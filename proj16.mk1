@@ -1,0 +1,82 @@
+!define BLANK ""
+C:\Z\16\dos_comm.obj : C:\Z\16\src\lib\dos_comm.c .AUTODEPEND
+ @C:
+ cd C:\Z\16
+ *wcc src\lib\dos_comm.c -i="c:\fdos\WATCOM/h" -w4 -e25 -zkl -zq -otexan -ol&
+ -ol+ -oh -om -d2 -bt=dos -fo=.obj -ml
+
+C:\Z\16\eng_ai.obj : C:\Z\16\src\eng_ai.cpp .AUTODEPEND
+ @C:
+ cd C:\Z\16
+ *wpp src\eng_ai.cpp -i="c:\fdos\WATCOM/h" -w4 -e25 -zkl -zq -otexan -ol -ol&
++ -oh -om -d2 -bt=dos -fo=.obj -ml -xs -xr
+
+C:\Z\16\eng_comm.obj : C:\Z\16\src\eng_comm.cpp .AUTODEPEND
+ @C:
+ cd C:\Z\16
+ *wpp src\eng_comm.cpp -i="c:\fdos\WATCOM/h" -w4 -e25 -zkl -zq -otexan -ol -&
+ol+ -oh -om -d2 -bt=dos -fo=.obj -ml -xs -xr
+
+C:\Z\16\eng_core.obj : C:\Z\16\src\eng_core.cpp .AUTODEPEND
+ @C:
+ cd C:\Z\16
+ *wpp src\eng_core.cpp -i="c:\fdos\WATCOM/h" -w4 -e25 -zkl -zq -otexan -ol -&
+ol+ -oh -om -d2 -bt=dos -fo=.obj -ml -xs -xr
+
+C:\Z\16\eng_gfx.obj : C:\Z\16\src\eng_gfx.cpp .AUTODEPEND
+ @C:
+ cd C:\Z\16
+ *wpp src\eng_gfx.cpp -i="c:\fdos\WATCOM/h" -w4 -e25 -zkl -zq -otexan -ol -o&
+l+ -oh -om -d2 -bt=dos -fo=.obj -ml -xs -xr
+
+C:\Z\16\eng_snd.obj : C:\Z\16\src\eng_snd.cpp .AUTODEPEND
+ @C:
+ cd C:\Z\16
+ *wpp src\eng_snd.cpp -i="c:\fdos\WATCOM/h" -w4 -e25 -zkl -zq -otexan -ol -o&
+l+ -oh -om -d2 -bt=dos -fo=.obj -ml -xs -xr
+
+C:\Z\16\dos_gfx.obj : C:\Z\16\src\lib\dos_gfx.cpp .AUTODEPEND
+ @C:
+ cd C:\Z\16
+ *wpp src\lib\dos_gfx.cpp -i="c:\fdos\WATCOM/h" -w4 -e25 -zkl -zq -otexan -o&
+l -ol+ -oh -om -d2 -bt=dos -fo=.obj -ml -xs -xr
+
+C:\Z\16\dos_opl2.obj : C:\Z\16\src\lib\dos_opl2.cpp .AUTODEPEND
+ @C:
+ cd C:\Z\16
+ *wpp src\lib\dos_opl2.cpp -i="c:\fdos\WATCOM/h" -w4 -e25 -zkl -zq -otexan -&
+ol -ol+ -oh -om -d2 -bt=dos -fo=.obj -ml -xs -xr
+
+C:\Z\16\lib_com.obj : C:\Z\16\src\lib\lib_com.cpp .AUTODEPEND
+ @C:
+ cd C:\Z\16
+ *wpp src\lib\lib_com.cpp -i="c:\fdos\WATCOM/h" -w4 -e25 -zkl -zq -otexan -o&
+l -ol+ -oh -om -d2 -bt=dos -fo=.obj -ml -xs -xr
+
+C:\Z\16\main.obj : C:\Z\16\src\main.cpp .AUTODEPEND
+ @C:
+ cd C:\Z\16
+ *wpp src\main.cpp -i="c:\fdos\WATCOM/h" -w4 -e25 -zkl -zq -otexan -ol -ol+ &
+-oh -om -d2 -bt=dos -fo=.obj -ml -xs -xr
+
+C:\Z\16\timer.obj : C:\Z\16\src\timer.cpp .AUTODEPEND
+ @C:
+ cd C:\Z\16
+ *wpp src\timer.cpp -i="c:\fdos\WATCOM/h" -w4 -e25 -zkl -zq -otexan -ol -ol+&
+ -oh -om -d2 -bt=dos -fo=.obj -ml -xs -xr
+
+C:\Z\16\core16.exe : C:\Z\16\dos_comm.obj C:\Z\16\eng_ai.obj C:\Z\16\eng_com&
+m.obj C:\Z\16\eng_core.obj C:\Z\16\eng_gfx.obj C:\Z\16\eng_snd.obj C:\Z\16\d&
+os_gfx.obj C:\Z\16\dos_opl2.obj C:\Z\16\lib_com.obj C:\Z\16\main.obj C:\Z\16&
+\timer.obj C:\Z\16\src\eng_ai.h C:\Z\16\src\eng_comm.h C:\Z\16\src\eng_core.&
+h C:\Z\16\src\eng_gfx.h C:\Z\16\src\eng_snd.h C:\Z\16\src\engine.h C:\Z\16\s&
+rc\lib\dos_comm.h C:\Z\16\src\lib\dos_gfx.h C:\Z\16\src\lib\lib_com.h C:\Z\1&
+6\src\lib\opl2.h C:\Z\16\src\timer.h .AUTODEPEND
+ @C:
+ cd C:\Z\16
+ @%write core16.lk1 FIL dos_comm.obj,eng_ai.obj,eng_comm.obj,eng_core.obj,en&
+g_gfx.obj,eng_snd.obj,dos_gfx.obj,dos_opl2.obj,lib_com.obj,main.obj,timer.ob&
+j
+ @%append core16.lk1 
+ *wlink name core16 d all sys dos op m op maxe=25 op q op symf @core16.lk1
+

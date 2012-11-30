@@ -1,0 +1,401 @@
+
+URL 	irc://irc.rizon.net/project16 	Mode 	+ntz 	Users 	7, 2@, 0%, 0+
+Topic 	irc://irc.sparky4.net/16 | http://www.yotsubano.me/16.zip <= new version!
+#project16
+[15:14]	===	55 unknown connection(s)
+[15:14]	=-=	User mode for sparky4 is now +ix
+[15:14]	Global	[Logon News - May 21 2011] First time on Rizon? Be sure to read the FAQ! http://s.rizon.net/FAQ
+[15:14]	Global	[Logon News - Feb 07 2012] We now have a Channel Takeover Policy for the channels with founder being gone for over a certain period of time. Please read http://forum.rizon.net/showthread.php?3850 for details
+[15:14]	Global	[Logon News - Jul 14 2012] Rizon is looking for php coders to assist in the creation of a ticketing system to track abuse & handle staff releated inquries. If you have experience with ticketing systems please see #dev or email m[at]rizon.net.
+[15:14]	Global	[Random News - Mar 28 2009] Rizon now offers a Quotes bot for any room that wishes to have one. For more information on this please see http://www.rizon.net/vbulletin/showthread.php?t=940 Thanks Rizon Staff.
+[15:14]	NickServ	This nickname is registered and protected. If it is your
+[15:14]	NickServ	nick, type /msg NickServ IDENTIFY password. Otherwise,
+[15:14]	NickServ	please choose a different nick.
+[15:14]	hopm-siglost	For network safety, your client is being scanned for open proxies by proxyscan.siglost.com (188.122.74.139). This scan will not harm your computer.
+[15:14]	=-=	User mode for sparky4 is now +r
+[15:14]	NickServ	Password accepted - you are now recognized.
+[15:14]	-->|	YOU (sparky4) have joined #project16
+[15:14]	=-=	Topic for #project16 is “irc://irc.sparky4.net/16 | http://www.yotsubano.me/16.zip”
+[15:14]	=-=	Topic for #project16 was set by sparky4!~sparky4@Rizon-C1D04E4A.resnet.latech.edu on Wed Jul 18 17:00:51 2012
+[15:14]	=-=	Mode #project16 +o sparky4 by ChanServ
+[15:39]	sparky4	yes everything in this game excluding the images will be just text files
+[15:39]	sparky4	wwwww
+[15:39]	sparky4	crazy
+[17:44]	|<--	Feint has left irc.rizon.net (Remote host closed the connection)
+[21:40]	sparky4	http://www.youtube.com/watch?v=6CPU2aKDWoo&fmt=18 = game's time setting wwww
+[00:36]	|<--	heheringfeast has left irc.rizon.net (Quit: Quitting)
+[06:11]	sparky4	............
+[06:11]	sparky4	TiV3: ticks thelinesofmagazine Sageru where in the fuck is everybody?
+[06:38]	-->|	sparky4_ (~yakui4@Rizon-C1D3076C.resnet.latech.edu) has joined #project16
+[06:38]	|<--	sparky4_ has left irc.rizon.net ()
+[08:29]	Sageru	?]
+[08:31]	ticks	sleeping of course
+[08:31]	ticks	or about to
+[08:31]	ticks	strange, my nick doesn't always want to highlight
+[08:46]	sparky4	wwww
+[08:46]	sparky4	wwww
+[08:46]	sparky4	wwww
+[08:46]	sparky4	wwww
+[08:46]	[ERROR]	No match for “sup”.
+[08:46]	[ERROR]	No match for “supp”.
+[08:46]	[ERROR]	No match for “supp”.
+[08:46]	[ERROR]	No match for “supp”.
+[11:18]	TiV3	hmm
+[11:18]	TiV3	w
+[12:15]	ticks	wwwwww
+[12:28]	sparky4	wwww
+[12:38]	sparky4	i with ojosama will tell me the fucking hooks for the input
+[12:44]	|<--	thelinesofmagazine has left irc.rizon.net (Ping timeout: 240 seconds)
+[14:22]	-->|	sparky4_ (~yakui4@Rizon-C1D3076C.resnet.latech.edu) has joined #project16
+[14:23]	sparky4_	void Core::run()
+[14:23]	sparky4_	{
+[14:23]	sparky4_	int i = 0;
+[14:24]	sparky4_	while (ENGINE_EXIT != this->msg)
+[14:24]	sparky4_	{
+[14:24]	sparky4_	//next line for purely testing purposes
+[14:24]	sparky4_	i++;if(i==600){char a;std::cin >> a;this->keys[a] = true;i=0;}
+[14:24]	sparky4_	this->sync();
+[14:24]	sparky4_	this->input();
+[14:24]	sparky4_	this->update();
+[14:24]	sparky4_	}
+[14:24]	sparky4_	}
+[14:24]	sparky4_	hmmm
+[15:16]	|<--	sparky4_ has left irc.rizon.net (Remote host closed the connection)
+[15:41]	-->|	Feint (~chatzilla@Rizon-8DFC2CD4.range86-141.btcentralplus.com) has joined #project16
+[15:48]	Sageru	https://www.power.org/resources/downloads/PowerISA_V2.06B_V2_PUBLIC.pdf too bad given that i don't know how to design CPUs this is useless to me
+[17:56]	|<--	ticks has left irc.rizon.net (Killed (NickServ (GHOST command used by ticks-netbook)))
+[17:56]	-->|	ticks (~emily@zima.blue) has joined #project16
+[17:57]	|<--	Feint has left irc.rizon.net (Remote host closed the connection)
+[18:41]	|<--	ticks has left irc.rizon.net (Read error: Connection reset by peer)
+[21:27]	-->|	ticks (~emily@zima.blue) has joined #project16
+[21:47]	|<--	ticks has left irc.rizon.net (Ping timeout: 240 seconds)
+[21:48]	-->|	ticks (~emily@zima.blue) has joined #project16
+[22:53]	Sageru	http://www.underground-gamer.com/details.php?id=53330 i can't believe there was a US DOS version of this
+[22:53]	Sageru	i had no ide a
+[22:54]	Sageru	http://www.underground-gamer.com/details.php?id=52672 >mfw this
+[22:54]	Sageru	wwwwwww
+[03:42]	-->|	sparky4_ (~yakui4@Rizon-C1D3076C.resnet.latech.edu) has joined #project16
+[04:02]	|<--	sparky4_ has left irc.rizon.net (Ping timeout: 240 seconds)
+[11:59]	|<--	ticks has left irc.rizon.net (Quit: leaving)
+[12:01]	-->|	ticks (~emily@zima.blue) has joined #project16
+[12:05]	|<--	ticks has left irc.rizon.net ()
+[12:19]	-->|	ticks (~emily@zima.blue) has joined #project16
+[12:22]	-->|	Feint (~chatzilla@Rizon-8DFC2CD4.range86-141.btcentralplus.com) has joined #project16
+[18:42]	|<--	Feint has left irc.rizon.net (Ping timeout: 240 seconds)
+[19:11]	|<--	ticks has left irc.rizon.net (Read error: Connection reset by peer)
+[19:14]	-->|	ticks (~emily@zima.blue) has joined #project16
+[20:40]	|<--	ticks has left irc.rizon.net (Quit: Restart.)
+[20:52]	-->|	ticks (~emily@zima.blue) has joined #project16
+[23:16]	sparky4	C/C++ = funny language
+[04:52]	|<--	ticks has left irc.rizon.net (Ping timeout: 240 seconds)
+[06:49]	-->|	ticks (~emily@zima.blue) has joined #project16
+[07:33]	sparky4	...........................
+[07:33]	sparky4	........
+[07:33]	sparky4	.................
+[07:33]	sparky4	..................
+[07:34]	sparky4	............................................................
+[12:50]	-->|	Feint (~chatzilla@Rizon-8DFC2CD4.range86-141.btcentralplus.com) has joined #project16
+[17:06]	sparky4	Feint: Sageru ticks TiV3 good news everyone
+[17:06]	sparky4	wwww
+[17:14]	sparky4	minor bug found
+[17:31]	sparky4	WWWW
+[17:31]	sparky4	there is some bugs in project 16
+[17:32]	sparky4	MANY buys w
+[18:36]	|<--	Feint has left irc.rizon.net (Remote host closed the connection)
+[19:23]	TiV3	www
+[19:32]	sparky4	!!
+[19:32]	sparky4	TiV3: wwww\
+[21:24]	-->|	sparky4_ (~yakui4@Rizon-C1D3076C.resnet.latech.edu) has joined #project16
+[21:39]	sparky4_	*lock_key&=(~(16 | 32 | 64));	// toggle off the lock keys
+[21:41]	=-=	sparky4 has changed the topic to “irc://irc.sparky4.net/16 | http://www.yotsubano.me/16.zip <= new version!”
+[22:30]	sparky4_	Sageru: TiV3 ticks WHERE THE FUCK IS EVERYONG?!?!
+[22:30]	Sageru	in my butt
+[22:32]	sparky4_	Sageru: nigga download that zip file
+[22:32]	sparky4_	Sageru: http://www.yotsubano.me/16.zip
+[22:32]	sparky4_	Sageru: http://www.yotsubano.me/16.zip
+[22:32]	Sageru	lol
+[22:32]	sparky4_	Sageru: http://www.yotsubano.me/16.zip
+[22:32]	sparky4_	Sageru: http://www.yotsubano.me/16.zip
+[22:32]	Sageru	i need to DOSbox it
+[22:32]	sparky4_	Sageru: http://www.yotsubano.me/16.zip
+[22:32]	sparky4_	Sageru: http://www.yotsubano.me/16.zip
+[22:32]	sparky4_	Sageru: http://www.yotsubano.me/16.zip
+[22:32]	Sageru	does it work in DOSbox?
+[22:32]	sparky4_	Sageru: http://www.yotsubano.me/16.zip
+[22:32]	sparky4_	Sageru: http://www.yotsubano.me/16.zip
+[22:32]	sparky4_	Sageru: NOBODY IS FUCKING REVEIWING IT
+[22:32]	sparky4_	Sageru: YES YES IT COMES WITH THE INSTALLER
+[22:32]	Sageru	oh
+[22:32]	Sageru	crazy.
+[22:33]	sparky4_	Sageru: I AM PISSED OFF
+[22:33]	sparky4_	nobody is reveiwing it
+[22:33]	sparky4_	and they be too dumb
+[22:33]	Sageru	┐(´～`；)┌
+[22:33]	sparky4_	wwww
+[22:33]	sparky4_	Sageru: please try it out
+[22:34]	Sageru	when i'm not IMing and on the phone and IRC at the same time
+[22:34]	sparky4_	Sageru: ;_;
+[22:34]	sparky4_	Sageru: it's late i i need to shpower before i get way too tired
+[22:35]	Sageru	lol
+[22:35]	Sageru	okay, well i will get back to you on it
+[22:35]	sparky4_	?
+[22:35]	sparky4_	please do it now ~ w
+[22:35]	Sageru	i'm busy
+[22:36]	sparky4_	FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[23:33]	TiV3	awawa
+[01:04]	Sageru	shit pickle
+[01:04]	Sageru	cool programming but what progress is there
+[05:12]	-->|	Feint (~chatzilla@Rizon-8DFC2CD4.range86-141.btcentralplus.com) has joined #project16
+[05:44]	-->|	Ojouchama (~chatzilla@jp.desuwa) has joined #project16
+[09:33]	sparky4_	https://boards.4chan.org/jp/res/9452272#p9454310
+[09:34]	sparky4_	Sageru: keyboard
+[09:34]	sparky4_	codes
+[09:40]	Sageru	hmm?
+[10:00]	Ojouchama	sparky4 when will you finish your game?
+[10:08]	Sageru	she has a little tune playing
+[10:08]	Sageru	so far
+[10:08]	Sageru	which is more than i could do w
+[10:08]	Sageru	i can hear the OPL2's glorious sound
+[10:10]	Sageru	SID/AY-3 are my favorite sound chips probably, as well as the FM chip in the PC88/PC98
+[10:12]	Sageru	pretty odd how the SID ended up in a total of two computers
+[10:53]	Ojouchama	Sageru shut up.
+[10:53]	Sageru	no u
+[10:53]	Ojouchama	Sageru always talking about stuff that doesn't work.
+[10:54]	Sageru	what does that even mean
+[10:54]	Ojouchama	Do you even have working code for those sound chips?
+[10:54]	Sageru	no i don't but i'm saying i like the sound
+[10:54]	Sageru	i don't program anything
+[10:54]	Sageru	i didn't claim to
+[10:54]	Sageru	┐(´～`；)┌
+[10:54]	Ojouchama	Did you compose anything that can actually be used?
+[10:54]	Sageru	god damnit
+[10:55]	Ojouchama	Stop distracting sparky4.
+[10:55]	Ojouchama	This is #project16 not #oldSoundHardwares
+[11:00]	Sageru	lol
+[11:00]	Sageru	go relax, have a drink or something
+[11:18]	sparky4	Ojouchama: wwww
+[11:18]	sparky4	Ojouchama: good news wwww
+[11:19]	sparky4	Ojouchama: a this rate it's vapor ware
+[11:20]	sparky4	Ojouchama: i was in class
+[11:21]	Sageru	sparky4, what is most important is not to give up
+[11:21]	Sageru	i wish i could help but i have no knowledge
+[11:21]	sparky4	Sageru: ^^
+[11:21]	sparky4	Sageru: i barely know anything wwww
+[11:21]	Sageru	and gaining it would take longer than it would for you to just develop it
+[11:21]	Sageru	w
+[11:21]	Sageru	oh
+[11:21]	sparky4	Sageru: well back in 2007
+[11:22]	sparky4	i started playin iwith computers (like actually take them apart and learn about them)
+[11:22]	sparky4	Sageru: i did not know SHIT about computers back in 2006
+[11:22]	sparky4	now i am an UBER POWAH USER
+[11:22]	Sageru	lol
+[11:23]	Sageru	i'm just a huge nerd, my understanding of hardware is greater than that of software so programming is really well beyond my capacity
+[11:23]	sparky4	Sageru: then you should make the fucking drivers
+[11:23]	sparky4	wwww
+[11:24]	Sageru	well
+[11:24]	Sageru	programming goes into software
+[11:24]	Sageru	i wish i understood the hardware *that* intimately
+[11:24]	sparky4	Sageru: and hardware bitch
+[11:24]	Sageru	;_;
+[11:25]	sparky4	is FAR too tired to work on project 16
+[11:26]	sparky4	Ojouchama: the keyoard input works but i cannot figure out how to make it work with the game engine's core
+[11:26]	sparky4	if we can get the input system down then development can REALLY take off
+[11:27]	sparky4	Sageru: i am soo weak
+[11:27]	sparky4	from hacking the keyboard yesterday
+[11:27]	sparky4	Sageru: http://www.youtube.com/watch?v=hOkPM91JRpk wwww
+[11:28]	sparky4	it's taking forever to make this game because only 1 person is actually developing www
+[11:28]	sparky4	and that person is ..... wwww dumb
+[11:41]	Ojouchama	sparky4 how do you know the keyboard input works?
+[11:41]	Ojouchama	sparky4 What does it do?
+[11:42]	sparky4	Ojouchama: wwww i can see raw scan codes when i push a key
+[11:42]	Ojouchama	sparky4 So you print them out?
+[11:42]	sparky4	....
+[11:42]	sparky4	Ojouchama: download it please wwww
+[11:44]	sparky4	Ojouchama: like when you press Esc it prints it's raw scan byte
+[11:44]	sparky4	which is 1
+[11:45]	sparky4	Ojouchama: i need this working swith the engine so i can inplement the moving pixel test
+[11:45]	sparky4	Ojouchama: the moving pixel that is controlled by keyboard
+[11:47]	Ojouchama	sparky4 That means you have it in a variable.
+[11:48]	sparky4	ohh~
+[11:48]	Ojouchama	sparky4 Map them with an ASCII key array like we discussed then use that aray in the engine core.
+[11:48]	sparky4	ok
+[11:49]	sparky4	Ojouchama: bot how do i make it communicate with the game engine core?
+[11:49]	Ojouchama	Then in the game, instead of querying the scan code you query the key array.
+[11:49]	Ojouchama	The input updates the key array / scan codes.
+[11:49]	sparky4	Ojouchama: ~ like a cloud of keys?
+[11:50]	Ojouchama	sparky4 Exactly.
+[11:50]	sparky4	Ojouchama: wwww
+[11:50]	Ojouchama	sparky4 It isn't too complicated and pretty universal.
+[11:50]	sparky4	Ojouchama: doom engine has something like that wwww
+[11:51]	Ojouchama	sparky4 They key array will be some member of the game core object.
+[11:51]	sparky4	?!!?!?!?
+[11:52]	sparky4	wait
+[11:52]	Ojouchama	sparky4 So it remembers everything and you separate the internal hardware code from the game code.
+[11:52]	sparky4_	private:
+[11:52]	sparky4_	engine_message msg;
+[11:52]	sparky4_	std::list<void(Core::*)()> *fp;
+[11:52]	sparky4_	Timer timer;
+[11:52]	sparky4_	bool keys[256];
+[11:52]	sparky4_	int frames_per_second;
+[11:52]	sparky4_	//std::list<void(core::*)()> fp;
+[11:52]	sparky4_	??
+[11:53]	Ojouchama	Yeah keys[]/
+[11:53]	sparky4_	wwww
+[11:53]	Ojouchama	Then, and this is the clever part...
+[11:53]	Ojouchama	You figures out what actions you want to take in your game.
+[11:54]	Ojouchama	Say you want to do 10 things.
+[11:54]	sparky4_	#define NUM_SCAN_QUE 256	// this MUST be 256, using BYTE roll-over for
+[11:54]	sparky4_	// q code
+[11:54]	sparky4_	Ojouchama: i am extreamly tired right now ww
+[11:54]	sparky4_	byte kee_q[NUM_SCAN_QUE];
+[11:54]	Ojouchama	You have a game object with an array of 10 bools, and you remap the keys to those.
+[11:55]	sparky4_	wtf is an object and a fucking bool?
+[11:55]	sparky4_	is a bool a pool?
+[11:55]	Ojouchama	sparky4 no.
+[11:55]	sparky4_	wwww
+[11:55]	Ojouchama	sparky4 A bool is like a bit, except it is either true or false.
+[11:56]	sparky4_	Ojouchama: we cannot forget joy sticks and mice
+[11:56]	sparky4_	Ojouchama: the bit as in byte and nibble or this is another bit?
+[11:56]	Ojouchama	http://www.cplusplus.com/forum/beginner/6557/
+[11:57]	sparky4_	Ojouchama: bool is like a switch variable?
+[11:57]	sparky4_	Ojouchama: when key is press it's 1
+[11:57]	Ojouchama	sparky4 That is why you separate and map keys twice.
+[11:57]	sparky4_	when key is up it's 0?>
+[11:58]	sparky4_	Ojouchama: i know they return different values
+[11:58]	Ojouchama	sparky4 you handle all input devices, and only map them to game registered "keys" when they are used.
+[11:59]	Ojouchama	Key up is false, which is 0.
+[11:59]	sparky4_	Ojouchama: ill use the joy stick as a dildo www
+[11:59]	Ojouchama	Use false.
+[11:59]	sparky4_	ok
+[11:59]	Ojouchama	sparky4 ew.
+[11:59]	sparky4_	Ojouchama: i am joking
+[11:59]	sparky4_	Ojouchama: ww
+[12:00]	sparky4_	Ojouchama: there is 6 rows of keys
+[12:00]	Ojouchama	sparky4 Eventually you want a Game object which the core maintains.
+[12:01]	sparky4_	wtf is an object?
+[12:01]	sparky4_	ww
+[12:01]	Ojouchama	sparky4 like the Core object, or Engine, I forgot what I named it.
+[12:01]	sparky4_	namespace engine{ this?
+[12:01]	sparky4_	Core::Core() this?
+[12:02]	Ojouchama	Except the Game object will only have things like player lives, and game rules, and stuff like that.
+[12:02]	Ojouchama	sparky4 yes.
+[12:02]	sparky4_	Ojouchama: we may need a physics object?
+[12:02]	sparky4_	Ojouchama: wait they are all objects?
+[12:02]	sparky4_	momentum and gravity ww
+[12:04]	Ojouchama	sparky4 so you can do this:
+[12:04]	Ojouchama	namespace engine{
+[12:04]	Ojouchama	class Game {
+[12:04]	Ojouchama	public: (public functions here)
+[12:04]	Ojouchama	protected:
+[12:04]	Ojouchama	private: (private variables here)
+[12:04]	Ojouchama	}
+[12:04]	Ojouchama	}
+[12:04]	Ojouchama	Then implement the functions/methods for it in a cppp
+[12:05]	sparky4	Ojouchama: ohhh can you explain wtf is is a class?
+[12:06]	Ojouchama	sparky4 A core object interfaces all other stuff, a game object has all game stuff, it can also have for example an options object. So core can't affect options directly. But it can update Game with keys, and Game can update options based on those keys.
+[12:07]	Ojouchama	sparky4 A class is a homosexual function that is persistent until killed.
+[12:07]	sparky4_	wwww
+[12:07]	=-=	sparky4_ is now known as sparky4|compy4
+[12:08]	sparky4|compy4	Ojouchama: i am logging this talk wwww so i can read over it when i don't fell sleepy
+[12:08]	Ojouchama	sparky4 It is like having global variables and functions that are bound to a scope of the "object" basically a struct.
+[12:08]	Ojouchama	But more homosexual.
+[12:09]	Ojouchama	The when eng_core.h and eng_core.cpp is more or less a good example of how you do a class.
+[12:09]	sparky4|compy4	Ojouchama: tho te global variables in that object is basically stuck in there?
+[12:10]	Ojouchama	sparky4 Yes, it's persistent and a member of the object so it's called like this OBJECT_NAME.variable
+[12:11]	Ojouchama	sparky4 with a . (dot)
+[12:11]	Ojouchama	sparky4 But you should make an instance of a class like a variable so... CLASS_NAME variablename;
+[12:12]	Ojouchama	You see that for Core in main.cpp
+[12:12]	sparky4|compy4	?
+[12:12]	Ojouchama	sparky4 Inside a class you can use this->variablename to get something.
+[12:12]	sparky4|compy4	Ojouchama: they should give this stuff better names ww
+[12:13]	Ojouchama	sparky4 What do you mean?
+[12:13]	sparky4|compy4	Ojouchama: wtf is "this->" i see it everywhere
+[12:13]	Ojouchama	this as in "this exactly copy of the class that is running now at this very moment"
+[12:13]	Ojouchama	And then -> is like using a pointer to the member.
+[12:14]	Ojouchama	sparky4 You can also access+
+[12:14]	sparky4|compy4	Ojouchama: you can call a class that is not running?
+[12:14]	sparky4|compy4	wtf is this sourcery? ww
+[12:14]	Ojouchama	sparky4 You can also access stuff statically so there is a difference.
+[12:15]	sparky4|compy4	's brain pops
+[12:15]	sparky4|compy4	wwww
+[12:15]	Ojouchama	Fore example you can Core::functionname(); and it should run, if it CAN run.
+[12:15]	sparky4|compy4	ww
+[12:16]	Ojouchama	But ... If you do that you might as well use C style functions in my opinion.
+[12:16]	Ojouchama	sparky4 The benefit with C++ is that you can organize persistent and running code better and more efficiently.
+[12:16]	sparky4|compy4	Ojouchama: is there something bad about C?
+[12:16]	sparky4|compy4	Ojouchama: ohh~~
+[12:17]	Ojouchama	sparky4 It has limited use for large scale simulations, which is what a game really is.
+[12:18]	Ojouchama	sparky4 In C you would use a lot of structs, but it gets more messy and complicated the more complex the program gets.
+[12:18]	sparky4|compy4	Ojouchama: ohh dear
+[12:18]	sparky4|compy4	Ojouchama: i have servere A.D.H.D. wwww if you can't notice
+[12:19]	Ojouchama	sparky4 C++ might seem complicated but when you think about it you just build a lot of scaffolding, that's all. The rest is then just reduced to ver simple functions that use variables you've stored on the class, or passed as arguments.
+[12:19]	sparky4|compy4	Ojouchama: this styl;e is programming is OBJECT ORIENTED programming
+[12:20]	Ojouchama	sparky4 Yes, it is. But it isn't bad or anything.
+[12:20]	sparky4|compy4	Ojouchama: i know but is is very advanced wwww
+[12:20]	Ojouchama	sparky4 Objects are really like contained simulated entities which makes using them for simulation work quite powerful.
+[12:22]	Ojouchama	sparky4 A lot of people will tell you that C++ is bad, or good, or whatever. But don't listen to them, they don't make anything, they're idiots.
+[12:22]	sparky4|compy4	wwww
+[12:23]	sparky4|compy4	Ojouchama: can you make a small tutorial file on the shit i don't know but need to know?
+[12:23]	sparky4|compy4	wwww
+[12:23]	Ojouchama	sparky4 Nothing can solve all use cases in a good way so you use what works good enough.
+[12:24]	Ojouchama	sparky4 If you find C++ hard you aren't good enough to make the optimizations to not use it, or to optimize it with C++, or whatever.
+[12:25]	sparky4|compy4	Ojouchama: it's not really
+[12:25]	Ojouchama	sparky4 This way you prevent a lot of mistakes, if you do it properly.
+[12:26]	sparky4|compy4	Ojouchama: the code has significantly much less errors now
+[12:26]	Ojouchama	sparky4 The errors were because you did it wrong.
+[12:26]	Ojouchama	www
+[12:26]	sparky4|compy4	wwww
+[12:26]	sparky4|compy4	WWWW
+[12:27]	Ojouchama	sparky4 I bought an XBOX360 on a whim.
+[12:27]	sparky4|compy4	they say at school i am an advanced programmer wwww
+[12:27]	Ojouchama	sparky4 I told you not to listen to other people, they're idiots.
+[12:27]	sparky4|compy4	in reality i suck massive donkey dicks
+[12:27]	Ojouchama	wwww
+[12:27]	sparky4|compy4	Ojouchama: that was like a while ago
+[12:28]	Ojouchama	sparky4 I am terrible, girls can't code.
+[12:28]	sparky4|compy4	Ojouchama: 99.99% o the population is bakas
+[12:28]	sparky4|compy4	the 0.01% barely know how to code
+[12:28]	Ojouchama	sparky4 Yes, I always say: It's not that I'm good... It's that you're just an idiot.
+[12:29]	sparky4|compy4	and a few people know dos programming w
+[12:29]	sparky4|compy4	Ojouchama: EYE AM A ⑨
+[12:30]	sparky4|compy4	Ojouchama: eye want to get better w
+[12:30]	Ojouchama	sparky4 The code runs on Win32 also.
+[12:30]	sparky4|compy4	Ojouchama: the game code?!
+[12:30]	Ojouchama	sparky4 If I replace the Dos stuff with Win32 libs and compile for Win32 it will work too.
+[12:31]	sparky4|compy4	Ojouchama: ohh cool~
+[12:31]	sparky4|compy4	what about win16?
+[12:31]	sparky4|compy4	and os/2?
+[12:31]	Ojouchama	sparky4 If I replace the Dos stuff with Xwindow stuff and compile for linux it will work on linux.
+[12:31]	sparky4|compy4	Ojouchama: wwww thats why i am advoiding assembely
+[12:32]	sparky4|compy4	in case anyone wants to port it to other machines
+[12:32]	Ojouchama	sparky4 If I replace the Dos stuff with glut stuff or QT or something and compile it for whichever system it will work for all systems which glut or QT uses.
+[12:32]	sparky4|compy4	Ojouchama: small tutorial file for me to play with? www
+[12:33]	Ojouchama	sparky4 assembly is more tricky, yes.
+[12:33]	Ojouchama	sparky4 Only do low level optimizations when it all works.
+[12:33]	sparky4|compy4	Ojouchama: and no snes port
+[12:34]	sparky4|compy4	ww
+[12:35]	Ojouchama	sparky4 It is so hot I am in my panties on the floor drinking lots of juice boxes and surrounded my computer stuff.
+[12:36]	sparky4|compy4	Ojouchama: wwwwwwwwwwwww
+[12:36]	sparky4|compy4	Ojouchama: tempurature?
+[12:36]	Ojouchama	sparky4 Yes temperature omigosh!!
+[12:37]	sparky4|compy4	it's 33 degrees celcious~
+[12:37]	Ojouchama	sparky4 But talking about code is exciting too.
+[12:37]	sparky4|compy4	yes
+[12:37]	sparky4|compy4	is dead tired
+[12:37]	sparky4|compy4	i am wearing boy's clothed because i feel icky when i cant shave my theighs w
+[12:38]	sparky4|compy4	i am too tired to
+[12:38]	Ojouchama	sparky4 ew
+[12:38]	sparky4|compy4	Ojouchama: i am way too tired it takes alot of work
+[12:38]	sparky4|compy4	i feel very heavy
+[12:39]	Ojouchama	sparky4 hairy legs weigh a lot.
+[12:39]	sparky4|compy4	Ojouchama: where you live? wwww
+[12:39]	sparky4|compy4	Ojouchama: i shave them alot www
+[12:39]	Ojouchama	sparky4 I live here.
+[12:41]	sparky4|compy4	Ojouchama: I live in hell http://www.youtube.com/watch?v=uks26L3B7_o
+[12:42]	sparky4|compy4	Ojouchama: *<all types>* otaku hell
+[12:44]	sparky4|compy4	Ojouchama: wwww
+[12:44]	|<--	ticks has left irc.rizon.net (Quit: overheatinggggggggg)
+[12:44]	sparky4|compy4	wwwwwww
+[12:44]	sparky4|compy4	Ojouchama: last year it hit 45C
+[12:45]	sparky4|compy4	Ojouchama: ??? hello crazy?
+
