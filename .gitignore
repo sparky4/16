@@ -2,11 +2,11 @@
 # Ignore (generated) html files,
 *.html
 *.htm
+*.sh
+!proj16.bfproject
 *.obj
 *.OBJ
 *.*~
-*.sh
-!proj16.bfproject
 
 # except foo.html which is maintained by hand.
 #!foo.html
