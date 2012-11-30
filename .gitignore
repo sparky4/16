@@ -7,7 +7,6 @@
 *.obj
 *.OBJ
 *.*~
-boop.sh
 
 # except foo.html which is maintained by hand.
 #!foo.html
