@@ -241,6 +241,24 @@ void FMSetVoice(int voiceNum, FMInstrument *ins){
 //  return (1);
 //} /* End of LoadSBI */
 
+unsigned short Notes[] = {
+        19327 ,        /* C b            */
+        18242 ,        /* C              */
+        17218 ,        /* C #   ( D b )  */
+        16252 ,        /* D              */
+        15340 ,        /* D #   ( E b )  */
+        14479 ,        /* E     ( F b )  */
+        13666 ,        /* F     ( E # )  */
+        12899 ,        /* F #   ( G b )  */
+        12175 ,        /* G              */
+        11492 ,        /* G #   ( A b )  */
+        10847 ,        /* A              */
+        10238 ,        /* A #   ( B b )  */
+        9664 ,         /* B     ( C b )  */
+        9121 ,         /* B #            */
+        0
+};
+
 /* test of the routines */
 void fmtest(){
 	enum SCALE test[] = { D4, E4, F4, G4, A4, B4, C4 };

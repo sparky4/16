@@ -7,6 +7,9 @@
 *.obj
 *.OBJ
 *.*~
+FUCK
+*.err
+*.ERR
 !boop.sh
 
 # except foo.html which is maintained by hand.

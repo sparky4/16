@@ -7,9 +7,9 @@
 
 #include <iostream>
 
-#include "src\lib\dos_gfx.h"
-#include "src\lib\opl2.h"
-#include "src\lib\dos_comm.h"
+//#include "src\lib\dos_gfx.h"
+//#include "src\lib\opl2.h"
+//#include "src\lib\dos_comm.h"
 
 namespace engine{
 
@@ -35,7 +35,7 @@ namespace engine{
 		//this->fp.push_back(&engine::core::ai);
 
 		// Global Variables
-		this->qing = 4; // test global variable
+		this->bing = 4; // test global variable
 		this->x = 0; // X
 		this->y = 0; // Y
 	}
@@ -45,7 +45,6 @@ namespace engine{
 		for (std::list<void(Core::*)()>::iterator i = fp->begin(); i != fp->end(); i++)
 		//for (std::list<void(core::*)()>::iterator i = this->fp.begin(); i != this->fp.end(); i++)
 		{
-			
 			(this->*(*i))();
 		}
 
@@ -78,7 +77,7 @@ namespace engine{
 		//if (this->timer.elapsed_timer() >= fps)
 		//{
 		//wrap comm lib
-		this->msg = do_communication(scankey());
+		this->msg = do_communication();
 		//this->timer.start_timer();
 		//}
 	}
@@ -103,7 +102,6 @@ namespace engine{
 			this->sync();
 			this->input();
 			this->update();
-//tt			std::cout << this->qing << std::endl;
 		}
 	}
 
@@ -147,7 +145,6 @@ namespace engine{
 		//dummy 'w' and 'p' down, t up
 //----		bool dummy_input_available = true;
 //----		if(dummy_input_available)
-		//if (scankey() <= 128)
 //----		{
 //----			std::cout << "key down" << std::endl;
 //----			this->keeq['w'] = true;

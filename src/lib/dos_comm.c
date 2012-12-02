@@ -2,44 +2,47 @@
 /* Thanks to Gary Neal for example code */
 #include "src\lib\dos_comm.h"
 
-// Q code
-byte kee;
-byte keer[128];	/* key pressed */
-byte keep[128];	/* key released */
+// keyboard buffer
+static byte key[NUM_SCANCODES]; // pressed
+static byte kea[NUM_SCANCODES]; // released
 
-#ifdef __cplusplus		/* Functions must be declared C style */
+#ifdef __cplusplus		/* Function must be declared C style */
 extern "C" {
 #endif
-extern void interrupt (far *oldkb)(void) = NULL; /* BIOS keyboard handler */
+static void interrupt (far *oldkb)(void) = NULL; /* BIOS keyboard handler */
 #ifdef __cplusplus
 }
 #endif
 /*****************NEW KEYBOARD 09h ISR***********************/
 void interrupt newkb(void){
+	byte kee;
 	register char qx;
 
 	kee = inp(0x60);	/* Read the keyboard scan code */
 
 	/* Clear keyboard controller on XT machines */
-	qx = inp(0x61);
+	qx = inp(0x61);           /* Get keyboard control register */
 	qx |= 0x82;
-	outp(0x61, qx);
+	outp(0x61, qx);           /* Toggle acknowledge bit high */
 	qx &= 0x7F;
-	outp(0x61, qx);
+	outp(0x61, qx);           /* Toggle acknowledge bit low */
 
 	/* Interpret the scan code and set our flags */
+//tt	printf("%d[%d]\n",kee,key[kee]);
 	if(kee & 0x80)
-		keep[kee & 0x7F] = 0;
+		key[kee & 0x7F] = 0; // a key is released
 	else
-		keep[kee] = keer[kee] = 1;
+		key[kee] = kea[kee] = 1; // a key is pressed
 
-	outp(0x20, 0x20);
+	/* Acknowledge the interrupt to the programmable interrupt controller */
+	outp(0x20, 0x20);      /* Signal non specific end of interrupt */
 }
 
 /* ---------------------- init_keyboard() ---------------- April 17,1993 */
 /* restore the bios keyboard handler */
 /* ---------------------- deinit_keyboard() -------------- April 17,1993 */
 void setkb(int vq){
+	int i;	/* Index variable */
 	if(!vq){ // deinitiation
 		/* Abort if our function pointer has no valid address */
 		if(oldkb == NULL) return;
@@ -47,23 +50,30 @@ void setkb(int vq){
 		_dos_setvect(9, oldkb);
 		/* Reset our function pointer to contain no valid address */
 		oldkb = NULL;
+		/* Print the key heap */
+		printf("\n");
+		for(i=0; i<NUM_SCANCODES; i++){
+			if(i==NUM_SCANCODES/2) printf("================================\n");
+			printf("%03d[%d][%d]",i+1,key[i],kea[i]);
+			if(key[i]==1)printf("====");
+			printf(",\n");
+		}
 	}else if(vq == 1){ // initiation
-		int i;	/* Index variable */
 		byte far *lock_key;
 
 		/* Abort if our function pointer has a valid address. */
 		if(oldkb != NULL) return;
 
 		/* Clear the keyboard buttons state arrays */
-		for(i = 0; i < 128; i++)
-			keep[i] = keer[i] = 0;
+		for(i = 0; i < NUM_SCANCODES; i++)
+			key[i] = kea[i] = 0;
 
 		/* save old BIOS key board handler */
 		oldkb = _dos_getvect(9);
 
 		// turn off num-lock via BIOS
-		lock_key = MK_FP(0x040, 0x017);	//wtf is going on here?
-		*lock_key&=(~(16 | 32 | 64));	// toggle off the lock keys
+		lock_key = MK_FP(0x040, 0x017); // Pointing to the address of the bios shift state keys
+		*lock_key&=(~(16 | 32 | 64)); // toggle off the locks by changing the values of the 4th, 5th, and 6th bits of the address byte of 0040:0017
 		oldkb();	// call BIOS keyhandler to change keyboard lights
 
 		/* setup our own handler */
@@ -78,24 +88,18 @@ void setkb(int vq){
  * The status is 1 if the key is pressed or has been pressed since the     *
  * last call to this function for that particular key.                     *
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-char keyp(byte c){
+int keyp(byte c){
 	register char retVal;
 
 	/* Key value in range of keyboard keys available */
 	c &= 0x7F;
 
 	/* Get the status of the key requested */
-	retVal = keep[c] | keer[c];
+	retVal = key[c] | kea[c];
 
 	/* Reset the was pressed status for the requested key */
-	keer[c] = 0;
+	kea[c] = 0;
 
 	/* Return the requested key's state */
 	return retVal;
-}
-
-// tesuto
-byte scankey(){
-	//if(keyp(kee)) printf("%c %03d %03x\n", kee, kee, kee);
-	return kee;
 }

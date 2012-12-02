@@ -28,12 +28,12 @@ namespace engine {
 		engine_message msg;
 		std::list<void(Core::*)()> *fp;
 		Timer timer;
-//		bool keeq[NUM_SCAN_QUE];
+//		unsigned char key[256];
 		int frames_per_second;
 		//std::list<void(core::*)()> fp;
 /*		int xxxx = 0;
 		int yyyy = 0;*/
-		int qing;
+		int bing;
 		int x;
 		int y;
 	};

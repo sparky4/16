@@ -50,7 +50,6 @@ typedef struct{
 	byte Feedback;                  /* feedback algorithm and strength  */
 } FMInstrument;
 
-
 /*
 * Enumerated F-Numbers (in octave 4) for the chromatic scale.
 */
@@ -84,30 +83,13 @@ enum SCALE{
 	C4  = 0x106,
 	A0 = 0x7F2
 };
-unsigned short Notes[] = {
-        19327 ,        /* C b            */
-        18242 ,        /* C              */
-        17218 ,        /* C #   ( D b )  */
-        16252 ,        /* D              */
-        15340 ,        /* D #   ( E b )  */
-        14479 ,        /* E     ( F b )  */
-        13666 ,        /* F     ( E # )  */
-        12899 ,        /* F #   ( G b )  */
-        12175 ,        /* G              */
-        11492 ,        /* G #   ( A b )  */
-        10847 ,        /* A              */
-        10238 ,        /* A #   ( B b )  */
-        9664 ,         /* B     ( C b )  */
-        9121 ,         /* B #            */
-        0
-};
 
 /* function prototyping */
 void WriteFM(int reg, int value);
 int ReadFM(void);
 int AdlibExists(void);
 void FMReset(/*int percusiveMode*/);	/* Resets the card, quiets all voices, sets the percussive mode state */
-void FMKeyOff(int voice);typedef unsigned char byte;
+void FMKeyOff(int voice);
 void FMKeyOn(int voice, int freq, int octave);
 void FMVoiceVolume(int voice, int vol);
 void FMSetVoice(int voiceNum, FMInstrument *ins);
