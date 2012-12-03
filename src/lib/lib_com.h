@@ -90,6 +90,10 @@
 #define KEY_INS         (0x52)
 #define KEY_DEL         (0x53)
 
+#define KEY_LWIN	(0x73)
+#define KEY_RWIN	(0x74)
+#define KEY_MENU	(0x75)
+
 typedef unsigned char byte;
 
 void wait(clock_t wait);
