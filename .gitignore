@@ -11,6 +11,7 @@ FUCK
 *.err
 *.ERR
 !boop.sh
+img
 
 # except foo.html which is maintained by hand.
 #!foo.html

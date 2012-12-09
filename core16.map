@@ -1,6 +1,6 @@
 Open Watcom Linker Version 1.9
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       12/12/02 02:28:01
+Created on:       12/12/03 17:53:30
 Executable Image: core16.exe
 creating a DOS executable
 
@@ -861,4 +861,4 @@ C:\FDOS\WATCOM/lib286\plbxl.lib
 Stack size:  0800 (2048.)
 Memory size:  000127f0 (75760.)
 Entry point address: 0000:4930
-Link time: 00:02.07
+Link time: 00:02.32
