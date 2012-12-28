@@ -1,6 +1,6 @@
 Open Watcom Linker Version 1.9
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       12/12/03 17:53:30
+Created on:       12/12/28 12:46:59
 Executable Image: core16.exe
 creating a DOS executable
 
@@ -291,38 +291,38 @@ Module: timer.obj(C:\Z\16\src\timer.cpp)
 0000:4150+     double far engine::Timer::time_in_seconds( long unsigned )
 0000:4198+     long unsigned far engine::Timer::_time()
 0000:41c8      far engine::Timer::~Timer()
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(inp.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(inp.c)
 0000:4200      inp_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(outp.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(outp.c)
 0000:4208      outp_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(d_setvec.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(d_setvec.c)
 0000:4212      _dos_setvect_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(printf.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(printf.c)
 0000:421f      printf_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(d_getvec.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(d_getvec.c)
 0000:424e      _dos_getvect_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(cmodel)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(cmodel)
 0000:425a      _big_code_
 0000:425a*     CodeModelMismatch
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(cppdata.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(cppdata.cpp)
 1105:0bac      __wint_thread_data
 1105:0bd0      __compiled_under_generic
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(fsregist.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(fsregist.cpp)
 0000:c4c0+     __wcpp_4_dispatch_dummy__
 0000:c4fa      __wcpp_4_fs_lookup__
 0000:c610      __wcpp_4_fs_handler_rtn__
 0000:c794      __wcpp_4_unwind_global__
 0000:c80c      __wcpp_4_raise_exception__
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(opnew.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(opnew.cpp)
 0000:c870      void far * far operator new( int unsigned )
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(setjmp)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(setjmp)
 0000:425a      _setjmp_
 0000:42af      longjmp_
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(opnewp.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(opnewp.cpp)
 0000:c8f0      void far * far operator new( int unsigned, void far * )
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(opdel.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(opdel.cpp)
 0000:c900      void far operator delete( void far * )
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stabthrw.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(stabthrw.cpp)
 0000:d2a0+     far std::exception::exception()
 0000:d300+     far std::exception::exception( std::exception const far & )
 0000:d380+     far std::exception::exception( char const far * )
@@ -335,19 +335,19 @@ Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stabthrw.cpp)
 0000:d152*     __wcpp_4_catch_done__
 0000:d1e4      __wcpp_4_throw__
 0000:d240*     __wcpp_4_throw_zero__
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(manendl.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(manendl.cpp)
 0000:d6c0      std::ostream far & far std::endl( std::ostream far & )
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(ioicout.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(ioicout.cpp)
 1105:0c18      std::ostream near std::cout
 0000:d73e+     far cout_initfini::cout_initfini()
 0000:d74c+     far cout_initfini::~cout_initfini()
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(ostincch.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(ostincch.cpp)
 0000:d790      std::ostream far & far std::ostream::operator <<( char const far * )
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(ostinomn.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(ostinomn.cpp)
 0000:d850      std::ostream far & far std::ostream::operator <<( std::ostream far & (far *)())
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(getch.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(getch.c)
 0000:430c      getch_
-Module: C:\FDOS\WATCOM/lib286/dos\emu87.lib(initemu.asm)
+Module: c:\fdos\WATCOM/lib286/dos\emu87.lib(initemu.asm)
 0000:8000      FJSRQQ
 0000:0632      FISRQQ
 0000:1632*     FIERQQ
@@ -359,45 +359,45 @@ Module: C:\FDOS\WATCOM/lib286/dos\emu87.lib(initemu.asm)
 0000:fe32*     FIARQQ
 0000:435e      __init_87_emulator
 0000:43ef*     __fini_87_emulator
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(fltused.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(fltused.c)
 1105:02be      _fltused_
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(iofefg.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(iofefg.cpp)
 1105:0a36      __ppfltused_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(_8087)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(_8087)
 1105:02c0      __8087
 1105:02c1      __real87
 1105:02c2      __dos87emucall
 1105:02c4      __dos87real
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(sound.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(sound.c)
 0000:4466      sound_
 0000:4500      nosound_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(delay.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(delay.c)
 0000:4520      delay_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(intx086.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(intx086.c)
 0000:467f+     int86x_
 0000:4718      int86_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(ffree.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(ffree.c)
 0000:4745*     _ffree_
 0000:4745      free_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(calloc.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(calloc.c)
 0000:478b      calloc_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(exit.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(exit.c)
 0000:47ca+     __null_int23_exit_
 0000:47cb      exit_
 0000:47fc*     _exit_
 1105:02c6+     ___int23_exit
 1105:02ca      ___FPE_handler_exit
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(rand.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(rand.c)
 0000:4815      rand_
 0000:4857*     srand_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(clockdos.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(clockdos.c)
 0000:487a+     __ibm_bios_get_ticks_
 0000:48f1      clock_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(kbhit.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(kbhit.c)
 0000:4918      kbhit_
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(undefed.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(undefed.cpp)
 0000:d8c0      __wcpp_4_undefed_cdtor__
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(cstart)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(cstart)
 1105:0000*     __nullarea
 1105:02da*     __ovlflag
 1105:02db*     __intno
@@ -407,28 +407,28 @@ Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(cstart)
 0000:4b37      __exit_
 0000:4b56      __do_exit_with_msg__
 0000:4bb4      __GETDS
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(fsroot.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(fsroot.cpp)
 1105:0a48      ___wcpp_4_data_init_fs_root_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(iob.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(iob.c)
 1105:02e0      ___iob
 1105:0448*     __fmode
 1105:0c4a      ___OpenStreams
 1105:0c4e      ___ClosedStreams
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(fprtf.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(fprtf.c)
 0000:4bd8      __fprtf_
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stabdtor.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(stabdtor.cpp)
 0000:dc78      __wcpp_4_destruct_internal__
 0000:dc96*     __wcpp_4_destruct_all__
 0000:dc98*     __wcpp_4_destruct__
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stabdisp.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(stabdisp.cpp)
 0000:dfa0      __wcpp_4_dispatchable__
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(fmalloc.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(fmalloc.c)
 0000:4ca3*     _fmalloc_
 0000:4ca3      malloc_
 1105:044a+     ___fheap
 1105:044c      ___fheapRover
 1105:044e      ___LargestSizeB4Rover
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(crwdata)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(crwdata)
 1105:0450      __curbrk
 1105:0458      __STACKLOW
 1105:045a      __STACKTOP
@@ -446,13 +446,13 @@ Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(crwdata)
 1105:0455      __osminor
 1105:0456      __osmode
 1105:0457      __HShift
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(ljmphdl.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(ljmphdl.c)
 1105:047a      ___longjmp_handler
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(dtorarst.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(dtorarst.cpp)
 0000:e020      __wcpp_4_dtor_array_store__
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(opdelarr.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(opdelarr.cpp)
 0000:e050      void far operator delete []( void far * )
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(exc_pr.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(exc_pr.cpp)
 0000:e060      far _EXC_PR::_EXC_PR( _RTCTL far *, RW_DTREG far *, EXCSTATE )
 0000:e0e4      far _EXC_PR::~_EXC_PR()
 0000:e104      far _EXC_PR_FREE::_EXC_PR_FREE( _RTCTL far *, RW_DTREG far *, EXCSTATE, ACTIVE_EXC far * )
@@ -461,386 +461,386 @@ Module: C:\FDOS\WATCOM/lib286\plbxl.lib(exc_pr.cpp)
 0000:e196      far _EXC_PR_FNEXC::_EXC_PR_FNEXC( _RTCTL far *, RW_DTREG far *, RW_DTREG far *, ACTIVE_EXC far * )
 0000:e1e4      far _EXC_PR_FNEXC::~_EXC_PR_FNEXC()
 0000:e1e8      far _EXC_PR_DTOR::~_EXC_PR_DTOR()
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(vfun_err.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(vfun_err.cpp)
 0000:e220      __wcpp_4_undef_vfun__
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(unexpect.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(unexpect.cpp)
 0000:e250      void far std::unexpected()
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(callterm.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(callterm.cpp)
 0000:e310      __wcpp_4_corrupted_stack__
 0000:e328      __wcpp_4_call_terminate__
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(tsequiv.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(tsequiv.cpp)
 0000:e360      __wcpp_4_ts_refed__
 0000:e380+     __wcpp_4_ts_pnted__
 0000:e3aa      __wcpp_4_ts_equiv__
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stabinit.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(stabinit.cpp)
 0000:e510      __wcpp_4_exc_setup__
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(stack086.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(stack086.c)
 0000:4db1      stackavail_
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(fatalerr.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(fatalerr.cpp)
 0000:e620      __wcpp_4_fatal_runtime_error__
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(allocexc.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(allocexc.cpp)
 0000:e662      __wcpp_4_alloc_exc__
 0000:e940      __wcpp_4_free_exc__
 0000:e9b4      __wcpp_4_find_active__
 0000:ea1e      __wcpp_4_dtor_free_exc__
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stabtrav.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(stabtrav.cpp)
 0000:eb30      __wcpp_4_stab_entry__
 0000:eb4a*     __wcpp_4_stab_trav_comp__
 0000:ec70      __wcpp_4_stab_trav_init__
 0000:ec9e      __wcpp_4_stab_trav_next__
 0000:ed14      __wcpp_4_stab_trav_move__
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(ljmpinit.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(ljmpinit.cpp)
 1105:0a5a      ___wcpp_4_data_init_longjmp_
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(ostput.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(ostput.cpp)
 0000:ed50      std::ostream far & far std::ostream::put( char )
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(ostflush.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(ostflush.cpp)
 0000:ee40      std::ostream far & far std::ostream::flush()
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(iobaddr.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(iobaddr.c)
 0000:4dbf      __get_std_stream_
 0000:4dbf*     __get_std_file_
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(sdfconfp.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(sdfconfp.cpp)
 0000:eea0      far stdiobuf::stdiobuf( __iobuf far * )
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stablcl.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(stablcl.cpp)
 0000:eec0      __wcpp_4_lcl_register__
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(ostconsf.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(ostconsf.cpp)
 0000:eed0      far std::ostream::ostream( std::streambuf far * )
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(ostdestr.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(ostdestr.cpp)
 0000:efe0      far std::ostream::~ostream()
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(sdfdestr.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(sdfdestr.cpp)
 0000:f0e0      far stdiobuf::~stdiobuf()
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(moddtorr.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(moddtorr.cpp)
 1105:0a7e      ___wcpp_4_data_module_dtor_ref_
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(ostopfx.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(ostopfx.cpp)
 0000:f1e0      int far std::ostream::do_opfx()
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(iouwrtit.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(iouwrtit.cpp)
 0000:f260      int far __WATCOM_ios::writeitem( std::ostream far &, char const far *, int, int )
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(iossetst.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(iossetst.cpp)
 0000:f630+     far std::ios::failure::failure( std::ios::failure const far & )
 0000:f640+     far std::ios::failure::~failure()
 0000:f650+     far __WATCOM_exception::__WATCOM_exception( __WATCOM_exception const far & )
 0000:f660+     far __WATCOM_exception::~__WATCOM_exception()
 0000:f5f0      void far std::ios::setstate( int )
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(init8087)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(init8087)
 0000:4dde      __init_8087_emu
 0000:4de4      __x87id
-Module: C:\FDOS\WATCOM/lib286/dos\emu87.lib(emu8087.asm)
+Module: c:\fdos\WATCOM/lib286/dos\emu87.lib(emu8087.asm)
 0000:4f34      __int34
 0000:4f71      __int3c
-Module: C:\FDOS\WATCOM/lib286/dos\emu87.lib(dosinit.asm)
+Module: c:\fdos\WATCOM/lib286/dos\emu87.lib(dosinit.asm)
 0000:787a      ___dos87emucall
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(setefg.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(setefg.c)
 0000:78b8      __setEFGfmt_
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(iofnoefg.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(iofnoefg.cpp)
 1105:04e8      void (far * far __EFG_cnvs2d)( char far *, double far * )
 1105:04ec      int (far * far __EFG_cnvd2f)( double far *, float far * )
 1105:04f0      void (far * far __EFG_LDcvt)( __g4aa8long_double far *, cvt_info far *, char far * )
 1105:04f4      char far * (far * far __EFG_fcvt)( double, int, int far *, int far * )
 1105:04f8      void (far * far __EFG__FDLD)( double near *, __g4aa8long_double near * )
-Module: C:\FDOS\WATCOM/lib286\math87l.lib(cnvs2d.c)
+Module: c:\fdos\WATCOM/lib286\math87l.lib(cnvs2d.c)
 0000:78d6      __cnvs2d_
-Module: C:\FDOS\WATCOM/lib286\math87l.lib(cnvd2f.c)
+Module: c:\fdos\WATCOM/lib286\math87l.lib(cnvd2f.c)
 0000:7915      __cnvd2f_
-Module: C:\FDOS\WATCOM/lib286\math87l.lib(ldcvt.c)
+Module: c:\fdos\WATCOM/lib286\math87l.lib(ldcvt.c)
 0000:7aed      _LDScale10x_
 0000:8050      __LDcvt_
-Module: C:\FDOS\WATCOM/lib286\math87l.lib(_i_fcvt_.asm)
+Module: c:\fdos\WATCOM/lib286\math87l.lib(_i_fcvt_.asm)
 0000:8586      _fcvt_
-Module: C:\FDOS\WATCOM/lib286\math87l.lib(cnvd2ld.c)
+Module: c:\fdos\WATCOM/lib286\math87l.lib(cnvd2ld.c)
 0000:858b      __cnvd2ld_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(chk8087.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(chk8087.c)
 0000:85bc*     _fpreset_
 0000:85e7      __init_8087_
 0000:861a+     __default_sigfpe_handler_
 0000:862d      __chk8087_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(nonibm.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(nonibm.c)
 0000:869d+     __is_nonIBM_
 1105:0588      ___NonIBM
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(i4d)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(i4d)
 0000:86e4      __I4D
 0000:8733      __U4D
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(i4m)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(i4m)
 0000:87b8      __I4M
 0000:87b8      __U4M
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(intr.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(intr.c)
 0000:87d0      intr_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(segread.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(segread.c)
 0000:87e4      segread_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(nmalloc.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(nmalloc.c)
 0000:8804      _nmalloc_
 1105:058a      ___nheapbeg
 1105:058c      ___MiniHeapRover
 1105:058e      ___LargestSizeB4MiniHeapRover
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(mem.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(mem.c)
 0000:88e0      __MemAllocator
 0000:89aa      __MemFree
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(nfree.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(nfree.c)
 0000:8b07      _nfree_
 1105:0c52+     ___MiniHeapFreeRover
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(initrtns.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(initrtns.c)
 0000:8c3d      __InitRtns
 0000:8c3d*     __FInitRtns
 0000:8c98      __FiniRtns
 0000:8c98*     __FFiniRtns
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(xmsg.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(xmsg.c)
 0000:8cfc      __exit_with_msg_
 0000:8d01      __fatal_runtime_error_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(cmain086.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(cmain086.c)
 0000:8d1f      __CMain
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(uselfn.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(uselfn.c)
 1105:0590      ___uselfn
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(dosseg)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(dosseg)
 0000:8d4a      __DOSseg__
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(initfile.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(initfile.c)
 0000:8d4b      __InitFiles_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(ioexit.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(ioexit.c)
 0000:8e99*     fcloseall_
 0000:8ea0      __full_io_exit_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(fputc.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(fputc.c)
 0000:8eaa      fputc_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(ioalloc.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(ioalloc.c)
 0000:8f7a      __ioalloc_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(prtf.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(prtf.c)
 0000:9014      __prtf_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(flush.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(flush.c)
 0000:9de2      __flush_
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stabadt.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(stabadt.cpp)
 0000:f690+     void far * far dtor_the_array( _RTARCTOR far * )
 0000:f700+     far _RTARCTOR::~_RTARCTOR()
 0000:f720      __wcpp_4_dtor_array__
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(hpgrw086.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(hpgrw086.c)
 0000:9f15      __CMain_nheapgrow_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(growseg.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(growseg.c)
 0000:9f1a      __GrowSeg_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(allocseg.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(allocseg.c)
 0000:a00c      __AllocSeg_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(fmemneed.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(fmemneed.c)
 0000:a0a3      __fmemneed_
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(prwdata.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(prwdata.cpp)
 1105:0c54      __wint_pure_error_flag
 1105:0c56      __wint_undef_vfun_flag
 1105:0c58      __wint_module_init
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(termnate.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(termnate.cpp)
 0000:f7c0      void far std::terminate()
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(enterdb.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(enterdb.c)
 0000:a0a6      __EnterWVIDEO_
 1105:0592+     ___WD_Present
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(areaexc.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(areaexc.cpp)
 1105:0594      ___EXC_AREA
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(tssize.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(tssize.cpp)
 0000:f832      __wcpp_4_ts_size__
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(bittest.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(bittest.cpp)
 0000:f880      __wcpp_4_bit_test__
 0000:f8a4      __wcpp_4_bit_off__
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(ljmpdtor.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(ljmpdtor.cpp)
 0000:f96e      __wcpp_4_lj_handler__
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(pure_err.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(pure_err.cpp)
 0000:f980      __wcpp_4_pure_error__
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stfdsgtn.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(stfdsgtn.cpp)
 0000:f9b0      int far std::streambuf::do_sgetn( char far *, int )
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stfdspun.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(stfdspun.cpp)
 0000:fa50      int far std::streambuf::do_sputn( char const far *, int )
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stfpbfai.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(stfpbfai.cpp)
 0000:fb40      int far std::streambuf::pbackfail( int )
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(sdfoverf.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(sdfoverf.cpp)
 0000:fb50      int far stdiobuf::overflow( int )
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(sdfundrf.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(sdfundrf.cpp)
 0000:fd40      int far stdiobuf::underflow()
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stfsbuf.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(stfsbuf.cpp)
 0000:fed0      std::streambuf far * far std::streambuf::setbuf( char far *, int )
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stfseeko.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(stfseeko.cpp)
 0000:ff60      long far std::streambuf::seekoff( long, int, int )
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stfseekp.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(stfseekp.cpp)
 0000:ff70      long far std::streambuf::seekpos( long, int )
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(sdfsync.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(sdfsync.cpp)
 0000:ffa0      int far stdiobuf::sync()
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stfdoall.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(stfdoall.cpp)
 0ffd:0000      int far std::streambuf::doallocate()
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stfconde.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(stfconde.cpp)
 0ffd:0040      far std::streambuf::streambuf()
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stabmod.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(stabmod.cpp)
 0ffd:00b0      __wcpp_4_module_dtor__
 0ffd:0106      __wcpp_4_mod_register__
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(iosinit.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(iosinit.cpp)
 0ffd:0130      void far std::ios::init( std::streambuf far * )
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(iosconde.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(iosconde.cpp)
 0ffd:01a0      far std::ios::ios()
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(iosdestr.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(iosdestr.cpp)
 0ffd:01c0      far std::ios::~ios()
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stfdestr.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(stfdestr.cpp)
 0ffd:0280      far std::streambuf::~streambuf()
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(opnewarr.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(opnewarr.cpp)
 0ffd:02b0      void far * far operator new []( int unsigned )
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(iosfail.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(iosfail.cpp)
 0ffd:02c0      far std::ios::failure::failure( int )
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(8087cw.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(8087cw.c)
 1105:09b0      __8087cw
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(noefgfmt.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(noefgfmt.c)
 1105:09b2      ___EFG_printf
 1105:09b6      ___EFG_scanf
-Module: C:\FDOS\WATCOM/lib286\math87l.lib(efgfmt.c)
+Module: c:\fdos\WATCOM/lib286\math87l.lib(efgfmt.c)
 0000:a0dd      _EFG_Format_
-Module: C:\FDOS\WATCOM/lib286\math87l.lib(strtod.c)
+Module: c:\fdos\WATCOM/lib286\math87l.lib(strtod.c)
 0000:a7e9+     __Strtold_
 0000:a99c      strtod_
-Module: C:\FDOS\WATCOM/lib286\math87l.lib(ldclass.c)
+Module: c:\fdos\WATCOM/lib286\math87l.lib(ldclass.c)
 0000:ab3e      __LDClass_
 0000:ab8c*     _FLClass_
-Module: C:\FDOS\WATCOM/lib286\math87l.lib(efcvt.c)
+Module: c:\fdos\WATCOM/lib286\math87l.lib(efcvt.c)
 0000:abe9*     ecvt_
 0000:ac23      fcvt_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(save8087.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(save8087.c)
 1105:09ba      ___Save8087
 1105:09be      ___Rest8087
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(grabfp87.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(grabfp87.c)
 0000:ac66      __GrabFP87_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(dointr)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(dointr)
 0000:ac98      _DoINTR_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(nmemneed.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(nmemneed.c)
 0000:b011      __nmemneed_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(grownear.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(grownear.c)
 0000:b099      __LastFree_
 0000:b113      __ExpandDGROUP_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(sgdef086)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(sgdef086)
 1105:0a24      __Start_XI
 1105:0a72      __End_XI
 1105:0a72      __Start_YI
 1105:0a84      __End_YI
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(___argc.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(___argc.c)
 1105:0c5c      ____Argv
 1105:0c60      ____Argc
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(amblksiz.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(amblksiz.c)
 1105:09c2      __amblksiz
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(fclose.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(fclose.c)
 0000:b224+     __doclose_
 0000:b2d5      __shutdown_stream_
 0000:b2ef*     fclose_
 1105:0c62+     ___RmTmpFileFn
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(freefp.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(freefp.c)
 0000:b33a      __freefp_
 0000:b3b5      __purgefp_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(seterrno.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(seterrno.c)
 0000:b3f6      __set_errno_
 0000:b40a*     __set_EDOM_
 0000:b41c      __set_ERANGE_
 0000:b42e*     __set_EINVAL_
 0000:b443      __set_doserrno_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(chktty.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(chktty.c)
 0000:b44f      __chktty_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(wctomb.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(wctomb.c)
 0000:b47a      wctomb_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(itoa.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(itoa.c)
 0000:b4a3+     utoa_
 0000:b500      itoa_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(strupr.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(strupr.c)
 0000:b524      strupr_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(mbisdbcs.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(mbisdbcs.c)
 1105:0c66      ___IsDBCS
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(mbislead.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(mbislead.c)
 0000:b546*     _ismbblead_
 1105:0c68      ___MBCSIsTable
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(lltoa.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(lltoa.c)
 0000:b562      ulltoa_
 0000:b647*     lltoa_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(ltoa.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(ltoa.c)
 0000:b6a9      ultoa_
 0000:b718*     ltoa_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(__lseek.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(__lseek.c)
 0000:b747      __lseek_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(qwrit.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(qwrit.c)
 0000:b781      __qwrite_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(fsync.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(fsync.c)
 0000:b7de      fsync_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(heapgrow.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(heapgrow.c)
 0000:b7e3*     _heapgrow_
 0000:b7e3*     _fheapgrow_
 0000:b7e4      _nheapgrow_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(heapen.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(heapen.c)
 0000:b85e*     _heapenable_
 1105:09c4      ___heap_enabled
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(fwrite.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(fwrite.c)
 0000:b86f      fwrite_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(memmove.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(memmove.c)
 0000:ba6a      memmove_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(fgetc.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(fgetc.c)
 0000:bae0+     __fill_buffer_
 0000:bbd5      fgetc_
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stfsetb.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(stfsetb.cpp)
 0ffd:02d0      void far std::streambuf::setb( char far *, char far *, int )
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(liballoc.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(liballoc.c)
 0000:bc7a      _plib_malloc_
 0000:bc7f      _plib_free_
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(ioufrxal.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(ioufrxal.cpp)
 0ffd:0360      void far __WATCOM_ios::free_xalloc_storage( std::ios far * )
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(rtcntrl.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(rtcntrl.c)
 0000:bc84*     _SetLD64bit_
 0000:bc8f*     _SetLD80bit_
 0000:bc9a      _LDisDouble_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(istable.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(istable.c)
 1105:0104      __IsTable
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(tolower.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(tolower.c)
 0000:bcad      tolower_
-Module: C:\FDOS\WATCOM/lib286\math87l.lib(bufld086)
+Module: c:\fdos\WATCOM/lib286\math87l.lib(bufld086)
 0000:bcbc      __ZBuf2LD
-Module: C:\FDOS\WATCOM/lib286\math87l.lib(inf_nan.c)
+Module: c:\fdos\WATCOM/lib286\math87l.lib(inf_nan.c)
 1105:0206*     ___f_infinity
 1105:020a*     ___f_posqnan
 1105:020e      ___d_infinity
 1105:0216      ___d_posqnan
 1105:021e*     ___ld_infinity
 1105:0226*     ___ld_posqnan
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(hugeval.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(hugeval.c)
 1105:022e      __HugeValue
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(cvtbuf.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(cvtbuf.c)
 0000:bd84      __CVTBuffer_
-Module: C:\FDOS\WATCOM/lib286\math87l.lib(cvt.c)
+Module: c:\fdos\WATCOM/lib286\math87l.lib(cvt.c)
 0000:bd8b      __cvt_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(fpe87)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(fpe87)
 0000:be2a      __Init_FPE_handler_
 0000:be63      __Fini_FPE_handler_
 0000:be9a*     __FPEHandler
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(sbrk.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(sbrk.c)
 0000:c12c*     sbrk_
 0000:c13c      __brk_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(_clse.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(_clse.c)
 0000:c1a6      __close_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(errno.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(errno.c)
 0000:c1d9      __get_errno_ptr_
 0000:c1e0      __get_doserrno_ptr_
 1105:0f96+     _errno
 1105:0f98+     __doserrno
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(isatt.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(isatt.c)
 0000:c1e7      isatty_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(alphabet.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(alphabet.c)
 1105:00de      ___Alphabet
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(mbinit.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(mbinit.c)
 0000:c241      __mbinit_
 1105:09de+     ___MBCodePage
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(dosret.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(dosret.c)
 0000:c31c*     _dosretax_
 0000:c321*     _dosret0_
 0000:c328      __set_errno_dos_
 0000:c386*     __set_errno_dos_reterr_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(iomode.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(iomode.c)
 0000:c391      __GetIOMode_
 0000:c3b6      __SetIOMode_nogrow_
 1105:09f4+     ___NFiles
 1105:09f6+     ___init_mode
 1105:0a1e+     ___io_mode
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(filedos.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(filedos.c)
 0000:c3d9*     _dos_close_
 0000:c3e7      _dos_commit_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(flushall.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(flushall.c)
 0000:c3f7      __flushall_
 0000:c454*     flushall_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(gtche.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(gtche.c)
 0000:c459      getche_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(qread.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(qread.c)
 0000:c473      __qread_
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(fpeint.c)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(fpeint.c)
 1105:0a22      ___FPE_int
-Module: C:\FDOS\WATCOM/lib286/dos\clibl.lib(doserror)
+Module: c:\fdos\WATCOM/lib286/dos\clibl.lib(doserror)
 0000:c4ac      __doserror_
-Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stfsync.cpp)
+Module: c:\fdos\WATCOM/lib286\plbxl.lib(stfsync.cpp)
 0ffd:03a0      int far std::streambuf::sync()
 
 
@@ -848,10 +848,10 @@ Module: C:\FDOS\WATCOM/lib286\plbxl.lib(stfsync.cpp)
                         |   Libraries Used   |
                         +--------------------+
 
-C:\FDOS\WATCOM/lib286\math87l.lib
-C:\FDOS\WATCOM/lib286/dos\emu87.lib
-C:\FDOS\WATCOM/lib286/dos\clibl.lib
-C:\FDOS\WATCOM/lib286\plbxl.lib
+c:\fdos\WATCOM/lib286\math87l.lib
+c:\fdos\WATCOM/lib286/dos\emu87.lib
+c:\fdos\WATCOM/lib286/dos\clibl.lib
+c:\fdos\WATCOM/lib286\plbxl.lib
 
 
                         +-----------------------+
@@ -861,4 +861,4 @@ C:\FDOS\WATCOM/lib286\plbxl.lib
 Stack size:  0800 (2048.)
 Memory size:  000127f0 (75760.)
 Entry point address: 0000:4930
-Link time: 00:02.32
+Link time: 00:01.37
