@@ -1,7 +1,6 @@
 #ifndef _ENGINE_CORE_H_
 #define _ENGINE_CORE_H_
 
-#include <list>
 #include "src\engine.h"
 #include "src\timer.h"
 
@@ -26,7 +25,6 @@ namespace engine {
 	protected:
 	private:
 		engine_message msg;
-		std::list<void(Core::*)()> *fp;
 		Timer timer;
 //		unsigned char key[256];
 		int frames_per_second;
@@ -36,6 +34,9 @@ namespace engine {
 		int bing;
 		int x;
 		int y;
+
+		// Because we removed the function pointer STL list:
+		bool graphics_flag, comm_flag, release_flag;
 	};
 }
 

@@ -1,5 +1,5 @@
 #include "src\eng_core.h"
-#include <list>
+
 #include "src\eng_snd.h"
 #include "src\eng_gfx.h"
 #include "src\eng_comm.h"
@@ -19,35 +19,35 @@ namespace engine{
 		this->init();
 		
 		//default constructor
-		this->fp = new std::list<void(Core::*)()>;
 		this->msg = ENGINE_RUN;
 		this->timer.start_timer();
 		this->frames_per_second = 60;
-
-		this->fp->push_back(&Core::sound);
-		this->fp->push_back(&Core::graphics);
-		this->fp->push_back(&Core::comm);
-		this->fp->push_back(&Core::ai);
-
-		//this->fp.push_back(&core::sound);
-		//this->fp.push_back(&core::graphics);
-		//this->fp.push_back(&core::comm);
-		//this->fp.push_back(&engine::core::ai);
 
 		// Global Variables
 		this->bing = 4; // test global variable
 		this->x = 0; // X
 		this->y = 0; // Y
+		
+		// Start setttings of flags.  I hope I got the same
+		// logic as it was before, with the STL list.
+		this->graphics_flag = true;
+		this->comm_flag = true;
+		this->release_flag = false;
 	}
 
 	void Core::update()
 	{
-		for (std::list<void(Core::*)()>::iterator i = fp->begin(); i != fp->end(); i++)
-		//for (std::list<void(core::*)()>::iterator i = this->fp.begin(); i != this->fp.end(); i++)
-		{
-			(this->*(*i))();
-		}
+	  // call update functions, instead of traversing a function pointer
+	  // list.  Remove this comment!
 
+	  sound();
+	  if ( graphics_flag )
+		  graphics();
+	  if ( comm_flag )
+		  comm();
+	  ai();
+	  if ( release_flag )
+		  release();
 	}
 
 	void Core::sound()
@@ -165,32 +165,31 @@ namespace engine{
 		if (this->timer.elapsed_timer() >= (1.0 / this->frames_per_second))
 		{
 			//int a;std::cin >> a;
-			this->fp->push_back(&Core::graphics);
+			graphics_flag = true;
 			this->timer.start_timer();
 //====			std::cout << "GRAPHICS GRAPHICS GRAPHICS GRAPHICS GRAPHICS" << std::endl;
 		}
 		else
 		{
-			this->fp->remove(&Core::graphics);
+			graphics_flag = false;
 		}
 		if (ENGINE_INPUT == this->msg)
 		{
-			this->fp->push_back(&Core::comm);
+			comm_flag = true;
 		}
 		else
 		{
-			this->fp->remove(&Core::comm);
+			comm_flag = false;
 		}
 		if (ENGINE_QUIT == this->msg)
 		{
-			this->fp->push_back(&Core::release);
+			release_flag = true;
 		}
 	}
 
 	Core::~Core()
 	{
 		//deconstructor
-		delete(this->fp);
 	}
 
 }
