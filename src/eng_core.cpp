@@ -122,8 +122,8 @@ namespace engine{
 		std::cout << "1 - 9 for graphical tests!" << std::endl;
 		std::cout << "space bar for control and sprite test!" << std::endl;
 		std::cout << "z key for noise!" << std::endl;
-		std::cout << "Press press any key to continue!" << std::endl;
-		getch();
+		//std::cout << "Press press any key to continue!" << std::endl;
+		//getch();
 		std::cout << "INPUT INITIATION" << std::endl;
 		setkb(1);
 		std::cout << "INITIATION" << std::endl;

@@ -18,7 +18,8 @@ namespace engine {
 //====		std::cout << "SOUND HERE" << std::endl;
 		if(keyp(44)){
 			FMKeyOn(0, 0x106, 4);
-		}else if(!keyp(44)) FMKeyOff(0);
+		}//else if(!keyp(44)) FMKeyOff(0);
+		if(keyp(KEY_A)) FMKeyOff(0);
 		if(keyp(KEY_X)){
 			sound(440);
 			delay(100);
