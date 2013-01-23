@@ -37,7 +37,9 @@ files: /dos/z/16/src/timer.h
 files: /dos/z/16/src/engine.h
 files: /dos/z/16/src/main.cpp
 files: /dos/z/16/doc/ojoww.cpp
+files: /dos/z/16/doc/char.txt
 c2e.convert_iso: 0
+recent_files: file:///dos/z/16/doc/char.txt
 recent_files: file:///dos/z/16/doc/ojoww.cpp
 recent_files: file:///dos/z/16/src/main.cpp
 recent_files: file:///dos/z/16/src/engine.h
@@ -111,5 +113,5 @@ outputb_show_all_output: 0
 spell_check_default: 1
 fb_show_backup_f: 0
 opendir: file:///dos/z/16/doc
-savedir: file:///dos/z/16/src/lib
+savedir: file:///dos/z/16/doc
 adv_open_matchname: 0

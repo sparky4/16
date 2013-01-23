@@ -1,4 +1,4 @@
-                                Project: 16
-
+		Project 16
+		01 話の地球 //Story of Chikyuu
 to make an epic as fuck 2d 16bit DOS game
 22 source files
