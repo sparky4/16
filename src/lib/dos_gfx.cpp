@@ -160,7 +160,7 @@ void BlockMove(){
 	for(loop2=1; loop2<41; loop2++)
 		for(loop3=1; loop3<41; loop3++)
 			plotpixel(loop1+loop2,loop3,14, vaddr);
-		updatevbuff();
+		//updatevbuff();
 		cls(0,vaddr);
 	}
 
@@ -177,19 +177,19 @@ void BlockMove(){
 
 void etesuto(int x = 160, int y = 100){
 	memset(vaddr+(x+(y*SW)),gq-1,1);
-	updatevbuff();
+	//updatevbuff();
 }
 
 void qtesuto(int x = 160, int y = 100, int color = 0){
 	memset(vaddr+(x+(y*SW)),color,1);
-	updatevbuff();
+	//updatevbuff();
 }
 
 //color てすと
 int colortest(){
 	if(gq < NUM_COLORS){
 		cls(gq, vaddr);
-		updatevbuff();
+		//updatevbuff();
 		gq++;
 	}else gq = 0;
 	return gq;
@@ -199,7 +199,7 @@ int colortest(){
 int colorz(){
 	if(gq < HGQ){
 		cls(gq, vaddr);
-		updatevbuff();
+		//updatevbuff();
 		gq++;
 	}else gq = LGQ;
 	return gq;
@@ -235,7 +235,7 @@ int ding(int q){
 	if(q == 6){
 		coor = rand()%NUM_COLORS;
 		cls(coor, vaddr);
-		updatevbuff();
+		//updatevbuff();
 	}
 
 	if(q == 7 || q== 9){

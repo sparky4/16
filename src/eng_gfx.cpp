@@ -52,6 +52,7 @@ namespace engine {
 		}
 		/*clearscr();
 		BlockMove();*/
+		updatevbuff();
 	}
 
 }
