@@ -227,8 +227,8 @@ void tulip(){
 	cls(0,vaddr);
 	std::cout << "01 Story of Chikyuu" << std::endl;
 	//22 lines
-	int tx = (SW/2)-8;
-	int ty = (SH/2)-11;
+	int tx = (SW/2)-16;
+	int ty = (SH/2)-22;
 	gq = 0;
 	ppf(tx+8, ty, 37, vaddr); ty++;
 	ppf(tx+7, ty, 37, vaddr); ppf(tx+8, ty, 37, vaddr); ty++;
