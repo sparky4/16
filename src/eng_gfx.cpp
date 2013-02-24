@@ -36,6 +36,7 @@ namespace engine {
 		if(bing > 0){
 			ding(bing);
 		}else{
+			if(keyp(KEY_C)) tulip();
 			if(keyp(KEY_UP) || keyp(KEY_DOWN) || keyp(KEY_LEFT) || keyp(KEY_RIGHT)) etesuto(xxxx, yyyy);
 			if(keyp(KEY_UP)){
 				if(--yyyy < 0) yyyy = 0;
@@ -52,7 +53,6 @@ namespace engine {
 		}
 		/*clearscr();
 		BlockMove();*/
-		updatevbuff();
 	}
 
 }

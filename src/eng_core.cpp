@@ -168,6 +168,7 @@ namespace engine{
 			graphics_flag = true;
 			this->timer.start_timer();
 //====			std::cout << "GRAPHICS GRAPHICS GRAPHICS GRAPHICS GRAPHICS" << std::endl;
+			updatevbuff();
 		}
 		else
 		{

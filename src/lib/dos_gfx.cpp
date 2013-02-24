@@ -131,7 +131,7 @@ void plotpixel(int x, int y, byte color, byte *Where){
 }
 
 // king_crimson's code
-void plotpixelfast(int x, int y, byte color, byte *Where) {
+void ppf(int x, int y, byte color, byte *Where) {
 	byte far *vidptr;
 	vidptr = (byte far *)(Where + y*SW + x);
 	*vidptr = color;
@@ -210,7 +210,7 @@ void ssd(int svq){
 	if(sy < SH+1){
 		if(sx < SW+1){
 			//plotpixel(xx, yy, coor, vga);
-			plotpixelfast(sx, sy, coor, vga);
+			ppf(sx, sy, coor, vga);
 			//printf("%d %d %d %d\n", sx, sy, svq, coor);
 			sx++;
 		}else sx = 0;
@@ -220,6 +220,42 @@ void ssd(int svq){
 			if(sy == SH && svq == 8) coor = rand()%NUM_COLORS;
 		}
 	}else sy = 0;
+}
+
+//draw a tulip inifficiently
+void tulip(){
+	cls(0,vaddr);
+	std::cout << "01 Story of Chikyuu" << std::endl;
+	//22 lines
+	int tx = (SW/2)-8;
+	int ty = (SH/2)-11;
+	gq = 0;
+	ppf(tx+8, ty, 37, vaddr); ty++;
+	ppf(tx+7, ty, 37, vaddr); ppf(tx+8, ty, 37, vaddr); ty++;
+	ppf(tx+6, ty, 37, vaddr); ppf(tx+7, ty, 37, vaddr); ppf(tx+8, ty, 40, vaddr); ppf(tx+9, ty, 37, vaddr); ty++;
+	ppf(tx+2, ty, 40, vaddr); ppf(tx+5, ty, 37, vaddr); ppf(tx+6, ty, 37, vaddr); ppf(tx+7, ty, 40, vaddr); ppf(tx+8, ty, 40, vaddr); ppf(tx+9, ty, 38, vaddr); ppf(tx+12, ty, 37, vaddr); ty++;
+	ppf(tx+3, ty, 40, vaddr); ppf(tx+4, ty, 40, vaddr); ppf(tx+5, ty, 37, vaddr); ppf(tx+6, ty, 38, vaddr); ppf(tx+7, ty, 40, vaddr); ppf(tx+8, ty, 38, vaddr); ppf(tx+9, ty, 40, vaddr); ppf(tx+10, ty, 38, vaddr); ppf(tx+11, ty, 37, vaddr); ppf(tx+12, ty, 40, vaddr); ty++;
+	ppf(tx+3, ty, 40, vaddr); ppf(tx+4, ty, 40, vaddr); ppf(tx+5, ty, 40, vaddr); ppf(tx+6, ty, 44, vaddr); ppf(tx+7, ty, 38, vaddr); ppf(tx+8, ty, 44, vaddr); ppf(tx+9, ty, 40, vaddr); ppf(tx+10, ty, 37, vaddr); ppf(tx+11, ty, 40, vaddr); ppf(tx+12, ty, 40, vaddr); ty++;
+	//7
+	ppf(tx+3, ty, 40, vaddr); ppf(tx+4, ty, 40, vaddr); ppf(tx+5, ty, 40, vaddr); ppf(tx+6, ty, 44, vaddr); ppf(tx+7, ty, 44, vaddr); ppf(tx+8, ty, 40, vaddr); ppf(tx+9, ty, 44, vaddr); ppf(tx+10, ty, 37, vaddr); ppf(tx+11, ty, 40, vaddr); ppf(tx+12, ty, 40, vaddr); ty++;
+	ppf(tx+3, ty, 40, vaddr); ppf(tx+4, ty, 40, vaddr); ppf(tx+5, ty, 40, vaddr); ppf(tx+6, ty, 40, vaddr); ppf(tx+7, ty, 40, vaddr); ppf(tx+8, ty, 40, vaddr); ppf(tx+9, ty, 44, vaddr); ppf(tx+10, ty, 40, vaddr); ppf(tx+11, ty, 40, vaddr); ppf(tx+12, ty, 40, vaddr); ty++;
+	ppf(tx+4, ty, 40, vaddr); ppf(tx+5, ty, 40, vaddr); ppf(tx+6, ty, 40, vaddr); ppf(tx+7, ty, 40, vaddr); ppf(tx+8, ty, 40, vaddr); ppf(tx+9, ty, 44, vaddr); ppf(tx+10, ty, 40, vaddr); ppf(tx+11, ty, 40, vaddr); ppf(tx+12, ty, 40, vaddr); ty++;
+	ppf(tx+4, ty, 40, vaddr); ppf(tx+5, ty, 40, vaddr); ppf(tx+6, ty, 40, vaddr); ppf(tx+7, ty, 40, vaddr); ppf(tx+8, ty, 4, vaddr); ppf(tx+9, ty, 44, vaddr); ppf(tx+10, ty, 40, vaddr); ppf(tx+11, ty, 40, vaddr); ppf(tx+12, ty, 40, vaddr); ty++;
+	//11
+	ppf(tx+4, ty, 40, vaddr); ppf(tx+5, ty, 4, vaddr); ppf(tx+6, ty, 40, vaddr); ppf(tx+7, ty, 40, vaddr); ppf(tx+8, ty, 4, vaddr); ppf(tx+9, ty, 40, vaddr); ppf(tx+10, ty, 40, vaddr); ppf(tx+11, ty, 4, vaddr); ppf(tx+12, ty, 4, vaddr); ty++;
+	//12
+	ppf(tx+4, ty, 4, vaddr); ppf(tx+5, ty, 4, vaddr); ppf(tx+6, ty, 40, vaddr); ppf(tx+7, ty, 4, vaddr); ppf(tx+8, ty, 4, vaddr); ppf(tx+9, ty, 40, vaddr); ppf(tx+10, ty, 40, vaddr); ppf(tx+11, ty, 4, vaddr); ppf(tx+15, ty, 2, vaddr); ty++;
+	ppf(tx, ty, 45, vaddr); ppf(tx+5, ty, 4, vaddr); ppf(tx+6, ty, 4, vaddr); ppf(tx+7, ty, 4, vaddr); ppf(tx+8, ty, 4, vaddr); ppf(tx+9, ty, 4, vaddr); ppf(tx+10, ty, 4, vaddr); ppf(tx+13, ty, 2, vaddr); ppf(tx+14, ty, 2, vaddr); ppf(tx+15, ty, 2, vaddr); ty++;
+	//14
+	ppf(tx, ty, 45, vaddr); ppf(tx+1, ty, 2, vaddr); ppf(tx+6, ty, 2, vaddr); ppf(tx+7, ty, 45, vaddr); ppf(tx+8, ty, 2, vaddr); ppf(tx+12, ty, 2, vaddr); ppf(tx+13, ty, 2, vaddr); ppf(tx+14, ty, 45, vaddr); ty++;
+	ppf(tx, ty, 45, vaddr); ppf(tx+1, ty, 45, vaddr); ppf(tx+2, ty, 2, vaddr); ppf(tx+7, ty, 45, vaddr); ppf(tx+11, ty, 2, vaddr); ppf(tx+12, ty, 2, vaddr); ppf(tx+13, ty, 2, vaddr); ppf(tx+14, ty, 45, vaddr); ty++;
+	ppf(tx+1, ty, 45, vaddr); ppf(tx+2, ty, 2, vaddr); ppf(tx+3, ty, 2, vaddr); ppf(tx+7, ty, 45, vaddr); ppf(tx+10, ty, 2, vaddr); ppf(tx+11, ty, 2, vaddr); ppf(tx+12, ty, 2, vaddr); ppf(tx+13, ty, 45, vaddr); ppf(tx+14, ty, 2, vaddr); ty++;
+	ppf(tx+1, ty, 45, vaddr); ppf(tx+2, ty, 45, vaddr); ppf(tx+3, ty, 2, vaddr); ppf(tx+4, ty, 2, vaddr); ppf(tx+7, ty, 45, vaddr); ppf(tx+10, ty, 2, vaddr); ppf(tx+11, ty, 2, vaddr); ppf(tx+12, ty, 45, vaddr); ppf(tx+13, ty, 2, vaddr); ty++;
+	ppf(tx+1, ty, 45, vaddr); ppf(tx+2, ty, 45, vaddr); ppf(tx+3, ty, 45, vaddr); ppf(tx+4, ty, 2, vaddr); ppf(tx+7, ty, 45, vaddr); ppf(tx+9, ty, 2, vaddr); ppf(tx+10, ty, 2, vaddr); ppf(tx+11, ty, 45, vaddr); ppf(tx+12, ty, 2, vaddr); ppf(tx+13, ty, 2, vaddr); ty++;
+	ppf(tx+2, ty, 45, vaddr); ppf(tx+3, ty, 45, vaddr); ppf(tx+4, ty, 45, vaddr); ppf(tx+5, ty, 2, vaddr); ppf(tx+7, ty, 45, vaddr); ppf(tx+9, ty, 2, vaddr); ppf(tx+10, ty, 45, vaddr); ppf(tx+11, ty, 2, vaddr); ppf(tx+11, ty, 2, vaddr); ppf(tx+12, ty, 2, vaddr); ty++;
+	ppf(tx+3, ty, 45, vaddr); ppf(tx+4, ty, 45, vaddr); ppf(tx+5, ty, 45, vaddr); ppf(tx+6, ty, 2, vaddr); ppf(tx+7, ty, 45, vaddr); ppf(tx+8, ty, 2, vaddr); ppf(tx+9, ty, 45, vaddr); ppf(tx+10, ty, 2, vaddr); ty++;
+	ppf(tx+5, ty, 45, vaddr); ppf(tx+7, ty, 45, vaddr); ppf(tx+8, ty, 2, vaddr); ty++;
+	ppf(tx+7, ty, 45, vaddr);
 }
 
 /*-----------ding-------------*/
@@ -289,8 +325,8 @@ int ding(int q){
 			}
 		}
 		// plot the pixel
-		plotpixelfast(xx, yy, coor, vga);
-		if(q==2) plotpixelfast(rand()%SW, rand()%SH, 0, vga);
+		ppf(xx, yy, coor, vga);
+		if(q==2) ppf(rand()%SW, rand()%SH, 0, vga);
 		if(q==2||q==4){ bakax = rand()&0x1; bakay = rand()&0x1; }
 		gq++;
 //		printf("%d %d %d %d\n", xx, yy, gq, coor);
