@@ -222,6 +222,21 @@ void ssd(int svq){
 	}else sy = 0;
 }
 
+void pdump(){
+	int palcol=0;
+	for(int paly=0; paly<32; paly++){
+		for(int palx=0; palx<32; palx++){
+			ppf((SW-32)+palx, paly, palcol, vaddr);
+			ppf((SW-32)+palx+1, paly, palcol, vaddr);
+			ppf((SW-32)+palx, paly+1, palcol, vaddr);
+			ppf((SW-32)+palx+1, paly+1, palcol, vaddr);
+			palx++;
+			palcol++;
+		}
+	paly++;
+	}
+}
+
 //draw a tulip inifficiently
 void tulip(){
 	cls(0,vaddr);
