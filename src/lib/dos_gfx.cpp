@@ -222,18 +222,20 @@ void ssd(int svq){
 	}else sy = 0;
 }
 
-void pdump(){
+void pdump(int mult){
+	int palq=mult*16;
 	int palcol=0;
-	for(int paly=0; paly<32; paly++){
-		for(int palx=0; palx<32; palx++){
-			ppf((SW-32)+palx, paly, palcol, vaddr);
-			ppf((SW-32)+palx+1, paly, palcol, vaddr);
-			ppf((SW-32)+palx, paly+1, palcol, vaddr);
-			ppf((SW-32)+palx+1, paly+1, palcol, vaddr);
-			palx++;
+	for(int paly=0; paly<palq; paly++){
+		for(int palx=0; palx<palq; palx++){
+				for(int iy=0; iy<mult; iy++){
+					for(int ix=0; ix<mult; ix++){
+						ppf((SW-palq)+palx+ix, paly+iy, palcol, vaddr);
+					}
+				}
+			for(int i=1; i<mult; i++) palx++;
 			palcol++;
 		}
-	paly++;
+	for(int i=1; i<mult; i++) paly++;
 	}
 }
 

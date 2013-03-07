@@ -19,7 +19,7 @@ namespace engine {
 		static int xxxx = 0;
 		static int yyyy = 0;
 		static int bing = 10;
-		static bool paldump = 0;
+		static int paldump = 0;
 		//if(12 >= kee && kee >= 2) bing = kee - 1;
 		/*if(keyp(2)) bing = 1;
 		if(keyp(3)) bing = 2;
@@ -32,8 +32,8 @@ namespace engine {
 		if(keyp(10)) bing = 9;
 		if(keyp(11)) bing = 10;
 		if(keyp(12)) bing = 11;*/
-		if(keyp(47) && paldump) paldump = 0;
-			else if(keyp(47) && !paldump) paldump = 1;
+		if(keyp(47) && paldump == 8) paldump = 0;
+			else if(keyp(47)) paldump++;
 		if(keyp(57) && bing == 10) bing = 0;
 			else if(keyp(57) && bing == 0) bing = 10;
 		if(bing > 0){
@@ -54,7 +54,7 @@ namespace engine {
 			}
 			qtesuto(xxxx, yyyy, 14);
 		}
-		if(paldump) pdump();
+		if(paldump) pdump(paldump);
 		/*clearscr();
 		BlockMove();*/
 	}

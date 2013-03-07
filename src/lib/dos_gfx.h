@@ -32,8 +32,8 @@ void qtesuto(int x, int y, int color);
 int colortest();
 int colorz();
 void ssd(int svq);
+void pdump(int mult);
 void tulip();
-void pdump();
 int ding(int q);
 
 #endif/*_DOSLIB_GFX_H_*/
