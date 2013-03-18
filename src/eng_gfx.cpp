@@ -16,8 +16,8 @@ namespace engine {
 	{
 		//graphics here
 //====		std::cout << "GRAPHICS HERE" << std::endl;
-		static int xxxx = 0;
-		static int yyyy = 0;
+		static int xxxx = 0; //I am confused!!!
+		static int yyyy = 0; //I am confused!!!
 		static int bing = 10;
 		static int paldump = 0;
 		//if(12 >= kee && kee >= 2) bing = kee - 1;
