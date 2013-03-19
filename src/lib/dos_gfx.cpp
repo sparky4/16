@@ -175,21 +175,18 @@ void BlockMove(){
 	}*/
 }
 
-void etesuto(int x = 160, int y = 100){
+void eraseplayer(int x = 160, int y = 100){
 	memset(vaddr+(x+(y*SW)),gq-1,1);
-	//updatevbuff();
 }
 
-void qtesuto(int x = 160, int y = 100, int color = 0){
+void drawplayer(int x = 160, int y = 100, int color = 0){
 	memset(vaddr+(x+(y*SW)),color,1);
-	//updatevbuff();
 }
 
 //color てすと
 int colortest(){
 	if(gq < NUM_COLORS){
 		cls(gq, vaddr);
-		//updatevbuff();
 		gq++;
 	}else gq = 0;
 	return gq;
@@ -199,7 +196,6 @@ int colortest(){
 int colorz(){
 	if(gq < HGQ){
 		cls(gq, vaddr);
-		//updatevbuff();
 		gq++;
 	}else gq = LGQ;
 	return gq;
@@ -222,6 +218,7 @@ void ssd(int svq){
 	}else sy = 0;
 }
 
+//inefficient pallette dumping
 void pdump(int mult){
 	int palq=mult*16;
 	int palcol=0;

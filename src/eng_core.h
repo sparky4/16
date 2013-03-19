@@ -31,7 +31,7 @@ namespace engine {
 		//std::list<void(core::*)()> fp;
 /*		int xxxx = 0;
 		int yyyy = 0;*/
-		int bing;
+		int mode;
 		int x;
 		int y;
 

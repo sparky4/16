@@ -24,7 +24,7 @@ namespace engine{
 		this->frames_per_second = 60;
 
 		// Global Variables
-		this->bing = 4; // test global variable
+		this->mode = 4; // test global variable
 		this->x = 0; // X
 		this->y = 0; // Y
 		
