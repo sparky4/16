@@ -25,6 +25,7 @@ namespace engine {
 	protected:
 	private:
 		engine_message msg;
+		/*std::list<void(Core::*)()> *fp;*/
 		Timer timer;
 //		unsigned char key[256];
 		int frames_per_second;
