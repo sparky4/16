@@ -11,18 +11,18 @@ CXXFLAGS=-i="C:\FDOS\WATCOM/H" -w4 -e25 -zkl -zq -otexan -ol -ol+ &
          -oh -om -d2 -bt=dos -ml -xs -xr
 
 LD=*wlink
-LDFLAGS=d all sys dos op m op maxe=25 op q op symf 
+LDFLAGS=d all sys dos op m op maxe=25 op q op symf
 
 all : core16.exe
 
-clean : .symbolic 
+clean : .symbolic
 	@del *.obj
 	@del core16.exe
 	@del *.err
 	@del *.smp
 
 core16.exe : $(OBJS)
-	$(LD) $(LDFLAGS) name core16 file {$(OBJS)} 
+	$(LD) $(LDFLAGS) name core16 file {$(OBJS)}
 
 .c : src/;src/lib
 .cpp : src/;src/lib
