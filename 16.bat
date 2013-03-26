@@ -1,1 +1,1 @@
-wmake all
+wmake all > 16.err
