@@ -37,9 +37,13 @@ namespace engine{
 
 	void Core::update()
 	{
+		/*for (std::list<void(Core::*)()>::iterator i = fp->begin(); i != fp->end(); i++)
+		//for (std::list<void(core::*)()>::iterator i = this->fp.begin(); i != this->fp.end(); i++)
+		{
+			(this->*(*i))();
+		}*/
 	  // call update functions, instead of traversing a function pointer
 	  // list.  Remove this comment!
-
 	  sound();
 	  if ( graphics_flag )
 		  graphics();
