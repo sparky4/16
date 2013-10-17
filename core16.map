@@ -1,6 +1,6 @@
 Open Watcom Linker Version 1.9
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       13/03/26 01:41:16
+Created on:       13/03/26 16:54:37
 Executable Image: core16.exe
 creating a DOS executable
 
@@ -874,4 +874,4 @@ c:\fdos\WATCOM/lib286/dos\emu87.lib
 Stack size:  0800 (2048.)
 Memory size:  00011620 (71200.)
 Entry point address: 0000:34a0
-Link time: 00:01.54
+Link time: 00:01.57
