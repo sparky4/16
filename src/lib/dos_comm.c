@@ -28,7 +28,8 @@ void interrupt newkb(void){
 	outp(0x61, qx);           /* Toggle acknowledge bit low */
 
 	/* Interpret the scan code and set our flags */
-//tt	printf("%d[%d]\n",kee,key[kee]);
+//tt
+	printf("%d[%d]\n",kee,key[kee]);
 	if(kee & 0x80)
 		key[kee & 0x7F] = 0; // a key is released
 	else

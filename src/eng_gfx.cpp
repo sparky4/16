@@ -32,16 +32,16 @@ namespace engine {
 		if(keyp(10)) mode = 9;
 		if(keyp(11)) mode = 10;
 		if(keyp(12)) mode = 11;*/
-		if(keyp(47) && paldump == 8) paldump = 0;
-			else if(keyp(47)) paldump++;
+//____		if(keyp(47) && paldump == 8) paldump = 0;
+//____			else if(keyp(47)) paldump++;
 		/* working on code overall!
 		if(keyp(57) && mode == 10) mode = 0;
 			else if(keyp(57) && mode == 0) mode = 10;
 		if(mode > 0){
 			ding(mode);
 		}else{*/
-			if(keyp(KEY_C)) tulip();
-			if(keyp(KEY_UP) || keyp(KEY_DOWN) || keyp(KEY_LEFT) || keyp(KEY_RIGHT)) eraseplayer(xxxx, yyyy);
+//____			if(keyp(KEY_C)) tulip();
+/*____			if(keyp(KEY_UP) || keyp(KEY_DOWN) || keyp(KEY_LEFT) || keyp(KEY_RIGHT)) eraseplayer(xxxx, yyyy);
 			if(keyp(KEY_UP)){
 				if(--yyyy < 0) yyyy = 0;
 			}else if(keyp(KEY_DOWN)){
@@ -55,7 +55,7 @@ namespace engine {
 			}
 			drawplayer(xxxx, yyyy, 14);
 		//}
-		if(paldump) pdump(paldump);
+		if(paldump) pdump(paldump);____*/
 		/*clearscr();
 		BlockMove();*/
 	}

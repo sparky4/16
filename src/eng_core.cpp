@@ -112,8 +112,8 @@ namespace engine{
 	bool Core::init(){
 		bool xz = 0; // error switch...
 		std::cout << "VIDEO INITIATION" << std::endl;
-		setvideo(0x13, 1);
-		setvbuff(1);
+//____working on mode x		setvideo(0x13, 1);
+//____working on mode x		setvbuff(1);
 		std::cout << "Checking for Adlib sound card...." << std::endl;
 		if(!AdlibExists()){
 			std::cout << "not found." << std::endl;
@@ -137,8 +137,8 @@ namespace engine{
 	void Core::release()
 	{
 		//release contexts and set engine to exit
-		setvideo(0x03, 0);
-		setvbuff(0);
+//____working on mode x		setvideo(0x03, 0);
+//____working on mode x		setvbuff(0);
 		setkb(0);
 		FMReset();
 		this->msg = ENGINE_EXIT;
@@ -172,7 +172,7 @@ namespace engine{
 			graphics_flag = true;
 			this->timer.start_timer();
 //====			std::cout << "GRAPHICS GRAPHICS GRAPHICS GRAPHICS GRAPHICS" << std::endl;
-			updatevbuff();
+//____			updatevbuff();
 		}
 		else
 		{
