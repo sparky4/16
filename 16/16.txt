@@ -1,0 +1,209 @@
+Current task: 2D scrolling tile engine
+Initial conditions:
+1. Total amount of program memory: This is tricky part because the OS has something called conveance memory and it is limited to 640k but there is may waya around it. using EMS and XMS the game should load a bunch of itself into the areas away from conventional memory as much as possible but if it like my current XT then we are forced to have less than that. I am still building up the official testing enviorment!
+2. Total amount of video memory: 256K, 320x240 screen, 256 colours //screen is 192K of memory! Only 64K is left free We can use it for buffering and storing game graphics!
+3. Tile size: 16x16, 256 bytes (0.25K) per tile
+4. Total amount of tiles used: n/a
+5. Total amount of tiles stored in memory at a time: 256 (64K) //reduce to 128 or less if there's not enough memory
+//31K for sprites which is about 124 sprites!
+//there is 3 pages advalible for us that are 75K each!
+Task explanation:
+Tiles are rendered as a background. Background needs to be scrolled from up to down and from left to right.
+Tiles currently used are stored in the video memory. World, consisting of tiles, is represented as a matrix.
+World is split into areas. Changing area means changing used tileset. Tiles in two neighbouring areas should not overlap.
+Viewport matrix holds 20x15 to 21x16 tiles at once. As we only have 256 tiles in our set, each tile is one byte long.
+The best variant to change matrix contents FAST seems to be 2D linked list. The downside is memory lookup time.
+An alternative is a 2D array. Fast lookup, less memory, expensive relocation.
+Something like
+#define NTILES_X = 21
+#define NTILES_Y = 16
+#define TILES_X = NTILES_X - 1
+#define TILES_Y = NTILES_Y - 1
+struct vp_node {
+    uint8_t tile;
+    struct vp_node *up;
+    struct vp_node *right;
+    struct vp_node *down;
+    struct vp_node *left;
+};
+struct viewport {
+    uint8_t offset_x; //X offset in pixels
+    uint8_t offset_y; //Y offset in pixels
+    uint16_t world_offset_x;
+    uint16_t world_offset_y;
+    struct vp_node *upper_left; //pointer to the upper left tile
+};
+void initvp(struct viewport *vp, uint8_t **world_matrix, uint16_t offset_x, uint16_t offset_y) {
+    int i, j;
+    struct vp_node *vp_tmp[NTILES_Y][NTILES_X]; //i'd like to copy it
+    for(i=0; i<NTILES_Y; i++) {
+        for(j=0; j<NTILES_X; j++) {
+            vp_tmp[i][j] = malloc(sizeof(struct vp_node));
+            vp_tmp[i][j]->tile = world_matrix[offset_x + i][offset_y + j];
+        }
+    }
+    // i for line, j for column
+    // linking neighbouring tiles
+    // wait, do we need links to left and up?
+    for(i=0; i<NTILES_Y; i++) {
+        for(j=0; j<NTILES_X; j++) {
+            if(i) vp_tmp[i][j]->up = vp_tmp[i-1][j];
+            else vp_tmp[i][j]->up = NULL;
+            if(j) vp_tmp[i][j]->left = vp_tmp[i][j-1];
+            else vp_tmp[i][j]->left = NULL;
+            if(i<20) vp_tmp[i][j]->down = vp_tmp[i+1][j];
+            else vp_tmp[i][j]->down = NULL;
+            if(j<15) vp_tmp[i][j]->right = vp_tmp[i][j+1];
+            else vp_tmp[i][j]->right = NULL;
+        }
+    }
+    vp = malloc(sizeof(struct viewport));
+    vp->offset_x = 0;
+    vp->offset_y = 0;
+    vp->world_offset_x = offset_x;
+    vp->world_offset_y = offset_y;
+    vp->upper_left = vp_tmp[0][0];
+}
+void scroll(struct viewport *vp, uint8_t **world_matrix, int8_t offset_x, int8_t offset_y) {
+    int8_t offset_x_total = offset_x + vp->offset_x;
+    int8_t offset_y_total = offset_y + vp->offset_y;
+    if(offset_x_total > 15) shift_right(vp, world_matrix);
+    if(offset_x_total < 0) shift_left(vp, world_matrix);
+    if(offset_y_total > 15) shift_down(vp, world_matrix);
+    if(offset_y_total < 0) shift_up(vp, world_matrix);
+    vp->offset_x = offset_x_total % 16;
+    vp->offset_y = offset_y_total % 16;
+}
+void shift_right(struct viewport *vp, uint8_t **world_matrix) {
+    vp->world_offset_x += 1;
+    struct vp_node *tmp = vp->upper_left;
+    vp->upper_left = vp->upper_left->right;
+    while(tmp->down) {
+        tmp->right->left = NULL;
+        tmp = tmp->down;
+        free(tmp->up);
+    }
+    tmp->right->left = NULL;
+    free(tmp);
+    // Starting from the upper left corner
+    tmp = vp->upper_left;
+    // Looking up the rightmost tile
+    while(tmp->right) tmp = tmp->right;
+    // Here and below: allocating and linking new neighbouring tiles
+    int i=0;
+    tmp->right = malloc(sizeof(struct vp_node));
+    tmp->right->tile = world_matrix[vp->world_offset_y + i++][vp->world_offset_x +20];
+    tmp->right->left = tmp;
+    tmp->right->up = NULL;
+    tmp->right->right = NULL;
+    while(tmp->down) {
+        tmp = tmp->down;
+        tmp->right = malloc(sizeof(struct vp_node));
+        tmp->right->tile = world_matrix[vp->world_offset_y + i++][vp->world_offset_x + 20];
+        tmp->right->left = tmp;
+        tmp->right->up = tmp->up->right;
+        tmp->up->right->down = tmp->right;
+        tmp->right->right = NULL;
+    }
+    tmp->right->down = NULL;
+    // looks like we've just added a column
+}
+void shift_left(struct viewport *vp, uint8_t **world_matrix) {
+    vp->world_offset_x -= 1;
+    // Removing the rightmost column first
+    struct vp_node *tmp = vp->upper_left;
+    while(tmp->right) tmp = tmp->right;
+    while(tmp->down) {
+        tmp->left->right = NULL;
+        tmp = tmp->down;
+        free(tmp->up);
+    }
+    tmp->left->right = NULL;
+    free(tmp);
+    // Now we need to add a new column to the left
+    tmp = vp->upper_left;
+    // Here and below: allocating and linking new neighbouring tiles
+    int i=0;
+    tmp->left = malloc(sizeof(struct vp_node));
+    tmp->left->tile = world_matrix[vp->world_offset_y + i++][vp->world_offset_x];
+    tmp->left->right = tmp;
+    tmp->left->up = NULL;
+    tmp->left->left = NULL;
+    while(tmp->down) {
+        tmp = tmp->down;
+        tmp->left = malloc(sizeof(struct vp_node));
+        tmp->left->tile = world_matrix[vp->world_offset_y + i++][vp->world_offset_x];
+        tmp->left->right = tmp;
+        tmp->left->up = tmp->up->left;
+        tmp->up->left->down = tmp->left;
+        tmp->left->left = NULL;
+    }
+    tmp->left->down = NULL;
+    // looks like we've just added a column to the left
+}
+void shift_down(struct viewport *vp, uint8_t **world_matrix) {
+    vp->world_offset_y += 1;
+    // Removing the upper row first
+    struct vp_node *tmp = vp->upper_left->down;
+    vp->upper_left = tmp;
+    do {
+        free(tmp->up);
+        tmp->up = NULL;
+    } while(tmp->right);
+    // Now we need to add a new column to the bottom
+    tmp = vp->upper_left;
+    while(tmp->down) tmp = tmp->down;
+    // Here and below: allocating and linking new neighbouring tiles
+    int i=0;
+    tmp->down = malloc(sizeof(struct vp_node));
+    tmp->dpwn->tile = world_matrix[vp->world_offset_y + i++][vp->world_offset_x];
+    tmp->down->left = NULL;
+    tmp->down->up = tmp;
+    tmp->down->down = NULL;
+    while(tmp->right) {
+        tmp = tmp->right;
+        tmp->down = malloc(sizeof(struct vp_node));
+        tmp->down->tile = world_matrix[vp->world_offset_y + i++][vp->world_offset_x];
+        tmp->down->up = tmp;
+        tmp->down->left = tmp->left->down;
+        tmp->left->down->right = tmp->down;
+        tmp->down->down = NULL;
+    }
+    tmp->down->right = NULL;
+    // looks like we've just added a row to the bottom
+}
+void shift_up(struct viewport *vp, uint8_t **world_matrix) {
+    vp->world_offset_y += 1;
+    // Removing the bottom row first
+    struct vp_node *tmp = vp->upper_left;
+    while(tmp->down) tmp = tmp->down;
+    while(tmp->right) {
+        tmp->up->down = NULL;
+        tmp = tmp->right;
+        free(tmp->left);
+    }
+    tmp->up->down = NULL;
+    free(tmp);
+    // Now we need to add a new row to the top
+    tmp = vp->upper_left;
+    // Here and below: allocating and linking new neighbouring tiles
+    int i=0;
+    tmp->up = malloc(sizeof(struct vp_node));
+    tmp->up->tile = world_matrix[vp->world_offset_y + i++][vp->world_offset_x];
+    tmp->up->left = NULL;
+    tmp->up->down = tmp;
+    tmp->up->up = NULL;
+    while(tmp->right) {
+        tmp = tmp->right;
+        tmp->up = malloc(sizeof(struct vp_node));
+        tmp->up->tile = world_matrix[vp->world_offset_y + i++][vp->world_offset_x];
+        tmp->up->down = tmp;
+        tmp->up->left = tmp->left->up;
+        tmp->left->up->right = tmp->up;
+        tmp->up->up = NULL;
+    }
+    tmp->up->right = NULL;
+    // looks like we've just added a row to the top
+}
+void render_vp(struct viewport *vp);
+
