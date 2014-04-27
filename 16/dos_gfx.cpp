@@ -452,10 +452,10 @@ int ding(int q){
 			}
 		}
 		// fixer
-		if(xx<0) xx=width;
+		/*if(xx<0) xx=width;
 		if(yy<0) yy=height;
 		if(xx>width) xx=0;
-		if(yy>height) yy=0;
+		if(yy>height) yy=0;*/
 
 		// plot the pixel
 //----		ppf(xx, yy, coor, vga);
