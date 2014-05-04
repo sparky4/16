@@ -36,6 +36,8 @@
  */
 
 
+
+
 /*
  * We 'require' a large data model simply to get rid of explicit 'far'
  * pointers and compiler specific '_fmemset()' functions and the likes.
@@ -242,6 +244,63 @@ void set320x240x256_X(void)
 	}
 
 
+/*tile*/
+// This is Bresenham's Line Drawing Algorithm
+void drawline(int x1, int y1, int x2, int y2, char col)
+{
+	int d, x, y, ax, ay, sx, sy, dx, dy;
+
+	dx = x2-x1;
+	ax = ABS(dx) << 1;
+	sx = SGN(dx);
+	dy = y2-y1;
+	ay = ABS(dy) << 1;
+	sy = SGN(dy);
+
+	x = x1;
+	y = y1;
+	if( ax > ay )
+	{
+		d = ay - (ax >> 1);
+		while( x != x2 )
+		{
+			putPixel_X( x, y, col );
+			if( d >= 0 )
+			{
+				y += sy;
+				d -= ax;
+			}
+		x += sx;
+		d += ay;
+		}
+	}
+	else
+	{
+		d = ax - (ay >> 1);
+		while( y != y2 )
+		{
+			putPixel_X( x, y, col );
+			if( d >= 0 )
+			{
+				x += sx;
+				d -= ay;
+			}
+			y += sy;
+			d += ax;
+		}
+	}
+	return;
+}
+
+void drawrect(int x1, int y1, int x2, int y2, char color)
+{
+	drawline(x1,y1,x2,y1,color);
+	drawline(x1,y2,x2,y2,color);
+	drawline(x1,y1,x1,y2,color);
+	drawline(x2,y1,x2,y2+1,color);
+}
+
+
 /*-----------XXXX-------------*/
 //---------------------------------------------------
 //
@@ -381,6 +440,7 @@ int ding(int q){
 //++++	if(q <= 4 && q!=2 && gq == BONK-1) coor = rand()%HGQ;
 	if((q == 2
 	||q==4
+	||q==16
 	) && gq == BONK-1){
 			if(coor < HGQ && coor < LGQ) coor = LGQ;
 			if(coor < HGQ-1){
@@ -408,7 +468,7 @@ int ding(int q){
 			gq++;
 		}else gq = LGQ;
 	}
-	if(q<5 && gq<BONK){ // the number variable make the colors more noticable
+	if((q<5 && gq<BONK) || (q==16 && gq<BONK)){ // the number variable make the colors more noticable
 		if(q==1){
 			if(xx==width){bakax=0;}
 			if(xx==0){bakax=1;}
@@ -440,29 +500,56 @@ int ding(int q){
 				xx++;
 			}
 		}else{
-			if(!bakax){
-				xx--;
-			}else if(bakax>1){
-				xx++;
-			}
-			if(!bakay){
-				yy--;
-			}else if(bakay>1){
-				yy++;
+			if(q==16)
+			{
+				if(!bakax){
+					xx--;//=TILEWH;
+				}else if(bakax>0){
+					xx++;//=TILEWH;
+				}
+				if(!bakay){
+					yy--;//=TILEWH;
+				}else if(bakay>0){
+					yy++;//=TILEWH;
+				}
+			}else{
+				if(!bakax){
+					xx-=TILEWH;
+				}else if(bakax>1){
+					xx+=TILEWH;
+				}
+				if(!bakay){
+					yy-=TILEWH;
+				}else if(bakay>1){
+					yy+=TILEWH;
+				}
 			}
 		}
 		// fixer
-		/*if(xx<0) xx=width;
-		if(yy<0) yy=height;
-		if(xx>width) xx=0;
-		if(yy>height) yy=0;*/
+		if(q!=16){
+			if(xx<0) xx=width;
+			if(yy<0) yy=height;
+			if(xx>width) xx=0;
+			if(yy>height) yy=0;
+		}
+
+//interesting effects
+		if(q==16)
+		{
+		int tx=0,ty=0;
+		tx+=xx+16;
+		ty+=yy+16;
+		putPixel_X(tx, ty, coor);
+		//drawrect(tx, ty, tx+TILEWH, ty+TILEWH, coor);
+		//printf("%d %d %d %d %d %d\n", xx, yy, tx, ty, TILEWH);
 
 		// plot the pixel
 //----		ppf(xx, yy, coor, vga);
-		putPixel_X(xx, yy, coor);
+//++++0000		putPixel_X(xx, yy, coor);
+		}else drawrect(xx, yy, xx+TILEWH-1, yy+TILEWH-1, coor);
 //----		if(q==2) ppf(rand()%, rand()%height, 0, vga);
-		if(q==2) putPixel_X(rand()%width, rand()%height, 0);
-		if(q==2||q==4){ bakax = rand()%3; bakay = rand()%3; }
+		if(q==2||q==16) putPixel_X(rand()%width, rand()%height, 0);
+		if(q==2||q==4||q==16){ bakax = rand()%3; bakay = rand()%3; }
 		gq++;
 //if(xx<0||xx>320||yy<0||yy>240)
 //	printf("%d %d %d %d %d %d\n", xx, yy, coor, bakax, bakay, getPixel_X(xx,yy));
