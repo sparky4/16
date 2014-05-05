@@ -10,7 +10,7 @@
 #define BONK            400
 #define LGQ             32
 #define HGQ             56
-#define TILEWH				16
+#define TILEWH                          16
 #define ABS(a)   ((a < 0) ? -a : a)
 #define SGN(a)   ((a < 0) ? -1 : 1)
 //#define VMEM            0xA000 // = vga
@@ -27,7 +27,7 @@ void cls(byte color, byte *Where);
 //void plotpixel(int x, int y, byte color, byte *Where);
 //void plotpixelfast(int x, int y, byte color, byte *Where);
 void putPixel_X(int x, int y, byte color);
-void putTile(int x, int y, byte color);
+//void putTile(int x, int y, byte color);
 //void BlockMove();
 //void eraseplayer(int x, int y);
 //void drawplayer(int x, int y, int color);
