@@ -1,22 +1,22 @@
 c2e.convert_special: 0
 e2c.convert_num: 0
-openfiles: /dos/z/16/16/dos_gfx.cpp:8341:8024:0:
-openfiles: /dos/z/16/16/dos_gfx.h:941:208:0:
-openfiles: /dos/z/16/16/dos_kb.c:759:642:0:
-openfiles: /dos/z/16/16/dos_kb.h:179:0:0:
-openfiles: /dos/z/16/16/lib_com.cpp:164:0:0:
+openfiles: /dos/z/16/16/dos_gfx.cpp:0:0:1:
+openfiles: /dos/z/16/16/dos_gfx.h:0:0:0:
+openfiles: /dos/z/16/16/dos_kb.c:0:0:0:
+openfiles: /dos/z/16/16/dos_kb.h:0:0:0:
+openfiles: /dos/z/16/16/lib_com.cpp:0:0:0:
 openfiles: /dos/z/16/16/lib_com.h:0:0:0:
 openfiles: /dos/z/16/16/16.txt:0:0:0:
-openfiles: /dos/z/16/16/project16.txt:1755:1676:0:
+openfiles: /dos/z/16/16/project16.txt:0:0:0:
 openfiles: /dos/z/4x4_16/sauce/jstick.h:0:0:0:
-openfiles: /dos/z/4x4_16/sauce/keydrv.h:0:601:0:
-openfiles: /dos/z/4x4_16/sauce/sprite.h:590:35:0:
-openfiles: /dos/z/4x4_16/sauce/tile.h:327:173:0:
+openfiles: /dos/z/4x4_16/sauce/keydrv.h:0:0:0:
+openfiles: /dos/z/4x4_16/sauce/sprite.h:0:0:0:
+openfiles: /dos/z/4x4_16/sauce/tile.h:0:0:0:
 openfiles: /dos/z/4x4_16/sauce/vgabuff.h:0:0:0:
 openfiles: /dos/z/4x4_16/sauce/vgautils.h:0:0:0:
 openfiles: /dos/z/4x4_16/sauce/keydrv.c:0:0:0:
 openfiles: /dos/z/4x4_16/sauce/sprite.c:0:0:0:
-openfiles: /dos/z/4x4_16/sauce/tile.c:304:55:1:
+openfiles: /dos/z/4x4_16/sauce/tile.c:0:0:0:
 openfiles: /dos/z/4x4_16/sauce/vgabuff.c:0:0:0:
 openfiles: /dos/z/4x4_16/sauce/vgautils.c:0:0:0:
 snr_recursion_level: 0
@@ -105,7 +105,7 @@ searchlist: rect`-
 searchlist: fill_plane(
 searchlist: fmemset
 searchlist: se
-searchlist:     
+searchlist: 
 searchlist: rect
 searchlist: fmem
 searchlist: vga

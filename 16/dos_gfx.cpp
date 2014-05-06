@@ -245,67 +245,19 @@ void set320x240x256_X(void)
 
 
 /*tile*/
-// This is Bresenham's Line Drawing Algorithm
-void drawline(int x1, int y1, int x2, int y2, char col)
-{
-		int d, x, y, ax, ay, sx, sy, dx, dy;
+void putColorBox_X(int x, int y, int w, int h, byte color) {
+	outp(0x3c4, 0x02);
 
-		dx = x2-x1;
-		ax = ABS(dx) << 1;
-		sx = SGN(dx);
-		dy = y2-y1;
-		ay = ABS(dy) << 1;
-		sy = SGN(dy);
-
-		x = x1;
-		y = y1;
-		if( ax > ay )
-		{
-				d = ay - (ax >> 1);
-				while( x != x2 )
-				{
-						putPixel_X( x, y, col );
-						if( d >= 0 )
-						{
-								y += sy;
-								d -= ax;
-						}
-				x += sx;
-				d += ay;
-				}
+	int curx, cury;
+	unsigned drawptr;
+	for (curx=x; curx<(x+w); curx++) {
+		outp(0x3c5, 0x01 << (curx & 3));
+		drawptr = (unsigned)(widthBytes * y) + (curx / 4) + actStart;
+		for (cury=0; cury<h; cury++) {
+			vga[drawptr] = color;
+			drawptr += widthBytes;
 		}
-		else
-		{
-				d = ax - (ay >> 1);
-				while( y != y2 )
-				{
-						putPixel_X( x, y, col );
-						if( d >= 0 )
-						{
-								x += sx;
-								d -= ay;
-						}
-						y += sy;
-						d += ax;
-				}
-		}
-		return;
-}
-
-void drawrect(int x1, int y1, int x2, int y2, char color)
-{
-	drawline(x1,y1,x2,y1,color);
-	drawline(x1,y2,x2,y2,color);
-	drawline(x1,y1,x1,y2,color);
-	drawline(x2,y1,x2,y2+1,color);
-	/*byte far *p;
-	
-	p=vga+y1*width+x1;  // make p point to the start of the line
-	while((y2-y1))			// repeat for entire line height
-		{
-		_fmemset(vga, color, x2-x1);	// set one line
-		p+=width;		// move down one row
-		}*/
+	}
 }
 
 
@@ -368,9 +320,9 @@ void drawText(int x, int y, int color, byte string)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-//																		 //
+//                                                                         //
 // setvideo() - This function Manages the video modes					  //
-//																		 //
+//                                                                         //
 /////////////////////////////////////////////////////////////////////////////
 void setvideo(/*byte mode, */int vq){
 		union REGS in, out;
@@ -554,7 +506,8 @@ int ding(int q){
 				// plot the pixel
 //----		  ppf(xx, yy, coor, vga);
 //++++0000			  putPixel_X(xx, yy, coor);
-				}else drawrect(xx, yy, xx+TILEWH-1, yy+TILEWH-1, coor);
+				}else putColorBox_X(xx, yy, TILEWH, TILEWH, coor);
+				//drawrect(xx, yy, xx+TILEWH-1, yy+TILEWH-1, coor);
 //----		  if(q==2) ppf(rand()%, rand()%height, 0, vga);
 				if(q==2||q==16) putPixel_X(rand()%width, rand()%height, 0);
 				if(q==2||q==4||q==16){ bakax = rand()%3; bakay = rand()%3; }

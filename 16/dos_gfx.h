@@ -27,7 +27,7 @@ void cls(byte color, byte *Where);
 //void plotpixel(int x, int y, byte color, byte *Where);
 //void plotpixelfast(int x, int y, byte color, byte *Where);
 void putPixel_X(int x, int y, byte color);
-//void putTile(int x, int y, byte color);
+void putColorBox_X(int x, int y, int w, int h, byte color);
 //void BlockMove();
 //void eraseplayer(int x, int y);
 //void drawplayer(int x, int y, int color);
