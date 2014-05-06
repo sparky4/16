@@ -294,19 +294,18 @@ void drawline(int x1, int y1, int x2, int y2, char col)
 
 void drawrect(int x1, int y1, int x2, int y2, char color)
 {
-	/*drawline(x1,y1,x2,y1,color);
+	drawline(x1,y1,x2,y1,color);
 	drawline(x1,y2,x2,y2,color);
 	drawline(x1,y1,x1,y2,color);
-	drawline(x2,y1,x2,y2+1,color);*/
-	//_fmemset(vga+x1+y2, color, 16*16);
-	byte far *p;
+	drawline(x2,y1,x2,y2+1,color);
+	/*byte far *p;
 	
 	p=vga+y1*width+x1;  // make p point to the start of the line
 	while((y2-y1))			// repeat for entire line height
 		{
-		_fmemset(p, color, x2-x1);	// set one line
+		_fmemset(vga, color, x2-x1);	// set one line
 		p+=width;		// move down one row
-		}
+		}*/
 }
 
 
