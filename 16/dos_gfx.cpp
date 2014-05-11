@@ -244,6 +244,7 @@ void set320x240x256_X(void)
 		}
 
 
+/*-----------XXXX-------------*/
 /*tile*/
 void putColorBox_X(int x, int y, int w, int h, byte color) {
 	outp(0x3c4, 0x02);
@@ -259,9 +260,25 @@ void putColorBox_X(int x, int y, int w, int h, byte color) {
 		}
 	}
 }
-
-
-/*-----------XXXX-------------*/
+/*OFFSET = 0
+WHILE NOT FINISHED DO
+  OFFSET = OFFSET + 80
+  IF OFFSET >= (200 * 80) THEN OFFSET = 0
+  DRAW TO ROW 200
+  SET VGA OFFSET = OFFSET
+  DRAW TO ROW -1 (was row 0 before scroll)
+END WHILE*//*
+void scrolly(){
+	int OFFSET = 0
+	WHILE NOT FINISHED DO
+		OFFSET = OFFSET + 80
+		IF OFFSET >= (240 * 80) THEN OFFSET = 0
+		RAW TO ROW 240
+		SET VGA OFFSET = OFFSET
+		DRAW TO ROW -1 (was row 0 before scroll)
+	}
+}
+*/
 //---------------------------------------------------
 //
 // Use the bios to get the address of the 8x8 font
@@ -486,12 +503,12 @@ int ding(int q){
 						}
 				}
 				// fixer
-				if(q!=16){
+				//if(q!=16){
 						if(xx<0) xx=width;
 						if(yy<0) yy=height;
 						if(xx>width) xx=0;
 						if(yy>height) yy=0;
-				}
+				//}
 
 //interesting effects
 				if(q==16)
@@ -505,11 +522,14 @@ int ding(int q){
 
 				// plot the pixel
 //----		  ppf(xx, yy, coor, vga);
-//++++0000			  putPixel_X(xx, yy, coor);
-				}else putColorBox_X(xx, yy, TILEWH, TILEWH, coor);
-				//drawrect(xx, yy, xx+TILEWH-1, yy+TILEWH-1, coor);
+				}else if(xx>=0 && xx<width && yy>=0 && PixelY<height){
+					putColorBox_X(xx, yy, TILEWH, TILEWH, coor);
+//++++0000					putPixel_X(xx, yy, coor);
+				} 
+
 //----		  if(q==2) ppf(rand()%, rand()%height, 0, vga);
-				if(q==2||q==16) putPixel_X(rand()%width, rand()%height, 0);
+				if(q==2) putColorBox_X(rand()%width, rand()%height, TILEWH, TILEWH, 0);
+				if(q==16) putPixel_X(rand()%width, rand()%height, 0);
 				if(q==2||q==4||q==16){ bakax = rand()%3; bakay = rand()%3; }
 				gq++;
 //if(xx<0||xx>320||yy<0||yy>240)
