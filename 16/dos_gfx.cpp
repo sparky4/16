@@ -32,7 +32,7 @@
  * Thanks go out to various helpful netters who spotted the 0xE7 bug
  * in the set320x240x256() function!
  *
- * modified by sparky4 so it can be compiled in open watcom ^^
+ * Modified by sparky4 so it can be compiled in open watcom ^^
  */
 
 
@@ -420,17 +420,17 @@ int ding(int q){
 		||q==16
 		) && gq == BONK-1){
 						if(coor < HGQ && coor < LGQ) coor = LGQ;
-						if(coor < HGQ-1){
+						if(coor < HGQ){
 								coor++;
 				}else{ coor = LGQ;
 						bakax = rand()%3; bakay = rand()%3;
 				}
 		}
 
-		if(q == 5){ colortest(); return gq; }
-		if(q == 10){ colorz(); return gq; }
+		if(q == 8){ colorz(); return gq; }else
+		if(q == 10){ ssd(q); /*printf("%d\n", coor);*/ }else
+		if(q == 5){ colortest(); return gq; }else
 		if(q == 11){ colorz(); delay(100); return gq; }
-		if(q == 8){ ssd(q); /*printf("%d\n", coor);*/ }
 		if(q == 6){
 				coor = rand()%NUM_COLORS;
 //----		  cls(coor, vaddr);
@@ -522,7 +522,7 @@ int ding(int q){
 
 				// plot the pixel
 //----		  ppf(xx, yy, coor, vga);
-				}else if(xx>=0 && xx<width && yy>=0 && PixelY<height){
+				}else if(xx>=0 && xx<width && yy>=0 && yy<height){
 					putColorBox_X(xx, yy, TILEWH, TILEWH, coor);
 //++++0000					putPixel_X(xx, yy, coor);
 				} 
@@ -648,7 +648,7 @@ int main(void)
 		doTest();
 		setvideo(0);
 		puts("Where to next?  It's your move! wwww");
-		printf("bakapi ver. 1.04.09a\nis made by sparky4（≧ω≦） feel free to use it ^^\nLicence: GPL v2\n");
+		printf("bakapi ver. 1.04.09.01\nis made by sparky4（≧ω≦） feel free to use it ^^\nLicence: GPL v2\n");
 		return 0;
 		}
 
