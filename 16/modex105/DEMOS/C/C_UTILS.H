@@ -115,3 +115,4 @@ int  far pascal int_sqr (int X, int Round);
 int  far pascal timer_count (void);
 
 #endif
+

@@ -626,7 +626,8 @@ int main(void)
 //	  puts("Press a key when ready...");
 //	  getch();
 
-		setvideo(1);
+//++++0000		setvideo(1);
+mxInit();
 // screen savers
 
 /*while(d!=0){ // on!
@@ -647,7 +648,9 @@ int main(void)
 		}
 		//end of screen savers
 		doTest();
-		setvideo(0);
+//++++0000		setvideo(0);
+mxTerm();
+mxGetVersion();
 		puts("Where to next?  It's your move! wwww");
 		printf("bakapi ver. 1.04.09.01\nis made by sparky4i†ƒÖ…j feel free to use it ^^\nLicence: GPL v2\n");
 		return 0;
