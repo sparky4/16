@@ -1,0 +1,164 @@
+;------------------------------------------------------------
+;
+; MODEX.DEF - Include file
+; Copyright (c) 1993-1994 by Alessandro Scotti
+;
+;JUMPS
+;LOCALS
+
+TRUE            EQU     1       ; Boolean constants
+FALSE           EQU     0
+
+USE286  = FALSE                  ; TRUE enables 80286 instructions
+USE386  = FALSE                  ; TRUE enables 80386 (and 80286) instructions
+
+IF USE286 EQ TRUE
+        P286
+ENDIF
+
+IF USE386 EQ TRUE
+        P386
+        USE286  = TRUE
+ENDIF
+
+MXVERSION       EQU     0128h   ; Library version (1.40)
+
+;------------------------------------------------------------
+;
+; VGA definitions
+;
+MISC    EQU     3C2h            ; Miscellaneous output
+TS      EQU     3C4h            ; Timing Sequencer index register
+GDC     EQU     3CEh            ; Graphics Data Controller index register
+CRTC    EQU     3D4h            ; CRTC index register
+STATUS  EQU     3DAh            ; Input Status register one
+
+;------------------------------------------------------------
+;
+; Raster operators
+;
+OP_SET          EQU     0
+OP_MOVE         EQU     0       ; Same as OP_SET
+OP_AND          EQU     1
+OP_OR           EQU     2
+OP_XOR          EQU     3
+OP_TRANS        EQU     4
+OP_ADD          EQU     5       ; Must be last op
+
+;------------------------------------------------------------
+;
+; Polygon fill functions
+;
+POLYSCANBUFSIZE EQU     4*1024
+
+;------------------------------------------------------------
+; Macro to push registers, variables or flags onto the stack
+; Usage: .push "loc16"[,"loc16"...]
+; where "loc16" is a 16-bit register, a word-sized variable or the
+; keyword "FLAGS".
+; Exmpl: .push ax, flags, var1
+;        .pop  ax, flags, var1
+;
+.push   MACRO   r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10
+    IFNB <r10>
+        .ERROR <.PUSH has more than 10 arguments>
+    ENDIF
+    IRP $reg, <r0, r1, r2, r3, r4, r5, r6, r7, r8, r9>
+        IFB <$reg>                      ;; Is argument blank?
+            EXITM                       ;; Yes, exit
+        ELSEIFIDNI <$reg>, <FLAGS>      ;; Is argument the keyword "FLAGS"?
+            pushf                       ;; Yes, push flags
+        ELSE
+            push    $reg                ;; Push argument
+        ENDIF
+    ENDM
+ENDM
+
+;------------------------------------------------------------
+; Macro to pop registers, variables or flags from the stack
+; Usage: .pop "loc16"[,"loc16"...]
+; where "loc16" is a 16-bit register, a word-sized variable or the
+; keyword "FLAGS".
+; Exmpl: .push ax, flags, var1
+;        .pop  ax, flags, var1
+;
+.pop    MACRO   r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10
+    IFNB <r10>
+        .ERROR <.POP has more than 10 arguments>
+    ENDIF
+    IRP $reg, <r9, r8, r7, r6, r5, r4, r3, r2, r1, r0>
+        IFNB <$reg>                     ;; Is argument non-blank?
+            IFIDNI <$reg>, <FLAGS>      ;; Yes, is it the keyword "FLAGS"?
+                popf                    ;; Yes, pop flags
+            ELSE
+                pop     $reg            ;; Pop argument
+            ENDIF
+        ENDIF
+    ENDM
+ENDM
+
+;------------------------------------------------------------
+;
+.enter  MACRO   localsize
+    IF USE286 EQ TRUE
+        enter   localsize, 0
+    ELSE
+        push    bp
+        mov     bp, sp
+        sub     sp, localsize
+    ENDIF
+ENDM
+
+;------------------------------------------------------------
+;
+.leave  MACRO   argsize
+    IF USE286 EQ TRUE
+        leave
+    ELSE
+        mov     sp, bp
+        pop     bp
+    ENDIF
+    IFNB <argspace>
+        ret     argsize
+    ELSE
+        ret
+    ENDIF
+ENDM
+
+;------------------------------------------------------------
+;
+.shr    MACRO   arg, count
+    IF USE286 EQ TRUE
+        shr     arg, count
+    ELSE
+        $temp = count
+        WHILE $temp GT 0
+            shr arg, 1
+            $temp = $temp-1
+        ENDM
+    ENDIF
+ENDM
+
+;------------------------------------------------------------
+;
+.shl    MACRO   arg, count
+    IF USE286 EQ TRUE
+        shl     arg, count
+    ELSE
+        $temp = count
+        WHILE $temp GT 0
+            shl arg, 1
+            $temp = $temp-1
+        ENDM
+    ENDIF
+ENDM
+
+;------------------------------------------------------------
+;
+;.chk386 MACRO   name, jump
+;    IF USE386 EQ FALSE
+;        .OUT    "Warning: ", <name>, " needs a 386 or better to run!"
+;        jmp     @@jump
+;    ENDIF
+;ENDM
+END
