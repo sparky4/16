@@ -184,7 +184,7 @@ OUT value TO PORT 3C0H (where "value" is the
   number of pixels to offset)
 -----------------------------------------------
 */
-		inp(0x3DA)
+		inp(0x3DA);
 		outpw(0x3C0, 0x13);
 		outpw(0x3C0, 0x58);
 
@@ -317,10 +317,9 @@ void scrolly(int bong)
 		boing=-1;
 	else if(bong>0)
 		boing=1;
-	else break;
 
-	for(int i=0;i<TILEWH;i++)
-		vScroll(boing)
+	for(int ti=0;ti<TILEWH;ti++)
+		vScroll(boing);
 }
 
 /*
@@ -554,10 +553,10 @@ void ssd(int svq){
 /*-----------ding-------------*/
 int ding(int q){
 
-	if(yy<height){
+//	if(yy<height){
 		setActivePage(0);
 		setVisiblePage(0);
-	}
+/*	}
 	if((height)<yy<(height*2)){
 		setActivePage(1);
 		setVisiblePage(1);
@@ -565,7 +564,7 @@ int ding(int q){
 	if((height*2)<yy<(height*3)){
 		setActivePage(2);
 		setVisiblePage(2);
-	}
+	}*/
 		int d3y;
 
 //++++  if(q <= 4 && q!=2 && gq == BONK-1) coor = rand()%HGQ;
@@ -645,23 +644,27 @@ int ding(int q){
 								}
 						}else{
 								if(!bakax){
-										xx-=TILEWH;
+//										xx-=TILEWH;
+										xx--;
 								}else if(bakax>1){
-										xx+=TILEWH;
+//										xx+=TILEWH;
+										xx++;
 								}
 								if(!bakay){
-										yy-=TILEWH;
+//										yy-=TILEWH;
+										yy--;
 								}else if(bakay>1){
-										yy+=TILEWH;
+//										yy+=TILEWH;
+										yy++;
 								}
 						}
 				}
 				// fixer
 //				if(q!=16){
 //if(q!=16)
-						if(xx<0) xx=width;
+						if(xx<(0/*-TILEWH*/)) xx=(width/*+TILEWH*/);
 						if(yy<0) yy=(height*3);
-						if(xx>width) xx=0;
+						if(xx>(width/*+TILEWH*/)) xx=(0/*-TILEWH*/);
 						if(yy>(height*3)) yy=0;
 //				}
 
@@ -678,16 +681,19 @@ int ding(int q){
 				// plot the pixel
 //----		  ppf(xx, yy, coor, vga);
 				}else /*if(xx>=0 && xx<width && yy>=0 && yy<(height*3))*/{
-					putColorBox_X(xx, yy, TILEWH, TILEWH, coor);
-//++++0000					putPixel_X(xx, yy, coor);
+//					putColorBox_X(xx, yy, TILEWH, TILEWH, coor);
+//++++0000
+					putPixel_X(xx, yy, coor);
 				} 
 
 //----		  if(q==2) ppf(rand()%, rand()%height, 0, vga);
-				if(q==2) putColorBox_X(rand()%width, rand()%(height*3), TILEWH, TILEWH, 0);
+//				if(q==2) putColorBox_X(rand()%width, rand()%(height*3), TILEWH, TILEWH, 0);
+//++++0000
+				if(q==2) putPixel_X(rand()%width, rand()%(height*3), 0);
 				if(q==16) putPixel_X(rand()%width, rand()%(height*3), 0);
 				if(q==2||q==4||q==16){ bakax = rand()%3; bakay = rand()%3; }
 				gq++;
-//if(xx<0||xx>320||yy<0||yy>240)
+//if(xx<0||xx>320||yy<0||yy>(height*3))
 //	  printf("%d %d %d %d %d %d\n", xx, yy, coor, bakax, bakay, getPixel_X(xx,yy));
 //	  printf("%d\n", getPixel_X(xx,yy));
 //0000
