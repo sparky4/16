@@ -184,9 +184,9 @@ OUT value TO PORT 3C0H (where "value" is the
   number of pixels to offset)
 -----------------------------------------------
 */
-		inp(0x3DA);
-		outpw(0x3C0, 0x13);
-		outpw(0x3C0, 0x58);
+//
+//	inp(0x3DA);
+//	outp(0x3C0, 0x13);
 
 		}
 
@@ -289,6 +289,7 @@ void set320x240x256_X(void)
 
 /*-----------XXXX-------------*/
 /*tile*/
+//king_crimson's code
 void putColorBox_X(int x, int y, int w, int h, byte color) {
 	outp(0x3c4, 0x02);
 
@@ -319,14 +320,22 @@ void scrolly(int bong)
 		boing=1;
 
 	for(int ti=0;ti<TILEWH;ti++)
+		//delay(100);
 		vScroll(boing);
 }
 
-/*
+//king_crimson's code
+void hScroll(int Cols) {
+	inp(0x3DA);
+	outp(0x3C0, 0x13);
+	outp(0x3C0, Cols & 3);
+	outp(0x3D4, 0x13);
+	outp(0x3D5, Cols >> 2);
+	setVisibleStart(visStart + (Cols * height));
+	//setVisibleStart(visStart + (Cols * width));
+}
 
-
-To implement smooth horizontal scrolling, you would do the following:
-
+/*To implement smooth horizontal scrolling, you would do the following:
 -------------- Horizontal Scrolling ------------
 FOR X = 0 TO 319 DO
   SET HPP TO ( X MOD 4 )
@@ -808,10 +817,12 @@ int main(void)
 			ding(4);
 		}
 		//end of screen savers
-		doTest();
+//		doTest();
+		getch();
 
 		while(!kbhit()){ // conditions of screen saver
-			vScroll(-1);
+			hScroll(1);
+			//delay(1000);
 		}
 //++++0000
 		setvideo(0);
