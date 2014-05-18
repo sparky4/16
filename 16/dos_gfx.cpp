@@ -190,12 +190,6 @@ void setVisiblePage(int page)
 		setVisibleStart(page * widthBytes * height);
 		}
 
-void vScroll(int rows)
-{
-	// Scrolling = current start + (rows * bytes in a row)
-	setVisibleStart(visStart + (rows * width));
-}
-
 void putPixel_X(int x, int y, byte color)
 		{
 		/* Each address accesses four neighboring pixels, so set
@@ -267,6 +261,13 @@ void putColorBox_X(int x, int y, int w, int h, byte color) {
 		}
 	}
 }
+
+void vScroll(int rows)
+{
+	// Scrolling = current start + (rows * bytes in a row)
+	setVisibleStart(visStart + (rows * width));
+}
+
 /*OFFSET = 0
 WHILE NOT FINISHED DO
   OFFSET = OFFSET + 80
@@ -417,8 +418,17 @@ void ssd(int svq){
 
 /*-----------ding-------------*/
 int ding(int q){
+
+	if(yy<height){
 		setActivePage(0);
 		setVisiblePage(0);
+	}else if((height)<yy<(height*2)){
+		setActivePage(1);
+		setVisiblePage(1);
+	}else if((height*2)<yy<(height*3)){
+		setActivePage(2);
+		setVisiblePage(2);
+	}
 		int d3y;
 
 //++++  if(q <= 4 && q!=2 && gq == BONK-1) coor = rand()%HGQ;
@@ -510,12 +520,13 @@ int ding(int q){
 						}
 				}
 				// fixer
-				//if(q!=16){
-//						if(xx<0) xx=width;
-//						if(yy<0) yy=height;
-//						if(xx>width) xx=0;
-//						if(yy>height) yy=0;
-				//}
+//				if(q!=16){
+//if(q!=16)
+						if(xx<0) xx=width;
+						if(yy<0) yy=(height*3);
+						if(xx>width) xx=0;
+						if(yy>(height*3)) yy=0;
+//				}
 
 //interesting effects
 				if(q==16)
@@ -535,8 +546,8 @@ int ding(int q){
 				} 
 
 //----		  if(q==2) ppf(rand()%, rand()%height, 0, vga);
-				if(q==2) putColorBox_X(rand()%width, rand()%height, TILEWH, TILEWH, 0);
-				if(q==16) putPixel_X(rand()%width, rand()%height, 0);
+				if(q==2) putColorBox_X(rand()%width, rand()%(height*3), TILEWH, TILEWH, 0);
+				if(q==16) putPixel_X(rand()%width, rand()%(height*3), 0);
 				if(q==2||q==4||q==16){ bakax = rand()%3; bakay = rand()%3; }
 				gq++;
 //if(xx<0||xx>320||yy<0||yy>240)
@@ -595,7 +606,7 @@ void doTest(void)
 										putPixel_X(x+(p+2)*16, y+(p+2)*16, x + y*16);
 						//}
 
-				drawText(0, 0, 15, p);
+//				drawText(0, 0, 15, p);
 
 				}
 
@@ -657,14 +668,14 @@ int main(void)
 		doTest();
 
 		while(!kbhit()){ // conditions of screen saver
-			vScroll(1);
+			vScroll(-1);
 		}
 //++++0000
 		setvideo(0);
 //mxTerm();
 //mxGetVersion();
 		puts("Where to next?  It's your move! wwww");
-		printf("bakapi ver. 1.04.09.01\nis made by sparky4（≧ω≦） feel free to use it ^^\nLicence: GPL v2\n");
+		printf("bakapi ver. 1.04.09.02\nis made by sparky4（≧ω≦） feel free to use it ^^\nLicence: GPL v2\n");
 		return 0;
 		}
 
