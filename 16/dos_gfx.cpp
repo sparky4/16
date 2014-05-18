@@ -422,10 +422,12 @@ int ding(int q){
 	if(yy<height){
 		setActivePage(0);
 		setVisiblePage(0);
-	}else if((height)<yy<(height*2)){
+	}
+	if((height)<yy<(height*2)){
 		setActivePage(1);
 		setVisiblePage(1);
-	}else if((height*2)<yy<(height*3)){
+	}
+	if((height*2)<yy<(height*3)){
 		setActivePage(2);
 		setVisiblePage(2);
 	}
