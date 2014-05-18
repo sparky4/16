@@ -190,6 +190,12 @@ void setVisiblePage(int page)
 		setVisibleStart(page * widthBytes * height);
 		}
 
+void vScroll(int rows)
+{
+	// Scrolling = current start + (rows * bytes in a row)
+	setVisibleStart(visStart + (rows * width));
+}
+
 void putPixel_X(int x, int y, byte color)
 		{
 		/* Each address accesses four neighboring pixels, so set
@@ -505,10 +511,10 @@ int ding(int q){
 				}
 				// fixer
 				//if(q!=16){
-						if(xx<0) xx=width;
-						if(yy<0) yy=height;
-						if(xx>width) xx=0;
-						if(yy>height) yy=0;
+//						if(xx<0) xx=width;
+//						if(yy<0) yy=height;
+//						if(xx>width) xx=0;
+//						if(yy>height) yy=0;
 				//}
 
 //interesting effects
@@ -626,8 +632,9 @@ int main(void)
 //	  puts("Press a key when ready...");
 //	  getch();
 
-//++++0000		setvideo(1);
-mxInit();
+//++++0000
+		setvideo(1);
+//mxInit();
 // screen savers
 
 /*while(d!=0){ // on!
@@ -644,13 +651,18 @@ mxInit();
 				}
 		}*/ // else off
 		while(!kbhit()){ // conditions of screen saver
-				ding(4);
+			ding(4);
 		}
 		//end of screen savers
 		doTest();
-//++++0000		setvideo(0);
-mxTerm();
-mxGetVersion();
+
+		while(!kbhit()){ // conditions of screen saver
+			vScroll(1);
+		}
+//++++0000
+		setvideo(0);
+//mxTerm();
+//mxGetVersion();
 		puts("Where to next?  It's your move! wwww");
 		printf("bakapi ver. 1.04.09.01\nis made by sparky4ÅiÅÜÉ÷ÅÖÅj feel free to use it ^^\nLicence: GPL v2\n");
 		return 0;
