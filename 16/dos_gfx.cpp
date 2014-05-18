@@ -45,7 +45,7 @@
 #if !defined(__COMPACT__)
 # if !defined(__LARGE__)
 #  if !defined(__HUGE__)
-#   error Large data model required!  Try compiling with 'bcc -ml lib.c'.
+#   error Large data model required!  Try compiling with 'wcc -0 -ml lib.c'.
 #  endif
 # endif
 #endif
@@ -146,6 +146,48 @@ void set320x200x256_X(void)
 		/* By default we want screen refreshing and drawing operations
 		   to be based at offset 0 in the video segment. */
 		actStart = visStart = 0;
+
+		/*
+--------------------
+HORIZONTAL SCROLLING
+--------------------
+Horizontal scrolling is essentially the same as vertical scrolling, all
+you do is increment or decrement the VGA offset register by 1 instead of
+80 as with vertical scrolling.
+
+However, horizontal scrolling is complicated by two things
+
+  1. Incrementing the offset register by one actually scrolls by FOUR
+     pixels (and there are FOUR planes on the VGA, what a coincidence)
+
+  2. You can't draw the image off the screen and then scroll it on
+     because of the way the VGA wraps to the next row every 80 bytes
+     (80 bytes * 4 planes = 320 pixels), if you tried it, you would
+     actually be drawing to the other side of the screen (which is
+     entirely visible)
+
+I'll solve these problems one at a time.
+
+Firstly, to get the VGA to scroll by only one pixel you use the horizontal
+pixel panning (HPP) register. This register resides at
+
+  PORT:     3C0H
+  INDEX:    13h
+
+and in real life, you use it like this
+
+----------------- Pixel Panning ---------------
+IN PORT 3DAH (this clears an internal
+  flip-flop of the VGA)
+OUT 13H TO PORT 3C0H
+OUT value TO PORT 3C0H (where "value" is the
+  number of pixels to offset)
+-----------------------------------------------
+*/
+		inp(0x3DA)
+		outpw(0x3C0, 0x13);
+		outpw(0x3C0, 0x58);
+
 		}
 
 /*
@@ -268,24 +310,117 @@ void vScroll(int rows)
 	setVisibleStart(visStart + (rows * width));
 }
 
-/*OFFSET = 0
-WHILE NOT FINISHED DO
-  OFFSET = OFFSET + 80
-  IF OFFSET >= (200 * 80) THEN OFFSET = 0
-  DRAW TO ROW 200
-  SET VGA OFFSET = OFFSET
-  DRAW TO ROW -1 (was row 0 before scroll)
-END WHILE*//*
-void scrolly(){
-	int OFFSET = 0
-	WHILE NOT FINISHED DO
-		OFFSET = OFFSET + 80
-		IF OFFSET >= (240 * 80) THEN OFFSET = 0
-		RAW TO ROW 240
-		SET VGA OFFSET = OFFSET
-		DRAW TO ROW -1 (was row 0 before scroll)
-	}
+void scrolly(int bong)
+{
+	int boing=0;
+	if(bong<0)
+		boing=-1;
+	else if(bong>0)
+		boing=1;
+	else break;
+
+	for(int i=0;i<TILEWH;i++)
+		vScroll(boing)
 }
+
+/*
+
+
+To implement smooth horizontal scrolling, you would do the following:
+
+-------------- Horizontal Scrolling ------------
+FOR X = 0 TO 319 DO
+  SET HPP TO ( X MOD 4 )
+  SET VGA OFFSET TO ( X/4 )
+END FOR
+------------------------------------------------
+
+Okay, no problem at all (although I think you might have to fiddle
+around with the HPP a bit to get it right...try different values and
+see what works :).
+
+So, the next problem is with drawing the images off the screen where
+they aren't visible and then scrolling them on!!! As it turns out,
+there's yet ANOTHER register to accomplish this. This one's called the
+offset register (no, not the one I was talking about before, that one
+was actually the "start address" register) and it's at
+
+  PORT:     3D4H/3D5H
+  OFFSET:   13H
+
+and here's how to use it
+
+-------------- Offset Register ---------------
+OUT 13H TO PORT 3D4H
+OUT value TO PORT 3D5H
+----------------------------------------------
+
+Now, what my VGA reference says is that this register holds the number
+of bytes (not pixels) difference between the start address of each row.
+So, in X-mode it normally contains the value 80 (as we remember,
+80 bytes * 4 planes = 320 pixels). This register does not affect the
+VISIBLE width of the display, only the difference between addresses on
+each row.
+
+When we scroll horizontally, we need a little bit of extra working space
+so we can draw off the edge of the screen.
+
+Perhaps a little diagram will clarify it. The following picture is of a
+standard X-mode addressing scheme with the OFFSET register set to 80.
+
+      ROW    OFFSET
+      0         0 ========================
+      1        80 [                      ]
+      2       160 [                      ]
+      ..       .. [       VISIBLE        ]
+                  [        SCREEN        ]
+                  [                      ]
+                  [                      ]
+      ..       .. [                      ]
+      199   15920 ========================
+
+and the next diagram is of a modified addressing scheme with the OFFSET
+register set to 82 (to give us 4 extra pixels on each side of the screen)
+
+ROW    OFFSET
+0         0 ------========================------
+1        82 |   V [                      ]   V |
+2       164 |   I [                      ]   I |
+..       .. | N S [      VISIBLE         ] N S |
+            | O I [       SCREEN         ] O I |
+            | T B [                      ] T B |
+            |   L [                      ]   L |
+..       .. |   E [                      ]   E |
+199   16318 ------========================------
+
+Beautiful!!!
+
+As with vertical scrolling, however, you still have the problem of when
+you reach the bottom of page 4...and it's fixed in the same manner.
+
+I haven't actually managed to get infinite horizontal scrolling working,
+but the method I have just stated will give you a horizontal scrolling
+range of over 200 screens!!!! So if you need more (which is extremely
+unlikely), figure it out yourself.
+
+
+------------------
+COMBINED SCROLLING
+------------------
+To do both horizontal and vertical scrolling, all you have to do is combine
+the two methods with a few little extras (it's always the way isn't it).
+
+You have to start off with the original screen on the current page and the
+next page as well. When you scroll horizontally, you have to draw the edge
+that's coming in to the screen to BOTH pages (that means you'll be drawing
+the incoming edge twice, once for each page). You do this so that when you
+have scrolled vertically down through a complete page, you can jump back
+to the first page and it will (hopefully) have an identical copy, and you
+can then continue scrolling again.
+
+I'm sorry about this being so confusing but it's a bit difficult to explain.
+
+
 */
 //---------------------------------------------------
 //
@@ -293,7 +428,7 @@ void scrolly(){
 //
 // You need a font if you are going to draw text.
 //
-
+/*
 int far *
 getFont()
 {
@@ -343,7 +478,7 @@ void drawText(int x, int y, int color, byte string)
 				string++;
 		}
 }
-
+*/
 /////////////////////////////////////////////////////////////////////////////
 //                                                                         //
 // setvideo() - This function Manages the video modes					  //
