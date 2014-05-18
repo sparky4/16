@@ -542,7 +542,7 @@ int ding(int q){
 
 				// plot the pixel
 //----		  ppf(xx, yy, coor, vga);
-				}else if(xx>=0 && xx<width && yy>=0 && yy<height){
+				}else /*if(xx>=0 && xx<width && yy>=0 && yy<(height*3))*/{
 					putColorBox_X(xx, yy, TILEWH, TILEWH, coor);
 //++++0000					putPixel_X(xx, yy, coor);
 				} 
