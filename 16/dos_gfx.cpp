@@ -288,6 +288,97 @@ void set320x240x256_X(void)
 
 
 /*-----------XXXX-------------*/
+
+/////////////////////////////////////////////////////////////////////////////
+//                                                                         //
+// WaitRetrace() - This waits until you are in a Verticle Retrace.         //
+//                                                                         //
+/////////////////////////////////////////////////////////////////////////////
+
+void WaitRetrace() {
+
+//  register char qy;
+
+	in.h.dx = 0x03DA;
+	in.h.al = in.h.dx;
+	
+	in.h.al &= 0x08;
+	int86(0x10, &in, &out);
+
+
+  /*l1: asm {
+	in  al,0x03DA;
+	and al,0x08;
+	jnz  l2;
+      }*/
+}
+
+/////////////////////////////////////////////////////////////////////////////
+//                                                                         //
+// MoveTo() - This moves to position X*4 on a chain 4 screen.              //
+//                Note: As soon as I find documentation, this function     //
+//                will be better documented.  - Snowman                    //
+//                                                                         //
+/////////////////////////////////////////////////////////////////////////////
+
+void MoveTo (word X, word Y) {
+
+//	word O = Y*SIZE*2+X;
+	word O = Y*widthBytes*2+X;
+
+  asm {
+    mov    bx, [O]
+    mov    ah, bh
+    mov    al, 0x0C
+
+    mov    dx, 0x3D4
+    out    dx, ax
+
+    mov    ah, bl
+    mov    al, 0x0D
+    mov    dx, 0x3D4
+    out    dx, ax
+  }
+}
+
+//Procedure Play;
+void Play()
+{
+  int loop1,loop2;
+  int xpos,ypos,xdir,ydir;
+  //int ch;
+//   for(loop1=1;loop1<=62;loop1++)
+     //Pal ((char)loop1,(char)loop1,(char)0,(char)(62-loop1)); // { This sets up the pallette for the pic }
+
+   moveto(0,0,Size); // { This moves the view to the top left hand corner }
+
+/*   for(loop1=0;loop1<=3;loop1++)
+     for(loop2=0;loop2<=5;loop2++)
+       Putpic (loop1*160,loop2*66); // { This places the picture all over the
+                                    //  chain-4 screen }
+   getch();
+   ch=0x0;*/
+//   xpos=rand (78)+1;
+//   ypos=rand (198)+1; // { Random start positions for the view }
+	xpos=0;
+	ypos=0;
+   xdir=1;
+   ydir=1;
+//   while(1)
+//   {
+     WaitRetrace();     //     { Take this out and watch the screen go crazy! }
+     moveto (xpos,ypos,Size);
+     xpos=xpos+xdir;
+     ypos=ypos+ydir;
+     if( (xpos>79)  || (xpos<1))xdir=-xdir;
+     if( (ypos>199) || (ypos<1))ydir=-ydir; // { Hit a boundry, change
+                                            //    direction! }
+//     if(_bios_keybrd(_KEYBRD_READY))ch=getch();
+//	 if(ch==0x71)break; // 'q'
+//	 if(ch==0x1b)break; // 'ESC'
+//   }
+}
+
 /*tile*/
 //king_crimson's code
 void putColorBox_X(int x, int y, int w, int h, byte color) {
@@ -823,9 +914,10 @@ int main(void)
 		getch();
 
 		while(!kbhit()){ // conditions of screen saver
-			hScroll(1);
-			scrolly(1);
-			delay(100);
+//			hScroll(1);
+//			scrolly(1);
+//			delay(100);
+			Play();
 		}
 //++++0000
 		setvideo(0);

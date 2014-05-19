@@ -97,6 +97,7 @@
 
 
 typedef unsigned char byte;
+typedef unsigned int word;
 
 void wait(clock_t wait);
 
