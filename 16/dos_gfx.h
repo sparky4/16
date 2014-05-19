@@ -11,9 +11,9 @@
 #define LGQ             32
 #define HGQ             56
 #define TILEWH                          16
-byte SIZE = 80;      // Size =  40 = 1 across, 4 down
+/*byte SIZE = 80;      // Size =  40 = 1 across, 4 down
                      // Size =  80 = 2 across, 2 down
-                     // Size = 160 = 4 across, 1 down
+                     // Size = 160 = 4 across, 1 down*/
 //#define VMEM            0xA000 // = vga
 //int width = 320;
 //int height = 240;
