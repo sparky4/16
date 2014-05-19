@@ -311,17 +311,19 @@ void vScroll(int rows)
 	setVisibleStart(visStart + (rows * width));
 }
 
-void scrolly(int bong)
+void scrolly(int bongy)
 {
-	int boing=0;
-	if(bong<0)
-		boing=-1;
-	else if(bong>0)
-		boing=1;
+	int boingy=0;
+	if(bongy<0)
+		boingy=-1;
+	else if(bongy>0)
+		boingy=1;
 
 	for(int ti=0;ti<TILEWH;ti++)
-		//delay(100);
-		vScroll(boing);
+	{
+		delay(1);
+		vScroll(boingy);
+	}
 }
 
 //king_crimson's code
@@ -330,9 +332,9 @@ void hScroll(int Cols) {
 	outp(0x3C0, 0x13);
 	outp(0x3C0, Cols & 3);
 	outp(0x3D4, 0x13);
-	outp(0x3D5, Cols >> 2);
-	setVisibleStart(visStart + (Cols * height));
-	//setVisibleStart(visStart + (Cols * width));
+	outp(0x3D5, Cols/* >> 2*/);
+	//setVisibleStart(visStart + (Cols * height));
+	setVisibleStart(visStart + (Cols * width));
 }
 
 /*To implement smooth horizontal scrolling, you would do the following:
@@ -822,14 +824,15 @@ int main(void)
 
 		while(!kbhit()){ // conditions of screen saver
 			hScroll(1);
-			//delay(1000);
+			scrolly(1);
+			delay(100);
 		}
 //++++0000
 		setvideo(0);
 //mxTerm();
 //mxGetVersion();
 		puts("Where to next?  It's your move! wwww");
-		printf("bakapi ver. 1.04.09.02\nis made by sparky4（≧ω≦） feel free to use it ^^\nLicence: GPL v2\n");
+		printf("bakapi ver. 1.04.09.03\nis made by sparky4（≧ω≦） feel free to use it ^^\nLicence: GPL v2\n");
 		return 0;
 		}
 
