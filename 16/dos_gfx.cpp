@@ -57,7 +57,8 @@
 //code from old library!
 /*src\lib\*/
 #include "dos_gfx.h"
-#include "lib\x\modex.h"
+//#include "lib\x\modex.h"
+//#include "XPRIM.HPP"
 
 int old_mode;
 //color ‚Ä‚·‚Æ
@@ -65,7 +66,7 @@ int gq = LGQ;
 //‚Ä‚·‚Æ
 int q = 0;
 int bakax = 0, bakay = 0;
-int xx = rand()&0%320, yy = rand()&0%240, sx = 0, sy = 0;
+cord xx = rand()&0%320, yy = rand()&0%240, sx = 0, sy = 0;
 byte coor;
 
 /*
@@ -81,6 +82,14 @@ byte coor;
 
 #define SEQU_ADDR	   0x3c4   /* Base port of the Sequencer */
 #define GRAC_ADDR	   0x3ce   /* Base port of the Graphics Controller */
+#define STATUS_ADDR     0x3DA
+
+unsigned char *RowsX[600];
+unsigned char write_plane, read_plane;
+unsigned short text_mask[16] = { 0x0002, 0x0102, 0x0202, 0x0302,
+                                 0x0402, 0x0502, 0x0602, 0x0702,
+                                 0x0802, 0x0902, 0x0A02, 0x0B02,
+                                 0x0C02, 0x0D02, 0x0E02, 0x0F02 };
 
 
 /*
@@ -89,7 +98,6 @@ byte coor;
  */
 byte *vga = (byte *) MK_FP(0xA000, 0);
 
-//fontAddr = getFont();
 
 /*
  * width and height should specify the mode dimensions.  widthBytes
@@ -184,10 +192,8 @@ OUT value TO PORT 3C0H (where "value" is the
   number of pixels to offset)
 -----------------------------------------------
 */
-//
-//	inp(0x3DA);
-//	outp(0x3C0, 0x13);
 
+//mxSetVirtualScreen(480,360);
 		}
 
 /*
@@ -294,23 +300,9 @@ void set320x240x256_X(void)
 // WaitRetrace() - This waits until you are in a Verticle Retrace.         //
 //                                                                         //
 /////////////////////////////////////////////////////////////////////////////
-
-void WaitRetrace() {
-
-//  register char qy;
-
-	in.h.dx = 0x03DA;
-	in.h.al = in.h.dx;
-	
-	in.h.al &= 0x08;
-	int86(0x10, &in, &out);
-
-
-  /*l1: asm {
-	in  al,0x03DA;
-	and al,0x08;
-	jnz  l2;
-      }*/
+void wait_for_retrace(void)
+{
+    while (!(inp(STATUS_ADDR) & 0x08));
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -320,7 +312,7 @@ void WaitRetrace() {
 //                will be better documented.  - Snowman                    //
 //                                                                         //
 /////////////////////////////////////////////////////////////////////////////
-
+/*
 void MoveTo (word X, word Y) {
 
 //	word O = Y*SIZE*2+X;
@@ -415,12 +407,12 @@ void Play()
 
    moveto(0,0,Size); // { This moves the view to the top left hand corner }
 
-/*   for(loop1=0;loop1<=3;loop1++)
-     for(loop2=0;loop2<=5;loop2++)
-       Putpic (loop1*160,loop2*66); // { This places the picture all over the
+//   for(loop1=0;loop1<=3;loop1++)
+//     for(loop2=0;loop2<=5;loop2++)
+//       Putpic (loop1*160,loop2*66); // { This places the picture all over the
                                     //  chain-4 screen }
-   getch();
-   ch=0x0;*/
+//   getch();
+//   ch=0x0;
 //   xpos=rand (78)+1;
 //   ypos=rand (198)+1; // { Random start positions for the view }
 	xpos=0;
@@ -441,7 +433,7 @@ void Play()
 //	 if(ch==0x1b)break; // 'ESC'
 //   }
 }
-
+*/
 /*tile*/
 //king_crimson's code
 void putColorBox_X(int x, int y, int w, int h, byte color) {
@@ -482,11 +474,12 @@ void scrolly(int bongy)
 
 //king_crimson's code
 void hScroll(int Cols) {
-	inp(0x3DA);
+	wait_for_retrace();
 	outp(0x3C0, 0x13);
 	outp(0x3C0, Cols & 3);
 	outp(0x3D4, 0x13);
-	outp(0x3D5, Cols/* >> 2*/);
+	outp(0x3D5, Cols >> 2);
+	outp(0x3D4, Cols);
 	//setVisibleStart(visStart + (Cols * height));
 	setVisibleStart(visStart + (Cols * width));
 }
@@ -586,63 +579,77 @@ I'm sorry about this being so confusing but it's a bit difficult to explain.
 
 
 */
-//---------------------------------------------------
-//
-// Use the bios to get the address of the 8x8 font
-//
-// You need a font if you are going to draw text.
-//
-/*
-int far *
-getFont()
+int loadfontX(char *fname)
 {
-	union REGPACK rg;
-	int seg;
-	int off;
-	memset(&rg, 0, sizeof(rg));
+	FILE *fp;
 
-	rg.w.ax = 0x1130;
-	rg.h.bh = 0x03;
-	intr(0x10, &rg);
-	seg = rg.w.es;
-	off = rg.w.bp;
-	
+	fp = fopen(fname, "rb");
 
-	return (int far *)MK_FP(seg, off);
+	if (fp == NULL) {
+		return 0;
+	} else {
+		fread(Xfont, 8, 256, fp);
+		fclose(fp);
+		return 1;
+	}
 }
 
-void drawChar(int x, int y, int color, byte c)
+void putchX(cord x, cord y, char c, byte color)
 {
-		int i, j;
-		int mask;
-		int far *font = getFont() + (c * 8);
+	int i;
+	byte *vga_ptr;
+	byte *font_ptr;
+	byte temp;
 
-		for (i = 0; i < 8; i++)
-		{
-				mask = *font;
-				for (j = 0; j < 8; j++)
-				{
-						if (mask & 0x80)
-						{
-								//pixel(x + j, y + i, color);
-								putPixel_X(x + j, y + i, color);
-						}
-						mask <<= 1;
-				}
-				font++;
+	// 8x8 font
+	vga_ptr = RowsX[y << 3] + (x << 1) + actStart;
+	write_plane = -1;
+
+	font_ptr = Xfont + (c << 3);
+
+	i=8;
+	while (i--) {
+		temp = *font_ptr++;
+		outpw(SEQU_ADDR, text_mask[temp & 0x0F]);
+		*vga_ptr++ = color;
+
+		outpw(SEQU_ADDR, text_mask[temp >> 4]);
+		*vga_ptr-- = color;
+		vga_ptr += widthBytes;
+	}
+}
+
+void putstringX(cord x, cord y, char *str, byte color)
+{
+	int i, skip;
+	byte *vga_ptr;
+	byte *font_ptr;
+	byte c, temp;
+
+	// 8x8 font
+	vga_ptr = RowsX[y << 3] + (x << 1) + actStart;
+	write_plane = -1;
+
+	skip = 2 - (widthBytes << 3);
+
+	while (c = *str++) {
+		font_ptr = Xfont + (c << 3);
+
+		i=8;
+		while (i--) {
+			temp = *font_ptr++;
+			outpw(SEQU_ADDR, text_mask[temp & 0x0F]);
+			*vga_ptr++ = color;
+
+			outpw(SEQU_ADDR, text_mask[temp >> 4]);
+			*vga_ptr-- = color;
+			vga_ptr += widthBytes;
 		}
+
+		vga_ptr += skip;
+	}
 }
 
-void drawText(int x, int y, int color, byte string)
-{
-		while (string)
-		{
-				drawChar(x, y, color, string);
-				x += 8;
-				string++;
-		}
-}
-*/
 /////////////////////////////////////////////////////////////////////////////
 //                                                                         //
 // setvideo() - This function Manages the video modes					  //
@@ -936,6 +943,7 @@ void doTest(void)
 int main(void)
 		{
 		int key,d;
+		//short int temp;
 		// main variables
 		d=1; // switch variable
 		key=4; // default screensaver number
@@ -953,7 +961,12 @@ int main(void)
 
 //++++0000
 		setvideo(1);
-//mxInit();
+		/*temp = loadfontX("vga8x8.fnt");
+
+		if (temp) {
+			putstringX(0, 0, "bakapi!", 2);
+		}
+		getch();*/
 // screen savers
 
 /*while(d!=0){ // on!
@@ -970,7 +983,7 @@ int main(void)
 				}
 		}*/ // else off
 		while(!kbhit()){ // conditions of screen saver
-			ding(4);
+			ding(2);
 		}
 		//end of screen savers
 //		doTest();
@@ -978,9 +991,9 @@ int main(void)
 
 		while(!kbhit()){ // conditions of screen saver
 //			hScroll(1);
-//			scrolly(1);
-//			delay(100);
-			Play();
+			scrolly(1);
+			delay(100);
+//			Play();
 		}
 //++++0000
 		setvideo(0);
