@@ -57,8 +57,7 @@
 //code from old library!
 /*src\lib\*/
 #include "dos_gfx.h"
-//#include "lib\x\modex.h"
-//#include "XPRIM.HPP"
+#include "lib\x\modex.h"
 
 int old_mode;
 //color ‚Ä‚·‚Æ
@@ -193,7 +192,7 @@ OUT value TO PORT 3C0H (where "value" is the
 -----------------------------------------------
 */
 
-//mxSetVirtualScreen(480,360);
+mxSetVirtualScreen(480,360);
 		}
 
 /*
