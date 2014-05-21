@@ -287,7 +287,7 @@ void set320x240x256_X(void)
                    resolution */
                 height = 240;
 
-*$pragma aux mxSetVirtualScreen "MXSETVIRTUALSCREEN"
+//*$pragma aux mxSetVirtualScreen "MXSETVIRTUALSCREEN"
 mxSetVirtualScreen(480,360);
                 }
 
