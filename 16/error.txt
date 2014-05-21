@@ -1,0 +1,3 @@
+Error! E2028: MXSETVIRTUALSCREEN is an undefined reference
+creating a DOS executable
+file dos_gfx.obj(C:\Z\16\16\dos_gfx.cpp): undefined symbol MXSETVIRTUALSCREEN

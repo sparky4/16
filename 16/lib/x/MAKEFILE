@@ -27,7 +27,7 @@ LIBOBJS = MXBB.OBJ \
           MXPI.OBJ \
           MXPN.OBJ \
           MXPP.OBJ \
-	  MXPT.OBJ \
+          MXPT.OBJ \
           MXRA.OBJ \
           MXRP.OBJ \
           MXSA.OBJ \
