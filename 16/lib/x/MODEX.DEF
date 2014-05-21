@@ -5,6 +5,7 @@
 ;
 ;JUMPS
 ;LOCALS
+.model huge,c
 
 TRUE            EQU     1       ; Boolean constants
 FALSE           EQU     0
