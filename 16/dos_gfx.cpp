@@ -57,7 +57,6 @@
 //code from old library!
 /*src\lib\*/
 #include "dos_gfx.h"
-#include "lib\x\modex.h"
 
 int old_mode;
 //color ‚Ä‚·‚Æ

@@ -3,6 +3,7 @@
 #include <iostream.h>
 #include <stdlib.h>
 #include "lib\lib_com.h"
+#include "lib\x\modex.h"
 
 #define NUM_COLORS      256 // number of colors in vga mode
 //static lgq=NUM_COLORS/(1/8)
