@@ -191,7 +191,7 @@ OUT value TO PORT 3C0H (where "value" is the
 -----------------------------------------------
 */
 
-mxSetVirtualScreen(480,360);
+//mxSetVirtualScreen(480,360);
 		}
 
 /*
@@ -337,12 +337,13 @@ void MoveTo (word X, word Y) {
 ;
 ;-----------------------------------------------------------
 ;WARN    PRO
-INCLUDE MODEX.DEF
-
 #pragma aux mxPan = \
+"INCLUDE MODEX.DEF" \
 
-EXTRN   mxWaitDisplay   : FAR
-EXTRN   mxStartAddress  : FAR
+
+
+"EXTRN   mxWaitDisplay   : FAR" \
+"EXTRN   mxStartAddress  : FAR" \
 
 MX_TEXT         SEGMENT USE16 PARA PUBLIC 'CODE'
                 ASSUME cs:MX_TEXT, ds:NOTHING, es:NOTHING
@@ -741,9 +742,9 @@ int ding(int q){
 		if((q == 2
 		||q==4
 		||q==16
-		) && gq == BONK-1){
+		) && gq == BONK){
 						if(coor < HGQ && coor < LGQ) coor = LGQ;
-						if(coor < HGQ){
+						if(coor < HGQ-1){
 								coor++;
 				}else{ coor = LGQ;
 						bakax = rand()%3; bakay = rand()%3;
@@ -832,9 +833,9 @@ int ding(int q){
 				// fixer
 //				if(q!=16){
 //if(q!=16)
-						if(xx<(0/*-TILEWH*/)) xx=(width/*+TILEWH*/);
+//						if(xx<(0/*-(TILEWH/2)*/)) xx=(width/*+(TILEWH)*/);
 						if(yy<0) yy=(height*3);
-						if(xx>(width/*+TILEWH*/)) xx=(0/*-TILEWH*/);
+//						if(xx>(width/*+(TILEWH)*/)) xx=(0/*-(TILEWH/2)*/);
 						if(yy>(height*3)) yy=0;
 //				}
 
@@ -889,8 +890,9 @@ void doTest(void)
 
 		/* This is the way to calculate the number of pages available. */
 		pages = 65536L/(widthBytes*height); // apparently this takes the A000 address
+//		if(height==240) pages++;
 
-		printf("%d\n", pages);
+//		printf("%d\n", pages);
 
 		for (p = 0; p <= pages; ++p)
 				{
@@ -904,31 +906,28 @@ void doTest(void)
 								{
 								putPixel_X(x, 0, p+1);
 								if(p!=pages) putPixel_X(x, height-1, p+1);
-										else putPixel_X(x, 99-1, p+1);
+										else if(height==240) putPixel_X(x, 99-1, p+1);
 								}
 
 						for (y = 0; y <= height; ++y)
 								{
 								putPixel_X(0, y, p+1);
 								if(p!=pages) putPixel_X(width-1, y, p+1);
-										else putPixel_X(width-1, y, p+1);
+										else if(height==240) putPixel_X(width-1, y, p+1);
 								}
 
-						for (x = 0; x < 16; ++x)
-								for (y = 0; y < 16; ++y)
-										putPixel_X(x+(p+2)*16, y+(p+2)*16, x + y*16);
+						for (x = 0; x < TILEWH; ++x)
+								for (y = 0; y < TILEWH; ++y)
+										putPixel_X(x+(p+2)*16, y+(p+2)*TILEWH, x + y*TILEWH);
 						//}
-
-//				drawText(0, 0, 15, p);
 
 				}
 
 		/* Each pages will now contain a different image.  Let the user cycle
 		   through all the pages by pressing a key. */
-		for (p = 0; p <= pages; ++p)
+		for (p = 0; p < pages; ++p)
 				{
 				setVisiblePage(p);
-				//drawText(0, 240, 15, "bakapi");
 				getch();
 				}
 
@@ -996,9 +995,11 @@ int main(void)
 		}
 //++++0000
 		setvideo(0);
+		printf("wwww\n[%d][%d]\n", width,height);
+//		setvideo(0);
 //mxTerm();
 //mxGetVersion();
-		puts("Where to next?  It's your move! wwww");
+		puts("where to next?  It's your move! wwww");
 		printf("bakapi ver. 1.04.09.03\nis made by sparky4i†ƒÖ…j feel free to use it ^^\nLicence: GPL v2\n");
 		return 0;
 		}
