@@ -3,11 +3,11 @@ REM     Batch File To Compile PCX_LIB Demonstration Programs
 REM     Compiler:  Microsoft C V6.0
 ECHO byHeart Software's PCX_LIB Demonstration Programs
 ECHO Now compiling source code files ...
-cl /c /W4 pcx_comm.c pcx_disp.c pcx_exam.c pcx_file.c rd_demo.c wr_demo.c
+wcl /c /W4 pcx_comm.c pcx_disp.c pcx_exam.c pcx_file.c rd_demo.c wr_demo.c
 ECHO Now linking PCX_EXAM ...
-link pcx_exam;
+wlink pcx_exam;
 ECHO Now linking RD_DEMO ...
-link rd_demo pcx_disp pcx_comm;
+wlink rd_demo pcx_disp pcx_comm;
 ECHO Now linking WR_DEMO ...
-link wr_demo pcx_disp pcx_file pcx_comm;
+wlink wr_demo pcx_disp pcx_file pcx_comm;
 

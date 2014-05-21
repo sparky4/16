@@ -751,18 +751,18 @@ int ding(int q){
 				}
 		}
 
-		if(q == 8){ colorz(); return gq; }else
-		if(q == 10){ ssd(q); /*printf("%d\n", coor);*/ }else
-		if(q == 5){ colortest(); return gq; }else
-		if(q == 11){ colorz(); delay(100); return gq; }
-		if(q == 6){
+		if(q==8){ colorz(); return gq; }else
+		if(q==10){ ssd(q); /*printf("%d\n", coor);*/ }else
+		if(q==5){ colortest(); return gq; }else
+		if(q==11){ colorz(); delay(100); return gq; }
+		if(q==6){
 				coor = rand()%NUM_COLORS;
 //----		  cls(coor, vaddr);
 				cls(coor, vga);
 				//updatevbuff();
 		}
 
-		if(q == 7 || q== 9){
+		if(q==7||q==9){
 				if(gq < HGQ){
 						if(q == 7) ssd(q);
 						if(q == 9){ ssd(q); coor++; }
@@ -982,16 +982,17 @@ int main(void)
 				}
 		}*/ // else off
 		while(!kbhit()){ // conditions of screen saver
-			ding(2);
+			ding(4);
 		}
 		//end of screen savers
-//		doTest();
-		getch();
+		doTest();
+//		getch();
 
 		while(!kbhit()){ // conditions of screen saver
 //			hScroll(1);
-			scrolly(1);
-			delay(100);
+//			scrolly(1);
+			vScroll(1);
+//			delay(100);
 //			Play();
 		}
 //++++0000
