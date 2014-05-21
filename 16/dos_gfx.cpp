@@ -339,7 +339,7 @@ void MoveTo (word X, word Y) {
 ;WARN    PRO
 INCLUDE MODEX.DEF
 
-PUBLIC  mxPan
+#pragma aux mxPan = \
 
 EXTRN   mxWaitDisplay   : FAR
 EXTRN   mxStartAddress  : FAR
