@@ -48,7 +48,7 @@
 #define MXBOOL      short int
 #define MXSINT      short int
 #define MXUINT      unsigned short int
-#define MXAPI       //far pascal
+#define MXAPI       far __syscall
 #define MXPTR       void far *
 
 // Functions

@@ -1,0 +1,236 @@
+!define BLANK ""
+C:\z\16\16\lib\x\MXBB.obj : C:\z\16\16\lib\x\MXBB.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXBB.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXCC.obj : C:\z\16\16\lib\x\MXCC.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXCC.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXCG.obj : C:\z\16\16\lib\x\MXCG.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXCG.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXCL.obj : C:\z\16\16\lib\x\MXCL.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXCL.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXCR.obj : C:\z\16\16\lib\x\MXCR.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXCR.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXEL.obj : C:\z\16\16\lib\x\MXEL.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXEL.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXFB.obj : C:\z\16\16\lib\x\MXFB.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXFB.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXFP.obj : C:\z\16\16\lib\x\MXFP.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXFP.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXGC.obj : C:\z\16\16\lib\x\MXGC.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXGC.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXGI.obj : C:\z\16\16\lib\x\MXGI.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXGI.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXGM.obj : C:\z\16\16\lib\x\MXGM.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXGM.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXGP.obj : C:\z\16\16\lib\x\MXGP.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXGP.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXGV.obj : C:\z\16\16\lib\x\MXGV.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXGV.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXHL.obj : C:\z\16\16\lib\x\MXHL.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXHL.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXIT.obj : C:\z\16\16\lib\x\MXIT.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXIT.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXLL.obj : C:\z\16\16\lib\x\MXLL.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXLL.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXLN.obj : C:\z\16\16\lib\x\MXLN.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXLN.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXOT.obj : C:\z\16\16\lib\x\MXOT.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXOT.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXPB.obj : C:\z\16\16\lib\x\MXPB.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXPB.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXPF.obj : C:\z\16\16\lib\x\MXPF.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXPF.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXPG.obj : C:\z\16\16\lib\x\MXPG.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXPG.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXPI.obj : C:\z\16\16\lib\x\MXPI.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXPI.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXPN.obj : C:\z\16\16\lib\x\MXPN.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXPN.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXPP.obj : C:\z\16\16\lib\x\MXPP.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXPP.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXPT.obj : C:\z\16\16\lib\x\MXPT.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXPT.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXRA.obj : C:\z\16\16\lib\x\MXRA.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXRA.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXRP.obj : C:\z\16\16\lib\x\MXRP.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXRP.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXSA.obj : C:\z\16\16\lib\x\MXSA.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXSA.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXSC.obj : C:\z\16\16\lib\x\MXSC.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXSC.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXSI.obj : C:\z\16\16\lib\x\MXSI.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXSI.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXSL.obj : C:\z\16\16\lib\x\MXSL.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXSL.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXSM.obj : C:\z\16\16\lib\x\MXSM.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXSM.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXSP.obj : C:\z\16\16\lib\x\MXSP.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXSP.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXSS.obj : C:\z\16\16\lib\x\MXSS.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXSS.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXTL.obj : C:\z\16\16\lib\x\MXTL.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXTL.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXVS.obj : C:\z\16\16\lib\x\MXVS.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXVS.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXWD.obj : C:\z\16\16\lib\x\MXWD.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXWD.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXWM.obj : C:\z\16\16\lib\x\MXWM.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXWM.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXWP.obj : C:\z\16\16\lib\x\MXWP.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXWP.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\MXWR.obj : C:\z\16\16\lib\x\MXWR.ASM .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ *wasm MXWR.ASM -i="C:\FDOS\WATCOM/h" -ml -d1 -w4 -e25 -zq
+
+C:\z\16\16\lib\x\modex.lib : C:\z\16\16\lib\x\MXBB.obj C:\z\16\16\lib\x\MXCC&
+.obj C:\z\16\16\lib\x\MXCG.obj C:\z\16\16\lib\x\MXCL.obj C:\z\16\16\lib\x\MX&
+CR.obj C:\z\16\16\lib\x\MXEL.obj C:\z\16\16\lib\x\MXFB.obj C:\z\16\16\lib\x\&
+MXFP.obj C:\z\16\16\lib\x\MXGC.obj C:\z\16\16\lib\x\MXGI.obj C:\z\16\16\lib\&
+x\MXGM.obj C:\z\16\16\lib\x\MXGP.obj C:\z\16\16\lib\x\MXGV.obj C:\z\16\16\li&
+b\x\MXHL.obj C:\z\16\16\lib\x\MXIT.obj C:\z\16\16\lib\x\MXLL.obj C:\z\16\16\&
+lib\x\MXLN.obj C:\z\16\16\lib\x\MXOT.obj C:\z\16\16\lib\x\MXPB.obj C:\z\16\1&
+6\lib\x\MXPF.obj C:\z\16\16\lib\x\MXPG.obj C:\z\16\16\lib\x\MXPI.obj C:\z\16&
+\16\lib\x\MXPN.obj C:\z\16\16\lib\x\MXPP.obj C:\z\16\16\lib\x\MXPT.obj C:\z\&
+16\16\lib\x\MXRA.obj C:\z\16\16\lib\x\MXRP.obj C:\z\16\16\lib\x\MXSA.obj C:\&
+z\16\16\lib\x\MXSC.obj C:\z\16\16\lib\x\MXSI.obj C:\z\16\16\lib\x\MXSL.obj C&
+:\z\16\16\lib\x\MXSM.obj C:\z\16\16\lib\x\MXSP.obj C:\z\16\16\lib\x\MXSS.obj&
+ C:\z\16\16\lib\x\MXTL.obj C:\z\16\16\lib\x\MXVS.obj C:\z\16\16\lib\x\MXWD.o&
+bj C:\z\16\16\lib\x\MXWM.obj C:\z\16\16\lib\x\MXWP.obj C:\z\16\16\lib\x\MXWR&
+.obj C:\z\16\16\lib\x\MODEX.DEF C:\z\16\16\lib\x\MODEX.H .AUTODEPEND
+ @C:
+ cd C:\z\16\16\lib\x
+ %create modex.lb1
+!ifneq BLANK "MXBB.obj MXCC.obj MXCG.obj MXCL.obj MXCR.obj MXEL.obj MXFB.obj&
+ MXFP.obj MXGC.obj MXGI.obj MXGM.obj MXGP.obj MXGV.obj MXHL.obj MXIT.obj MXL&
+L.obj MXLN.obj MXOT.obj MXPB.obj MXPF.obj MXPG.obj MXPI.obj MXPN.obj MXPP.ob&
+j MXPT.obj MXRA.obj MXRP.obj MXSA.obj MXSC.obj MXSI.obj MXSL.obj MXSM.obj MX&
+SP.obj MXSS.obj MXTL.obj MXVS.obj MXWD.obj MXWM.obj MXWP.obj MXWR.obj"
+ @for %i in (MXBB.obj MXCC.obj MXCG.obj MXCL.obj MXCR.obj MXEL.obj MXFB.obj &
+MXFP.obj MXGC.obj MXGI.obj MXGM.obj MXGP.obj MXGV.obj MXHL.obj MXIT.obj MXLL&
+.obj MXLN.obj MXOT.obj MXPB.obj MXPF.obj MXPG.obj MXPI.obj MXPN.obj MXPP.obj&
+ MXPT.obj MXRA.obj MXRP.obj MXSA.obj MXSC.obj MXSI.obj MXSL.obj MXSM.obj MXS&
+P.obj MXSS.obj MXTL.obj MXVS.obj MXWD.obj MXWM.obj MXWP.obj MXWR.obj) do @%a&
+ppend modex.lb1 +'%i'
+!endif
+!ifneq BLANK ""
+ @for %i in () do @%append modex.lb1 +'%i'
+!endif
+ *wlib -c -n -q -p=512 -irn -inn modex.lib @modex.lb1
+
