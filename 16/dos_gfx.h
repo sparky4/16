@@ -5,17 +5,17 @@
 #include "lib\lib_com.h"
 #include "lib\x\modex.h"
 
-#define NUM_COLORS      256 // number of colors in vga mode
+#define NUM_COLORS	256 // number of colors in vga mode
 //static lgq=NUM_COLORS/(1/8)
 //static hgq=NUM_COLORS/(1/8)
-#define BONK            400
-#define LGQ             32
-#define HGQ             56
-#define TILEWH                          16
-/*byte SIZE = 80;      // Size =  40 = 1 across, 4 down
-                     // Size =  80 = 2 across, 2 down
-                     // Size = 160 = 4 across, 1 down*/
-//#define VMEM            0xA000 // = vga
+#define BONK	    400
+#define LGQ	     32
+#define HGQ	     56
+#define TILEWH			  16
+/*byte SIZE = 80;	// Size =  40 = 1 across, 4 down
+		     // Size =  80 = 2 across, 2 down
+		     // Size = 160 = 4 across, 1 down*/
+//#define VMEM	    0xA000 // = vga
 byte Xfont[2048];
 
 void drawChar(int x, int y, int color, byte c);

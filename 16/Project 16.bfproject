@@ -1,6 +1,6 @@
 c2e.convert_special: 0
 e2c.convert_num: 0
-openfiles: /dos/z/16/16/dos_gfx.cpp:11047:10691:1:
+openfiles: /dos/z/16/16/dos_gfx.cpp:38508:37505:1:
 openfiles: /dos/z/16/16/dos_gfx.h:607:0:0:
 openfiles: /dos/z/16/16/dos_kb.c:892:395:0:
 openfiles: /dos/z/16/16/dos_kb.h:60:0:0:
@@ -9,7 +9,6 @@ openfiles: /dos/z/16/16/lib/lib_com.h:2553:1575:0:
 openfiles: /dos/z/16/16/scroll.txt:5307:5103:0:
 openfiles: /dos/z/16/16/project16.txt:1675:950:0:
 openfiles: /dos/z/16/16/16.txt:0:0:0:
-openfiles: /dos/z/16/16/lib/x/MODEX.DEF:1385:1054:0:
 snr_recursion_level: 0
 convertcolumn_horizontally: 0
 adv_open_matchname: 0
@@ -21,7 +20,7 @@ view_left_panel: 0
 default_mime_type: text/plain
 e2c.convert_xml: 1
 c2e.convert_iso: 0
-opendir: file:///dos/z/16/16
+opendir: file:///dos/z/16/16/lib/x
 wrap_text_default: 0
 bookmarks_filename_mode: 1
 ssearch_text: mxpan
@@ -69,15 +68,15 @@ recent_files: file:///dos/z/16/16/w_modex/XPRIM.CPP
 recent_files: file:///dos/z/16/16/w_modex/MODEX.CPP
 recent_files: file:///dos/z/16/16/w_modex/TEST.CPP
 recent_files: file:///dos/z/16/16/x.bat
-recent_files: file:///dos/z/16/16/dos_gfx.h
-recent_files: file:///dos/z/16/16/dos_kb.c
-recent_files: file:///dos/z/16/16/lib/lib_com.h
-recent_files: file:///dos/z/16/16/dos_kb.h
-recent_files: file:///dos/z/16/16/lib/lib_com.cpp
-recent_files: file:///dos/z/16/16/dos_gfx.cpp
 recent_files: file:///dos/z/16/16/lib/x/MODEX.DEF
 recent_files: file:///dos/z/16/16/Project%2016.bfproject
+recent_files: file:///dos/z/16/16/dos_gfx.cpp
+recent_files: file:///dos/z/16/16/dos_gfx.h
+recent_files: file:///dos/z/16/16/lib/lib_com.h
+recent_files: file:///dos/z/16/16/lib/lib_com.cpp
+recent_files: file:///dos/z/16/16/dos_kb.c
 recent_files: file:///dos/z/16/16/project16.txt
+recent_files: file:///dos/z/16/16/dos_kb.h
 recent_files: file:///dos/z/16/16/16.txt
 recent_files: file:///dos/z/16/16/scroll.txt
 snr_replacetype: 0
@@ -97,7 +96,7 @@ searchlist: ding
 searchlist: font
 searchlist: wi
 searchlist: waiyt
-searchlist:       ENDP
+searchlist: ENDP
 searchlist: mss
 searchlist: mxset
 searchlist: mspai

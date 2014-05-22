@@ -28,11 +28,11 @@ void interrupt newkb(void){
 	kee = inp(0x60);	/* Read the keyboard scan code */
 
 	/* Clear keyboard controller on XT machines */
-	qx = inp(0x61);           /* Get keyboard control register */
+	qx = inp(0x61);	   /* Get keyboard control register */
 	qx |= 0x82;
-	outp(0x61, qx);           /* Toggle acknowledge bit high */
+	outp(0x61, qx);	   /* Toggle acknowledge bit high */
 	qx &= 0x7F;
-	outp(0x61, qx);           /* Toggle acknowledge bit low */
+	outp(0x61, qx);	   /* Toggle acknowledge bit low */
 
 	/* Interpret the scan code and set our flags */
 	#ifdef TESTING
@@ -93,11 +93,11 @@ void setkb(int vq){
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
- * keyp                                                              *
- *                                                                         *
- * Returns the status of the key requested.                                *
+ * keyp							      *
+ *									 *
+ * Returns the status of the key requested.				*
  * The status is 1 if the key is pressed or has been pressed since the     *
- * last call to this function for that particular key.                     *
+ * last call to this function for that particular key.		     *
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int keyp(byte c){
 	register char retVal;

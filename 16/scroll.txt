@@ -5,12 +5,12 @@
      SS   SS CC   CC RR  RR  OO   OO LL    LL      II   NNN   NN GG   GG
      SS      CC      RR   RR OO   OO LL    LL      II   NNNN  NN GG
       SSSSS  CC      RR  RR  OO   OO LL    LL      II   NN NN NN GG
-          SS CC      RRRRR   OO   OO LL    LL      II   NN  NNNN GG  GGG
+	  SS CC      RRRRR   OO   OO LL    LL      II   NN  NNNN GG  GGG
      SS   SS CC   CC RR  RR  OO   OO LL    LL      II   NN   NNN GG   GG
       SSSSS   CCCCC  RR   RR  OOOOO  LLLLL LLLLL IIIIII NN    NN  GGGGG
 
-                    by Alec Thomas (Kestrel) of FORGE Software Australia
-                                          (c9223826@cs.newcastle.edu.au)
+		    by Alec Thomas (Kestrel) of FORGE Software Australia
+					  (c9223826@cs.newcastle.edu.au)
 
 
 ------------
@@ -36,7 +36,7 @@ on with the STUFF!!!
 the same with columns (except 0-319), etc. unless otherwise stated)
 
 ********************************************************************************
-*                               X-MODE SCROLLING                               *
+*			       X-MODE SCROLLING			       *
 ********************************************************************************
 ------------------
 VERTICAL SCROLLING
@@ -174,28 +174,28 @@ Perhaps a little diagram will clarify it. The following picture is of a
 standard X-mode addressing scheme with the OFFSET register set to 80.
 
       ROW    OFFSET
-      0         0 ========================
-      1        80 [                      ]
-      2       160 [                      ]
-      ..       .. [       VISIBLE        ]
-                  [        SCREEN        ]
-                  [                      ]
-                  [                      ]
-      ..       .. [                      ]
+      0	 0 ========================
+      1	80 [		      ]
+      2       160 [		      ]
+      ..       .. [       VISIBLE	]
+		  [	SCREEN	]
+		  [		      ]
+		  [		      ]
+      ..       .. [		      ]
       199   15920 ========================
 
 and the next diagram is of a modified addressing scheme with the OFFSET
 register set to 82 (to give us 4 extra pixels on each side of the screen)
 
 ROW    OFFSET
-0         0 ------========================------
-1        82 |   V [                      ]   V |
-2       164 |   I [                      ]   I |
-..       .. | N S [      VISIBLE         ] N S |
-            | O I [       SCREEN         ] O I |
-            | T B [                      ] T B |
-            |   L [                      ]   L |
-..       .. |   E [                      ]   E |
+0	 0 ------========================------
+1	82 |   V [		      ]   V |
+2       164 |   I [		      ]   I |
+..       .. | N S [      VISIBLE	 ] N S |
+	    | O I [       SCREEN	 ] O I |
+	    | T B [		      ] T B |
+	    |   L [		      ]   L |
+..       .. |   E [		      ]   E |
 199   16318 ------========================------
 
 Beautiful!!!
@@ -230,7 +230,7 @@ I'm sorry about this being so confusing but it's a bit difficult to explain.
 
 
 ********************************************************************************
-*                            STANDARD VGA SCROLLING                            *
+*			    STANDARD VGA SCROLLING			    *
 ********************************************************************************
 Without X-mode, there is no easy way to do scrolling using the VGA hardware.
 So basically, you have to resort to redrawing the entire screen for every
@@ -258,7 +258,7 @@ END WHILE
 
 
 ********************************************************************************
-*                              PARALLAX SCROLLING                              *
+*			      PARALLAX SCROLLING			      *
 ********************************************************************************
 Parallax scrolling is when the "world" appears to have different levels
 of perspective. That is, images further away from the viewer move
@@ -291,7 +291,7 @@ colour to what was there previously).
 
 
 ********************************************************************************
-*                                  DISCLAIMER                                  *
+*				  DISCLAIMER				  *
 ********************************************************************************
 I'm sorry if any of this is confusing, but hey that's half the fun of it -
 figuring out what the hell I'm raving on about :)
