@@ -18,8 +18,8 @@
 //#define VMEM	    0xA000 // = vga
 byte Xfont[2048];
 
-void drawChar(int x, int y, int color, byte c);
-void drawText(int x, int y, int color, byte string);
+//void drawChar(int x, int y, int color, byte c);
+//void drawText(int x, int y, int color, byte string);
 void setvideo(/*byte mode, */int vq);
 //void setvbuff(int vq);
 //void updatevbuff();
@@ -31,7 +31,7 @@ void putPixel_X(int x, int y, byte color);
 void putColorBox_X(int x, int y, int w, int h, byte color);
 void vScroll(int rows);
 void scrolly(int bong);
-void wait_for_retrace(void); // Waits for vertical retrace
+//void wait_for_retrace(void); // Waits for vertical retrace
 //void BlockMove();
 //void eraseplayer(int x, int y);
 //void drawplayer(int x, int y, int color);

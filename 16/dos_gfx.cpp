@@ -353,172 +353,6 @@ void hScroll(int Cols) {
 	setVisibleStart(visStart + (Cols * width));
 }
 
-/*To implement smooth horizontal scrolling, you would do the following:
--------------- Horizontal Scrolling ------------
-FOR X = 0 TO 319 DO
-  SET HPP TO ( X MOD 4 )
-  SET VGA OFFSET TO ( X/4 )
-END FOR
-------------------------------------------------
-
-Okay, no problem at all (although I think you might have to fiddle
-around with the HPP a bit to get it right...try different values and
-see what works :).
-
-So, the next problem is with drawing the images off the screen where
-they aren't visible and then scrolling them on!!! As it turns out,
-there's yet ANOTHER register to accomplish this. This one's called the
-offset register (no, not the one I was talking about before, that one
-was actually the "start address" register) and it's at
-
-  PORT:     3D4H/3D5H
-  OFFSET:   13H
-
-and here's how to use it
-
--------------- Offset Register ---------------
-OUT 13H TO PORT 3D4H
-OUT value TO PORT 3D5H
-----------------------------------------------
-
-Now, what my VGA reference says is that this register holds the number
-of bytes (not pixels) difference between the start address of each row.
-So, in X-mode it normally contains the value 80 (as we remember,
-80 bytes * 4 planes = 320 pixels). This register does not affect the
-VISIBLE width of the display, only the difference between addresses on
-each row.
-
-When we scroll horizontally, we need a little bit of extra working space
-so we can draw off the edge of the screen.
-
-Perhaps a little diagram will clarify it. The following picture is of a
-standard X-mode addressing scheme with the OFFSET register set to 80.
-
-      ROW    OFFSET
-      0         0 ========================
-      1        80 [                      ]
-      2       160 [                      ]
-      ..       .. [       VISIBLE        ]
-                  [        SCREEN        ]
-                  [                      ]
-                  [                      ]
-      ..       .. [                      ]
-      199   15920 ========================
-
-and the next diagram is of a modified addressing scheme with the OFFSET
-register set to 82 (to give us 4 extra pixels on each side of the screen)
-
-ROW    OFFSET
-0         0 ------========================------
-1        82 |   V [                      ]   V |
-2       164 |   I [                      ]   I |
-..       .. | N S [      VISIBLE         ] N S |
-            | O I [       SCREEN         ] O I |
-            | T B [                      ] T B |
-            |   L [                      ]   L |
-..       .. |   E [                      ]   E |
-199   16318 ------========================------
-
-Beautiful!!!
-
-As with vertical scrolling, however, you still have the problem of when
-you reach the bottom of page 4...and it's fixed in the same manner.
-
-I haven't actually managed to get infinite horizontal scrolling working,
-but the method I have just stated will give you a horizontal scrolling
-range of over 200 screens!!!! So if you need more (which is extremely
-unlikely), figure it out yourself.
-
-
-------------------
-COMBINED SCROLLING
-------------------
-To do both horizontal and vertical scrolling, all you have to do is combine
-the two methods with a few little extras (it's always the way isn't it).
-
-You have to start off with the original screen on the current page and the
-next page as well. When you scroll horizontally, you have to draw the edge
-that's coming in to the screen to BOTH pages (that means you'll be drawing
-the incoming edge twice, once for each page). You do this so that when you
-have scrolled vertically down through a complete page, you can jump back
-to the first page and it will (hopefully) have an identical copy, and you
-can then continue scrolling again.
-
-I'm sorry about this being so confusing but it's a bit difficult to explain.
-
-
-*/
-int loadfontX(char *fname)
-{
-	FILE *fp;
-
-	fp = fopen(fname, "rb");
-
-	if (fp == NULL) {
-		return 0;
-	} else {
-		fread(Xfont, 8, 256, fp);
-		fclose(fp);
-		return 1;
-	}
-}
-
-void putchX(cord x, cord y, char c, byte color)
-{
-	int i;
-	byte *vga_ptr;
-	byte *font_ptr;
-	byte temp;
-
-	// 8x8 font
-	vga_ptr = RowsX[y << 3] + (x << 1) + actStart;
-	write_plane = -1;
-
-	font_ptr = Xfont + (c << 3);
-
-	i=8;
-	while (i--) {
-		temp = *font_ptr++;
-		outpw(SEQU_ADDR, text_mask[temp & 0x0F]);
-		*vga_ptr++ = color;
-
-		outpw(SEQU_ADDR, text_mask[temp >> 4]);
-		*vga_ptr-- = color;
-		vga_ptr += widthBytes;
-	}
-}
-
-void putstringX(cord x, cord y, char *str, byte color)
-{
-	int i, skip;
-	byte *vga_ptr;
-	byte *font_ptr;
-	byte c, temp;
-
-	// 8x8 font
-	vga_ptr = RowsX[y << 3] + (x << 1) + actStart;
-	write_plane = -1;
-
-	skip = 2 - (widthBytes << 3);
-
-	while (c = *str++) {
-		font_ptr = Xfont + (c << 3);
-
-		i=8;
-		while (i--) {
-			temp = *font_ptr++;
-			outpw(SEQU_ADDR, text_mask[temp & 0x0F]);
-			*vga_ptr++ = color;
-
-			outpw(SEQU_ADDR, text_mask[temp >> 4]);
-			*vga_ptr-- = color;
-			vga_ptr += widthBytes;
-		}
-
-		vga_ptr += skip;
-	}
-}
-
 /////////////////////////////////////////////////////////////////////////////
 //                                                                         //
 // setvideo() - This function Manages the video modes					  //
@@ -529,23 +363,23 @@ void setvideo(/*byte mode, */int vq){
 
 		if(!vq){ // deinit the video
 				// change to the video mode we were in before we switched to mode 13h
-				//mxSetMode( MX_TEXT );
-				//mxTerm();
-				in.h.ah = 0x00;
-				in.h.al = old_mode;
-				int86(0x10, &in, &out);
+				mxSetMode( MX_TEXT );
+				//in.h.ah = 0x00;
+				//in.h.al = old_mode;
+				//int86(0x10, &in, &out);
+				mxTerm();
 
 		}else if(vq == 1){ // init the video
 				// get old video mode
-				in.h.ah = 0xf;
-				int86(0x10, &in, &out);
-				old_mode = out.h.al;
+				//in.h.ah = 0xf;
+				//int86(0x10, &in, &out);
+				//old_mode = out.h.al;
 
 				// enter mode
-				//mxInit();
-				//mxSetMode( MX_320x200 );
-				//mxSetVirtualScreen( 640, 400 );
-				set320x240x256_X();
+				mxInit();
+				mxSetMode( MX_320x240 );
+				mxSetVirtualScreen( 480, 360 );
+				//set320x240x256_X();
 				//mxSetMode(MX_320x240);
 				//mxSetVirtualScreen(560,420);
 				//mxSetVirtualScreen((640-TILEWH),(480-TILEWH));
@@ -603,10 +437,10 @@ void ssd(int svq){
 /*-----------ding-------------*/
 int ding(int q){
 
-//	if(yy<height){
+/*	if(yy<height){
 		setActivePage(0);
 		setVisiblePage(0);
-/*	}
+	}
 	if((height)<yy<(height*2)){
 		setActivePage(1);
 		setVisiblePage(1);
@@ -694,18 +528,18 @@ int ding(int q){
 								}
 						}else{
 								if(!bakax){
-									xx-=TILEWH;
-//									xx--;
+//									xx-=TILEWH;
+									xx--;
 								}else if(bakax>1){
-									xx+=TILEWH;
-//									xx++;
+//									xx+=TILEWH;
+									xx++;
 								}
 								if(!bakay){
-									yy-=TILEWH;
-//									yy--;
+//									yy-=TILEWH;
+									yy--;
 								}else if(bakay>1){
-									yy+=TILEWH;
-//									yy++;
+//									yy+=TILEWH;
+									yy++;
 								}
 						}
 				}
@@ -731,9 +565,10 @@ int ding(int q){
 				// plot the pixel
 //----		  ppf(xx, yy, coor, vga);
 				}else /*if(xx>=0 && xx<width && yy>=0 && yy<(height*3))*/{
-					putColorBox_X(xx, yy, TILEWH, TILEWH, coor);
+//					putColorBox_X(xx, yy, TILEWH, TILEWH, coor);
 //++++0000
 //					putPixel_X(xx, yy, coor);
+					mxPutPixel(xx, yy, coor);
 				} 
 
 //----		  if(q==2) ppf(rand()%, rand()%height, 0, vga);
@@ -864,25 +699,19 @@ int main(void)
 			ding(4);
 		}
 		//end of screen savers
-		doTest();
-//		getch();
+		//doTest();
+		getch();
 
 		while(!kbhit()){ // conditions of screen saver
 //			hScroll(1);
 //			scrolly(1);
 //			vScroll(1);
 //			delay(100);
-			/*mxSetVirtualScreen(320,240*2);
-			for(int i=0;i<TILEWH;i++){
-				mxPan(x,y);
-				//mxWaitRetrace();
-				y++;
-			}*/
-			mxSetVirtualScreen(320*2,240);
 			for(int i=0;i<TILEWH;i++){
 				mxPan(x,y);
 				mxWaitRetrace();
 				x++;
+				y++;
 			}
 		//delay(100);
 		}
