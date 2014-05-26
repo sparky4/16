@@ -27,7 +27,6 @@ LIBOBJS = MXBB.OBJ \
           MXPI.OBJ \
           MXPN.OBJ \
           MXPP.OBJ \
-	  MXPT.OBJ \
           MXRA.OBJ \
           MXRP.OBJ \
           MXSA.OBJ \
@@ -47,14 +46,14 @@ LIBOBJS = MXBB.OBJ \
 #
 # ASM compiler
 #
-ASMC = JWASMR
-ASMO = -Zm -0
+ASMC = tasm
+ASMO = /m5 /p
 
 #
 # PAS compiler
 #
-#PASC = bpc
-#PASO = /m -$D- -$L- -$S-
+PASC = bpc
+PASO = /m -$D- -$L- -$S-
 
 #
 # LIB maker, uses response file

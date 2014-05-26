@@ -4,8 +4,8 @@
 ; Copyright (c) 1994 by Alessandro Scotti
 ;
 ;-----------------------------------------------------------
-;WARN    PRO
-;NOWARN  RES                             ; We use the reserved name 'WIDTH'
+WARN    PRO
+NOWARN  RES                             ; We use the reserved name 'WIDTH'
 INCLUDE MODEX.DEF
 
 PUBLIC  mxOutChar

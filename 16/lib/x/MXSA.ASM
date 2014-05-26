@@ -4,7 +4,7 @@
 ; Copyright (c) 1993,1994 by Alessandro Scotti
 ;
 ;-----------------------------------------------------------
-;WARN    PRO
+WARN    PRO
 INCLUDE MODEX.DEF
 
 PUBLIC  mxStartAddress

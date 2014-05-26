@@ -1,1 +1,0 @@
-jwasmr -0 -Zm *.asm

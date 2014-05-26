@@ -5,7 +5,7 @@
 ; Author: Alessandro Scotti
 ;
 ;-----------------------------------------------------------
-;WARN    PRO
+WARN    PRO
 INCLUDE MODEX.DEF
 
 PUBLIC  mxFadePalette

@@ -4,8 +4,8 @@
 ; Copyright (c) 1994 by Alessandro Scotti
 ;
 ;-----------------------------------------------------------
-;WARN    PRO
-;NOWARN  RES
+WARN    PRO
+NOWARN  RES
 INCLUDE MODEX.DEF
 
 PUBLIC  mxStretchImage
