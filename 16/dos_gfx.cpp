@@ -82,13 +82,6 @@ byte coor;
 #define GRAC_ADDR	   0x3ce   /* Base port of the Graphics Controller */
 #define STATUS_ADDR     0x3DA
 
-unsigned char *RowsX[600];
-unsigned char write_plane, read_plane;
-unsigned short text_mask[16] = { 0x0002, 0x0102, 0x0202, 0x0302,
-                                 0x0402, 0x0502, 0x0602, 0x0702,
-                                 0x0802, 0x0902, 0x0A02, 0x0B02,
-                                 0x0C02, 0x0D02, 0x0E02, 0x0F02 };
-
 
 /*
  * Make a far pointer to the VGA graphics buffer segment.  Your compiler
@@ -153,45 +146,6 @@ void set320x200x256_X(void)
 		   to be based at offset 0 in the video segment. */
 		actStart = visStart = 0;
 
-		/*
---------------------
-HORIZONTAL SCROLLING
---------------------
-Horizontal scrolling is essentially the same as vertical scrolling, all
-you do is increment or decrement the VGA offset register by 1 instead of
-80 as with vertical scrolling.
-
-However, horizontal scrolling is complicated by two things
-
-  1. Incrementing the offset register by one actually scrolls by FOUR
-     pixels (and there are FOUR planes on the VGA, what a coincidence)
-
-  2. You can't draw the image off the screen and then scroll it on
-     because of the way the VGA wraps to the next row every 80 bytes
-     (80 bytes * 4 planes = 320 pixels), if you tried it, you would
-     actually be drawing to the other side of the screen (which is
-     entirely visible)
-
-I'll solve these problems one at a time.
-
-Firstly, to get the VGA to scroll by only one pixel you use the horizontal
-pixel panning (HPP) register. This register resides at
-
-  PORT:     3C0H
-  INDEX:    13h
-
-and in real life, you use it like this
-
------------------ Pixel Panning ---------------
-IN PORT 3DAH (this clears an internal
-  flip-flop of the VGA)
-OUT 13H TO PORT 3C0H
-OUT value TO PORT 3C0H (where "value" is the
-  number of pixels to offset)
------------------------------------------------
-*/
-
-//mxSetVirtualScreen(480,360);
 		}
 
 /*
@@ -363,27 +317,30 @@ void setvideo(/*byte mode, */int vq){
 
 		if(!vq){ // deinit the video
 				// change to the video mode we were in before we switched to mode 13h
-				mxSetMode( MX_TEXT );
-				//in.h.ah = 0x00;
-				//in.h.al = old_mode;
-				//int86(0x10, &in, &out);
+				//mxSetMode( MX_TEXT );
 				mxTerm();
+				in.h.ah = 0x00;
+				in.h.al = old_mode;
+				int86(0x10, &in, &out);
 
 		}else if(vq == 1){ // init the video
 				// get old video mode
-				//in.h.ah = 0xf;
-				//int86(0x10, &in, &out);
-				//old_mode = out.h.al;
+				in.h.ah = 0xf;
+				int86(0x10, &in, &out);
+				old_mode = out.h.al;
 
 				// enter mode
 				mxInit();
 				mxSetMode( MX_320x240 );
-				mxSetVirtualScreen( 480, 360 );
+				width=320;
+				height=240;
+//				mxSetVirtualScreen(width+(width/4), height+(height/4));
+//				mxSetVirtualScreen(width*2, height*2);
 				//set320x240x256_X();
-				//mxSetMode(MX_320x240);
-				//mxSetVirtualScreen(560,420);
-				//mxSetVirtualScreen((640-TILEWH),(480-TILEWH));
-				//mxSetClip( TRUE );
+				mxSetVirtualScreen(560,420);
+//				mxSetVirtualScreen((640-(TILEWH*2)),(480-(TILEWH*2)));
+				mxSetClip(0);
+				//mxSetClipRegion(0, 0, width, height);
 		}
 }
 
@@ -545,11 +502,10 @@ int ding(int q){
 				}
 				// fixer
 //				if(q!=16){
-//if(q!=16)
-//						if(xx<0) xx=(width-TILEWH);
-//						if(yy<0) yy=(height-TILEWH);
-//						if(xx>(width-TILEWH)) xx=0;
-//						if(yy>(height-TILEWH)) yy=0;
+						if(xx<0) xx=(560/*-TILEWH*/);
+						if(yy<0) yy=(420/*-TILEWH*/);
+						if(xx>(560/*-TILEWH*/)) xx=0;
+						if(yy>(420/*-TILEWH*/)) yy=0;
 //				}
 
 //interesting effects
@@ -558,14 +514,14 @@ int ding(int q){
 				int tx=0,ty=0;
 				tx+=xx+16;
 				ty+=yy+16;
-				putPixel_X(tx, ty, coor);
+				mxPutPixel(tx, ty, coor);
 				//drawrect(tx, ty, tx+TILEWH, ty+TILEWH, coor);
 				//printf("%d %d %d %d %d %d\n", xx, yy, tx, ty, TILEWH);
 
 				// plot the pixel
 //----		  ppf(xx, yy, coor, vga);
 				}else /*if(xx>=0 && xx<width && yy>=0 && yy<(height*3))*/{
-//					putColorBox_X(xx, yy, TILEWH, TILEWH, coor);
+//					mxFillBox(xx, yy, TILEWH, TILEWH, coor, 0);
 //++++0000
 //					putPixel_X(xx, yy, coor);
 					mxPutPixel(xx, yy, coor);
@@ -574,15 +530,13 @@ int ding(int q){
 //----		  if(q==2) ppf(rand()%, rand()%height, 0, vga);
 //				if(q==2) putColorBox_X(rand()%width, rand()%(height*3), TILEWH, TILEWH, 0);
 //++++0000
-				if(q==2) putPixel_X(rand()%width, rand()%(height*3), 0);
-				if(q==16) putPixel_X(rand()%width, rand()%(height*3), 0);
+				if(q==2) mxPutPixel(rand()%width, rand()%(height*3), 0);
+				if(q==16) mxPutPixel(rand()%width, rand()%(height*3), 0);
 				if(q==2||q==4||q==16){ bakax = rand()%3; bakay = rand()%3; }
 				gq++;
 //if(xx<0||xx>320||yy<0||yy>(height*3))
 //	  printf("%d %d %d %d %d %d\n", xx, yy, coor, bakax, bakay, getPixel_X(xx,yy));
 //	  printf("%d\n", getPixel_X(xx,yy));
-//0000
-//	  drawText(0, 0, 15, getPixel_X(xx,yy));
 		}else gq = LGQ;
 		return gq;
 }
@@ -618,21 +572,22 @@ void doTest(void)
 				   //{
 						for (x = 0; x <= width; ++x)
 								{
-								putPixel_X(x, 0, p+1);
-								if(p!=pages) putPixel_X(x, height-1, p+1);
-										else if(height==240) putPixel_X(x, 99-1, p+1);
+//								putPixel_X(x, 0, p+1);
+								mxPutPixel(x, 0, p+1);
+								if(p!=pages) mxPutPixel(x, height-1, p+1);
+										else if(height==240) mxPutPixel(x, 99-1, p+1);
 								}
 
 						for (y = 0; y <= height; ++y)
 								{
-								putPixel_X(0, y, p+1);
-								if(p!=pages) putPixel_X(width-1, y, p+1);
-										else if(height==240) putPixel_X(width-1, y, p+1);
+								mxPutPixel(0, y, p+1);
+								if(p!=pages) mxPutPixel(width-1, y, p+1);
+										else if(height==240) mxPutPixel(width-1, y, p+1);
 								}
 
 						for (x = 0; x < TILEWH; ++x)
 								for (y = 0; y < TILEWH; ++y)
-										putPixel_X(x+(p+2)*16, y+(p+2)*TILEWH, x + y*TILEWH);
+										mxPutPixel(x+(p+2)*16, y+(p+2)*TILEWH, x + y*TILEWH);
 						//}
 
 				}
@@ -653,13 +608,15 @@ void doTest(void)
 
 int main(void)
 		{
-		int key,d,x,y;
+		int key,d,xpos,ypos,xdir,ydir;
 		//short int temp;
 		// main variables
 		d=1; // switch variable
 		key=4; // default screensaver number
-		x=0;
-		y=0;
+		xpos=0;
+		ypos=0;
+		xdir=1;
+		ydir=1;
 //	  puts("First, have a look at the 320x200 mode.  I will draw some rubbish");
 //	  puts("on all of the four pages, then let you cycle through them by");
 //	  puts("hitting a key on each page.");
@@ -674,12 +631,6 @@ int main(void)
 
 //++++0000
 		setvideo(1);
-		/*temp = loadfontX("vga8x8.fnt");
-
-		if (temp) {
-			putstringX(0, 0, "bakapi!", 2);
-		}
-		getch();*/
 // screen savers
 
 /*while(d!=0){ // on!
@@ -696,24 +647,36 @@ int main(void)
 				}
 		}*/ // else off
 		while(!kbhit()){ // conditions of screen saver
-			ding(4);
+			ding(key);
 		}
 		//end of screen savers
 		//doTest();
+		for (int x = 0; x < width; ++x)
+			{
+				mxPutPixel(x, 0, 15);
+				mxPutPixel(x, height-1, 15);
+			}
+		for (int y = 0; y < height; ++y)
+			{
+				mxPutPixel(0, y, 15);
+				mxPutPixel(width-1, y, 15);
+			}
 		getch();
-
-		while(!kbhit()){ // conditions of screen saver
+		while(!kbhit()){
 //			hScroll(1);
 //			scrolly(1);
 //			vScroll(1);
 //			delay(100);
-			for(int i=0;i<TILEWH;i++){
-				mxPan(x,y);
+			//for(int i=0;i<TILEWH;i++){
+				ding(key);
+				mxPan(xpos,ypos);
 				mxWaitRetrace();
-				x++;
-				y++;
-			}
-		//delay(100);
+				xpos=xpos+xdir;
+				ypos=ypos+ydir;
+				if( (xpos>239)  || (xpos<1))xdir=-xdir;
+				if( (ypos>179) || (ypos<1))ydir=-ydir; // { Hit a boundry, change
+			//    direction! }
+			//}
 		}
 		setvideo(0);
 		printf("wwww\n%dx%d\n", width,height);
