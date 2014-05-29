@@ -1,60 +1,5 @@
-/*
- * LIB.C v1.2a
- *
- * by Robert Schmidt
- * (C)1993 Ztiff Zox Softwear
- *
- * Simple graphics library to accompany the article
- * 
- *					  INTRODUCTION TO MODE X.
- * 
- * This library provides the basic functions for initializing and using
- * unchained (planar) 256-color VGA modes.  Currently supported are:
- *
- *	  - 320x200
- *	  - 320x240
- *
- * Functions are provided for:
- *
- *	  - initializing one of the available modes
- *	  - setting the start address of the VGA refresh data
- *	  - setting active and visible display pages
- *	  - writing and reading a single pixel to/from video memory
- *
- * The library is provided as a demonstration only, and is not claimed
- * to be particularly efficient or suited for any purpose.  It has only
- * been tested with Borland C++ 3.1 by the author.  Comments on success
- * or disaster with other compilers are welcome.
- *
- * This file is public domain.  Do with it whatever you'd like, but
- * please don't distribute it without the article.
- *
- * Thanks go out to various helpful netters who spotted the 0xE7 bug
- * in the set320x240x256() function!
- *
- * Modified by sparky4 so it can be compiled in open watcom ^^
- */
-
-
-
-
-/*
- * We 'require' a large data model simply to get rid of explicit 'far'
- * pointers and compiler specific '_fmemset()' functions and the likes.
- */
-#if !defined(__COMPACT__)
-# if !defined(__LARGE__)
-#  if !defined(__HUGE__)
-#   error Large data model required!  Try compiling with 'wcc -0 -ml lib.c'.
-#  endif
-# endif
-#endif
-
-#include <dos.h>
-#include <mem.h>
-#include <conio.h>
-
-//code from old library!
+//DOS Graphics thingy by sparky4 licence GPL v2
+//a special thanks to everyone to release source code for mode X
 /*src\lib\*/
 #include "dos_gfx.h"
 
@@ -67,245 +12,13 @@ int bakax = 0, bakay = 0;
 cord xx = rand()&0%320, yy = rand()&0%240, sx = 0, sy = 0;
 byte coor;
 
+byte *vga = (byte *) MK_FP(0xA000, 0);
+
 /*
  * Comment out the following #define if you don't want the testing main()
  * to be included.
  */
 #define TESTING
-
-/*
- * Define the port addresses of some VGA registers.
- */
-#define CRTC_ADDR	   0x3d4   /* Base port of the CRT Controller (color) */
-
-#define SEQU_ADDR	   0x3c4   /* Base port of the Sequencer */
-#define GRAC_ADDR	   0x3ce   /* Base port of the Graphics Controller */
-#define STATUS_ADDR     0x3DA
-
-
-/*
- * Make a far pointer to the VGA graphics buffer segment.  Your compiler
- * might not have the MK_FP macro, but you'll figure something out.
- */
-byte *vga = (byte *) MK_FP(0xA000, 0);
-
-
-/*
- * width and height should specify the mode dimensions.  widthBytes
- * specify the width of a line in addressable bytes.
- */
-unsigned width, height, widthBytes;
-
-/*
- * actStart specifies the start of the page being accessed by
- * drawing operations.  visStart specifies the contents of the Screen
- * Start register, i.e. the start of the visible page.
- */
-unsigned actStart, visStart;
-
-/*
- * set320x200x256_X()
- *	  sets mode 13h, then turns it into an unchained (planar), 4-page
- *	  320x200x256 mode.
- */
-void set320x200x256_X(void)
-		{
-		union REGS r;
-
-		/* Set VGA BIOS mode 13h: */
-		r.x.ax = 0x0013;
-		int86(0x10, &r, &r);
-
-		/* Turn off the Chain-4 bit (bit 3 at index 4, port 0x3c4): */
-		outpw(SEQU_ADDR, 0x0604);
-
-		/* Turn off word mode, by setting the Mode Control register
-		of the CRT Controller (index 0x17, port 0x3d4): */
-		outpw(CRTC_ADDR, 0xE317);
-
-		/* Turn off doubleword mode, by setting the Underline Location
-		   register (index 0x14, port 0x3d4): */
-		outpw(CRTC_ADDR, 0x0014);
-
-		/* Clear entire video memory, by selecting all four planes, then
-		   writing 0 to entire segment. */
-		outpw(SEQU_ADDR, 0x0F02);
-		memset(vga+1, 0, 0xffff); /* stupid size_t exactly 1 too small */
-		vga[0] = 0;
-
-		/* Update the global variables to reflect dimensions of this
-		   mode.  This is needed by most future drawing operations. */
-		width		   = 320;
-		height  = 200;
-
-		/* Each byte addresses four pixels, so the width of a scan line
-		   in *bytes* is one fourth of the number of pixels on a line. */
-		widthBytes = width / 4;
-
-		/* By default we want screen refreshing and drawing operations
-		   to be based at offset 0 in the video segment. */
-		actStart = visStart = 0;
-
-		}
-
-/*
- * setActiveStart() tells our graphics operations which address in video
- * memory should be considered the top left corner.
- */
-void setActiveStart(unsigned offset)
-		{
-		actStart = offset;
-		}
-
-/*
- * setVisibleStart() tells the VGA from which byte to fetch the first
- * pixel when starting refresh at the top of the screen.  This version
- * won't look very well in time critical situations (games for
- * instance) as the register outputs are not synchronized with the
- * screen refresh.  This refresh might start when the high byte is
- * set, but before the low byte is set, which produces a bad flicker.
- */
-void setVisibleStart(unsigned offset)
-		{
-		visStart = offset;
-		outpw(CRTC_ADDR, 0x0C);		 /* set high byte */
-		outpw(CRTC_ADDR+1, visStart >> 8);
-		outpw(CRTC_ADDR, 0x0D);		 /* set low byte */
-		outpw(CRTC_ADDR+1, visStart & 0xff);
-		}
-
-/*
- * setXXXPage() sets the specified page by multiplying the page number
- * with the size of one page at the current resolution, then handing the
- * resulting offset value over to the corresponding setXXXStart()
- * function.  The first page is number 0.
- */
-void setActivePage(int page)
-		{
-		setActiveStart(page * widthBytes * height);
-		}
-
-void setVisiblePage(int page)
-		{
-		setVisibleStart(page * widthBytes * height);
-		}
-
-void putPixel_X(int x, int y, byte color)
-		{
-		/* Each address accesses four neighboring pixels, so set
-		   Write Plane Enable according to which pixel we want
-		   to modify.  The plane is determined by the two least
-		   significant bits of the x-coordinate: */
-		outp(0x3c4, 0x02);
-		outp(0x3c5, 0x01 << (x & 3));
-
-		/* The offset of the pixel into the video segment is
-		   offset = (width * y + x) / 4, and write the given
-		   color to the plane we selected above.  Heed the active
-		   page start selection. */
-		vga[(unsigned)(widthBytes * y) + (x / 4) + actStart] = color;
-
-		}
-
-byte getPixel_X(int x, int y)
-		{
-		/* Select the plane from which we must read the pixel color: */
-		outpw(GRAC_ADDR, 0x04);
-		outpw(GRAC_ADDR+1, x & 3);
-
-		return vga[(unsigned)(widthBytes * y) + (x / 4) + actStart];
-
-		}
-
-void set320x240x256_X(void)
-		{
-		/* Set the unchained version of mode 13h: */
-		set320x200x256_X();
-
-		/* Modify the vertical sync polarity bits in the Misc. Output
-		   Register to achieve square aspect ratio: */
-		outp(0x3C2, 0xE3);
-
-		/* Modify the vertical timing registers to reflect the increased
-		   vertical resolution, and to center the image as good as
-		   possible: */
-		outpw(0x3D4, 0x2C11);		   /* turn off write protect */
-		outpw(0x3D4, 0x0D06);		   /* vertical total */
-		outpw(0x3D4, 0x3E07);		   /* overflow register */
-		outpw(0x3D4, 0xEA10);		   /* vertical retrace start */
-		outpw(0x3D4, 0xAC11);		   /* vertical retrace end AND wr.prot */
-		outpw(0x3D4, 0xDF12);		   /* vertical display enable end */
-		outpw(0x3D4, 0xE715);		   /* start vertical blanking */
-		outpw(0x3D4, 0x0616);		   /* end vertical blanking */
-
-		/* Update mode info, so future operations are aware of the
-		   resolution */
-		height = 240;
-
-		}
-
-
-/*-----------XXXX-------------*/
-
-/////////////////////////////////////////////////////////////////////////////
-//                                                                         //
-// WaitRetrace() - This waits until you are in a Verticle Retrace.         //
-//                                                                         //
-/////////////////////////////////////////////////////////////////////////////
-void wait_for_retrace(void)
-{
-    while (!(inp(STATUS_ADDR) & 0x08));
-}
-
-/*tile*/
-//king_crimson's code
-void putColorBox_X(int x, int y, int w, int h, byte color) {
-	outp(0x3c4, 0x02);
-
-	int curx, cury;
-	unsigned drawptr;
-	for (curx=x; curx<(x+w); curx++) {
-		outp(0x3c5, 0x01 << (curx & 3));
-		drawptr = (unsigned)(widthBytes * y) + (curx / 4) + actStart;
-		for (cury=0; cury<h; cury++) {
-			vga[drawptr] = color;
-			drawptr += widthBytes;
-		}
-	}
-}
-
-void vScroll(int rows)
-{
-	// Scrolling = current start + (rows * bytes in a row)
-	setVisibleStart(visStart + (rows * width));
-}
-
-void scrolly(int bongy)
-{
-	int boingy=0;
-	if(bongy<0)
-		boingy=-1;
-	else if(bongy>0)
-		boingy=1;
-
-	for(int ti=0;ti<TILEWH;ti++)
-	{
-		delay(1);
-		vScroll(boingy);
-	}
-}
-
-//king_crimson's code
-void hScroll(int Cols) {
-	wait_for_retrace();
-	outp(0x3C0, 0x13);
-	outp(0x3C0, Cols & 3);
-	outp(0x3D4, 0x13);
-	outp(0x3D5, Cols >> 2);
-	outp(0x3D4, Cols);
-	//setVisibleStart(visStart + (Cols * height));
-	setVisibleStart(visStart + (Cols * width));
-}
 
 /////////////////////////////////////////////////////////////////////////////
 //                                                                         //
@@ -332,15 +45,12 @@ void setvideo(/*byte mode, */int vq){
 				// enter mode
 				mxInit();
 				mxSetMode( MX_320x240 );
-				width=320;
-				height=240;
-//				mxSetVirtualScreen(width+(width/4), height+(height/4));
-//				mxSetVirtualScreen(width*2, height*2);
-				//set320x240x256_X();
-				mxSetVirtualScreen(560,420);
-//				mxSetVirtualScreen((640-(TILEWH*2)),(480-(TILEWH*2)));
+//				mxSetVirtualScreen(SW+(SW/4), SH+(SH/4));
+//				mxSetVirtualScreen(SW*2, SH*2);
+				mxSetVirtualScreen(VW,VH);
+//				mxSetVirtualScreen((640-(TILEWH*4)),(480-(TILEWH*4)));
 				mxSetClip(0);
-				//mxSetClipRegion(0, 0, width, height);
+				//mxSetClipRegion(0, 0, SW, SH);
 		}
 }
 
@@ -351,7 +61,7 @@ void setvideo(/*byte mode, */int vq){
 //																		 //
 /////////////////////////////////////////////////////////////////////////////
 void cls(byte color, byte *Where){
-		_fmemset(Where, color, width*(height*17));
+		_fmemset(Where, color, VW*(VH));
 }
 
 //color ‚Ä‚·‚Æ
@@ -375,18 +85,18 @@ int colorz(){
 
 //slow spectrum down
 void ssd(int svq){
-		if(sy < height+1){
-				if(sx < width+1){
+		if(sy < SH+1){
+				if(sx < SW+1){
 						//plotpixel(xx, yy, coor, vga);
 						//ppf(sx, sy, coor, vga);
-						putPixel_X(sx, sy, coor);
+						mxPutPixel(sx, sy, coor);
 						//printf("%d %d %d %d\n", sx, sy, svq, coor);
 						sx++;
 				}else sx = 0;
-				if(sx == width){
+				if(sx == SW){
 						sy++;
 						if(svq == 7) coor++;
-						if(sy == height && svq == 8) coor = rand()%NUM_COLORS;
+						if(sy == SH && svq == 8) coor = rand()%NUM_COLORS;
 				}
 		}else sy = 0;
 }
@@ -394,18 +104,6 @@ void ssd(int svq){
 /*-----------ding-------------*/
 int ding(int q){
 
-/*	if(yy<height){
-		setActivePage(0);
-		setVisiblePage(0);
-	}
-	if((height)<yy<(height*2)){
-		setActivePage(1);
-		setVisiblePage(1);
-	}
-	if((height*2)<yy<(height*3)){
-		setActivePage(2);
-		setVisiblePage(2);
-	}*/
 		int d3y;
 
 //++++  if(q <= 4 && q!=2 && gq == BONK-1) coor = rand()%HGQ;
@@ -414,7 +112,7 @@ int ding(int q){
 		||q==16
 		) && gq == BONK){
 						if(coor < HGQ && coor < LGQ) coor = LGQ;
-						if(coor < HGQ-1){
+						if(coor < HGQ){
 								coor++;
 				}else{ coor = LGQ;
 						bakax = rand()%3; bakay = rand()%3;
@@ -427,7 +125,6 @@ int ding(int q){
 		if(q==11){ colorz(); delay(100); return gq; }
 		if(q==6){
 				coor = rand()%NUM_COLORS;
-//----		  cls(coor, vaddr);
 				cls(coor, vga);
 				//updatevbuff();
 		}
@@ -441,17 +138,17 @@ int ding(int q){
 		}
 		if((q<5 && gq<BONK) || (q==16 && gq<BONK)){ // the number variable make the colors more noticable
 				if(q==1){
-						if(xx==width){bakax=0;}
+						if(xx==SW){bakax=0;}
 						if(xx==0){bakax=1;}
-						if(yy==height){bakay=0;}
+						if(yy==SH){bakay=0;}
 						if(yy==0){bakay=1;}
 				}else if(q==3){
-						if(xx!=width||yy!=height){
+						if(xx!=SW||yy!=SH){
 								if(xx==0){bakax=1;bakay=-1;d3y=1;}
 								if(yy==0){bakax=1;bakay=0;d3y=1;}
-								if(xx==width){bakax=-1;bakay=-1;d3y=1;}
-								if(yy==height){bakax=1;bakay=0;d3y=1;}
-						}else if(xx==width&&yy==height) xx=yy=0;
+								if(xx==SW){bakax=-1;bakay=-1;d3y=1;}
+								if(yy==SH){bakax=1;bakay=0;d3y=1;}
+						}else if(xx==SW&&yy==SH) xx=yy=0;
 				}
 				if(q==3){
 						if(d3y){
@@ -501,12 +198,12 @@ int ding(int q){
 						}
 				}
 				// fixer
-//				if(q!=16){
-						if(xx<0) xx=(560/*-TILEWH*/);
-						if(yy<0) yy=(420/*-TILEWH*/);
-						if(xx>(560/*-TILEWH*/)) xx=0;
-						if(yy>(420/*-TILEWH*/)) yy=0;
-//				}
+				if(q!=16){
+						if(xx<0) xx=(VW/*-TILEWH*/);
+						if(yy<0) yy=(VH/*-TILEWH*/);
+						if(xx>(VW/*-TILEWH*/)) xx=0;
+						if(yy>(VH/*-TILEWH*/)) yy=0;
+				}
 
 //interesting effects
 				if(q==16)
@@ -515,26 +212,19 @@ int ding(int q){
 				tx+=xx+16;
 				ty+=yy+16;
 				mxPutPixel(tx, ty, coor);
-				//drawrect(tx, ty, tx+TILEWH, ty+TILEWH, coor);
 				//printf("%d %d %d %d %d %d\n", xx, yy, tx, ty, TILEWH);
 
 				// plot the pixel
-//----		  ppf(xx, yy, coor, vga);
-				}else /*if(xx>=0 && xx<width && yy>=0 && yy<(height*3))*/{
+				}else{
 //					mxFillBox(xx, yy, TILEWH, TILEWH, coor, 0);
-//++++0000
-//					putPixel_X(xx, yy, coor);
 					mxPutPixel(xx, yy, coor);
 				} 
 
-//----		  if(q==2) ppf(rand()%, rand()%height, 0, vga);
-//				if(q==2) putColorBox_X(rand()%width, rand()%(height*3), TILEWH, TILEWH, 0);
-//++++0000
-				if(q==2) mxPutPixel(rand()%width, rand()%(height*3), 0);
-				if(q==16) mxPutPixel(rand()%width, rand()%(height*3), 0);
+				if(q==2) mxPutPixel(rand()%SW, rand()%(SH*3), 0);
+				if(q==16) mxPutPixel(rand()%SW, rand()%(SH*3), 0);
 				if(q==2||q==4||q==16){ bakax = rand()%3; bakay = rand()%3; }
 				gq++;
-//if(xx<0||xx>320||yy<0||yy>(height*3))
+//if(xx<0||xx>320||yy<0||yy>(SH*3))
 //	  printf("%d %d %d %d %d %d\n", xx, yy, coor, bakax, bakay, getPixel_X(xx,yy));
 //	  printf("%d\n", getPixel_X(xx,yy));
 		}else gq = LGQ;
@@ -546,61 +236,7 @@ int ding(int q){
  * The library testing routines follows below.
  */
 
-
 #ifdef TESTING
-
-#include <stdio.h>
-#include <conio.h>
-
-void doTest(void)
-		{
-		int p, x, y, pages;
-
-		/* This is the way to calculate the number of pages available. */
-		pages = 65536L/(widthBytes*height); // apparently this takes the A000 address
-//		if(height==240) pages++;
-
-//		printf("%d\n", pages);
-
-		for (p = 0; p <= pages; ++p)
-				{
-				setActivePage(p);
-
-				/* On each page draw a single colored border, and dump the palette
-				   onto a small square about the middle of the page. */
-
-				   //{
-						for (x = 0; x <= width; ++x)
-								{
-//								putPixel_X(x, 0, p+1);
-								mxPutPixel(x, 0, p+1);
-								if(p!=pages) mxPutPixel(x, height-1, p+1);
-										else if(height==240) mxPutPixel(x, 99-1, p+1);
-								}
-
-						for (y = 0; y <= height; ++y)
-								{
-								mxPutPixel(0, y, p+1);
-								if(p!=pages) mxPutPixel(width-1, y, p+1);
-										else if(height==240) mxPutPixel(width-1, y, p+1);
-								}
-
-						for (x = 0; x < TILEWH; ++x)
-								for (y = 0; y < TILEWH; ++y)
-										mxPutPixel(x+(p+2)*16, y+(p+2)*TILEWH, x + y*TILEWH);
-						//}
-
-				}
-
-		/* Each pages will now contain a different image.  Let the user cycle
-		   through all the pages by pressing a key. */
-		for (p = 0; p < pages; ++p)
-				{
-				setVisiblePage(p);
-				getch();
-				}
-
-		}
 
 /*
  * Library test (program) entry point.
@@ -617,19 +253,6 @@ int main(void)
 		ypos=0;
 		xdir=1;
 		ydir=1;
-//	  puts("First, have a look at the 320x200 mode.  I will draw some rubbish");
-//	  puts("on all of the four pages, then let you cycle through them by");
-//	  puts("hitting a key on each page.");
-//	  puts("Press a key when ready...");
-//	  getch();
-
-//	  doTest();
-
-//	  puts("Then, check out Mode X, 320x240 with 3 (and a half) pages.");
-//	  puts("Press a key when ready...");
-//	  getch();
-
-//++++0000
 		setvideo(1);
 // screen savers
 
@@ -651,15 +274,27 @@ int main(void)
 		}
 		//end of screen savers
 		//doTest();
-		for (int x = 0; x < width; ++x)
+		for (int x = 0; x < VW; ++x)
 			{
 				mxPutPixel(x, 0, 15);
-				mxPutPixel(x, height-1, 15);
+				mxPutPixel(x, SH-1, 15);
 			}
-		for (int y = 0; y < height; ++y)
+		for (int y = 0; y < VH; ++y)
 			{
 				mxPutPixel(0, y, 15);
-				mxPutPixel(width-1, y, 15);
+				mxPutPixel(SW-1, y, 15);
+			}
+
+		getch();
+		for (int x = 320; x < VW; ++x)
+			{
+				mxPutPixel(x, 0, 15);
+				mxPutPixel(x, VH-1, 15);
+			}
+		for (int y = 240; y < VH; ++y)
+			{
+				mxPutPixel(0, y, 15);
+				mxPutPixel(VW-1, y, 15);
 			}
 		getch();
 		while(!kbhit()){
@@ -670,18 +305,18 @@ int main(void)
 			//for(int i=0;i<TILEWH;i++){
 				ding(key);
 				mxPan(xpos,ypos);
-				mxWaitRetrace();
-				xpos=xpos+xdir;
-				ypos=ypos+ydir;
-				if( (xpos>239)  || (xpos<1))xdir=-xdir;
-				if( (ypos>179) || (ypos<1))ydir=-ydir; // { Hit a boundry, change
+				//mxWaitRetrace();
+				xpos+=xdir;
+				ypos+=ydir;
+				if( (xpos>(VW-SW-1))  || (xpos<1)){xdir=-xdir;}
+				if( (ypos>(VH-SH-1)) || (ypos<1)){ydir=-ydir;} // { Hit a boundry, change
 			//    direction! }
 			//}
 		}
 		setvideo(0);
-		printf("wwww\n%dx%d\n", width,height);
-		printf("[%d]\n", mxGetVersion());
-		puts("where to next?  It's your move! wwww");
+		printf("wwww\nResolution: %dx%d\n", SW,SH);
+		printf("Mode X Library Version: %d\n", mxGetVersion());
+		//puts("where to next?  It's your move! wwww");
 		printf("bakapi ver. 1.04.09.04\nis made by sparky4i†ƒÖ…j feel free to use it ^^\nLicence: GPL v2\n");
 		return 0;
 		}

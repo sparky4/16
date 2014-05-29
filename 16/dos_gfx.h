@@ -17,6 +17,10 @@
 		     // Size = 160 = 4 across, 1 down*/
 //#define VMEM	    0xA000 // = vga
 byte Xfont[2048];
+#define SW	320
+#define SH	240
+#define VW	560
+#define VH	416
 
 //void drawChar(int x, int y, int color, byte c);
 //void drawText(int x, int y, int color, byte string);
@@ -27,10 +31,10 @@ void cls(byte color, byte *Where);
 //void clearscr();
 //void plotpixel(int x, int y, byte color, byte *Where);
 //void plotpixelfast(int x, int y, byte color, byte *Where);
-void putPixel_X(int x, int y, byte color);
-void putColorBox_X(int x, int y, int w, int h, byte color);
-void vScroll(int rows);
-void scrolly(int bong);
+//void putPixel_X(int x, int y, byte color);
+//void putColorBox_X(int x, int y, int w, int h, byte color);
+//void vScroll(int rows);
+//void scrolly(int bong);
 //void wait_for_retrace(void); // Waits for vertical retrace
 //void BlockMove();
 //void eraseplayer(int x, int y);
