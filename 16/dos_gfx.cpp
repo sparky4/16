@@ -182,18 +182,18 @@ int ding(int q){
 								}
 						}else{
 								if(!bakax){
-//									xx-=TILEWH;
-									xx--;
+									xx-=TILEWH;
+//									xx--;
 								}else if(bakax>1){
-//									xx+=TILEWH;
-									xx++;
+									xx+=TILEWH;
+//									xx++;
 								}
 								if(!bakay){
-//									yy-=TILEWH;
-									yy--;
+									yy-=TILEWH;
+//									yy--;
 								}else if(bakay>1){
-//									yy+=TILEWH;
-									yy++;
+									yy+=TILEWH;
+//									yy++;
 								}
 						}
 				}
@@ -216,8 +216,8 @@ int ding(int q){
 
 				// plot the pixel
 				}else{
-//					mxFillBox(xx, yy, TILEWH, TILEWH, coor, 0);
-					mxPutPixel(xx, yy, coor);
+					mxFillBox(xx, yy, TILEWH, TILEWH, coor, 0);
+//					mxPutPixel(xx, yy, coor);
 				} 
 
 				if(q==2) mxPutPixel(rand()%SW, rand()%(SH*3), 0);
@@ -296,6 +296,11 @@ int main(void)
 				mxPutPixel(0, y, 15);
 				mxPutPixel(VW-1, y, 15);
 			}
+		mxSetTextColor(16, OP_TRANS);
+				mxOutText(64, SH-40, "CRAZY!!!!");
+				mxOutText(64, SH-32, "CRAZY!!!!");
+				mxOutText(64, SH-24, "  _  CRAZY!!!!");
+				mxOutText(64, SH-16, "  _    _  CRAZY!!!!");
 		getch();
 		while(!kbhit()){
 //			hScroll(1);
@@ -304,6 +309,10 @@ int main(void)
 //			delay(100);
 			//for(int i=0;i<TILEWH;i++){
 				ding(key);
+				mxOutText(64, SH-40, "CRAZY!!!!");
+				mxOutText(64, SH-32, "CRAZY!!!!");
+				mxOutText(64, SH-24, "  _  CRAZY!!!!");
+				mxOutText(64, SH-16, "  _    _  CRAZY!!!!");
 				mxPan(xpos,ypos);
 				//mxWaitRetrace();
 				xpos+=xdir;
