@@ -112,7 +112,7 @@ int ding(int q){
 		||q==16
 		) && gq == BONK){
 						if(coor < HGQ && coor < LGQ) coor = LGQ;
-						if(coor < HGQ){
+						if(coor < HGQ-1){
 								coor++;
 				}else{ coor = LGQ;
 						bakax = rand()%3; bakay = rand()%3;
@@ -182,18 +182,18 @@ int ding(int q){
 								}
 						}else{
 								if(!bakax){
-									xx-=TILEWH;
-//									xx--;
+//									xx-=TILEWH;
+									xx--;
 								}else if(bakax>1){
-									xx+=TILEWH;
-//									xx++;
+//									xx+=TILEWH;
+									xx++;
 								}
 								if(!bakay){
-									yy-=TILEWH;
-//									yy--;
+//									yy-=TILEWH;
+									yy--;
 								}else if(bakay>1){
-									yy+=TILEWH;
-//									yy++;
+//									yy+=TILEWH;
+									yy++;
 								}
 						}
 				}
@@ -216,13 +216,13 @@ int ding(int q){
 
 				// plot the pixel
 				}else{
-					mxFillBox(xx, yy, TILEWH, TILEWH, coor, 0);
-//					mxPutPixel(xx, yy, coor);
+//					mxFillBox(xx, yy, TILEWH, TILEWH, coor, 16);
+					mxPutPixel(xx, yy, coor);
 				} 
 
-				if(q==2) mxPutPixel(rand()%SW, rand()%(SH*3), 0);
-				if(q==16) mxPutPixel(rand()%SW, rand()%(SH*3), 0);
-				if(q==2||q==4||q==16){ bakax = rand()%3; bakay = rand()%3; }
+				if(q==2) mxPutPixel(rand()%VW, rand()%(VH), 0);
+				if(q==16) mxPutPixel(rand()%VW, rand()%(VH), 0);
+				if(q==2||q==4||q==16){ bakax = rand()%3; bakay = rand()%3; }  //random 3 switch
 				gq++;
 //if(xx<0||xx>320||yy<0||yy>(SH*3))
 //	  printf("%d %d %d %d %d %d\n", xx, yy, coor, bakax, bakay, getPixel_X(xx,yy));
@@ -245,6 +245,7 @@ int ding(int q){
 int main(void)
 		{
 		int key,d,xpos,ypos,xdir,ydir;
+		int ch=0x0;
 		//short int temp;
 		// main variables
 		d=1; // switch variable
@@ -269,7 +270,8 @@ int main(void)
 						setvideo(1);
 				}
 		}*/ // else off
-		while(!kbhit()){ // conditions of screen saver
+		while(1){ // conditions of screen saver
+		while(!kbhit()){
 			ding(key);
 		}
 		//end of screen savers
@@ -284,8 +286,6 @@ int main(void)
 				mxPutPixel(0, y, 15);
 				mxPutPixel(SW-1, y, 15);
 			}
-
-		getch();
 		for (int x = 320; x < VW; ++x)
 			{
 				mxPutPixel(x, 0, 15);
@@ -296,11 +296,17 @@ int main(void)
 				mxPutPixel(0, y, 15);
 				mxPutPixel(VW-1, y, 15);
 			}
+			
+		getch();
+		//mxFillBox(xx, yy, QUADWH, QUADWH, 1, 16);
+		//mxFillBox(xx, yy, QUADWH, QUADWH, 2, 16);
+		//mxFillBox(xx, yy, QUADWH, QUADWH, 3, 16);
+		//mxFillBox(xx, yy, QUADWH, QUADWH, 4, 16);
 		mxSetTextColor(16, OP_TRANS);
-				mxOutText(64, SH-40, "CRAZY!!!!");
-				mxOutText(64, SH-32, "CRAZY!!!!");
-				mxOutText(64, SH-24, "  _  CRAZY!!!!");
-				mxOutText(64, SH-16, "  _    _  CRAZY!!!!");
+				mxOutText(56, SH-40, "CRAZY!!!!]");
+				mxOutText(64, SH-32, "CRAZY!!!!]");
+				mxOutText(64, SH-24, "____  CRAZY!!!!]");
+				mxOutText(56, SH-16, "___    _  CRAZY!!!!]");
 		getch();
 		while(!kbhit()){
 //			hScroll(1);
@@ -309,18 +315,23 @@ int main(void)
 //			delay(100);
 			//for(int i=0;i<TILEWH;i++){
 				ding(key);
-				mxOutText(64, SH-40, "CRAZY!!!!");
-				mxOutText(64, SH-32, "CRAZY!!!!");
-				mxOutText(64, SH-24, "  _  CRAZY!!!!");
-				mxOutText(64, SH-16, "  _    _  CRAZY!!!!");
+				//mxOutText(64, SH-40, "CRAZY!!!!");
+				//mxOutText(64, SH-32, "CRAZY!!!!");
+				//mxOutText(64, SH-24, "  _  CRAZY!!!!");
+				//mxOutText(64, SH-16, "  _    _  CRAZY!!!!");
 				mxPan(xpos,ypos);
-				//mxWaitRetrace();
-				xpos+=xdir;
-				ypos+=ydir;
+				for(int o = 0; o<TILEWH; o++){
+					xpos+=xdir;
+					ypos+=ydir;
+					//mxWaitRetrace();
+				}
 				if( (xpos>(VW-SW-1))  || (xpos<1)){xdir=-xdir;}
 				if( (ypos>(VH-SH-1)) || (ypos<1)){ydir=-ydir;} // { Hit a boundry, change
 			//    direction! }
-			//}
+			}
+			ch=getch();
+			if(ch==0x71)break; // 'q'
+			if(ch==0x1b)break; // 'ESC'
 		}
 		setvideo(0);
 		printf("wwww\nResolution: %dx%d\n", SW,SH);
