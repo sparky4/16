@@ -98,7 +98,7 @@
 
 typedef unsigned char byte;
 typedef unsigned int word;
-typedef unsigned short cord;
+typedef unsigned short syte;
 
 void wait(clock_t wait);
 

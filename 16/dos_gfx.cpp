@@ -5,11 +5,11 @@
 
 int old_mode;
 //color ‚Ä‚·‚Æ
-int gq = LGQ;
+short gq = LGQ;
+
 //‚Ä‚·‚Æ
-int q = 0;
-int bakax = 0, bakay = 0;
-cord xx = rand()&0%320, yy = rand()&0%240, sx = 0, sy = 0;
+short bakax = 0, bakay = 0;
+syte xx = rand()&0%SW, yy = rand()&0%SH, sx = 0, sy = 0;
 byte coor;
 
 byte *vga = (byte *) MK_FP(0xA000, 0);
@@ -25,7 +25,7 @@ byte *vga = (byte *) MK_FP(0xA000, 0);
 // setvideo() - This function Manages the video modes					  //
 //                                                                         //
 /////////////////////////////////////////////////////////////////////////////
-void setvideo(/*byte mode, */int vq){
+void setvideo(/*byte mode, */short vq){
 		union REGS in, out;
 
 		if(!vq){ // deinit the video
@@ -36,7 +36,7 @@ void setvideo(/*byte mode, */int vq){
 				in.h.al = old_mode;
 				int86(0x10, &in, &out);
 
-		}else if(vq == 1){ // init the video
+		}else if(vq==1){ // init the video
 				// get old video mode
 				in.h.ah = 0xf;
 				int86(0x10, &in, &out);
@@ -65,7 +65,7 @@ void cls(byte color, byte *Where){
 }
 
 //color ‚Ä‚·‚Æ
-int colortest(){
+short colortest(){
 		if(gq < NUM_COLORS){
 				cls(gq, vga);
 				gq++;
@@ -74,7 +74,7 @@ int colortest(){
 }
 
 //color ‚Ä‚·‚Æ
-int colorz(){
+short colorz(){
 		if(gq < HGQ){
 //----		  cls(gq, vaddr);
 				cls(gq, vga);
@@ -84,7 +84,7 @@ int colorz(){
 }
 
 //slow spectrum down
-void ssd(int svq){
+void ssd(short svq){
 		if(sy < SH+1){
 				if(sx < SW+1){
 						//plotpixel(xx, yy, coor, vga);
@@ -102,9 +102,9 @@ void ssd(int svq){
 }
 
 /*-----------ding-------------*/
-int ding(int q){
+short ding(int q){
 
-		int d3y;
+		short d3y;
 
 //++++  if(q <= 4 && q!=2 && gq == BONK-1) coor = rand()%HGQ;
 		if((q == 2
@@ -119,7 +119,7 @@ int ding(int q){
 				}
 		}
 
-		if(q==8){ colorz(); return gq; }else
+		if(q==8){ colorz(); return gq; mxOutText(SW/2, SH/2, "ƒoƒJƒs"); }else
 		if(q==10){ ssd(q); /*printf("%d\n", coor);*/ }else
 		if(q==5){ colortest(); return gq; }else
 		if(q==11){ colorz(); delay(100); return gq; }
@@ -138,17 +138,17 @@ int ding(int q){
 		}
 		if((q<5 && gq<BONK) || (q==16 && gq<BONK)){ // the number variable make the colors more noticable
 				if(q==1){
-						if(xx==SW){bakax=0;}
+						if(xx==VW){bakax=0;}
 						if(xx==0){bakax=1;}
-						if(yy==SH){bakay=0;}
+						if(yy==VH){bakay=0;}
 						if(yy==0){bakay=1;}
 				}else if(q==3){
-						if(xx!=SW||yy!=SH){
+						if(xx!=VW||yy!=VH){
 								if(xx==0){bakax=1;bakay=-1;d3y=1;}
 								if(yy==0){bakax=1;bakay=0;d3y=1;}
-								if(xx==SW){bakax=-1;bakay=-1;d3y=1;}
-								if(yy==SH){bakax=1;bakay=0;d3y=1;}
-						}else if(xx==SW&&yy==SH) xx=yy=0;
+								if(xx==VW){bakax=-1;bakay=-1;d3y=1;}
+								if(yy==VH){bakax=1;bakay=0;d3y=1;}
+						}else if(xx==VW&&yy==VH) xx=yy=0;
 				}
 				if(q==3){
 						if(d3y){
@@ -208,7 +208,7 @@ int ding(int q){
 //interesting effects
 				if(q==16)
 				{
-				int tx=0,ty=0;
+				short tx=0,ty=0;
 				tx+=xx+16;
 				ty+=yy+16;
 				mxPutPixel(tx, ty, coor);
@@ -225,8 +225,7 @@ int ding(int q){
 				if(q==2||q==4||q==16){ bakax = rand()%3; bakay = rand()%3; }  //random 3 switch
 				gq++;
 //if(xx<0||xx>320||yy<0||yy>(SH*3))
-//	  printf("%d %d %d %d %d %d\n", xx, yy, coor, bakax, bakay, getPixel_X(xx,yy));
-//	  printf("%d\n", getPixel_X(xx,yy));
+//	  printf("%d %d %d %d %d\n", xx, yy, coor, bakax, bakay);
 		}else gq = LGQ;
 		return gq;
 }
@@ -244,12 +243,11 @@ int ding(int q){
 
 int main(void)
 		{
-		int key,d,xpos,ypos,xdir,ydir;
+		short key,d,xpos,ypos,xdir,ydir;
 		int ch=0x0;
-		//short int temp;
 		// main variables
-		d=1; // switch variable
-		key=4; // default screensaver number
+		d=4; // switch variable
+		key=3; // default screensaver number
 		xpos=0;
 		ypos=0;
 		xdir=1;
@@ -302,7 +300,7 @@ int main(void)
 		//mxFillBox(xx, yy, QUADWH, QUADWH, 2, 16);
 		//mxFillBox(xx, yy, QUADWH, QUADWH, 3, 16);
 		//mxFillBox(xx, yy, QUADWH, QUADWH, 4, 16);
-		mxSetTextColor(16, OP_TRANS);
+		mxSetTextColor(8, OP_TRANS);
 				mxOutText(56, SH-40, "CRAZY!!!!]");
 				mxOutText(64, SH-32, "CRAZY!!!!]");
 				mxOutText(64, SH-24, "____  CRAZY!!!!]");
@@ -320,7 +318,7 @@ int main(void)
 				//mxOutText(64, SH-24, "  _  CRAZY!!!!");
 				//mxOutText(64, SH-16, "  _    _  CRAZY!!!!");
 				mxPan(xpos,ypos);
-				for(int o = 0; o<TILEWH; o++){
+				for(short o = 0; o<TILEWH; o++){
 					xpos+=xdir;
 					ypos+=ydir;
 					//mxWaitRetrace();

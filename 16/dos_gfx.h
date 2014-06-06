@@ -25,7 +25,7 @@ byte Xfont[2048];
 
 //void drawChar(int x, int y, int color, byte c);
 //void drawText(int x, int y, int color, byte string);
-void setvideo(/*byte mode, */int vq);
+void setvideo(/*byte mode, */short vq);
 //void setvbuff(int vq);
 //void updatevbuff();
 void cls(byte color, byte *Where);
@@ -40,11 +40,11 @@ void cls(byte color, byte *Where);
 //void BlockMove();
 //void eraseplayer(int x, int y);
 //void drawplayer(int x, int y, int color);
-int colortest();
-int colorz();
-void ssd(int svq);
+short colortest();
+short colorz();
+void ssd(short svq);
 //void pdump(int mult);
 //void tulip();
-int ding(int q);
+short ding(int q);
 
 #endif/*_DOSLIB_GFX_H_*/
