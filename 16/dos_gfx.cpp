@@ -19,6 +19,7 @@ byte *vga = (byte *) MK_FP(0xA000, 0);
  * to be included.
  */
 #define TESTING
+#define TILE
 
 /////////////////////////////////////////////////////////////////////////////
 //                                                                         //
@@ -47,10 +48,11 @@ void setvideo(/*byte mode, */short vq){
 				mxSetMode( MX_320x240 );
 //				mxSetVirtualScreen(SW+(SW/4), SH+(SH/4));
 //				mxSetVirtualScreen(SW*2, SH*2);
-				mxSetVirtualScreen(VW,VH);
+				mxSetVirtualScreen(VW,(VH+(TILEWH*BUFFMX)));
 //				mxSetVirtualScreen((640-(TILEWH*4)),(480-(TILEWH*4)));
-				mxSetClip(0);
-				//mxSetClipRegion(0, 0, SW, SH);
+				mxSetClip(true);
+				mxSetClipRegion(0, 0, VW, (VH+(TILEWH*BUFFMX)));
+				//mxSetClipRegion(0, VH+1, VW, (TILEWH*BUFFMX));
 		}
 }
 
@@ -61,7 +63,7 @@ void setvideo(/*byte mode, */short vq){
 //																		 //
 /////////////////////////////////////////////////////////////////////////////
 void cls(byte color, byte *Where){
-		_fmemset(Where, color, VW*(VH));
+		_fmemset(Where, color, VW*(VH*1.5));
 }
 
 //color てすと
@@ -119,7 +121,7 @@ short ding(int q){
 				}
 		}
 
-		if(q==8){ colorz(); return gq; mxOutText(SW/2, SH/2, "バカピ"); }else
+		if(q==8){ colorz(); return gq; mxOutText(SW/2, SH/2, "bakapi"); }else
 		if(q==10){ ssd(q); /*printf("%d\n", coor);*/ }else
 		if(q==5){ colortest(); return gq; }else
 		if(q==11){ colorz(); delay(100); return gq; }
@@ -182,18 +184,30 @@ short ding(int q){
 								}
 						}else{
 								if(!bakax){
-//									xx-=TILEWH;
+									#ifdef TILE
+									xx-=TILEWH;
+									#else
 									xx--;
+									#endif
 								}else if(bakax>1){
-//									xx+=TILEWH;
+									#ifdef TILE
+									xx+=TILEWH;
+									#else
 									xx++;
+									#endif
 								}
 								if(!bakay){
-//									yy-=TILEWH;
+									#ifdef TILE
+									yy-=TILEWH;
+									#else
 									yy--;
+									#endif
 								}else if(bakay>1){
-//									yy+=TILEWH;
+									#ifdef TILE
+									yy+=TILEWH;
+									#else
 									yy++;
+									#endif
 								}
 						}
 				}
@@ -202,7 +216,7 @@ short ding(int q){
 						if(xx<0) xx=(VW/*-TILEWH*/);
 						if(yy<0) yy=(VH/*-TILEWH*/);
 						if(xx>(VW/*-TILEWH*/)) xx=0;
-						if(yy>(VH/*-TILEWH*/)) yy=0;
+						if(yy>(VH+(TILEWH*BUFFMX))) yy=0;
 				}
 
 //interesting effects
@@ -216,8 +230,11 @@ short ding(int q){
 
 				// plot the pixel
 				}else{
-//					mxFillBox(xx, yy, TILEWH, TILEWH, coor, 16);
+					#ifdef TILE
+					mxFillBox(xx, yy, TILEWH, TILEWH, coor, OP_SET);
+					#else
 					mxPutPixel(xx, yy, coor);
+					#endif
 				} 
 
 				if(q==2) mxPutPixel(rand()%VW, rand()%(VH), 0);
@@ -247,7 +264,7 @@ int main(void)
 		int ch=0x0;
 		// main variables
 		d=4; // switch variable
-		key=3; // default screensaver number
+		key=4; // default screensaver number
 		xpos=0;
 		ypos=0;
 		xdir=1;
@@ -321,10 +338,10 @@ int main(void)
 				for(short o = 0; o<TILEWH; o++){
 					xpos+=xdir;
 					ypos+=ydir;
-					//mxWaitRetrace();
+					mxWaitRetrace();
 				}
 				if( (xpos>(VW-SW-1))  || (xpos<1)){xdir=-xdir;}
-				if( (ypos>(VH-SH-1)) || (ypos<1)){ydir=-ydir;} // { Hit a boundry, change
+				if( (ypos>((VH+(TILEWH*13))-SH-1)) || (ypos<1)){ydir=-ydir; delay(1000);} // { Hit a boundry, change
 			//    direction! }
 			}
 			ch=getch();
@@ -332,7 +349,7 @@ int main(void)
 			if(ch==0x1b)break; // 'ESC'
 		}
 		setvideo(0);
-		printf("wwww\nResolution: %dx%d\n", SW,SH);
+		printf("wwww\nVirtual Resolution: %dx%d\n", VW,VH);
 		printf("Mode X Library Version: %d\n", mxGetVersion());
 		//puts("where to next?  It's your move! wwww");
 		printf("bakapi ver. 1.04.09.04\nis made by sparky4（≧ω≦） feel free to use it ^^\nLicence: GPL v2\n");

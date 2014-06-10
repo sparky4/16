@@ -11,13 +11,14 @@
 #define BONK	    400
 #define LGQ	     32
 #define HGQ	     56
-#define TILEWH			  16
+#define TILEWH			16
 #define QUADWH			TILEWH/4
+#define BUFFMX			3
 /*byte SIZE = 80;	// Size =  40 = 1 across, 4 down
 		     // Size =  80 = 2 across, 2 down
 		     // Size = 160 = 4 across, 1 down*/
 //#define VMEM	    0xA000 // = vga
-byte Xfont[2048];
+
 #define SW	320
 #define SH	240
 #define VW	560
