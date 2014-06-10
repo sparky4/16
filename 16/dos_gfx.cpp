@@ -301,7 +301,7 @@ int main(void)
 				mxPutPixel(0, y, 15);
 				mxPutPixel(SW-1, y, 15);
 			}
-		for (int x = 320; x < VW; ++x)
+		for (int x = 0; x < VW; ++x)
 			{
 				mxPutPixel(x, 0, 15);
 				mxPutPixel(x, VH-1, 15);
@@ -312,36 +312,32 @@ int main(void)
 				mxPutPixel(VW-1, y, 15);
 			}
 			
-		getch();
-		//mxFillBox(xx, yy, QUADWH, QUADWH, 1, 16);
-		//mxFillBox(xx, yy, QUADWH, QUADWH, 2, 16);
-		//mxFillBox(xx, yy, QUADWH, QUADWH, 3, 16);
-		//mxFillBox(xx, yy, QUADWH, QUADWH, 4, 16);
-		mxSetTextColor(8, OP_TRANS);
-				mxOutText(56, SH-40, "CRAZY!!!!]");
-				mxOutText(64, SH-32, "CRAZY!!!!]");
-				mxOutText(64, SH-24, "____  CRAZY!!!!]");
-				mxOutText(56, SH-16, "___    _  CRAZY!!!!]");
-		getch();
+			getch();
+			mxSetTextColor(8, OP_TRANS);
+			mxOutText(xpos+(QUADWH*6)+1, ypos+SH-48, "==================================");
+			mxOutText(xpos+(QUADWH*6)+1, ypos+SH-40, "CRAZY!!!!]");
+			mxOutText(xpos+(QUADWH*6)+1, ypos+SH-32, "CRAZY!!!!]");
+			mxOutText(xpos+(QUADWH*6)+1, ypos+SH-24, "____  CRAZY!!!!]");
+			mxOutText(xpos+(QUADWH*6)+1, ypos+SH-16, "___    _  CRAZY!!!!]");
+			mxOutText(xpos+(QUADWH*6)+1, ypos+SH-8, "==================================");
+			getch();
 		while(!kbhit()){
 //			hScroll(1);
 //			scrolly(1);
 //			vScroll(1);
 //			delay(100);
 			//for(int i=0;i<TILEWH;i++){
+				
 				ding(key);
-				//mxOutText(64, SH-40, "CRAZY!!!!");
-				//mxOutText(64, SH-32, "CRAZY!!!!");
-				//mxOutText(64, SH-24, "  _  CRAZY!!!!");
-				//mxOutText(64, SH-16, "  _    _  CRAZY!!!!");
 				mxPan(xpos,ypos);
-				for(short o = 0; o<TILEWH; o++){
+				//for(short o = 0; o<TILEWH; o++){
 					xpos+=xdir;
 					ypos+=ydir;
+					if(ypos==1 || (ypos==((VH+(TILEWH*BUFFMX))-SH-1)))delay(1000);
 					mxWaitRetrace();
-				}
+				//}
 				if( (xpos>(VW-SW-1))  || (xpos<1)){xdir=-xdir;}
-				if( (ypos>((VH+(TILEWH*13))-SH-1)) || (ypos<1)){ydir=-ydir; delay(1000);} // { Hit a boundry, change
+				if( (ypos>((VH+(TILEWH*BUFFMX))-SH-1)) || (ypos<1)){ydir=-ydir;} // { Hit a boundry, change
 			//    direction! }
 			}
 			ch=getch();
@@ -350,6 +346,7 @@ int main(void)
 		}
 		setvideo(0);
 		printf("wwww\nVirtual Resolution: %dx%d\n", VW,VH);
+		printf("Resolution: %dx%d\n", SW,SH);
 		printf("Mode X Library Version: %d\n", mxGetVersion());
 		//puts("where to next?  It's your move! wwww");
 		printf("bakapi ver. 1.04.09.04\nis made by sparky4i†ƒÖ…j feel free to use it ^^\nLicence: GPL v2\n");

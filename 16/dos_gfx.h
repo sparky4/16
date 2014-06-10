@@ -12,7 +12,7 @@
 #define LGQ	     32
 #define HGQ	     56
 #define TILEWH			16
-#define QUADWH			TILEWH/4
+#define QUADWH			TILEWH/2
 #define BUFFMX			3
 /*byte SIZE = 80;	// Size =  40 = 1 across, 4 down
 		     // Size =  80 = 2 across, 2 down
