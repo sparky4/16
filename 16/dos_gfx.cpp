@@ -63,7 +63,7 @@ void setvideo(/*byte mode, */short vq){
 //																		 //
 /////////////////////////////////////////////////////////////////////////////
 void cls(byte color, byte *Where){
-		_fmemset(Where, color, VW*(VH*1.5));
+		_fmemset(Where, color, VW*(VH*2));
 }
 
 //color ‚Ä‚·‚Æ
@@ -213,10 +213,17 @@ short ding(int q){
 				}
 				// fixer
 				if(q!=16){
-						if(xx<0) xx=(VW/*-TILEWH*/);
-						if(yy<0) yy=(VH/*-TILEWH*/);
-						if(xx>(VW/*-TILEWH*/)) xx=0;
-						if(yy>(VH+(TILEWH*BUFFMX))) yy=0;
+					#ifdef TILE
+						if(xx<0) xx=(VW-TILEWH);
+						if(yy<0) yy=(VH-TILEWH);
+						if(xx>(VW-TILEWH)) xx=0;
+						if(yy>(VH-TILEWH)/*+(TILEWH*BUFFMX)*/) yy=0;
+					#else
+						if(xx<0) xx=VW;
+						if(yy<0) yy=VH;
+						if(xx>VW) xx=0;
+						if(yy>VH) yy=0;
+					#endif
 				}
 
 //interesting effects
@@ -313,13 +320,19 @@ int main(void)
 			}
 			
 			getch();
-			mxSetTextColor(8, OP_TRANS);
+			//text box
+			mxSetTextColor(10, OP_TRANS); //set font
+			mxBitBlt(xpos, ypos+(TILEWH*12), 320, TILEWH*BUFFMX, 0, VH); //copy background
+			mxFillBox(xpos, ypos+(TILEWH*12), 320, TILEWH*BUFFMX, 0, OP_SET); // background for text box
 			mxOutText(xpos+(QUADWH*6)+1, ypos+SH-48, "==================================");
 			mxOutText(xpos+(QUADWH*6)+1, ypos+SH-40, "CRAZY!!!!]");
 			mxOutText(xpos+(QUADWH*6)+1, ypos+SH-32, "CRAZY!!!!]");
 			mxOutText(xpos+(QUADWH*6)+1, ypos+SH-24, "____  CRAZY!!!!]");
 			mxOutText(xpos+(QUADWH*6)+1, ypos+SH-16, "___    _  CRAZY!!!!]");
 			mxOutText(xpos+(QUADWH*6)+1, ypos+SH-8, "==================================");
+			getch();
+			mxBitBlt(0, VH, 320, TILEWH*BUFFMX, xpos, ypos+(TILEWH*12)); //copy background
+			//mxBitBlt(0, (TILEWH*12)+1, 320, TILEWH*3, 0, 0);
 			getch();
 		while(!kbhit()){
 //			hScroll(1);
