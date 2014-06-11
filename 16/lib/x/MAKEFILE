@@ -52,7 +52,7 @@ ASMO = /m5 /p
 #
 # PAS compiler
 #
-PASC = bpc
+PASC = tpc
 PASO = /m -$D- -$L- -$S-
 
 #

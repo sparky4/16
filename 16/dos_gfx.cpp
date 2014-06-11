@@ -19,7 +19,7 @@ byte *vga = (byte *) MK_FP(0xA000, 0);
  * to be included.
  */
 #define TESTING
-#define TILE
+//#define TILE
 
 /////////////////////////////////////////////////////////////////////////////
 //                                                                         //
@@ -324,12 +324,14 @@ int main(void)
 			mxSetTextColor(10, OP_TRANS); //set font
 			mxBitBlt(xpos, ypos+(TILEWH*12), 320, TILEWH*BUFFMX, 0, VH); //copy background
 			mxFillBox(xpos, ypos+(TILEWH*12), 320, TILEWH*BUFFMX, 0, OP_SET); // background for text box
-			mxOutText(xpos+(QUADWH*6)+1, ypos+SH-48, "==================================");
-			mxOutText(xpos+(QUADWH*6)+1, ypos+SH-40, "CRAZY!!!!]");
-			mxOutText(xpos+(QUADWH*6)+1, ypos+SH-32, "CRAZY!!!!]");
-			mxOutText(xpos+(QUADWH*6)+1, ypos+SH-24, "____  CRAZY!!!!]");
-			mxOutText(xpos+(QUADWH*6)+1, ypos+SH-16, "___    _  CRAZY!!!!]");
-			mxOutText(xpos+(QUADWH*6)+1, ypos+SH-8, "==================================");
+			//+(QUADWH*6)
+			mxOutText(xpos+1, ypos+SH-48, "========================================");
+			mxOutText(xpos+1, ypos+SH-40, "|    |Chikyuu:$line1");
+			mxOutText(xpos+1, ypos+SH-32, "|    |$line2");
+			mxOutText(xpos+1, ypos+SH-24, "|    |$line3");
+			mxOutText(xpos+1, ypos+SH-16, "|    |$line4");
+			mxOutText(xpos+1, ypos+SH-8,  "========================================");
+			mxFillBox(xpos+QUADWH, ypos+QUADWH+(TILEWH*12), TILEWH*2, TILEWH*2, 9, OP_SET);
 			getch();
 			mxBitBlt(0, VH, 320, TILEWH*BUFFMX, xpos, ypos+(TILEWH*12)); //copy background
 			//mxBitBlt(0, (TILEWH*12)+1, 320, TILEWH*3, 0, 0);
@@ -344,10 +346,10 @@ int main(void)
 				ding(key);
 				mxPan(xpos,ypos);
 				//for(short o = 0; o<TILEWH; o++){
-					xpos+=xdir;
-					ypos+=ydir;
+					//xpos+=xdir;
+					//ypos+=ydir;
 					if(ypos==1 || (ypos==((VH+(TILEWH*BUFFMX))-SH-1)))delay(1000);
-					mxWaitRetrace();
+					//mxWaitRetrace();
 				//}
 				if( (xpos>(VW-SW-1))  || (xpos<1)){xdir=-xdir;}
 				if( (ypos>((VH+(TILEWH*BUFFMX))-SH-1)) || (ypos<1)){ydir=-ydir;} // { Hit a boundry, change
@@ -361,7 +363,6 @@ int main(void)
 		printf("wwww\nVirtual Resolution: %dx%d\n", VW,VH);
 		printf("Resolution: %dx%d\n", SW,SH);
 		printf("Mode X Library Version: %d\n", mxGetVersion());
-		//puts("where to next?  It's your move! wwww");
 		printf("bakapi ver. 1.04.09.04\nis made by sparky4i†ƒÖ…j feel free to use it ^^\nLicence: GPL v2\n");
 		return 0;
 		}
