@@ -48,10 +48,11 @@ void setvideo(/*byte mode, */short vq){
 				mxSetMode( MX_320x240 );
 //				mxSetVirtualScreen(SW+(SW/4), SH+(SH/4));
 //				mxSetVirtualScreen(SW*2, SH*2);
-				mxSetVirtualScreen(VW,(VH+(TILEWH*BUFFMX)));
+				mxSetVirtualScreen(VW,BH);
 //				mxSetVirtualScreen((640-(TILEWH*4)),(480-(TILEWH*4)));
 				mxSetClip(true);
-				mxSetClipRegion(0, 0, VW, (VH+(TILEWH*BUFFMX)));
+				mxSetClipRegion(0, 0, VW, BH);
+				mxPan(TILEWH*2,TILEWH*2);
 				//mxSetClipRegion(0, VH+1, VW, (TILEWH*BUFFMX));
 		}
 }
@@ -272,8 +273,8 @@ int main(void)
 		// main variables
 		d=4; // switch variable
 		key=4; // default screensaver number
-		xpos=0;
-		ypos=0;
+		xpos=TILEWH*2;
+		ypos=TILEWH*2;
 		xdir=1;
 		ydir=1;
 		setvideo(1);
@@ -322,7 +323,7 @@ int main(void)
 			getch();
 			//text box
 			mxSetTextColor(10, OP_TRANS); //set font
-			mxBitBlt(xpos, ypos+(TILEWH*12), 320, TILEWH*BUFFMX, 0, VH); //copy background
+			mxBitBlt(xpos, ypos+(TILEWH*12), 320, TILEWH*BUFFMX, 0, BS); //copy background
 			mxFillBox(xpos, ypos+(TILEWH*12), 320, TILEWH*BUFFMX, 0, OP_SET); // background for text box
 			//+(QUADWH*6)
 			mxOutText(xpos+1, ypos+SH-48, "========================================");
@@ -331,9 +332,9 @@ int main(void)
 			mxOutText(xpos+1, ypos+SH-24, "|    |$line3");
 			mxOutText(xpos+1, ypos+SH-16, "|    |$line4");
 			mxOutText(xpos+1, ypos+SH-8,  "========================================");
-			mxFillBox(xpos+QUADWH, ypos+QUADWH+(TILEWH*12), TILEWH*2, TILEWH*2, 9, OP_SET);
+			mxFillBox(xpos+QUADWH, ypos+QUADWH+(TILEWH*12), TILEWH*2, TILEWH*2, 9, OP_SET); //portriat~
 			getch();
-			mxBitBlt(0, VH, 320, TILEWH*BUFFMX, xpos, ypos+(TILEWH*12)); //copy background
+			mxBitBlt(0, BS, 320, TILEWH*BUFFMX, xpos, ypos+(TILEWH*12)); //copy background
 			//mxBitBlt(0, (TILEWH*12)+1, 320, TILEWH*3, 0, 0);
 			getch();
 		while(!kbhit()){
@@ -346,13 +347,14 @@ int main(void)
 				ding(key);
 				mxPan(xpos,ypos);
 				//for(short o = 0; o<TILEWH; o++){
-					//xpos+=xdir;
-					//ypos+=ydir;
-					if(ypos==1 || (ypos==((VH+(TILEWH*BUFFMX))-SH-1)))delay(1000);
-					//mxWaitRetrace();
+					xpos+=xdir;
+					ypos+=ydir;
+					//if(ypos==1 || (ypos==(BH-SH-1)))delay(500);
+					//if((xpos>(VW-SW-1)) || (xpos<1))delay(500);
+					mxWaitRetrace();
 				//}
 				if( (xpos>(VW-SW-1))  || (xpos<1)){xdir=-xdir;}
-				if( (ypos>((VH+(TILEWH*BUFFMX))-SH-1)) || (ypos<1)){ydir=-ydir;} // { Hit a boundry, change
+				if( (ypos>(BH-SH-1)) || (ypos<1)){ydir=-ydir;} // { Hit a boundry, change
 			//    direction! }
 			}
 			ch=getch();
@@ -360,7 +362,8 @@ int main(void)
 			if(ch==0x1b)break; // 'ESC'
 		}
 		setvideo(0);
-		printf("wwww\nVirtual Resolution: %dx%d\n", VW,VH);
+		printf("wwww\nFull Buffer Virtual Resolution: %dx%d\n", VW,BH);
+		printf("Virtual Resolution: %dx%d\n", VW,VH);
 		printf("Resolution: %dx%d\n", SW,SH);
 		printf("Mode X Library Version: %d\n", mxGetVersion());
 		printf("bakapi ver. 1.04.09.04\nis made by sparky4i†ƒÖ…j feel free to use it ^^\nLicence: GPL v2\n");

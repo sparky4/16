@@ -21,8 +21,12 @@
 
 #define SW	320
 #define SH	240
-#define VW	560
-#define VH	416
+//#define VW	560
+//#define VH	416
+#define VW	(SW+64)
+#define VH	(SH+64)
+#define BS (VH*2) // buffer space! not BULLSHIT
+#define BH	BS+(TILEWH*BUFFMX) // buffer resolution
 
 //void drawChar(int x, int y, int color, byte c);
 //void drawText(int x, int y, int color, byte string);
