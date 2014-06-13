@@ -19,7 +19,7 @@ byte *vga = (byte *) MK_FP(0xA000, 0);
  * to be included.
  */
 #define TESTING
-//#define TILE
+#define TILE
 
 /////////////////////////////////////////////////////////////////////////////
 //                                                                         //
@@ -245,7 +245,12 @@ short ding(int q){
 					#endif
 				} 
 
-				if(q==2) mxPutPixel(rand()%VW, rand()%(VH), 0);
+				if(q==2)
+				#ifdef TILE
+					mxFillBox((rand()*TILEWH)%VW, (rand()*TILEWH)%(VH), TILEWH, TILEWH, 0, OP_SET);
+				#else
+					mxPutPixel(rand()%VW, rand()%(VH), 0);
+				#endif
 				if(q==16) mxPutPixel(rand()%VW, rand()%(VH), 0);
 				if(q==2||q==4||q==16){ bakax = rand()%3; bakay = rand()%3; }  //random 3 switch
 				gq++;
@@ -272,7 +277,7 @@ int main(void)
 		int ch=0x0;
 		// main variables
 		d=4; // switch variable
-		key=4; // default screensaver number
+		key=2; // default screensaver number
 		xpos=TILEWH*2;
 		ypos=TILEWH*2;
 		xdir=1;
@@ -299,7 +304,7 @@ int main(void)
 		}
 		//end of screen savers
 		//doTest();
-		for (int x = 0; x < VW; ++x)
+/*		for (int x = 0; x < VW; ++x)
 			{
 				mxPutPixel(x, 0, 15);
 				mxPutPixel(x, SH-1, 15);
@@ -320,11 +325,11 @@ int main(void)
 				mxPutPixel(VW-1, y, 15);
 			}
 			
-			getch();
+			getch();*/
 			//text box
 			mxSetTextColor(10, OP_TRANS); //set font
-			mxBitBlt(xpos, ypos+(TILEWH*12), 320, TILEWH*BUFFMX, 0, BS); //copy background
-			mxFillBox(xpos, ypos+(TILEWH*12), 320, TILEWH*BUFFMX, 0, OP_SET); // background for text box
+			mxBitBlt(xpos, ypos+(TILEWH*12), SW, TILEWH*BUFFMX, 0, BS); //copy background
+			mxFillBox(xpos, ypos+(TILEWH*12), SW, TILEWH*BUFFMX, 0, OP_SET); // background for text box
 			//+(QUADWH*6)
 			mxOutText(xpos+1, ypos+SH-48, "========================================");
 			mxOutText(xpos+1, ypos+SH-40, "|    |Chikyuu:$line1");
@@ -334,7 +339,7 @@ int main(void)
 			mxOutText(xpos+1, ypos+SH-8,  "========================================");
 			mxFillBox(xpos+QUADWH, ypos+QUADWH+(TILEWH*12), TILEWH*2, TILEWH*2, 9, OP_SET); //portriat~
 			getch();
-			mxBitBlt(0, BS, 320, TILEWH*BUFFMX, xpos, ypos+(TILEWH*12)); //copy background
+			mxBitBlt(0, BS, SW, TILEWH*BUFFMX, xpos, ypos+(TILEWH*12)); //copy background
 			//mxBitBlt(0, (TILEWH*12)+1, 320, TILEWH*3, 0, 0);
 			getch();
 		while(!kbhit()){
@@ -346,16 +351,20 @@ int main(void)
 				
 				ding(key);
 				mxPan(xpos,ypos);
+				mxBitBlt(xpos, ypos, SW, SH, 0, SH);
 				//for(short o = 0; o<TILEWH; o++){
 					xpos+=xdir;
 					ypos+=ydir;
 					//if(ypos==1 || (ypos==(BH-SH-1)))delay(500);
 					//if((xpos>(VW-SW-1)) || (xpos<1))delay(500);
-					mxWaitRetrace();
+					//mxWaitRetrace();
+					mxPan(TILEWH*2,TILEWH*2);
+					mxBitBlt(0, SH, SW, SH, xpos, ypos);
 				//}
 				if( (xpos>(VW-SW-1))  || (xpos<1)){xdir=-xdir;}
 				if( (ypos>(BH-SH-1)) || (ypos<1)){ydir=-ydir;} // { Hit a boundry, change
 			//    direction! }
+			
 			}
 			ch=getch();
 			if(ch==0x71)break; // 'q'
