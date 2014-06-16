@@ -298,6 +298,7 @@ int main(void)
 						setvideo(1);
 				}
 		}*/ // else off
+		mxFillBox(0, 0, VW, BH, 10, OP_SET);
 		while(1){ // conditions of screen saver
 		while(!kbhit()){
 			ding(key);
@@ -324,8 +325,8 @@ int main(void)
 				mxPutPixel(0, y, 15);
 				mxPutPixel(VW-1, y, 15);
 			}
-			
-			getch();*/
+			*/
+			getch();
 			//text box
 			mxSetTextColor(10, OP_TRANS); //set font
 			mxBitBlt(xpos, ypos+(TILEWH*12), SW, TILEWH*BUFFMX, 0, BS); //copy background
@@ -340,31 +341,31 @@ int main(void)
 			mxFillBox(xpos+QUADWH, ypos+QUADWH+(TILEWH*12), TILEWH*2, TILEWH*2, 9, OP_SET); //portriat~
 			getch();
 			mxBitBlt(0, BS, SW, TILEWH*BUFFMX, xpos, ypos+(TILEWH*12)); //copy background
-			//mxBitBlt(0, (TILEWH*12)+1, 320, TILEWH*3, 0, 0);
 			getch();
 		while(!kbhit()){
-//			hScroll(1);
-//			scrolly(1);
-//			vScroll(1);
-//			delay(100);
 			//for(int i=0;i<TILEWH;i++){
 				
 				ding(key);
 				mxPan(xpos,ypos);
-				mxBitBlt(xpos, ypos, SW, SH, 0, SH);
+mxFillBox(384, 304, 384, 304, 10, OP_SET);
+//mxBitBlt(xpos, ypos, SW, SH, 32, (SH+64+32));
+mxBitBlt(TILEWH*2, TILEWH*2, SW, SH, 32, (SH+64+32));
 				//for(short o = 0; o<TILEWH; o++){
 					xpos+=xdir;
 					ypos+=ydir;
 					//if(ypos==1 || (ypos==(BH-SH-1)))delay(500);
 					//if((xpos>(VW-SW-1)) || (xpos<1))delay(500);
 					//mxWaitRetrace();
-					mxPan(TILEWH*2,TILEWH*2);
-					mxBitBlt(0, SH, SW, SH, xpos, ypos);
+//mxBitBlt(32, (SH+32), SW, SH, xpos, ypos);
+//mxBitBlt(32, (SH+64+32), SW, SH, 32, 32);
+//xpos=ypos=TILEWH*2;
+mxPan(32,32);
 				//}
 				if( (xpos>(VW-SW-1))  || (xpos<1)){xdir=-xdir;}
 				if( (ypos>(BH-SH-1)) || (ypos<1)){ydir=-ydir;} // { Hit a boundry, change
 			//    direction! }
-			
+//mxBitBlt(32, (SH+64+32), SW, SH, xpos, ypos);
+mxBitBlt(TILEWH*2, (SH+64+32), SW, SH, TILEWH*2, TILEWH*2);
 			}
 			ch=getch();
 			if(ch==0x71)break; // 'q'
