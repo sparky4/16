@@ -357,7 +357,7 @@ mxBitBlt(TILEWH*2, TILEWH*2, SW, SH, 32, (SH+64+32));
 					//if((xpos>(VW-SW-1)) || (xpos<1))delay(500);
 					//mxWaitRetrace();
 //mxBitBlt(32, (SH+32), SW, SH, xpos, ypos);
-//mxBitBlt(32, (SH+64+32), SW, SH, 32, 32);
+mxBitBlt(TILEWH*2, (SH+64+32), SW, SH, TILEWH*2, TILEWH*2);
 //xpos=ypos=TILEWH*2;
 mxPan(32,32);
 				//}
@@ -365,7 +365,7 @@ mxPan(32,32);
 				if( (ypos>(BH-SH-1)) || (ypos<1)){ydir=-ydir;} // { Hit a boundry, change
 			//    direction! }
 //mxBitBlt(32, (SH+64+32), SW, SH, xpos, ypos);
-mxBitBlt(TILEWH*2, (SH+64+32), SW, SH, TILEWH*2, TILEWH*2);
+//mxBitBlt(TILEWH*2, (SH+64+32), SW, SH, TILEWH*2, TILEWH*2);
 			}
 			ch=getch();
 			if(ch==0x71)break; // 'q'
