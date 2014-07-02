@@ -48,7 +48,7 @@ void cls(byte color, byte *Where);
 short colortest();
 short colorz();
 void ssd(short svq);
-//void pdump(int mult);
+void pdump();
 //void tulip();
 short ding(int q);
 

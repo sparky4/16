@@ -57,6 +57,20 @@ void setvideo(/*byte mode, */short vq){
 		}
 }
 
+void pdump(){
+	int mult=QUADWH;
+	int palq=mult*16;
+	int palcol=0;
+	for(int paly=0; paly<palq; paly++){
+		for(int palx=0; palx<palq; palx++){
+				mxFillBox((SW-palq)+palx+32, paly+32, TILEWH, TILEWH, palcol, OP_SET);
+			for(int i=1; i<mult; i++) palx++;
+			palcol++;
+		}
+	for(int i=1; i<mult; i++) paly++;
+	}
+}
+
 /////////////////////////////////////////////////////////////////////////////
 //																		 //
 // cls() - This clears the screen to the specified color, on the VGA or on //
@@ -326,6 +340,7 @@ int main(void)
 				mxPutPixel(VW-1, y, 15);
 			}
 			*/
+			pdump();
 			getch();
 			//text box
 			mxSetTextColor(10, OP_TRANS); //set font
