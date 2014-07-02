@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 6.11		    06/22/14 14:00:02
+Microsoft (R) Macro Assembler Version 6.11		    07/02/14 15:18:33
 modex.asm						     Page 1 - 1
 
 
@@ -342,7 +342,7 @@ modex.asm						     Page 1 - 1
  0064  0074 R 0086 R		        DW  o MODE_320x200, o MODE_320x400
  0068  00E0 R 00F2 R		        DW  o MODE_360x200, o MODE_360x400
  006C  00BC R 00CE R		        DW  o MODE_320x240, o MODE_320x480
-Microsoft (R) Macro Assembler Version 6.11		    06/22/14 14:00:02
+Microsoft (R) Macro Assembler Version 6.11		    07/02/14 15:18:33
 modex.asm						     Page 2 - 1
 
 
@@ -597,7 +597,7 @@ modex.asm						     Page 2 - 1
  01B2  89 3E 0014 R		    MOV     CURRENT_PAGE, DI    ; Current Page (Offset) = 0
  01B6  89 3E 0018 R		    MOV     CURRENT_XOFFSET, DI ; Horz Scroll Index = 0
  01BA  89 3E 001A R		    MOV     CURRENT_YOFFSET, DI ; Vert Scroll Index = 0
-Microsoft (R) Macro Assembler Version 6.11		    06/22/14 14:00:02
+Microsoft (R) Macro Assembler Version 6.11		    07/02/14 15:18:33
 modex.asm						     Page 3 - 1
 
 
@@ -852,7 +852,7 @@ modex.asm						     Page 3 - 1
  02CA  26: 88 01		    MOV     ES:[DI+BX], AL      ; Draw Pixel
 				 
 				    POPx    DI, BP              ; Restore Saved Registers
-Microsoft (R) Macro Assembler Version 6.11		    06/22/14 14:00:02
+Microsoft (R) Macro Assembler Version 6.11		    07/02/14 15:18:33
 modex.asm						     Page 4 - 1
 
 
@@ -1107,7 +1107,7 @@ modex.asm						     Page 4 - 1
  03BF  8B D9			    MOV     BX, CX              ; BX = Quick Refill for CX
  03C1  8B 76 0E			    MOV     SI, [BP].FB_Ypos2   ; SI = # of Line to Fill
  03C4  8A 46 0C			    MOV     AL, [BP].FB_Color   ; Get Fill Color
-Microsoft (R) Macro Assembler Version 6.11		    06/22/14 14:00:02
+Microsoft (R) Macro Assembler Version 6.11		    07/02/14 15:18:33
 modex.asm						     Page 5 - 1
 
 
@@ -1362,7 +1362,7 @@ modex.asm						     Page 5 - 1
  04DC				@DL_DeltaYOK:
  04DC  F7 26 0000 R		    MUL     SCREEN_WIDTH        ; Offset = SCREEN_WIDTH * Y1
 				 
-Microsoft (R) Macro Assembler Version 6.11		    06/22/14 14:00:02
+Microsoft (R) Macro Assembler Version 6.11		    07/02/14 15:18:33
 modex.asm						     Page 6 - 1
 
 
@@ -1617,7 +1617,7 @@ modex.asm						     Page 6 - 1
  0600  3C 12			    CMP     AL, 12h             ; Wrap? if AL >12 then Carry not set
  0602  83 D7 00			    ADC     DI, 0               ; Adjust Address: DI = DI + Carry
  0605  EE			    OUT     DX, AL              ; Set up New Bit Plane mask
-Microsoft (R) Macro Assembler Version 6.11		    06/22/14 14:00:02
+Microsoft (R) Macro Assembler Version 6.11		    07/02/14 15:18:33
 modex.asm						     Page 7 - 1
 
 
@@ -1872,7 +1872,7 @@ modex.asm						     Page 7 - 1
 				 
 				    PUBLIC  READ_DAC_REGISTERS
 				 
-Microsoft (R) Macro Assembler Version 6.11		    06/22/14 14:00:02
+Microsoft (R) Macro Assembler Version 6.11		    07/02/14 15:18:33
 modex.asm						     Page 8 - 1
 
 
@@ -2128,7 +2128,7 @@ modex.asm						     Page 8 - 1
 				 
  073D  8B 4E 08			    MOV     CX, [BP].SW_Xpos    ; Get Desired X Offset
  0740  3B 0E 001E R		    CMP     CX, MAX_XOFFSET     ; Is it Within Limits?
-Microsoft (R) Macro Assembler Version 6.11		    06/22/14 14:00:02
+Microsoft (R) Macro Assembler Version 6.11		    07/02/14 15:18:33
 modex.asm						     Page 9 - 1
 
 
@@ -2383,7 +2383,7 @@ modex.asm						     Page 9 - 1
  080C  8E 5E 04			    MOV     DS, [BP].GPC_T_SETS ; Point to character set
 				 
  080F				@GPC_DECODE_CHAR_BYTE:
-Microsoft (R) Macro Assembler Version 6.11		    06/22/14 14:00:02
+Microsoft (R) Macro Assembler Version 6.11		    07/02/14 15:18:33
 modex.asm						     Page 10 - 1
 
 
@@ -2638,7 +2638,7 @@ modex.asm						     Page 10 - 1
 				 
  094D  8B F3			    MOV     SI, BX                  ; Make Lookup Pointer
  094F  83 E6 0F			    AND     SI, CHAR_BITS           ; Get Low Bits
-Microsoft (R) Macro Assembler Version 6.11		    06/22/14 14:00:02
+Microsoft (R) Macro Assembler Version 6.11		    07/02/14 15:18:33
 modex.asm						     Page 11 - 1
 
 
@@ -2893,7 +2893,7 @@ modex.asm						     Page 11 - 1
 				; picture or an Icon on the current Display Page in
 				; Mode X.  The Bitmap is stored in a linear byte array
 				; corresponding to (0,0) (1,0), (2,0) .. (Width, Height)
-Microsoft (R) Macro Assembler Version 6.11		    06/22/14 14:00:02
+Microsoft (R) Macro Assembler Version 6.11		    07/02/14 15:18:33
 modex.asm						     Page 12 - 1
 
 
@@ -3148,7 +3148,7 @@ modex.asm						     Page 12 - 1
  0B17  8A FC			    MOV     BH, AH              ; BH = Saved Plane Mask
  0B19  B3 04			    MOV     BL, 4               ; BL = Planes to Copy
 				 
-Microsoft (R) Macro Assembler Version 6.11		    06/22/14 14:00:02
+Microsoft (R) Macro Assembler Version 6.11		    07/02/14 15:18:33
 modex.asm						     Page 13 - 1
 
 
@@ -3403,7 +3403,7 @@ modex.asm						     Page 13 - 1
  0010  0000			    CB_DestY1   DW  ?   ; Destination Ypos
  0012  0000			    CB_DestX1   DW  ?   ; Destination Xpos
  0014  0000			    CB_DestP    DW  ?   ; Page to Copy Bitmap To
-Microsoft (R) Macro Assembler Version 6.11		    06/22/14 14:00:02
+Microsoft (R) Macro Assembler Version 6.11		    07/02/14 15:18:33
 modex.asm						     Page 14 - 1
 
 
@@ -3658,7 +3658,7 @@ modex.asm						     Page 14 - 1
  0D77				@CB_Finish:
 				    OUT_16  GC_Index, LATCHES_OFF   ; Data from Latches = on
  0D77  BA 03CE		     1	        MOV     DX, GC_Index        ; then Select Register
-Microsoft (R) Macro Assembler Version 6.11		    06/22/14 14:00:02
+Microsoft (R) Macro Assembler Version 6.11		    07/02/14 15:18:33
 modex.asm						     Page 15 - 1
 
 
@@ -3677,7 +3677,7 @@ modex.asm						     Page 15 - 1
  0D88				COPY_BITMAP ENDP
 				 
 				    END                         ; End of Code Segment
-Microsoft (R) Macro Assembler Version 6.11		    06/22/14 14:00:02
+Microsoft (R) Macro Assembler Version 6.11		    07/02/14 15:18:33
 modex.asm						     Symbols 16 - 1
 
 
@@ -3694,7 +3694,7 @@ OUT_16 . . . . . . . . . . . . .	Proc
 OUT_8  . . . . . . . . . . . . .	Proc
 POPx . . . . . . . . . . . . . .	Proc
 PUSHx  . . . . . . . . . . . . .	Proc
-Microsoft (R) Macro Assembler Version 6.11		    06/22/14 14:00:02
+Microsoft (R) Macro Assembler Version 6.11		    07/02/14 15:18:33
 modex.asm						     Symbols 17 - 1
 
 
@@ -3840,7 +3840,7 @@ TPS_STACK  . . . . . . . . . . .	 0018
   TPS_Xpos . . . . . . . . . . .	 0010	     Word
   TPS_Len  . . . . . . . . . . .	 0012	     Word
   TPS_Text . . . . . . . . . . .	 0014	     Word
-Microsoft (R) Macro Assembler Version 6.11		    06/22/14 14:00:02
+Microsoft (R) Macro Assembler Version 6.11		    07/02/14 15:18:33
 modex.asm						     Symbols 18 - 1
 
 
@@ -3854,7 +3854,7 @@ DGROUP . . . . . . . . . . . . .	GROUP
 _DATA  . . . . . . . . . . . . .	16 Bit	 0000	  Word	  Public  'DATA'	
 _BSS . . . . . . . . . . . . . .	16 Bit	 002A	  Word	  Public  'BSS'  
 MODEX_TEXT . . . . . . . . . . .	16 Bit	 0D88	  Word	  Public  'CODE'	
-Microsoft (R) Macro Assembler Version 6.11		    06/22/14 14:00:02
+Microsoft (R) Macro Assembler Version 6.11		    07/02/14 15:18:33
 modex.asm						     Symbols 19 - 1
 
 
@@ -3892,7 +3892,7 @@ SYNC_DISPLAY . . . . . . . . . .	P Far	 0795	  MODEX_TEXT	Length= 000E Public
 TDRAW_BITMAP . . . . . . . . . .	P Far	 0ACB	  MODEX_TEXT	Length= 00EF Public
 TGPRINTC . . . . . . . . . . . .	P Far	 08A1	  MODEX_TEXT	Length= 00D4 Public
 TPRINT_STR . . . . . . . . . . .	P Far	 09B6	  MODEX_TEXT	Length= 003D Public
-Microsoft (R) Macro Assembler Version 6.11		    06/22/14 14:00:02
+Microsoft (R) Macro Assembler Version 6.11		    07/02/14 15:18:33
 modex.asm						     Symbols 20 - 1
 
 
