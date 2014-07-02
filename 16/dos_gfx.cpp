@@ -58,16 +58,14 @@ void setvideo(/*byte mode, */short vq){
 }
 
 void pdump(){
-	int mult=QUADWH;
-	int palq=mult*16;
+	int mult=(QUADWH)/2;
+	int palq=(mult)*16;
 	int palcol=0;
-	for(int paly=0; paly<palq; paly++){
-		for(int palx=0; palx<palq; palx++){
+	for(int paly=0; paly<palq; paly+=mult){
+		for(int palx=0; palx<palq; palx+=mult){
 				mxFillBox((SW-palq)+palx+32, paly+32, TILEWH, TILEWH, palcol, OP_SET);
-			for(int i=1; i<mult; i++) palx++;
 			palcol++;
 		}
-	for(int i=1; i<mult; i++) paly++;
 	}
 }
 
