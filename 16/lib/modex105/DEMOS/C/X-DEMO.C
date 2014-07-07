@@ -507,8 +507,8 @@ char	*Error1 = "Failure during SET_VGA_MODEX (0, 360, 240, 3) call";
 
 int		Last_Objects[2], Visible_Objects;
 
-int		Screen_X = 360;
-int		Screen_Y = 240;
+int		Screen_X = 384;
+int		Screen_Y = 672;
 
 int		x, y, z;
 int		c, dc;
