@@ -37,7 +37,6 @@ void main() {
 				if(ch==0x71)break; // 'q'
 				if(ch==0x1b)break; // 'ESC'
 	    }
-	    free();
     modexLeave();
 
     return;
