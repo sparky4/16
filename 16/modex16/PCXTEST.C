@@ -3,15 +3,15 @@
 
 void main() {
     bitmap_t bmp;
-	//bitmap_t bmp2;
+	bitmap_t bmp2;
 	bitmap_t bmp3;
 	//bitmap_t bmp4;
 //	int index;
 	//int ch=0x0;
 
     //bmp = modexLoadPcx("ed.pcx");
-//	bmp = modexLoadPcx("koishi^^.pcx");
-	bmp = modexLoadPcx("chikyuu.pcx");
+	bmp = modexLoadPcx("w.pcx");
+	bmp2 = modexLoadPcx("q.pcx");
 	bmp3 = modexLoadPcx("flower.pcx");
     /*bmp2 = modexLoadPcx("ed2.pcx");
     bmp3 = modexLoadPcx("flower.pcx");
@@ -19,7 +19,7 @@ void main() {
 	modexEnter();
 
     /* fix up the palette and everything */
-	modexPalUpdate(bmp3.palette);
+	modexPalUpdate(bmp.palette);
 
     /* don't show the drawing page */
     modexShowPage(VGA + PAGE_SIZE);
@@ -30,8 +30,10 @@ void main() {
     modexDrawBmp(VGA, 180, 20, &bmp, 1);
 	modexDrawBmp(VGA, 180, 0, &bmp3, 1);
 	modexDrawBmp(VGA, 170, 100, &bmp4, 1);*/
-	modexDrawBmp(VGA, 0, 0, &bmp, 1);
-	modexDrawBmp(VGA, 100, 20, &bmp3, 1);
+	modexDrawBmp(VGA, 100, 0, &bmp, 0);
+	//modexDrawBmp(VGA, 120, 20, &bmp3, 0);
+	modexDrawBmp(VGA, 100, 0, &bmp2, 1);
+	//modexDrawBmp(VGA, 120, 60, &bmp3, 1);
     modexShowPage(VGA);
 //    for(index = 0; index<500; index++) {
 	//while(1/*!kbhit()*/){ // conditions of screen saver

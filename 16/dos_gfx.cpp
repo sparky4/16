@@ -19,7 +19,7 @@ byte *vga = (byte *) MK_FP(0xA000, 0);
  * to be included.
  */
 #define TESTING
-#define TILE
+//#define TILE
 
 /////////////////////////////////////////////////////////////////////////////
 //                                                                         //
@@ -90,7 +90,7 @@ short colortest(){
 
 //color ‚Ä‚·‚Æ
 short colorz(){
-		if(gq < HGQ){
+		if(gq <= HGQ){
 //----		  cls(gq, vaddr);
 				cls(gq, vga);
 				gq++;
@@ -127,7 +127,7 @@ short ding(int q){
 		||q==16
 		) && gq == BONK){
 						if(coor < HGQ && coor < LGQ) coor = LGQ;
-						if(coor < HGQ-1){
+						if(coor < HGQ){
 								coor++;
 				}else{ coor = LGQ;
 						bakax = rand()%3; bakay = rand()%3;
@@ -145,7 +145,7 @@ short ding(int q){
 		}
 
 		if(q==7||q==9){
-				if(gq < HGQ){
+				if(gq <= HGQ){
 						if(q == 7) ssd(q);
 						if(q == 9){ ssd(q); coor++; }
 						gq++;
@@ -310,7 +310,7 @@ int main(void)
 						setvideo(1);
 				}
 		}*/ // else off
-		mxFillBox(0, 0, VW, BH, 10, OP_SET);
+		//mxFillBox(0, 0, VW, BH, 10, OP_SET);
 		while(1){ // conditions of screen saver
 		while(!kbhit()){
 			ding(key);

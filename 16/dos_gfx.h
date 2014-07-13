@@ -10,7 +10,7 @@
 //static hgq=NUM_COLORS/(1/8)
 #define BONK	    400
 #define LGQ	     32
-#define HGQ	     56
+#define HGQ	     55
 #define TILEWH			16
 #define QUADWH			TILEWH/2
 #define BUFFMX			4
