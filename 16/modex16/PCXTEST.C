@@ -12,14 +12,14 @@ void main() {
     //bmp = modexLoadPcx("ed.pcx");
 	bmp = modexLoadPcx("w.pcx");
 	bmp2 = modexLoadPcx("q.pcx");
-	bmp3 = modexLoadPcx("flower.pcx");
+	bmp3 = modexLoadPcx("chikyuu-.pcx");
     /*bmp2 = modexLoadPcx("ed2.pcx");
     bmp3 = modexLoadPcx("flower.pcx");
     bmp4 = modexLoadPcx("koishi^^.pcx");*/
 	modexEnter();
 
     /* fix up the palette and everything */
-	modexPalUpdate(bmp.palette);
+	//modexPalUpdate(bmp3.palette);
 
     /* don't show the drawing page */
     modexShowPage(VGA + PAGE_SIZE);
@@ -30,9 +30,9 @@ void main() {
     modexDrawBmp(VGA, 180, 20, &bmp, 1);
 	modexDrawBmp(VGA, 180, 0, &bmp3, 1);
 	modexDrawBmp(VGA, 170, 100, &bmp4, 1);*/
-	modexDrawBmp(VGA, 100, 0, &bmp, 0);
-	//modexDrawBmp(VGA, 120, 20, &bmp3, 0);
-	modexDrawBmp(VGA, 100, 0, &bmp2, 1);
+	modexDrawBmp(VGA, 100, 40, &bmp, 0);
+	modexDrawBmp(VGA, 100, 40, &bmp2, 1);
+	modexDrawBmp(VGA, 0, 20, &bmp3, 0);
 	//modexDrawBmp(VGA, 120, 60, &bmp3, 1);
     modexShowPage(VGA);
 //    for(index = 0; index<500; index++) {
