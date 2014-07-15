@@ -40,7 +40,7 @@ void main() {
     modexDrawBmp(VGA, 180, 20, &bmp, 1);
 	modexDrawBmp(VGA, 180, 0, &bmp3, 1);
 	modexDrawBmp(VGA, 170, 100, &bmp4, 1);*/
-	modexDrawBmp(VGA, 0, 0, &bmp, 1);
+	modexDrawBmp(VGA, 0, 0, &bmp, 0);
 	//modexDrawBmp(VGA, 100, 40, &bmp2, 1);
 	//modexDrawBmp(VGA, 0, 20, &bmp3, 0);
 	//modexDrawBmp(VGA, 120, 60, &bmp3, 1);
