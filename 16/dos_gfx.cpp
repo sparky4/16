@@ -2,6 +2,7 @@
 //a special thanks to everyone to release source code for mode X
 /*src\lib\*/
 #include "dos_gfx.h"
+//#include "lib\modex16.h" //____
 
 int old_mode;
 //color ‚Ä‚·‚Æ
@@ -9,7 +10,7 @@ short gq = LGQ;
 
 //‚Ä‚·‚Æ
 short bakax = 0, bakay = 0;
-syte xx = rand()&0%SW, yy = rand()&0%SH, sx = 0, sy = 0;
+word xx = rand()&0%SW, yy = rand()&0%SH, sx = 0, sy = 0;
 byte coor;
 
 byte *vga = (byte *) MK_FP(0xA000, 0);
@@ -285,6 +286,8 @@ short ding(int q){
 
 int main(void)
 		{
+		//bitmap_t bmp; //____
+		//bmp = modexLoadPcx("chikyuu.pcx"); //____
 		short key,d,xpos,ypos,xdir,ydir;
 		int ch=0x0;
 		// main variables
@@ -295,6 +298,9 @@ int main(void)
 		xdir=1;
 		ydir=1;
 		setvideo(1);
+		//modexPalUpdate(bmp.palette); //____
+		//modexDrawBmp(VGA, 0, 0, &bmp, 0); //____
+		//getch(); //____
 // screen savers
 
 /*while(d!=0){ // on!

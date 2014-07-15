@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <conio.h> // just for wait
 #include <time.h> // just for wait
+#include "lib\types.h"
 
 /* Control codes for all keys on the keyboard */
 //here temperarly
@@ -96,9 +97,9 @@
 #define KEY_MENU		(0x75)
 
 
-typedef unsigned char byte;
-typedef unsigned int word;
-typedef unsigned short syte;
+//typedef unsigned char byte;
+//typedef unsigned int word;
+//typedef unsigned short syte;
 
 void wait(clock_t wait);
 

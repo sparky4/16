@@ -1,4 +1,5 @@
-#include "src\lib\lib_com.h"
+//#include "src\lib\lib_com.h"
+#include "lib\lib_com.h"
 
 /* local function */
 void wait(clock_t wait);

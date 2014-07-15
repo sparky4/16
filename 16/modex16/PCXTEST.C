@@ -29,12 +29,12 @@ void main() {
 
     /* don't show the drawing page */
 //	printf("=======\n");
-    modexShowPage(VGA + PAGE_SIZE);
+    //modexShowPage(VGA + PAGE_SIZE);
 //	printf("========\n");
 
     /* clear and draw one sprite and one bitmap */
 //	printf("=========\n");
-    modexClearRegion(VGA, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+    //modexClearRegion(VGA, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 //	printf("==========\n");
    	/*modexDrawBmp(VGA, 20, 20, &bmp2, 0);
     modexDrawBmp(VGA, 180, 20, &bmp, 1);
@@ -44,7 +44,7 @@ void main() {
 	//modexDrawBmp(VGA, 100, 40, &bmp2, 1);
 	//modexDrawBmp(VGA, 0, 20, &bmp3, 0);
 	//modexDrawBmp(VGA, 120, 60, &bmp3, 1);
-    modexShowPage(VGA);
+    //modexShowPage(VGA);
 //    for(index = 0; index<500; index++) {
 	//while(1/*!kbhit()*/){ // conditions of screen saver
 	while (!kbhit()){  /* Wait for a keystroke                         */
