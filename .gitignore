@@ -4,8 +4,8 @@
 *.htm
 *.sh
 !proj16.bfproject
-#*.obj
-#*.OBJ
+*.obj
+*.OBJ
 *.*~
 FUCK
 *.err
