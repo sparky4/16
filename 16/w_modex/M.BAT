@@ -1,2 +1,3 @@
-wcl386 test modex xprim xpal xblitbuf fixed32
+wcl /0 test modex xprim xpal xblitbuf
+rem fixed32
 erase *.obj

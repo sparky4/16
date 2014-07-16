@@ -1,0 +1,10 @@
+Open watcom to compile the code of project 16
+/ = main engine code (branched off due to lack of understanding of C++)
+16/ = the current code sparky4 is working with
+16/modex16/ = pngwen's code
+
+TODO:
+1. SCROLLING!!!!!!!
+2. Fix pngwen's pcx rendering code it dose not render large relolution pcx files well at all!
+3. document an understrand how the main engine code works!
+4. make the $#@%# game!

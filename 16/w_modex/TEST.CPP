@@ -5,16 +5,16 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "fixed32.hpp"
+//#include "fixed32.hpp"
 #include "modex.hpp"
 #include "xprim.hpp"
 #include "xpal.hpp"
 #include "xblitbuf.hpp"
 
-#define FIRE_DEMO 1
-#define ROTATE_DEMO 1
-#define MONSTER_DEMO_ONE 1
-#define MONSTER_DEMO_TWO 1
+#define FIRE_DEMO 0
+#define ROTATE_DEMO 0
+#define MONSTER_DEMO_ONE 0
+#define MONSTER_DEMO_TWO 0
 #define MATH_DEMO 0
 
 int
@@ -26,7 +26,7 @@ monster_demo1(void)
 
     clearX(0);
 
-    load_blitbufPCX("monster.pcx", &sprite_image);
+    load_blitbufPCX("chikyuu.pcx", &sprite_image);
     aligned_bitblitX(0, 20, &sprite_image);
     getch();
 
@@ -82,7 +82,7 @@ monster_demo2(void)
 
     clearX(0);
 
-    load_blitbufPCX("monster.pcx", &sprite_image);
+    load_blitbufPCX("chikyuu.pcx", &sprite_image);
     aligned_bitblitX(0, 20, &sprite_image);
     getch();
 
@@ -326,7 +326,7 @@ main(void)
     unsigned char pal[768];
     COORD x1, y1, x2, y2;
     Iangle theta1, theta2;
-    Fixed32 trigSin, trigCos;
+    //----Fixed32 trigSin, trigCos;
     blitbuf blit_image, sprite_image;
     clock_t begin, end;
     short int x, y, temp, done;
@@ -370,7 +370,7 @@ main(void)
     getch();
 #endif
 
-    load_blitbufPCX("spock.pcx", &blit_image);
+    load_blitbufPCX("chikyuu.pcx", &blit_image);
     scale_blitbuf(160, 100, &blit_image);
     aligned_bitblitX(0, 0, &blit_image);
 
@@ -401,7 +401,7 @@ main(void)
     getch();
 
     clear_blitbuf(&blit_image);
-    load_blitbufPCX("spock.pcx", &blit_image);
+    load_blitbufPCX("chikyuu.pcx", &blit_image);
     greyscale_blitbuf(&blit_image);
     smooth64_paletteX(1, 0, 1);
     aligned_bitblitX(0, 0, &blit_image);
@@ -414,7 +414,7 @@ main(void)
     getch();
 
     clear_blitbuf(&blit_image);
-    load_blitbufPCX("spock.pcx", &blit_image);
+    load_blitbufPCX("chikyuu.pcx", &blit_image);
     aligned_bitblitX(0, 0, &blit_image);
 
     done = 0;
@@ -449,7 +449,7 @@ main(void)
 
             case 'L':
             case 'l':
-                load_blitbufPCX("spock.pcx", &blit_image);
+                load_blitbufPCX("chikyuu.pcx", &blit_image);
                 break;
 
             case 'R':
@@ -521,7 +521,7 @@ main(void)
 
     getch();
 
-    load_blitbufPCX("buddha.pcx", &sprite_image);
+    load_blitbufPCX("chikyuu.pcx", &sprite_image);
     transparent_bitblitX(100, 100, &sprite_image);
 
     getch();
@@ -535,7 +535,7 @@ main(void)
     aligned_bitblitX(84, 36, &sprite_image);
     getch();
 
-    initFixed32();
+    //----initFixed32();
 
     theta1=0;
     count=0;
@@ -593,7 +593,7 @@ main(void)
 
     set80x25();
 
-#if MATH_DEMO
+/*#if MATH_DEMO
     Fixed32 c1, c2, c3, a1, a2, a3;
 
     c1 = INT_TO_FIXED(50);
@@ -615,7 +615,7 @@ main(void)
     printf("DIV ASM version = %d\n", FIXED_TO_INT(a2));
 
     getch();
-#endif
+#endif*/
 
     temp = (time1 - time2);
     printf("10000 lines took %4d ticks\n", time1);
