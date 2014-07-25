@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-//#include "fixed32.hpp"
+#include "fixed32.hpp"
 #include "modex.hpp"
 #include "xprim.hpp"
 #include "xpal.hpp"
@@ -326,7 +326,7 @@ main(void)
     unsigned char pal[768];
     COORD x1, y1, x2, y2;
     Iangle theta1, theta2;
-    //----Fixed32 trigSin, trigCos;
+    Fixed32 trigSin, trigCos;
     blitbuf blit_image, sprite_image;
     clock_t begin, end;
     short int x, y, temp, done;
@@ -535,7 +535,7 @@ main(void)
     aligned_bitblitX(84, 36, &sprite_image);
     getch();
 
-    //----initFixed32();
+    initFixed32();
 
     theta1=0;
     count=0;
