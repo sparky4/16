@@ -10,13 +10,13 @@ void main() {
 
     page=modexDefaultPage();
 
-    modexEnter();
+    setvideo(1);
     start = *clock;
     for(i=0; i<500; i++) {
 	modexShowPage(&page);
     }
     t1 = (*clock - start)/18.2;
-    modexLeave();
+    setvideo(0);
 
     printf("Time: %f\n", t1);
 }

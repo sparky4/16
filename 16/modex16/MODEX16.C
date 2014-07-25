@@ -93,13 +93,31 @@ modexEnter() {
     }
 }
 
+int old_mode;
 
-void
-modexLeave() {
-    /* TODO restore original mode and palette */
-    vgaSetMode(TEXT_MODE);
+/////////////////////////////////////////////////////////////////////////////
+//                                                                         //
+// setvideo() - This function Manages the video modes					  //
+//                                                                         //
+/////////////////////////////////////////////////////////////////////////////
+void setvideo(/*byte mode, */short vq){
+		union REGS in, out;
+
+		if(!vq){ // deinit the video
+				// change to the video mode we were in before we switched to mode 13h
+				in.h.ah = 0x00;
+				in.h.al = old_mode;
+				int86(0x10, &in, &out);
+
+		}else if(vq==1){ // init the video
+				// get old video mode
+				in.h.ah = 0xf;
+				int86(0x10, &in, &out);
+				old_mode = out.h.al;
+				// enter mode
+				modexEnter();
+		}
 }
-
 
 page_t
 modexDefaultPage() {

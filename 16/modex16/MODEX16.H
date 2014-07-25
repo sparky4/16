@@ -28,7 +28,7 @@ typedef struct {
 /* -============================ Functions =============================- */
 /* mode switching, page, and plane functions */
 void modexEnter();
-void modexLeave();
+void setvideo(/*byte mode, */short vq);
 page_t modexDefaultPage();
 page_t modexNextPage(page_t *p);
 void modexShowPage(page_t *page);
@@ -90,4 +90,11 @@ extern byte far*  VGA;  /* The VGA Memory */
 #define PAL_WRITE_REG           0x03C8   /* Color register, write address */
 #define PAL_DATA_REG            0x03C9   /* Color register, data port */
 #define PAL_SIZE                (256 * 3)
+
+#define NUM_COLORS	256 // number of colors in vga mode
+#define BONK	    400
+#define LGQ	     32
+#define HGQ	     55
+#define TILEWH			16
+#define QUADWH			TILEWH/2
 #endif

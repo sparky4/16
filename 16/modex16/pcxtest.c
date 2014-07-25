@@ -33,7 +33,7 @@ void main() {
     page=modexDefaultPage();
 
     bmp = modexLoadPcx("ed.pcx");
-    modexEnter();
+    setvideo(1);
 
     /* fix up the palette and everything */
     modexPalUpdate(bmp.palette);
@@ -65,7 +65,7 @@ void main() {
       modexDrawSprite(&page, 20, 20, &bmp);
     }
     t4 = (*clock-start) / 18.2;
-    modexLeave();
+    setvideo(0);
 
     printf("Old non-sprite: %f\n", t1);
     printf("New non-sprite: %f\n", t2);

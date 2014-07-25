@@ -93,36 +93,101 @@ modexEnter() {
     }
 }
 
+int old_mode;
 
-void
-modexLeave() {
-    /* TODO restore original mode and palette */
-    vgaSetMode(TEXT_MODE);
+/////////////////////////////////////////////////////////////////////////////
+//                                                                         //
+// setvideo() - This function Manages the video modes					  //
+//                                                                         //
+/////////////////////////////////////////////////////////////////////////////
+void setvideo(/*byte mode, */short vq){
+		union REGS in, out;
+
+		if(!vq){ // deinit the video
+				// change to the video mode we were in before we switched to mode 13h
+				in.h.ah = 0x00;
+				in.h.al = old_mode;
+				int86(0x10, &in, &out);
+
+		}else if(vq==1){ // init the video
+				// get old video mode
+				in.h.ah = 0xf;
+				int86(0x10, &in, &out);
+				old_mode = out.h.al;
+				// enter mode
+				modexEnter();
+		}
+}
+
+page_t
+modexDefaultPage() {
+    page_t page;
+
+    /* default page values */
+    page.data = VGA;
+    page.dx = 0;
+    page.dy = 0;
+    page.width = SCREEN_WIDTH;
+    page.height = SCREEN_HEIGHT;
+
+    return page;
+}
+
+/* returns the next page in contiguous memory
+ * the next page will be the same size as p, by default
+ */
+page_t
+modexNextPage(page_t *p) {
+    page_t result;
+
+    result.data = p->data + (p->width/4)*p->height;  /* compute the offset */
+    result.dx = 0;
+    result.dy = 0;
+    result.width = p->width;
+    result.height = p->height;
+
+    return result;
 }
 
 
 void
-modexShowPage(page_t page) {
+modexShowPage(page_t *page) {
     word high_address;
     word low_address;
+    word offset;
+    byte crtcOffset;
 
-    high_address = HIGH_ADDRESS | ((word)(page) & 0xff00);
-    low_address  = LOW_ADDRESS  | ((word)(page) << 8);
+    /* calculate offset */
+    offset = (word) page->data;
+    offset += page->dy * (page->width >> 2 );
+    offset += page->dx >> 2;
 
-    /* wait for appropriate timing */
+    /* calculate crtcOffset according to virtual width */
+    crtcOffset = page->width >> 3;
+
+    high_address = HIGH_ADDRESS | (offset & 0xff00);
+    low_address  = LOW_ADDRESS  | (offset << 8);
+
+    /* wait for appropriate timing and then program CRTC */
     while ((inp(INPUT_STATUS_1) & DISPLAY_ENABLE));
     outpw(CRTC_INDEX, high_address);
     outpw(CRTC_INDEX, low_address);
+    outp(CRTC_INDEX, 0x13);
+    outp(CRTC_DATA, crtcOffset);
 
     /*  wait for one retrace */
     while (!(inp(INPUT_STATUS_1) & VRETRACE)); 
+
+    /* do PEL panning here */
+    outp(AC_INDEX, 0x33);
+    outp(AC_INDEX, (page->dx & 0x03) << 1);
 }
 
 
 void
 modexPanPage(page_t *page, int dx, int dy) {
-    /* TODO figure out how the $@#! you do horizontal panning */
-    *page += dy * SCREEN_WIDTH;
+    page->dx = dx;
+    page->dy = dy;
 }
 
 
@@ -134,42 +199,216 @@ modexSelectPlane(byte plane) {
 
 
 void
-modexClearRegion(page_t page, int x, int y, int w, int h, byte color) {
-    byte plane;
-    word endx = x + w;
-    word endy = y + h;
-    word dx, dy;
+modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
+    word pageOff = (word) page->data;
+    word xoff=x/4;       /* xoffset that begins each row */
+    word scanCount=w/4;  /* number of iterations per row (excluding right clip)*/
+    word poffset = pageOff + y*(page->width/4) + xoff; /* starting offset */
+    word nextRow = page->width/4-scanCount-1;  /* loc of next row */
+    byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08};  /* clips for rectangles not on 4s */
+    byte rclip[] = {0x00, 0x01, 0x03, 0x07};
+    byte left = lclip[x&0x03];
+    byte right = rclip[(x+w)&0x03];
 
-    /* TODO Make this fast.  It's SLOOOOOOW */
-    for(plane=0; plane < 4; plane++) {
-	modexSelectPlane(PLANE(plane+x));
-	for(dx = x; dx < endx; dx+=4) {
-	    for(dy=y; dy<endy; dy++) {
-		page[PAGE_OFFSET(dx, dy)] = color;
-	    }
-	}
+    /* handle the case which requires an extra group */
+    if((x & 0x03) && !((x+w) & 0x03)) {
+      right=0x0f;
+    }
+
+    __asm {
+		MOV AX, SCREEN_SEG      ; go to the VGA memory
+		MOV ES, AX
+		MOV DI, poffset		; go to the first pixel
+		MOV DX, SC_INDEX	; point to the map mask
+		MOV AL, MAP_MASK
+		OUT DX, AL
+		INC DX
+		MOV AL, color		; get ready to write colors
+	SCAN_START:
+		MOV CX, scanCount	; count the line
+		MOV BL, AL		; remember color
+		MOV AL, left		; do the left clip
+		OUT DX, AL		; set the left clip
+		MOV AL, BL		; restore color
+		STOSB			; write the color
+		DEC CX
+		JZ SCAN_DONE		; handle 1 group stuff
+
+		;-- write the main body of the scanline
+		MOV BL, AL	  	; remember color
+		MOV AL, 0x0f		; write to all pixels
+		OUT DX, AL
+		MOV AL, BL		; restore color
+		REP STOSB		; write the color
+	SCAN_DONE:
+		MOV BL, AL		; remeber color
+		MOV AL, right
+		OUT DX, AL		; do the right clip
+		MOV AL, BL		; restore color
+		STOSB			; write pixel
+		ADD DI, nextRow		; go to the next row
+		DEC h
+		JNZ SCAN_START
     }
 }
 
 
 void
-modexDrawBmp(page_t page, int x, int y, bitmap_t *bmp, byte sprite) {
-    byte plane;
-    word px, py;
-    word offset;
+modexDrawBmp(page_t *page, int x, int y, bitmap_t *bmp) {
+    /* draw the region (the entire freakin bitmap) */
+    modexDrawBmpRegion(page, x, y, 0, 0, bmp->width, bmp->height, bmp);
+}
 
-    /* TODO Make this fast.  It's SLOOOOOOW */
-    for(plane=0; plane < 4; plane++) {
-	modexSelectPlane(PLANE(plane+x));
-	for(px = plane; px < bmp->width; px+=4) {
-	    offset=px;
-	    for(py=0; py<bmp->height; py++) {
-		if(!sprite || bmp->data[offset])
-		  page[PAGE_OFFSET(x+px, y+py)] = bmp->data[offset];
-		offset+=bmp->width;
-	    }
-	}
+
+void
+modexDrawBmpRegion(page_t *page, int x, int y,
+                   int rx, int ry, int rw, int rh, bitmap_t *bmp) {
+    word poffset = (word) page->data  + y*(page->width/4) + x/4;
+    byte *data = bmp->data;
+    word bmpOffset = (word) data + ry * bmp->width + rx;
+    word width = rw;
+    word height = rh;
+    byte plane = 1 << ((byte) x & 0x03);
+    word scanCount = width/4 + (width%4 ? 1 :0);
+    word nextPageRow = page->width/4 - scanCount;
+    word nextBmpRow = (word) bmp->width - width;
+    word rowCounter;
+    byte planeCounter = 4;
+
+    __asm {
+		MOV AX, SCREEN_SEG      ; go to the VGA memory
+		MOV ES, AX
+
+		MOV DX, SC_INDEX	; point at the map mask register
+		MOV AL, MAP_MASK	;
+		OUT DX, AL		;
+
+	PLANE_LOOP:
+		MOV DX, SC_DATA		; select the current plane
+		MOV AL, plane		;
+		OUT DX, AL		;
+
+		;-- begin plane painting
+		MOV AX, height		; start the row counter
+		MOV rowCounter, AX	; 
+		MOV DI, poffset		; go to the first pixel
+		MOV SI, bmpOffset	; go to the bmp pixel
+	ROW_LOOP:
+		MOV CX, width		; count the columns
+	SCAN_LOOP:
+		MOVSB			; copy the pixel
+		SUB CX, 3		; we skip the next 3
+		ADD SI, 3		; skip the bmp pixels
+		LOOP SCAN_LOOP		; finish the scan
+
+		MOV AX, nextPageRow
+		ADD DI, AX		; go to the next row on screen
+		MOV AX, nextBmpRow
+		ADD SI, AX		; go to the next row on bmp
+
+		DEC rowCounter
+		JNZ ROW_LOOP		; do all the rows
+		;-- end plane painting
+
+		MOV AL, plane		; advance to the next plane
+		SHL AL, 1		;
+		AND AL, 0x0f		; mask the plane properly
+		MOV plane, AL		; store the plane
+
+		INC bmpOffset		; start bmp at the right spot
+
+		DEC planeCounter
+		JNZ PLANE_LOOP		; do all 4 planes
     }
+}
+
+
+void
+modexDrawSprite(page_t *page, int x, int y, bitmap_t *bmp) {
+    /* draw the whole sprite */
+    modexDrawSpriteRegion(page, x, y, 0, 0, bmp->width, bmp->height, bmp);
+}
+
+void
+modexDrawSpriteRegion(page_t *page, int x, int y,
+		      int rx, int ry, int rw, int rh, bitmap_t *bmp) {
+    word poffset = (word)page->data + y*(page->width/4) + x/4;
+    byte *data = bmp->data;
+    word bmpOffset = (word) data + ry * bmp->width + rx;
+    word width = rw;
+    word height = rh;
+    byte plane = 1 << ((byte) x & 0x03);
+    word scanCount = width/4 + (width%4 ? 1 :0);
+    word nextPageRow = page->width/4 - scanCount;
+    word nextBmpRow = (word) bmp->width - width;
+    word rowCounter;
+    byte planeCounter = 4;
+
+    __asm {
+		MOV AX, SCREEN_SEG      ; go to the VGA memory
+		MOV ES, AX
+
+		MOV DX, SC_INDEX	; point at the map mask register
+		MOV AL, MAP_MASK	;
+		OUT DX, AL		;
+
+	PLANE_LOOP:
+		MOV DX, SC_DATA		; select the current plane
+		MOV AL, plane		;
+		OUT DX, AL		;
+
+		;-- begin plane painting
+		MOV AX, height		; start the row counter
+		MOV rowCounter, AX	; 
+		MOV DI, poffset		; go to the first pixel
+		MOV SI, bmpOffset	; go to the bmp pixel
+	ROW_LOOP:
+		MOV CX, width		; count the columns
+	SCAN_LOOP:
+		LODSB
+		DEC SI
+		CMP AL, 0
+		JNE DRAW_PIXEL		; draw non-zero pixels
+
+		INC DI			; skip the transparent pixel
+		ADD SI, 1
+		JMP NEXT_PIXEL
+	DRAW_PIXEL:
+		MOVSB			; copy the pixel
+	NEXT_PIXEL:
+		SUB CX, 3		; we skip the next 3
+		ADD SI, 3		; skip the bmp pixels
+		LOOP SCAN_LOOP		; finish the scan
+
+		MOV AX, nextPageRow
+		ADD DI, AX		; go to the next row on screen
+		MOV AX, nextBmpRow
+		ADD SI, AX		; go to the next row on bmp
+
+		DEC rowCounter
+		JNZ ROW_LOOP		; do all the rows
+		;-- end plane painting
+
+		MOV AL, plane		; advance to the next plane
+		SHL AL, 1		;
+		AND AL, 0x0f		; mask the plane properly
+		MOV plane, AL		; store the plane
+
+		INC bmpOffset		; start bmp at the right spot
+
+		DEC planeCounter
+		JNZ PLANE_LOOP		; do all 4 planes
+    }
+}
+
+
+void
+modexCopyPageRegion(page_t *dest, page_t src,
+		    word sx, word sy,
+		    word dx, word dy,
+		    word width, word height)
+{
+    /* todo */
 }
 
 
