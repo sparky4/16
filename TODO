@@ -3,7 +3,12 @@
 What needs to be done
 1. Map system and movement
 Look at the game Pokemon Crystal and Ib for an example of what I mean
-pngwen is supposly making this part but he has not responded to me at all!
+pngwen is making this part!
 
-2. sprite loading and rendering!
-3. make the game wwww
+2. sprite loading and rendering! properly
+3. font and text box rendering and system
+4. map rendering
+5. map and item interaction
+6. fix any bugs found
+7. script system for text and interaction
+8. make the game wwww
