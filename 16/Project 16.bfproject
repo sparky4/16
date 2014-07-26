@@ -11,9 +11,11 @@ openfiles: /dos/z/16/16/project16.txt:8063:6091:0:
 openfiles: /dos/z/16/16/16.txt:0:0:0:
 openfiles: /dos/z/16/16/lib/x/MODEX.H:5511:2798:0:
 openfiles: /dos/z/16/16/modex16/PCXTEST.C:794:497:0:
-openfiles: /dos/z/16/16/lib/MODEX16.C:2334:1895:0:
-openfiles: /dos/z/16/16/lib/MODEX16.H:2926:2348:0:
-openfiles: /dos/z/16/16/TEST.C:335:0:1:
+openfiles: /dos/z/16/16/lib/MODEX16.C:2321:2310:0:
+openfiles: /dos/z/16/16/lib/MODEX16.H:2926:1941:0:
+openfiles: /dos/z/16/16/TEST.C:430:0:0:
+openfiles: /dos/z/16/16/modex16/test.c:350:412:1:
+openfiles: /dos/z/16/16/modex16/pcxtest.c:846:690:0:
 snr_recursion_level: 0
 convertcolumn_horizontally: 0
 adv_open_matchname: 0
@@ -25,10 +27,10 @@ view_left_panel: 0
 default_mime_type: text/plain
 e2c.convert_xml: 1
 c2e.convert_iso: 0
-opendir: file:///dos/z/16/16/lib
+opendir: file:///dos/z/16/16/modex16
 wrap_text_default: 0
 bookmarks_filename_mode: 1
-ssearch_text: gq
+ssearch_text: SC_INDEX
 snr_casesens: 1
 view_blocks: 1
 name: project 16
@@ -50,8 +52,6 @@ ssearch_regex: 0
 e2c.convert_iso: 0
 ssearch_casesens: 0
 charmap_block: 1
-recent_files: file:///dos/z/4x4_16/tile.h
-recent_files: file:///dos/z/16/16/lib_com.cpp
 recent_files: file:///dos/z/16/16/lib_com.h
 recent_files: file:///dos/z/16/16/PCGPE10/SCROLL.TXT
 recent_files: file:///dos/z/16/16/lib/x/MXSM.ASM
@@ -82,26 +82,28 @@ recent_files: file:///dos/z/16/16/modex16/MODEX16.C
 recent_files: file:///dos/z/4x4_16/w_modex/MODEX.CPP
 recent_files: file:///dos/z/16/16/TYPES.H
 recent_files: file:///dos/z/16/16/lib/TYPES.H
-recent_files: file:///dos/z/16/16/dos_gfx.cpp
-recent_files: file:///dos/z/16/16/dos_gfx.h
-recent_files: file:///dos/z/16/16/lib/lib_com.h
-recent_files: file:///dos/z/16/16/dos_kb.c
-recent_files: file:///dos/z/16/16/dos_kb.h
-recent_files: file:///dos/z/16/16/lib/lib_com.cpp
-recent_files: file:///dos/z/16/16/scroll.txt
-recent_files: file:///dos/z/16/16/lib/MODEX16.C
-recent_files: file:///dos/z/16/16/project16.txt
-recent_files: file:///dos/z/16/16/lib/MODEX16.H
-recent_files: file:///dos/z/16/16/lib/x/MODEX.H
-recent_files: file:///dos/z/16/16/16.txt
-recent_files: file:///dos/z/16/16/modex16/PCXTEST.C
 recent_files: file:///dos/z/16/16/test.c
-recent_files: file:///dos/z/16/16/TEST.C
 recent_files: file:///dos/z/16/16/MODEX16.H
 recent_files: file:///dos/z/16/16/MODEX16.C
 recent_files: file:///dos/z/16/16/lib/types.h
+recent_files: file:///dos/z/16/16/TEST.C
+recent_files: file:///dos/z/16/16/dos_gfx.h
+recent_files: file:///dos/z/16/16/lib/lib_com.h
+recent_files: file:///dos/z/16/16/lib/lib_com.cpp
+recent_files: file:///dos/z/16/16/dos_kb.c
+recent_files: file:///dos/z/16/16/dos_kb.h
+recent_files: file:///dos/z/16/16/dos_gfx.cpp
+recent_files: file:///dos/z/16/16/scroll.txt
+recent_files: file:///dos/z/16/16/project16.txt
+recent_files: file:///dos/z/16/16/16.txt
+recent_files: file:///dos/z/16/16/lib/MODEX16.H
+recent_files: file:///dos/z/16/16/lib/x/MODEX.H
+recent_files: file:///dos/z/16/16/lib/MODEX16.C
+recent_files: file:///dos/z/16/16/modex16/PCXTEST.C
+recent_files: file:///dos/z/16/16/modex16/test.c
+recent_files: file:///dos/z/16/16/modex16/pcxtest.c
 snr_replacetype: 0
-savedir: file:///dos/z/16/16/lib
+savedir: file:///dos/z/16/16/modex16
 spell_check_default: 1
 spell_insert_entities: 0
 last_filefilter: 
@@ -111,7 +113,6 @@ snr_escape_chars: 0
 htmlbar_view: 0
 spell_lang: en
 ssearch_dotmatchall: 0
-searchlist: modexen
 searchlist: modexClearRegion(page_t *page, (SW-palq)+palx+32, paly+32, TILEWH, TILEWH, palcol);
 searchlist: mx
 searchlist: sw
@@ -126,6 +127,7 @@ searchlist: vga
 searchlist: clock
 searchlist: setvideo
 searchlist: gq
+searchlist: SC_INDEX
 autocomplete: 1
 outputb_show_all_output: 0
 bookmarks_show_mode: 0

@@ -93,13 +93,31 @@ modexEnter() {
     }
 }
 
+int old_mode;
 
-void
-modexLeave() {
-    /* TODO restore original mode and palette */
-    vgaSetMode(TEXT_MODE);
+/////////////////////////////////////////////////////////////////////////////
+//                                                                         //
+// setvideo() - This function Manages the video modes					  //
+//                                                                         //
+/////////////////////////////////////////////////////////////////////////////
+void setvideo(/*byte mode, */short vq){
+		union REGS in, out;
+
+		if(!vq){ // deinit the video
+				// change to the video mode we were in before we switched to mode 13h
+				in.h.ah = 0x00;
+				in.h.al = old_mode;
+				int86(0x10, &in, &out);
+
+		}else if(vq==1){ // init the video
+				// get old video mode
+				in.h.ah = 0xf;
+				int86(0x10, &in, &out);
+				old_mode = out.h.al;
+				// enter mode
+				modexEnter();
+		}
 }
-
 
 page_t
 modexDefaultPage() {
@@ -384,76 +402,13 @@ modexDrawSpriteRegion(page_t *page, int x, int y,
 }
 
 
-/* copy a region of video memory from one page to another.
- * It assumes that the left edge of the tile is the same on both
- * regions and the memory areas do not overlap.
- */
 void
-modexCopyPageRegion(page_t *dest, page_t *src,
+modexCopyPageRegion(page_t *dest, page_t src,
 		    word sx, word sy,
 		    word dx, word dy,
 		    word width, word height)
 {
-    word doffset = (word)dest->data + dy*(dest->width/4) + dx/4;
-    word soffset = (word)src->data + sy*(src->width/4) + sx/4;
-    word scans   = width/4;
-    word nextSrcRow = src->width/4 - scans - 1;
-    word nextDestRow = dest->width/4 - scans - 1;
-    byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08};  /* clips for rectangles not on 4s */
-    byte rclip[] = {0x0f, 0x01, 0x03, 0x07};
-    byte left = lclip[sx&0x03];
-    byte right = rclip[(sx+width)&0x03];
-
-    __asm {
-		MOV AX, SCREEN_SEG	; work in the vga space
-		MOV ES, AX		;
-		MOV DI, doffset		;
-		MOV SI, soffset		;
-
-		MOV DX, GC_INDEX	; turn off cpu bits
-		MOV AX, 0008h		;
-		OUT DX, AX
-
-		MOV AX, SC_INDEX	; point to the mask register
-		MOV DX, AX		;
-		MOV AL, MAP_MASK	;
-		OUT DX, AL		;
-		INC DX			;
-
-	ROW_START:
-		PUSH DS
-		MOV AX, ES
-		MOV DS, AX
-		MOV CX, scans		; the number of latches
-
-		MOV AL, left		; do the left column
-		OUT DX, AL		;
-		MOVSB			;
-		DEC CX			;
-
-		MOV AL, 0fh		; do the inner columns
-		OUT DX, AL
-		REP MOVSB		; copy the pixels
-
-		MOV AL, right		; do the right column
-		OUT DX, AL
-		MOVSB
-		POP DS
-
-		MOV AX, SI		; go the start of the next row
-		ADD AX, nextSrcRow	;
-		MOV SI, AX		;
-		MOV AX, DI		;
-		ADD AX, nextDestRow	;
-		MOV DI, AX		;
-
-		DEC height		; do the rest of the actions
-		JNZ ROW_START		;
-
-		MOV DX, GC_INDEX+1	; go back to CPU data
-		MOV AL, 0ffh		; none from latches
-		OUT DX, AL		;
-    }
+    /* todo */
 }
 
 

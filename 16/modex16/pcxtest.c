@@ -26,14 +26,14 @@ oldDrawBmp(byte far* page, int x, int y, bitmap_t *bmp, byte sprite) {
 void main() {
     bitmap_t bmp;
     int i;
-    float t1, t2, t3, t4;
-    word start;
     page_t page;
+    word start;
+    float t1, t2;
 
     page=modexDefaultPage();
 
     bmp = modexLoadPcx("ed.pcx");
-    setvideo(1);
+    modexEnter();
 
     /* fix up the palette and everything */
     modexPalUpdate(bmp.palette);
@@ -46,31 +46,33 @@ void main() {
     for(i=0; i<100 ;i++) {
       oldDrawBmp(VGA, 20, 20, &bmp, 0);
     }
-    t1 = (*clock-start) / 18.2;
 
     start = *clock;
     for(i=0; i<100 ;i++) {
       modexDrawBmp(&page, 20, 20, &bmp);
     }
-    t2 = (*clock-start) / 18.2;
+    t1 = (*clock-start) /18.2;
+
+    start = *clock;
+    for(i=0; i<100; i++) {
+    	modexCopyPageRegion(&page, &page, 20, 20, 128, 20, 64, 64);
+    }
+    t2 = (*clock-start)/18.2;
+
 
     start = *clock;
     for(i=0; i<100 ;i++) {
       oldDrawBmp(VGA, 20, 20, &bmp, 1);
     }
-    t3 = (*clock-start) / 18.2;
+
 
     start = *clock;
     for(i=0; i<100 ;i++) {
       modexDrawSprite(&page, 20, 20, &bmp);
     }
-    t4 = (*clock-start) / 18.2;
-    setvideo(0);
+    modexLeave();
 
-    printf("Old non-sprite: %f\n", t1);
-    printf("New non-sprite: %f\n", t2);
-    printf("Old Sprite: %f\n", t3);
-    printf("New Sprite: %f\n", t4);
-
+    printf("CPU to VGA: %f\n", t1);
+    printf("VGA to VGA: %f\n", t2);
     return;
 }
