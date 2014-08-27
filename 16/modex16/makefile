@@ -1,4 +1,4 @@
-FLAGS=-0 
+FLAGS=-0 -d3
 all: test.exe pcxtest.exe test2.exe
 
 test.exe: test.obj modex16.obj

@@ -10,12 +10,12 @@ openfiles: /dos/z/16/16/scroll.txt:5256:4537:0:
 openfiles: /dos/z/16/16/project16.txt:8063:6091:0:
 openfiles: /dos/z/16/16/16.txt:0:0:0:
 openfiles: /dos/z/16/16/lib/x/MODEX.H:5511:2798:0:
-openfiles: /dos/z/16/16/modex16/PCXTEST.C:794:497:0:
-openfiles: /dos/z/16/16/lib/MODEX16.C:2321:2310:0:
-openfiles: /dos/z/16/16/lib/MODEX16.H:2926:1941:0:
-openfiles: /dos/z/16/16/TEST.C:430:0:0:
-openfiles: /dos/z/16/16/modex16/test.c:350:412:1:
-openfiles: /dos/z/16/16/modex16/pcxtest.c:846:690:0:
+openfiles: /dos/z/16/16/TEST.C:430:4128:0:
+openfiles: /dos/z/16/16/modex16/test.c:354:22:1:
+openfiles: /dos/z/16/16/modex16/pcxtest.c:858:576:0:
+openfiles: /dos/z/16/16/modex16/test2.c:385:0:0:
+openfiles: /dos/z/16/16/modex16/modex16.c:14732:14507:0:
+openfiles: /dos/z/16/16/modex16/modex16.h:0:0:0:
 snr_recursion_level: 0
 convertcolumn_horizontally: 0
 adv_open_matchname: 0
@@ -30,7 +30,7 @@ c2e.convert_iso: 0
 opendir: file:///dos/z/16/16/modex16
 wrap_text_default: 0
 bookmarks_filename_mode: 1
-ssearch_text: SC_INDEX
+ssearch_text: int index
 snr_casesens: 1
 view_blocks: 1
 name: project 16
@@ -52,9 +52,6 @@ ssearch_regex: 0
 e2c.convert_iso: 0
 ssearch_casesens: 0
 charmap_block: 1
-recent_files: file:///dos/z/16/16/lib_com.h
-recent_files: file:///dos/z/16/16/PCGPE10/SCROLL.TXT
-recent_files: file:///dos/z/16/16/lib/x/MXSM.ASM
 recent_files: file:///dos/z/16/16/w_modex/MODEX.HPP
 recent_files: file:///dos/z/16/16/w_modex/XPRIM.HPP
 recent_files: file:///dos/z/16/16/w_modex/XPRIM.CPP
@@ -86,22 +83,25 @@ recent_files: file:///dos/z/16/16/test.c
 recent_files: file:///dos/z/16/16/MODEX16.H
 recent_files: file:///dos/z/16/16/MODEX16.C
 recent_files: file:///dos/z/16/16/lib/types.h
-recent_files: file:///dos/z/16/16/TEST.C
+recent_files: file:///dos/z/16/16/modex16/PCXTEST.C
+recent_files: file:///dos/z/16/16/lib/MODEX16.C
+recent_files: file:///dos/z/16/16/lib/MODEX16.H
+recent_files: file:///dos/z/16/16/modex16/test.c
 recent_files: file:///dos/z/16/16/dos_gfx.h
-recent_files: file:///dos/z/16/16/lib/lib_com.h
-recent_files: file:///dos/z/16/16/lib/lib_com.cpp
 recent_files: file:///dos/z/16/16/dos_kb.c
 recent_files: file:///dos/z/16/16/dos_kb.h
+recent_files: file:///dos/z/16/16/lib/lib_com.cpp
+recent_files: file:///dos/z/16/16/lib/lib_com.h
 recent_files: file:///dos/z/16/16/dos_gfx.cpp
 recent_files: file:///dos/z/16/16/scroll.txt
 recent_files: file:///dos/z/16/16/project16.txt
 recent_files: file:///dos/z/16/16/16.txt
-recent_files: file:///dos/z/16/16/lib/MODEX16.H
 recent_files: file:///dos/z/16/16/lib/x/MODEX.H
-recent_files: file:///dos/z/16/16/lib/MODEX16.C
-recent_files: file:///dos/z/16/16/modex16/PCXTEST.C
-recent_files: file:///dos/z/16/16/modex16/test.c
+recent_files: file:///dos/z/16/16/TEST.C
 recent_files: file:///dos/z/16/16/modex16/pcxtest.c
+recent_files: file:///dos/z/16/16/modex16/test2.c
+recent_files: file:///dos/z/16/16/modex16/modex16.h
+recent_files: file:///dos/z/16/16/modex16/modex16.c
 snr_replacetype: 0
 savedir: file:///dos/z/16/16/modex16
 spell_check_default: 1
@@ -113,8 +113,6 @@ snr_escape_chars: 0
 htmlbar_view: 0
 spell_lang: en
 ssearch_dotmatchall: 0
-searchlist: modexClearRegion(page_t *page, (SW-palq)+palx+32, paly+32, TILEWH, TILEWH, palcol);
-searchlist: mx
 searchlist: sw
 searchlist: SW
 searchlist: SH
@@ -128,6 +126,8 @@ searchlist: clock
 searchlist: setvideo
 searchlist: gq
 searchlist: SC_INDEX
+searchlist: draw
+searchlist: int index
 autocomplete: 1
 outputb_show_all_output: 0
 bookmarks_show_mode: 0
