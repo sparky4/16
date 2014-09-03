@@ -1,7 +1,7 @@
 c2e.convert_special: 0
 e2c.convert_num: 0
-openfiles: /dos/z/16/16/dos_gfx.cpp:187:0:0:
-openfiles: /dos/z/16/16/dos_gfx.h:116:0:0:
+openfiles: /dos/z/16/16/dos_gfx.cpp:5935:5677:0:
+openfiles: /dos/z/16/16/dos_gfx.h:910:518:0:
 openfiles: /dos/z/16/16/dos_kb.c:217:0:0:
 openfiles: /dos/z/16/16/dos_kb.h:161:0:0:
 openfiles: /dos/z/16/16/lib/lib_com.cpp:2:0:0:
@@ -10,12 +10,8 @@ openfiles: /dos/z/16/16/scroll.txt:5256:4537:0:
 openfiles: /dos/z/16/16/project16.txt:8063:6091:0:
 openfiles: /dos/z/16/16/16.txt:0:0:0:
 openfiles: /dos/z/16/16/lib/x/MODEX.H:5511:2798:0:
-openfiles: /dos/z/16/16/TEST.C:430:4128:0:
-openfiles: /dos/z/16/16/modex16/test.c:354:22:1:
-openfiles: /dos/z/16/16/modex16/pcxtest.c:858:576:0:
-openfiles: /dos/z/16/16/modex16/test2.c:385:0:0:
-openfiles: /dos/z/16/16/modex16/modex16.c:14732:14507:0:
-openfiles: /dos/z/16/16/modex16/modex16.h:0:0:0:
+openfiles: /dos/z/16/16/TEST.C:430:6112:0:
+openfiles: /dos/z/16/16/modex16/scroll.c:2383:1718:1:
 snr_recursion_level: 0
 convertcolumn_horizontally: 0
 adv_open_matchname: 0
@@ -30,7 +26,7 @@ c2e.convert_iso: 0
 opendir: file:///dos/z/16/16/modex16
 wrap_text_default: 0
 bookmarks_filename_mode: 1
-ssearch_text: int index
+ssearch_text: mapScrollRight
 snr_casesens: 1
 view_blocks: 1
 name: project 16
@@ -86,22 +82,19 @@ recent_files: file:///dos/z/16/16/lib/types.h
 recent_files: file:///dos/z/16/16/modex16/PCXTEST.C
 recent_files: file:///dos/z/16/16/lib/MODEX16.C
 recent_files: file:///dos/z/16/16/lib/MODEX16.H
-recent_files: file:///dos/z/16/16/modex16/test.c
 recent_files: file:///dos/z/16/16/dos_gfx.h
 recent_files: file:///dos/z/16/16/dos_kb.c
 recent_files: file:///dos/z/16/16/dos_kb.h
 recent_files: file:///dos/z/16/16/lib/lib_com.cpp
-recent_files: file:///dos/z/16/16/lib/lib_com.h
 recent_files: file:///dos/z/16/16/dos_gfx.cpp
-recent_files: file:///dos/z/16/16/scroll.txt
 recent_files: file:///dos/z/16/16/project16.txt
+recent_files: file:///dos/z/16/16/lib/lib_com.h
+recent_files: file:///dos/z/16/16/scroll.txt
+recent_files: file:///dos/z/16/16/TEST.C
 recent_files: file:///dos/z/16/16/16.txt
 recent_files: file:///dos/z/16/16/lib/x/MODEX.H
-recent_files: file:///dos/z/16/16/TEST.C
-recent_files: file:///dos/z/16/16/modex16/pcxtest.c
-recent_files: file:///dos/z/16/16/modex16/test2.c
-recent_files: file:///dos/z/16/16/modex16/modex16.h
-recent_files: file:///dos/z/16/16/modex16/modex16.c
+recent_files: file:///dos/z/16/16/modex16/SCROLL.C
+recent_files: file:///dos/z/16/16/modex16/scroll.c
 snr_replacetype: 0
 savedir: file:///dos/z/16/16/modex16
 spell_check_default: 1
@@ -113,9 +106,6 @@ snr_escape_chars: 0
 htmlbar_view: 0
 spell_lang: en
 ssearch_dotmatchall: 0
-searchlist: sw
-searchlist: SW
-searchlist: SH
 searchlist: QUADWH
 searchlist: pdump
 searchlist: #include "modex16.h"\r\n#include <stdio.h>\r\n\r\nword far* clock= (word far*) 0x046C; /* 18.2hz clock */\r\n\r\nvoid main() {\r\n#include "modex16.h"\r\n#include <stdio.h>\r\n\r\nword far* clock= (word far*) 0x046C; /* 18.2hz clock */\r\n\r\nvoid main() {\r\n
@@ -128,6 +118,9 @@ searchlist: gq
 searchlist: SC_INDEX
 searchlist: draw
 searchlist: int index
+searchlist: map.dat
+searchlist: 32
+searchlist: mapScrollRight
 autocomplete: 1
 outputb_show_all_output: 0
 bookmarks_show_mode: 0

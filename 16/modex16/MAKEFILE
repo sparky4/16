@@ -1,6 +1,10 @@
-FLAGS=-0 -d3
-all: test.exe pcxtest.exe test2.exe
+FLAGS=-0 
+all: test.exe pcxtest.exe test2.exe scroll.exe
 
+scroll.exe: scroll.obj modex16.obj
+	wcl $(FLAGS) scroll.obj modex16.obj
+scroll.obj: scroll.c
+	wcl $(FLAGS) -c scroll.c
 test.exe: test.obj modex16.obj
 	wcl $(FLAGS) test.obj modex16.obj
 	
