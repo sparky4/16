@@ -63,11 +63,24 @@ void main() {
     mapGoTo(&mv, 0, 0);
 
     /* scroll all the way to the right */
-    for(x=0; x<(80*16-SCREEN_WIDTH); x++) {
+    /*for(x=0; x<((80)*16-SCREEN_WIDTH); x++) {
 	mapScrollRight(&mv, 1);
 	modexShowPage(mv.page);
     }
-    
+
+    for(x=0; x<((80+0.50625)*16-SCREEN_WIDTH); x++) {
+	mapScrollLeft(&mv, 1);
+	modexShowPage(mv.page);
+    }*/
+
+    for(x=0; x<((40)*16-SCREEN_WIDTH); x++) {
+	mapScrollRight(&mv, 1);
+	modexShowPage(mv.page);
+    }
+    for(x=0; x<((40/*+0.50625*/)*16-SCREEN_WIDTH); x++) {
+	mapScrollLeft(&mv, 1);
+	modexShowPage(mv.page);
+    }
 
     /* spin for a time */
     for(x=0; x<500; x++) {
@@ -151,7 +164,7 @@ mapScrollRight(map_view_t *mv, byte offset) {
 	/* draw the next column */
 	x= SCREEN_WIDTH;
 	i= mv->ty * mv->map->width + mv->tx + 20;
-	for(y=0; y<240; y+=16) {
+	for(y=0; y<SCREEN_HEIGHT; y+=16) {
 	    mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, (int)mv->page->dx + x, (int)mv->page->dy+y);
 	    i += mv->map->width;
 	}
@@ -160,7 +173,30 @@ mapScrollRight(map_view_t *mv, byte offset) {
 
 
 void
-mapScrollLeft(map_view_t *mv, byte offest) {
+mapScrollLeft(map_view_t *mv, byte offset) {
+	word x, y;  /* coordinate for drawing */
+    unsigned int i;
+
+    /* increment the pixel position and update the page */
+    mv->page->dx -= offset;
+
+    /* check to see if this changes the tile */
+    if(mv->page->dx >= 16) {
+	/* go forward one tile */
+	mv->tx++;
+	/* Snap the origin forward */
+	mv->page->data -= 4;
+	mv->page->dx =16;
+
+
+	/* draw the next column */
+	x= SCREEN_WIDTH;
+	i= mv->ty * mv->map->width + mv->tx + 20;
+	for(y=0; y<SCREEN_HEIGHT; y+=16) {
+	    mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, (int)mv->page->dx + x, (int)mv->page->dy+y);
+	    i += mv->map->width;
+	}
+}
 }
 
 
