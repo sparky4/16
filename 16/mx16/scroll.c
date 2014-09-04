@@ -73,7 +73,7 @@ void main() {
 	modexShowPage(mv.page);
     }*/
 
-    for(x=0; x<((40)*16-SCREEN_WIDTH); x++) {
+    for(x=0; x<((20)*16-SCREEN_WIDTH); x++) {
 	mapScrollRight(&mv, 1);
 	modexShowPage(mv.page);
     }
