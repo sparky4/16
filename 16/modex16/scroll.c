@@ -8,24 +8,26 @@ typedef struct {
     bitmap_t *data;
     word tileHeight;
     word tileWidth;
-    word rows;
-    word cols;
+    unsigned int rows;
+    unsigned int cols;
 } tiles_t;
 
 
 typedef struct {
     byte    *data;
     tiles_t *tiles;
-    word width;
-    word height;
+    int width;
+    int height;
 } map_t;
 
 
 typedef struct {
     map_t *map;
     page_t *page;
-    word tx;
-    word ty;
+    int tx;
+    int ty;
+    word dxThresh;
+    word dyThresh;
 } map_view_t;
 
 
@@ -37,7 +39,7 @@ void mapScrollRight(map_view_t *mv, byte offset);
 void mapScrollLeft(map_view_t *mv, byte offest);
 void mapScrollUp(map_view_t *mv, byte offset);
 void mapScrollDown(map_view_t *mv, byte offset);
-void mapGoTo(map_view_t *mv, byte tx, byte ty);
+void mapGoTo(map_view_t *mv, int tx, int ty);
 void mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
 void mapDrawRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
@@ -63,17 +65,24 @@ void main() {
     screen.width = 352;
     mv.page = &screen;
     mapGoTo(&mv, 0, 0);
+    modexShowPage(mv.page);
 
-
-	/* scroll all the way to the right */
-
-    for(x=0; x<((20)*16-SCREEN_WIDTH); x++) {
+    /* scroll all the way to the right */
+    for(x=0; x<(map.width*16-SCREEN_WIDTH); x++) {
 	mapScrollRight(&mv, 1);
 	modexShowPage(mv.page);
     }
-    for(x=0; x<((40/*+0.50625*/)*16-SCREEN_WIDTH); x++) {
+
+    /* scroll all the way to the left */
+    for(; x>0; x--) {
 	mapScrollLeft(&mv, 1);
 	modexShowPage(mv.page);
+    }
+
+    /* scroll all the way down */
+    for(y=0; y<(map.height*16-SCREEN_HEIGHT); y++) {
+        mapScrollDown(&mv, 1);
+        modexShowPage(mv.page);
     }
 
     /* spin for a time */
@@ -141,55 +150,44 @@ initMap(map_t *map) {
 void
 mapScrollRight(map_view_t *mv, byte offset) {
     word x, y;  /* coordinate for drawing */
-    unsigned int i;
 
     /* increment the pixel position and update the page */
     mv->page->dx += offset;
 
     /* check to see if this changes the tile */
-    if(mv->page->dx >= 16) {
+    if(mv->page->dx >= mv->dxThresh ) {
 	/* go forward one tile */
 	mv->tx++;
 	/* Snap the origin forward */
 	mv->page->data += 4;
-	mv->page->dx =0;
+	mv->page->dx = mv->map->tiles->tileWidth;
 
 
 	/* draw the next column */
-	x= SCREEN_WIDTH;
-	i= mv->ty * mv->map->width + mv->tx + 20;
-	for(y=0; y<SCREEN_HEIGHT; y+=16) {
-	    mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, (int)mv->page->dx + x, (int)mv->page->dy+y);
-	    i += mv->map->width;
-	}
+	x= SCREEN_WIDTH + mv->map->tiles->tileWidth;
+        mapDrawCol(mv, mv->tx + 20 , mv->ty-1, x);
     }
 }
 
 
 void
 mapScrollLeft(map_view_t *mv, byte offset) {
-	word x, y;  /* coordinate for drawing */
-    unsigned int i;
+    word x, y;  /* coordinate for drawing */
 
     /* increment the pixel position and update the page */
     mv->page->dx -= offset;
 
     /* check to see if this changes the tile */
-    if(mv->page->dx >= 16) {
-	/* go forward one tile */
-	mv->tx++;
-	/* Snap the origin forward */
+    if(mv->page->dx == 0) {
+	/* go backward one tile */
+	mv->tx--;
+        
+	/* Snap the origin backward */
 	mv->page->data -= 4;
-	mv->page->dx =16;
-
+	mv->page->dx = mv->map->tiles->tileWidth;
 
 	/* draw the next column */
-	x= SCREEN_WIDTH;
-	i= mv->ty * mv->map->width + mv->tx + 20;
-	for(y=0; y<SCREEN_HEIGHT; y+=16) {
-	    mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, (int)mv->page->dx + x, (int)mv->page->dy+y);
-	    i += mv->map->width;
-	}
+        mapDrawCol(mv, mv->tx-1, mv->ty-1, 0);
     }
 }
 
@@ -201,30 +199,49 @@ mapScrollUp(map_view_t *mv, byte offset) {
 
 void
 mapScrollDown(map_view_t *mv, byte offset) {
+    word x, y;  /* coordinate for drawing */
+
+    /* increment the pixel position and update the page */
+    mv->page->dy += offset;
+
+    /* check to see if this changes the tile */
+    if(mv->page->dy >= mv->dyThresh ) {
+	/* go down one tile */
+	mv->ty++;
+	/* Snap the origin downward */
+	mv->page->data += SCREEN_WIDTH*4;
+	mv->page->dy = mv->map->tiles->tileHeight;
+
+
+	/* draw the next row */
+	y= SCREEN_HEIGHT + mv->map->tiles->tileHeight;
+        mapDrawRow(mv, mv->tx-1 , mv->ty+15, y);
+    }
+
 }
 
 
 void
-mapGoTo(map_view_t *mv, byte tx, byte ty) {
+mapGoTo(map_view_t *mv, int tx, int ty) {
     int px, py;
     unsigned int i;
 
     /* set up the coordinates */
     mv->tx = tx;
     mv->ty = ty;
-    mv->page->dx = 0;
-    mv->page->dy = 0;
+    mv->page->dx = mv->map->tiles->tileWidth;
+    mv->page->dy = mv->map->tiles->tileHeight;
+
+    /* set up the thresholds */
+    mv->dxThresh = mv->map->tiles->tileWidth * 2;
+    mv->dyThresh = mv->map->tiles->tileHeight * 2;
 
     /* draw the tiles */
     modexClearRegion(mv->page, 0, 0, mv->page->width, mv->page->height, 0);
     py=0;
     i=mv->ty * mv->map->width + mv->tx;
-    for(ty=mv->ty; py < SCREEN_HEIGHT && ty < mv->map->height; ty++, py+=mv->map->tiles->tileHeight) {
-	px=0;
-	for(tx=mv->tx; px < SCREEN_WIDTH+16 && tx < mv->map->width+1; tx++, px+=mv->map->tiles->tileWidth) {
-	    mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, px, py);
-	    i++;
-	}
+    for(ty=mv->ty-1; py < SCREEN_HEIGHT+mv->dyThresh && ty < mv->map->height; ty++, py+=mv->map->tiles->tileHeight) {
+        mapDrawRow(mv, tx-1, ty, py);
 	i+=mv->map->width - tx;
     }
 }
@@ -247,7 +264,7 @@ mapDrawRow(map_view_t *mv, int tx, int ty, word y) {
 
     /* the position within the map array */
     i=ty * mv->map->width + tx;
-    for(x=0; x<SCREEN_HEIGHT+2 & tx < mv->map->width; x+=mv->map->tiles->tileWidth, tx++) {
+    for(x=0; x<SCREEN_WIDTH+mv->dxThresh && tx < mv->map->width; x+=mv->map->tiles->tileWidth, tx++) {
 	if(i>=0) {
 	    /* we are in the map, so copy! */
 	    mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
@@ -267,7 +284,7 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 
     /* We'll copy all of the columns in the screen, 
        i + 1 row above and one below */
-    for(y=0; y<SCREEN_HEIGHT+2 && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
+    for(y=0; y<SCREEN_HEIGHT+mv->dyThresh && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
 	if(i>=0) {
 	    /* we are in the map, so copy away! */
 	    mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
