@@ -85,6 +85,12 @@ void main() {
         modexShowPage(mv.page);
     }
 
+    /* scroll all the way up */
+    for(; y>0; y--) {
+	mapScrollUp(&mv, 1);
+	modexShowPage(mv.page);
+    }
+
     /* spin for a time */
     for(x=0; x<500; x++) {
         modexWaitBorder();
@@ -194,6 +200,24 @@ mapScrollLeft(map_view_t *mv, byte offset) {
 
 void
 mapScrollUp(map_view_t *mv, byte offset) {
+    word x, y;  /* coordinate for drawing */
+
+    /* increment the pixel position and update the page */
+    mv->page->dy -= offset;
+
+    /* check to see if this changes the tile */
+    if(mv->page->dy == 0 ) {
+	/* go down one tile */
+	mv->ty--;
+	/* Snap the origin downward */
+	mv->page->data -= mv->page->width*4;
+	mv->page->dy = mv->map->tiles->tileHeight;
+
+
+	/* draw the next row */
+	y= 0;
+        mapDrawRow(mv, mv->tx-1 , mv->ty-1, y);
+    }
 }
 
 
@@ -209,7 +233,7 @@ mapScrollDown(map_view_t *mv, byte offset) {
 	/* go down one tile */
 	mv->ty++;
 	/* Snap the origin downward */
-	mv->page->data += SCREEN_WIDTH*4;
+	mv->page->data += mv->page->width*4;
 	mv->page->dy = mv->map->tiles->tileHeight;
 
 
