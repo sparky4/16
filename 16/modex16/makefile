@@ -1,8 +1,8 @@
 FLAGS=-0 
 all: test.exe pcxtest.exe test2.exe scroll.exe
 
-scroll.exe: scroll.obj modex16.obj
-	wcl $(FLAGS) scroll.obj modex16.obj
+scroll.exe: scroll.obj modex16.obj dos_kb.obj
+	wcl $(FLAGS) scroll.obj modex16.obj dos_kb.obj
 scroll.obj: scroll.c
 	wcl $(FLAGS) -c scroll.c
 test.exe: test.obj modex16.obj
@@ -25,7 +25,10 @@ pcxtest.obj: pcxtest.c modex16.h
 
 modex16.obj: modex16.h modex16.c
 	wcl $(FLAGS) -c modex16.c
-	
+
+dos_kb.obj: dos_kb.h dos_kb.c
+	wcl $(FLAGS) -c dos_kb.c
+
 clean: 
 	del *.obj
 	del *.exe

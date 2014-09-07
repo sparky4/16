@@ -1,8 +1,9 @@
 #include "modex16.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "dos_kb.h"
 
-word far *clock= (word far*) 0x046C; /* 18.2hz clock */
+//word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 
 typedef struct {
     bitmap_t *data;
@@ -48,13 +49,16 @@ void main() {
     int show1=1;
     int tx, ty;
     int x, y;
-	int ch=0x0;
+	//int ch=0x0;
+	byte ch;
 	int q=0;
     page_t screen;
     map_t map;
     map_view_t mv;
     byte *ptr;
-    
+
+    setkb(1);
+
     /* create the map */
     map = allocMap(40,30);
     initMap(&map);
@@ -69,10 +73,12 @@ void main() {
     mapGoTo(&mv, 0, 0);
     modexShowPage(mv.page);
 
-	while(1){ 
+	while(!keyp(1))
+	{
     // scroll all the way to the right
     //for(x=0; x<(map.width*16-SCREEN_WIDTH); x++) {
-	if(ch==0x4d){
+	//if(ch==0x4d){
+	if(keyp(77)){
 	for(q=0; q<16; q++) {
 	mapScrollRight(&mv, 1);
 	modexShowPage(mv.page);
@@ -81,7 +87,8 @@ void main() {
 
     // scroll all the way to the left
     //for(; x>0; x--) {
-	if(ch==0x4b){
+	//if(ch==0x4b){
+	if(keyp(75)){
 	for(q=0; q<16; q++) {
 	mapScrollLeft(&mv, 1);
 	modexShowPage(mv.page);
@@ -90,7 +97,8 @@ void main() {
 
     // scroll all the way down
     //for(y=0; y<(map.height*16-SCREEN_HEIGHT); y++) {
-	if(ch==0x50){
+	//if(ch==0x50){
+	if(keyp(80)){
 		for(q=0; q<16; q++) {
         mapScrollDown(&mv, 1);
         modexShowPage(mv.page);
@@ -99,7 +107,8 @@ void main() {
 
     // scroll all the way up
     //for(; y>0; y--) {
-	if(ch==0x48){
+	//if(ch==0x48){
+	if(keyp(72)){
 		for(q=0; q<16; q++) {
 	mapScrollUp(&mv, 1);
 	modexShowPage(mv.page);
@@ -111,12 +120,14 @@ void main() {
         modexWaitBorder();
     }*/
     //while(1){
-			ch=getch();
+//			ch=getch();
 			//printf("0x%02x\n", ch);
-			if(ch==0x71)break; // 'q'
-			if(ch==0x1b)break; // 'ESC'
+			keyp(ch);
+//			if(ch==0x71)break; // 'q'
+//			if(ch==0x1b)break; // 'ESC'
 }
     modexLeave();
+	setkb(0);
 }
 
 
