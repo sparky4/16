@@ -49,6 +49,7 @@ void main() {
     int tx, ty;
     int x, y;
 	int ch=0x0;
+	int q=0;
     page_t screen;
     map_t map;
     map_view_t mv;
@@ -72,29 +73,37 @@ void main() {
     // scroll all the way to the right
     //for(x=0; x<(map.width*16-SCREEN_WIDTH); x++) {
 	if(ch==0x4d){
-	mapScrollRight(&mv, 4);
+	for(q=0; q<16; q++) {
+	mapScrollRight(&mv, 1);
 	modexShowPage(mv.page);
+	}
     }
 
     // scroll all the way to the left
     //for(; x>0; x--) {
 	if(ch==0x4b){
-	mapScrollLeft(&mv, 4);
+	for(q=0; q<16; q++) {
+	mapScrollLeft(&mv, 1);
 	modexShowPage(mv.page);
+	}
     }
 
     // scroll all the way down
     //for(y=0; y<(map.height*16-SCREEN_HEIGHT); y++) {
 	if(ch==0x50){
-        mapScrollDown(&mv, 4);
+		for(q=0; q<16; q++) {
+        mapScrollDown(&mv, 1);
         modexShowPage(mv.page);
+    }
     }
 
     // scroll all the way up
     //for(; y>0; y--) {
 	if(ch==0x48){
-	mapScrollUp(&mv, 4);
+		for(q=0; q<16; q++) {
+	mapScrollUp(&mv, 1);
 	modexShowPage(mv.page);
+	}
     }
 
     // spin for a time 
@@ -114,7 +123,7 @@ void main() {
 map_t
 allocMap(int w, int h) {
     map_t result;
-    
+
     result.width =w;
     result.height=h;
     result.data = malloc(sizeof(byte) * w * h);
