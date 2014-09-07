@@ -48,13 +48,14 @@ void main() {
     int show1=1;
     int tx, ty;
     int x, y;
+	int ch=0x0;
     page_t screen;
     map_t map;
     map_view_t mv;
     byte *ptr;
     
     /* create the map */
-    map = allocMap(80,60);
+    map = allocMap(40,30);
     initMap(&map);
     mv.map = &map;
 
@@ -67,35 +68,45 @@ void main() {
     mapGoTo(&mv, 0, 0);
     modexShowPage(mv.page);
 
-    /* scroll all the way to the right */
-    for(x=0; x<(map.width*16-SCREEN_WIDTH); x++) {
-	mapScrollRight(&mv, 1);
+	while(1){ 
+    // scroll all the way to the right
+    //for(x=0; x<(map.width*16-SCREEN_WIDTH); x++) {
+	if(ch==0x4d){
+	mapScrollRight(&mv, 4);
 	modexShowPage(mv.page);
     }
 
-    /* scroll all the way to the left */
-    for(; x>0; x--) {
-	mapScrollLeft(&mv, 1);
+    // scroll all the way to the left
+    //for(; x>0; x--) {
+	if(ch==0x4b){
+	mapScrollLeft(&mv, 4);
 	modexShowPage(mv.page);
     }
 
-    /* scroll all the way down */
-    for(y=0; y<(map.height*16-SCREEN_HEIGHT); y++) {
-        mapScrollDown(&mv, 1);
+    // scroll all the way down
+    //for(y=0; y<(map.height*16-SCREEN_HEIGHT); y++) {
+	if(ch==0x50){
+        mapScrollDown(&mv, 4);
         modexShowPage(mv.page);
     }
 
-    /* scroll all the way up */
-    for(; y>0; y--) {
-	mapScrollUp(&mv, 1);
+    // scroll all the way up
+    //for(; y>0; y--) {
+	if(ch==0x48){
+	mapScrollUp(&mv, 4);
 	modexShowPage(mv.page);
     }
 
-    /* spin for a time */
-    for(x=0; x<500; x++) {
+    // spin for a time 
+    /*for(x=0; x<500; x++) {
         modexWaitBorder();
-    }
-
+    }*/
+    //while(1){
+			ch=getch();
+			//printf("0x%02x\n", ch);
+			if(ch==0x71)break; // 'q'
+			if(ch==0x1b)break; // 'ESC'
+}
     modexLeave();
 }
 

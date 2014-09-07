@@ -4,7 +4,11 @@ Open watcom to compile the code of project 16
 16/modex16/ = pngwen's code
 
 TODO:
-1. SCROLLING!!!!!!!
+DONE almost 1. SCROLLING!!!!!!!
 2. Fix pngwen's pcx rendering code it dose not render large relolution pcx files well at all!
 3. document an understrand how the main engine code works!
-4. make the $#@%# game!
+4. movement and player movement when reaching edge of map
+5. sprite rendering
+6. text box rendering
+7. text rendering
+8. 
