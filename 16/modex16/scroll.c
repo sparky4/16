@@ -53,13 +53,14 @@ void main() {
 	//int ch=0x0;
 	byte ch;
 	int q=0;
-	setkb(1);
 	page_t screen,screen2;
 	map_t map;
 	map_view_t mv, mv2;
 	map_view_t *draw, *show, *tmp;
 	byte *ptr;
 	
+
+	setkb(1);
 	/* create the map */
 	map = allocMap(40,30);
 	initMap(&map);
@@ -72,9 +73,9 @@ void main() {
 	screen = modexDefaultPage();
 	screen.width = 352;
 	mv.page = &screen;
+	mapGoTo(&mv, 0, 0);
 	screen2=modexNextPage(mv.page);
 	mv2.page = &screen2;
-	mapGoTo(&mv, 0, 0);
 	mapGoTo(&mv2, 0, 0);
 	modexShowPage(mv.page);
 
@@ -95,6 +96,7 @@ void main() {
 		for(q=0; q<16; q++) {
  		mapScrollLeft(draw, 1);
 		modexShowPage(draw->page);
+ 		mapScrollLeft(show, 1);
 		SWAP(draw, show);
 		}
 	}
@@ -103,6 +105,7 @@ void main() {
 		for(q=0; q<16; q++) {
 		mapScrollDown(draw, 1);
 		modexShowPage(draw->page);
+		mapScrollDown(show, 1);
 		SWAP(draw, show);
 		}
 	}
@@ -112,6 +115,7 @@ void main() {
 		for(q=0; q<16; q++) {
 		mapScrollUp(draw, 1);
 		modexShowPage(draw->page);
+		mapScrollUp(show, 1);
 		SWAP(draw, show);
 
 		}
