@@ -19,6 +19,7 @@ static void interrupt (far *oldkb)(void) = NULL; /* BIOS keyboard handler */
  * to be included.
  */
 //#define TESTING
+#define TESTING2
 
 /*****************NEW KEYBOARD 09h ISR***********************/
 void interrupt newkb(void){
@@ -35,8 +36,8 @@ void interrupt newkb(void){
 	outp(0x61, qx);	   /* Toggle acknowledge bit low */
 
 	/* Interpret the scan code and set our flags */
-	#ifdef TESTING
-	//printf("%d[%d]\n",kee,key[kee]);
+	#ifdef TESTING2
+	printf("%d[%d]\n",kee,key[kee]);
 	#endif
 	if(kee & 0x80)
 		key[kee & 0x7F] = 0; // a key is released
@@ -59,15 +60,15 @@ void setkb(int vq){
 		_dos_setvect(9, oldkb);
 		/* Reset our function pointer to contain no valid address */
 		oldkb = NULL;
-		#ifdef TESTING
+		#ifdef TESTING2
 		/* Print the key heap */
-		/*printf("\n");
+		printf("\n");
 		for(i=0; i<NUM_SCANCODES; i++){
 			if(i==NUM_SCANCODES/2) printf("================================\n");
 			printf("%03d[%d][%d]",i+1,key[i],kea[i]);
 			if(key[i]==1)printf("====");
 			printf(",\n");
-		}*/
+		}
 		#endif
 	}else if(vq == 1){ // initiation
 		byte far *lock_key;

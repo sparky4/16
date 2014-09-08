@@ -69,7 +69,7 @@ void main() {
 
 	/* draw the tiles */
 	ptr = map.data;
-	modexEnter();
+	//modexEnter();
 	screen = modexDefaultPage();
 	screen.width = 352;
 	mv.page = &screen;
@@ -84,11 +84,12 @@ void main() {
 	draw = &mv2;
 
 	while(!keyp(1)) {
-	if(keyp(77)){
+	/*if(keyp(77)){
 		for(q=0; q<16; q++) {
 		mapScrollRight(draw, 1);
 		modexShowPage(draw->page);
-		SWAP(draw, show);
+		//mapScrollRight(draw, 1);
+		//SWAP(draw, show);
 		}
 	}
 
@@ -96,8 +97,8 @@ void main() {
 		for(q=0; q<16; q++) {
  		mapScrollLeft(draw, 1);
 		modexShowPage(draw->page);
- 		mapScrollLeft(show, 1);
-		SWAP(draw, show);
+ 		//mapScrollLeft(show, 1);
+		//SWAP(draw, show);
 		}
 	}
 
@@ -105,8 +106,8 @@ void main() {
 		for(q=0; q<16; q++) {
 		mapScrollDown(draw, 1);
 		modexShowPage(draw->page);
-		mapScrollDown(show, 1);
-		SWAP(draw, show);
+		//mapScrollDown(show, 1);
+		//SWAP(draw, show);
 		}
 	}
 
@@ -115,17 +116,16 @@ void main() {
 		for(q=0; q<16; q++) {
 		mapScrollUp(draw, 1);
 		modexShowPage(draw->page);
-		mapScrollUp(show, 1);
-		SWAP(draw, show);
-
+		//mapScrollUp(show, 1);
+		//SWAP(draw, show);
 		}
+	}*/
+
+	keyp(ch);
+
 	}
 
-	//keyp(ch);
-
-	}
-
-	modexLeave();
+	//modexLeave();
 	setkb(0);
 }
 
