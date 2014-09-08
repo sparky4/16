@@ -44,19 +44,22 @@ void mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
 void mapDrawRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
 
+#define SWAP(a, b) tmp=a; a=b; b=tmp;
 void main() {
     int show1=1;
     int tx, ty;
     int x, y;
-    page_t screen;
+    page_t screen,screen2;
     map_t map;
-    map_view_t mv;
+    map_view_t mv, mv2;
+    map_view_t *draw, *show, *tmp;
     byte *ptr;
     
     /* create the map */
     map = allocMap(80,60);
     initMap(&map);
     mv.map = &map;
+    mv2.map = &map;
 
     /* draw the tiles */
     ptr = map.data;
@@ -64,13 +67,21 @@ void main() {
     screen = modexDefaultPage();
     screen.width = 352;
     mv.page = &screen;
+    screen2=modexNextPage(mv.page);
+    mv2.page = &screen2;
     mapGoTo(&mv, 0, 0);
+    mapGoTo(&mv2, 0, 0);
     modexShowPage(mv.page);
 
+    /* set up paging */
+    show = &mv;
+    draw = &mv2;
     /* scroll all the way to the right */
     for(x=0; x<(map.width*16-SCREEN_WIDTH); x++) {
-	mapScrollRight(&mv, 1);
-	modexShowPage(mv.page);
+	mapScrollRight(draw, 1);
+	modexShowPage(draw->page);
+	mapScrollRight(show, 1);
+	//SWAP(draw, show);
     }
 
     /* scroll all the way to the left */
