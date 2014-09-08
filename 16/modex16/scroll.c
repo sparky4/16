@@ -1,8 +1,9 @@
 #include "modex16.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "dos_kb.h"
 
-word far *clock= (word far*) 0x046C; /* 18.2hz clock */
+//word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 
 typedef struct {
     bitmap_t *data;
@@ -49,6 +50,9 @@ void main() {
     int show1=1;
     int tx, ty;
     int x, y;
+	//int ch=0x0;
+	byte ch;
+	int q=0;
     page_t screen,screen2;
     map_t map;
     map_view_t mv, mv2;
@@ -56,7 +60,7 @@ void main() {
     byte *ptr;
     
     /* create the map */
-    map = allocMap(80,60);
+    map = allocMap(40,30);
     initMap(&map);
     mv.map = &map;
     mv2.map = &map;
@@ -76,45 +80,55 @@ void main() {
     /* set up paging */
     show = &mv;
     draw = &mv2;
-    /* scroll all the way to the right */
-    for(x=0; x<(map.width*16-SCREEN_WIDTH); x++) {
-	mapScrollRight(draw, 1);
-	modexShowPage(draw->page);
-	mapScrollRight(show, 1);
-	//SWAP(draw, show);
-    }
 
-    /* scroll all the way to the left */
-    for(; x>0; x--) {
-	mapScrollLeft(&mv, 1);
-	modexShowPage(mv.page);
-    }
+    while(!keyp(1)) {
+	if(keyp(77)){
+	    for(q=0; q<16; q++) {
+		mapScrollRight(draw, 1);
+		modexShowPage(draw->page);
+		SWAP(draw, show);
+	    }
+	}
 
-    /* scroll all the way down */
-    for(y=0; y<(map.height*16-SCREEN_HEIGHT); y++) {
-        mapScrollDown(&mv, 1);
-        modexShowPage(mv.page);
-    }
+	if(keyp(75)){
+	    for(q=0; q<16; q++) {
+ 		mapScrollLeft(draw, 1);
+		modexShowPage(draw->page);
+		SWAP(draw, show);
+	    }
+	}
 
-    /* scroll all the way up */
-    for(; y>0; y--) {
-	mapScrollUp(&mv, 1);
-	modexShowPage(mv.page);
-    }
+	if(keyp(80)){
+	    for(q=0; q<16; q++) {
+		mapScrollDown(draw, 1);
+		modexShowPage(draw->page);
+		SWAP(draw, show);
+	    }
+	}
 
-    /* spin for a time */
-    for(x=0; x<500; x++) {
-        modexWaitBorder();
+
+	if(keyp(72)){
+	    for(q=0; q<16; q++) {
+		mapScrollUp(draw, 1);
+		modexShowPage(draw->page);
+		SWAP(draw, show);
+
+	    }
+	}
+
+	keyp(ch);
+
     }
 
     modexLeave();
+    setkb(0);
 }
 
 
 map_t
 allocMap(int w, int h) {
     map_t result;
-    
+
     result.width =w;
     result.height=h;
     result.data = malloc(sizeof(byte) * w * h);
