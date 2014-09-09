@@ -37,7 +37,8 @@ void interrupt newkb(void){
 
 	/* Interpret the scan code and set our flags */
 	#ifdef TESTING2
-	printf("%d[%d]\n",kee,key[kee]);
+	//printf("%d[%d]\n",kee,key[kee]);
+	printf("\0"); // bug
 	#endif
 	if(kee & 0x80)
 		key[kee & 0x7F] = 0; // a key is released
@@ -60,7 +61,7 @@ void setkb(int vq){
 		_dos_setvect(9, oldkb);
 		/* Reset our function pointer to contain no valid address */
 		oldkb = NULL;
-		#ifdef TESTING2
+		#ifdef TESTING
 		/* Print the key heap */
 		printf("\n");
 		for(i=0; i<NUM_SCANCODES; i++){
