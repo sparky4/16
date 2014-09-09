@@ -91,7 +91,7 @@ void main() {
 //		mapScrollRight(draw, 1);
 //		SWAP(draw, show);
 		}
-	}else
+	}
 
 	if(keyp(75)){
 		for(q=0; q<16; q++) {
@@ -109,7 +109,7 @@ void main() {
 //		mapScrollDown(show, 1);
 //		SWAP(draw, show);
 		}
-	}else
+	}
 
 	if(keyp(72)){
 		for(q=0; q<16; q++) {
