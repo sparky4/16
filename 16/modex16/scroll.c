@@ -62,7 +62,7 @@ void main() {
 
 	setkb(1);
 	/* create the map */
-	map = allocMap(40,30);
+	map = allocMap(40,30); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	initMap(&map);
 	mv.map = &map;
 	mv2.map = &map;
@@ -163,9 +163,9 @@ initMap(map_t *map) {
 	for(y=0; y<16; y++) {
 	for(x=0; x<32; x++) {
 		if(x<16)
-		  map->tiles->data->data[i] = 0x00;
+		  map->tiles->data->data[i] = 0x24;
 		else
-		  map->tiles->data->data[i] = 0x47;
+		  map->tiles->data->data[i] = 0x34;
 		i++;
 	}
 	}
