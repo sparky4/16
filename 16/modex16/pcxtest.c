@@ -32,7 +32,7 @@ void main() {
 
     page=modexDefaultPage();
 
-    bmp = modexLoadPcx("ed.pcx");
+    bmp = modexLoadPcx("46113319.pcx");
     modexEnter();
 
     /* fix up the palette and everything */
