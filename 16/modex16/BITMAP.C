@@ -21,11 +21,10 @@ static struct pcxHeader {
     word hScreenSize;
     word vScreenSize;
     byte padding[54];
-};
+} head;
 
 
 static void loadPcxStage1(FILE *file, bitmap_t *result) {
-    struct pcxHeader head;
     long bufSize;
     int index;
     byte count, val;
@@ -34,26 +33,22 @@ static void loadPcxStage1(FILE *file, bitmap_t *result) {
     /* read the header */
     fread(&head, sizeof(char), sizeof(struct pcxHeader), file);
 
+    /* get the width and height */
+    result->width = head.xmax - head.xmin + 1;
+    result->height = head.ymax - head.ymin + 1;
+
     /* make sure this  is 8bpp */
     if(head.bpp != 8) {
 	printf("I only know how to handle 8bpp pcx files!\n");
 	fclose(file);
 	exit(-2);
     }
+}
 
-    /* allocate the buffer */
-    result->width = head.xmax - head.xmin + 1;
-    result->height = head.ymax - head.ymin + 1;
-    bufSize = result->width * result->height;
-    result->data = malloc(bufSize);
-    if(!result->data) {
-	printf("Could not allocate memory for bitmap data.");
-	fclose(file);
-	exit(-1);
-    }
 
-    /* save the position of the pixel data */
-    pos = ftell(file);
+static void loadPcxPalette(FILE *file, bitmap_t *result) {
+    byte val;
+    int index;
 
     /* handle the palette */
     fseek(file, -769, SEEK_END);
@@ -71,9 +66,6 @@ static void loadPcxStage1(FILE *file, bitmap_t *result) {
 	    result->palette[index]  = head.pal16[index];
 	}
     }
-
-    /* go back to the pixel data */
-    fseek(file, -pos, SEEK_END);
 }
 
 
@@ -81,7 +73,6 @@ bitmap_t
 bitmapLoadPcx(char *filename) {
     FILE *file;
     bitmap_t result;
-    struct pcxHeader head;
     long bufSize;
     int index;
     byte count, val;
@@ -95,6 +86,15 @@ bitmapLoadPcx(char *filename) {
 
     /* load the first part of the pcx file */
     loadPcxStage1(file, &result);
+
+    /* allocate the buffer */
+    bufSize = result.width * result.height;
+    result.data = malloc(bufSize);
+    if(!result.data) {
+	printf("Could not allocate memory for bitmap data.");
+	fclose(file);
+	exit(-1);
+    }
 
     /*  read the buffer in */
     index = 0;
@@ -115,6 +115,7 @@ bitmapLoadPcx(char *filename) {
 	}
     } while(index < bufSize);
 
+    loadPcxPalette(file, &result);
 
     fclose(file);
 
