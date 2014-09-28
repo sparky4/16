@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "modex16.h"
+#include "bitmap.h"
 
 word far* clock= (word far*) 0x046C; /* 18.2hz clock */
 

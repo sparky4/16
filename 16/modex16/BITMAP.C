@@ -1,0 +1,130 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "bitmap.h"
+#include "modex16.h"
+
+static struct pcxHeader {
+    byte id;
+    byte version;
+    byte encoding;
+    byte bpp;
+    word xmin;
+    word ymin;
+    word xmax;
+    word ymax;
+    word hres;
+    word vres;
+    byte pal16[48];
+    byte res1;
+    word bpplane;
+    word palType;
+    word hScreenSize;
+    word vScreenSize;
+    byte padding[54];
+};
+
+
+static void loadPcxStage1(FILE *file, bitmap_t *result) {
+    struct pcxHeader head;
+    long bufSize;
+    int index;
+    byte count, val;
+    long int pos;
+
+    /* read the header */
+    fread(&head, sizeof(char), sizeof(struct pcxHeader), file);
+
+    /* make sure this  is 8bpp */
+    if(head.bpp != 8) {
+	printf("I only know how to handle 8bpp pcx files!\n");
+	fclose(file);
+	exit(-2);
+    }
+
+    /* allocate the buffer */
+    result->width = head.xmax - head.xmin + 1;
+    result->height = head.ymax - head.ymin + 1;
+    bufSize = result->width * result->height;
+    result->data = malloc(bufSize);
+    if(!result->data) {
+	printf("Could not allocate memory for bitmap data.");
+	fclose(file);
+	exit(-1);
+    }
+
+    /* save the position of the pixel data */
+    pos = ftell(file);
+
+    /* handle the palette */
+    fseek(file, -769, SEEK_END);
+    val = fgetc(file);
+    result->palette = modexNewPal();
+    if(head.version == 5 && val == 12) {
+	/* use the vga palette */
+	for(index=0; !feof(file) && index < PAL_SIZE; index++) {
+	    val = fgetc(file);
+	    result->palette[index] = val >> 2;
+	}
+    } else {
+	/* use the 16 color palette */
+	for(index=0; index<48; index++) {
+	    result->palette[index]  = head.pal16[index];
+	}
+    }
+
+    /* go back to the pixel data */
+    fseek(file, -pos, SEEK_END);
+}
+
+
+bitmap_t
+bitmapLoadPcx(char *filename) {
+    FILE *file;
+    bitmap_t result;
+    struct pcxHeader head;
+    long bufSize;
+    int index;
+    byte count, val;
+
+    /* open the PCX file for reading */
+    file = fopen(filename, "rb");
+    if(!file) {
+	printf("Could not open %s for reading.\n", filename);
+	exit(-2);
+    }
+
+    /* load the first part of the pcx file */
+    loadPcxStage1(file, &result);
+
+    /*  read the buffer in */
+    index = 0;
+    do {
+	/* get the run length and the value */
+	count = fgetc(file);
+	if(0xC0 ==  (count & 0xC0)) { /* this is the run count */
+	    count &= 0x3f;
+	    val = fgetc(file);
+	} else {
+	    val = count;
+	    count = 1;
+	}
+
+	/* write the pixel the specified number of times */
+	for(; count && index < bufSize; count--,index++)  {
+	    result.data[index] = val;
+	}
+    } while(index < bufSize);
+
+
+    fclose(file);
+
+    return result;
+}
+
+
+tileset_t
+bitmapLoadPcxTiles(char *filename, word twidth, word theight) {
+    tileset_t ts;
+
+    return ts;
+}

@@ -5,17 +5,12 @@
 #define MODEX16_H
 #include <conio.h>
 #include "types.h"
+#include "bitmap.h"
 
 /* -========================== Types & Macros ==========================- */
 #define PAGE_OFFSET(x,y) (((y)<<6)+((y)<<4)+((x)>>2))
 #define PLANE(x) (1<< (x&3))
 #define SELECT_ALL_PLANES() outpw(0x03c4, 0xff02)
-typedef struct {
-    byte *data;
-    word width;
-    word height;
-    byte *palette;
-} bitmap_t;
 
 typedef struct {
     byte far* data;	/* the data for the page */
