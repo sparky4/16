@@ -1,0 +1,1261 @@
+This is ../../doc/libbinio.info, produced by makeinfo version 4.3 from
+../../doc/libbinio.texi.
+
+This manual documents the binary I/O stream class library, version
+1.4. It was last updated on 18 August 2004.
+
+   Copyright (C) 2002 - 2004 Simon Peter
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being "A GNU Manual," and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     "GNU Free Documentation License."
+
+     (a) The FSF's Back-Cover Text is: "You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development."
+   
+INFO-DIR-SECTION Software Libraries
+START-INFO-DIR-ENTRY
+* libbinio: (libbinio)          Binary I/O stream class library 1.4
+END-INFO-DIR-ENTRY
+
+
+File: libbinio.info,  Node: Top,  Next: Introduction,  Up: (dir)
+
+Binary I/O stream class library
+*******************************
+
+This manual documents the binary I/O stream class library, version
+1.4. It was last updated on 18 August 2004.
+
+   Copyright (C) 2002 - 2004 Simon Peter
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being "A GNU Manual," and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     "GNU Free Documentation License."
+
+     (a) The FSF's Back-Cover Text is: "You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development."
+   
+* Menu:
+
+* Introduction::                Introduction to the library.
+* Usage::                       A tutorial to libbinio.
+* Reference::                   The complete reference.
+* FAQ::                         Frequently asked questions.
+* Copying This Manual::         Your rights and freedoms.
+
+* Concept Index::
+* Class Index::
+* Method Index::
+* Type Variable and Macro Index::
+
+
+File: libbinio.info,  Node: Introduction,  Next: Usage,  Prev: Top,  Up: Top
+
+Introduction
+************
+
+   The binary I/O stream class library (libbinio) presents a
+platform-independent way to access binary data streams in C++.
+
+   The library is hardware independent in the form that it transparently
+converts between the different forms of machine-internal binary data
+representation.
+
+   It further employs no special I/O protocol and can be used on
+arbitrary binary data sources.
+
+* Menu:
+
+* Features::
+
+
+File: libbinio.info,  Node: Features,  Up: Introduction
+
+Features
+========
+
+   libbinio implements a generalized binary stream class framework, with
+the following features:
+
+   * The ability to read arbitrary-sized integers, as long as the
+     underlying system can hold the final value.
+
+   * Conversion between Big- and Little-Endian storage.
+
+   * Reading and writing of IEEE-754 single and double precision
+     floating-point numbers and the conversion to/from any
+     system-internal floating-point representation.
+
+   libbinio provides classes for streaming access to normal files,
+arbitrary data strings in memory and a wrapper around standard
+iostreams from either the ISO standard C++ library, or a "traditional"
+iostream implementation.
+
+   In addition, convenience methods for the STL `string' class can be
+enabled that support reading and writing of arbitrary length strings
+with dynamic memory allocation.
+
+   libbinio should compile and run on as much systems as possible. If it
+doesn't work with your system/compiler combination, please tell me!
+
+
+File: libbinio.info,  Node: Usage,  Next: Reference,  Prev: Introduction,  Up: Top
+
+Usage
+*****
+
+   This chapter covers common usage of libbinio and mostly everything
+you need to know to interface with the library. For very advanced usage,
+refer to *Note Reference::.
+
+   Since libbinio's class framework is modelled somewhat after the
+traditional iostream library, it is good if you already have used the
+C++ iostream facility before.
+
+* Menu:
+
+* Basics::
+* Files::
+* Reading and Writing::
+* Peeking::
+* Seeking::
+* Alien architectures::
+* Wrapping around iostream::
+* Errors::
+* Examples::
+
+
+File: libbinio.info,  Node: Basics,  Next: Files,  Up: Usage
+
+Basics
+======
+
+   The binary stream class framework divides streams into "input-only",
+"output-only" and "input/output" supporting streams. All derived
+classes also inherit this partition.
+
+   All derived classes that come with the library follow a uniform
+naming scheme. You can identify what I/O facilities a stream provides,
+by looking at the class name. All class names of libbinio start with
+`bin' and end with a descriptive name of what they are meant for. In
+between is at most one character that describes what I/O functionality
+is provided. If this character is an `i', the class provides input-only
+streams, `o' means output-only and no character indicates both input
+and output facilities.
+
+   For example, `binifstream' is an input-only binary stream for
+standard file access. `binstream' is the general input and output
+supporting stream.
+
+
+File: libbinio.info,  Node: Files,  Next: Reading and Writing,  Prev: Basics,  Up: Usage
+
+Files
+=====
+
+   For the most part, you will want to use libbinio to access normal
+binary files on your filesystem.
+
+   This is what the `binfstream' related classes are for. To use them,
+you first have to include the file `binfile.h' within your code.
+
+   This file contains four class declarations - `binfbase',
+`binifstream', `binofstream' and `binfstream'. `binfbase' is a base
+class for the others and normally not used by an ordinary libbinio
+user. This leaves us with three usable classes.
+
+   To create a binary stream on a file, just instantiate one of the
+three classes, according to what I/O facilities the stream should
+provide (see *Note Basics:: for information on the class naming
+conventions).
+
+   To open a file, you use the `open(FILENAME, [MODE])' method of one
+of the classes. FILENAME is a string (both C style ASCIIZ strings and
+STL `string' objects can be passed, if supported by your compiler)
+containing the name of the file to open. Additionally, you can pass a
+MODE argument to specify a special way to open the file - this is
+described later. There's also a special constructor, provided for
+convenience, that opens up a file automatically when the object is
+created. It has exactly the same syntax as `open()'.
+
+   After usage, you can explicitly close the file with the `close()'
+method. It is always a good idea to do this explicitly, though not
+needed because the file automatically will be closed on object
+deconstruction.
+
+
+File: libbinio.info,  Node: Reading and Writing,  Next: Peeking,  Prev: Files,  Up: Usage
+
+Reading and Writing
+===================
+
+   Every binary stream class offers the same set of binary I/O methods,
+inherited from one of the general stream base classes `binistream',
+`binostream' or both of them. These, in turn, inherit from the `binio'
+class, which provides additional general methods, as well as some
+important type declarations.
+
+   The binary I/O methods differenciate between integers, floating-point
+numbers and character strings.
+
+   To read an integer from a binary stream, you would use
+`readInt(SIZE)'. The SIZE argument specifies the size of the integer in
+bytes. The method returns the integer, that has just been read.
+
+   `readFloat(TYPE)' reads a floating-point number of type TYPE from
+the stream. As all floating-point formats are well defined, you just
+have to specify the right floating-point type to this method and it
+will figure out the correct size by itself. Refer to *Note Reference::
+for information of what floating-point formats are supported and how to
+specify them. The method returns the floating-point number, that has
+just been read.
+
+   A character string can be read by using the `readString()' method.
+To read a character string into a pre-allocated C style ASCIIZ string
+buffer, you would use `readString(STRING, MAX-LENGTH, [DELIMITER])' and
+give a pointer to the string buffer with STRING, the maximum length of
+the string (_not_ including the final `\0') in MAX-LENGTH and
+optionally a delimiter character DELIMITER, at which libbinio would
+stop reading the string, even if it could read more characters. The
+delimiter is extracted from the stream and then discarded. It will not
+appear in the final string. If you do not supply a DELIMITER, always up
+to MAX-LENGTH characters are read from the stream. The method returns
+the number of characters actually read from the stream.
+
+   You can also read an STL `string' object from the stream, using an
+overloaded version of `readString()'. The syntax is
+`readString([DELIMITER])'. You also do not need to supply a DELIMITER,
+as it is set to `\0' by default (to prevent you from reading a
+virtually unlimited number of characters and flood your memory, since
+you can't supply a MAX-LENGTH argument  this time). The method returns
+a `string' object, containing all characters up to, but not including,
+DELIMITER or the end of the stream, whichever was encountered first.
+
+   All the above mentioned "read" methods have a "write" equivalent,
+with the same options and features. All "write" methods take the data
+to be written as first argument, as in (for example) `writeInt(VALUE,
+SIZE)', VALUE is the actual value to be written to the stream.
+
+
+File: libbinio.info,  Node: Peeking,  Next: Seeking,  Prev: Reading and Writing,  Up: Usage
+
+Peeking
+=======
+
+   Analogous to the `readInt()' and `readFloat()' methods are the
+`peekInt(SIZE)' and `peekFloat(TYPE)' methods, that take the same
+arguments and also read an integer or a floating-point number from the
+stream. Unlike their "`read'" counterparts, they don't modify the
+stream position. The next "real" access (i.e. with one of the `read'
+methods) to the stream will continue as if the `peek' methods have
+never been called.
+
+
+File: libbinio.info,  Node: Seeking,  Next: Alien architectures,  Prev: Peeking,  Up: Usage
+
+Seeking
+=======
+
+   Sometimes, you need to reposition within your stream. To do this, you
+use the `seek(POSITION, [OFFSET])' method. POSITION is the new position
+in the stream, counted byte-wise and starting at `0'. The optional
+argument OFFSET specifies from where the method should seek. If it is
+`Set', counting is started at the beginning of the stream. `Add'
+indicates to seek from the current stream position and `End' means
+seeking from the end of the stream. Note that POSITION is a signed
+integer value and you can also seek backwards by inserting a negative
+number.
+
+   You can use the `pos()' method to determine your current position
+within the stream, which is returned by the method.
+
+
+File: libbinio.info,  Node: Alien architectures,  Next: Wrapping around iostream,  Prev: Seeking,  Up: Usage
+
+Alien architectures
+===================
+
+   All the above mentioned procedures expect the data to be in the
+format of your machine's own idea of how the data has to be stored.
+However, there are situations where you have to read and even write
+binary data for some other, incompatible architecture.
+
+   All architectures that are incompatible with the architecture,
+libbinio is currently running on, are called "alien" architectures.
+
+   libbinio makes the process of converting between your architecture's
+and the alien architecture's idea of binary storage completely
+transparent to you. All you have to do is to specify some
+characteristics about the stream's binary format, after you have opened
+it. All newly created streams are initialized with the current system's
+binary characteristics, so you don't have to do anything if you just
+want to access data of your own architecture.
+
+   You use the `setFlag(FLAG, [SET])' and `getFlag(FLAG)' methods to
+set and read a stream's characteristics. FLAG specifies the flag to be
+set or read (refer to *Note Reference:: for information on what flags
+are available and their meaning). The optional argument SET specifies
+whether the flag should be set (the default) or erased.
+
+   After you have set up all flags to sufficiently specify the alien
+architecture, you can proceed to do binary I/O, just as described in
+the previous chapters and libbinio will do all the necessary conversion
+between your own and the alien architecture for you.
+
+   If you ever happen to have binary data of multiple, incompatbile,
+alien architectures in a single stream (very unlikely), you can re-set
+any of the flags to any other value, in between any of the other stream
+access method calls. The stream will adhere to the new flag values
+instantly with the next data access.
+
+
+File: libbinio.info,  Node: Wrapping around iostream,  Next: Errors,  Prev: Alien architectures,  Up: Usage
+
+Wrapping around iostream
+========================
+
+   libbinio provides a set of classes, called `binwstream',
+`biniwstream' and `binowstream', that can be wrapped around an already
+existing stream from the standard or traditional C++ iostream library.
+
+   To do this, you just have to pass a pointer to the original stream
+object from the iostream library to the constructor of the appropriate
+`binwstream' class. Of course, you have to match an input stream from
+the iostream library to an input stream from libbinio and analogous for
+the output-only streams. The class framework will prevent you from
+mismatching them. You can, however, wrap an unidirectional binary
+stream around a bidirectional stream from the iostream library.
+
+   There is one important thing you have to remember: If you plan to
+wrap a binary stream around an iostream stream, always open the iostream
+stream with the `ios::bin' mode flag set! This will prevent some
+operating systems (namely, MS-DOS and Windows) from doing nasty
+implicit interpretation on the streams. This definitly will impose
+problems when you try to read or write the binary stream.
+
+   All other flags, you set when opening the original iostream stream,
+can indirectly have effect on the operations you do on the wrapped
+binary stream.
+
+
+File: libbinio.info,  Node: Errors,  Next: Examples,  Prev: Wrapping around iostream,  Up: Usage
+
+Errors
+======
+
+   When doing stream I/O, some unpredictable, erroneus situations can
+occur at runtime. Binary streams are no exception to this phenomenon.
+To provide some sort of protection against this, all libbinio stream
+classes inherit an error reporting method called `error()'.
+
+   It is a good idea to check the error status of a stream once in a
+while to see if everything is still in place. `error()' returns a
+variable of type `Error', which is an integer that holds a bit field of
+error values for that stream. Refer to *Note Reference:: for
+information about the possible values of this variable and their
+meaning.
+
+   A status of no error is always reported with a value of `0', so you
+can easily check if everything is still okay in a simple `if'
+construct, like this:
+
+     if(mystream.error())
+       // an error occured, do something to cure it...
+     else
+       // everything is still okay!
+
+   Two convenience error reporting methods are also included:
+
+   `eof()' only checks for the `Eof' error status, indicating whether
+the end of the stream has just been passed. It returns a boolean value,
+indicating the past the end of the stream.
+
+   `ateof()' is like `eof()' but returns true already when the stream
+pointer is at the last byte of the stream, not past it. This is useful
+when you want to read an entire file into memory in a `while(!ateof())'
+loop. This method is only defined on streams that support reading. On
+write-only streams, it is not defined and not useful.
+
+   Whenever you call `error()', the internal error variable is reset to
+the `NoError' state, indicating no error at all, and a subsequent call
+to any of the error reporting methods will return `NoError' again.
+`eof()' and `ateof()' do not reset the internal error variable. The
+last error status of the stream is retained.
+
+
+File: libbinio.info,  Node: Examples,  Prev: Errors,  Up: Usage
+
+Examples
+========
+
+   To read some data (namely integers, floats and strings) from an
+ordinary binary file on your filesystem, which was also created on your
+architecture:
+
+     #include <binfile.h>
+     
+     binifstream     file("test.dat");
+     int             i;
+     float           f;
+     char            string[256];
+     
+     // Read a 32-bit integer
+     i = file.readInt(4);
+     
+     // Read an IEEE-754 single (32 bits)
+     f = file.readFloat(binio::Single);
+     
+     // Read a string until newline or max. number of chars exceeded
+     file.readString(string, 256, '\n');
+
+   To do I/O on a file that was created on an x86 machine (i.e. Little
+Endian, IEEE-754 floats), while your own architecture is something
+different:
+
+     #include <binfile.h>
+     
+     binfstream     file;
+     int            i = 1234567;
+     long           pos;
+     
+     // open the file "x86.dat" for reading and writing, but do not create
+     // it if it's not there.
+     file.open("x86.dat", binfbase::NoCreate);
+     
+     // Check if we could cleanly open the file and bail out, if we
+     // couldn't.
+     if(file.error())
+       return ERROR;
+     
+     // Set Little Endian mode, with IEEE-754 floats.
+     file.setFlag(binio::BigEndian, false);   // remove flag
+     file.setFlag(binio::FloatIEEE);          // set flag
+     
+     // as we just want a demonstration, we discard all read data right away.
+     
+     // Read a 16-bit integer
+     file.readInt(2);
+     
+     // Read an IEEE-754 double (64 bits)
+     file.readFloat(binio::Double);
+     
+     // Remember our current position in the stream
+     pos = file.pos();
+     
+     // Seek to the end of the file
+     file.seek(0, binio::End);
+     
+     // Write our variable i, determining its size using sizeof()
+     file.writeInt(i, sizeof(i));
+     
+     // Seek back to our former position
+     file.seek(pos);
+     
+     // Read a byte from here
+     file.readInt(1);
+     
+     // close the file again
+     file.close();
+     
+     // and we're finished
+     return SUCCESS;
+
+   To wrap around a stream from the iostream library, reading data until
+the end of the stream:
+
+     #include <fstream>
+     #include <binwrap.h>
+     
+     // Open the iostream stream for reading and writing in binary mode.
+     fstream file("test.dat", ios::in | ios::out | ios::bin);
+     
+     // Wrap a binary input-only stream around it.
+     biniwstream bfile(&file);
+     
+     // Read (and immediately discard) 24-bit integers until the end
+     // of the stream.
+     while(!bfile.eof())
+       bfile.readInt(3);
+
+
+File: libbinio.info,  Node: Reference,  Next: FAQ,  Prev: Usage,  Up: Top
+
+Reference
+*********
+
+   This chapter comprises a complete reference of all classes, methods,
+types and variables inside libbinio.
+
+* Menu:
+
+* Concepts::
+* Configuration::
+* Base classes::
+* File streams::
+* String streams::
+* iostream wrappers::
+
+
+File: libbinio.info,  Node: Concepts,  Next: Configuration,  Up: Reference
+
+Concepts
+========
+
+   The libbinio stream classes can be divided into two layers of
+functionality:
+
+  1. The "conversion layer" provides methods for transparently
+     converting the data, that has just been read from or is to be
+     written to a stream, between the current and the alien
+     architecture. The `binistream', `binostream' and `binstream'
+     classes belong to this layer.
+
+  2. The "stream layer" faciliates functionality on the stream level.
+     It provides methods for byte-by-byte access to the data, seeking,
+     opening and closing a stream and anything else related to the
+     maintenance of a stream. The `binfstream', `binwstream' and
+     `binsstream' related classes belong to this layer.
+
+   Additionally, there are some administrative and auxiliary classes
+provided, which do not belong to any of the above defined layers. The
+`binio' base class belongs here, for example.
+
+
+File: libbinio.info,  Node: Configuration,  Next: Base classes,  Prev: Concepts,  Up: Reference
+
+Configuration
+=============
+
+   libbinio can be configured in various ways at compile time and some
+parts of the library can be disabled to save disk space and/or
+processing speed.
+
+   In some cases, these configuration options directly change parts of
+the interface and must thus also be known by the library user.
+
+   To make these options available to the library user, libbinio defines
+some C preprocessor macros in `binio.h'. These are:
+
+`BINIO_ENABLE_STRING'
+     If this macro expands to `1', STL `string' object support is
+     enabled and can be used instead of traditional C ASCIIZ pointers
+     with all functions that expect a string somewhere. It expands to
+     `0' otherwise.
+
+`BINIO_ENABLE_IOSTREAM'
+     If this macro expands to `1', the iostream wrapper classes are
+     enabled and can be used by the library user. It expands to `0'
+     otherwise and no iostream wrapper classes are present in this case.
+
+`BINIO_ISO_STDLIB'
+     If this macro expands to `1', libbinio's iostream wrapper classes
+     are taylored for the ISO standard C++ library, instead of a
+     "traditional" iostream implementation. It expands to `0'
+     otherwise. This macro is merely for libbinio's internal use and
+     should not be used by an application programmer.
+
+`BINIO_WITH_MATH'
+     This macro is for libbinio's internal use and should not be used
+     by an application programmer.
+
+   All macros are _always_ defined. The decision whether a feature is
+enabled in the library has to be based on the value of these macros,
+not whether they are defined or not.
+
+
+File: libbinio.info,  Node: Base classes,  Next: File streams,  Prev: Configuration,  Up: Reference
+
+Base classes
+============
+
+   The base classes provide a common base for all derived libbinio
+stream classes. They define important methods, types and variables.
+
+   One general and three stream base classes are defined in the file
+`binio.h', which make up the libbinio base classes.
+
+* Menu:
+
+* binio::
+* binistream::
+* binostream::
+* binstream::
+
+
+File: libbinio.info,  Node: binio,  Next: binistream,  Up: Base classes
+
+binio
+-----
+
+   `binio' is the general base class, containing important method, type
+and variable declarations. As a user, you normally do not need it
+directly, except for scoping types and variables to it.
+
+Header file: `binio.h'
+----------------------
+
+Public methods:
+---------------
+
+`binio()'
+     The constructor.
+
+`~binio()'
+     The destructor.
+
+`void setFlag(Flag f, bool set = true)'
+     Is used to set or erase flags to change the behaviour of the
+     stream. Available flags and their meaning are listed in the types
+     table for this class, below. The optional argument `set' is used
+     to set or erase the specified flag. If it is not specified, it
+     defaults to `true', setting (activating) the specified flag.
+
+`bool getFlag(Flag f)'
+     Returns whether the specified flag is set (active) or not. Refer to
+     `setFlag', above, for more information.
+
+`Error error()'
+     Returns the current error status of the stream. A status of no
+     error is always indicated with a value of `0', as to allow easy
+     error checks with a simple `if' construct.
+
+`bool eof()'
+     Returns `true' if the last access to the stream was unsuccessful
+     because the stream pointer was already past the end of the stream.
+     `false' is returned otherwise. Synonymous to checking if the
+     return value of a call to `error()' sets the `Eof' error code flag.
+
+`virtual void seek(long, Offset = Set)'
+     Abstract virtual method for seeking into streams. Implemented by
+     the stream layer. The first argument specifies the relative
+     position to seek to. Use a negative value to seek backwards. The
+     optional second argument specifies from where to start seeking.
+     `Set' specifies the beginning of a stream, `Add' specifies the
+     current position and `End' specifies the end of the stream. If it
+     is omitted, it defaults to `Set', seeking from the beginning of
+     the stream.
+
+`virtual long pos()'
+     Abstract virtual method that returns the current position inside
+     the stream. Implemented by the stream layer.
+
+Protected methods:
+------------------
+
+`Float pow(Float base, signed int exp)'
+     Is a stripped-down version of the `pow()' function from the
+     `math.h' standard C math library include file. It is used during
+     conversion between floating-point formats and can calculate powers
+     of a floating-point base argument, using a signed integer exponent.
+
+Public data types and variables:
+--------------------------------
+
+`enum Flag'
+     Enumeration of all defined stream flags that can be set using the
+     `setFlag()' and `getFlag()' methods. This type defines the
+     following values:
+
+    `BigEndian'
+          If set, sets the stream's byte-ordering to big endian
+          notation. Otherwise, little endian notation is used.
+
+    `FloatIEEE'
+          If set, all floating-point access to the stream will assume
+          IEEE-754 standardized floating-point numbers. Only this type
+          of data is expected from and written to the stream.
+
+          If your architecture does not support IEEE-754 floating-point
+          numbers, the value will be converted. Various conversion
+          errors can occur and sometimes the conversion is not possible
+          at all. In this case, the `Unsupported' error is issued and a
+          specific value is returned. The following table summarizes all
+          possible return codes for certain problematic values:
+
+          Real value             Return value
+          `Infinity'             `1.0'
+          `-Infinity'            `-1.0'
+          `Not a Number (NaN)'   `0.0'
+
+          Both positive and negative zero (`0') are mapped to the same
+          zero value, if your architecture does not support both
+          positive and negative zeroes. There is no way to distinguish
+          between the two values in this case.
+
+`enum ErrorCode'
+     Enumeration of all possible error values. This type defines the
+     following values:
+
+    `NoError'
+          No error at all. This is always mapped to an integer value of
+          `0'.
+
+    `Fatal'
+          An unspecified, fatal error occured. This error is issued
+          only if something really strange happened (i.e. on internal
+          logic errors in the library, or if something else, undefined
+          happens, etc.). It is advised to immediately terminate any
+          binary stream I/O activity and fail with an error message to
+          the application user, maybe even terminate the application
+          completely.
+
+    `Unsupported'
+          You tried to access stream data in an unsupported way. This
+          error is issued whenever an (explicit or implicit) conversion
+          between two types of data storage is requested, that isn't
+          supported by libbinio yet.
+
+    `NotOpen'
+          The stream you tried to access is not open yet.
+
+    `Denied'
+          Access to this stream is denied. This error is normally
+          issued when you try to open a file on a filesystem, but you
+          have insufficient rights to access it.
+
+    `NotFound'
+          The stream you tried to access was not found. This is mostly
+          issued on a file not found error, when accessing normal files
+          on a filesystem.
+
+    `Eof'
+          The end of the stream has been passed. Issued when you tried
+          to read past the last byte of a stream.
+
+`enum Offset'
+     Specifies the position inside a stream, from where a seek is
+     started with the `seek()' method. This type defines the following
+     values:
+
+    `Set'
+          Start seeking at the beginning of the stream.
+
+    `Add'
+          Start seeking from the current position in the stream.
+
+    `End'
+          Start seeking from the end of the stream.
+
+`enum FType'
+     Specifies what type of floating-point number is to be accessed
+     next, using the `readFloat()' or `writeFloat()' methods. Most
+     floating-point formats specify multiple data types to support a
+     broader range of precision. libbinio generalizes the idea by
+     categorizing them only into single and double precision numbers.
+     This type defines the following values:
+
+    `Single'
+          Access a single precision floating-point number.
+
+    `Double'
+          Access a double precision floating-point number.
+
+`int Error'
+     This integer holds a bit field of all error values for a stream.
+     Returned by `error()'. A status of "no error" is always indicated
+     when the whole field is set to `0' (zero), i.e. the integer is
+     `0'. Test for an error by binary or'ing this integer with one of
+     the error values from `ErrorCode'.
+
+Protected data types and variables:
+-----------------------------------
+
+`Int'
+     The largest integer type supported by the architecture.
+
+`Float'
+     The largest floating-point type supported by the architecture.
+
+`Byte'
+     This type is always one byte (8 bits) wide.
+
+`Flags'
+     Type to hold a flag variable, containing the status of all flags
+     of a stream.
+
+`Flags my_flags'
+     This variable holds the current status of all flags for the stream.
+
+`static const Flags system_flags'
+     This variable holds the status of the flags, defining the standard
+     behaviour of the system. This is determined once at runtime, at
+     startup of the library.
+
+`Error err'
+     This variable holds the error status of a stream.
+
+
+File: libbinio.info,  Node: binistream,  Next: binostream,  Prev: binio,  Up: Base classes
+
+binistream
+----------
+
+   `binistream' provides an input-only binary stream.
+
+Header file: `binio.h'
+----------------------
+
+Public methods:
+---------------
+
+`binistream()'
+     The constructor.
+
+`~binistream()'
+     The destructor.
+
+`Int readInt(unsigned int size)'
+     Reads an integer of size `size' (in bytes) from the stream and
+     returns it. The return value is undefined if an error occured. The
+     maximum number of bytes that can be read at once equals the size
+     (in bytes) of the largest integer type, supported by the system.
+
+`Float readFloat(FType ft)'
+     Reads a floating-point number from the stream and returns it. Takes
+     the floating-point format to read as the argument `ft'. Refer to
+     the list of public types of the `binio' class for information
+     about what floating-point formats are supported. The return value
+     is undefined if an error occured. The value from the stream is
+     always rendered to the biggest floating-point type, supported by
+     the system.
+
+     If your architecture is incompatible with the floating-point number
+     that has just been read, `readFloat()' tries to convert it. This
+     is sometimes not possible or not as accurate as the original value
+     and an error will be issued in these cases. Refer to the list of
+     public types of the `binio' class for information about what errors
+     could be issued.
+
+`unsigned long readString(char *str, unsigned long maxlen, const char delim)'
+`std::string readString(const char delim = '\0')'
+     Reads a character string from the stream. Both pre-allocated
+     standard C ASCIIZ strings and STL `string' objects are supported.
+
+     The ASCIIZ version takes a pointer to the pre-allocated string
+     buffer as the `str' argument. `maxlen' specifies the maximum
+     number of characters to be read from the stream (_not_ including
+     the trailing `\0' that is always appended to the string buffer).
+     The optional argument `delim' is a delimiter character. If this
+     character is encountered in the stream, no more characters will be
+     read. The delimiter character itself is discarded. It will not
+     appear in the final string. If the `delim' argument is omitted,
+     always up to `maxlen' characters are read.
+
+     The `string' object version just takes one optional argument, the
+     delimiter character, explained above. Characters are always read
+     until the delimiter character or the end of the stream is
+     encountered. If `delim' is omitted, it defaults to `\0'. It
+     returns a `string' object, containing the final string.
+
+`Int peekInt(unsigned int size)'
+     Like `readInt()', but doesn't modify the stream position, so any
+     later access to the stream will appear as if `peekInt()' has never
+     been called.
+
+`Float peekFloat(FType ft)'
+     Like `readFloat()', but doesn't modify the stream position, so any
+     later access to the stream will appear as if `peekFloat()' has
+     never been called.
+
+`bool ateof()'
+     Returns `true' if the current stream position is at the last byte
+     of the stream. `false' is returned otherwise.
+
+`void ignore(unsigned long amount = 1)'
+     Reads and then immediately discards the specified amount of bytes
+     from the stream. If the optional argument `amount' is omitted, it
+     defaults to `1', ignoring exactly 1 byte from the stream.
+
+Protected methods:
+------------------
+
+`virtual Byte getByte()'
+     Abstract virtual method to extract exactly one byte (8 bits) from
+     the stream and advance stream pointer accordingly. The byte is
+     returned. Implemented by the stream layer.
+
+
+File: libbinio.info,  Node: binostream,  Next: binstream,  Prev: binistream,  Up: Base classes
+
+binostream
+----------
+
+   `binostream' provides an output-only binary stream.
+
+Header file: `binio.h'
+----------------------
+
+Public methods:
+---------------
+
+`binostream()'
+     The constructor.
+
+`~binostream()'
+     The destructor.
+
+`void writeInt(Int val, unsigned int size);'
+     Writes the integer value `val' of size `size' (in bytes) to the
+     stream.
+
+`void writeFloat(Float f, FType ft);'
+     Writes the floating-point value `f' of type `ft' to the stream.
+     Refer to the list of public types of the `binio' class for
+     information about what floating-point formats are supported.
+
+     If the requested floating-point type is not supported by your
+     architecture, `writeFloat()' tries to convert it. This is not
+     always possible and an `Unsupported' error is issued if the
+     conversion fails and nothing is written to the stream in this case.
+
+`unsigned long writeString(const char *str, unsigned long amount = 0);'
+`unsigned long writeString(const std::string &str);'
+     Writes a character string to the stream. Both standard C ASCIIZ
+     strings and STL `string' objects are supported.
+
+     The standard C version takes a pointer `str' to the ASCIIZ string
+     to write as first argument and an optional second argument
+     `amount', which specifies the number of characters to write from
+     that string. If it is omitted, the whole string is written to the
+     stream.
+
+     For the `string' object version, the only argument is the `string'
+     object, containing the string to write.
+
+     Both methods return the number of characters actually written to
+     the stream (which should only differ from the value you wanted to
+     write when an error occured).
+
+Protected methods:
+------------------
+
+`virtual void putByte(Byte)'
+     Abstract virtual method to insert exactly one byte (8 bits) into
+     the stream and advance the stream pointer accordingly. The byte to
+     be written is passed as the only argument. Implemented by the
+     stream layer.
+
+
+File: libbinio.info,  Node: binstream,  Prev: binostream,  Up: Base classes
+
+binstream
+---------
+
+   `binstream' provides a both input and output supporting binary
+stream. It inherits the interface from both `binistream' and
+`binostream' and defines no additional methods. Refer to the
+documentation of these two classes for more information instead.
+
+
+File: libbinio.info,  Node: File streams,  Next: String streams,  Prev: Base classes,  Up: Reference
+
+File streams
+============
+
+   File streams provide access to ordinary files on a filesystem. They
+consist of the classes `binifstream', `binofstream' and `binfstream',
+which are all derived from the common base class `binfbase'.
+
+* Menu:
+
+* binfbase::
+* File stream classes::
+
+
+File: libbinio.info,  Node: binfbase,  Next: File stream classes,  Up: File streams
+
+binfbase
+--------
+
+   `binfbase' provides the common base class for all file I/O binary
+streams. It defines important data types, variables and methods.
+
+Header file: `binfile.h'
+------------------------
+
+Public methods:
+---------------
+
+`binfbase()'
+     The constructor.
+
+`~binfbase()'
+     The destructor. Automatically closes an eventually open stream.
+
+`virtual void open(const char *filename, const Mode mode)'
+`virtual void open(const std::string &filename, const Mode mode)'
+     Two versions of an abstract virtual method to open a binary file
+     stream. `filename' is the filename of the file to open and `mode'
+     specifies in which mode to do so. Refer to the list of data types
+     for this class for more information on this argument. You can
+     combine multiple mode flags together, using the `|' operator.
+
+`void close()'
+     Method to explicitly close the stream.
+
+`void seek(long pos, Offset offs = Set)'
+`long pos()'
+     Implementation of the abstract virtual methods, inherited from
+     `binio'. Look there for reference.
+
+Public data types and variables:
+--------------------------------
+
+`enum ModeFlags'
+     Enumeration of all defined file stream open mode flags, defining
+     how a file should be opened when the `open()' method is called.
+     This type defines the following flags:
+
+    `Append'
+          Open the stream for appending. The stream pointer is
+          positioned at the end of the stream. Also, do not truncate a
+          file to zero length, if it already exists.
+
+    `NoCreate'
+          Do not automatically create a nonexistant file on first
+          access and fail instead. Also, do not truncate a file to zero
+          length, if it already exists.
+
+`Mode'
+     Type of the variable to hold the mode specification flags that are
+     passed to one of the `open()' methods to open a file stream. Refer
+     to `enum ModeFlags' above for information on what flags are
+     defined.
+
+Protected data types and variables:
+-----------------------------------
+
+`FILE *f'
+     Pointer to the currently opened file of this stream.
+
+
+File: libbinio.info,  Node: File stream classes,  Prev: binfbase,  Up: File streams
+
+File stream classes
+-------------------
+
+   The binary file streams consist of the classes `binifstream',
+`binofstream' and `binfstream'. They all inherit the interface from
+both `binfbase' and `binistream' and/or `binostream'. Refer to the
+class reference of these classes for more information on the interface
+instead.
+
+   `binifstream' provides an input-only binary file stream. It is
+inherited from `binistream'. The `open()' method of this class ignores
+all passed `mode' arguments, the open mode is always `NoCreate'. The
+stream pointer is always positioned at the beginning of the stream and
+no files will ever be created, if they don't exist.
+
+   `binofstream' provides an output-only binary file stream. It is
+inherited from `binostream'. The default open mode is `0'. A file is
+truncated to zero length or created if it did not exist previously. The
+stream is positioned at the beginning of the file. The `NoCreate' mode
+flag has no effect with the `open()' method of this class. Only
+`Append' is honored, positioning the stream at the end of the file and
+not truncating it. The file is still created, if it did not exist.
+
+   `binfstream' provides an input and output supporting binary file
+stream. It is inherited from both `binifstream' and `binofstream'. The
+default open mode is `0'. A file is truncated to zero length or created
+if it did not exist previously. The stream is positioned at the
+beginning of the file. All `mode' arguments are valid with the `open()'
+method of this class. Refer to the list of public data types and
+variables of the `binfbase' class for more information on their meaning.
+
+   All three classes define an extra convenience constructor that has
+the same syntax as the `open()' method and automatically open the
+specified file on object construction.
+
+   For your information, here is a list of some important redefined
+methods of these classes, as explained above:
+
+Header file: `binfile.h'
+------------------------
+
+Public methods:
+---------------
+
+`binifstream()'
+`binofstream()'
+`binfstream()'
+     All standard constructors.
+
+`~binifstream()'
+`~binofstream()'
+`~binfstream()'
+     All standard destructors. They all automatically close an
+     eventually open stream, on object deconstruction.
+
+`binifstream(const char *filename, const Mode mode = NoCreate)'
+`binifstream(const std::string &filename, const Mode mode = NoCreate)'
+     Convenience constructors of the input-only stream class. Refer to
+     the description of the `open()' method in the list of public
+     methods of the `binfbase' class for syntax information.
+
+`binofstream(const char *filename, const Mode mode = 0)'
+`binofstream(const std::string &filename, const Mode mode = 0)'
+     Convenience constructors of the output-only stream class. Refer to
+     the description of the `open()' method in the list of public
+     methods of the `binfbase' class for syntax information.
+
+`binfstream(const char *filename, const Mode mode = 0)'
+`binfstream(const std::string &filename, const Mode mode = 0)'
+     Convenience constructors of the input and output supporting stream
+     class. Refer to the description of the `open()' method in the list
+     of public methods of the `binfbase' class for syntax information.
+
+
+File: libbinio.info,  Node: String streams,  Next: iostream wrappers,  Prev: File streams,  Up: Reference
+
+String streams
+==============
+
+   The string stream classes provide a means of turning arbitrary
+strings (or "blocks") in memory into a binary stream, similary to what
+`strstream' does in the iostream library.
+
+   Unlike `strstream' from the iostream library, these streams _do not_
+support automatic enlarging of the memory area. If the user tries to
+write beyond the end of the stream, nothing is actually written and an
+`Eof' error is issued.
+
+Header file: `binstr.h'
+-----------------------
+
+Public methods:
+---------------
+
+`binsbase(void *str, unsigned long len)'
+
+`binisstream(void *str, unsigned long len)'
+
+`binosstream(void *str, unsigned long len)'
+
+`binsstream(void *str, unsigned long len)'
+     All constructors take two arguments. `str' is a pointer to a
+     previously initialized data string in memory. `len' specifies the
+     length in bytes of the string.
+
+`~binsbase()'
+
+`~binisstream()'
+
+`~binosstream()'
+
+`~binsstream()'
+     All deconstructors.
+
+`virtual void seek(long pos, Offset offs = Set)'
+`virtual long pos()'
+     Implementation of the abstract virtual methods, inherited from
+     `binio'. Refer to the reference of that class for more information.
+
+Protected data types and variables in `binsbase':
+-------------------------------------------------
+
+`Byte *data'
+     This pointer is always pointing to the beginning of the initialized
+     data string in memory, passed to the constructor.
+
+`Byte *spos'
+     This pointer points to the current position in the string stream.
+
+`long length'
+     Holds the length in bytes for the whole data string in memory, as
+     passed to the constructor.
+
+
+File: libbinio.info,  Node: iostream wrappers,  Prev: String streams,  Up: Reference
+
+iostream wrappers
+=================
+
+   The iostream wrapper classes provide a way to "wrap" around an
+already existing stream of the standard or traditional C++ iostream
+library, thus providing binary access to such a stream. The wrapper
+classes consist of `biniwstream', `binowstream' and `binwstream'.
+
+   The iostream wrapper classes do not provide any extra methods by
+themselves. They just inherit the interface of the general binary
+stream classes. Look there for reference. `biniwstream' inherits from
+`binistream', `binowstream' inherits from `binostream' and `binwstream'
+inherits from both of them.
+
+   Remember to _always_ open the iostream stream with the `ios::bin'
+flag set, before you wrap it with a binary stream, or else you will get
+strange errors on some operating systems.
+
+   All other flags you set on the iostream stream will also indirectly
+affect the wrapped binary stream, so be careful.
+
+Header file: `binwrap.h'
+------------------------
+
+Public methods:
+---------------
+
+`biniwstream(istream *istr)'
+`binowstream(ostream *ostr)'
+`binwstream(iostream *str)'
+     The constructor. `istr', `ostr' and `str' are pointers to an
+     appropriate, already existing and open stream from the iostream
+     library.
+
+`~biniwstream()'
+`~binowstream()'
+`~binwstream()'
+     The destructor.
+
+`virtual void seek(long pos, Offset offs = Set)'
+`virtual long pos()'
+     Implementation of the abstract virtual methods, inherited from
+     `binio'. Refer to the reference of that class for more information.
+
+
+File: libbinio.info,  Node: FAQ,  Next: Copying This Manual,  Prev: Reference,  Up: Top
+
+FAQ
+***
+
+   * Q: Why don't you supply general data block I/O methods, taking
+     `void' pointers as arguments, so i can read all my data into a
+     `struct' at once?
+
+   * A: This, in general, is a broken idea. It only makes sense if you
+     plan to write your program for only one architecture and want a
+     fast way to read your whole data into memory. This is not what
+     libbinio was meant for, so such methods will never be implemented.
+     libbinio cannot know what data types your `struct' is made of and
+     thus cannot do any transparent data conversion. And there's even
+     more: Most compilers align their `struct's to a special multiple
+     of bytes (mostly the current architecture's data word size).
+     libbinio doesn't (and cannot) know about all this and would just
+     read the data byte by byte, completely ignoring the alignment and
+     causing you to be unable to read any of your data.
+
+   * Q: Why haven't you implemented error reporting using exceptions,
+     instead of this darn `error()' method polling?
+
+   * A: Because exceptions aren't supported on all compiler platforms.
+
+
+File: libbinio.info,  Node: Copying This Manual,  Next: Concept Index,  Prev: FAQ,  Up: Top
+
+Copying This Manual
+*******************
+
+* Menu:
+
+* GNU Free Documentation License::  License for copying this manual.
+

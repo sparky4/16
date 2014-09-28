@@ -1,0 +1,67 @@
+This is ../../doc/libbinio.info, produced by makeinfo version 4.3 from
+../../doc/libbinio.texi.
+
+This manual documents the binary I/O stream class library, version
+1.4. It was last updated on 18 August 2004.
+
+   Copyright (C) 2002 - 2004 Simon Peter
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being "A GNU Manual," and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     "GNU Free Documentation License."
+
+     (a) The FSF's Back-Cover Text is: "You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development."
+   
+INFO-DIR-SECTION Software Libraries
+START-INFO-DIR-ENTRY
+* libbinio: (libbinio)          Binary I/O stream class library 1.4
+END-INFO-DIR-ENTRY
+
+
+Indirect:
+libbinio.info-1: 1060
+libbinio.info-2: 46671
+
+Tag Table:
+(Indirect)
+Node: Top1060
+Node: Introduction2398
+Node: Features2909
+Node: Usage3976
+Node: Basics4571
+Node: Files5488
+Node: Reading and Writing7036
+Node: Peeking9774
+Node: Seeking10311
+Node: Alien architectures11105
+Node: Wrapping around iostream13023
+Node: Errors14420
+Node: Examples16343
+Node: Reference18987
+Node: Concepts19311
+Node: Configuration20297
+Node: Base classes21964
+Node: binio22416
+Node: binistream29857
+Node: binostream33566
+Node: binstream35668
+Node: File streams36022
+Node: binfbase36403
+Node: File stream classes38579
+Node: String streams41900
+Node: iostream wrappers43638
+Node: FAQ45246
+Node: Copying This Manual46456
+Node: GNU Free Documentation License46671
+Node: Concept Index66539
+Node: Class Index69099
+Node: Method Index70143
+Node: Type Variable and Macro Index74142
+
+End Tag Table
