@@ -55,9 +55,6 @@ void modexPalWhite();
 void modexPalUpdate(byte *p);
 void modexWaitBorder();
 
-/* bitmap functions */
-bitmap_t modexLoadPcx(char *filename);
-
 /* -======================= Constants & Vars ==========================- */
 extern byte far*  VGA;  /* The VGA Memory */
 #define SCREEN_SEG		0xa000
