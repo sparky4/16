@@ -78,7 +78,7 @@ void main() {
 	ptr = map.data;
 	modexEnter();
 	screen = modexDefaultPage();
-	screen.width = 352;
+	screen.width += (TILEWH*2);
 	mv.page = &screen;
 	mapGoTo(&mv, 0, 0);
 	screen2=modexNextPage(mv.page);
