@@ -11,6 +11,7 @@ typedef struct {
 	word tileWidth;
 	unsigned int rows;
 	unsigned int cols;
+	unsigned int tilex,tiley; // tile position on the map
 } tiles_t;
 
 
@@ -25,15 +26,15 @@ typedef struct {
 typedef struct {
 	map_t *map;
 	page_t *page;
-	int tx;
-	int ty;
-	word dxThresh;
-	word dyThresh;
+	int tx; //???? appears to be the tile position on the viewable screen map
+	int ty; //???? appears to be the tile position on the viewable screen map
+	word dxThresh; //????
+	word dyThresh; //????
 } map_view_t;
 
 struct {
-	int tilex;
-	int tiley;
+	int tx; //player position on the viewable map
+	int ty; //player position on the viewable map
 } player;
 
 
@@ -64,12 +65,12 @@ void main() {
 	map_view_t *draw, *show, *tmp;
 	byte *ptr;
 	//default player position on the viewable map
-	player.tilex = 10;
-	player.tiley = 8;
+	player.tx = 10;
+	player.ty = 8;
 
 	setkb(1);
 	/* create the map */
-	map = allocMap(40,30); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
+	map = allocMap(160,120); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	initMap(&map);
 	mv.map = &map;
 	mv2.map = &map;
@@ -80,17 +81,22 @@ void main() {
 	screen = modexDefaultPage();
 	screen.width += (TILEWH*2);
 	mv.page = &screen;
-	mapGoTo(&mv, 0, 0);
+	mapGoTo(&mv, 16, 16);
 	screen2=modexNextPage(mv.page);
 	mv2.page = &screen2;
-	mapGoTo(&mv2, 0, 0);
+	mapGoTo(&mv2, 16, 16);
 	modexShowPage(mv.page);
 
 	/* set up paging */
 	show = &mv;
 	draw = &mv2;
 
+	//TODO: set player position data here according to the viewable map screen thingy
+
 	while(!keyp(1)) {
+	//TODO: top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
+	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
+	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
 	if(keyp(77)){
 //		for(q=0; q<TILEWH; q++) {
 		mapScrollRight(draw, 1);
