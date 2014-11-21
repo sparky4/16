@@ -31,7 +31,10 @@ typedef struct {
 	word dyThresh;
 } map_view_t;
 
-
+struct {
+	int tilex;
+	int tiley;
+} player;
 
 
 map_t allocMap(int w, int h);
@@ -45,6 +48,8 @@ void mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
 void mapDrawRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
 
+#define TILEWH 16
+#define QUADWH (TILEWH/4)
 #define SWAP(a, b) tmp=a; a=b; b=tmp;
 void main() {
 	int show1=1;
@@ -58,7 +63,9 @@ void main() {
 	map_view_t mv, mv2;
 	map_view_t *draw, *show, *tmp;
 	byte *ptr;
-	
+	//default player position on the viewable map
+	player.tilex = 10;
+	player.tiley = 8;
 
 	setkb(1);
 	/* create the map */
@@ -85,42 +92,43 @@ void main() {
 
 	while(!keyp(1)) {
 	if(keyp(77)){
-		for(q=0; q<16; q++) {
+//		for(q=0; q<TILEWH; q++) {
 		mapScrollRight(draw, 1);
-		modexShowPage(draw->page);
+//		modexShowPage(draw->page);
 //		mapScrollRight(draw, 1);
 //		SWAP(draw, show);
-		}
+//		}
 	}
 
 	if(keyp(75)){
-		for(q=0; q<16; q++) {
+//		for(q=0; q<TILEWH; q++) {
  		mapScrollLeft(draw, 1);
-		modexShowPage(draw->page);
+//		modexShowPage(draw->page);
 // 		mapScrollLeft(show, 1);
 //		SWAP(draw, show);
-		}
+//		}
 	}
 
 	if(keyp(80)){
-		for(q=0; q<16; q++) {
+//		for(q=0; q<TILEWH; q++) {
 		mapScrollDown(draw, 1);
-		modexShowPage(draw->page);
+//		modexShowPage(draw->page);
 //		mapScrollDown(show, 1);
 //		SWAP(draw, show);
-		}
+//		}
 	}
 
 	if(keyp(72)){
-		for(q=0; q<16; q++) {
+//		for(q=0; q<TILEWH; q++) {
 		mapScrollUp(draw, 1);
-		modexShowPage(draw->page);
+//		modexShowPage(draw->page);
 //		mapScrollUp(show, 1);
 //		SWAP(draw, show);
-		}
+//		}
 	}
 
 	//keyp(ch);
+	modexShowPage(draw->page);
 
 	}
 
@@ -151,18 +159,18 @@ initMap(map_t *map) {
 
 	/* create the tile set */
 	map->tiles->data = malloc(sizeof(bitmap_t));
-	map->tiles->data->width = 32;
-	map->tiles->data->height= 16;
-	map->tiles->data->data = malloc(32*16);
-	map->tiles->tileHeight = 16;
-	map->tiles->tileWidth = 16;
+	map->tiles->data->width = (TILEWH*2);
+	map->tiles->data->height= TILEWH;
+	map->tiles->data->data = malloc((TILEWH*2)*TILEWH);
+	map->tiles->tileHeight = TILEWH;
+	map->tiles->tileWidth =TILEWH;
 	map->tiles->rows = 1;
 	map->tiles->cols = 2;
 
 	i=0;
-	for(y=0; y<16; y++) {
-	for(x=0; x<32; x++) {
-		if(x<16)
+	for(y=0; y<TILEWH; y++) {
+	for(x=0; x<(TILEWH*2); x++) {
+		if(x<TILEWH)
 		  map->tiles->data->data[i] = 0x24;
 		else
 		  map->tiles->data->data[i] = 0x34;
