@@ -118,6 +118,7 @@ void main() {
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
 				mapScrollRight(draw, SPEED);
+				modexDrawBmp(draw->page, player.x+((q+1)*SPEED), player.y, &bmp);
 				modexShowPage(draw->page);
 //		mapScrollRight(draw, 1);
 //		SWAP(draw, show);
@@ -141,7 +142,8 @@ void main() {
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
- 				mapScrollLeft(draw, SPEED);
+				mapScrollLeft(draw, SPEED);
+				modexDrawBmp(draw->page, player.x-((q+1)*SPEED), player.y, &bmp);
 				modexShowPage(draw->page);
 // 		mapScrollLeft(show, 1);
 //		SWAP(draw, show);
@@ -167,6 +169,7 @@ void main() {
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
 				mapScrollDown(draw, SPEED);
+				modexDrawBmp(draw->page, player.x, player.y+((q+1)*SPEED), &bmp);
 				modexShowPage(draw->page);
 //		mapScrollDown(show, 1);
 //		SWAP(draw, show);
@@ -192,6 +195,7 @@ void main() {
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
 				mapScrollUp(draw, SPEED);
+				modexDrawBmp(draw->page, player.x, player.y-((q+1)*SPEED), &bmp);
 				modexShowPage(draw->page);
 //		mapScrollUp(show, 1);
 //		SWAP(draw, show);
@@ -219,6 +223,8 @@ void main() {
 	printf("Project 16 scroll.exe\n");
 	printf("tx: %d\n", draw->tx);
 	printf("ty: %d\n", draw->ty);
+	printf("player.x: %d\n", player.x);
+	printf("player.y: %d\n", player.y);
 	printf("player.tx: %d\n", player.tx);
 	printf("player.ty: %d\n", player.ty);
 }
