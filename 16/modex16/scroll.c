@@ -58,13 +58,11 @@ void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
 #define SPEED 2
 
 //place holder definitions
-#define MAPX 24
-#define MAPY 19
+#define MAPX 40
+#define MAPY 30
 //#define SWAP(a, b) tmp=a; a=b; b=tmp;
 void main() {
 	bitmap_t bmp;
-//	int tx, ty;
-//	int x, y;
 	int q=0;
 	page_t screen;//,screen2;
 	map_t map;
@@ -97,9 +95,10 @@ void main() {
 //	draw = &mv2;
 	draw = &mv;
 
+//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(draw, 0, 0);
 
-	//TODO: set player position data here according to the viewable map screen thingy
+	//TODO: put player in starting position of spot
 	//default player position on the viewable map
 	player.tx = draw->tx + 10;
 	player.ty = draw->ty + 8;
@@ -109,12 +108,12 @@ void main() {
 	modexShowPage(draw->page);
 	while(!keyp(1))
 	{
-	//TODO: top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
+	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
 	if(keyp(77))
 	{
-		if(draw->tx >= 0 && draw->tx+20 <= MAPX && player.tx == draw->tx + 10)
+		if(draw->tx >= 0 && draw->tx+20 < MAPX && player.tx == draw->tx + 10)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
@@ -123,8 +122,9 @@ void main() {
 //		mapScrollRight(draw, 1);
 //		SWAP(draw, show);
 			}
+			player.tx++;
 		}
-		else if(player.tx < draw->tx+20 && player.tx >= draw->tx + 10)// && player.tx <= draw->tx+10)
+		else if(player.tx < MAPX)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
@@ -137,7 +137,7 @@ void main() {
 	}
 
 	if(keyp(75)){
-		if(draw->tx >= 0 && draw->tx+20 <= MAPX && player.tx == draw->tx + 10)
+		if(draw->tx > 0 && draw->tx+20 <= MAPX && player.tx == draw->tx + 10)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
@@ -146,8 +146,9 @@ void main() {
 // 		mapScrollLeft(show, 1);
 //		SWAP(draw, show);
 			}
+			player.tx--;
 		}
-		else if(player.tx > 0 && player.tx <= draw->tx + 10)// && player.tx >= draw->tx+10)
+		else if(player.tx > 0)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
@@ -161,7 +162,7 @@ void main() {
 
 	if(keyp(80))
 	{
-		if(draw->ty >= 0 && draw->ty+15 <= MAPY && player.ty == draw->ty + 8)
+		if(draw->ty >= 0 && draw->ty+15 < MAPY && player.ty == draw->ty + 8)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
@@ -170,8 +171,9 @@ void main() {
 //		mapScrollDown(show, 1);
 //		SWAP(draw, show);
 			}
+			player.ty++;
 		}
-		else if(player.ty < draw->ty+15 && player.ty >= draw->ty + 8)// && player.ty <= draw->ty+8)
+		else if(player.ty < MAPY)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
@@ -185,7 +187,7 @@ void main() {
 
 	if(keyp(72))
 	{
-		if(draw->ty >= 0 && draw->ty+15 <= MAPY && player.ty == draw->ty + 8)
+		if(draw->ty > 0 && draw->ty+15 <= MAPY && player.ty == draw->ty + 8)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
@@ -194,8 +196,9 @@ void main() {
 //		mapScrollUp(show, 1);
 //		SWAP(draw, show);
 			}
+			player.ty--;
 		}
-		else if(player.ty > 0 && player.ty <= draw->ty + 8)// && player.ty >= draw->ty+8)
+		else if(player.ty > 0)// && player.ty <= draw->ty + 8)// && player.ty >= draw->ty+8)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
