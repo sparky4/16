@@ -53,7 +53,7 @@ void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
 
 #define TILEWH 16
 #define QUADWH (TILEWH/4)
-#define SPEED 1
+#define SPEED 2
 
 //place holder definitions
 #define MAPX 40
@@ -114,7 +114,7 @@ void main() {
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
 	if(keyp(77)){
 		if(draw->tx >= 0 && draw->tx+20 < MAPX)
-			for(q=0; q<TILEWH; q++) {
+			for(q=0; q<(TILEWH/SPEED); q++) {
 				mapScrollRight(draw, SPEED);
 				modexShowPage(draw->page);
 //		mapScrollRight(draw, 1);
@@ -125,7 +125,7 @@ void main() {
 
 	if(keyp(75)){
 		if(draw->tx > 0 && draw->tx+20 <= MAPX)
-			for(q=0; q<TILEWH; q++) {
+			for(q=0; q<(TILEWH/SPEED); q++) {
  				mapScrollLeft(draw, SPEED);
 				modexShowPage(draw->page);
 // 		mapScrollLeft(show, 1);
@@ -136,7 +136,7 @@ void main() {
 
 	if(keyp(80)){
 		if(draw->ty >= 0 && draw->ty+15 < MAPY)
-			for(q=0; q<TILEWH; q++) {
+			for(q=0; q<(TILEWH/SPEED); q++) {
 				mapScrollDown(draw, SPEED);
 				modexShowPage(draw->page);
 //		mapScrollDown(show, 1);
@@ -147,7 +147,7 @@ void main() {
 
 	if(keyp(72)){
 		if(draw->ty > 0 && draw->ty+15 <= MAPY)
-			for(q=0; q<TILEWH; q++) {
+			for(q=0; q<(TILEWH/SPEED); q++) {
 				mapScrollUp(draw, SPEED);
 				modexShowPage(draw->page);
 //		mapScrollUp(show, 1);
