@@ -51,19 +51,20 @@ void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
 
 #define TILEWH 16
 #define QUADWH (TILEWH/4)
-#define SWAP(a, b) tmp=a; a=b; b=tmp;
+//#define SWAP(a, b) tmp=a; a=b; b=tmp;
 void main() {
-	int show1=1;
+//	int show1=1;
 	int tx, ty;
 	int x, y;
 	//int ch=0x0;
-	byte ch;
+//	byte ch;
 	int q=0;
-	page_t screen,screen2;
+	page_t screen;//,screen2;
 	map_t map;
-	map_view_t mv, mv2;
-	map_view_t *draw, *show, *tmp;
+	map_view_t mv;//, mv2;
+	map_view_t *draw;//, *show, *tmp;
 	byte *ptr;
+
 	//default player position on the viewable map
 	player.tx = 10;
 	player.ty = 8;
@@ -73,7 +74,7 @@ void main() {
 	map = allocMap(160,120); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	initMap(&map);
 	mv.map = &map;
-	mv2.map = &map;
+//	mv2.map = &map;
 
 	/* draw the tiles */
 	ptr = map.data;
@@ -82,14 +83,15 @@ void main() {
 	screen.width += (TILEWH*2);
 	mv.page = &screen;
 	mapGoTo(&mv, 16, 16);
-	screen2=modexNextPage(mv.page);
-	mv2.page = &screen2;
-	mapGoTo(&mv2, 16, 16);
-	modexShowPage(mv.page);
+//	screen2=modexNextPage(mv.page);
+//	mv2.page = &screen2;
+//	mapGoTo(&mv2, 16, 16);
+//	modexShowPage(mv.page);
 
 	/* set up paging */
-	show = &mv;
-	draw = &mv2;
+//	show = &mv;
+//	draw = &mv2;
+	draw = &mv;
 
 	//TODO: set player position data here according to the viewable map screen thingy
 
