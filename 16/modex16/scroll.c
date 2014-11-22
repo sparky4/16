@@ -150,7 +150,7 @@ void main() {
 			}
 			player.tx--;
 		}
-		else if(player.tx > 0)
+		else if(player.tx > 1)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
@@ -202,7 +202,7 @@ void main() {
 			}
 			player.ty--;
 		}
-		else if(player.ty > 0)// && player.ty <= draw->ty + 8)// && player.ty >= draw->ty+8)
+		else if(player.ty > 1)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
