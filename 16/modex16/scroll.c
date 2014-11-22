@@ -111,6 +111,8 @@ void main() {
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
+	
+	//TODO: render the player properly with animation and sprite sheet
 	if(keyp(77))
 	{
 		if(draw->tx >= 0 && draw->tx+20 < MAPX && player.tx == draw->tx + 10)
@@ -213,7 +215,7 @@ void main() {
 			player.ty--;
 		}
 	}
-	//modexDrawBmp(draw->page, player.x, player.y, &bmp);
+	modexDrawBmp(draw->page, player.x, player.y, &bmp);
 	//modexShowPage(draw->page);
 
 	}
