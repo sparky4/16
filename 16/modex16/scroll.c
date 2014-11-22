@@ -26,8 +26,10 @@ typedef struct {
 typedef struct {
 	map_t *map;
 	page_t *page;
-	int tx; //???? appears to be the tile position on the viewable screen map
-	int ty; //???? appears to be the tile position on the viewable screen map
+	int tx; //appears to be the top left tile position on the viewable screen map
+	int ty; //appears to be the top left tile position on the viewable screen map
+//	int ttx; //bottem right tile
+//	int tty; //bottem left tile
 	word dxThresh; //????
 	word dyThresh; //????
 } map_view_t;
@@ -51,6 +53,11 @@ void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
 
 #define TILEWH 16
 #define QUADWH (TILEWH/4)
+#define SPEED 1
+
+//place holder definitions
+#define MAPX 40
+#define MAPY 30
 //#define SWAP(a, b) tmp=a; a=b; b=tmp;
 void main() {
 //	int show1=1;
@@ -71,9 +78,13 @@ void main() {
 
 	setkb(1);
 	/* create the map */
-	map = allocMap(160,120); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
+	map = allocMap(MAPX,MAPY); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	initMap(&map);
 	mv.map = &map;
+
+	//initiate bottem right edge trigger
+//	mv.ttx = mv.tx + 20;
+//	mv.tty = mv.ty + 15;
 //	mv2.map = &map;
 
 	/* draw the tiles */
@@ -82,7 +93,6 @@ void main() {
 	screen = modexDefaultPage();
 	screen.width += (TILEWH*2);
 	mv.page = &screen;
-	mapGoTo(&mv, 16, 16);
 //	screen2=modexNextPage(mv.page);
 //	mv2.page = &screen2;
 //	mapGoTo(&mv2, 16, 16);
@@ -93,55 +103,71 @@ void main() {
 //	draw = &mv2;
 	draw = &mv;
 
+	mapGoTo(draw, 0, 0);
+
 	//TODO: set player position data here according to the viewable map screen thingy
 
+	modexShowPage(draw->page);
 	while(!keyp(1)) {
 	//TODO: top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
 	if(keyp(77)){
-//		for(q=0; q<TILEWH; q++) {
-		mapScrollRight(draw, 1);
-//		modexShowPage(draw->page);
+		if(draw->tx >= 0 && draw->tx+20 < MAPX)
+			for(q=0; q<16; q++) {
+				mapScrollRight(draw, SPEED);
+				modexShowPage(draw->page);
 //		mapScrollRight(draw, 1);
 //		SWAP(draw, show);
-//		}
+			}
+
 	}
 
 	if(keyp(75)){
-//		for(q=0; q<TILEWH; q++) {
- 		mapScrollLeft(draw, 1);
-//		modexShowPage(draw->page);
+		if(draw->tx > 0 && draw->tx+20 <= MAPX)
+			for(q=0; q<16; q++) {
+ 				mapScrollLeft(draw, SPEED);
+				modexShowPage(draw->page);
 // 		mapScrollLeft(show, 1);
 //		SWAP(draw, show);
-//		}
+			}
+
 	}
 
 	if(keyp(80)){
-//		for(q=0; q<TILEWH; q++) {
-		mapScrollDown(draw, 1);
-//		modexShowPage(draw->page);
+		if(draw->ty >= 0 && draw->ty+15 < MAPY)
+			for(q=0; q<16; q++) {
+				mapScrollDown(draw, SPEED);
+				modexShowPage(draw->page);
 //		mapScrollDown(show, 1);
 //		SWAP(draw, show);
-//		}
+			}
+
 	}
 
 	if(keyp(72)){
-//		for(q=0; q<TILEWH; q++) {
-		mapScrollUp(draw, 1);
-//		modexShowPage(draw->page);
+		if(draw->ty > 0 && draw->ty+15 <= MAPY)
+			for(q=0; q<16; q++) {
+				mapScrollUp(draw, SPEED);
+				modexShowPage(draw->page);
 //		mapScrollUp(show, 1);
 //		SWAP(draw, show);
-//		}
+			}
+
 	}
 
 	//keyp(ch);
-	modexShowPage(draw->page);
+	//modexShowPage(draw->page);
 
 	}
 
 	modexLeave();
 	setkb(0);
+	printf("Project 16 scroll.exe\n");
+	printf("tx: %d\n", draw->tx);
+	printf("ty: %d\n", draw->ty);
+	//printf("ttx: %d\n", draw->ttx);
+	//printf("tty: %d\n", draw->tty);
 }
 
 
