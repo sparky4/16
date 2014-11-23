@@ -216,6 +216,61 @@ modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
 
 
 void
+modexClearPlayer(page_t *page, int x, int y, int w, int h) {
+    word pageOff = (word) page->data;
+    word xoff=x/4;       /* xoffset that begins each row */
+    word scanCount=w/4;  /* number of iterations per row (excluding right clip)*/
+    word poffset = pageOff + y*(page->width/4) + xoff; /* starting offset */
+    word nextRow = page->width/4-scanCount-1;  /* loc of next row */
+    byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08};  /* clips for rectangles not on 4s */
+    byte rclip[] = {0x00, 0x01, 0x03, 0x07};
+    byte left = lclip[x&0x03];
+    byte right = rclip[(x+w)&0x03];
+
+    /* handle the case which requires an extra group */
+    if((x & 0x03) && !((x+w) & 0x03)) {
+      right=0x0f;
+    }
+
+    __asm {
+		MOV AX, SCREEN_SEG      ; go to the VGA memory
+		MOV ES, AX
+		MOV DI, poffset		; go to the first pixel
+		MOV DX, SC_INDEX	; point to the map mask
+		MOV AL, MAP_MASK
+		OUT DX, AL
+		INC DX
+		MOV AL, NULL		; get ready to write colors
+	SCAN_START:
+		MOV CX, scanCount	; count the line
+		MOV BL, AL		; remember color
+		MOV AL, left		; do the left clip
+		OUT DX, AL		; set the left clip
+		MOV AL, BL		; restore color
+		STOSB			; write the color
+		DEC CX
+		JZ SCAN_DONE		; handle 1 group stuff
+
+		;-- write the main body of the scanline
+		MOV BL, AL	  	; remember color
+		MOV AL, 0x0f		; write to all pixels
+		OUT DX, AL
+		MOV AL, BL		; restore color
+		REP STOSB		; write the color
+	SCAN_DONE:
+		MOV BL, AL		; remeber color
+		MOV AL, right
+		OUT DX, AL		; do the right clip
+		MOV AL, BL		; restore color
+		STOSB			; write pixel
+		ADD DI, nextRow		; go to the next row
+		DEC h
+		JNZ SCAN_START
+    }
+}
+
+
+void
 modexDrawBmp(page_t *page, int x, int y, bitmap_t *bmp) {
     /* draw the region (the entire freakin bitmap) */
     modexDrawBmpRegion(page, x, y, 0, 0, bmp->width, bmp->height, bmp);
