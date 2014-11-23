@@ -138,6 +138,7 @@ void main() {
 //				modexDrawBmp(draw->page, player.x, player.y, &bmp);
 				animatePlayer(show, 1, 0, player.x, player.y, q, &ptmp);
 				modexShowPage(draw->page);
+				SWAP(draw, show);
 			}
 			player.tx++;
 		}
@@ -167,6 +168,7 @@ void main() {
 //				modexDrawBmp(draw->page, player.x, player.y, &bmp);
 				animatePlayer(show, 3, 0, player.x, player.y, q, &ptmp);
 				modexShowPage(draw->page);
+				SWAP(draw, show);
 			}
 			player.tx--;
 		}
@@ -196,6 +198,7 @@ void main() {
 //				modexDrawBmp(draw->page, player.x, player.y, &bmp);
 				animatePlayer(show, 2, 0, player.x, player.y, q, &ptmp);
 				modexShowPage(draw->page);
+				SWAP(draw, show);
 			}
 			player.ty++;
 		}
@@ -224,6 +227,7 @@ void main() {
 //				modexDrawBmp(draw->page, player.x, player.y, &bmp);
 				animatePlayer(show, 0, 0, player.x, player.y, q, &ptmp);
 				modexShowPage(draw->page);
+				SWAP(draw, show);
 			}
 			player.ty--;
 		}
