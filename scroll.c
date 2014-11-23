@@ -67,17 +67,17 @@ void main() {
 	page_t screen, screen2;
 	map_t map;
 	map_view_t mv, mv2;
-	map_view_t *draw, *spri, *tmp;
+	map_view_t *bg, *spri, *tmp;
 	byte *ptr;
 
 	setkb(1);
 	/* create the map */
-	map = allocMap(MAPX,MAPY); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
+	map = allocMap(MAPX,MAPY); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be bgn properly
 	initMap(&map);
 	mv.map = &map;
 	mv2.map = &map;
 
-	/* draw the tiles */
+	/* bg the tiles */
 	ptr = map.data;
 	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
 	modexEnter();
@@ -91,21 +91,21 @@ void main() {
 	//modexShowPage(mv.page);
 
 	/* set up paging */
-	draw = &mv;
+	bg = &mv;
 	spri = &mv2;
 
 //TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
-	mapGoTo(draw, 0, 0);
+	mapGoTo(bg, 0, 0);
 	mapGoTo(spri, 0, 0);
 
 	//TODO: put player in starting position of spot
 	//default player position on the viewable map
-	player.tx = draw->tx + 10;
-	player.ty = draw->ty + 8;
+	player.tx = bg->tx + 10;
+	player.ty = bg->ty + 8;
 	player.x = player.tx*TILEWH;
 	player.y = player.ty*TILEWH;
 	modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
-	modexCopyPageRegion(spri->page, draw->page, player.x-4, player.y-TILEWH, player.x-4, player.y-TILEWH, 24, 34);
+	modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 34);
 	modexShowPage(spri->page);
 	while(!keyp(1))
 	{
@@ -116,13 +116,15 @@ void main() {
 	//TODO: render the player properly with animation and sprite sheet
 	if(keyp(77))
 	{
-		modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 32, 24, 32, &ptmp);
-		if(draw->tx >= 0 && draw->tx+20 < MAPX && player.tx == draw->tx + 10)
+		//modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 34);
+		//modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 32, 24, 32, &ptmp);
+		if(bg->tx >= 0 && bg->tx+20 < MAPX && player.tx == bg->tx + 10)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
-				animatePlayer(spri, draw, 1, 1, player.x, player.y, q, &ptmp);
-				mapScrollRight(draw, SPEED);
+				animatePlayer(spri, bg, 1, 1, player.x, player.y, q, &ptmp);
+				mapScrollRight(bg, SPEED);
+				mapScrollRight(spri, SPEED);
 				modexShowPage(spri->page);
 			}
 			player.tx++;
@@ -132,7 +134,7 @@ void main() {
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
 				player.x+=SPEED;
-				animatePlayer(spri, draw, 1, 0, player.x, player.y, q, &ptmp);
+				animatePlayer(spri, bg, 1, 0, player.x, player.y, q, &ptmp);
 				modexShowPage(spri->page);
 			}
 			player.tx++;
@@ -141,14 +143,16 @@ void main() {
 
 	if(keyp(75))
 	{
-		modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 96, 24, 32, &ptmp);
-		if(draw->tx > 0 && draw->tx+20 <= MAPX && player.tx == draw->tx + 10)
+		//modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 34);
+		//modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 96, 24, 32, &ptmp);
+		if(bg->tx > 0 && bg->tx+20 <= MAPX && player.tx == bg->tx + 10)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
 				
-				animatePlayer(spri, draw, 3, 1, player.x, player.y, q, &ptmp);
-				mapScrollLeft(draw, SPEED);
+				animatePlayer(spri, bg, 3, 1, player.x, player.y, q, &ptmp);
+				mapScrollLeft(bg, SPEED);
+				mapScrollLeft(spri, SPEED);
 				modexShowPage(spri->page);
 			}
 			player.tx--;
@@ -158,7 +162,7 @@ void main() {
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
 				player.x-=SPEED;
-				animatePlayer(spri, draw, 3, 0, player.x, player.y, q, &ptmp);
+				animatePlayer(spri, bg, 3, 0, player.x, player.y, q, &ptmp);
 				modexShowPage(spri->page);
 			}
 			player.tx--;
@@ -167,13 +171,15 @@ void main() {
 
 	if(keyp(80))
 	{
-		modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
-		if(draw->ty >= 0 && draw->ty+15 < MAPY && player.ty == draw->ty + 8)
+		//modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 34);
+		//modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
+		if(bg->ty >= 0 && bg->ty+15 < MAPY && player.ty == bg->ty + 8)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
-				animatePlayer(spri, draw, 2, 1, player.x, player.y, q, &ptmp);
-				mapScrollDown(draw, SPEED);
+				animatePlayer(spri, bg, 2, 1, player.x, player.y, q, &ptmp);
+				mapScrollDown(bg, SPEED);
+				mapScrollDown(spri, SPEED);
 				modexShowPage(spri->page);
 			}
 			player.ty++;
@@ -183,7 +189,7 @@ void main() {
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
 				player.y+=SPEED;
-				animatePlayer(spri, draw, 2, 0, player.x, player.y, q, &ptmp);
+				animatePlayer(spri, bg, 2, 0, player.x, player.y, q, &ptmp);
 				modexShowPage(spri->page);
 			}
 			player.ty++;
@@ -192,13 +198,14 @@ void main() {
 
 	if(keyp(72))
 	{
-		modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 0, 24, 32, &ptmp);
-		if(draw->ty > 0 && draw->ty+15 <= MAPY && player.ty == draw->ty + 8)
+		//modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 34);
+		//modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 0, 24, 32, &ptmp);
+		if(bg->ty > 0 && bg->ty+15 <= MAPY && player.ty == bg->ty + 8)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
-				animatePlayer(spri, draw, 0, 1, player.x, player.y, q, &ptmp);
-				mapScrollUp(draw, SPEED);
+				animatePlayer(spri, bg, 0, 1, player.x, player.y, q, &ptmp);
+				mapScrollUp(bg, SPEED);
 				mapScrollUp(spri, SPEED);
 				modexShowPage(spri->page);
 			}
@@ -209,7 +216,7 @@ void main() {
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
 				player.y-=SPEED;
-				animatePlayer(spri, draw, 0, 0, player.x, player.y, q, &ptmp);
+				animatePlayer(spri, bg, 0, 0, player.x, player.y, q, &ptmp);
 				modexShowPage(spri->page);
 			}
 			player.ty--;
@@ -221,8 +228,8 @@ void main() {
 	modexLeave();
 	setkb(0);
 	printf("Project 16 scroll.exe\n");
-	printf("tx: %d\n", draw->tx);
-	printf("ty: %d\n", draw->ty);
+	printf("tx: %d\n", bg->tx);
+	printf("ty: %d\n", bg->ty);
 	printf("player.x: %d\n", player.x);
 	printf("player.y: %d\n", player.y);
 	printf("player.tx: %d\n", player.tx);
@@ -285,7 +292,7 @@ initMap(map_t *map) {
 
 void
 mapScrollRight(map_view_t *mv, byte offset) {
-	word x, y;  /* coordinate for drawing */
+	word x, y;  /* coordinate for bging */
 
 	/* increment the pixel position and update the page */
 	mv->page->dx += offset;
@@ -299,7 +306,7 @@ mapScrollRight(map_view_t *mv, byte offset) {
 	mv->page->dx = mv->map->tiles->tileWidth;
 
 
-	/* draw the next column */
+	/* bg the next column */
 	x= SCREEN_WIDTH + mv->map->tiles->tileWidth;
 		mapDrawCol(mv, mv->tx + 20 , mv->ty-1, x);
 	}
@@ -308,7 +315,7 @@ mapScrollRight(map_view_t *mv, byte offset) {
 
 void
 mapScrollLeft(map_view_t *mv, byte offset) {
-	word x, y;  /* coordinate for drawing */
+	word x, y;  /* coordinate for bging */
 
 	/* increment the pixel position and update the page */
 	mv->page->dx -= offset;
@@ -322,7 +329,7 @@ mapScrollLeft(map_view_t *mv, byte offset) {
 	mv->page->data -= 4;
 	mv->page->dx = mv->map->tiles->tileWidth;
 
-	/* draw the next column */
+	/* bg the next column */
 		mapDrawCol(mv, mv->tx-1, mv->ty-1, 0);
 	}
 }
@@ -330,7 +337,7 @@ mapScrollLeft(map_view_t *mv, byte offset) {
 
 void
 mapScrollUp(map_view_t *mv, byte offset) {
-	word x, y;  /* coordinate for drawing */
+	word x, y;  /* coordinate for bging */
 
 	/* increment the pixel position and update the page */
 	mv->page->dy -= offset;
@@ -344,7 +351,7 @@ mapScrollUp(map_view_t *mv, byte offset) {
 	mv->page->dy = mv->map->tiles->tileHeight;
 
 
-	/* draw the next row */
+	/* bg the next row */
 	y= 0;
 		mapDrawRow(mv, mv->tx-1 , mv->ty-1, y);
 	}
@@ -353,7 +360,7 @@ mapScrollUp(map_view_t *mv, byte offset) {
 
 void
 mapScrollDown(map_view_t *mv, byte offset) {
-	word x, y;  /* coordinate for drawing */
+	word x, y;  /* coordinate for bging */
 
 	/* increment the pixel position and update the page */
 	mv->page->dy += offset;
@@ -367,7 +374,7 @@ mapScrollDown(map_view_t *mv, byte offset) {
 	mv->page->dy = mv->map->tiles->tileHeight;
 
 
-	/* draw the next row */
+	/* bg the next row */
 	y= SCREEN_HEIGHT + mv->map->tiles->tileHeight;
 		mapDrawRow(mv, mv->tx-1 , mv->ty+15, y);
 	}
@@ -390,7 +397,7 @@ mapGoTo(map_view_t *mv, int tx, int ty) {
 	mv->dxThresh = mv->map->tiles->tileWidth * 2;
 	mv->dyThresh = mv->map->tiles->tileHeight * 2;
 
-	/* draw the tiles */
+	/* bg the tiles */
 	modexClearRegion(mv->page, 0, 0, mv->page->width, mv->page->height, 0);
 	py=0;
 	i=mv->ty * mv->map->width + mv->tx;
@@ -468,35 +475,35 @@ void animatePlayer(map_view_t *mv, map_view_t *src, short d1, short d2, int x, i
 		break;
 		case 1:
 			// right
-			if(ls<1) { modexCopyPageRegion(mv->page, src->page, x+qq-4, y-TILEWH, x+qq-4, y-TILEWH, 24, 34);
+			if(ls<1) { modexCopyPageRegion(mv->page, src->page, x+qq-4, y-TILEWH, x+qq-4, y-TILEWH, 24, 34);// modexWaitBorder();
 			modexDrawSpriteRegion(mv->page, x+qq-4, y-TILEWH, 24, 32, 24, 32, bmp); }
-			if(4>ls && ls>=1) { modexCopyPageRegion(mv->page, src->page, x+qq-4, y-TILEWH, x+qq-4, y-TILEWH, 24, 34);
+			if(4>ls && ls>=1) { modexCopyPageRegion(mv->page, src->page, x+qq-4, y-TILEWH, x+qq-4, y-TILEWH, 24, 34);// modexWaitBorder();
 			modexDrawSpriteRegion(mv->page, x+qq-4, y-TILEWH, 48, 32, 24, 32, bmp); }
-			if(7>ls && ls>=4) { modexCopyPageRegion(mv->page, src->page, x+qq-4, y-TILEWH, x+qq-4, y-TILEWH, 24, 34);
+			if(7>ls && ls>=4) { modexCopyPageRegion(mv->page, src->page, x+qq-4, y-TILEWH, x+qq-4, y-TILEWH, 24, 34);// modexWaitBorder();
 			modexDrawSpriteRegion(mv->page, x+qq-4, y-TILEWH, 0, 32, 24, 32, bmp); }
-			if(ls>=7) { modexCopyPageRegion(mv->page, src->page, x+qq-4, y-TILEWH, x+qq-4, y-TILEWH, 24, 34);
+			if(ls>=7) { modexCopyPageRegion(mv->page, src->page, x+qq-4, y-TILEWH, x+qq-4, y-TILEWH, 24, 34);// modexWaitBorder();
 			modexDrawSpriteRegion(mv->page, x+qq-4, y-TILEWH, 24, 32, 24, 32, bmp); }
 		break;
 		case 2:
 			//down
-			if(ls<1) { modexCopyPageRegion(mv->page, src->page, x-4, y+qq-TILEWH, x-4, y+qq-TILEWH, 24, 34);
+			if(ls<1) { modexCopyPageRegion(mv->page, src->page, x-4, y+qq-TILEWH-2, x-4, y+qq-TILEWH-2, 24, 34);
 			modexDrawSpriteRegion(mv->page, x-4, y+qq-TILEWH, 24, 64, 24, 32, bmp); }
-			if(4>ls && ls>=1) { modexCopyPageRegion(mv->page, src->page, x-4, y+qq-TILEWH, x-4, y+qq-TILEWH, 24, 34); 
+			if(4>ls && ls>=1) { modexCopyPageRegion(mv->page, src->page, x-4, y+qq-TILEWH-2, x-4, y+qq-TILEWH-2, 24, 34); 
 			modexDrawSpriteRegion(mv->page, x-4, y+qq-TILEWH, 48, 64, 24, 32, bmp); }
-			if(7>ls && ls>=4) { modexCopyPageRegion(mv->page, src->page, x-4, y+qq-TILEWH, x-4, y+qq-TILEWH, 24, 34);
+			if(7>ls && ls>=4) { modexCopyPageRegion(mv->page, src->page, x-4, y+qq-TILEWH-2, x-4, y+qq-TILEWH-2, 24, 34);
 			modexDrawSpriteRegion(mv->page, x-4, y+qq-TILEWH, 0, 64, 24, 32, bmp); }
-			if(ls>=7) { modexCopyPageRegion(mv->page, src->page, x-4, y+qq-TILEWH, x-4, y+qq-TILEWH, 24, 34);
+			if(ls>=7) { modexCopyPageRegion(mv->page, src->page, x-4, y+qq-TILEWH-2, x-4, y+qq-TILEWH-2, 24, 34);
 			modexDrawSpriteRegion(mv->page, x-4, y+qq-TILEWH, 24, 64, 24, 32, bmp); }
 		break;
 		case 3:
 			//left
-			if(ls<1) { modexCopyPageRegion(mv->page, src->page, x-qq-4, y-TILEWH, x-qq-4, y-TILEWH, 24, 34);
+			if(ls<1) { modexCopyPageRegion(mv->page, src->page, x-qq-4, y-TILEWH, x-qq-4, y-TILEWH, 24, 34);// modexWaitBorder();
 			modexDrawSpriteRegion(mv->page, x-qq-4, y-TILEWH, 24, 96, 24, 32, bmp); }
-			if(4>ls && ls>=1) { modexCopyPageRegion(mv->page, src->page, x-qq-4, y-TILEWH, x-qq-4, y-TILEWH, 24, 34);
+			if(4>ls && ls>=1) { modexCopyPageRegion(mv->page, src->page, x-qq-4, y-TILEWH, x-qq-4, y-TILEWH, 24, 34);// modexWaitBorder();
 			modexDrawSpriteRegion(mv->page, x-qq-4, y-TILEWH, 48, 96, 24, 32, bmp); }
-			if(7>ls && ls>=4) { modexCopyPageRegion(mv->page, src->page, x-qq-4, y-TILEWH, x-qq-4, y-TILEWH, 24, 34);
+			if(7>ls && ls>=4) { modexCopyPageRegion(mv->page, src->page, x-qq-4, y-TILEWH, x-qq-4, y-TILEWH, 24, 34);// modexWaitBorder();
 			modexDrawSpriteRegion(mv->page, x-qq-4, y-TILEWH, 0, 96, 24, 32, bmp); }
-			if(ls>=7) { modexCopyPageRegion(mv->page, src->page, x-qq-4, y-TILEWH, x-qq-4, y-TILEWH, 24, 34);
+			if(ls>=7) { modexCopyPageRegion(mv->page, src->page, x-qq-4, y-TILEWH, x-qq-4, y-TILEWH, 24, 34);// modexWaitBorder();
 			modexDrawSpriteRegion(mv->page, x-qq-4, y-TILEWH, 24, 96, 24, 32, bmp); }
 		break;
 	}
