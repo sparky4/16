@@ -52,6 +52,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty);
 void mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
 void mapDrawRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
+void animatePlayer(map_view_t *mv, short d1, short d2, int x, int y, int ls, bitmap_t *bmp);
 
 #define TILEWH 16
 #define QUADWH (TILEWH/4)
@@ -62,12 +63,12 @@ void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
 #define MAPY 30
 //#define SWAP(a, b) tmp=a; a=b; b=tmp;
 void main() {
-	bitmap_t bmp;
+	bitmap_t ptmp; // player sprite
 	int q=0;
-	page_t screen;//,screen2;
+	page_t screen, screen2;
 	map_t map;
-	map_view_t mv;//, mv2;
-	map_view_t *draw;//, *show, *tmp;
+	map_view_t mv, mv2;
+	map_view_t *draw, *show, *tmp;
 	byte *ptr;
 
 	setkb(1);
@@ -79,9 +80,9 @@ void main() {
 
 	/* draw the tiles */
 	ptr = map.data;
-	bmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
-	modexPalUpdate(bmp.palette);
+	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
 	modexEnter();
+	modexPalUpdate(ptmp.palette);
 	screen = modexDefaultPage();
 	screen.width += (TILEWH*2);
 	mv.page = &screen;
@@ -104,7 +105,8 @@ void main() {
 	player.ty = draw->ty + 8;
 	player.x = player.tx*TILEWH;
 	player.y = player.ty*TILEWH;
-
+	modexDrawSpriteRegion(draw->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
+	
 	modexShowPage(draw->page);
 	while(!keyp(1))
 	{
@@ -115,11 +117,13 @@ void main() {
 	//TODO: render the player properly with animation and sprite sheet
 	if(keyp(77))
 	{
+//		modexDrawSpriteRegion(draw->page, player.x-4, player.y-TILEWH, 24, 32, 24, 32, &ptmp);
 		if(draw->tx >= 0 && draw->tx+20 < MAPX && player.tx == draw->tx + 10)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
-				modexDrawBmp(draw->page, player.x+((q+1)*SPEED), player.y, &bmp);
+//				modexDrawBmp(draw->page, &bmp);
+				animatePlayer(draw, 1, 1, player.x, player.y, q, &ptmp);
 				mapScrollRight(draw, SPEED);
 				modexShowPage(draw->page);
 //		mapScrollRight(draw, 1);
@@ -132,19 +136,23 @@ void main() {
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
 				player.x+=SPEED;
-				modexDrawBmp(draw->page, player.x, player.y, &bmp);
+//				modexDrawBmp(draw->page, player.x, player.y, &bmp);
+				animatePlayer(draw, 1, 0, player.x, player.y, q, &ptmp);
 				modexShowPage(draw->page);
 			}
 			player.tx++;
 		}
 	}
 
-	if(keyp(75)){
+	if(keyp(75))
+	{
+//		modexDrawSpriteRegion(draw->page, player.x-4, player.y-TILEWH, 24, 96, 24, 32, &ptmp);
 		if(draw->tx > 0 && draw->tx+20 <= MAPX && player.tx == draw->tx + 10)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
-				modexDrawBmp(draw->page, player.x-((q+1)*SPEED), player.y, &bmp);
+//				modexDrawBmp(draw->page, player.x-((q+1)*SPEED), player.y, &bmp);
+				animatePlayer(draw, 3, 1, player.x, player.y, q, &ptmp);
 				mapScrollLeft(draw, SPEED);
 				modexShowPage(draw->page);
 // 		mapScrollLeft(show, 1);
@@ -157,7 +165,8 @@ void main() {
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
 				player.x-=SPEED;
-				modexDrawBmp(draw->page, player.x, player.y, &bmp);
+//				modexDrawBmp(draw->page, player.x, player.y, &bmp);
+				animatePlayer(draw, 3, 0, player.x, player.y, q, &ptmp);
 				modexShowPage(draw->page);
 			}
 			player.tx--;
@@ -166,11 +175,13 @@ void main() {
 
 	if(keyp(80))
 	{
+		modexDrawSpriteRegion(draw->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
 		if(draw->ty >= 0 && draw->ty+15 < MAPY && player.ty == draw->ty + 8)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
-				modexDrawBmp(draw->page, player.x, player.y+((q+1)*SPEED), &bmp);
+//				modexDrawBmp(draw->page, player.x, player.y+((q+1)*SPEED), &bmp);
+				animatePlayer(draw, 2, 1, player.x, player.y, q, &ptmp);
 				mapScrollDown(draw, SPEED);
 				modexShowPage(draw->page);
 //		mapScrollDown(show, 1);
@@ -183,7 +194,8 @@ void main() {
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
 				player.y+=SPEED;
-				modexDrawBmp(draw->page, player.x, player.y, &bmp);
+//				modexDrawBmp(draw->page, player.x, player.y, &bmp);
+				animatePlayer(draw, 2, 0, player.x, player.y, q, &ptmp);
 				modexShowPage(draw->page);
 			}
 			player.ty++;
@@ -196,7 +208,8 @@ void main() {
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
-				modexDrawBmp(draw->page, player.x, player.y-((q+1)*SPEED), &bmp);
+//				modexDrawBmp(draw->page, player.x, player.y-((q+1)*SPEED), &bmp);
+				animatePlayer(draw, 0, 1, player.x, player.y, q, &ptmp);
 				mapScrollUp(draw, SPEED);
 				modexShowPage(draw->page);
 //		mapScrollUp(show, 1);
@@ -209,13 +222,14 @@ void main() {
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
 				player.y-=SPEED;
-				modexDrawBmp(draw->page, player.x, player.y, &bmp);
+//				modexDrawBmp(draw->page, player.x, player.y, &bmp);
+				animatePlayer(draw, 0, 0, player.x, player.y, q, &ptmp);
 				modexShowPage(draw->page);
 			}
 			player.ty--;
 		}
 	}
-	modexDrawBmp(draw->page, player.x, player.y, &bmp);
+//	modexDrawBmp(draw->page, player.x, player.y, &bmp);
 	//modexShowPage(draw->page);
 
 	}
@@ -446,5 +460,45 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
 	}
 	i += mv->map->width;
+	}
+}
+
+void animatePlayer(map_view_t *mv, short d1, short d2, int x, int y, int ls, bitmap_t *bmp)
+{
+	int qq;
+
+	if(d2==0) qq = 0;
+	else qq = ((ls+1)*SPEED);
+	switch (d1)
+	{
+		case 0:
+			//up
+			if(ls<2) modexDrawSpriteRegion(mv->page, x-4, y-qq-TILEWH, 24, 0, 24, 32, bmp);
+			if(4>ls && ls>=2) modexDrawSpriteRegion(mv->page, x-4, y-qq-TILEWH, 0, 0, 24, 32, bmp);
+			if(6>ls && ls>=4) modexDrawSpriteRegion(mv->page, x-4, y-qq-TILEWH, 48, 0, 24, 32, bmp);
+			if(ls>6) modexDrawSpriteRegion(mv->page, x-4, y-qq-TILEWH, 24, 0, 24, 32, bmp);
+		break;
+		case 1:
+			// right
+		//right
+			if(ls<2) modexDrawSpriteRegion(mv->page, x+qq-4, y-TILEWH, 24, 32, 24, 32, bmp);
+			if(4>ls && ls>=2) modexDrawSpriteRegion(mv->page, x+qq-4, y-TILEWH, 0, 32, 24, 32, bmp);
+			if(6>ls && ls>=4) modexDrawSpriteRegion(mv->page, x+qq-4, y-TILEWH, 48, 32, 24, 32, bmp);
+			if(ls>6) modexDrawSpriteRegion(mv->page, x+qq-4, y-TILEWH, 24, 32, 24, 32, bmp);
+		break;
+		case 2:
+			//down
+			if(ls<2) modexDrawSpriteRegion(mv->page, x-4, y+qq-TILEWH, 24, 64, 24, 32, bmp);
+			if(4>ls && ls>=2) modexDrawSpriteRegion(mv->page, x-4, y+qq-TILEWH, 0, 64, 24, 32, bmp);
+			if(6>ls && ls>=4) modexDrawSpriteRegion(mv->page, x-4, y+qq-TILEWH, 48, 64, 24, 32, bmp);
+			if(ls>6) modexDrawSpriteRegion(mv->page, x-4, y+qq-TILEWH, 24, 64, 24, 32, bmp);
+		break;
+		case 3:
+			//left
+			if(ls<2) modexDrawSpriteRegion(mv->page, x-qq-4, y-TILEWH, 24, 96, 24, 32, bmp);
+			if(4>ls && ls>=2) modexDrawSpriteRegion(mv->page, x-qq-4, y-TILEWH, 0, 96, 24, 32, bmp);
+			if(6>ls && ls>=4) modexDrawSpriteRegion(mv->page, x-qq-4, y-TILEWH, 48, 96, 24, 32, bmp);
+			if(ls>6) modexDrawSpriteRegion(mv->page, x-qq-4, y-TILEWH, 24, 96, 24, 32, bmp);
+		break;
 	}
 }
