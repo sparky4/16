@@ -116,7 +116,7 @@ void main() {
 	//TODO: render the player properly with animation and sprite sheet
 	if(keyp(77))
 	{
-//		modexDrawSpriteRegion(draw->page, player.x-4, player.y-TILEWH, 24, 32, 24, 32, &ptmp);
+		modexDrawSpriteRegion(draw->page, player.x-4, player.y-TILEWH, 24, 32, 24, 32, &ptmp);
 		if(draw->tx >= 0 && draw->tx+20 < MAPX && player.tx == draw->tx + 10)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
@@ -138,7 +138,7 @@ void main() {
 //				modexDrawBmp(draw->page, player.x, player.y, &bmp);
 				animatePlayer(draw, 1, 0, player.x, player.y, q, &ptmp);
 				modexShowPage(draw->page);
-				SWAP(draw, show);
+//				SWAP(draw, show);
 			}
 			player.tx++;
 		}
@@ -146,7 +146,7 @@ void main() {
 
 	if(keyp(75))
 	{
-//		modexDrawSpriteRegion(draw->page, player.x-4, player.y-TILEWH, 24, 96, 24, 32, &ptmp);
+		modexDrawSpriteRegion(draw->page, player.x-4, player.y-TILEWH, 24, 96, 24, 32, &ptmp);
 		if(draw->tx > 0 && draw->tx+20 <= MAPX && player.tx == draw->tx + 10)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
@@ -168,7 +168,7 @@ void main() {
 //				modexDrawBmp(draw->page, player.x, player.y, &bmp);
 				animatePlayer(draw, 3, 0, player.x, player.y, q, &ptmp);
 				modexShowPage(draw->page);
-				SWAP(draw, show);
+//				SWAP(draw, show);
 			}
 			player.tx--;
 		}
@@ -176,7 +176,7 @@ void main() {
 
 	if(keyp(80))
 	{
-//		modexDrawSpriteRegion(draw->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
+		modexDrawSpriteRegion(draw->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
 		if(draw->ty >= 0 && draw->ty+15 < MAPY && player.ty == draw->ty + 8)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
@@ -206,6 +206,7 @@ void main() {
 
 	if(keyp(72))
 	{
+		modexDrawSpriteRegion(draw->page, player.x-4, player.y-TILEWH, 24, 0, 24, 32, &ptmp);
 		if(draw->ty > 0 && draw->ty+15 <= MAPY && player.ty == draw->ty + 8)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
@@ -477,30 +478,30 @@ void animatePlayer(map_view_t *mv, short d1, short d2, int x, int y, int ls, bit
 		case 0:
 			//up
 			if(ls<2) modexDrawSpriteRegion(mv->page, x-4, y-qq-TILEWH, 24, 0, 24, 32, bmp);
-			if(4>ls && ls>=2) modexDrawSpriteRegion(mv->page, x-4, y-qq-TILEWH, 0, 0, 24, 32, bmp);
-			if(6>ls && ls>=4) modexDrawSpriteRegion(mv->page, x-4, y-qq-TILEWH, 48, 0, 24, 32, bmp);
+			if(4>ls && ls>=2) modexDrawSpriteRegion(mv->page, x-4, y-qq-TILEWH, 48, 0, 24, 32, bmp);
+			if(6>ls && ls>=4) modexDrawSpriteRegion(mv->page, x-4, y-qq-TILEWH, 0, 0, 24, 32, bmp);
 			if(ls>6) modexDrawSpriteRegion(mv->page, x-4, y-qq-TILEWH, 24, 0, 24, 32, bmp);
 		break;
 		case 1:
 			// right
 		//right
 			if(ls<2) modexDrawSpriteRegion(mv->page, x+qq-4, y-TILEWH, 24, 32, 24, 32, bmp);
-			if(4>ls && ls>=2) modexDrawSpriteRegion(mv->page, x+qq-4, y-TILEWH, 0, 32, 24, 32, bmp);
-			if(6>ls && ls>=4) modexDrawSpriteRegion(mv->page, x+qq-4, y-TILEWH, 48, 32, 24, 32, bmp);
+			if(4>ls && ls>=2) modexDrawSpriteRegion(mv->page, x+qq-4, y-TILEWH, 48, 32, 24, 32, bmp);
+			if(6>ls && ls>=4) modexDrawSpriteRegion(mv->page, x+qq-4, y-TILEWH, 0, 32, 24, 32, bmp);
 			if(ls>6) modexDrawSpriteRegion(mv->page, x+qq-4, y-TILEWH, 24, 32, 24, 32, bmp);
 		break;
 		case 2:
 			//down
 			if(ls<2) modexDrawSpriteRegion(mv->page, x-4, y+qq-TILEWH, 24, 64, 24, 32, bmp);
-			if(4>ls && ls>=2) modexDrawSpriteRegion(mv->page, x-4, y+qq-TILEWH, 0, 64, 24, 32, bmp);
-			if(6>ls && ls>=4) modexDrawSpriteRegion(mv->page, x-4, y+qq-TILEWH, 48, 64, 24, 32, bmp);
+			if(4>ls && ls>=2) modexDrawSpriteRegion(mv->page, x-4, y+qq-TILEWH, 48, 64, 24, 32, bmp);
+			if(6>ls && ls>=4) modexDrawSpriteRegion(mv->page, x-4, y+qq-TILEWH, 0, 64, 24, 32, bmp);
 			if(ls>6) modexDrawSpriteRegion(mv->page, x-4, y+qq-TILEWH, 24, 64, 24, 32, bmp);
 		break;
 		case 3:
 			//left
 			if(ls<2) modexDrawSpriteRegion(mv->page, x-qq-4, y-TILEWH, 24, 96, 24, 32, bmp);
-			if(4>ls && ls>=2) modexDrawSpriteRegion(mv->page, x-qq-4, y-TILEWH, 0, 96, 24, 32, bmp);
-			if(6>ls && ls>=4) modexDrawSpriteRegion(mv->page, x-qq-4, y-TILEWH, 48, 96, 24, 32, bmp);
+			if(4>ls && ls>=2) modexDrawSpriteRegion(mv->page, x-qq-4, y-TILEWH, 48, 96, 24, 32, bmp);
+			if(6>ls && ls>=4) modexDrawSpriteRegion(mv->page, x-qq-4, y-TILEWH, 0, 96, 24, 32, bmp);
 			if(ls>6) modexDrawSpriteRegion(mv->page, x-qq-4, y-TILEWH, 24, 96, 24, 32, bmp);
 		break;
 	}
