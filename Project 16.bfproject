@@ -1,9 +1,9 @@
 c2e.convert_special: 0
 e2c.convert_num: 0
 openfiles: /dos/z/16/doc/project.txt:0:0:0:
-openfiles: /dos/z/16/scroll.c:12102:11962:1:
-openfiles: /dos/z/16/modex16.c:6464:6244:0:
-openfiles: /dos/z/16/modex16.h:1191:2119:0:
+openfiles: /dos/z/16/scroll.c:4669:4145:1:
+openfiles: /dos/z/16/modex16.c:2077:556:0:
+openfiles: /dos/z/16/modex16.h:1150:0:0:
 snr_recursion_level: 0
 convertcolumn_horizontally: 0
 adv_open_matchname: 0
@@ -18,7 +18,7 @@ c2e.convert_iso: 0
 opendir: file:///dos/z/16
 wrap_text_default: 0
 bookmarks_filename_mode: 1
-ssearch_text: color
+ssearch_text: modexShowPage(spri->page);
 snr_casesens: 1
 view_blocks: 1
 name: project 16
@@ -27,9 +27,11 @@ replacelist: \t
 replacelist: putPixel_X
 replacelist: SCREEN_WIDTH
 replacelist: SCREEN_HEIGHT
-replacelist: animatePlayer(spri
-replacelist: animatePlayer(draw
 replacelist: modexClearPlayer(mv->page
+replacelist: animatePlayer(draw
+replacelist: animatePlayer(spri
+replacelist: modexDrawSpriteRegion(spri
+replacelist: spri->page = modexDefaultPage();
 fb_show_hidden_f: 0
 editor_tab_width: 4
 show_visible_spacing: 1
@@ -104,11 +106,6 @@ snr_escape_chars: 0
 htmlbar_view: 0
 spell_lang: en
 ssearch_dotmatchall: 0
-searchlist: mapScrollRight
-searchlist: 32
-searchlist: map.dat
-searchlist: int index
-searchlist: draw
 searchlist: SC_INDEX
 searchlist: gq
 searchlist: setvideo
@@ -118,7 +115,12 @@ searchlist: color 0
 searchlist: sprite
 searchlist: clear
 searchlist: modexClearRegion(mv->page
+searchlist: animatePlayer(spri
 searchlist: color
+searchlist: modexShowPage(spri->page);
+searchlist: animatePlayer(draw
+searchlist: modexDrawSpriteRegion(draw
+searchlist: spri->page=NULL;
 autocomplete: 1
 outputb_show_all_output: 0
 bookmarks_show_mode: 0
