@@ -28,8 +28,6 @@ typedef struct {
 	page_t *page;
 	int tx; //appears to be the top left tile position on the viewable screen map
 	int ty; //appears to be the top left tile position on the viewable screen map
-//	int ttx; //bottem right tile
-//	int tty; //bottem left tile
 	word dxThresh; //????
 	word dyThresh; //????
 } map_view_t;
@@ -39,6 +37,7 @@ struct {
 	int y; //player exact position on the viewable map
 	int tx; //player tile position on the viewable map
 	int ty; //player tile position on the viewable map
+	int hp; //hitpoints of the player
 } player;
 
 
@@ -61,7 +60,7 @@ void animatePlayer(map_view_t *mv, short d1, short d2, int x, int y, int ls, bit
 //place holder definitions
 #define MAPX 40
 #define MAPY 30
-//#define SWAP(a, b) tmp=a; a=b; b=tmp;
+#define SWAP(a, b) tmp=a; a=b; b=tmp;
 void main() {
 	bitmap_t ptmp; // player sprite
 	int q=0;
@@ -76,7 +75,7 @@ void main() {
 	map = allocMap(MAPX,MAPY); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	initMap(&map);
 	mv.map = &map;
-//	mv2.map = &map;
+	mv2.map = &map;
 
 	/* draw the tiles */
 	ptr = map.data;
@@ -86,18 +85,18 @@ void main() {
 	screen = modexDefaultPage();
 	screen.width += (TILEWH*2);
 	mv.page = &screen;
-//	screen2=modexNextPage(mv.page);
-//	mv2.page = &screen2;
-//	mapGoTo(&mv2, 16, 16);
-//	modexShowPage(mv.page);
+	screen2=modexNextPage(mv.page);
+	mv2.page = &screen2;
+	modexShowPage(mv.page);
 
 	/* set up paging */
-//	show = &mv;
-//	draw = &mv2;
-	draw = &mv;
+	show = &mv;
+	draw = &mv2;
+//	draw = &mv;
 
 //TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(draw, 0, 0);
+	mapGoTo(show, 0, 0);
 
 	//TODO: put player in starting position of spot
 	//default player position on the viewable map
@@ -126,8 +125,8 @@ void main() {
 				animatePlayer(draw, 1, 1, player.x, player.y, q, &ptmp);
 				mapScrollRight(draw, SPEED);
 				modexShowPage(draw->page);
-//		mapScrollRight(draw, 1);
-//		SWAP(draw, show);
+//				mapScrollRight(draw, SPEED);
+//				SWAP(draw, show);
 			}
 			player.tx++;
 		}
@@ -155,8 +154,8 @@ void main() {
 				animatePlayer(draw, 3, 1, player.x, player.y, q, &ptmp);
 				mapScrollLeft(draw, SPEED);
 				modexShowPage(draw->page);
-// 		mapScrollLeft(show, 1);
-//		SWAP(draw, show);
+//				mapScrollLeft(show, SPEED);
+//				SWAP(draw, show);
 			}
 			player.tx--;
 		}
@@ -175,7 +174,7 @@ void main() {
 
 	if(keyp(80))
 	{
-		modexDrawSpriteRegion(draw->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
+//		modexDrawSpriteRegion(draw->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
 		if(draw->ty >= 0 && draw->ty+15 < MAPY && player.ty == draw->ty + 8)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
@@ -184,8 +183,8 @@ void main() {
 				animatePlayer(draw, 2, 1, player.x, player.y, q, &ptmp);
 				mapScrollDown(draw, SPEED);
 				modexShowPage(draw->page);
-//		mapScrollDown(show, 1);
-//		SWAP(draw, show);
+//				mapScrollDown(show, SPEED);
+//				SWAP(draw, show);
 			}
 			player.ty++;
 		}
@@ -212,8 +211,8 @@ void main() {
 				animatePlayer(draw, 0, 1, player.x, player.y, q, &ptmp);
 				mapScrollUp(draw, SPEED);
 				modexShowPage(draw->page);
-//		mapScrollUp(show, 1);
-//		SWAP(draw, show);
+//				mapScrollUp(show, SPEED);
+//				SWAP(draw, show);
 			}
 			player.ty--;
 		}
