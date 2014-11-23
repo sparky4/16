@@ -116,8 +116,6 @@ void main() {
 	//TODO: render the player properly with animation and sprite sheet
 	if(keyp(77))
 	{
-		//modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 34);
-		//modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 32, 24, 32, &ptmp);
 		if(bg->tx >= 0 && bg->tx+20 < MAPX && player.tx == bg->tx + 10)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
@@ -143,8 +141,6 @@ void main() {
 
 	if(keyp(75))
 	{
-		//modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 34);
-		//modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 96, 24, 32, &ptmp);
 		if(bg->tx > 0 && bg->tx+20 <= MAPX && player.tx == bg->tx + 10)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
@@ -171,8 +167,6 @@ void main() {
 
 	if(keyp(80))
 	{
-		//modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 34);
-		//modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
 		if(bg->ty >= 0 && bg->ty+15 < MAPY && player.ty == bg->ty + 8)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
@@ -198,8 +192,6 @@ void main() {
 
 	if(keyp(72))
 	{
-		//modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 34);
-		//modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 0, 24, 32, &ptmp);
 		if(bg->ty > 0 && bg->ty+15 <= MAPY && player.ty == bg->ty + 8)
 		{
 			for(q=0; q<(TILEWH/SPEED); q++)
