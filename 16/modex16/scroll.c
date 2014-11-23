@@ -122,11 +122,11 @@ void main() {
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
 //				modexDrawBmp(draw->page, &bmp);
-				animatePlayer(draw, 1, 1, player.x, player.y, q, &ptmp);
+				animatePlayer(show, 1, 1, player.x, player.y, q, &ptmp);
 				mapScrollRight(draw, SPEED);
 				modexShowPage(draw->page);
-//				mapScrollRight(draw, SPEED);
-//				SWAP(draw, show);
+				mapScrollRight(show, SPEED);
+				SWAP(draw, show);
 			}
 			player.tx++;
 		}
@@ -136,7 +136,7 @@ void main() {
 			{
 				player.x+=SPEED;
 //				modexDrawBmp(draw->page, player.x, player.y, &bmp);
-				animatePlayer(draw, 1, 0, player.x, player.y, q, &ptmp);
+				animatePlayer(show, 1, 0, player.x, player.y, q, &ptmp);
 				modexShowPage(draw->page);
 			}
 			player.tx++;
@@ -151,11 +151,11 @@ void main() {
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
 //				modexDrawBmp(draw->page, player.x-((q+1)*SPEED), player.y, &bmp);
-				animatePlayer(draw, 3, 1, player.x, player.y, q, &ptmp);
+				animatePlayer(show, 3, 1, player.x, player.y, q, &ptmp);
 				mapScrollLeft(draw, SPEED);
 				modexShowPage(draw->page);
-//				mapScrollLeft(show, SPEED);
-//				SWAP(draw, show);
+				mapScrollLeft(show, SPEED);
+				SWAP(draw, show);
 			}
 			player.tx--;
 		}
@@ -165,7 +165,7 @@ void main() {
 			{
 				player.x-=SPEED;
 //				modexDrawBmp(draw->page, player.x, player.y, &bmp);
-				animatePlayer(draw, 3, 0, player.x, player.y, q, &ptmp);
+				animatePlayer(show, 3, 0, player.x, player.y, q, &ptmp);
 				modexShowPage(draw->page);
 			}
 			player.tx--;
@@ -180,11 +180,11 @@ void main() {
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
 //				modexDrawBmp(draw->page, player.x, player.y+((q+1)*SPEED), &bmp);
-				animatePlayer(draw, 2, 1, player.x, player.y, q, &ptmp);
+				animatePlayer(show, 2, 1, player.x, player.y, q, &ptmp);
 				mapScrollDown(draw, SPEED);
 				modexShowPage(draw->page);
-//				mapScrollDown(show, SPEED);
-//				SWAP(draw, show);
+				mapScrollDown(show, SPEED);
+				SWAP(draw, show);
 			}
 			player.ty++;
 		}
@@ -194,7 +194,7 @@ void main() {
 			{
 				player.y+=SPEED;
 //				modexDrawBmp(draw->page, player.x, player.y, &bmp);
-				animatePlayer(draw, 2, 0, player.x, player.y, q, &ptmp);
+				animatePlayer(show, 2, 0, player.x, player.y, q, &ptmp);
 				modexShowPage(draw->page);
 			}
 			player.ty++;
@@ -208,11 +208,11 @@ void main() {
 			for(q=0; q<(TILEWH/SPEED); q++)
 			{
 //				modexDrawBmp(draw->page, player.x, player.y-((q+1)*SPEED), &bmp);
-				animatePlayer(draw, 0, 1, player.x, player.y, q, &ptmp);
+				animatePlayer(show, 0, 1, player.x, player.y, q, &ptmp);
 				mapScrollUp(draw, SPEED);
 				modexShowPage(draw->page);
-//				mapScrollUp(show, SPEED);
-//				SWAP(draw, show);
+				mapScrollUp(show, SPEED);
+				SWAP(draw, show);
 			}
 			player.ty--;
 		}
@@ -222,7 +222,7 @@ void main() {
 			{
 				player.y-=SPEED;
 //				modexDrawBmp(draw->page, player.x, player.y, &bmp);
-				animatePlayer(draw, 0, 0, player.x, player.y, q, &ptmp);
+				animatePlayer(show, 0, 0, player.x, player.y, q, &ptmp);
 				modexShowPage(draw->page);
 			}
 			player.ty--;
