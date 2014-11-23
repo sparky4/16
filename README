@@ -4,9 +4,9 @@ Open watcom to compile the code of project 16
 16/modex16/ = pngwen's code archived
 
 TODO not in particular order~:
-almost done 1. SCROLLING!!!!!!!
+DONE 1. SCROLLING!!!!!!!
 2. Fix pngwen's pcx rendering code it dose not render large relolution pcx files well at all!
-3.  Erase player sprite when moving and tweak it
+3. tweak animation frame perloop and make the dpad controls a case switch (look at commander keen code?) and vsync horizontal animation
 DONE 4. movement and player movement when reaching edge of map
 DONE 5. sprite rendering
 6. text box rendering
