@@ -105,7 +105,7 @@ void main() {
 	player.x = player.tx*TILEWH;
 	player.y = player.ty*TILEWH;
 	modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
-	modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 34);
+	modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 36);
 	modexShowPage(spri->page);
 	while(!keyp(1))
 	{
@@ -114,6 +114,7 @@ void main() {
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
 	
 	//TODO: render the player properly with animation and sprite sheet
+	//TODO: fexible speeds
 	if(keyp(77))
 	{
 		if(bg->tx >= 0 && bg->tx+20 < MAPX && player.tx == bg->tx + 10)
@@ -448,9 +449,10 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 
 void animatePlayer(map_view_t *mv, map_view_t *src, short d1, short d2, int x, int y, int ls, bitmap_t *bmp)
 {
-	int qq;
-	int lo = ((TILEWH / SPEED) / 3);
-	int loo = (ls + lo);
+	short dire=32*d1;
+	short qq;
+	short lo = ((TILEWH / SPEED) / 3);
+	short loo = (ls + lo);
 
 	if(d2==0) qq = 0;
 	else qq = ((ls+1)*SPEED);
@@ -458,47 +460,31 @@ void animatePlayer(map_view_t *mv, map_view_t *src, short d1, short d2, int x, i
 	{
 		case 0:
 			//up
-			if(ls<1) { modexCopyPageRegion(mv->page, src->page, x-4, y-qq-TILEWH, x-4, y-qq-TILEWH, 24, 34);
-			modexDrawSpriteRegion(mv->page, x-4, y-qq-TILEWH, 24, 0, 24, 32, bmp); }
-			if(4>ls && ls>=1) { modexCopyPageRegion(mv->page, src->page, x-4, y-qq-TILEWH, x-4, y-qq-TILEWH, 24, 34);
-			modexDrawSpriteRegion(mv->page, x-4, y-qq-TILEWH, 48, 0, 24, 32, bmp); }
-			if(7>ls && ls>=4) { modexCopyPageRegion(mv->page, src->page, x-4, y-qq-TILEWH, x-4, y-qq-TILEWH, 24, 34);
-			modexDrawSpriteRegion(mv->page, x-4, y-qq-TILEWH, 0, 0, 24, 32, bmp); }
-			if(ls>=7) { modexCopyPageRegion(mv->page, src->page, x-4, y-qq-TILEWH, x-4, y-qq-TILEWH, 24, 34);
-			modexDrawSpriteRegion(mv->page, x-4, y-qq-TILEWH, 24, 0, 24, 32, bmp); }
+			x=x-4;
+			y=y-qq-TILEWH;
 		break;
 		case 1:
 			// right
-			if(ls<1) { modexCopyPageRegion(mv->page, src->page, x+qq-4, y-TILEWH, x+qq-4, y-TILEWH, 24, 34);// modexWaitBorder();
-			modexDrawSpriteRegion(mv->page, x+qq-4, y-TILEWH, 24, 32, 24, 32, bmp); }
-			if(4>ls && ls>=1) { modexCopyPageRegion(mv->page, src->page, x+qq-4, y-TILEWH, x+qq-4, y-TILEWH, 24, 34);// modexWaitBorder();
-			modexDrawSpriteRegion(mv->page, x+qq-4, y-TILEWH, 48, 32, 24, 32, bmp); }
-			if(7>ls && ls>=4) { modexCopyPageRegion(mv->page, src->page, x+qq-4, y-TILEWH, x+qq-4, y-TILEWH, 24, 34);// modexWaitBorder();
-			modexDrawSpriteRegion(mv->page, x+qq-4, y-TILEWH, 0, 32, 24, 32, bmp); }
-			if(ls>=7) { modexCopyPageRegion(mv->page, src->page, x+qq-4, y-TILEWH, x+qq-4, y-TILEWH, 24, 34);// modexWaitBorder();
-			modexDrawSpriteRegion(mv->page, x+qq-4, y-TILEWH, 24, 32, 24, 32, bmp); }
+			x=x+qq-4;
+			y=y-TILEWH;
 		break;
 		case 2:
 			//down
-			if(ls<1) { modexCopyPageRegion(mv->page, src->page, x-4, y+qq-TILEWH-2, x-4, y+qq-TILEWH-2, 24, 34);
-			modexDrawSpriteRegion(mv->page, x-4, y+qq-TILEWH, 24, 64, 24, 32, bmp); }
-			if(4>ls && ls>=1) { modexCopyPageRegion(mv->page, src->page, x-4, y+qq-TILEWH-2, x-4, y+qq-TILEWH-2, 24, 34); 
-			modexDrawSpriteRegion(mv->page, x-4, y+qq-TILEWH, 48, 64, 24, 32, bmp); }
-			if(7>ls && ls>=4) { modexCopyPageRegion(mv->page, src->page, x-4, y+qq-TILEWH-2, x-4, y+qq-TILEWH-2, 24, 34);
-			modexDrawSpriteRegion(mv->page, x-4, y+qq-TILEWH, 0, 64, 24, 32, bmp); }
-			if(ls>=7) { modexCopyPageRegion(mv->page, src->page, x-4, y+qq-TILEWH-2, x-4, y+qq-TILEWH-2, 24, 34);
-			modexDrawSpriteRegion(mv->page, x-4, y+qq-TILEWH, 24, 64, 24, 32, bmp); }
+			x=x-4;
+			y=y+qq-TILEWH;
 		break;
 		case 3:
 			//left
-			if(ls<1) { modexCopyPageRegion(mv->page, src->page, x-qq-4, y-TILEWH, x-qq-4, y-TILEWH, 24, 34);// modexWaitBorder();
-			modexDrawSpriteRegion(mv->page, x-qq-4, y-TILEWH, 24, 96, 24, 32, bmp); }
-			if(4>ls && ls>=1) { modexCopyPageRegion(mv->page, src->page, x-qq-4, y-TILEWH, x-qq-4, y-TILEWH, 24, 34);// modexWaitBorder();
-			modexDrawSpriteRegion(mv->page, x-qq-4, y-TILEWH, 48, 96, 24, 32, bmp); }
-			if(7>ls && ls>=4) { modexCopyPageRegion(mv->page, src->page, x-qq-4, y-TILEWH, x-qq-4, y-TILEWH, 24, 34);// modexWaitBorder();
-			modexDrawSpriteRegion(mv->page, x-qq-4, y-TILEWH, 0, 96, 24, 32, bmp); }
-			if(ls>=7) { modexCopyPageRegion(mv->page, src->page, x-qq-4, y-TILEWH, x-qq-4, y-TILEWH, 24, 34);// modexWaitBorder();
-			modexDrawSpriteRegion(mv->page, x-qq-4, y-TILEWH, 24, 96, 24, 32, bmp); }
+			x=x-qq-4;
+			y=y-TILEWH;
 		break;
-	}
+	}		//TODO: make flexible animation thingy
+			if(ls<1) { modexCopyPageRegion(mv->page, src->page, x, y-2, x, y-2, 24, 36);// modexWaitBorder();
+			modexDrawSpriteRegion(mv->page, x, y, 24, dire, 24, 32, bmp); }else
+			if(4>ls && ls>=1) { modexCopyPageRegion(mv->page, src->page, x, y-2, x, y-2, 24, 36);// modexWaitBorder();
+			modexDrawSpriteRegion(mv->page, x, y, 48, dire, 24, 32, bmp); }else
+			if(7>ls && ls>=4) { modexCopyPageRegion(mv->page, src->page, x, y-2, x, y-2, 24, 36);// modexWaitBorder();
+			modexDrawSpriteRegion(mv->page, x, y, 0, dire, 24, 32, bmp); }else
+			if(8>=ls && ls>=7) { modexCopyPageRegion(mv->page, src->page, x, y-2, x, y-2, 24, 36);// modexWaitBorder();
+			modexDrawSpriteRegion(mv->page, x, y, 24, dire, 24, 32, bmp); }else ls-=ls;
 }
