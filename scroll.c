@@ -457,6 +457,8 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 void animatePlayer(map_view_t *mv, map_view_t *src, short d1, short d2, int x, int y, int ls, bitmap_t *bmp)
 {
 	int qq;
+	int lo = ((TILEWH / SPEED) / 3);
+	int loo = (ls + lo);
 
 	if(d2==0) qq = 0;
 	else qq = ((ls+1)*SPEED);
