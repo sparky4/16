@@ -138,6 +138,12 @@ void main() {
 			}
 			player.tx++;
 		}
+		else
+		{
+			modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 36);
+			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 32, 24, 32, &ptmp);
+			modexShowPage(spri->page);
+		}
 	}
 
 	if(keyp(75))
@@ -164,6 +170,12 @@ void main() {
 			}
 			player.tx--;
 		}
+		else
+		{
+			modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 36);
+			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 96, 24, 32, &ptmp);
+			modexShowPage(spri->page);
+		}
 	}
 
 	if(keyp(80))
@@ -189,6 +201,12 @@ void main() {
 			}
 			player.ty++;
 		}
+		else
+		{
+			modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 36);
+			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
+			modexShowPage(spri->page);
+		}
 	}
 
 	if(keyp(72))
@@ -213,6 +231,12 @@ void main() {
 				modexShowPage(spri->page);
 			}
 			player.ty--;
+		}
+		else
+		{
+			modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 36);
+			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 0, 24, 32, &ptmp);
+			modexShowPage(spri->page);
 		}
 	}
 	
