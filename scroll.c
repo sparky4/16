@@ -140,7 +140,7 @@ void main() {
 		}
 		else
 		{
-			modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 36);
+			modexCopyPageRegion(spri->page, bg->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 36);
 			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 32, 24, 32, &ptmp);
 			modexShowPage(spri->page);
 		}
@@ -172,7 +172,7 @@ void main() {
 		}
 		else
 		{
-			modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 36);
+			modexCopyPageRegion(spri->page, bg->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 36);
 			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 96, 24, 32, &ptmp);
 			modexShowPage(spri->page);
 		}
@@ -203,7 +203,7 @@ void main() {
 		}
 		else
 		{
-			modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 36);
+			modexCopyPageRegion(spri->page, bg->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 36);
 			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
 			modexShowPage(spri->page);
 		}
@@ -234,7 +234,7 @@ void main() {
 		}
 		else
 		{
-			modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 36);
+			modexCopyPageRegion(spri->page, bg->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 36);
 			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 0, 24, 32, &ptmp);
 			modexShowPage(spri->page);
 		}
