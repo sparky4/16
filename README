@@ -16,6 +16,7 @@ DONE 5. sprite rendering
 10. map and item interation
 11. item inventory~
 12. Memory management (EMS + XMS)
+13. case switch with keyboard code (when your holding 2 arrow keys and a key is released the keyboard controller dose not read input from the port anymore for some weired reason)
 
 To compile:
 You need Open Watcom stable to compile and just run wmake

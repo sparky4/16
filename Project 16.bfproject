@@ -1,10 +1,13 @@
 c2e.convert_special: 0
 e2c.convert_num: 0
 openfiles: /dos/z/16/doc/project.txt:0:0:0:
-openfiles: /dos/z/16/scroll.c:2811:2233:1:
+openfiles: /dos/z/16/scroll.c:4789:4030:1:
 openfiles: /dos/z/16/modex16.c:9475:0:0:
-openfiles: /dos/z/16/modex16.h:393:0:0:
-openfiles: /dos/z/16/pcxtest.c:1339:753:0:
+openfiles: /dos/z/16/modex16.h:1512:344:0:
+openfiles: /dos/z/16/pcxtest.c:1339:442:0:
+openfiles: /dos/z/16/dos_kb.c:3759:3388:0:
+openfiles: /dos/z/16/dos_kb.h:464:0:0:
+openfiles: /dos/z/16/lib/lib_head.h:2319:1809:0:
 snr_recursion_level: 0
 convertcolumn_horizontally: 0
 adv_open_matchname: 0
@@ -16,7 +19,7 @@ view_left_panel: 0
 default_mime_type: text/plain
 e2c.convert_xml: 1
 c2e.convert_iso: 0
-opendir: file:///dos/z/16
+opendir: file:///dos/z/16/lib
 wrap_text_default: 0
 bookmarks_filename_mode: 1
 ssearch_text: modexDrawSpriteRegion
@@ -51,9 +54,6 @@ ssearch_regex: 0
 e2c.convert_iso: 0
 ssearch_casesens: 0
 charmap_block: 1
-recent_files: file:///dos/z/16/16/lib/x/MAKEFILE
-recent_files: file:///dos/z/16/16/lib/x/MODEX.DEF
-recent_files: file:///dos/z/4x4_16/modex/DEMO01.PAS
 recent_files: file:///dos/z/16/16/lib/x/MXCR.ASM
 recent_files: file:///dos/z/4x4_16/modex/DEMO07.PAS
 recent_files: file:///dos/z/16/16/scrasm/MAIN.ASM
@@ -97,12 +97,15 @@ recent_files: file:///dos/z/16/16/modex16/dos_kb.h
 recent_files: file:///dos/z/16/doc/16.16
 recent_files: file:///dos/z/16/doc/16story.txt
 recent_files: file:///dos/z/16/scroll.c
-recent_files: file:///dos/z/16/doc/project.txt
 recent_files: file:///dos/z/16/modex16.h
+recent_files: file:///dos/z/16/doc/project.txt
 recent_files: file:///dos/z/16/pcxtest.c
 recent_files: file:///dos/z/16/modex16.c
+recent_files: file:///dos/z/16/dos_kb.h
+recent_files: file:///dos/z/16/dos_kb.c
+recent_files: file:///dos/z/16/lib/lib_head.h
 snr_replacetype: 0
-savedir: file:///dos/z/16
+savedir: file:///dos/z/16/lib
 spell_check_default: 1
 spell_insert_entities: 0
 last_filefilter: 
