@@ -115,7 +115,7 @@ void main() {
 	
 	//TODO: render the player properly with animation and sprite sheet
 	//TODO: fexible speeds
-	if(keyp(77))
+	if(keyp(77) && !keyp(75))
 	{
 		if(bg->tx >= 0 && bg->tx+20 < MAPX && player.tx == bg->tx + 10)
 		{
@@ -146,7 +146,7 @@ void main() {
 		}
 	}
 
-	if(keyp(75))
+	if(keyp(75) && !keyp(77))
 	{
 		if(bg->tx > 0 && bg->tx+20 <= MAPX && player.tx == bg->tx + 10)
 		{
@@ -178,7 +178,7 @@ void main() {
 		}
 	}
 
-	if(keyp(80))
+	if(keyp(80) && !keyp(72))
 	{
 		if(bg->ty >= 0 && bg->ty+15 < MAPY && player.ty == bg->ty + 8)
 		{
@@ -209,7 +209,7 @@ void main() {
 		}
 	}
 
-	if(keyp(72))
+	if(keyp(72) && !keyp(80))
 	{
 		if(bg->ty > 0 && bg->ty+15 <= MAPY && player.ty == bg->ty + 8)
 		{
