@@ -51,7 +51,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty);
 void mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
 void mapDrawRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
-void animatePlayer(map_view_t *src, map_view_t *dest, short d1, short d2, int x, int y, int ls, bitmap_t *bmp);
+void animatePlayer(map_view_t *src, map_view_t *dest, short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp);
 
 #define TILEWH 16
 #define QUADWH (TILEWH/4)
@@ -64,6 +64,7 @@ void animatePlayer(map_view_t *src, map_view_t *dest, short d1, short d2, int x,
 void main() {
 	bitmap_t ptmp; // player sprite
 	int q=1;
+	static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	page_t screen, screen2;
 	map_t map;
 	map_view_t mv, mv2;
@@ -112,15 +113,16 @@ void main() {
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
 	
-	//TODO: render the player properly with animation and sprite sheet
-	//TODO: fexible speeds
+	#define INC_PER_FRAME if(q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;
+
 	if(keyp(77) && !keyp(75))
 	{
 		if(bg->tx >= 0 && bg->tx+20 < MAPX && player.tx == bg->tx + 10)
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
-				animatePlayer(bg, spri, 1, 1, player.x, player.y, q, &ptmp);
+				INC_PER_FRAME;
+				animatePlayer(bg, spri, 1, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				mapScrollRight(bg, SPEED);
 				mapScrollRight(spri, SPEED);
 				modexShowPage(spri->page);
@@ -131,8 +133,9 @@ void main() {
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
+				INC_PER_FRAME;
 				player.x+=SPEED;
-				animatePlayer(bg, spri, 1, 0, player.x, player.y, q, &ptmp);
+				animatePlayer(bg, spri, 1, 0, player.x, player.y, persist_aniframe, q, &ptmp);
 				modexShowPage(spri->page);
 			}
 			player.tx++;
@@ -151,8 +154,8 @@ void main() {
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
-				
-				animatePlayer(bg, spri, 3, 1, player.x, player.y, q, &ptmp);
+				INC_PER_FRAME;
+				animatePlayer(bg, spri, 3, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				mapScrollLeft(bg, SPEED);
 				mapScrollLeft(spri, SPEED);
 				modexShowPage(spri->page);
@@ -163,8 +166,9 @@ void main() {
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
+				INC_PER_FRAME;
 				player.x-=SPEED;
-				animatePlayer(bg, spri, 3, 0, player.x, player.y, q, &ptmp);
+				animatePlayer(bg, spri, 3, 0, player.x, player.y, persist_aniframe, q, &ptmp);
 				modexShowPage(spri->page);
 			}
 			player.tx--;
@@ -183,7 +187,8 @@ void main() {
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
-				animatePlayer(bg, spri, 2, 1, player.x, player.y, q, &ptmp);
+				INC_PER_FRAME;
+				animatePlayer(bg, spri, 2, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				mapScrollDown(bg, SPEED);
 				mapScrollDown(spri, SPEED);
 				modexShowPage(spri->page);
@@ -194,8 +199,9 @@ void main() {
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
+				INC_PER_FRAME;
 				player.y+=SPEED;
-				animatePlayer(bg, spri, 2, 0, player.x, player.y, q, &ptmp);
+				animatePlayer(bg, spri, 2, 0, player.x, player.y, persist_aniframe, q, &ptmp);
 				modexShowPage(spri->page);
 			}
 			player.ty++;
@@ -214,7 +220,8 @@ void main() {
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
-				animatePlayer(bg, spri, 0, 1, player.x, player.y, q, &ptmp);
+				INC_PER_FRAME;
+				animatePlayer(bg, spri, 0, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				mapScrollUp(bg, SPEED);
 				mapScrollUp(spri, SPEED);
 				modexShowPage(spri->page);
@@ -225,8 +232,9 @@ void main() {
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
+				INC_PER_FRAME;
 				player.y-=SPEED;
-				animatePlayer(bg, spri, 0, 0, player.x, player.y, q, &ptmp);
+				animatePlayer(bg, spri, 0, 0, player.x, player.y, persist_aniframe, q, &ptmp);
 				modexShowPage(spri->page);
 			}
 			player.ty--;
@@ -471,15 +479,13 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 }
 
 void
-animatePlayer(map_view_t *src, map_view_t *dest, short d1, short d2, int x, int y, int ls, bitmap_t *bmp)
+animatePlayer(map_view_t *src, map_view_t *dest, short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp)
 {
 	short dire=32*d1;
 	short qq;
-	short lo = ((TILEWH / SPEED) / 3);
-	short loo = (ls + lo);
 
 	if(d2==0) qq = 0;
-	else qq = ((ls)*SPEED);
+	else qq = ((lp)*SPEED);
 	switch (d1)
 	{
 		case 0:

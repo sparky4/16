@@ -1,7 +1,7 @@
 c2e.convert_special: 0
 e2c.convert_num: 0
 openfiles: /dos/z/16/doc/project.txt:102:0:0:
-openfiles: /dos/z/16/scroll.c:0:2959:1:
+openfiles: /dos/z/16/scroll.c:12437:11784:1:
 openfiles: /dos/z/16/modex16.c:9475:0:0:
 openfiles: /dos/z/16/modex16.h:1512:344:0:
 openfiles: /dos/z/16/pcxtest.c:1339:442:0:
@@ -22,13 +22,10 @@ c2e.convert_iso: 0
 opendir: file:///dos/z/16/lib
 wrap_text_default: 0
 bookmarks_filename_mode: 1
-ssearch_text: )*2
+ssearch_text: inc_
 snr_casesens: 1
 view_blocks: 1
 name: project 16
-replacelist: animatePlayer(spri
-replacelist: modexDrawSpriteRegion(spri
-replacelist: spri->page = modexDefaultPage();
 replacelist: screen2=modexNextPage(mv.page);
 replacelist: spri->page=draw->page;
 replacelist: mv
@@ -41,6 +38,9 @@ replacelist: 34);
 replacelist: bg
 replacelist: dest
 replacelist: animatePlayer(bg, spri,
+replacelist: qi=1
+replacelist: qi<=(
+replacelist: \t\t\t\t
 fb_show_hidden_f: 0
 editor_tab_width: 4
 show_visible_spacing: 1
@@ -96,14 +96,14 @@ recent_files: file:///dos/z/16/16/lib/x/MODEX.H
 recent_files: file:///dos/z/16/16/modex16/dos_kb.h
 recent_files: file:///dos/z/16/doc/16.16
 recent_files: file:///dos/z/16/doc/16story.txt
-recent_files: file:///dos/z/16/scroll.c
 recent_files: file:///dos/z/16/doc/project.txt
-recent_files: file:///dos/z/16/modex16.h
-recent_files: file:///dos/z/16/pcxtest.c
-recent_files: file:///dos/z/16/dos_kb.c
 recent_files: file:///dos/z/16/dos_kb.h
 recent_files: file:///dos/z/16/lib/lib_head.h
+recent_files: file:///dos/z/16/dos_kb.c
+recent_files: file:///dos/z/16/modex16.h
+recent_files: file:///dos/z/16/pcxtest.c
 recent_files: file:///dos/z/16/modex16.c
+recent_files: file:///dos/z/16/scroll.c
 snr_replacetype: 0
 savedir: file:///dos/z/16
 spell_check_default: 1
@@ -115,10 +115,6 @@ snr_escape_chars: 0
 htmlbar_view: 0
 spell_lang: en
 ssearch_dotmatchall: 0
-searchlist: wPage(draw
-searchlist: 32);
-searchlist: 33)
-searchlist: 3)
 searchlist: draw
 searchlist: 34)
 searchlist: 0x3DA
@@ -129,7 +125,11 @@ searchlist: clearpl
 searchlist: modexDrawSpriteRegion
 searchlist: bg
 searchlist: )*-
+searchlist: qi=0
+searchlist: qi<(
+searchlist:                 
 searchlist: )*2
+searchlist: inc_
 autocomplete: 1
 outputb_show_all_output: 0
 bookmarks_show_mode: 0
