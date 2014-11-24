@@ -479,7 +479,7 @@ animatePlayer(map_view_t *src, map_view_t *dest, short d1, short d2, int x, int 
 	short loo = (ls + lo);
 
 	if(d2==0) qq = 0;
-	else qq = ((ls+1)*SPEED);
+	else qq = ((ls)*SPEED);
 	switch (d1)
 	{
 		case 0:
@@ -504,13 +504,10 @@ animatePlayer(map_view_t *src, map_view_t *dest, short d1, short d2, int x, int 
 		break;
 	}
 	//TODO: make flexible animation thingy
-	if(2>ls && ls>=1) { modexCopyPageRegion(dest->page, src->page, x-2, y-4, x-2, y-4, 28, 40);
-	modexDrawSpriteRegion(dest->page, x, y, 48, dire, 24, 32, bmp); }else
-	if(3>ls && ls>=2) { modexCopyPageRegion(dest->page, src->page, x-2, y-4, x-2, y-4, 28, 40);
-	modexDrawSpriteRegion(dest->page, x, y, 24, dire, 24, 32, bmp); }else
-	if(4>ls && ls>=3) { modexCopyPageRegion(dest->page, src->page, x-2, y-4, x-2, y-4, 28, 40);
-	modexDrawSpriteRegion(dest->page, x, y, 0, dire, 24, 32, bmp); }else
-	if(5>ls && ls>=4) { modexCopyPageRegion(dest->page, src->page, x-2, y-4, x-2, y-4, 28, 40);
-	modexDrawSpriteRegion(dest->page, x, y, 24, dire, 24, 32, bmp); }
+	modexCopyPageRegion(dest->page, src->page, x-4, y-4, x-4, y-4, 28, 40);
+	if(2>ls && ls>=1) { modexDrawSpriteRegion(dest->page, x, y, 48, dire, 24, 32, bmp); }else
+	if(3>ls && ls>=2) { modexDrawSpriteRegion(dest->page, x, y, 24, dire, 24, 32, bmp); }else
+	if(4>ls && ls>=3) { modexDrawSpriteRegion(dest->page, x, y, 0, dire, 24, 32, bmp); }else
+	if(5>ls && ls>=4) { modexDrawSpriteRegion(dest->page, x, y, 24, dire, 24, 32, bmp); }
 	modexWaitBorder();
 }
