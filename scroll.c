@@ -63,7 +63,7 @@ void animatePlayer(map_view_t *src, map_view_t *dest, short d1, short d2, int x,
 #define SWAP(a, b) tmp=a; a=b; b=tmp;
 void main() {
 	bitmap_t ptmp; // player sprite
-	int q=0;
+	int q=1;
 	page_t screen, screen2;
 	map_t map;
 	map_view_t mv, mv2;
@@ -118,7 +118,7 @@ void main() {
 	{
 		if(bg->tx >= 0 && bg->tx+20 < MAPX && player.tx == bg->tx + 10)
 		{
-			for(q=0; q<(TILEWH/SPEED); q++)
+			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
 				animatePlayer(bg, spri, 1, 1, player.x, player.y, q, &ptmp);
 				mapScrollRight(bg, SPEED);
@@ -129,7 +129,7 @@ void main() {
 		}
 		else if(player.tx < MAPX)
 		{
-			for(q=0; q<(TILEWH/SPEED); q++)
+			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
 				player.x+=SPEED;
 				animatePlayer(bg, spri, 1, 0, player.x, player.y, q, &ptmp);
@@ -149,7 +149,7 @@ void main() {
 	{
 		if(bg->tx > 0 && bg->tx+20 <= MAPX && player.tx == bg->tx + 10)
 		{
-			for(q=0; q<(TILEWH/SPEED); q++)
+			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
 				
 				animatePlayer(bg, spri, 3, 1, player.x, player.y, q, &ptmp);
@@ -161,7 +161,7 @@ void main() {
 		}
 		else if(player.tx > 1)
 		{
-			for(q=0; q<(TILEWH/SPEED); q++)
+			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
 				player.x-=SPEED;
 				animatePlayer(bg, spri, 3, 0, player.x, player.y, q, &ptmp);
@@ -181,7 +181,7 @@ void main() {
 	{
 		if(bg->ty >= 0 && bg->ty+15 < MAPY && player.ty == bg->ty + 8)
 		{
-			for(q=0; q<(TILEWH/SPEED); q++)
+			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
 				animatePlayer(bg, spri, 2, 1, player.x, player.y, q, &ptmp);
 				mapScrollDown(bg, SPEED);
@@ -192,7 +192,7 @@ void main() {
 		}
 		else if(player.ty < MAPY)
 		{
-			for(q=0; q<(TILEWH/SPEED); q++)
+			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
 				player.y+=SPEED;
 				animatePlayer(bg, spri, 2, 0, player.x, player.y, q, &ptmp);
@@ -212,7 +212,7 @@ void main() {
 	{
 		if(bg->ty > 0 && bg->ty+15 <= MAPY && player.ty == bg->ty + 8)
 		{
-			for(q=0; q<(TILEWH/SPEED); q++)
+			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
 				animatePlayer(bg, spri, 0, 1, player.x, player.y, q, &ptmp);
 				mapScrollUp(bg, SPEED);
@@ -223,7 +223,7 @@ void main() {
 		}
 		else if(player.ty > 1)
 		{
-			for(q=0; q<(TILEWH/SPEED); q++)
+			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
 				player.y-=SPEED;
 				animatePlayer(bg, spri, 0, 0, player.x, player.y, q, &ptmp);
@@ -504,13 +504,13 @@ animatePlayer(map_view_t *src, map_view_t *dest, short d1, short d2, int x, int 
 		break;
 	}
 	//TODO: make flexible animation thingy
-	if(2>ls && ls>=0) { modexCopyPageRegion(dest->page, src->page, x-2, y-4, x-2, y-4, 28, 40);
+	if(2>ls && ls>=1) { modexCopyPageRegion(dest->page, src->page, x-2, y-4, x-2, y-4, 28, 40);
 	modexDrawSpriteRegion(dest->page, x, y, 48, dire, 24, 32, bmp); }else
-	if(4>ls && ls>=2) { modexCopyPageRegion(dest->page, src->page, x-2, y-4, x-2, y-4, 28, 40);
+	if(3>ls && ls>=2) { modexCopyPageRegion(dest->page, src->page, x-2, y-4, x-2, y-4, 28, 40);
 	modexDrawSpriteRegion(dest->page, x, y, 24, dire, 24, 32, bmp); }else
-	if(6>ls && ls>=4) { modexCopyPageRegion(dest->page, src->page, x-2, y-4, x-2, y-4, 28, 40);
+	if(4>ls && ls>=3) { modexCopyPageRegion(dest->page, src->page, x-2, y-4, x-2, y-4, 28, 40);
 	modexDrawSpriteRegion(dest->page, x, y, 0, dire, 24, 32, bmp); }else
-	if(8>ls && ls>=6) { modexCopyPageRegion(dest->page, src->page, x-2, y-4, x-2, y-4, 28, 40);
-	modexDrawSpriteRegion(dest->page, x, y, 24, dire, 24, 32, bmp); }else ls-=ls;
+	if(5>ls && ls>=4) { modexCopyPageRegion(dest->page, src->page, x-2, y-4, x-2, y-4, 28, 40);
+	modexDrawSpriteRegion(dest->page, x, y, 24, dire, 24, 32, bmp); }
 	modexWaitBorder();
 }

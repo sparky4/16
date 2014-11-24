@@ -79,10 +79,10 @@ bitmapLoadPcx(char *filename) {
 
     /* open the PCX file for reading */
     file = fopen(filename, "rb");
-    if(!file) {
+    /*if(!file) {
 	printf("Could not open %s for reading.\n", filename);
 	exit(-2);
-    }
+    }*/
 
     /* load the first part of the pcx file */
     loadPcxStage1(file, &result);
