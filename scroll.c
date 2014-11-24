@@ -77,18 +77,17 @@ void main() {
 	mv.map = &map;
 	mv2.map = &map;
 
-	/* bg the tiles */
+	/* draw the tiles */
 	ptr = map.data;
 	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
 	modexEnter();
 	modexPalUpdate(ptmp.palette);
 	screen = modexDefaultPage();
 	screen.width += (TILEWH*2);
+	screen.height += (TILEWH*2);
 	mv.page = &screen;
 	screen2 = modexNextPage(mv.page);
-	screen2.width += (TILEWH*2);
 	mv2.page = &screen2;
-	//modexShowPage(mv.page);
 
 	/* set up paging */
 	bg = &mv;

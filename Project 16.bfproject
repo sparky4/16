@@ -1,7 +1,7 @@
 c2e.convert_special: 0
 e2c.convert_num: 0
-openfiles: /dos/z/16/doc/project.txt:0:0:0:
-openfiles: /dos/z/16/scroll.c:4789:4030:1:
+openfiles: /dos/z/16/doc/project.txt:102:0:0:
+openfiles: /dos/z/16/scroll.c:2377:1837:1:
 openfiles: /dos/z/16/modex16.c:9475:0:0:
 openfiles: /dos/z/16/modex16.h:1512:344:0:
 openfiles: /dos/z/16/pcxtest.c:1339:442:0:
@@ -105,7 +105,7 @@ recent_files: file:///dos/z/16/dos_kb.h
 recent_files: file:///dos/z/16/dos_kb.c
 recent_files: file:///dos/z/16/lib/lib_head.h
 snr_replacetype: 0
-savedir: file:///dos/z/16/lib
+savedir: file:///dos/z/16
 spell_check_default: 1
 spell_insert_entities: 0
 last_filefilter: 
