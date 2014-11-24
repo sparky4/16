@@ -1,4 +1,4 @@
-FLAGS=-0 
+FLAGS=-0 -d2 
 all: test.exe pcxtest.exe test2.exe scroll.exe
 
 scroll.exe: scroll.obj modex16.obj dos_kb.obj bitmap.obj

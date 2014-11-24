@@ -17,6 +17,9 @@ DONE 5. sprite rendering
 11. item inventory~
 12. Memory management (EMS + XMS)
 13. case switch with keyboard code (when your holding 2 arrow keys and a key is released the keyboard controller dose not read input from the port anymore for some weired reason)
+14. masking layer!
+15. 8088 detection to turn off vsync!
+16. (very important!) optimize modexDrawBmpRegion so it can draw the bloody tiles and continue moving or make sure that you can move and draw the tiles at the same time
 
 To compile:
 You need Open Watcom stable to compile and just run wmake

@@ -37,6 +37,8 @@ struct {
 	int y; //player exact position on the viewable map
 	int tx; //player tile position on the viewable map
 	int ty; //player tile position on the viewable map
+	int triggerx; //player's trigger box tile position on the viewable map
+	int triggery; //player's trigger box tile position on the viewable map
 	int hp; //hitpoints of the player
 } player;
 
@@ -51,7 +53,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty);
 void mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
 void mapDrawRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
-void animatePlayer(map_view_t *src, map_view_t *dest, short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp);
+void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp);
 
 #define TILEWH 16
 #define QUADWH (TILEWH/4)
@@ -60,15 +62,15 @@ void animatePlayer(map_view_t *src, map_view_t *dest, short d1, short d2, int x,
 //place holder definitions
 #define MAPX 40
 #define MAPY 30
-#define SWAP(a, b) tmp=a; a=b; b=tmp;
+//#define SWAP(a, b) tmp=a; a=b; b=tmp;
 void main() {
 	bitmap_t ptmp; // player sprite
 	int q=1;
 	static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
-	page_t screen, screen2;
+	page_t screen, screen2, screen3;
 	map_t map;
-	map_view_t mv, mv2;
-	map_view_t *bg, *spri, *tmp;
+	map_view_t mv, mv2, mv3;
+	map_view_t *bg, *spri, *mask;//, *tmp;
 	byte *ptr;
 
 	setkb(1);
@@ -77,6 +79,7 @@ void main() {
 	initMap(&map);
 	mv.map = &map;
 	mv2.map = &map;
+	mv3.map = &map;
 
 	/* draw the tiles */
 	ptr = map.data;
@@ -85,18 +88,22 @@ void main() {
 	modexPalUpdate(ptmp.palette);
 	screen = modexDefaultPage();
 	screen.width += (TILEWH*2);
-	screen.height += (TILEWH*2);
+	screen.height += ((TILEWH*2)+QUADWH);
 	mv.page = &screen;
 	screen2 = modexNextPage(mv.page);
 	mv2.page = &screen2;
+	screen3 = screen2;
+	mv3.page = &screen3;
 
 	/* set up paging */
 	bg = &mv;
 	spri = &mv2;
+	mask = &mv3;
 
 //TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(bg, 0, 0);
 	mapGoTo(spri, 0, 0);
+	//mapGoTo(mask, 0, 0);
 
 	//TODO: put player in starting position of spot
 	//default player position on the viewable map
@@ -107,25 +114,26 @@ void main() {
 	modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
 	modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH, player.x-4, player.y-TILEWH, 24, 32);
 	modexShowPage(bg->page);
-	while(!keyp(1))
+	while(!keyp(1))//!keyp(1))
 	{
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
 	
-	#define INC_PER_FRAME if(q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;
+	#define INC_PER_FRAME if(q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;	
 
-	if(keyp(77) && !keyp(75))
-	{
-		if(bg->tx >= 0 && bg->tx+20 < MAPX && player.tx == bg->tx + 10)
+	//temp testing
+		/*if(bg->tx >= 0 && bg->tx+20 < MAPX && player.tx == bg->tx + 10)
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
-				INC_PER_FRAME;
-				animatePlayer(bg, spri, 1, 1, player.x, player.y, persist_aniframe, q, &ptmp);
+				//INC_PER_FRAME;
+				//animatePlayer(bg, spri, mask, 1, 1, player.x, player.y, persist_aniframe, q, &ptmp);
+				//animatePlayer(bg, spri, 1, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				mapScrollRight(bg, SPEED);
-				mapScrollRight(spri, SPEED);
-				modexShowPage(spri->page);
+				//mapScrollRight(spri, SPEED);
+				//mapScrollRight(mask, SPEED);
+				modexShowPage(bg->page);
 			}
 			player.tx++;
 		}
@@ -135,6 +143,39 @@ void main() {
 			{
 				INC_PER_FRAME;
 				player.x+=SPEED;
+				//animatePlayer(bg, spri, mask, 1, 0, player.x, player.y, persist_aniframe, q, &ptmp);
+				animatePlayer(bg, spri, 1, 0, player.x, player.y, persist_aniframe, q, &ptmp);
+				modexShowPage(spri->page);
+			}
+			player.tx++;
+		}
+		else
+		{
+break;
+		}*/
+	if(keyp(77) && !keyp(75))
+	{
+		if(bg->tx >= 0 && bg->tx+20 < MAPX && player.tx == bg->tx + 10 && !(player.tx+1 == 2 && player.ty == 2))
+		{
+			for(q=1; q<=(TILEWH/SPEED); q++)
+			{
+				INC_PER_FRAME;
+				//animatePlayer(bg, spri, mask, 1, 1, player.x, player.y, persist_aniframe, q, &ptmp);
+				animatePlayer(bg, spri, 1, 1, player.x, player.y, persist_aniframe, q, &ptmp);
+				mapScrollRight(bg, SPEED);
+				mapScrollRight(spri, SPEED);
+				//mapScrollRight(mask, SPEED);
+				modexShowPage(spri->page);
+			}
+			player.tx++;
+		}
+		else if(player.tx < MAPX && !(player.tx+1 == 2 && player.ty == 2))
+		{
+			for(q=1; q<=(TILEWH/SPEED); q++)
+			{
+				INC_PER_FRAME;
+				player.x+=SPEED;
+				//animatePlayer(bg, spri, mask, 1, 0, player.x, player.y, persist_aniframe, q, &ptmp);
 				animatePlayer(bg, spri, 1, 0, player.x, player.y, persist_aniframe, q, &ptmp);
 				modexShowPage(spri->page);
 			}
@@ -146,28 +187,33 @@ void main() {
 			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 32, 24, 32, &ptmp);
 			modexShowPage(spri->page);
 		}
+		player.triggerx = player.tx+1;
+		player.triggery = player.ty;
 	}
 
 	if(keyp(75) && !keyp(77))
 	{
-		if(bg->tx > 0 && bg->tx+20 <= MAPX && player.tx == bg->tx + 10)
+		if(bg->tx > 0 && bg->tx+20 <= MAPX && player.tx == bg->tx + 10 && !(player.tx-1 == 2 && player.ty == 2))
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
 				INC_PER_FRAME;
+				//animatePlayer(bg, spri, mask, 3, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				animatePlayer(bg, spri, 3, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				mapScrollLeft(bg, SPEED);
 				mapScrollLeft(spri, SPEED);
+				//mapScrollLeft(mask, SPEED);
 				modexShowPage(spri->page);
 			}
 			player.tx--;
 		}
-		else if(player.tx > 1)
+		else if(player.tx > 1 && !(player.tx-1 == 2 && player.ty == 2))
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
 				INC_PER_FRAME;
 				player.x-=SPEED;
+				//animatePlayer(bg, spri, mask, 3, 0, player.x, player.y, persist_aniframe, q, &ptmp);
 				animatePlayer(bg, spri, 3, 0, player.x, player.y, persist_aniframe, q, &ptmp);
 				modexShowPage(spri->page);
 			}
@@ -179,28 +225,33 @@ void main() {
 			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 96, 24, 32, &ptmp);
 			modexShowPage(spri->page);
 		}
+		player.triggerx = player.tx-1;
+		player.triggery = player.ty;
 	}
 
 	if(keyp(80) && !keyp(72))
 	{
-		if(bg->ty >= 0 && bg->ty+15 < MAPY && player.ty == bg->ty + 8)
+		if(bg->ty >= 0 && bg->ty+15 < MAPY && player.ty == bg->ty + 8 && !(player.tx == 2 && player.ty+1 == 2))
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
 				INC_PER_FRAME;
+				//animatePlayer(bg, spri, mask, 2, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				animatePlayer(bg, spri, 2, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				mapScrollDown(bg, SPEED);
 				mapScrollDown(spri, SPEED);
+				//mapScrollDown(mask, SPEED);
 				modexShowPage(spri->page);
 			}
 			player.ty++;
 		}
-		else if(player.ty < MAPY)
+		else if(player.ty < MAPY && !(player.tx == 2 && player.ty+1 == 2))
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
 				INC_PER_FRAME;
 				player.y+=SPEED;
+				//animatePlayer(bg, spri, mask, 2, 0, player.x, player.y, persist_aniframe, q, &ptmp);
 				animatePlayer(bg, spri, 2, 0, player.x, player.y, persist_aniframe, q, &ptmp);
 				modexShowPage(spri->page);
 			}
@@ -212,30 +263,35 @@ void main() {
 			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
 			modexShowPage(spri->page);
 		}
+		player.triggerx = player.tx;
+		player.triggery = player.ty+1;
 	}
 
 	if(keyp(72) && !keyp(80))
 	{
-		if(bg->ty > 0 && bg->ty+15 <= MAPY && player.ty == bg->ty + 8)
+		if(bg->ty > 0 && bg->ty+15 <= MAPY && player.ty == bg->ty + 8 && !(player.tx == 2 && player.ty-1 == 2))
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
 				INC_PER_FRAME;
+				//animatePlayer(bg, spri, mask, 0, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				animatePlayer(bg, spri, 0, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				mapScrollUp(bg, SPEED);
 				mapScrollUp(spri, SPEED);
+				//mapScrollUp(mask, SPEED);
 				modexShowPage(spri->page);
 			}
 			player.ty--;
 		}
-		else if(player.ty > 1)
+		else if(player.ty > 1 && !(player.tx == 2 &&  player.ty-1 == 2))
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
 				INC_PER_FRAME;
 				player.y-=SPEED;
-				animatePlayer(bg, spri, 0, 0, player.x, player.y, persist_aniframe, q, &ptmp);
+				//animatePlayer(bg, spri, mask, 0, 0, player.x, player.y, persist_aniframe, q, &ptmp);
 				modexShowPage(spri->page);
+				animatePlayer(bg, spri, 0, 0, player.x, player.y, persist_aniframe, q, &ptmp);
 			}
 			player.ty--;
 		}
@@ -245,8 +301,19 @@ void main() {
 			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 0, 24, 32, &ptmp);
 			modexShowPage(spri->page);
 		}
+		player.triggerx = player.tx;
+		player.triggery = player.ty-1;
 	}
-
+	//modexClearRegion(mask->page, 66, 66, 2, 40, 0);
+	if((player.triggerx == 2 && player.triggery == 2) && keyp(KEY_ENTER))
+	{
+		short i;
+		for(i=600; i>=400; i--)
+		{
+			sound(i);
+		}
+		nosound();
+	}
 	}
 
 	modexLeave();
@@ -258,6 +325,8 @@ void main() {
 	printf("player.y: %d\n", player.y);
 	printf("player.tx: %d\n", player.tx);
 	printf("player.ty: %d\n", player.ty);
+	printf("player.triggx: %d\n", player.triggerx);
+	printf("player.triggy: %d\n", player.triggery);
 }
 
 
@@ -479,7 +548,7 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 }
 
 void
-animatePlayer(map_view_t *src, map_view_t *dest, short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp)
+animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp)
 {
 	short dire=32*d1;
 	short qq;
@@ -509,12 +578,14 @@ animatePlayer(map_view_t *src, map_view_t *dest, short d1, short d2, int x, int 
 			y=y-TILEWH;
 		break;
 	}
-	//TODO: make flexible animation thingy
 	modexCopyPageRegion(dest->page, src->page, x-4, y-4, x-4, y-4, 28, 40);
 	if(2>ls && ls>=1) { modexDrawSpriteRegion(dest->page, x, y, 48, dire, 24, 32, bmp); }else
 	if(3>ls && ls>=2) { modexDrawSpriteRegion(dest->page, x, y, 24, dire, 24, 32, bmp); }else
 	if(4>ls && ls>=3) { modexDrawSpriteRegion(dest->page, x, y, 0, dire, 24, 32, bmp); }else
 	if(5>ls && ls>=4) { modexDrawSpriteRegion(dest->page, x, y, 24, dire, 24, 32, bmp); }
+	//TODO: mask copy //modexCopyPageRegion(dest->page, src->page, x-4, y-4, x-4, y-4, 28, 40);
+	//modexClearRegion(top->page, 66, 66, 2, 40, 0);
+	//modexCopyPageRegion(dest->page, top->page, 66, 66, 66, 66, 2, 40);
 	//turn this off if XT
 	modexWaitBorder();
 }

@@ -237,6 +237,7 @@ modexDrawBmpRegion(page_t *page, int x, int y,
     word rowCounter;
     byte planeCounter = 4;
 
+	//code is a bit slow here
     __asm {
 		MOV AX, SCREEN_SEG      ; go to the VGA memory
 		MOV ES, AX
