@@ -1,7 +1,7 @@
 c2e.convert_special: 0
 e2c.convert_num: 0
 openfiles: /dos/z/16/doc/project.txt:60:0:0:
-openfiles: /dos/z/16/scroll.c:4879:4341:1:
+openfiles: /dos/z/16/scroll.c:9751:9231:0:
 openfiles: /dos/z/16/modex16.c:6319:6141:0:
 openfiles: /dos/z/16/modex16.h:1057:344:0:
 openfiles: /dos/z/16/pcxtest.c:795:442:0:
@@ -10,6 +10,8 @@ openfiles: /dos/z/16/dos_kb.h:464:0:0:
 openfiles: /dos/z/16/lib/lib_head.h:1738:1885:0:
 openfiles: /dos/z/16/README:668:0:0:
 openfiles: /dos/z/16/makefile:181:123:0:
+openfiles: /dos/z/keen-src/id_mm.c:2128:1591:1:
+openfiles: /dos/z/keen-src/id_mm.h:0:0:0:
 snr_recursion_level: 0
 convertcolumn_horizontally: 0
 adv_open_matchname: 0
@@ -21,7 +23,7 @@ view_left_panel: 0
 default_mime_type: text/plain
 e2c.convert_xml: 1
 c2e.convert_iso: 0
-opendir: file:///dos/z/16
+opendir: file:///dos/z/keen-src
 wrap_text_default: 0
 bookmarks_filename_mode: 1
 ssearch_text: enter
@@ -56,8 +58,6 @@ ssearch_regex: 0
 e2c.convert_iso: 0
 ssearch_casesens: 0
 charmap_block: 1
-recent_files: file:///dos/z/16/16/scrasm/MAIN.ASM
-recent_files: file:///dos/z/16/16/lib/x/MXBB.ASM
 recent_files: file:///dos/z/16/src/lib/dos_gfx.h
 recent_files: file:///dos/z/16/16/lib/intro/lib.c
 recent_files: file:///dos/z/16/src/lib/dos_gfx.cpp
@@ -106,6 +106,8 @@ recent_files: file:///dos/z/16/modex16.c
 recent_files: file:///dos/z/16/scroll.c
 recent_files: file:///dos/z/16/README
 recent_files: file:///dos/z/16/makefile
+recent_files: file:///dos/z/keen-src/id_mm.h
+recent_files: file:///dos/z/keen-src/id_mm.c
 snr_replacetype: 0
 savedir: file:///dos/z/16
 spell_check_default: 1

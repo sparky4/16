@@ -55,6 +55,8 @@ void mapDrawRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
 void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp);
 
+void ma();
+
 #define TILEWH 16
 #define QUADWH (TILEWH/4)
 #define SPEED 4
@@ -84,6 +86,7 @@ void main() {
 	/* draw the tiles */
 	ptr = map.data;
 	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
+	ma();
 	modexEnter();
 	modexPalUpdate(ptmp.palette);
 	screen = modexDefaultPage();
@@ -588,4 +591,16 @@ animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short d1, 
 	//modexCopyPageRegion(dest->page, top->page, 66, 66, 66, 66, 2, 40);
 	//turn this off if XT
 	modexWaitBorder();
+}
+
+void ma()
+{
+	int dos_memavail;
+	__asm {
+		mov bx,0ffffh
+		mov ah,48h
+		int 21h
+		mov dos_memavail,bx
+	}
+	printf("\n%d\n", dos_memavail);
 }
