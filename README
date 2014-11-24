@@ -15,6 +15,7 @@ DONE 5. sprite rendering
 9. map rendering~
 10. map and item interation
 11. item inventory~
+12. Memory management (EMS + XMS)
 
 To compile:
 You need Open Watcom stable to compile and just run wmake

@@ -106,7 +106,7 @@ void main() {
 	player.y = player.ty*TILEWH;
 	modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
 	modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH-2, player.x-4, player.y-TILEWH-2, 24, 36);
-	modexShowPage(spri->page);
+	modexShowPage(bg->page);
 	while(!keyp(1))
 	{
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
