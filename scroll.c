@@ -515,5 +515,6 @@ animatePlayer(map_view_t *src, map_view_t *dest, short d1, short d2, int x, int 
 	if(3>ls && ls>=2) { modexDrawSpriteRegion(dest->page, x, y, 24, dire, 24, 32, bmp); }else
 	if(4>ls && ls>=3) { modexDrawSpriteRegion(dest->page, x, y, 0, dire, 24, 32, bmp); }else
 	if(5>ls && ls>=4) { modexDrawSpriteRegion(dest->page, x, y, 24, dire, 24, 32, bmp); }
+	//turn this off if XT
 	modexWaitBorder();
 }
