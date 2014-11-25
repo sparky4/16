@@ -52,7 +52,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty);
 void mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
 void mapDrawRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
-void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp);
+void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */word d1, word d2, int x, int y, word ls, word lp, bitmap_t *bmp);
 
 #define TILEWH 16
 #define QUADWH (TILEWH/4)
@@ -66,7 +66,7 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short
 //#define SWAP(a, b) tmp=a; a=b; b=tmp;
 void main() {
 	bitmap_t ptmp; // player sprite
-	int q=1;
+	word q=1;
 	static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	page_t screen, screen2, screen3;
 	map_t map;
@@ -550,10 +550,10 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 }
 
 void
-animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp)
+animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */word d1, word d2, int x, int y, word ls, word lp, bitmap_t *bmp)
 {
-	short dire=32*d1;
-	short qq;
+	word dire=32*d1;
+	word qq;
 
 	if(d2==0) qq = 0;
 	else qq = ((lp)*SPEED);
