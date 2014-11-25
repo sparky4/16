@@ -11,7 +11,6 @@ typedef struct {
 	word tileWidth;
 	unsigned int rows;
 	unsigned int cols;
-	//unsigned int tilex,tiley; // tile position on the map
 } tiles_t;
 
 
@@ -62,6 +61,8 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short
 //place holder definitions
 #define MAPX 40
 #define MAPY 30
+#define TRIGGX 10
+#define TRIGGY 9
 //#define SWAP(a, b) tmp=a; a=b; b=tmp;
 void main() {
 	bitmap_t ptmp; // player sprite
@@ -88,7 +89,7 @@ void main() {
 	modexPalUpdate(ptmp.palette);
 	screen = modexDefaultPage();
 	screen.width += (TILEWH*2);
-	screen.height += ((TILEWH*2)+QUADWH);
+	screen.height += (TILEWH*2);//+QUADWH;
 	mv.page = &screen;
 	screen2 = modexNextPage(mv.page);
 	mv2.page = &screen2;
@@ -155,7 +156,7 @@ break;
 		}*/
 	if(keyp(77) && !keyp(75))
 	{
-		if(bg->tx >= 0 && bg->tx+20 < MAPX && player.tx == bg->tx + 10 && !(player.tx+1 == 2 && player.ty == 2))
+		if(bg->tx >= 0 && bg->tx+20 < MAPX && player.tx == bg->tx + 10 && !(player.tx+1 == TRIGGX && player.ty == TRIGGY))
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
@@ -169,7 +170,7 @@ break;
 			}
 			player.tx++;
 		}
-		else if(player.tx < MAPX && !(player.tx+1 == 2 && player.ty == 2))
+		else if(player.tx < MAPX && !(player.tx+1 == TRIGGX && player.ty == TRIGGY))
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
@@ -193,7 +194,7 @@ break;
 
 	if(keyp(75) && !keyp(77))
 	{
-		if(bg->tx > 0 && bg->tx+20 <= MAPX && player.tx == bg->tx + 10 && !(player.tx-1 == 2 && player.ty == 2))
+		if(bg->tx > 0 && bg->tx+20 <= MAPX && player.tx == bg->tx + 10 && !(player.tx-1 == TRIGGX && player.ty == TRIGGY))
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
@@ -207,7 +208,7 @@ break;
 			}
 			player.tx--;
 		}
-		else if(player.tx > 1 && !(player.tx-1 == 2 && player.ty == 2))
+		else if(player.tx > 1 && !(player.tx-1 == TRIGGX && player.ty == TRIGGY))
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
@@ -231,7 +232,7 @@ break;
 
 	if(keyp(80) && !keyp(72))
 	{
-		if(bg->ty >= 0 && bg->ty+15 < MAPY && player.ty == bg->ty + 8 && !(player.tx == 2 && player.ty+1 == 2))
+		if(bg->ty >= 0 && bg->ty+15 < MAPY && player.ty == bg->ty + 8 && !(player.tx == TRIGGX && player.ty+1 == TRIGGY))
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
@@ -245,7 +246,7 @@ break;
 			}
 			player.ty++;
 		}
-		else if(player.ty < MAPY && !(player.tx == 2 && player.ty+1 == 2))
+		else if(player.ty < MAPY && !(player.tx == TRIGGX && player.ty+1 == TRIGGY))
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
@@ -269,7 +270,7 @@ break;
 
 	if(keyp(72) && !keyp(80))
 	{
-		if(bg->ty > 0 && bg->ty+15 <= MAPY && player.ty == bg->ty + 8 && !(player.tx == 2 && player.ty-1 == 2))
+		if(bg->ty > 0 && bg->ty+15 <= MAPY && player.ty == bg->ty + 8 && !(player.tx == TRIGGX && player.ty-1 == TRIGGY))
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
@@ -283,7 +284,7 @@ break;
 			}
 			player.ty--;
 		}
-		else if(player.ty > 1 && !(player.tx == 2 &&  player.ty-1 == 2))
+		else if(player.ty > 1 && !(player.tx == TRIGGX &&  player.ty-1 == TRIGGY))
 		{
 			for(q=1; q<=(TILEWH/SPEED); q++)
 			{
@@ -305,7 +306,8 @@ break;
 		player.triggery = player.ty-1;
 	}
 	//modexClearRegion(mask->page, 66, 66, 2, 40, 0);
-	if((player.triggerx == 2 && player.triggery == 2) && keyp(KEY_ENTER))
+	//modexClearRegion(spri->page, TRIGGX, TRIGGY, 16, 16, 0);
+	if((player.triggerx == TRIGGX && player.triggery == TRIGGY) && keyp(KEY_ENTER))
 	{
 		short i;
 		for(i=600; i>=400; i--)
