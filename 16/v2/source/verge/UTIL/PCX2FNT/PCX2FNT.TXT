@@ -1,0 +1,15 @@
+pcx2fnt.exe
+documentation
+by zeromus 5.8.99
+zeromus@verge-rpg.com
+(be sure word wrap is on)
+---
+USE: creates v2 font file from pcx
+---
+If you need to make a custom font for your game, you're in luck: pcx2fnt is very easy to use.  Simply run it.  It will ask you for an input pcx file, which must be in the correct format (described below), the .fnt file to output, the height and width of the characters, and the number of subset fonts.
+
+The pcx format is simple: each font must be surrounded by a 1 pixel wide pad, with 20 characters per row.  The characters of the font must be in the correct order for v2 to print strings correctly.  The best thing you can do to figure out this format is look at the two examples.  Everything will be perfectly clear then.
+
+Subsets are what you'll see if you look in font02b.pcx.  Each font file can have many subsets potentially.  These are most often used for different colors of letters, although they *could* be completely different fonts.  The characters would have to be the same size, in that case.  This explains why the subset system was designed for, and we have only used it to, make different colors of text.
+
+That is all.

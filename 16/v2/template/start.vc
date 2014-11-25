@@ -1,0 +1,7 @@
+event //autoexec
+{
+  palettemorph(0,0,0,0,64); //get proper palette going
+  entityspawn(4,4,"vecna.chr"); //first chr will be index 0
+  setplayer(0); //set the control focus to entity index 0
+}
+  

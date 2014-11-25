@@ -1,0 +1,499 @@
+-------------------------
+MapEd 2.0 Release Edition
+-------------------------
+
+I) Intro to Maped 2.0
+II) Running Maped 2.0
+ A) Moving within Maped
+ B) Selection modes
+    i) Layer Modes
+       a) Tile Layers
+  	  *) TileEd
+       b) Special Layers
+III) Our friend the Program Menu
+ A) Save/Load Functions
+ B) Map Properties
+ C) Layers
+ D) Options 
+ E) Fun Crap(tm)
+    i) MOD Player
+    ii) CD Player
+    iii) Columns
+IV) Miscellaneous
+    i) Bug Fixes
+
+I) Intro to Maped 2.0
+---------------------
+MapEd 2.0 is essentially the same program as the one users had grown accustomed
+to with V1 but with significant enhancement and miscellaneous Fun Crap(tm). 
+If you are unfamiliar with MapEd, it can be described as the "heart" of VERGE. 
+Most of elements that will be seen by the player in terms of characters (entities)
+and backgrounds (tiles) will be setup within MapEd. 
+
+Some of the most notable features of MapEd 2.0 are the windows-like enhancements;
+Dialog boxes can be dragged by their title bars and text boxes can be advanced
+with 'Tab'.
+
+Items added since the beta release are annoted with '***'
+
+I) Running Maped 
+----------------
+MapEd can be run from the command line simply as 'maped' or with the 
+specification of a map. (i.e. 'maped vospram1.map')
+
+MapEd 2.0 can be started without an additional map parameter, unlike its 
+predecessor, to load a blank map and vsp. This has been stabalized from previous 
+betas to load the default palette. Once inside the program, use the mouse to scroll 
+around the map by moving it to the borders of the screen or use the cardinal 
+direction keys.
+
+A) Moving within MapEd
+ 
+You can scroll the map a screen at a time by using one of the quick scroll keys:
+
+Page Up   - Up
+Page Down - Down
+End       - Right
+Home      - Left
+
+You can summon the mini-map (just what the name implies) by pressing 'M'. 
+Move the white screen outline to a portion of the map and click to move there 
+quickly. 
+Pressing 'Escape' while in the mini-map mode will return to MapEd without moving 
+the screen.
+
+B) Selection Modes
+
+At the bottom of the main MapEd screen is are boxes indicating the current 
+layers of the map. To the lower right is the information HUD for that layer.
+
+
+i) Layer Modes
+
+a) Tile Layers 
+The numbers located in the lower left portion of the main MapEd screen are the 
+tile layers available. (see the layers section of the menu chapter for instructions 
+for adding new tile layers)
+
+Pressing the corresponding keyboard shortcut or clicking on a number shown in these 
+boxes will toggle that tile layer's visibility and its background will become red to 
+indicate that it is visible. (When switching to the special layers, all available 
+tile layers will be shown.) 
+While you can press a layer's number to make it immediately visable, you must click 
+on it or press "shift+layer number" in order to hide it.
+
+When one or more of the tile layers is selected, two tile boxes will appear in the 
+lower right portion of the screen to indicate the tile assigned to each mouse 
+button. The left box is assigned to the left mouse button while the right is assigned 
+to the right mouse button. (I hope your head isn't hurting, yet) 
+
+Pressing 'Ctrl' while in the tile layer editing mode, will cause the 
+'Maped 2.0 Tile Selector' to pop-up. Basically the same as ME1, simply press up or 
+down or mouse scroll through the VSP and click on a tile to select with the mouse 
+button you wish to assign it to.
+
+While in tile layer editing mode, A/Z will change the tile assigned to the left 
+button and S/X will change the tile assigned tot the right. 
+The former letter scrolls forward through the VSP while the latter scrolls back.
+Also while in tile layer editing mode, clicking on a tile while holding '/' will 
+assign that tile to the chosen mouse button. (Also, pressing 'H' will toggle tile
+highlighting.)
+
+Back to the Tile Selector, the buttons seen on the panel at the bottom of the 
+screen are somewhat self explanatory.
+
+-Add Tiles adds the specified number of blank tiles to the end of the vsp.
+
+-Animation (can be called with 'V') brings up a dialog box showing an animation 
+ specified in the vsp. The Up/Down keys change the shown animation, while the 
+ text boxes across from it alter the shown animation's traits. Start and End 
+ are the animation's starting and ending tiles (Animations must be tiles in 
+ sequential order in the vsp.), Delay is the amount of time in milliseconds 
+ between each frame (100ms = 1 second), and mode is the animation's display 
+ mode. (0 = Linear(normal); 1 = Reverse; 2 = Random; 3 = Loop Back and Forth)
+
+-Import PCX/Import VSP are used to pilfer tiles from an existing image or 
+ tileset respectively. Import PCX is more complicated in that you are prompted
+ to choose whether or not the imported image is a tileset or an image. If the 
+ pcx is set up as a tileset (with 1 pixel padding) then import it as a tileset.
+ If appears as a normal image, import it as such.
+ ***When selecting tiles to import, those which have already been imported will 
+ appear with a grey mask. You can still import multiple copies of each tile, but 
+ the masks will keep track. Pressing 'B' will build a list of imported tiles, 
+ automatically greying duplicates which already exist in the VSP. 'N' will 
+ import all non-existing tiles within the image to the VSP, while 'A' imports 
+ them all, regardless.
+
+-H/P toggles tile selector highlighting and tile padding respectively. Tile 
+ padding adds or removes a 1 pixel border in between tiles to make them more
+ distinguished.
+
+-Select/Edit modes determine what happens when you click on a tile. In 'Select 
+ Mode' the selected tile is assigned to that button as previously mentioned, 
+ unlike 'Edit Mode' which causes TileEd to be launched and the selected tile to
+ be loaded. You can also enter edit mode by pressing 'E' with the cursor over the 
+ tile to edit.
+
+While in the Tile Selector with the cursor positioned over a tile you wish to 
+copy, press 'Ctrl+C' to copy that tile onto the clipboard. If you wish to carbon
+copy the tile onto another, position the cursor over the tile you wish to overlay
+and press 'Ctrl+S'. If you only want to paste the non-0 color portions of the 
+tile, press 'Ctrl+T'.
+
+To delete a tile entirely from the VSP, postion the cursor over it and press 
+'Ctrl+D'. If you accidently delete an important tile from your VSP by mistake,
+you can reload the map it to recover the lost tile. Also, be warned that the tiles
+are recognized by number and as such, deleting a single tile will cause the 
+following tiles to move one number higher. This will seriously screw up your maps,
+so be careful. A work around is to delete the tile then insert a blank one in its
+place to be used later. 
+***The Super Delete function, 'ctrl+alt+d' will alter the map information so that 
+all of the deleted tile's instances on the map will be replaced with the default,
+rather than creating a big mess.
+
+To insert a blank tile into the vsp, position the cursor over the tile
+you want to add the blank one before and press 'Ctrl+I'. 
+***Similar to Super Delete, Super Insert, 'ctrl+alt+i' will insert a blank
+tile while reassigning the current tiles to their original artwork.
+
+***Note*** Do not super delete or insert too quickly, do it slow and
+rhythmically... i know it sounds stupid but for some reason, doing it too fast
+messes things up.
+
+X/Y/Z- X and Y will mirror chosen tile upon the pressed key's related axis. 'X' for 
+instance, will flip the tile left to right, 'Y' will flip it up and down.
+'Z' however, will turn the tile 90 degrees clockwise.
+
+*) TileEd 
+
+TileEd primary method of drawing tiles, and has improved exponetially from ME1.
+Most of the manipulation functions are self-explanatory or ported similarly from
+ACE, but there are a few new features.	Key shortcuts are courtesy of Ric:
+
+CTRL/S + mouse click - (over edit window) Pick up colour under mouse
+SPACEBAR    - toggle between draw mode and select mode
+CTRL+Z or U - one level undo
+CTRL+A      - select all
+CTRL+U      - unselect all
+CTRL+C      - copy selected area
+CTRL+X      - cut selected area
+CTRL+V      - paste
+DEL         - clears selected area
+CTRL+R      - reverts the tile to the original (like undo in maped 1)
+G           - toggles grid on/off
+H           - toggles hilight on/off
+M           - toggles mask on/off
+I           - inverts mask
+X           - mirrors image
+Y           - flips image 
+L/R         - Rotates tile 90 degrees anti-clockwise/clockwise
+Q/W         - Steps through animation (in tile edit mode) if any
+A/Z and S/X - changes the left or right drawing colours
+PGUP/PGDN   - Colour shift up/down
+[ and ]     - toggle screen resolutions
+ALT+X       - quits to DOS (Note: This doesn't prompt you to save nor does 
+              it save automatically at the moment. It just dumps you 
+              straight to DOS)
+
+b) Special Layers
+The letters adjacent to the tile layers in the lower left portion indicate the 
+map's special layers as follows:
+
+O - Obstructions 
+----------------
+Areas the main character and designated entities cannot enter. When editing in 
+layer mode, you simply left click the area upon which you wish to add an 
+obstruction or right click to remove it.
+
+N - Zones
+---------
+Zones are triggers that link to events in the map's vc code of which there may be 
+a maximum of 256 per map.
+Pressing A/Z scrolls through the available zones (or shift-clicking a zone to 
+adopt it), and pressing 'ctrl' will bring up the zone info box for the active zone. 
+
+Name: A description of the zone for the creator's use alone. The player will 
+      never see it.
+
+Script: This is the number of the event in the map's vc code that will be called 
+        when the player successfully activated the zone.
+
+Chance: This value determines whether the zone will be activated by determining 
+        the randomness of success.  A value of 0 will cause the event never to occur 
+        (unless over-ridden by Adjacent Activation) while 256 (the maximum) will 
+        cause it never to fail.
+
+Delay: A value of 0 is assigned to the chance of the zone before this number of 
+       steps have been taken within the zone. From then, the Chance it returned to 
+       the default you've set and calculated normally. For instance, on a map if the 
+       chance of incurring a random battle is 50%, and the delay s 10, a minimum 
+       of 10 steps must be taken after each battle before another may occur. 
+
+Entity: This specifies a script number to be executed when an entity enters the zone. 
+        0 means no script.
+
+Allow Adjacent Activation: If this is checked, then the player may stand in an 
+      adjacent tile and while facing the zone, activate it with the 'Talk/Confirm' 
+      button. This over-rides the chance factor.
+
+E - Entities
+------------
+Entities are generally the characters that roam your maps but can become more dynamic 
+if you so choose. In entity editing mode, clicking on a blank space on the map creates 
+an entity doppelganger there and assigns it the lowest untaken entity number. Pressing 
+'Del' while the cursor is over an entity will prompt you to erase that entity. When 
+done so, that entity and it's properties will be gone and the next numbered entity 
+with become one number lower and so on. (i.e. Deleting Entity0 on a map will cause 
+Entity1 to become Entity0 and Entity2 to become Entity1, etc)
+
+Clicking on an existing entity will call that character's information dialog box.
+(Pressing Up/Down while in this box will scroll through the available entities.)
+The entity properties include a description (for your benefit alone), the XY 
+coordinated of the entity (which are useful when you want to move a single entity 
+without disrupting the whole order of your entities by deleting one), the number of 
+the chr (as referenced to the chr list (see below) which may be accessed by a button 
+adjacent to the chr text box), the speed of the entity (see Appendix A), and the 
+activation script called when the entity is activated.
+
+Pressing the 'CHR list' from the entity properties box will bring up a listing of 
+chrs that may be used in the map. Clicking on an empty text box to enter the chrs 
+name with the attached extention, or choose browse to search for the file locally.
+
+Once the chr for the entity has been chosen, the appropriate chr will be displayed in 
+the upper right corner of the property box.
+
+The addtional boxes control:
+
+-Autoface- Causes entity to face the player when "activated."
+
+-Active/Adjacent Method- If active, the entity will be activated when faced and 
+ "talked to" by the player. In Adjacent mode, it is activated as soon as the player 
+ comes in contact with it by occupying the space adjacent to it.
+
+-Obstructable/Obstruction- If the entity is obstructable, it will be stopped as the 
+ player would by map obstruction. If obstruction is unchecked, the player will be 
+ able to walk through the entity. (useful for flying chrs or invisible trigger chrs)
+
+Below these are the Movement Code/Scripts for the entity which control its movement 
+behaviour in the game.
+
+The MoveCodes are:
+0 - Stopped
+1 - Causes the entity to roam aimlessly the specified number of steps before 
+    pausing for the specified delay.
+2 - Causes the entity only to wander within a specified area.
+3 - Causes the entity to wander within a specified zone.
+4 - Causes the entity to enact a movement script specified in the 'scripts box'. 
+    (see below)
+
+If you select 4, fill in the last text box with the *number* of the movement script
+you wish the entity to use, not the actual movement code. 
+
+Scripts: This button brings up a list of the predefined scripts for the entities to 
+follow. Using Up/Down you can find the numbered slot to fill in the movement script 
+using a letter followed by the value of the direction. 
+
+The letters are: 
+U - Up
+D - Down
+L - Left
+R - Right
+X - Move to X axis value
+Y - Move to Y axis value
+Z - Special Frame
+F - Face (See Appendix B)
+W - Wait
+
+If you wanted the entity to move up two spaces, left 1, then move to 21 on the X axis, 
+face down, pause for one second, and display its 22nd frame then repeat, you would use:
+
+ U2L1X21F0B
+
+III) The Program Menu
+---------------------
+The program menu is the most crucial and integral part of MapEd 2.0. How else would you 
+get to Columns? It can be called by pressing 'Esc' or (if you have a three-button mouse)
+with the middle (or third bound) mouse button within the main editing window. 
+
+A) New/Save/Load Functions
+
+Using 'New MAP' from the menu will abort the current map (after a prompt) and begin
+an blank map and VSP. In order to use an existing VSP with the new map, you must enter
+one in the MAP properties (see below) or use the 'Import VSP' function from the tile 
+selector.
+
+The Save/Load features are fairly obvious; Pressing 'F10' or accessing 'Save MAP' from 
+the menu will save the map contents including the VSP, map contents and it will compile
+the map's VC code into the map itself. 
+***Saving a new VSP does so in a compressed format, although Maped2 and the engine can 
+load older, uncompressed VSP formats. Maps must be resaved in order to be used, however.
+-If you save a New MAP generated from the menu or one generated if maped is run without 
+a map parameter, it will automatically be saved as "untitled.map" with "untitled.vsp"
+Load will bring up a Load Map Dialog box. Either enter the map's name (with .map 
+extention) or press the 'Browse' button to search for the map locally. You will be 
+prompted to save the current map before it is aborted.
+
+Save VSP will save just the VSP independant of the map and entailing information. 
+Useful if you were to create a few nice tiles, yet accidently delete a layer.
+
+B) MAP properties
+
+This dialog box is used to enter the important map information and the map resize 
+function. 
+
+-Music:   This is the initial music file that will be played upon map startup.
+-VSP:     The VSP this map will use. Note that if you use the same VSP for multiple 
+          maps, all alterations made to it will affect ALL of its maps.
+-Rstring: This indicates the order and display values of the layers. (see below) The 
+          order of the the layer numbers determines in which order they will be 
+          displayed. Also, the letter 'E' should be added in order to determine upon 
+          which layer they will be shown. Additionally, you may add an 'R' to 
+          determine where to display a hookretrace script or you may define a specific 
+          script begun with an 'S' followed by the script number appended with an 'X'. 
+          Therefore, if you had four map layers, the obligatory entities drawn on the 
+          first layer and script 3 to drawn over all the other layers, your Rstring 
+          would look like: 1E234S3X
+
+-MAP Resize:
+ This calls a box used to edit the X/Y sizes of the map. Just enter the new values and 
+ press 'Resize'.
+
+C) Layers:
+ Layers are a somewhat complicated aspect of your map. Accessing 'Layers' on the 
+ program menu calls a submenu which is used to add or edit existing map layers.
+ 'Add Layer' will generate a new layer for the map. After adding it to the 
+ Rstring (IIIb), you can then add tiles to it as you would the other layers. 'Edit
+ Layer' allows you to edit the layer properties including parallax and 
+ h-line/transparency. The parallax values alter the movement of the layers in 
+ accordance with the party's movement. The X/Y multipliers alter the direction of the
+ layer opposite to the party while the divider does vice versa. Keep in mind that
+ these are multipliers and dividers, hence, are fractions so an x multiplier and 
+ divider of 20 reduces to 1/1 and cancels movement.
+ 'Import Image' directly crops all tiles from an image and places them in proper order
+ directly onto a selected layer. If the selected layer has tiles currently on it, that 
+ information will discarded. ***The checkbox 'Eliminate Duplicates' will not crop and 
+ tiles that are identical to ones already a part of the vsp, instead substituting the
+ original when they are actually imported.
+-Destroyer: 
+ Destroys specific elements entirely from the map. Destroying Zones will get rid of 
+ the physical placement of the zones while destroying zone data will eliminate the 
+ information about the zones from the zone's property box. You can also eliminate
+ all entities and obstructions with destroyer.
+
+D) Options
+Most of these values are self explanatory; You can toggle smooth scrolling as opposed 
+to tile based scrolling, mouse scrolling, whether you cursor will have a white tile 
+outline and alternate between graphics modes. 
+You can also set the color of the window title bar, box background, highlight color, 
+and white offset color. 
+The window color options are based on the numbers of the currently active palette.
+
+E) Fun Crap (tm)
+
+These are some assorted throw ins that are determined to throw all sorts of road 
+blocks in front of you as you attempt to concentrate. 
+
+i) MOD Player
+This is a simple interface for loading MOD, XM, or S3M music file. In the future it 
+may be used for playing ITs as well. Simply enter the name of the music file or 
+browse for it locally and press play.
+
+ii) CD Player
+This feature is capable of loading and playing CD music tracks. Unfortunately, it has 
+some issues conflicting with Windows' Auto-Load and CD-Player.
+
+iii) Columns
+If you want to know the real reason V2 was delayed, look no further. The great spanning
+abyss of wasted time, this is Columns!
+In case you've never played the original SEGA classic, the object of Columns is to align
+three of the same colored crystals (orbs) and they will disappear. 
+Pressing 'Up' will alternate the colors of the orbs, and Left/Right move the stack 
+accordingly. Press 'Down' to accelerate the stack.
+
+To change the difficulty setting, alter the 'difficulty' variable in MAPED.CFG (found at 
+the end of maped.cfg) 
+
+(Courtesy of vecna:)
+The difficulty levels are as follows:
+       4 - Normal
+       5 - Harder
+       6 - Your death is assured. ^_^
+
+     The difficulty controls not how fast the blocks fall, but how many
+     different colors of blocks are on the playing field. A value of greater
+     than 6 will error the program, and a difficulty less than 4 is outright
+     cheating. If you ever LOSE with a difficulty less than 4 you have
+     serious problems.
+  
+ You can now skin the background and sprite graphics for Columns. The
+ default is still hardcoded into the EXE, however, if the external files
+ COLBACK.PCX and/or COLSPR.PCX are found, they will be used. You can
+ download the default skin from www.verge-rpg.com, and other graphic sets can
+ be found at Extended Play. 
+ (http://www.doc.ic.ac.uk/~rwkl97/ep/download.html#me2skins)
+
+iv) Quitting!
+Accessing 'Exit to DOS' from the main menu or 'Alt+X' will quit to DOS.
+
+IV) Miscellaneous
+-----------------
+***'F11' will take a proper screen shot, making the 'prntscrn' method obsolete.
+ Map movement has been retooled so that it will scroll independant of CPU speed.
+ 
+There are a few other features such as the trippy built-in screen saver that are
+left for you to uncover. ^_^
+
+*) Various Fixes  
+----------------
+(From whatsnew.txt in Maped Beta 3)
+  - Out-of-Bounds rendering protections reintroduced to the map renderer.
+    These were originally in ME2 a while ago, but somehow along the line
+    they got lost while juggling around different copies of the source.
+    This should prevent ME2 from crashing even if a mapfile or VSP is
+    partially corrupt.
+  - Fixed a problem with an internal tileset helper array not being
+    updated if you loaded a map from the commandline, resulting in the
+    map being drawn erratically.
+  - Problems with the sound system crashing the DOS box if sound
+    couldn't be initialized fixed. Now you just won't hear sound if
+    there are problems; The only reason ME2 should crash on startup
+    now is 1) you're running Windows NT or 2) you need to use the
+    nocdaudio option in MAPED.CFG
+  - Increased the tilebay size from 2048 tiles to 10240 tiles.
+  - Some improvements have been made with the CD audio situation; Exiting
+    ME2 will no longer stop the CD playback unless you used the ME2 CD
+    player. This was causing problems with people who were using Windows
+    CD Player to listen to CDs while going in and out of MapEd, which could
+    get very annoying. ^_^ It's still not perfect tho.
+
+***The map movement clipping has been fixed so you can now access every tile 
+in the map.
+
+***Maped2 won't crash and burn hardcode if your map is less than the screen
+size. Not that you shouldn't have maps less than the screen size, but if you're
+stupid and try it, it'll handle it. 
+This will become an issue with the multi-res versions of Maped.
+
+========================================================================================
+
+Appendix A: Entity/Character Speeds
+-----------------------------------
+  Speed  Pixels/second
+    1      25
+    2      33
+    3      50
+    4      100
+    5      200
+    6      300
+    7      400
+The default speed of the main character is 4.
+
+Appendix B: Face direction values
+---------------------------------
+
+          1-Up
+           |
+ 2-Left   - -     3-Right
+           |
+         0-Down
+

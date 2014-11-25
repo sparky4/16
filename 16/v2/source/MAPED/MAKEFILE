@@ -1,0 +1,32 @@
+# Use the C or C++ compiler
+Compiler = wcc386
+
+# compiler options
+#comp = /oneatx /zp4 /5 /d0
+comp = /bt=dos /oneatx /5 /fp5 /wx /d0
+
+Linker_options = option stack=60000
+
+# Compile using dos4g or pmodew
+#System = dos4g
+System = pmodew
+
+Exe_file = maped.exe
+
+Objs = maped.obj config.obj gui.obj guicomp.obj  mode13h.obj modex.obj keyboard.obj &
+       minimap.obj mouse.obj render.obj smalfont.obj ssaver.obj tileed.obj &
+       tilesel.obj timer.obj vdriver.obj columns.obj a_memory.obj mikmod.lib
+
+####################
+
+maped.exe : $(Objs)
+
+           *wlink system $(System) $(Linker_Options) name maped.exe &
+           file {$<}
+#           *pmwlite -c4 maped.exe
+
+.c.obj:
+        $(Compiler) $(comp) $<
+
+.asm.obj:
+        wasm -3pr $<

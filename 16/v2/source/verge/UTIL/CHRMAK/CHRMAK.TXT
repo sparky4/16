@@ -1,0 +1,118 @@
+chrmak.exe
+the utility with bloated code perpetrated by aen (aen@verge-rpg.com for hate mail)
+documentation
+by zeromus 5.8.99
+zermous@verge-rpg.com
+(be sure word wrap is on)
+---
+USE: creates v2 chr from pcx file
+---
+You'll use this bad boy a lot, unless you have one of those newfangled graphical chr editors.  What we do here is have a character ready in the standard pcx-graphics format (that is, with a one-pixel buffer between frames), and give it to chrmak, along with a text file describing what characteristics the output v2 chr should have.
+
+to run chrmak, simply execute chrmak with the makefile, with extension (ex: vecna.mak) as the first and only argument. (ex: "chrmak vecna.mak")
+
+The characteristics file is technically called a make file, or .mak.  it containst several variables, and what they should be.  for example:
+
+/* comment */
+pcx_name=rath; //comment
+chr_name=rath;
+
+these variables can be scattered around anywhere in the mak file, so long as they have a semicolon after each command.  you can stick comments anywhere like a c or vc file.  here is a list of all the variables you need to set in the make file, what they are, and their typical values.  In most cases, however, you should be able to just replace the values found in the samples rath.mak and vecna.mak with your own.
+
+---
+
+**pcx_name** the file name of the source pcx file, sans extension. note in the above examples or in the sampel .mak files it is not pcx_name = rath.pcx, only rath.
+**chr_name** the filename, sans extension, of the chr file to output. same as above in all other respects.
+
+**frame_w** the width of each frame of the chr (DEFAULT 16)
+**frame_h** the height of each frame (DEFAULT 32)
+
+**hot_x** the x-coord of the chr's hotspot.  See appendix A for info on chr hotspots. (DEFAULT 0)
+**hot_y** the same, but y-coord (DEFAULT 16)
+**hot_w** the width of the obstructing region of the hotspot. (DEFAULT 16)
+**hot_h** the height of the obstructing region of the hotspot. (DEFAULT 16)
+
+**per_row** the number of frames per row in the pcx file.  in old v1 chr/pcx files, this was 5. (DEFAULT 5)
+**total frames** total number of frames in the pcx file. (DEFAULT 20)
+
+**lidle** the frame to show when the chr is idling, facing the left (DEFAULT 10)
+**ridle** the frame to show when the chr is idling, facing the right (DEFAULT 15)
+**uidle** the frame to show when the chr is idling, facing up (DEFAULT 5)
+**didle** the frame to show when the chr is idling, facing down (DEFAULT 0)
+
+**lscript** the animation script for when the chr moves to the left. See appendix B for discussion of animation scripts.  (DEFAULT F10W10F11W10F12W10F11W10F10W10F13W10F14W10F13W10)
+**rscript** the animation script for when the chr moves to the right. (DEFAULT F15W10F16W10F17W10F16W10F15W10F18W10F19W10F18W10)
+**uscript** the animation script for when the chr moves up (DEFAULT F5W10F6W10F7W10F6W10F5W10F8W10F9W10F8W10)
+**dscript** the animation script for when the chr moves down (DEFAULT F0W10F1W10F2W10F2W10F0W10F3W10F4W10F3W10)
+
+---
+
+APPENDIX A: Hotspots
+
+If a chr is located at coordinates (x,y) on the screen, then the pixel under the hotspot on the chr will be drawn at (x,y).  
+
+You may think--"I tell a chr to go to (5,4) on the screen... but where exactly does it go? (4,4) from the middle, the left edge, or what?"
+Imagine three scenarios: a 4x4 sprite with the hotspot at top left, bottom left, and middle left, respectively:
+
+    Top Left          Bottom Left        Middle Left
+0123456789ABCDEF   0123456789ABCDEF   0123456789ABCEDEF
+1                  1    ****          1
+2    +---hotspot   2    ****          2    ****
+3   \|/            3    ****          3   \****
+4    @***          4    @***          4 +--@***
+5    ****          5   /|\            5 | /****
+6    ****          6    +---hotspot   6 |
+7    ****          7                  7 +---hotspot
+8                  8                  8
+
+So you can see how the hotspot determines how the sprite is oriented, relative to its current screen position.
+
+The default hotspot, (and its equivalent in v1) is at (0,16).  That is, 0 to the right and 16 down from the upper-left corner of the sprite.  Remember, default chr size is 16x32, and on computer, the (+,+) quadrant is quadrant IV.  In other words
+
+              -32
+              -24
+              -16
+              -8
+-16 -12 -8 -4  0   4  8  12 16
+               8   *  *  *  *
+               16  *  *  *  * <--- sprite goes there.  
+               24  @  *  *  *      @ is where hotspot would be
+               32  *  *  *  *
+
+Hotspots also have an obstruction width and height.  This is the area of the chr that touches the ground, and cannot walk over things.  In your game, you may want your head to be drawn on top of a wall, if your feet are against the bottom of the wall, right?  But you don't want your feet drawn on top of the wall.
+
++----------------------+
+|                      |
+|                      |
+|                      |
+|                      |
+|      +---+           |
+|      |***|           |
++------|@@@|-----------+
+       +---+
+
+The messy area is the chr; the @@@, and the --- beneath it, would be OBSTRUCTIVE.  If the player tried to walk up, he couldnt--you would be walking into the wall.  The *** and the --- above it would not be obstructive.
+
+Obstructive areas are defined by declaring their width and height, based from the chr's hotspot.  the default values, a width and height of 16, would count over 16 and down 16 from the hotspot, effectively making the bottom 16x16 square of the 16x32 chr obstructive.
+
+Final example:
+A 32x64 giant might be defined like this:
+
+...
+hot_x=8;
+hot_y=48;
+hot_w=16;
+hot_h=16;
+...
+
+---
+
+APPENDIX B: Animation scripts
+
+Animation scripts are made of a string of no more than 255 characters.  This string can contain any combination of COMMAND CODES, of which there are two.
+
+The two COMMAND CODES are F and W.
+
+**F** sets the current frame that should be shown.  So, if you want your animation, when walking to go from frame 12 to 15, you would make the script: "F12F13F14F15F14F13F12".  The F can have any number of digits after it, so you don't have to do F03F05, etc.. you can just do F3F5.
+
+**W** makes the animation string wait the specified number of milliseconds.  If you peek at the default animation strings mentioned a ways up, you'll see that there is a Wxx between each frame.  This pauses the frame so you can see it, effectively slowing the animation down.  In fact, the animation we just maed an example of, "F12F13F14F15F14F13F12", would g oby *waaay* too fast.  Now that we know the W command we can fix it: "F12W10F13W10F14W10F15W10F14W10F13W10F12W10".

@@ -1,0 +1,36 @@
+pack.exe
+documentation
+by zeromus 5.8.99
+zeromus@verge-rpg.com
+(be sure word wrap is on)
+---
+USE: creates v2 pakfile
+---
+v2 enjoys its own built-in pakfile system.  v2 can use files in any number of pakfiles at the same time it can read files from your computer's regular directory structure.  This allows for simplified distribution and management of v2 games, as well as adding a small measure of security to the data you worked so hard to create for your game--it will be a pain for losers to remove (read: rip) data from pakfiles, although we make no gurantees that your data is safe.  This should help the situation some.
+
+To create a packfile, pack.exe takes a makefile of the following format:
+
+--- <--cut below this line :)
+pakfile_to_create.vrg
+number_of_files
+file_name_1    flag_extrractable flag_overrideable
+file_name_2    flag_extrractable flag_overrideable
+file_name_3    flag_extrractable flag_overrideable
+---
+
+Here it is with sample data.
+
+---
+test.vrg
+3
+pack.c   0 0
+test.mak 1 0
+test.obj 0 1
+---
+
+This would create test.vrg with three files: pack.c, neither overrideable nor extractable, test.mak, extractable, but not overrideable, and test.obj, only overrideable.
+
+Extractable means that the file will be extracted by unpack.exe.  Files you want to keep secret should have a 0 for this.  
+
+Overrideable files will be overridden by a file of the same name in the game directory.  That means, if there is a file in the game directory, it will use that one instead of the one in the pakfile.  Otherwise, the copy in the pakfile will always be used.  You'll usually want this set to 1, as it facilitates patches, etc.  For example, if battle.map had a bug in it, you could just distribute a copy of the corrected battle.map for users to chunk in the game directory, and v2 would use the corrected copy instead.
+

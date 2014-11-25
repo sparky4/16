@@ -1,0 +1,17 @@
+gradients 16
+starts 0 ends 15 endspan
+starts 16 ends 32 endspan
+starts 33 ends 47 endspan
+starts 48 ends 63 endspan
+starts 64 ends 79 endspan
+starts 80 ends 95 endspan
+starts 96 ends 111 endspan
+starts 112 ends 127 endspan
+starts 128 ends 143 endspan
+starts 144 ends 159 endspan
+starts 160 ends 175 endspan
+starts 176 ends 191 endspan
+starts 192 ends 207 endspan
+starts 208 ends 223 endspan
+starts 224 ends 239 endspan
+starts 240 ends 255 endspan
