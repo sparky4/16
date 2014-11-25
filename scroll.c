@@ -1,3 +1,9 @@
+/*
+
+hey pngwen! draw half of the  rows and colums instread of the whole thing at once
+or try to optimized it~
+
+*/
 #include "modex16.h"
 #include <stdio.h>
 #include <stdlib.h>
