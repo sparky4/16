@@ -21,5 +21,7 @@ DONE 5. sprite rendering
 15. 8088 detection to turn off vsync!
 16. (very important!) optimize modexDrawBmpRegion so it can draw the bloody tiles and continue moving or make sure that you can move and draw the tiles at the same time
 
+17. merge scripting system and map system from verge 2
+
 To compile:
 You need Open Watcom stable to compile and just run wmake
