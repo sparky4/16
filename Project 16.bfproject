@@ -1,17 +1,17 @@
 c2e.convert_special: 0
 e2c.convert_num: 0
 openfiles: /dos/z/16/doc/project.txt:60:0:0:
-openfiles: /dos/z/16/scroll.c:3397:2951:1:
+openfiles: /dos/z/16/scroll.c:14906:14747:0:
 openfiles: /dos/z/16/modex16.c:6838:6141:0:
 openfiles: /dos/z/16/modex16.h:1057:344:0:
 openfiles: /dos/z/16/pcxtest.c:795:442:0:
 openfiles: /dos/z/16/dos_kb.c:3759:2440:0:
 openfiles: /dos/z/16/dos_kb.h:464:0:0:
 openfiles: /dos/z/16/lib/lib_head.h:1738:1347:0:
-openfiles: /dos/z/16/README:744:0:0:
+openfiles: /dos/z/16/README:1119:0:1:
 openfiles: /dos/z/16/makefile:181:0:0:
-openfiles: /dos/z/keen-src/id_mm.c:1835:14600:0:
-openfiles: /dos/z/keen-src/id_mm.h:0:1026:0:
+openfiles: /dos/z/keen-src/id_mm.c:1835:14598:0:
+openfiles: /dos/z/keen-src/id_mm.h:0:1024:0:
 openfiles: /dos/z/keen-src/id_rf.c:46629:47657:0:
 openfiles: /dos/z/keen-src/id_rf.h:0:0:0:
 openfiles: /dos/z/keen-src/id_rf_a.asm:3987:3375:0:
@@ -30,7 +30,7 @@ c2e.convert_iso: 0
 opendir: file:///dos/z/16
 wrap_text_default: 0
 bookmarks_filename_mode: 1
-ssearch_text: mapDrawTile
+ssearch_text: dxThresh
 snr_casesens: 1
 view_blocks: 1
 name: project 16
@@ -98,20 +98,20 @@ recent_files: file:///dos/z/16/doc/16.16
 recent_files: file:///dos/z/16/doc/16story.txt
 recent_files: file:///dos/z/16/scroll.c
 recent_files: file:///dos/z/16/doc/project.txt
-recent_files: file:///dos/z/16/README
-recent_files: file:///dos/z/16/makefile
-recent_files: file:///dos/z/16/dos_kb.c
 recent_files: file:///dos/z/16/lib/lib_head.h
 recent_files: file:///dos/z/16/dos_kb.h
-recent_files: file:///dos/z/16/modex16.c
+recent_files: file:///dos/z/16/dos_kb.c
 recent_files: file:///dos/z/16/modex16.h
-recent_files: file:///dos/z/keen-src/id_rf.h
-recent_files: file:///dos/z/keen-src/id_mm.h
-recent_files: file:///dos/z/16/types.h
 recent_files: file:///dos/z/16/pcxtest.c
+recent_files: file:///dos/z/16/README
+recent_files: file:///dos/z/16/modex16.c
+recent_files: file:///dos/z/16/makefile
+recent_files: file:///dos/z/16/types.h
+recent_files: file:///dos/z/keen-src/id_mm.h
 recent_files: file:///dos/z/keen-src/id_mm.c
 recent_files: file:///dos/z/keen-src/id_rf_a.asm
 recent_files: file:///dos/z/keen-src/id_rf.c
+recent_files: file:///dos/z/keen-src/id_rf.h
 snr_replacetype: 0
 savedir: file:///dos/z/16
 spell_check_default: 1
@@ -123,7 +123,6 @@ snr_escape_chars: 0
 htmlbar_view: 0
 spell_lang: en
 ssearch_dotmatchall: 0
-searchlist: draw
 searchlist: return
 searchlist: enter
 searchlist: bg->tx == bg->ty
@@ -138,6 +137,7 @@ searchlist: cols
 searchlist: MAPY/2
 searchlist: MAPX/2
 searchlist: mapDrawTile
+searchlist: dxThresh
 autocomplete: 1
 outputb_show_all_output: 0
 bookmarks_show_mode: 0
