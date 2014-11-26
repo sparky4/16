@@ -316,7 +316,7 @@ break;
 		player.triggery = player.ty-1;
 	}
 	//modexClearRegion(mask->page, 66, 66, 2, 40, 0);
-	//modexClearRegion(spri->page, TRIGGX, TRIGGY, 16, 16, 0);
+
 	if((player.triggerx == TRIGGX && player.triggery == TRIGGY) && keyp(KEY_ENTER))
 	{
 		short i;
