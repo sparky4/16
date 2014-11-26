@@ -66,7 +66,7 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short
 //#define SWAP(a, b) tmp=a; a=b; b=tmp;
 void main() {
 	bitmap_t ptmp; // player sprite
-	int q=1;
+	word q=1;
 	static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	page_t screen, screen2, screen3;
 	map_t map;
@@ -89,7 +89,7 @@ void main() {
 	modexPalUpdate(ptmp.palette);
 	screen = modexDefaultPage();
 	screen.width += (TILEWH*2);
-	screen.height += (TILEWH*2);//+QUADWH;
+	screen.height += (TILEWH*2)+QUADWH;
 	mv.page = &screen;
 	screen2 = modexNextPage(mv.page);
 	mv2.page = &screen2;
@@ -112,14 +112,24 @@ void main() {
 	player.ty = bg->ty + 8;
 	player.x = player.tx*TILEWH;
 	player.y = player.ty*TILEWH;
+	player.triggerx = player.tx;
+	player.triggery = player.ty+1;
+	//TODO: erase player initial draw
 	modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
-	modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH, player.x-4, player.y-TILEWH, 24, 32);
-	modexShowPage(bg->page);
+	//temp draw trigger box
+	modexClearRegion(spri->page, player.triggerx*16, player.triggery*16, 16, 16, 0);
+	modexClearRegion(bg->page, player.triggerx*16, player.triggery*16, 16, 16, 0);
+	modexShowPage(spri->page);
+	//bool run = 0;
 	while(!keyp(1))//!keyp(1))
 	{
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
+
+	//trying to remove initial drawing of sprite
+	/*if(!run){ modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH, player.x-4, player.y-TILEWH, 24, 32);
+	modexShowPage(bg->page); run = 1; }*/
 	
 	#define INC_PER_FRAME if(q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;	
 
@@ -329,6 +339,7 @@ break;
 	printf("player.ty: %d\n", player.ty);
 	printf("player.triggx: %d\n", player.triggerx);
 	printf("player.triggy: %d\n", player.triggery);
+	printf("temporary player sprite http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867");
 }
 
 
