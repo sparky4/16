@@ -339,6 +339,8 @@ break;
 	printf("player.ty: %d\n", player.ty);
 	printf("player.triggx: %d\n", player.triggerx);
 	printf("player.triggy: %d\n", player.triggery);
+	printf("dxThresh: %d\n", bg->dxThresh);
+	printf("dyThresh: %d\n", bg->dyThresh);
 	printf("temporary player sprite http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867");
 }
 
