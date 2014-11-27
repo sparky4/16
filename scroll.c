@@ -31,6 +31,7 @@ typedef struct {
 	word dyThresh; //????
 } map_view_t;
 
+//TODO: make this into actor_t
 struct {
 	int x; //player exact position on the viewable map
 	int y; //player exact position on the viewable map
@@ -59,8 +60,8 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short
 #define SPEED 4
 
 //place holder definitions
-#define MAPX 40
-#define MAPY 30
+#define MAPX 200
+#define MAPY 150
 #define TRIGGX 10
 #define TRIGGY 9
 //#define SWAP(a, b) tmp=a; a=b; b=tmp;

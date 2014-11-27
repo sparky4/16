@@ -1,7 +1,7 @@
 c2e.convert_special: 0
 e2c.convert_num: 0
 openfiles: /dos/z/16/doc/project.txt:60:0:0:
-openfiles: /dos/z/16/scroll.c:1900:1692:1:
+openfiles: /dos/z/16/scroll.c:3046:2949:1:
 openfiles: /dos/z/16/modex16.c:6838:6141:0:
 openfiles: /dos/z/16/modex16.h:1057:344:0:
 openfiles: /dos/z/16/pcxtest.c:753:655:0:
@@ -33,7 +33,6 @@ ssearch_text: dxThresh
 snr_casesens: 1
 view_blocks: 1
 name: project 16
-replacelist: wPage(spri
 replacelist: 34);
 replacelist: bg
 replacelist: dest
@@ -48,6 +47,7 @@ replacelist: modexShowPage(spri
 replacelist: player.tx == player.ty
 replacelist: TRIGGY
 replacelist: TRIGGX
+replacelist: play->
 fb_show_hidden_f: 0
 editor_tab_width: 4
 show_visible_spacing: 1
@@ -122,7 +122,6 @@ snr_escape_chars: 0
 htmlbar_view: 0
 spell_lang: en
 ssearch_dotmatchall: 0
-searchlist: return
 searchlist: enter
 searchlist: bg->tx == bg->ty
 searchlist: data
@@ -137,6 +136,7 @@ searchlist: MAPY/2
 searchlist: MAPX/2
 searchlist: mapDrawTile
 searchlist: dxThresh
+searchlist: player.
 autocomplete: 1
 outputb_show_all_output: 0
 bookmarks_show_mode: 0
