@@ -120,17 +120,12 @@ void main() {
 	modexClearRegion(spri->page, player.triggerx*16, player.triggery*16, 16, 16, 0);
 	modexClearRegion(bg->page, player.triggerx*16, player.triggery*16, 16, 16, 0);
 	modexShowPage(spri->page);
-	//bool run = 0;
 	while(!keyp(1))//!keyp(1))
 	{
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
 
-	//trying to remove initial drawing of sprite
-	/*if(!run){ modexCopyPageRegion(bg->page, spri->page, player.x-4, player.y-TILEWH, player.x-4, player.y-TILEWH, 24, 32);
-	modexShowPage(bg->page); run = 1; }*/
-	
 	#define INC_PER_FRAME if(q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;	
 
 	//temp testing
@@ -565,8 +560,8 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 void
 animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp)
 {
-	short dire=32*d1;
-	short qq;
+	short dire=32*d1; //direction
+	short qq; //scroll offset
 
 	if(d2==0) qq = 0;
 	else qq = ((lp)*SPEED);
