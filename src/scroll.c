@@ -86,7 +86,8 @@ void main() {
 
 	/* draw the tiles */
 	ptr = map.data;
-	ptmp = bitmapLoadPcx("data\\ptmp.pcx"); // load sprite
+	/*data\\*/
+	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
 	setkb(1);
 	modexEnter();
 	modexPalUpdate(ptmp.palette);
