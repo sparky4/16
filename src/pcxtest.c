@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "modex16.h"
-#include "bitmap.h"
+#include "src\lib\modex16.h"
+#include "src\lib\bitmap.h"
 
 word far* clock= (word far*) 0x046C; /* 18.2hz clock */
 
@@ -33,7 +33,7 @@ void main() {
 
     page=modexDefaultPage();
 
-    bmp = bitmapLoadPcx("46113319.pcx");
+    bmp = bitmapLoadPcx("data\46113319.pcx");
     modexEnter();
 
     /* fix up the palette and everything */

@@ -1,4 +1,4 @@
-#include "modex16.h"
+#include "src\lib\modex16.h"
 
 void
 main() {

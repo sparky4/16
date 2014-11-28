@@ -1,8 +1,8 @@
-#include "modex16.h"
+#include "src\lib\modex16.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "dos_kb.h"
-#include "lib\wtest\wtest.c"
+#include "src\lib\dos_kb.h"
+#include "src\lib\wtest\wtest.c"
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 
@@ -87,7 +87,7 @@ void main() {
 
 	/* draw the tiles */
 	ptr = map.data;
-	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
+	ptmp = bitmapLoadPcx("data\ptmp.pcx"); // load sprite
 	modexEnter();
 	modexPalUpdate(ptmp.palette);
 	screen = modexDefaultPage();

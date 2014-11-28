@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "bitmap.h"
-#include "modex16.h"
+#include "src\lib\bitmap.h"
+#include "src\lib\modex16.h"
 
 static struct pcxHeader {
     byte id;

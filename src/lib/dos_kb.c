@@ -1,6 +1,6 @@
 /* Thanks to Alex Russell for example code */
 /* Thanks to Gary Neal for example code */
-#include "dos_kb.h"
+#include "src\lib\dos_kb.h"
 
 // keyboard buffer
 static byte key[NUM_SCANCODES]; // pressed
