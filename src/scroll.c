@@ -87,7 +87,7 @@ void main() {
 	/* draw the tiles */
 	ptr = map.data;
 	/*data\\*/
-	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
+	ptmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 	setkb(1);
 	modexEnter();
 	modexPalUpdate(ptmp.palette);
@@ -340,7 +340,8 @@ break;
 	printf("player.triggy: %d\n", player.triggery);
 	printf("dxThresh: %d\n", bg->dxThresh);
 	printf("dyThresh: %d\n", bg->dyThresh);
-	printf("temporary player sprite http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
+	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
+	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
 	switch(detectcpu())
 	{
 		case 0: cpus = "8086/8088 or 186/88"; break;
