@@ -77,7 +77,6 @@ void main() {
 	map_view_t *bg, *spri, *mask;//, *tmp;
 	byte *ptr;
 
-	setkb(1);
 	/* create the map */
 	map = allocMap(MAPX,MAPY); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	initMap(&map);
@@ -87,7 +86,8 @@ void main() {
 
 	/* draw the tiles */
 	ptr = map.data;
-	ptmp = bitmapLoadPcx("data\ptmp.pcx"); // load sprite
+	ptmp = bitmapLoadPcx("data\\ptmp.pcx"); // load sprite
+	setkb(1);
 	modexEnter();
 	modexPalUpdate(ptmp.palette);
 	screen = modexDefaultPage();
