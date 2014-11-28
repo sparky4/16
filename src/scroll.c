@@ -342,6 +342,7 @@ break;
 	printf("dyThresh: %d\n", bg->dyThresh);
 	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
 	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
+	printf("\n");
 	switch(detectcpu())
 	{
 		case 0: cpus = "8086/8088 or 186/88"; break;
@@ -387,9 +388,9 @@ initMap(map_t *map) {
 	for(y=0; y<TILEWH; y++) {
 	for(x=0; x<(TILEWH*2); x++) {
 		if(x<TILEWH)
-		  map->tiles->data->data[i] = 0x00;//0x24;
+		  map->tiles->data->data[i] = 0x01;//0x24;
 		else
-		  map->tiles->data->data[i] = 28;//0x34;
+		  map->tiles->data->data[i] = 0;//0x34;
 		i++;
 	}
 	}
