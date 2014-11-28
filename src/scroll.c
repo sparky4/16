@@ -121,8 +121,8 @@ void main() {
 	//TODO: erase player initial draw
 	modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
 	//temp draw trigger box
-	modexClearRegion(spri->page, player.triggerx*16, player.triggery*16, 16, 16, 0);
-	modexClearRegion(bg->page, player.triggerx*16, player.triggery*16, 16, 16, 0);
+	modexClearRegion(spri->page, player.triggerx*16, player.triggery*16, 16, 16, 1);
+	modexClearRegion(bg->page, player.triggerx*16, player.triggery*16, 16, 16, 1);
 	modexShowPage(spri->page);
 	while(!keyp(1))//!keyp(1))
 	{
@@ -386,9 +386,9 @@ initMap(map_t *map) {
 	for(y=0; y<TILEWH; y++) {
 	for(x=0; x<(TILEWH*2); x++) {
 		if(x<TILEWH)
-		  map->tiles->data->data[i] = 0x24;
+		  map->tiles->data->data[i] = 0x00;//0x24;
 		else
-		  map->tiles->data->data[i] = 0x34;
+		  map->tiles->data->data[i] = 28;//0x34;
 		i++;
 	}
 	}
