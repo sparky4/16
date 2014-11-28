@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "dos_kb.h"
+#include "lib\wtest\wtest.c"
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 
@@ -68,6 +69,7 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short
 void main() {
 	bitmap_t ptmp; // player sprite
 	word q=1;
+	const char *cpus;
 	static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	page_t screen, screen2, screen3;
 	map_t map;
@@ -337,7 +339,15 @@ break;
 	printf("player.triggy: %d\n", player.triggery);
 	printf("dxThresh: %d\n", bg->dxThresh);
 	printf("dyThresh: %d\n", bg->dyThresh);
-	printf("temporary player sprite http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867");
+	printf("temporary player sprite http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
+	switch(detectcpu())
+	{
+		case 0: cpus = "8086/8088 or 186/88"; break;
+		case 1: cpus = "286"; break;
+		case 2: cpus = "386 or newer"; break;
+		default: cpus = "internal error"; break;
+	}
+	printf("detected CPU type: %s\n", cpus);
 }
 
 
@@ -598,5 +608,5 @@ animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short d1, 
 	//modexClearRegion(top->page, 66, 66, 2, 40, 0);
 	//modexCopyPageRegion(dest->page, top->page, 66, 66, 66, 66, 2, 40);
 	//turn this off if XT
-	modexWaitBorder();
+	if(detectcpu() > 0) modexWaitBorder();
 }
