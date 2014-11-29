@@ -87,7 +87,7 @@ void main() {
 	/* draw the tiles */
 	ptr = map.data;
 	/*data\\*/
-	ptmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
+	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
 	setkb(1);
 	modexEnter();
 	modexPalUpdate(ptmp.palette);
@@ -388,7 +388,7 @@ initMap(map_t *map) {
 	for(y=0; y<TILEWH; y++) {
 	for(x=0; x<(TILEWH*2); x++) {
 		if(x<TILEWH)
-		  map->tiles->data->data[i] = 0x01;//0x24;
+		  map->tiles->data->data[i] = 28;//0x24;
 		else
 		  map->tiles->data->data[i] = 0;//0x34;
 		i++;
