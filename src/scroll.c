@@ -46,14 +46,16 @@ struct {
 
 map_t allocMap(int w, int h);
 void initMap(map_t *map);
-void mapScrollRight(map_view_t *mv, byte offset);
-void mapScrollLeft(map_view_t *mv, byte offest);
-void mapScrollUp(map_view_t *mv, byte offset);
-void mapScrollDown(map_view_t *mv, byte offset);
+void mapScrollRight(map_view_t *mv, byte offset, short lp);
+void mapScrollLeft(map_view_t *mv, byte offest, short lp);
+void mapScrollUp(map_view_t *mv, byte offset, short lp);
+void mapScrollDown(map_view_t *mv, byte offset, short lp);
 void mapGoTo(map_view_t *mv, int tx, int ty);
 void mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
-void mapDrawRow(map_view_t *mv, int tx, int ty, word y);
-void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
+void mapDrawRow(map_view_t *mv, int tx, int ty, word y, word poopoffset);
+void mapDrawCol(map_view_t *mv, int tx, int ty, word x, word poopoffset);
+void mapDrawWRow(map_view_t *mv, int tx, int ty, word y);
+void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp);
 
 #define TILEWH 16
@@ -172,8 +174,8 @@ break;
 				INC_PER_FRAME;
 				//animatePlayer(bg, spri, mask, 1, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				animatePlayer(bg, spri, 1, 1, player.x, player.y, persist_aniframe, q, &ptmp);
-				mapScrollRight(bg, SPEED);
-				mapScrollRight(spri, SPEED);
+				mapScrollRight(bg, SPEED, q);
+				mapScrollRight(spri, SPEED, q);
 				//mapScrollRight(mask, SPEED);
 				modexShowPage(spri->page);
 			}
@@ -210,8 +212,8 @@ break;
 				INC_PER_FRAME;
 				//animatePlayer(bg, spri, mask, 3, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				animatePlayer(bg, spri, 3, 1, player.x, player.y, persist_aniframe, q, &ptmp);
-				mapScrollLeft(bg, SPEED);
-				mapScrollLeft(spri, SPEED);
+				mapScrollLeft(bg, SPEED, q);
+				mapScrollLeft(spri, SPEED, q);
 				//mapScrollLeft(mask, SPEED);
 				modexShowPage(spri->page);
 			}
@@ -248,8 +250,8 @@ break;
 				INC_PER_FRAME;
 				//animatePlayer(bg, spri, mask, 2, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				animatePlayer(bg, spri, 2, 1, player.x, player.y, persist_aniframe, q, &ptmp);
-				mapScrollDown(bg, SPEED);
-				mapScrollDown(spri, SPEED);
+				mapScrollDown(bg, SPEED, q);
+				mapScrollDown(spri, SPEED, q);
 				//mapScrollDown(mask, SPEED);
 				modexShowPage(spri->page);
 			}
@@ -286,8 +288,8 @@ break;
 				INC_PER_FRAME;
 				//animatePlayer(bg, spri, mask, 0, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				animatePlayer(bg, spri, 0, 1, player.x, player.y, persist_aniframe, q, &ptmp);
-				mapScrollUp(bg, SPEED);
-				mapScrollUp(spri, SPEED);
+				mapScrollUp(bg, SPEED, q);
+				mapScrollUp(spri, SPEED, q);
 				//mapScrollUp(mask, SPEED);
 				modexShowPage(spri->page);
 			}
@@ -408,7 +410,7 @@ initMap(map_t *map) {
 
 
 void
-mapScrollRight(map_view_t *mv, byte offset) {
+mapScrollRight(map_view_t *mv, byte offset, short lp) {
 	word x, y;  /* coordinate for drawing */
 
 	/* increment the pixel position and update the page */
@@ -421,17 +423,18 @@ mapScrollRight(map_view_t *mv, byte offset) {
 	/* Snap the origin forward */
 	mv->page->data += 4;
 	mv->page->dx = mv->map->tiles->tileWidth;
-
+	}
 
 	/* draw the next column */
 	x= SCREEN_WIDTH + mv->map->tiles->tileWidth;
-		mapDrawCol(mv, mv->tx + 20 , mv->ty-1, x);
-	}
+	if(lp%2)
+		mapDrawCol(mv, mv->tx + 20 , mv->ty-1, x, mv->page->dx);
+	//}
 }
 
 
 void
-mapScrollLeft(map_view_t *mv, byte offset) {
+mapScrollLeft(map_view_t *mv, byte offset, short lp) {
 	word x, y;  /* coordinate for drawing */
 
 	/* increment the pixel position and update the page */
@@ -445,15 +448,16 @@ mapScrollLeft(map_view_t *mv, byte offset) {
 	/* Snap the origin backward */
 	mv->page->data -= 4;
 	mv->page->dx = mv->map->tiles->tileWidth;
-
-	/* draw the next column */
-		mapDrawCol(mv, mv->tx-1, mv->ty-1, 0);
 	}
+	/* draw the next column */
+	if(lp%2)
+		mapDrawCol(mv, mv->tx-1, mv->ty-1, 0, mv->page->dx);
+	//}
 }
 
 
 void
-mapScrollUp(map_view_t *mv, byte offset) {
+mapScrollUp(map_view_t *mv, byte offset, short lp) {
 	word x, y;  /* coordinate for drawing */
 
 	/* increment the pixel position and update the page */
@@ -466,17 +470,18 @@ mapScrollUp(map_view_t *mv, byte offset) {
 	/* Snap the origin downward */
 	mv->page->data -= mv->page->width*4;
 	mv->page->dy = mv->map->tiles->tileHeight;
-
+	}
 
 	/* draw the next row */
 	y= 0;
-		mapDrawRow(mv, mv->tx-1 , mv->ty-1, y);
-	}
+	if(lp%3)
+		mapDrawRow(mv, mv->tx-1 , mv->ty-1, y, mv->page->dy);
+	//}
 }
 
 
 void
-mapScrollDown(map_view_t *mv, byte offset) {
+mapScrollDown(map_view_t *mv, byte offset, short lp) {
 	word x, y;  /* coordinate for drawing */
 
 	/* increment the pixel position and update the page */
@@ -489,12 +494,13 @@ mapScrollDown(map_view_t *mv, byte offset) {
 	/* Snap the origin downward */
 	mv->page->data += mv->page->width*4;
 	mv->page->dy = mv->map->tiles->tileHeight;
-
+	}
 
 	/* draw the next row */
 	y= SCREEN_HEIGHT + mv->map->tiles->tileHeight;
-		mapDrawRow(mv, mv->tx-1 , mv->ty+15, y);
-	}
+	if(lp%3)
+		mapDrawRow(mv, mv->tx-1 , mv->ty+15, y, mv->page->dy);
+	//}
 
 }
 
@@ -519,7 +525,7 @@ mapGoTo(map_view_t *mv, int tx, int ty) {
 	py=0;
 	i=mv->ty * mv->map->width + mv->tx;
 	for(ty=mv->ty-1; py < SCREEN_HEIGHT+mv->dyThresh && ty < mv->map->height; ty++, py+=mv->map->tiles->tileHeight) {
-		mapDrawRow(mv, tx-1, ty, py);
+		mapDrawWRow(mv, tx-1, ty, py);
 	i+=mv->map->width - tx;
 	}
 }
@@ -536,7 +542,45 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y) {
 
 
 void 
-mapDrawRow(map_view_t *mv, int tx, int ty, word y) {
+mapDrawRow(map_view_t *mv, int tx, int ty, word y, word poopoffset) {
+	word x;
+	int i;
+	poopoffset%=6;
+
+	/* the position within the map array */
+	i=ty * mv->map->width + tx;
+	for(x=poopoffset; x<(SCREEN_WIDTH+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width; x+=mv->map->tiles->tileWidth, tx++) {
+	if(i>=0) {
+		/* we are in the map, so copy! */
+		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
+	}
+	i++; /* next! */
+	}
+}
+
+
+void 
+mapDrawCol(map_view_t *mv, int tx, int ty, word x, word poopoffset) {
+	int y;
+	int i;
+	poopoffset%=4;
+
+	/* location in the map array */
+	i=ty * mv->map->width + tx;
+
+	/* We'll copy all of the columns in the screen, 
+	   i + 1 row above and one below */
+	for(y=poopoffset; y<(SCREEN_HEIGHT+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
+	if(i>=0) {
+		/* we are in the map, so copy away! */
+		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
+	}
+	i += mv->map->width;
+	}
+}
+
+void 
+mapDrawWRow(map_view_t *mv, int tx, int ty, word y) {
 	word x;
 	int i;
 
@@ -551,9 +595,8 @@ mapDrawRow(map_view_t *mv, int tx, int ty, word y) {
 	}
 }
 
-
 void 
-mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
+mapDrawWCol(map_view_t *mv, int tx, int ty, word x) {
 	int y;
 	int i;
 
