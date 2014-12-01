@@ -340,8 +340,6 @@ break;
 	printf("player.ty: %d\n", player.ty);
 	printf("player.triggx: %d\n", player.triggerx);
 	printf("player.triggy: %d\n", player.triggery);
-	printf("dxThresh: %d\n", bg->dxThresh);
-	printf("dyThresh: %d\n", bg->dyThresh);
 	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
 	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
 	printf("\n");
@@ -423,13 +421,13 @@ mapScrollRight(map_view_t *mv, byte offset, short lp) {
 	/* Snap the origin forward */
 	mv->page->data += 4;
 	mv->page->dx = mv->map->tiles->tileWidth;
-	}
+	//}
 
 	/* draw the next column */
 	x= SCREEN_WIDTH + mv->map->tiles->tileWidth;
-	if(lp%2)
+	//if(lp%4)
 		mapDrawCol(mv, mv->tx + 20 , mv->ty-1, x, mv->page->dx);
-	//}
+	}
 }
 
 
@@ -448,11 +446,11 @@ mapScrollLeft(map_view_t *mv, byte offset, short lp) {
 	/* Snap the origin backward */
 	mv->page->data -= 4;
 	mv->page->dx = mv->map->tiles->tileWidth;
-	}
-	/* draw the next column */
-	if(lp%2)
-		mapDrawCol(mv, mv->tx-1, mv->ty-1, 0, mv->page->dx);
 	//}
+	/* draw the next column */
+	//if(lp%4)
+		mapDrawCol(mv, mv->tx-1, mv->ty-1, 0, mv->page->dx);
+	}
 }
 
 
@@ -470,13 +468,13 @@ mapScrollUp(map_view_t *mv, byte offset, short lp) {
 	/* Snap the origin downward */
 	mv->page->data -= mv->page->width*4;
 	mv->page->dy = mv->map->tiles->tileHeight;
-	}
+	//}
 
 	/* draw the next row */
 	y= 0;
-	if(lp%3)
+	//if(lp%3)
 		mapDrawRow(mv, mv->tx-1 , mv->ty-1, y, mv->page->dy);
-	//}
+	}
 }
 
 
@@ -494,13 +492,13 @@ mapScrollDown(map_view_t *mv, byte offset, short lp) {
 	/* Snap the origin downward */
 	mv->page->data += mv->page->width*4;
 	mv->page->dy = mv->map->tiles->tileHeight;
-	}
+	//}
 
 	/* draw the next row */
 	y= SCREEN_HEIGHT + mv->map->tiles->tileHeight;
-	if(lp%3)
+	//if(lp%3)
 		mapDrawRow(mv, mv->tx-1 , mv->ty+15, y, mv->page->dy);
-	//}
+	}
 
 }
 
@@ -545,11 +543,11 @@ void
 mapDrawRow(map_view_t *mv, int tx, int ty, word y, word poopoffset) {
 	word x;
 	int i;
-	poopoffset%=6;
-
+	poopoffset%=SPEED;
+printf("y: %d\n", poopoffset);
 	/* the position within the map array */
 	i=ty * mv->map->width + tx;
-	for(x=poopoffset*TILEWH; x<(SCREEN_WIDTH+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width; x+=mv->map->tiles->tileWidth, tx++) {
+	for(x=poopoffset; x<(SCREEN_WIDTH+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width; x+=mv->map->tiles->tileWidth, tx++) {
 	if(i>=0) {
 		/* we are in the map, so copy! */
 		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
@@ -563,14 +561,14 @@ void
 mapDrawCol(map_view_t *mv, int tx, int ty, word x, word poopoffset) {
 	int y;
 	int i;
-	poopoffset%=4;
-
+	poopoffset%=SPEED;
+printf("x: %d\n", poopoffset);
 	/* location in the map array */
 	i=ty * mv->map->width + tx;
 
 	/* We'll copy all of the columns in the screen, 
 	   i + 1 row above and one below */
-	for(y=poopoffset*TILEWH; y<(SCREEN_HEIGHT+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
+	for(y=poopoffset; y<(SCREEN_HEIGHT+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
 	if(i>=0) {
 		/* we are in the map, so copy away! */
 		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
