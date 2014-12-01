@@ -172,8 +172,8 @@ break;
 				INC_PER_FRAME;
 				//animatePlayer(bg, spri, mask, 1, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				animatePlayer(bg, spri, 1, 1, player.x, player.y, persist_aniframe, q, &ptmp);
-				mapScrollRight(bg, SPEED, q);
-				mapScrollRight(spri, SPEED, q);
+				mapScrollRight(bg, SPEED);
+				mapScrollRight(spri, SPEED);
 				//mapScrollRight(mask, SPEED);
 				modexShowPage(spri->page);
 			}
@@ -210,8 +210,8 @@ break;
 				INC_PER_FRAME;
 				//animatePlayer(bg, spri, mask, 3, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				animatePlayer(bg, spri, 3, 1, player.x, player.y, persist_aniframe, q, &ptmp);
-				mapScrollLeft(bg, SPEED, q);
-				mapScrollLeft(spri, SPEED, q);
+				mapScrollLeft(bg, SPEED);
+				mapScrollLeft(spri, SPEED);
 				//mapScrollLeft(mask, SPEED);
 				modexShowPage(spri->page);
 			}
@@ -248,8 +248,8 @@ break;
 				INC_PER_FRAME;
 				//animatePlayer(bg, spri, mask, 2, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				animatePlayer(bg, spri, 2, 1, player.x, player.y, persist_aniframe, q, &ptmp);
-				mapScrollDown(bg, SPEED, q);
-				mapScrollDown(spri, SPEED, q);
+				mapScrollDown(bg, SPEED);
+				mapScrollDown(spri, SPEED);
 				//mapScrollDown(mask, SPEED);
 				modexShowPage(spri->page);
 			}
@@ -286,8 +286,8 @@ break;
 				INC_PER_FRAME;
 				//animatePlayer(bg, spri, mask, 0, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				animatePlayer(bg, spri, 0, 1, player.x, player.y, persist_aniframe, q, &ptmp);
-				mapScrollUp(bg, SPEED, q);
-				mapScrollUp(spri, SPEED, q);
+				mapScrollUp(bg, SPEED);
+				mapScrollUp(spri, SPEED);
 				//mapScrollUp(mask, SPEED);
 				modexShowPage(spri->page);
 			}
