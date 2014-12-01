@@ -428,8 +428,7 @@ mapScrollRight(map_view_t *mv, byte offset, short lp) {
 	/* draw the next column */
 	x= SCREEN_WIDTH + mv->map->tiles->tileWidth;
 	if(lp%2)
-	//mapDrawCol(mv, mv->tx + 20 , mv->ty-1, x, mv->page->dx);
-	mapDrawWCol(mv, mv->tx + 20 , mv->ty-1, x);
+		mapDrawCol(mv, mv->tx + 20 , mv->ty-1, x, mv->page->dx);
 	//}
 }
 
@@ -452,8 +451,7 @@ mapScrollLeft(map_view_t *mv, byte offset, short lp) {
 	}
 	/* draw the next column */
 	if(lp%2)
-	//mapDrawCol(mv, mv->tx-1, mv->ty-1, 0, mv->page->dx);
-	mapDrawWCol(mv, mv->tx-1, mv->ty-1, 0);
+		mapDrawCol(mv, mv->tx-1, mv->ty-1, 0, mv->page->dx);
 	//}
 }
 
@@ -477,8 +475,7 @@ mapScrollUp(map_view_t *mv, byte offset, short lp) {
 	/* draw the next row */
 	y= 0;
 	if(lp%3)
-	//mapDrawRow(mv, mv->tx-1 , mv->ty-1, y, mv->page->dy);
-	mapDrawWRow(mv, mv->tx-1 , mv->ty-1, y);
+		mapDrawRow(mv, mv->tx-1 , mv->ty-1, y, mv->page->dy);
 	//}
 }
 
@@ -502,8 +499,7 @@ mapScrollDown(map_view_t *mv, byte offset, short lp) {
 	/* draw the next row */
 	y= SCREEN_HEIGHT + mv->map->tiles->tileHeight;
 	if(lp%3)
-	//mapDrawRow(mv, mv->tx-1 , mv->ty+15, y, mv->page->dy);
-	mapDrawWRow(mv, mv->tx-1 , mv->ty+15, y);
+		mapDrawRow(mv, mv->tx-1 , mv->ty+15, y, mv->page->dy);
 	//}
 
 }
@@ -553,7 +549,7 @@ mapDrawRow(map_view_t *mv, int tx, int ty, word y, word poopoffset) {
 
 	/* the position within the map array */
 	i=ty * mv->map->width + tx;
-	for(x=poopoffset; x<(SCREEN_WIDTH+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width; x+=mv->map->tiles->tileWidth, tx++) {
+	for(x=poopoffset*TILEWH; x<(SCREEN_WIDTH+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width; x+=mv->map->tiles->tileWidth, tx++) {
 	if(i>=0) {
 		/* we are in the map, so copy! */
 		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
@@ -574,7 +570,7 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x, word poopoffset) {
 
 	/* We'll copy all of the columns in the screen, 
 	   i + 1 row above and one below */
-	for(y=poopoffset; y<(SCREEN_HEIGHT+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
+	for(y=poopoffset*TILEWH; y<(SCREEN_HEIGHT+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
 	if(i>=0) {
 		/* we are in the map, so copy away! */
 		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
