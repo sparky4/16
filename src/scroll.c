@@ -132,37 +132,6 @@ void main() {
 
 	#define INC_PER_FRAME if(q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;	
 
-	//temp testing
-		/*if(bg->tx >= 0 && bg->tx+20 < MAPX && player.tx == bg->tx + 10)
-		{
-			for(q=1; q<=(TILEWH/SPEED); q++)
-			{
-				//INC_PER_FRAME;
-				//animatePlayer(bg, spri, mask, 1, 1, player.x, player.y, persist_aniframe, q, &ptmp);
-				//animatePlayer(bg, spri, 1, 1, player.x, player.y, persist_aniframe, q, &ptmp);
-				mapScrollRight(bg, SPEED);
-				//mapScrollRight(spri, SPEED);
-				//mapScrollRight(mask, SPEED);
-				modexShowPage(bg->page);
-			}
-			player.tx++;
-		}
-		else if(player.tx < MAPX)
-		{
-			for(q=1; q<=(TILEWH/SPEED); q++)
-			{
-				INC_PER_FRAME;
-				player.x+=SPEED;
-				//animatePlayer(bg, spri, mask, 1, 0, player.x, player.y, persist_aniframe, q, &ptmp);
-				animatePlayer(bg, spri, 1, 0, player.x, player.y, persist_aniframe, q, &ptmp);
-				modexShowPage(spri->page);
-			}
-			player.tx++;
-		}
-		else
-		{
-break;
-		}*/
 	if(keyp(77) && !keyp(75))
 	{
 		if(bg->tx >= 0 && bg->tx+20 < MAPX && player.tx == bg->tx + 10 && !(player.tx+1 == TRIGGX && player.ty == TRIGGY))
@@ -517,7 +486,7 @@ mapGoTo(map_view_t *mv, int tx, int ty) {
 	py=0;
 	i=mv->ty * mv->map->width + mv->tx;
 	for(ty=mv->ty-1; py < SCREEN_HEIGHT+mv->dyThresh && ty < mv->map->height; ty++, py+=mv->map->tiles->tileHeight) {
-		mapDrawWRow(mv, tx-1, ty, py);
+		mapDrawRow(mv, tx-1, ty, py);
 	i+=mv->map->width - tx;
 	}
 }

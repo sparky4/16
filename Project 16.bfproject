@@ -2,8 +2,8 @@ c2e.convert_special: 0
 e2c.convert_num: 0
 openfiles: /dos/z/16/doc/project.txt:60:0:0:
 openfiles: /dos/z/16/16.c:25:0:0:
-openfiles: /dos/z/16/src/scroll.c:5954:5217:1:
-openfiles: /dos/z/16/src/lib/scroll.c:0:0:0:
+openfiles: /dos/z/16/src/scroll.c:12603:12335:1:
+openfiles: /dos/z/16/src/lib/scroll.c:1178:1022:0:
 openfiles: /dos/z/16/src/lib/scroll.h:1961:598:0:
 openfiles: /dos/z/16/src/lib/modex16.c:136:0:0:
 openfiles: /dos/z/16/src/lib/modex16.h:3194:2077:0:
@@ -35,7 +35,7 @@ c2e.convert_iso: 0
 opendir: file:///dos/z/16/16
 wrap_text_default: 0
 bookmarks_filename_mode: 1
-ssearch_text: PalFile
+ssearch_text: Wrow
 snr_casesens: 1
 view_blocks: 1
 name: project 16
@@ -53,7 +53,7 @@ replacelist: TRIGGY
 replacelist: TRIGGX
 replacelist: $(SRCLIB)
 replacelist: $(SRC)
-replacelist:  SPEED);
+replacelist: SPEED);
 fb_show_hidden_f: 0
 editor_tab_width: 4
 show_visible_spacing: 1
@@ -96,26 +96,26 @@ recent_files: file:///dos/z/keen-src/id_rf.h
 recent_files: file:///dos/z/keen-src/id_rf_a.asm
 recent_files: file:///dos/z/keen-src/id_rf.c
 recent_files: file:///dos/z/16/gfx.pal
-recent_files: file:///dos/z/16/src/lib/scroll.c
-recent_files: file:///dos/z/16/src/lib/scroll.h
-recent_files: file:///dos/z/16/src/lib/modex16.h
-recent_files: file:///dos/z/16/16.c
-recent_files: file:///dos/z/16/doc/project.txt
-recent_files: file:///dos/z/16/src/pcxtest.c
 recent_files: file:///dos/z/16/src/scroll.c
-recent_files: file:///dos/z/16/src/lib/modex16.c
+recent_files: file:///dos/z/16/src/lib/scroll.c
+recent_files: file:///dos/z/16/src/lib/modex16.h
+recent_files: file:///dos/z/16/doc/project.txt
 recent_files: file:///dos/z/16/src/lib/dos_kb.h
+recent_files: file:///dos/z/16/src/lib/scroll.h
 recent_files: file:///dos/z/16/src/lib/dos_kb.c
+recent_files: file:///dos/z/16/src/pcxtest.c
+recent_files: file:///dos/z/16/16.c
+recent_files: file:///dos/z/16/src/lib/modex16.c
 recent_files: file:///dos/z/16/src/lib/lib_head.h
-recent_files: file:///dos/z/16/src/test2.c
 recent_files: file:///dos/z/16/src/palettec.c
-recent_files: file:///dos/z/16/src/lib/bitmap.h
 recent_files: file:///dos/z/16/src/test.c
+recent_files: file:///dos/z/16/src/test2.c
+recent_files: file:///dos/z/16/src/lib/bitmap.h
 recent_files: file:///dos/z/16/src/lib/types.h
 recent_files: file:///dos/z/16/makefile
-recent_files: file:///dos/z/16/src/lib/bitmap.c
 recent_files: file:///dos/z/16/16/dos_gfx.h
 recent_files: file:///dos/z/16/16/dos_gfx.cpp
+recent_files: file:///dos/z/16/src/lib/bitmap.c
 recent_files: file:///dos/z/16/src/lib/lib_head.cpp
 snr_replacetype: 0
 savedir: file:///dos/z/16/src
@@ -128,7 +128,6 @@ snr_escape_chars: 0
 htmlbar_view: 0
 spell_lang: en
 ssearch_dotmatchall: 0
-searchlist: cra
 searchlist: drawtile
 searchlist: UpdateTiles
 searchlist: dyThresh
@@ -142,7 +141,8 @@ searchlist: dxThresh
 searchlist: PalFile
 searchlist: src\\lib\\
 searchlist: src\\
-searchlist:  SPEED, q);
+searchlist: SPEED, q);
+searchlist: Wrow
 autocomplete: 1
 outputb_show_all_output: 0
 bookmarks_show_mode: 0
