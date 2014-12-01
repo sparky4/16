@@ -544,7 +544,7 @@ mapDrawRow(map_view_t *mv, int tx, int ty, word y, word poopoffset) {
 	word x;
 	int i;
 	poopoffset%=SPEED;
-printf("y: %d\n", poopoffset);
+//printf("y: %d\n", poopoffset);
 	/* the position within the map array */
 	i=ty * mv->map->width + tx;
 	for(x=poopoffset; x<(SCREEN_WIDTH+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width; x+=mv->map->tiles->tileWidth, tx++) {
@@ -562,7 +562,7 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x, word poopoffset) {
 	int y;
 	int i;
 	poopoffset%=SPEED;
-printf("x: %d\n", poopoffset);
+//printf("x: %d\n", poopoffset);
 	/* location in the map array */
 	i=ty * mv->map->width + tx;
 
