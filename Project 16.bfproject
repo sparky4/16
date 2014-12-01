@@ -1,9 +1,12 @@
 c2e.convert_special: 0
 e2c.convert_num: 0
 openfiles: /dos/z/16/doc/project.txt:60:0:0:
-openfiles: /dos/z/16/src/scroll.c:15500:15216:1:
+openfiles: /dos/z/16/16.c:25:0:0:
+openfiles: /dos/z/16/src/scroll.c:18423:392:0:
+openfiles: /dos/z/16/src/lib/scroll.c:0:0:1:
+openfiles: /dos/z/16/src/lib/scroll.h:1961:598:0:
 openfiles: /dos/z/16/src/lib/modex16.c:136:0:0:
-openfiles: /dos/z/16/src/lib/modex16.h:1931:1068:0:
+openfiles: /dos/z/16/src/lib/modex16.h:3194:2077:0:
 openfiles: /dos/z/16/src/pcxtest.c:68:0:0:
 openfiles: /dos/z/16/src/lib/dos_kb.c:107:0:0:
 openfiles: /dos/z/16/src/lib/dos_kb.h:62:0:0:
@@ -29,7 +32,7 @@ view_left_panel: 0
 default_mime_type: text/plain
 e2c.convert_xml: 1
 c2e.convert_iso: 0
-opendir: file:///dos/z/16/16
+opendir: file:///dos/z/16/src/lib
 wrap_text_default: 0
 bookmarks_filename_mode: 1
 ssearch_text: PalFile
@@ -64,7 +67,6 @@ ssearch_regex: 0
 e2c.convert_iso: 0
 ssearch_casesens: 0
 charmap_block: 1
-recent_files: file:///dos/z/16/src/lib/dos_comm.h
 recent_files: file:///dos/z/16/16/modex16/lib/lib_com.h
 recent_files: file:///dos/z/16/16/modex16/lib/lib_com.cpp
 recent_files: file:///dos/z/16/16/modex16/modex16.h
@@ -114,8 +116,9 @@ recent_files: file:///dos/z/16/src/lib/bitmap.c
 recent_files: file:///dos/z/16/src/lib/lib_head.cpp
 recent_files: file:///dos/z/16/16/dos_gfx.h
 recent_files: file:///dos/z/16/16/dos_gfx.cpp
+recent_files: file:///dos/z/16/src/lib/scroll.c
 snr_replacetype: 0
-savedir: file:///dos/z/16/src
+savedir: file:///dos/z/16/src/lib
 spell_check_default: 1
 spell_insert_entities: 0
 last_filefilter: 
