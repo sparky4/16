@@ -6,7 +6,7 @@ Open watcom to compile the code of project 16
 TODO not in particular order~:
 DONE 1. SCROLLING!!!!!!!
 2. Fix pngwen's pcx rendering code it dose not render large relolution pcx files well at all!
-DONE 3. tweak animation frame perloop and make the dpad controls a case switch (look at commander keen code?) and vsync horizontal animation
+almost done  3. tweak animation frame perloop and make the dpad controls a case switch (look at commander keen code?) and vsync horizontal animation
 DONE 4. movement and player movement when reaching edge of map
 DONE 5. sprite rendering
 6. text box rendering
