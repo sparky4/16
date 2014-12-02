@@ -2,7 +2,7 @@ c2e.convert_special: 0
 e2c.convert_num: 0
 openfiles: /dos/z/16/doc/project.txt:60:0:0:
 openfiles: /dos/z/16/16.c:25:0:0:
-openfiles: /dos/z/16/src/scroll.c:12603:12335:1:
+openfiles: /dos/z/16/src/scroll.c:1:0:1:
 openfiles: /dos/z/16/src/lib/scroll.c:1178:1022:0:
 openfiles: /dos/z/16/src/lib/scroll.h:1961:598:0:
 openfiles: /dos/z/16/src/lib/modex16.c:136:0:0:
@@ -35,7 +35,7 @@ c2e.convert_iso: 0
 opendir: file:///dos/z/16/16
 wrap_text_default: 0
 bookmarks_filename_mode: 1
-ssearch_text: Wrow
+ssearch_text: wWrow
 snr_casesens: 1
 view_blocks: 1
 name: project 16
@@ -128,7 +128,6 @@ snr_escape_chars: 0
 htmlbar_view: 0
 spell_lang: en
 ssearch_dotmatchall: 0
-searchlist: drawtile
 searchlist: UpdateTiles
 searchlist: dyThresh
 searchlist: screen.width
@@ -143,6 +142,7 @@ searchlist: src\\lib\\
 searchlist: src\\
 searchlist: SPEED, q);
 searchlist: Wrow
+searchlist: wWrow
 autocomplete: 1
 outputb_show_all_output: 0
 bookmarks_show_mode: 0
