@@ -75,7 +75,14 @@ void main() {
 	map_t map;
 	map_view_t mv, mv2, mv3;
 	map_view_t *bg, *spri, *mask;//, *tmp;
+	byte *pal;
 	byte *ptr;
+
+	/* save the palette */
+	pal  = modexNewPal();
+	modexPalSave(pal);
+	modexFadeOff(4, pal);
+	modexPalBlack();
 
 	/* create the map */
 	map = allocMap(MAPX,MAPY); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
@@ -90,7 +97,9 @@ void main() {
 	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
 	setkb(1);
 	modexEnter();
+	modexPalBlack();
 	modexPalUpdate(ptmp.palette);
+	modexFadeOn(4, ptmp.palette);
 	screen = modexDefaultPage();
 	screen.width += (TILEWH*2);
 	screen.height += (TILEWH*2)+QUADWH;
@@ -124,13 +133,13 @@ void main() {
 	modexClearRegion(spri->page, player.triggerx*16, player.triggery*16, 16, 16, 1);
 	modexClearRegion(bg->page, player.triggerx*16, player.triggery*16, 16, 16, 1);
 	modexShowPage(spri->page);
-	while(!keyp(1))//!keyp(1))
+	while(!keyp(1))
 	{
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
 
-	#define INC_PER_FRAME if(q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;	
+	#define INC_PER_FRAME if(q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;
 
 	if(keyp(77) && !keyp(75))
 	{
@@ -296,6 +305,9 @@ void main() {
 	}
 	}
 
+	/* fade back to text mode */
+	modexFadeOff(4, ptmp.palette);
+	modexPalBlack();
 	modexLeave();
 	setkb(0);
 	printf("Project 16 scroll.exe\n");
@@ -318,6 +330,8 @@ void main() {
 		default: cpus = "internal error"; break;
 	}
 	printf("detected CPU type: %s\n", cpus);
+	modexPalBlack();
+	modexFadeOn(4, pal);
 }
 
 
