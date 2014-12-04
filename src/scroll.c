@@ -40,6 +40,8 @@ struct {
 	int ty; //player tile position on the viewable map
 	int triggerx; //player's trigger box tile position on the viewable map
 	int triggery; //player's trigger box tile position on the viewable map
+	sword q; //loop variable
+	sword d; //direction
 	int hp; //hitpoints of the player
 } player;
 
@@ -59,6 +61,7 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short
 #define TILEWH 16
 #define QUADWH (TILEWH/4)
 #define SPEED 4
+//#define LOOPMAX (TILEWH/SPEED)
 
 //place holder definitions
 #define MAPX 200
@@ -68,7 +71,7 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short
 //#define SWAP(a, b) tmp=a; a=b; b=tmp;
 void main() {
 	bitmap_t ptmp; // player sprite
-	word q=1;
+	//word q=1;
 	const char *cpus;
 	static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	page_t screen, screen2, screen3;
@@ -77,6 +80,9 @@ void main() {
 	map_view_t *bg, *spri, *mask;//, *tmp;
 	byte *pal;
 	byte *ptr;
+
+	player.q=1;
+	player.d=0;
 
 	/* save the palette */
 	pal  = modexNewPal();
@@ -139,35 +145,43 @@ void main() {
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
 
-	#define INC_PER_FRAME if(q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;
+	if(keyp(72) && !keyp(80)  && player.q == 1) player.d = 1;
+	if(keyp(77) && !keyp(75) && player.q == 1) player.d = 2;
+	if(keyp(80) && !keyp(72) && player.q == 1) player.d = 3;
+	if(keyp(75) && !keyp(77)  && player.q == 1) player.d = 4;
+	//if(player.d>0) player.q=1;
 
-	if(keyp(77) && !keyp(75))
+	#define INC_PER_FRAME if(player.q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;
+
+	if(player.d == 2)
 	{
 		if(bg->tx >= 0 && bg->tx+20 < MAPX && player.tx == bg->tx + 10 && !(player.tx+1 == TRIGGX && player.ty == TRIGGY))
 		{
-			for(q=1; q<=(TILEWH/SPEED); q++)
+			//for(q=1; q<=(TILEWH/SPEED); q++)
+			if(player.q<=(TILEWH/SPEED))
 			{
 				INC_PER_FRAME;
 				//animatePlayer(bg, spri, mask, 1, 1, player.x, player.y, persist_aniframe, q, &ptmp);
-				animatePlayer(bg, spri, 1, 1, player.x, player.y, persist_aniframe, q, &ptmp);
+				animatePlayer(bg, spri, 1, 1, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				mapScrollRight(bg, SPEED);
 				mapScrollRight(spri, SPEED);
 				//mapScrollRight(mask, SPEED);
 				modexShowPage(spri->page);
-			}
-			player.tx++;
+				player.q++;
+			} else { player.q = 1; player.d = 0; player.tx++; }
 		}
 		else if(player.tx < MAPX && !(player.tx+1 == TRIGGX && player.ty == TRIGGY))
 		{
-			for(q=1; q<=(TILEWH/SPEED); q++)
+			//for(q=1; q<=(TILEWH/SPEED); q++)
+			if(player.q<=(TILEWH/SPEED))
 			{
 				INC_PER_FRAME;
 				player.x+=SPEED;
 				//animatePlayer(bg, spri, mask, 1, 0, player.x, player.y, persist_aniframe, q, &ptmp);
-				animatePlayer(bg, spri, 1, 0, player.x, player.y, persist_aniframe, q, &ptmp);
+				animatePlayer(bg, spri, 1, 0, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				modexShowPage(spri->page);
-			}
-			player.tx++;
+				player.q++;
+			} else { player.q = 1; player.d = 0; player.tx++; }
 		}
 		else
 		{
@@ -179,33 +193,35 @@ void main() {
 		player.triggery = player.ty;
 	}
 
-	if(keyp(75) && !keyp(77))
+	if(player.d == 4)
 	{
 		if(bg->tx > 0 && bg->tx+20 <= MAPX && player.tx == bg->tx + 10 && !(player.tx-1 == TRIGGX && player.ty == TRIGGY))
 		{
-			for(q=1; q<=(TILEWH/SPEED); q++)
+			//for(q=1; q<=(TILEWH/SPEED); q++)
+			if(player.q<=(TILEWH/SPEED))
 			{
 				INC_PER_FRAME;
 				//animatePlayer(bg, spri, mask, 3, 1, player.x, player.y, persist_aniframe, q, &ptmp);
-				animatePlayer(bg, spri, 3, 1, player.x, player.y, persist_aniframe, q, &ptmp);
+				animatePlayer(bg, spri, 3, 1, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				mapScrollLeft(bg, SPEED);
 				mapScrollLeft(spri, SPEED);
 				//mapScrollLeft(mask, SPEED);
 				modexShowPage(spri->page);
-			}
-			player.tx--;
+				player.q++;
+			} else { player.q = 1; player.d = 0; player.tx--; }
 		}
 		else if(player.tx > 1 && !(player.tx-1 == TRIGGX && player.ty == TRIGGY))
 		{
-			for(q=1; q<=(TILEWH/SPEED); q++)
+			//for(q=1; q<=(TILEWH/SPEED); q++)
+			if(player.q<=(TILEWH/SPEED))
 			{
 				INC_PER_FRAME;
 				player.x-=SPEED;
 				//animatePlayer(bg, spri, mask, 3, 0, player.x, player.y, persist_aniframe, q, &ptmp);
-				animatePlayer(bg, spri, 3, 0, player.x, player.y, persist_aniframe, q, &ptmp);
+				animatePlayer(bg, spri, 3, 0, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				modexShowPage(spri->page);
-			}
-			player.tx--;
+				player.q++;
+			} else { player.q = 1; player.d = 0; player.tx--; }
 		}
 		else
 		{
@@ -217,33 +233,35 @@ void main() {
 		player.triggery = player.ty;
 	}
 
-	if(keyp(80) && !keyp(72))
+	if(player.d == 3)
 	{
 		if(bg->ty >= 0 && bg->ty+15 < MAPY && player.ty == bg->ty + 8 && !(player.tx == TRIGGX && player.ty+1 == TRIGGY))
 		{
-			for(q=1; q<=(TILEWH/SPEED); q++)
+			//for(q=1; q<=(TILEWH/SPEED); q++)
+			if(player.q<=(TILEWH/SPEED))
 			{
 				INC_PER_FRAME;
 				//animatePlayer(bg, spri, mask, 2, 1, player.x, player.y, persist_aniframe, q, &ptmp);
-				animatePlayer(bg, spri, 2, 1, player.x, player.y, persist_aniframe, q, &ptmp);
+				animatePlayer(bg, spri, 2, 1, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				mapScrollDown(bg, SPEED);
 				mapScrollDown(spri, SPEED);
 				//mapScrollDown(mask, SPEED);
 				modexShowPage(spri->page);
-			}
-			player.ty++;
+				player.q++;
+			} else { player.q = 1; player.d = 0; player.ty++; }
 		}
 		else if(player.ty < MAPY && !(player.tx == TRIGGX && player.ty+1 == TRIGGY))
 		{
-			for(q=1; q<=(TILEWH/SPEED); q++)
+			//for(q=1; q<=(TILEWH/SPEED); q++)
+			if(player.q<=(TILEWH/SPEED))
 			{
 				INC_PER_FRAME;
 				player.y+=SPEED;
 				//animatePlayer(bg, spri, mask, 2, 0, player.x, player.y, persist_aniframe, q, &ptmp);
-				animatePlayer(bg, spri, 2, 0, player.x, player.y, persist_aniframe, q, &ptmp);
+				animatePlayer(bg, spri, 2, 0, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				modexShowPage(spri->page);
-			}
-			player.ty++;
+				player.q++;
+			} else { player.q = 1; player.d = 0; player.ty++; }
 		}
 		else
 		{
@@ -255,33 +273,35 @@ void main() {
 		player.triggery = player.ty+1;
 	}
 
-	if(keyp(72) && !keyp(80))
+	if(player.d == 1)
 	{
 		if(bg->ty > 0 && bg->ty+15 <= MAPY && player.ty == bg->ty + 8 && !(player.tx == TRIGGX && player.ty-1 == TRIGGY))
 		{
-			for(q=1; q<=(TILEWH/SPEED); q++)
+			//for(q=1; q<=(TILEWH/SPEED); q++)
+			if(player.q<=(TILEWH/SPEED))
 			{
 				INC_PER_FRAME;
 				//animatePlayer(bg, spri, mask, 0, 1, player.x, player.y, persist_aniframe, q, &ptmp);
-				animatePlayer(bg, spri, 0, 1, player.x, player.y, persist_aniframe, q, &ptmp);
+				animatePlayer(bg, spri, 0, 1, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				mapScrollUp(bg, SPEED);
 				mapScrollUp(spri, SPEED);
 				//mapScrollUp(mask, SPEED);
 				modexShowPage(spri->page);
-			}
-			player.ty--;
+				player.q++;
+			} else { player.q = 1; player.d = 0; player.ty--; }
 		}
 		else if(player.ty > 1 && !(player.tx == TRIGGX &&  player.ty-1 == TRIGGY))
 		{
-			for(q=1; q<=(TILEWH/SPEED); q++)
+			//for(q=1; q<=(TILEWH/SPEED); q++)
+			if(player.q<=(TILEWH/SPEED))
 			{
 				INC_PER_FRAME;
 				player.y-=SPEED;
 				//animatePlayer(bg, spri, mask, 0, 0, player.x, player.y, persist_aniframe, q, &ptmp);
 				modexShowPage(spri->page);
-				animatePlayer(bg, spri, 0, 0, player.x, player.y, persist_aniframe, q, &ptmp);
-			}
-			player.ty--;
+				animatePlayer(bg, spri, 0, 0, player.x, player.y, persist_aniframe, player.q, &ptmp);
+				player.q++;
+			} else { player.q = 1; player.d = 0; player.ty--; }
 		}
 		else
 		{
@@ -319,6 +339,8 @@ void main() {
 	printf("player.ty: %d\n", player.ty);
 	printf("player.triggx: %d\n", player.triggerx);
 	printf("player.triggy: %d\n", player.triggery);
+	printf("player.q: %d\n", player.q);
+	printf("player.d: %d\n", player.d);
 	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
 	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
 	printf("\n");
