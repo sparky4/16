@@ -145,6 +145,8 @@ void main() {
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
 
+
+	//TODO: make this better
 	if(keyp(72) && !keyp(80)  && player.q == 1) player.d = 1;
 	if(keyp(77) && !keyp(75) && player.q == 1) player.d = 2;
 	if(keyp(80) && !keyp(72) && player.q == 1) player.d = 3;
@@ -188,6 +190,7 @@ void main() {
 			modexCopyPageRegion(spri->page, bg->page, player.x-4, player.y-TILEWH, player.x-4, player.y-TILEWH, 24, 32);
 			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 32, 24, 32, &ptmp);
 			modexShowPage(spri->page);
+			player.d = 0;
 		}
 		player.triggerx = player.tx+1;
 		player.triggery = player.ty;
@@ -228,6 +231,7 @@ void main() {
 			modexCopyPageRegion(spri->page, bg->page, player.x-4, player.y-TILEWH, player.x-4, player.y-TILEWH, 24, 32);
 			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 96, 24, 32, &ptmp);
 			modexShowPage(spri->page);
+			player.d = 0;
 		}
 		player.triggerx = player.tx-1;
 		player.triggery = player.ty;
@@ -268,6 +272,7 @@ void main() {
 			modexCopyPageRegion(spri->page, bg->page, player.x-4, player.y-TILEWH, player.x-4, player.y-TILEWH, 24, 32);
 			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
 			modexShowPage(spri->page);
+			player.d = 0;
 		}
 		player.triggerx = player.tx;
 		player.triggery = player.ty+1;
@@ -308,6 +313,7 @@ void main() {
 			modexCopyPageRegion(spri->page, bg->page, player.x-4, player.y-TILEWH, player.x-4, player.y-TILEWH, 24, 32);
 			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 0, 24, 32, &ptmp);
 			modexShowPage(spri->page);
+			player.d = 0;
 		}
 		player.triggerx = player.tx;
 		player.triggery = player.ty-1;
