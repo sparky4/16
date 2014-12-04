@@ -2,17 +2,17 @@ c2e.convert_special: 0
 e2c.convert_num: 0
 openfiles: /dos/z/16/doc/project.txt:60:0:0:
 openfiles: /dos/z/16/16.c:0:0:0:
-openfiles: /dos/z/16/src/scroll.c:2242:1394:0:
+openfiles: /dos/z/16/src/scroll.c:4410:3763:1:
 openfiles: /dos/z/16/src/lib/scroll.c:1666:0:0:
 openfiles: /dos/z/16/src/lib/scroll.h:1961:241:0:
-openfiles: /dos/z/16/src/lib/modex16.c:13778:13598:0:
+openfiles: /dos/z/16/src/lib/modex16.c:13778:13034:0:
 openfiles: /dos/z/16/src/lib/modex16.h:2059:913:0:
 openfiles: /dos/z/16/src/pcxtest.c:68:0:0:
 openfiles: /dos/z/16/src/lib/dos_kb.c:107:0:0:
 openfiles: /dos/z/16/src/lib/dos_kb.h:62:0:0:
 openfiles: /dos/z/16/src/lib/lib_head.h:165:0:0:
 openfiles: /dos/z/16/src/palettec.c:176:0:0:
-openfiles: /dos/z/16/src/test.c:415:52:1:
+openfiles: /dos/z/16/src/test.c:415:629:0:
 openfiles: /dos/z/16/src/test2.c:18:0:0:
 openfiles: /dos/z/16/src/lib/bitmap.c:59:0:0:
 openfiles: /dos/z/16/src/lib/bitmap.h:125:0:0:
@@ -20,7 +20,7 @@ openfiles: /dos/z/16/src/lib/lib_head.cpp:0:0:0:
 openfiles: /dos/z/16/src/lib/types.h:98:0:0:
 openfiles: /dos/z/16/makefile:22:0:0:
 openfiles: /dos/z/16/16/dos_gfx.cpp:6388:0:0:
-openfiles: /dos/z/16/16/dos_gfx.h:175:597:0:
+openfiles: /dos/z/16/16/dos_gfx.h:175:233:0:
 snr_recursion_level: 0
 convertcolumn_horizontally: 0
 adv_open_matchname: 0
@@ -96,23 +96,23 @@ recent_files: file:///dos/z/keen-src/id_rf.h
 recent_files: file:///dos/z/keen-src/id_rf_a.asm
 recent_files: file:///dos/z/keen-src/id_rf.c
 recent_files: file:///dos/z/16/gfx.pal
-recent_files: file:///dos/z/16/src/scroll.c
+recent_files: file:///dos/z/16/src/test.c
 recent_files: file:///dos/z/16/doc/project.txt
 recent_files: file:///dos/z/16/src/lib/modex16.h
+recent_files: file:///dos/z/16/src/lib/modex16.c
 recent_files: file:///dos/z/16/src/lib/scroll.h
 recent_files: file:///dos/z/16/src/lib/scroll.c
-recent_files: file:///dos/z/16/src/pcxtest.c
-recent_files: file:///dos/z/16/src/lib/modex16.c
-recent_files: file:///dos/z/16/16.c
 recent_files: file:///dos/z/16/src/lib/dos_kb.c
 recent_files: file:///dos/z/16/src/lib/dos_kb.h
-recent_files: file:///dos/z/16/src/palettec.c
-recent_files: file:///dos/z/16/src/test2.c
 recent_files: file:///dos/z/16/src/lib/lib_head.h
-recent_files: file:///dos/z/16/src/test.c
-recent_files: file:///dos/z/16/src/lib/bitmap.c
-recent_files: file:///dos/z/16/src/lib/bitmap.h
+recent_files: file:///dos/z/16/src/pcxtest.c
+recent_files: file:///dos/z/16/16.c
+recent_files: file:///dos/z/16/src/scroll.c
+recent_files: file:///dos/z/16/src/test2.c
 recent_files: file:///dos/z/16/src/lib/lib_head.cpp
+recent_files: file:///dos/z/16/src/lib/bitmap.c
+recent_files: file:///dos/z/16/src/palettec.c
+recent_files: file:///dos/z/16/src/lib/bitmap.h
 recent_files: file:///dos/z/16/src/lib/types.h
 recent_files: file:///dos/z/16/makefile
 recent_files: file:///dos/z/16/16/dos_gfx.h
@@ -139,7 +139,7 @@ searchlist: void modexPalBlack();
 searchlist: oid modexPalBlack(
 searchlist: id modexPalBlack(
 searchlist: d modexPalBlack(
-searchlist:  modexPalBlack(
+searchlist: modexPalBlack(
 searchlist: fadePalette(
 searchlist: modexPalBlack(
 searchlist: modexPalUpdate

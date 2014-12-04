@@ -147,10 +147,10 @@ void main() {
 
 
 	//TODO: make this better
-	if(keyp(72) && !keyp(80)  && player.q == 1) player.d = 1;
 	if(keyp(77) && !keyp(75) && player.q == 1) player.d = 2;
-	if(keyp(80) && !keyp(72) && player.q == 1) player.d = 3;
 	if(keyp(75) && !keyp(77)  && player.q == 1) player.d = 4;
+	if(keyp(80) && !keyp(72) && player.q == 1) player.d = 3;
+	if(keyp(72) && !keyp(80)  && player.q == 1) player.d = 1;
 	//if(player.d>0) player.q=1;
 
 	#define INC_PER_FRAME if(player.q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;
