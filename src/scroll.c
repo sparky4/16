@@ -151,7 +151,7 @@ void main() {
 	if(player.q == 1)
 	{
 		dpad(keypressed);
-		//if(keypressed>1){ keypressed=0; dpad(keypressed); }
+		if(keypressed>1){ dpad(keypressed); }
 		keypressed = 0;
 	}
 
@@ -584,6 +584,7 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 sword
 dpad(sword keypressed)
 {
+	if(keypressed>1) keypressed=0;
 	if(keyp(75) && !keyp(77)){ player.d = 4; keypressed++; }
 	if(keyp(80) && !keyp(72)){ player.d = 3; keypressed++; }
 	if(keyp(77) && !keyp(75)){ player.d = 2; keypressed++; }
