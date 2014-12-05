@@ -40,8 +40,8 @@ struct {
 	int ty; //player tile position on the viewable map
 	int triggerx; //player's trigger box tile position on the viewable map
 	int triggery; //player's trigger box tile position on the viewable map
-	sword q; //loop variable
-	sword d; //direction
+	word q; //loop variable
+	word d; //direction
 	int hp; //hitpoints of the player
 } player;
 
@@ -56,7 +56,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty);
 void mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
 void mapDrawRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
-sword dpad(sword keypressed);
+void dpad(sword k);
 void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp);
 
 #define TILEWH 16
@@ -80,7 +80,6 @@ void main() {
 	map_view_t *bg, *spri, *mask;//, *tmp;
 	byte *pal;
 	byte *ptr;
-	sword keypressed = 0;
 
 	player.q=1;
 	player.d=0;
@@ -150,9 +149,7 @@ void main() {
 	//TODO: make this better like rpg maker 2000 better
 	if(player.q == 1)
 	{
-		dpad(keypressed);
-		if(keypressed>1){ dpad(keypressed); }
-		keypressed = 0;
+		dpad(0/*, 0*/);
 	}
 
 	#define INC_PER_FRAME if(player.q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;
@@ -581,15 +578,31 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 	}
 }
 
-sword
-dpad(sword keypressed)
+//sword
+void
+dpad(sword k/*, sword q*/)
 {
-	if(keypressed>1) keypressed=0;
-	if(keyp(75) && !keyp(77)){ player.d = 4; keypressed++; }
-	if(keyp(80) && !keyp(72)){ player.d = 3; keypressed++; }
-	if(keyp(77) && !keyp(75)){ player.d = 2; keypressed++; }
-	if(keyp(72) && !keyp(80)){ player.d = 1; keypressed++; }
-	return keypressed;
+	//printf("p1: %d\n", k);
+	//keypressed=0;
+	//if(q>1){ q=0; return q; }
+	//if(keypressed>1){ keypressed=0; return keypressed; }
+	if(k==0)
+	{
+		if(keyp(75) && !keyp(77)){ player.d = 4; k--; }
+		if(keyp(80) && !keyp(72)){ player.d = 3; k--; }
+		if(keyp(77) && !keyp(75)){ player.d = 2; k++; }
+		if(keyp(72) && !keyp(80)){ player.d = 1; k++; }
+	}
+	else
+	{
+		if(keyp(72) && !keyp(80)){ player.d = 1; k++; }
+		if(keyp(77) && !keyp(75)){ player.d = 2; k++; }
+		if(keyp(80) && !keyp(72)){ player.d = 3; k--; }
+		if(keyp(75) && !keyp(77)){ player.d = 4; k--; }
+	} 
+	//printf("p2: %d\n", k);
+	//if(k>1 || k<-1){ dpad(0); }
+	//return keypressed=0;
 }
 
 void

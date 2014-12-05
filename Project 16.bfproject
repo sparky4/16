@@ -2,7 +2,7 @@ c2e.convert_special: 0
 e2c.convert_num: 0
 openfiles: /dos/z/16/doc/project.txt:60:0:0:
 openfiles: /dos/z/16/16.c:0:0:0:
-openfiles: /dos/z/16/src/scroll.c:4649:3633:1:
+openfiles: /dos/z/16/src/scroll.c:17044:16836:1:
 openfiles: /dos/z/16/src/lib/scroll.c:1666:0:0:
 openfiles: /dos/z/16/src/lib/scroll.h:1961:241:0:
 openfiles: /dos/z/16/src/v2/source/ENGINE/CONTROLS.C:2441:1179:0:
@@ -18,7 +18,7 @@ openfiles: /dos/z/16/src/test2.c:18:0:0:
 openfiles: /dos/z/16/src/lib/bitmap.c:59:0:0:
 openfiles: /dos/z/16/src/lib/bitmap.h:125:0:0:
 openfiles: /dos/z/16/src/lib/lib_head.cpp:0:0:0:
-openfiles: /dos/z/16/src/lib/types.h:98:0:0:
+openfiles: /dos/z/16/src/lib/types.h:242:0:0:
 openfiles: /dos/z/16/makefile:22:0:0:
 openfiles: /dos/z/16/16/dos_gfx.cpp:6388:0:0:
 openfiles: /dos/z/16/16/dos_gfx.h:175:233:0:
