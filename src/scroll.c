@@ -56,6 +56,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty);
 void mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
 void mapDrawRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
+sword dpad(sword keypressed);
 void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp);
 
 #define TILEWH 16
@@ -71,7 +72,6 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short
 //#define SWAP(a, b) tmp=a; a=b; b=tmp;
 void main() {
 	bitmap_t ptmp; // player sprite
-	//word q=1;
 	const char *cpus;
 	static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	page_t screen, screen2, screen3;
@@ -80,6 +80,7 @@ void main() {
 	map_view_t *bg, *spri, *mask;//, *tmp;
 	byte *pal;
 	byte *ptr;
+	sword keypressed = 0;
 
 	player.q=1;
 	player.d=0;
@@ -146,12 +147,13 @@ void main() {
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
 
 
-	//TODO: make this better
-	if(keyp(77) && !keyp(75) && player.q == 1) player.d = 2;
-	if(keyp(75) && !keyp(77)  && player.q == 1) player.d = 4;
-	if(keyp(80) && !keyp(72) && player.q == 1) player.d = 3;
-	if(keyp(72) && !keyp(80)  && player.q == 1) player.d = 1;
-	//if(player.d>0) player.q=1;
+	//TODO: make this better like rpg maker 2000 better
+	if(player.q == 1)
+	{
+		dpad(keypressed);
+		//if(keypressed>1){ keypressed=0; dpad(keypressed); }
+		keypressed = 0;
+	}
 
 	#define INC_PER_FRAME if(player.q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;
 
@@ -577,6 +579,16 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 	}
 	i += mv->map->width;
 	}
+}
+
+sword
+dpad(sword keypressed)
+{
+	if(keyp(75) && !keyp(77)){ player.d = 4; keypressed++; }
+	if(keyp(80) && !keyp(72)){ player.d = 3; keypressed++; }
+	if(keyp(77) && !keyp(75)){ player.d = 2; keypressed++; }
+	if(keyp(72) && !keyp(80)){ player.d = 1; keypressed++; }
+	return keypressed;
 }
 
 void
