@@ -588,20 +588,20 @@ dpad(sword k/*, sword q*/)
 	//if(keypressed>1){ keypressed=0; return keypressed; }
 	if(k==0)
 	{
-		if(keyp(75) && !keyp(77)){ player.d = 4; k--; }
-		if(keyp(80) && !keyp(72)){ player.d = 3; k--; }
+		if(keyp(75) && !keyp(77)){ player.d = 4; k++; }
+		if(keyp(80) && !keyp(72)){ player.d = 3; k++; }
 		if(keyp(77) && !keyp(75)){ player.d = 2; k++; }
 		if(keyp(72) && !keyp(80)){ player.d = 1; k++; }
 	}
 	else
 	{
-		if(keyp(72) && !keyp(80)){ player.d = 1; k++; }
-		if(keyp(77) && !keyp(75)){ player.d = 2; k++; }
+		if(keyp(72) && !keyp(80)){ player.d = 1; k--; }
+		if(keyp(77) && !keyp(75)){ player.d = 2; k--; }
 		if(keyp(80) && !keyp(72)){ player.d = 3; k--; }
 		if(keyp(75) && !keyp(77)){ player.d = 4; k--; }
 	} 
 	//printf("p2: %d\n", k);
-	//if(k>1 || k<-1){ dpad(0); }
+	if(k>1/* || k<-1*/){ dpad(k); }
 	//return keypressed=0;
 }
 
