@@ -144,6 +144,7 @@ void main() {
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
 	#define INC_PER_FRAME if(player.q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;
 
+	//right movement
 	if((keyp(77) && !keyp(75) && player.d == 0) || player.d == 2)
 	{
 		if(player.d == 0){ player.d = 2; }
@@ -153,7 +154,7 @@ void main() {
 			{
 				INC_PER_FRAME;
 				//animatePlayer(bg, spri, mask, 1, 1, player.x, player.y, persist_aniframe, q, &ptmp);
-				animatePlayer(bg, spri, 1, 1, player.x, player.y, persist_aniframe, player.q, &ptmp);
+				animatePlayer(bg, spri, player.d-1, 1, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				mapScrollRight(bg, SPEED);
 				mapScrollRight(spri, SPEED);
 				//mapScrollRight(mask, SPEED);
@@ -168,7 +169,7 @@ void main() {
 				INC_PER_FRAME;
 				player.x+=SPEED;
 				//animatePlayer(bg, spri, mask, 1, 0, player.x, player.y, persist_aniframe, q, &ptmp);
-				animatePlayer(bg, spri, 1, 0, player.x, player.y, persist_aniframe, player.q, &ptmp);
+				animatePlayer(bg, spri, player.d-1, 0, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				modexShowPage(spri->page);
 				player.q++;
 			} else { player.q = 1; player.d = 0; player.tx++; }
@@ -184,6 +185,7 @@ void main() {
 		player.triggery = player.ty;
 	}
 
+	//left movement
 	if((keyp(75) && !keyp(77) && player.d == 0) || player.d == 4)
 	{
 		if(player.d == 0){ player.d = 4; }
@@ -193,7 +195,7 @@ void main() {
 			{
 				INC_PER_FRAME;
 				//animatePlayer(bg, spri, mask, 3, 1, player.x, player.y, persist_aniframe, q, &ptmp);
-				animatePlayer(bg, spri, 3, 1, player.x, player.y, persist_aniframe, player.q, &ptmp);
+				animatePlayer(bg, spri, player.d-1, 1, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				mapScrollLeft(bg, SPEED);
 				mapScrollLeft(spri, SPEED);
 				//mapScrollLeft(mask, SPEED);
@@ -208,7 +210,7 @@ void main() {
 				INC_PER_FRAME;
 				player.x-=SPEED;
 				//animatePlayer(bg, spri, mask, 3, 0, player.x, player.y, persist_aniframe, q, &ptmp);
-				animatePlayer(bg, spri, 3, 0, player.x, player.y, persist_aniframe, player.q, &ptmp);
+				animatePlayer(bg, spri, player.d-1, 0, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				modexShowPage(spri->page);
 				player.q++;
 			} else { player.q = 1; player.d = 0; player.tx--; }
@@ -224,6 +226,7 @@ void main() {
 		player.triggery = player.ty;
 	}
 
+	//down movement
 	if((keyp(80) && !keyp(72) && player.d == 0) || player.d == 3)
 	{
 		if(player.d == 0){ player.d = 3; }
@@ -233,7 +236,7 @@ void main() {
 			{
 				INC_PER_FRAME;
 				//animatePlayer(bg, spri, mask, 2, 1, player.x, player.y, persist_aniframe, q, &ptmp);
-				animatePlayer(bg, spri, 2, 1, player.x, player.y, persist_aniframe, player.q, &ptmp);
+				animatePlayer(bg, spri, player.d-1, 1, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				mapScrollDown(bg, SPEED);
 				mapScrollDown(spri, SPEED);
 				//mapScrollDown(mask, SPEED);
@@ -248,7 +251,7 @@ void main() {
 				INC_PER_FRAME;
 				player.y+=SPEED;
 				//animatePlayer(bg, spri, mask, 2, 0, player.x, player.y, persist_aniframe, q, &ptmp);
-				animatePlayer(bg, spri, 2, 0, player.x, player.y, persist_aniframe, player.q, &ptmp);
+				animatePlayer(bg, spri, player.d-1, 0, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				modexShowPage(spri->page);
 				player.q++;
 			} else { player.q = 1; player.d = 0; player.ty++; }
@@ -264,6 +267,7 @@ void main() {
 		player.triggery = player.ty+1;
 	}
 
+	//up movement
 	if((keyp(72) && !keyp(80) && player.d == 0) || player.d == 1)
 	{
 		if(player.d == 0){ player.d = 1; }
@@ -273,7 +277,7 @@ void main() {
 			{
 				INC_PER_FRAME;
 				//animatePlayer(bg, spri, mask, 0, 1, player.x, player.y, persist_aniframe, q, &ptmp);
-				animatePlayer(bg, spri, 0, 1, player.x, player.y, persist_aniframe, player.q, &ptmp);
+				animatePlayer(bg, spri, player.d-1, 1, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				mapScrollUp(bg, SPEED);
 				mapScrollUp(spri, SPEED);
 				//mapScrollUp(mask, SPEED);
@@ -289,7 +293,7 @@ void main() {
 				player.y-=SPEED;
 				//animatePlayer(bg, spri, mask, 0, 0, player.x, player.y, persist_aniframe, q, &ptmp);
 				modexShowPage(spri->page);
-				animatePlayer(bg, spri, 0, 0, player.x, player.y, persist_aniframe, player.q, &ptmp);
+				animatePlayer(bg, spri, player.d-1, 0, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				player.q++;
 			} else { player.q = 1; player.d = 0; player.ty--; }
 		}
