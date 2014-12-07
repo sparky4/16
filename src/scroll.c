@@ -55,7 +55,6 @@ void mapGoTo(map_view_t *mv, int tx, int ty);
 void mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
 void mapDrawRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
-sword dpad(actor_t *qd);
 void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp);
 
 #define TILEWH 16
@@ -131,7 +130,7 @@ void main() {
 	player.y = player.ty*TILEWH;
 	player.triggerx = player.tx;
 	player.triggery = player.ty+1;
-	player.q=0;
+	player.q=1;
 	player.d=0;
 	modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
 
@@ -143,20 +142,11 @@ void main() {
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
-
-
-	//TODO: make this better like rpg maker 2000 better
-	if(player.q <= 1)
-	{
-		dpad(&player);
-		if(player.d>0) dpad(&player);
-		if(player.q<1) player.q++;
-	}
-
 	#define INC_PER_FRAME if(player.q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;
 
-	if(player.d == 2)
+	if((keyp(77) && !keyp(75) && player.d == 0) || player.d == 2)
 	{
+		if(player.d == 0){ player.d = 2; }
 		if(bg->tx >= 0 && bg->tx+20 < MAPX && player.tx == bg->tx + 10 && !(player.tx+1 == TRIGGX && player.ty == TRIGGY))
 		{
 			if(player.q<=(TILEWH/SPEED))
@@ -169,7 +159,7 @@ void main() {
 				//mapScrollRight(mask, SPEED);
 				modexShowPage(spri->page);
 				player.q++;
-			} else { player.q = 0; player.d = 0; player.tx++; }
+			} else { player.q = 1; player.d = 0; player.tx++; }
 		}
 		else if(player.tx < MAPX && !(player.tx+1 == TRIGGX && player.ty == TRIGGY))
 		{
@@ -181,7 +171,7 @@ void main() {
 				animatePlayer(bg, spri, 1, 0, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				modexShowPage(spri->page);
 				player.q++;
-			} else { player.q = 0; player.d = 0; player.tx++; }
+			} else { player.q = 1; player.d = 0; player.tx++; }
 		}
 		else
 		{
@@ -194,8 +184,9 @@ void main() {
 		player.triggery = player.ty;
 	}
 
-	if(player.d == 4)
+	if((keyp(75) && !keyp(77) && player.d == 0) || player.d == 4)
 	{
+		if(player.d == 0){ player.d = 4; }
 		if(bg->tx > 0 && bg->tx+20 <= MAPX && player.tx == bg->tx + 10 && !(player.tx-1 == TRIGGX && player.ty == TRIGGY))
 		{
 			if(player.q<=(TILEWH/SPEED))
@@ -208,7 +199,7 @@ void main() {
 				//mapScrollLeft(mask, SPEED);
 				modexShowPage(spri->page);
 				player.q++;
-			} else { player.q = 0; player.d = 0; player.tx--; }
+			} else { player.q = 1; player.d = 0; player.tx--; }
 		}
 		else if(player.tx > 1 && !(player.tx-1 == TRIGGX && player.ty == TRIGGY))
 		{
@@ -220,7 +211,7 @@ void main() {
 				animatePlayer(bg, spri, 3, 0, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				modexShowPage(spri->page);
 				player.q++;
-			} else { player.q = 0; player.d = 0; player.tx--; }
+			} else { player.q = 1; player.d = 0; player.tx--; }
 		}
 		else
 		{
@@ -233,8 +224,9 @@ void main() {
 		player.triggery = player.ty;
 	}
 
-	if(player.d == 3)
+	if((keyp(80) && !keyp(72) && player.d == 0) || player.d == 3)
 	{
+		if(player.d == 0){ player.d = 3; }
 		if(bg->ty >= 0 && bg->ty+15 < MAPY && player.ty == bg->ty + 8 && !(player.tx == TRIGGX && player.ty+1 == TRIGGY))
 		{
 			if(player.q<=(TILEWH/SPEED))
@@ -247,7 +239,7 @@ void main() {
 				//mapScrollDown(mask, SPEED);
 				modexShowPage(spri->page);
 				player.q++;
-			} else { player.q = 0; player.d = 0; player.ty++; }
+			} else { player.q = 1; player.d = 0; player.ty++; }
 		}
 		else if(player.ty < MAPY && !(player.tx == TRIGGX && player.ty+1 == TRIGGY))
 		{
@@ -259,7 +251,7 @@ void main() {
 				animatePlayer(bg, spri, 2, 0, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				modexShowPage(spri->page);
 				player.q++;
-			} else { player.q = 0; player.d = 0; player.ty++; }
+			} else { player.q = 1; player.d = 0; player.ty++; }
 		}
 		else
 		{
@@ -272,8 +264,9 @@ void main() {
 		player.triggery = player.ty+1;
 	}
 
-	if(player.d == 1)
+	if((keyp(72) && !keyp(80) && player.d == 0) || player.d == 1)
 	{
+		if(player.d == 0){ player.d = 1; }
 		if(bg->ty > 0 && bg->ty+15 <= MAPY && player.ty == bg->ty + 8 && !(player.tx == TRIGGX && player.ty-1 == TRIGGY))
 		{
 			if(player.q<=(TILEWH/SPEED))
@@ -286,7 +279,7 @@ void main() {
 				//mapScrollUp(mask, SPEED);
 				modexShowPage(spri->page);
 				player.q++;
-			} else { player.q = 0; player.d = 0; player.ty--; }
+			} else { player.q = 1; player.d = 0; player.ty--; }
 		}
 		else if(player.ty > 1 && !(player.tx == TRIGGX &&  player.ty-1 == TRIGGY))
 		{
@@ -298,7 +291,7 @@ void main() {
 				modexShowPage(spri->page);
 				animatePlayer(bg, spri, 0, 0, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				player.q++;
-			} else { player.q = 0; player.d = 0; player.ty--; }
+			} else { player.q = 1; player.d = 0; player.ty--; }
 		}
 		else
 		{
@@ -569,42 +562,6 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 	}
 	i += mv->map->width;
 	}
-}
-
-sword
-dpad(actor_t *qd)
-{
-	if((keyp(75) && !keyp(77))) qd->d = 4; //left
-	if((keyp(80) && !keyp(72))) qd->d = 3; //down
-	if((keyp(77) && !keyp(75))) qd->d = 2; //right
-	if((keyp(72) && !keyp(80))) qd->d = 1; //up
-/*	if(qd->d==0)
-	{
-		//if((keyp(80) || keyp(72)))
-		//{
-			if((keyp(72) && !keyp(80))&&qd->d==0) qd->d = 1; //up
-			if((keyp(80) && !keyp(72))&&qd->d==0) qd->d = 3; //down
-		//}
-		//if((keyp(75) || keyp(77)))
-		//{
-			if((keyp(75) && !keyp(77))&&qd->d==0) qd->d = 4; //left
-			if((keyp(77) && !keyp(75))&&qd->d==0) qd->d = 2; //right
-		//}
-	}
-	else
-	{
-	if((qd->d==2 || qd->d==4))
-	{
-		if(keyp(72) && !keyp(80)) qd->d = 1; //up
-		if(keyp(80) && !keyp(72)) qd->d = 3; //down
-	}
-	else if((qd->d==1 || qd->d==3))
-	{
-		if(keyp(75) && !keyp(77)) qd->d = 4; //left
-		if(keyp(77) && !keyp(75)) qd->d = 2; //right
-	}
-	}*/
-	return qd->d;
 }
 
 void
