@@ -55,7 +55,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty);
 void mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
 void mapDrawRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
-void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp);
+void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword d, short scrolloffsetswitch, int x, int y, int ls, int lp, bitmap_t *bmp);
 
 #define TILEWH 16
 #define QUADWH (TILEWH/4)
@@ -569,14 +569,14 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 }
 
 void
-animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp)
+animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword d, short scrolloffsetswitch, int x, int y, int ls, int lp, bitmap_t *bmp)
 {
-	short dire=32*d1; //direction
-	short qq; //scroll offset
+	sword dire=32*d; //direction
+	sword qq; //scroll offset
 
-	if(d2==0) qq = 0;
+	if(scrolloffsetswitch==0) qq = 0;
 	else qq = ((lp)*SPEED);
-	switch (d1)
+	switch (d)
 	{
 		case 0:
 			//up
