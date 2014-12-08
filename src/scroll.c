@@ -461,8 +461,9 @@ void main() {
 	printf("Project 16 scroll.exe\n");
 	printf("tx: %d\n", bg->tx);
 	printf("ty: %d\n", bg->ty);
-	printf("player.x: %d\n", player.x);
-	printf("player.y: %d\n", player.y);
+	printf("player.x: %d", player.x);
+	if(player.hp==0) printf("%d wwww\n", player.y+8);
+	else printf("\nplayer.y: %d\n", player.y);
 	printf("player.tx: %d\n", player.tx);
 	printf("player.ty: %d\n", player.ty);
 	printf("player.triggx: %d\n", player.triggerx);
