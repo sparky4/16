@@ -39,6 +39,8 @@ typedef struct {
 	int ty; //player tile position on the viewable map
 	int triggerx; //player's trigger box tile position on the viewable map
 	int triggery; //player's trigger box tile position on the viewable map
+	int setx; //NOT USED YET! player sprite sheet set on the image x
+	int sety; //NOT USED YET! player sprite sheet set on the image y
 	word q; //loop variable
 	word d; //direction
 	int hp; //hitpoints of the player
@@ -69,7 +71,7 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword
 #define TRIGGY 9
 //#define SWAP(a, b) tmp=a; a=b; b=tmp;
 void main() {
-	bitmap_t ptmp; // player sprite
+	bitmap_t ptmp;//, npctmp; // player sprite
 	const char *cpus;
 	static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	page_t screen, screen2, screen3;
@@ -79,7 +81,7 @@ void main() {
 	byte *pal;
 	byte *ptr;
 	actor_t player;
-
+	//actor_t npc0;
 
 	/* save the palette */
 	pal  = modexNewPal();
@@ -96,8 +98,9 @@ void main() {
 
 	/* draw the tiles */
 	ptr = map.data;
-	/*data\\*/
+	/* data */
 	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
+	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 	setkb(1);
 	modexEnter();
 	modexPalBlack();
@@ -132,18 +135,147 @@ void main() {
 	player.triggery = player.ty+1;
 	player.q=1;
 	player.d=0;
+	player.hp=4;
+	//npc
+	/*npc0.tx = bg->tx + 1;
+	npc0.ty = bg->ty + 1;
+	npc0.x = npc0.tx*TILEWH;
+	npc0.y = npc0.ty*TILEWH;
+	npc0.triggerx = npc0.tx;
+	npc0.triggery = npc0.ty+1;
+	npc0.q=1;
+	npc0.d=0;
+	modexDrawSpriteRegion(spri->page, npc0.x-4, npc0.y-TILEWH, 24, 64, 24, 32, &npctmp);*/
 	modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
 
 	modexClearRegion(spri->page, player.triggerx*16, player.triggery*16, 16, 16, 1);
 	modexClearRegion(bg->page, player.triggerx*16, player.triggery*16, 16, 16, 1);
+
+	modexClearRegion(spri->page, 5*16, 5*16, 16, 16, 255);
+	modexClearRegion(bg->page, 5*16, 5*16, 16, 16, 255);
+
 	modexShowPage(spri->page);
-	while(!keyp(1))
+	while(!keyp(1) && player.hp!=0)
 	{
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
 	#define INC_PER_FRAME if(player.q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;
+	/*#define INC_PER_FRAME_NPC if(npc0.q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;
 
+	if(npc0.d == 0 && npc0.q == 1) npc0.d =rand()%8;
+	if(npc0.d>4)
+		npc0.d=0;
+
+	//right movement
+	if(npc0.d == 2)
+	{
+		if(npc0.tx < MAPX && !(npc0.tx+1 == TRIGGX && npc0.ty == TRIGGY) && !(npc0.tx+1 == player.tx && npc0.ty == player.ty))
+		{
+			if(npc0.q<=(TILEWH/SPEED))
+			{
+				INC_PER_FRAME_NPC;
+				npc0.x+=SPEED;
+				//animatePlayer(bg, spri, mask, 1, 0, npc0.x, npc0.y, persist_aniframe, q, &npctmp);
+				animatePlayer(bg, spri, npc0.d-1, 0, npc0.x, npc0.y, persist_aniframe, npc0.q, &npctmp);
+				modexShowPage(spri->page);
+				npc0.q++;
+			} else { npc0.q = 1; npc0.d = 0; npc0.tx++; }
+		}
+		else
+		{
+			modexCopyPageRegion(spri->page, bg->page, npc0.x-4, npc0.y-TILEWH, npc0.x-4, npc0.y-TILEWH, 24, 32);
+			modexDrawSpriteRegion(spri->page, npc0.x-4, npc0.y-TILEWH, 24, 32, 24, 32, &npctmp);
+			modexShowPage(spri->page);
+			npc0.d = 0;
+		}
+		npc0.triggerx = npc0.tx+1;
+		npc0.triggery = npc0.ty;
+	}
+
+	//left movement
+	if(npc0.d == 4)
+	{
+		if(npc0.tx > 1 && !(npc0.tx-1 == TRIGGX && npc0.ty == TRIGGY) && !(npc0.tx-1 == player.tx && npc0.ty == player.ty))
+		{
+			if(npc0.q<=(TILEWH/SPEED))
+			{
+				INC_PER_FRAME_NPC;
+				npc0.x-=SPEED;
+				//animatePlayer(bg, spri, mask, 3, 0, npc0.x, npc0.y, persist_aniframe, q, &npctmp);
+				animatePlayer(bg, spri, npc0.d-1, 0, npc0.x, npc0.y, persist_aniframe, npc0.q, &npctmp);
+				modexShowPage(spri->page);
+				npc0.q++;
+			} else { npc0.q = 1; npc0.d = 0; npc0.tx--; }
+		}
+		else
+		{
+			modexCopyPageRegion(spri->page, bg->page, npc0.x-4, npc0.y-TILEWH, npc0.x-4, npc0.y-TILEWH, 24, 32);
+			modexDrawSpriteRegion(spri->page, npc0.x-4, npc0.y-TILEWH, 24, 96, 24, 32, &npctmp);
+			modexShowPage(spri->page);
+			npc0.d = 0;
+		}
+		npc0.triggerx = npc0.tx-1;
+		npc0.triggery = npc0.ty;
+	}
+
+	//down movement
+	if(npc0.d == 3)
+	{
+		if(npc0.ty < MAPY && !(npc0.tx == TRIGGX && npc0.ty+1 == TRIGGY) && !(npc0.tx == player.tx && npc0.ty == player.ty+1))
+		{
+			if(npc0.q<=(TILEWH/SPEED))
+			{
+				INC_PER_FRAME_NPC;
+				npc0.y+=SPEED;
+				//animatePlayer(bg, spri, mask, 2, 0, npc0.x, npc0.y, persist_aniframe, q, &npctmp);
+				animatePlayer(bg, spri, npc0.d-1, 0, npc0.x, npc0.y, persist_aniframe, npc0.q, &npctmp);
+				modexShowPage(spri->page);
+				npc0.q++;
+			} else { npc0.q = 1; npc0.d = 0; npc0.ty++; }
+		}
+		else
+		{
+			modexCopyPageRegion(spri->page, bg->page, npc0.x-4, npc0.y-TILEWH, npc0.x-4, npc0.y-TILEWH, 24, 32);
+			modexDrawSpriteRegion(spri->page, npc0.x-4, npc0.y-TILEWH, 24, 64, 24, 32, &npctmp);
+			modexShowPage(spri->page);
+			npc0.d = 0;
+		}
+		npc0.triggerx = npc0.tx;
+		npc0.triggery = npc0.ty+1;
+	}
+
+	//up movement
+	if(npc0.d == 1)
+	{
+		if(npc0.ty > 1 && !(npc0.tx == TRIGGX &&  npc0.ty-1 == TRIGGY) && !(npc0.tx+1 == player.tx && npc0.ty == player.ty-1))
+		{
+			if(npc0.q<=(TILEWH/SPEED))
+			{
+				INC_PER_FRAME_NPC;
+				npc0.y-=SPEED;
+				//animatePlayer(bg, spri, mask, 0, 0, npc0.x, npc0.y, persist_aniframe, q, &npctmp);
+				modexShowPage(spri->page);
+				animatePlayer(bg, spri, npc0.d-1, 0, npc0.x, npc0.y, persist_aniframe, npc0.q, &npctmp);
+				npc0.q++;
+			} else { npc0.q = 1; npc0.d = 0; npc0.ty--; }
+		}
+		else
+		{
+			modexCopyPageRegion(spri->page, bg->page, npc0.x-4, npc0.y-TILEWH, npc0.x-4, npc0.y-TILEWH, 24, 32);
+			modexDrawSpriteRegion(spri->page, npc0.x-4, npc0.y-TILEWH, 24, 0, 24, 32, &npctmp);
+			modexShowPage(spri->page);
+			npc0.d = 0;
+		}
+		npc0.triggerx = npc0.tx;
+		npc0.triggery = npc0.ty-1;
+	}
+
+	if((npc0.triggery == player.ty && npc0.triggerx == player.tx) || (npc0.ty == player.ty && npc0.tx == player.tx)){ player.hp--; }
+*/
+
+	//player movement
+	//TODO: make movement into aa function!
 	//right movement
 	if((keyp(77) && !keyp(75) && player.d == 0) || player.d == 2)
 	{
@@ -309,15 +441,16 @@ void main() {
 	}
 	//modexClearRegion(mask->page, 66, 66, 2, 40, 0);
 
-	if((player.triggerx == TRIGGX && player.triggery == TRIGGY) && keyp(KEY_ENTER))
+	if(((player.triggerx == TRIGGX && player.triggery == TRIGGY) && keyp(KEY_ENTER))||(player.tx == 5 && player.ty == 5))
 	{
 		short i;
-		for(i=600; i>=400; i--)
+		for(i=800; i>=400; i--)
 		{
 			sound(i);
 		}
 		nosound();
 	}
+	if(player.q == (TILEWH/SPEED)+1 && player.d > 0 && (player.triggerx == 5 && player.triggery == 5)){ player.hp--; }
 	}
 
 	/* fade back to text mode */
@@ -334,6 +467,7 @@ void main() {
 	printf("player.ty: %d\n", player.ty);
 	printf("player.triggx: %d\n", player.triggerx);
 	printf("player.triggy: %d\n", player.triggery);
+	printf("player.hp: %d\n", player.hp);
 	printf("player.q: %d\n", player.q);
 	printf("player.d: %d\n", player.d);
 	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
@@ -567,6 +701,11 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 	i += mv->map->width;
 	}
 }
+
+/*void npcmove(map_view_t bg, map_view_t fg, )
+{
+	
+}*/
 
 void
 animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword d, short scrolloffsetswitch, int x, int y, int ls, int lp, bitmap_t *bmp)
