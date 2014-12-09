@@ -69,7 +69,7 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword
 #define MAPY 150
 #define TRIGGX 10
 #define TRIGGY 9
-//#define SWAP(a, b) tmp=a; a=b; b=tmp;
+
 void main() {
 	bitmap_t ptmp;//, npctmp; // player sprite
 	const char *cpus;
@@ -275,7 +275,7 @@ void main() {
 */
 
 	//player movement
-	//TODO: make movement into aa function!
+	//TODO: make movement into a function!
 	//right movement
 	if((keyp(77) && !keyp(75) && player.d == 0) || player.d == 2)
 	{
@@ -451,6 +451,7 @@ void main() {
 		nosound();
 	}
 	if(player.q == (TILEWH/SPEED)+1 && player.d > 0 && (player.triggerx == 5 && player.triggery == 5)){ player.hp--; }
+	if(keyp(0x0E)) while(1){ if(malloc(24)) break; }
 	}
 
 	/* fade back to text mode */
