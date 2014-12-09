@@ -452,7 +452,7 @@ void main() {
 		nosound();
 	}
 	if(player.q == (TILEWH/SPEED)+1 && player.d > 0 && (player.triggerx == 5 && player.triggery == 5)){ player.hp--; }
-	if(keyp(0x0E)) while(1){ if(xmsmalloc(24)) break; }
+	//if(keyp(0x0E)) while(1){ if(xmsmalloc(24)) break; }
 	}
 
 	/* fade back to text mode */
@@ -476,6 +476,7 @@ void main() {
 	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
 	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
 	printf("\n");
+	xmsfree(&map);
 	switch(detectcpu())
 	{
 		case 0: cpus = "8086/8088 or 186/88"; break;
