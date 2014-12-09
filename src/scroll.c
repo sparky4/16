@@ -84,12 +84,6 @@ void main() {
 	actor_t player;
 	//actor_t npc0;
 
-	/* save the palette */
-	pal  = modexNewPal();
-	modexPalSave(pal);
-	modexFadeOff(4, pal);
-	modexPalBlack();
-
 	/* create the map */
 	map = allocMap(MAPX,MAPY); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	initMap(&map);
@@ -102,6 +96,13 @@ void main() {
 	/* data */
 	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
+
+	/* save the palette */
+	pal  = modexNewPal();
+	modexPalSave(pal);
+	modexFadeOff(4, pal);
+	modexPalBlack();
+
 	setkb(1);
 	modexEnter();
 	modexPalBlack();
@@ -498,7 +499,7 @@ allocMap(int w, int h) {
 	result.height=h;
 	if(initxms()>0)
 	result.data = malloc(sizeof(byte) * w * h);
-	else result.data = xmsmalloc(sizeof(byte) * w * h);
+	else (void huge*)result.data = xmsmalloc(sizeof(byte) * w * h);
 
 	return result;
 }
@@ -512,17 +513,17 @@ initMap(map_t *map) {
 	int tile = 1;
 	if(initxms()>0)
 	map->tiles = malloc(sizeof(tiles_t));
-	else map->tiles = xmsmalloc(sizeof(tiles_t));
+	else (void huge*)map->tiles = xmsmalloc(sizeof(tiles_t));
 
 	/* create the tile set */
 	if(initxms()>0)
 	map->tiles->data = malloc(sizeof(bitmap_t));
-	else map->tiles->data = xmsmalloc(sizeof(bitmap_t));
+	else (void huge*)map->tiles->data = xmsmalloc(sizeof(bitmap_t));
 	map->tiles->data->width = (TILEWH*2);
 	map->tiles->data->height= TILEWH;
 	if(initxms()>0)
 	map->tiles->data->data = malloc((TILEWH*2)*TILEWH);
-	else map->tiles->data->data = xmsmalloc((TILEWH*2)*TILEWH);
+	else (void huge*)map->tiles->data->data = xmsmalloc((TILEWH*2)*TILEWH);
 	map->tiles->tileHeight = TILEWH;
 	map->tiles->tileWidth =TILEWH;
 	map->tiles->rows = 1;
