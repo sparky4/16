@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "src\lib\dos_kb.h"
 #include "src\lib\wtest\wtest.c"
+#include "src\lib\xms.c"
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 
@@ -441,7 +442,7 @@ void main() {
 	}
 	//modexClearRegion(mask->page, 66, 66, 2, 40, 0);
 
-	if(((player.triggerx == TRIGGX && player.triggery == TRIGGY) && keyp(KEY_ENTER))||(player.tx == 5 && player.ty == 5))
+	if(((player.triggerx == TRIGGX && player.triggery == TRIGGY) && keyp(0x1C))||(player.tx == 5 && player.ty == 5))
 	{
 		short i;
 		for(i=800; i>=400; i--)
@@ -451,7 +452,7 @@ void main() {
 		nosound();
 	}
 	if(player.q == (TILEWH/SPEED)+1 && player.d > 0 && (player.triggerx == 5 && player.triggery == 5)){ player.hp--; }
-	if(keyp(0x0E)) while(1){ if(malloc(24)) break; }
+	if(keyp(0x0E)) while(1){ if(xmsmalloc(24)) break; }
 	}
 
 	/* fade back to text mode */
@@ -494,7 +495,8 @@ allocMap(int w, int h) {
 
 	result.width =w;
 	result.height=h;
-	result.data = malloc(sizeof(byte) * w * h);
+	if(initxms()) result.data = malloc(sizeof(byte) * w * h);
+	else result.data = xmsmalloc(sizeof(byte) * w * h);
 
 	return result;
 }
@@ -506,13 +508,16 @@ initMap(map_t *map) {
 	int x, y;
 	int i;
 	int tile = 1;
-	map->tiles = malloc(sizeof(tiles_t));
+	if(initxms()) map->tiles = malloc(sizeof(tiles_t));
+	else map->tiles = xmsmalloc(sizeof(tiles_t));
 
 	/* create the tile set */
-	map->tiles->data = malloc(sizeof(bitmap_t));
+	if(initxms()) map->tiles = malloc(sizeof(tiles_t));
+	else map->tiles->data = xmsmalloc(sizeof(bitmap_t));
 	map->tiles->data->width = (TILEWH*2);
 	map->tiles->data->height= TILEWH;
-	map->tiles->data->data = malloc((TILEWH*2)*TILEWH);
+	if(initxms()) map->tiles->data->data = malloc((TILEWH*2)*TILEWH);
+	else map->tiles->data->data = xmsmalloc((TILEWH*2)*TILEWH);
 	map->tiles->tileHeight = TILEWH;
 	map->tiles->tileWidth =TILEWH;
 	map->tiles->rows = 1;

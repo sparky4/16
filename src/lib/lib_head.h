@@ -8,6 +8,7 @@
 
 /* Control codes for all keys on the keyboard */
 //here temperarly
+/*
 #define KEY_A		(0x1E)
 #define KEY_B		(0x30)
 #define KEY_C		(0x2E)
@@ -44,17 +45,17 @@
 #define KEY_8		(0x09)
 #define KEY_9		(0x0A)
 #define KEY_0		(0x0B)
-#define KEY_DASH		(0x0C)	/* -_ */
-#define KEY_EQUAL		(0x0D)	/* =+ */
-#define KEY_LBRACKET	(0x1A)	/* [{ */
-#define KEY_RBRACKET	(0x1B)	/* ]} */
-#define KEY_SEMICOLON	(0x27)	/* ;: */
-#define KEY_RQUOTE	(0x28)	/* '" */
-#define KEY_LQUOTE	(0x29)	/* `~ */
-#define KEY_PERIOD	(0x33)	/* .> */
-#define KEY_COMMA		(0x34)	/* ,< */
-#define KEY_SLASH		(0x35)	/* /? */
-#define KEY_BACKSLASH	(0x2B)	/* \| */
+#define KEY_DASH		(0x0C)	// -_
+#define KEY_EQUAL		(0x0D)	// =+
+#define KEY_LBRACKET	(0x1A)	// [{
+#define KEY_RBRACKET	(0x1B)	// ]}
+#define KEY_SEMICOLON	(0x27)	// ;:
+#define KEY_RQUOTE	(0x28)	// '"
+#define KEY_LQUOTE	(0x29)	// `~
+#define KEY_PERIOD	(0x33)	// .>
+#define KEY_COMMA		(0x34)	// ,<
+#define KEY_SLASH		(0x35)	// /?
+#define KEY_BACKSLASH	(0x2B)	// \|
 #define KEY_F1		(0x3B)
 #define KEY_F2		(0x3C)
 #define KEY_F3		(0x3D)
@@ -95,7 +96,7 @@
 #define KEY_LWIN		(0x73)
 #define KEY_RWIN		(0x74)
 #define KEY_MENU		(0x75)
-
+*/
 
 //typedef unsigned char byte;
 //typedef unsigned int word;
