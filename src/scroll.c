@@ -85,6 +85,15 @@ void main() {
 	actor_t player;
 	//actor_t npc0;
 
+	if(isEMS()) printf("%d\n", coretotalEMS());
+	if(isEMS())
+	{
+		emmhandle = alloc_emem(1024);
+		move_emem((XMOVE *)&map);
+//		printf("%d\n", emmhandle);
+		printf("%d\n", coretotalEMS());
+	}
+
 	/* create the map */
 	map = allocMap(MAPX,MAPY); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	initMap(&map);
@@ -97,13 +106,6 @@ void main() {
 	/* data */
 	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
-
-	if(isEMS()) printf("%d\n", coretotalEMS());
-	if(isEMS())
-	{
-		emmhandle = alloc_emem(256);
-		printf("%d\n", emmhandle);
-	}
 
 	/* save the palette */
 	pal  = modexNewPal();
@@ -490,7 +492,12 @@ void main() {
 	//xmsfree(spri);
 	//xmsfree(mask);
 	//xmsreport();
-	if(isEMS()) dealloc_emem(emmhandle);
+	if(isEMS())
+	{
+	printf("%d\n", coretotalEMS());
+	dealloc_emem(emmhandle);
+	printf("%d\n", coretotalEMS());
+	}
 	switch(detectcpu())
 	{
 		case 0: cpus = "8086/8088 or 186/88"; break;
