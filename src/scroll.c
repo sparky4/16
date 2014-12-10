@@ -97,6 +97,8 @@ void main() {
 	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 
+	if(isEMS()) printf("%d\n", coretotalEMS());
+
 	/* save the palette */
 	pal  = modexNewPal();
 	modexPalSave(pal);
@@ -501,9 +503,10 @@ allocMap(int w, int h) {
 
 	result.width =w;
 	result.height=h;
-	if(!isEMS())
-	result.data = malloc(sizeof(byte) * w * h);
-	else result.data = (byte *)alloc_emem(sizeof(byte) * w * h);
+	//if(!isEMS() || !checkEMS())
+		result.data = malloc(sizeof(byte) * w * h);
+	//else
+	//	result.data = (byte *)alloc_emem(sizeof(byte) * w * h);
 
 	return result;
 }
@@ -515,19 +518,22 @@ initMap(map_t *map) {
 	int x, y;
 	int i;
 	int tile = 1;
-	if(!isEMS())
-	map->tiles = malloc(sizeof(tiles_t));
-	else map->tiles = (tiles_t *)alloc_emem(sizeof(tiles_t));
+	//if(!isEMS() || !checkEMS())
+		map->tiles = malloc(sizeof(tiles_t));
+	//else
+	//	map->tiles = (tiles_t *)alloc_emem(sizeof(tiles_t));
 
 	/* create the tile set */
-	if(!isEMS())
-	map->tiles->data = malloc(sizeof(bitmap_t));
-	else map->tiles->data = (bitmap_t *)alloc_emem(sizeof(bitmap_t));
+	//if(!isEMS() || !checkEMS())
+		map->tiles->data = malloc(sizeof(bitmap_t));
+	//else
+	//	map->tiles->data = (bitmap_t *)alloc_emem(sizeof(bitmap_t));
 	map->tiles->data->width = (TILEWH*2);
 	map->tiles->data->height= TILEWH;
-	if(!isEMS())
-	map->tiles->data->data = malloc((TILEWH*2)*TILEWH);
-	else map->tiles->data->data = (byte *)alloc_emem((TILEWH*2)*TILEWH);
+	//if(!isEMS() || !checkEMS())
+		map->tiles->data->data = malloc((TILEWH*2)*TILEWH);
+	//else
+	//	map->tiles->data->data = (byte *)alloc_emem((TILEWH*2)*TILEWH);
 	map->tiles->tileHeight = TILEWH;
 	map->tiles->tileWidth =TILEWH;
 	map->tiles->rows = 1;
