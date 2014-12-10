@@ -75,6 +75,7 @@ void main() {
 	bitmap_t ptmp;//, npctmp; // player sprite
 	const char *cpus;
 	static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
+	int emmhandle;
 	page_t screen, screen2, screen3;
 	map_t map;
 	map_view_t mv, mv2, mv3;
@@ -100,7 +101,7 @@ void main() {
 	if(isEMS()) printf("%d\n", coretotalEMS());
 	if(isEMS())
 	{
-		int emmhandle = alloc_emem(1);
+		emmhandle = alloc_emem(256);
 		printf("%d\n", emmhandle);
 	}
 
@@ -489,6 +490,7 @@ void main() {
 	//xmsfree(spri);
 	//xmsfree(mask);
 	//xmsreport();
+	if(isEMS()) dealloc_emem(emmhandle);
 	switch(detectcpu())
 	{
 		case 0: cpus = "8086/8088 or 186/88"; break;
