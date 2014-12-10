@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "src\lib\dos_kb.h"
 #include "src\lib\wtest\wtest.c"
-#include "src\lib\xms.c"
+#include "src\lib\ems.c"
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 
@@ -477,11 +477,11 @@ void main() {
 	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
 	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
 	printf("\n");
-	xmsfree(&map);
-	xmsfree(bg);
-	xmsfree(spri);
-	xmsfree(mask);
-	xmsreport();
+	//xmsfree(&map);
+	//xmsfree(bg);
+	//xmsfree(spri);
+	//xmsfree(mask);
+	//xmsreport();
 	switch(detectcpu())
 	{
 		case 0: cpus = "8086/8088 or 186/88"; break;
@@ -501,9 +501,9 @@ allocMap(int w, int h) {
 
 	result.width =w;
 	result.height=h;
-	if(initxms()>0)
+	if(!isEMS())
 	result.data = malloc(sizeof(byte) * w * h);
-	else result.data = (byte *)xmsmalloc(sizeof(byte) * w * h);
+	else result.data = (byte *)alloc_emem(sizeof(byte) * w * h);
 
 	return result;
 }
@@ -515,19 +515,19 @@ initMap(map_t *map) {
 	int x, y;
 	int i;
 	int tile = 1;
-	if(initxms()>0)
+	if(!isEMS())
 	map->tiles = malloc(sizeof(tiles_t));
-	else map->tiles = (tiles_t *)xmsmalloc(sizeof(tiles_t));
+	else map->tiles = (tiles_t *)alloc_emem(sizeof(tiles_t));
 
 	/* create the tile set */
-	if(initxms()>0)
+	if(!isEMS())
 	map->tiles->data = malloc(sizeof(bitmap_t));
-	else map->tiles->data = (bitmap_t *)xmsmalloc(sizeof(bitmap_t));
+	else map->tiles->data = (bitmap_t *)alloc_emem(sizeof(bitmap_t));
 	map->tiles->data->width = (TILEWH*2);
 	map->tiles->data->height= TILEWH;
-	if(initxms()>0)
+	if(!isEMS())
 	map->tiles->data->data = malloc((TILEWH*2)*TILEWH);
-	else map->tiles->data->data = (byte *)xmsmalloc((TILEWH*2)*TILEWH);
+	else map->tiles->data->data = (byte *)alloc_emem((TILEWH*2)*TILEWH);
 	map->tiles->tileHeight = TILEWH;
 	map->tiles->tileWidth =TILEWH;
 	map->tiles->rows = 1;
