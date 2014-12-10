@@ -89,6 +89,7 @@ void main() {
 	if(isEMS())
 	{
 		emmhandle = alloc_emem(1024);
+		mapEMS(emmhandle, 0, 0);
 		move_emem((XMOVE *)&map);
 //		printf("%d\n", emmhandle);
 		printf("%d\n", coretotalEMS());
