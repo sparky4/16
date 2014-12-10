@@ -98,6 +98,11 @@ void main() {
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 
 	if(isEMS()) printf("%d\n", coretotalEMS());
+	if(isEMS())
+	{
+		int emmhandle = alloc_emem(1);
+		printf("%d\n", emmhandle);
+	}
 
 	/* save the palette */
 	pal  = modexNewPal();
