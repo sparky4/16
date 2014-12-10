@@ -499,7 +499,7 @@ allocMap(int w, int h) {
 	result.height=h;
 	if(initxms()>0)
 	result.data = malloc(sizeof(byte) * w * h);
-	else result.data = xmsmalloc(sizeof(byte) * w * h);
+	else result.data = (byte *)xmsmalloc(sizeof(byte) * w * h);
 
 	return result;
 }
@@ -513,17 +513,17 @@ initMap(map_t *map) {
 	int tile = 1;
 	if(initxms()>0)
 	map->tiles = malloc(sizeof(tiles_t));
-	else map->tiles = xmsmalloc(sizeof(tiles_t));
+	else map->tiles = (tiles_t *)xmsmalloc(sizeof(tiles_t));
 
 	/* create the tile set */
 	if(initxms()>0)
 	map->tiles->data = malloc(sizeof(bitmap_t));
-	else map->tiles->data = xmsmalloc(sizeof(bitmap_t));
+	else map->tiles->data = (bitmap_t *)xmsmalloc(sizeof(bitmap_t));
 	map->tiles->data->width = (TILEWH*2);
 	map->tiles->data->height= TILEWH;
 	if(initxms()>0)
 	map->tiles->data->data = malloc((TILEWH*2)*TILEWH);
-	else map->tiles->data->data = xmsmalloc((TILEWH*2)*TILEWH);
+	else map->tiles->data->data = (byte *)xmsmalloc((TILEWH*2)*TILEWH);
 	map->tiles->tileHeight = TILEWH;
 	map->tiles->tileWidth =TILEWH;
 	map->tiles->rows = 1;
