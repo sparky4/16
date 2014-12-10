@@ -23,6 +23,6 @@ static XMSHandleMap allocMapXMS[MAX_XMS_ALLOCATIONS];
 static int initxms(void);
 void huge * xmsmalloc(long unsigned int size);
 void xmsfree(void huge * XMSPointer);
-void xmsreport(FILE * stream);
+void xmsreport(void/*FILE * stream*/);
 
 #endif/*_XMS_H_*/

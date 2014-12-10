@@ -149,7 +149,7 @@ void xmsfree(void huge * XMSPointer)
 }
 
 /* Write a memory report for debugging purposes */
-void xmsreport(FILE * stream)
+void xmsreport(void/*FILE * stream*/)
 {
 	int XMSVersionNumber = 0;
 	unsigned int XMSLargestBlock = 0;
@@ -174,8 +174,10 @@ void xmsreport(FILE * stream)
 		mov [XMSTotal], dx
 	}
 
-	fprintf(stream, "XMS Version number: %d\n", XMSVersionNumber);
-	fprintf(stream, "Largest available block: %d kB (%d kB total)\n", XMSLargestBlock, XMSTotal);
+	//fprintf(stream, "XMS Version number: %d\n", XMSVersionNumber);
+	//fprintf(stream, "Largest available block: %d kB (%d kB total)\n", XMSLargestBlock, XMSTotal);
+	printf("XMS Version number: %d\n", XMSVersionNumber);
+	printf("Largest available block: %d kB (%d kB total)\n", XMSLargestBlock, XMSTotal);
 }
 
 /*int main()

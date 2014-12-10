@@ -478,6 +478,10 @@ void main() {
 	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
 	printf("\n");
 	xmsfree(&map);
+	xmsfree(bg);
+	xmsfree(spri);
+	xmsfree(mask);
+	xmsreport();
 	switch(detectcpu())
 	{
 		case 0: cpus = "8086/8088 or 186/88"; break;
