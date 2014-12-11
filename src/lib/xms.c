@@ -82,7 +82,7 @@ void huge * xmsmalloc(long unsigned int size)
 		call [XMSControl]
 		mov [XMSStatus], ax
 
-		mov word ptr [XMSPointer],  bx 
+		mov word ptr [XMSPointer],  bx
 		mov word ptr [XMSPointer+2],dx
 	}
 

@@ -287,3 +287,33 @@ int mem_emem(unsigned int *total, unsigned int *freeall)
 
  return( 1 );
 }
+
+void emmmove(int page, short *str, int n)
+     {
+          /*
+          Move 'n' bytes from conventional memory to the specified
+     expanded memory
+          page
+          */
+     
+          char far *ptr;
+     
+          ptr = pageframeEMS() + page * 16384;
+          while(n-- > 0)
+               *ptr++ = *str++;
+     }
+     
+     void emmget(int page, short *str, int n)
+     {
+          /*
+          Move 'n' bytes from the specified expanded memory page into
+     conventional
+          memory
+          */
+     
+          char far *ptr;
+     
+          ptr = pageframeEMS() + page * 16384;
+          while(n-- > 0)
+               *str++ = *ptr++;
+     }

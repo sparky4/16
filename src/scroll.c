@@ -76,6 +76,7 @@ void main() {
 	const char *cpus;
 	static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	int emmhandle;
+	XMOVE mm;
 	page_t screen, screen2, screen3;
 	map_t map;
 	map_view_t mv, mv2, mv3;
@@ -88,10 +89,11 @@ void main() {
 	if(isEMS()) printf("%d\n", coretotalEMS());
 	if(isEMS())
 	{
-		emmhandle = alloc_emem(1024);
+		emmhandle = mallocEMS(coretotalEMS());
 		mapEMS(emmhandle, 0, 0);
-		move_emem((XMOVE *)&map);
-//		printf("%d\n", emmhandle);
+		//halp!
+		//move_emem((XMOVE *)&map);
+		//printf("%d\n", emmhandle);
 		printf("%d\n", coretotalEMS());
 	}
 
@@ -106,6 +108,7 @@ void main() {
 	ptr = map.data;
 	/* data */
 	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
+	//if(isEMS()) emmmove(emmhandle,ptmp,sizeof(ptmp)+ 1);
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 
 	/* save the palette */
@@ -495,8 +498,10 @@ void main() {
 	//xmsreport();
 	if(isEMS())
 	{
+	printf("%d\n", get_emem());
 	printf("%d\n", coretotalEMS());
 	dealloc_emem(emmhandle);
+	//freeEMS(emmtotal);
 	printf("%d\n", coretotalEMS());
 	}
 	switch(detectcpu())
