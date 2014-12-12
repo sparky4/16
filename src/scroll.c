@@ -7,6 +7,8 @@
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 
+int emmhandle,ist;
+
 typedef struct {
 	bitmap_t *data;
 	word tileHeight;
@@ -44,9 +46,9 @@ typedef struct {
 	int sety; //NOT USED YET! player sprite sheet set on the image y
 	word q; //loop variable
 	word d; //direction
+	bitmap_t data; //supposively the sprite sheet data
 	int hp; //hitpoints of the player
 } actor_t;
-
 
 map_t allocMap(int w, int h);
 void initMap(map_t *map);
@@ -66,8 +68,8 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword
 //#define LOOPMAX (TILEWH/SPEED)
 
 //place holder definitions
-#define MAPX 200
-#define MAPY 150
+#define MAPX 40
+#define MAPY 30
 #define TRIGGX 10
 #define TRIGGY 9
 
@@ -75,8 +77,6 @@ void main() {
 	bitmap_t ptmp;//, npctmp; // player sprite
 	const char *cpus;
 	static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
-	int emmhandle;
-	XMOVE mm;
 	page_t screen, screen2, screen3;
 	map_t map;
 	map_view_t mv, mv2, mv3;
@@ -86,19 +86,11 @@ void main() {
 	actor_t player;
 	//actor_t npc0;
 
-	if(isEMS()) printf("%d\n", coretotalEMS());
-	if(isEMS())
-	{
-		emmhandle = mallocEMS(coretotalEMS());
-		mapEMS(emmhandle, 0, 0);
-		//halp!
-		//move_emem((XMOVE *)&map);
-		//printf("%d\n", emmhandle);
-		printf("%d\n", coretotalEMS());
-	}
+	if(isEMS() || checkEMS()){ printf("%d\n", coretotalEMS()); emmhandle = mallocEMS(coretotalEMS()); }
 
 	/* create the map */
 	map = allocMap(MAPX,MAPY); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
+	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
 	initMap(&map);
 	mv.map = &map;
 	mv2.map = &map;
@@ -108,9 +100,38 @@ void main() {
 	ptr = map.data;
 	/* data */
 	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
-	//if(isEMS()) emmmove(emmhandle,ptmp,sizeof(ptmp)+ 1);
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 
+	/*if(isEMS())
+	{
+		XMOVE mm;
+		mm.length=sizeof(map);
+		mm.sourceH=0;
+		mm.sourceOff=(long)&map;
+		mm.destH=emmhandle;
+		mm.destOff=1;
+		//halp!
+		ist = move_emem(&mm);
+		printf("%d\n", coretotalEMS());
+		if(!ist){ dealloc_emem(emmhandle); exit(5); }
+		//printf("%d\n", emmhandle);
+	}
+
+	if(isEMS())
+	{
+		XMOVE mm;
+		mm.length=emmhandle;
+		mm.sourceH=0;
+		mm.sourceOff=(long)&ptmp;
+		mm.destH=emmhandle;
+		mm.destOff=0;
+		//halp!
+		ist = move_emem(&mm);
+		printf("%d\n", coretotalEMS());
+		if(!ist){ dealloc_emem(emmhandle); exit(5); }
+		//printf("%d\n", emmhandle);
+	}
+*/
 	/* save the palette */
 	pal  = modexNewPal();
 	modexPalSave(pal);
@@ -171,7 +192,7 @@ void main() {
 	modexClearRegion(bg->page, 5*16, 5*16, 16, 16, 255);
 
 	modexShowPage(spri->page);
-	while(!keyp(1) && player.hp!=0)
+	while(!keyp(1) && player.hp>0)
 	{
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
@@ -475,6 +496,7 @@ void main() {
 	modexPalBlack();
 	modexLeave();
 	setkb(0);
+	//system("mem /E /P");
 	printf("Project 16 scroll.exe\n");
 	printf("tx: %d\n", bg->tx);
 	printf("ty: %d\n", bg->ty);
@@ -498,11 +520,10 @@ void main() {
 	//xmsreport();
 	if(isEMS())
 	{
-	printf("%d\n", get_emem());
-	printf("%d\n", coretotalEMS());
-	dealloc_emem(emmhandle);
-	//freeEMS(emmtotal);
-	printf("%d\n", coretotalEMS());
+		printf("%d\n", get_emem());
+		printf("%d\n", coretotalEMS());
+		dealloc_emem(emmhandle);
+		printf("%d\n", coretotalEMS());
 	}
 	switch(detectcpu())
 	{
@@ -523,14 +544,24 @@ allocMap(int w, int h) {
 
 	result.width =w;
 	result.height=h;
-	//if(!isEMS() || !checkEMS())
-		result.data = malloc(sizeof(byte) * w * h);
-	//else
-	//	result.data = (byte *)alloc_emem(sizeof(byte) * w * h);
+	result.data = malloc(sizeof(byte) * w * h);
+	//result.data = (byte *)alloc_emem(((int)sizeof(byte) * w * h)/1024);
+	/*if(isEMS() || checkEMS())
+	{
+		XMOVE mm;
+		//emmhandle = mallocEMS(coretotalEMS());//alloc_emem((int)sizeof(map))
+		mm.length=sizeof(result);
+		mm.sourceH=0;
+		mm.sourceOff=ptr2long(&result);
+		mm.destH=emmhandle;
+		mm.destOff=0;
+		ist = move_emem(&mm);
+		if(!ist){ dealloc_emem(emmhandle); exit(5); }
+		printf("%d\n", coretotalEMS());
+	}*/
 
 	return result;
 }
-
 
 void
 initMap(map_t *map) {

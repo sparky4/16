@@ -104,4 +104,7 @@
 
 void wait(clock_t wait);
 
+/* THIS FUNCTION CONVERTS A POINTER TO AN INTEL LONG              */
+//int long ptr2long(char *p);
+
 #endif/*_LIBHEAD_H_*/
