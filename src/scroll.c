@@ -741,7 +741,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y) {
 }
 
 
-void 
+void
 mapDrawRow(map_view_t *mv, int tx, int ty, word y) {
 	word x;
 	int i;
@@ -757,7 +757,7 @@ mapDrawRow(map_view_t *mv, int tx, int ty, word y) {
 	}
 }
 
-void 
+void
 mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 	int y;
 	int i;
@@ -775,12 +775,6 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 	i += mv->map->width;
 	}
 }
-
-/*void npcmove(map_view_t bg, map_view_t fg, )
-{
-	
-}*/
-
 void
 animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword d, short scrolloffsetswitch, int x, int y, int ls, int lp, bitmap_t *bmp)
 {
