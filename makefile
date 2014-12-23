@@ -4,7 +4,7 @@ SRCLIB=$(SRC)lib\
 all: test.exe pcxtest.exe test2.exe scroll.exe
 
 scroll.exe: scroll.obj modex16.obj dos_kb.obj bitmap.obj
-	wcl $(FLAGS) scroll.obj modex16.obj dos_kb.obj bitmap.obj
+	wcl $(FLAGS) scroll.obj modex16.obj dos_kb.obj bitmap.obj 16\lib\x\modex.lib
 scroll.obj: $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
 test.exe: test.obj modex16.obj bitmap.obj

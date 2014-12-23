@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "src\lib\dos_kb.h"
+#include "16\lib\x\modex.h"
 #include "src\lib\wtest\wtest.c"
 #include "src\lib\ems.c"
 
@@ -68,8 +69,8 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword
 //#define LOOPMAX (TILEWH/SPEED)
 
 //place holder definitions
-#define MAPX 40
-#define MAPY 30
+#define MAPX 200
+#define MAPY 150
 #define TRIGGX 10
 #define TRIGGY 9
 
@@ -737,6 +738,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y) {
 	word ry;
 	rx = (i % t->cols) * t->tileWidth;
 	ry = (i / t->cols) * t->tileHeight;
+	//mxPutTile(t->data, x, y, t->tileWidth, t->tileHeight);
 	modexDrawBmpRegion(page, x, y, rx, ry, t->tileWidth, t->tileHeight, t->data);
 }
 
