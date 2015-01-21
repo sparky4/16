@@ -10,8 +10,8 @@ scroll.obj: $(SRC)scroll.c
 test.exe: test.obj modex16.obj bitmap.obj
 	wcl $(FLAGS) test.obj modex16.obj bitmap.obj
 	
-test2.exe: test2.obj modex16.obj bitmap.obj
-	wcl $(FLAGS) test2.obj modex16.obj bitmap.obj
+test2.exe: test2.obj modex16.obj bitmap.obj planar.obj
+	wcl $(FLAGS) test2.obj modex16.obj bitmap.obj planar.obj
 	
 pcxtest.exe: pcxtest.obj modex16.obj bitmap.obj
 	wcl $(FLAGS) pcxtest.obj modex16.obj bitmap.obj
@@ -33,6 +33,9 @@ dos_kb.obj: $(SRCLIB)dos_kb.h $(SRCLIB)dos_kb.c
 
 bitmap.obj: $(SRCLIB)bitmap.h $(SRCLIB)bitmap.c
 	wcl $(FLAGS) -c $(SRCLIB)bitmap.c
+
+planar.obj: $(SRCLIB)planar.h $(SRCLIB)planar.c
+	wcl $(FLAGS) -c $(SRCLIB)planar.c
 	
 clean: 
 	del *.obj
