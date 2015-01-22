@@ -2,9 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "src\lib\dos_kb.h"
+#include "16\lib\x\modex.h"
 #include "src\lib\wtest\wtest.c"
+#include "src\lib\ems.c"
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
+
+int emmhandle,ist;
 
 typedef struct {
 	bitmap_t *data;
@@ -39,11 +43,13 @@ typedef struct {
 	int ty; //player tile position on the viewable map
 	int triggerx; //player's trigger box tile position on the viewable map
 	int triggery; //player's trigger box tile position on the viewable map
+	int setx; //NOT USED YET! player sprite sheet set on the image x
+	int sety; //NOT USED YET! player sprite sheet set on the image y
 	word q; //loop variable
 	word d; //direction
+	bitmap_t data; //supposively the sprite sheet data
 	int hp; //hitpoints of the player
 } actor_t;
-
 
 map_t allocMap(int w, int h);
 void initMap(map_t *map);
@@ -55,7 +61,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty);
 void mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
 void mapDrawRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
-void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp);
+void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword d, short scrolloffsetswitch, int x, int y, int ls, int lp, bitmap_t *bmp);
 
 #define TILEWH 16
 #define QUADWH (TILEWH/4)
@@ -67,9 +73,9 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short
 #define MAPY 150
 #define TRIGGX 10
 #define TRIGGY 9
-//#define SWAP(a, b) tmp=a; a=b; b=tmp;
+
 void main() {
-	bitmap_t ptmp; // player sprite
+	bitmap_t ptmp;//, npctmp; // player sprite
 	const char *cpus;
 	static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	page_t screen, screen2, screen3;
@@ -79,16 +85,13 @@ void main() {
 	byte *pal;
 	byte *ptr;
 	actor_t player;
+	//actor_t npc0;
 
-
-	/* save the palette */
-	pal  = modexNewPal();
-	modexPalSave(pal);
-	modexFadeOff(4, pal);
-	modexPalBlack();
+	if(isEMS() || checkEMS()){ printf("%d\n", coretotalEMS()); emmhandle = mallocEMS(coretotalEMS()); }
 
 	/* create the map */
 	map = allocMap(MAPX,MAPY); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
+	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
 	initMap(&map);
 	mv.map = &map;
 	mv2.map = &map;
@@ -96,8 +99,46 @@ void main() {
 
 	/* draw the tiles */
 	ptr = map.data;
-	/*data\\*/
+	/* data */
 	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
+	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
+
+	/*if(isEMS())
+	{
+		XMOVE mm;
+		mm.length=sizeof(map);
+		mm.sourceH=0;
+		mm.sourceOff=(long)&map;
+		mm.destH=emmhandle;
+		mm.destOff=1;
+		//halp!
+		ist = move_emem(&mm);
+		printf("%d\n", coretotalEMS());
+		if(!ist){ dealloc_emem(emmhandle); exit(5); }
+		//printf("%d\n", emmhandle);
+	}
+
+	if(isEMS())
+	{
+		XMOVE mm;
+		mm.length=emmhandle;
+		mm.sourceH=0;
+		mm.sourceOff=(long)&ptmp;
+		mm.destH=emmhandle;
+		mm.destOff=0;
+		//halp!
+		ist = move_emem(&mm);
+		printf("%d\n", coretotalEMS());
+		if(!ist){ dealloc_emem(emmhandle); exit(5); }
+		//printf("%d\n", emmhandle);
+	}
+*/
+	/* save the palette */
+	pal  = modexNewPal();
+	modexPalSave(pal);
+	modexFadeOff(4, pal);
+	modexPalBlack();
+
 	setkb(1);
 	modexEnter();
 	modexPalBlack();
@@ -132,18 +173,147 @@ void main() {
 	player.triggery = player.ty+1;
 	player.q=1;
 	player.d=0;
+	player.hp=4;
+	//npc
+	/*npc0.tx = bg->tx + 1;
+	npc0.ty = bg->ty + 1;
+	npc0.x = npc0.tx*TILEWH;
+	npc0.y = npc0.ty*TILEWH;
+	npc0.triggerx = npc0.tx;
+	npc0.triggery = npc0.ty+1;
+	npc0.q=1;
+	npc0.d=0;
+	modexDrawSpriteRegion(spri->page, npc0.x-4, npc0.y-TILEWH, 24, 64, 24, 32, &npctmp);*/
 	modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
 
 	modexClearRegion(spri->page, player.triggerx*16, player.triggery*16, 16, 16, 1);
 	modexClearRegion(bg->page, player.triggerx*16, player.triggery*16, 16, 16, 1);
+
+	modexClearRegion(spri->page, 5*16, 5*16, 16, 16, 255);
+	modexClearRegion(bg->page, 5*16, 5*16, 16, 16, 255);
+
 	modexShowPage(spri->page);
-	while(!keyp(1))
+	while(!keyp(1) && player.hp>0)
 	{
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
 	#define INC_PER_FRAME if(player.q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;
+	/*#define INC_PER_FRAME_NPC if(npc0.q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;
 
+	if(npc0.d == 0 && npc0.q == 1) npc0.d =rand()%8;
+	if(npc0.d>4)
+		npc0.d=0;
+
+	//right movement
+	if(npc0.d == 2)
+	{
+		if(npc0.tx < MAPX && !(npc0.tx+1 == TRIGGX && npc0.ty == TRIGGY) && !(npc0.tx+1 == player.tx && npc0.ty == player.ty))
+		{
+			if(npc0.q<=(TILEWH/SPEED))
+			{
+				INC_PER_FRAME_NPC;
+				npc0.x+=SPEED;
+				//animatePlayer(bg, spri, mask, 1, 0, npc0.x, npc0.y, persist_aniframe, q, &npctmp);
+				animatePlayer(bg, spri, npc0.d-1, 0, npc0.x, npc0.y, persist_aniframe, npc0.q, &npctmp);
+				modexShowPage(spri->page);
+				npc0.q++;
+			} else { npc0.q = 1; npc0.d = 0; npc0.tx++; }
+		}
+		else
+		{
+			modexCopyPageRegion(spri->page, bg->page, npc0.x-4, npc0.y-TILEWH, npc0.x-4, npc0.y-TILEWH, 24, 32);
+			modexDrawSpriteRegion(spri->page, npc0.x-4, npc0.y-TILEWH, 24, 32, 24, 32, &npctmp);
+			modexShowPage(spri->page);
+			npc0.d = 0;
+		}
+		npc0.triggerx = npc0.tx+1;
+		npc0.triggery = npc0.ty;
+	}
+
+	//left movement
+	if(npc0.d == 4)
+	{
+		if(npc0.tx > 1 && !(npc0.tx-1 == TRIGGX && npc0.ty == TRIGGY) && !(npc0.tx-1 == player.tx && npc0.ty == player.ty))
+		{
+			if(npc0.q<=(TILEWH/SPEED))
+			{
+				INC_PER_FRAME_NPC;
+				npc0.x-=SPEED;
+				//animatePlayer(bg, spri, mask, 3, 0, npc0.x, npc0.y, persist_aniframe, q, &npctmp);
+				animatePlayer(bg, spri, npc0.d-1, 0, npc0.x, npc0.y, persist_aniframe, npc0.q, &npctmp);
+				modexShowPage(spri->page);
+				npc0.q++;
+			} else { npc0.q = 1; npc0.d = 0; npc0.tx--; }
+		}
+		else
+		{
+			modexCopyPageRegion(spri->page, bg->page, npc0.x-4, npc0.y-TILEWH, npc0.x-4, npc0.y-TILEWH, 24, 32);
+			modexDrawSpriteRegion(spri->page, npc0.x-4, npc0.y-TILEWH, 24, 96, 24, 32, &npctmp);
+			modexShowPage(spri->page);
+			npc0.d = 0;
+		}
+		npc0.triggerx = npc0.tx-1;
+		npc0.triggery = npc0.ty;
+	}
+
+	//down movement
+	if(npc0.d == 3)
+	{
+		if(npc0.ty < MAPY && !(npc0.tx == TRIGGX && npc0.ty+1 == TRIGGY) && !(npc0.tx == player.tx && npc0.ty == player.ty+1))
+		{
+			if(npc0.q<=(TILEWH/SPEED))
+			{
+				INC_PER_FRAME_NPC;
+				npc0.y+=SPEED;
+				//animatePlayer(bg, spri, mask, 2, 0, npc0.x, npc0.y, persist_aniframe, q, &npctmp);
+				animatePlayer(bg, spri, npc0.d-1, 0, npc0.x, npc0.y, persist_aniframe, npc0.q, &npctmp);
+				modexShowPage(spri->page);
+				npc0.q++;
+			} else { npc0.q = 1; npc0.d = 0; npc0.ty++; }
+		}
+		else
+		{
+			modexCopyPageRegion(spri->page, bg->page, npc0.x-4, npc0.y-TILEWH, npc0.x-4, npc0.y-TILEWH, 24, 32);
+			modexDrawSpriteRegion(spri->page, npc0.x-4, npc0.y-TILEWH, 24, 64, 24, 32, &npctmp);
+			modexShowPage(spri->page);
+			npc0.d = 0;
+		}
+		npc0.triggerx = npc0.tx;
+		npc0.triggery = npc0.ty+1;
+	}
+
+	//up movement
+	if(npc0.d == 1)
+	{
+		if(npc0.ty > 1 && !(npc0.tx == TRIGGX &&  npc0.ty-1 == TRIGGY) && !(npc0.tx+1 == player.tx && npc0.ty == player.ty-1))
+		{
+			if(npc0.q<=(TILEWH/SPEED))
+			{
+				INC_PER_FRAME_NPC;
+				npc0.y-=SPEED;
+				//animatePlayer(bg, spri, mask, 0, 0, npc0.x, npc0.y, persist_aniframe, q, &npctmp);
+				modexShowPage(spri->page);
+				animatePlayer(bg, spri, npc0.d-1, 0, npc0.x, npc0.y, persist_aniframe, npc0.q, &npctmp);
+				npc0.q++;
+			} else { npc0.q = 1; npc0.d = 0; npc0.ty--; }
+		}
+		else
+		{
+			modexCopyPageRegion(spri->page, bg->page, npc0.x-4, npc0.y-TILEWH, npc0.x-4, npc0.y-TILEWH, 24, 32);
+			modexDrawSpriteRegion(spri->page, npc0.x-4, npc0.y-TILEWH, 24, 0, 24, 32, &npctmp);
+			modexShowPage(spri->page);
+			npc0.d = 0;
+		}
+		npc0.triggerx = npc0.tx;
+		npc0.triggery = npc0.ty-1;
+	}
+
+	if((npc0.triggery == player.ty && npc0.triggerx == player.tx) || (npc0.ty == player.ty && npc0.tx == player.tx)){ player.hp--; }
+*/
+
+	//player movement
+	//TODO: make movement into a function!
 	//right movement
 	if((keyp(77) && !keyp(75) && player.d == 0) || player.d == 2)
 	{
@@ -309,15 +479,17 @@ void main() {
 	}
 	//modexClearRegion(mask->page, 66, 66, 2, 40, 0);
 
-	if((player.triggerx == TRIGGX && player.triggery == TRIGGY) && keyp(KEY_ENTER))
+	if(((player.triggerx == TRIGGX && player.triggery == TRIGGY) && keyp(0x1C))||(player.tx == 5 && player.ty == 5))
 	{
 		short i;
-		for(i=600; i>=400; i--)
+		for(i=800; i>=400; i--)
 		{
 			sound(i);
 		}
 		nosound();
 	}
+	if(player.q == (TILEWH/SPEED)+1 && player.d > 0 && (player.triggerx == 5 && player.triggery == 5)){ player.hp--; }
+	//if(keyp(0x0E)) while(1){ if(xmsmalloc(24)) break; }
 	}
 
 	/* fade back to text mode */
@@ -325,20 +497,35 @@ void main() {
 	modexPalBlack();
 	modexLeave();
 	setkb(0);
+	//system("mem /E /P");
 	printf("Project 16 scroll.exe\n");
 	printf("tx: %d\n", bg->tx);
 	printf("ty: %d\n", bg->ty);
-	printf("player.x: %d\n", player.x);
-	printf("player.y: %d\n", player.y);
+	printf("player.x: %d", player.x);
+	if(player.hp==0) printf("%d wwww\n", player.y+8);
+	else printf("\nplayer.y: %d\n", player.y);
 	printf("player.tx: %d\n", player.tx);
 	printf("player.ty: %d\n", player.ty);
 	printf("player.triggx: %d\n", player.triggerx);
 	printf("player.triggy: %d\n", player.triggery);
+	printf("player.hp: %d\n", player.hp);
 	printf("player.q: %d\n", player.q);
 	printf("player.d: %d\n", player.d);
 	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
 	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
 	printf("\n");
+	//xmsfree(&map);
+	//xmsfree(bg);
+	//xmsfree(spri);
+	//xmsfree(mask);
+	//xmsreport();
+	if(isEMS())
+	{
+		printf("%d\n", get_emem());
+		printf("%d\n", coretotalEMS());
+		dealloc_emem(emmhandle);
+		printf("%d\n", coretotalEMS());
+	}
 	switch(detectcpu())
 	{
 		case 0: cpus = "8086/8088 or 186/88"; break;
@@ -359,10 +546,23 @@ allocMap(int w, int h) {
 	result.width =w;
 	result.height=h;
 	result.data = malloc(sizeof(byte) * w * h);
+	//result.data = (byte *)alloc_emem(((int)sizeof(byte) * w * h)/1024);
+	/*if(isEMS() || checkEMS())
+	{
+		XMOVE mm;
+		//emmhandle = mallocEMS(coretotalEMS());//alloc_emem((int)sizeof(map))
+		mm.length=sizeof(result);
+		mm.sourceH=0;
+		mm.sourceOff=ptr2long(&result);
+		mm.destH=emmhandle;
+		mm.destOff=0;
+		ist = move_emem(&mm);
+		if(!ist){ dealloc_emem(emmhandle); exit(5); }
+		printf("%d\n", coretotalEMS());
+	}*/
 
 	return result;
 }
-
 
 void
 initMap(map_t *map) {
@@ -370,13 +570,22 @@ initMap(map_t *map) {
 	int x, y;
 	int i;
 	int tile = 1;
-	map->tiles = malloc(sizeof(tiles_t));
+	//if(!isEMS() || !checkEMS())
+		map->tiles = malloc(sizeof(tiles_t));
+	//else
+	//	map->tiles = (tiles_t *)alloc_emem(sizeof(tiles_t));
 
 	/* create the tile set */
-	map->tiles->data = malloc(sizeof(bitmap_t));
+	//if(!isEMS() || !checkEMS())
+		map->tiles->data = malloc(sizeof(bitmap_t));
+	//else
+	//	map->tiles->data = (bitmap_t *)alloc_emem(sizeof(bitmap_t));
 	map->tiles->data->width = (TILEWH*2);
 	map->tiles->data->height= TILEWH;
-	map->tiles->data->data = malloc((TILEWH*2)*TILEWH);
+	//if(!isEMS() || !checkEMS())
+		map->tiles->data->data = malloc((TILEWH*2)*TILEWH);
+	//else
+	//	map->tiles->data->data = (byte *)alloc_emem((TILEWH*2)*TILEWH);
 	map->tiles->tileHeight = TILEWH;
 	map->tiles->tileWidth =TILEWH;
 	map->tiles->rows = 1;
@@ -529,11 +738,12 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y) {
 	word ry;
 	rx = (i % t->cols) * t->tileWidth;
 	ry = (i / t->cols) * t->tileHeight;
+	//mxPutTile(t->data, x, y, t->tileWidth, t->tileHeight);
 	modexDrawBmpRegion(page, x, y, rx, ry, t->tileWidth, t->tileHeight, t->data);
 }
 
 
-void 
+void
 mapDrawRow(map_view_t *mv, int tx, int ty, word y) {
 	word x;
 	int i;
@@ -549,7 +759,7 @@ mapDrawRow(map_view_t *mv, int tx, int ty, word y) {
 	}
 }
 
-void 
+void
 mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 	int y;
 	int i;
@@ -567,16 +777,15 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 	i += mv->map->width;
 	}
 }
-
 void
-animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp)
+animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword d, short scrolloffsetswitch, int x, int y, int ls, int lp, bitmap_t *bmp)
 {
-	short dire=32*d1; //direction
-	short qq; //scroll offset
+	sword dire=32*d; //direction
+	sword qq; //scroll offset
 
-	if(d2==0) qq = 0;
+	if(scrolloffsetswitch==0) qq = 0;
 	else qq = ((lp)*SPEED);
-	switch (d1)
+	switch (d)
 	{
 		case 0:
 			//up

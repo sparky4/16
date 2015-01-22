@@ -287,6 +287,12 @@ modexDrawBmpRegion(page_t *page, int x, int y,
 
 
 void
+modexDrawPlanarBuf(page_t *page, int x, int y, planar_buf_t *bmp) {
+    /* TODO - adapt from test code */
+}
+
+
+void
 modexDrawSprite(page_t *page, int x, int y, bitmap_t *bmp) {
     /* draw the whole sprite */
     modexDrawSpriteRegion(page, x, y, 0, 0, bmp->width, bmp->height, bmp);

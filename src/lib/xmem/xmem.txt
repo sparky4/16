@@ -1,0 +1,33 @@
+Newsgroups: rec.games.programmer
+From: alexad3@icebox.iceonline.com (Alexander J. Russell)
+Subject: xms for x2ftp.oulu.fi
+Date: Mon, 20 Mar 1995 08:16:21 GMT
+
+Can some kind soul please pass this on to x2ftp.oulu.fi for me.
+I can't ftp from my currrent connection.
+
+ 
+This file contains 3 files:
+xmem.h   : c include file
+xmem.asm : low level basic XMS acess
+xmemc.c  : super easy C access via functions like fopen, fread, fwrite
+           xopen, xread, xwrite, xseek etc...
+ 
+ 
+FOR DOS REAL mode programs, requires HIMEM.SYS to be loaded in
+config.sys.
+ 
+... 
+
+This should be enough code to do what ever you want with XMS.
+I like to use the file style access to remind myself it isn't
+as fast as say memcpy().
+
+Cheers.
+
+
+
+
+The AnArChIsT - Anarchy! NOT Chaos! aka Alec Russell
+alexad3@icebox.iceonline.com
+

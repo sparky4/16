@@ -6,6 +6,7 @@
 #include <conio.h>
 #include "src\lib\types.h"
 #include "src\lib\bitmap.h"
+#include "src\lib\planar.h"
 
 /* -========================== Types & Macros ==========================- */
 #define PAGE_OFFSET(x,y) (((y)<<6)+((y)<<4)+((x)>>2))
@@ -32,6 +33,7 @@ void modexSelectPlane(byte plane);
 void modexClearRegion(page_t *page, int x, int y, int w, int h, byte color);
 void modexDrawBmp(page_t *page, int x, int y, bitmap_t *bmp);
 void modexDrawBmpRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp);
+void modexDrawPlanarBuf(page_t *page, int x, int y, planar_buf_t *bmp);
 void modexDrawSprite(page_t *page, int x, int y, bitmap_t *bmp);
 void modexDrawSpriteRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp);
 void modexCopyPageRegion(page_t *dest, page_t *src, word sx, word sy, word dx, word dy, word width, word height);

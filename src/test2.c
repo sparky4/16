@@ -1,19 +1,46 @@
+#include <stdio.h>
 #include "src\lib\modex16.h"
+#include "src\lib\planar.h"
+#include "src\lib\bitmap.h"
 
 word far* clock= (word far*) 0x046C; /* 18.2hz clock */
 
 void main() {
+    bitmap_t bmp;
+    planar_buf_t *p;
+    word size;
     int i;
-    word start;
-    page_t page;
+    int plane;
+    int x,y;
+    byte color;
 
-    page=modexDefaultPage();
+    /* get the size we want */
+    printf("Width: ");
+    scanf("%d", &bmp.width);
+    printf("Height: ");
+    scanf("%d", &bmp.height);
+    printf("Color: ");
+    scanf("%x", &color);
 
-    modexEnter();
-    start = *clock;
-    for(i=0; i<500; i++) {
-	modexShowPage(&page);
+    /* allocate the bmp and fill it with 42 */
+    size = bmp.width * bmp.height;
+    bmp.data = malloc(size);
+    for(i=0; i<size; i++) {
+	bmp.data[i] = color;
     }
-    modexLeave();
 
+    /* create the planar buffer */
+    p = planar_buf_from_bitmap(&bmp);
+
+    /* print out the contents of each plane */
+    for(plane=0; plane < 4; plane++) {
+        i=0;
+	printf("Plane %d\n", plane);
+	for(y=0; y < p->height; y++) {
+	    for(x=0; x < p->pwidth; x++) {
+		printf("%02X ", (int) p->plane[plane][i++]);
+	    }
+	    printf("\n");
+	}
+    }
 }
