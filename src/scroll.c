@@ -61,6 +61,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty);
 void mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
 void mapDrawRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
+void qclean();
 void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword d, short scrolloffsetswitch, int x, int y, int ls, int lp, bitmap_t *bmp);
 
 #define TILEWH 16
@@ -87,7 +88,8 @@ void main() {
 	actor_t player;
 	//actor_t npc0;
 
-	if(isEMS() || checkEMS()){ printf("%d\n", coretotalEMS()); emmhandle = mallocEMS(coretotalEMS()); }
+//	atexit(qclean());
+//	if(isEMS() || checkEMS()){ printf("%d\n", coretotalEMS()); emmhandle = mallocEMS(coretotalEMS()); }
 
 	/* create the map */
 	map = allocMap(MAPX,MAPY); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
@@ -519,13 +521,13 @@ void main() {
 	//xmsfree(spri);
 	//xmsfree(mask);
 	//xmsreport();
-	if(isEMS())
+	/*if(isEMS())
 	{
 		printf("%d\n", get_emem());
 		printf("%d\n", coretotalEMS());
 		dealloc_emem(emmhandle);
 		printf("%d\n", coretotalEMS());
-	}
+	}*/
 	switch(detectcpu())
 	{
 		case 0: cpus = "8086/8088 or 186/88"; break;
@@ -777,6 +779,13 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 	i += mv->map->width;
 	}
 }
+
+void qclean()
+{
+	modexLeave();
+	setkb(0);
+}
+
 void
 animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword d, short scrolloffsetswitch, int x, int y, int ls, int lp, bitmap_t *bmp)
 {
