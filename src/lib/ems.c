@@ -1,289 +1,181 @@
-//------- PRACE S EMS pameti ---------------
-#include <stdio.h>
-#include <fcntl.h>
-#include <io.h>
-#include <dos.h>
-#include <mem.h>
+/*
 
-typedef struct
-  {
-  unsigned long length;         /* velikost prenasene pameti      */
-  unsigned int sourceH;         /* handle pro zdroj (0=konvencni  */
-  unsigned long sourceOff;      /* offset zdroje pameti           */
-  unsigned int destH;           /* handle pro terc (0=konvencni   */
-  unsigned long destOff;        /* offset terce pameti            */
-  } XMOVE;
-
-int get_emem(void);             // Fce pro zachazeni s EMS
-int alloc_emem(int n);          // Alokuje n KB pameti, vraci handle
-int dealloc_emem(int h);        // Dealokuje EMS (handle)
-int move_emem(XMOVE *p);        // presune blok z/do EMS
-int mem_emem(unsigned *total, unsigned *free);
-
-#define  pagesizeEMS 0x4000       // pamet EMS je ze 16k stranek
-
-//int   pagesAllocated = 0;
-//int   totalPages;
-char *EmsFrame;
+                   THE IBM PC PROGRAMMER'S GUIDE TO C
+                                    
+                                    
+                                    
+                               3rd Edition
+                                    
+                                    
+                                    
+                             Matthew Probert
 
 
-//------ Zda je EMS driver dostupny: ret=  1 - ANO, 0 - NE
-int isEMS(void)
-{
-    int fh;
-    union REGS rg;
+                                    
+                            COPYRIGHT NOTICE
 
-    if((fh=open("EMMXXXX0",O_RDONLY,&fh)) == -1) return( 0 );
 
-    rg.h.ah = 0x44;
-    rg.h.al = 0x00;
-    rg.x.bx = fh;
-    int86(0x21,&rg,&rg);
-    close(fh);
-    if(rg.x.cflag) return(0);
-    if(rg.x.dx & 0x80)
-     return( 1 );
-    else
-     return( 0 );
-}
-
-//----- Zda je EMS HW dostupny ret=  1 - ANO, 0 - NE
-int checkEMS(void)
-{
-    union REGS rg;
-
-    rg.h.ah = 0x40;
-    int86(0x67,&rg,&rg);
-    if(rg.h.ah == 0)
-     return( 1 );
-    else
-     return( 0 );
-}
-
-//----- Vraci totalni pocet stranek EMS nebo -1 ----
-int coretotalEMS(void)
-{
-    union REGS rg;
-
-    rg.h.ah = 0x42;
-    int86(0x67,&rg,&rg);
-    if(rg.x.cflag) return( -1 );
-    //if(!pagesAllocated)
-    // { pagesAllocated = 1;
-    //   totalPages = rg.x.dx;
-    // }
-    return(rg.x.bx);
-}
-
-//----- Vraci pocet volnych stranek EMS nebo -1 ----
-int coreleftEMS(void)
-{
-    union REGS rg;
-
-    //if(pagesAllocated) return(totalPages);
-    rg.h.ah = 0x42;
-    int86(0x67,&rg,&rg);
-    if(rg.x.cflag) return( -1 );
-    //if(!pagesAllocated)
-    //pagesAllocated = 1;
-    //totalPages = rg.x.dx;
-    //return(totalPages);
-    return(rg.x.dx);
-}
-
-//----- Vraci EMS page frame (pointr na EMS) nebo NULL ----
-char *pageframeEMS(void)
-{
-    union REGS rg;
-
-    rg.h.ah = 0x41;
-    int86(0x67,&rg,&rg);
-    if(rg.h.ah != 0)
-     return( NULL );
-    else
-     return((char *)MK_FP(rg.x.bx,0));
-}
-
-//----- Alokuje n stranek - vraci handle na blok stranek nebo 0 ----
-unsigned mallocEMS(int n)
-{
-    union REGS rg;
-
-    if(n > coreleftEMS() ) return( 0 );
-    rg.h.ah = 0x43;
-    rg.x.bx = n;
-    int86(0x67,&rg,&rg);
-    if(rg.h.ah)
-     return( 0 );
-    else
-     return(rg.x.dx);
-}
-
-//----- Dealokuje blok stranek ret = 1-O.K. 0-ERR -----
-unsigned freeEMS(unsigned h)
-{
-    union REGS rg;
-    int   i;
-
-    for(i=0; i<5; i++)
-     { rg.h.ah = 0x45;
-       rg.x.dx = h;
-       int86(0x67,&rg,&rg);
-       if(rg.h.ah == 0) break;
-     }
-    if(rg.h.ah == 0)
-     return( 1 );
-    else
-     return( 0 );
-}
-
-//----- Mapuje logiclou stranku do fyzicke stranky
-int mapEMS(unsigned h, int Ppage, int Lpage)
-{
-    union REGS rg;
-
-    if(Ppage < 0 || Ppage > 3) return( 0 );
-    rg.h.ah = 0x44;
-    rg.h.al = Ppage;
-    rg.x.bx = Lpage;
-    rg.x.dx = h;
-    int86(0x67,&rg,&rg);
-    if(rg.h.ah != 0)
-     return( 0 );
-    else
-     return( 1 );
-}
-
-// ##### Fce se stejnymi parametry pro EMS jako pro XMS
-
-//----- Zda je EMS dostupna
-int get_emem(void)
-{
-  int ist;
-
-  ist = checkEMS();
-  if(ist == 1)
-  { ist = isEMS();
-    if(ist == 1) return( 0x0300 );
-  }
-  return( -1 );
-}
-
-//----- Allokuje Kb pameti -------
-int alloc_emem(int kb)
-{
-   int Pages,hhh;
-
-   Pages = kb / 16;
-   if((Pages * 16) < kb) Pages++;
-
-   hhh = mallocEMS(Pages);
-   if(hhh == 0)
-    return( -1);
-   else
-    return(hhh);
-}
-
-//----- dealokuje EMS pres handle
-int dealloc_emem(int h)
-{
-   return( freeEMS( h ) );
-}
-
-//----- presune blok pameti
-//  unsigned long length;         /* velikost prenasene pameti      */
-//  unsigned int  sourceH;        /* handle pro zdroj (0=konvencni  */
-//  unsigned long sourceOff;      /* offset zdroje pameti           */
-//  unsigned int  destH;          /* handle pro terc (0=konvencni   */
-//  unsigned long destOff;        /* offset terce pameti            */
-int move_emem(XMOVE *pxm)
-{
-   unsigned char *SrcBuf,*DstBuf;
-   int      ist;
-   unsigned int  SrcOff, DstOff, BegPage, BegOff, FreeByte, CopyLen;
-
-   if(pxm->sourceH == 0 && pxm->destH != 0)    // Buffer->EMS
-   {
-     SrcBuf  = (unsigned char *)pxm->sourceOff;// buffer
-     SrcOff  = 0;
-     BegPage = pxm->destOff / pagesizeEMS;     // pocatecni page
-     BegOff  = pxm->destOff % pagesizeEMS;     // offset in page
-     FreeByte= pagesizeEMS - BegOff;           // volnych B na page
-     CopyLen = pxm->length;                    // celkova delka
-
-     Next_page:
-     if(CopyLen > FreeByte)
+This publication remains the property of Matthew Probert. License is
+hereby given for this work to be freely distibuted in whole under the
+proviso that credit is given to the author. Sections of this work may be
+used and distributed without payment under the proviso that credit is
+given to both this work and the author. Source code occuring in this work
+may be used within commercial and non-commercial applications without
+charge and without reference to the author.
+*/
+     /*
+     Various functions for using Expanded memory
+     */
+#include "src\lib\ems.h"
+     emmtest()
      {
-       ist = mapEMS(pxm->destH, 0, BegPage);
-       if(ist==0) return( 0 );
-       memcpy(EmsFrame+BegOff, SrcBuf+SrcOff, FreeByte);
-
-       CopyLen  = CopyLen - FreeByte;
-       SrcOff  += FreeByte;
-       BegPage++;
-       BegOff   = 0;
-       FreeByte = pagesizeEMS;
-       goto Next_page;
+          /*
+          Tests for the presence of expnaded memory by attempting to
+          open the file EMMXXXX0.
+          */
+     
+          union REGS regs;
+          struct SREGS sregs;
+          int error;
+          long handle;
+     
+          /* Attempt to open the file device EMMXXXX0 */
+          regs.x.ax = 0x3d00;
+          regs.x.dx = (int)"EMMXXXX0";
+          sregs.ds = 0; //????
+          intdosx(&regs,&regs,&sregs);
+          handle = regs.x.ax;
+          error = regs.x.cflag;
+     
+          if (!error)
+          {
+               regs.h.ah = 0x3e;
+               regs.x.bx = handle;
+               intdos(&regs,&regs);
+          }
+          return error;
      }
-     else
+     
+     emmok()
      {
-       ist = mapEMS(pxm->destH, 0, BegPage);
-       if(ist==0) return( 0 );
-       memcpy(EmsFrame+BegOff, SrcBuf+SrcOff, CopyLen);
+          /*
+          Checks whether the expanded memory manager responds correctly
+          */
+     
+          union REGS regs;
+     
+          regs.h.ah = 0x40;
+          int86(EMM,&regs,&regs);
+     
+          if (regs.h.ah)
+               return 0;
+     
+          regs.h.ah = 0x41;
+          int86(EMM,&regs,&regs);
+     
+          if (regs.h.ah)
+               return 0;
+     
+          emmbase = MK_FP(regs.x.bx,0);
+          return 1;
      }
-   }
-   else if(pxm->sourceH != 0 && pxm->destH == 0) // EMS->Buffer
-   {
-     DstBuf  = (unsigned char *)pxm->destOff;// buffer
-     DstOff  = 0;
-     BegPage = pxm->sourceOff / pagesizeEMS;     // pocatecni page
-     BegOff  = pxm->sourceOff % pagesizeEMS;     // offset in page
-     FreeByte= pagesizeEMS - BegOff;             // volnych B na page
-     CopyLen = pxm->length;                    // celkova delka
-
-     Next_page2:
-     if(CopyLen > FreeByte)
+     
+     long emmavail()
      {
-       ist = mapEMS(pxm->sourceH, 0, BegPage);
-       if(ist==0) return( 0 );
-       memcpy(DstBuf+DstOff, EmsFrame+BegOff, FreeByte);
-
-       CopyLen  = CopyLen - FreeByte;
-       DstOff  += FreeByte;
-       BegPage++;
-       BegOff   = 0;
-       FreeByte = pagesizeEMS;
-       goto Next_page2;
+        /*
+        Returns the number of available (free) 16K pages of expanded
+     memory
+        or -1 if an error occurs.
+        */
+     
+             union REGS regs;
+     
+          regs.h.ah = 0x42;
+          int86(EMM,&regs,&regs);
+          if (!regs.h.ah)
+               return regs.x.bx;
+          return -1;
      }
-     else
+     
+     long emmalloc(int n)
      {
-       ist = mapEMS(pxm->sourceH, 0, BegPage);
-       if(ist==0) return( 0 );
-       memcpy(DstBuf+DstOff, EmsFrame+BegOff, CopyLen);
+          /*
+          Requests 'n' pages of expanded memory and returns the file
+     handle
+          assigned to the pages or -1 if there is an error
+          */
+     
+          union REGS regs;
+     
+          regs.h.ah = 0x43;
+          regs.x.bx = n;
+          int86(EMM,&regs,&regs);
+          if (regs.h.ah)
+               return -1;
+          return regs.x.dx;
      }
-   }
-   else   // Error
-   { return( 0 );
-   }
-
-   return 1;
-}
-
-// ----- Vrati pocet volnych a max. KB EMS
-int mem_emem(unsigned int *total, unsigned int *freeall)
-{
- int pom;
-
- pom = coretotalEMS();
- if(pom != -1 )
-  *total = pom * 16;
- else
-  return( 0 );
- pom = coreleftEMS();
- if(pom != -1)
-  *freeall = pom * 16;
- else
-  return( 0 );
-
- return( 1 );
-}
+     
+     emmmap(long handle, int phys, int page)
+     {
+          /*
+          Maps a physical page from expanded memory into the page frame
+     in the
+          conventional memory 16K window so that data can be transfered
+     between
+          the expanded memory and conventional memory.
+          */
+     
+          union REGS regs;
+     
+          regs.h.ah = 0x44;
+          regs.h.al = page;
+          regs.x.bx = phys;
+          regs.x.dx = handle;
+          int86(EMM,&regs,&regs);
+          return (regs.h.ah == 0);
+     }
+     
+     void emmmove(int page, char *str, int n)
+     {
+          /*
+          Move 'n' bytes from conventional memory to the specified
+     expanded memory
+          page
+          */
+     
+          char far *ptr;
+     
+          ptr = emmbase + page * 16384;
+          while(n-- > 0)
+               *ptr++ = *str++;
+     }
+     
+     void emmget(int page, char *str, int n)
+     {
+          /*
+          Move 'n' bytes from the specified expanded memory page into
+     conventional
+          memory
+          */
+     
+          char far *ptr;
+     
+          ptr = emmbase + page * 16384;
+          while(n-- > 0)
+               *str++ = *ptr++;
+     }
+     
+     emmclose(long handle)
+     {
+          /*
+          Release control of the expanded memory pages allocated to
+     'handle'
+          */
+     
+          union REGS regs;
+     
+          regs.h.ah = 0x45;
+          regs.x.dx = handle;
+          int86(EMM,&regs,&regs);
+          return (regs.h.ah == 0);
+     }
