@@ -8,8 +8,6 @@
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 
-int emmhandle,ist;
-
 typedef struct {
 	bitmap_t *data;
 	word tileHeight;
@@ -76,6 +74,10 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword
 #define TRIGGY 9
 
 void main() {
+	long emmhandle;
+	long emsavail;
+	char teststr[80];
+	int i;
 	bitmap_t ptmp;//, npctmp; // player sprite
 	const char *cpus;
 	static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
@@ -89,7 +91,31 @@ void main() {
 	//actor_t npc0;
 
 //	atexit(qclean());
-//	if(isEMS() || checkEMS()){ printf("%d\n", coretotalEMS()); emmhandle = mallocEMS(coretotalEMS()); }
+	/*if(!emmtest())
+	{
+		printf("Expanded memory is not present\n");
+		exit(0);
+	}
+     
+	if(!emmok())
+	{
+		printf("Expanded memory manager is not present\n");
+		exit(0);
+	}
+     
+	emsavail = emmavail();
+	if(emsavail == -1)
+	{
+		printf("Expanded memory manager error\n");
+		exit(0);
+	}
+	printf("There are %ld pages available\n",emsavail);
+
+	if((emmhandle = emmalloc(emsavail)) < 0)
+	{
+		printf("Insufficient pages available\n");
+		exit(0);
+	}*/
 
 	/* create the map */
 	map = allocMap(MAPX,MAPY); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
@@ -521,13 +547,7 @@ void main() {
 	//xmsfree(spri);
 	//xmsfree(mask);
 	//xmsreport();
-	/*if(isEMS())
-	{
-		printf("%d\n", get_emem());
-		printf("%d\n", coretotalEMS());
-		dealloc_emem(emmhandle);
-		printf("%d\n", coretotalEMS());
-	}*/
+	//emmclose(emmhandle);
 	switch(detectcpu())
 	{
 		case 0: cpus = "8086/8088 or 186/88"; break;
