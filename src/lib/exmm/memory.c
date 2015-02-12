@@ -23,12 +23,12 @@
 
 #include "memory.h"
 
-// static globals --------------------------------
+ //static globals --------------------------------
 
 static int  ActiveEMList[MAXEMHANDLES];
 static unsigned int  EMMSeg;
 
-// forward declarations ---------------------------------
+ //forward declarations ---------------------------------
 
 static int  EMPresent(void);
 static int  EMReady(void);
@@ -87,13 +87,12 @@ EMMCoreLeft(void)
         mov     ah,0x42             /* get EMM free page count */
         int     0x67
         or      ah,ah
-        //js      InternalError       /* returns 80, 81, or 84 hex on error */
+        js      InternalError       /* returns 80, 81, or 84 hex on error */
         mov     Pages,bx            /* number of unallocated 16K pages */
     }
     RtnVal = ((unsigned long)Pages << 14);  /* Pages * 16K rtns bytes*/
 
-//InternalError:
-
+InternalError:
     return(RtnVal);
 }               /* End of EMMCoreLeft() */
 
@@ -141,11 +140,11 @@ EMMRealloc(int Handle, int Pages)
         mov     dx,Handle
         int     0x67
         or      ah,ah
-        //js      NoGo                /* returns 80 to 88 hex on error */
+        js      NoGo                /* returns 80 to 88 hex on error */
     }
     RtnCode = TRUE;
 
-//NoGo:
+NoGo:
 
     return(RtnCode);
 }               /* End of EMMRealloc() */
@@ -256,11 +255,11 @@ EMReady(void)
         mov     ah,0x40             /* get EM Manager Status */
         int     0x67
         or      ah,ah
-        //jns     Ready               /* returns 80, 81, or 84 hex on error */
+        jns     Ready               /* returns 80, 81, or 84 hex on error */
     }
     return(FALSE);
 
-//Ready:
+Ready:
     return(TRUE);
 }               /* End of EMReady() */
 
@@ -275,12 +274,12 @@ GetEMMSeg(void)
         mov     ah,0x41             /* get EMM page frame segment */
         int     0x67
         or      ah,ah
-        //js      NotReady            /* returns 80, 81, or 84 hex on error */
+        js      NotReady            /* returns 80, 81, or 84 hex on error */
         mov     EMSegment,bx
     }
     return(EMSegment);              /*lint !e530 */
 
-//NotReady:
+NotReady:
     return(NOTREADY);
 }               /* End of GetEMMSeg() */
 
@@ -296,12 +295,12 @@ GetEMHandle(int NumPages)
         mov     bx,NumPages         /* number of 16K pages to allocate */
         int     0x67
         or      ah,ah               /* returns 80 to 89 hex on error */
-        //js      NoHandle
+        js      NoHandle
         mov     NewHandle,dx        /* retrieve handle */
     }
     return(NewHandle);
 
-//NoHandle:
+NoHandle:
     return(NO_DATA);
 }               /* End of GetEMHandle() */
 
@@ -319,11 +318,11 @@ EMMap(int Handle, int LogPg, int PhyPg)
         mov     dx,Handle
         int     0x67
         or      ah,ah               /* returns 80 to 8B hex on error */
-        //js      NoMapping
+        js      NoMapping
     }
     RtnCode = SUCCESS;
 
-//NoMapping:
+NoMapping:
     return(RtnCode);
 }               /* End of EMMap() */
 
@@ -337,11 +336,11 @@ FreeEMHandle(int Handle)
         mov     dx,Handle
         int     0x67
         or      ah,ah               /* returns 80 to 86 hex on error */
-        //js      NotFreed
+        js      NotFreed
     }
     return(SUCCESS);
 
-//NotFreed:                           /* must retry if unsuccessful */
+NotFreed:                           /* must retry if unsuccessful */
     return(NO_DATA);
 }               /* End of FreeEMHandle() */
 
@@ -357,10 +356,10 @@ GetNumPages(int Handle)
         mov     dx,Handle
         int     0x67
         or      ah,ah               /* returns 80 to 84 hex on error */
-        //js      BadHandle
+        js      BadHandle
         mov     NumPages,bx
     }
-//BadHandle:
+BadHandle:
 
     return(NumPages);
 }               /* End of GetNumPages() */
@@ -376,11 +375,11 @@ EMStateSave(int Handle)
         mov     dx,Handle
         int     0x67
         or      ah,ah
-        //js      Unsaved             /* out of save space error */
+        js      Unsaved             /* out of save space error */
     }
     RtnCode = SUCCESS;
 
-//Unsaved:
+Unsaved:
     return(RtnCode);
 }               /* End of EMStateSave() */
 

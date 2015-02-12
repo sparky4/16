@@ -1,1 +1,1 @@
-"wcp -mh emm.c"  at
+wcp -mh emm.c

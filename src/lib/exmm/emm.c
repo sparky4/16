@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <mem.h>
 
-#include "memory.c"
+#include "memory.h"
 
 void TransformData(char *pEmmData, unsigned int len)
 {
