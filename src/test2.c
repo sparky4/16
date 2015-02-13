@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <conio.h>
 #include "src\lib\modex16.h"
 #include "src\lib\planar.h"
 #include "src\lib\bitmap.h"
@@ -6,6 +7,7 @@
 word far* clock= (word far*) 0x046C; /* 18.2hz clock */
 
 void main() {
+	FILE *file;
     bitmap_t bmp;
     planar_buf_t *p;
     word size;
@@ -45,4 +47,10 @@ void main() {
 	    printf("\n");
 	}
     }
+
+//	file = fopen("ptmp0.pcx", "wb");
+
+    /* write the data to the file */
+    //fwrite(p, 1, p->width*p->height, file);
+    //fclose(file);
 }
