@@ -1,6 +1,7 @@
 #include "src\lib\modex16.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "src\lib\dos_kb.h"
 #include "16\lib\x\modex.h"
 #include "src\lib\wtest\wtest.c"
@@ -156,7 +157,7 @@ void main() {
 		XMOVE mm;
 		mm.length=emmhandle;
 		mm.sourceH=0;
-		mm.sourceOff=(long)(bitmap_t *)p;
+		mm.sourceOff=(long)&ptmp;
 		mm.destH=emmhandle;
 		mm.destOff=0;
 		//halp!
@@ -217,7 +218,7 @@ void main() {
 	npc0.q=1;
 	npc0.d=0;
 	modexDrawSpriteRegion(spri->page, npc0.x-4, npc0.y-TILEWH, 24, 64, 24, 32, &npctmp);*/
-	modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, (bitmap_t *)p);
+	modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
 
 	modexClearRegion(spri->page, player.triggerx*16, player.triggery*16, 16, 16, 1);
 	modexClearRegion(bg->page, player.triggerx*16, player.triggery*16, 16, 16, 1);
@@ -226,6 +227,7 @@ void main() {
 	modexClearRegion(bg->page, 5*16, 5*16, 16, 16, 255);
 
 	modexShowPage(spri->page);
+	memcpy ( &mv2, p, (p->pwidth*(p->height))+1 );
 	while(!keyp(1) && player.hp>0)
 	{
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
@@ -356,8 +358,8 @@ void main() {
 			if(player.q<=(TILEWH/SPEED))
 			{
 				INC_PER_FRAME;
-				//animatePlayer(bg, spri, mask, 1, 1, player.x, player.y, persist_aniframe, q, (bitmap_t *)p);
-				animatePlayer(bg, spri, player.d-1, 1, player.x, player.y, persist_aniframe, player.q, (bitmap_t *)p);
+				//animatePlayer(bg, spri, mask, 1, 1, player.x, player.y, persist_aniframe, q, &ptmp);
+				animatePlayer(bg, spri, player.d-1, 1, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				mapScrollRight(bg, SPEED);
 				mapScrollRight(spri, SPEED);
 				//mapScrollRight(mask, SPEED);
@@ -371,8 +373,8 @@ void main() {
 			{
 				INC_PER_FRAME;
 				player.x+=SPEED;
-				//animatePlayer(bg, spri, mask, 1, 0, player.x, player.y, persist_aniframe, q, (bitmap_t *)p);
-				animatePlayer(bg, spri, player.d-1, 0, player.x, player.y, persist_aniframe, player.q, (bitmap_t *)p);
+				//animatePlayer(bg, spri, mask, 1, 0, player.x, player.y, persist_aniframe, q, &ptmp);
+				animatePlayer(bg, spri, player.d-1, 0, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				modexShowPage(spri->page);
 				player.q++;
 			} else { player.q = 1; player.d = 0; player.tx++; }
@@ -380,7 +382,7 @@ void main() {
 		else
 		{
 			modexCopyPageRegion(spri->page, bg->page, player.x-4, player.y-TILEWH, player.x-4, player.y-TILEWH, 24, 32);
-			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 32, 24, 32, (bitmap_t *)p);
+			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 32, 24, 32, &ptmp);
 			modexShowPage(spri->page);
 			player.d = 0;
 		}
@@ -397,8 +399,8 @@ void main() {
 			if(player.q<=(TILEWH/SPEED))
 			{
 				INC_PER_FRAME;
-				//animatePlayer(bg, spri, mask, 3, 1, player.x, player.y, persist_aniframe, q, (bitmap_t *)p);
-				animatePlayer(bg, spri, player.d-1, 1, player.x, player.y, persist_aniframe, player.q, (bitmap_t *)p);
+				//animatePlayer(bg, spri, mask, 3, 1, player.x, player.y, persist_aniframe, q, &ptmp);
+				animatePlayer(bg, spri, player.d-1, 1, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				mapScrollLeft(bg, SPEED);
 				mapScrollLeft(spri, SPEED);
 				//mapScrollLeft(mask, SPEED);
@@ -412,8 +414,8 @@ void main() {
 			{
 				INC_PER_FRAME;
 				player.x-=SPEED;
-				//animatePlayer(bg, spri, mask, 3, 0, player.x, player.y, persist_aniframe, q, (bitmap_t *)p);
-				animatePlayer(bg, spri, player.d-1, 0, player.x, player.y, persist_aniframe, player.q, (bitmap_t *)p);
+				//animatePlayer(bg, spri, mask, 3, 0, player.x, player.y, persist_aniframe, q, &ptmp);
+				animatePlayer(bg, spri, player.d-1, 0, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				modexShowPage(spri->page);
 				player.q++;
 			} else { player.q = 1; player.d = 0; player.tx--; }
@@ -421,7 +423,7 @@ void main() {
 		else
 		{
 			modexCopyPageRegion(spri->page, bg->page, player.x-4, player.y-TILEWH, player.x-4, player.y-TILEWH, 24, 32);
-			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 96, 24, 32, (bitmap_t *)p);
+			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 96, 24, 32, &ptmp);
 			modexShowPage(spri->page);
 			player.d = 0;
 		}
@@ -438,8 +440,8 @@ void main() {
 			if(player.q<=(TILEWH/SPEED))
 			{
 				INC_PER_FRAME;
-				//animatePlayer(bg, spri, mask, 2, 1, player.x, player.y, persist_aniframe, q, (bitmap_t *)p);
-				animatePlayer(bg, spri, player.d-1, 1, player.x, player.y, persist_aniframe, player.q, (bitmap_t *)p);
+				//animatePlayer(bg, spri, mask, 2, 1, player.x, player.y, persist_aniframe, q, &ptmp);
+				animatePlayer(bg, spri, player.d-1, 1, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				mapScrollDown(bg, SPEED);
 				mapScrollDown(spri, SPEED);
 				//mapScrollDown(mask, SPEED);
@@ -453,8 +455,8 @@ void main() {
 			{
 				INC_PER_FRAME;
 				player.y+=SPEED;
-				//animatePlayer(bg, spri, mask, 2, 0, player.x, player.y, persist_aniframe, q, (bitmap_t *)p);
-				animatePlayer(bg, spri, player.d-1, 0, player.x, player.y, persist_aniframe, player.q, (bitmap_t *)p);
+				//animatePlayer(bg, spri, mask, 2, 0, player.x, player.y, persist_aniframe, q, &ptmp);
+				animatePlayer(bg, spri, player.d-1, 0, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				modexShowPage(spri->page);
 				player.q++;
 			} else { player.q = 1; player.d = 0; player.ty++; }
@@ -462,7 +464,7 @@ void main() {
 		else
 		{
 			modexCopyPageRegion(spri->page, bg->page, player.x-4, player.y-TILEWH, player.x-4, player.y-TILEWH, 24, 32);
-			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, (bitmap_t *)p);
+			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
 			modexShowPage(spri->page);
 			player.d = 0;
 		}
@@ -479,8 +481,8 @@ void main() {
 			if(player.q<=(TILEWH/SPEED))
 			{
 				INC_PER_FRAME;
-				//animatePlayer(bg, spri, mask, 0, 1, player.x, player.y, persist_aniframe, q, (bitmap_t *)p);
-				animatePlayer(bg, spri, player.d-1, 1, player.x, player.y, persist_aniframe, player.q, (bitmap_t *)p);
+				//animatePlayer(bg, spri, mask, 0, 1, player.x, player.y, persist_aniframe, q, &ptmp);
+				animatePlayer(bg, spri, player.d-1, 1, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				mapScrollUp(bg, SPEED);
 				mapScrollUp(spri, SPEED);
 				//mapScrollUp(mask, SPEED);
@@ -494,16 +496,16 @@ void main() {
 			{
 				INC_PER_FRAME;
 				player.y-=SPEED;
-				//animatePlayer(bg, spri, mask, 0, 0, player.x, player.y, persist_aniframe, q, (bitmap_t *)p);
+				//animatePlayer(bg, spri, mask, 0, 0, player.x, player.y, persist_aniframe, q, &ptmp);
 				modexShowPage(spri->page);
-				animatePlayer(bg, spri, player.d-1, 0, player.x, player.y, persist_aniframe, player.q, (bitmap_t *)p);
+				animatePlayer(bg, spri, player.d-1, 0, player.x, player.y, persist_aniframe, player.q, &ptmp);
 				player.q++;
 			} else { player.q = 1; player.d = 0; player.ty--; }
 		}
 		else
 		{
 			modexCopyPageRegion(spri->page, bg->page, player.x-4, player.y-TILEWH, player.x-4, player.y-TILEWH, 24, 32);
-			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 0, 24, 32, (bitmap_t *)p);
+			modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 0, 24, 32, &ptmp);
 			modexShowPage(spri->page);
 			player.d = 0;
 		}

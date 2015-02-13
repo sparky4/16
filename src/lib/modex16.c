@@ -289,6 +289,11 @@ modexDrawBmpRegion(page_t *page, int x, int y,
 void
 modexDrawPlanarBuf(page_t *page, int x, int y, planar_buf_t *bmp) {
     /* TODO - adapt from test code */
+	int plane;
+	for(plane=0; plane < 4; plane++)
+	{
+		//fack
+	}
 }
 
 
