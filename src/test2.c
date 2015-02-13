@@ -12,22 +12,24 @@ void main() {
     int i;
     int plane;
     int x,y;
-    byte color;
+    //byte color;
 
     /* get the size we want */
-    printf("Width: ");
+    /*printf("Width: ");
     scanf("%d", &bmp.width);
     printf("Height: ");
     scanf("%d", &bmp.height);
     printf("Color: ");
-    scanf("%x", &color);
+    scanf("%x", &color);*/
 
     /* allocate the bmp and fill it with 42 */
-    size = bmp.width * bmp.height;
+    /*size = bmp.width * bmp.height;
     bmp.data = malloc(size);
     for(i=0; i<size; i++) {
 	bmp.data[i] = color;
-    }
+    }*/
+
+	bmp = bitmapLoadPcx("ptmp.pcx");
 
     /* create the planar buffer */
     p = planar_buf_from_bitmap(&bmp);
