@@ -1,7 +1,6 @@
 #include "src\lib\modex16.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "src\lib\dos_kb.h"
 #include "16\lib\x\modex.h"
 #include "src\lib\wtest\wtest.c"
@@ -227,7 +226,6 @@ void main() {
 	modexClearRegion(bg->page, 5*16, 5*16, 16, 16, 255);
 
 	modexShowPage(spri->page);
-	//memcpy ( &mv2, p, (p->pwidth*(p->height))+1 );
 	while(!keyp(1) && player.hp>0)
 	{
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
