@@ -6,7 +6,7 @@
 #include "16\lib\x\modex.h"
 #include "src\lib\wtest\wtest.c"
 #include "src\lib\planar.c"
-#include "src\lib\ems.c"
+//====#include "src\lib\ems.c"
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 
@@ -168,7 +168,7 @@ void main() {
 	}
 */
 	/* save the palette */
-	pal  = modexNewPal();
+	pal = modexNewPal();
 	modexPalSave(pal);
 	modexFadeOff(4, pal);
 	modexPalBlack();
@@ -227,7 +227,6 @@ void main() {
 	modexClearRegion(bg->page, 5*16, 5*16, 16, 16, 255);
 
 	modexShowPage(spri->page);
-	//_fmemset(bg->page, (int)p, 16);
 	while(!keyp(1) && player.hp>0)
 	{
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
