@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <dos.h>
 #include <string.h>
 #include "src\lib\modex16.h"
 #include "src\lib\bitmap.h"
@@ -69,7 +70,7 @@ void main() {
     modexPalUpdate(bmp.palette);
 
     /* clear and draw one sprite and one bitmap */
-    modexClearRegion(&page, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 1);
+    //modexClearRegion(&page, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 1);
 
     /* non sprite comparison */
     /*start = *clock;
@@ -100,9 +101,10 @@ void main() {
     for(i=0; i<100 ;i++) {
       modexDrawSprite(&page, 20, 20, &bmp);
     }*/
+    _fmemset(MK_FP(0xA000, 0), (int)p->plane, SCREEN_WIDTH*(SCREEN_HEIGHT*2));
 	while(!kbhit())
 	{
-		DrawPBuf(&page, 0, 0, p, 0);
+		//DrawPBuf(&page, 0, 0, p, 0);
 	}
     modexLeave();
 

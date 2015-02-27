@@ -1,6 +1,7 @@
 #include "src\lib\modex16.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "src\lib\dos_kb.h"
 #include "16\lib\x\modex.h"
 #include "src\lib\wtest\wtest.c"
@@ -226,6 +227,7 @@ void main() {
 	modexClearRegion(bg->page, 5*16, 5*16, 16, 16, 255);
 
 	modexShowPage(spri->page);
+	//_fmemset(bg->page, (int)p, 16);
 	while(!keyp(1) && player.hp>0)
 	{
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
@@ -523,6 +525,16 @@ void main() {
 	}
 	if(player.q == (TILEWH/SPEED)+1 && player.d > 0 && (player.triggerx == 5 && player.triggery == 5)){ player.hp--; }
 	//if(keyp(0x0E)) while(1){ if(xmsmalloc(24)) break; }
+	if(keyp(87))
+	{
+		modexLeave();
+		setkb(0);
+		__asm
+		{
+			mov ah,31h
+			int 21h
+		}
+	}
 	}
 
 	/* fade back to text mode */

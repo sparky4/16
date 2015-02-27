@@ -31,7 +31,7 @@ void main() {
 	bmp.data[i] = color;
     }*/
 
-	bmp = bitmapLoadPcx("data/46113319.pcx");
+	bmp = bitmapLoadPcx("data/koishi^^.pcx");
 
     /* create the planar buffer */
     p = planar_buf_from_bitmap(&bmp);
