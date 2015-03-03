@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="40" height="30" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="wwww" tilewidth="16" tileheight="16">
+  <image source="bakapi.png" width="320" height="240"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="40" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt1TEOgCAMheESbuHQ+x/TxYEJ2uYBRd7wTxL6xYCqiGhTSZYKfX/2MdarJjDQd4+vBsrwrkbPZlqte1vXIK3efTzrEc6ZPoQzOu+EWSvmIc6H53uz2mc1R+91tv8D8izR2XfSytienq/djpHvBTJnB3E=
+  </data>
+ </layer>
+</map>
