@@ -47,6 +47,11 @@ void main() {
 	    printf("\n");
 	}
     }
+		/*__asm
+		{
+			mov ah,31h
+			int 21h
+		}*/
 
 //	file = fopen("ptmp0.pcx", "wb");
 
