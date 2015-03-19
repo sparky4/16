@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "../jsmn.c"
 
 /*
@@ -7,9 +8,9 @@
  * tokens is predictable.
  */
 
-const char *JSON_STRING =
+/*char *JSON_STRING =
 	"{\"user\": \"johndoe\", \"admin\": false, \"uid\": 1000,\n  "
-	"\"groups\": [\"users\", \"wheel\", \"audio\", \"video\"]}";
+	"\"groups\": [\"users\", \"wheel\", \"audio\", \"video\"]}";*/
 
 static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 	if (tok->type == JSMN_STRING && (int) strlen(s) == tok->end - tok->start &&
@@ -23,10 +24,19 @@ int main() {
 	int i;
 	int r;
 	jsmn_parser p;
-	jsmntok_t t[128]; /* We expect no more than 128 tokens */
+	jsmntok_t t[8192]; /* We expect no more than 128 tokens */
+	char *JSON_STRING;
+	FILE *fh = fopen("../../../../data/test.map", "r");
+	if(fh != NULL)
+	{
+		fread(JSON_STRING, sizeof(t), sizeof(t), fh);
+		// we can now close the file
+		fclose(fh); fh = NULL;
+		printf("%s\n", JSON_STRING);
 
 	jsmn_init(&p);
 	r = jsmn_parse(&p, JSON_STRING, strlen(JSON_STRING), t, sizeof(t)/sizeof(t[0]));
+	printf("%s\n", JSON_STRING);
 	if (r < 0) {
 		printf("Failed to parse JSON: %d\n", r);
 		return 1;
@@ -71,5 +81,10 @@ int main() {
 					JSON_STRING + t[i].start);
 		}
 	}
+
+	free(JSON_STRING);
+	}
+	if (fh != NULL) fclose(fh);
+  //}
 	return 0;
 }
