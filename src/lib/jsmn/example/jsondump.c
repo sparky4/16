@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-#include "../jsmn.h"
+#include "../jsmn.c"
 
 /*
  * An example of reading JSON from stdin and printing its content to stdout.
