@@ -40,7 +40,7 @@ int main() {
 	FILE *fh = fopen("../../../../data/test.map", "r");
 	jsmntok_t t[1536]; /* We expect no more than 128 tokens */
 	char JSON_S[6144];
-	memset(JSON_S, 0, filesize(fh));
+	memset(JSON_S, 0, sizeof(JSON_S));
 
 	if(fh != NULL)
 	{
