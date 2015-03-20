@@ -8,9 +8,22 @@
  * tokens is predictable.
  */
 
-/*char *JSON_STRING =
+/*char *JSON_S =
 	"{\"user\": \"johndoe\", \"admin\": false, \"uid\": 1000,\n  "
 	"\"groups\": [\"users\", \"wheel\", \"audio\", \"video\"]}";*/
+
+char *JSON_STRING;
+
+long int filesize(FILE *fp)
+{
+	long int save_pos, size_of_file;
+
+	save_pos = ftell(fp);
+	fseek(fp, 0L, SEEK_END);
+	size_of_file = ftell(fp);
+	fseek(fp, save_pos, SEEK_SET);
+	return(size_of_file);
+}
 
 static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 	if (tok->type == JSMN_STRING && (int) strlen(s) == tok->end - tok->start &&
@@ -24,19 +37,23 @@ int main() {
 	int i;
 	int r;
 	jsmn_parser p;
-	jsmntok_t t[8192]; /* We expect no more than 128 tokens */
-	char *JSON_STRING;
 	FILE *fh = fopen("../../../../data/test.map", "r");
+	jsmntok_t t[2048]; /* We expect no more than 128 tokens */
+	char JSON_S[8192];
+	memset(JSON_S, 0, sizeof JSON_S);
+
 	if(fh != NULL)
 	{
-		fread(JSON_STRING, sizeof(t), sizeof(t), fh);
+		fread(JSON_S, sizeof(char), filesize(fh), fh);
 		// we can now close the file
 		fclose(fh); fh = NULL;
-		printf("%s\n", JSON_STRING);
+		//printf("]%s[\n", JSON_S);
+		JSON_STRING=JSON_S;
+		//printf("[[%s]]\n", JSON_STRING);
 
 	jsmn_init(&p);
 	r = jsmn_parse(&p, JSON_STRING, strlen(JSON_STRING), t, sizeof(t)/sizeof(t[0]));
-	printf("%s\n", JSON_STRING);
+	printf("%s", JSON_STRING);
 	if (r < 0) {
 		printf("Failed to parse JSON: %d\n", r);
 		return 1;
@@ -50,9 +67,9 @@ int main() {
 
 	/* Loop over all keys of the root object */
 	for (i = 1; i < r; i++) {
-		if (jsoneq(JSON_STRING, &t[i], "user") == 0) {
+		if (jsoneq(JSON_STRING, &t[i], "image") == 0) {
 			/* We may use strndup() to fetch string value */
-			printf("- User: %.*s\n", t[i+1].end-t[i+1].start,
+			printf("- image: %.*s\n", t[i+1].end-t[i+1].start,
 					JSON_STRING + t[i+1].start);
 			i++;
 		} else if (jsoneq(JSON_STRING, &t[i], "admin") == 0) {
@@ -65,9 +82,9 @@ int main() {
 			printf("- UID: %.*s\n", t[i+1].end-t[i+1].start,
 					JSON_STRING + t[i+1].start);
 			i++;
-		} else if (jsoneq(JSON_STRING, &t[i], "groups") == 0) {
+		} else if (jsoneq(JSON_STRING, &t[i], "tilesets") == 0) {
 			int j;
-			printf("- Groups:\n");
+			printf("- tilesets:\n");
 			if (t[i+1].type != JSMN_ARRAY) {
 				continue; /* We expect groups to be an array of strings */
 			}
@@ -82,9 +99,9 @@ int main() {
 		}
 	}
 
-	free(JSON_STRING);
+	//free(JSON_STRING);
 	}
 	if (fh != NULL) fclose(fh);
-  //}
+  ////}
 	return 0;
 }
