@@ -27,6 +27,7 @@ oldDrawBmp(byte far* page, int x, int y, bitmap_t *bmp, byte sprite) {
     }
 }
 
+/*
 void
 DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, byte sprite)
 {
@@ -34,7 +35,7 @@ DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, byte sprite)
     word px, py;
     word offset;
 
-    /* TODO Make this fast.  It's SLOOOOOOW */
+    // TODO Make this fast.  It's SLOOOOOOW
     for(plane=0; plane < 4; plane++) {
 	modexSelectPlane(PLANE(plane+x));
 	for(px = plane; px < p->width; px+=4) {
@@ -49,7 +50,7 @@ DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, byte sprite)
 	}
     }
 }
-
+*/
 
 void main() {
     bitmap_t bmp;
@@ -62,7 +63,7 @@ void main() {
 
     page=modexDefaultPage();
 
-    bmp = bitmapLoadPcx("data/koishi^^.pcx");
+    bmp = bitmapLoadPcx("data/koishi~~.pcx");
     p = planar_buf_from_bitmap(&bmp);
     modexEnter();
 
