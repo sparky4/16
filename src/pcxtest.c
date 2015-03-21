@@ -62,7 +62,7 @@ void main() {
 
     page=modexDefaultPage();
 
-    bmp = bitmapLoadPcx("data/ed.pcx");
+    bmp = bitmapLoadPcx("data/koishi^^.pcx");
     p = planar_buf_from_bitmap(&bmp);
     modexEnter();
 
@@ -70,10 +70,10 @@ void main() {
     modexPalUpdate(bmp.palette);
 
     /* clear and draw one sprite and one bitmap */
-    //modexClearRegion(&page, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 1);
+    modexClearRegion(&page, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 1);
 
     /* non sprite comparison */
-    /*start = *clock;
+    start = *clock;
     for(i=0; i<100 ;i++) {
       oldDrawBmp(VGA, 20, 20, &bmp, 0);
     }
@@ -100,8 +100,8 @@ void main() {
     start = *clock;
     for(i=0; i<100 ;i++) {
       modexDrawSprite(&page, 20, 20, &bmp);
-    }*/
-    _fmemset(MK_FP(0xA000, 0), (int)p->plane, SCREEN_WIDTH*(SCREEN_HEIGHT*2));
+    }
+    //_fmemset(MK_FP(0xA000, 0), (int)p->plane, SCREEN_WIDTH*(SCREEN_HEIGHT*2));
 	while(!kbhit())
 	{
 		//DrawPBuf(&page, 0, 0, p, 0);
@@ -110,7 +110,7 @@ void main() {
 
 	printf("\n%d\n", sizeof(p->plane));
 	printf("%d\n", sizeof(bmp));
-    //printf("CPU to VGA: %f\n", t1);
-    //printf("VGA to VGA: %f\n", t2);
+    printf("CPU to VGA: %f\n", t1);
+    printf("VGA to VGA: %f\n", t2);
     return;
 }
