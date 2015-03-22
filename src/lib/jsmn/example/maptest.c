@@ -8,12 +8,9 @@
  * tokens is predictable.
  */
 
-/*char *JSON_S =
+/*char *json_string =
 	"{\"user\": \"johndoe\", \"admin\": false, \"uid\": 1000,\n  "
 	"\"groups\": [\"users\", \"wheel\", \"audio\", \"video\"]}";*/
-
-char *JSON_STRING;
-char JSON_S[BUFSIZ];
 
 long int filesize(FILE *fp)
 {
@@ -37,23 +34,28 @@ static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 int main() {
 	int i;
 	int r;
+	//char json_s[8192];
 	jsmn_parser p;
-	FILE *fh = fopen("../../../../data/test.map", "r");
 	jsmntok_t t[2048]; /* We expect no more than 128 tokens */
-	//memset(JSON_S, 0, sizeof(JSON_S));
+	FILE *fh = fopen("../../../../data/test.map", "r");
+
+	char *json_string = malloc(filesize(fh)+1);
+	//memset(json_string, 0, sizeof(*json_string));
 
 	if(fh != NULL)
 	{
-		fread(JSON_S, sizeof(char), filesize(fh), fh);
+		fread(json_string, 1, filesize(fh), fh);
+		json_string+1="\0";
 		// we can now close the file
-		//printf("]%s[\n", JSON_S);
-		JSON_STRING=JSON_S;
-		//printf("[[%s]]\n", JSON_STRING);
+		//printf("]%s[\n", json_s);
+		//json_string=json_s;
+		//printf("[[%s]]\n", json_string);
 
 	jsmn_init(&p);
-	r = jsmn_parse(&p, JSON_STRING, filesize(fh), t, sizeof(t)/sizeof(t[0]));
+	printf("[\n%s\n]", json_string);
+	r = jsmn_parse(&p, json_string, filesize(fh), t, sizeof(t)/sizeof(t[0]));
 		fclose(fh); fh = NULL;
-	printf("%s", JSON_STRING);
+	//printf("[\n%s\n]", json_string);
 	if (r < 0) {
 		printf("Failed to parse JSON: %d\n", r);
 		return 1;
@@ -67,22 +69,22 @@ int main() {
 
 	/* Loop over all keys of the root object */
 	for (i = 1; i < r; i++) {
-		if (jsoneq(JSON_STRING, &t[i], "image") == 0) {
+		if (jsoneq(json_string, &t[i], "image") == 0) {
 			/* We may use strndup() to fetch string value */
 			printf("- image: %.*s\n", t[i+1].end-t[i+1].start,
-					JSON_STRING + t[i+1].start);
+					json_string + t[i+1].start);
 			i++;
-		} else if (jsoneq(JSON_STRING, &t[i], "admin") == 0) {
+		} else if (jsoneq(json_string, &t[i], "admin") == 0) {
 			/* We may additionally check if the value is either "true" or "false" */
 			printf("- Admin: %.*s\n", t[i+1].end-t[i+1].start,
-					JSON_STRING + t[i+1].start);
+					json_string + t[i+1].start);
 			i++;
-		} else if (jsoneq(JSON_STRING, &t[i], "uid") == 0) {
+		} else if (jsoneq(json_string, &t[i], "uid") == 0) {
 			/* We may want to do strtol() here to get numeric value */
 			printf("- UID: %.*s\n", t[i+1].end-t[i+1].start,
-					JSON_STRING + t[i+1].start);
+					json_string + t[i+1].start);
 			i++;
-		} else if (jsoneq(JSON_STRING, &t[i], "tilesets") == 0) {
+		} else if (jsoneq(json_string, &t[i], "tilesets") == 0) {
 			int j;
 			printf("- tilesets:\n");
 			if (t[i+1].type != JSMN_ARRAY) {
@@ -90,16 +92,16 @@ int main() {
 			}
 			for (j = 0; j < t[i+1].size; j++) {
 				jsmntok_t *g = &t[i+j+2];
-				printf("  * %.*s\n", g->end - g->start, JSON_STRING + g->start);
+				printf("  * %.*s\n", g->end - g->start, json_string + g->start);
 			}
 			i += t[i+1].size + 1;
 		} else {
 			printf("Unexpected key: %.*s\n", t[i].end-t[i].start,
-					JSON_STRING + t[i].start);
+					json_string + t[i].start);
 		}
 	}
 
-	//free(JSON_STRING);
+	//free(json_string);
 	}
 	if (fh != NULL) fclose(fh);
   ////}
