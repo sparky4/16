@@ -14,8 +14,10 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent) {
 	if (count == 0) {
 		return 0;
 	}
+	//what the fuck is going on here?
 	if (t->type == JSMN_PRIMITIVE) {
 		printf("%.*s", t->end - t->start, js+t->start);
+		printf("%s\n", js+t->start);
 		return 1;
 	} else if (t->type == JSMN_STRING) {
 		printf("'%.*s'", t->end - t->start, js+t->start);
@@ -43,6 +45,14 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent) {
 		return j+1;
 	}
 	return 0;
+}
+
+static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
+	if (tok->type == JSMN_STRING && (int) strlen(s) == tok->end - tok->start &&
+			strncmp(json + tok->start, s, tok->end - tok->start) == 0) {
+		return 0;
+	}
+	return -1;
 }
 
 int main() {
