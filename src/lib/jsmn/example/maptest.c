@@ -13,7 +13,7 @@
 	"\"groups\": [\"users\", \"wheel\", \"audio\", \"video\"]}";*/
 
 char *JSON_STRING;
-char JSON_S[8192];
+char JSON_S[BUFSIZ];
 
 long int filesize(FILE *fp)
 {
