@@ -50,7 +50,7 @@ int main() {
 	int eof_expected = 0;
 	char *js = NULL;
 	size_t jslen = 0;
-	char buf[BUFSIZ-256];
+	char buf[BUFSIZ];
 
 	jsmn_parser p;
 	jsmntok_t *tok;
