@@ -34,6 +34,7 @@ static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 int main() {
 	int i;
 	int r;
+	size_t z;
 	//char json_s[8192];
 	jsmn_parser p;
 	jsmntok_t t[2048]; /* We expect no more than 128 tokens */
@@ -44,8 +45,9 @@ int main() {
 
 	if(fh != NULL)
 	{
-		fread(json_string, 1, filesize(fh), fh);
-		json_string+1="\0";
+		z = fread(json_string, 1, filesize(fh), fh);
+		printf("[[%d]]\n", z);
+		json_string[z] = '\0';
 		// we can now close the file
 		//printf("]%s[\n", json_s);
 		//json_string=json_s;
