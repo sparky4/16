@@ -13,6 +13,7 @@
 	"\"groups\": [\"users\", \"wheel\", \"audio\", \"video\"]}";*/
 
 char *JSON_STRING;
+char JSON_S[BUFSIZ];
 
 long int filesize(FILE *fp)
 {
@@ -39,15 +40,14 @@ int main() {
 	jsmn_parser p;
 	FILE *fh = fopen("../../../../data/test.map", "r");
 	jsmntok_t *t; /* We expect no more than 128 tokens */
-	size_t tokcount = 2;
+	size_t tokcount = 2048;
 	/* Allocate some tokens as a start */
 	t = malloc(sizeof(*t) * tokcount);
-	char JSON_S[BUFSIZ];
-	memset(JSON_S, 0, sizeof(JSON_S));
+	//memset(JSON_S, 0, sizeof(JSON_S));
 
 	if(fh != NULL)
 	{
-		fread(JSON_S, sizeof(char), filesize(fh), fh);
+		fread(JSON_S, 1, filesize(fh), fh);
 		// we can now close the file
 		//printf("]%s[\n", JSON_S);
 		JSON_STRING=JSON_S;
