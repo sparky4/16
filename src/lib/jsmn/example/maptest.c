@@ -39,13 +39,13 @@ int main() {
 	jsmn_parser p;
 	jsmntok_t t[2048]; /* We expect no more than 128 tokens */
 	FILE *fh = fopen("../../../../data/test.map", "r");
-
 	char *json_string = malloc(filesize(fh));
 	//memset(json_string, 0, sizeof(*json_string));
 
 	if(fh != NULL)
 	{
 		z = fread(json_string, 1, filesize(fh), fh);
+		fclose(fh); fh = NULL;
 		printf("[[%d]]\n", z);
 		json_string[z] = '\0';
 		// we can now close the file
@@ -54,10 +54,8 @@ int main() {
 		//printf("[[%s]]\n", json_string);
 
 	jsmn_init(&p);
+	r = jsmn_parse(&p, json_string, z, t, sizeof(t)/sizeof(t[0]));
 	printf("[\n%s\n]", json_string);
-	r = jsmn_parse(&p, json_string, filesize(fh), t, sizeof(t)/sizeof(t[0]));
-		fclose(fh); fh = NULL;
-	//printf("[\n%s\n]", json_string);
 	if (r < 0) {
 		printf("Failed to parse JSON: %d\n", r);
 		return 1;
