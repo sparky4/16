@@ -13,6 +13,7 @@
 	"\"groups\": [\"users\", \"wheel\", \"audio\", \"video\"]}";*/
 
 char *JSON_STRING;
+char JSON_S[6144];
 
 long int filesize(FILE *fp)
 {
@@ -39,8 +40,7 @@ int main() {
 	jsmn_parser p;
 	FILE *fh = fopen("../../../../data/test.map", "r");
 	jsmntok_t t[1536]; /* We expect no more than 128 tokens */
-	char JSON_S[6144];
-	memset(JSON_S, 0, sizeof(JSON_S));
+	//memset(JSON_S, 0, sizeof(JSON_S));
 
 	if(fh != NULL)
 	{
@@ -53,7 +53,7 @@ int main() {
 	jsmn_init(&p);
 	r = jsmn_parse(&p, JSON_STRING, filesize(fh), t, sizeof(t)/sizeof(t[0]));
 		fclose(fh); fh = NULL;
-	printf("%s", JSON_STRING);
+	//printf("%s", JSON_STRING);
 	if (r < 0) {
 		printf("Failed to parse JSON: %d\n", r);
 		return 1;
