@@ -40,7 +40,7 @@ int main() {
 	jsmntok_t t[2048]; /* We expect no more than 128 tokens */
 	FILE *fh = fopen("../../../../data/test.map", "r");
 
-	char *json_string = malloc(filesize(fh)+1);
+	char *json_string = malloc(filesize(fh));
 	//memset(json_string, 0, sizeof(*json_string));
 
 	if(fh != NULL)
