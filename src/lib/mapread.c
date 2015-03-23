@@ -9,14 +9,19 @@ static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 }
 
 //this function is quite messy ^^; sorry! it is a quick and dirty fix~
-static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *js_sv,*/ map_t *map) {
+static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *js_sv,*/ map_t *map, short q) {
 	int i, j, k;
 	if (count == 0) {
 		return 0;
 	}
 	/* We may want to do strtol() here to get numeric value */
 	if (t->type == JSMN_PRIMITIVE) {
-		if(js_sv == "height")
+		if(js_sv == "data")
+		{
+			map->tiles->data->data[q] = (byte)strtol(js+t->start, (char **)js+t->end, 10);
+			printf("[%d]", map->tiles->data->data[q]);
+			q++;
+		}else if(js_sv == "height")
 		{
 			map->height = (int)strtol(js+t->start, (char **)js+t->end, 10);
 			//printf("h:[%d]\n", map->height);
@@ -29,7 +34,11 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 		/* We may use strndup() to fetch string value */
 	} else if (t->type == JSMN_STRING) {
 		//printf("'%.*s'", t->end - t->start, js+t->start);
-		if (jsoneq(js, t, "height") == 0 && indent==1)
+		if (jsoneq(js, t, "data") == 0 && indent==2)
+		{
+			js_sv="data";//strdup(js+t->start);//, t->end - t->start);
+			//printf("%s\n", js_sv);
+		}else if (jsoneq(js, t, "height") == 0 && indent==1)
 		{
 			js_sv="height";//strdup(js+t->start);//, t->end - t->start);
 			//printf("%s\n", js_sv);
@@ -44,9 +53,9 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 		j = 0;
 		for (i = 0; i < t->size; i++) {
 			//for (k = 0; k < indent; k++) printf("\t");
-			j += dump(js, t+1+j, count-j, indent+1, map);
+			j += dump(js, t+1+j, count-j, indent+1, map, q);
 			//printf(": ");
-			j += dump(js, t+1+j, count-j, indent+1, map);
+			j += dump(js, t+1+j, count-j, indent+1, map, q);
 			//printf("\n");
 		}
 		return j+1;
@@ -56,7 +65,7 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 		for (i = 0; i < t->size; i++) {
 			//for (k = 0; k < indent-1; k++) printf("\t");
 			//printf("\t-");
-			j += dump(js, t+1+j, count-j, indent+1, map);
+			j += dump(js, t+1+j, count-j, indent+1, map, q);
 			//printf("==\n");
 		}
 		return j+1;
@@ -125,7 +134,7 @@ again:
 				goto again;
 			}
 		} else {
-			dump(js, tok, p.toknext, 0, map);
+			dump(js, tok, p.toknext, 0, map, 0);
 			//fprintf(stdout, "[[[[%d]]]]\n", sizeof(tok));
 			//printf("[\n%d\n]", jslen);
 			eof_expected = 1;

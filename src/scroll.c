@@ -627,7 +627,7 @@ initMap(map_t *map) {
 	map->tiles->rows = 1;
 	map->tiles->cols = 2;
 
-	i=0;
+	/*i=0;
 	for(y=0; y<TILEWH; y++) {
 	for(x=0; x<(TILEWH*2); x++) {
 		if(x<TILEWH)
@@ -636,7 +636,7 @@ initMap(map_t *map) {
 		  map->tiles->data->data[i] = 0;//0x34;
 		i++;
 	}
-	}
+	}*/
 
 	i=0;
 	for(y=0; y<map->height; y++) {

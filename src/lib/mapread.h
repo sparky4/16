@@ -24,7 +24,7 @@ typedef struct {
 } map_t;
 
 static int jsoneq(const char *json, jsmntok_t *tok, const char *s);
-static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *js_sv,*/ map_t *map);
+static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *js_sv,*/ map_t *map, short q);
 int loadmap(char *mn, map_t *map);
 
 #endif/*_LIBMAPREAD_H_*/
