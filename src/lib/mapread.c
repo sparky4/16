@@ -9,7 +9,7 @@ static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 }
 
 //this function is quite messy ^^; sorry! it is a quick and dirty fix~
-static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *js_sv,*/ map_t *map, short q) {
+static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *js_sv,*/ map_t *map, int q) {
 	int i, j, k;
 	if (count == 0) {
 		return 0;
@@ -18,9 +18,11 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 	if (t->type == JSMN_PRIMITIVE) {
 		if(js_sv == "data")
 		{
+			//bgdata[q] = (byte)strtol(js+t->start, (char **)js+t->end, 10);
+			if(strtol(js+t->start, (char **)js+t->end, 10)==0){ fprintf(stderr, "FACK! %d\n", errno); exit(-1); }
 			map->tiles->data->data[q] = (byte)strtol(js+t->start, (char **)js+t->end, 10);
-			printf("[%d]", map->tiles->data->data[q]);
-			q++;
+			printf("%d[%d]", q, map->tiles->data->data[q]);
+			//printf("%d[%d]", q, bgdata[q]);
 		}else if(js_sv == "height")
 		{
 			map->height = (int)strtol(js+t->start, (char **)js+t->end, 10);
@@ -34,7 +36,7 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 		/* We may use strndup() to fetch string value */
 	} else if (t->type == JSMN_STRING) {
 		//printf("'%.*s'", t->end - t->start, js+t->start);
-		if (jsoneq(js, t, "data") == 0 && indent==2)
+		if (jsoneq(js, t, "data") == 0)
 		{
 			js_sv="data";//strdup(js+t->start);//, t->end - t->start);
 			//printf("%s\n", js_sv);
@@ -53,9 +55,9 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 		j = 0;
 		for (i = 0; i < t->size; i++) {
 			//for (k = 0; k < indent; k++) printf("\t");
-			j += dump(js, t+1+j, count-j, indent+1, map, q);
+			j += dump(js, t+1+j, count-j, indent+1, map, i);
 			//printf(": ");
-			j += dump(js, t+1+j, count-j, indent+1, map, q);
+			j += dump(js, t+1+j, count-j, indent+1, map, i);
 			//printf("\n");
 		}
 		return j+1;
@@ -63,9 +65,10 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 		j = 0;
 		//printf("==\n");
 		for (i = 0; i < t->size; i++) {
+			//if(bgdata==NULL) bgdata=malloc(sizeof(char)*t->size);
 			//for (k = 0; k < indent-1; k++) printf("\t");
 			//printf("\t-");
-			j += dump(js, t+1+j, count-j, indent+1, map, q);
+			j += dump(js, t+1+j, count-j, indent+1, map, i);
 			//printf("==\n");
 		}
 		return j+1;
