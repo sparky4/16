@@ -8,7 +8,7 @@
 #include "src/lib/modex16.h"
 
 static char *js_sv;
-//byte bgdata[4096];
+//static long int bgdata[4096];
 
 typedef struct {
 	bitmap_t *data;
@@ -25,8 +25,9 @@ typedef struct {
 	int height;
 } map_t;
 
+//static void initMap(map_t *map, int maps);
 static int jsoneq(const char *json, jsmntok_t *tok, const char *s);
-static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *js_sv,*/ map_t *map, int q/*, word w*/);
+static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *js_sv,*/ map_t *map, int q/*, int w*/);
 static int loadmap(char *mn, map_t *map/*, word w*/);
 
 #endif/*_LIBMAPREAD_H_*/

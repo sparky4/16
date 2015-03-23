@@ -120,8 +120,8 @@ void main() {
 	/* create the map */
 	loadmap("data/test.map", &map/*, 0*/);
 	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
-	//loadmap(NULL, &map, 1);
 	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
+	//++++
 	initMap(&map);
 	mv.map = &map;
 	mv2.map = &map;
