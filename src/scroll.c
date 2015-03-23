@@ -1,16 +1,13 @@
-#include "src\lib\modex16.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "src\lib\dos_kb.h"
-#include "16\lib\x\modex.h"
+#include "src\lib\mapread.c"
+//#include "16\lib\x\modex.h"
 #include "src\lib\wtest\wtest.c"
 #include "src\lib\planar.c"
 //====#include "src\lib\ems.c"
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 
-typedef struct {
+/*typedef struct {
 	bitmap_t *data;
 	word tileHeight;
 	word tileWidth;
@@ -24,7 +21,7 @@ typedef struct {
 	tiles_t *tiles;
 	int width;
 	int height;
-} map_t;
+} map_t;*/
 
 
 typedef struct {
@@ -70,8 +67,8 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword
 //#define LOOPMAX (TILEWH/SPEED)
 
 //place holder definitions
-#define MAPX 200
-#define MAPY 150
+//#define MAPX 200
+//#define MAPY 150
 #define TRIGGX 10
 #define TRIGGY 9
 
@@ -121,7 +118,8 @@ void main() {
 	}*/
 
 	/* create the map */
-	map = allocMap(MAPX,MAPY); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
+	loadmap("data/test.map", &map);
+	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
 	initMap(&map);
 	mv.map = &map;
@@ -242,7 +240,7 @@ void main() {
 	//right movement
 	if(npc0.d == 2)
 	{
-		if(npc0.tx < MAPX && !(npc0.tx+1 == TRIGGX && npc0.ty == TRIGGY) && !(npc0.tx+1 == player.tx && npc0.ty == player.ty))
+		if(npc0.tx < map.width && !(npc0.tx+1 == TRIGGX && npc0.ty == TRIGGY) && !(npc0.tx+1 == player.tx && npc0.ty == player.ty))
 		{
 			if(npc0.q<=(TILEWH/SPEED))
 			{
@@ -294,7 +292,7 @@ void main() {
 	//down movement
 	if(npc0.d == 3)
 	{
-		if(npc0.ty < MAPY && !(npc0.tx == TRIGGX && npc0.ty+1 == TRIGGY) && !(npc0.tx == player.tx && npc0.ty == player.ty+1))
+		if(npc0.ty < map.height && !(npc0.tx == TRIGGX && npc0.ty+1 == TRIGGY) && !(npc0.tx == player.tx && npc0.ty == player.ty+1))
 		{
 			if(npc0.q<=(TILEWH/SPEED))
 			{
@@ -352,7 +350,7 @@ void main() {
 	if((keyp(77) && !keyp(75) && player.d == 0) || player.d == 2)
 	{
 		if(player.d == 0){ player.d = 2; }
-		if(bg->tx >= 0 && bg->tx+20 < MAPX && player.tx == bg->tx + 10 && !(player.tx+1 == TRIGGX && player.ty == TRIGGY))
+		if(bg->tx >= 0 && bg->tx+20 < map.width && player.tx == bg->tx + 10 && !(player.tx+1 == TRIGGX && player.ty == TRIGGY))
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -366,7 +364,7 @@ void main() {
 				player.q++;
 			} else { player.q = 1; player.d = 0; player.tx++; }
 		}
-		else if(player.tx < MAPX && !(player.tx+1 == TRIGGX && player.ty == TRIGGY))
+		else if(player.tx < map.width && !(player.tx+1 == TRIGGX && player.ty == TRIGGY))
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -393,7 +391,7 @@ void main() {
 	if((keyp(75) && !keyp(77) && player.d == 0) || player.d == 4)
 	{
 		if(player.d == 0){ player.d = 4; }
-		if(bg->tx > 0 && bg->tx+20 <= MAPX && player.tx == bg->tx + 10 && !(player.tx-1 == TRIGGX && player.ty == TRIGGY))
+		if(bg->tx > 0 && bg->tx+20 <= map.width && player.tx == bg->tx + 10 && !(player.tx-1 == TRIGGX && player.ty == TRIGGY))
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -434,7 +432,7 @@ void main() {
 	if((keyp(80) && !keyp(72) && player.d == 0) || player.d == 3)
 	{
 		if(player.d == 0){ player.d = 3; }
-		if(bg->ty >= 0 && bg->ty+15 < MAPY && player.ty == bg->ty + 8 && !(player.tx == TRIGGX && player.ty+1 == TRIGGY))
+		if(bg->ty >= 0 && bg->ty+15 < map.height && player.ty == bg->ty + 8 && !(player.tx == TRIGGX && player.ty+1 == TRIGGY))
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -448,7 +446,7 @@ void main() {
 				player.q++;
 			} else { player.q = 1; player.d = 0; player.ty++; }
 		}
-		else if(player.ty < MAPY && !(player.tx == TRIGGX && player.ty+1 == TRIGGY))
+		else if(player.ty < map.height && !(player.tx == TRIGGX && player.ty+1 == TRIGGY))
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -475,7 +473,7 @@ void main() {
 	if((keyp(72) && !keyp(80) && player.d == 0) || player.d == 1)
 	{
 		if(player.d == 0){ player.d = 1; }
-		if(bg->ty > 0 && bg->ty+15 <= MAPY && player.ty == bg->ty + 8 && !(player.tx == TRIGGX && player.ty-1 == TRIGGY))
+		if(bg->ty > 0 && bg->ty+15 <= map.height && player.ty == bg->ty + 8 && !(player.tx == TRIGGX && player.ty-1 == TRIGGY))
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{

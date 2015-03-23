@@ -2,6 +2,7 @@ Open watcom to compile the code of project 16
 / = copy of pngwen's code
 16/ = the current code sparky4 is working with
 16/modex16/ = pngwen's code archived
+src/ = source of project~
 
 TODO not in particular order~:
 DONE 1. SCROLLING!!!!!!!
@@ -11,7 +12,7 @@ DONE 4. movement and player movement when reaching edge of map
 DONE 5. sprite rendering
 6. text box rendering
 7. text rendering
-8. map loading
+DONE! YAY! 8. map loading
 9. map rendering~
 10. map and item interation
 11. item inventory~
@@ -21,7 +22,7 @@ DONE 5. sprite rendering
 DONE 15. 8088 detection to turn off vsync!
 16. (very important!) optoimize draw row and draw col
 
-17. merge map system and interperator from verge 2
+not needed ... really... 17. merge map system and interperator from verge 2
 18. save feature!
 19. (also important) interperator! and possibly custom map system
 20. (also important) lua scripting system!

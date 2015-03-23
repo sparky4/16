@@ -1,32 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#include "../jsmn.c"
-#include "../../../lib/types.h"
-
-/*
- * An example of reading JSON from stdin and printing its content to stdout.
- * The output looks like YAML, but I'm not sure if it's really compatible.
- */
-
-char *js_sv;
-
-typedef struct {
-	//bitmap_t *data;
-	byte *data;
-	word tileHeight;
-	word tileWidth;
-	unsigned int rows;
-	unsigned int cols;
-} tiles_t;
-
-typedef struct {
-	byte	*data;
-	tiles_t *tiles;
-	int width;
-	int height;
-} map_t;
+#include "src/lib/mapread.h"
 
 static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 	if (tok->type == JSMN_STRING && (int) strlen(s) == tok->end - tok->start &&
@@ -162,9 +134,9 @@ again:
 	return 0;
 }
 
-int main()
+/*int main()
 {
 	map_t map;
 	loadmap("../../../../data/test.map", &map);
 	return 0;
-}
+}*/

@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <conio.h> // just for wait
 #include <time.h> // just for wait
-#include "src\lib\types.h"
+#include "src/lib/types.h"
 
 /* Control codes for all keys on the keyboard */
 //here temperarly
