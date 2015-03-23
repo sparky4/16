@@ -35,7 +35,6 @@ int main() {
 	int i;
 	int r;
 	size_t z;
-	//char json_s[8192];
 	jsmn_parser p;
 	jsmntok_t t[2048]; /* We expect no more than 128 tokens */
 	FILE *fh = fopen("../../../../data/test.map", "r");
