@@ -8,6 +8,7 @@ static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 	return -1;
 }
 
+//this function is quite messy ^^; sorry! it is a quick and dirty fix~
 static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *js_sv,*/ map_t *map) {
 	int i, j, k;
 	if (count == 0) {
@@ -18,11 +19,11 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 		if(js_sv == "height")
 		{
 			map->height = (int)strtol(js+t->start, (char **)js+t->end, 10);
-			printf("h:[%d]\n", map->height);
+			//printf("h:[%d]\n", map->height);
 		}else if(js_sv == "width")
 		{
 			map->width = (int)strtol(js+t->start, (char **)js+t->end, 10);
-			printf("w:[%d]\n", map->width);
+			//printf("w:[%d]\n", map->width);
 		}
 		return 1;
 		/* We may use strndup() to fetch string value */
@@ -31,11 +32,11 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 		if (jsoneq(js, t, "height") == 0 && indent==1)
 		{
 			js_sv="height";//strdup(js+t->start);//, t->end - t->start);
-			printf("%s\n", js_sv);
+			//printf("%s\n", js_sv);
 		}else if (jsoneq(js, t, "width") == 0 && indent==1)
 		{
 			js_sv="width";//strdup(js+t->start);//, t->end - t->start);
-			printf("%s\n", js_sv);
+			//printf("%s\n", js_sv);
 		}else js_sv=NULL;
 		return 1;
 	} else if (t->type == JSMN_OBJECT) {
