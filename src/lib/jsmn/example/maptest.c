@@ -54,7 +54,7 @@ int main() {
 		//printf("[[%s]]\n", json_string);
 
 	jsmn_init(&p);
-	r = jsmn_parse(&p, json_string, z, t, sizeof(t)/sizeof(t[0]));
+	r = jsmn_parse(&p, json_string, strlen(json_string), t, sizeof(t)/sizeof(t[0]));
 	printf("[\n%s\n]", json_string);
 	if (r < 0) {
 		printf("Failed to parse JSON: %d\n", r);
