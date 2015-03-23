@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <errno.h>
 #include "../jsmn.c"
 
 /*
@@ -36,17 +37,28 @@ int main() {
 	int r;
 	size_t z;
 	jsmn_parser p;
-	jsmntok_t t[128]; /* We expect no more than 128 tokens */
+	jsmntok_t t[(BUFSIZ/sizeof(jsmntok_t))*2]; /* We expect no more than 128 tokens */
 	FILE *fh = fopen("../../../../data/test0.map", "r");
 	char *json_string = malloc(filesize(fh));
 	//memset(json_string, 0, sizeof(*json_string));
-	memset(&p, 0, sizeof(p));
+	//memset(&p, 0, sizeof(p));
+
+	//printf("\n[[[[%d]]]]\n\n", BUFSIZ);
 
 	if(fh != NULL)
 	{
+	/*t = malloc(2048);
+	if (t == NULL) {
+		fprintf(stderr, "malloc(): errno=%d\n", errno);
+		return 3;
+	}*/
+		//printf("\n%d\n\n", sizeof(*t));
+		printf("\n%d", sizeof(t));
+		printf("\n%d\n\n", sizeof(t)/sizeof(t[0]));
 		z = fread(json_string, 1, filesize(fh), fh);
+		//char json_s[2048];
 		fclose(fh); fh = NULL;
-		printf("[[%d]]\n", z);
+		printf("[%d]\n", z);
 		json_string[z] = '\0';
 		// we can now close the file
 		//printf("]%s[\n", json_s);
@@ -56,6 +68,7 @@ int main() {
 	jsmn_init(&p);
 	r = jsmn_parse(&p, json_string, strlen(json_string), t, sizeof(t)/sizeof(t[0]));
 	printf("[\n%s\n]", json_string);
+	printf("[[%d]]\n",r);
 	if (r < 0) {
 		printf("Failed to parse JSON: %d\n", r);
 		return 1;
@@ -96,8 +109,8 @@ int main() {
 			}
 			i += t[i+1].size + 1;
 		} else {
-			printf("Unexpected key: %.*s\n", t[i].end-t[i].start,
-					json_string + t[i].start);
+			/*printf("Unexpected key: %.*s\n", t[i].end-t[i].start,
+					json_string + t[i].start);*/
 		}
 	}
 
