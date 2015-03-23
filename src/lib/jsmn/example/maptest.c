@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <errno.h>
+//#include <errno.h>
 #include "../jsmn.c"
+
+//#define BUFSIZ 2048
 
 /*
  * A small example of jsmn parsing when JSON structure is known and number of
@@ -38,12 +40,8 @@ int main() {
 	size_t z;
 	jsmn_parser p;
 	jsmntok_t t[(BUFSIZ/sizeof(jsmntok_t))*2]; /* We expect no more than 128 tokens */
-	FILE *fh = fopen("../../../../data/test0.map", "r");
+	FILE *fh = fopen("../../../../data/test.map", "r");
 	char *json_string = malloc(filesize(fh));
-	//memset(json_string, 0, sizeof(*json_string));
-	//memset(&p, 0, sizeof(p));
-
-	//printf("\n[[[[%d]]]]\n\n", BUFSIZ);
 
 	if(fh != NULL)
 	{
@@ -53,6 +51,7 @@ int main() {
 		return 3;
 	}*/
 		//printf("\n%d\n\n", sizeof(*t));
+		printf("\n%d", sizeof(*t));
 		printf("\n%d", sizeof(t));
 		printf("\n%d\n\n", sizeof(t)/sizeof(t[0]));
 		z = fread(json_string, 1, filesize(fh), fh);
@@ -67,6 +66,7 @@ int main() {
 
 	jsmn_init(&p);
 	r = jsmn_parse(&p, json_string, strlen(json_string), t, sizeof(t)/sizeof(t[0]));
+	//t[(BUFSIZ/sizeof(jsmntok_t))*2+1].type=JSMN_OBJECT;
 	printf("[\n%s\n]", json_string);
 	printf("[[%d]]\n",r);
 	if (r < 0) {

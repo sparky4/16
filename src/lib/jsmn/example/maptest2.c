@@ -9,6 +9,14 @@
  * The output looks like YAML, but I'm not sure if it's really compatible.
  */
 
+static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
+	if (tok->type == JSMN_STRING && (int) strlen(s) == tok->end - tok->start &&
+			strncmp(json + tok->start, s, tok->end - tok->start) == 0) {
+		return 0;
+	}
+	return -1;
+}
+
 static int dump(const char *js, jsmntok_t *t, size_t count, int indent) {
 	int i, j, k;
 	if (count == 0) {
@@ -19,12 +27,16 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent) {
 		return 1;
 	} else if (t->type == JSMN_STRING) {
 		printf("'%.*s'", t->end - t->start, js+t->start);
+		/*if (jsoneq(js, t, "image") == 0) {
+			printf("- image: %.*s\n", t->end-t->start,
+					js + t->start);
+		}*/
 		return 1;
 	} else if (t->type == JSMN_OBJECT) {
 		printf("\n");
 		j = 0;
 		for (i = 0; i < t->size; i++) {
-			for (k = 0; k < indent; k++) printf("  ");
+			//for (k = 0; k < indent; k++) printf("\t");
 			j += dump(js, t+1+j, count-j, indent+1);
 			printf(": ");
 			j += dump(js, t+1+j, count-j, indent+1);
@@ -35,8 +47,8 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent) {
 		j = 0;
 		printf("\n");
 		for (i = 0; i < t->size; i++) {
-			for (k = 0; k < indent-1; k++) printf("  ");
-			printf("   - ");
+			//for (k = 0; k < indent-1; k++) printf("\t");
+			printf("\t-");
 			j += dump(js, t+1+j, count-j, indent+1);
 			printf("\n");
 		}
@@ -106,6 +118,7 @@ again:
 			}
 		} else {
 			dump(js, tok, p.toknext, 0);
+			//fprintf(stdout, "[[[[%d]]]]\n", sizeof(tok));
 			printf("[\n%d\n]", jslen);
 			eof_expected = 1;
 		}
