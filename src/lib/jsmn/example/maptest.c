@@ -40,6 +40,7 @@ int main() {
 	FILE *fh = fopen("../../../../data/test.map", "r");
 	char *json_string = malloc(filesize(fh));
 	//memset(json_string, 0, sizeof(*json_string));
+	memset(&p, 0, sizeof(p));
 
 	if(fh != NULL)
 	{
