@@ -1,54 +1,5 @@
 #include "src/lib/mapread.h"
 
-/*static void
-initMap(map_t *map, int maps) {
-	// just a place holder to fill out an alternating pattern
-	int x, y;
-	int i;
-	int tile = 1;
-	//if(!isEMS() || !checkEMS())
-		map->tiles = malloc(sizeof(tiles_t));
-	//else
-	//	map->tiles = (tiles_t *)alloc_emem(sizeof(tiles_t));
-
-	// create the tile set
-	//if(!isEMS() || !checkEMS())
-		map->tiles->data = malloc(sizeof(bitmap_t));
-	//else
-	//	map->tiles->data = (bitmap_t *)alloc_emem(sizeof(bitmap_t));
-	map->tiles->data->width = (16*2);
-	map->tiles->data->height= 16;
-	//if(!isEMS() || !checkEMS())
-		map->tiles->data->data = malloc((16*2)*16);
-	//else
-	//	map->tiles->data->data = (byte *)alloc_emem((TILEWH*2)*TILEWH);
-	map->tiles->tileHeight = 16;
-	map->tiles->tileWidth =16;
-	map->tiles->rows = 1;
-	map->tiles->cols = 2;
-
-	//i=0;
-	//for(y=0; y<TILEWH; y++) {
-	//for(x=0; x<(TILEWH*2); x++) {
-	//	if(x<TILEWH)
-	//	  map->tiles->data->data[i] = 28;//0x24;
-	//	else
-	//	  map->tiles->data->data[i] = 0;//0x34;
-	//	i++;
-	//}
-	//}
-
-	i=0;
-	for(y=0; y<map->height; y++) {
-		for(x=0; x<map->width; x++) {
-			map->data[i] = tile;
-			tile = tile ? 0 : 1;
-			i++;
-		}
-		tile = tile ? 0 : 1;
-	}
-}*/
-
 static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 	if (tok->type == JSMN_STRING && (int) strlen(s) == tok->end - tok->start &&
 			strncmp(json + tok->start, s, tok->end - tok->start) == 0) {
@@ -78,7 +29,7 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 			//dump(js, t+1, count, indent, map, i);
 			
 			//bgdata[q] = strtol(js+t->start, (char **)js+t->end, 10);
-			if(strtol(js+t->start, (char **)js+t->end, 10)==0){ /*printf("%d\n", sizeof(map->tiles->data->data));*/ /*fprintf(stderr, "\nFACK! %d\n", errno);*/ return 1; /*exit(-1); */}
+			//if(strtol(js+t->start, (char **)js+t->end, 10)==0){ /*printf("%d\n", sizeof(map->tiles->data->data));*/ /*fprintf(stderr, "\nFACK! %d\n", errno);*/ return 1; /*exit(-1); */}
 			map->tiles->data->data[q] = (byte)strtol(js+t->start, (char **)js+t->end, 10);
 			printf("%d[%d]", q, map->tiles->data->data[q]);
 			//printf("%d[%d]", q, bgdata[q]);
