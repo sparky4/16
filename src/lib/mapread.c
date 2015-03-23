@@ -9,13 +9,14 @@ static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 }
 
 //this function is quite messy ^^; sorry! it is a quick and dirty fix~
-static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *js_sv,*/ map_t *map, int q) {
+static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *js_sv,*/ map_t *map, int q/*, word w*/) {
 	int i, j, k;
 	if (count == 0) {
 		return 0;
 	}
 	/* We may want to do strtol() here to get numeric value */
 	if (t->type == JSMN_PRIMITIVE) {
+		//if(w)
 		if(js_sv == "data")
 		{
 			//bgdata[q] = (byte)strtol(js+t->start, (char **)js+t->end, 10);
@@ -23,24 +24,29 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 			map->tiles->data->data[q] = (byte)strtol(js+t->start, (char **)js+t->end, 10);
 			printf("%d[%d]", q, map->tiles->data->data[q]);
 			//printf("%d[%d]", q, bgdata[q]);
-		}else if(js_sv == "height")
+		}
+		else
+		if(js_sv == "height")
 		{
 			map->height = (int)strtol(js+t->start, (char **)js+t->end, 10);
-			//printf("h:[%d]\n", map->height);
+			printf("h:[%d]\n", map->height);
 		}else if(js_sv == "width")
 		{
 			map->width = (int)strtol(js+t->start, (char **)js+t->end, 10);
-			//printf("w:[%d]\n", map->width);
+			printf("w:[%d]\n", map->width);
 		}
 		return 1;
 		/* We may use strndup() to fetch string value */
 	} else if (t->type == JSMN_STRING) {
 		//printf("'%.*s'", t->end - t->start, js+t->start);
-		if (jsoneq(js, t, "data") == 0)
+		//if(w)
+		if(jsoneq(js, t, "data") == 0 )
 		{
 			js_sv="data";//strdup(js+t->start);//, t->end - t->start);
 			//printf("%s\n", js_sv);
-		}else if (jsoneq(js, t, "height") == 0 && indent==1)
+		}
+		else
+		if (jsoneq(js, t, "height") == 0 && indent==1)
 		{
 			js_sv="height";//strdup(js+t->start);//, t->end - t->start);
 			//printf("%s\n", js_sv);
@@ -55,9 +61,9 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 		j = 0;
 		for (i = 0; i < t->size; i++) {
 			//for (k = 0; k < indent; k++) printf("\t");
-			j += dump(js, t+1+j, count-j, indent+1, map, i);
+			j += dump(js, t+1+j, count-j, indent+1, map, i/*, w*/);
 			//printf(": ");
-			j += dump(js, t+1+j, count-j, indent+1, map, i);
+			j += dump(js, t+1+j, count-j, indent+1, map, i/*, w*/);
 			//printf("\n");
 		}
 		return j+1;
@@ -68,7 +74,7 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 			//if(bgdata==NULL) bgdata=malloc(sizeof(char)*t->size);
 			//for (k = 0; k < indent-1; k++) printf("\t");
 			//printf("\t-");
-			j += dump(js, t+1+j, count-j, indent+1, map, i);
+			j += dump(js, t+1+j, count-j, indent+1, map, i/*, w*/);
 			//printf("==\n");
 		}
 		return j+1;
@@ -76,7 +82,7 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 	return 0;
 }
 
-int loadmap(char *mn, map_t *map)
+static int loadmap(char *mn, map_t *map/*, word w*/)
 {
 	int r;
 	int eof_expected = 0;
@@ -118,7 +124,7 @@ int loadmap(char *mn, map_t *map)
 
 		js = realloc(js, jslen + r + 1);
 		if (js == NULL) {
-			fprintf(stderr, "realloc(): errno=%d\n", errno);
+			fprintf(stderr, "realloc(): errno = %d\n", errno);
 			return 3;
 		}
 		strncpy(js + jslen, buf, r);
@@ -137,12 +143,16 @@ again:
 				goto again;
 			}
 		} else {
-			dump(js, tok, p.toknext, 0, map, 0);
+			dump(js, tok, p.toknext, 0, map, 0/*, w*/);
 			//fprintf(stdout, "[[[[%d]]]]\n", sizeof(tok));
 			//printf("[\n%d\n]", jslen);
 			eof_expected = 1;
 		}
 	}
+
+	free(js);
+	free(tok);
+	fclose(fh);
 
 	return 0;
 }
