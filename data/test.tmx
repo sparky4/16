@@ -3,7 +3,7 @@
  <tileset firstgid="1" name="wwww" tilewidth="16" tileheight="16">
   <image source="bakapi.png" width="320" height="240"/>
  </tileset>
- <layer name="Tile Layer 1" width="40" height="30">
+ <layer name="bg" width="40" height="30">
   <data encoding="csv">
 30,30,30,30,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 30,30,30,30,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
