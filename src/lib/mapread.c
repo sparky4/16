@@ -170,8 +170,8 @@ again:
 		}
 	}
 
-	free(js);
-	free(tok);
+	//free(js);
+	//free(tok);
 	fclose(fh);
 
 	return 0;

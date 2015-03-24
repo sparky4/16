@@ -130,11 +130,11 @@ void main() {
 	/* draw the tiles */
 	ptr = map.data;
 	/* data */
-	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
+//++++	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
-
+printf("\nwwww\n");
 	/* create the planar buffer */
-	p = planar_buf_from_bitmap(&ptmp);
+//++++	p = planar_buf_from_bitmap(&ptmp);
 
 	/*if(isEMS())
 	{
