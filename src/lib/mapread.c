@@ -28,16 +28,19 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 			*/
 			//bgdata[q] = strtol(js+t->start, (char **)js+t->end, 10);
 			//if(strtol(js+t->start, (char **)js+t->end, 10)==0){ /*printf("%d\n", sizeof(map->tiles->data->data));*/ fprintf(stderr, "\nFACK! %d\n", errno); exit(-1); }
-//			map->tiles->data->data[q] = (byte)strtol(js+t->start, (char **)js+t->end, 10);
-//			printf("%d[%d]", q, (byte)strtol(js+t->start, (char **)js+t->end, 10));
+			//printf("%.*s", (t-1)->end - (t-1)->start, js+(t-1)->start);
+			map->tiles->data->data[q] = (byte)strtol(js+t->start, (char **)js+t->end, 0);
+			printf("[%d]", map->tiles->data->data[q]);
 		}
 		else
 		if(js_sv == "height")
 		{
+			//map->height = (int)malloc(sizeof(int));
 			map->height = (int)strtol(js+t->start, (char **)js+t->end, 10);
 			printf("h:[%d]\n", map->height);
 		}else if(js_sv == "width")
 		{
+			//map->width = (int)malloc(sizeof(int));
 			map->width = (int)strtol(js+t->start, (char **)js+t->end, 10);
 			printf("w:[%d]\n", map->width);
 		}
@@ -50,7 +53,7 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 		{
 //			printf("[[[[%d|%d]]]]\n", &(t+1)->size, (t+1)->size);
 			printf("\n%.*s[xx[%d|%d]xx]\n", (t+1)->end - (t+1)->start, js+(t+1)->start, &(t+1)->size, (t+1)->size);
-			map->data = malloc(sizeof(byte) * (t+1)->size +1);
+			map->data = malloc(sizeof(byte) * (t+1)->size);
 			map->tiles = malloc(sizeof(tiles_t));
 			map->tiles->data = malloc(sizeof(bitmap_t));
 			map->tiles->data->width = (16*2);
@@ -161,6 +164,7 @@ again:
 			}
 		} else {
 			//printf("================================================================================%s================================================================================", js);
+			js_sv=malloc(sizeof(char)*10);
 			dump(js, tok, p.toknext, 0, map, 0);
 			eof_expected = 1;
 		}
