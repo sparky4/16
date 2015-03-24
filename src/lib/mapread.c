@@ -29,7 +29,7 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 			//bgdata[q] = strtol(js+t->start, (char **)js+t->end, 10);
 			//if(strtol(js+t->start, (char **)js+t->end, 10)==0){ /*printf("%d\n", sizeof(map->tiles->data->data));*/ fprintf(stderr, "\nFACK! %d\n", errno); exit(-1); }
 			//printf("%.*s", (t-1)->end - (t-1)->start, js+(t-1)->start);
-			map->tiles->data->data[q] = (byte)strtol(js+t->start, (char **)js+t->end, 0);
+			map->tiles->data->data[q] = (byte)strtol(js+t->start, &(char *)t->end, 0);
 			printf("[%d]", map->tiles->data->data[q]);
 		}
 		else
@@ -37,7 +37,7 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 		{
 			//map->height = (int)malloc(sizeof(int));
 			map->height = (int)strtol(js+t->start, (char **)js+t->end, 10);
-			printf("h:[%d]\n", map->height);
+			//printf("h:[%d]\n", map->height);
 		}else if(js_sv == "width")
 		{
 			//map->width = (int)malloc(sizeof(int));
