@@ -164,14 +164,14 @@ again:
 			}
 		} else {
 			//printf("================================================================================%s================================================================================", js);
-			js_sv=malloc(sizeof(char)*10);
+			//js_sv=malloc(sizeof(char)*10);
 			dump(js, tok, p.toknext, 0, map, 0);
 			eof_expected = 1;
 		}
 	}
 
-	//free(js);
-	//free(tok);
+	free(js);
+	free(tok);
 	fclose(fh);
 
 	return 0;

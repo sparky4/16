@@ -89,7 +89,7 @@ bitmapLoadPcx(char *filename) {
 
     /* allocate the buffer */
     bufSize = result.width * result.height;
-    result.data = malloc(bufSize);
+    result.data = malloc(bufSize);	//it breaks right here~
     if(!result.data) {
 	printf("Could not allocate memory for bitmap data.");
 	fclose(file);
