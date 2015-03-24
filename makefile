@@ -1,7 +1,7 @@
 FLAGS=-0 -d2 
 SRC=src\
 SRCLIB=$(SRC)lib\
-all: test.exe pcxtest.exe test2.exe scroll.exe
+all: test.exe pcxtest.exe test2.exe maptest.exe scroll.exe
 
 scroll.exe: scroll.obj modex16.obj dos_kb.obj bitmap.obj mapread.obj jsmn.obj
 	wcl $(FLAGS) scroll.obj modex16.obj dos_kb.obj bitmap.obj mapread.obj jsmn.obj 16\lib\x\modex.lib
@@ -16,6 +16,9 @@ test2.exe: test2.obj modex16.obj bitmap.obj planar.obj
 pcxtest.exe: pcxtest.obj modex16.obj bitmap.obj
 	wcl $(FLAGS) pcxtest.obj modex16.obj bitmap.obj
 
+maptest.exe: maptest.obj mapread.obj jsmn.obj
+        wcl $(FLAGS) maptest.obj jsmn.obj
+
 test.obj: $(SRC)test.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)test.c
 	
@@ -24,6 +27,9 @@ test2.obj: $(SRC)test2.c $(SRCLIB)modex16.h
 	
 pcxtest.obj: $(SRC)pcxtest.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)pcxtest.c
+
+maptest.obj: $(SRC)maptest.c $(SRCLIB)mapread.h
+        wcl $(FLAGS) -c $(SRC)maptest.c
 
 modex16.obj: $(SRCLIB)modex16.h $(SRCLIB)modex16.c
 	wcl $(FLAGS) -c $(SRCLIB)modex16.c

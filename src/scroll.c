@@ -119,7 +119,7 @@ void main() {
 
 	/* create the map */
 	loadmap("data/test.map", &map/*, 0*/);
-	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
+	//map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
 	//++++
 	initMap(&map);
@@ -608,19 +608,19 @@ initMap(map_t *map) {
 	int i;
 	int tile = 1;
 	//if(!isEMS() || !checkEMS())
-		map->tiles = malloc(sizeof(tiles_t));
+//		map->tiles = malloc(sizeof(tiles_t));
 	//else
 	//	map->tiles = (tiles_t *)alloc_emem(sizeof(tiles_t));
 
 	/* create the tile set */
 	//if(!isEMS() || !checkEMS())
-		map->tiles->data = malloc(sizeof(bitmap_t));
+//		map->tiles->data = malloc(sizeof(bitmap_t));
 	//else
 	//	map->tiles->data = (bitmap_t *)alloc_emem(sizeof(bitmap_t));
-	map->tiles->data->width = (TILEWH*2);
-	map->tiles->data->height= TILEWH;
+//	map->tiles->data->width = (TILEWH*2);
+//	map->tiles->data->height= TILEWH;
 	//if(!isEMS() || !checkEMS())
-		map->tiles->data->data = malloc((TILEWH*2)*TILEWH);
+//		map->tiles->data->data = malloc((TILEWH*2)*TILEWH);
 	//else
 	//	map->tiles->data->data = (byte *)alloc_emem((TILEWH*2)*TILEWH);
 	map->tiles->tileHeight = TILEWH;
