@@ -121,7 +121,7 @@ void main() {
 	loadmap("data/test.map", &map/*, 0*/);
 //	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
-	initMap(&map);
+//	initMap(&map);
 	mv.map = &map;
 	mv2.map = &map;
 	mv3.map = &map;
@@ -129,7 +129,7 @@ void main() {
 	/* draw the tiles */
 	ptr = map.data;
 	/* data */
-	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
+	ptmp = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 	/* create the planar buffer */
 	p = planar_buf_from_bitmap(&ptmp);
@@ -616,16 +616,16 @@ initMap(map_t *map) {
 //		map->tiles->data = malloc(sizeof(bitmap_t));
 	//else
 	//	map->tiles->data = (bitmap_t *)alloc_emem(sizeof(bitmap_t));
-	map->tiles->data->width = (TILEWH/**2*/);
-	map->tiles->data->height= TILEWH;
+//	map->tiles->data->width = (TILEWH/**2*/);
+//	map->tiles->data->height= TILEWH;
 	//if(!isEMS() || !checkEMS())
 //		map->tiles->data->data = malloc((TILEWH*2)*TILEWH);
 	//else
 	//	map->tiles->data->data = (byte *)alloc_emem((TILEWH*2)*TILEWH);
-	map->tiles->tileHeight = TILEWH;
-	map->tiles->tileWidth =TILEWH;
-	map->tiles->rows = 1;
-	map->tiles->cols = 1;//2;
+//	map->tiles->tileHeight = TILEWH;
+//	map->tiles->tileWidth =TILEWH;
+//	map->tiles->rows = 1;
+//	map->tiles->cols = 1;//2;
 
 	/*q=0;
 	//for(y=0; y<map->height; y++) {

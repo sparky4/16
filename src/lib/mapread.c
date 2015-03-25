@@ -49,7 +49,14 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 			map->data = malloc(sizeof(byte) * (t+1)->size);
 			map->tiles = malloc(sizeof(tiles_t));
 			map->tiles->data = malloc(sizeof(bitmap_t));
+			//map->tiles->data = bitmapLoadPcx("data/chikyuu.pcx");
 			map->tiles->data->data = malloc((16/**2*/)*16);
+			map->tiles->data->width = (16/**2*/);
+			map->tiles->data->height= 16;
+			map->tiles->tileHeight = 16;
+			map->tiles->tileWidth = 16;
+			map->tiles->rows = 1;
+			map->tiles->cols = 1;
 			js_sv="data";//strdup(js+t->start);//, t->end - t->start);
 		}
 		else
