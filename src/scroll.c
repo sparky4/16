@@ -119,9 +119,8 @@ void main() {
 
 	/* create the map */
 	loadmap("data/test.map", &map/*, 0*/);
-	//map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
+//	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
-	//++++
 	initMap(&map);
 	mv.map = &map;
 	mv2.map = &map;
@@ -130,11 +129,10 @@ void main() {
 	/* draw the tiles */
 	ptr = map.data;
 	/* data */
-//++++	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
+	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
-printf("\nwwww\n");
 	/* create the planar buffer */
-//++++	p = planar_buf_from_bitmap(&ptmp);
+	p = planar_buf_from_bitmap(&ptmp);
 
 	/*if(isEMS())
 	{
@@ -554,6 +552,7 @@ printf("\nwwww\n");
 	printf("player.hp: %d\n", player.hp);
 	printf("player.q: %d\n", player.q);
 	printf("player.d: %d\n", player.d);
+	printf("%d\n", map.data[0]);
 	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
 	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
 	printf("\n");
@@ -604,9 +603,9 @@ allocMap(int w, int h) {
 void
 initMap(map_t *map) {
 	/* just a place holder to fill out an alternating pattern */
-	int x, y;
-	int i;
-	int tile = 1;
+	int x, y, xx, yy;
+	int i, q;
+//	int tile = 1;
 	//if(!isEMS() || !checkEMS())
 //		map->tiles = malloc(sizeof(tiles_t));
 	//else
@@ -617,8 +616,8 @@ initMap(map_t *map) {
 //		map->tiles->data = malloc(sizeof(bitmap_t));
 	//else
 	//	map->tiles->data = (bitmap_t *)alloc_emem(sizeof(bitmap_t));
-//	map->tiles->data->width = (TILEWH*2);
-//	map->tiles->data->height= TILEWH;
+	map->tiles->data->width = (TILEWH/**2*/);
+	map->tiles->data->height= TILEWH;
 	//if(!isEMS() || !checkEMS())
 //		map->tiles->data->data = malloc((TILEWH*2)*TILEWH);
 	//else
@@ -626,28 +625,41 @@ initMap(map_t *map) {
 	map->tiles->tileHeight = TILEWH;
 	map->tiles->tileWidth =TILEWH;
 	map->tiles->rows = 1;
-	map->tiles->cols = 2;
+	map->tiles->cols = 1;//2;
 
-	/*i=0;
-	for(y=0; y<TILEWH; y++) {
-	for(x=0; x<(TILEWH*2); x++) {
-		if(x<TILEWH)
-		  map->tiles->data->data[i] = 28;//0x24;
-		else
-		  map->tiles->data->data[i] = 0;//0x34;
+	/*q=0;
+	//for(y=0; y<map->height; y++) {
+	//for(x=0; x<map->width; x++) {
+	i=0;
+	for(yy=0; yy<TILEWH; yy++) {
+	for(xx=0; xx<(TILEWH); xx++) {
+		//if(x<TILEWH){
+		  map->tiles->data->data[i+1] = map->data[q];//28;//0x24;
+//		  printf("[%d]", map->tiles->data->data[i]);
+		//}else{
+		  //map->tiles->data->data[i] = map->data[q];//0;//0x34;
+		  //printf("]%d[==[%d]", i, map->tiles->data->data[i]);
+		//}
 		i++;
 	}
-	}*/
+//	printf("\n");
+	}
+//	printf("[%d]", map->data[q]);
+	q++;
+//	}
+	//printf("\n\n");
+//	}*/
 
-	i=0;
+	/*i=0;
 	for(y=0; y<map->height; y++) {
 		for(x=0; x<map->width; x++) {
-			map->data[i] = tile;
-			tile = tile ? 0 : 1;
+//			map->data[i]=255;
+			printf("[%d]", map->data[i]);
+			//tile = tile ? 0 : 1;
 			i++;
 		}
-		tile = tile ? 0 : 1;
-	}
+		//tile = tile ? 0 : 1;
+	}*/
 }
 
 
