@@ -521,8 +521,8 @@ void main() {
 	}
 	if(player.q == (TILEWH/SPEED)+1 && player.d > 0 && (player.triggerx == 5 && player.triggery == 5)){ player.hp--; }
 	//if(keyp(0x0E)) while(1){ if(xmsmalloc(24)) break; }
-	modexDrawBmp(bg->page, 0, 0, map.tiles->data);
-	modexDrawBmp(spri->page, 0, 0, map.tiles->data);
+//	modexDrawBmp(bg->page, 0, 0, map.tiles->data);
+//	modexDrawBmp(spri->page, 0, 0, map.tiles->data);
 	if(keyp(87))
 	{
 		modexLeave();
