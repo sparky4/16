@@ -11,6 +11,7 @@ static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 //this function is quite messy ^^; sorry! it is a quick and dirty fix~
 static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *js_sv,*/ map_t *map, int q/*, int *w*/) {
 	int i, j, k;
+	bitmap_t bp;
 	if (count == 0) {
 		return 0;
 	}
@@ -25,7 +26,7 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 
 				FUCK well i am stuck.... wwww
 			*/
-			map->data[q] = (byte)strtol(js+t->start, &(char *)t->end, 10);
+			map->data[q] = (byte)strtol(js+t->start, &(char *)t->end, 10)%4;
 //			printf("%d[%d]", q, map->data[q]);
 		}
 		else
@@ -48,11 +49,14 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 //			printf("\n%.*s[xx[%d|%d]xx]\n", (t+1)->end - (t+1)->start, js+(t+1)->start, &(t+1)->size, (t+1)->size);
 			map->data = malloc(sizeof(byte) * (t+1)->size);
 			map->tiles = malloc(sizeof(tiles_t));
-			map->tiles->data = malloc(sizeof(bitmap_t));
-			//map->tiles->data = bitmapLoadPcx("data/chikyuu.pcx");
-			map->tiles->data->data = malloc((16/**2*/)*16);
-			map->tiles->data->width = (16/**2*/);
-			map->tiles->data->height= 16;
+			//map->tiles->data = malloc(sizeof(bitmap_t));
+			printf("ed.pcx\n");
+			bp = bitmapLoadPcx("data/ed.pcx");
+			printf("ed.pcx\n");
+			map->tiles->data = &bp;
+			//map->tiles->data->data = malloc((16/**2*/)*16);
+			//map->tiles->data->width = (16/**2*/);
+			//map->tiles->data->height= 16;
 			map->tiles->tileHeight = 16;
 			map->tiles->tileWidth = 16;
 			map->tiles->rows = 1;

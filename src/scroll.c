@@ -119,9 +119,9 @@ void main() {
 
 	/* create the map */
 	loadmap("data/test.map", &map/*, 0*/);
-//	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
+//----	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
-//	initMap(&map);
+//----	initMap(&map);
 	mv.map = &map;
 	mv2.map = &map;
 	mv3.map = &map;
@@ -521,6 +521,8 @@ void main() {
 	}
 	if(player.q == (TILEWH/SPEED)+1 && player.d > 0 && (player.triggerx == 5 && player.triggery == 5)){ player.hp--; }
 	//if(keyp(0x0E)) while(1){ if(xmsmalloc(24)) break; }
+	modexDrawBmp(bg->page, 0, 0, map.tiles->data);
+	modexDrawBmp(spri->page, 0, 0, map.tiles->data);
 	if(keyp(87))
 	{
 		modexLeave();
