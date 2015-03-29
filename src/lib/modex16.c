@@ -598,10 +598,6 @@ modexPalUpdate(bitmap_t *bmp, word *i)
 	word q=0;
 	long lq;
 	long bufSize = (bmp->width * bmp->height);
-	for(lq=0; lq<bufSize; lq++)
-	{
-		bmp->data[lq]+=bmp->offset;
-	}
 	modexWaitBorder();
 	if((*i)==0) outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
 	else q=(*i);
@@ -646,6 +642,13 @@ modexPalUpdate(bitmap_t *bmp, word *i)
 //				if((*i)>(88*3)) printf("		%d	%d\n", (*i), p[(*i)]);
 			}
 		}
+	}
+	if((*i)>0)
+	for(lq=0; lq<bufSize; lq++)
+	{
+		bmp->data[lq]+=bmp->offset;
+		printf("%02d", bmp->data[lq]);
+		if(lq%bmp->width==0) printf("\n");
 	}
 }
 
