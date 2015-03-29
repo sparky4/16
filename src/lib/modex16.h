@@ -55,7 +55,8 @@ void modexPalBlack();
 void modexPalWhite();
 
 /* utility functions */
-void modexPalUpdate(byte *p);
+void modexPalUpdate(byte *p, word *i);
+void modexPalUpdate2(byte *p);
 void modexWaitBorder();
 
 /* -======================= Constants & Vars ==========================- */

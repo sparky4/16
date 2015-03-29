@@ -226,7 +226,7 @@ void
 modexDrawBmpRegion(page_t *page, int x, int y,
                    int rx, int ry, int rw, int rh, bitmap_t *bmp) {
     word poffset = (word) page->data  + y*(page->width/4) + x/4;
-    byte *data = bmp->data;
+    byte *data = bmp->data;//+bmp->offset;
     word bmpOffset = (word) data + ry * bmp->width + rx;
     word width = rw;
     word height = rh;
@@ -307,7 +307,7 @@ void
 modexDrawSpriteRegion(page_t *page, int x, int y,
 		      int rx, int ry, int rw, int rh, bitmap_t *bmp) {
     word poffset = (word)page->data + y*(page->width/4) + x/4;
-    byte *data = bmp->data;
+    byte *data = bmp->data;//+bmp->offset;
     word bmpOffset = (word) data + ry * bmp->width + rx;
     word width = rw;
     word height = rh;
@@ -481,7 +481,7 @@ fadePalette(sbyte fade, sbyte start, word iter, byte *palette) {
 
     /* handle the case where we just update */
     if(iter == 0) {
-	modexPalUpdate(palette);
+	modexPalUpdate2(palette);
 	return;
     }
 
@@ -494,7 +494,7 @@ fadePalette(sbyte fade, sbyte start, word iter, byte *palette) {
 		tmppal[i] = 63;
 	    }
 	}
-        modexPalUpdate(tmppal);
+        modexPalUpdate2(tmppal);
 	iter--;
 	dim += fade;
     }
@@ -591,19 +591,73 @@ modexPalWhite() {
 
 /* utility */
 void
-modexPalUpdate(byte *p) {
-    int i;
-    modexWaitBorder();
-    outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
-    for(i=0; i<PAL_SIZE/2; i++) {
-	outp(PAL_DATA_REG, p[i]);
-    }
-    modexWaitBorder();	    /* waits one retrace -- less flicker */
-    for(i=PAL_SIZE/2; i<PAL_SIZE; i++) {
-	outp(PAL_DATA_REG, p[i]);
-    }
+modexPalUpdate(byte *p, word *i)
+{
+	word w=0;
+	word q=0;
+	modexWaitBorder();
+	if((*i)==0) outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
+	else q=(*i);
+	if((*i)<PAL_SIZE/2 && w==0)
+	{
+//		printf("	%d	1st half\n", (*i));
+		for(; (*i)<PAL_SIZE/2; (*i)++)
+		{
+			//if(i%3==0 && (p[i+5]==p[i+4] && p[i+4]==p[i+3] && p[i+3]==p[i+2] && p[i+2]==p[i+1] && p[i+1]==p[i] && p[i+5]==p[i]))
+			if(((*i)-q)%3==0 && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5]))
+			{
+//				printf("[%d]", p[((*i)-q)]);	printf("[%d]", p[((*i)-q)+1]);	printf("[%d]", p[((*i)-q)+2]);	printf("[%d]", p[((*i)-q)+3]);			printf("[%d]", p[((*i)-q)+4]);			printf("[%d]", p[((*i)-q)+5]);			printf("	%d [%d]\n", (*i), p[((*i)-q)]);
+				//printf("		1st break\n");
+				w++;
+				//(*i)=(*i)+3;
+				break;
+			}
+			else
+			{
+				outp(PAL_DATA_REG, p[(*i)-q]);
+//				if((*i)>(88*3)) printf("		%d	%d\n", (*i), p[(*i)]);
+			}
+		}
+	}
+	modexWaitBorder();	    /* waits one retrace -- less flicker */
+	if((*i)>=PAL_SIZE/2 && w==0)
+	{
+		//printf("		2nd half\n");
+		for(; (*i)<PAL_SIZE; (*i)++)
+		{
+			if(((*i)-q)%3==0 && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5]))
+			{
+//				printf("[%d]", p[((*i)-q)]);	printf("[%d]", p[((*i)-q)+1]);	printf("[%d]", p[((*i)-q)+2]);	printf("[%d]", p[((*i)-q)+3]);			printf("[%d]", p[((*i)-q)+4]);			printf("[%d]", p[((*i)-q)+5]);			printf("	%d [%d]\n", (*i), p[((*i)-q)]);
+				//printf("		1st break\n");
+				w++;
+				//(*i)=(*i)+3;
+				break;
+			}
+			else
+			{
+				outp(PAL_DATA_REG, p[(*i)-q]);
+//				if((*i)>(88*3)) printf("		%d	%d\n", (*i), p[(*i)]);
+			}
+		}
+	}
 }
 
+void
+modexPalUpdate2(byte *p)
+{
+	int i;
+	modexWaitBorder();
+	outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
+	for(i=0; i<PAL_SIZE/2; i++)
+	{
+		outp(PAL_DATA_REG, p[i]);
+	}
+	modexWaitBorder();	    /* waits one retrace -- less flicker */
+	for(; i<PAL_SIZE; i++)
+	{
+		outp(PAL_DATA_REG, p[(i)]);
+	}
+}
 
 void
 modexWaitBorder() {

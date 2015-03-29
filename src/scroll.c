@@ -59,10 +59,11 @@ void mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
 void mapDrawRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawCol(map_view_t *mv, int tx, int ty, word x);
 void qclean();
+void pdump(map_view_t *pee);
 void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword d, short scrolloffsetswitch, int x, int y, int ls, int lp, bitmap_t *bmp);
 
 #define TILEWH 16
-#define QUADWH (TILEWH/4)
+#define QUADWH			TILEWH/2
 #define SPEED 4
 //#define LOOPMAX (TILEWH/SPEED)
 
@@ -77,6 +78,7 @@ void main() {
 	long emsavail;
 	char teststr[80];
 	int i;
+	static word paloffset=0;
 	bitmap_t ptmp;//, npctmp; // player sprite
 	planar_buf_t *p;
 	const char *cpus;
@@ -85,8 +87,8 @@ void main() {
 	map_t map;
 	map_view_t mv, mv2, mv3;
 	map_view_t *bg, *spri, *mask;//, *tmp;
-	byte *pal;
-	byte *ptr;
+	byte *dpal, *gpal;
+	byte *ptr, *mappalptr;
 	actor_t player;
 	//actor_t npc0;
 
@@ -118,7 +120,7 @@ void main() {
 	}*/
 
 	/* create the map */
-	loadmap("data/test.map", &map/*, 0*/);
+	loadmap("data/test.map", &map);
 //----	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
 //----	initMap(&map);
@@ -128,6 +130,7 @@ void main() {
 
 	/* draw the tiles */
 	ptr = map.data;
+	mappalptr = map.tiles->data->palette;
 	/* data */
 	ptmp = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
@@ -164,17 +167,31 @@ void main() {
 		//printf("%d\n", emmhandle);
 	}
 */
+
 	/* save the palette */
-	pal = modexNewPal();
-	modexPalSave(pal);
-	modexFadeOff(4, pal);
+	dpal = modexNewPal();
+	modexPalSave(dpal);
+	modexFadeOff(4, dpal);
 	modexPalBlack();
 
 	setkb(1);
 	modexEnter();
 	modexPalBlack();
-	modexPalUpdate(ptmp.palette);
-	modexFadeOn(4, ptmp.palette);
+	//ptmp.offset=(paloffset/3);
+	ptmp.offset=paloffset;
+	modexPalUpdate(ptmp.palette, &paloffset);
+//	printf("	%x\n", ptmp.data);
+	//printf("1:	%d\n", paloffset);
+	map.tiles->data->offset=paloffset;
+	modexPalUpdate(map.tiles->data->palette, &paloffset);
+	//printf("2:	%d\n", paloffset);
+//	printf("	%x\n", map.tiles->data->data);
+	gpal = modexNewPal();
+	modexPalSave(gpal);
+	modexSavePalFile("data/g.pal", gpal);
+	modexFadeOn(4, gpal);
+
+	/* setup camera and screen~ */
 	screen = modexDefaultPage();
 	screen.width += (TILEWH*2);
 	screen.height += (TILEWH*2)+QUADWH;
@@ -217,11 +234,11 @@ void main() {
 	modexDrawSpriteRegion(spri->page, npc0.x-4, npc0.y-TILEWH, 24, 64, 24, 32, &npctmp);*/
 	modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
 
-	modexClearRegion(spri->page, player.triggerx*16, player.triggery*16, 16, 16, 1);
-	modexClearRegion(bg->page, player.triggerx*16, player.triggery*16, 16, 16, 1);
+	//----modexClearRegion(spri->page, player.triggerx*16, player.triggery*16, 16, 16, 1);
+	//----modexClearRegion(bg->page, player.triggerx*16, player.triggery*16, 16, 16, 1);
 
-	modexClearRegion(spri->page, 5*16, 5*16, 16, 16, 255);
-	modexClearRegion(bg->page, 5*16, 5*16, 16, 16, 255);
+	//----modexClearRegion(spri->page, 5*16, 5*16, 16, 16, 255);
+	//----modexClearRegion(bg->page, 5*16, 5*16, 16, 16, 255);
 
 	modexShowPage(spri->page);
 	while(!keyp(1) && player.hp>0)
@@ -521,8 +538,8 @@ void main() {
 	}
 	if(player.q == (TILEWH/SPEED)+1 && player.d > 0 && (player.triggerx == 5 && player.triggery == 5)){ player.hp--; }
 	//if(keyp(0x0E)) while(1){ if(xmsmalloc(24)) break; }
-//	modexDrawBmp(bg->page, 0, 0, map.tiles->data);
-//	modexDrawBmp(spri->page, 0, 0, map.tiles->data);
+	if(keyp(25)){ pdump(bg); pdump(spri); }
+
 	if(keyp(87))
 	{
 		modexLeave();
@@ -536,7 +553,7 @@ void main() {
 	}
 
 	/* fade back to text mode */
-	modexFadeOff(4, ptmp.palette);
+	modexFadeOff(4, gpal);
 	modexPalBlack();
 	modexLeave();
 	setkb(0);
@@ -554,7 +571,7 @@ void main() {
 	printf("player.hp: %d\n", player.hp);
 	printf("player.q: %d\n", player.q);
 	printf("player.d: %d\n", player.d);
-	printf("%d\n", map.data[0]);
+	printf("palette offset:	%d\n", paloffset);
 	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
 	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
 	printf("\n");
@@ -573,7 +590,7 @@ void main() {
 	}
 	printf("detected CPU type: %s\n", cpus);
 	modexPalBlack();
-	modexFadeOn(4, pal);
+	modexFadeOn(4, dpal);
 }
 
 
@@ -833,6 +850,20 @@ void qclean()
 {
 	modexLeave();
 	setkb(0);
+}
+
+void pdump(map_view_t *pee)
+{
+	int mult=(QUADWH);
+	int palq=(mult)*TILEWH;
+	int palcol=0;
+	int palx, paly;
+	for(paly=0; paly<palq; paly+=mult){
+		for(palx=0; palx<palq; palx+=mult){
+				modexClearRegion(pee->page, palx+TILEWH, paly+TILEWH, mult, mult, palcol);
+			palcol++;
+		}
+	}
 }
 
 void

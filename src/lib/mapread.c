@@ -9,7 +9,7 @@ static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 }
 
 //this function is quite messy ^^; sorry! it is a quick and dirty fix~
-static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *js_sv,*/ map_t *map, int q/*, int *w*/) {
+static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *js_sv,*/ map_t *map, int q) {
 	int i, j, k;
 	bitmap_t bp;
 	if (count == 0) {
@@ -75,9 +75,9 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 		j = 0;
 		for (i = 0; i < t->size; i++) {
 			//for (k = 0; k < indent; k++) printf("\t");
-			j += dump(js, t+1+j, count-j, indent+1, map, i/*, w*/);
+			j += dump(js, t+1+j, count-j, indent+1, map, i);
 			//printf(": ");
-			j += dump(js, t+1+j, count-j, indent+1, map, i/*, w*/);
+			j += dump(js, t+1+j, count-j, indent+1, map, i);
 			//printf("\n");
 		}
 		return j+1;
@@ -87,7 +87,7 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 		for (i = 0; i < t->size; i++) {
 			//for (k = 0; k < indent-1; k++) printf("\t");
 			//printf("\t-");
-			j += dump(js, t+1+j, count-j, indent+1, map, i/*, &t->size*/);
+			j += dump(js, t+1+j, count-j, indent+1, map, i);
 			//printf("==\n");
 		}
 		return j+1;
@@ -95,7 +95,7 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 	return 0;
 }
 
-static int loadmap(char *mn, map_t *map/*, word w*/)
+static int loadmap(char *mn, map_t *map)
 {
 	int r;
 	int eof_expected = 0;
