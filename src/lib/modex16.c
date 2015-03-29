@@ -591,10 +591,17 @@ modexPalWhite() {
 
 /* utility */
 void
-modexPalUpdate(byte *p, word *i)
+modexPalUpdate(bitmap_t *bmp, word *i)
 {
+	byte *p = bmp->palette;
 	word w=0;
 	word q=0;
+	long lq;
+	long bufSize = (bmp->width * bmp->height);
+	for(lq=0; lq<bufSize; lq++)
+	{
+		bmp->data[lq]+=bmp->offset;
+	}
 	modexWaitBorder();
 	if((*i)==0) outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
 	else q=(*i);

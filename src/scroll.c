@@ -78,7 +78,6 @@ void main() {
 	long emsavail;
 	char teststr[80];
 	int i;
-	long lq, bufSize;
 	static word paloffset=0;
 	bitmap_t ptmp;//, npctmp; // player sprite
 	planar_buf_t *p;
@@ -180,17 +179,12 @@ void main() {
 	modexPalBlack();
 	//ptmp.offset=(paloffset/3);
 	ptmp.offset=(paloffset/3);
-	modexPalUpdate(ptmp.palette, &paloffset);
+	modexPalUpdate(&ptmp, &paloffset);
 	//printf("	%d\n", sizeof(ptmp.data));
 	//printf("1:	%d\n", paloffset);
 	map.tiles->data->offset=(paloffset/3);
-	modexPalUpdate(map.tiles->data->palette, &paloffset);
+	modexPalUpdate(map.tiles->data, &paloffset);
 	//printf("wwww:	%d\n", map.tiles->data->offset);
-	bufSize = (map.tiles->data->width * map.tiles->data->height);
-	for(lq=0; lq<bufSize; lq++)
-	{
-		map.tiles->data->data[lq]+=map.tiles->data->offset;
-	}
 	//printf("2:	%d\n", paloffset);
 	//printf("	%d\n", sizeof(map.tiles->data->(*data)));
 	gpal = modexNewPal();
