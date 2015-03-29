@@ -185,7 +185,7 @@ void main() {
 	//printf("1:	%d\n", paloffset);
 	map.tiles->data->offset=(paloffset/3);
 	modexPalUpdate(map.tiles->data->palette, &paloffset);
-	printf("wwww:	%d\n", map.tiles->data->offset);
+	//printf("wwww:	%d\n", map.tiles->data->offset);
 	bufSize = (map.tiles->data->width * map.tiles->data->height);
 	for(lq=0; lq<bufSize; lq++)
 	{
