@@ -179,11 +179,11 @@ void main() {
 	modexPalBlack();
 	//ptmp.offset=(paloffset/3);
 	ptmp.offset=(paloffset/3);
-	modexPalUpdate(&ptmp, &paloffset, 0);
+	modexPalUpdate(&ptmp, &paloffset, 0, 0);
 	//printf("	%d\n", sizeof(ptmp.data));
 	//printf("1:	%d\n", paloffset);
 	map.tiles->data->offset=(paloffset/3);
-	modexPalUpdate(map.tiles->data, &paloffset, 0);
+	modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	//printf("wwww:	%d\n", map.tiles->data->offset);
 	//printf("2:	%d\n", paloffset);
 	//printf("	%d\n", sizeof(map.tiles->data->(*data)));

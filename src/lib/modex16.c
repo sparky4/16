@@ -591,32 +591,82 @@ modexPalWhite() {
 
 /* utility */
 void
-modexPalUpdate(bitmap_t *bmp, word *i, word qp)
+modexPalUpdate(bitmap_t *bmp, word *i, word qp, word qr)
 {
 	byte *p = bmp->palette;
 	word w=0;
 	word q=0;
+	word qq=0;
+	word *qqqq;
+	static word a[256] = { 0 };
+	word z=0,aq=0,aa=0;
+	word pp=0,aqpp=0,spee=0,ppee=0;
 
-	if(qp>0) printf("(*i)=%02d\n", (*i)/3);
-
+//	if(qp>0) printf("(*i)=%02d\n", (*i));
 	modexWaitBorder();
 	if((*i)==0) outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
-	else if(qp==0) q=(*i);// else outp(PAL_WRITE_REG, (*i));
+	else if(qp==0)
+	{
+		q=(*i);
+		(*qqqq)=(*i)-q;
+		//mxi1=PAL_SIZE/2;
+		//mxi2=PAL_SIZE;
+	}
+	else
+	{
+		q=(*i);
+		qq=(*i)/3;
+		(*qqqq)=(*i)-(bmp->offset*3);
+		//mxi1=q+3;
+		//mxi2=q+3;
+//		printf("q: %02d\n", (q));
+		//printf("mxi1: %02d\n", mxi1);
+//		printf("qq: %02d\n", (qq));
+		//printf("	((*i)-(bmp->offset*3))=%02d\n", ((*i)-(bmp->offset*3)));
+		//printf("	(*i)-q=%02d\n", (*i)-q);
+//		printf("qqqq: %d\n",(*qqqq));
+//		printf("================\n");
+		outp(PAL_WRITE_REG, qq);  /* start at the beginning of palette */
+	}
 	if((*i)<PAL_SIZE/2 && w==0)
 	{
 		for(; (*i)<PAL_SIZE/2; (*i)++)
 		{
 			//if(i%3==0 && (p[i+5]==p[i+4] && p[i+4]==p[i+3] && p[i+3]==p[i+2] && p[i+2]==p[i+1] && p[i+1]==p[i] && p[i+5]==p[i]))
 //____			if((qp>0)&&((*i)-q)%3==0 && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5])) outp(PAL_DATA_REG, p[(*i)-q]); else
-			if(((*i)-q)%3==0 && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5]))
+			if((((*i)-q)%3==0 || ((qp>0)&&((*i)-(bmp->offset*3))%3==0)) && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5]))
 			{
-//				printf("[%d]", p[((*i)-q)]);	printf("[%d]", p[((*i)-q)+1]);	printf("[%d]", p[((*i)-q)+2]);	printf("[%d]", p[((*i)-q)+3]);			printf("[%d]", p[((*i)-q)+4]);			printf("[%d]", p[((*i)-q)+5]);			printf("	%d [%d]\n", (*i), p[((*i)-q)]);
+				printf("[%d]", p[((*i)-q)]);	printf("[%d]", p[((*i)-q)+1]);	printf("[%d]", p[((*i)-q)+2]);	printf("[%d]", p[((*i)-q)+3]);			printf("[%d]", p[((*i)-q)+4]);			printf("[%d]", p[((*i)-q)+5]);			printf("	%d [%d]\n", (*i), p[((*i)-q)]);
 				w++;
 				break;
 			}
 			else
 			{
-				outp(PAL_DATA_REG, p[(*i)-q]);
+				/*if(qp>0)
+				{
+					printf("	((*i)-(bmp->offset*3))=%02d\n", ((*i)-(bmp->offset*3)));
+				}*/
+				/*if(q>0 && qp==0)
+				{
+					printf("(*i)-q=%02d", (*i)-q);
+					printf("[%d]", p[((*i)-q)]);	printf("[%d]", p[((*i)-q)+1]);	printf("[%d]", p[((*i)-q)+2]);	printf("[%d]", p[((*i)-q)+3]);			printf("[%d]", p[((*i)-q)+4]);			printf("[%d]", p[((*i)-q)+5]);			printf("	%d [%d]\n", (*i), p[((*i)-q)]);
+				}*/
+				if(qp==0) outp(PAL_DATA_REG, p[(*i)-q]);
+				else outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3))]);
+				/*if(q>0 && qp==0)
+				{
+					qq=(*i)-q;
+					chkcolor(bmp, &q, &a, &aa, &z);
+					if(a[(*i)-q]==0)
+					{
+						printf("%d	qqqq\n", qq);
+						outp(PAL_DATA_REG, p[(*i)-q]);
+					}
+				}
+				else
+				{
+					outp(PAL_DATA_REG, p[(*i)-q]);
+				}*/
 			}
 		}
 	}
@@ -626,92 +676,61 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp)
 		for(; (*i)<PAL_SIZE; (*i)++)
 		{
 //____			if((qp>0)&&((*i)-q)%3==0 && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5])) outp(PAL_DATA_REG, p[(*i)-q]); else
-			if(((*i)-q)%3==0 && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5]))
+			if((((*i)-q)%3==0 || ((qp>0)&&((*i)-(bmp->offset*3))%3==0)) && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5]))
 			{
-//				printf("[%d]", p[((*i)-q)]);	printf("[%d]", p[((*i)-q)+1]);	printf("[%d]", p[((*i)-q)+2]);	printf("[%d]", p[((*i)-q)+3]);			printf("[%d]", p[((*i)-q)+4]);			printf("[%d]", p[((*i)-q)+5]);			printf("	%d [%d]\n", (*i), p[((*i)-q)]);
+				printf("[%d]", p[((*i)-q)]);	printf("[%d]", p[((*i)-q)+1]);	printf("[%d]", p[((*i)-q)+2]);	printf("[%d]", p[((*i)-q)+3]);			printf("[%d]", p[((*i)-q)+4]);			printf("[%d]", p[((*i)-q)+5]);			printf("	%d [%d]\n", (*i), p[((*i)-q)]);
 				w++;
 				break;
 			}
 			else
 			{
-				outp(PAL_DATA_REG, p[(*i)-q]);
+				/*if(qp>0)
+				{
+					printf("	((*i)-(bmp->offset*3))=%02d\n", ((*i)-(bmp->offset*3)));
+				}*/
+				/*if(q>0 && qp==0)
+				{
+					printf("(*i)-q=%02d", (*i)-q);
+					printf("[%d]", p[((*i)-q)]);	printf("[%d]", p[((*i)-q)+1]);	printf("[%d]", p[((*i)-q)+2]);	printf("[%d]", p[((*i)-q)+3]);			printf("[%d]", p[((*i)-q)+4]);			printf("[%d]", p[((*i)-q)+5]);			printf("	%d [%d]\n", (*i), p[((*i)-q)]);
+				}*/
+				if(qp==0) outp(PAL_DATA_REG, p[(*i)-q]);
+				else outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3))]);
+				/*if(q>0 && qp==0)
+				{
+					qq=(*i)-q;
+					chkcolor(bmp, &q, &a, &aa, &z);
+					if(a[(*i)-q]==0)
+					{
+						printf("%d	qqqq\n", qq);
+						outp(PAL_DATA_REG, p[(*i)-q]);
+					}
+				}
+				else
+				{
+					outp(PAL_DATA_REG, p[(*i)-q]);
+				}*/
 			}
 		}
 	}
 
+//	if(qp>0) printf("(*i)=%02d\n", (*i));
 
 	//palette checker~
-	if(q>0 && qp==0)
+	if(q>0 && qp==0/* && qr==0*/)
 	{
-		static word a[256] = { 0 };
+		word qw=0;
 		long lq;
 		long bufSize = (bmp->width * bmp->height);
-		byte *pal;
-		word z, zz=0,aq=0,aa=0,pp=0,aqpp=0,spee=0,ppp=0;
-		pal = modexNewPal();
-		modexPalSave(pal);
-		//q-=3;
-		printf("q: %02d\n", (q/3));
-		//check palette for dups
-		for(z=0; z<PAL_SIZE; z+=3)
-		{
-			if(z%3==0)
-			{
-				if(pal[z]==pal[z+3] && pal[z+1]==pal[z+4] && pal[z+2]==pal[z+5])
-				{
-//					printf("\n%d	[%02d][%02d][%02d]\n", z, pal[z], pal[z+1], pal[z+2]);
-//					printf("%d	[%02d][%02d][%02d]\n\n", z+3, pal[z+3], pal[z+4], pal[z+5]);
-					break;
-				}
-				else for(zz=0; zz<q; zz+=3)
-				{
-					//zq=(zz+(q-3));
-					//printf("zz: %02d\n", zz/3);
-					if(zz%3==0)
-					{
-						if(pal[(z+q)]==pal[(z+q)+3] && pal[(z+q)+1]==pal[(z+q)+4] && pal[(z+q)+2]==pal[(z+q)+5])
-						{
-//							printf("\nzq1:%d[%02d][%02d][%02d]\n", (zz+q), pal[(zz+q)], pal[(zz+q)+1], pal[(zz+q)+2]);
-//							printf("zq2:%d[%02d][%02d][%02d]\n\n", (zz+q)+3, pal[(zz+q)+3], pal[(zz+q)+4], pal[(zz+q)+5]);
-							break;
-						}
-						else if(pal[zz]==pal[(z+q)] && pal[zz+1]==pal[(z+q)+1] && pal[zz+2]==pal[(z+q)+2])
-						{
-//							printf("\n\nwwwwwwwwwwwwwwww\n");
-//							printf("	zq: %d	[%02d][%02d][%02d] value that is needing to be changed~\n", (z+q)/3, pal[(z+q)], pal[(z+q)+1], pal[(z+q)+2]);
-//							printf("	zz: %d	[%02d][%02d][%02d] value that the previous value is going to change to~\n", (zz)/3, pal[zz], pal[zz+1], pal[zz+2]);
-//							//printf("	zv: %d	[%02d][%02d][%02d] wwww\n", (zz-z+q)/3, pal[(zz-z+q)], pal[(zz-z+q)+1], pal[(zz-z+q)+2]);
-//							printf("	z : %d	[%02d][%02d][%02d] offset value~\n", z/3, pal[z], pal[z+1], pal[z+2]);
-							a[(z+q)/3]=zz/3;
-							aa=(z+q)/3;
-//							printf("	a[%02d]=(%02d) offset array i think the palette should be updated again~\n", (z+q)/3, a[(z+q)/3]);
-//							printf("wwwwwwwwwwwwwwww\n\n");
-						}
-						/*else
-						{
-							printf("================\n");
-							printf("zq: %d	[%02d][%02d][%02d]\n", (z+q)/3, pal[(z+q)], pal[(z+q)+1], pal[(z+q)+2]);
-							printf("zz: %d	[%02d][%02d][%02d]\n", (zz)/3, pal[zz], pal[zz+1], pal[zz+2]);
-							printf("z : %d	[%02d][%02d][%02d]\n", z/3, pal[z], pal[z+1], pal[z+2]);
-							printf("================\n");
-						}*/
-						//printf("[%d]", (zz+q));
-					}
-				}
-				//printf("\nz:	%d\n", z);
-				//printf("q:	%d\n", q);
-				//printf("zz:	%d\n", zz);
-			}
-		}
+		chkcolor(bmp, &q, &a, &aa, &z);
 
-//		printf("z=%d\n", z/3);
-//		printf("q+z=%d\n", (q+z)/3);
-//		printf("z-q=%d\n", (z-q)/3);
-//		printf("%d\n", (z-(z-q))/3);
-//		printf("q=%d\n", q/3);
-//		printf("aa=%d\n", aa);
+		printf("z=%d\n", z/3);
+		printf("q+z=%d\n", (q+z)/3);
+		printf("z-ppee=%d\n", (z-ppee)/3);
+//		printf("%d\n", (z-(z-ppee))/3);
+		printf("q=%d\n", q/3);
+		printf("aa=%d\n", aa);
 
-		aq=0; pp = q; ppp=q;//(aq)*3;
+		aq=0; pp = q; ppee=q;//(aq)*3;
 aqpee:
 		while(aq<aa)
 		{
@@ -749,38 +768,42 @@ aqpee:
 	{
 		//if(pp<(z-1))
 		/*printf("pp=%02d	", pp/3);
-		printf("bmp: [%d]", bmp->palette[pp-q]);
-		printf("[%d]", bmp->palette[(pp-q)+1]);
-		printf("[%d]\n", bmp->palette[(pp-q)+2]);*/
+		printf("bmp: [%d]", bmp->palette[pp-ppee]);
+		printf("[%d]", bmp->palette[(pp-ppee)+1]);
+		printf("[%d]\n", bmp->palette[(pp-ppee)+2]);*/
 		if(((pp/3)==aq || spee>0))
 		{
 			printf("spee=%d\n", spee);
 			printf("		pp=%02d	", pp/3);
-			printf("old	bmp: [%d]", bmp->palette[(pp-ppp)]);
-			printf("[%d]", bmp->palette[(pp-ppp)+1]);
-			printf("[%d]\n", bmp->palette[(pp-ppp)+2]);
+			printf("old	bmp: [%d]", bmp->palette[(pp-ppee)]);
+			printf("[%d]", bmp->palette[(pp-ppee)+1]);
+			printf("[%d]\n", bmp->palette[(pp-ppee)+2]);
 			//if(spee==0) printf("\npp=%02d\n\n", pp/3);
-			bmp->palette[(pp-ppp)]=		bmp->palette[(pp-ppp)+3];
-			bmp->palette[(pp-ppp)+1]=	bmp->palette[(pp-ppp)+4];
-			bmp->palette[(pp-ppp)+2]=	bmp->palette[(pp-ppp)+5];
+			bmp->palette[(pp-ppee)]=		bmp->palette[(pp-ppee)+3];
+			bmp->palette[(pp-ppee)+1]=	bmp->palette[(pp-ppee)+4];
+			bmp->palette[(pp-ppee)+2]=	bmp->palette[(pp-ppee)+5];
 			if(spee==0) spee++;
 		}
 /*		bmp->palette[pp]=		bmp->palette[pp+3];
 		bmp->palette[pp+1]=	bmp->palette[pp+4];
 		bmp->palette[pp+2]=	bmp->palette[pp+5];*/
 		printf("		pp=%02d	", pp/3);
-		printf("	bmp: [%d]", bmp->palette[(pp-ppp)]);
-		printf("[%d]", bmp->palette[(pp-ppp)+1]);
-		printf("[%d]\n", bmp->palette[(pp-ppp)+2]);
+		printf("	bmp: [%d]", bmp->palette[(pp-ppee)]);
+		printf("[%d]", bmp->palette[(pp-ppee)+1]);
+		printf("[%d]\n", bmp->palette[(pp-ppee)+2]);
 /*		printf("bmp: [%d]", bmp->palette[pp]);
 		printf("[%d]", bmp->palette[pp+1]);
 		printf("[%d]\n", bmp->palette[pp+2]);*/
-		//aqpp=(pp-q);
+		//aqpp=(pp-ppee);
 		//else if(pp==(z-1)) bmp->palette[pp]=0;
+		//if(pp<aqpp-3) 
 		pp+=3;
 	}
 //	spee++;
-	printf("aqpp=	%02d\n", aqpp/3);
+	//ppp=aqpp-ppee;
+	//printf("aqpp=	%02d\n", aqpp/3);
+	//printf("pp=	%02d\n", pp/3);
+	//printf("ppp=	%02d\n", ppp/3);
 	//printf("&aqpp=	%02d\n", &aqpp);
 	//printf("q=	%02d\n", q/3);
 	//printf("z=	%02d\n", z/3);
@@ -789,12 +812,15 @@ aqpee:
 	//modexPalUpdate(bmp, &, 1);
 //	if(pp<=aqpp) 
 	//modexPalUpdate(bmp, &ppp, 1);
-	modexPalUpdate(bmp, 0, 1);
+	modexPalUpdate(bmp, &aqpp, 1, aqpp);
+	printf("aqpp=	%02d\n", aqpp/3);
+	printf("aq=	%02d\n", aq);
+	printf("aa=	%02d\n", aa);
 //	}
 
 //	modexPalUpdate(bmp, 0, 1);
 
-	if(aq<aa){ printf("~~~~\n"); ppp=q; /*spee=0;*/ aq++; goto aqpee; }
+	if(aq<aa){ printf("~~~~\n");  /*ppp=q; spee=0;*/ aq++; goto aqpee; }
 
 	}
 }
@@ -814,6 +840,72 @@ modexPalUpdate2(byte *p)
 	{
 		outp(PAL_DATA_REG, p[(i)]);
 	}
+}
+
+void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z)
+{
+		byte *pal;
+		word zz=0;
+		pal = modexNewPal();
+		modexPalSave(pal);
+		//q-=3;
+		//printf("q: %02d\n", (*q));
+		//check palette for dups
+		for((*z)=0; (*z)<PAL_SIZE; (*z)+=3)
+		{
+//			printf("\n		z: %d\n", (*z));
+//			printf("		q: %d\n", (*q));
+//			printf("		z+q: %d\n\n", ((*z)+(*q)));
+			if((*z)%3==0)
+			{
+				if(pal[(*z)]==pal[(*z)+3] && pal[(*z)+1]==pal[(*z)+4] && pal[(*z)+2]==pal[(*z)+5])
+				{
+//					printf("\n%d	[%02d][%02d][%02d]\n", (*z), pal[(*z)], pal[(*z)+1], pal[(*z)+2]);
+//					printf("%d	[%02d][%02d][%02d]\n\n", (*z)+3, pal[(*z)+3], pal[(*z)+4], pal[(*z)+5]);
+					break;
+				}
+				else for(zz=0; zz<(*q); zz+=3)
+				{
+					//zq=(zz+(q-3));
+					//printf("zz: %02d\n", zz/3);
+					if(zz%3==0)
+					{
+						if(pal[((*z)+(*q))]==pal[((*z)+(*q))+3] && pal[((*z)+(*q))+1]==pal[((*z)+(*q))+4] && pal[((*z)+(*q))+2]==pal[((*z)+(*q))+5])
+						{
+//							printf("\nzq1:%d[%02d][%02d][%02d]\n", (zz+q), pal[(zz+q)], pal[(zz+q)+1], pal[(zz+q)+2]);
+//							printf("zq2:%d[%02d][%02d][%02d]\n\n", (zz+q)+3, pal[(zz+q)+3], pal[(zz+q)+4], pal[(zz+q)+5]);
+							break;
+						}
+						else if(pal[zz]==pal[((*z)+(*q))] && pal[zz+1]==pal[((*z)+(*q))+1] && pal[zz+2]==pal[((*z)+(*q))+2])
+						{
+//							printf("\n\nwwwwwwwwwwwwwwww\n");
+//							printf("	zq: %d	[%02d][%02d][%02d] value that is needing to be changed~\n", ((*z)+(*q))/3, pal[((*z)+(*q))], pal[((*z)+(*q))+1], pal[((*z)+(*q))+2]);
+//							printf("	zz: %d	[%02d][%02d][%02d] value that the previous value is going to change to~\n", (zz)/3, pal[zz], pal[zz+1], pal[zz+2]);
+//							//printf("	zv: %d	[%02d][%02d][%02d] wwww\n", (zz-z+q)/3, pal[(zz-z+q)], pal[(zz-z+q)+1], pal[(zz-z+q)+2]);
+//							printf("	z : %d	[%02d][%02d][%02d] offset value~\n", (*z)/3, pal[(*z)], pal[(*z)+1], pal[(*z)+2]);
+							a[((*z)+(*q))/3]=zz/3;
+							(*aa)=((*z)+(*q))/3;
+//							printf("\n		aa: %d\n\n", (*aa));
+//							printf("	a[%02d]=(%02d) offset array i think the palette should be updated again~\n", ((*z)+(*q))/3, a[((*z)+(*q))/3]);
+//							printf("wwwwwwwwwwwwwwww\n\n");
+						}
+						/*else
+						{
+							printf("================\n");
+							printf("zq: %d	[%02d][%02d][%02d]\n", ((*z)+(*q))/3, pal[((*z)+(*q))], pal[((*z)+(*q))+1], pal[((*z)+(*q))+2]);
+							printf("zz: %d	[%02d][%02d][%02d]\n", (zz)/3, pal[zz], pal[zz+1], pal[zz+2]);
+							printf("z : %d	[%02d][%02d][%02d]\n", (*z)/3, pal[(*z)], pal[(*z)+1], pal[(*z)+2]);
+							printf("================\n");
+						}*/
+						//printf("[%d]", (zz+q));
+					}
+				}
+				//printf("\nz:	%d\n", z);
+				//printf("q:	%d\n", q);
+				//printf("zz:	%d\n", zz);
+			}
+		}
+		free(pal);
 }
 
 void
