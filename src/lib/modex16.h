@@ -55,7 +55,7 @@ void modexPalBlack();
 void modexPalWhite();
 
 /* utility functions */
-void modexPalUpdate(bitmap_t *bmp, word *i);
+void modexPalUpdate(bitmap_t *bmp, word *i, word qp);
 void modexPalUpdate2(byte *p);
 void modexWaitBorder();
 
