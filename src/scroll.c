@@ -177,7 +177,6 @@ void main() {
 	setkb(1);
 	modexEnter();
 	modexPalBlack();
-	//ptmp.offset=(paloffset/3);
 	ptmp.offset=(paloffset/3);
 	modexPalUpdate(&ptmp, &paloffset, 0, 0);
 	//printf("	%d\n", sizeof(ptmp.data));
@@ -572,7 +571,7 @@ void main() {
 	printf("player.hp: %d\n", player.hp);
 	printf("player.q: %d\n", player.q);
 	printf("player.d: %d\n", player.d);
-	printf("palette offset:	%d\n", paloffset);
+	printf("palette offset:	%d\n", paloffset/3);
 	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
 	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
 	printf("\n");
@@ -805,10 +804,25 @@ void
 mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y) {
 	word rx;
 	word ry;
-	rx = (i % t->cols) * t->tileWidth;
-	ry = (i / t->cols) * t->tileHeight;
+	//rx = (i % t->cols) * t->tileWidth;
+	//ry = (i / t->cols) * t->tileHeight;
+	//if(i==0) i=2;
+	if(i==0)
+	{
+		//wwww
+	}
+	else
+	{
+	rx = (((i-1) % ((t->data->width)/t->tileWidth)) * t->tileWidth);
+	ry = (((i-1) / ((t->data->height)/t->tileHeight)) * t->tileHeight);
+	if(i==5) printf("rx=	%d\n", rx);
+	if(i==5) printf("ry=	%d\n", ry);
+	if(i==5) printf("i=	%d\n", i);
+	//if(i==4) printf("x=	%d\n", (i % ((t->data->width*i)/t->tileWidth)) * t->tileWidth);
+	//if(i==4) printf("y=	%d\n", (i / ((t->data->height*i)/t->tileHeight)) * t->tileHeight);
 	//mxPutTile(t->data, x, y, t->tileWidth, t->tileHeight);
-	modexDrawBmpRegion(page, x, y, rx, ry, t->tileWidth, t->tileHeight, t->data);
+	modexDrawBmpRegion(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
+	}
 }
 
 
@@ -822,6 +836,9 @@ mapDrawRow(map_view_t *mv, int tx, int ty, word y) {
 	for(x=0; x<SCREEN_WIDTH+mv->dxThresh && tx < mv->map->width; x+=mv->map->tiles->tileWidth, tx++) {
 	if(i>=0) {
 		/* we are in the map, so copy! */
+		//if(mv->map->data[i]==0) mv->map->data[i]=2;
+		//if(mv->map->data[i]==0) modexClearRegion(mv->page, x, y, 16, 16, 0);
+		//else
 		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
 	}
 	i++; /* next! */
@@ -841,6 +858,9 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 	for(y=0; y<SCREEN_HEIGHT+mv->dyThresh && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
 	if(i>=0) {
 		/* we are in the map, so copy away! */
+		//if(mv->map->data[i]==0) mv->map->data[i]=2;
+		//if(mv->map->data[i]==0) modexClearRegion(mv->page, x, y, 16, 16, 0);
+		//else
 		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
 	}
 	i += mv->map->width;
