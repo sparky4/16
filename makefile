@@ -3,8 +3,8 @@ SRC=src\
 SRCLIB=$(SRC)lib\
 all: test.exe pcxtest.exe test2.exe scroll.exe
 
-scroll.exe: scroll.obj modex16.obj dos_kb.obj bitmap.obj mapread.obj jsmn.obj
-	wcl $(FLAGS) scroll.obj modex16.obj dos_kb.obj bitmap.obj mapread.obj jsmn.obj# 16\lib\x\modex.lib
+scroll.exe: scroll.obj modex16.obj dos_kb.obj bitmap.obj mapread.obj jsmn.obj lib_head.obj
+	wcl $(FLAGS) scroll.obj modex16.obj dos_kb.obj bitmap.obj mapread.obj jsmn.obj lib_head.obj# 16/lib/x/modex.lib
 scroll.obj: $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
 test.exe: test.obj modex16.obj bitmap.obj
@@ -43,8 +43,11 @@ bitmap.obj: $(SRCLIB)bitmap.h $(SRCLIB)bitmap.c
 planar.obj: $(SRCLIB)planar.h $(SRCLIB)planar.c
 	wcl $(FLAGS) -c $(SRCLIB)planar.c
 	
-mapread.obj: $(SRCLIB)mapread.h $(SRCLIB)mapread.c jsmn.obj
+mapread.obj: $(SRCLIB)mapread.h $(SRCLIB)mapread.c jsmn.obj lib_head.obj
 	wcl $(FLAGS) -c $(SRCLIB)mapread.c
+
+lib_head.obj: $(SRCLIB)lib_head.h $(SRCLIB)lib_head.c
+	wcl $(FLAGS) -c $(SRCLIB)lib_head.c
 
 jsmn.obj: $(SRCLIB)jsmn\jsmn.h $(SRCLIB)jsmn\jsmn.c
 	wcl $(FLAGS) -c $(SRCLIB)jsmn\jsmn.c

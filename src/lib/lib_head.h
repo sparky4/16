@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <conio.h> // just for wait
 #include <time.h> // just for wait
+#include <stdlib.h>
 #include "src/lib/types.h"
 
 /* Control codes for all keys on the keyboard */
@@ -103,6 +104,8 @@
 //typedef unsigned short syte;
 
 void wait(clock_t wait);
+void* AllocateLargestFreeBlock(size_t* Size);
+size_t GetFreeSize(void);
 
 /* THIS FUNCTION CONVERTS A POINTER TO AN INTEL LONG              */
 //int long ptr2long(char *p);

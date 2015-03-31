@@ -1,8 +1,8 @@
-#include "src\lib\dos_kb.h"
-#include "src\lib\mapread.c"
+#include "src/lib/dos_kb.h"
+#include "src/lib/mapread.c"
 //#include "16\lib\x\modex.h"
-#include "src\lib\wtest\wtest.c"
-#include "src\lib\planar.c"
+#include "src/lib/wtest/wtest.c"
+#include "src/lib/planar.c"
 //====#include "src\lib\ems.c"
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
@@ -74,6 +74,7 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword
 #define TRIGGY 9
 
 void main() {
+	size_t oldfreemem=GetFreeSize();
 	long emmhandle;
 	long emsavail;
 	char teststr[80];
@@ -120,6 +121,7 @@ void main() {
 	}*/
 
 	/* create the map */
+	printf("Total used @ before map load:			%zu\n", oldfreemem-GetFreeSize());
 	loadmap("data/test.map", &map);
 //----	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
@@ -132,10 +134,14 @@ void main() {
 	ptr = map.data;
 	mappalptr = map.tiles->data->palette;
 	/* data */
+	printf("Total used @ before image loading:		%zu\n", oldfreemem-GetFreeSize());
 	ptmp = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
+	
 	/* create the planar buffer */
+	printf("Total used @ before planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
 	p = planar_buf_from_bitmap(&ptmp);
+	printf("Total used @ after planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
 
 	/*if(isEMS())
 	{
@@ -176,6 +182,7 @@ void main() {
 	setkb(1);
 	modexEnter();
 	modexPalBlack();	//reset the palette~
+	printf("Total used @ before palette initiation:		%zu\n", oldfreemem-GetFreeSize());
 	ptmp.offset=(paloffset/3);
 	modexPalUpdate(&ptmp, &paloffset, 0, 0);
 	//printf("	%d\n", sizeof(ptmp.data));
@@ -236,6 +243,9 @@ void main() {
 	//----modexClearRegion(spri->page, 5*16, 5*16, 16, 16, 255);
 	//----modexClearRegion(bg->page, 5*16, 5*16, 16, 16, 255);
 	modexShowPage(spri->page);
+	//printf("Total free: %zu\n", GetFreeSize());
+	//printf("Total free: %zu\n", GetFreeSize());
+	printf("Total used @ before loop:			%zu\n", oldfreemem-GetFreeSize());
 	modexFadeOn(4, gpal);
 	while(!keyp(1) && player.hp>0)
 	{
@@ -567,6 +577,8 @@ void main() {
 	printf("player.q: %d\n", player.q);
 	printf("player.d: %d\n", player.d);
 	printf("palette offset:	%d\n", paloffset/3);
+	printf("Total used: %zu\n", oldfreemem-GetFreeSize());
+	printf("Total free: %zu\n", GetFreeSize());
 	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
 	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
 	printf("\n");
