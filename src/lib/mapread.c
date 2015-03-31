@@ -26,7 +26,7 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 
 				FUCK well i am stuck.... wwww
 			*/
-			map->data[q] = (byte)strtol(js+t->start, &(char *)t->end, 10);
+//++++			map->data[q] = (byte)strtol(js+t->start, &(char *)t->end, 10);
 //			printf("%d[%d]", q, map->data[q]);
 		}
 		else
@@ -46,11 +46,11 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 		if(jsoneq(js, t, "data") == 0 )
 		{
 //			printf("[[[[%d|%d]]]]\n", &(t+1)->size, (t+1)->size);
-//			printf("\n%.*s[xx[%d|%d]xx]\n", (t+1)->end - (t+1)->start, js+(t+1)->start, &(t+1)->size, (t+1)->size);
-			map->data = malloc(sizeof(byte) * (t+1)->size);
-			map->tiles = malloc(sizeof(tiles_t));
+//++++			printf("\n%.*s[xx[%d|%d]xx]\n", (t+1)->end - (t+1)->start, js+(t+1)->start, &(t+1)->size, (t+1)->size);
+//++++			map->data = malloc(sizeof(byte) * (t+1)->size);
+//++++			map->tiles = malloc(sizeof(tiles_t));
 			//map->tiles->data = malloc(sizeof(bitmap_t));
-			bp = bitmapLoadPcx("data/ed.pcx");
+//++++			bp = bitmapLoadPcx("data/ed.pcx");
 			map->tiles->data = &bp;
 			//map->tiles->data->data = malloc((16/**2*/)*16);
 			//map->tiles->data->width = (16/**2*/);
