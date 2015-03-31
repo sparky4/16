@@ -179,17 +179,18 @@ void main() {
 	modexPalBlack();
 	ptmp.offset=(paloffset/3);
 	modexPalUpdate(&ptmp, &paloffset, 0, 0);
+	modexClearRegion(bg->page, 0, 0, 320, 240, 255);
 	//printf("	%d\n", sizeof(ptmp.data));
 	//printf("1:	%d\n", paloffset);
 	map.tiles->data->offset=(paloffset/3);
 	modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
-	//printf("wwww:	%d\n", map.tiles->data->offset);
-	//printf("2:	%d\n", paloffset);
-	//printf("	%d\n", sizeof(map.tiles->data->(*data)));
 	gpal = modexNewPal();
 	modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);
-	modexFadeOn(4, gpal);
+	modexPalBlack();
+	//printf("wwww:	%d\n", map.tiles->data->offset);
+	//printf("2:	%d\n", paloffset);
+	//printf("	%d\n", sizeof(map.tiles->data->(*data)));
 
 	/* setup camera and screen~ */
 	screen = modexDefaultPage();
@@ -239,8 +240,8 @@ void main() {
 
 	//----modexClearRegion(spri->page, 5*16, 5*16, 16, 16, 255);
 	//----modexClearRegion(bg->page, 5*16, 5*16, 16, 16, 255);
-
 	modexShowPage(spri->page);
+	modexFadeOn(4, gpal);
 	while(!keyp(1) && player.hp>0)
 	{
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
