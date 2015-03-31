@@ -179,7 +179,7 @@ void main() {
 	modexPalBlack();
 	ptmp.offset=(paloffset/3);
 	modexPalUpdate(&ptmp, &paloffset, 0, 0);
-	modexClearRegion(bg->page, 0, 0, 320, 240, 255);
+	//modexClearRegion(bg->page, 0, 0, 320, 240, 255);
 	//printf("	%d\n", sizeof(ptmp.data));
 	//printf("1:	%d\n", paloffset);
 	map.tiles->data->offset=(paloffset/3);

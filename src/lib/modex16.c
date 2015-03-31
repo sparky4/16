@@ -663,6 +663,8 @@ printf("	%d [%d]\n",((((*i)+((aqpp-ii)*3))+((aqpp+ii)*3))-(bmp->offset*3))/3, p[
 			}
 			else
 			{
+				if(bmp->offset==0 && (*i)<3 && q==0) outp(PAL_DATA_REG, 0);
+				else
 				if(qp==0) outp(PAL_DATA_REG, p[(*i)-q]);
 				else outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3))]);
 			}
