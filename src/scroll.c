@@ -182,7 +182,7 @@ void main() {
 	setkb(1);
 	modexEnter();
 	modexPalBlack();	//reset the palette~
-	printf("Total used @ before palette initiation:		%zu\n", oldfreemem-GetFreeSize());
+//	printf("Total used @ before palette initiation:		%zu\n", oldfreemem-GetFreeSize());
 	ptmp.offset=(paloffset/3);
 	modexPalUpdate(&ptmp, &paloffset, 0, 0);
 	//printf("	%d\n", sizeof(ptmp.data));
@@ -245,7 +245,7 @@ void main() {
 	modexShowPage(spri->page);
 	//printf("Total free: %zu\n", GetFreeSize());
 	//printf("Total free: %zu\n", GetFreeSize());
-	printf("Total used @ before loop:			%zu\n", oldfreemem-GetFreeSize());
+//	printf("Total used @ before loop:			%zu\n", oldfreemem-GetFreeSize());
 	modexFadeOn(4, gpal);
 	while(!keyp(1) && player.hp>0)
 	{
