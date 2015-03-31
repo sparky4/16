@@ -104,7 +104,7 @@ void main() {
 		printf("Expanded memory manager is not present\n");
 		exit(0);
 	}
-     
+
 	emsavail = emmavail();
 	if(emsavail == -1)
 	{
@@ -175,7 +175,7 @@ void main() {
 
 	setkb(1);
 	modexEnter();
-	modexPalBlack();
+	modexPalBlack();	//reset the palette~
 	ptmp.offset=(paloffset/3);
 	modexPalUpdate(&ptmp, &paloffset, 0, 0);
 	//printf("	%d\n", sizeof(ptmp.data));
@@ -185,10 +185,7 @@ void main() {
 	gpal = modexNewPal();
 	modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);
-	modexPalBlack();
-	//printf("wwww:	%d\n", map.tiles->data->offset);
-	//printf("2:	%d\n", paloffset);
-	//printf("	%d\n", sizeof(map.tiles->data->(*data)));
+	modexPalBlack();	//so player will not see loadings~
 
 	/* setup camera and screen~ */
 	screen = modexDefaultPage();
