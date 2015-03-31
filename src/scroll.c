@@ -172,14 +172,12 @@ void main() {
 	dpal = modexNewPal();
 	modexPalSave(dpal);
 	modexFadeOff(4, dpal);
-	modexPalBlack();
 
 	setkb(1);
 	modexEnter();
 	modexPalBlack();
 	ptmp.offset=(paloffset/3);
 	modexPalUpdate(&ptmp, &paloffset, 0, 0);
-	//modexClearRegion(bg->page, 0, 0, 320, 240, 255);
 	//printf("	%d\n", sizeof(ptmp.data));
 	//printf("1:	%d\n", paloffset);
 	map.tiles->data->offset=(paloffset/3);
@@ -555,7 +553,6 @@ void main() {
 
 	/* fade back to text mode */
 	modexFadeOff(4, gpal);
-	modexPalBlack();
 	modexLeave();
 	setkb(0);
 	//system("mem /E /P");
@@ -590,7 +587,6 @@ void main() {
 		default: cpus = "internal error"; break;
 	}
 	printf("detected CPU type: %s\n", cpus);
-	modexPalBlack();
 	modexFadeOn(4, dpal);
 }
 
