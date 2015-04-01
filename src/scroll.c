@@ -543,6 +543,7 @@ void main() {
 	if(player.q == (TILEWH/SPEED)+1 && player.d > 0 && (player.triggerx == 5 && player.triggery == 5)){ player.hp--; }
 	//if(keyp(0x0E)) while(1){ if(xmsmalloc(24)) break; }
 	if(keyp(25)){ pdump(bg); pdump(spri); }
+	if(keyp(24)){ modexPalUpdate3(gpal); pdump(bg); pdump(spri); modexPalSave(gpal); modexSavePalFile("data/g.pal", gpal); }
 
 	if(keyp(87))
 	{

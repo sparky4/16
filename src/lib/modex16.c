@@ -829,6 +829,23 @@ modexPalUpdate2(byte *p)
 	}
 }
 
+void
+modexPalUpdate3(byte *p)
+{
+	int i;
+	modexWaitBorder();
+	outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
+	for(i=0; i<PAL_SIZE/2; i++)
+	{
+		outp(PAL_DATA_REG, rand());
+	}
+	modexWaitBorder();	    /* waits one retrace -- less flicker */
+	for(; i<PAL_SIZE; i++)
+	{
+		outp(PAL_DATA_REG, rand());
+	}
+}
+
 //color checker~
 //i want to make another vesion that checks the palette when the palette is being appened~
 void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z)
