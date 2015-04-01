@@ -593,7 +593,7 @@ modexPalWhite() {
 void
 modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqpp)
 {
-	byte *p = bmp->palette;
+	const byte *p = bmp->palette;
 	word w=0;
 	word q=0;
 	word qq=0;

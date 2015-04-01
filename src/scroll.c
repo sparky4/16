@@ -543,7 +543,8 @@ void main() {
 	if(player.q == (TILEWH/SPEED)+1 && player.d > 0 && (player.triggerx == 5 && player.triggery == 5)){ player.hp--; }
 	//if(keyp(0x0E)) while(1){ if(xmsmalloc(24)) break; }
 	if(keyp(25)){ pdump(bg); pdump(spri); }
-	if(keyp(24)){ modexPalUpdate3(gpal); pdump(bg); pdump(spri); modexPalSave(gpal); modexSavePalFile("data/g.pal", gpal); }
+	if(keyp(24)){ modexPalUpdate3(gpal); paloffset=0; pdump(bg); pdump(spri); }
+	if(keyp(22)){ paloffset=0; modexPalBlack(); modexPalUpdate(&ptmp, &paloffset, 0, 0); modexPalUpdate(map.tiles->data, &paloffset, 0, 0); pdump(bg); pdump(spri); }
 
 	if(keyp(87))
 	{
@@ -558,6 +559,9 @@ void main() {
 	}
 
 	/* fade back to text mode */
+	/* but 1st lets save the game palette~ */
+	modexPalSave(gpal);
+	modexSavePalFile("data/g.pal", gpal);
 	modexFadeOff(4, gpal);
 	modexLeave();
 	setkb(0);
