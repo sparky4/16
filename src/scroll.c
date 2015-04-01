@@ -121,7 +121,7 @@ void main() {
 	}*/
 
 	/* create the map */
-	printf("Total used @ before map load:			%zu\n", oldfreemem-GetFreeSize());
+//0000	printf("Total used @ before map load:			%zu\n", oldfreemem-GetFreeSize());
 	loadmap("data/test.map", &map);
 //----	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
@@ -134,14 +134,14 @@ void main() {
 	ptr = map.data;
 	mappalptr = map.tiles->data->palette;
 	/* data */
-	printf("Total used @ before image loading:		%zu\n", oldfreemem-GetFreeSize());
+//0000	printf("Total used @ before image loading:		%zu\n", oldfreemem-GetFreeSize());
 	ptmp = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 	
 	/* create the planar buffer */
-	printf("Total used @ before planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
+//0000	printf("Total used @ before planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
 	p = planar_buf_from_bitmap(&ptmp);
-	printf("Total used @ after planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
+//0000	printf("Total used @ after planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
 
 	/*if(isEMS())
 	{
@@ -243,8 +243,6 @@ void main() {
 	//----modexClearRegion(spri->page, 5*16, 5*16, 16, 16, 255);
 	//----modexClearRegion(bg->page, 5*16, 5*16, 16, 16, 255);
 	modexShowPage(spri->page);
-	//printf("Total free: %zu\n", GetFreeSize());
-	//printf("Total free: %zu\n", GetFreeSize());
 //	printf("Total used @ before loop:			%zu\n", oldfreemem-GetFreeSize());
 	modexFadeOn(4, gpal);
 	while(!keyp(1) && player.hp>0)
