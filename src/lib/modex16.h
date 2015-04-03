@@ -58,7 +58,7 @@ void modexPalWhite();
 void modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqpp);
 void modexPalUpdate2(byte *p);
 void modexPalUpdate3(byte *p);
-void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z);
+void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i);
 void modexWaitBorder();
 
 /* -======================= Constants & Vars ==========================- */

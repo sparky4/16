@@ -189,6 +189,9 @@ void main() {
 	//printf("1:	%d\n", paloffset);
 	map.tiles->data->offset=(paloffset/3);
 	modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
+	printf("\n====\n");
+	printf("0	paloffset=	%d\n", paloffset/3);
+	printf("====\n\n");
 	gpal = modexNewPal();
 	modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);
@@ -544,7 +547,12 @@ void main() {
 	//if(keyp(0x0E)) while(1){ if(xmsmalloc(24)) break; }
 	if(keyp(25)){ pdump(bg); pdump(spri); }
 	if(keyp(24)){ modexPalUpdate3(gpal); paloffset=0; pdump(bg); pdump(spri); }
-	if(keyp(22)){ paloffset=0; modexPalBlack(); modexPalUpdate(&ptmp, &paloffset, 0, 0); modexPalUpdate(map.tiles->data, &paloffset, 0, 0); pdump(bg); pdump(spri); }
+	if(keyp(22)){ 
+	paloffset=0; modexPalBlack(); modexPalUpdate(&ptmp, &paloffset, 0, 0);
+	printf("1paloffset	=	%d\n", paloffset/3);
+	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
+	printf("2paloffset	=	%d\n", paloffset/3);
+	 pdump(bg); pdump(spri); }
 
 	if(keyp(87))
 	{
