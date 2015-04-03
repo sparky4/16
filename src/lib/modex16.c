@@ -591,17 +591,17 @@ modexPalWhite() {
 
 /* utility */
 void
-modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqpp)
+modexPalUpdate(bitmap_t *bmp, word *i, word qp/*, word aqpp*/)
 {
 //----	static word count=0;
 	byte *p = bmp->palette;
 	word w=0;
 	word q=0;
 	word qq=0;
-	word ii;
+	//word ii;
 	static word a[PAL_SIZE/3];
-	word z=0, aq=0, aa=0, pp=0, apee=0;
-	sword aqpw;
+	word z=0, aq=0, aa=0, pp=0;//, apee=0;
+	//sword aqpw;
 
 	//printf("1	(*i)=%02d\n", (*i)/3);
 	modexWaitBorder();
@@ -630,42 +630,18 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqpp)
 		{
 			//if(i%3==0 && (p[i+5]==p[i+4] && p[i+4]==p[i+3] && p[i+3]==p[i+2] && p[i+2]==p[i+1] && p[i+1]==p[i] && p[i+5]==p[i]))
 //____			if((qp>0)&&((*i)-q)%3==0 && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5])) outp(PAL_DATA_REG, p[(*i)-q]); else
-			if(((((*i)-q)%3==0) || ((qp>0)&&((*i)-(bmp->offset*3))%3==0)) && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5]))
+			if(((((*i)-q)%3==0)) && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5]))
 			{
-				if(q>0)
-				{
-/*					(*i)-=(aqpp*3);
-					aqpw=aqpp-1;
-					outp(PAL_WRITE_REG, qq+(((*i)+(aqpw*3)-(bmp->offset*3))/3));
-					for(ii=aqpp; ii>0; ii--)
-					{
-						outp(PAL_DATA_REG, p[((((*i)+((aqpp-ii)*3))+((aqpp+ii)*3))-(bmp->offset*3))]);
-						outp(PAL_DATA_REG, p[((((*i)+((aqpp-ii)*3))+((aqpp+ii)*3)+1)-(bmp->offset*3))]);
-						outp(PAL_DATA_REG, p[((((*i)+((aqpp-ii)*3))+((aqpp+ii)*3)+2)-(bmp->offset*3))]);*/
-						printf("%d's color=%d\n", (*i)/3, ((*i)-(bmp->offset*3)));
-						printf("%d's color2=%d\n", (*i)/3, ((*i)-(bmp->offset*3))-(aqpp*3));
-//						printf("position	=	%d\n", qq+(((*i)+(aqpw*3)-(bmp->offset*3))/3));
-/*if(qp>0){ //printf("[%d]", p[((*i)-q)]);	printf("[%d]", p[((*i)-q)+1]);	printf("[%d]", p[((*i)-q)+2]);	printf("[%d]", p[((*i)-q)+3]);			printf("[%d]", p[((*i)-q)+4]);			printf("[%d]", p[((*i)-q)+5]);			printf("	%d [%d]\n", (*i), p[((*i)-q)]); }
-printf("[%d]", p[((((*i)+((aqpp-ii)*3)))-(bmp->offset*3))]);
-printf("[%d]", p[((((*i)+((aqpp-ii)*3))+1)-(bmp->offset*3))]);
-printf("[%d] | ", p[((((*i)+((aqpp-ii)*3))+2)-(bmp->offset*3))]);
-printf("[%d]", p[((((*i)+((aqpp-ii)*3))+3)-(bmp->offset*3))]);
-printf("[%d]", p[((((*i)+((aqpp-ii)*3))+4)-(bmp->offset*3))]);
-printf("[%d]", p[((((*i)+((aqpp-ii)*3))+5)-(bmp->offset*3))]);
-printf("	%d [%d]\n",((((*i)+((aqpp-ii)*3))+((aqpp+ii)*3))-(bmp->offset*3))/3, p[((((*i)+((aqpp-ii)*3))+((aqpp+ii)*3))-(bmp->offset*3))]); }*/
-						//printf("%d\n", ((*i)+((ii)*3))/3);
-						//printf("ii=%d\n", ii);
-						//printf("aqpp=%d\n", aqpp);
-						//printf("			%d\n", ((*i)+((aqpp-ii)*3))/3);
-//					}
-					//printf("	%d\n",((((*i)+((aqpp-ii)*3)))-(bmp->offset*3)));
-					//printf("	%d\n",((((*i)+((aqpp-ii)*3))+1)-(bmp->offset*3)));
-					//printf("	%d\n",((((*i)+((aqpp-ii)*3))+2)-(bmp->offset*3)));
-					printf("						(*i)=%d\n", (*i)/3);
-				}
-				//if(q>0) printf("%d\n", (*i)/3);
-				//printf("[%d]", p[((*i)-q)]);	printf("[%d]", p[((*i)-q)+1]);	printf("[%d]", p[((*i)-q)+2]);	printf("[%d]", p[((*i)-q)+3]);			printf("[%d]", p[((*i)-q)+4]);			printf("[%d]", p[((*i)-q)+5]);			printf("	%d [%d]\n", (*i), p[((*i)-q)]);
 				w++;
+				break;
+			}
+			else if(qp>0 && (*i)==(qp*3))
+			{
+				(*i)++;
+				//printf("qp=%d\n", qp);
+				//printf("						(*i)=%d\n", (*i)/3);
+				//printf("		%d's color=%d\n", (*i)/3, ((*i)-(bmp->offset*3)));
+				//printf("		%d's color2=%d\n", (*i)/3, ((*i)-(bmp->offset*3))-(qp*3));
 				break;
 			}
 			else
@@ -676,6 +652,8 @@ printf("	%d [%d]\n",((((*i)+((aqpp-ii)*3))+((aqpp+ii)*3))-(bmp->offset*3))/3, p[
 				else outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3))]);
 			}
 		}
+		//if(qp>0) printf("qp=%d\n", qp);
+		if(qp>0) printf("						(*i)=%d\n", (*i)/3);
 	}
 	modexWaitBorder();	    /* waits one retrace -- less flicker */
 	if((*i)>=PAL_SIZE/2 && w==0)
@@ -683,42 +661,18 @@ printf("	%d [%d]\n",((((*i)+((aqpp-ii)*3))+((aqpp+ii)*3))-(bmp->offset*3))/3, p[
 		for(; (*i)<PAL_SIZE; (*i)++)
 		{
 //____			if((qp>0)&&((*i)-q)%3==0 && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5])) outp(PAL_DATA_REG, p[(*i)-q]); else
-			if(((((*i)-q)%3==0) || ((qp>0)&&((*i)-(bmp->offset*3))%3==0)) && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5]))
+			if(((((*i)-q)%3==0)) && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5]))
 			{
-				if(q>0)
-				{
-/*					(*i)-=(aqpp*3);
-					aqpw=aqpp-1;
-					outp(PAL_WRITE_REG, qq+(((*i)+(aqpw*3)-(bmp->offset*3))/3));
-					for(ii=aqpp; ii>0; ii--)
-					{
-						outp(PAL_DATA_REG, p[((((*i)+((aqpp-ii)*3))+((aqpp+ii)*3))-(bmp->offset*3))]);
-						outp(PAL_DATA_REG, p[((((*i)+((aqpp-ii)*3))+((aqpp+ii)*3)+1)-(bmp->offset*3))]);
-						outp(PAL_DATA_REG, p[((((*i)+((aqpp-ii)*3))+((aqpp+ii)*3)+2)-(bmp->offset*3))]);*/
-						printf("%d's color=%d\n", (*i)/3, ((*i)-(bmp->offset*3)));
-						printf("%d's color2=%d\n", (*i)/3, ((*i)-(bmp->offset*3))-(aqpp*3));
-//						printf("position	=	%d\n", qq+(((*i)+(aqpw*3)-(bmp->offset*3))/3));
-/*if(qp>0){ //printf("[%d]", p[((*i)-q)]);	printf("[%d]", p[((*i)-q)+1]);	printf("[%d]", p[((*i)-q)+2]);	printf("[%d]", p[((*i)-q)+3]);			printf("[%d]", p[((*i)-q)+4]);			printf("[%d]", p[((*i)-q)+5]);			printf("	%d [%d]\n", (*i), p[((*i)-q)]); }
-printf("[%d]", p[((((*i)+((aqpp-ii)*3)))-(bmp->offset*3))]);
-printf("[%d]", p[((((*i)+((aqpp-ii)*3))+1)-(bmp->offset*3))]);
-printf("[%d] | ", p[((((*i)+((aqpp-ii)*3))+2)-(bmp->offset*3))]);
-printf("[%d]", p[((((*i)+((aqpp-ii)*3))+3)-(bmp->offset*3))]);
-printf("[%d]", p[((((*i)+((aqpp-ii)*3))+4)-(bmp->offset*3))]);
-printf("[%d]", p[((((*i)+((aqpp-ii)*3))+5)-(bmp->offset*3))]);
-printf("	%d [%d]\n",((((*i)+((aqpp-ii)*3))+((aqpp+ii)*3))-(bmp->offset*3))/3, p[((((*i)+((aqpp-ii)*3))+((aqpp+ii)*3))-(bmp->offset*3))]); }*/
-						//printf("%d\n", ((*i)+((ii)*3))/3);
-						//printf("ii=%d\n", ii);
-						//printf("aqpp=%d\n", aqpp);
-						//printf("			%d\n", ((*i)+((aqpp-ii)*3))/3);
-//					}
-					//printf("	%d\n",((((*i)+((aqpp-ii)*3)))-(bmp->offset*3)));
-					//printf("	%d\n",((((*i)+((aqpp-ii)*3))+1)-(bmp->offset*3)));
-					//printf("	%d\n",((((*i)+((aqpp-ii)*3))+2)-(bmp->offset*3)));
-					printf("						(*i)=%d\n", (*i)/3);
-				}
-				//if(q>0) printf("%d\n", (*i)/3);
-				//printf("[%d]", p[((*i)-q)]);	printf("[%d]", p[((*i)-q)+1]);	printf("[%d]", p[((*i)-q)+2]);	printf("[%d]", p[((*i)-q)+3]);			printf("[%d]", p[((*i)-q)+4]);			printf("[%d]", p[((*i)-q)+5]);			printf("	%d [%d]\n", (*i), p[((*i)-q)]);
 				w++;
+				break;
+			}
+			else if(qp>0 && (*i)==(qp*3))
+			{
+				(*i)++;
+				//printf("qp=%d\n", qp);
+				//printf("						(*i)=%d\n", (*i)/3);
+				//printf("		%d's color=%d\n", (*i)/3, ((*i)-(bmp->offset*3)));
+				//printf("		%d's color2=%d\n", (*i)/3, ((*i)-(bmp->offset*3))-(qp*3));
 				break;
 			}
 			else
@@ -727,6 +681,7 @@ printf("	%d [%d]\n",((((*i)+((aqpp-ii)*3))+((aqpp+ii)*3))-(bmp->offset*3))/3, p[
 				else outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3))]);
 			}
 		}
+		//printf("						(*i)=%d\n", (*i)/3);
 	}
 
 //	if(q>0) 
@@ -740,7 +695,7 @@ printf("	%d [%d]\n",((((*i)+((aqpp-ii)*3))+((aqpp+ii)*3))-(bmp->offset*3))/3, p[
 		pp = q;
 		//printf("1(*i)=%02d\n", (*i)/3);
 		//printf("1z=%02d\n", z/3);
-		chkcolor(bmp, &q, &a, &aa, &z, i, &aqpp);
+		chkcolor(bmp, &q, &a, &aa, &z, i/*, &aqpp*/);
 		//printf("2(*i)=%02d\n", (*i)/3);
 		//printf("2z=%02d\n", z/3);
 
@@ -750,14 +705,8 @@ aqpee:
 		{
 //			printf("a[%02d]=(%d)\n", aq, a[aq]);
 			if(a[aq]==-1) aq++;
-			else{ apee++; break; }
+			else break; //{ apee++; break; }
 		}
-
-		//printf("(*i)	=%02d\n", (*i)/3);
-		//printf("z	=%02d\n", z/3);
-		//if(aq<aa) printf("aq=%02d\n", aq);
-		printf("aqpp=%02d\n", aqpp);
-		printf("apee=%02d\n", apee);
 
 	for(lq=0; lq<bufSize; lq++)
 	{
@@ -790,13 +739,13 @@ aqpee:
 	}
 
 //printf("		aq=%02d\n", aq);
-//printf("		aa=%02d\n", aa);/
+//printf("		aa=%02d\n", aa);
 
 	//update the palette~
-	modexPalUpdate(bmp, &pp, 1, aqpp);
+	modexPalUpdate(bmp, &pp, aq/*, apee*/);
 	(*i)=pp;
 
-	if(aq<aa){ /*printf("~~~~\n"); */pp=q; aq++; goto aqpee; }
+	if(aq<aa){ pp=q; aq++; goto aqpee; }
 	}
 }
 
@@ -836,7 +785,7 @@ modexPalUpdate3(byte *p)
 
 //color checker~
 //i want to make another vesion that checks the palette when the palette is being appened~
-void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i, word *offset)
+void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, word *offset*/)
 {
 		byte *pal;
 		word zz=0;
@@ -874,7 +823,6 @@ void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i, word 
 //							(*i)-=3;
 //							printf("\nzq1:%d[%02d][%02d][%02d]\n", (zz+q), pal[(zz+q)], pal[(zz+q)+1], pal[(zz+q)+2]);
 //							printf("zq2:%d[%02d][%02d][%02d]\n\n", (zz+q)+3, pal[(zz+q)+3], pal[(zz+q)+4], pal[(zz+q)+5]);
-//0000							printf("wwww\n");
 							break;
 						}
 						else if(pal[zz]==pal[((*z)+(*q))] && pal[zz+1]==pal[((*z)+(*q))+1] && pal[zz+2]==pal[((*z)+(*q))+2])
@@ -886,11 +834,9 @@ void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i, word 
 //							printf("	z : %d	[%02d][%02d][%02d] offset value~\n", (*z)/3, pal[(*z)], pal[(*z)+1], pal[(*z)+2]);
 //++++							(*i)--;
 //							(*z)--;
-//							printf("(*z)=%d\n", (*z)/3);
-							a[(((*z)+(*q))/3)-(*offset)]=zz/3;
-							(*aa)=(((*z)+(*q))/3)-(*offset);
-							printf("!!				a[%02d]: %d\n", (((*z)+(*q))/3)-(*offset), zz/3);
-							(*offset)++;
+							a[(((*z)+(*q))/3)]=zz/3;
+							(*aa)=(((*z)+(*q))/3);
+							printf("!!				a[%02d]: %d\n", (((*z)+(*q))/3), zz/3);
 //							printf("\n		aa: %d\n\n", (*aa));
 //							printf("	a[%02d]=(%02d) offset array i think the palette should be updated again~\n", ((*z)+(*q))/3, a[((*z)+(*q))/3]);
 //							printf("wwwwwwwwwwwwwwww\n\n");
@@ -911,7 +857,6 @@ void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i, word 
 				//printf("zz:	%d\n", zz);
 			}
 		}
-		//printf("		aa: %d\n", (*aa));
 		printf("2				(*z): %d\n", (*z)/3);
 		printf("2				(*i): %d\n", (*i)/3);
 		printf("chkcolor end~\n");
