@@ -643,18 +643,18 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 				*/
 				//printf("qp=%d\n", qp);
 				//printf("						(*i)=%d\n", (*i)/3);
-				printf("	(*i)=%d	bmp->offset=%d	aqoffset=%d\n", (*i)/3, (bmp->offset), aqoffset);
-				printf("		%d's color=%d\n", (*i)/3, (*i)-(bmp->offset*3));//+(aqoffset*3)
-				outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3))]);
-				(*i)++;
-				break;
+				//for(w=(*i); w<()){
+				printf("		(*i)=%d	a[%d]=%d\n", (*i), qp, a[qp]);
+				printf("		%d's color=%d\n", (*i), (a[qp]*3)+(aqoffset*3));//+(aqoffset*3)
+				outp(PAL_DATA_REG, p[(a[qp]*3)+(aqoffset*3)]);
+				if((*i)+1==(qp*3)+3){ /*(*i)++;*/ break; }
 			}
 			else
 			{
 				if(bmp->offset==0 && (*i)<3 && q==0) outp(PAL_DATA_REG, 0);
 				else
 				if(qp==0) outp(PAL_DATA_REG, p[(*i)-q]);
-				else outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3))]);
+				else outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3)/*+(aqoffset*3)*/)]);
 			}
 		}
 		//if(qp>0) printf("qp=%d\n", qp);
