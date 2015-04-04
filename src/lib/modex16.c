@@ -591,7 +591,7 @@ modexPalWhite() {
 
 /* utility */
 void
-modexPalUpdate(bitmap_t *bmp, word *i, word qp/*, word aqpp*/)
+modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 {
 //----	static word count=0;
 	byte *p = bmp->palette;
@@ -600,7 +600,7 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp/*, word aqpp*/)
 	word qq=0;
 	//word ii;
 	static word a[PAL_SIZE/3];
-	word z=0, aq=0, aa=0, pp=0;//, apee=0;
+	word z=0, aq=0, aa=0, pp=0;
 	//sword aqpw;
 
 	//printf("1	(*i)=%02d\n", (*i)/3);
@@ -635,13 +635,18 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp/*, word aqpp*/)
 				w++;
 				break;
 			}
-			else if(qp>0 && (*i)==(qp*3))
+			else if(qp>0 && (*i)>=(qp*3) && (*i)<((qp*3)+3))
 			{
-				(*i)++;
+				/*
+									note to self
+									use a[qp] instead of bmp->offset for this spot!
+				*/
 				//printf("qp=%d\n", qp);
 				//printf("						(*i)=%d\n", (*i)/3);
-				//printf("		%d's color=%d\n", (*i)/3, ((*i)-(bmp->offset*3)));
-				//printf("		%d's color2=%d\n", (*i)/3, ((*i)-(bmp->offset*3))-(qp*3));
+				printf("	(*i)=%d	bmp->offset=%d	aqoffset=%d\n", (*i)/3, (bmp->offset), aqoffset);
+				printf("		%d's color=%d\n", (*i)/3, (*i)-(bmp->offset*3));//+(aqoffset*3)
+				outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3))]);
+				(*i)++;
 				break;
 			}
 			else
@@ -666,19 +671,25 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp/*, word aqpp*/)
 				w++;
 				break;
 			}
-			else if(qp>0 && (*i)==(qp*3))
+			else if(qp>0 && (*i)>=(qp*3) && (*i)<((qp*3)+3))
 			{
-				(*i)++;
+				/*
+									note to self
+									use a[qp] instead of bmp->offset for this spot!
+				*/
 				//printf("qp=%d\n", qp);
 				//printf("						(*i)=%d\n", (*i)/3);
-				//printf("		%d's color=%d\n", (*i)/3, ((*i)-(bmp->offset*3)));
+				printf("	(*i)=%d	bmp->offset*3=%d	(qp*3)=%d\n", (*i), (bmp->offset), (qp));
+				printf("		%d's color=%d\n", (*i)/3, ((*i)-(bmp->offset)+(qp*3)));
 				//printf("		%d's color2=%d\n", (*i)/3, ((*i)-(bmp->offset*3))-(qp*3));
+				//outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3))+()]);
+				(*i)++;
 				break;
 			}
 			else
 			{
 				if(qp==0) outp(PAL_DATA_REG, p[(*i)-q]);
-				else outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3))]);
+				else outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3))+(qp*3)]);
 			}
 		}
 		//printf("						(*i)=%d\n", (*i)/3);
@@ -695,7 +706,7 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp/*, word aqpp*/)
 		pp = q;
 		//printf("1(*i)=%02d\n", (*i)/3);
 		//printf("1z=%02d\n", z/3);
-		chkcolor(bmp, &q, &a, &aa, &z, i/*, &aqpp*/);
+		chkcolor(bmp, &q, &a, &aa, &z, i);
 		//printf("2(*i)=%02d\n", (*i)/3);
 		//printf("2z=%02d\n", z/3);
 
@@ -705,7 +716,7 @@ aqpee:
 		{
 //			printf("a[%02d]=(%d)\n", aq, a[aq]);
 			if(a[aq]==-1) aq++;
-			else break; //{ apee++; break; }
+			else { aqoffset++; break; }
 		}
 
 	for(lq=0; lq<bufSize; lq++)
@@ -742,7 +753,7 @@ aqpee:
 //printf("		aa=%02d\n", aa);
 
 	//update the palette~
-	modexPalUpdate(bmp, &pp, aq/*, apee*/);
+	modexPalUpdate(bmp, &pp, aq, aqoffset);
 	(*i)=pp;
 
 	if(aq<aa){ pp=q; aq++; goto aqpee; }

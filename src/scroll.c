@@ -184,11 +184,11 @@ void main() {
 	modexPalBlack();	//reset the palette~
 //	printf("Total used @ before palette initiation:		%zu\n", oldfreemem-GetFreeSize());
 	ptmp.offset=(paloffset/3);
-	modexPalUpdate(&ptmp, &paloffset, 0/*, 0*/);
+	modexPalUpdate(&ptmp, &paloffset, 0, 0);
 	//printf("	%d\n", sizeof(ptmp.data));
 	//printf("1:	%d\n", paloffset);
 	map.tiles->data->offset=(paloffset/3);
-	modexPalUpdate(map.tiles->data, &paloffset, 0/*, 0*/);
+	modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	printf("\n====\n");
 	printf("0	paloffset=	%d\n", paloffset/3);
 	printf("====\n\n");
@@ -548,9 +548,9 @@ void main() {
 	if(keyp(25)){ pdump(bg); pdump(spri); }
 	if(keyp(24)){ modexPalUpdate3(gpal); paloffset=0; pdump(bg); pdump(spri); }
 	if(keyp(22)){ 
-	paloffset=0; modexPalBlack(); modexPalUpdate(&ptmp, &paloffset, 0/*, 0*/);
+	paloffset=0; modexPalBlack(); modexPalUpdate(&ptmp, &paloffset, 0, 0);
 	printf("1paloffset	=	%d\n", paloffset/3);
-	 modexPalUpdate(map.tiles->data, &paloffset, 0/*, 0*/);
+	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	printf("2paloffset	=	%d\n", paloffset/3);
 	 pdump(bg); pdump(spri); }
 
