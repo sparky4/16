@@ -599,7 +599,7 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 	word q=0;
 	word qq=0;
 	//word ii;
-	static word a[PAL_SIZE/3];
+	static word a[PAL_SIZE];
 	word z=0, aq=0, aa=0, pp=0;
 	//sword aqpw;
 
@@ -645,9 +645,9 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 				//printf("						(*i)=%d\n", (*i)/3);
 				//for(w=(*i); w<()){
 				printf("		(*i)=%d	a[%d]=%d\n", (*i), qp, a[qp]);
-				printf("		%d's color=%d\n", (*i), (a[qp]*3)+(aqoffset*3));//+(aqoffset*3)
-				outp(PAL_DATA_REG, p[(a[qp]*3)+(aqoffset*3)]);
-				if((*i)+1==(qp*3)+3){ /*(*i)++;*/ break; }
+				printf("		%d's color=%d\n", (*i), (a[qp])*3);//+(aqoffset*3)
+				outp(PAL_DATA_REG, p[((a[qp])*3)]);// fix this shit!
+				if((*i)+1==(qp*3)+3){ w++; /*(*i)++;*/ break; }
 			}
 			else
 			{
