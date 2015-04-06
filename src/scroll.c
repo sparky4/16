@@ -64,7 +64,7 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword
 
 #define TILEWH 16
 #define QUADWH			TILEWH/2
-#define SPEED 4
+#define SPEED 16
 //#define LOOPMAX (TILEWH/SPEED)
 
 //place holder definitions
