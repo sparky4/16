@@ -812,8 +812,8 @@ void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, wor
 //			printf("\n		z: %d\n", (*z));
 //			printf("		q: %d\n", (*q));
 //			printf("		z+q: %d\n\n", ((*z)+(*q)));
-			if((*z)%3==0)
-			{
+			//if((*z)%3==0)
+			//{
 //----				if(pal[(*z)]==pal[(*z)+3] && pal[(*z)+1]==pal[(*z)+4] && pal[(*z)+2]==pal[(*z)+5])
 				if((*z)==(*i))
 				{
@@ -845,8 +845,10 @@ void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, wor
 //							printf("	z : %d	[%02d][%02d][%02d] offset value~\n", (*z)/3, pal[(*z)], pal[(*z)+1], pal[(*z)+2]);
 //++++							(*i)--;
 //							(*z)--;
-							a[(((*z)+(*q))/3)]=zz/3;
-							(*aa)=(((*z)+(*q))/3);
+
+							//expand dong here!
+							a[(((*z)+(*q)))]=zz;
+							(*aa)=(((*z)+(*q)));
 							printf("!!				a[%02d]: %d\n", (((*z)+(*q))/3), zz/3);
 //							printf("\n		aa: %d\n\n", (*aa));
 //							printf("	a[%02d]=(%02d) offset array i think the palette should be updated again~\n", ((*z)+(*q))/3, a[((*z)+(*q))/3]);
@@ -866,7 +868,7 @@ void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, wor
 				//printf("\nz:	%d\n", z);
 				//printf("q:	%d\n", q);
 				//printf("zz:	%d\n", zz);
-			}
+			//}
 		}
 		printf("2				(*z): %d\n", (*z)/3);
 		printf("2				(*i): %d\n", (*i)/3);
