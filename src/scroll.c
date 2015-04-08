@@ -592,7 +592,8 @@ void main() {
 	printf("Total free: %zu\n", GetFreeSize());
 	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
 	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
-	printf("\n");
+	printf("Screen: %dx", screen.width);
+	printf("%d\n", screen.height);
 	//xmsfree(&map);
 	//xmsfree(bg);
 	//xmsfree(spri);
