@@ -846,7 +846,13 @@ void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, wor
 //++++							(*i)--;
 //							(*z)--;
 
-							//expand dong here!
+							//expand dong here
+/*
+planned features that i plan to implement~
+image that has values on the pallete list!
+wwww 
+
+*/
 							a[(((*z)+(*q)))]=zz;
 							(*aa)=(((*z)+(*q)));
 							printf("!!				a[%02d]: %d\n", (((*z)+(*q))/3), zz/3);
