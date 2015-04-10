@@ -721,6 +721,13 @@ aqpee:
 
 	for(lq=0; lq<bufSize; lq++)
 	{
+		/*
+
+
+		(offset/bmp->offset)*bmp->offset
+
+
+		*/
 		//printf("%02d_", bmp->data[lq]+bmp->offset);
 		/*if(bmp->data[lq]+bmp->offset==aq)
 		{
