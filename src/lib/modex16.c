@@ -673,10 +673,6 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 			}
 			else if(qp>0 && (*i)>=(qp*3) && (*i)<((qp*3)+3))
 			{
-				/*
-									note to self
-									use a[qp] instead of bmp->offset for this spot!
-				*/
 				//printf("qp=%d\n", qp);
 				//printf("						(*i)=%d\n", (*i)/3);
 				printf("	(*i)=%d	bmp->offset*3=%d	(qp*3)=%d\n", (*i), (bmp->offset), (qp));
@@ -721,13 +717,17 @@ aqpee:
 
 	for(lq=0; lq<bufSize; lq++)
 	{
-		/*
+		
+				/*
+									note to self
+									use a[qp] instead of bmp->offset for this spot!
+				*/
 
 
-		(offset/bmp->offset)*bmp->offset
+		//(offset/bmp->offset)*bmp->offset
 
 
-		*/
+		
 		//printf("%02d_", bmp->data[lq]+bmp->offset);
 		/*if(bmp->data[lq]+bmp->offset==aq)
 		{
