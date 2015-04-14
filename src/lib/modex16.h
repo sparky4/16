@@ -21,6 +21,13 @@ typedef struct {
     word height;	/* virtual height of the page */
 } page_t;
 
+typedef union
+{
+	byte red;
+	byte green;
+	byte blue;
+} rgb_t;
+
 /* -============================ Functions =============================- */
 /* mode switching, page, and plane functions */
 void modexEnter();

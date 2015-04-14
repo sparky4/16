@@ -593,13 +593,12 @@ modexPalWhite() {
 void
 modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 {
-//----	static word count=0;
 	byte *p = bmp->palette;
 	word w=0;
 	word q=0;
 	word qq=0;
 	//word ii;
-	static word a[PAL_SIZE];
+	static word a[PAL_SIZE/3];	//palette array of change values!
 	word z=0, aq=0, aa=0, pp=0;
 	//sword aqpw;
 
@@ -645,8 +644,8 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 				//printf("						(*i)=%d\n", (*i)/3);
 				//for(w=(*i); w<()){
 				printf("		(*i)=%d	a[%d]=%d\n", (*i), qp, a[qp]);
-				printf("		%d's color=%d\n", (*i), (a[qp])*3);//+(aqoffset*3)
-				outp(PAL_DATA_REG, p[((a[qp])*3)]);// fix this shit!
+//0000				printf("		%d's color=%d\n", (*i), (a[qp])*3);//+(aqoffset*3)
+//0000				outp(PAL_DATA_REG, p[((a[qp])*3)]);// fix this shit!
 				if((*i)+1==(qp*3)+3){ w++; /*(*i)++;*/ break; }
 			}
 			else
@@ -717,17 +716,28 @@ aqpee:
 
 	for(lq=0; lq<bufSize; lq++)
 	{
-		
 				/*
 									note to self
 									use a[qp] instead of bmp->offset for this spot!
+									NO! wwww
 				*/
+
+
+
+
+				/*
+				Facking bloody point the values of the changed palette to correct values.... major confusion! wwww
+				*/
+
+
+
 
 
 		//(offset/bmp->offset)*bmp->offset
 
 
-		
+		printf("%02d ",bmp->data[lq]+bmp->offset);
+		if(lq > 0 && lq%bmp->width==0) printf("\n");
 		//printf("%02d_", bmp->data[lq]+bmp->offset);
 		/*if(bmp->data[lq]+bmp->offset==aq)
 		{
@@ -813,12 +823,14 @@ void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, wor
 		printf("chkcolor start~\n");
 		printf("1				(*z): %d\n", (*z)/3);
 		printf("1				(*i): %d\n", (*i)/3);
+//		printf("1 offset of color in palette	(*q): %d\n", (*q)/3);
+		printf("wwwwwwwwwwwwwwww\n");
 		//check palette for dups
 		for(; (*z)<PAL_SIZE; (*z)+=3)
 		{
-//			printf("\n		z: %d\n", (*z));
-//			printf("		q: %d\n", (*q));
-//			printf("		z+q: %d\n\n", ((*z)+(*q)));
+			//printf("\n		z: %d\n", (*z));
+			//printf("		q: %d\n", (*q));
+			//printf("		z+q: %d\n\n", ((*z)+(*q)));
 			//if((*z)%3==0)
 			//{
 //----				if(pal[(*z)]==pal[(*z)+3] && pal[(*z)+1]==pal[(*z)+4] && pal[(*z)+2]==pal[(*z)+5])
@@ -831,11 +843,10 @@ void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, wor
 				}
 				else for(zz=0; zz<(*q); zz+=3)
 				{
-					//zq=(zz+(q-3));
 					//printf("zz: %02d\n", zz/3);
 					if(zz%3==0)
 					{
-						if(pal[((*z)+(*q))]==pal[((*z)+(*q))+3] && pal[((*z)+(*q))+1]==pal[((*z)+(*q))+4] && pal[((*z)+(*q))+2]==pal[((*z)+(*q))+5])
+						if(pal[((*z)+(*q))]==pal[((*z)+(*q))+3] && pal[((*z)+(*q))+1]==pal[((*z)+(*q))+4] && pal[((*z)+(*q))+2]==pal[((*z)+(*q))+5])	//break if duplicate colors found in palette because it have reached the end of the current data of the palette
 						{
 //							(*z)-=3;
 //							(*i)-=3;
@@ -852,17 +863,20 @@ void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, wor
 //							printf("	z : %d	[%02d][%02d][%02d] offset value~\n", (*z)/3, pal[(*z)], pal[(*z)+1], pal[(*z)+2]);
 //++++							(*i)--;
 //							(*z)--;
-
 							//expand dong here
 /*
 planned features that i plan to implement~
 image that has values on the pallete list!
-wwww 
-
+wwww
+no... wait.... no wwww
 */
-							a[(((*z)+(*q)))]=zz;
+							//for(zzii=0; zzii<3; zzii++)
+							//{
+								//printf("z+q: %d\n\n", ((*z)+(*q)));
+								a[(((*z)+(*q)))]=zz;
+							//}
 							(*aa)=(((*z)+(*q)));
-							printf("!!				a[%02d]: %d\n", (((*z)+(*q))/3), zz/3);
+							printf("!!					a[%02d]: %d\n", (((*z)+(*q))/3), zz/3);
 //							printf("\n		aa: %d\n\n", (*aa));
 //							printf("	a[%02d]=(%02d) offset array i think the palette should be updated again~\n", ((*z)+(*q))/3, a[((*z)+(*q))/3]);
 //							printf("wwwwwwwwwwwwwwww\n\n");
@@ -878,13 +892,11 @@ wwww
 						//printf("[%d]", (zz+q));
 					}
 				}
-				//printf("\nz:	%d\n", z);
-				//printf("q:	%d\n", q);
-				//printf("zz:	%d\n", zz);
-			//}
 		}
+		printf("wwwwwwwwwwwwwwww\n");
 		printf("2				(*z): %d\n", (*z)/3);
 		printf("2				(*i): %d\n", (*i)/3);
+//		printf("2 offset of color in palette	(*q): %d\n", (*q)/3);
 		printf("chkcolor end~\n");
 		free(pal);
 }
