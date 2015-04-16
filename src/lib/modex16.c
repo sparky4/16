@@ -597,12 +597,9 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 	word w=0;
 	word q=0;
 	word qq=0;
-	//word ii;
-	static word a[PAL_SIZE/3];	//palette array of change values!
+	static word a[PAL_SIZE];	//palette array of change values!
 	word z=0, aq=0, aa=0, pp=0;
-	//sword aqpw;
 
-	//printf("1	(*i)=%02d\n", (*i)/3);
 	modexWaitBorder();
 	if((*i)==0)
 	{
@@ -620,7 +617,6 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 //		printf("q: %02d\n", (q));
 //		printf("qq: %02d\n", (qq));
 		//printf("	(*i)-q=%02d\n", (*i)-q);
-//		printf("================\n");
 		outp(PAL_WRITE_REG, qq);  /* start at the beginning of palette */
 	}
 	if((*i)<PAL_SIZE/2 && w==0)
@@ -634,7 +630,7 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 				w++;
 				break;
 			}
-			else if(qp>0 && (*i)>=(qp*3) && (*i)<((qp*3)+3))
+			else if(qp>0 && (*i)>=(qp) && (*i)<((qp)+3))
 			{
 				/*
 									note to self
@@ -644,20 +640,21 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 				//printf("						(*i)=%d\n", (*i)/3);
 				//for(w=(*i); w<()){
 				printf("		(*i)=%d	a[%d]=%d\n", (*i), qp, a[qp]);
-//0000				printf("		%d's color=%d\n", (*i), (a[qp])*3);//+(aqoffset*3)
-//0000				outp(PAL_DATA_REG, p[((a[qp])*3)]);// fix this shit!
-				if((*i)+1==(qp*3)+3){ w++; /*(*i)++;*/ break; }
+				printf("		%d's color=%d\n", (*i), (a[qp])-(bmp->offset*3)+qp);
+				outp(PAL_DATA_REG, p[((a[qp])-(bmp->offset*3)+qp)]);// fix this shit!
+				if((*i)+1==(qp)+3){ w++; /*(*i)++;*/ break; }
 			}
 			else
 			{
 				if(bmp->offset==0 && (*i)<3 && q==0) outp(PAL_DATA_REG, 0);
 				else
 				if(qp==0) outp(PAL_DATA_REG, p[(*i)-q]);
-				else outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3)/*+(aqoffset*3)*/)]);
+				else outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3)+qp)]);
+				printf("p[]=%d	qp=%d	p[]-qp=%d\n", ((*i)-(bmp->offset*3)), qp, ((*i)-(bmp->offset*3))+qp);
 			}
 		}
 		//if(qp>0) printf("qp=%d\n", qp);
-		if(qp>0) printf("						(*i)=%d\n", (*i)/3);
+		//if(qp>0) printf("						(*i)=%d\n", (*i)/3);
 	}
 	modexWaitBorder();	    /* waits one retrace -- less flicker */
 	if((*i)>=PAL_SIZE/2 && w==0)
@@ -670,21 +667,25 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 				w++;
 				break;
 			}
-			else if(qp>0 && (*i)>=(qp*3) && (*i)<((qp*3)+3))
+			else if(qp>0 && (*i)>=(qp) && (*i)<((qp)+3))
 			{
+				/*
+									note to self
+									use a[qp] instead of bmp->offset for this spot!
+				*/
 				//printf("qp=%d\n", qp);
 				//printf("						(*i)=%d\n", (*i)/3);
-				printf("	(*i)=%d	bmp->offset*3=%d	(qp*3)=%d\n", (*i), (bmp->offset), (qp));
-				printf("		%d's color=%d\n", (*i)/3, ((*i)-(bmp->offset)+(qp*3)));
-				//printf("		%d's color2=%d\n", (*i)/3, ((*i)-(bmp->offset*3))-(qp*3));
-				//outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3))+()]);
-				(*i)++;
-				break;
+				//for(w=(*i); w<()){
+				printf("		(*i)=%d	a[%d]=%d\n", (*i), qp, a[qp]);
+				printf("		%d's color=%d\n", (*i), (a[qp]-(bmp->offset*3)+qp));
+				outp(PAL_DATA_REG, p[((a[qp])-(bmp->offset*3)+qp)]);// fix this shit!
+				if((*i)+1==(qp)+3){ w++; /*(*i)++;*/ break; }
 			}
 			else
 			{
 				if(qp==0) outp(PAL_DATA_REG, p[(*i)-q]);
-				else outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3))+(qp*3)]);
+				else outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3)+qp)]);
+				printf("p[]=%d	qp=%d	p[]-qp=%d\n", ((*i)-(bmp->offset*3)), qp, ((*i)-(bmp->offset*3))+qp);
 			}
 		}
 		//printf("						(*i)=%d\n", (*i)/3);
@@ -692,6 +693,7 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 
 //	if(q>0) 
 //	printf("2	(*i)=%02d\n", (*i)/3);
+printf("\nqqqqqqqq\n\n");
 
 	//palette checker~
 	if(q>0 && qp==0)
@@ -704,7 +706,6 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 		chkcolor(bmp, &q, &a, &aa, &z, i);
 		//printf("2(*i)=%02d\n", (*i)/3);
 		//printf("2z=%02d\n", z/3);
-
 		aq=0;
 aqpee:
 		while(aq<=aa)
@@ -713,7 +714,7 @@ aqpee:
 			if(a[aq]==-1) aq++;
 			else { aqoffset++; break; }
 		}
-
+//update the image data here!
 	for(lq=0; lq<bufSize; lq++)
 	{
 				/*
@@ -722,22 +723,15 @@ aqpee:
 									NO! wwww
 				*/
 
-
-
-
 				/*
 				Facking bloody point the values of the changed palette to correct values.... major confusion! wwww
 				*/
 
-
-
-
-
 		//(offset/bmp->offset)*bmp->offset
 
 
-		printf("%02d ",bmp->data[lq]+bmp->offset);
-		if(lq > 0 && lq%bmp->width==0) printf("\n");
+		//printf("%02d ",bmp->data[lq]+bmp->offset);
+		//if(lq > 0 && lq%bmp->width==0) printf("\n");
 		//printf("%02d_", bmp->data[lq]+bmp->offset);
 		/*if(bmp->data[lq]+bmp->offset==aq)
 		{
