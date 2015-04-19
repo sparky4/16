@@ -241,11 +241,6 @@ void main() {
 	modexDrawSpriteRegion(spri->page, npc0.x-4, npc0.y-TILEWH, 24, 64, 24, 32, &npctmp);*/
 	modexDrawSpriteRegion(spri->page, player.x-4, player.y-TILEWH, 24, 64, 24, 32, &ptmp);
 
-	//----modexClearRegion(spri->page, player.triggerx*16, player.triggery*16, 16, 16, 1);
-	//----modexClearRegion(bg->page, player.triggerx*16, player.triggery*16, 16, 16, 1);
-
-	//----modexClearRegion(spri->page, 5*16, 5*16, 16, 16, 255);
-	//----modexClearRegion(bg->page, 5*16, 5*16, 16, 16, 255);
 	modexShowPage(spri->page);
 //	printf("Total used @ before loop:			%zu\n", oldfreemem-GetFreeSize());
 	modexFadeOn(4, gpal);
@@ -375,7 +370,8 @@ void main() {
 	if((keyp(77) && !keyp(75) && player.d == 0) || player.d == 2)
 	{
 		if(player.d == 0){ player.d = 2; }
-		if(bg->tx >= 0 && bg->tx+20 < map.width && player.tx == bg->tx + 10 && !(player.tx+1 == TRIGGX && player.ty == TRIGGY))
+		if(bg->tx >= 0 && bg->tx+20 < map.width && player.tx == bg->tx + 10 &&
+		!(player.tx+1 == TRIGGX && player.ty == TRIGGY))	//collision detection!
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -416,7 +412,8 @@ void main() {
 	if((keyp(75) && !keyp(77) && player.d == 0) || player.d == 4)
 	{
 		if(player.d == 0){ player.d = 4; }
-		if(bg->tx > 0 && bg->tx+20 <= map.width && player.tx == bg->tx + 10 && !(player.tx-1 == TRIGGX && player.ty == TRIGGY))
+		if(bg->tx > 0 && bg->tx+20 <= map.width && player.tx == bg->tx + 10 &&
+		!(player.tx-1 == TRIGGX && player.ty == TRIGGY))	//collision detection!
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -457,7 +454,8 @@ void main() {
 	if((keyp(80) && !keyp(72) && player.d == 0) || player.d == 3)
 	{
 		if(player.d == 0){ player.d = 3; }
-		if(bg->ty >= 0 && bg->ty+15 < map.height && player.ty == bg->ty + 8 && !(player.tx == TRIGGX && player.ty+1 == TRIGGY))
+		if(bg->ty >= 0 && bg->ty+15 < map.height && player.ty == bg->ty + 8 &&
+		!(player.tx == TRIGGX && player.ty+1 == TRIGGY))	//collision detection!
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -498,7 +496,8 @@ void main() {
 	if((keyp(72) && !keyp(80) && player.d == 0) || player.d == 1)
 	{
 		if(player.d == 0){ player.d = 1; }
-		if(bg->ty > 0 && bg->ty+15 <= map.height && player.ty == bg->ty + 8 && !(player.tx == TRIGGX && player.ty-1 == TRIGGY))
+		if(bg->ty > 0 && bg->ty+15 <= map.height && player.ty == bg->ty + 8 &&
+		!(player.tx == TRIGGX && player.ty-1 == TRIGGY))	//collision detection!
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{

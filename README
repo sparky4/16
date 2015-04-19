@@ -14,11 +14,11 @@ DONE 5. sprite rendering
 7. text rendering
 DONE! YAY! 8. map loading
 DONE! YAY! wwww 9. map rendering~
-10. map and item interation
+10. map and item interation (working currently on this!)
 11. item inventory~
 12. Memory management (EMS + XMS)
 13. case switch with keyboard code (when your holding 2 arrow keys and a key is released the keyboard controller dose not read input from the port anymore for some weired reason)
-14. masking layer!
+14. masking layer! (i think this is not easy to accomplish!)
 DONE 15. 8088 detection to turn off vsync!
 16. (very important!) optoimize draw row and draw col
 
@@ -26,6 +26,7 @@ not needed ... really... 17. merge map system and interperator from verge 2
 18. save feature!
 19. (also important) interperator! and possibly custom map system
 20. (also important) lua scripting system!
+21. extend the map system!
 
 To compile:
 You need Open Watcom stable to compile and just run wmake
