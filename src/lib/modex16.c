@@ -481,7 +481,7 @@ fadePalette(sbyte fade, sbyte start, word iter, byte *palette) {
 
     /* handle the case where we just update */
     if(iter == 0) {
-	modexPalUpdate2(palette);
+	modexPalUpdate1(palette);
 	return;
     }
 
@@ -494,7 +494,7 @@ fadePalette(sbyte fade, sbyte start, word iter, byte *palette) {
 		tmppal[i] = 63;
 	    }
 	}
-        modexPalUpdate2(tmppal);
+        modexPalUpdate1(tmppal);
 	iter--;
 	dim += fade;
     }
@@ -632,16 +632,10 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 			}
 			else if(qp>0 && (*i)>=(qp) && (*i)<((qp)+3))
 			{
-				/*
-									note to self
-									use a[qp] instead of bmp->offset for this spot!
-				*/
 				//printf("qp=%d\n", qp);
-				//printf("						(*i)=%d\n", (*i)/3);
-				//for(w=(*i); w<()){
-				printf("		(*i)=%d	a[%d]=%d\n", (*i), qp, a[qp]);
+				//printf("		(*i)=%d	a[%d]=%d\n", (*i), qp, a[qp]);
 				printf("		%d's color=%d\n", (*i), (a[qp])-(bmp->offset*3)+qp);
-				outp(PAL_DATA_REG, p[((a[qp])-(bmp->offset*3)+qp)]);// fix this shit!
+				//outp(PAL_DATA_REG, p[((a[qp])-(bmp->offset*3)+qp)]);// fix this shit!
 				if((*i)+1==(qp)+3){ w++; /*(*i)++;*/ break; }
 			}
 			else
@@ -649,8 +643,8 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 				if(bmp->offset==0 && (*i)<3 && q==0) outp(PAL_DATA_REG, 0);
 				else
 				if(qp==0) outp(PAL_DATA_REG, p[(*i)-q]);
-				else outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3)+qp)]);
-				printf("p[]=%d	qp=%d	p[]-qp=%d\n", ((*i)-(bmp->offset*3)), qp, ((*i)-(bmp->offset*3))+qp);
+				else{ //outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3)+qp)]);
+				printf("p[]=%d	qp=%d	p[]-qp=%d\n", ((*i)-(bmp->offset*3)), qp, ((*i)-(bmp->offset*3))+qp); }
 			}
 		}
 		//if(qp>0) printf("qp=%d\n", qp);
@@ -669,30 +663,22 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 			}
 			else if(qp>0 && (*i)>=(qp) && (*i)<((qp)+3))
 			{
-				/*
-									note to self
-									use a[qp] instead of bmp->offset for this spot!
-				*/
 				//printf("qp=%d\n", qp);
-				//printf("						(*i)=%d\n", (*i)/3);
-				//for(w=(*i); w<()){
-				printf("		(*i)=%d	a[%d]=%d\n", (*i), qp, a[qp]);
+				//printf("		(*i)=%d	a[%d]=%d\n", (*i), qp, a[qp]);
 				printf("		%d's color=%d\n", (*i), (a[qp]-(bmp->offset*3)+qp));
-				outp(PAL_DATA_REG, p[((a[qp])-(bmp->offset*3)+qp)]);// fix this shit!
+				//outp(PAL_DATA_REG, p[((a[qp])-(bmp->offset*3)+qp)]);// fix this shit!
 				if((*i)+1==(qp)+3){ w++; /*(*i)++;*/ break; }
 			}
 			else
 			{
 				if(qp==0) outp(PAL_DATA_REG, p[(*i)-q]);
-				else outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3)+qp)]);
-				printf("p[]=%d	qp=%d	p[]-qp=%d\n", ((*i)-(bmp->offset*3)), qp, ((*i)-(bmp->offset*3))+qp);
+				else{ //outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3)+qp)]);
+				printf("p[]=%d	qp=%d	p[]-qp=%d\n", ((*i)-(bmp->offset*3)), qp, ((*i)-(bmp->offset*3))+qp); }
 			}
 		}
 		//printf("						(*i)=%d\n", (*i)/3);
 	}
 
-//	if(q>0) 
-//	printf("2	(*i)=%02d\n", (*i)/3);
 printf("\nqqqqqqqq\n\n");
 
 	//palette checker~
@@ -772,7 +758,7 @@ aqpee:
 }
 
 void
-modexPalUpdate2(byte *p)
+modexPalUpdate1(byte *p)
 {
 	int i;
 	modexWaitBorder();
@@ -789,7 +775,7 @@ modexPalUpdate2(byte *p)
 }
 
 void
-modexPalUpdate3(byte *p)
+modexPalUpdate0(byte *p)
 {
 	int i;
 	modexWaitBorder();

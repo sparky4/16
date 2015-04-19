@@ -64,7 +64,7 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword
 
 #define TILEWH 16
 #define QUADWH			TILEWH/2
-#define SPEED 16
+#define SPEED 4
 //#define LOOPMAX (TILEWH/SPEED)
 
 //place holder definitions
@@ -534,6 +534,74 @@ void main() {
 	}
 	//modexClearRegion(mask->page, 66, 66, 2, 40, 0);
 
+/*	//right movement
+	if((keyp(32) && !keyp(30) && player.d == 0) || player.d == 2)
+	{
+		if(player.d == 0){ player.d = 2; }
+		if(bg->tx >= 0 && bg->tx+20 < map.width)
+		{
+			if(player.q<=(TILEWH/SPEED))
+			{
+				bg->page->dx++;
+				modexShowPage(bg->page);
+				player.q++;
+			} else { player.q = 1; player.d = 0; }
+		}
+//		player.triggerx = player.tx+1;
+//		player.triggery = player.ty;
+	}
+
+	//left movement
+	if((keyp(30) && !keyp(32) && player.d == 0) || player.d == 4)
+	{
+		if(player.d == 0){ player.d = 4; }
+		if(bg->tx > 0 && bg->tx+20 <= map.width)
+		{
+			if(player.q<=(TILEWH/SPEED))
+			{
+				bg->page->dx--;
+				modexShowPage(bg->page);
+				player.q++;
+			} else { player.q = 1; player.d = 0; }
+		}
+		//player.triggerx = player.tx-1;
+		//player.triggery = player.ty;
+	}
+
+	//down movement
+	if((keyp(31) && !keyp(17) && player.d == 0) || player.d == 3)
+	{
+		if(player.d == 0){ player.d = 3; }
+		if(bg->ty >= 0 && bg->ty+15 < map.height)
+		{
+			if(player.q<=(TILEWH/SPEED))
+			{
+				bg->page->dy--;
+				modexShowPage(bg->page);
+				player.q++;
+			} else { player.q = 1; player.d = 0; }
+		}
+		//player.triggerx = player.tx;
+		//player.triggery = player.ty+1;
+	}
+
+	//up movement
+	if((keyp(17) && !keyp(31) && player.d == 0) || player.d == 1)
+	{
+		if(player.d == 0){ player.d = 1; }
+		if(bg->ty > 0 && bg->ty+15 <= map.height)
+		{
+			if(player.q<=(TILEWH/SPEED))
+			{
+				bg->page->dy++;
+				modexShowPage(bg->page);
+				player.q++;
+			} else { player.q = 1; player.d = 0; }
+		}
+		//player.triggerx = player.tx;
+		//player.triggery = player.ty-1;
+	}*/
+
 	if(((player.triggerx == TRIGGX && player.triggery == TRIGGY) && keyp(0x1C))||(player.tx == 5 && player.ty == 5))
 	{
 		short i;
@@ -546,7 +614,7 @@ void main() {
 	if(player.q == (TILEWH/SPEED)+1 && player.d > 0 && (player.triggerx == 5 && player.triggery == 5)){ player.hp--; }
 	//if(keyp(0x0E)) while(1){ if(xmsmalloc(24)) break; }
 	if(keyp(25)){ pdump(bg); pdump(spri); }
-	if(keyp(24)){ modexPalUpdate3(gpal); paloffset=0; pdump(bg); pdump(spri); }
+	if(keyp(24)){ modexPalUpdate0(gpal); paloffset=0; pdump(bg); pdump(spri); }
 	if(keyp(22)){ 
 	paloffset=0; modexPalBlack(); modexPalUpdate(&ptmp, &paloffset, 0, 0);
 	printf("1paloffset	=	%d\n", paloffset/3);
@@ -932,5 +1000,5 @@ animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword d, s
 	//modexClearRegion(top->page, 66, 66, 2, 40, 0);
 	//modexCopyPageRegion(dest->page, top->page, 66, 66, 66, 66, 2, 40);
 	//turn this off if XT
-	//if(detectcpu() > 0) modexWaitBorder();
+	if(detectcpu() > 0) modexWaitBorder();
 }
