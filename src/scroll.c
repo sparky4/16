@@ -250,6 +250,8 @@ void main() {
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
 	#define INC_PER_FRAME if(player.q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;
+
+	//modexClearRegion(bg->page, player.x, player.y, 16, 16, 4); //currently the over scan color!
 	/*#define INC_PER_FRAME_NPC if(npc0.q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;
 
 	if(npc0.d == 0 && npc0.q == 1) npc0.d =rand()%8;
