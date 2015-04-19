@@ -78,6 +78,7 @@ void main() {
 	long emmhandle;
 	long emsavail;
 	char teststr[80];
+	word panswitch=0, panq=1, pand=0; //for panning!
 	int i;
 	static word paloffset=0;
 	bitmap_t ptmp;//, npctmp; // player sprite
@@ -369,6 +370,7 @@ void main() {
 
 	//player movement
 	//TODO: make movement into a function!
+	if(!panswitch){
 	//right movement
 	if((keyp(77) && !keyp(75) && player.d == 0) || player.d == 2)
 	{
@@ -533,77 +535,61 @@ void main() {
 		player.triggery = player.ty-1;
 	}
 	//modexClearRegion(mask->page, 66, 66, 2, 40, 0);
-
-
+}else{
 //88 switch!
-/*	//right movement
-	if((keyp(32) && !keyp(30) && player.d == 0) || player.d == 2)
+	//right movement
+	if((keyp(77) && !keyp(75) && pand == 0) || pand == 2)
 	{
-		if(player.d == 0){ player.d = 2; }
-		if(bg->tx >= 0 && bg->tx+20 < map.width)
-		{
-			if(player.q<=(TILEWH/SPEED))
+		if(pand == 0){ pand = 2; }
+			if(panq<=(TILEWH/SPEED))
 			{
 				bg->page->dx++;
+				spri->page->dx++;
 				modexShowPage(bg->page);
-				player.q++;
-			} else { player.q = 1; player.d = 0; }
-		}
-//		player.triggerx = player.tx+1;
-//		player.triggery = player.ty;
+				modexShowPage(spri->page);
+				panq++;
+			} else { panq = 1; pand = 0; }
 	}
-
 	//left movement
-	if((keyp(30) && !keyp(32) && player.d == 0) || player.d == 4)
+	if((keyp(75) && !keyp(77) && pand == 0) || pand == 4)
 	{
-		if(player.d == 0){ player.d = 4; }
-		if(bg->tx > 0 && bg->tx+20 <= map.width)
-		{
-			if(player.q<=(TILEWH/SPEED))
+		if(pand == 0){ pand = 4; }
+			if(panq<=(TILEWH/SPEED))
 			{
 				bg->page->dx--;
+				spri->page->dx--;
 				modexShowPage(bg->page);
-				player.q++;
-			} else { player.q = 1; player.d = 0; }
-		}
-		//player.triggerx = player.tx-1;
-		//player.triggery = player.ty;
+				modexShowPage(spri->page);
+				panq++;
+			} else { panq = 1; pand = 0; }
 	}
-
 	//down movement
-	if((keyp(31) && !keyp(17) && player.d == 0) || player.d == 3)
+	if((keyp(72) && !keyp(80) && pand == 0) || pand == 3)
 	{
-		if(player.d == 0){ player.d = 3; }
-		if(bg->ty >= 0 && bg->ty+15 < map.height)
-		{
-			if(player.q<=(TILEWH/SPEED))
+		if(pand == 0){ pand = 3; }
+			if(panq<=(TILEWH/SPEED))
 			{
 				bg->page->dy--;
+				spri->page->dy--;
 				modexShowPage(bg->page);
-				player.q++;
-			} else { player.q = 1; player.d = 0; }
-		}
-		//player.triggerx = player.tx;
-		//player.triggery = player.ty+1;
+				modexShowPage(spri->page);
+				panq++;
+			} else { panq = 1; pand = 0; }
 	}
-
 	//up movement
-	if((keyp(17) && !keyp(31) && player.d == 0) || player.d == 1)
+	if((keyp(80) && !keyp(72) && pand == 0) || pand == 1)
 	{
-		if(player.d == 0){ player.d = 1; }
-		if(bg->ty > 0 && bg->ty+15 <= map.height)
-		{
-			if(player.q<=(TILEWH/SPEED))
+		if(pand == 0){ pand = 1; }
+			if(panq<=(TILEWH/SPEED))
 			{
 				bg->page->dy++;
+				spri->page->dy++;
 				modexShowPage(bg->page);
-				player.q++;
-			} else { player.q = 1; player.d = 0; }
-		}
-		//player.triggerx = player.tx;
-		//player.triggery = player.ty-1;
-	}*/
-
+				modexShowPage(spri->page);
+				panq++;
+			} else { panq = 1; pand = 0; }
+	}
+}
 	if(((player.triggerx == TRIGGX && player.triggery == TRIGGY) && keyp(0x1C))||(player.tx == 5 && player.ty == 5))
 	{
 		short i;
@@ -624,6 +610,7 @@ void main() {
 	printf("2paloffset	=	%d\n", paloffset/3);
 	 pdump(bg); pdump(spri); }
 
+	if(keyp(88)){if(!panswitch) panswitch++; else panswitch--; }
 	if(keyp(87))
 	{
 		modexLeave();
@@ -647,17 +634,13 @@ void main() {
 	printf("Project 16 scroll.exe\n");
 	printf("tx: %d\n", bg->tx);
 	printf("ty: %d\n", bg->ty);
-	printf("player.x: %d", player.x);
-	if(player.hp==0) printf("%d wwww\n", player.y+8);
-	else printf("\nplayer.y: %d\n", player.y);
-	printf("player.tx: %d\n", player.tx);
-	printf("player.ty: %d\n", player.ty);
-	printf("player.triggx: %d\n", player.triggerx);
-	printf("player.triggy: %d\n", player.triggery);
-	printf("player.hp: %d\n", player.hp);
-	printf("player.q: %d\n", player.q);
-	printf("player.d: %d\n", player.d);
-	printf("tile data value at player pos: %d\n", player.tx+(player.tx*player.ty));//bg->map->data[]);
+	printf("player.x: %d", player.x); printf("		player.y: %d\n", player.y);
+	//if(player.hp==0) printf("%d wwww\n", player.y+8);
+	//else printf("\nplayer.y: %d\n", player.y);
+	printf("player.tx: %d", player.tx); printf("		player.ty: %d\n", player.ty);
+	printf("player.triggx: %d", player.triggerx); printf("	player.triggy: %d\n", player.triggery);
+	printf("player.hp: %d", player.hp);	printf("	player.q: %d", player.q);	printf("	player.d: %d\n", player.d);
+	printf("tile data value at player pos: %d\n", bg->map->data[(player.tx-1)+(map.width*(player.ty-1))]);
 	printf("palette offset:	%d\n", paloffset/3);
 	printf("Total used: %zu\n", oldfreemem-GetFreeSize());
 	printf("Total free: %zu\n", GetFreeSize());
