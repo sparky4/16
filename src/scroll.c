@@ -371,7 +371,7 @@ void main() {
 	{
 		if(player.d == 0){ player.d = 2; }
 		if(bg->tx >= 0 && bg->tx+20 < map.width && player.tx == bg->tx + 10 &&
-		!(player.tx+1 == TRIGGX && player.ty == TRIGGY))	//collision detection!
+		!(bg->map->data[(player.triggerx-1)+(map.width*(player.triggery-1))] == 0))//!(player.tx+1 == TRIGGX && player.ty == TRIGGY))	//collision detection!
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -385,7 +385,7 @@ void main() {
 				player.q++;
 			} else { player.q = 1; player.d = 0; player.tx++; }
 		}
-		else if(player.tx < map.width && !(player.tx+1 == TRIGGX && player.ty == TRIGGY))
+		else if(player.tx < map.width && !(bg->map->data[(player.triggerx-1)+(map.width*(player.triggery-1))] == 0))//!(player.tx+1 == TRIGGX && player.ty == TRIGGY))
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -413,7 +413,7 @@ void main() {
 	{
 		if(player.d == 0){ player.d = 4; }
 		if(bg->tx > 0 && bg->tx+20 <= map.width && player.tx == bg->tx + 10 &&
-		!(player.tx-1 == TRIGGX && player.ty == TRIGGY))	//collision detection!
+		!(bg->map->data[(player.triggerx-1)+(map.width*(player.triggery-1))] == 0))//!(player.tx-1 == TRIGGX && player.ty == TRIGGY))	//collision detection!
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -427,7 +427,7 @@ void main() {
 				player.q++;
 			} else { player.q = 1; player.d = 0; player.tx--; }
 		}
-		else if(player.tx > 1 && !(player.tx-1 == TRIGGX && player.ty == TRIGGY))
+		else if(player.tx > 1 && !(bg->map->data[(player.triggerx-1)+(map.width*(player.triggery-1))] == 0))//!(player.tx-1 == TRIGGX && player.ty == TRIGGY))
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -455,7 +455,7 @@ void main() {
 	{
 		if(player.d == 0){ player.d = 3; }
 		if(bg->ty >= 0 && bg->ty+15 < map.height && player.ty == bg->ty + 8 &&
-		!(player.tx == TRIGGX && player.ty+1 == TRIGGY))	//collision detection!
+		!(bg->map->data[(player.triggerx-1)+(map.width*(player.triggery-1))] == 0))//!(player.tx == TRIGGX && player.ty+1 == TRIGGY))	//collision detection!
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -469,7 +469,7 @@ void main() {
 				player.q++;
 			} else { player.q = 1; player.d = 0; player.ty++; }
 		}
-		else if(player.ty < map.height && !(player.tx == TRIGGX && player.ty+1 == TRIGGY))
+		else if(player.ty < map.height && !(bg->map->data[(player.triggerx-1)+(map.width*(player.triggery-1))] == 0))//!(player.tx == TRIGGX && player.ty+1 == TRIGGY))
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -497,7 +497,7 @@ void main() {
 	{
 		if(player.d == 0){ player.d = 1; }
 		if(bg->ty > 0 && bg->ty+15 <= map.height && player.ty == bg->ty + 8 &&
-		!(player.tx == TRIGGX && player.ty-1 == TRIGGY))	//collision detection!
+		!(bg->map->data[(player.triggerx-1)+(map.width*(player.triggery-1))] == 0))//!(player.tx == TRIGGX && player.ty-1 == TRIGGY))	//collision detection!
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -511,7 +511,7 @@ void main() {
 				player.q++;
 			} else { player.q = 1; player.d = 0; player.ty--; }
 		}
-		else if(player.ty > 1 && !(player.tx == TRIGGX &&  player.ty-1 == TRIGGY))
+		else if(player.ty > 1 && !(bg->map->data[(player.triggerx-1)+(map.width*(player.triggery-1))] == 0))//!(player.tx == TRIGGX &&  player.ty-1 == TRIGGY))
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -639,7 +639,7 @@ void main() {
 	printf("player.tx: %d", player.tx); printf("		player.ty: %d\n", player.ty);
 	printf("player.triggx: %d", player.triggerx); printf("	player.triggy: %d\n", player.triggery);
 	printf("player.hp: %d", player.hp);	printf("	player.q: %d", player.q);	printf("	player.d: %d\n", player.d);
-	printf("tile data value at player pos: %d\n", bg->map->data[(player.tx-1)+(map.width*(player.ty-1))]);
+	printf("tile data value at player trigger position: %d\n", bg->map->data[(player.triggerx-1)+(map.width*(player.triggery-1))]);
 	printf("palette offset:	%d\n", paloffset/3);
 	printf("Total used: %zu\n", oldfreemem-GetFreeSize());
 	printf("Total free: %zu\n", GetFreeSize());
