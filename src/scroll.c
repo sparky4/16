@@ -657,6 +657,7 @@ void main() {
 	printf("player.hp: %d\n", player.hp);
 	printf("player.q: %d\n", player.q);
 	printf("player.d: %d\n", player.d);
+	printf("tile data value at player pos: %d\n", player.tx+(player.tx*player.ty));//bg->map->data[]);
 	printf("palette offset:	%d\n", paloffset/3);
 	printf("Total used: %zu\n", oldfreemem-GetFreeSize());
 	printf("Total free: %zu\n", GetFreeSize());
