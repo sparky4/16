@@ -371,7 +371,7 @@ void main() {
 	{
 		if(player.d == 0){ player.d = 2; }
 		if(bg->tx >= 0 && bg->tx+20 < map.width && player.tx == bg->tx + 10 &&
-		!(bg->map->data[(player.triggerx-1)+(map.width*(player.triggery-1))] == 0))//!(player.tx+1 == TRIGGX && player.ty == TRIGGY))	//collision detection!
+		!(bg->map->data[(player.tx)+(map.width*(player.ty-1))] == 0))//!(player.tx+1 == TRIGGX && player.ty == TRIGGY))	//collision detection!
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -385,7 +385,7 @@ void main() {
 				player.q++;
 			} else { player.q = 1; player.d = 0; player.tx++; }
 		}
-		else if(player.tx < map.width && !(bg->map->data[(player.triggerx-1)+(map.width*(player.triggery-1))] == 0))//!(player.tx+1 == TRIGGX && player.ty == TRIGGY))
+		else if(player.tx < map.width && !(bg->map->data[(player.tx)+(map.width*(player.ty-1))] == 0))//!(player.tx+1 == TRIGGX && player.ty == TRIGGY))
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -413,7 +413,7 @@ void main() {
 	{
 		if(player.d == 0){ player.d = 4; }
 		if(bg->tx > 0 && bg->tx+20 <= map.width && player.tx == bg->tx + 10 &&
-		!(bg->map->data[(player.triggerx-1)+(map.width*(player.triggery-1))] == 0))//!(player.tx-1 == TRIGGX && player.ty == TRIGGY))	//collision detection!
+		!(bg->map->data[(player.tx-2)+(map.width*(player.ty-1))] == 0))//!(player.tx-1 == TRIGGX && player.ty == TRIGGY))	//collision detection!
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -427,7 +427,7 @@ void main() {
 				player.q++;
 			} else { player.q = 1; player.d = 0; player.tx--; }
 		}
-		else if(player.tx > 1 && !(bg->map->data[(player.triggerx-1)+(map.width*(player.triggery-1))] == 0))//!(player.tx-1 == TRIGGX && player.ty == TRIGGY))
+		else if(player.tx > 1 && !(bg->map->data[(player.tx-2)+(map.width*(player.ty-1))] == 0))//!(player.tx-1 == TRIGGX && player.ty == TRIGGY))
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -455,7 +455,7 @@ void main() {
 	{
 		if(player.d == 0){ player.d = 3; }
 		if(bg->ty >= 0 && bg->ty+15 < map.height && player.ty == bg->ty + 8 &&
-		!(bg->map->data[(player.triggerx-1)+(map.width*(player.triggery-1))] == 0))//!(player.tx == TRIGGX && player.ty+1 == TRIGGY))	//collision detection!
+		!(bg->map->data[(player.tx-1)+(map.width*(player.ty))] == 0))//!(player.tx == TRIGGX && player.ty+1 == TRIGGY))	//collision detection!
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -469,7 +469,7 @@ void main() {
 				player.q++;
 			} else { player.q = 1; player.d = 0; player.ty++; }
 		}
-		else if(player.ty < map.height && !(bg->map->data[(player.triggerx-1)+(map.width*(player.triggery-1))] == 0))//!(player.tx == TRIGGX && player.ty+1 == TRIGGY))
+		else if(player.ty < map.height && !(bg->map->data[(player.tx-1)+(map.width*(player.ty))] == 0))//!(player.tx == TRIGGX && player.ty+1 == TRIGGY))
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -497,7 +497,7 @@ void main() {
 	{
 		if(player.d == 0){ player.d = 1; }
 		if(bg->ty > 0 && bg->ty+15 <= map.height && player.ty == bg->ty + 8 &&
-		!(bg->map->data[(player.triggerx-1)+(map.width*(player.triggery-1))] == 0))//!(player.tx == TRIGGX && player.ty-1 == TRIGGY))	//collision detection!
+		!(bg->map->data[(player.tx-1)+(map.width*(player.ty-2))] == 0))//!(player.tx == TRIGGX && player.ty-1 == TRIGGY))	//collision detection!
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -511,7 +511,7 @@ void main() {
 				player.q++;
 			} else { player.q = 1; player.d = 0; player.ty--; }
 		}
-		else if(player.ty > 1 && !(bg->map->data[(player.triggerx-1)+(map.width*(player.triggery-1))] == 0))//!(player.tx == TRIGGX &&  player.ty-1 == TRIGGY))
+		else if(player.ty > 1 && !(bg->map->data[(player.tx-1)+(map.width*(player.ty-2))] == 0))//!(player.tx == TRIGGX &&  player.ty-1 == TRIGGY))
 		{
 			if(player.q<=(TILEWH/SPEED))
 			{
@@ -533,7 +533,6 @@ void main() {
 		player.triggerx = player.tx;
 		player.triggery = player.ty-1;
 	}
-	//modexClearRegion(mask->page, 66, 66, 2, 40, 0);
 }else{
 //88 switch!
 	//right movement
@@ -589,7 +588,8 @@ void main() {
 			} else { panq = 1; pand = 0; }
 	}
 }
-	if(((player.triggerx == TRIGGX && player.triggery == TRIGGY) && keyp(0x1C))||(player.tx == 5 && player.ty == 5))
+	//if(((player.triggerx == TRIGGX && player.triggery == TRIGGY) && keyp(0x1C))||(player.tx == 5 && player.ty == 5))
+	if(((bg->map->data[(player.triggerx-1)+(map.width*(player.triggery-1))] == 0) && keyp(0x1C))||(player.tx == 5 && player.ty == 5))
 	{
 		short i;
 		for(i=800; i>=400; i--)
@@ -620,6 +620,9 @@ void main() {
 			int 21h
 		}
 	}
+
+	if((player.q==1) && !(player.x%TILEWH==0 && player.y%TILEWH==0)) break;	//incase things go out of sync!
+
 	}
 
 	/* fade back to text mode */
@@ -629,7 +632,6 @@ void main() {
 	modexFadeOff(4, gpal);
 	modexLeave();
 	setkb(0);
-	//system("mem /E /P");
 	printf("Project 16 scroll.exe\n");
 	printf("tx: %d\n", bg->tx);
 	printf("ty: %d\n", bg->ty);
@@ -879,6 +881,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y) {
 	if(i==0)
 	{
 		//wwww
+		modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, 0); //currently the over scan color!
 	}
 	else
 	{
