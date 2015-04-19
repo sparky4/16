@@ -534,6 +534,8 @@ void main() {
 	}
 	//modexClearRegion(mask->page, 66, 66, 2, 40, 0);
 
+
+//88 switch!
 /*	//right movement
 	if((keyp(32) && !keyp(30) && player.d == 0) || player.d == 2)
 	{
@@ -615,7 +617,7 @@ void main() {
 	//if(keyp(0x0E)) while(1){ if(xmsmalloc(24)) break; }
 	if(keyp(25)){ pdump(bg); pdump(spri); }
 	if(keyp(24)){ modexPalUpdate0(gpal); paloffset=0; pdump(bg); pdump(spri); }
-	if(keyp(22)){ 
+	if(keyp(22)){
 	paloffset=0; modexPalBlack(); modexPalUpdate(&ptmp, &paloffset, 0, 0);
 	printf("1paloffset	=	%d\n", paloffset/3);
 	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
