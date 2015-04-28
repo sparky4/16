@@ -50,6 +50,7 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 			map->data = malloc(sizeof(byte) * (t+1)->size);
 			map->tiles = malloc(sizeof(tiles_t));
 			//map->tiles->data = malloc(sizeof(bitmap_t));
+			//fix this
 			bp = bitmapLoadPcx("data/ed.pcx");
 			map->tiles->data = &bp;
 			//map->tiles->data->data = malloc((16/**2*/)*16);
