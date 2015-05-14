@@ -20,26 +20,26 @@ _OpenEMM:
     push        ds 
     mov         ax,MEMORY_DATA 
     mov         ds,ax 
-    call        far ptr L$59 
-    or          ax,ax 
-    je          L$1 
     call        far ptr L$65 
     or          ax,ax 
-    jne         L$2 
-L$1:
-    xor         ax,ax 
-    jmp         L$4 
-L$2:
-    call        far ptr L$68 
-    mov         word ptr L$89,ax 
+    je          L$1 
+    call        far ptr L$72 
     or          ax,ax 
     jne         L$3 
+L$1:
     xor         ax,ax 
-    jmp         L$4 
+L$2:
+    jmp         L$5 
 L$3:
-    mov         ax,1 
-    jmp         L$4 
+    call        far ptr L$76 
+    mov         word ptr L$99,ax 
+    or          ax,ax 
+    jne         L$4 
+    jmp         L$1 
 L$4:
+    mov         ax,1 
+    jmp         L$2 
+L$5:
     pop         ds 
     pop         bp 
     retf        
@@ -50,33 +50,32 @@ _CloseEMM:
     push        ds 
     mov         ax,MEMORY_DATA 
     mov         ds,ax 
-    cmp         word ptr L$89,0 
-    jne         L$5 
-    jmp         L$9 
-L$5:
-    xor         si,si 
-    jmp         L$8 
+    cmp         word ptr L$99,0 
+    jne         L$6 
+    jmp         L$10 
 L$6:
-    mov         bx,si 
-    shl         bx,1 
-    cmp         word ptr L$88[bx],0 
-    je          L$7 
-    mov         bx,si 
-    shl         bx,1 
-    push        word ptr L$88[bx] 
-    call        far ptr L$77 
-    inc         sp 
-    inc         sp 
-    mov         bx,si 
-    shl         bx,1 
-    mov         word ptr L$88[bx],0 
+    xor         si,si 
+    jmp         L$9 
 L$7:
-    inc         si 
+    mov         bx,si 
+    shl         bx,1 
+    cmp         word ptr L$100[bx],0 
+    je          L$8 
+    mov         bx,si 
+    shl         bx,1 
+    push        word ptr L$100[bx] 
+    call        far ptr L$87 
+    pop         cx 
+    mov         bx,si 
+    shl         bx,1 
+    mov         word ptr L$100[bx],0 
 L$8:
-    cmp         si,40H 
-    jl          L$6 
-    mov         word ptr L$89,0 
+    inc         si 
 L$9:
+    cmp         si,40H 
+    jl          L$7 
+    mov         word ptr L$99,0 
+L$10:
     pop         ds 
     pop         si 
     pop         bp 
@@ -87,15 +86,15 @@ _EMMInstalled:
     push        ds 
     mov         ax,MEMORY_DATA 
     mov         ds,ax 
-    cmp         word ptr L$89,0 
-    je          L$10 
+    cmp         word ptr L$99,0 
+    je          L$11 
     mov         ax,1 
-    jmp         L$11 
-L$10:
-    xor         ax,ax 
-L$11:
     jmp         L$12 
+L$11:
+    xor         ax,ax 
 L$12:
+    jmp         L$13 
+L$13:
     pop         ds 
     pop         bp 
     retf        
@@ -111,7 +110,7 @@ _EMMCoreLeft:
     mov         ah,42H 
     int         67H 
     or          ah,ah 
-    js          L$13 
+    js          L$14 
     mov         word ptr -2[bp],bx 
     mov         ax,word ptr -2[bp] 
     xor         dx,dx 
@@ -119,11 +118,11 @@ _EMMCoreLeft:
     call        far ptr `F_LXLSH@` 
     mov         word ptr -4[bp],dx 
     mov         word ptr -6[bp],ax 
-L$13:
+L$14:
     mov         dx,word ptr -4[bp] 
     mov         ax,word ptr -6[bp] 
-    jmp         L$14 
-L$14:
+    jmp         L$15 
+L$15:
     pop         ds 
     mov         sp,bp 
     pop         bp 
@@ -140,67 +139,64 @@ _EMMalloc:
     mov         di,word ptr 0aH[bp] 
     mov         word ptr -2[bp],0 
     mov         word ptr -4[bp],0 
-    cmp         word ptr L$89,0 
-    jne         L$15 
+    cmp         word ptr L$99,0 
+    jne         L$18 
     les         bx,dword ptr 6[bp] 
     mov         word ptr es:[bx],0 
+L$16:
     xor         dx,dx 
     xor         ax,ax 
-    jmp         L$23 
-L$15:
+L$17:
+    jmp         L$26 
+L$18:
     cmp         di,1 
-    jl          L$16 
+    jl          L$19 
     cmp         di,3fcH 
-    jle         L$17 
-L$16:
+    jle         L$20 
+L$19:
     les         bx,dword ptr 6[bp] 
     mov         word ptr es:[bx],0f440H 
-    xor         dx,dx 
-    xor         ax,ax 
-    jmp         L$23 
-L$17:
+    jmp         L$16 
+L$20:
     xor         si,si 
-    jmp         L$19 
-L$18:
+    jmp         L$22 
+L$21:
     inc         si 
-L$19:
+L$22:
     cmp         si,40H 
-    jge         L$20 
+    jge         L$23 
     mov         bx,si 
     shl         bx,1 
-    cmp         word ptr L$88[bx],0 
-    jne         L$18 
-L$20:
-    cmp         si,40H 
+    cmp         word ptr L$100[bx],0 
     jne         L$21 
+L$23:
+    cmp         si,40H 
+    jne         L$24 
     les         bx,dword ptr 6[bp] 
     mov         word ptr es:[bx],0f443H 
-    xor         dx,dx 
-    xor         ax,ax 
-    jmp         L$23 
-L$21:
+    jmp         L$16 
+L$24:
     push        di 
-    call        far ptr L$71 
-    inc         sp 
-    inc         sp 
+    call        far ptr L$80 
+    pop         cx 
     mov         bx,si 
     shl         bx,1 
-    mov         word ptr L$88[bx],ax 
+    mov         word ptr L$100[bx],ax 
     or          ax,ax 
-    jle         L$22 
-    mov         ax,word ptr L$89 
+    jle         L$25 
+    mov         ax,word ptr L$99 
     mov         word ptr -2[bp],ax 
     mov         word ptr -4[bp],0 
-L$22:
+L$25:
     mov         bx,si 
     shl         bx,1 
-    mov         ax,word ptr L$88[bx] 
+    mov         ax,word ptr L$100[bx] 
     les         bx,dword ptr 6[bp] 
     mov         word ptr es:[bx],ax 
     mov         dx,word ptr -2[bp] 
     mov         ax,word ptr -4[bp] 
-    jmp         L$23 
-L$23:
+    jmp         L$17 
+L$26:
     pop         ds 
     pop         di 
     pop         si 
@@ -210,93 +206,88 @@ L$23:
 _EMMRealloc:
     push        bp 
     mov         bp,sp 
-    push        si 
     push        ds 
     mov         ax,MEMORY_DATA 
     mov         ds,ax 
-    xor         si,si 
-    cmp         word ptr L$89,0 
-    je          L$24 
+    xor         cx,cx 
+    cmp         word ptr L$99,0 
+    je          L$27 
     cmp         word ptr 8[bp],0 
-    jl          L$24 
+    jl          L$27 
     cmp         word ptr 8[bp],3fcH 
-    jle         L$25 
-L$24:
+    jle         L$29 
+L$27:
     xor         ax,ax 
-    jmp         L$27 
-L$25:
+L$28:
+    jmp         L$31 
+L$29:
     mov         ah,51H 
     mov         bx,word ptr 8[bp] 
     mov         dx,word ptr 6[bp] 
     int         67H 
     or          ah,ah 
-    js          L$26 
-    mov         si,1 
-L$26:
-    mov         ax,si 
-    jmp         L$27 
-L$27:
+    js          L$30 
+    mov         cx,1 
+L$30:
+    mov         ax,cx 
+    jmp         L$28 
+L$31:
     pop         ds 
-    pop         si 
     pop         bp 
     retf        
 _EMMFree:
     push        bp 
     mov         bp,sp 
-    dec         sp 
-    dec         sp 
     push        si 
     push        di 
     push        ds 
     mov         ax,MEMORY_DATA 
     mov         ds,ax 
-    mov         di,word ptr 6[bp] 
-    cmp         word ptr L$89,0 
-    jne         L$28 
-    jmp         L$36 
-L$28:
-    xor         si,si 
-    jmp         L$30 
-L$29:
-    inc         si 
-L$30:
-    cmp         si,40H 
-    jge         L$31 
-    mov         bx,si 
-    shl         bx,1 
-    cmp         word ptr L$88[bx],di 
-    jne         L$29 
-L$31:
-    cmp         si,40H 
-    jl          L$32 
-    jmp         L$36 
+    cmp         word ptr L$99,0 
+    jne         L$32 
+    jmp         L$40 
 L$32:
-    mov         word ptr -2[bp],10H 
+    xor         si,si 
     jmp         L$34 
 L$33:
+    inc         si 
+L$34:
+    cmp         si,40H 
+    jge         L$35 
     mov         bx,si 
     shl         bx,1 
-    push        word ptr L$88[bx] 
-    call        far ptr L$77 
-    inc         sp 
-    inc         sp 
-    or          ax,ax 
-    je          L$34 
-    jmp         L$35 
-L$34:
-    mov         ax,word ptr -2[bp] 
-    dec         word ptr -2[bp] 
-    or          ax,ax 
+    mov         ax,word ptr L$100[bx] 
+    cmp         ax,word ptr 6[bp] 
     jne         L$33 
 L$35:
+    cmp         si,40H 
+    jl          L$36 
+    jmp         L$40 
+L$36:
+    mov         di,10H 
+    jmp         L$38 
+L$37:
     mov         bx,si 
     shl         bx,1 
-    mov         word ptr L$88[bx],0 
-L$36:
+    push        word ptr L$100[bx] 
+    call        far ptr L$87 
+    pop         cx 
+    or          ax,ax 
+    je          L$38 
+    jmp         L$39 
+L$38:
+    mov         ax,di 
+    dec         di 
+    or          ax,ax 
+    jne         L$37 
+L$39:
+    mov         bx,si 
+    shl         bx,1 
+    mov         word ptr L$100[bx],0 
+L$40:
     pop         ds 
     pop         di 
     pop         si 
-    mov         sp,bp 
     pop         bp 
     retf        
 _MapEMM:
@@ -307,67 +298,67 @@ _MapEMM:
     push        ds 
     mov         ax,MEMORY_DATA 
     mov         ds,ax 
-    mov         di,word ptr 6[bp] 
-    cmp         word ptr L$89,0 
-    jne         L$37 
+    mov         di,word ptr 0aH[bp] 
+    cmp         word ptr L$99,0 
+    jne         L$43 
+L$41:
     xor         ax,ax 
-    jmp         L$47 
-L$37:
+L$42:
+    jmp         L$53 
+L$43:
     xor         si,si 
-    jmp         L$39 
-L$38:
+    jmp         L$45 
+L$44:
     inc         si 
-L$39:
+L$45:
     cmp         si,40H 
-    jge         L$40 
+    jge         L$46 
     mov         bx,si 
     shl         bx,1 
-    cmp         word ptr L$88[bx],di 
-    jne         L$38 
-L$40:
+    mov         ax,word ptr L$100[bx] 
+    cmp         ax,word ptr 6[bp] 
+    jne         L$44 
+L$46:
     cmp         si,40H 
-    jne         L$41 
-    xor         ax,ax 
-    jmp         L$47 
-L$41:
-    push        di 
-    call        far ptr L$80 
-    inc         sp 
-    inc         sp 
-    cmp         ax,word ptr 0aH[bp] 
-    jl          L$42 
-    cmp         word ptr 0aH[bp],1 
-    jl          L$42 
-    cmp         word ptr 0aH[bp],4 
-    jle         L$43 
-L$42:
+    jne         L$47 
+    jmp         L$41 
+L$47:
+    push        word ptr 6[bp] 
+    call        far ptr L$91 
+    pop         cx 
+    cmp         ax,di 
+    jl          L$48 
+    cmp         di,1 
+    jl          L$48 
+    cmp         di,4 
+    jle         L$49 
+L$48:
     mov         ax,0f440H 
-    jmp         L$47 
-L$43:
+    jmp         L$42 
+L$49:
     mov         si,word ptr 8[bp] 
-    jmp         L$46 
-L$44:
+    jmp         L$52 
+L$50:
     mov         ax,si 
     sub         ax,word ptr 8[bp] 
     push        ax 
     push        si 
-    push        di 
-    call        far ptr L$74 
+    push        word ptr 6[bp] 
+    call        far ptr L$84 
     add         sp,6 
     or          ax,ax 
-    jne         L$45 
-    xor         ax,ax 
-    jmp         L$47 
-L$45:
+    jne         L$51 
+    jmp         L$41 
+L$51:
     inc         si 
-L$46:
+L$52:
     mov         ax,word ptr 8[bp] 
-    add         ax,word ptr 0aH[bp] 
+    add         ax,di 
     cmp         ax,si 
-    jg          L$44 
+    jg          L$50 
     mov         ax,1 
-    jmp         L$47 
-L$47:
+    jmp         L$42 
+L$53:
     pop         ds 
     pop         di 
     pop         si 
@@ -376,58 +367,57 @@ L$47:
 _UnmapEMM:
     push        bp 
     mov         bp,sp 
-    dec         sp 
-    dec         sp 
+    sub         sp,2 
     push        si 
     push        di 
     push        ds 
     mov         ax,MEMORY_DATA 
     mov         ds,ax 
     mov         di,word ptr 6[bp] 
-    cmp         word ptr L$89,0 
-    jne         L$48 
-    jmp         L$57 
-L$48:
+    cmp         word ptr L$99,0 
+    jne         L$54 
+    jmp         L$63 
+L$54:
     xor         si,si 
-    jmp         L$50 
-L$49:
+    jmp         L$56 
+L$55:
     inc         si 
-L$50:
+L$56:
     cmp         si,40H 
-    jge         L$51 
+    jge         L$57 
     mov         bx,si 
     shl         bx,1 
-    cmp         word ptr L$88[bx],di 
-    jne         L$49 
-L$51:
+    cmp         word ptr L$100[bx],di 
+    jne         L$55 
+L$57:
     cmp         si,40H 
-    jne         L$52 
-    jmp         L$57 
-L$52:
+    jne         L$58 
+    jmp         L$63 
+L$58:
     mov         ax,word ptr 8[bp] 
     add         ax,word ptr 0aH[bp] 
     mov         word ptr -2[bp],ax 
     cmp         word ptr 0aH[bp],1 
-    jl          L$53 
+    jl          L$59 
     cmp         word ptr -2[bp],4 
-    jle         L$54 
-L$53:
-    jmp         L$57 
-L$54:
+    jle         L$60 
+L$59:
+    jmp         L$63 
+L$60:
     mov         si,word ptr 8[bp] 
-    jmp         L$56 
-L$55:
+    jmp         L$62 
+L$61:
     push        si 
     mov         ax,0ffffH 
     push        ax 
     push        di 
-    call        far ptr L$74 
+    call        far ptr L$84 
     add         sp,6 
     inc         si 
-L$56:
+L$62:
     cmp         si,word ptr -2[bp] 
-    jl          L$55 
-L$57:
+    jl          L$61 
+L$63:
     pop         ds 
     pop         di 
     pop         si 
@@ -443,17 +433,16 @@ _UseEMM:
     mov         ds,ax 
     mov         si,word ptr 6[bp] 
     push        si 
-    call        far ptr L$83 
-    inc         sp 
-    inc         sp 
+    call        far ptr L$94 
+    pop         cx 
     push        word ptr 0aH[bp] 
     push        word ptr 8[bp] 
     push        si 
     push        cs 
     call        near ptr _MapEMM 
     add         sp,6 
-    jmp         L$58 
-L$58:
+    jmp         L$64 
+L$64:
     pop         ds 
     pop         si 
     pop         bp 
@@ -473,26 +462,24 @@ _SaveEMM:
     call        near ptr _UnmapEMM 
     add         sp,6 
     push        si 
-    call        far ptr L$86 
-    inc         sp 
-    inc         sp 
+    call        far ptr L$97 
+    pop         cx 
     pop         ds 
     pop         si 
     pop         bp 
     retf        
-L$59:
+L$65:
     push        bp 
     mov         bp,sp 
     sub         sp,14H 
-    push        si 
     push        ds 
     mov         ax,MEMORY_DATA 
     mov         ds,ax 
-    push        ss 
     lea         ax,-0cH[bp] 
+    push        ss 
     push        ax 
+    mov         ax,offset L$98 
     push        ds 
-    mov         ax,offset L$87 
     push        ax 
     mov         cx,9 
     call        far ptr `F_SCOPY@` 
@@ -508,35 +495,35 @@ L$59:
     lea         ax,-0cH[bp] 
     mov         word ptr -0eH[bp],ss 
     mov         word ptr -10H[bp],ax 
-    xor         si,si 
-    jmp         L$61 
-L$60:
-    inc         si 
-L$61:
-    cmp         si,8 
-    jge         L$62 
+    xor         dx,dx 
+    jmp         L$67 
+L$66:
+    inc         dx 
+L$67:
+    cmp         dx,8 
+    jge         L$68 
     les         bx,dword ptr -10H[bp] 
     inc         word ptr -10H[bp] 
     mov         al,byte ptr es:[bx] 
     les         bx,dword ptr -14H[bp] 
     inc         word ptr -14H[bp] 
     cmp         al,byte ptr es:[bx] 
-    je          L$60 
-L$62:
-    cmp         si,8 
-    jne         L$63 
+    je          L$66 
+L$68:
+    cmp         dx,8 
+    jne         L$70 
     mov         ax,1 
-    jmp         L$64 
-L$63:
+L$69:
+    jmp         L$71 
+L$70:
     xor         ax,ax 
-    jmp         L$64 
-L$64:
+    jmp         L$69 
+L$71:
     pop         ds 
-    pop         si 
     mov         sp,bp 
     pop         bp 
     retf        
-L$65:
+L$72:
     push        bp 
     mov         bp,sp 
     push        ds 
@@ -545,44 +532,44 @@ L$65:
     mov         ah,40H 
     int         67H 
     or          ah,ah 
-    jns         L$66 
+    jns         L$74 
     xor         ax,ax 
-    jmp         L$67 
-L$66:
+L$73:
+    jmp         L$75 
+L$74:
     mov         ax,1 
-    jmp         L$67 
-L$67:
+    jmp         L$73 
+L$75:
     pop         ds 
     pop         bp 
     retf        
-L$68:
+L$76:
     push        bp 
     mov         bp,sp 
-    dec         sp 
-    dec         sp 
+    sub         sp,2 
     push        ds 
     mov         ax,MEMORY_DATA 
     mov         ds,ax 
     mov         ah,41H 
     int         67H 
     or          ah,ah 
-    js          L$69 
+    js          L$78 
     mov         word ptr -2[bp],bx 
     mov         ax,word ptr -2[bp] 
-    jmp         L$70 
-L$69:
+L$77:
+    jmp         L$79 
+L$78:
     xor         ax,ax 
-    jmp         L$70 
-L$70:
+    jmp         L$77 
+L$79:
     pop         ds 
     mov         sp,bp 
     pop         bp 
     retf        
-L$71:
+L$80:
     push        bp 
     mov         bp,sp 
-    dec         sp 
-    dec         sp 
+    sub         sp,2 
     push        ds 
     mov         ax,MEMORY_DATA 
     mov         ds,ax 
@@ -590,43 +577,42 @@ L$71:
     mov         bx,word ptr 6[bp] 
     int         67H 
     or          ah,ah 
-    js          L$72 
+    js          L$82 
     mov         word ptr -2[bp],dx 
     mov         ax,word ptr -2[bp] 
-    jmp         L$73 
-L$72:
+L$81:
+    jmp         L$83 
+L$82:
     xor         ax,ax 
-    jmp         L$73 
-L$73:
+    jmp         L$81 
+L$83:
     pop         ds 
     mov         sp,bp 
     pop         bp 
     retf        
-L$74:
+L$84:
     push        bp 
     mov         bp,sp 
-    push        si 
     push        ds 
     mov         ax,MEMORY_DATA 
     mov         ds,ax 
-    xor         si,si 
+    xor         cx,cx 
     mov         ax,word ptr 0aH[bp] 
     mov         ah,44H 
     mov         bx,word ptr 8[bp] 
     mov         dx,word ptr 6[bp] 
     int         67H 
     or          ah,ah 
-    js          L$75 
-    mov         si,1 
-L$75:
-    mov         ax,si 
-    jmp         L$76 
-L$76:
+    js          L$85 
+    mov         cx,1 
+L$85:
+    mov         ax,cx 
+    jmp         L$86 
+L$86:
     pop         ds 
-    pop         si 
     pop         bp 
     retf        
-L$77:
+L$87:
     push        bp 
     mov         bp,sp 
     push        ds 
@@ -636,21 +622,21 @@ L$77:
     mov         dx,word ptr 6[bp] 
     int         67H 
     or          ah,ah 
-    js          L$78 
+    js          L$89 
     mov         ax,1 
-    jmp         L$79 
-L$78:
+L$88:
+    jmp         L$90 
+L$89:
     xor         ax,ax 
-    jmp         L$79 
-L$79:
+    jmp         L$88 
+L$90:
     pop         ds 
     pop         bp 
     retf        
-L$80:
+L$91:
     push        bp 
     mov         bp,sp 
-    dec         sp 
-    dec         sp 
+    sub         sp,2 
     push        ds 
     mov         ax,MEMORY_DATA 
     mov         ds,ax 
@@ -659,39 +645,37 @@ L$80:
     mov         dx,word ptr 6[bp] 
     int         67H 
     or          ah,ah 
-    js          L$81 
+    js          L$92 
     mov         word ptr -2[bp],bx 
-L$81:
+L$92:
     mov         ax,word ptr -2[bp] 
-    jmp         L$82 
-L$82:
+    jmp         L$93 
+L$93:
     pop         ds 
     mov         sp,bp 
     pop         bp 
     retf        
-L$83:
+L$94:
     push        bp 
     mov         bp,sp 
-    push        si 
     push        ds 
     mov         ax,MEMORY_DATA 
     mov         ds,ax 
-    mov         si,0f442H 
+    mov         bx,0f442H 
     mov         ah,47H 
     mov         dx,word ptr 6[bp] 
     int         67H 
     or          ah,ah 
-    js          L$84 
-    mov         si,1 
-L$84:
-    mov         ax,si 
-    jmp         L$85 
-L$85:
+    js          L$95 
+    mov         bx,1 
+L$95:
+    mov         ax,bx 
+    jmp         L$96 
+L$96:
     pop         ds 
-    pop         si 
     pop         bp 
     retf        
-L$86:
+L$97:
     push        bp 
     mov         bp,sp 
     push        ds 
@@ -705,14 +689,14 @@ L$86:
     retf        
 MEMORY_TEXT		ENDS
 MEMORY_DATA		SEGMENT	WORD PUBLIC USE16 'FAR_DATA'
-L$87:
+L$98:
     DB	45H, 4dH, 4dH, 58H, 58H, 58H, 58H, 30H
+    DB	0
+L$99:
     DB	0, 0
-L$88:
+L$100:
     DB	0FH DUP(0,0,0,0,0,0,0,0)
     DB	0, 0, 0, 0, 0, 0, 0, 0
-L$89:
-    DB	0, 0
 
 MEMORY_DATA		ENDS
 		END
