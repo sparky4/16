@@ -1,4 +1,4 @@
-bcc -mh -c -lh memory.c
+bcc -mh -c memory.c
 bcc -mh emm.c memory.obj
 move emm.exe em0.exe
 move memory.obj memory.ob
