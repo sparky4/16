@@ -17,11 +17,13 @@
 
 #include "emmret.h"
 #include "emmsize.h"
+#include "../types.h"
 
 #define     CMM                  0
 #define     EMM                  1
 
 extern int EMVer(void);
+extern unsigned long EMInfo(void);
 extern int      OpenEMM(void);
 extern void     CloseEMM(void);
 extern int      EMMInstalled(void);

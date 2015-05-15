@@ -43,6 +43,21 @@ static int  EMStateSave(int Handle);
 static void EMStateRestore(int Handle);
 
 /********************************************************************/
+//beta
+unsigned long
+EMInfo(void)
+{
+	int EMSinfo;
+	_asm
+	{
+		mov		ah,0x58
+		int		0x67
+		mov		EMSinfo,ax
+	}
+	return((unsigned long)EMSinfo);
+}
+
+/********************************************************************/
 
 int
 EMVer(void)
@@ -58,6 +73,7 @@ EMVer(void)
 }
 
 /********************************************************************/
+
 int
 OpenEMM(void)
 {
@@ -112,7 +128,7 @@ EMMCoreLeft(void)
 		End:
 	}
 	if(!interr)
-	RtnVal = ((unsigned long)Pages);  /* Pages * 16K rtns bytes*/
+	RtnVal = ((unsigned long)Pages);  /* Pages * 16K rtns bytes*/ //<< 14);
 
 	return(RtnVal);
 }               /* End of EMMCoreLeft() */
@@ -129,7 +145,7 @@ EMMalloc(int *Handle, int Pages)
         *Handle = NOTREADY;
         return(NULL);
     }
-    if ((Pages < 1) || (Pages > EMMCoreLeft())) {
+    if ((Pages < 1) || (Pages > EMMCoreLeft(/*1020*/))) {
         *Handle = VALUE_OUTF_RANGE;
         return (NULL);
     }
@@ -197,7 +213,7 @@ MapEMM(int Handle, int Start, int Pages)
     if (!EMMSeg) return(NOTREADY);
     for (i = 0; (i < MAXEMHANDLES) && (ActiveEMList[i] != Handle); i++) ;
     if (i == MAXEMHANDLES) return (NO_DATA);
-    if ((GetNumPages(Handle) < Pages) || (Pages < 1) || (Pages > 4)) {
+    if ((GetNumPages(Handle) < Pages) || (Pages < 1) || (Pages > EMMCoreLeft(/*4*/))) {
         return (VALUE_OUTF_RANGE);
     }
     for (i = Start; i < Start + Pages; i++) {
@@ -217,7 +233,7 @@ UnmapEMM(int Handle, int Start, int Pages)
     for (i = 0; (i < MAXEMHANDLES) && (ActiveEMList[i] != Handle); i++) ;
     if (i == MAXEMHANDLES) return;
     j = Start + Pages;
-    if ((Pages < 1) || (j > 4)) return;
+    if ((Pages < 1) || (j > EMMCoreLeft(/*4*/))) return;
 
     for (i = Start; i < j; i++) {
         EMMap(Handle, NONE, i);

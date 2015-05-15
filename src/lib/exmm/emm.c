@@ -32,50 +32,72 @@ void TransformData(char *pEmmData, unsigned int len)
       }
 }
 
-void main(void)
+void main(int argc, char *argv[])
 {
-   char    *pEmmData;
-   int     hEData;
+	byte *pEmmData;
+	int hEData;
 
-   if ( OpenEMM() != SUCCESS )
-      {     // make sure we got EMM
-      printf("EMM unavailable.\n");
-      exit(1);
-      }
-   else
-      printf("Emm %x available\n", EMVer());
-      printf("EMS pages available are %lu\n", EMMCoreLeft());
+	if(OpenEMM() != SUCCESS)
+	{     // make sure we got EMM
+		printf("EMM unavailable.\n");
+		exit(1);
+	}
+	else
+		{
+			printf("Emm %x available\n", EMVer());
+			printf("EMS pages available are %lu\n", EMMCoreLeft());
+			//printf("EMM Hardware Information %lu\n", EMInfo());
+		}
 
-   pEmmData = (char *)EMMalloc(&hEData, 6);  // get 6 * 16K bytes - 96K
-   if ( pEmmData == NULL )
-      {
-      printf("Not enough EMM or out of handles.\n");
-      exit(2);
-      }
-   else
-      printf("emm alloced OK\n");
+	printf("b4 EMS		*pEmmData=%x\n", *pEmmData);
+	//printf("b4 EMS	*pEmmData=%s\n", *pEmmData);
 
+	pEmmData = (byte *)EMMalloc(&hEData, EMMCoreLeft(/*6*/));  // get 6 * 16K bytes - 96K
+	if(pEmmData == NULL/* ||  pEmmData0 == NULL*/)
+	{
+		printf("Not enough EMM or out of handles.\n");
+		exit(2);
+	}
+	else
+		printf("EMM allocate OK\n");
 
-   printf("Map 1st 4 pages\n");
-   MapEMM(hEData, 0, 4);   // load 1st 4 pages into page frame: 0-3
+	printf("EMS pages available are %lu\n", EMMCoreLeft());
 
-   memset(pEmmData, 0x0e, 64000u);
-   UnmapEMM(hEData, 0, 4);          // not absolutely necessary
-   
-   printf("Map next 2 pages\n");
-   MapEMM(hEData, 4, 2);            // map last 2 pages: 4-5
-   memset(pEmmData, 0x0e, 32768u);
+	printf("Map 1st 4 pages\n");
+	MapEMM(hEData, 0, EMMCoreLeft(/*4*/)-2);   // load 1st 4 pages into page frame: 0-3
+	//memset(pEmmData, 0x0e, 64000u);
+	memset(pEmmData, atoi(argv[1]), 64000u);
+//----	UnmapEMM(hEData, 0, 4);          // not absolutely necessary
+	printf("*pEmmData=%c\n", *pEmmData);
 
-   MapEMM(hEData, 0, 4);
+	printf("Map next 2 pages\n");
+	MapEMM(hEData, EMMCoreLeft(/*4*/)-2, EMMCoreLeft(/*2*/));            // map last 2 pages: 4-5
+	memset(pEmmData, 0x0e, 32768u);
+//	memset(pEmmData, atoi(argv[0]), 32768u);
+	printf("*pEmmData=%c\n", *pEmmData);
+//	printf("*pEmmData++=%c\n", *(pEmmData++));
+
+	/*MapEMM(hEData0, 0, 1);
+	memset(pEmmData0, (short)4, sizeof(short));
+	printf("*pEmmData0=%d\n", *pEmmData0);*/
+
+   /*MapEMM(hEData, 0, 4);
    // do some stuff with the first 64K of file data.
    printf("Transform data\n");
    TransformData(pEmmData, 64000UL);
+	printf("*pEmmData=%lu\n", *pEmmData);
    MapEMM(hEData, 4, 2);  // only unmaps 1st two pages of prior 64k mapping
    // do stuff with remaining 32K of data
    TransformData(pEmmData, 32768UL);
-   UnmapEMM(hEData, 0, 4);  // should unmap before freeing
+	printf("*pEmmData=%lu\n", *pEmmData);*/
 
-   printf("Close emm\n");
-   EMMFree(hEData);     // finished with the file data
-   CloseEMM();
+	UnmapEMM(hEData, 0, EMMCoreLeft(/*4*/));  // should unmap before freeing
+	//UnmapEMM(hEData0, 0, 1);  // should unmap before freeing
+	//printf("after EMS	*pEmmData=%c\n", *pEmmData);
+
+	printf("Close emm\n");
+	EMMFree(hEData);     // finished with the file data
+	CloseEMM();
+	printf("after EMS	*pEmmData=%x\n", *pEmmData);
+	printf("EMS pages available are %lu\n", EMMCoreLeft());
 }
