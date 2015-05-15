@@ -1,18 +1,6 @@
-memory.c(92): Error! E1011: Symbol 'InternalError' has not been declared
-memory.c(97): Warning! W118: Label 'InternalError' has been defined but not referenced
-memory.c(144): Error! E1011: Symbol 'NoGo' has not been declared
-memory.c(150): Warning! W118: Label 'NoGo' has been defined but not referenced
-memory.c(259): Error! E1011: Symbol 'Ready' has not been declared
-memory.c(264): Warning! W118: Label 'Ready' has been defined but not referenced
-memory.c(279): Error! E1011: Symbol 'NotReady' has not been declared
-memory.c(284): Warning! W118: Label 'NotReady' has been defined but not referenced
-memory.c(300): Error! E1011: Symbol 'NoHandle' has not been declared
-memory.c(305): Warning! W118: Label 'NoHandle' has been defined but not referenced
-memory.c(322): Error! E1011: Symbol 'NoMapping' has not been declared
-memory.c(327): Warning! W118: Label 'NoMapping' has been defined but not referenced
-memory.c(340): Error! E1011: Symbol 'NotFreed' has not been declared
-memory.c(345): Warning! W118: Label 'NotFreed' has been defined but not referenced
-memory.c(361): Error! E1011: Symbol 'BadHandle' has not been declared
-memory.c(365): Warning! W118: Label 'BadHandle' has been defined but not referenced
-memory.c(379): Error! E1011: Symbol 'Unsaved' has not been declared
-memory.c(384): Warning! W118: Label 'Unsaved' has been defined but not referenced
+Open Watcom C16 Optimizing Compiler Version 1.9
+Portions Copyright (c) 1984-2002 Sybase, Inc. All Rights Reserved.
+Source code is available under the Sybase Open Watcom Public License.
+See http://www.openwatcom.org/ for details.
+memory.c: 413 lines, included 1940, 0 warnings, 0 errors
+Code size: 1534

@@ -89,10 +89,12 @@ EMMCoreLeft(void)
         or      ah,ah
         js      InternalError       /* returns 80, 81, or 84 hex on error */
         mov     Pages,bx            /* number of unallocated 16K pages */
+		InternalError:
+		ret
     }
     RtnVal = ((unsigned long)Pages << 14);  /* Pages * 16K rtns bytes*/
 
-InternalError:
+//InternalError:
     return(RtnVal);
 }               /* End of EMMCoreLeft() */
 
@@ -141,11 +143,12 @@ EMMRealloc(int Handle, int Pages)
         int     0x67
         or      ah,ah
         js      NoGo                /* returns 80 to 88 hex on error */
+		NoGo:
+		ret
     }
     RtnCode = TRUE;
 
-NoGo:
-
+//NoGo:
     return(RtnCode);
 }               /* End of EMMRealloc() */
 
@@ -256,11 +259,13 @@ EMReady(void)
         int     0x67
         or      ah,ah
         jns     Ready               /* returns 80, 81, or 84 hex on error */
+		Ready:
+		ret
     }
     return(FALSE);
 
-Ready:
-    return(TRUE);
+//Ready:
+//    return(TRUE);
 }               /* End of EMReady() */
 
 /********************************************************************/
@@ -276,11 +281,13 @@ GetEMMSeg(void)
         or      ah,ah
         js      NotReady            /* returns 80, 81, or 84 hex on error */
         mov     EMSegment,bx
+		NotReady:
+		ret
     }
     return(EMSegment);              /*lint !e530 */
 
-NotReady:
-    return(NOTREADY);
+//NotReady:
+//    return(NOTREADY);
 }               /* End of GetEMMSeg() */
 
 /********************************************************************/
@@ -297,11 +304,13 @@ GetEMHandle(int NumPages)
         or      ah,ah               /* returns 80 to 89 hex on error */
         js      NoHandle
         mov     NewHandle,dx        /* retrieve handle */
+		NoHandle:
+		ret
     }
     return(NewHandle);
 
-NoHandle:
-    return(NO_DATA);
+//NoHandle:
+//    return(NO_DATA);
 }               /* End of GetEMHandle() */
 
 /********************************************************************/
@@ -319,10 +328,12 @@ EMMap(int Handle, int LogPg, int PhyPg)
         int     0x67
         or      ah,ah               /* returns 80 to 8B hex on error */
         js      NoMapping
+		NoMapping:
+		ret
     }
     RtnCode = SUCCESS;
 
-NoMapping:
+//NoMapping:
     return(RtnCode);
 }               /* End of EMMap() */
 
@@ -337,11 +348,13 @@ FreeEMHandle(int Handle)
         int     0x67
         or      ah,ah               /* returns 80 to 86 hex on error */
         js      NotFreed
+		NotFreed:                           /* must retry if unsuccessful */
+		ret
     }
     return(SUCCESS);
 
-NotFreed:                           /* must retry if unsuccessful */
-    return(NO_DATA);
+//NotFreed:                           /* must retry if unsuccessful */
+//    return(NO_DATA);
 }               /* End of FreeEMHandle() */
 
 /********************************************************************/
@@ -358,9 +371,11 @@ GetNumPages(int Handle)
         or      ah,ah               /* returns 80 to 84 hex on error */
         js      BadHandle
         mov     NumPages,bx
+		BadHandle:
+		ret
     }
-BadHandle:
 
+//BadHandle:
     return(NumPages);
 }               /* End of GetNumPages() */
 
@@ -376,10 +391,12 @@ EMStateSave(int Handle)
         int     0x67
         or      ah,ah
         js      Unsaved             /* out of save space error */
+		Unsaved:
+		ret
     }
     RtnCode = SUCCESS;
 
-Unsaved:
+//Unsaved:
     return(RtnCode);
 }               /* End of EMStateSave() */
 
