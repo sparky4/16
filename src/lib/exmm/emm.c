@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 	printf("Map 1st 4 pages\n");
 	MapEMM(hEData, 0, EMMCoreLeft(/*4*/));   // load 1st 4 pages into page frame: 0-3
 	//memset(pEmmData, 0x0e, 64000u);
-	memset(pEmmData, atoi(argv[1]), ((EMMCoreLeft())*EMMPAGESIZE));
+	memset(pEmmData, atoi(argv[1]), sizeof(atoi(argv[1])));//((EMMCoreLeft())*EMMPAGESIZE));
 //----	UnmapEMM(hEData, 0, 4);          // not absolutely necessary
 	printf("*pEmmData=%c\n", *pEmmData);
 
