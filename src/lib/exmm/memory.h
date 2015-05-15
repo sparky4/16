@@ -4,9 +4,11 @@
  *      Module:     All Modules
  *      Author(s):  Chris Somers
  *      Date:       August 5, 1993
- *      Version:    V.1.1
+ *      Version:    V.1.1w
 
         modified by Alex Russell to simplify.
+        
+		Open Watcom patch by sparky4~
  */
 
 

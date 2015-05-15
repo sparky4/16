@@ -112,7 +112,7 @@ EMMCoreLeft(void)
 		End:
 	}
 	if(!interr)
-	RtnVal = ((unsigned long)Pages << 14);  /* Pages * 16K rtns bytes*/
+	RtnVal = ((unsigned long)Pages);  /* Pages * 16K rtns bytes*/
 
 	return(RtnVal);
 }               /* End of EMMCoreLeft() */
@@ -129,7 +129,7 @@ EMMalloc(int *Handle, int Pages)
         *Handle = NOTREADY;
         return(NULL);
     }
-    if ((Pages < 1) || (Pages > 1020)) {
+    if ((Pages < 1) || (Pages > EMMCoreLeft())) {
         *Handle = VALUE_OUTF_RANGE;
         return (NULL);
     }

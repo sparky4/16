@@ -4,11 +4,13 @@
  *      Module:     All Modules
  *      Author(s):  Chris Somers
  *      Date:       December 1, 1992
- *      Version:    V.1.1
+ *      Version:    V.1.1w
 
         minor mods by Alex Russell to simplify
 
         Must use memory model with FAR code
+
+		Open Watcom patch by sparky4~
 
  */
 
@@ -42,6 +44,7 @@ void main(void)
       }
    else
       printf("Emm %x available\n", EMVer());
+      printf("EMS pages available are %lu\n", EMMCoreLeft());
 
    pEmmData = (char *)EMMalloc(&hEData, 6);  // get 6 * 16K bytes - 96K
    if ( pEmmData == NULL )
