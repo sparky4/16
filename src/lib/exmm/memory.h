@@ -19,6 +19,7 @@
 #define     CMM                  0
 #define     EMM                  1
 
+extern int EMVer(void);
 extern int      OpenEMM(void);
 extern void     CloseEMM(void);
 extern int      EMMInstalled(void);

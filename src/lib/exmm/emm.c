@@ -41,7 +41,7 @@ void main(void)
       exit(1);
       }
    else
-      printf("Emm available\n");
+      printf("Emm %x available\n", EMVer());
 
    pEmmData = (char *)EMMalloc(&hEData, 6);  // get 6 * 16K bytes - 96K
    if ( pEmmData == NULL )

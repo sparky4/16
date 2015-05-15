@@ -3,11 +3,13 @@
  *      Module:     All Modules
  *      Author(s):  Chris Somers
  *      Date:       December 1, 1992
- *      Version:    V.1.1
+ *      Version:    V.1.1w
 
         minor mods by Alex Russell to simplify
 
         Must use memory model with FAR code
+
+		Open Watcom patch by sparky4~
 
  */
 
@@ -40,6 +42,20 @@ static int  GetNumPages(int Handle);
 static int  EMStateSave(int Handle);
 static void EMStateRestore(int Handle);
 
+/********************************************************************/
+
+int
+EMVer(void)
+{
+	int EMSver;
+	_asm
+	{
+		mov		ah,0x46
+		int		0x67
+		mov		EMSver,ax
+	}
+	return(EMSver);
+}
 
 /********************************************************************/
 int
@@ -80,22 +96,25 @@ EMMInstalled(void)
 unsigned long
 EMMCoreLeft(void)
 {
-    unsigned      Pages;
-    unsigned long RtnVal = 0UL;
+	unsigned      Pages;
+	unsigned long RtnVal = 0UL;
+	unsigned short interr=0;
 
-    _asm {
-        mov     ah,0x42             /* get EMM free page count */
-        int     0x67
-        or      ah,ah
-        js      InternalError       /* returns 80, 81, or 84 hex on error */
-        mov     Pages,bx            /* number of unallocated 16K pages */
+	_asm {
+		mov     ah,0x42             /* get EMM free page count */
+		int     0x67
+		or      ah,ah
+		js      InternalError       /* returns 80, 81, or 84 hex on error */
+		mov     Pages,bx            /* number of unallocated 16K pages */
+		jmp End
 		InternalError:
-		ret
-    }
-    RtnVal = ((unsigned long)Pages << 14);  /* Pages * 16K rtns bytes*/
+		mov		interr,1
+		End:
+	}
+	if(!interr)
+	RtnVal = ((unsigned long)Pages << 14);  /* Pages * 16K rtns bytes*/
 
-//InternalError:
-    return(RtnVal);
+	return(RtnVal);
 }               /* End of EMMCoreLeft() */
 
 /********************************************************************/
@@ -131,25 +150,24 @@ EMMalloc(int *Handle, int Pages)
 int
 EMMRealloc(int Handle, int Pages)
 {
-    int     RtnCode = FALSE;
+	int     RtnCode = FALSE;
 
-    if (!EMMSeg || (Pages < 0) || (Pages > 1020)) {
-        return (FALSE);
-    }
-    _asm {
-        mov     ah,0x51             /* change # of pages */
-        mov     bx,Pages
-        mov     dx,Handle
-        int     0x67
-        or      ah,ah
-        js      NoGo                /* returns 80 to 88 hex on error */
+	if (!EMMSeg || (Pages < 0) || (Pages > 1020)) {
+		return (FALSE);
+	}
+	_asm {
+		mov     ah,0x51             /* change # of pages */
+		mov     bx,Pages
+		mov     dx,Handle
+		int     0x67
+		or      ah,ah
+		js      NoGo                /* returns 80 to 88 hex on error */
+		mov		RtnCode,TRUE
 		NoGo:
-		ret
-    }
-    RtnCode = TRUE;
+	}
 
 //NoGo:
-    return(RtnCode);
+	return(RtnCode);
 }               /* End of EMMRealloc() */
 
 /********************************************************************/
@@ -254,15 +272,19 @@ EMPresent(void)
 static int
 EMReady(void)
 {
-    _asm {
-        mov     ah,0x40             /* get EM Manager Status */
-        int     0x67
-        or      ah,ah
-        jns     Ready               /* returns 80, 81, or 84 hex on error */
+	int EMSready;
+	_asm {
+		mov     ah,0x40             /* get EM Manager Status */
+		int     0x67
+		or      ah,ah
+		jns     Ready               /* returns 80, 81, or 84 hex on error */
+		mov		EMSready,FALSE
+		jmp End
 		Ready:
-		ret
-    }
-    return(FALSE);
+		mov		EMSready,TRUE
+		End:
+	}
+	return(EMSready);
 
 //Ready:
 //    return(TRUE);
@@ -273,18 +295,20 @@ EMReady(void)
 static unsigned int
 GetEMMSeg(void)
 {
-    unsigned int     EMSegment;
+	unsigned int     EMSegment;
 
-    _asm {
-        mov     ah,0x41             /* get EMM page frame segment */
-        int     0x67
-        or      ah,ah
-        js      NotReady            /* returns 80, 81, or 84 hex on error */
-        mov     EMSegment,bx
+	_asm {
+		mov     ah,0x41             /* get EMM page frame segment */
+		int     0x67
+		or      ah,ah
+		js      NotReady            /* returns 80, 81, or 84 hex on error */
+		mov     EMSegment,bx
+		jmp End
 		NotReady:
-		ret
-    }
-    return(EMSegment);              /*lint !e530 */
+		mov     EMSegment,NOTREADY
+		End:
+	}
+	return(EMSegment);              /*lint !e530 */
 
 //NotReady:
 //    return(NOTREADY);
@@ -295,19 +319,21 @@ GetEMMSeg(void)
 static int
 GetEMHandle(int NumPages)
 {
-    int     NewHandle;
+	int     NewHandle;
 
-    _asm {
-        mov     ah,0x43             /* get handle and allocate EM */
-        mov     bx,NumPages         /* number of 16K pages to allocate */
-        int     0x67
-        or      ah,ah               /* returns 80 to 89 hex on error */
-        js      NoHandle
-        mov     NewHandle,dx        /* retrieve handle */
+	_asm {
+		mov     ah,0x43             /* get handle and allocate EM */
+		mov     bx,NumPages         /* number of 16K pages to allocate */
+		int     0x67
+		or      ah,ah               /* returns 80 to 89 hex on error */
+		js      NoHandle
+		mov     NewHandle,dx        /* retrieve handle */
+		jmp End
 		NoHandle:
-		ret
-    }
-    return(NewHandle);
+		mov		NewHandle,NO_DATA
+		End:
+	}
+	return(NewHandle);
 
 //NoHandle:
 //    return(NO_DATA);
@@ -318,23 +344,25 @@ GetEMHandle(int NumPages)
 static int
 EMMap(int Handle, int LogPg, int PhyPg)
 {
-    int     RtnCode = NO_DATA;
+	int     RtnCode = NO_DATA;
 
-    _asm {
-        mov     ax,PhyPg            /* physical page: 0 - 3 in AL only */
-        mov     ah,0x44             /* map logical to physical page */
-        mov     bx,LogPg            /* logical page: 0 - 1020 */
-        mov     dx,Handle
-        int     0x67
-        or      ah,ah               /* returns 80 to 8B hex on error */
-        js      NoMapping
+	_asm {
+		mov     ax,PhyPg            /* physical page: 0 - 3 in AL only */
+		mov     ah,0x44             /* map logical to physical page */
+		mov     bx,LogPg            /* logical page: 0 - 1020 */
+		mov     dx,Handle
+		int     0x67
+		or      ah,ah               /* returns 80 to 8B hex on error */
+		js      NoMapping
+		mov		RtnCode,SUCCESS
+//		jmp End
 		NoMapping:
-		ret
-    }
-    RtnCode = SUCCESS;
+//		End:
+	}
+//    RtnCode = SUCCESS;
 
 //NoMapping:
-    return(RtnCode);
+	return(RtnCode);
 }               /* End of EMMap() */
 
 /********************************************************************/
@@ -342,16 +370,20 @@ EMMap(int Handle, int LogPg, int PhyPg)
 static int
 FreeEMHandle(int Handle)
 {
-    _asm {
-        mov     ah,0x45             /* free handle and deallocate EM */
-        mov     dx,Handle
-        int     0x67
-        or      ah,ah               /* returns 80 to 86 hex on error */
-        js      NotFreed
+	int FreeEMShandle;
+	_asm {
+		mov     ah,0x45             /* free handle and deallocate EM */
+		mov     dx,Handle
+		int     0x67
+		or      ah,ah               /* returns 80 to 86 hex on error */
+		js      NotFreed
+		mov		FreeEMShandle,SUCCESS
+		jmp End
 		NotFreed:                           /* must retry if unsuccessful */
-		ret
-    }
-    return(SUCCESS);
+		mov		FreeEMShandle,NO_DATA
+		End:
+	}
+	return(FreeEMShandle);
 
 //NotFreed:                           /* must retry if unsuccessful */
 //    return(NO_DATA);
@@ -362,21 +394,22 @@ FreeEMHandle(int Handle)
 static int
 GetNumPages(int Handle)
 {
-    int     NumPages = 0;
+	int     NumPages = 0;
 
-    _asm {
-        mov     ah,0x4C             /* get allocated pages for Handle */
-        mov     dx,Handle
-        int     0x67
-        or      ah,ah               /* returns 80 to 84 hex on error */
-        js      BadHandle
-        mov     NumPages,bx
+	_asm {
+		mov     ah,0x4C             /* get allocated pages for Handle */
+		mov     dx,Handle
+		int     0x67
+		or      ah,ah               /* returns 80 to 84 hex on error */
+		js      BadHandle
+		mov     NumPages,bx
+//		jmp End
 		BadHandle:
-		ret
-    }
+//		End:
+	}
 
 //BadHandle:
-    return(NumPages);
+	return(NumPages);
 }               /* End of GetNumPages() */
 
 /********************************************************************/
@@ -384,17 +417,17 @@ GetNumPages(int Handle)
 static int
 EMStateSave(int Handle)
 {
-    int     RtnCode = NO_MEMORY;
-    _asm {
-        mov     ah,0x47             /* save page map under Handle */
-        mov     dx,Handle
-        int     0x67
-        or      ah,ah
-        js      Unsaved             /* out of save space error */
+	int     RtnCode = NO_MEMORY;
+	_asm {
+		mov     ah,0x47             /* save page map under Handle */
+		mov     dx,Handle
+		int     0x67
+		or      ah,ah
+		js      Unsaved             /* out of save space error */
+		mov		RtnCode,SUCCESS
 		Unsaved:
-		ret
-    }
-    RtnCode = SUCCESS;
+	}
+//    RtnCode = SUCCESS;
 
 //Unsaved:
     return(RtnCode);
