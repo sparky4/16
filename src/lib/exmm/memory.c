@@ -168,7 +168,7 @@ EMMRealloc(int Handle, int Pages)
 {
 	int     RtnCode = FALSE;
 
-	if (!EMMSeg || (Pages < 0) || (Pages > 1020)) {
+	if (!EMMSeg || (Pages < 0) || (Pages > EMMCoreLeft(/*1020*/))) {
 		return (FALSE);
 	}
 	_asm {

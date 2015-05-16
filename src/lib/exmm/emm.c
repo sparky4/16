@@ -64,17 +64,17 @@ int main(int argc, char *argv[])
 	printf("EMS pages available are %lu\n", EMMCoreLeft());
 
 	printf("Map 1st 4 pages\n");
-	MapEMM(hEData, 0, EMMCoreLeft(/*4*/));   // load 1st 4 pages into page frame: 0-3
+	MapEMM(hEData, 0, 4);   // load 1st 4 pages into page frame: 0-3
 	//memset(pEmmData, 0x0e, 64000u);
 	memset(pEmmData, atoi(argv[1]), sizeof(atoi(argv[1])));//((EMMCoreLeft())*EMMPAGESIZE));
 //----	UnmapEMM(hEData, 0, 4);          // not absolutely necessary
 	printf("*pEmmData=%c\n", *pEmmData);
 
-	//printf("Map next 2 pages\n");
-	//MapEMM(hEData, EMMCoreLeft(/*4*/)-3, EMMCoreLeft(/*2*/)-1);            // map last 2 pages: 4-5
-	//memset(pEmmData, 0x04, 32768u);
+	printf("Map next 2 pages\n");
+	MapEMM(hEData, 4, 2);            // map last 2 pages: 4-5
+	memset(pEmmData, 0x04, 32768u);
 //	memset(pEmmData, atoi(argv[0]), 32768u);
-	//printf("*pEmmData=%c\n", *pEmmData);
+	printf("*pEmmData=%c\n", *pEmmData);
 //	printf("*pEmmData++=%c\n", *(pEmmData++));
 
 	/*MapEMM(hEData0, 0, 1);
