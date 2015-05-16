@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
 
 	printf("Map 1st 4 pages\n");
 	//MapEMM(hEData, 0, 4);   // load 1st 4 pages into page frame: 0-3
-	MapEMM(hEData, 0, EMMCoreLeft());   // load 1st 4 pages into page frame: 0-3
+	MapEMM(hEData, 0, 4);   // load 1st 4 pages into page frame: 0-3
 	//memset(pEmmData, 0x0e, 64000u);
 	printf("(advi*EMMPAGESIZE)=%lu\n", advi);
 	memset(pEmmData, atoi(argv[1]), advi);//sizeof(atoi(argv[1])));//((EMMCoreLeft())*EMMPAGESIZE));
@@ -93,9 +93,8 @@ int main(int argc, char *argv[])
 	printf("*pEmmData=%lu\n", *pEmmData);*/
 	if(!atoi(argv[2]))
 	{
-	UnmapEMM(hEData, 0, EMMCoreLeft(/*4*/));  // should unmap before freeing
+	UnmapEMM(hEData, 0, 4);  // should unmap before freeing
 	//printf("after EMS	*pEmmData=%c\n", *pEmmData);
-
 	printf("Close emm\n");
 	EMMFree(hEData);     // finished with the file data
 	CloseEMM();
