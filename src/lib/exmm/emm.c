@@ -95,11 +95,11 @@ int main(int argc, char *argv[])
 	//UnmapEMM(hEData0, 0, 1);  // should unmap before freeing
 	//printf("after EMS	*pEmmData=%c\n", *pEmmData);
 
-	/*printf("Close emm\n");
+	printf("Close emm\n");
 	EMMFree(hEData);     // finished with the file data
 	CloseEMM();
 	printf("after EMS	*pEmmData=%x\n", *pEmmData);
 	printf("EMS pages available are %lu\n", EMMCoreLeft());
-	//printf("EMMPAGESIZE=%d\n", EMMPAGESIZE);*/
+	//printf("EMMPAGESIZE=%d\n", EMMPAGESIZE);
 	return 0;
 }
