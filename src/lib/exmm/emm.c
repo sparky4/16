@@ -36,6 +36,7 @@ int main(int argc, char *argv[])
 {
 	byte *pEmmData;
 	int hEData;
+	unsigned long advi;
 
 	if(OpenEMM() != SUCCESS)
 	{     // make sure we got EMM
@@ -51,6 +52,8 @@ int main(int argc, char *argv[])
 
 	printf("b4 EMS		pEmmData=%p\n", pEmmData);
 	//printf("b4 EMS	*pEmmData=%s\n", *pEmmData);
+	advi=EMMCoreLeft()*EMMPAGESIZE;
+	printf("advi=%lu\n", advi);
 
 	pEmmData = (byte *)EMMalloc(&hEData, EMMCoreLeft());  // get 6 * 16K bytes - 96K
 	if(pEmmData == NULL/* ||  pEmmData0 == NULL*/)
@@ -64,18 +67,20 @@ int main(int argc, char *argv[])
 	printf("EMS pages available are %lu\n", EMMCoreLeft());
 
 	printf("Map 1st 4 pages\n");
-	MapEMM(hEData, 0, 4);   // load 1st 4 pages into page frame: 0-3
+	//MapEMM(hEData, 0, 4);   // load 1st 4 pages into page frame: 0-3
+	MapEMM(hEData, 0, EMMCoreLeft());   // load 1st 4 pages into page frame: 0-3
 	//memset(pEmmData, 0x0e, 64000u);
-	memset(pEmmData, atoi(argv[1]), sizeof(atoi(argv[1])));//((EMMCoreLeft())*EMMPAGESIZE));
+	printf("(advi*EMMPAGESIZE)=%lu\n", advi);
+	memset(pEmmData, atoi(argv[1]), advi);//sizeof(atoi(argv[1])));//((EMMCoreLeft())*EMMPAGESIZE));
 //----	UnmapEMM(hEData, 0, 4);          // not absolutely necessary
 	printf("*pEmmData=%c\n", *pEmmData);
 
-	printf("Map next 2 pages\n");
+	/*printf("Map next 2 pages\n");
 	MapEMM(hEData, 4, 2);            // map last 2 pages: 4-5
 	memset(pEmmData, 0x04, 32768u);
 //	memset(pEmmData, atoi(argv[0]), 32768u);
 	printf("*pEmmData=%c\n", *pEmmData);
-	printf(" pEmmData=%p\n", pEmmData);
+	printf(" pEmmData=%p\n", pEmmData);*/
 
    /*MapEMM(hEData, 0, 4);
    // do some stuff with the first 64K of file data.
@@ -86,13 +91,15 @@ int main(int argc, char *argv[])
    // do stuff with remaining 32K of data
    TransformData(pEmmData, 32768UL);
 	printf("*pEmmData=%lu\n", *pEmmData);*/
-
+	if(!atoi(argv[2]))
+	{
 	UnmapEMM(hEData, 0, EMMCoreLeft(/*4*/));  // should unmap before freeing
 	//printf("after EMS	*pEmmData=%c\n", *pEmmData);
 
 	printf("Close emm\n");
 	EMMFree(hEData);     // finished with the file data
 	CloseEMM();
+	}
 	printf("after EMS	pEmmData=%p\n", pEmmData);
 	printf("EMS pages available are %lu\n", EMMCoreLeft());
 	//printf("EMMPAGESIZE=%d\n", EMMPAGESIZE);
