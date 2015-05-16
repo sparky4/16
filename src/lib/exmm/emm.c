@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 			//printf("EMM Hardware Information %lu\n", EMInfo());
 		}
 
-	printf("b4 EMS		*pEmmData=%x\n", *pEmmData);
+	printf("b4 EMS		pEmmData=%p\n", pEmmData);
 	//printf("b4 EMS	*pEmmData=%s\n", *pEmmData);
 
 	pEmmData = (byte *)EMMalloc(&hEData, EMMCoreLeft());  // get 6 * 16K bytes - 96K
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 	memset(pEmmData, 0x04, 32768u);
 //	memset(pEmmData, atoi(argv[0]), 32768u);
 	printf("*pEmmData=%c\n", *pEmmData);
-//	printf("*pEmmData++=%c\n", *(pEmmData++));
+	printf(" pEmmData=%p\n", pEmmData);
 
 	/*MapEMM(hEData0, 0, 1);
 	memset(pEmmData0, (short)4, sizeof(short));
@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
 	printf("Close emm\n");
 	EMMFree(hEData);     // finished with the file data
 	CloseEMM();
-	printf("after EMS	*pEmmData=%x\n", *pEmmData);
+	printf("after EMS	pEmmData=%p\n", pEmmData);
 	printf("EMS pages available are %lu\n", EMMCoreLeft());
 	//printf("EMMPAGESIZE=%d\n", EMMPAGESIZE);
 	return 0;
