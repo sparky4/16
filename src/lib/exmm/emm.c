@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 	printf("b4 EMS		*pEmmData=%x\n", *pEmmData);
 	//printf("b4 EMS	*pEmmData=%s\n", *pEmmData);
 
-	pEmmData = (byte *)EMMalloc(&hEData, EMMCoreLeft()-1);  // get 6 * 16K bytes - 96K
+	pEmmData = (byte *)EMMalloc(&hEData, EMMCoreLeft());  // get 6 * 16K bytes - 96K
 	if(pEmmData == NULL/* ||  pEmmData0 == NULL*/)
 	{
 		printf("Not enough EMM or out of handles.\n");
