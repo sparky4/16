@@ -77,10 +77,6 @@ int main(int argc, char *argv[])
 	printf("*pEmmData=%c\n", *pEmmData);
 	printf(" pEmmData=%p\n", pEmmData);
 
-	/*MapEMM(hEData0, 0, 1);
-	memset(pEmmData0, (short)4, sizeof(short));
-	printf("*pEmmData0=%d\n", *pEmmData0);*/
-
    /*MapEMM(hEData, 0, 4);
    // do some stuff with the first 64K of file data.
    printf("Transform data\n");
@@ -92,7 +88,6 @@ int main(int argc, char *argv[])
 	printf("*pEmmData=%lu\n", *pEmmData);*/
 
 	UnmapEMM(hEData, 0, EMMCoreLeft(/*4*/));  // should unmap before freeing
-	//UnmapEMM(hEData0, 0, 1);  // should unmap before freeing
 	//printf("after EMS	*pEmmData=%c\n", *pEmmData);
 
 	printf("Close emm\n");
