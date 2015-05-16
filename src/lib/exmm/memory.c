@@ -213,7 +213,7 @@ MapEMM(int Handle, int Start, int Pages)
     if (!EMMSeg) return(NOTREADY);
     for (i = 0; (i < MAXEMHANDLES) && (ActiveEMList[i] != Handle); i++) ;
     if (i == MAXEMHANDLES) return (NO_DATA);
-    if ((GetNumPages(Handle) < Pages) || (Pages < 1) || (Pages > EMMCoreLeft(/*4*/))) {
+    if ((GetNumPages(Handle) < Pages) || (Pages < 1) || (Pages > 4)) {
         return (VALUE_OUTF_RANGE);
     }
     for (i = Start; i < Start + Pages; i++) {
@@ -233,7 +233,7 @@ UnmapEMM(int Handle, int Start, int Pages)
     for (i = 0; (i < MAXEMHANDLES) && (ActiveEMList[i] != Handle); i++) ;
     if (i == MAXEMHANDLES) return;
     j = Start + Pages;
-    if ((Pages < 1) || (j > EMMCoreLeft(/*4*/))) return;
+    if ((Pages < 1) || (j > 4)) return;
 
     for (i = Start; i < j; i++) {
         EMMap(Handle, NONE, i);
