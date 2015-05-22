@@ -71,10 +71,11 @@ int main(int argc, char *argv[])
 
 
 	printf("Map 1st 4 pages\n");
-	MapEMM(hEData, 0, 4);   // load 1st 4 pages into page frame: 0-3
+	MapEMM(hEData, 0, 16);   // load 1st 4 pages into page frame: 0-3
 	//memset(pEmmData, 0x0e, 64000u);
 //0000	printf("(advi*EMMPAGESIZE)=%lu\n", advi);
 	memset(pEmmData, atoi(argv[1]), 0xffff);//sizeof(atoi(argv[1])));//((EMMCoreLeft())*EMMPAGESIZE));
+	memset(pEmmData+0x10000, atoi(argv[1]), 0xffff);//sizeof(atoi(argv[1])));//((EMMCoreLeft())*EMMPAGESIZE));
 //----	UnmapEMM(hEData, 0, 4);          // not absolutely necessary
 //	printf("*pEmmData=%c\n", *pEmmData);
 	printf("%p= %c %c %c %c %c %c %c %c\n", pEmmData,
@@ -115,11 +116,23 @@ int main(int argc, char *argv[])
 			i++;
 			p++;
 		}
+	}
+	if(atoi(argv[3]))
+		p =(char huge *)(GetEMMSeg0()*0x20000);
+		while(p<(char huge *)((GetEMMSeg0()*0x20000)+0xffff) && !kbhit())
+		{
+			if((i%16)==0) printf("%p= %c %c %c %c %c %c %c %c %c %c %c %c %c %c %c %c\n", p,
+*p, *(p+1), *(p+2), *(p+3), *(p+4), *(p+5), *(p+6), *(p+7),
+*(p+8), *(p+9), *(p+10), *(p+11), *(p+12), *(p+13), *(p+14), *(p+15));
+	//		(*p)++;
+			i++;
+			p++;
+		}
 		//free(p);
 	}
-	if(!atoi(argv[3]))
+	if(!atoi(argv[4]))
 	{
-		UnmapEMM(hEData, 0, 4);  // should unmap before freeing
+		UnmapEMM(hEData, 0, 16);  // should unmap before freeing
 		//printf("after EMS	*pEmmData=%c\n", *pEmmData);
 		printf("Close emm\n");
 		EMMFree(hEData);     // finished with the file data
