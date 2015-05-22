@@ -28,13 +28,13 @@
  //static globals --------------------------------
 
 static int  ActiveEMList[MAXEMHANDLES];
-static unsigned int  EMMSeg;
+static unsigned long EMMSeg;
 
  //forward declarations ---------------------------------
 
 static int  EMPresent(void);
 static int  EMReady(void);
-static unsigned int  GetEMMSeg(void);
+static unsigned long GetEMMSeg(void);
 static int  GetEMHandle(int NumPages);
 static int  EMMap(int Handle, int LogPg, int PhyPg);
 static int  FreeEMHandle(int Handle);
@@ -308,7 +308,7 @@ EMReady(void)
 
 /********************************************************************/
 
-static unsigned int
+static unsigned long
 GetEMMSeg(void)
 {
 	unsigned int     EMSegment;
@@ -329,6 +329,30 @@ GetEMMSeg(void)
 //NotReady:
 //    return(NOTREADY);
 }               /* End of GetEMMSeg() */
+
+/********************************************************************/
+
+unsigned long
+GetEMMSeg0(void)
+{
+	unsigned int     EMSegment;
+
+	_asm {
+		mov     ah,0x41             /* get EMM page frame segment */
+		int     0x67
+		or      ah,ah
+		js      NotReady            /* returns 80, 81, or 84 hex on error */
+		mov     EMSegment,bx
+		jmp End
+		NotReady:
+		mov     EMSegment,NOTREADY
+		End:
+	}
+	return(EMSegment);              /*lint !e530 */
+
+//NotReady:
+//    return(NOTREADY);
+}               /* End of GetEMMSeg0() */
 
 /********************************************************************/
 

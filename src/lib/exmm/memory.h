@@ -25,6 +25,7 @@
 extern int EMVer(void);
 extern unsigned long EMInfo(void);
 extern int      OpenEMM(void);
+extern unsigned long GetEMMSeg0(void);
 extern void     CloseEMM(void);
 extern int      EMMInstalled(void);
 extern void far *EMMalloc(int *Handle, int Pages);
