@@ -3,14 +3,14 @@
 #include <limits.h>
 
 int main(){
-	unsigned short i=0;
+	unsigned long i=0;
 	char near w;
-	char huge *p =(char far *)0xF0000000;
+	char huge *p =(char far *)0xD0000000;
 	//char far *q =(char far *)0x53332225;
-	printf("1p=%p\n", p);
-	while(p<=0xFFFFFFFF/*0<=i<(_UI16_MAX)*/ && !kbhit())
+	printf("1p=%p	%ul\n", p, i);
+	while(p<=(char far *)0xDFFFFFFF/*i<262144UL*/ && !kbhit())
 	{
-		printf("*p=%c	%ul\n",*p, i);
+		printf("p=%p=%x	%ul\n", p, *p, i);
 //		*p = i;
 //		(*p)++;
 		p++;
