@@ -77,17 +77,8 @@ int main(int argc, char *argv[])
 	memset(pEmmData, atoi(argv[1]), 0xffff);//sizeof(atoi(argv[1])));//((EMMCoreLeft())*EMMPAGESIZE));
 //qqqq	memset(pEmmData+0x10000, atoi(argv[1]), 0xffff);//sizeof(atoi(argv[1])));//((EMMCoreLeft())*EMMPAGESIZE));
 //----	UnmapEMM(hEData, 0, 4);          // not absolutely necessary
-//	printf("*pEmmData=%c\n", *pEmmData);
 	printf("%p= %c %c %c %c %c %c %c %c\n", pEmmData,
 *pEmmData, *(pEmmData+1), *(pEmmData+2), *(pEmmData+3), *(pEmmData+4), *(pEmmData+5), *(pEmmData+6), *(pEmmData+7));
-	/*memset(pEmmData, atoi(argv[1]), 0x40001U);//sizeof(atoi(argv[1])));//((EMMCoreLeft())*EMMPAGESIZE));
-	printf("*pEmmData=%c\n", *pEmmData);
-	memset(pEmmData, atoi(argv[1]), 0x40001L);//sizeof(atoi(argv[1])));//((EMMCoreLeft())*EMMPAGESIZE));
-	printf("*pEmmData=%c\n", *pEmmData);
-	memset(pEmmData, atoi(argv[1]), 0x40001UL);//sizeof(atoi(argv[1])));//((EMMCoreLeft())*EMMPAGESIZE));
-	printf("*pEmmData=%c\n", *pEmmData);
-	memset(pEmmData, atoi(argv[1]), sizeof(byte)*4);//sizeof(atoi(argv[1])));//((EMMCoreLeft())*EMMPAGESIZE));
-	printf("*pEmmData=%c\n", *pEmmData);*/
 
 	/*printf("Map next 2 pages\n");
 	MapEMM(hEData, 4, 2);            // map last 2 pages: 4-5
