@@ -1,4 +1,4 @@
-FLAGS=-0 -d2 -mh
+FLAGS=-0 -d2 
 SRC=src\
 SRCLIB=$(SRC)lib\
 all: test.exe pcxtest.exe test2.exe scroll.exe

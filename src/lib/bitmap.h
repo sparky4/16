@@ -6,7 +6,7 @@
 #include <malloc.h>
 #include "src/lib/types.h"
 typedef struct {
-    byte far *data;
+    byte *data;
     word width;
     word height;
     byte *palette;
@@ -14,7 +14,7 @@ typedef struct {
 } bitmap_t;
 
 typedef struct {
-    byte far **data;
+    byte **data;
     word ntiles;   /* the number of tiles */
     word twidth;   /* width of the tiles */
     word theight;  /* height of the tiles */

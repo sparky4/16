@@ -89,7 +89,7 @@ bitmapLoadPcx(char *filename) {
 
     /* allocate the buffer */
     bufSize = result.width * result.height;
-    result.data = _fmalloc(bufSize);	//it breaks right here~
+    result.data = malloc(bufSize);	//it breaks right here~
     if(!result.data) {
 	printf("Could not allocate memory for bitmap data.");
 	fclose(file);
@@ -147,8 +147,8 @@ bitmapLoadPcxTiles(char *filename, word twidth, word theight) {
     ts.palette = result.palette;
 
     /* allocate the pixel storage for the tiles */
-    ts.data = _fmalloc(sizeof(byte*) * ts.ntiles);
-    ts.data[0] = _fmalloc(sizeof(byte) * ts.ntiles * twidth * theight);
+    ts.data = malloc(sizeof(byte*) * ts.ntiles);
+    ts.data[0] = malloc(sizeof(byte) * ts.ntiles * twidth * theight);
     for(i=1; i < ts.ntiles; i++) {
 	ts.data[i] = ts.data[i-1] + twidth * theight;
     }

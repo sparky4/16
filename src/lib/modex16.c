@@ -226,7 +226,7 @@ void
 modexDrawBmpRegion(page_t *page, int x, int y,
                    int rx, int ry, int rw, int rh, bitmap_t *bmp) {
     word poffset = (word) page->data  + y*(page->width/4) + x/4;
-    byte far *data = bmp->data;//+bmp->offset;
+    byte *data = bmp->data;//+bmp->offset;
     word bmpOffset = (word) data + ry * bmp->width + rx;
     word width = rw;
     word height = rh;
@@ -307,7 +307,7 @@ void
 modexDrawSpriteRegion(page_t *page, int x, int y,
 		      int rx, int ry, int rw, int rh, bitmap_t *bmp) {
     word poffset = (word)page->data + y*(page->width/4) + x/4;
-    byte far *data = bmp->data;//+bmp->offset;
+    byte *data = bmp->data;//+bmp->offset;
     word bmpOffset = (word) data + ry * bmp->width + rx;
     word width = rw;
     word height = rh;
