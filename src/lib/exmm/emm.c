@@ -21,6 +21,8 @@
 
 #include "memory.h"
 
+#define PEMMDATAPAGENUM	4
+
 void TransformData(char *pEmmData, unsigned int len)
 {
 	while(len)
@@ -71,7 +73,7 @@ int main(int argc, char *argv[])
 
 
 	printf("Map 1st 4 pages\n");
-	MapEMM(hEData, 0, 4);   // load 1st 4 pages into page frame: 0-3
+	MapEMM(hEData, 0, PEMMDATAPAGENUM);   // load 1st 4 pages into page frame: 0-3
 	//memset(pEmmData, 0x0e, 64000u);
 //0000	printf("(advi*EMMPAGESIZE)=%lu\n", advi);
 	memset(pEmmData, atoi(argv[1]), 0xffff);//sizeof(atoi(argv[1])));//((EMMCoreLeft())*EMMPAGESIZE));
@@ -123,7 +125,7 @@ int main(int argc, char *argv[])
 	}*/
 	if(!atoi(argv[3]))
 	{
-		UnmapEMM(hEData, 0, 4);  // should unmap before freeing
+		UnmapEMM(hEData, 0, PEMMDATAPAGENUM);  // should unmap before freeing
 		//printf("after EMS	*pEmmData=%c\n", *pEmmData);
 		printf("Close emm\n");
 		EMMFree(hEData);     // finished with the file data
