@@ -3,9 +3,10 @@
  */
 #ifndef BITMAP_H
 #define BITMAP_H
-#include "src\lib\types.h"
+#include <malloc.h>
+#include "src/lib/types.h"
 typedef struct {
-    byte *data;
+    byte far *data;
     word width;
     word height;
     byte *palette;
@@ -13,7 +14,7 @@ typedef struct {
 } bitmap_t;
 
 typedef struct {
-    byte **data;
+    byte far **data;
     word ntiles;   /* the number of tiles */
     word twidth;   /* width of the tiles */
     word theight;  /* height of the tiles */

@@ -17,7 +17,6 @@
 
 #include "emmret.h"
 #include "emmsize.h"
-#include "../types.h"
 
 #define     CMM                  0
 #define     EMM                  1

@@ -4,7 +4,7 @@
 #include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "src\lib\modex16.h"
+#include "src/lib/modex16.h"
 
 
 byte far* VGA=(byte far*) 0xA0000000; 	/* this points to video memory. */
@@ -226,7 +226,7 @@ void
 modexDrawBmpRegion(page_t *page, int x, int y,
                    int rx, int ry, int rw, int rh, bitmap_t *bmp) {
     word poffset = (word) page->data  + y*(page->width/4) + x/4;
-    byte *data = bmp->data;//+bmp->offset;
+    byte far *data = bmp->data;//+bmp->offset;
     word bmpOffset = (word) data + ry * bmp->width + rx;
     word width = rw;
     word height = rh;
@@ -307,7 +307,7 @@ void
 modexDrawSpriteRegion(page_t *page, int x, int y,
 		      int rx, int ry, int rw, int rh, bitmap_t *bmp) {
     word poffset = (word)page->data + y*(page->width/4) + x/4;
-    byte *data = bmp->data;//+bmp->offset;
+    byte far *data = bmp->data;//+bmp->offset;
     word bmpOffset = (word) data + ry * bmp->width + rx;
     word width = rw;
     word height = rh;

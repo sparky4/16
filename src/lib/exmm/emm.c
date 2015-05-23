@@ -20,6 +20,7 @@
 #include <conio.h>
 
 #include "memory.h"
+#include "../types.h"
 
 #define PEMMDATAPAGENUM	4
 

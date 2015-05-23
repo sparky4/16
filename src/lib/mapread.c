@@ -26,7 +26,7 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 
 				FUCK well i am stuck.... wwww
 			*/
-			map->data[q] = (byte)strtol(js+t->start, &(char *)t->end, 10);
+			map->data[q] = (byte)strtol(js+t->start, (char **)t->end, 10);
 //			printf("%d[%d]", q, map->data[q]);
 		}
 		else
