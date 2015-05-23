@@ -28,8 +28,8 @@ test2.obj: $(SRC)test2.c $(SRCLIB)modex16.h
 pcxtest.obj: $(SRC)pcxtest.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)pcxtest.c
 
-#maptest.obj: $(SRC)maptest.c $(SRCLIB)mapread.h
-#        wcl $(FLAGS) -c $(SRC)maptest.c
+maptest.obj: $(SRC)maptest.c $(SRCLIB)mapread.h
+	wcl $(FLAGS) -c $(SRC)maptest.c
 
 modex16.obj: $(SRCLIB)modex16.h $(SRCLIB)modex16.c
 	wcl $(FLAGS) -c $(SRCLIB)modex16.c
