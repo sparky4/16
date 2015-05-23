@@ -3,7 +3,7 @@
  */
 #ifndef BITMAP_H
 #define BITMAP_H
-#include <malloc.h>
+//#include <malloc.h>
 #include "src/lib/types.h"
 typedef struct {
     byte *data;

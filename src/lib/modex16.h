@@ -4,9 +4,9 @@
 #ifndef MODEX16_H
 #define MODEX16_H
 #include <conio.h>
-#include "src\lib\types.h"
-#include "src\lib\bitmap.h"
-#include "src\lib\planar.h"
+#include "src/lib/types.h"
+#include "src/lib/bitmap.h"
+#include "src/lib/planar.h"
 
 /* -========================== Types & Macros ==========================- */
 #define PAGE_OFFSET(x,y) (((y)<<6)+((y)<<4)+((x)>>2))

@@ -1,8 +1,10 @@
 #include "src/lib/mapread.c"
 
-int main()
+void
+main(int argc, char *argv[])
 {
 	map_t map;
-	loadmap("data/test.map", &map);
-	return 0;
+	fprintf(stderr, "wwww\n");
+	//loadmap("data/test.map", &map);
+	fprintf(stderr, "wwww\n");
 }

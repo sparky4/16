@@ -1,4 +1,4 @@
-#include "src\lib\modex16.h"
+#include "src/lib/modex16.h"
 #include <stdio.h>
 
 word far* clock= (word far*) 0x046C; /* 18.2hz clock */

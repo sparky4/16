@@ -2,6 +2,9 @@
 #define _LIBMAPREAD_H_
 #include <string.h>
 #include <errno.h>
+
+//#include <stdlib.h>
+
 #include "src/lib/jsmn/jsmn.h"
 #include "src/lib/modex16.h"
 #include "src/lib/lib_head.h"
