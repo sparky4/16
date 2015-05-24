@@ -2,9 +2,9 @@
 #include <conio.h>
 #include "src/lib/modex16.h"
 #include "src/lib/planar.h"
-#include "src/lib/bitmap.h"
+//#include "src/lib/bitmap.h"
 
-word far* clock= (word far*) 0x046C; /* 18.2hz clock */
+word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 
 void main() {
 	FILE *file;

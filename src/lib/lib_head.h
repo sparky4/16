@@ -106,6 +106,7 @@
 void wait(clock_t wait);
 void* AllocateLargestFreeBlock(size_t* Size);
 size_t GetFreeSize(void);
+long int filesize(FILE *fp);
 
 /* THIS FUNCTION CONVERTS A POINTER TO AN INTEL LONG              */
 //int long ptr2long(char *p);

@@ -1,7 +1,7 @@
 #include "src/lib/modex16.h"
 #include <stdio.h>
 
-word far* clock= (word far*) 0x046C; /* 18.2hz clock */
+word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 
 void main() {
     int i, j;
@@ -39,7 +39,7 @@ void main() {
     modexFadeOn(1, pal2);
 
 
-    start = *clock;
+    start = *clockw;
     for(i=0; i<5; i++) {
 	/* go right */
 	for(j=0; j<32; j++) {
@@ -64,7 +64,7 @@ void main() {
 	}
     }
 
-    end = *clock;
+    end = *clockw;
 
     /* fade back to text mode */
     modexFadeOff(1, pal2);

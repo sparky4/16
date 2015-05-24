@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <malloc.h>
 #include "src/lib/bitmap.h"
 #include "src/lib/modex16.h"
 
@@ -39,9 +40,9 @@ static void loadPcxStage1(FILE *file, bitmap_t *result) {
 
     /* make sure this  is 8bpp */
     if(head.bpp != 8) {
-	printf("I only know how to handle 8bpp pcx files!\n");
-	fclose(file);
-	exit(-2);
+		printf("I only know how to handle 8bpp pcx files!\n");
+		fclose(file);
+		exit(-2);
     }
 }
 
@@ -73,28 +74,34 @@ bitmap_t
 bitmapLoadPcx(char *filename) {
     FILE *file;
     bitmap_t result;
-    long bufSize;
+    dword bufSize;
     int index;
     byte count, val;
 
     /* open the PCX file for reading */
     file = fopen(filename, "rb");
     if(!file) {
-	printf("Could not open %s for reading.\n", filename);
-	exit(-2);
+		printf("Could not open %s for reading.\n", filename);
+		exit(-2);
     }
 
     /* load the first part of the pcx file */
     loadPcxStage1(file, &result);
 
     /* allocate the buffer */
-    bufSize = result.width * result.height;
-    result.data = malloc(bufSize);	//it breaks right here~
-    if(!result.data) {
-	printf("Could not allocate memory for bitmap data.");
-	fclose(file);
-	exit(-1);
-    }
+	bufSize = ((dword)result.width * result.height);
+	result.data = malloc((bufSize));
+	/*0000printf("Size of block is %u bytes\n", _msize(result.data));
+	printf("Size of bufSize is %lu bytes\n", bufSize);
+	printf("Size of result.width is %lu \n", result.width);
+	printf("Size of result.height is %lu \n", result.height);
+	printf("Dimensions of result is %lu\n", result.width*result.height);*/
+	//exit(0);
+	if(!result.data) {
+		fprintf(stderr, "Could not allocate memory for bitmap data.");
+		fclose(file);
+		exit(-1);
+	}
 
     /*  read the buffer in */
     index = 0;
@@ -102,16 +109,16 @@ bitmapLoadPcx(char *filename) {
 	/* get the run length and the value */
 	count = fgetc(file);
 	if(0xC0 ==  (count & 0xC0)) { /* this is the run count */
-	    count &= 0x3f;
-	    val = fgetc(file);
+		count &= 0x3f;
+		val = fgetc(file);
 	} else {
-	    val = count;
-	    count = 1;
+		val = count;
+		count = 1;
 	}
 
 	/* write the pixel the specified number of times */
 	for(; count && index < bufSize; count--,index++)  {
-	    result.data[index] = val;
+		result.data[index] = val;
 	}
     } while(index < bufSize);
 
@@ -122,7 +129,7 @@ bitmapLoadPcx(char *filename) {
     return result;
 }
 
-
+//update!!
 tileset_t
 bitmapLoadPcxTiles(char *filename, word twidth, word theight) {
     tileset_t ts;
@@ -132,10 +139,10 @@ bitmapLoadPcxTiles(char *filename, word twidth, word theight) {
 
     /* open the PCX file for reading */
     file = fopen(filename, "rb");
-    if(!file) {
-	printf("Could not open %s for reading.\n", filename);
-	exit(-2);
-    }
+	if(!file) {
+		printf("Could not open %s for reading.\n", filename);
+		exit(-2);
+	}
 
     /* load the first part of the pcx file */
     loadPcxStage1(file, &result);
@@ -146,12 +153,12 @@ bitmapLoadPcxTiles(char *filename, word twidth, word theight) {
     ts.ntiles = (result.width/twidth) * (result.height/theight);
     ts.palette = result.palette;
 
-    /* allocate the pixel storage for the tiles */
-    ts.data = malloc(sizeof(byte*) * ts.ntiles);
-    ts.data[0] = malloc(sizeof(byte) * ts.ntiles * twidth * theight);
-    for(i=1; i < ts.ntiles; i++) {
-	ts.data[i] = ts.data[i-1] + twidth * theight;
-    }
+	/* allocate the pixel storage for the tiles */
+	ts.data = malloc(sizeof(byte*) * ts.ntiles);
+	ts.data[0] = malloc(sizeof(byte) * ts.ntiles * twidth * theight);
+	for(i=1; i < ts.ntiles; i++) {
+		ts.data[i] = ts.data[i-1] + twidth * theight;
+	}
 
     /* finish off the file */
     loadPcxPalette(file, &result);

@@ -1,5 +1,5 @@
 OFLAGS=-ot -ox -ob -ol -oh -or
-FLAGS=-0 -d2 -mh -wo $(OFLAGS)
+FLAGS=-0 -d2 -wo $(OFLAGS)# -mh
 DIRSEP=\
 SRC=src$(DIRSEP)
 SRCLIB=$(SRC)lib$(DIRSEP)
@@ -20,8 +20,8 @@ test2.exe: test2.obj modex16.obj bitmap.obj planar.obj
 pcxtest.exe: pcxtest.obj modex16.obj bitmap.obj
 	wcl $(FLAGS) pcxtest.obj modex16.obj bitmap.obj
 
-maptest.exe: maptest.obj mapread.obj jsmn.obj modex16.obj bitmap.obj
-	wcl $(FLAGS) maptest.obj mapread.obj jsmn.obj modex16.obj bitmap.obj
+maptest.exe: maptest.obj mapread.obj jsmn.obj modex16.obj bitmap.obj lib_head.obj
+	wcl $(FLAGS) maptest.obj mapread.obj jsmn.obj modex16.obj bitmap.obj lib_head.obj
 
 
 test.obj: $(SRC)test.c $(SRCLIB)modex16.h
@@ -49,7 +49,7 @@ bitmap.obj: $(SRCLIB)bitmap.h $(SRCLIB)bitmap.c
 planar.obj: $(SRCLIB)planar.h $(SRCLIB)planar.c
 	wcl $(FLAGS) -c $(SRCLIB)planar.c
 
-mapread.obj: $(SRCLIB)mapread.h $(SRCLIB)mapread.c lib_head.obj jsmn.obj
+mapread.obj: $(SRCLIB)mapread.h $(SRCLIB)mapread.c# lib_head.obj jsmn.obj
 	wcl $(FLAGS) -c $(SRCLIB)mapread.c
 
 lib_head.obj: $(SRCLIB)lib_head.h $(SRCLIB)lib_head.c

@@ -4,6 +4,7 @@
 void wait(clock_t wait);
 void* AllocateLargestFreeBlock(size_t* Size);
 size_t GetFreeSize(void);
+long int filesize(FILE *fp);
 
 /* Function: Wait **********************************************************
 *
@@ -92,4 +93,16 @@ size_t GetFreeSize(void)
   }
 
   return total;
+}
+
+long int
+filesize(FILE *fp)
+{
+	long int save_pos, size_of_file;
+
+	save_pos = ftell(fp);
+	fseek(fp, 0L, SEEK_END);
+	size_of_file = ftell(fp);
+	fseek(fp, save_pos, SEEK_SET);
+	return(size_of_file);
 }

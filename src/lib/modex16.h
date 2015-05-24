@@ -3,7 +3,7 @@
  */
 #ifndef MODEX16_H
 #define MODEX16_H
-#include <conio.h>
+//#include <conio.h>
 #include "src/lib/types.h"
 #include "src/lib/bitmap.h"
 #include "src/lib/planar.h"
