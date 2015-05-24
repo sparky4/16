@@ -1,5 +1,9 @@
-OFLAGS=-ot -ox -ob -ol -oh -or
-FLAGS=-0 -d2 -wo $(OFLAGS) -mh
+#-zk0u = translate kanji to unicode... wwww
+#-zk0 = kanji support~
+#-zkl = current codepage
+
+OFLAGS=-ot -ox -ob -oh# -or -om -ol -ol+
+FLAGS=-0 -d2 -wo $(OFLAGS) -zkl# -mh# -zdp# -zm# -zp16 -zq
 DIRSEP=\
 SRC=src$(DIRSEP)
 SRCLIB=$(SRC)lib$(DIRSEP)
@@ -11,14 +15,14 @@ scroll.exe: scroll.obj modex16.obj dos_kb.obj bitmap.obj mapread.obj jsmn.obj li
 	wcl $(FLAGS) scroll.obj modex16.obj dos_kb.obj bitmap.obj mapread.obj jsmn.obj lib_head.obj# 16/lib/x/modex.lib
 scroll.obj: $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
-test.exe: test.obj modex16.obj bitmap.obj
-	wcl $(FLAGS) test.obj modex16.obj bitmap.obj
+test.exe: test.obj modex16.obj bitmap.obj lib_head.obj
+	wcl $(FLAGS) test.obj modex16.obj bitmap.obj lib_head.obj
 
-test2.exe: test2.obj modex16.obj bitmap.obj planar.obj
-	wcl $(FLAGS) test2.obj modex16.obj bitmap.obj planar.obj
+test2.exe: test2.obj modex16.obj bitmap.obj planar.obj lib_head.obj
+	wcl $(FLAGS) test2.obj modex16.obj bitmap.obj planar.obj lib_head.obj
 
-pcxtest.exe: pcxtest.obj modex16.obj bitmap.obj
-	wcl $(FLAGS) pcxtest.obj modex16.obj bitmap.obj
+pcxtest.exe: pcxtest.obj modex16.obj bitmap.obj lib_head.obj
+	wcl $(FLAGS) pcxtest.obj modex16.obj bitmap.obj lib_head.obj
 
 maptest.exe: maptest.obj mapread.obj jsmn.obj modex16.obj bitmap.obj lib_head.obj
 	wcl $(FLAGS) maptest.obj mapread.obj jsmn.obj modex16.obj bitmap.obj lib_head.obj
@@ -49,7 +53,7 @@ bitmap.obj: $(SRCLIB)bitmap.h $(SRCLIB)bitmap.c
 planar.obj: $(SRCLIB)planar.h $(SRCLIB)planar.c
 	wcl $(FLAGS) -c $(SRCLIB)planar.c
 
-mapread.obj: $(SRCLIB)mapread.h $(SRCLIB)mapread.c# lib_head.obj jsmn.obj
+mapread.obj: $(SRCLIB)mapread.h $(SRCLIB)mapread.c
 	wcl $(FLAGS) -c $(SRCLIB)mapread.c
 
 lib_head.obj: $(SRCLIB)lib_head.h $(SRCLIB)lib_head.c
@@ -58,6 +62,6 @@ lib_head.obj: $(SRCLIB)lib_head.h $(SRCLIB)lib_head.c
 jsmn.obj: $(JSMNLIB)jsmn.h $(JSMNLIB)jsmn.c
 	wcl $(FLAGS) -c $(JSMNLIB)jsmn.c
 
-clean:
-	del *.obj
-#	del *.exe
+clean: .symbolic
+	@del *.obj
+#	@del *.exe

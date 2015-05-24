@@ -64,8 +64,8 @@ void main() {
 	page=modexDefaultPage();
 
 //0000	bmp = bitmapLoadPcx("data/koishi~~.pcx");
-	bmp = bitmapLoadPcx("data/chikyuu.pcx");
-//	bmp = bitmapLoadPcx("data/koishi^^.pcx");
+//	bmp = bitmapLoadPcx("data/chikyuu.pcx");
+	bmp = bitmapLoadPcx("data/koishi^^.pcx");
 //	bmp = bitmapLoadPcx("16/PCX_LIB/chikyuu.pcx");
 //0000	p = planar_buf_from_bitmap(&bmp);
 	modexEnter();
