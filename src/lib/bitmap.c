@@ -91,12 +91,12 @@ bitmapLoadPcx(char *filename) {
 	/* allocate the buffer */
 	//printf("%zu\n", _memmax());
 	bufSize = (/*(dword)*/result.width * result.height);
-	result.data = malloc(bufSize);
+	result.data = (byte __near *)malloc(bufSize);
 //	result.data = (byte far *)_fmalloc(bufSize);
 //	result.data = (byte __huge *)halloc(bufSize, sizeof(byte));
 	printf("&bufSize=%p\n", &bufSize);
 	printf("&result.data=%p\n", result.data);
-	printf("Size of block is %zu bytes\n", _fmsize(result.data));
+	printf("Size of block is %zu bytes\n", _msize(result.data));
 	printf("Size of bufSize is %zu bytes\n", bufSize);
 	printf("Size of result.width is %zu \n", result.width);
 	printf("Size of result.height is %zu \n", result.height);

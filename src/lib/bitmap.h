@@ -7,7 +7,7 @@
 #include "src/lib/lib_head.h"
 
 typedef struct {
-	byte far *data;
+	byte near *data;
 	word width;
 	word height;
 	byte *palette;

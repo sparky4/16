@@ -3,7 +3,7 @@
 #-zkl = current codepage
 
 OFLAGS=-ot -ox -ob -oh# -or -om -ol -ol+
-FLAGS=-0 -d2 -wo $(OFLAGS) -zkl# -mh# -zdp# -zm# -zp16 -zq
+FLAGS=-0 -d2 -wo $(OFLAGS) -zkl -mh# -zdp# -zm# -zp16 -zq
 DIRSEP=\
 SRC=src$(DIRSEP)
 SRCLIB=$(SRC)lib$(DIRSEP)
