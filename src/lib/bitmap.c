@@ -93,8 +93,8 @@ bitmapLoadPcx(char *filename) {
 	result.data = malloc((bufSize));
 	printf("Size of block is %u bytes\n", _msize(result.data));
 	printf("Size of bufSize is %lu bytes\n", bufSize);
-	printf("Size of result.width is %lu \n", result.width);
-	printf("Size of result.height is %lu \n", result.height);
+	printf("Size of result.width is %d \n", result.width);
+	printf("Size of result.height is %d \n", result.height);
 	printf("Dimensions of result is %lu\n", result.width*result.height);
 	//exit(0);
 	if(!result.data) {
