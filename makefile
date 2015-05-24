@@ -1,5 +1,5 @@
 OFLAGS=-ot -ox -ob -ol -oh -or
-FLAGS=-0 -d2 -wo $(OFLAGS)# -mh
+FLAGS=-0 -d2 -wo $(OFLAGS) -mh
 DIRSEP=\
 SRC=src$(DIRSEP)
 SRCLIB=$(SRC)lib$(DIRSEP)

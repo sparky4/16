@@ -75,7 +75,7 @@ bitmapLoadPcx(char *filename) {
     FILE *file;
     bitmap_t result;
     dword bufSize;
-    int index;
+    dword index;
     byte count, val;
 
     /* open the PCX file for reading */
@@ -89,13 +89,13 @@ bitmapLoadPcx(char *filename) {
     loadPcxStage1(file, &result);
 
     /* allocate the buffer */
-	bufSize = ((dword)result.width * result.height);
+	bufSize = (result.width * result.height);
 	result.data = malloc((bufSize));
-	/*0000printf("Size of block is %u bytes\n", _msize(result.data));
+	printf("Size of block is %u bytes\n", _msize(result.data));
 	printf("Size of bufSize is %lu bytes\n", bufSize);
 	printf("Size of result.width is %lu \n", result.width);
 	printf("Size of result.height is %lu \n", result.height);
-	printf("Dimensions of result is %lu\n", result.width*result.height);*/
+	printf("Dimensions of result is %lu\n", result.width*result.height);
 	//exit(0);
 	if(!result.data) {
 		fprintf(stderr, "Could not allocate memory for bitmap data.");

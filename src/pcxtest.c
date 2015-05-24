@@ -55,8 +55,7 @@ DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, byte sprite)
 void main() {
 	bitmap_t bmp;
 	planar_buf_t *p;
-	//int i;
-	dword i;
+	int i;
 	page_t page;
 	word start;
 	int plane;
