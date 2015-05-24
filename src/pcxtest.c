@@ -71,7 +71,7 @@ void main() {
 	modexEnter();
 
 	/* fix up the palette and everything */
-//++++	modexPalUpdate(&bmp, 0, 0, 0);
+	modexPalUpdate1(bmp.palette);
 
 	/* clear and draw one sprite and one bitmap */
 	modexClearRegion(&page, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 1);
