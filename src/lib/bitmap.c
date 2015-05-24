@@ -89,7 +89,7 @@ bitmapLoadPcx(char *filename) {
     loadPcxStage1(file, &result);
 
     /* allocate the buffer */
-	bufSize = (result.width * result.height);
+	bufSize = ((dword)result.width * result.height);
 	result.data = malloc((bufSize));
 	/*0000printf("Size of block is %u bytes\n", _msize(result.data));
 	printf("Size of bufSize is %lu bytes\n", bufSize);
