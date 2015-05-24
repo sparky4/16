@@ -1,7 +1,11 @@
-FLAGS=-0 -d2 
-SRC=src\
-SRCLIB=$(SRC)lib\
-all: test.exe pcxtest.exe test2.exe scroll.exe
+OFLAGS=-ot -ox -ob -ol -oh -or
+FLAGS=-0 -d2 -mh -wo $(OFLAGS)
+DIRSEP=\
+SRC=src$(DIRSEP)
+SRCLIB=$(SRC)lib$(DIRSEP)
+JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
+
+all: test.exe pcxtest.exe test2.exe scroll.exe maptest.exe
 
 scroll.exe: scroll.obj modex16.obj dos_kb.obj bitmap.obj mapread.obj jsmn.obj lib_head.obj
 	wcl $(FLAGS) scroll.obj modex16.obj dos_kb.obj bitmap.obj mapread.obj jsmn.obj lib_head.obj# 16/lib/x/modex.lib
@@ -17,7 +21,7 @@ pcxtest.exe: pcxtest.obj modex16.obj bitmap.obj
 	wcl $(FLAGS) pcxtest.obj modex16.obj bitmap.obj
 
 maptest.exe: maptest.obj mapread.obj jsmn.obj modex16.obj bitmap.obj
-	wcl $(FLAGS) maptest.obj jsmn.obj modex16.obj bitmap.obj
+	wcl $(FLAGS) maptest.obj mapread.obj jsmn.obj modex16.obj bitmap.obj
 
 
 test.obj: $(SRC)test.c $(SRCLIB)modex16.h
@@ -29,8 +33,9 @@ test2.obj: $(SRC)test2.c $(SRCLIB)modex16.h
 pcxtest.obj: $(SRC)pcxtest.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)pcxtest.c
 
-maptest.obj: $(SRC)maptest.c $(SRCLIB)mapread.h
+maptest.obj: $(SRC)maptest.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)maptest.c
+
 
 modex16.obj: $(SRCLIB)modex16.h $(SRCLIB)modex16.c
 	wcl $(FLAGS) -c $(SRCLIB)modex16.c
@@ -44,14 +49,14 @@ bitmap.obj: $(SRCLIB)bitmap.h $(SRCLIB)bitmap.c
 planar.obj: $(SRCLIB)planar.h $(SRCLIB)planar.c
 	wcl $(FLAGS) -c $(SRCLIB)planar.c
 
-mapread.obj: $(SRCLIB)mapread.h $(SRCLIB)mapread.c jsmn.obj lib_head.obj
+mapread.obj: $(SRCLIB)mapread.h $(SRCLIB)mapread.c lib_head.obj jsmn.obj
 	wcl $(FLAGS) -c $(SRCLIB)mapread.c
 
 lib_head.obj: $(SRCLIB)lib_head.h $(SRCLIB)lib_head.c
 	wcl $(FLAGS) -c $(SRCLIB)lib_head.c
 
-jsmn.obj: $(SRCLIB)jsmn\jsmn.h $(SRCLIB)jsmn\jsmn.c
-	wcl $(FLAGS) -c $(SRCLIB)jsmn\jsmn.c
+jsmn.obj: $(JSMNLIB)jsmn.h $(JSMNLIB)jsmn.c
+	wcl $(FLAGS) -c $(JSMNLIB)jsmn.c
 
 clean:
 	del *.obj

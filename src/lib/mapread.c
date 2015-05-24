@@ -26,7 +26,7 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent, /*char *
 
 				FUCK well i am stuck.... wwww
 			*/
-//++++			map->data[q] = (byte)strtol(js+t->start, (char **)t->end, 10);
+			map->data[q] = (byte)strtol(js+t->start, (char **)t->end, 10);
 //			printf("%d[%d]", q, map->data[q]);
 		}
 		else
@@ -112,7 +112,7 @@ static int loadmap(char *mn, map_t *map)
 
 	/* Prepare parser */
 	jsmn_init(&p);
-fprintf(stderr, "b4 malloc\n");
+
 	/* Allocate some tokens as a start */
 	tok = malloc(sizeof(*tok) * tokcount);
 	if (tok == NULL) {
@@ -161,7 +161,6 @@ again:
 			eof_expected = 1;
 		}
 	}
-fprintf(stderr, "a4 malloc\n");
 
 	free(js);
 	free(tok);

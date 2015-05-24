@@ -100,7 +100,7 @@ void main() {
 		printf("Expanded memory is not present\n");
 		exit(0);
 	}
-     
+
 	if(!emmok())
 	{
 		printf("Expanded memory manager is not present\n");
@@ -124,7 +124,7 @@ void main() {
 	/* create the map */
 //0000	printf("Total used @ before map load:			%zu\n", oldfreemem-GetFreeSize());
 	fprintf(stderr, "testing~\n");
-//testqqqq	loadmap("data/test.map", &map);
+	loadmap("data/test.map", &map);
 //----	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
 //----	initMap(&map);
