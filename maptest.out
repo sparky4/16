@@ -1,0 +1,9 @@
+indent= [1]	h:[30]
+indent= [1]	w:[40]
+map.width=	40
+map.height=	30
+&map==0018:191e
+&map.tiles==0018:19a8
+&map.width==0018:0028
+&map.height==0018:001e
+&map.data==1237:0018

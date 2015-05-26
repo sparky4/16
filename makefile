@@ -65,11 +65,11 @@ jsmn.obj: $(JSMNLIB)jsmn.h $(JSMNLIB)jsmn.c
 	wcl $(FLAGS) -c $(JSMNLIB)jsmn.c
 
 clean: .symbolic
-	@$(REMOVECOMMAND) *.obj
+#	@$(REMOVECOMMAND) *.obj
 	@$(REMOVECOMMAND) *.OBJ
-	@$(REMOVECOMMAND) *.out
-	@$(REMOVECOMMAND) *.OUT
+#	@$(REMOVECOMMAND) *.out
+#	@$(REMOVECOMMAND) *.OUT
 	@$(REMOVECOMMAND) makefi~1
 	@$(REMOVECOMMAND) __WCL__.LNK
-	@$(REMOVECOMMAND) *.smp
+#	@$(REMOVECOMMAND) *.smp
 	@$(REMOVECOMMAND) *.SMP
