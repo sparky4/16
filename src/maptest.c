@@ -1,7 +1,7 @@
 #include "src/lib/mapread.h"
 
 #define DUMP
-#define DUMP_MAP
+//#define DUMP_MAP
 
 void
 main(int argc, char *argv[])
@@ -20,6 +20,12 @@ main(int argc, char *argv[])
 		fprintf(stdout, "%04d[%02d]", i, map.data[i]);
 		if(i && !(i%map.width)) fprintf(stdout, "\n");
 	}
+	fprintf(stdout, "\n");
 	#endif
+	fprintf(stdout, "&map==%Fp\n", &map);
+	fprintf(stdout, "&map.tiles==%Fp\n", map.tiles);
+	fprintf(stdout, "&map.width==%Fp\n", map.width);
+	fprintf(stdout, "&map.height==%Fp\n", map.height);
+	fprintf(stdout, "&map.data==%Fp\n", map.data);
 	#endif
 }

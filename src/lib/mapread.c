@@ -68,7 +68,7 @@ int dump(const char /*far*/ *js, jsmntok_t /*far*/ *t, size_t count, int indent,
 		{
 //			fprintf(stdout, "[[[[%d|%d]]]]\n", &(t+1)->size, (t+1)->size);
 //			fprintf(stdout, "\n%.*s[xx[%d|%d]xx]\n", (t+1)->end - (t+1)->start, js+(t+1)->start, &(t+1)->size, (t+1)->size);
-			map->data = /*_f*/malloc(sizeof(byte) * (t+1)->size);
+			map->data = _fmalloc(sizeof(byte) * (t+1)->size);
 			map->tiles = /*_f*/malloc(sizeof(tiles_t));
 			//map->tiles->data = malloc(sizeof(bitmap_t));
 			//fix this
@@ -87,7 +87,8 @@ int dump(const char /*far*/ *js, jsmntok_t /*far*/ *t, size_t count, int indent,
 		if (jsoneq(js, t, "height") == 0 && indent<=1)
 		{
 			strcpy(js_sv, "height");//strdup(js+t->start);//, t->end - t->start);
-		}else if(jsoneq(js, t, "width") == 0 && indent<=1)
+		}else
+		if(jsoneq(js, t, "width") == 0 && indent<=1)
 		{
 			strcpy(js_sv, "width");//strdup(js+t->start);//, t->end - t->start);
 		}else strcpy(js_sv, "\0");

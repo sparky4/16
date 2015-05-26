@@ -13,7 +13,7 @@
 //#define DEBUG_MAPDATA
 #define DEBUG_MAPVAR
 //#define DEBUG_DUMPVARS
-#define DEBUG_JS
+//#define DEBUG_JS
 
 typedef struct {
 	bitmap_t *data;
@@ -24,7 +24,7 @@ typedef struct {
 } tiles_t;
 
 typedef struct {
-	byte *data;
+	byte far *data;
 	tiles_t *tiles;
 	unsigned int width;
 	unsigned int height;
