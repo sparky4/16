@@ -1,5 +1,5 @@
 #include "src/lib/dos_kb.h"
-#include "src/lib/mapread.c"
+#include "src/lib/mapread.h"
 //#include "16\lib\x\modex.h"
 #include "src/lib/wtest/wtest.c"
 #include "src/lib/planar.c"
