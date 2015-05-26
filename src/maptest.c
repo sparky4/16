@@ -8,9 +8,7 @@ main(int argc, char *argv[])
 {
 	map_t map;
 	short i;
-	//int lm;
 	loadmap("data/test.map", &map);
-	//fprintf(stdout, "loadmap=	%d\n\n", lm);
 	#ifdef DUMP
 	fprintf(stdout, "map.width=	%d\n", map.width);
 	fprintf(stdout, "map.height=	%d\n", map.height);
