@@ -2,8 +2,10 @@
 #-zk0 = kanji support~
 #-zkl = current codepage
 
-OFLAGS=-ot -ox -ob -oh# -or -om -ol -ol+
-FLAGS=-0 -d2 -wo $(OFLAGS) -zkl -zm# -mh# -zdp# -zm# -zp16 -zq
+CFLAGS=-zkl# -zm# -mh# -wo -x# -zdp# -zp16 -zq
+OFLAGS=-ot -ox -ob -oh -or# -om -ol -ol+
+FLAGS=-0 -d2 $(OFLAGS) $(CFLAGS)
+REMOVECOMMAND=del
 DIRSEP=\
 SRC=src$(DIRSEP)
 SRCLIB=$(SRC)lib$(DIRSEP)
@@ -63,5 +65,11 @@ jsmn.obj: $(JSMNLIB)jsmn.h $(JSMNLIB)jsmn.c
 	wcl $(FLAGS) -c $(JSMNLIB)jsmn.c
 
 clean: .symbolic
-	@del *.obj
-#	@del *.exe
+	@$(REMOVECOMMAND) *.obj
+	@$(REMOVECOMMAND) *.OBJ
+	@$(REMOVECOMMAND) *.out
+	@$(REMOVECOMMAND) *.OUT
+	@$(REMOVECOMMAND) makefi~1
+	@$(REMOVECOMMAND) __WCL__.LNK
+	@$(REMOVECOMMAND) *.smp
+	@$(REMOVECOMMAND) *.SMP

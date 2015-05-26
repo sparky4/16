@@ -1,16 +1,19 @@
 #ifndef _LIBMAPREAD_H_
 #define _LIBMAPREAD_H_
+//#include <stdlib.h>
+//#include <stdio.h>
 #include <string.h>
 #include <errno.h>
-
-//#include <stdlib.h>
+#include <alloc.h>
 
 #include "src/lib/jsmn/jsmn.h"
 #include "src/lib/modex16.h"
 #include "src/lib/lib_head.h"
 
-//---- temp!
-static char *js_sv;
+//#define DEBUG_MAPDATA
+#define DEBUG_MAPVAR
+//#define DEBUG_DUMPVARS
+#define DEBUG_JS
 
 typedef struct {
 	bitmap_t *data;
@@ -21,14 +24,14 @@ typedef struct {
 } tiles_t;
 
 typedef struct {
-	byte	*data;
+	byte *data;
 	tiles_t *tiles;
-	int width;
-	int height;
+	unsigned int width;
+	unsigned int height;
 } map_t;
 
-static int jsoneq(const char *json, jsmntok_t *tok, const char *s);
-static int dump(const char *js, jsmntok_t *t, size_t count, int indent, map_t *map, int q);
-static int loadmap(char *mn, map_t *map);
+int jsoneq(const char /*far*/ *json, jsmntok_t /*far*/ *tok, const char *s);
+int dump(const char /*far*/ *js, jsmntok_t /*far*/ *t, size_t count, int indent, char *js_sv, map_t *map, int q);
+int loadmap(char *mn, map_t *map);
 
 #endif/*_LIBMAPREAD_H_*/
