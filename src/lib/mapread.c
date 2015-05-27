@@ -1,15 +1,15 @@
 #include "src/lib/mapread.h"
 
-int jsoneq(const char /*far*/ *json, jsmntok_t /*far*/ *tok, const char *s) {
+int jsoneq(const char huge *json, jsmntok_t huge *tok, const char *s) {
 	if (tok->type == JSMN_STRING && (int) strlen(s) == tok->end - tok->start &&
-			strncmp(json + tok->start, s, tok->end - tok->start) == 0) {
+			strncmp((char const near *)json + tok->start, s, tok->end - tok->start) == 0) {
 		return 0;
 	}
 	return -1;
 }
 
 //this function is quite messy ^^; sorry! it is a quick and dirty fix~
-int dump(const char /*far*/ *js, jsmntok_t /*far*/ *t, size_t count, int indent, char *js_sv, map_t *map, int q) {
+int dump(const char huge *js, jsmntok_t huge *t, size_t count, int indent, char *js_sv, map_t *map, int q) {
 	int i, j, k;
 	bitmap_t bp;
 	#ifdef DEBUG_JS
@@ -38,7 +38,7 @@ int dump(const char /*far*/ *js, jsmntok_t /*far*/ *t, size_t count, int indent,
 				FUCK well i am stuck.... wwww
 			*/
 //----			map->data[q] = (byte)strtol(js+t->start, (char **)t->end, 10);
-			map->data[q] = (byte)atoi(js+t->start);
+			map->data[q] = (byte)atoi((const char *)js+t->start);
 			#ifdef DEBUG_MAPDATA
 				fprintf(stdout, "%d[%d]", q, map->data[q]);
 			#endif
@@ -47,7 +47,7 @@ int dump(const char /*far*/ *js, jsmntok_t /*far*/ *t, size_t count, int indent,
 		if(strstr(js_sv, "height"))
 		{
 //----			map->height = (unsigned int)strtol(js+t->start, (char **)js+t->end, 10);
-			map->height = (unsigned int)atoi(js+t->start);
+			map->height = atoi((const char *)js+t->start);
 			#ifdef DEBUG_MAPVAR
 			fprintf(stdout, "indent= [%d]	", indent);
 			fprintf(stdout, "h:[%d]\n", map->height);
@@ -55,7 +55,7 @@ int dump(const char /*far*/ *js, jsmntok_t /*far*/ *t, size_t count, int indent,
 		}else if(strstr(js_sv, "width"))
 		{
 //----			map->width = (unsigned int)strtol(js+t->start, (char **)js+t->end, 10);
-			map->width = (unsigned int)atoi(js+t->start);
+			map->width = atoi((const char *)js+t->start);
 			#ifdef DEBUG_MAPVAR
 			fprintf(stdout, "indent= [%d]	", indent);
 			fprintf(stdout, "w:[%d]\n", map->width);
@@ -68,7 +68,8 @@ int dump(const char /*far*/ *js, jsmntok_t /*far*/ *t, size_t count, int indent,
 		{
 //			fprintf(stdout, "[[[[%d|%d]]]]\n", &(t+1)->size, (t+1)->size);
 //			fprintf(stdout, "\n%.*s[xx[%d|%d]xx]\n", (t+1)->end - (t+1)->start, js+(t+1)->start, &(t+1)->size, (t+1)->size);
-			map->data = _fmalloc(sizeof(byte) * (t+1)->size);
+			map->data = halloc(sizeof(byte) * (t+1)->size, sizeof(byte));
+			//map->data = malloc(sizeof(byte) * (t+1)->size);
 			map->tiles = /*_f*/malloc(sizeof(tiles_t));
 			//map->tiles->data = malloc(sizeof(bitmap_t));
 			//fix this
@@ -123,13 +124,14 @@ int loadmap(char *mn, map_t *map)
 	int r;
 	static int incr=0;
 	int eof_expected = 0;
-	char /*far*/ *js = NULL;
+	char *jz = NULL;
+	char huge *js = NULL;
 	size_t jslen = 0;
 	char buf[BUFSIZ];
 	static char js_ss[16];
 
 	jsmn_parser p;
-	jsmntok_t /*far*/ *tok;
+	jsmntok_t huge *tok;
 	size_t tokcount = 2;
 
 	FILE *fh = fopen(mn, "r");
@@ -138,7 +140,7 @@ int loadmap(char *mn, map_t *map)
 	jsmn_init(&p);
 
 	/* Allocate some tokens as a start */
-	tok = /*_f*/malloc(sizeof(*tok) * tokcount);
+	tok = _fmalloc(sizeof(*tok) * tokcount);
 	if (tok == NULL) {
 		fprintf(stderr, "malloc(): errno=%d\n", errno);
 		return 3;
@@ -159,21 +161,26 @@ int loadmap(char *mn, map_t *map)
 				return 2;
 			}
 		}
-
-		js = /*_f*/realloc(js, jslen + r + 1);
-		if (js == NULL) {
+		jz = realloc(jz, jslen + r + 1);
+		//js = _frealloc(js, jslen + r + 1);
+		if (jz == NULL) {
+			fprintf(stderr, "*js=%s\n", *js);
+			fprintf(stderr, "*jz=%s\n", *jz);
 			fprintf(stderr, "realloc(): errno = %d\n", errno);
 			return 3;
 		}
-		strncpy(js + jslen, buf, r);
+		//printf("_fstrncpy~\n");
+		strncpy(jz + jslen, buf, r);
+		//printf("_fstrncpy okies~~\n");
 		jslen = jslen + r;
 
 again:
+		js = (char huge *)*jz;
 		r = jsmn_parse(&p, js, jslen, tok, tokcount);
 		if (r < 0) {
 			if (r == JSMN_ERROR_NOMEM) {
 				tokcount = tokcount * 2;
-				tok = /*_f*/realloc(tok, sizeof(*tok) * tokcount);
+				tok = _frealloc(tok, sizeof(*tok) * tokcount);
 				if (tok == NULL) {
 					fprintf(stderr, "realloc(): errno=%d\n", errno);
 					return 3;
@@ -181,13 +188,15 @@ again:
 				goto again;
 			}
 		} else {
+			//printf("*buff=[\n%s\n]\n", *buff);
+			//printf("buff=[\n%Fp\n]\n", buff);
 			dump(js, tok, p.toknext, incr, &js_ss, map, 0);
 			eof_expected = 1;
 		}
 	}
 
-	/*_f*/free(js);
-	/*_f*/free(tok);
+	hfree(js);
+	hfree(tok);
 	fclose(fh);
 
 	return 0;

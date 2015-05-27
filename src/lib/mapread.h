@@ -10,10 +10,10 @@
 #include "src/lib/modex16.h"
 #include "src/lib/lib_head.h"
 
-//#define DEBUG_MAPDATA
-//#define DEBUG_MAPVAR
+#define DEBUG_MAPDATA
+#define DEBUG_MAPVAR
 //#define DEBUG_DUMPVARS
-//#define DEBUG_JS
+#define DEBUG_JS
 
 typedef struct {
 	bitmap_t *data;
@@ -24,14 +24,14 @@ typedef struct {
 } tiles_t;
 
 typedef struct {
-	byte far *data;
+	byte huge *data;
 	tiles_t *tiles;
-	unsigned int width;
-	unsigned int height;
+	int width;	//this has to be signed!
+	int height;	//this has to be signed!
 } map_t;
 
-int jsoneq(const char /*far*/ *json, jsmntok_t /*far*/ *tok, const char *s);
-int dump(const char /*far*/ *js, jsmntok_t /*far*/ *t, size_t count, int indent, char *js_sv, map_t *map, int q);
+int jsoneq(const char huge *json, jsmntok_t huge *tok, const char *s);
+int dump(const char huge *js, jsmntok_t huge *t, size_t count, int indent, char *js_sv, map_t *map, int q);
 int loadmap(char *mn, map_t *map);
 
 #endif/*_LIBMAPREAD_H_*/

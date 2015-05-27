@@ -14,7 +14,7 @@
 #define SELECT_ALL_PLANES() outpw(0x03c4, 0xff02)
 
 typedef struct {
-    byte far* data;	/* the data for the page */
+    byte huge* data;	/* the data for the page */
     word dx;		/* col we are viewing on the virtual screen */
     word dy;		/* row we are viewing on the virtual screen */
     word width;		/* virtual width of the page */

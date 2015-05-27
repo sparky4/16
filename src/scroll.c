@@ -75,9 +75,9 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword
 
 void main() {
 	size_t oldfreemem=GetFreeSize();
-	long emmhandle;
+	/*long emmhandle;
 	long emsavail;
-	char teststr[80];
+	char teststr[80];*/
 	word panswitch=0, panq=1, pand=0; //for panning!
 	int i;
 	static word paloffset=0;
@@ -90,7 +90,7 @@ void main() {
 	map_view_t mv, mv2, mv3;
 	map_view_t *bg, *spri, *mask;//, *tmp;
 	byte *dpal, *gpal;
-	byte far *ptr;
+	byte huge *ptr;
 	byte *mappalptr;
 	actor_t player;
 	//actor_t npc0;
@@ -124,9 +124,9 @@ void main() {
 
 	/* create the map */
 //0000	printf("Total used @ before map load:			%zu\n", oldfreemem-GetFreeSize());
-	fprintf(stderr, "testing~\n");
+//0000	fprintf(stderr, "testing~\n");
 	loadmap("data/test.map", &map);
-	fprintf(stderr, "yay map loaded~~\n");
+//0000	fprintf(stderr, "yay map loaded~~\n");
 //----	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
 //----	initMap(&map);
@@ -654,6 +654,7 @@ void main() {
 	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
 	printf("Screen: %dx", screen.width);	printf("%d\n", screen.height);
 	printf("Screen2: %dx", screen2.width);	printf("%d\n", screen2.height);
+	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", bg->map->width, bg->map->height, bg->map->data[0]);
 	//xmsfree(&map);
 	//xmsfree(bg);
 	//xmsfree(spri);
@@ -892,6 +893,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y) {
 	{
 	rx = (((i-1) % ((t->data->width)/t->tileWidth)) * t->tileWidth);
 	ry = (((i-1) / ((t->data->height)/t->tileHeight)) * t->tileHeight);
+	printf("i=%d\n", i);
 	//mxPutTile(t->data, x, y, t->tileWidth, t->tileHeight);
 	modexDrawBmpRegion(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
 	}
