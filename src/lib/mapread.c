@@ -147,8 +147,6 @@ int loadmap(char *mn, map_t *map)
 		return 3;
 	}
 
-	//buff = _fmalloc(sizeof(buf[BUFSIZ]));
-
 	for (;;) {
 		/* Read another chunk */
 		r = fread(buf, 1, sizeof(buf), fh);
@@ -164,17 +162,19 @@ int loadmap(char *mn, map_t *map)
 				return 2;
 			}
 		}
+		//buf[BUFSIZ]=(char)"\0";
 		js = _frealloc(js, jslen + r + 1);
 		if (js == NULL) {
 			fprintf(stderr, "*js=%Fp\n", *js);
 			fprintf(stderr, "realloc(): errno = %d\n", errno);
 			return 3;
 		}
-		//(*buff)=*buf;
 		//printf("strncpy~\n");
 		//strncpy(jz + jslen, buf, r);
 		//if(
+		//_fstrncpy(js + jslen, &(*buff), r);
 		_fstrncpy(js + jslen, &(*buff), r);
+		//strncpy((char *)js + jslen, buf, r);
 		// == NULL)
 //			fprintf(stderr, "_fstrncpy(): errno = %d\n", errno);
 		//printf("strncpy okies~~\n");
@@ -194,9 +194,9 @@ again:
 				goto again;
 			}
 		} else {
-			printf("js=%Fp\n", js);
-			printf("*js=%Fp\n", (*js));
-			printf("*js=%s\n", &(*js));
+			printf("js=%Fp\n", (js));
+			printf("*js=%Fp\n", (*(js)));
+			printf("&*js=%s\n", &(*(js)));
 			printf("&buf=[%Fp]\n", &buf);
 			//printf("&buf_seg=[%x]\n", FP_SEG(&buf));
 			//printf("&buf_off=[%x]\n", FP_OFF(&buf));
@@ -204,14 +204,15 @@ again:
 			//printf("buf=[\n%s\n]\n", buf);
 			printf("buff=[%Fp]\n", buff);
 			printf("(*buff)=[%Fp]\n", (*buff));
-			printf("&(*buff)=[\n%s\n]\n", &(*buff));
+			//printf("&(*buff)=[\n%s\n]\n", &(*buff));
 			dump(js, tok, p.toknext, incr, &js_ss, map, 0);
 			eof_expected = 1;
 		}
 	}
 
-	hfree(js);
-	hfree(tok);
+	_ffree(js);
+	_ffree(buff);
+	_ffree(tok);
 	fclose(fh);
 
 	return 0;
