@@ -9,10 +9,10 @@ main(int argc, char *argv[])
 
 	//ptr=&x;
 	printf("ptr0=%Fp\n", ptr0);
-	printf("&ptr0=%Fp\n", &ptr0);
+	//printf("&ptr0=%Fp\n", &ptr0);
 	printf("*ptr0=%d\n", *ptr0);
 	printf("ptr=%Fp\n", ptr);
-	printf("&ptr=%Fp\n", &ptr);
+	//printf("&ptr=%Fp\n", &ptr);
 	printf("*ptr=%d\n", *ptr);
 	printf("address of *ptr=%Fp\n", *ptr);
 	printf("&x=%Fp\n", &x);
