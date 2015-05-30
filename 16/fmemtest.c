@@ -8,6 +8,7 @@ main(int argc, char *argv[])
 	int *ptr0=&x;
 
 	//ptr=&x;
+	printf("&main()=%Fp\n", *argv[0]);
 	printf("ptr0=%Fp\n", ptr0);
 	//printf("&ptr0=%Fp\n", &ptr0);
 	printf("*ptr0=%d\n", *ptr0);
