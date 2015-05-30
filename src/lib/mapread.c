@@ -128,7 +128,7 @@ int loadmap(char *mn, map_t *map)
 	char huge *js = NULL;
 	size_t jslen = 0;
 	char buf[BUFSIZ];
-	char huge *buff = (char huge *)(MK_FP(FP_SEG(&buf), FP_OFF(&buf)));//(char huge *)FP_OFF(&buf);
+	char huge *buff = /*(char huge *)*/&buf;//(char huge *)(MK_FP(FP_SEG(&buf), FP_OFF(&buf)));//
 	static char js_ss[16];
 
 	jsmn_parser p;
@@ -164,23 +164,22 @@ int loadmap(char *mn, map_t *map)
 				return 2;
 			}
 		}
-		//jz = realloc(jz, jslen + r + 1);
-		js = _frealloc(js, jslen + r + 1);
-		if (/*jz == NULL || */js == NULL) {
+		buff = /*(char huge *)*/&buf;
+		js = _frealloc(js, jslen + r +1);
+		if (js == NULL) {
 			fprintf(stderr, "*js=%Fp\n", *js);
-			//fprintf(stderr, "*jz=%Fp\n", *jz);
 			fprintf(stderr, "realloc(): errno = %d\n", errno);
 			return 3;
 		}
 		//printf("strncpy~\n");
 		//strncpy(jz + jslen, buf, r);
-		_fstrncpy(js + jslen, buff, r);
+		if(_fstrncpy(js + jslen, buff, r) == NULL)
+			fprintf(stderr, "_fstrncpy(): errno = %d\n", errno);
 		//printf("strncpy okies~~\n");
 		jslen = jslen + r;
 
 again:
-		//js = (char huge *)*jz;
-		//printf("*js=%s\n", (*js));
+		//printf("(*js)=%Fp\n", (*js));
 		r = jsmn_parse(&p, js, jslen, tok, tokcount);
 		if (r < 0) {
 			if (r == JSMN_ERROR_NOMEM) {
@@ -193,13 +192,15 @@ again:
 				goto again;
 			}
 		} else {
-			printf("&buf=[\n%Fp\n]\n", &buf);
-			printf("&buf_seg=[\n%x\n]\n", FP_SEG(&buf));
-			printf("&buf_off=[\n%x\n]\n", FP_OFF(&buf));
-			printf("&buf_fp=[\n%Fp\n]\n", MK_FP(FP_SEG(&buf), FP_OFF(&buf)));
+			printf("*js=%Fp\n", (*js));
+			printf("&buf=[%Fp]\n", &buf);
+			printf("&buf_seg=[%x]\n", FP_SEG(&buf));
+			printf("&buf_off=[%x]\n", FP_OFF(&buf));
+			printf("&buf_fp=[%Fp]\n", MK_FP(FP_SEG(&buf), FP_OFF(&buf)));
 			//printf("buf=[\n%s\n]\n", buf);
-			printf("buff=[\n%Fp\n]\n", buff);
-			printf("*buff=[\n%Fp\n]\n", (*buff));
+			printf("buff=[%Fp]\n", buff);
+			printf("(*buff)=[%Fp]\n", (*buff));
+			//printf("&(*buff)=[\n%s\n]\n", &(*buff));
 			dump(js, tok, p.toknext, incr, &js_ss, map, 0);
 			eof_expected = 1;
 		}
