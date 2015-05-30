@@ -11,7 +11,7 @@
 #include "src/lib/lib_head.h"
 
 #define DEBUG_MAPDATA
-#define DEBUG_MAPVAR
+//#define DEBUG_MAPVAR
 //#define DEBUG_DUMPVARS
 #define DEBUG_JS
 

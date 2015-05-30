@@ -124,10 +124,11 @@ int loadmap(char *mn, map_t *map)
 	int r;
 	static int incr=0;
 	int eof_expected = 0;
-	char *jz = NULL;
+	//char *jz = NULL;
 	char huge *js = NULL;
 	size_t jslen = 0;
 	char buf[BUFSIZ];
+	char huge *buff = (char huge *)(MK_FP(FP_SEG(&buf), FP_OFF(&buf)));//(char huge *)FP_OFF(&buf);
 	static char js_ss[16];
 
 	jsmn_parser p;
@@ -146,6 +147,8 @@ int loadmap(char *mn, map_t *map)
 		return 3;
 	}
 
+	//buff = _fmalloc(sizeof(buf));
+
 	for (;;) {
 		/* Read another chunk */
 		r = fread(buf, 1, sizeof(buf), fh);
@@ -161,21 +164,23 @@ int loadmap(char *mn, map_t *map)
 				return 2;
 			}
 		}
-		jz = realloc(jz, jslen + r + 1);
-		//js = _frealloc(js, jslen + r + 1);
-		if (jz == NULL) {
-			fprintf(stderr, "*js=%s\n", *js);
-			fprintf(stderr, "*jz=%s\n", *jz);
+		//jz = realloc(jz, jslen + r + 1);
+		js = _frealloc(js, jslen + r + 1);
+		if (/*jz == NULL || */js == NULL) {
+			fprintf(stderr, "*js=%Fp\n", *js);
+			//fprintf(stderr, "*jz=%Fp\n", *jz);
 			fprintf(stderr, "realloc(): errno = %d\n", errno);
 			return 3;
 		}
-		//printf("_fstrncpy~\n");
-		strncpy(jz + jslen, buf, r);
-		//printf("_fstrncpy okies~~\n");
+		//printf("strncpy~\n");
+		//strncpy(jz + jslen, buf, r);
+		_fstrncpy(js + jslen, buff, r);
+		//printf("strncpy okies~~\n");
 		jslen = jslen + r;
 
 again:
-		js = (char huge *)*jz;
+		//js = (char huge *)*jz;
+		//printf("*js=%s\n", (*js));
 		r = jsmn_parse(&p, js, jslen, tok, tokcount);
 		if (r < 0) {
 			if (r == JSMN_ERROR_NOMEM) {
@@ -188,8 +193,13 @@ again:
 				goto again;
 			}
 		} else {
-			//printf("*buff=[\n%s\n]\n", *buff);
-			//printf("buff=[\n%Fp\n]\n", buff);
+			printf("&buf=[\n%Fp\n]\n", &buf);
+			printf("&buf_seg=[\n%x\n]\n", FP_SEG(&buf));
+			printf("&buf_off=[\n%x\n]\n", FP_OFF(&buf));
+			printf("&buf_fp=[\n%Fp\n]\n", MK_FP(FP_SEG(&buf), FP_OFF(&buf)));
+			//printf("buf=[\n%s\n]\n", buf);
+			printf("buff=[\n%Fp\n]\n", buff);
+			printf("*buff=[\n%Fp\n]\n", (*buff));
 			dump(js, tok, p.toknext, incr, &js_ss, map, 0);
 			eof_expected = 1;
 		}
