@@ -162,7 +162,7 @@ int loadmap(char *mn, map_t *map)
 				return 2;
 			}
 		}
-		//buf[BUFSIZ]=(char)"\0";
+		//buf[BUFSIZ]='\0';
 		js = _frealloc(js, jslen + r + 1);
 		if (js == NULL) {
 			fprintf(stderr, "*js=%Fp\n", *js);
