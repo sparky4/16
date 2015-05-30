@@ -1,16 +1,50 @@
-*js=199e:007b
-&buf=[199e:177a]
-&buf_seg=[924]
-&buf_off=[177a]
-&buf_fp=[0924:177a]
-buff=[0924:177a]
-(*buff)=[199e:000a]
-Æ‰VþFÞŒÒ>è¼ ±Ž^þŠ„Àt1ˆÂˆÃ0ö¸@‰×€ãÓÿ0ÿŠSÞŽØŠŸö…ÚuFëÕ‹^þ‰ò‰Ð‰Ú‰ì]_^Ë1Ò1ÛëðSQR‰Ã¸
+js=0ac4:603e
+*js=197e:007b
+*js=!¹@¸
 
-map.width=	4521
-map.height=	4530
-&map==36c1:199e
-&map.tiles==36c1:0000
-&map.width==36c1:11a9
-&map.height==36c1:11b2
-&map.data==0924:36c1
+&buf=[197e:175a]
+buff=[0922:175a]
+(*buff)=[197e:000a]
+&(*buff)=[
+
+         "imagewidth":64,
+         "margin":0,
+         "name":"wwww",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":16,
+         "tilewidth":16
+        }],
+ "tilewidth":16,
+ "version":1,
+ "width":40
+}width":40,
+         "x":0,
+         "y":0
+        }],
+ "orientation":"orthogonal",
+ "properties":
+    {
+
+    },
+ "renderorder":"right-down",
+ "tileheight":16,
+ "tilesets":[
+        {
+         "firstgid":1,
+         "image":"ed.png",
+         "imageheight":64,ýïÿÿ>
+]
+!¹@¸
+
+
+map.width=	4489
+map.height=	4498
+&map==36a1:197e
+&map.tiles==36a1:0000
+&map.width==36a1:1189
+&map.height==36a1:1192
+&map.data==0922:36a1
