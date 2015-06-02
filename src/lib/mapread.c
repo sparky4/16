@@ -9,7 +9,7 @@ int jsoneq(const char huge *json, jsmntok_t huge *tok, const char huge *s) {
 }
 
 //this function is quite messy ^^; sorry! it is a quick and dirty fix~
-int dump(const char huge *js, jsmntok_t huge *t, size_t count, int indent, char *js_sv, map_t *map, int q) {
+int dump(const char huge *js, jsmntok_t huge *t, size_t count, int indent, char *js_sv, map_t huge *map, int q) {
 	int i, j, k;
 	bitmap_t bp;
 	#ifdef DEBUG_JS
@@ -194,6 +194,9 @@ again:
 			//printf("buff=[%Fp]\n", buff);
 			//printf("(*buff)=[%Fp]\n", (*buff));
 			//printf("&(*buff)=[\n%s\n]\n", &(*buff));
+			#ifdef DEBUG_DUMPVARS
+			fprintf(stdout, "running dump~\n");
+			#endif
 			dump(js, tok, p.toknext, incr, &js_ss, map, 0);
 			eof_expected = 1;
 		}
