@@ -26,4 +26,5 @@ main(int argc, char *argv[])
 	fprintf(stdout, "&map.height==%Fp\n", map.height);
 	fprintf(stdout, "&map.data==%Fp\n", map.data);
 	#endif
+	fprintf(stdout, "okies~\n");
 }

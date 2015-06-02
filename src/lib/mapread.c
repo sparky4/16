@@ -87,12 +87,10 @@ int dump(const char huge *js, jsmntok_t huge *t, size_t count, int indent, char 
 		else
 		if (jsoneq(js, t, "height") == 0 && indent<=1)
 		{
-			fprintf(stdout, "height\n");
 			_fstrcpy(js_sv, "height");//strdup(js+t->start);//, t->end - t->start);
 		}else
 		if(jsoneq(js, t, "width") == 0 && indent<=1)
 		{
-			fprintf(stdout, "width\n");
 			_fstrcpy(js_sv, "width");//strdup(js+t->start);//, t->end - t->start);
 		}else _fstrcpy(js_sv, "\0");
 		return 1;
@@ -126,11 +124,10 @@ int loadmap(char *mn, map_t *map)
 	int r;
 	static int incr=0;
 	int eof_expected = 0;
-	//char *jz = NULL;
 	char huge *js = NULL;
 	size_t jslen = 0;
 	char buf[BUFSIZ];
-	char huge *buff = &buf;//(char huge *)(MK_FP(FP_SEG(&buf), FP_OFF(&buf)));//
+	char huge *buff = &buf;
 	static char js_ss[16];
 
 	jsmn_parser p;
@@ -164,26 +161,16 @@ int loadmap(char *mn, map_t *map)
 				return 2;
 			}
 		}
-		//buf[BUFSIZ]='\0';
 		js = _frealloc(js, jslen + r + 1);
 		if (js == NULL) {
 			fprintf(stderr, "*js=%Fp\n", *js);
 			fprintf(stderr, "realloc(): errno = %d\n", errno);
 			return 3;
 		}
-		//printf("strncpy~\n");
-		//strncpy(jz + jslen, buf, r);
-		//if(
-		//_fstrncpy(js + jslen, &(*buff), r);
 		_fstrncpy(js + jslen, &(*buff), r);
-		//strncpy((char *)js + jslen, buf, r);
-		// == NULL)
-//			fprintf(stderr, "_fstrncpy(): errno = %d\n", errno);
-		//printf("strncpy okies~~\n");
 		jslen = jslen + r;
 
 again:
-		//printf("(*js)=%Fp\n", (*js));
 		r = jsmn_parse(&p, js, jslen, tok, tokcount);
 		if (r < 0) {
 			if (r == JSMN_ERROR_NOMEM) {
@@ -196,16 +183,16 @@ again:
 				goto again;
 			}
 		} else {
-			printf("js=%Fp\n", (js));
-			printf("*js=%Fp\n", (*(js)));
+			//printf("js=%Fp\n", (js));
+			//printf("*js=%Fp\n", (*(js)));
 			//printf("&*js=%s\n", &(*(js)));
 			//printf("&buf=[%Fp]\n", &buf);
 			//printf("&buf_seg=[%x]\n", FP_SEG(&buf));
 			//printf("&buf_off=[%x]\n", FP_OFF(&buf));
 			//printf("&buf_fp=[%Fp]\n", MK_FP(FP_SEG(&buf), FP_OFF(&buf)));
 			//printf("buf=[\n%s\n]\n", buf);
-			printf("buff=[%Fp]\n", buff);
-			printf("(*buff)=[%Fp]\n", (*buff));
+			//printf("buff=[%Fp]\n", buff);
+			//printf("(*buff)=[%Fp]\n", (*buff));
 			//printf("&(*buff)=[\n%s\n]\n", &(*buff));
 			dump(js, tok, p.toknext, incr, &js_ss, map, 0);
 			eof_expected = 1;
