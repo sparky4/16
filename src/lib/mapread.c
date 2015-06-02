@@ -179,12 +179,12 @@ int loadmap(char *mn, map_t *map)
 		jslen = jslen + r;
 
 again:
-//fprintf(stdout, "	parse~ tok=%zu	jslen=%zu	r=%d	_memavl()=%u	BUFSIZ=%d~\n", tokcount, jslen, r, _memavl(), BUFSIZ);
-fprintf(stdout, "p=[%u]	[%u]	[%d]\n", p.pos, p.toknext, p.toksuper);
+//0000fprintf(stdout, "	parse~ tok=%zu	jslen=%zu	r=%d	_memavl()=%u	BUFSIZ=%d~\n", tokcount, jslen, r, _memavl(), BUFSIZ);
+//0000fprintf(stdout, "p=[%u]	[%u]	[%d]\n", p.pos, p.toknext, p.toksuper);
 /*
 		I think it crashes on the line below when it tries to parse the data of huge maps... wwww this is a jsmn problem wwww
 */
-//0000		r = jsmn_parse(&p, js, jslen, tok, tokcount);
+//++++		r = jsmn_parse(&p, js, jslen, tok, tokcount);
 //0000fprintf(stdout, "r=	[%d]\n", r);
 		if (r < 0) {
 			if (r == JSMN_ERROR_NOMEM) {
@@ -212,7 +212,7 @@ fprintf(stdout, "p=[%u]	[%u]	[%d]\n", p.pos, p.toknext, p.toksuper);
 			#ifdef DEBUG_DUMPVARS
 			fprintf(stdout, "running dump~\n");
 			#endif
-//0000			dump(js, tok, p.toknext, incr, &js_ss, map, 0);
+//++++			dump(js, tok, p.toknext, incr, &js_ss, map, 0);
 			eof_expected = 1;
 		}
 	}
