@@ -1,8 +1,8 @@
 #include "src/lib/mapread.h"
 
-int jsoneq(const char huge *json, jsmntok_t huge *tok, const char *s) {
-	if (tok->type == JSMN_STRING && (int) strlen(s) == tok->end - tok->start &&
-			strncmp((char const near *)json + tok->start, s, tok->end - tok->start) == 0) {
+int jsoneq(const char huge *json, jsmntok_t huge *tok, const char huge *s) {
+	if (tok->type == JSMN_STRING && (int)_fstrlen(s) == tok->end - tok->start &&
+			_fstrncmp((char const *)json + tok->start, s, tok->end - tok->start) == 0) {
 		return 0;
 	}
 	return -1;
@@ -28,7 +28,7 @@ int dump(const char huge *js, jsmntok_t huge *t, size_t count, int indent, char 
 	}
 	/* We may want to do strtol() here to get numeric value */
 	if (t->type == JSMN_PRIMITIVE) {
-		if(strstr(js_sv, "data"))
+		if(_fstrstr(js_sv, "data"))
 		{
 			/*
 				here we should recursivly call dump again here to skip over the array until we get the facking width of the map.
@@ -44,7 +44,7 @@ int dump(const char huge *js, jsmntok_t huge *t, size_t count, int indent, char 
 			#endif
 		}
 		else
-		if(strstr(js_sv, "height"))
+		if(_fstrstr(js_sv, "height"))
 		{
 //----			map->height = (unsigned int)strtol(js+t->start, (char **)js+t->end, 10);
 			map->height = atoi((const char *)js+t->start);
@@ -52,7 +52,7 @@ int dump(const char huge *js, jsmntok_t huge *t, size_t count, int indent, char 
 			fprintf(stdout, "indent= [%d]	", indent);
 			fprintf(stdout, "h:[%d]\n", map->height);
 			#endif
-		}else if(strstr(js_sv, "width"))
+		}else if(_fstrstr(js_sv, "width"))
 		{
 //----			map->width = (unsigned int)strtol(js+t->start, (char **)js+t->end, 10);
 			map->width = atoi((const char *)js+t->start);
@@ -82,17 +82,19 @@ int dump(const char huge *js, jsmntok_t huge *t, size_t count, int indent, char 
 			map->tiles->tileWidth = 16;
 			map->tiles->rows = 1;
 			map->tiles->cols = 1;
-			strcpy(js_sv, "data");//strdup(js+t->start);//, t->end - t->start);
+			_fstrcpy(js_sv, "data");//strdup(js+t->start);//, t->end - t->start);
 		}
 		else
 		if (jsoneq(js, t, "height") == 0 && indent<=1)
 		{
-			strcpy(js_sv, "height");//strdup(js+t->start);//, t->end - t->start);
+			fprintf(stdout, "height\n");
+			_fstrcpy(js_sv, "height");//strdup(js+t->start);//, t->end - t->start);
 		}else
 		if(jsoneq(js, t, "width") == 0 && indent<=1)
 		{
-			strcpy(js_sv, "width");//strdup(js+t->start);//, t->end - t->start);
-		}else strcpy(js_sv, "\0");
+			fprintf(stdout, "width\n");
+			_fstrcpy(js_sv, "width");//strdup(js+t->start);//, t->end - t->start);
+		}else _fstrcpy(js_sv, "\0");
 		return 1;
 	} else if (t->type == JSMN_OBJECT) {
 		//fprintf(stdout, "\n");
@@ -196,8 +198,8 @@ again:
 		} else {
 			printf("js=%Fp\n", (js));
 			printf("*js=%Fp\n", (*(js)));
-			printf("&*js=%s\n", &(*(js)));
-			printf("&buf=[%Fp]\n", &buf);
+			//printf("&*js=%s\n", &(*(js)));
+			//printf("&buf=[%Fp]\n", &buf);
 			//printf("&buf_seg=[%x]\n", FP_SEG(&buf));
 			//printf("&buf_off=[%x]\n", FP_OFF(&buf));
 			//printf("&buf_fp=[%Fp]\n", MK_FP(FP_SEG(&buf), FP_OFF(&buf)));

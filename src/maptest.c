@@ -1,7 +1,7 @@
 #include "src/lib/mapread.h"
 
 #define DUMP
-//#define DUMP_MAP
+#define DUMP_MAP
 
 void
 main(int argc, char *argv[])
