@@ -1,7 +1,7 @@
 #include <conio.h>
 #include "src/lib/mapread.h"
 
-#define DUMP
+//#define DUMP
 //#define DUMP_MAP
 
 void

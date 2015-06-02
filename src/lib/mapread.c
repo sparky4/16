@@ -9,8 +9,9 @@ int jsoneq(const char huge *json, jsmntok_t huge *tok, const char huge *s) {
 }
 
 //this function is quite messy ^^; sorry! it is a quick and dirty fix~
-int dump(const char huge *js, jsmntok_t huge *t, size_t count, int indent, char *js_sv, map_t huge *map, int q) {
-	int i, j, k;
+word dump(const char huge *js, jsmntok_t huge *t, size_t count, word indent, char *js_sv, map_t *map, unsigned long q) {
+	unsigned long i;
+	word j;//, k;
 	bitmap_t bp;
 	#ifdef DEBUG_JS
 	if(indent==0)
@@ -20,6 +21,8 @@ int dump(const char huge *js, jsmntok_t huge *t, size_t count, int indent, char 
 	}
 	#endif
 	#ifdef DEBUG_DUMPVARS
+	fprintf(stdout, "t->size=[%d]	", t->size);
+	fprintf(stdout, "q=[%d]	", q);
 	fprintf(stdout, "indent= [%d]	", indent);
 	fprintf(stdout, "js_sv= [%s]\n", js_sv);
 	#endif
@@ -27,6 +30,7 @@ int dump(const char huge *js, jsmntok_t huge *t, size_t count, int indent, char 
 		return 0;
 	}
 	/* We may want to do strtol() here to get numeric value */
+//0000fprintf(stderr, "t->type=%d\n", t->type);
 	if (t->type == JSMN_PRIMITIVE) {
 		if(_fstrstr(js_sv, "data"))
 		{
@@ -122,7 +126,7 @@ int dump(const char huge *js, jsmntok_t huge *t, size_t count, int indent, char 
 int loadmap(char *mn, map_t *map)
 {
 	int r;
-	static int incr=0;
+	static word incr=0;
 	int eof_expected = 0;
 	char huge *js = NULL;
 	size_t jslen = 0;
@@ -140,6 +144,7 @@ int loadmap(char *mn, map_t *map)
 	jsmn_init(&p);
 
 	/* Allocate some tokens as a start */
+//0000fprintf(stderr, "tok malloc\n");
 	tok = _fmalloc(sizeof(*tok) * tokcount);
 	if (tok == NULL) {
 		fprintf(stderr, "malloc(): errno=%d\n", errno);
@@ -148,6 +153,7 @@ int loadmap(char *mn, map_t *map)
 
 	for (;;) {
 		/* Read another chunk */
+//0000fprintf(stderr, "read\n");
 		r = fread(buf, 1, sizeof(buf), fh);
 		if (r < 0) {
 			fprintf(stderr, "fread(): %d, errno=%d\n", r, errno);
@@ -161,6 +167,8 @@ int loadmap(char *mn, map_t *map)
 				return 2;
 			}
 		}
+//0000fprintf(stdout, "r=	[%d]	BUFSIZ=%d\n", r, BUFSIZ);
+//0000fprintf(stderr, "js alloc~\n");
 		js = _frealloc(js, jslen + r + 1);
 		if (js == NULL) {
 			fprintf(stderr, "*js=%Fp\n", *js);
@@ -171,10 +179,13 @@ int loadmap(char *mn, map_t *map)
 		jslen = jslen + r;
 
 again:
+//fprintf(stdout, "	parse~ tok=%zu	jslen=%zu	r=%d	_memavl()=%u	BUFSIZ=%d~\n", tokcount, jslen, r, _memavl(), BUFSIZ);
 		r = jsmn_parse(&p, js, jslen, tok, tokcount);
+//0000fprintf(stdout, "r=	[%d]\n", r);
 		if (r < 0) {
 			if (r == JSMN_ERROR_NOMEM) {
 				tokcount = tokcount * 2;
+//0000fprintf(stderr, "tok realloc~ %zu\n", tokcount);
 				tok = _frealloc(tok, sizeof(*tok) * tokcount);
 				if (tok == NULL) {
 					fprintf(stderr, "realloc(): errno=%d\n", errno);

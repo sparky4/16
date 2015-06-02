@@ -11,7 +11,7 @@
 #include "src/lib/lib_head.h"
 
 //#define DEBUG_MAPDATA
-#define DEBUG_MAPVAR
+//#define DEBUG_MAPVAR
 //#define DEBUG_DUMPVARS
 //#define DEBUG_JS
 
@@ -31,7 +31,7 @@ typedef struct {
 } map_t;
 
 int jsoneq(const char huge *json, jsmntok_t huge *tok, const char huge *s);
-int dump(const char huge *js, jsmntok_t huge *t, size_t count, int indent, char *js_sv, map_t huge *map, int q);
+word dump(const char huge *js, jsmntok_t huge *t, size_t count, word indent, char *js_sv, map_t *map, unsigned long q);
 int loadmap(char *mn, map_t *map);
 
 #endif/*_LIBMAPREAD_H_*/
