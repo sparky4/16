@@ -5,6 +5,8 @@
 #include "src/lib/planar.c"
 //====#include "src\lib\ems.c"
 
+//#define LOADDATA
+
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 
 /*typedef struct {
@@ -124,9 +126,11 @@ void main() {
 
 	/* create the map */
 //0000	printf("Total used @ before map load:			%zu\n", oldfreemem-GetFreeSize());
-//0000	fprintf(stderr, "testing~\n");
+	fprintf(stderr, "testing~\n");
+//#ifdef LOADDATA
 	loadmap("data/test.map", &map);
-//0000	fprintf(stderr, "yay map loaded~~\n");
+//#endif
+	fprintf(stderr, "yay map loaded~~\n");
 //----	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
 //----	initMap(&map);
@@ -139,12 +143,16 @@ void main() {
 	mappalptr = map.tiles->data->palette;
 	/* data */
 //0000	printf("Total used @ before image loading:		%zu\n", oldfreemem-GetFreeSize());
+#ifdef LOADDATA
 	ptmp = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
+#endif
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 	
 	/* create the planar buffer */
 //0000	printf("Total used @ before planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
+#ifdef LOADDATA
 	p = planar_buf_from_bitmap(&ptmp);
+#endif
 //0000	printf("Total used @ after planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
 
 	/*if(isEMS())
