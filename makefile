@@ -2,7 +2,7 @@
 #-zk0 = kanji support~
 #-zkl = current codepage
 
-CFLAGS=-zkl -zm -wo -x -mh# -zdp# -zp16 -zq
+CFLAGS=-zkl -wo -x -mh# -zdp# -zp16 -zq
 OFLAGS=-ot -ox -ob -oh -or# -om -ol -ol+
 FLAGS=-0 -d2 $(OFLAGS) $(CFLAGS)
 REMOVECOMMAND=del

@@ -10,10 +10,10 @@
 #include "src/lib/modex16.h"
 #include "src/lib/lib_head.h"
 
-#define DEBUG_MAPDATA
-#define DEBUG_MAPVAR
-#define DEBUG_DUMPVARS
-#define DEBUG_JS
+//#define DEBUG_MAPDATA
+//#define DEBUG_MAPVAR
+//#define DEBUG_DUMPVARS
+//#define DEBUG_JS
 
 typedef struct {
 	bitmap_t *data;
