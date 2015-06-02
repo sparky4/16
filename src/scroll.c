@@ -123,7 +123,7 @@ void main() {
 //0000	printf("Total used @ before image loading:		%zu\n", oldfreemem-GetFreeSize());
 	ptmp = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
-	
+
 	/* create the planar buffer */
 //0000	printf("Total used @ before planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
 	p = planar_buf_from_bitmap(&ptmp);
