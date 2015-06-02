@@ -4,9 +4,74 @@ qqqqqqqq
 
 qqqqqqqq
 
+chkcolor start~
+1				(*z): 0
+1				(*i): 39
+wwwwwwwwwwwwwwww
+!!					a[30]: 0
+!!					a[31]: 11
+!!					a[38]: 28
+wwwwwwwwwwwwwwww
+2				(*z): 39
+2				(*i): 39
+chkcolor end~
+p[]=0	qp=90	p[]-qp=90
+p[]=1	qp=90	p[]-qp=91
+p[]=2	qp=90	p[]-qp=92
+		90's color=3
+		91's color=3
+		92's color=3
+
+qqqqqqqq
+
+p[]=0	qp=93	p[]-qp=93
+p[]=1	qp=93	p[]-qp=94
+p[]=2	qp=93	p[]-qp=95
+p[]=3	qp=93	p[]-qp=96
+p[]=4	qp=93	p[]-qp=97
+p[]=5	qp=93	p[]-qp=98
+		93's color=39
+		94's color=39
+		95's color=39
+
+qqqqqqqq
+
+p[]=0	qp=114	p[]-qp=114
+p[]=1	qp=114	p[]-qp=115
+p[]=2	qp=114	p[]-qp=116
+p[]=3	qp=114	p[]-qp=117
+p[]=4	qp=114	p[]-qp=118
+p[]=5	qp=114	p[]-qp=119
+p[]=6	qp=114	p[]-qp=120
+p[]=7	qp=114	p[]-qp=121
+p[]=8	qp=114	p[]-qp=122
+p[]=9	qp=114	p[]-qp=123
+p[]=10	qp=114	p[]-qp=124
+p[]=11	qp=114	p[]-qp=125
+p[]=12	qp=114	p[]-qp=126
+p[]=13	qp=114	p[]-qp=127
+p[]=14	qp=114	p[]-qp=128
+p[]=15	qp=114	p[]-qp=129
+p[]=16	qp=114	p[]-qp=130
+p[]=17	qp=114	p[]-qp=131
+p[]=18	qp=114	p[]-qp=132
+p[]=19	qp=114	p[]-qp=133
+p[]=20	qp=114	p[]-qp=134
+p[]=21	qp=114	p[]-qp=135
+p[]=22	qp=114	p[]-qp=136
+p[]=23	qp=114	p[]-qp=137
+p[]=24	qp=114	p[]-qp=138
+p[]=25	qp=114	p[]-qp=139
+p[]=26	qp=114	p[]-qp=140
+		114's color=111
+		115's color=111
+		116's color=111
+
+qqqqqqqq
+
 
 ====
-0	paloffset=	10
+0	paloffset=	38
 ====
 
 i=1
@@ -661,9 +726,9 @@ player.tx: 10		player.ty: 8
 player.triggx: 10	player.triggy: 9
 player.hp: 4	player.q: 1	player.d: 0
 tile data value at player trigger position: 0
-palette offset:	10
-Total used: 32328
-Total free: 25816
+palette offset:	38
+Total used: 51566
+Total free: 6562
 temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867
 temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385
 Screen: 352x280

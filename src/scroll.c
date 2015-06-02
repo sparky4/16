@@ -1,30 +1,10 @@
 #include "src/lib/dos_kb.h"
 #include "src/lib/mapread.h"
-//#include "16\lib\x\modex.h"
 #include "src/lib/wtest/wtest.c"
 #include "src/lib/planar.c"
 //====#include "src\lib\ems.c"
 
-//#define LOADDATA
-
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
-
-/*typedef struct {
-	bitmap_t *data;
-	word tileHeight;
-	word tileWidth;
-	unsigned int rows;
-	unsigned int cols;
-} tiles_t;
-
-
-typedef struct {
-	byte	*data;
-	tiles_t *tiles;
-	int width;
-	int height;
-} map_t;*/
-
 
 typedef struct {
 	map_t *map;
@@ -72,8 +52,8 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword
 //place holder definitions
 //#define MAPX 200
 //#define MAPY 150
-#define TRIGGX 10
-#define TRIGGY 9
+//#define TRIGGX 10
+//#define TRIGGY 9
 
 void main() {
 	size_t oldfreemem=GetFreeSize();
@@ -126,11 +106,9 @@ void main() {
 
 	/* create the map */
 //0000	printf("Total used @ before map load:			%zu\n", oldfreemem-GetFreeSize());
-//0000	#ifdef LOADDATA
 //0000	fprintf(stderr, "testing~\n");
 	loadmap("data/test.map", &map);
 //0000	fprintf(stderr, "yay map loaded~~\n");
-//0000	#endif
 //----	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
 //----	initMap(&map);
@@ -143,16 +121,12 @@ void main() {
 	mappalptr = map.tiles->data->palette;
 	/* data */
 //0000	printf("Total used @ before image loading:		%zu\n", oldfreemem-GetFreeSize());
-#ifdef LOADDATA
 	ptmp = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
-#endif
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 	
 	/* create the planar buffer */
 //0000	printf("Total used @ before planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
-#ifdef LOADDATA
 	p = planar_buf_from_bitmap(&ptmp);
-#endif
 //0000	printf("Total used @ after planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
 
 	/*if(isEMS())
