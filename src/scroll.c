@@ -126,11 +126,11 @@ void main() {
 
 	/* create the map */
 //0000	printf("Total used @ before map load:			%zu\n", oldfreemem-GetFreeSize());
+//0000	#ifdef LOADDATA
 	fprintf(stderr, "testing~\n");
-//#ifdef LOADDATA
 	loadmap("data/test.map", &map);
-//#endif
 	fprintf(stderr, "yay map loaded~~\n");
+//0000	#endif
 //----	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
 //----	initMap(&map);
