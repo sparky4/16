@@ -184,7 +184,8 @@ again:
 /*
 		I think it crashes on the line below when it tries to parse the data of huge maps... wwww this is a jsmn problem wwww
 */
-//++++		r = jsmn_parse(&p, js, jslen, tok, tokcount);
+//++++		
+		r = jsmn_parse(&p, js, jslen, tok, tokcount);
 //0000fprintf(stdout, "r=	[%d]\n", r);
 		if (r < 0) {
 			if (r == JSMN_ERROR_NOMEM) {
@@ -212,7 +213,8 @@ again:
 			#ifdef DEBUG_DUMPVARS
 			fprintf(stdout, "running dump~\n");
 			#endif
-//++++			dump(js, tok, p.toknext, incr, &js_ss, map, 0);
+//++++
+			dump(js, tok, p.toknext, incr, &js_ss, map, 0);
 			eof_expected = 1;
 		}
 	}
