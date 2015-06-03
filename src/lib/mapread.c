@@ -77,8 +77,8 @@ word dump(const char huge *js, jsmntok_t huge *t, size_t count, word indent, cha
 			map->tiles = /*_f*/malloc(sizeof(tiles_t));
 			//map->tiles->data = malloc(sizeof(bitmap_t));
 			//fix this to be far~
-			bp = bitmapLoadPcx("data/ed.pcx");
-			map->tiles->data = &bp;
+//++++			bp = bitmapLoadPcx("data/ed.pcx");
+//++++			map->tiles->data = &bp;
 			//map->tiles->data->data = malloc((16/**2*/)*16);
 			//map->tiles->data->width = (16/**2*/);
 			//map->tiles->data->height= 16;
