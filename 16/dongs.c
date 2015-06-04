@@ -20,7 +20,7 @@
 void
 main(int argc, char *argv[])
 {
-	long huge dongs[1337];
+	long huge *dongs[1337];
 	fprintf(stdout, "argv[0]=%Fp\n", argv[0]);
 	fprintf(stdout, "dongs=%Fp\n", dongs[0]);
 	//fprintf(stdout, "%d\n", sizeof(dongs));
