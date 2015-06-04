@@ -201,7 +201,7 @@ again:
 		} else {
 			//printf("js=%Fp\n", (js));
 			//printf("*js=%Fp\n", (*(js)));
-			printf("&*js=%s\n", &(*(js)));
+			//printf("&*js=%s\n", &(*(js)));
 			//printf("&buf=[%Fp]\n", &buf);
 			//printf("&buf_seg=[%x]\n", FP_SEG(&buf));
 			//printf("&buf_off=[%x]\n", FP_OFF(&buf));
