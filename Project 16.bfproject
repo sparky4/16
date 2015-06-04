@@ -3,7 +3,7 @@ e2c.convert_num: 0
 openfiles: /dos/z/16/doc/project.txt:138:0:0:
 openfiles: /dos/z/16/src/palettec.c:179:0:0:
 openfiles: /dos/z/16/src/pcxtest.c:504:0:0:
-openfiles: /dos/z/16/src/scroll.c:3723:3241:0:
+openfiles: /dos/z/16/src/scroll.c:3841:2952:0:
 openfiles: /dos/z/16/src/test.c:0:0:0:
 openfiles: /dos/z/16/src/test2.c:0:0:0:
 openfiles: /dos/z/16/src/lib/planar.h:0:0:0:
@@ -14,8 +14,10 @@ openfiles: /dos/z/16/src/lib/dos_kb.c:0:0:0:
 openfiles: /dos/z/16/src/lib/dos_kb.h:0:0:0:
 openfiles: /dos/z/16/src/lib/modex16.c:444:0:0:
 openfiles: /dos/z/16/src/lib/modex16.h:0:0:0:
-openfiles: /dos/z/16/src/lib/mapread.c:2209:1453:1:
-openfiles: /dos/z/16/src/lib/mapread.h:0:23:0:
+openfiles: /dos/z/16/src/lib/mapread.c:6535:5770:0:
+openfiles: /dos/z/16/src/lib/mapread.h:285:23:0:
+openfiles: /dos/z/16/src/lib/jsmn/jsmn.c:0:0:0:
+openfiles: /dos/z/16/src/lib/jsmn/jsmn.h:0:0:1:
 openfiles: /dos/z/16/src/lib/types.h:0:0:0:
 snr_recursion_level: 0
 convertcolumn_horizontally: 0
@@ -28,7 +30,7 @@ view_left_panel: 0
 default_mime_type: text/plain
 e2c.convert_xml: 1
 c2e.convert_iso: 0
-opendir: file:///dos/z/16/src/lib
+opendir: file:///dos/z/16/src/lib/jsmn
 wrap_text_default: 0
 bookmarks_filename_mode: 1
 snr_casesens: 0
@@ -72,8 +74,10 @@ recent_files: file:///dos/z/16/src/lib/modex16.h
 recent_files: file:///dos/z/16/src/lib/modex16.c
 recent_files: file:///dos/z/16/src/lib/mapread.h
 recent_files: file:///dos/z/16/src/lib/mapread.c
+recent_files: file:///dos/z/16/src/lib/jsmn/jsmn.c
+recent_files: file:///dos/z/16/src/lib/jsmn/jsmn.h
 snr_replacetype: 0
-savedir: file:///dos/z/16/src
+savedir: file:///dos/z/16/src/lib
 spell_check_default: 1
 spell_insert_entities: 0
 last_filefilter: 
