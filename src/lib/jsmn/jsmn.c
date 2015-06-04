@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>	//fprintf for noisy debugging wwww
 
 #include "jsmn.h"
 
@@ -150,16 +151,20 @@ static jsmnerr_t jsmn_parse_string(jsmn_parser huge *parser, const char huge *js
 /**
  * Parse JSON string and fill tokens.
  */
-jsmnerr_t jsmn_parse(jsmn_parser *parser, const char huge *js, size_t len,
+jsmnerr_t jsmn_parse(jsmn_parser huge *parser, const char huge *js, size_t len,
 		jsmntok_t huge *tokens, unsigned int num_tokens) {
 	jsmnerr_t r;
 	int i;
 	jsmntok_t huge *token;
 	int count = 0;
+	//static unsigned long pee=0;
 
 	for (; parser->pos < len && js[parser->pos] != '\0'; parser->pos++) {
 		char c;
 		jsmntype_t type;
+
+//fprintf(stdout, "pee=%lu	count=%u	i=%d	nt=%u\n", pee, count, i, num_tokens);
+//pee++;
 
 		c = js[parser->pos];
 		switch (c) {
@@ -303,7 +308,7 @@ jsmnerr_t jsmn_parse(jsmn_parser *parser, const char huge *js, size_t len,
  * Creates a new parser based over a given  buffer with an array of tokens
  * available.
  */
-void jsmn_init(jsmn_parser *parser) {
+void jsmn_init(jsmn_parser huge *parser) {
 	parser->pos = 0;
 	parser->toknext = 0;
 	parser->toksuper = -1;
