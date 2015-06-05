@@ -10,8 +10,9 @@ DIRSEP=\
 SRC=src$(DIRSEP)
 SRCLIB=$(SRC)lib$(DIRSEP)
 JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
+EXMMLIB=$(SRCLIB)exmm$(DIRSEP)
 
-all: test.exe pcxtest.exe test2.exe scroll.exe maptest.exe maptest0.exe
+all: test.exe pcxtest.exe test2.exe scroll.exe maptest.exe maptest0.exe far.exe emmtest.exe
 
 scroll.exe: scroll.obj modex16.obj dos_kb.obj bitmap.obj mapread.obj jsmn.obj lib_head.obj
 	wcl $(FLAGS) scroll.obj modex16.obj dos_kb.obj bitmap.obj mapread.obj jsmn.obj lib_head.obj# 16/lib/x/modex.lib
@@ -32,6 +33,13 @@ maptest.exe: maptest.obj mapread.obj jsmn.obj modex16.obj bitmap.obj lib_head.ob
 maptest0.exe: maptest0.obj mapread.obj jsmn.obj modex16.obj bitmap.obj lib_head.obj
 	wcl $(FLAGS) maptest0.obj mapread.obj jsmn.obj modex16.obj bitmap.obj lib_head.obj
 
+emmtest.exe: emmtest.obj memory.obj
+	wcl $(FLAGS) emmtest.obj memory.obj
+
+far.exe: far.obj memory.obj
+	wcl $(FLAGS) far.obj memory.obj
+
+
 test.obj: $(SRC)test.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)test.c
 
@@ -46,6 +54,12 @@ maptest.obj: $(SRC)maptest.c $(SRCLIB)modex16.h
 
 maptest0.obj: $(SRC)maptest0.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)maptest0.c
+
+emmtest.obj: $(SRC)emmtest.c
+	wcl $(FLAGS) -c $(SRC)emmtest.c
+
+far.obj: $(SRC)far.c
+	wcl $(FLAGS) -c $(SRC)far.c
 
 
 modex16.obj: $(SRCLIB)modex16.h $(SRCLIB)modex16.c
@@ -68,6 +82,9 @@ lib_head.obj: $(SRCLIB)lib_head.h $(SRCLIB)lib_head.c
 
 jsmn.obj: $(JSMNLIB)jsmn.h $(JSMNLIB)jsmn.c
 	wcl $(FLAGS) -c $(JSMNLIB)jsmn.c
+
+memory.obj: $(EXMMLIB)memory.h $(EXMMLIB)memory.c
+	wcl $(FLAGS) -c $(EXMMLIB)memory.c
 
 clean: .symbolic
 #	@$(REMOVECOMMAND) *.obj

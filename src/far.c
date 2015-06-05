@@ -2,7 +2,7 @@
 #include <conio.h>
 //#include <limits.h>
 
-#include "memory.h"
+#include "src/lib/exmm/memory.h"
 
 int main(int argc, char *argv[])
 {

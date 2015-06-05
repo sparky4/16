@@ -19,8 +19,8 @@
 #include <mem.h>
 #include <conio.h>
 
-#include "memory.h"
-#include "../types.h"
+#include "src/lib/exmm/memory.h"
+#include "src/lib/types.h"
 
 #define PEMMDATAPAGENUM	4
 
