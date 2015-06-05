@@ -68,7 +68,7 @@ void jsmn_init(jsmn_parser huge *parser);
  * a single JSON object.
  */
 jsmnerr_t jsmn_parse(jsmn_parser huge *parser, const char huge *js, size_t len,
-		jsmntok_t huge *tokens, unsigned num_tokens);
+		jsmntok_t huge *tokens, unsigned int num_tokens);
 
 #ifdef __cplusplus
 }
