@@ -106,9 +106,9 @@ void main() {
 
 	/* create the map */
 //0000	printf("Total used @ before map load:			%zu\n", oldfreemem-GetFreeSize());
-//0000	fprintf(stderr, "testing~\n");
-	loadmap("data/test.map", &map);
-//0000	fprintf(stderr, "yay map loaded~~\n");
+	fprintf(stderr, "testing~\n");
+//++++	loadmap("data/test.map", &map);
+	fprintf(stderr, "yay map loaded~~\n");
 //----	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
 //----	initMap(&map);
@@ -121,12 +121,12 @@ void main() {
 	mappalptr = map.tiles->data->palette;
 	/* data */
 //0000	printf("Total used @ before image loading:		%zu\n", oldfreemem-GetFreeSize());
-	//++++ptmp = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
+	ptmp = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 
 	/* create the planar buffer */
 //0000	printf("Total used @ before planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
-//++++	p = planar_buf_from_bitmap(&ptmp);
+	p = planar_buf_from_bitmap(&ptmp);
 //0000	printf("Total used @ after planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
 
 	/*if(isEMS())
