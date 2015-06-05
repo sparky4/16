@@ -12,8 +12,11 @@ SRCLIB=$(SRC)lib$(DIRSEP)
 JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
 EXMMLIB=$(SRCLIB)exmm$(DIRSEP)
 
-all: test.exe pcxtest.exe test2.exe scroll.exe maptest.exe maptest0.exe fartest.exe emmtest.exe
+all: test.exe pcxtest.exe test2.exe scroll.exe maptest.exe maptest0.exe fartest.exe emmtest.exe fmemtest.exe
 
+#
+#executables
+#
 scroll.exe: scroll.obj modex16.obj dos_kb.obj bitmap.obj mapread.obj jsmn.obj lib_head.obj
 	wcl $(FLAGS) scroll.obj modex16.obj dos_kb.obj bitmap.obj mapread.obj jsmn.obj lib_head.obj# 16/lib/x/modex.lib
 scroll.obj: $(SRC)scroll.c
@@ -39,7 +42,12 @@ emmtest.exe: emmtest.obj memory.obj
 fartest.exe: fartest.obj memory.obj
 	wcl $(FLAGS) fartest.obj memory.obj
 
+fmemtest.exe: fmemtest.obj# memory.obj
+	wcl $(FLAGS) fmemtest.obj# memory.obj
 
+#
+#executable's objects
+#
 test.obj: $(SRC)test.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)test.c
 
@@ -61,7 +69,12 @@ emmtest.obj: $(SRC)emmtest.c
 fartest.obj: $(SRC)fartest.c
 	wcl $(FLAGS) -c $(SRC)fartest.c
 
+fmemtest.obj: $(SRC)fmemtest.c
+	wcl $(FLAGS) -c $(SRC)fmemtest.c
 
+#
+#non executable objects libraries
+#
 modex16.obj: $(SRCLIB)modex16.h $(SRCLIB)modex16.c
 	wcl $(FLAGS) -c $(SRCLIB)modex16.c
 
@@ -86,6 +99,9 @@ jsmn.obj: $(JSMNLIB)jsmn.h $(JSMNLIB)jsmn.c
 memory.obj: $(EXMMLIB)memory.h $(EXMMLIB)memory.c
 	wcl $(FLAGS) -c $(EXMMLIB)memory.c
 
+#
+#other~
+#
 clean: .symbolic
 #	@$(REMOVECOMMAND) *.obj
 	@$(REMOVECOMMAND) *.OBJ

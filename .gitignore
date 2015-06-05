@@ -10,6 +10,7 @@
 FUCK
 *.err
 *.ERR
+makefile~
 !boop.sh
 img
 !.git/config

@@ -4,9 +4,9 @@ openfiles: /dos/z/16/doc/project.txt:138:0:0:
 openfiles: /dos/z/16/src/palettec.c:179:0:0:
 openfiles: /dos/z/16/src/pcxtest.c:1431:2127:0:
 openfiles: /dos/z/16/src/scroll.c:3841:2952:0:
-openfiles: /dos/z/16/src/fmemtest.c:415:0:0:
+openfiles: /dos/z/16/src/fmemtest.c:150:0:0:
 openfiles: /dos/z/16/src/emmtest.c:732:160:0:
-openfiles: /dos/z/16/src/fartest.c:948:0:0:
+openfiles: /dos/z/16/src/emsdump.c:456:0:0:
 openfiles: /dos/z/16/src/maptest.c:69:0:0:
 openfiles: /dos/z/16/src/maptest0.c:253:85:0:
 openfiles: /dos/z/16/src/test.c:0:0:0:
@@ -23,11 +23,11 @@ openfiles: /dos/z/16/src/lib/mapread.c:4790:4435:0:
 openfiles: /dos/z/16/src/lib/mapread.h:285:23:0:
 openfiles: /dos/z/16/src/lib/jsmn/jsmn.c:4073:3697:0:
 openfiles: /dos/z/16/src/lib/jsmn/jsmn.h:1635:826:0:
-openfiles: /dos/z/16/src/lib/exmm/memory.c:496:0:1:
+openfiles: /dos/z/16/src/lib/exmm/memory.c:496:0:0:
 openfiles: /dos/z/16/src/lib/exmm/memory.h:0:0:0:
 openfiles: /dos/z/16/src/lib/exmm/emmsize.h:0:0:0:
 openfiles: /dos/z/16/src/lib/exmm/emmret.h:0:0:0:
-openfiles: /dos/z/16/makefile:143:0:0:
+openfiles: /dos/z/16/makefile:2267:2340:1:
 openfiles: /dos/z/16/src/lib/types.h:165:0:0:
 snr_recursion_level: 0
 convertcolumn_horizontally: 0

@@ -12,7 +12,7 @@ SRCLIB=$(SRC)lib$(DIRSEP)
 JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
 EXMMLIB=$(SRCLIB)exmm$(DIRSEP)
 
-all: test.exe pcxtest.exe test2.exe scroll.exe maptest.exe maptest0.exe fartest.exe emmtest.exe fmemtest.exe
+all: test.exe pcxtest.exe test2.exe scroll.exe maptest.exe maptest0.exe emsdump.exe emmtest.exe fmemtest.exe
 
 #
 #executables
@@ -39,8 +39,11 @@ maptest0.exe: maptest0.obj mapread.obj jsmn.obj modex16.obj bitmap.obj lib_head.
 emmtest.exe: emmtest.obj memory.obj
 	wcl $(FLAGS) emmtest.obj memory.obj
 
-fartest.exe: fartest.obj memory.obj
-	wcl $(FLAGS) fartest.obj memory.obj
+emsdump.exe: emsdump.obj memory.obj
+	wcl $(FLAGS) emsdump.obj memory.obj
+
+fmemtest.exe: fmemtest.obj# memory.obj
+	wcl $(FLAGS) fmemtest.obj# memory.obj
 
 #
 #executable's objects
@@ -63,8 +66,8 @@ maptest0.obj: $(SRC)maptest0.c $(SRCLIB)modex16.h
 emmtest.obj: $(SRC)emmtest.c
 	wcl $(FLAGS) -c $(SRC)emmtest.c
 
-fartest.obj: $(SRC)fartest.c
-	wcl $(FLAGS) -c $(SRC)fartest.c
+emsdump.obj: $(SRC)emsdump.c
+	wcl $(FLAGS) -c $(SRC)emsdump.c
 
 fmemtest.obj: $(SRC)fmemtest.c
 	wcl $(FLAGS) -c $(SRC)fmemtest.c
