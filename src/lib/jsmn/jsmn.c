@@ -157,14 +157,14 @@ jsmnerr_t jsmn_parse(jsmn_parser huge *parser, const char huge *js, size_t len,
 	int i;
 	jsmntok_t huge *token;
 	int count = 0;
-	//static unsigned long pee=0;
+	static unsigned long pee=0;
 
 	for (; parser->pos < len && js[parser->pos] != '\0'; parser->pos++) {
 		char c;
 		jsmntype_t type;
 
-//fprintf(stdout, "pee=%lu	count=%u	i=%d	nt=%u\n", pee, count, i, num_tokens);
-//pee++;
+fprintf(stdout, "pee=%lu	count=%u	i=%d	nt=%u\n", pee, count, i, num_tokens);
+pee++;
 
 		c = js[parser->pos];
 		switch (c) {
