@@ -875,7 +875,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y) {
 	{
 	rx = (((i-1) % ((t->data->width)/t->tileWidth)) * t->tileWidth);
 	ry = (((i-1) / ((t->data->height)/t->tileHeight)) * t->tileHeight);
-	printf("i=%d\n", i);
+////0000	printf("i=%d\n", i);
 	//mxPutTile(t->data, x, y, t->tileWidth, t->tileHeight);
 	modexDrawBmpRegion(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
 	}
