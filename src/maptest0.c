@@ -19,7 +19,7 @@ main(int argc, char *argv[])
 	getch();
 
 	fprintf(stderr, "loading~\n\n");
-	loadmap("data/test.map", &map);
+	loadmap("data/tes0.map", &map);
 	fprintf(stderr, "\nokies~\n");
 	#ifdef DUMP
 	fprintf(stdout, "map.width=	%d\n", map.width);
