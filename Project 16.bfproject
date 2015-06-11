@@ -17,15 +17,19 @@ openfiles: /dos/z/16/src/lib/bitmap.c:0:0:0:
 openfiles: /dos/z/16/src/lib/bitmap.h:453:0:0:
 openfiles: /dos/z/16/src/lib/dos_kb.c:0:0:0:
 openfiles: /dos/z/16/src/lib/dos_kb.h:0:0:0:
-openfiles: /dos/z/16/src/lib/modex16.c:444:0:0:
-openfiles: /dos/z/16/src/lib/modex16.h:0:0:0:
-openfiles: /dos/z/16/src/lib/mapread.c:4790:4435:0:
-openfiles: /dos/z/16/src/lib/mapread.h:285:0:0:
-openfiles: /dos/z/16/src/lib/exmm/memory.c:496:0:0:
+openfiles: /dos/z/16/src/lib/modex16.c:148:0:0:
+openfiles: /dos/z/16/src/lib/modex16.h:445:0:0:
+openfiles: /dos/z/16/src/lib/mapread.c:2673:1807:1:
+openfiles: /dos/z/16/src/lib/mapread.h:584:0:0:
+openfiles: /dos/z/16/src/lib/fmapread.c:863:0:0:
+openfiles: /dos/z/16/src/lib/fmapread.h:519:0:0:
+openfiles: /dos/z/16/src/lib/exmm/memory.c:308:99:0:
 openfiles: /dos/z/16/src/lib/exmm/memory.h:0:0:0:
 openfiles: /dos/z/16/src/lib/exmm/emmsize.h:0:0:0:
 openfiles: /dos/z/16/src/lib/exmm/emmret.h:0:0:0:
-openfiles: /dos/z/16/makefile:3079:248:1:
+openfiles: /dos/z/16/src/lib/jsmn/farjsmn.c:85:0:0:
+openfiles: /dos/z/16/src/lib/jsmn/farjsmn.h:1693:0:0:
+openfiles: /dos/z/16/makefile:1505:1021:0:
 openfiles: /dos/z/16/src/lib/types.h:165:0:0:
 snr_recursion_level: 0
 convertcolumn_horizontally: 0
@@ -38,10 +42,10 @@ view_left_panel: 0
 default_mime_type: text/plain
 e2c.convert_xml: 1
 c2e.convert_iso: 0
-opendir: file:///dos/z/16/src/lib
+opendir: file:///dos/z/16/src/lib/jsmn
 wrap_text_default: 0
 bookmarks_filename_mode: 1
-ssearch_text: fprintf
+ssearch_text: huge
 snr_casesens: 0
 view_blocks: 1
 name: Project 16
@@ -86,21 +90,25 @@ recent_files: file:///dos/z/16/src/lib/planar.h
 recent_files: file:///dos/z/16/src/lib/PLANAR.C
 recent_files: file:///dos/z/16/src/lib/dos_kb.c
 recent_files: file:///dos/z/16/src/lib/dos_kb.h
-recent_files: file:///dos/z/16/src/lib/mapread.h
 recent_files: file:///dos/z/16/src/lib/bitmap.c
 recent_files: file:///dos/z/16/src/lib/bitmap.h
 recent_files: file:///dos/z/16/src/lib/modex16.h
 recent_files: file:///dos/z/16/src/lib/modex16.c
 recent_files: file:///dos/z/16/src/lib/jsmn/jsmn.c
-recent_files: file:///dos/z/16/src/lib/mapread.c
 recent_files: file:///dos/z/16/src/lib/jsmn/jsmn.h
 recent_files: file:///dos/z/16/src/lib/exmm/emmsize.h
 recent_files: file:///dos/z/16/src/lib/exmm/emmret.h
 recent_files: file:///dos/z/16/src/lib/exmm/memory.h
 recent_files: file:///dos/z/16/src/lib/types.h
 recent_files: file:///dos/z/16/src/lib/exmm/memory.c
+recent_files: file:///dos/z/16/src/lib/mapread.c
+recent_files: file:///dos/z/16/src/lib/mapread.h
+recent_files: file:///dos/z/16/src/lib/fmapread.c
+recent_files: file:///dos/z/16/src/lib/fmapread.h
+recent_files: file:///dos/z/16/src/lib/jsmn/farjsmn.c
+recent_files: file:///dos/z/16/src/lib/jsmn/farjsmn.h
 snr_replacetype: 0
-savedir: file:///dos/z/16/src/lib/jsmn
+savedir: file:///dos/z/16/src/lib
 spell_check_default: 1
 spell_insert_entities: 0
 last_filefilter: 
@@ -110,8 +118,6 @@ snr_escape_chars: 0
 htmlbar_view: 0
 spell_lang: en
 ssearch_dotmatchall: 0
-searchlist: alloc(
-searchlist: alloc (
 searchlist: parse(
 searchlist: i
 searchlist: parser->toknext
@@ -125,6 +131,8 @@ searchlist: rhuge
 searchlist: huge
 searchlist: ++++
 searchlist: fprintf
+searchlist: far
+searchlist: huge
 autocomplete: 1
 outputb_show_all_output: 0
 bookmarks_show_mode: 0

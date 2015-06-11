@@ -72,7 +72,7 @@ void main() {
 	map_view_t mv, mv2, mv3;
 	map_view_t *bg, *spri, *mask;//, *tmp;
 	byte *dpal, *gpal;
-	byte huge *ptr;
+	byte *ptr;
 	byte *mappalptr;
 	actor_t player;
 	//actor_t npc0;

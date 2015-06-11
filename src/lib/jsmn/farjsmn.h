@@ -1,5 +1,5 @@
-#ifndef __JSMN_H_
-#define __JSMN_H_
+#ifndef __FARJSMN_H_
+#define __FARJSMN_H_
 
 #include <stddef.h>
 
@@ -74,4 +74,4 @@ jsmnerr_t jsmn_parse(jsmn_parser huge *parser, const char huge *js, size_t len,
 }
 #endif
 
-#endif /* __JSMN_H_ */
+#endif /* __FARJSMN_H_ */

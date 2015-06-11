@@ -75,7 +75,7 @@ bitmapLoadPcx(char *filename) {
     FILE *file;
     bitmap_t result;
     dword bufSize;
-    dword index;
+    int index;
     byte count, val;
 
     /* open the PCX file for reading */

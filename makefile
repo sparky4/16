@@ -2,6 +2,7 @@
 #-zk0 = kanji support~
 #-zkl = current codepage
 
+MFLAGS=-mh
 CFLAGS=-zkl -wo -x## -mc# -zdp# -zp16 -zq
 OFLAGS=-ot -ox -ob -oh -or# -om -ol -ol+
 FLAGS=-0 -d2 $(OFLAGS) $(CFLAGS)
@@ -33,17 +34,17 @@ pcxtest.exe: pcxtest.obj modex16.obj bitmap.obj lib_head.obj
 maptest.exe: maptest.obj mapread.obj jsmn.obj modex16.obj bitmap.obj lib_head.obj
 	wcl $(FLAGS) maptest.obj mapread.obj jsmn.obj modex16.obj bitmap.obj lib_head.obj
 
-maptest0.exe: maptest0.obj mapread.obj jsmn.obj modex16.obj bitmap.obj lib_head.obj
-	wcl $(FLAGS) maptest0.obj mapread.obj jsmn.obj modex16.obj bitmap.obj lib_head.obj
+maptest0.exe: maptest0.obj fmapread.obj farjsmn.obj# modex16.obj bitmap.obj lib_head.obj
+	wcl $(FLAGS) $(MFLAGS) maptest0.obj fmapread.obj farjsmn.obj# modex16.obj bitmap.obj lib_head.obj
 
 emmtest.exe: emmtest.obj memory.obj
-	wcl $(FLAGS) emmtest.obj memory.obj
+	wcl $(FLAGS) $(MFLAGS) emmtest.obj memory.obj
 
 emsdump.exe: emsdump.obj memory.obj
-	wcl $(FLAGS) emsdump.obj memory.obj
+	wcl $(FLAGS) $(MFLAGS) emsdump.obj memory.obj
 
 fmemtest.exe: fmemtest.obj# memory.obj
-	wcl $(FLAGS) fmemtest.obj# memory.obj
+	wcl $(FLAGS) $(MFLAGS) fmemtest.obj# memory.obj
 
 #
 #executable's objects
@@ -60,17 +61,17 @@ pcxtest.obj: $(SRC)pcxtest.c $(SRCLIB)modex16.h
 maptest.obj: $(SRC)maptest.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)maptest.c
 
-maptest0.obj: $(SRC)maptest0.c $(SRCLIB)modex16.h
-	wcl $(FLAGS) -c $(SRC)maptest0.c
+maptest0.obj: $(SRC)maptest0.c# $(SRCLIB)modex16.h
+	wcl $(FLAGS) $(MFLAGS) -c $(SRC)maptest0.c
 
 emmtest.obj: $(SRC)emmtest.c
-	wcl $(FLAGS) -c $(SRC)emmtest.c
+	wcl $(FLAGS) $(MFLAGS) -c $(SRC)emmtest.c
 
 emsdump.obj: $(SRC)emsdump.c
-	wcl $(FLAGS) -c $(SRC)emsdump.c
+	wcl $(FLAGS) $(MFLAGS) -c $(SRC)emsdump.c
 
 fmemtest.obj: $(SRC)fmemtest.c
-	wcl $(FLAGS) -c $(SRC)fmemtest.c
+	wcl $(FLAGS) $(MFLAGS) -c $(SRC)fmemtest.c
 
 #
 #non executable objects libraries
@@ -90,6 +91,9 @@ planar.obj: $(SRCLIB)planar.h $(SRCLIB)planar.c
 mapread.obj: $(SRCLIB)mapread.h $(SRCLIB)mapread.c
 	wcl $(FLAGS) -c $(SRCLIB)mapread.c
 
+fmapread.obj: $(SRCLIB)fmapread.h $(SRCLIB)fmapread.c
+	wcl $(FLAGS) $(MFLAGS) -c $(SRCLIB)fmapread.c
+
 lib_head.obj: $(SRCLIB)lib_head.h $(SRCLIB)lib_head.c
 	wcl $(FLAGS) -c $(SRCLIB)lib_head.c
 
@@ -97,10 +101,10 @@ jsmn.obj: $(JSMNLIB)jsmn.h $(JSMNLIB)jsmn.c
 	wcl $(FLAGS) -c $(JSMNLIB)jsmn.c
 
 farjsmn.obj: $(JSMNLIB)farjsmn.h $(JSMNLIB)farjsmn.c
-	wcl $(FLAGS) -c $(JSMNLIB)farjsmn.c
+	wcl $(FLAGS) $(MFLAGS) -c $(JSMNLIB)farjsmn.c
 
 memory.obj: $(EXMMLIB)memory.h $(EXMMLIB)memory.c
-	wcl $(FLAGS) -c $(EXMMLIB)memory.c
+	wcl $(FLAGS) $(MFLAGS) -c $(EXMMLIB)memory.c
 
 #
 #other~

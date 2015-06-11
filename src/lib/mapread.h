@@ -24,14 +24,14 @@ typedef struct {
 } tiles_t;
 
 typedef struct {
-	byte huge *data;
+	byte	*data;
 	tiles_t *tiles;
 	int width;	//this has to be signed!
 	int height;	//this has to be signed!
 } map_t;
 
-int jsoneq(const char huge *json, jsmntok_t huge *tok, const char huge *s);
-word dump(const char huge *js, jsmntok_t huge *t, size_t count, word indent, char *js_sv, map_t *map, unsigned long q);
+int jsoneq(const char *json, jsmntok_t *tok, const char *s);
+word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, map_t *map, dword q);
 int loadmap(char *mn, map_t *map);
 
 #endif/*_LIBMAPREAD_H_*/

@@ -1,18 +1,18 @@
-#include "src/lib/mapread.h"
+#include "src/lib/fmapread.h"
 
-int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
-	if (tok->type == JSMN_STRING && (int) strlen(s) == tok->end - tok->start &&
-			strncmp(json + tok->start, s, tok->end - tok->start) == 0) {
+int jsoneq(const char huge *json, jsmntok_t huge *tok, const char huge *s) {
+	if (tok->type == JSMN_STRING && (int)_fstrlen(s) == tok->end - tok->start &&
+			_fstrncmp((char const *)json + tok->start, s, tok->end - tok->start) == 0) {
 		return 0;
 	}
 	return -1;
 }
 
 //this function is quite messy ^^; sorry! it is a quick and dirty fix~
-word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, map_t *map, dword q) {
+word dump(const char huge *js, jsmntok_t huge *t, size_t count, word indent, char *js_sv, map_t *map, dword q) {
 	dword i;
-	word j;//, k;
-	bitmap_t bp;
+	word j;
+//++++	bitmap_t bp;
 	#ifdef DEBUG_JS
 	if(indent==0)
 	{
@@ -32,7 +32,7 @@ word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, 
 	/* We may want to do strtol() here to get numeric value */
 //0000fprintf(stderr, "t->type=%d\n", t->type);
 	if (t->type == JSMN_PRIMITIVE) {
-		if(strstr(js_sv, "data"))
+		if(_fstrstr(js_sv, "data"))
 		{
 			/*
 				here we should recursivly call dump again here to skip over the array until we get the facking width of the map.
@@ -41,22 +41,22 @@ word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, 
 
 				FUCK well i am stuck.... wwww
 			*/
-			map->data[q] = (byte)atoi(js+t->start);
+			map->data[q] = (byte)atoi((const char *)js+t->start);
 			#ifdef DEBUG_MAPDATA
 				fprintf(stdout, "%d[%d]", q, map->data[q]);
 			#endif
 		}
 		else
-		if(strstr(js_sv, "height"))
+		if(_fstrstr(js_sv, "height"))
 		{
-			map->height = atoi(js+t->start);
+			map->height = atoi((const char *)js+t->start);
 			#ifdef DEBUG_MAPVAR
 			fprintf(stdout, "indent= [%d]	", indent);
 			fprintf(stdout, "h:[%d]\n", map->height);
 			#endif
-		}else if(strstr(js_sv, "width"))
+		}else if(_fstrstr(js_sv, "width"))
 		{
-			map->width = atoi(js+t->start);
+			map->width = atoi((const char *)js+t->start);
 			#ifdef DEBUG_MAPVAR
 			fprintf(stdout, "indent= [%d]	", indent);
 			fprintf(stdout, "w:[%d]\n", map->width);
@@ -69,12 +69,13 @@ word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, 
 		{
 //			fprintf(stdout, "[[[[%d|%d]]]]\n", &(t+1)->size, (t+1)->size);
 //			fprintf(stdout, "\n%.*s[xx[%d|%d]xx]\n", (t+1)->end - (t+1)->start, js+(t+1)->start, &(t+1)->size, (t+1)->size);
-			map->data = malloc(sizeof(byte) * (t+1)->size);
-			map->tiles = malloc(sizeof(tiles_t));
+			map->data = halloc(sizeof(byte) * (t+1)->size, sizeof(byte));
+			//map->data = malloc(sizeof(byte) * (t+1)->size);
+			map->tiles = /*_f*/malloc(sizeof(tiles_t));
 			//map->tiles->data = malloc(sizeof(bitmap_t));
 			//fix this to be far~
-			bp = bitmapLoadPcx("data/ed.pcx");
-			map->tiles->data = &bp;
+//++++			bp = bitmapLoadPcx("data/ed.pcx");
+//++++			map->tiles->data = &bp;
 			//map->tiles->data->data = malloc((16/**2*/)*16);
 			//map->tiles->data->width = (16/**2*/);
 			//map->tiles->data->height= 16;
@@ -82,17 +83,17 @@ word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, 
 			map->tiles->tileWidth = 16;
 			map->tiles->rows = 1;
 			map->tiles->cols = 1;
-			strcpy(js_sv, "data");//strdup(js+t->start);//, t->end - t->start);
+			_fstrcpy(js_sv, "data");//strdup(js+t->start);//, t->end - t->start);
 		}
 		else
 		if (jsoneq(js, t, "height") == 0 && indent<=1)
 		{
-			strcpy(js_sv, "height");//strdup(js+t->start);//, t->end - t->start);
+			_fstrcpy(js_sv, "height");//strdup(js+t->start);//, t->end - t->start);
 		}else
 		if(jsoneq(js, t, "width") == 0 && indent<=1)
 		{
-			strcpy(js_sv, "width");//strdup(js+t->start);//, t->end - t->start);
-		}else strcpy(js_sv, "\0");
+			_fstrcpy(js_sv, "width");//strdup(js+t->start);//, t->end - t->start);
+		}else _fstrcpy(js_sv, "\0");
 		return 1;
 	} else if (t->type == JSMN_OBJECT) {
 		//fprintf(stdout, "\n");
@@ -124,14 +125,14 @@ int loadmap(char *mn, map_t *map)
 	int r;
 	static word incr=0;
 	int eof_expected = 0;
-	char *js = NULL;
+	char huge *js = NULL;
 	size_t jslen = 0;
 	char buf[BUFSIZ];
-//----	char *buff = &buf;
+	char huge *buff = &buf;
 	static char js_ss[16];
 
 	jsmn_parser p;
-	jsmntok_t *tok;
+	jsmntok_t huge *tok;
 	size_t tokcount = 2;
 
 	FILE *fh = fopen(mn, "r");
@@ -141,7 +142,7 @@ int loadmap(char *mn, map_t *map)
 
 	/* Allocate some tokens as a start */
 //0000fprintf(stderr, "tok malloc\n");
-	tok = malloc(sizeof(*tok) * tokcount);
+	tok = _fmalloc(sizeof(*tok) * tokcount);
 	if (tok == NULL) {
 		fprintf(stderr, "malloc(): errno=%d\n", errno);
 		return 3;
@@ -165,13 +166,13 @@ int loadmap(char *mn, map_t *map)
 		}
 //0000fprintf(stdout, "r=	[%d]	BUFSIZ=%d\n", r, BUFSIZ);
 //0000fprintf(stderr, "js alloc~\n");
-		js = realloc(js, jslen + r + 1);
+		js = _frealloc(js, jslen + r + 1);
 		if (js == NULL) {
 			fprintf(stderr, "*js=%Fp\n", *js);
 			fprintf(stderr, "realloc(): errno = %d\n", errno);
 			return 3;
 		}
-		strncpy(js + jslen, buf, r);
+		_fstrncpy(js + jslen, &(*buff), r);
 		jslen = jslen + r;
 
 again:
@@ -180,13 +181,14 @@ again:
 /*
 		I think it crashes on the line below when it tries to parse the data of huge maps... wwww this is a jsmn problem wwww
 */
+//++++		
 		r = jsmn_parse(&p, js, jslen, tok, tokcount);
 //0000fprintf(stdout, "r=	[%d]\n", r);
 		if (r < 0) {
 			if (r == JSMN_ERROR_NOMEM) {
 				tokcount = tokcount * 2;
 //0000fprintf(stderr, "tok realloc~ %zu\n", tokcount);
-				tok = realloc(tok, sizeof(*tok) * tokcount);
+				tok = _frealloc(tok, sizeof(*tok) * tokcount);
 				if (tok == NULL) {
 					fprintf(stderr, "realloc(): errno=%d\n", errno);
 					return 3;
@@ -208,13 +210,15 @@ again:
 			#ifdef DEBUG_DUMPVARS
 			fprintf(stdout, "running dump~\n");
 			#endif
+//++++
 			dump(js, tok, p.toknext, incr, &js_ss, map, 0);
 			eof_expected = 1;
 		}
 	}
 
-	free(js);
-	free(tok);
+	_ffree(js);
+	_ffree(buff);
+	_ffree(tok);
 	fclose(fh);
 
 	return 0;
