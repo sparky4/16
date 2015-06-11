@@ -20,6 +20,7 @@ main(int argc, char *argv[])
 	}
 	fprintf(stdout, "\n");
 	#endif
+	fprintf(stdout, "&main()=%Fp\n", *argv[0]);
 	fprintf(stdout, "&map==%Fp\n", &map);
 	fprintf(stdout, "&map.tiles==%Fp\n", map.tiles);
 	fprintf(stdout, "&map.width==%Fp\n", map.width);
