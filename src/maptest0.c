@@ -1,7 +1,7 @@
 #include <conio.h>
 #include "src/lib/fmapread.h"
 
-//#define DUMP
+#define DUMP
 //#define DUMP_MAP
 
 void
@@ -19,7 +19,7 @@ main(int argc, char *argv[])
 	getch();
 
 	fprintf(stderr, "loading~\n\n");
-	loadmap("data/tes0.map", &map);
+	loadmap("data/test.map", &map);
 	fprintf(stderr, "\nokies~\n");
 	#ifdef DUMP
 	fprintf(stdout, "map.width=	%d\n", map.width);

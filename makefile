@@ -3,7 +3,7 @@
 #-zkl = current codepage
 
 MFLAGS=-mh
-CFLAGS=-zkl -wo -x## -mc# -zdp# -zp16 -zq
+CFLAGS=-zkl -wo -x#### -mc# -zdp# -zp16 -zq
 OFLAGS=-ot -ox -ob -oh -or# -om -ol -ol+
 FLAGS=-0 -d2 $(OFLAGS) $(CFLAGS)
 REMOVECOMMAND=del
