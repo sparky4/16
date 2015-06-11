@@ -163,7 +163,8 @@ jsmnerr_t jsmn_parse(jsmn_parser huge *parser, const char huge *js, size_t len,
 		char c;
 		jsmntype_t type;
 
-fprintf(stdout, "pee=%lu	count=%u	i=%d	nt=%u\n", pee, count, i, num_tokens);
+fprintf(stdout, "pee=%lu	count=%u 	i=%d	nt=%u", pee, count, i, num_tokens);
+fprintf(stdout, "	parser->pos=%u\n", parser->pos);
 pee++;
 
 		c = js[parser->pos];
