@@ -2,7 +2,7 @@
 #-zk0 = kanji support~
 #-zkl = current codepage
 
-CFLAGS=-zkl -wo -x -mc# -mh# -zdp# -zp16 -zq
+CFLAGS=-zkl -wo -x## -mc# -zdp# -zp16 -zq
 OFLAGS=-ot -ox -ob -oh -or# -om -ol -ol+
 FLAGS=-0 -d2 $(OFLAGS) $(CFLAGS)
 REMOVECOMMAND=del
@@ -95,6 +95,9 @@ lib_head.obj: $(SRCLIB)lib_head.h $(SRCLIB)lib_head.c
 
 jsmn.obj: $(JSMNLIB)jsmn.h $(JSMNLIB)jsmn.c
 	wcl $(FLAGS) -c $(JSMNLIB)jsmn.c
+
+farjsmn.obj: $(JSMNLIB)farjsmn.h $(JSMNLIB)farjsmn.c
+	wcl $(FLAGS) -c $(JSMNLIB)farjsmn.c
 
 memory.obj: $(EXMMLIB)memory.h $(EXMMLIB)memory.c
 	wcl $(FLAGS) -c $(EXMMLIB)memory.c

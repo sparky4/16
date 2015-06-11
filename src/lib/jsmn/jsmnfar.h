@@ -3,6 +3,8 @@
 
 #include <stddef.h>
 
+#define JSMN_PARENT_LINKS
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -59,14 +61,14 @@ typedef struct {
 /**
  * Create JSON parser over an array of tokens
  */
-void jsmn_init(jsmn_parser *parser);
+void jsmn_init(jsmn_parser huge *parser);
 
 /**
  * Run JSON parser. It parses a JSON data string into and array of tokens, each describing
  * a single JSON object.
  */
-jsmnerr_t jsmn_parse(jsmn_parser *parser, const char *js, size_t len,
-		jsmntok_t *tokens, unsigned int num_tokens);
+jsmnerr_t jsmn_parse(jsmn_parser huge *parser, const char huge *js, size_t len,
+		jsmntok_t huge *tokens, unsigned int num_tokens);
 
 #ifdef __cplusplus
 }
