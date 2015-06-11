@@ -4,11 +4,11 @@ openfiles: /dos/z/16/doc/project.txt:138:0:0:
 openfiles: /dos/z/16/src/palettec.c:179:0:0:
 openfiles: /dos/z/16/src/pcxtest.c:1431:1432:0:
 openfiles: /dos/z/16/src/scroll.c:2104:2104:0:
-openfiles: /dos/z/16/src/fmemtest.c:415:0:0:
+openfiles: /dos/z/16/src/fmemtest.c:116:0:0:
 openfiles: /dos/z/16/src/emmtest.c:732:0:0:
 openfiles: /dos/z/16/src/emsdump.c:456:0:0:
-openfiles: /dos/z/16/src/maptest.c:377:0:0:
-openfiles: /dos/z/16/src/maptest0.c:522:122:0:
+openfiles: /dos/z/16/src/maptest.c:207:0:0:
+openfiles: /dos/z/16/src/maptest0.c:506:122:0:
 openfiles: /dos/z/16/src/test.c:0:0:0:
 openfiles: /dos/z/16/src/test2.c:0:0:0:
 openfiles: /dos/z/16/src/lib/planar.h:602:0:0:
@@ -21,15 +21,15 @@ openfiles: /dos/z/16/src/lib/modex16.c:17882:17405:0:
 openfiles: /dos/z/16/src/lib/modex16.h:490:349:0:
 openfiles: /dos/z/16/src/lib/mapread.c:2265:1988:0:
 openfiles: /dos/z/16/src/lib/mapread.h:584:0:0:
-openfiles: /dos/z/16/src/lib/fmapread.c:5461:5017:0:
-openfiles: /dos/z/16/src/lib/fmapread.h:519:0:0:
+openfiles: /dos/z/16/src/lib/fmapread.c:5594:5017:1:
+openfiles: /dos/z/16/src/lib/fmapread.h:436:0:0:
 openfiles: /dos/z/16/src/lib/exmm/memory.c:308:99:0:
 openfiles: /dos/z/16/src/lib/exmm/memory.h:0:0:0:
 openfiles: /dos/z/16/src/lib/exmm/emmsize.h:0:0:0:
 openfiles: /dos/z/16/src/lib/exmm/emmret.h:0:0:0:
-openfiles: /dos/z/16/src/lib/jsmn/farjsmn.c:4152:3702:1:
-openfiles: /dos/z/16/src/lib/jsmn/farjsmn.h:1693:0:0:
-openfiles: /dos/z/16/makefile:110:0:0:
+openfiles: /dos/z/16/src/lib/jsmn/farjsmn.c:7182:6673:0:
+openfiles: /dos/z/16/src/lib/jsmn/farjsmn.h:861:381:0:
+openfiles: /dos/z/16/makefile:107:0:0:
 openfiles: /dos/z/16/src/lib/types.h:165:0:0:
 snr_recursion_level: 0
 convertcolumn_horizontally: 0
@@ -45,7 +45,7 @@ c2e.convert_iso: 0
 opendir: file:///dos/z/16/src/lib
 wrap_text_default: 0
 bookmarks_filename_mode: 1
-ssearch_text: printf
+ssearch_text: jsmn_alloc_token
 snr_casesens: 0
 view_blocks: 1
 name: Project 16
@@ -108,7 +108,7 @@ recent_files: file:///dos/z/16/src/lib/jsmn/farjsmn.h
 recent_files: file:///dos/z/16/makefile
 recent_files: file:///dos/z/16/src/lib/types.h
 snr_replacetype: 0
-savedir: file:///dos/z/16/src/lib/jsmn
+savedir: file:///dos/z/16/src
 spell_check_default: 1
 spell_insert_entities: 0
 last_filefilter: 
@@ -118,9 +118,6 @@ snr_escape_chars: 0
 htmlbar_view: 0
 spell_lang: en
 ssearch_dotmatchall: 0
-searchlist: far
-searchlist: _f
-searchlist: row
 searchlist: far
 searchlist: row
 searchlist: wrow
@@ -133,6 +130,9 @@ searchlist: data
 searchlist: -data
 searchlist: ->data
 searchlist: printf
+searchlist: jsmntok_t
+searchlist: token
+searchlist: jsmn_alloc_token
 autocomplete: 1
 outputb_show_all_output: 0
 bookmarks_show_mode: 0
