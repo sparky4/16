@@ -1,5 +1,5 @@
 #include <conio.h>
-#include "src/lib/mapread.h"
+#include "src/lib/fmapread.h"
 
 //#define DUMP
 //#define DUMP_MAP
