@@ -99,9 +99,22 @@
 #define KEY_MENU		(0x75)
 */
 
-//typedef unsigned char byte;
-//typedef unsigned int word;
-//typedef unsigned short syte;
+//#define	FARPTR(S, O)	MK_FP(S, O)
+
+//#define	inportb(P)	inp(P)
+//#define	outportb(P,V)	outp(P,V)
+//#define	outportw(P,V)	outpw(P,V)
+
+//#define	R_AX		w.ax
+//#define	R_BX		w.bx
+//#define	R_BP		w.bp
+//#define	R_ES		w.es
+
+/* WARNING: for 32-bit code, unused fields of regs_t
+must be zeroed before using this macro */
+//#define	trap(N,R)	intr(N,R)
+
+typedef union REGPACK	regs_t;
 
 void wait(clock_t wait);
 void* AllocateLargestFreeBlock(size_t* Size);

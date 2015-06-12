@@ -75,6 +75,7 @@ void main() {
 	byte *ptr;
 	byte *mappalptr;
 	actor_t player;
+	bitmap_t font;
 	//actor_t npc0;
 
 //	atexit(qclean());
@@ -122,6 +123,7 @@ void main() {
 	/* data */
 //0000	printf("Total used @ before image loading:		%zu\n", oldfreemem-GetFreeSize());
 	ptmp = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
+	//font = bitmapLoadPcx("data/font.pcx");
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 
 	/* create the planar buffer */
@@ -587,6 +589,7 @@ void main() {
 	}
 	if(player.q == (TILEWH/SPEED)+1 && player.d > 0 && (player.triggerx == 5 && player.triggery == 5)){ player.hp--; }
 	//if(keyp(0x0E)) while(1){ if(xmsmalloc(24)) break; }
+	if(keyp(0x44))	bputs(bg->page, &font, player.triggerx, player.triggery, "wwww");	//f10
 	if(keyp(25)){ pdump(bg); pdump(spri); }
 	if(keyp(24)){ modexPalUpdate0(gpal); paloffset=0; pdump(bg); pdump(spri); }
 	if(keyp(22)){
@@ -595,8 +598,9 @@ void main() {
 	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	printf("2paloffset	=	%d\n", paloffset/3);
 	 pdump(bg); pdump(spri); }
-
+	//pan switch
 	if(keyp(88)){if(!panswitch) panswitch++; else panswitch--; }
+	//TSR
 	if(keyp(87))
 	{
 		modexLeave();
@@ -643,6 +647,8 @@ void main() {
 	//xmsfree(mask);
 	//xmsreport();
 	//emmclose(emmhandle);
+	printf("%Fp\n", bios_8x8_font());
+	printf("%c\n", *bios_8x8_font());
 	switch(detectcpu())
 	{
 		case 0: cpus = "8086/8088 or 186/88"; break;

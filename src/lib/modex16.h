@@ -4,9 +4,11 @@
 #ifndef MODEX16_H
 #define MODEX16_H
 //#include <conio.h>
+
 #include "src/lib/types.h"
 #include "src/lib/bitmap.h"
 #include "src/lib/planar.h"
+#include "src/lib/lib_head.h"
 
 /* -========================== Types & Macros ==========================- */
 #define PAGE_OFFSET(x,y) (((y)<<6)+((y)<<4)+((x)>>2))
@@ -67,6 +69,8 @@ void modexPalUpdate1(byte *p);
 void modexPalUpdate0(byte *p);
 void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, word *offset*/);
 void modexWaitBorder();
+byte far *bios_8x8_font(void);
+void bputs(page_t *page, bitmap_t *bmp, int x, int y, const char *s);
 
 /* -======================= Constants & Vars ==========================- */
 extern byte far*  VGA;  /* The VGA Memory */

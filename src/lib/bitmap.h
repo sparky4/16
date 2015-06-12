@@ -12,6 +12,7 @@ typedef struct {
 	word height;
 	byte *palette;
 	word offset;
+//	byte far *font;
 } bitmap_t;
 
 typedef struct {
