@@ -3,7 +3,7 @@ e2c.convert_num: 0
 openfiles: /dos/z/16/doc/project.txt:138:0:0:
 openfiles: /dos/z/16/src/palettec.c:179:0:0:
 openfiles: /dos/z/16/src/pcxtest.c:1431:1432:0:
-openfiles: /dos/z/16/src/scroll.c:19850:19233:0:
+openfiles: /dos/z/16/src/scroll.c:19798:19084:0:
 openfiles: /dos/z/16/src/fmemtest.c:116:0:0:
 openfiles: /dos/z/16/src/emmtest.c:732:0:0:
 openfiles: /dos/z/16/src/emsdump.c:456:0:0:
@@ -13,11 +13,11 @@ openfiles: /dos/z/16/src/test.c:0:0:0:
 openfiles: /dos/z/16/src/test2.c:0:0:0:
 openfiles: /dos/z/16/src/lib/planar.h:602:0:0:
 openfiles: /dos/z/16/src/lib/PLANAR.C:0:0:0:
-openfiles: /dos/z/16/src/lib/bitmap.c:0:0:0:
+openfiles: /dos/z/16/src/lib/bitmap.c:294:0:0:
 openfiles: /dos/z/16/src/lib/bitmap.h:257:0:0:
-openfiles: /dos/z/16/src/lib/modex16.c:22970:22527:0:
-openfiles: /dos/z/16/src/lib/modex16.h:2168:1159:0:
-openfiles: /dos/z/16/src/lib/dos_kb.c:3264:2408:1:
+openfiles: /dos/z/16/src/lib/modex16.c:23968:23029:1:
+openfiles: /dos/z/16/src/lib/modex16.h:2566:1791:0:
+openfiles: /dos/z/16/src/lib/dos_kb.c:3264:2598:0:
 openfiles: /dos/z/16/src/lib/dos_kb.h:0:0:0:
 openfiles: /dos/z/16/src/lib/mapread.c:2265:1988:0:
 openfiles: /dos/z/16/src/lib/mapread.h:584:0:0:
@@ -30,9 +30,9 @@ openfiles: /dos/z/16/src/lib/exmm/emmret.h:0:0:0:
 openfiles: /dos/z/16/src/lib/jsmn/farjsmn.c:7182:6673:0:
 openfiles: /dos/z/16/src/lib/jsmn/farjsmn.h:861:381:0:
 openfiles: /dos/z/16/src/lib/lib_head.c:0:0:0:
-openfiles: /dos/z/16/src/lib/lib_head.h:2424:2067:0:
+openfiles: /dos/z/16/src/lib/lib_head.h:2786:2219:0:
 openfiles: /dos/z/16/makefile:2533:2535:0:
-openfiles: /dos/z/16/src/lib/types.h:165:0:0:
+openfiles: /dos/z/16/src/lib/types.h:274:0:0:
 snr_recursion_level: 0
 convertcolumn_horizontally: 0
 adv_open_matchname: 0
@@ -47,7 +47,7 @@ c2e.convert_iso: 0
 opendir: file:///dos/z/16/src/lib
 wrap_text_default: 0
 bookmarks_filename_mode: 1
-ssearch_text: reg
+ssearch_text: memset
 snr_casesens: 0
 view_blocks: 1
 name: Project 16
@@ -121,13 +121,6 @@ snr_escape_chars: 0
 htmlbar_view: 0
 spell_lang: en
 ssearch_dotmatchall: 0
-searchlist: 44
-searchlist: page, x, y, w.width, w.height, &w);
-searchlist: bmp(
-searchlist: modexDrawBmp
-searchlist: CopyPageRegion
-searchlist: vga
-searchlist: VGA
 searchlist: =VGA
 searchlist: = VGA
 searchlist: FARPTR
@@ -136,6 +129,13 @@ searchlist: atoi
 searchlist: (*bmp)=bitmapLoadPcx("data/font.pcx");(*bmp)=bitmapLoadPcx("data/font.pcx");
 searchlist: modexDraws
 searchlist: reg
+searchlist: animate
+searchlist: SelectPlane
+searchlist: modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
+searchlist: cla
+searchlist: clear
+searchlist: trigg
+searchlist: memset
 autocomplete: 1
 outputb_show_all_output: 0
 bookmarks_show_mode: 0

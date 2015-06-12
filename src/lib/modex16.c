@@ -901,7 +901,7 @@ byte far *bios_8x8_font(void)
 	regs_t regs;
 
 /* use BIOS INT 10h AX=1130h to find font #3 (8x8) in ROM */
-	//memset(&regs, 0, sizeof(regs)); /* for Watcom C */
+	memset(&regs, 0, sizeof(regs)); /* for Watcom C */
 	regs.w.ax = 0x1130;
 	regs.w.bx = 0x0300;
 	intr(0x10, &regs);
@@ -911,22 +911,18 @@ byte far *bios_8x8_font(void)
 
 /*****************************************************************************
 *****************************************************************************/
-void bputs(page_t *page, bitmap_t *bmp, int x, int y, const char *s)
+void bputs(page_t *pee, int x, int y, const char *s)
 {
 	byte far *font;
-	//byte far *fontoffset;
-	//bitmap_t w;	//font bitmap wwww
+	byte far *fontoffset;
 
 	font = bios_8x8_font();
 	//printf("font=%Fp\n", font);
 	for(; *s != '\0'; s++)
 	{
-//++++		(*bmp)=bitmapLoadPcx("data/font.pcx");
 		//src.raster = font + 8 * (*s);
-		//bmp->width=8;
-		//w.height=8;
 		//BLOODY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!111111111111!!!11!!11!111!11!!1111!!111!11!!1!!!11!11!!1!!111!11!!
-//++++		(*(bmp->data)) = (*(font + 8 * (*s)));
+//		(*(bmp->data)) = (*(font + 8 * (*s)));
 
 		//printf("fontoffset=%Fp\n", font + 8 * (*s));
 		//printf("*fontoffset=%s\n", *(font + 8 * (*s)));
@@ -934,8 +930,12 @@ void bputs(page_t *page, bitmap_t *bmp, int x, int y, const char *s)
 		//printf("*w.data=%s\n", *(w.data));
 		//blit1(&src, bmp, x, y);
 //		modexDrawSprite(page, x, y, bmp);
-		modexDrawBmp(page, x, y, bmp);
+//		modexDrawBmp(page, x, y, bmp);
+//		printf("%x\n", (*(font + 8 * (*s))));
+		//_fmemset(VGA, *(font + 8 * (*s)), _msize(font));
+		//draw text?!?! wwww
+		modexClearRegion(pee, x, y, 8, 8, 4);
 		x += 8;
 	}
-	//printf("\n");
+//	printf("\n");
 }
