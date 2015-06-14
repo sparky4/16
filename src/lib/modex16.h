@@ -74,6 +74,7 @@ void bputs(page_t *pee, int x, int y, const char *s);
 
 /* -======================= Constants & Vars ==========================- */
 extern byte far*  VGA;  /* The VGA Memory */
+extern word text_mask[16];
 #define SCREEN_SEG		0xa000
 #define VIDEO_INT		0x10
 #define SET_MODE		0x00

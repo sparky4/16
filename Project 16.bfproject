@@ -8,14 +8,14 @@ openfiles: /dos/z/16/src/fmemtest.c:116:0:0:
 openfiles: /dos/z/16/src/emmtest.c:732:0:0:
 openfiles: /dos/z/16/src/emsdump.c:456:0:0:
 openfiles: /dos/z/16/src/maptest.c:463:0:0:
-openfiles: /dos/z/16/src/maptest0.c:506:19:0:
+openfiles: /dos/z/16/src/maptest0.c:366:19:0:
 openfiles: /dos/z/16/src/test.c:0:0:0:
 openfiles: /dos/z/16/src/test2.c:0:0:0:
 openfiles: /dos/z/16/src/lib/planar.h:602:0:0:
 openfiles: /dos/z/16/src/lib/PLANAR.C:0:0:0:
 openfiles: /dos/z/16/src/lib/bitmap.c:294:0:0:
 openfiles: /dos/z/16/src/lib/bitmap.h:257:0:0:
-openfiles: /dos/z/16/src/lib/modex16.c:23968:23029:1:
+openfiles: /dos/z/16/src/lib/modex16.c:23351:22964:1:
 openfiles: /dos/z/16/src/lib/modex16.h:2566:1791:0:
 openfiles: /dos/z/16/src/lib/dos_kb.c:3264:2598:0:
 openfiles: /dos/z/16/src/lib/dos_kb.h:0:0:0:

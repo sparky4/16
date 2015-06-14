@@ -8,6 +8,12 @@
 
 
 byte far* VGA=(byte far*) 0xA0000000; 	/* this points to video memory. */
+word text_mask[16] = {
+	0x0002, 0x0102, 0x0202, 0x0302,
+	0x0402, 0x0502, 0x0602, 0x0702,
+	0x0802, 0x0902, 0x0A02, 0x0B02,
+	0x0C02, 0x0D02, 0x0E02, 0x0F02
+};
 
 static void fadePalette(sbyte fade, sbyte start, word iter, byte *palette);
 static byte tmppal[PAL_SIZE];
@@ -913,16 +919,31 @@ byte far *bios_8x8_font(void)
 *****************************************************************************/
 void bputs(page_t *pee, int x, int y, const char *s)
 {
+	//int i, skip;
 	byte far *font;
-	byte far *fontoffset;
+	byte far *font_pntr;
+	//byte c, temp;
 
 	font = bios_8x8_font();
+	//skip = 2 - ((pee->width/4) << 3);
 	//printf("font=%Fp\n", font);
 	for(; *s != '\0'; s++)
 	{
 		//src.raster = font + 8 * (*s);
 		//BLOODY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!111111111111!!!11!!11!111!11!!1111!!111!11!!1!!!11!11!!1!!111!11!!
 //		(*(bmp->data)) = (*(font + 8 * (*s)));
+		font_pntr = (*(font + 8 * (*s)));
+//		font_pntr = font + (c << 3);
+//		i=8;
+//		while (i--) {
+//			temp = *font_pntr++;
+//			outpw(SC_INDEX, text_mask[temp & 0x0F]);
+			//*vga_ptr++ = color;
+
+//			outpw(SC_INDEX, text_mask[temp >> 4]);
+			//*vga_ptr-- = color;
+			//vga_ptr += widthBytes;
+//		}
 
 		//printf("fontoffset=%Fp\n", font + 8 * (*s));
 		//printf("*fontoffset=%s\n", *(font + 8 * (*s)));
@@ -934,8 +955,9 @@ void bputs(page_t *pee, int x, int y, const char *s)
 //		printf("%x\n", (*(font + 8 * (*s))));
 		//_fmemset(VGA, *(font + 8 * (*s)), _msize(font));
 		//draw text?!?! wwww
+
 		modexClearRegion(pee, x, y, 8, 8, 4);
-		x += 8;
+//		x += 8;
 	}
 //	printf("\n");
 }
