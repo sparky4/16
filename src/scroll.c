@@ -176,7 +176,7 @@ void main() {
 	//printf("	%d\n", sizeof(ptmp.data));
 	//printf("1:	%d\n", paloffset);
 	map.tiles->data->offset=(paloffset/3);
-//++++	modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
+	modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	printf("\n====\n");
 	printf("0	paloffset=	%d\n", paloffset/3);
 	printf("====\n\n");
