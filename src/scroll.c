@@ -192,7 +192,8 @@ void main() {
 	mv.page = &screen;
 	screen2 = modexNextPage(mv.page);
 	mv2.page = &screen2;
-	screen3 = screen2;
+	screen3 = modexNextPage0(mv2.page, 352, 176);	//(352*176)+1024 is the remaining amount of memory left wwww
+	//screen3 = modexNextPage0(mv2.page, 320, 192);	//(352*176)+1024 is the remaining amount of memory left wwww
 	mv3.page = &screen3;
 
 	/* set up paging */
@@ -532,8 +533,10 @@ void main() {
 			{
 				bg->page->dx++;
 				spri->page->dx++;
+				mask->page->dx++;
 				modexShowPage(bg->page);
 				modexShowPage(spri->page);
+				modexShowPage(mask->page);
 				panq++;
 			} else { panq = 1; pand = 0; }
 	}
@@ -545,8 +548,10 @@ void main() {
 			{
 				bg->page->dx--;
 				spri->page->dx--;
+				mask->page->dx--;
 				modexShowPage(bg->page);
 				modexShowPage(spri->page);
+				modexShowPage(mask->page);
 				panq++;
 			} else { panq = 1; pand = 0; }
 	}
@@ -558,8 +563,10 @@ void main() {
 			{
 				bg->page->dy--;
 				spri->page->dy--;
+				mask->page->dy--;
 				modexShowPage(bg->page);
 				modexShowPage(spri->page);
+				modexShowPage(mask->page);
 				panq++;
 			} else { panq = 1; pand = 0; }
 	}
@@ -571,12 +578,17 @@ void main() {
 			{
 				bg->page->dy++;
 				spri->page->dy++;
+				mask->page->dy++;
 				modexShowPage(bg->page);
 				modexShowPage(spri->page);
+				modexShowPage(mask->page);
 				panq++;
 			} else { panq = 1; pand = 0; }
 	}
 }
+
+	//the scripting stuf....
+
 	//if(((player.triggerx == TRIGGX && player.triggery == TRIGGY) && keyp(0x1C))||(player.tx == 5 && player.ty == 5))
 	if(((bg->map->data[(player.triggerx-1)+(map.width*(player.triggery-1))] == 0) && keyp(0x1C))||(player.tx == 5 && player.ty == 5))
 	{
@@ -588,9 +600,13 @@ void main() {
 		nosound();
 	}
 	if(player.q == (TILEWH/SPEED)+1 && player.d > 0 && (player.triggerx == 5 && player.triggery == 5)){ player.hp--; }
+	//debugging binds!
 	//if(keyp(0x0E)) while(1){ if(xmsmalloc(24)) break; }
+	if(keyp(2)) modexShowPage(bg->page);
+	if(keyp(3)) modexShowPage(spri->page);
+	if(keyp(4)) modexShowPage(mask->page);
 	if(keyp(0x44)){ bputs(spri->page, player.x+(TILEWH*2), player.y+(TILEWH*2), "wwww"); }	//f10
-	if(keyp(25)){ pdump(bg); pdump(spri); }
+	if(keyp(25)){ pdump(bg); pdump(spri); }	//p
 	if(keyp(24)){ modexPalUpdate0(gpal); paloffset=0; pdump(bg); pdump(spri); }
 	if(keyp(22)){
 	paloffset=0; modexPalBlack(); modexPalUpdate(&ptmp, &paloffset, 0, 0);
@@ -599,9 +615,9 @@ void main() {
 	printf("2paloffset	=	%d\n", paloffset/3);
 	 pdump(bg); pdump(spri); }
 	//pan switch
-	if(keyp(88)){if(!panswitch) panswitch++; else panswitch--; }
+	if(keyp(88)){if(!panswitch) panswitch++; else panswitch--; }	//f12
 	//TSR
-	if(keyp(87))
+	if(keyp(87))	//f11
 	{
 		modexLeave();
 		setkb(0);
@@ -648,7 +664,7 @@ void main() {
 	//xmsreport();
 	//emmclose(emmhandle);
 	printf("%Fp\n", bios_8x8_font());
-	printf("%c\n", *bios_8x8_font());
+	//printf("%c\n", *bios_8x8_font());
 	switch(detectcpu())
 	{
 		case 0: cpus = "8086/8088 or 186/88"; break;

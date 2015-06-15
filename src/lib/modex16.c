@@ -117,6 +117,21 @@ modexNextPage(page_t *p) {
     return result;
 }
 
+//next page with defined dimentions~
+page_t
+modexNextPage0(page_t *p, word x, word y)
+{
+	page_t result;
+
+	result.data = p->data + (p->width/4)*p->height;  /* compute the offset */
+	result.dx = 0;
+	result.dy = 0;
+	result.width = x;
+	result.height = y;
+
+    return result;
+}
+
 
 void
 modexShowPage(page_t *page) {
@@ -218,6 +233,28 @@ modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
 		DEC h
 		JNZ SCAN_START
     }
+}
+
+
+void
+oldDrawBmp(byte far* page, int x, int y, bitmap_t *bmp, byte sprite)
+{
+	byte plane;
+	word px, py;
+	word offset;
+
+	/* TODO Make this fast.  It's SLOOOOOOW */
+	for(plane=0; plane < 4; plane++) {
+		modexSelectPlane(PLANE(plane+x));
+		for(px = plane; px < bmp->width; px+=4) {
+			offset=px;
+			for(py=0; py<bmp->height; py++) {
+			if(!sprite || bmp->data[offset])
+				page[PAGE_OFFSET(x+px, y+py)] = bmp->data[offset];
+			offset+=bmp->width;
+			}
+		}
+	}
 }
 
 
