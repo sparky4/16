@@ -6,6 +6,8 @@
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 
+//optimize scroll*!!!!
+
 typedef struct {
 	map_t *map;
 	page_t *page;
@@ -60,7 +62,7 @@ void main() {
 	/*long emmhandle;
 	long emsavail;
 	char teststr[80];*/
-	word panswitch=0, panq=1, pand=0; //for panning!
+	word panswitch=0, panq=1, pand=0, panpagenum=0; //for panning!
 	int i;
 	static word paloffset=0;
 	bitmap_t ptmp;//, npctmp; // player sprite
@@ -531,12 +533,24 @@ void main() {
 		if(pand == 0){ pand = 2; }
 			if(panq<=(TILEWH/SPEED))
 			{
-				bg->page->dx++;
-				spri->page->dx++;
-				mask->page->dx++;
-				modexShowPage(bg->page);
-				modexShowPage(spri->page);
-				modexShowPage(mask->page);
+				switch(panpagenum)
+				{
+					case 0:
+						//bg
+						bg->page->dx++;
+						modexShowPage(bg->page);
+					break;
+					case 1:
+						//spri
+						spri->page->dx++;
+						modexShowPage(spri->page);
+					break;
+					case 2:
+						//fg
+						mask->page->dx++;
+						modexShowPage(mask->page);
+					break;
+				}
 				panq++;
 			} else { panq = 1; pand = 0; }
 	}
@@ -546,12 +560,24 @@ void main() {
 		if(pand == 0){ pand = 4; }
 			if(panq<=(TILEWH/SPEED))
 			{
-				bg->page->dx--;
-				spri->page->dx--;
-				mask->page->dx--;
-				modexShowPage(bg->page);
-				modexShowPage(spri->page);
-				modexShowPage(mask->page);
+				switch(panpagenum)
+				{
+					case 0:
+						//bg
+						bg->page->dx--;
+						modexShowPage(bg->page);
+					break;
+					case 1:
+						//spri
+						spri->page->dx--;
+						modexShowPage(spri->page);
+					break;
+					case 2:
+						//fg
+						mask->page->dx--;
+						modexShowPage(mask->page);
+					break;
+				}
 				panq++;
 			} else { panq = 1; pand = 0; }
 	}
@@ -561,12 +587,24 @@ void main() {
 		if(pand == 0){ pand = 3; }
 			if(panq<=(TILEWH/SPEED))
 			{
-				bg->page->dy--;
-				spri->page->dy--;
-				mask->page->dy--;
-				modexShowPage(bg->page);
-				modexShowPage(spri->page);
-				modexShowPage(mask->page);
+				switch(panpagenum)
+				{
+					case 0:
+						//bg
+						bg->page->dy--;
+						modexShowPage(bg->page);
+					break;
+					case 1:
+						//spri
+						spri->page->dy--;
+						modexShowPage(spri->page);
+					break;
+					case 2:
+						//fg
+						mask->page->dy--;
+						modexShowPage(mask->page);
+					break;
+				}
 				panq++;
 			} else { panq = 1; pand = 0; }
 	}
@@ -576,12 +614,24 @@ void main() {
 		if(pand == 0){ pand = 1; }
 			if(panq<=(TILEWH/SPEED))
 			{
-				bg->page->dy++;
-				spri->page->dy++;
-				mask->page->dy++;
-				modexShowPage(bg->page);
-				modexShowPage(spri->page);
-				modexShowPage(mask->page);
+				switch(panpagenum)
+				{
+					case 0:
+						//bg
+						bg->page->dy++;
+						modexShowPage(bg->page);
+					break;
+					case 1:
+						//spri
+						spri->page->dy++;
+						modexShowPage(spri->page);
+					break;
+					case 2:
+						//fg
+						mask->page->dy++;
+						modexShowPage(mask->page);
+					break;
+				}
 				panq++;
 			} else { panq = 1; pand = 0; }
 	}
@@ -602,9 +652,9 @@ void main() {
 	if(player.q == (TILEWH/SPEED)+1 && player.d > 0 && (player.triggerx == 5 && player.triggery == 5)){ player.hp--; }
 	//debugging binds!
 	//if(keyp(0x0E)) while(1){ if(xmsmalloc(24)) break; }
-	if(keyp(2)) modexShowPage(bg->page);
-	if(keyp(3)) modexShowPage(spri->page);
-	if(keyp(4)) modexShowPage(mask->page);
+	if(keyp(2)){ modexShowPage(bg->page); panpagenum=0; }
+	if(keyp(3)){ modexShowPage(spri->page); panpagenum=1; }
+	if(keyp(4)){ modexShowPage(mask->page); panpagenum=2; }
 	if(keyp(0x44)){ bputs(spri->page, player.x+(TILEWH*2), player.y+(TILEWH*2), "wwww"); }	//f10
 	if(keyp(25)){ pdump(bg); pdump(spri); }	//p
 	if(keyp(24)){ modexPalUpdate0(gpal); paloffset=0; pdump(bg); pdump(spri); }
