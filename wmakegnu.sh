@@ -1,2 +1,2 @@
 #/bin/bash
-wmake -f makefile.lin
+wmake -f makefile.gnu
