@@ -123,7 +123,7 @@ void main() {
 //----	initMap(&map);
 	mv[0].map = &map;
 	mv[1].map = &map;
-	mv[2].map = &map;
+	//mv[2].map = &map;
 
 	/* draw the tiles */
 	ptr = map.data;
@@ -200,7 +200,7 @@ void main() {
 	mv[0].page = &screen;
 	screen2 = modexNextPage(mv[0].page);
 	mv[1].page = &screen2;
-	screen3 = modexNextPage0(mv[1].page, 352, 176);	//(352*176)+1024 is the remaining amount of memory left wwww
+	screen3 = modexNextPage0(mv[1].page, 352, 200);	//(352*176)+1024 is the remaining amount of memory left wwww
 	//screen3 = modexNextPage0(mv2.page, 320, 192);	//(352*176)+1024 is the remaining amount of memory left wwww
 	mv[2].page = &screen3;
 
@@ -239,6 +239,7 @@ void main() {
 
 	modexShowPage(spri->page);
 //	printf("Total used @ before loop:			%zu\n", oldfreemem-GetFreeSize());
+	modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 1);
 	modexFadeOn(4, gpal);
 	while(!keyp(1) && player.hp>0)
 	{

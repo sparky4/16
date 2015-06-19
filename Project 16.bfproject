@@ -3,7 +3,7 @@ e2c.convert_num: 0
 openfiles: /dos/z/16/doc/project.txt:138:0:0:
 openfiles: /dos/z/16/src/palettec.c:179:0:0:
 openfiles: /dos/z/16/src/pcxtest.c:141:0:0:
-openfiles: /dos/z/16/src/scroll.c:8595:7726:1:
+openfiles: /dos/z/16/src/scroll.c:7332:6669:1:
 openfiles: /dos/z/16/src/fmemtest.c:116:0:0:
 openfiles: /dos/z/16/src/emmtest.c:439:0:0:
 openfiles: /dos/z/16/src/emsdump.c:456:0:0:
@@ -12,7 +12,7 @@ openfiles: /dos/z/16/src/maptest0.c:366:0:0:
 openfiles: /dos/z/16/src/test.c:0:0:0:
 openfiles: /dos/z/16/src/test2.c:0:0:0:
 openfiles: /dos/z/16/src/lib/modex16.c:2760:2448:0:
-openfiles: /dos/z/16/src/lib/modex16.h:503:0:0:
+openfiles: /dos/z/16/src/lib/modex16.h:1279:866:0:
 openfiles: /dos/z/16/src/lib/planar.h:131:0:0:
 openfiles: /dos/z/16/src/lib/PLANAR.C:0:0:0:
 openfiles: /dos/z/16/src/lib/bitmap.c:1152:604:0:
@@ -47,7 +47,7 @@ c2e.convert_iso: 0
 opendir: file:///dos/z/16/src
 wrap_text_default: 0
 bookmarks_filename_mode: 1
-ssearch_text: mapscroll
+ssearch_text: mapscrollr
 snr_casesens: 0
 view_blocks: 1
 name: Project 16
@@ -137,8 +137,8 @@ searchlist: scroll
 searchlist: mscroll
 searchlist: mascroll
 searchlist: maposcroll
-searchlist: mapscroll
 searchlist: mv->
+searchlist: mapscrollr
 autocomplete: 1
 outputb_show_all_output: 0
 bookmarks_show_mode: 0
