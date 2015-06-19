@@ -123,7 +123,7 @@ void main() {
 //----	initMap(&map);
 	mv[0].map = &map;
 	mv[1].map = &map;
-	//mv[2].map = &map;
+	mv[2].map = &map;
 
 	/* draw the tiles */
 	ptr = map.data;
@@ -196,11 +196,11 @@ void main() {
 	/* setup camera and screen~ */
 	screen = modexDefaultPage();
 	screen.width += (TILEWH*2);
-	screen.height += (TILEWH*2)+QUADWH;
+	screen.height += (TILEWH*2);//+QUADWH;
 	mv[0].page = &screen;
 	screen2 = modexNextPage(mv[0].page);
 	mv[1].page = &screen2;
-	screen3 = modexNextPage0(mv[1].page, 352, 200);	//(352*176)+1024 is the remaining amount of memory left wwww
+	screen3 = modexNextPage0(mv[1].page, 320, 240);	//(352*176)+1024 is the remaining amount of memory left wwww
 	//screen3 = modexNextPage0(mv2.page, 320, 192);	//(352*176)+1024 is the remaining amount of memory left wwww
 	mv[2].page = &screen3;
 
