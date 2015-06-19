@@ -3,9 +3,9 @@
 #-zkl = current codepage
 
 MFLAGS=-mh# -zm
-CFLAGS=-zkl -wo -x#### -mc# -zdp# -zp16 -zq
+CFLAGS=-zkl -wo -x #### -mc# -zdp# -zp16 -zq
 OFLAGS=-ot -ox -ob -oh -or# -om -ol -ol+
-FLAGS=-0 -d2 $(OFLAGS) $(CFLAGS)
+FLAGS=-0 -d2 -l=dos -bt=dos $(OFLAGS) $(CFLAGS)
 REMOVECOMMAND=rm
 DIRSEP=/
 SRC=src$(DIRSEP)
