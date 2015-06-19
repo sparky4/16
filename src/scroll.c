@@ -719,6 +719,7 @@ mapScrollRight(map_view_t *mv, byte offset) {
 
 	/* draw the next column */
 	x= SCREEN_WIDTH + mv->map->tiles->tileWidth;
+		if(mv->page->id==0)
 		mapDrawCol(mv, mv->tx + 20 , mv->ty-1, x);
 	}
 }
@@ -741,6 +742,7 @@ mapScrollLeft(map_view_t *mv, byte offset) {
 	mv->page->dx = mv->map->tiles->tileWidth;
 	//}
 	/* draw the next column */
+		if(mv->page->id==0)
 		mapDrawCol(mv, mv->tx-1, mv->ty-1, 0);
 	}
 }
@@ -764,6 +766,7 @@ mapScrollUp(map_view_t *mv, byte offset) {
 
 	/* draw the next row */
 	y= 0;
+		if(mv->page->id==0)
 		mapDrawRow(mv, mv->tx-1 , mv->ty-1, y);
 	}
 }
@@ -787,6 +790,7 @@ mapScrollDown(map_view_t *mv, byte offset) {
 
 	/* draw the next row */
 	y= SCREEN_HEIGHT + mv->map->tiles->tileHeight;
+		if(mv->page->id==0)
 		mapDrawRow(mv, mv->tx-1 , mv->ty+15, y);
 	}
 

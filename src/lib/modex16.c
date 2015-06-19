@@ -97,6 +97,7 @@ modexDefaultPage() {
     page.dy = 0;
     page.width = SCREEN_WIDTH;
     page.height = SCREEN_HEIGHT;
+	page.id = 0;
 
     return page;
 }
@@ -113,6 +114,7 @@ modexNextPage(page_t *p) {
     result.dy = 0;
     result.width = p->width;
     result.height = p->height;
+	result.id = p->id+1;
 
     return result;
 }
@@ -128,6 +130,7 @@ modexNextPage0(page_t *p, word x, word y)
 	result.dy = 0;
 	result.width = x;
 	result.height = y;
+	result.id = p->id+1;
 
     return result;
 }
