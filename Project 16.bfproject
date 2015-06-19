@@ -3,7 +3,7 @@ e2c.convert_num: 0
 openfiles: /dos/z/16/doc/project.txt:138:0:0:
 openfiles: /dos/z/16/src/palettec.c:179:0:0:
 openfiles: /dos/z/16/src/pcxtest.c:141:0:0:
-openfiles: /dos/z/16/src/scroll.c:22998:22397:1:
+openfiles: /dos/z/16/src/scroll.c:3783:3119:1:
 openfiles: /dos/z/16/src/fmemtest.c:116:0:0:
 openfiles: /dos/z/16/src/emmtest.c:439:0:0:
 openfiles: /dos/z/16/src/emsdump.c:456:0:0:
@@ -47,7 +47,7 @@ c2e.convert_iso: 0
 opendir: file:///dos/z/16/src
 wrap_text_default: 0
 bookmarks_filename_mode: 1
-ssearch_text: drawcol
+ssearch_text: mv
 snr_casesens: 0
 view_blocks: 1
 name: Project 16
@@ -121,13 +121,6 @@ snr_escape_chars: 0
 htmlbar_view: 0
 spell_lang: en
 ssearch_dotmatchall: 0
-searchlist: next
-searchlist: bg
-searchlist: newde
-searchlist: default
-searchlist: (1)
-searchlist: map
-searchlist: screen,
 searchlist: modexShowPage()
 searchlist: scrollright
 searchlist: col
@@ -136,6 +129,13 @@ searchlist: dcol
 searchlist: drcol
 searchlist: dracol
 searchlist: drawcol
+searchlist: scrolle
+searchlist: scrollr
+searchlist: map_view_db_tscr
+searchlist: scrollright
+searchlist: map_view_db_t *mvdb, byte offset, word id
+searchlist: scrollright
+searchlist: mv
 autocomplete: 1
 outputb_show_all_output: 0
 bookmarks_show_mode: 0

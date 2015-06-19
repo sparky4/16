@@ -39,10 +39,10 @@ typedef struct
 
 map_t allocMap(int w, int h);
 void initMap(map_t *map);
-void mapScrollRight(map_view_db_t *mvdb, byte offset, word id);
-void mapScrollLeft(map_view_t *mv, byte offest);
-void mapScrollUp(map_view_t *mv, byte offset);
-void mapScrollDown(map_view_t *mv, byte offset);
+void mapScrollRight(map_view_t *mv, byte offset, word id);
+void mapScrollLeft(map_view_t *mv, byte offest, word id);
+void mapScrollUp(map_view_t *mv, byte offset, word id);
+void mapScrollDown(map_view_t *mv, byte offset, word id);
 void mapGoTo(map_view_t *mv, int tx, int ty);
 void mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
 void mapDrawRow(map_view_t *mv, int tx, int ty, word y);
@@ -76,9 +76,9 @@ void main() {
 	static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	page_t screen, screen2, screen3;
 	map_t map;
-	map_view_t mv, mv2, mv3;
+	map_view_t mv[3];//mv, mv2, mv3;
 	map_view_t *bg, *spri, *mask;//, *tmp;
-	map_view_db_t pgid[4];
+	//map_view_db_t pgid[4];
 	byte *dpal, *gpal;
 	byte *ptr;
 	byte *mappalptr;
@@ -121,9 +121,9 @@ void main() {
 //----	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
 //----	initMap(&map);
-	mv.map = &map;
-	mv2.map = &map;
-	mv3.map = &map;
+	mv[0].map = &map;
+	mv[1].map = &map;
+	mv[2].map = &map;
 
 	/* draw the tiles */
 	ptr = map.data;
@@ -197,20 +197,20 @@ void main() {
 	screen = modexDefaultPage();
 	screen.width += (TILEWH*2);
 	screen.height += (TILEWH*2)+QUADWH;
-	mv.page = &screen;
-	screen2 = modexNextPage(mv.page);
-	mv2.page = &screen2;
-	screen3 = modexNextPage0(mv2.page, 352, 176);	//(352*176)+1024 is the remaining amount of memory left wwww
+	mv[0].page = &screen;
+	screen2 = modexNextPage(mv[0].page);
+	mv[1].page = &screen2;
+	screen3 = modexNextPage0(mv[1].page, 352, 176);	//(352*176)+1024 is the remaining amount of memory left wwww
 	//screen3 = modexNextPage0(mv2.page, 320, 192);	//(352*176)+1024 is the remaining amount of memory left wwww
-	mv3.page = &screen3;
+	mv[2].page = &screen3;
 
 	/* set up paging */
-	bg = &mv;
-	spri = &mv2;
-	mask = &mv3;
-	pgid[0].mv = &mv;
-	pgid[1].mv = &mv2;
-	pgid[2].mv = &mv3;
+	bg = &mv[0];
+	spri = &mv[1];
+	mask = &mv[2];
+	//pgid[0].mv = &mv;
+	//pgid[1].mv = &mv2;
+	//pgid[2].mv = &mv3;
 
 //TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(bg, 0, 0);
@@ -265,8 +265,8 @@ void main() {
 				INC_PER_FRAME;
 				//animatePlayer(bg, spri, mask, 1, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				animatePlayer(bg, spri, player.d-1, 1, player.x, player.y, persist_aniframe, player.q, &ptmp);
-				mapScrollRight(pgid, SPEED, 0);
-				mapScrollRight(pgid, SPEED, 1);
+				mapScrollRight(mv, SPEED, 0);
+				mapScrollRight(mv, SPEED, 1);
 				//mapScrollRight(mask, SPEED);
 				modexShowPage(spri->page);
 				player.q++;
@@ -307,8 +307,8 @@ void main() {
 				INC_PER_FRAME;
 				//animatePlayer(bg, spri, mask, 3, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				animatePlayer(bg, spri, player.d-1, 1, player.x, player.y, persist_aniframe, player.q, &ptmp);
-				mapScrollLeft(bg, SPEED);
-				mapScrollLeft(spri, SPEED);
+				mapScrollLeft(mv, SPEED, 0);
+				mapScrollLeft(mv, SPEED, 1);
 				//mapScrollLeft(mask, SPEED);
 				modexShowPage(spri->page);
 				player.q++;
@@ -349,8 +349,8 @@ void main() {
 				INC_PER_FRAME;
 				//animatePlayer(bg, spri, mask, 2, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				animatePlayer(bg, spri, player.d-1, 1, player.x, player.y, persist_aniframe, player.q, &ptmp);
-				mapScrollDown(bg, SPEED);
-				mapScrollDown(spri, SPEED);
+				mapScrollDown(mv, SPEED, 0);
+				mapScrollDown(mv, SPEED, 1);
 				//mapScrollDown(mask, SPEED);
 				modexShowPage(spri->page);
 				player.q++;
@@ -391,8 +391,8 @@ void main() {
 				INC_PER_FRAME;
 				//animatePlayer(bg, spri, mask, 0, 1, player.x, player.y, persist_aniframe, q, &ptmp);
 				animatePlayer(bg, spri, player.d-1, 1, player.x, player.y, persist_aniframe, player.q, &ptmp);
-				mapScrollUp(bg, SPEED);
-				mapScrollUp(spri, SPEED);
+				mapScrollUp(mv, SPEED, 0);
+				mapScrollUp(mv, SPEED, 1);
 				//mapScrollUp(mask, SPEED);
 				modexShowPage(spri->page);
 				player.q++;
@@ -711,100 +711,106 @@ initMap(map_t *map) {
 
 
 void
-mapScrollRight(map_view_db_t *mvdb, byte offset, word id) {
+mapScrollRight(map_view_t *mv, byte offset, word id)
+{
 	word x, y;  /* coordinate for drawing */
 
 	/* increment the pixel position and update the page */
-	mvdb[id].mv->page->dx += offset;
+	mv[id].page->dx += offset;
 
 	/* check to see if this changes the tile */
-	if(mvdb[id].mv->page->dx >= mvdb[id].mv->dxThresh ) {
+	if(mv[id].page->dx >= mv[id].dxThresh ) {
 	/* go forward one tile */
-	mvdb[id].mv->tx++;
+	mv[id].tx++;
 	/* Snap the origin forward */
-	mvdb[id].mv->page->data += 4;
-	mvdb[id].mv->page->dx = mvdb[id].mv->map->tiles->tileWidth;
+	mv[id].page->data += 4;
+	mv[id].page->dx = mv[id].map->tiles->tileWidth;
 
 	/* draw the next column */
-	x= SCREEN_WIDTH + mvdb[id].mv->map->tiles->tileWidth;
-		if(mvdb[id].mv->page->id==0)
-			mapDrawCol(mvdb[id].mv, mvdb[id].mv->tx + 20 , mvdb[id].mv->ty-1, x);
+	x= SCREEN_WIDTH + mv[id].map->tiles->tileWidth;
+		if(id==0)
+			mapDrawCol(&mv[id], mv[id].tx + 20 , mv[id].ty-1, x);
 		else
-			modexCopyPageRegion(mvdb[id].mv->page, mvdb[0].mv->page, x, 0, x, 0, mvdb[id].mv->map->tiles->tileWidth, mvdb[id].mv->map->tiles->tileHeight*17);
-//		 mv[0]
+			modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*17);
 	}
 }
 
 
 void
-mapScrollLeft(map_view_t *mv, byte offset) {
+mapScrollLeft(map_view_t *mv, byte offset, word id)
+{
 	word x, y;  /* coordinate for drawing */
 
 	/* increment the pixel position and update the page */
-	mv->page->dx -= offset;
+	mv[id].page->dx -= offset;
 
 	/* check to see if this changes the tile */
-	if(mv->page->dx == 0) {
+	if(mv[id].page->dx == 0) {
 	/* go backward one tile */
-	mv->tx--;
+	mv[id].tx--;
 
 	/* Snap the origin backward */
-	mv->page->data -= 4;
-	mv->page->dx = mv->map->tiles->tileWidth;
-	//}
+	mv[id].page->data -= 4;
+	mv[id].page->dx = mv[id].map->tiles->tileWidth;
+
 	/* draw the next column */
-		if(mv->page->id==0)
-		mapDrawCol(mv, mv->tx-1, mv->ty-1, 0);
+		if(id==0)
+			mapDrawCol(&mv[0], mv[id].tx-1, mv[id].ty-1, 0);
+		else
+			modexCopyPageRegion(mv[id].page, mv[0].page, 0, 0, 0, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*17);
 	}
 }
 
 
 void
-mapScrollUp(map_view_t *mv, byte offset) {
+mapScrollUp(map_view_t *mv, byte offset, word id)
+{
 	word x, y;  /* coordinate for drawing */
 
 	/* increment the pixel position and update the page */
-	mv->page->dy -= offset;
+	mv[id].page->dy -= offset;
 
 	/* check to see if this changes the tile */
-	if(mv->page->dy == 0 ) {
+	if(mv[id].page->dy == 0 ) {
 	/* go down one tile */
-	mv->ty--;
+	mv[id].ty--;
 	/* Snap the origin downward */
-	mv->page->data -= mv->page->width*4;
-	mv->page->dy = mv->map->tiles->tileHeight;
-	//}
+	mv[id].page->data -= mv[id].page->width*4;
+	mv[id].page->dy = mv[id].map->tiles->tileHeight;
 
 	/* draw the next row */
-	y= 0;
-		if(mv->page->id==0)
-		mapDrawRow(mv, mv->tx-1 , mv->ty-1, y);
+	//y= 0;
+		if(id==0)
+			mapDrawRow(&mv[0], mv[id].tx-1 , mv[id].ty-1, 0);
+		else
+			modexCopyPageRegion(mv[id].page, mv[0].page, 0, 0, 0, 0, mv[id].map->tiles->tileWidth*22, mv[id].map->tiles->tileHeight);
 	}
 }
 
 
 void
-mapScrollDown(map_view_t *mv, byte offset) {
+mapScrollDown(map_view_t *mv, byte offset, word id)
+{
 	word x, y;  /* coordinate for drawing */
 
 	/* increment the pixel position and update the page */
-	mv->page->dy += offset;
+	mv[id].page->dy += offset;
 
 	/* check to see if this changes the tile */
-	if(mv->page->dy >= mv->dyThresh ) {
+	if(mv[id].page->dy >= mv[id].dyThresh ) {
 	/* go down one tile */
-	mv->ty++;
+	mv[id].ty++;
 	/* Snap the origin downward */
-	mv->page->data += mv->page->width*4;
-	mv->page->dy = mv->map->tiles->tileHeight;
-	//}
+	mv[id].page->data += mv[id].page->width*4;
+	mv[id].page->dy = mv[id].map->tiles->tileHeight;
 
 	/* draw the next row */
-	y= SCREEN_HEIGHT + mv->map->tiles->tileHeight;
-		if(mv->page->id==0)
-		mapDrawRow(mv, mv->tx-1 , mv->ty+15, y);
+	y= SCREEN_HEIGHT + mv[id].map->tiles->tileHeight;
+		if(id==0)
+			mapDrawRow(&mv[0], mv[id].tx-1 , mv[id].ty+15, y);
+		else
+			modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*22, mv[id].map->tiles->tileHeight);
 	}
-
 }
 
 
