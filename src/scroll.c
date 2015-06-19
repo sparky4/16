@@ -184,7 +184,7 @@ void main() {
 	//printf("	%d\n", sizeof(ptmp.data));
 	//printf("1:	%d\n", paloffset);
 	map.tiles->data->offset=(paloffset/3);
-	modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
+	//XTmodexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	printf("\n====\n");
 	printf("0	paloffset=	%d\n", paloffset/3);
 	printf("====\n\n");
@@ -956,5 +956,6 @@ animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword d, s
 	//modexClearRegion(top->page, 66, 66, 2, 40, 0);
 	//modexCopyPageRegion(dest->page, top->page, 66, 66, 66, 66, 2, 40);
 	//turn this off if XT
-	if(detectcpu() > 0) modexWaitBorder();
+	//XTif(detectcpu() > 0) 
+	modexWaitBorder();
 }
