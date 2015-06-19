@@ -12,7 +12,7 @@ FUCK
 *.ERR
 makefile~
 !boop.sh
-!wmakelin.sh
+!wmakegnu.sh
 img
 !.git/config
 
