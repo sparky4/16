@@ -208,9 +208,6 @@ void main() {
 	bg = &mv[0];
 	spri = &mv[1];
 	mask = &mv[2];
-	//pgid[0].mv = &mv;
-	//pgid[1].mv = &mv2;
-	//pgid[2].mv = &mv3;
 
 //TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(bg, 0, 0);
@@ -729,7 +726,7 @@ mapScrollRight(map_view_t *mv, byte offset, word id)
 	/* draw the next column */
 	x= SCREEN_WIDTH + mv[id].map->tiles->tileWidth;
 		if(id==0)
-			mapDrawCol(&mv[id], mv[id].tx + 20 , mv[id].ty-1, x);
+			mapDrawCol(&mv[0], mv[0].tx + 20 , mv[0].ty-1, x);
 		else
 			modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*17);
 	}
@@ -754,10 +751,11 @@ mapScrollLeft(map_view_t *mv, byte offset, word id)
 	mv[id].page->dx = mv[id].map->tiles->tileWidth;
 
 	/* draw the next column */
+	x= 0;
 		if(id==0)
-			mapDrawCol(&mv[0], mv[id].tx-1, mv[id].ty-1, 0);
+			mapDrawCol(&mv[0], mv[0].tx-1, mv[0].ty-1, 0);
 		else
-			modexCopyPageRegion(mv[id].page, mv[0].page, 0, 0, 0, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*17);
+			modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*17);
 	}
 }
 
@@ -779,11 +777,11 @@ mapScrollUp(map_view_t *mv, byte offset, word id)
 	mv[id].page->dy = mv[id].map->tiles->tileHeight;
 
 	/* draw the next row */
-	//y= 0;
+	y= 0;
 		if(id==0)
-			mapDrawRow(&mv[0], mv[id].tx-1 , mv[id].ty-1, 0);
+			mapDrawRow(&mv[0], mv[0].tx-1 , mv[0].ty-1, 0);
 		else
-			modexCopyPageRegion(mv[id].page, mv[0].page, 0, 0, 0, 0, mv[id].map->tiles->tileWidth*22, mv[id].map->tiles->tileHeight);
+			modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*22, mv[id].map->tiles->tileHeight);
 	}
 }
 
@@ -807,7 +805,7 @@ mapScrollDown(map_view_t *mv, byte offset, word id)
 	/* draw the next row */
 	y= SCREEN_HEIGHT + mv[id].map->tiles->tileHeight;
 		if(id==0)
-			mapDrawRow(&mv[0], mv[id].tx-1 , mv[id].ty+15, y);
+			mapDrawRow(&mv[0], mv[0].tx-1 , mv[0].ty+15, y);
 		else
 			modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*22, mv[id].map->tiles->tileHeight);
 	}
