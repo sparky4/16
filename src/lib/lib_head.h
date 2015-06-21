@@ -137,6 +137,7 @@ must be zeroed before using this macro */
 //#define	trap(N,R)	intr(N,R)
 
 typedef union REGPACK	regs_t;
+typedef	enum	{FALSE,TRUE}	boolean;
 
 void wait(clock_t wait);
 void* AllocateLargestFreeBlock(size_t* Size);
