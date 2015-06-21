@@ -14,16 +14,18 @@ JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
 EXMMLIB=$(SRCLIB)exmm$(DIRSEP)
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
+16LIBOBJS = modex16.obj dos_kb.obj bitmap.obj planar.obj wcpu.obj lib_head.obj scroll16.obj
+
 all: 16.exe test.exe pcxtest.exe test2.exe scroll.exe palettec.exe maptest.exe maptest0.exe emsdump.exe emmtest.exe fmemtest.exe 
 
 #
 #executables
 #
-16.exe: 16.obj modex16.obj dos_kb.obj bitmap.obj mapread.obj jsmn.obj lib_head.obj scroll16.obj#planar.obj wcpu.obj
-	wcl $(FLAGS) 16.obj modex16.obj dos_kb.obj bitmap.obj mapread.obj jsmn.obj lib_head.obj scroll16.obj#planar.obj wcpu.obj
+16.exe: 16.obj mapread.obj jsmn.obj 16.lib
+	wcl $(FLAGS) 16.obj mapread.obj jsmn.obj 16.lib
 
-scroll.exe: scroll.obj modex16.obj dos_kb.obj bitmap.obj planar.obj mapread.obj jsmn.obj wcpu.obj
-	wcl $(FLAGS) scroll.obj modex16.obj dos_kb.obj bitmap.obj planar.obj mapread.obj jsmn.obj wcpu.obj# 16/lib/x/modex.lib
+scroll.exe: scroll.obj 16.lib mapread.obj jsmn.obj
+	wcl $(FLAGS) scroll.obj 16.lib mapread.obj jsmn.obj
 scroll.obj: $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
 test.exe: test.obj modex16.obj bitmap.obj lib_head.obj
@@ -89,6 +91,9 @@ fmemtest.obj: $(SRC)fmemtest.c
 #
 #non executable objects libraries
 #
+16.lib: $(SRCLIB)16.lbr $(16LIBOBJS)
+	wlib -b 16.lib $(16LIBOBJS)
+
 modex16.obj: $(SRCLIB)modex16.h $(SRCLIB)modex16.c
 	wcl $(FLAGS) -c $(SRCLIB)modex16.c
 
@@ -107,11 +112,11 @@ scroll16.obj: $(SRCLIB)scroll16.h $(SRCLIB)scroll16.c
 wcpu.obj: $(WCPULIB)wcpu.h $(WCPULIB)wcpu.c
 	wcl $(FLAGS) -c $(WCPULIB)wcpu.c
 
-mapread.obj: $(SRCLIB)mapread.h $(SRCLIB)mapread.c
-	wcl $(FLAGS) -c $(SRCLIB)mapread.c
+mapread.obj: $(SRCLIB)mapread.h $(SRCLIB)mapread.c 16.lib
+	wcl $(FLAGS) -c $(SRCLIB)mapread.c 16.lib
 
-fmapread.obj: $(SRCLIB)fmapread.h $(SRCLIB)fmapread.c
-	wcl $(FLAGS) $(MFLAGS) -c $(SRCLIB)fmapread.c
+fmapread.obj: $(SRCLIB)fmapread.h $(SRCLIB)fmapread.c 16.lib
+	wcl $(FLAGS) $(MFLAGS) -c $(SRCLIB)fmapread.c 16.lib
 
 lib_head.obj: $(SRCLIB)lib_head.h $(SRCLIB)lib_head.c
 	wcl $(FLAGS) -c $(SRCLIB)lib_head.c
