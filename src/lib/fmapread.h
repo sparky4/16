@@ -4,7 +4,7 @@
 #include <stdio.h>		//huge wwww
 #include <string.h>
 #include <errno.h>
-#include <alloc.h>
+#include <malloc.h>
 
 #include "src/lib/jsmn/farjsmn.h"
 //++++#include "src/lib/modex16.h"

@@ -4,7 +4,7 @@
 //#include <stdio.h>
 #include <string.h>
 #include <errno.h>
-#include <alloc.h>
+#include <malloc.h>
 
 #include "src/lib/jsmn/jsmn.h"
 #include "src/lib/modex16.h"
