@@ -24,8 +24,8 @@
  * level code
  */
 
-#ifndef TYPE_H
-#define TYPE_H
+#ifndef _TYPE_H_
+#define _TYPE_H_
 
 typedef unsigned char byte;
 typedef unsigned short word;
@@ -34,4 +34,4 @@ typedef signed char sbyte;
 typedef signed short sword;
 typedef signed long sdword;
 
-#endif/*TYPE_H*/
+#endif/*_TYPE_H_*/
