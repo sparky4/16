@@ -1,6 +1,6 @@
 #ifndef _DOSLIB_KB_H_
 #define _DOSLIB_KB_H_
-#include "src\lib\lib_head.h"
+#include "src/lib/lib_head.h"
 
 /* Maximum number of scan codes on keyboard controllers */
 #define NUM_SCANCODES   128

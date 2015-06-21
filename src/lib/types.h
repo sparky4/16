@@ -30,3 +30,5 @@ typedef unsigned long  dword;
 typedef signed char sbyte;
 typedef signed short sword;
 typedef signed long sdword;
+
+//typedef	enum	{FALSE,TRUE}	boolean;

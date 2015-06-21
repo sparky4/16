@@ -12,14 +12,18 @@ SRC=src$(DIRSEP)
 SRCLIB=$(SRC)lib$(DIRSEP)
 JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
 EXMMLIB=$(SRCLIB)exmm$(DIRSEP)
+WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
-all: test.exe pcxtest.exe test2.exe scroll.exe maptest.exe maptest0.exe emsdump.exe emmtest.exe fmemtest.exe
+all: 16.exe test.exe pcxtest.exe test2.exe scroll.exe palettec.exe maptest.exe maptest0.exe emsdump.exe emmtest.exe fmemtest.exe 
 
 #
 #executables
 #
-scroll.exe: scroll.obj modex16.obj dos_kb.obj bitmap.obj mapread.obj jsmn.obj lib_head.obj
-	wcl $(FLAGS) scroll.obj modex16.obj dos_kb.obj bitmap.obj mapread.obj jsmn.obj lib_head.obj# 16/lib/x/modex.lib
+16.exe: 16.obj modex16.obj dos_kb.obj bitmap.obj mapread.obj jsmn.obj lib_head.obj scroll16.obj#planar.obj wcpu.obj
+	wcl $(FLAGS) 16.obj modex16.obj dos_kb.obj bitmap.obj mapread.obj jsmn.obj lib_head.obj scroll16.obj#planar.obj wcpu.obj
+
+scroll.exe: scroll.obj modex16.obj dos_kb.obj bitmap.obj planar.obj mapread.obj jsmn.obj wcpu.obj
+	wcl $(FLAGS) scroll.obj modex16.obj dos_kb.obj bitmap.obj planar.obj mapread.obj jsmn.obj wcpu.obj# 16/lib/x/modex.lib
 scroll.obj: $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
 test.exe: test.obj modex16.obj bitmap.obj lib_head.obj
@@ -28,8 +32,11 @@ test.exe: test.obj modex16.obj bitmap.obj lib_head.obj
 test2.exe: test2.obj modex16.obj bitmap.obj planar.obj lib_head.obj
 	wcl $(FLAGS) test2.obj modex16.obj bitmap.obj planar.obj lib_head.obj
 
-pcxtest.exe: pcxtest.obj modex16.obj bitmap.obj lib_head.obj
-	wcl $(FLAGS) pcxtest.obj modex16.obj bitmap.obj lib_head.obj
+pcxtest.exe: pcxtest.obj modex16.obj bitmap.obj planar.obj lib_head.obj
+	wcl $(FLAGS) pcxtest.obj modex16.obj bitmap.obj planar.obj lib_head.obj
+
+palettec.exe: palettec.obj modex16.obj
+	wcl $(FLAGS) palettec.obj modex16.obj
 
 maptest.exe: maptest.obj mapread.obj jsmn.obj modex16.obj bitmap.obj lib_head.obj
 	wcl $(FLAGS) maptest.obj mapread.obj jsmn.obj modex16.obj bitmap.obj lib_head.obj
@@ -49,6 +56,9 @@ fmemtest.exe: fmemtest.obj# memory.obj
 #
 #executable's objects
 #
+16.obj: $(SRC)16.h $(SRC)16.c
+	wcl $(FLAGS) -c $(SRC)16.c
+
 test.obj: $(SRC)test.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)test.c
 
@@ -57,6 +67,9 @@ test2.obj: $(SRC)test2.c $(SRCLIB)modex16.h
 
 pcxtest.obj: $(SRC)pcxtest.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)pcxtest.c
+
+palettec.obj: $(SRC)palettec.c
+	wcl $(FLAGS) -c $(SRC)palettec.c
 
 maptest.obj: $(SRC)maptest.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)maptest.c
@@ -87,6 +100,12 @@ bitmap.obj: $(SRCLIB)bitmap.h $(SRCLIB)bitmap.c
 
 planar.obj: $(SRCLIB)planar.h $(SRCLIB)planar.c
 	wcl $(FLAGS) -c $(SRCLIB)planar.c
+
+scroll16.obj: $(SRCLIB)scroll16.h $(SRCLIB)scroll16.c
+	wcl $(FLAGS) -c $(SRCLIB)scroll16.c
+
+wcpu.obj: $(WCPULIB)wcpu.h $(WCPULIB)wcpu.c
+	wcl $(FLAGS) -c $(WCPULIB)wcpu.c
 
 mapread.obj: $(SRCLIB)mapread.h $(SRCLIB)mapread.c
 	wcl $(FLAGS) -c $(SRCLIB)mapread.c

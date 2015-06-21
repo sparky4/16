@@ -1,7 +1,29 @@
+/* Project 16 Source Code~
+ * Copyright (C) 2012-2015 sparky4 & pngwen & andrius4669
+ *
+ * This file is part of Project 16.
+ *
+ * Project 16 is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Project 16 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>, or
+ * write to the Free Software Foundation, Inc., 51 Franklin Street,
+ * Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ */
+
 #include "src/lib/dos_kb.h"
 #include "src/lib/mapread.h"
-#include "src/lib/wtest/wtest.c"
-#include "src/lib/planar.c"
+#include "src/lib/wcpu/wcpu.h"
+#include "src/lib/planar.h"
 //====#include "src\lib\ems.c"
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
@@ -63,7 +85,7 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword
 //#define TRIGGY 9
 
 void main() {
-	size_t oldfreemem=GetFreeSize();
+//++++	size_t oldfreemem=GetFreeSize();
 	/*long emmhandle;
 	long emsavail;
 	char teststr[80];*/
@@ -593,8 +615,8 @@ void main() {
 	printf("player.hp: %d", player.hp);	printf("	player.q: %d", player.q);	printf("	player.d: %d\n", player.d);
 	printf("tile data value at player trigger position: %d\n", bg->map->data[(player.triggerx-1)+(map.width*(player.triggery-1))]);
 	printf("palette offset:	%d\n", paloffset/3);
-	printf("Total used: %zu\n", oldfreemem-GetFreeSize());
-	printf("Total free: %zu\n", GetFreeSize());
+//++++	printf("Total used: %zu\n", oldfreemem-GetFreeSize());
+//++++	printf("Total free: %zu\n", GetFreeSize());
 	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
 	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
 	printf("Screen: %dx", screen.width);	printf("%d\n", screen.height);

@@ -19,32 +19,14 @@
  * Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-/*
- * Functions and types for loading and manipulating bitmaps.
- */
 
-#ifndef BITMAP_H
-#define BITMAP_H
+#ifndef _WCPU_H_
+#define _WCPU_H_
+#include <stdio.h>
 #include "src/lib/types.h"
-#include "src/lib/lib_head.h"
 
-typedef struct {
-	byte *data;
-	word width;
-	word height;
-	byte *palette;
-	word offset;
-//	byte far *font;
-} bitmap_t;
+//#define TEST
 
-typedef struct {
-	byte **data;
-	word ntiles;   /* the number of tiles */
-	word twidth;   /* width of the tiles */
-	word theight;  /* height of the tiles */
-	byte *palette; /* palette for the tile set */
-} tileset_t;
+extern byte detectcpu(void);
 
-bitmap_t bitmapLoadPcx(char *filename);
-tileset_t bitmapLoadPcxTiles(char *filename, word twidth, word theight);
-#endif
+#endif/*_WCPU_H_*/

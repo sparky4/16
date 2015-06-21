@@ -1,11 +1,11 @@
 CFLAGS=-0
 
-all: wtest.exe
+all: wcpu.exe
 
-wtest.exe: wtest.obj
+wcpu.exe: wcpu.obj
 	wcl $(CFLAGS) $<
 
-wtest.obj: wtest.c
+wcpu.obj: wcpu.c
 	wcl $(CFLAGS) -c $<
 
 .NOCHECK
