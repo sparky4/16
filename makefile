@@ -91,7 +91,7 @@ fmemtest.obj: $(SRC)fmemtest.c
 #
 #non executable objects libraries
 #
-16.lib: $(SRCLIB)16.lbr $(16LIBOBJS)
+16.lib: $(16LIBOBJS)
 	wlib -b 16.lib $(16LIBOBJS)
 
 modex16.obj: $(SRCLIB)modex16.h $(SRCLIB)modex16.c

@@ -1,7 +1,0 @@
-+-modex16.obj &
-+-dos_kb.obj &
-+-bitmap.obj &
-+-planar.obj &
-+-wcpu.obj &
-+-lib_head.obj &
-+-scroll16.obj
