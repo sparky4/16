@@ -183,7 +183,7 @@ modexShowPage(page_t *page) {
     outp(CRTC_DATA, crtcOffset);
 
     /*  wait for one retrace */
-    while (!(inp(INPUT_STATUS_1) & VRETRACE)); 
+    while (!(inp(INPUT_STATUS_1) & VRETRACE));
 
     /* do PEL panning here */
     outp(AC_INDEX, 0x33);
@@ -320,7 +320,7 @@ modexDrawBmpRegion(page_t *page, int x, int y,
 
 		;-- begin plane painting
 		MOV AX, height		; start the row counter
-		MOV rowCounter, AX	; 
+		MOV rowCounter, AX	;
 		MOV DI, poffset		; go to the first pixel
 		MOV SI, bmpOffset	; go to the bmp pixel
 	ROW_LOOP:
@@ -400,7 +400,7 @@ modexDrawSpriteRegion(page_t *page, int x, int y,
 
 		;-- begin plane painting
 		MOV AX, height		; start the row counter
-		MOV rowCounter, AX	; 
+		MOV rowCounter, AX	;
 		MOV DI, poffset		; go to the first pixel
 		MOV SI, bmpOffset	; go to the bmp pixel
 	ROW_LOOP:

@@ -27,6 +27,6 @@
 
 //#define TEST
 
-extern byte detectcpu(void);
+byte detectcpu(void);
 
 #endif/*_WCPU_H_*/

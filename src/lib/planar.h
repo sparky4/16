@@ -20,7 +20,7 @@
  *
  */
 /*
- * Functions and types for a planar image buffer.  
+ * Functions and types for a planar image buffer.
  * This is meant to be able to load into video memory faster.
  */
 #include "src/lib/bitmap.h"

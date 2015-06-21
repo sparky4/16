@@ -977,6 +977,6 @@ animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */sword d, s
 	//modexClearRegion(top->page, 66, 66, 2, 40, 0);
 	//modexCopyPageRegion(dest->page, top->page, 66, 66, 66, 66, 2, 40);
 	//turn this off if XT
-	//XTif(detectcpu() > 0) 
+	//XTif(detectcpu() > 0)
 	modexWaitBorder();
 }

@@ -19,7 +19,7 @@
  * Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
- 
+
 #include <stdio.h>
 #include <dos.h>
 #include <string.h>
