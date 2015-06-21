@@ -24,4 +24,4 @@
 #define __16_H_
 
 
-#endif __16_H_
+#endif /*__16_H_*/

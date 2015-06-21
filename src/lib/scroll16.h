@@ -24,4 +24,4 @@
 #define __SCROLL16_H_
 
 
-#endif __SCROLL16_H_
+#endif /*__SCROLL16_H_*/
