@@ -14,7 +14,7 @@ JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
 EXMMLIB=$(SRCLIB)exmm$(DIRSEP)
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
-all: 16.exe test.exe pcxtest.exe test2.exe scroll.exe palettec.exe maptest.exe maptest0.exe emsdump.exe emmtest.exe fmemtest.exe 
+all: 16.exe test.exe pcxtest.exe test2.exe scroll.exe palettec.exe maptest.exe maptest0.exe emsdump.exe emmtest.exe fmemtest.exe ftest.exe
 
 #
 #executables
@@ -31,6 +31,15 @@ test.exe: test.obj modex16.obj bitmap.obj lib_head.obj
 
 test2.exe: test2.obj modex16.obj bitmap.obj planar.obj lib_head.obj
 	wcl $(FLAGS) test2.obj modex16.obj bitmap.obj planar.obj lib_head.obj
+
+ftest.exe: text.obj ftest.obj
+	wcl $(FLAGS) ftest.obj text.obj
+
+text.obj: $(SRCLIB)text.c
+	wcl -c $(SRCLIB)text.c
+
+ftest.obj: $(SRC)ftest.c
+	wcl -c $(SRC)ftest.c
 
 pcxtest.exe: pcxtest.obj modex16.obj bitmap.obj planar.obj lib_head.obj
 	wcl $(FLAGS) pcxtest.obj modex16.obj bitmap.obj planar.obj lib_head.obj
