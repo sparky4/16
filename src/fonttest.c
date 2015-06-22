@@ -22,7 +22,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include "lib/types.h"
-#include "lib/text.h"
+#include "lib/16text.h"
 
 void main(int argc, char *argv[])
 {

@@ -12,6 +12,8 @@ FUCK
 *.ERR
 makefile~
 !boop.sh
+!awoo.sh
+!lowcase.sh
 !wmakegnu.sh
 img
 !.git/config
