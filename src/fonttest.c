@@ -91,7 +91,7 @@ void main(int argc, char *argv[])
 		SHL BX, 1
 		SHL BX, 1
 		ADD SI, BX	;the address of A
-		MOV CX, 16
+		MOV CX, w
 	L1:	MOV AX, ES:SI
 		MOV DS:DI, AX
 		INC SI
