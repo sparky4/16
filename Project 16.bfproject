@@ -33,12 +33,12 @@ openfiles: /dos/z/16/src/lib/jsmn/farjsmn.c:7182:6170:0:
 openfiles: /dos/z/16/src/lib/jsmn/farjsmn.h:861:381:0:
 openfiles: /dos/z/16/src/lib/lib_head.c:890:0:0:
 openfiles: /dos/z/16/src/lib/lib_head.h:3712:3110:0:
-openfiles: /dos/z/16/makefile:3054:2620:1:
+openfiles: /dos/z/16/makefile:1091:0:0:
 openfiles: /dos/z/16/src/lib/types.h:1216:27:0:
 openfiles: /dos/z/16/src/16.h:943:0:0:
 openfiles: /dos/z/16/src/16.c:928:0:0:
 openfiles: /dos/z/16/src/lib/scroll16.h:961:0:0:
-openfiles: /dos/z/16/src/lib/scroll16.c:944:0:0:
+openfiles: /dos/z/16/src/lib/scroll16.c:944:0:1:
 snr_recursion_level: 0
 convertcolumn_horizontally: 0
 adv_open_matchname: 0
@@ -126,7 +126,7 @@ recent_files: file:///dos/z/16/src/16.h
 recent_files: file:///dos/z/16/src/16.c
 recent_files: file:///dos/z/16/src/lib/scroll16.h
 snr_replacetype: 0
-savedir: file:///dos/z/16/src
+savedir: file:///dos/z/16
 spell_check_default: 1
 spell_insert_entities: 0
 last_filefilter: 
