@@ -43,27 +43,33 @@ void main(int argc, char *argv[])
     printf("Character: ");
     scanf("%c", &c);
 
+	if(*argv[1]!=NULL)
 	switch(*argv[1])
 	{
-			case 0:
-				t=0;
-				w=14;
-			break;
-			case 1:
-				t=1;
-				w=8;
-			break;
-			case 2:
-				t=2;
-				w=8;
-			break;
-			case 3:
-				t=3;
-				w=16;
-			break;
-			default:
-				t=3;
-				w=16;
+		case 0:
+			t=0;
+			w=14;
+		break;
+		case 1:
+			t=1;
+			w=8;
+		break;
+		case 2:
+			t=2;
+			w=8;
+		break;
+		case 3:
+			t=3;
+			w=16;
+		break;
+		default:
+			t=3;
+			w=16;
+	}
+	else
+	{
+		t=3;
+		w=16;	
 	}
 
 
