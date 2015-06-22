@@ -84,14 +84,11 @@ void main(int argc, char *argv[])
 		MOV DI, addr
 		MOV SI, o
 		MOV ES, s
-		SUB BH, BH
-		MOV BL, c	; the letter
-		SHL BX, 1
-		SHL BX, 1
-		SHL BX, 1
-		SHL BX, 1
-		ADD SI, BX	;the address of A
+		SUB AH, AH
+		MOV AL, c	; the letter
 		MOV CX, w
+		MUL CX
+		ADD SI, AX	;the address of charcter
 	L1:	MOV AX, ES:SI
 		MOV DS:DI, AX
 		INC SI
