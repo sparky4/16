@@ -27,6 +27,9 @@
  */
 #ifndef TEXT_H
 #define TEXT_H
+#ifdef __WATCOMC__
+#include <jstring.h>
+#endif
 #include "types.h"
 
 /* font information type */
