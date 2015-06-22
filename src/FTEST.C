@@ -1,13 +1,36 @@
+/* Project 16 Source Code~
+ * Copyright (C) 2012-2015 sparky4 & pngwen & andrius4669
+ *
+ * This file is part of Project 16.
+ *
+ * Project 16 is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Project 16 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>, or
+ * write to the Free Software Foundation, Inc., 51 Franklin Street,
+ * Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ */
 #include <stdio.h>
+#include <conio.h>
 #include "lib/types.h"
 #include "lib/text.h"
 
-main() {
+void main(int argc, char *argv[])
+{
     int i;
     int j;
-    char l[16];
+	char l[16];
     char c;
-    word s, o;
+    word s, o, t, w;
     word addr = (word) l;
     textInit();
 
@@ -20,8 +43,32 @@ main() {
     printf("Character: ");
     scanf("%c", &c);
 
-    s=romFonts[ROM_FONT_8x16].seg;
-    o=romFonts[ROM_FONT_8x16].off;
+	switch(*argv[1])
+	{
+			case 0:
+				t=0;
+				w=14;
+			break;
+			case 1:
+				t=1;
+				w=8;
+			break;
+			case 2:
+				t=2;
+				w=8;
+			break;
+			case 3:
+				t=3;
+				w=16;
+			break;
+			default:
+				t=3;
+				w=16;
+	}
+
+
+    s=romFonts[t].seg;
+    o=romFonts[t].off;
 
     //load the letter 'A'
     __asm {
@@ -35,7 +82,7 @@ main() {
 		SHL BX, 1
 		SHL BX, 1
 		ADD SI, BX	;the address of A
-		MOV CX, 16
+		MOV CX, w
 	L1:	MOV AX, ES:SI
 		MOV DS:DI, AX
 		INC SI
@@ -45,7 +92,7 @@ main() {
     }
 
     //render the letter in ascii art
-    for(i=0; i<16; i++) {
+    for(i=0; i<w; i++) {
 	j=1<<8;
 	while(j) {
 	    printf("%c", l[i] & j ? '*':' ');

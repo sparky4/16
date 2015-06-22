@@ -25,7 +25,7 @@
 #include <string.h>
 #include "src/lib/modex16.h"
 #include "src/lib/bitmap.h"
-#include "src/lib/planar.c"
+#include "src/lib/planar.h"
 
 word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 
