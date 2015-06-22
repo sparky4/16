@@ -35,7 +35,7 @@ test.exe: test.$(OBJ) modex16.$(OBJ) bitmap.$(OBJ) lib_head.$(OBJ)
 test2.exe: test2.$(OBJ) modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) lib_head.$(OBJ)
 	wcl $(FLAGS) test2.$(OBJ) modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) lib_head.$(OBJ)
 
-fonttest.exe: text.$(OBJ) fonttest.$(OBJ)
+fonttest.exe: 16text.$(OBJ) fonttest.$(OBJ)
 	wcl $(FLAGS) fonttest.$(OBJ) 16text.$(OBJ)
 
 16text.$(OBJ): $(SRCLIB)16text.c
