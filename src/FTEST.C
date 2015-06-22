@@ -40,31 +40,34 @@ void main(int argc, char *argv[])
 	printf("%d: %x:%x\n", i, romFonts[i].seg, romFonts[i].off);
     }
 
+	printf("*argv[1]=%d\n", *argv[1]);
+
     printf("Character: ");
     scanf("%c", &c);
 
-	if(*argv[1]!=NULL)
+	if(*argv[1]!=1)
 	switch(*argv[1])
 	{
-		case 0:
+		case 48:
 			t=0;
 			w=14;
 		break;
-		case 1:
+		case 49:
 			t=1;
 			w=8;
 		break;
-		case 2:
+		case 50:
 			t=2;
 			w=8;
 		break;
-		case 3:
+		case 51:
 			t=3;
 			w=16;
 		break;
 		default:
 			t=3;
 			w=16;
+		break;
 	}
 	else
 	{
