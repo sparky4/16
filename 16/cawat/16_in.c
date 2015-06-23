@@ -222,6 +222,13 @@ static	boolean	special;
 	outp(0x20,0x20);
 }
 
+static void
+Mouse(int x)
+{
+	x = CPURegs.x.ax;
+	int86(MouseInt,&CPURegs,&CPURegs);
+}
+
 ///////////////////////////////////////////////////////////////////////////
 //
 //	INL_GetMouseDelta() - Gets the amount that the mouse has moved from the
@@ -232,8 +239,8 @@ static void
 INL_GetMouseDelta(int *x,int *y)
 {
 	Mouse(MDelta);
-	*x = _CX;
-	*y = _DX;
+	*x = CPURegs.x.cx;
+	*y = CPURegs.x.dx;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -248,7 +255,7 @@ INL_GetMouseButtons(void)
 	word	buttons;
 
 	Mouse(MButtons);
-	buttons = _BX;
+	buttons = CPURegs.x.bx;
 	return(buttons);
 }
 
@@ -443,10 +450,10 @@ IN_GetJoyButtonsDB(word joy)
 	{
 		result1 = INL_GetJoyButtons(joy);
 		lasttime = TimeCount;
-		while (TimeCount == lasttime)
+		while(TimeCount == lasttime)
 			;
 		result2 = INL_GetJoyButtons(joy);
-	} while (result1 != result2);
+	} while(result1 != result2);
 	return(result1);
 }
 
@@ -462,8 +469,8 @@ INL_StartKbd(void)
 
 	IN_ClearKeysDown();
 
-	OldKeyVect = getvect(KeyInt);
-	setvect(KeyInt,INL_KeyService);
+	OldKeyVect = _dos_getvect(KeyInt);
+	_dos_setvect(KeyInt,INL_KeyService);
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -476,7 +483,7 @@ INL_ShutKbd(void)
 {
 	poke(0x40,0x17,peek(0x40,0x17) & 0xfaf0);	// Clear ctrl/alt/shift flags
 
-	setvect(KeyInt,OldKeyVect);
+	_dos_setvect(KeyInt,OldKeyVect);
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -487,10 +494,10 @@ INL_ShutKbd(void)
 static boolean
 INL_StartMouse(void)
 {
-	if (getvect(MouseInt))
+	if(_dos_getvect(MouseInt))
 	{
 		Mouse(MReset);
-		if (_AX == 0xffff)
+		if(CPURegs.x.ax == 0xffff)
 			return(true);
 	}
 	return(false);

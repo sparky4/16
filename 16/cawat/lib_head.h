@@ -26,13 +26,17 @@
 
 #ifndef _LIB_HEAD_H_
 #define _LIB_HEAD_H_
-
-#include <malloc.h>
 #include <dos.h>
+#include <malloc.h>
+#include <conio.h>
 //#include ""
 //#include ""
 //#include "ID_CA.H"
 //#include "AUDIOARM.H"
 #include "types.h"
+
+#ifndef REGS
+struct REGS CPURegs;
+#endif
 
 #endif/*_LIB_HEAD_H_*/

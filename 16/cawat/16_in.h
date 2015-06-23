@@ -23,14 +23,14 @@
 //	By Jason Blochowiak
 //
 
+#ifndef	__16_IN__
+#define	__16_IN__
+
 #include "lib_head.h"
 
 #ifndef	__TYPES__
 //#include "ID_Types.h"
 #endif
-
-#ifndef	__ID_IN__
-#define	__ID_IN__
 
 #ifdef	__DEBUG__
 #define	__DEBUG_InputMgr__
@@ -120,7 +120,6 @@ typedef	byte		ScanCode;
 #define	MDelta		11
 
 #define	MouseInt	0x33
-#define	Mouse(x)	_AX = x,_dos_geninterrupt(MouseInt)
 
 typedef	enum		{
 						demo_Off,demo_Record,demo_Playback,demo_PlayDone
