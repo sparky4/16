@@ -1,0 +1,1932 @@
+/* Catacomb Armageddon Source Code
+ * Copyright (C) 1993-2014 Flat Rock Software
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
+// C3_DRAW.C
+
+#include "DEF.H"
+#pragma hdrstop
+
+//#define DRAWEACH                              // draw walls one at a time for debugging
+
+unsigned        highest;
+unsigned        mostwalls,numwalls;
+
+/*
+=============================================================================
+
+						 LOCAL CONSTANTS
+
+=============================================================================
+*/
+
+#define PI      3.141592657
+#define ANGLEQUAD       (ANGLES/4)
+
+unsigned        oldend;
+
+#define FINEANGLES      3600
+
+#define MINRATIO        16
+
+
+const   unsigned        MAXSCALEHEIGHT  = (VIEWWIDTH/2);
+const   unsigned        MAXVISHEIGHT    = (VIEWHEIGHT/2);
+const   unsigned        BASESCALE               = 32;
+
+/*
+=============================================================================
+
+						 GLOBAL VARIABLES
+
+=============================================================================
+*/
+
+//
+// calculate location of screens in video memory so they have the
+// maximum possible distance seperating them (for scaling overflow)
+//
+
+unsigned screenloc[3]= {PAGE1START,PAGE2START,PAGE3START};
+unsigned freelatch = FREESTART;
+
+boolean         fizzlein;
+
+long    scaleshapecalll;
+long    scaletablecall;
+
+/*
+=============================================================================
+
+						 LOCAL VARIABLES
+
+=============================================================================
+*/
+
+long    bytecount,endcount;             // for profiling
+int             animframe;
+int             pixelangle[VIEWWIDTH];
+int             far finetangent[FINEANGLES+1];
+int             fineviewangle;
+unsigned        viewxpix,viewypix;
+
+/*
+============================================================================
+
+			   3 - D  DEFINITIONS
+
+============================================================================
+*/
+
+fixed   tileglobal      = TILEGLOBAL;
+fixed   focallength     = FOCALLENGTH;
+fixed   mindist         = MINDIST;
+int             viewheight      = VIEWHEIGHT;
+fixed scale;
+
+
+tilept  tile,lasttile,          // tile of wall being followed
+	focal,                  // focal point in tiles
+	left,mid,right;         // rightmost tile in view
+
+globpt edge,view;
+
+int     segstart[VIEWHEIGHT],   // addline tracks line segment and draws
+	segend[VIEWHEIGHT],
+	segcolor[VIEWHEIGHT];   // only when the color changes
+
+
+walltype        walls[MAXWALLS],*leftwall,*rightwall;
+
+
+//==========================================================================
+
+//
+// refresh stuff
+//
+
+int screenpage;
+
+long lasttimecount;
+
+//
+// rendering stuff
+//
+
+int firstangle,lastangle;
+
+fixed prestep;
+
+fixed sintable[ANGLES+ANGLES/4],*costable = sintable+(ANGLES/4);
+
+fixed   viewx,viewy;                    // the focal point
+int     viewangle;
+fixed   viewsin,viewcos;
+
+int     zbuffer[VIEWXH+1];      // holds the height of the wall at that point
+
+//==========================================================================
+
+void    DrawLine (int xl, int xh, int y,int color);
+void    DrawWall (walltype *wallptr);
+void    TraceRay (unsigned angle);
+fixed   FixedByFrac (fixed a, fixed b);
+fixed   FixedAdd (void);
+fixed   TransformX (fixed gx, fixed gy);
+int             FollowTrace (fixed tracex, fixed tracey, long deltax, long deltay, int max);
+int             BackTrace (int finish);
+void    ForwardTrace (void);
+int             TurnClockwise (void);
+int             TurnCounterClockwise (void);
+void    FollowWall (void);
+
+void    NewScene (void);
+void    BuildTables (void);
+
+//==========================================================================
+
+
+#if 0
+/*
+==================
+=
+= DrawLine
+=
+= Must be in write mode 2 with all planes enabled
+= The bit mask is left set to the end value, so clear it after all lines are
+= drawn
+=
+= draws a black dot at the left edge of the line
+=
+==================
+*/
+
+unsigned static char dotmask[8] = {0x80,0x40,0x20,0x10,8,4,2,1};
+unsigned static char leftmask[8] = {0xff,0x7f,0x3f,0x1f,0xf,7,3,1};
+unsigned static char rightmask[8] = {0x80,0xc0,0xe0,0xf0,0xf8,0xfc,0xfe,0xff};
+
+void DrawLine (int xl, int xh, int y,int color)
+{
+  unsigned dest,xlp,xlb,xhb,maskleft,maskright,maskdot,mid;
+
+  xlb=xl/8;
+  xhb=xh/8;
+
+  if (xh<xl)
+	Quit("DrawLine: xh<xl");
+  if (y<VIEWY)
+	Quit("DrawLine: y<VIEWY");
+  if (y>VIEWYH)
+	Quit("DrawLine: y>VIEWYH");
+
+	xlp = xl&7;
+	maskleft = leftmask[xlp];
+	maskright = rightmask[xh&7];
+
+  mid = xhb-xlb-1;
+  dest = bufferofs+ylookup[y]+xlb;
+
+	//
+	// set the GC index register to point to the bit mask register
+	//
+	asm     mov     al,GC_BITMASK
+	asm     mov     dx,GC_INDEX
+	asm     out     dx,al
+
+  if (xlb==xhb)
+  {
+  //
+  // entire line is in one byte
+  //
+
+	maskleft&=maskright;
+
+	asm     mov     es,[screenseg]
+	asm     mov     di,[dest]
+	asm     mov     dx,GC_INDEX+1
+
+	asm     mov     al,[BYTE PTR maskleft]
+	asm     out     dx,al           // mask off pixels
+
+	asm     mov     al,[BYTE PTR color]
+	asm     xchg    al,[es:di]      // load latches and write pixels
+
+	return;
+  }
+
+asm     mov     es,[screenseg]
+asm     mov     di,[dest]
+asm     mov     dx,GC_INDEX+1
+asm     mov     bh,[BYTE PTR color]
+
+//
+// draw left side
+//
+asm     mov     al,[BYTE PTR maskleft]
+asm     out     dx,al           // mask off pixels
+
+asm     mov     al,bh
+asm     xchg    al,[es:di]      // load latches and write pixels
+asm     inc     di
+
+//
+// draw middle
+//
+asm     mov     al,255
+asm     out     dx,al           // no masking
+
+asm     mov     al,bh
+asm     mov     cx,[mid]
+asm     rep     stosb
+
+//
+// draw right side
+//
+asm     mov     al,[BYTE PTR maskright]
+asm     out     dx,al           // mask off pixels
+asm     xchg    bh,[es:di]      // load latches and write pixels
+
+}
+
+//==========================================================================
+
+void DrawLineDot (int xl, int xh, int y,int color)
+{
+  unsigned dest,xlp,xlb,xhb,maskleft,maskright,maskdot,mid;
+
+  xlb=xl/8;
+  xhb=xh/8;
+
+  if (xh<xl)
+	Quit("DrawLine: xh<xl");
+  if (y<VIEWY)
+	Quit("DrawLine: y<VIEWY");
+  if (y>VIEWYH)
+	Quit("DrawLine: y>VIEWYH");
+
+	xlp = xl&7;
+	maskdot = dotmask[xlp];
+	maskleft = leftmask[xlp];
+	maskright = rightmask[xh&7];
+
+  mid = xhb-xlb-1;
+  dest = bufferofs+ylookup[y]+xlb;
+
+	//
+	// set the GC index register to point to the bit mask register
+	//
+	asm     mov     al,GC_BITMASK
+	asm     mov     dx,GC_INDEX
+	asm     out     dx,al
+
+  if (xlb==xhb)
+  {
+  //
+  // entire line is in one byte
+  //
+
+	maskleft&=maskright;
+
+	asm     mov     es,[screenseg]
+	asm     mov     di,[dest]
+	asm     mov     dx,GC_INDEX+1
+
+	asm     mov     al,[BYTE PTR maskleft]
+	asm     out     dx,al           // mask off pixels
+
+	asm     mov     al,[BYTE PTR color]
+	asm     xchg    al,[es:di]      // load latches and write pixels
+
+
+	//
+	// write the black dot at the start
+	//
+	asm     mov     al,[BYTE PTR maskdot]
+	asm     out     dx,al           // mask off pixels
+
+	asm     xor     al,al
+	asm     xchg    al,[es:di]      // load latches and write pixels
+
+
+	return;
+  }
+
+asm     mov     es,[screenseg]
+asm     mov     di,[dest]
+asm     mov     dx,GC_INDEX+1
+asm     mov     bh,[BYTE PTR color]
+
+//
+// draw left side
+//
+asm     mov     al,[BYTE PTR maskleft]
+asm     out     dx,al           // mask off pixels
+
+asm     mov     al,bh
+asm     xchg    al,[es:di]      // load latches and write pixels
+
+//
+// write the black dot at the start
+//
+asm     mov     al,[BYTE PTR maskdot]
+asm     out     dx,al           // mask off pixels
+asm     xor     al,al
+asm     xchg    al,[es:di]      // load latches and write pixels
+asm     inc     di
+
+//
+// draw middle
+//
+asm     mov     al,255
+asm     out     dx,al           // no masking
+
+asm     mov     al,bh
+asm     mov     cx,[mid]
+asm     rep     stosb
+
+//
+// draw right side
+//
+asm     mov     al,[BYTE PTR maskright]
+asm     out     dx,al           // mask off pixels
+asm     xchg    bh,[es:di]      // load latches and write pixels
+
+}
+
+#endif
+
+//==========================================================================
+
+
+long            wallscalesource;
+
+#ifdef DRAWEACH
+/*
+====================
+=
+= ScaleOneWall
+=
+====================
+*/
+
+void near ScaleOneWall (int xl, int xh)
+{
+	int     x,pixwidth,height;
+
+	*(((unsigned *)&wallscalesource)+1) = wallseg[xl];
+
+	for (x=xl;x<=xh;x+=pixwidth)
+	{
+		height = wallheight[x];
+		pixwidth = wallwidth[x];
+		(unsigned)wallscalesource = wallofs[x];
+
+		*(((unsigned *)&scaletablecall)+1) = (unsigned)scaledirectory[height];
+		(unsigned)scaletablecall = scaledirectory[height]->codeofs[0];
+
+		//
+		// scale a byte wide strip of wall
+		//
+		asm     mov     bx,[x]
+		asm     mov     di,bx
+		asm     shr     di,1
+		asm     shr     di,1
+		asm     shr     di,1                                            // X in bytes
+		asm     add     di,[bufferofs]
+		asm     and     bx,7
+		asm     shl     bx,1
+		asm     shl     bx,1
+		asm     shl     bx,1
+		asm     add     bx,[pixwidth]                           // bx = pixel*8+pixwidth-1
+		asm     dec     bx
+		asm     mov     al,BYTE PTR [bitmasks1+bx]
+		asm     mov     dx,GC_INDEX+1
+		asm     out     dx,al                                           // set bit mask register
+		asm     mov     es,[screenseg]
+		asm     lds     si,[wallscalesource]
+		asm     call [DWORD PTR ss:scaletablecall]              // scale the line of pixels
+
+		asm     mov     al,BYTE PTR [ss:bitmasks2+bx]
+		asm     or      al,al
+		asm     jz      nosecond
+
+		//
+		// draw a second byte for vertical strips that cross two bytes
+		//
+		asm     inc     di
+		asm     out     dx,al                                           // set bit mask register
+		asm     call [DWORD PTR ss:scaletablecall]      // scale the line of pixels
+	nosecond:
+		asm     mov     ax,ss
+		asm     mov     ds,ax
+	}
+}
+
+#endif
+
+char wall_anim_pos[NUMFLOORS];
+
+// EAST / WEST WALLS
+//
+int     far walllight1[NUMFLOORS] = {0,
+
+	CRYSTAL_LIGHT_1PIC,
+	CRYSTAL_LIGHT_2PIC,
+	CRYSTAL_LIGHT_3PIC,
+	CRYSTAL_LIGHT_4PIC,			//4
+
+	FIRE_WALL_1PIC,
+	FIRE_WALL_2PIC,
+	FIRE_WALL_3PIC,
+	FIRE_WALL_4PIC,				//8
+
+	BRN_STONE_GATEPIC,
+	BRN_STONE_WALL_1PIC,
+	KUDZU_WEAK_LIGHTPIC,
+	KUDZU_LIGHT_WALLPIC,
+	HEDGE_WALLPIC,
+	HEDGE_EYESPIC,    			//14
+
+	W_GEN_DOOR1PIC,					//15
+	BRN_WINDOW_LIGHTPIC,
+
+	ALTAR_LEFTPIC,
+	ALTAR_RIGHTPIC,
+	GRAY_LIGHT_WALLPIC,
+	GRAY_LIGHT_SIGNPIC,			//20
+
+	MANICLE_LIGHT_WALLPIC,
+	MANICLE_LIGHT_BLOODYPIC,
+
+	LIGHT_CURTAIN_WINDOWPIC,
+	LIGHT_CURTAIN_WALLPIC,
+	BRN_LIGHT_SIGNPIC,			//25
+
+	LIGHT_STONE_WALLPIC,
+
+	W_GEN_DOOR2PIC,					//27
+
+	TROLL_LIGHT_STONEPIC,
+
+	BRN_FLAGSTONE_LIGHT_2PIC,
+
+	W_CRYSTAL_DOORPIC,
+
+	DMG_BRN_FSTN_LTPIC,
+
+	RUST_METAL_LIGHTPIC,
+	GRAY_METAL_LIGHTPIC,			//33
+
+	WEAK_STONE_LIGHTPIC,
+
+	DMG_FIN_FSTN_LTPIC,
+
+	WEAK_GRAY_RFGSTN_LIGHTPIC,
+	0,
+
+	WEAK_CRYSTAL_LIGHTPIC,
+
+	RED_MUD_LIGHTPIC,
+
+	STEEL_DOOR1PIC,				//40
+
+	RED_MUD_WEAK_LIGHTPIC,
+
+	STEEL_DOOR2PIC,                         //42
+
+	HORN_DOORPIC,
+	TROLL_BLOODY_LT_STONEPIC,
+	CLOSED_DOOR_1PIC,
+
+	GRY_DOOR_LTPIC,				//46
+
+	BRN_DOOR_LTPIC,                         //47
+
+	GRY_FGSTN_LTPIC,                           //48
+	DOOR_2PIC,
+
+	WATER_LIGHT_WEAK_1PIC,
+	WATER_LIGHT_WEAK_2PIC,
+	WATER_LIGHT_WEAK_3PIC,			//52
+
+	WATER_LIGHT_1PIC,
+	WATER_LIGHT_2PIC,
+	WATER_LIGHT_3PIC,
+
+	LIGHT_BREATH_1PIC,
+	LIGHT_BREATH_2PIC,
+	LIGHT_BREATH_3PIC,			//58
+
+	EXP_WALL_1PIC,
+	EXP_WALL_2PIC,
+	EXP_WALL_3PIC,
+
+	WATER_EXP_WALL_1PIC,
+	WATER_EXP_WALL_2PIC,
+	WATER_EXP_WALL_3PIC,			//64
+
+	FINALWALLPIC,
+
+	LT_SKEL1PIC,
+	DK_SKEL1PIC,
+	LT_SKEL2PIC,
+	DK_SKEL2PIC,
+
+	0,
+
+	TAP_1PIC,
+	TAP_2PIC,
+	TAP_3PIC,
+	TAP_4PIC,
+	TAP_5PIC,
+
+	WATER_DOOR1_PIC,
+	WATER_DOOR2_PIC,
+	};
+
+// NORTH / SOUTH WALLS
+//
+int     far walldark1[NUMFLOORS] = {0,
+
+	CRYSTAL_DARK_1PIC,
+	CRYSTAL_DARK_2PIC,
+	CRYSTAL_DARK_3PIC,
+	CRYSTAL_DARK_4PIC,			//4
+
+	FIRE_WALL_1PIC,
+	FIRE_WALL_2PIC,
+	FIRE_WALL_3PIC,
+	FIRE_WALL_4PIC,				//8
+
+	BRN_STONE_GATEPIC,
+	BRN_STONE_WALL_2PIC,
+	KUDZU_WEAK_DARKPIC,
+	KUDZU_DARK_WALLPIC,
+	HEDGE_WALLPIC,
+	HEDGE_EYESPIC,				//14
+
+	W_GEN_DOOR1PIC,				//15
+	BRN_WINDOW_DARKPIC,
+
+	ALTAR_LEFTPIC,
+	ALTAR_RIGHTPIC,
+	GRAY_DARK_WALLPIC,
+	GRAY_DARK_SIGNPIC,			//20
+
+	MANICLE_DARK_WALLPIC,
+	MANICLE_DARK_BLOODYPIC,
+
+	DARK_CURTAIN_WINDOWPIC,
+	DARK_CURTAIN_WALLPIC,
+	BRN_DARK_SIGNPIC,
+
+	DARK_STONE_WALLPIC,
+
+	W_GEN_DOOR2PIC,				//27
+
+	TROLL_DARK_STONEPIC,
+
+	BRN_FLAGSTONE_DARK_2PIC,
+
+	W_CRYSTAL_DOORPIC,				//30
+
+	DMG_BRN_FSTN_DKPIC,
+
+	RUST_METAL_DARKPIC,
+	GRAY_METAL_DARKPIC,
+
+	WEAK_STONE_DARKPIC,
+
+	DMG_FIN_FSTN_DKPIC,			//35
+
+	WEAK_GRAY_RFGSTN_DARKPIC,
+	0,
+
+	WEAK_CRYSTAL_DARKPIC,
+
+	BRN_MUD_DARKPIC,
+
+	STEEL_DOOR1PIC,				//40
+
+	BRN_MUD_WEAK_DARKPIC,
+
+	STEEL_DOOR2PIC,
+
+	HORN_DOORPIC,
+	TROLL_BLOODY_DK_STONEPIC,
+
+	CLOSED_DOOR_1PIC,
+
+	GRY_DOOR_DKPIC,				//46
+	BRN_DOOR_DKPIC,				//47
+	GRY_FGSTN_DKPIC,				//48
+	DOOR_2PIC,
+
+	WATER_DARK_WEAK_1PIC,
+	WATER_DARK_WEAK_2PIC,
+	WATER_DARK_WEAK_3PIC,
+
+	WATER_DARK_1PIC,
+	WATER_DARK_2PIC,
+	WATER_DARK_3PIC,
+
+	DARK_BREATH_1PIC,
+	DARK_BREATH_2PIC,
+	DARK_BREATH_3PIC,
+
+	EXP_WALL_1PIC,
+	EXP_WALL_2PIC,
+	EXP_WALL_3PIC,
+
+	WATER_EXP_WALL_1PIC,
+	WATER_EXP_WALL_2PIC,
+	WATER_EXP_WALL_3PIC,
+
+	FINALWALLPIC,
+
+	LT_SKEL1PIC,
+	DK_SKEL1PIC,
+	LT_SKEL2PIC,
+	DK_SKEL2PIC,
+
+	0,
+
+	TAP_1PIC,
+	TAP_2PIC,
+	TAP_3PIC,
+	TAP_4PIC,
+	TAP_5PIC,
+
+	WATER_DOOR1_PIC,
+	WATER_DOOR2_PIC,
+	};
+
+
+/*
+=====================
+=
+= DrawVWall
+=
+= Draws a wall by vertical segments, for texture mapping!
+=
+= wallptr->side is true for east/west walls (constant x)
+=
+= fracheight and fracstep are 16.16 bit fractions
+=
+=====================
+*/
+
+void DrawVWall (walltype *wallptr)
+{
+	int                     x,i;
+	unsigned        source;
+	unsigned        width,sourceint;
+	unsigned        wallpic,wallpicseg;
+	unsigned        skip;
+	long            fracheight,fracstep,longheightchange;
+	unsigned        height;
+	int                     heightchange;
+	unsigned        slope,distance;
+	int                     traceangle,angle;
+	int                     mapadd;
+	unsigned        lastpix,lastsource,lastwidth;
+
+	if (wallptr->rightclip < wallptr->leftclip)
+		Quit ("DrawVWall: Right < Left");
+
+//
+// setup for height calculation
+//
+	wallptr->height1 >>= 1;
+	wallptr->height2 >>= 1;
+	wallptr->planecoord>>=10;                       // remove non significant bits
+
+	width = wallptr->x2 - wallptr->x1;
+	if (width)
+	{
+		heightchange = wallptr->height2 - wallptr->height1;
+		asm     mov     ax,[heightchange]
+		asm     mov     WORD PTR [longheightchange+2],ax
+		asm     mov     WORD PTR [longheightchange],0   // avoid long shift by 16
+		fracstep = longheightchange/width;
+	}
+
+	fracheight = ((long)wallptr->height1<<16)+0x8000;
+	skip = wallptr->leftclip - wallptr->x1;
+	if (skip)
+		fracheight += fracstep*skip;
+
+//
+// setup for texture mapping
+//
+// mapadd is 64*64 (to keep source positive) + the origin wall intercept
+// distance has 6 unit bits, and 6 frac bits
+// traceangle is the center view angle in FINEANGLES, moved to be in
+// the +-90 degree range (to thew right of origin)
+//
+	traceangle = fineviewangle;
+	//
+	// find wall picture to map from
+	//
+	if (wallptr->side)
+	{       // east or west wall
+
+		wallpic = walllight1[wallptr->color+wall_anim_pos[wallptr->color]];
+		if (wallptr->planecoord < viewxpix)
+		{
+			distance = viewxpix-wallptr->planecoord;
+			traceangle -= FINEANGLES/2;
+			mapadd = (64-viewypix&63);              // the pixel spot of the origin
+		}
+		else
+		{
+			distance = wallptr->planecoord-viewxpix;
+			// traceangle is correct
+			mapadd = viewypix&63;           // the pixel spot of the origin
+		}
+	}
+	else
+	{       // north or south wall
+
+		wallpic = walldark1[wallptr->color+wall_anim_pos[wallptr->color]];
+		if (wallptr->planecoord < viewypix)
+		{
+			distance = viewypix-wallptr->planecoord;
+			traceangle -= FINEANGLES/4;
+			mapadd = viewxpix&63;           // the pixel spot of the origin
+		}
+		else
+		{
+			distance = wallptr->planecoord-viewypix;
+			traceangle -= FINEANGLES*3/4;
+			mapadd = (64-viewxpix&63);              // the pixel spot of the origin
+		}
+	}
+
+	mapadd = 64*64-mapadd;                          // make sure it stays positive
+
+	wallpicseg = (unsigned)walldirectory[wallpic-FIRSTWALLPIC];
+	if (traceangle > FINEANGLES/2)
+		traceangle -= FINEANGLES;
+
+//
+// calculate everything
+//
+// IMPORTANT!  This loop is executed around 5000 times / second!
+//
+	lastpix = lastsource = (unsigned)-1;
+
+	for (x = wallptr->leftclip ; x <= wallptr->rightclip ; x++)
+	{
+		//
+		// height
+		//
+		asm     mov     ax,WORD PTR [fracheight]
+		asm     mov     dx,WORD PTR [fracheight+2]
+		asm     mov     cx,dx
+		asm     add     ax,WORD PTR [fracstep]
+		asm     adc     dx,WORD PTR [fracstep+2]
+		asm     mov     WORD PTR [fracheight],ax
+		asm     mov     WORD PTR [fracheight+2],dx
+		asm     mov     bx,[x]
+		asm     shl     bx,1
+		asm     cmp     cx,MAXSCALEHEIGHT
+		asm     jbe     storeheight
+		asm     mov     cx,MAXSCALEHEIGHT
+storeheight:
+		asm     mov WORD PTR [wallheight+bx],cx
+		asm     mov WORD PTR [zbuffer+bx],cx
+
+//              height = fracheight>>16;
+//              fracheight += fracstep;
+//              if (height > MAXSCALEHEIGHT)
+//                      height = MAXSCALEHEIGHT;
+//              wallheight[x] = zbuffer[x] = height;
+
+		//
+		// texture map
+		//
+		angle = pixelangle[x]+traceangle;
+		if (angle<0)
+			angle+=FINEANGLES;
+
+		slope = finetangent[angle];
+
+//
+// distance is an unsigned 6.6 bit number (12 pixel bits)
+// slope is a signed 5.10 bit number
+// result is a signed 11.16 bit number
+//
+
+#if 0
+		source = distance*slope;
+		source >>=20;
+
+		source += mapadd;
+		source &= 63;                           // mask off the unused units
+		source = 63-source;
+		source <<= 6;                           // multiply by 64 for offset into pic
+#endif
+		asm     mov     ax,[distance]
+		asm     imul    [slope]                 // ax is the source pixel
+		asm     mov     al,ah
+		asm     shr     al,1
+		asm     shr     al,1                            // low 6 bits is now pixel number
+		asm     add     ax,[mapadd]
+		asm     and ax,63
+		asm     mov     dx,63
+		asm     sub     dx,ax                           // otherwise it is backwards
+		asm     shl     dx,1
+		asm     shl     dx,1
+		asm     shl     dx,1
+		asm     shl     dx,1
+		asm     shl     dx,1
+		asm     shl     dx,1                            // *64 to index into shape
+		asm     mov     [source],dx
+
+		if (source != lastsource)
+		{
+			if (lastpix != (unsigned)-1)
+			{
+				wallofs[lastpix] = lastsource;
+				wallseg[lastpix] = wallpicseg;
+				wallwidth[lastpix] = lastwidth;
+			}
+			lastpix = x;
+			lastsource = source;
+			lastwidth = 1;
+		}
+		else
+			lastwidth++;                    // optimized draw, same map as last one
+	}
+	wallofs[lastpix] = lastsource;
+	wallseg[lastpix] = wallpicseg;
+	wallwidth[lastpix] = lastwidth;
+}
+
+
+//==========================================================================
+
+
+/*
+=================
+=
+= TraceRay
+=
+= Used to find the left and rightmost tile in the view area to be traced from
+= Follows a ray of the given angle from viewx,viewy in the global map until
+= it hits a solid tile
+= sets:
+=   tile.x,tile.y       : tile coordinates of contacted tile
+=   tilecolor   : solid tile's color
+=
+==================
+*/
+
+int tilecolor;
+
+void TraceRay (unsigned angle)
+{
+  long tracex,tracey,tracexstep,traceystep,searchx,searchy;
+  fixed fixtemp;
+  int otx,oty,searchsteps;
+
+  tracexstep = costable[angle];
+  traceystep = sintable[angle];
+
+//
+// advance point so it is even with the view plane before we start checking
+//
+  fixtemp = FixedByFrac(prestep,tracexstep);
+  tracex = viewx+fixtemp;
+  fixtemp = FixedByFrac(prestep,traceystep);
+  tracey = viewy-fixtemp;
+
+  tile.x = tracex>>TILESHIFT;   // starting point in tiles
+  tile.y = tracey>>TILESHIFT;
+
+
+  if (tracexstep<0)                     // use 2's complement, not signed magnitude
+	tracexstep = -(tracexstep&0x7fffffff);
+
+  if (traceystep<0)                     // use 2's complement, not signed magnitude
+	traceystep = -(traceystep&0x7fffffff);
+
+//
+// we assume viewx,viewy is not inside a solid tile, so go ahead one step
+//
+
+  do    // until a solid tile is hit
+  {
+    otx = tile.x;
+	oty = tile.y;
+	spotvis[otx][oty] = true;
+	tracex += tracexstep;
+    tracey -= traceystep;
+    tile.x = tracex>>TILESHIFT;
+	tile.y = tracey>>TILESHIFT;
+
+	if (tile.x!=otx && tile.y!=oty && (tilemap[otx][tile.y] || tilemap[tile.x][oty]) )
+    {
+      //
+	  // trace crossed two solid tiles, so do a binary search along the line
+	  // to find a spot where only one tile edge is crossed
+      //
+      searchsteps = 0;
+      searchx = tracexstep;
+      searchy = traceystep;
+      do
+      {
+	searchx/=2;
+	searchy/=2;
+	if (tile.x!=otx && tile.y!=oty)
+	{
+	 // still too far
+	  tracex -= searchx;
+	  tracey += searchy;
+	}
+	else
+	{
+	 // not far enough, no tiles crossed
+	  tracex += searchx;
+	  tracey -= searchy;
+	}
+
+	//
+	// if it is REAL close, go for the most clockwise intersection
+	//
+	if (++searchsteps == 16)
+	{
+	  tracex = (long)otx<<TILESHIFT;
+	  tracey = (long)oty<<TILESHIFT;
+	  if (tracexstep>0)
+	  {
+		if (traceystep<0)
+		{
+		  tracex += TILEGLOBAL-1;
+		  tracey += TILEGLOBAL;
+		}
+		else
+		{
+		  tracex += TILEGLOBAL;
+		}
+	  }
+	  else
+	  {
+		if (traceystep<0)
+		{
+		  tracex --;
+		  tracey += TILEGLOBAL-1;
+		}
+		else
+		{
+		  tracey --;
+		}
+	  }
+	}
+
+	tile.x = tracex>>TILESHIFT;
+	tile.y = tracey>>TILESHIFT;
+
+	  } while (( tile.x!=otx && tile.y!=oty) || (tile.x==otx && tile.y==oty) );
+	}
+  } while (!(tilecolor = tilemap[tile.x][tile.y]) );
+
+}
+
+//==========================================================================
+
+
+/*
+========================
+=
+= FixedByFrac
+=
+= multiply a 16/16 bit, 2's complement fixed point number by a 16 bit
+= fraction, passed as a signed magnitude 32 bit number
+=
+========================
+*/
+
+#pragma warn -rvl                       // I stick the return value in with ASMs
+
+fixed FixedByFrac (fixed a, fixed b)
+{
+  fixed value;
+
+//
+// setup
+//
+asm     mov     si,[WORD PTR b+2]       // sign of result = sign of fraction
+
+asm     mov     ax,[WORD PTR a]
+asm     mov     cx,[WORD PTR a+2]
+
+asm     or      cx,cx
+asm     jns     aok:                            // negative?
+asm     not     ax
+asm     not     cx
+asm     add     ax,1
+asm     adc     cx,0
+asm     xor     si,0x8000                       // toggle sign of result
+aok:
+
+//
+// multiply  cx:ax by bx
+//
+asm     mov     bx,[WORD PTR b]
+asm     mul     bx                                      // fraction*fraction
+asm     mov     di,dx                           // di is low word of result
+asm     mov     ax,cx                           //
+asm     mul     bx                                      // units*fraction
+asm add ax,di
+asm     adc     dx,0
+
+//
+// put result dx:ax in 2's complement
+//
+asm     test    si,0x8000               // is the result negative?
+asm     jz      ansok:
+asm     not     ax
+asm     not     dx
+asm     add     ax,1
+asm     adc     dx,0
+
+ansok:;
+
+}
+
+#pragma warn +rvl
+
+#if 0
+/*
+=========================
+=
+= FixedAdd
+=
+= add two 16 bit fixed point numbers
+= to subtract, invert the sign of B before invoking
+=
+=========================
+*/
+
+fixed FixedAdd (fixed a, fixed b)
+{
+  fixed value;
+
+asm     mov     ax,[WORD PTR a]
+asm     mov     dx,[WORD PTR a+2]
+
+asm     mov     bx,[WORD PTR b]
+asm     mov     cx,[WORD PTR b+2]
+
+asm     or      dx,dx
+asm     jns     aok:            // negative?
+asm     and     dx,0x7fff
+asm     not     ax              // convert a from signed magnitude to 2's compl
+asm     not     dx
+asm     add     ax,1
+asm     adc     dx,0
+aok:
+
+asm     or      cx,cx
+asm     jns     bok:            // negative?
+asm     and     cx,0x7fff
+asm     not     bx              // convert b from signed magnitude to 2's compl
+asm     not     cx
+asm     add     bx,1
+asm     adc     cx,0
+bok:
+
+asm     add     ax,bx           // perform the addition
+asm     adc     dx,cx
+asm     jns     done
+
+asm     and     dx,0x7fff       // value was negative
+asm     not     ax              // back to signed magnitude
+asm     not     dx
+asm     add     ax,1
+asm     adc     dx,0
+
+done:
+
+asm     mov     [WORD PTR value],ax
+asm     mov     [WORD PTR value+2],dx
+
+  return value;
+}
+#endif
+
+//==========================================================================
+
+
+/*
+========================
+=
+= TransformPoint
+=
+= Takes paramaters:
+=   gx,gy               : globalx/globaly of point
+=
+= globals:
+=   viewx,viewy         : point of view
+=   viewcos,viewsin     : sin/cos of viewangle
+=
+=
+= defines:
+=   CENTERX             : pixel location of center of view window
+=   TILEGLOBAL          : size of one
+=   FOCALLENGTH         : distance behind viewx/y for center of projection
+=   scale               : conversion from global value to screen value
+=
+= returns:
+=   screenx,screenheight: projected edge location and size
+=
+========================
+*/
+
+void TransformPoint (fixed gx, fixed gy, int *screenx, unsigned *screenheight)
+{
+  int ratio;
+  fixed gxt,gyt,nx,ny;
+
+//
+// translate point to view centered coordinates
+//
+  gx = gx-viewx;
+  gy = gy-viewy;
+
+//
+// calculate newx
+//
+  gxt = FixedByFrac(gx,viewcos);
+  gyt = FixedByFrac(gy,viewsin);
+  nx = gxt-gyt;
+
+//
+// calculate newy
+//
+  gxt = FixedByFrac(gx,viewsin);
+  gyt = FixedByFrac(gy,viewcos);
+  ny = gyt+gxt;
+
+//
+// calculate perspective ratio
+//
+  if (nx<0)
+	nx = 0;
+
+  ratio = nx*scale/FOCALLENGTH;
+
+  if (ratio<=MINRATIO)
+	ratio = MINRATIO;
+
+  *screenx = CENTERX + ny/ratio;
+
+  *screenheight = TILEGLOBAL/ratio;
+
+}
+
+
+//
+// transform actor
+//
+void TransformActor (objtype *ob)
+{
+  int ratio;
+  fixed gx,gy,gxt,gyt,nx,ny;
+
+//
+// translate point to view centered coordinates
+//
+  gx = ob->x-viewx;
+  gy = ob->y-viewy;
+
+//
+// calculate newx
+//
+  gxt = FixedByFrac(gx,viewcos);
+  gyt = FixedByFrac(gy,viewsin);
+  nx = gxt-gyt-ob->size;
+
+//
+// calculate newy
+//
+  gxt = FixedByFrac(gx,viewsin);
+  gyt = FixedByFrac(gy,viewcos);
+  ny = gyt+gxt;
+
+//
+// calculate perspective ratio
+//
+  if (nx<0)
+	nx = 0;
+
+  ratio = nx*scale/FOCALLENGTH;
+
+  if (ratio<=MINRATIO)
+	ratio = MINRATIO;
+
+  ob->viewx = CENTERX + ny/ratio;
+
+  ob->viewheight = TILEGLOBAL/ratio;
+}
+
+//==========================================================================
+
+fixed TransformX (fixed gx, fixed gy)
+{
+  int ratio;
+  fixed gxt,gyt,nx,ny;
+
+//
+// translate point to view centered coordinates
+//
+  gx = gx-viewx;
+  gy = gy-viewy;
+
+//
+// calculate newx
+//
+  gxt = FixedByFrac(gx,viewcos);
+  gyt = FixedByFrac(gy,viewsin);
+
+  return gxt-gyt;
+}
+
+//==========================================================================
+
+/*
+==================
+=
+= BuildTables
+=
+= Calculates:
+=
+= scale                 projection constant
+= sintable/costable     overlapping fractional tables
+= firstangle/lastangle  angles from focalpoint to left/right view edges
+= prestep               distance from focal point before checking for tiles
+=
+==================
+*/
+
+void BuildTables (void)
+{
+  int           i;
+  long          intang;
+  long          x;
+  float         angle,anglestep,radtoint;
+  double        tang;
+  fixed         value;
+
+//
+// calculate the angle offset from view angle of each pixel's ray
+//
+	radtoint = (float)FINEANGLES/2/PI;
+	for (i=0;i<VIEWWIDTH/2;i++)
+	{
+	// start 1/2 pixel over, so viewangle bisects two middle pixels
+		x = (TILEGLOBAL*i+TILEGLOBAL/2)/VIEWWIDTH;
+		tang = (float)x/(FOCALLENGTH+MINDIST);
+		angle = atan(tang);
+		intang = angle*radtoint;
+		pixelangle[VIEWWIDTH/2-1-i] = intang;
+		pixelangle[VIEWWIDTH/2+i] = -intang;
+	}
+
+//
+// calculate fine tangents
+// 1 sign bit, 5 units (clipped to), 10 fracs
+//
+#define MININT  (-MAXINT)
+
+	for (i=0;i<FINEANGLES/4;i++)
+	{
+		intang = tan(i/radtoint)*(1l<<10);
+
+		//
+		// if the tangent is not reprentable in this many bits, bound the
+		// units part ONLY
+		//
+		if (intang>MAXINT)
+			intang = 0x8f00 | (intang & 0xff);
+		else if (intang<MININT)
+			intang = 0xff00 | (intang & 0xff);
+
+		finetangent[i] = intang;
+//              finetangent[FINEANGLES/2+i] = intang;
+//              finetangent[FINEANGLES/2-i-1] = -intang;
+		finetangent[FINEANGLES-i-1] = -intang;
+	}
+
+//
+// calculate scale value so one tile at mindist allmost fills the view horizontally
+//
+  scale = GLOBAL1/VIEWWIDTH;
+  scale *= focallength;
+  scale /= (focallength+mindist);
+
+//
+// costable overlays sintable with a quarter phase shift
+// ANGLES is assumed to be divisable by four
+//
+// The low word of the value is the fraction, the high bit is the sign bit,
+// bits 16-30 should be 0
+//
+
+  angle = 0;
+  anglestep = PI/2/ANGLEQUAD;
+  for (i=0;i<=ANGLEQUAD;i++)
+  {
+	value=GLOBAL1*sin(angle);
+	sintable[i]=
+	  sintable[i+ANGLES]=
+	  sintable[ANGLES/2-i] = value;
+	sintable[ANGLES-i]=
+	  sintable[ANGLES/2+i] = value | 0x80000000l;
+	angle += anglestep;
+  }
+
+//
+// figure trace angles for first and last pixel on screen
+//
+  angle = atan((float)VIEWWIDTH/2*scale/FOCALLENGTH);
+  angle *= ANGLES/(PI*2);
+
+  intang = (int)angle+1;
+  firstangle = intang;
+  lastangle = -intang;
+
+  prestep = GLOBAL1*((float)FOCALLENGTH/costable[firstangle]);
+
+//
+// misc stuff
+//
+  walls[0].x2 = VIEWX-1;
+  walls[0].height2 = 32000;
+}
+
+
+//==========================================================================
+
+/*
+=====================
+=
+= ClearScreen
+=
+=====================
+*/
+
+void ClearScreen (void)
+{
+	unsigned topcolor=*skycolor, bottomcolor=*groundcolor;
+	unsigned topimage=topcolor&0xf0,bottomimage=bottomcolor&0xf0;
+	unsigned pfoffset=0;
+
+
+#if USE_STRIPS
+	if (topimage == 0x20)		// special code for lightning
+		topimage = topcolor = 0;
+
+// Manually wipe screen with solid color.
+// If BOTH sky and ground are 'images' don't manually clear it!
+//
+	if ((!topimage) || (!bottomimage))
+	{
+#endif
+
+  //
+  // clear the screen
+  //
+asm     mov     dx,GC_INDEX
+asm     mov     ax,GC_MODE + 256*2              // read mode 0, write mode 2
+asm     out     dx,ax
+asm     mov     ax,GC_BITMASK + 255*256
+asm     out     dx,ax
+
+//asm     mov     dx,40-VIEWWIDTH/8					// dx = modulo
+asm     mov     bl,VIEWWIDTH/16
+asm     mov     bh,CENTERY+1
+
+asm     mov     ax,topcolor
+asm     mov     es,[screenseg]
+asm     mov     di,[bufferofs]
+asm     add     di,((SCREENWIDTH*VIEWY)+(VIEWX/8))
+
+toploop:
+asm     mov     cl,bl
+asm     rep     stosw
+asm     stosb
+//asm     add     di,dx					// no need to add "0" modulo
+asm     dec     bh
+asm     jnz     toploop
+
+asm     mov     bh,CENTERY+1
+asm     mov     ax,bottomcolor
+
+bottomloop:
+asm     mov     cl,bl
+asm     rep     stosw
+asm     stosb
+//asm     add     di,dx					// no need to add "0" modulo
+asm     dec     bh
+asm     jnz     bottomloop
+
+#if USE_STRIPS
+	}
+
+
+//
+// code to test parallax turning
+//
+
+	if (topimage)
+	{
+		topimage -= 16;
+		pfoffset = LONG_PERCENTAGE(3200,359,(359-player->angle),12);
+		while (pfoffset >= 640)
+			pfoffset -= 640;
+		LatchDrawPicStrip(0,0,SKY1PIC+topimage,pfoffset+8);
+	}
+
+	if (bottomimage)
+	{
+////		pfoffset = LONG_PERCENTAGE(3200,359,(359-player->angle),12)+320;
+//		pfoffset += 320;
+//		while (pfoffset >= 640)
+//			pfoffset -= 640;
+//		LatchDrawPicStrip(0,64,SKY1PIC+topimage,pfoffset+8);
+		bottomimage -= 16;
+		LatchDrawPic(0,64,GND1PIC+bottomimage);
+	}
+#endif
+
+
+asm     mov     dx,GC_INDEX
+asm     mov     ax,GC_MODE + 256*10             // read mode 1, write mode 2
+asm     out     dx,ax
+asm     mov     al,GC_BITMASK
+asm     out     dx,al
+
+}
+
+//==========================================================================
+
+/*
+=====================
+=
+= DrawWallList
+=
+= Clips and draws all the walls traced this refresh
+=
+=====================
+*/
+
+void DrawWallList (void)
+{
+	int i,leftx,newleft,rightclip;
+	walltype *wall, *check;
+
+asm     mov     ax,ds
+asm     mov     es,ax
+asm     mov     di,OFFSET wallwidth
+asm     xor     ax,ax
+asm     mov     cx,VIEWWIDTH/2
+asm     rep     stosw
+
+	ClearScreen ();
+
+	rightwall->x1 = VIEWXH+1;
+	rightwall->height1 = 32000;
+	(rightwall+1)->x1 = 32000;
+
+	leftx = -1;
+
+	for (wall=&walls[1];wall<rightwall && leftx<=VIEWXH ;wall++)
+	{
+	  if (leftx >= wall->x2)
+		continue;
+
+	  rightclip = wall->x2;
+
+	  check = wall+1;
+	  while (check->x1 <= rightclip && check->height1 >= wall->height2)
+	  {
+		rightclip = check->x1-1;
+		check++;
+	  }
+
+	  if (rightclip>VIEWXH)
+		rightclip=VIEWXH;
+
+	  if (leftx < wall->x1 - 1)
+		newleft = wall->x1-1;           // there was black space between walls
+	  else
+		newleft = leftx;
+
+	  if (rightclip > newleft)
+	  {
+		wall->leftclip = newleft+1;
+		wall->rightclip = rightclip;
+		DrawVWall (wall);
+		leftx = rightclip;
+	  }
+	}
+
+#ifndef DRAWEACH
+	ScaleWalls ();                                  // draw all the walls
+#endif
+}
+
+//==========================================================================
+
+/*
+=====================
+=
+= DrawScaleds
+=
+= Draws all objects that are visable
+=
+=====================
+*/
+
+objtype *depthsort[MAXACTORS];
+
+void DrawScaleds (void)
+{
+#if USE_INERT_LIST
+		extern inertobjtype inertobjlist[], *inert;
+
+		boolean inertlist=false;
+#endif
+	int             i,j,least,numvisable,height;
+	objtype         *obj,**vislist,*farthest;
+	memptr          shape;
+	byte            *tilespot,*visspot;
+
+	numvisable = 0;
+
+//
+// calculate base positions of all objects
+//
+	vislist = &depthsort[0];
+
+	obj = player->next;
+	while (obj)
+	{
+		tilespot = &tilemap[0][0]+(obj->tilex<<6)+obj->tiley;
+		visspot = &spotvis[0][0]+(obj->tilex<<6)+obj->tiley;
+		//
+		// could be in any of the nine surrounding tiles
+		//
+		if (*visspot
+		|| ( *(visspot-1) && !*(tilespot-1) )
+		|| ( *(visspot+1) && !*(tilespot+1) )
+		|| ( *(visspot-65) && !*(tilespot-65) )
+		|| ( *(visspot-64) && !*(tilespot-64) )
+		|| ( *(visspot-63) && !*(tilespot-63) )
+		|| ( *(visspot+65) && !*(tilespot+65) )
+		|| ( *(visspot+64) && !*(tilespot+64) )
+		|| ( *(visspot+63) && !*(tilespot+63) ) )
+		{
+#if USE_INERT_LIST
+			if (!inertlist)
+#endif
+				if ((obj->active == noalways) || (obj->active == always))
+					obj->active = always;
+				else
+					obj->active = yes;
+			TransformActor (obj);
+			if (!obj->viewheight || obj->viewheight > VIEWWIDTH)
+				goto cont;                       // too close or far away
+
+			if (!obj->state->shapenum)
+				goto cont;
+
+			*vislist++ = obj;
+			numvisable++;
+		}
+		else
+#if USE_INERT_LIST
+			if (!inertlist)
+#endif
+				if ((obj->active != always) && (obj->active != noalways))
+					obj->active = no;
+
+cont:;
+		obj = obj->next;
+#if USE_INERT_LIST
+		if ((!obj) && (!inertlist))
+		{
+			if (inert != inertobjlist)
+				obj = (objtype *)inertobjlist;
+			inertlist = true;
+		}
+#endif
+	}
+
+	if (vislist == &depthsort[0])
+		return;                                         // no visable objects
+
+//
+// draw from back to front
+//
+	for (i = 0; i<numvisable; i++)
+	{
+		least = 32000;
+		for (j=0;j<numvisable;j++)
+		{
+			height = depthsort[j]->viewheight;
+			if (height < least)
+			{
+				least = height;
+				farthest = depthsort[j];
+			}
+		}
+		//
+		// draw farthest
+		//
+		shape = shapedirectory[farthest->state->shapenum-FIRSTSCALEPIC];
+		ScaleShape(farthest->viewx,shape,farthest->viewheight);
+		farthest->viewheight = 32000;
+	}
+}
+
+//==========================================================================
+
+
+/*
+=====================
+=
+= CalcTics
+=
+=====================
+*/
+
+void CalcTics (void)
+{
+	long    newtime,oldtimecount;
+
+
+#ifdef PROFILE
+	tics = 1;
+	return;
+#endif
+
+//
+// calculate tics since last refresh for adaptive timing
+//
+	if (lasttimecount > TimeCount)
+		TimeCount = lasttimecount;              // if the game was paused a LONG time
+
+#if 0
+	if (DemoMode)                                   // demo recording and playback needs
+	{                                                               // to be constant
+//
+// take DEMOTICS or more tics, and modify Timecount to reflect time taken
+//
+		oldtimecount = lasttimecount;
+		while (TimeCount<oldtimecount+DEMOTICS*2)
+		;
+		lasttimecount = oldtimecount + DEMOTICS;
+		TimeCount = lasttimecount + DEMOTICS;
+		realtics = tics = DEMOTICS;
+	}
+	else
+#endif
+	{
+//
+// non demo, so report actual time
+//
+		newtime = TimeCount;
+		realtics = tics = newtime-lasttimecount;
+		lasttimecount = newtime;
+
+#ifdef FILEPROFILE
+			strcpy (scratch,"\tTics:");
+			itoa (tics,str,10);
+			strcat (scratch,str);
+			strcat (scratch,"\n");
+			write (profilehandle,scratch,strlen(scratch));
+#endif
+
+		if (tics>MAXTICS)
+		{
+			TimeCount -= (tics-MAXTICS);
+			tics = MAXTICS;
+		}
+
+		if (realtics>MAXREALTICS)
+			realtics = MAXREALTICS;
+	}
+}
+
+
+//==========================================================================
+
+
+/*
+========================
+=
+= DrawHand
+=
+========================
+*/
+
+void    DrawHand (void)
+{
+	#define HAND_X_POS      ((VIEWWIDTH/16)-(10/2))         // "10" = hand width in bytes
+
+	#define picnum HAND1PICM
+
+	memptr source;
+	unsigned dest,width,height;
+
+//      if (gamestate.shotpower || boltsleft)
+//              picnum += (((unsigned)TimeCount>>3)&1);
+
+	source = grsegs[picnum];
+	dest = ylookup[VIEWHEIGHT-handheight]+HAND_X_POS+bufferofs;                     // 12
+	width = picmtable[picnum-STARTPICM].width;
+	height = picmtable[picnum-STARTPICM].height;
+
+	VW_MaskBlock(source,0,dest,width,handheight,width*height);
+	EGAMAPMASK(15);
+}
+
+//==========================================================================
+
+
+/*
+========================
+=
+= ThreeDRefresh
+=
+========================
+*/
+
+void    ThreeDRefresh (void)
+{
+	int tracedir;
+
+restart:
+	aborttrace = false;
+
+//
+// clear out the traced array
+//
+asm     mov     ax,ds
+asm     mov     es,ax
+asm     mov     di,OFFSET spotvis
+asm     xor     ax,ax
+asm     mov     cx,[mapwidth]           // mapheight*32 words
+asm     shl     cx,1
+asm     shl     cx,1
+asm     shl     cx,1
+asm     shl     cx,1
+asm     shl     cx,1
+asm     rep stosw
+
+
+//
+// set up variables for this view
+//
+
+	viewangle = player->angle;
+	fineviewangle = viewangle*(FINEANGLES/ANGLES);
+	viewsin = sintable[viewangle];
+	viewcos = costable[viewangle];
+	viewx = player->x - FixedByFrac(FOCALLENGTH,viewcos);
+	viewy = player->y + FixedByFrac(FOCALLENGTH,viewsin);
+	viewx &= 0xfffffc00;            // stop on a pixel boundary
+	viewy &= 0xfffffc00;
+	viewx += 0x180;
+	viewy += 0x180;
+	viewxpix = viewx>>10;
+	viewypix = viewy>>10;
+
+	focal.x = viewx>>TILESHIFT;
+	focal.y = viewy>>TILESHIFT;
+
+//
+// find the rightmost visable tile in view
+//
+	tracedir = viewangle + lastangle;
+	if (tracedir<0)
+	  tracedir+=ANGLES;
+	else if (tracedir>=ANGLES)
+	  tracedir-=ANGLES;
+	TraceRay( tracedir );
+	right.x = tile.x;
+	right.y = tile.y;
+
+//
+// find the leftmost visable tile in view
+//
+	tracedir = viewangle + firstangle;
+	if (tracedir<0)
+	  tracedir+=ANGLES;
+	else if (tracedir>=ANGLES)
+	  tracedir-=ANGLES;
+	TraceRay( tracedir );
+
+//
+// follow the walls from there to the right
+//
+	rightwall = &walls[1];
+	FollowWalls ();
+
+	if (aborttrace)
+		goto restart;
+
+//
+// actually draw stuff
+//
+	if (++screenpage == 3)
+		screenpage = 0;
+
+	bufferofs = screenloc[screenpage];
+
+	EGAWRITEMODE(2);
+	EGAMAPMASK(15);
+
+//
+// draw the wall list saved be FollowWalls ()
+//
+//      animframe = (TimeCount&8)>>3;
+
+//
+// draw all the scaled images
+//
+	asm     mov     dx,GC_INDEX
+
+	asm     mov     ax,GC_COLORDONTCARE
+	asm     out     dx,ax                                           // don't look at any of the planes
+
+	asm     mov     ax,GC_MODE + 256*(10)           // read mode 1, write mode 2
+	asm     out     dx,ax
+
+	asm     mov     al,GC_BITMASK
+	asm     out     dx,al
+
+	AnimateWallList();
+	DrawWallList();
+	DrawScaleds();
+
+	EGAWRITEMODE(0);
+	EGABITMASK(0xff);
+
+//
+// draw hand
+//
+	if (handheight)
+		DrawHand ();
+
+//
+// show screen and time last cycle
+//
+	if (fizzlein)
+	{
+		fizzlein = false;
+		FizzleFade(bufferofs,displayofs,VIEWWIDTH,VIEWHEIGHT,true);
+		lasttimecount = TimeCount;
+		if (MousePresent) Mouse(MDelta);        // Clear accumulated mouse movement
+	}
+
+asm     cli
+asm     mov     cx,[bufferofs]
+asm     mov     dx,3d4h         // CRTC address register
+asm     mov     al,0ch          // start address high register
+asm     out     dx,al
+asm     inc     dx
+asm     mov     al,ch
+asm     out     dx,al           // set the high byte
+asm     dec     dx
+asm     mov     al,0dh          // start address low register
+asm     out     dx,al
+asm     inc     dx
+asm     mov     al,cl
+asm     out     dx,al           // set the low byte
+asm     sti
+
+	displayofs = bufferofs;
+
+	CalcTics ();
+
+}
+
