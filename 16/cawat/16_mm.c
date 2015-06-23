@@ -181,11 +181,13 @@ boolean MML_CheckForEMS (void)
 void MML_SetupEMS (void)
 {
 	char	str[80],str2[10];
-	unsigned	error;
+	unsigned	err;
+	struct REGS CPURegs;
 
 	totalEMSpages = freeEMSpages = EMSpageframe = EMSpagesmapped = 0;
 
-	__asm {
+	__asm
+		{
 		mov	ah,EMS_STATUS
 		int	EMS_INT						// make sure EMS hardware is present
 		or	ah,ah
@@ -226,11 +228,11 @@ getpages:
 		mov	[EMShandle],dx
 		jmp End
 error:
-		error = _AH;
-		strcpy (str,"MML_SetupEMS: EMS error 0x");
-		itoa(error,str2,16);
-		strcpy (str,str2);
-		printf("%s\n",str);
+//		err = CPURegs.h.ah;
+//		strcpy (str,"MML_SetupEMS: EMS error 0x");
+//		itoa(err,str2,16);
+//		strcpy (str,str2);
+//		printf("%s\n",str);
 		jmp End
 noEMS:
 End:
@@ -374,6 +376,7 @@ getmemory:
 gotone:
 	mov	[base],bx
 	mov	[size],dx
+	done:
 	}
 	MML_UseSpace (base,size);
 	mminfo.XMSmem += size*16;
@@ -381,8 +384,6 @@ gotone:
 	numUMBs++;
 	if (numUMBs < MAXUMBS)
 		goto getmemory;
-
-done:;
 }
 
 
