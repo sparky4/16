@@ -130,7 +130,7 @@ boolean MML_CheckForEMS (void)
 	char	emmname[] = "EMMXXXX0";
 
 	__asm {
-		mov	dx,OFF emmname
+		mov	dx,OFF=emmname
 		mov	ax,0x3d00
 		int	0x21		// try to open EMMXXXX0 device
 		jc	error
@@ -216,28 +216,25 @@ void MML_SetupEMS (void)
 		cmp	bx,4
 		jle	getpages					// there is only 1,2,3,or 4 pages
 		mov	bx,4						// we can't use more than 4 pages
-	}
 
 getpages:
-asm {
-	mov	[EMSpagesmapped],bx
-	mov	ah,EMS_ALLOCPAGES			// allocate up to 64k of EMS
-	int	EMS_INT
-	or	ah,ah
-	jnz	error
-	mov	[EMShandle],dx
-	}
-	return;
-
+		mov	[EMSpagesmapped],bx
+		mov	ah,EMS_ALLOCPAGES			// allocate up to 64k of EMS
+		int	EMS_INT
+		or	ah,ah
+		jnz	error
+		mov	[EMShandle],dx
+		jmp End
 error:
-	error = _AH;
-	strcpy (str,"MML_SetupEMS: EMS error 0x");
-	itoa(error,str2,16);
-	strcpy (str,str2);
-	Quit (str);
-
+		error = _AH;
+		strcpy (str,"MML_SetupEMS: EMS error 0x");
+		itoa(error,str2,16);
+		strcpy (str,str2);
+		printf("%s\n",str);
+		jmp End
 noEMS:
-;
+End:
+	}
 }
 
 
@@ -254,18 +251,16 @@ void MML_ShutdownEMS (void)
 	if (!EMShandle)
 		return;
 
-		{
-	mov	ah,EMS_FREEPAGES
-	mov	dx,[EMShandle]
-	int	EMS_INT
-	or	ah,ah
-	jz	ok
+	__asm
+	{
+		mov	ah,EMS_FREEPAGES
+		mov	dx,[EMShandle]
+		int	EMS_INT
+		or	ah,ah
+		jz	ok
+		printf("MML_ShutdownEMS: Error freeing EMS!");
+		ok:
 	}
-
-	Quit ("MML_ShutdownEMS: Error freeing EMS!");
-
-ok:
-;
 }
 
 /*
@@ -288,25 +283,26 @@ void MM_MapEMS (void)
 
 	for (i=0;i<EMSpagesmapped;i++)
 	{
-			{
-		mov	ah,EMS_MAPPAGE
-		mov	bx,[i]			// logical page
-		mov	al,bl			// physical page
-		mov	dx,[EMShandle]	// handle
-		int	EMS_INT
-		or	ah,ah
-		jnz	error
+		__asm
+		{
+			mov	ah,EMS_MAPPAGE
+			mov	bx,[i]			// logical page
+			mov	al,bl			// physical page
+			mov	dx,[EMShandle]	// handle
+			int	EMS_INT
+			or	ah,ah
+			jnz	error
+			jmp End
+			error:
+			error = _AH;
+			strcpy (str,"MM_MapEMS: EMS error 0x");
+			itoa(error,str2,16);
+			strcpy (str,str2);
+			printf("%s\n",str);
+			End:
 		}
 	}
-
 	return;
-
-error:
-	error = _AH;
-	strcpy (str,"MM_MapEMS: EMS error 0x");
-	itoa(error,str2,16);
-	strcpy (str,str2);
-	Quit (str);
 }
 
 //==========================================================================
@@ -325,15 +321,17 @@ boolean MML_CheckForXMS (void)
 {
 	numUMBs = 0;
 
-asm {
-	mov	ax,0x4300
-	int	0x2f				// query status of installed diver
-	cmp	al,0x80
-	je	good
+	__asm
+	{
+		mov	ax,0x4300
+		int	0x2f				// query status of installed diver
+		cmp	al,0x80
+		je	good
+		good:
 	}
-	return false;
+/*	return false;
 good:
-	return true;
+	return true;*/
 }
 
 
@@ -351,15 +349,14 @@ void MML_SetupXMS (void)
 {
 	unsigned	base,size;
 
-		{
-	mov	ax,0x4310
-	int	0x2f
-	mov	[WORD PTR XMSaddr],bx
-	mov	[WORD PTR XMSaddr+2],es		// function pointer to XMS driver
-	}
+	__asm
+	{
+		mov	ax,0x4310
+		int	0x2f
+		mov	[WORD PTR XMSaddr],bx
+		mov	[WORD PTR XMSaddr+2],es		// function pointer to XMS driver
 
 getmemory:
-		{
 	mov	ah,XMS_ALLOCUMB
 	mov	dx,0xffff					// try for largest block possible
 	call	[DWORD PTR XMSaddr]
@@ -373,10 +370,8 @@ getmemory:
 	call	[DWORD PTR XMSaddr]		// DX holds largest available UMB
 	or	ax,ax
 	jz	done						// another error...
-	}
 
 gotone:
-		{
 	mov	[base],bx
 	mov	[size],dx
 	}
@@ -407,10 +402,12 @@ void MML_ShutdownXMS (void)
 	for (i=0;i<numUMBs;i++)
 	{
 		base = UMBbase[i];
-
-		mov	ah,XMS_FREEUMB
-		mov	dx,[base]
-		call	[DWORD PTR XMSaddr]
+		__asm
+		{
+			mov	ah,XMS_FREEUMB
+			mov	dx,[base]
+			call	[DWORD PTR XMSaddr]
+		}
 	}
 }
 
