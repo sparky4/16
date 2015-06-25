@@ -28,9 +28,9 @@ not needed ... really... 17. merge map system and interperator from verge 2
 19. (also important) interperator! and possibly custom map system
 20. (also important) lua scripting system!
 21. extend the map system!
-
 ==working== 22. opl2/3 audio!!!!
 
+use IN_ReadControl!!
 
 
 To compile:
