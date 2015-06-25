@@ -60,9 +60,9 @@
 		JoystickDef	JoyDefs[MaxJoys];
 		ControlType	Controls[MaxPlayers];
 
-//		Demo		DemoMode = demo_Off;
-//		byte /*_1seg*/	*DemoBuffer;
-//		word		DemoOffset,DemoSize;
+		Demo		DemoMode = demo_Off;
+		byte _seg	*DemoBuffer;
+		word		DemoOffset,DemoSize;
 
 //	Internal variables
 static	boolean		IN_Started;

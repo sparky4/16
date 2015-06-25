@@ -27,6 +27,7 @@
 #define	__16_IN__
 
 #include "lib_head.h"
+#include "16_us.h"
 
 #ifndef	__TYPES__
 //#include "ID_Types.h"
@@ -35,6 +36,13 @@
 #ifdef	__DEBUG__
 #define	__DEBUG_InputMgr__
 #endif
+
+#define	KeyInt	9	// The keyboard ISR number
+
+// Stuff for the joystick
+#define	JoyScaleMax		32768
+#define	JoyScaleShift	8
+#define	MaxJoyValue		5000
 
 #define	MaxPlayers	4
 #define	MaxKbds		2
@@ -179,9 +187,11 @@ extern	ControlType	Controls[MaxPlayers];
 extern	boolean JoystickCalibrated;				// MDM (GAMERS EDGE) - added
 extern	ControlType ControlTypeUsed;				// MDM (GAMERS EDGE) - added
 
+#ifdef DEMO0
 extern	Demo		DemoMode;
-extern	byte /*_seg*/	*DemoBuffer;
+extern	byte __segment	*DemoBuffer;
 extern	word		DemoOffset,DemoSize;
+#endif
 
 // Function prototypes
 #define	IN_KeyDown(code)	(Keyboard[(code)])
@@ -199,12 +209,17 @@ extern	void		IN_Startup(void),IN_Shutdown(void),
 					IN_GetJoyAbs(word joy,word *xp,word *yp),
 					IN_SetupJoy(word joy,word minx,word maxx,
 								word miny,word maxy),
-					IN_StartDemoPlayback(byte /*_seg*/ *buffer,word bufsize),
+#ifdef DEMO0
+					IN_StartDemoPlayback(byte __segment *buffer,word bufsize),
 					IN_StopDemo(void),IN_FreeDemoBuffer(void),
+#endif
 					IN_Ack(void),IN_AckBack(void);
 extern	boolean		IN_UserInput(dword delay,boolean clear),
-					IN_IsUserInput(void),
-					IN_StartDemoRecord(word bufsize);
+					IN_IsUserInput(void)
+#ifdef DEMO0
+					, IN_StartDemoRecord(word bufsize)
+#endif
+;
 extern	byte		*IN_GetScanName(ScanCode);
 extern	char		IN_WaitForASCII(void);
 extern	ScanCode	IN_WaitForKey(void);

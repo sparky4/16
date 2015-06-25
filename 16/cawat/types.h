@@ -2,6 +2,7 @@
 #define _TYPE_H_
 
 typedef	enum	{false,true}	boolean;
+//typedef __segment	pseg;
 #define	nil	((void *)0)
 
 typedef unsigned char byte;

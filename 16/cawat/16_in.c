@@ -35,16 +35,7 @@
 //	DEBUG - there are more globals
 //
 
-//#include "ID_HEADS.H"
 #include "16_in.h"
-//#pragma	hdrstop
-
-#define	KeyInt	9	// The keyboard ISR number
-
-// Stuff for the joystick
-#define	JoyScaleMax		32768
-#define	JoyScaleShift	8
-#define	MaxJoyValue		5000
 
 // 	Global variables
 		boolean JoystickCalibrated=false;		// MDM (GAMERS EDGE) - added
@@ -60,9 +51,11 @@
 		JoystickDef	JoyDefs[MaxJoys];
 		ControlType	Controls[MaxPlayers];
 
-//		Demo		DemoMode = demo_Off;
-//		byte /*_1seg*/	*DemoBuffer;
-//		word		DemoOffset,DemoSize;
+#ifdef DEMO0
+		Demo		DemoMode = demo_Off;
+		byte __segment	*DemoBuffer;
+		word		DemoOffset,DemoSize;
+#endif
 
 //	Internal variables
 static	boolean		IN_Started;
@@ -225,6 +218,7 @@ static	boolean	special;
 static void
 Mouse(int x)
 {
+	union REGS CPURegs;
 	x = CPURegs.x.ax;
 	int86(MouseInt,&CPURegs,&CPURegs);
 }
@@ -238,6 +232,7 @@ Mouse(int x)
 static void
 INL_GetMouseDelta(int *x,int *y)
 {
+	union REGS CPURegs;
 	Mouse(MDelta);
 	*x = CPURegs.x.cx;
 	*y = CPURegs.x.dx;
@@ -252,6 +247,7 @@ INL_GetMouseDelta(int *x,int *y)
 static word
 INL_GetMouseButtons(void)
 {
+	union REGS CPURegs;
 	word	buttons;
 
 	Mouse(MButtons);
@@ -300,7 +296,7 @@ IN_GetJoyAbs(word joy,word *xp,word *yp)
 		push	bp			// Don't mess up stack frame
 		mov		bp,MaxJoyValue
 
-loop:
+loo:
 		in		al,dx		// Get bits indicating whether all are finished
 
 		dec		bp			// Check bounding register
@@ -316,10 +312,10 @@ loop:
 		add		di,bx
 
 		add		cl,bl
-		jnz		loop 		// If both bits were 0, drop out
+		jnz		loo		// If both bits were 0, drop out
 
 done:
-     pop		bp
+		pop		bp
 
 		mov		cl,[xs]		// Get the number of bits to shift
 		shr		si,cl		//  and shift the count that many times
@@ -350,6 +346,7 @@ INL_GetJoyDelta(word joy,int *dx,int *dy,boolean adaptive)
 {
 	word		x,y;
 	dword	time;
+	dword TimeCount = *clockdw;
 	JoystickDef	*def;
 static	dword	lasttime;
 
@@ -443,6 +440,7 @@ register	word	result;
 word
 IN_GetJoyButtonsDB(word joy)
 {
+	dword TimeCount = *clockdw;
 	dword	lasttime;
 	word		result1,result2;
 
@@ -451,7 +449,6 @@ IN_GetJoyButtonsDB(word joy)
 		result1 = INL_GetJoyButtons(joy);
 		lasttime = TimeCount;
 		while(TimeCount == lasttime)
-			;
 		result2 = INL_GetJoyButtons(joy);
 	} while(result1 != result2);
 	return(result1);
@@ -481,7 +478,7 @@ INL_StartKbd(void)
 static void
 INL_ShutKbd(void)
 {
-	poke(0x40,0x17,peek(0x40,0x17) & 0xfaf0);	// Clear ctrl/alt/shift flags
+	pokeb(0x40,0x17,peekb(0x40,0x17) & 0xfaf0);	// Clear ctrl/alt/shift flags
 
 	_dos_setvect(KeyInt,OldKeyVect);
 }
@@ -494,6 +491,7 @@ INL_ShutKbd(void)
 static boolean
 INL_StartMouse(void)
 {
+	union REGS CPURegs;
 	if(_dos_getvect(MouseInt))
 	{
 		Mouse(MReset);
@@ -614,9 +612,9 @@ IN_Startup(void)
 
 	checkjoys = true;
 	checkmouse = true;
-	for (i = 1;i < _argc;i++)
+	for (i = 1;i < __argc;i++)
 	{
-		switch (US_CheckParm(_argv[i],ParmStrings))
+		switch (US_CheckParm(__argv[i],ParmStrings))
 		{
 		case 0:
 			checkjoys = false;
@@ -778,7 +776,7 @@ register	KeyboardDef	*def;
 	mx = my = motion_None;
 	buttons = 0;
 
-#if 0
+#if DEMO0
 	if (DemoMode == demo_Playback)
 	{
 		dbyte = DemoBuffer[DemoOffset + 1];
@@ -881,7 +879,7 @@ register	KeyboardDef	*def;
 	info->button1 = buttons & (1 << 1);
 	info->dir = DirTable[((my + 1) * 3) + (mx + 1)];
 
-#if 0
+#if DEMO0
 	if (DemoMode == demo_Record)
 	{
 		// Pack the control info into a byte
@@ -930,7 +928,7 @@ register	KeyboardDef	*def;
 	mx = my = motion_None;
 	buttons = 0;
 
-#if 0
+#if DEMO0
 	if (DemoMode == demo_Playback)
 	{
 		dbyte = DemoBuffer[DemoOffset + 1];
@@ -1016,7 +1014,7 @@ register	KeyboardDef	*def;
 	info->button1 = buttons & (1 << 1);
 	info->dir = DirTable[((my + 1) * 3) + (mx + 1)];
 
-#if 0
+#if DEMO0
 	if (DemoMode == demo_Record)
 	{
 		// Pack the control info into a byte
@@ -1057,7 +1055,7 @@ IN_SetControlType(int player,ControlType type)
 	Controls[player] = type;
 }
 
-#if 0
+#if DEMO0
 ///////////////////////////////////////////////////////////////////////////
 //
 //	IN_StartDemoRecord() - Starts the demo recording, using a buffer the
@@ -1085,7 +1083,7 @@ IN_StartDemoRecord(word bufsize)
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-IN_StartDemoPlayback(byte /*_1seg*/ *buffer,word bufsize)
+IN_StartDemoPlayback(byte /*__segment*/ *buffer,word bufsize)
 {
 	DemoBuffer = buffer;
 	DemoMode = demo_Playback;
@@ -1278,6 +1276,7 @@ IN_IsUserInput(void)
 boolean
 IN_UserInput(dword delay,boolean clear)
 {
+	dword TimeCount = *clockdw;
 	dword	lasttime;
 
 	lasttime = TimeCount;

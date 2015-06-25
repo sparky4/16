@@ -26,17 +26,19 @@
 
 #ifndef _LIB_HEAD_H_
 #define _LIB_HEAD_H_
+#include <i86.h>
 #include <dos.h>
-#include <malloc.h>
 #include <conio.h>
-//#include ""
-//#include ""
-//#include "ID_CA.H"
-//#include "AUDIOARM.H"
+#include <stdio.h>
+#include <stdlib.h>
+#include <malloc.h>
 #include "types.h"
 
-#ifndef REGS
-struct REGS CPURegs;
-#endif
+dword far* clockdw= (dword far*) 0x046C; /* 18.2hz clock */
+
+#define peekb(segm,ofs) (*(byte far*)MK_FP((segm),(ofs)))
+#define peekw(segm,ofs) (*(word far*)MK_FP((segm),(ofs)))
+#define pokeb(segm,ofs,value) (peekb((segm),(ofs)) = (byte)(value))
+#define pokew(segm,ofs,value) (peekw((segm),(ofs)) = (word)(value))
 
 #endif/*_LIB_HEAD_H_*/
