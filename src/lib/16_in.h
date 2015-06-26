@@ -313,4 +313,6 @@ extern	char		IN_WaitForASCII(void);
 extern	ScanCode	IN_WaitForKey(void);
 extern	word		IN_GetJoyButtonsDB(word joy);
 
+static void interrupt INL_KeyService(void);
+
 #endif
