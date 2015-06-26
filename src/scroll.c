@@ -105,7 +105,6 @@ void main() {
 	byte *ptr;
 	byte *mappalptr;
 	actor_t player;
-//	bitmap_t font;
 	//actor_t npc0;
 
 //	atexit(qclean());
@@ -153,7 +152,6 @@ void main() {
 	/* data */
 //0000	printf("Total used @ before image loading:		%zu\n", oldfreemem-GetFreeSize());
 	ptmp = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
-//	font = bitmapLoadPcx("data/font.pcx");
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 
 	/* create the planar buffer */
@@ -628,8 +626,6 @@ void main() {
 	//xmsfree(mask);
 	//xmsreport();
 	//emmclose(emmhandle);
-	printf("%Fp\n", bios_8x8_font());
-	//printf("%c\n", *bios_8x8_font());
 	switch(detectcpu())
 	{
 		case 0: cpus = "8086/8088 or 186/88"; break;
