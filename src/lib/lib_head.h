@@ -22,11 +22,13 @@
 
 #ifndef _LIBHEAD_H_
 #define _LIBHEAD_H_
+#include <i86.h>
 #include <dos.h>
 #include <stdio.h>
 #include <conio.h> // just for wait
 #include <time.h> // just for wait
 #include <stdlib.h>
+#include <ctype.h>
 #include "src/lib/types.h"
 
 /* Control codes for all keys on the keyboard */
@@ -121,9 +123,9 @@
 #define KEY_MENU		(0x75)
 */
 
-#define	nil	((void *)0)
+static dword far* clockdw= (dword far*) 0x046C; /* 18.2hz clock */
 
-dword far* clockdw= (dword far*) 0x046C; /* 18.2hz clock */
+#define	nil	((void *)0)
 
 #define peekb(segm,ofs) (*(byte far*)MK_FP((segm),(ofs)))
 #define peekw(segm,ofs) (*(word far*)MK_FP((segm),(ofs)))
@@ -137,5 +139,6 @@ void wait(clock_t wait);
 void* AllocateLargestFreeBlock(size_t* Size);
 size_t GetFreeSize(void);
 long int filesize(FILE *fp);
+int US_CheckParm(char *parm,char **strings);
 
 #endif/*_LIBHEAD_H_*/

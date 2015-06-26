@@ -27,7 +27,7 @@
 #define	__16_IN__
 
 #include "src/lib/lib_head.h"
-#include "src/lib/16_us.h"
+//#include "src/lib/16_us.h"
 
 #ifdef	__DEBUG__
 #define	__DEBUG_InputMgr__
@@ -135,10 +135,11 @@ typedef	byte		ScanCode;
 #define	MDelta		11
 
 #define	MouseInt	0x33
-
+#ifdef DEMO0
 typedef	enum		{
 						demo_Off,demo_Record,demo_Playback,demo_PlayDone
 					} Demo;
+#endif
 typedef	enum		{
 						ctrl_None,				// MDM (GAMERS EDGE) - added
 						ctrl_Keyboard,
@@ -180,7 +181,6 @@ typedef	struct		{
 									joyMultXL,joyMultYL,
 									joyMultXH,joyMultYH;
 					} JoystickDef;
-
 /*
 =============================================================================
 
@@ -192,33 +192,33 @@ typedef	struct		{
 //
 // configuration variables
 //
-boolean			MousePresent;
-boolean			JoysPresent[MaxJoys];
-boolean			JoyPadPresent;
+static boolean			MousePresent;
+static boolean			JoysPresent[MaxJoys];
+static boolean			JoyPadPresent;
 
 
 // 	Global variables
-		boolean JoystickCalibrated=false;		// MDM (GAMERS EDGE) - added
-		ControlType ControlTypeUsed;				// MDM (GAMERS EDGE) - added
+		static boolean JoystickCalibrated=false;		// MDM (GAMERS EDGE) - added
+		static ControlType ControlTypeUsed;				// MDM (GAMERS EDGE) - added
 
-		boolean		Keyboard[NumCodes];
-		boolean		Paused;
-		char		LastASCII;
-		ScanCode	LastScan;
+		static boolean		Keyboard[NumCodes];
+		static boolean		Paused;
+		static char		LastASCII;
+		static ScanCode	LastScan;
 
-		KeyboardDef	KbdDefs[] = {0x1d,0x38,0x47,0x48,0x49,0x4b,0x4d,0x4f,0x50,0x51};
-		JoystickDef	JoyDefs[MaxJoys];
-		ControlType	Controls[MaxPlayers];
+		static KeyboardDef	KbdDefs[] = {0x1d,0x38,0x47,0x48,0x49,0x4b,0x4d,0x4f,0x50,0x51};
+		static JoystickDef	JoyDefs[MaxJoys];
+		static ControlType	Controls[MaxPlayers];
 
-		dword	MouseDownCount;
+		static dword	MouseDownCount;
 
 #ifdef DEMO0
-		Demo		DemoMode = demo_Off;
-		byte /*_seg*/	*DemoBuffer;
-		word		DemoOffset,DemoSize;
+		static Demo		DemoMode = demo_Off;
+		static byte /*_seg*/	*DemoBuffer;
+		static word		DemoOffset,DemoSize;
 #endif
 
-
+extern dword far* clockdw;
 
 /*
 =============================================================================
@@ -313,6 +313,5 @@ extern	char		IN_WaitForASCII(void);
 extern	ScanCode	IN_WaitForKey(void);
 extern	word		IN_GetJoyButtonsDB(word joy);
 
-static void interrupt INL_KeyService(void);
-
+//static void interrupt INL_KeyService(void);
 #endif

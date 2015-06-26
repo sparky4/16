@@ -38,8 +38,8 @@ test2.exe: test2.$(OBJ) modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) lib_head.$(OB
 fonttest.exe: 16text.$(OBJ) fonttest.$(OBJ)
 	wcl $(FLAGS) fonttest.$(OBJ) 16text.$(OBJ)
 
-inputest.exe: inputest.$(OBJ) 16_in.$(OBJ)
-	wcl $(FLAGS) inputest.$(OBJ) 16_in.$(OBJ)
+inputest.exe: inputest.$(OBJ) 16_in.$(OBJ) lib_head.$(OBJ)
+	wcl $(FLAGS) inputest.$(OBJ) 16_in.$(OBJ) lib_head.$(OBJ)
 
 16text.$(OBJ): $(SRCLIB)16text.c
 	wcl -c $(SRCLIB)16text.c
