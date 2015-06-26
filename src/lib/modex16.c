@@ -29,12 +29,6 @@
 #include "src/lib/modex16.h"
 
 byte far* VGA=(byte far*) 0xA0000000; 	/* this points to video memory. */
-/*word text_mask[16] = {
-	0x0002, 0x0102, 0x0202, 0x0302,
-	0x0402, 0x0502, 0x0602, 0x0702,
-	0x0802, 0x0902, 0x0A02, 0x0B02,
-	0x0C02, 0x0D02, 0x0E02, 0x0F02
-};*/
 
 static void fadePalette(sbyte fade, sbyte start, word iter, byte *palette);
 static byte tmppal[PAL_SIZE];
