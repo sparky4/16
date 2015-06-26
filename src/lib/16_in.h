@@ -26,12 +26,8 @@
 #ifndef	__16_IN__
 #define	__16_IN__
 
-#include "lib_head.h"
-#include "16_us.h"
-
-#ifndef	__TYPES__
-//#include "ID_Types.h"
-#endif
+#include "src/lib/lib_head.h"
+#include "src/lib/16_us.h"
 
 #ifdef	__DEBUG__
 #define	__DEBUG_InputMgr__
@@ -85,6 +81,17 @@ typedef	byte		ScanCode;
 #define	sc_F10			0x44
 #define	sc_F11			0x57
 #define	sc_F12			0x59
+
+#define	sc_1			0x02
+#define	sc_2			0x03
+#define	sc_3			0x04
+#define	sc_4			0x05
+#define	sc_5			0x06
+#define	sc_6			0x07
+#define	sc_7			0x08
+#define	sc_8			0x09
+#define	sc_9			0x0a
+#define	sc_0			0x0b
 
 #define	sc_A			0x1e
 #define	sc_B			0x30
@@ -173,25 +180,106 @@ typedef	struct		{
 									joyMultXL,joyMultYL,
 									joyMultXH,joyMultYH;
 					} JoystickDef;
-// Global variables
-extern	boolean		Keyboard[],
-					MousePresent,
-					JoysPresent[];
-extern	boolean		Paused;
-extern	char		LastASCII;
-extern	ScanCode	LastScan;
-extern	KeyboardDef	KbdDefs[];
-extern	JoystickDef	JoyDefs[];
-extern	ControlType	Controls[MaxPlayers];
 
-extern	boolean JoystickCalibrated;				// MDM (GAMERS EDGE) - added
-extern	ControlType ControlTypeUsed;				// MDM (GAMERS EDGE) - added
+/*
+=============================================================================
+
+					GLOBAL VARIABLES
+
+=============================================================================
+*/
+
+//
+// configuration variables
+//
+boolean			MousePresent;
+boolean			JoysPresent[MaxJoys];
+boolean			JoyPadPresent;
+
+
+// 	Global variables
+		boolean JoystickCalibrated=false;		// MDM (GAMERS EDGE) - added
+		ControlType ControlTypeUsed;				// MDM (GAMERS EDGE) - added
+
+		boolean		Keyboard[NumCodes];
+		boolean		Paused;
+		char		LastASCII;
+		ScanCode	LastScan;
+
+		KeyboardDef	KbdDefs[] = {0x1d,0x38,0x47,0x48,0x49,0x4b,0x4d,0x4f,0x50,0x51};
+		JoystickDef	JoyDefs[MaxJoys];
+		ControlType	Controls[MaxPlayers];
+
+		dword	MouseDownCount;
 
 #ifdef DEMO0
-extern	Demo		DemoMode;
-extern	byte __segment	*DemoBuffer;
-extern	word		DemoOffset,DemoSize;
+		Demo		DemoMode = demo_Off;
+		byte /*_seg*/	*DemoBuffer;
+		word		DemoOffset,DemoSize;
 #endif
+
+
+
+/*
+=============================================================================
+
+					LOCAL VARIABLES
+
+=============================================================================
+*/
+static	byte        far ASCIINames[] =		// Unshifted ASCII for scan codes
+					{
+//	 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+	0  ,27 ,'1','2','3','4','5','6','7','8','9','0','-','=',8  ,9  ,	// 0
+	'q','w','e','r','t','y','u','i','o','p','[',']',13 ,0  ,'a','s',	// 1
+	'd','f','g','h','j','k','l',';',39 ,'`',0  ,92 ,'z','x','c','v',	// 2
+	'b','n','m',',','.','/',0  ,'*',0  ,' ',0  ,0  ,0  ,0  ,0  ,0  ,	// 3
+	0  ,0  ,0  ,0  ,0  ,0  ,0  ,'7','8','9','-','4','5','6','+','1',	// 4
+	'2','3','0',127,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 5
+	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 6
+	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0		// 7
+					},
+					far ShiftNames[] =		// Shifted ASCII for scan codes
+					{
+//	 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+	0  ,27 ,'!','@','#','$','%','^','&','*','(',')','_','+',8  ,9  ,	// 0
+	'Q','W','E','R','T','Y','U','I','O','P','{','}',13 ,0  ,'A','S',	// 1
+	'D','F','G','H','J','K','L',':',34 ,'~',0  ,'|','Z','X','C','V',	// 2
+	'B','N','M','<','>','?',0  ,'*',0  ,' ',0  ,0  ,0  ,0  ,0  ,0  ,	// 3
+	0  ,0  ,0  ,0  ,0  ,0  ,0  ,'7','8','9','-','4','5','6','+','1',	// 4
+	'2','3','0',127,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 5
+	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 6
+	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0   	// 7
+					},
+					far SpecialNames[] =	// ASCII for 0xe0 prefixed codes
+					{
+//	 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 0
+	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,13 ,0  ,0  ,0  ,	// 1
+	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 2
+	0  ,0  ,0  ,0  ,0  ,'/',0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 3
+	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 4
+	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 5
+	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 6
+	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0   	// 7
+					};
+
+
+static	boolean		IN_Started;
+static	boolean		CapsLock;
+static	ScanCode	CurCode,LastCode;
+
+static	Direction	DirTable[] =		// Quick lookup for total direction
+					{
+						dir_NorthWest,	dir_North,	dir_NorthEast,
+						dir_West,		dir_None,	dir_East,
+						dir_SouthWest,	dir_South,	dir_SouthEast
+					};
+
+static	void			(*INL_KeyHook)(void);
+static	void interrupt	(*OldKeyVect)(void);
+
+static	char			*ParmStrings[] = {"nojoys","nomouse",nil};
 
 // Function prototypes
 #define	IN_KeyDown(code)	(Keyboard[(code)])

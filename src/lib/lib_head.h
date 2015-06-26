@@ -121,20 +121,14 @@
 #define KEY_MENU		(0x75)
 */
 
-//#define	FARPTR(S, O)	MK_FP(S, O)
+#define	nil	((void *)0)
 
-//#define	inportb(P)	inp(P)
-//#define	outportb(P,V)	outp(P,V)
-//#define	outportw(P,V)	outpw(P,V)
+dword far* clockdw= (dword far*) 0x046C; /* 18.2hz clock */
 
-//#define	R_AX		w.ax
-//#define	R_BX		w.bx
-//#define	R_BP		w.bp
-//#define	R_ES		w.es
-
-/* WARNING: for 32-bit code, unused fields of regs_t
-must be zeroed before using this macro */
-//#define	trap(N,R)	intr(N,R)
+#define peekb(segm,ofs) (*(byte far*)MK_FP((segm),(ofs)))
+#define peekw(segm,ofs) (*(word far*)MK_FP((segm),(ofs)))
+#define pokeb(segm,ofs,value) (peekb((segm),(ofs)) = (byte)(value))
+#define pokew(segm,ofs,value) (peekw((segm),(ofs)) = (word)(value))
 
 typedef union REGPACK	regs_t;
 typedef	enum	{false,true}	boolean;
@@ -143,8 +137,5 @@ void wait(clock_t wait);
 void* AllocateLargestFreeBlock(size_t* Size);
 size_t GetFreeSize(void);
 long int filesize(FILE *fp);
-
-/* THIS FUNCTION CONVERTS A POINTER TO AN INTEL LONG              */
-//int long ptr2long(char *p);
 
 #endif/*_LIBHEAD_H_*/
