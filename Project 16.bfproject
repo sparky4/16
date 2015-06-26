@@ -36,12 +36,12 @@ openfiles: /dos/z/16/src/lib/16_in.c:1522:1072:0:
 openfiles: /dos/z/16/src/lib/16_in.h:3692:3652:0:
 openfiles: /dos/z/16/src/lib/lib_head.c:3456:2616:0:
 openfiles: /dos/z/16/src/lib/lib_head.h:3332:2969:0:
-openfiles: /dos/z/16/makefile:1665:1084:0:
+openfiles: /dos/z/16/makefile:1235:295:1:
 openfiles: /dos/z/16/src/lib/types.h:1043:28:0:
 openfiles: /dos/z/16/src/16.h:943:0:0:
 openfiles: /dos/z/16/src/16.c:891:0:0:
 openfiles: /dos/z/16/src/lib/scroll16.h:961:0:0:
-openfiles: /dos/z/16/src/lib/scroll16.c:0:0:1:
+openfiles: /dos/z/16/src/lib/scroll16.c:0:0:0:
 snr_recursion_level: 0
 convertcolumn_horizontally: 0
 adv_open_matchname: 0
@@ -129,7 +129,7 @@ recent_files: file:///dos/z/16/src/inputest.c
 recent_files: file:///dos/z/16/src/lib/16_in.h
 recent_files: file:///dos/z/16/src/lib/16_in.c
 snr_replacetype: 0
-savedir: file:///dos/z/16/src/lib
+savedir: file:///dos/z/16
 spell_check_default: 1
 spell_insert_entities: 0
 last_filefilter: 

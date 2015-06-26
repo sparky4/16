@@ -15,7 +15,8 @@ JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
 EXMMLIB=$(SRCLIB)exmm$(DIRSEP)
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
-16LIBOBJS = 16_in.$(OBJ) modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) wcpu.$(OBJ) lib_head.$(OBJ) scroll16.$(OBJ)
+16LIBOBJS = 16_in.$(OBJ) wcpu.$(OBJ) lib_head.$(OBJ) scroll16.$(OBJ) 16text.$(OBJ)
+GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ)
 
 all: 16.exe test.exe pcxtest.exe test2.exe scroll.exe palettec.exe maptest.exe maptest0.exe emsdump.exe emmtest.exe fmemtest.exe fonttest.exe inputest.exe
 
@@ -29,14 +30,14 @@ scroll.exe: scroll.$(OBJ) 16.lib mapread.$(OBJ) jsmn.$(OBJ) dos_kb.$(OBJ)
 	wcl $(FLAGS) scroll.$(OBJ) 16.lib mapread.$(OBJ) jsmn.$(OBJ) dos_kb.$(OBJ)
 scroll.$(OBJ): $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
-test.exe: test.$(OBJ) modex16.$(OBJ) bitmap.$(OBJ) lib_head.$(OBJ)
-	wcl $(FLAGS) test.$(OBJ) modex16.$(OBJ) bitmap.$(OBJ) lib_head.$(OBJ)
+test.exe: test.$(OBJ) 16.lib
+	wcl $(FLAGS) test.$(OBJ) 16.lib
 
-test2.exe: test2.$(OBJ) modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) lib_head.$(OBJ)
-	wcl $(FLAGS) test2.$(OBJ) modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) lib_head.$(OBJ)
+test2.exe: test2.$(OBJ) 16.lib
+	wcl $(FLAGS) test2.$(OBJ) 16.lib
 
-fonttest.exe: 16text.$(OBJ) fonttest.$(OBJ)
-	wcl $(FLAGS) fonttest.$(OBJ) 16text.$(OBJ)
+fonttest.exe: fonttest.$(OBJ) 16.lib
+	wcl $(FLAGS) fonttest.$(OBJ) 16.lib
 
 inputest.exe: inputest.$(OBJ) 16.lib
 	wcl $(FLAGS) inputest.$(OBJ) 16.lib
@@ -47,17 +48,17 @@ inputest.exe: inputest.$(OBJ) 16.lib
 fonttest.$(OBJ): $(SRC)fonttest.c
 	wcl -c $(SRC)fonttest.c
 
-pcxtest.exe: pcxtest.$(OBJ) modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) lib_head.$(OBJ)
-	wcl $(FLAGS) pcxtest.$(OBJ) modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) lib_head.$(OBJ)
+pcxtest.exe: pcxtest.$(OBJ) 16.lib
+	wcl $(FLAGS) pcxtest.$(OBJ) 16.lib
 
 palettec.exe: palettec.$(OBJ) modex16.$(OBJ)
 	wcl $(FLAGS) palettec.$(OBJ) modex16.$(OBJ)
 
-maptest.exe: maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) modex16.$(OBJ) bitmap.$(OBJ) lib_head.$(OBJ)
-	wcl $(FLAGS) maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) modex16.$(OBJ) bitmap.$(OBJ) lib_head.$(OBJ)
+maptest.exe: maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
+	wcl $(FLAGS) maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
 
-maptest0.exe: maptest0.$(OBJ) fmapread.$(OBJ) farjsmn.$(OBJ)# modex16.$(OBJ) bitmap.$(OBJ) lib_head.$(OBJ)
-	wcl $(FLAGS) $(MFLAGS) maptest0.$(OBJ) fmapread.$(OBJ) farjsmn.$(OBJ)# modex16.$(OBJ) bitmap.$(OBJ) lib_head.$(OBJ)
+maptest0.exe: maptest0.$(OBJ) fmapread.$(OBJ) farjsmn.$(OBJ)# 16.lib
+	wcl $(FLAGS) $(MFLAGS) maptest0.$(OBJ) fmapread.$(OBJ) farjsmn.$(OBJ)# 16.lib
 
 emmtest.exe: emmtest.$(OBJ) memory.$(OBJ)
 	wcl $(FLAGS) $(MFLAGS) emmtest.$(OBJ) memory.$(OBJ)
@@ -107,8 +108,11 @@ inputest.$(OBJ): $(SRC)inputest.c
 #
 #non executable objects libraries
 #
-16.lib: $(16LIBOBJS)
-	wlib -b 16.lib $(16LIBOBJS)
+16.lib: $(16LIBOBJS) gfx.lib
+	wlib -b 16.lib $(16LIBOBJS) gfx.lib
+
+gfx.lib: $(GFXLIBOBJS)
+	wlib -b gfx.lib $(GFXLIBOBJS)
 
 modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c
 	wcl $(FLAGS) -c $(SRCLIB)modex16.c
