@@ -11,6 +11,7 @@ openfiles: /dos/z/16/src/maptest.c:886:0:0:
 openfiles: /dos/z/16/src/maptest0.c:886:0:0:
 openfiles: /dos/z/16/src/test.c:890:0:0:
 openfiles: /dos/z/16/src/test2.c:886:0:0:
+openfiles: /dos/z/16/src/inputest.c:976:0:0:
 openfiles: /dos/z/16/src/lib/modex16.c:3597:3271:0:
 openfiles: /dos/z/16/src/lib/modex16.h:1052:576:0:
 openfiles: /dos/z/16/src/lib/planar.h:1008:127:0:
@@ -19,7 +20,7 @@ openfiles: /dos/z/16/src/lib/bitmap.c:890:0:0:
 openfiles: /dos/z/16/src/lib/bitmap.h:0:0:0:
 openfiles: /dos/z/16/src/lib/wcpu/wcpu.c:942:0:0:
 openfiles: /dos/z/16/src/lib/wcpu/wcpu.h:925:0:0:
-openfiles: /dos/z/16/src/lib/dos_kb.c:317:0:0:
+openfiles: /dos/z/16/src/lib/dos_kb.c:670:338:0:
 openfiles: /dos/z/16/src/lib/dos_kb.h:324:0:0:
 openfiles: /dos/z/16/src/lib/mapread.c:3072:1988:0:
 openfiles: /dos/z/16/src/lib/mapread.h:109:0:0:
@@ -31,17 +32,16 @@ openfiles: /dos/z/16/src/lib/exmm/emmsize.h:1159:693:0:
 openfiles: /dos/z/16/src/lib/exmm/emmret.h:0:0:0:
 openfiles: /dos/z/16/src/lib/jsmn/farjsmn.c:7182:6170:0:
 openfiles: /dos/z/16/src/lib/jsmn/farjsmn.h:861:381:0:
-openfiles: /dos/z/16/src/lib/lib_head.c:890:0:0:
-openfiles: /dos/z/16/src/lib/lib_head.h:3340:2984:0:
-openfiles: /dos/z/16/makefile:3246:2866:0:
-openfiles: /dos/z/16/src/lib/types.h:1043:128:0:
+openfiles: /dos/z/16/src/lib/16_in.c:1522:1072:0:
+openfiles: /dos/z/16/src/lib/16_in.h:3692:3652:0:
+openfiles: /dos/z/16/src/lib/lib_head.c:3456:2616:0:
+openfiles: /dos/z/16/src/lib/lib_head.h:3332:2969:0:
+openfiles: /dos/z/16/makefile:1665:1084:0:
+openfiles: /dos/z/16/src/lib/types.h:1043:28:0:
 openfiles: /dos/z/16/src/16.h:943:0:0:
 openfiles: /dos/z/16/src/16.c:891:0:0:
 openfiles: /dos/z/16/src/lib/scroll16.h:961:0:0:
-openfiles: /dos/z/16/src/lib/scroll16.c:0:0:0:
-openfiles: /dos/z/16/src/inputest.c:976:0:0:
-openfiles: /dos/z/16/src/lib/16_in.c:5652:5251:0:
-openfiles: /dos/z/16/src/lib/16_in.h:6531:4290:1:
+openfiles: /dos/z/16/src/lib/scroll16.c:0:0:1:
 snr_recursion_level: 0
 convertcolumn_horizontally: 0
 adv_open_matchname: 0
@@ -56,7 +56,7 @@ c2e.convert_iso: 0
 opendir: file:///dos/z/16/src/lib
 wrap_text_default: 0
 bookmarks_filename_mode: 1
-ssearch_text: JoyDefs
+ssearch_text: INL_KeyService
 snr_casesens: 0
 view_blocks: 1
 name: Project 16
@@ -139,9 +139,6 @@ snr_escape_chars: 0
 htmlbar_view: 0
 spell_lang: en
 ssearch_dotmatchall: 0
-searchlist: getfree
-searchlist: offset
-searchlist: _dos)_
 searchlist: _dos_
 searchlist: '_dos_geninterrupt
 searchlist: _dos_geninterrupt
@@ -154,6 +151,9 @@ searchlist: joydeg
 searchlist: joydefs
 searchlist: MousePresent
 searchlist: JoyDefs
+searchlist: keyser
+searchlist: static void in
+searchlist: INL_KeyService
 autocomplete: 1
 outputb_show_all_output: 0
 bookmarks_show_mode: 0

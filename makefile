@@ -15,7 +15,7 @@ JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
 EXMMLIB=$(SRCLIB)exmm$(DIRSEP)
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
-16LIBOBJS = modex16.$(OBJ) dos_kb.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) wcpu.$(OBJ) lib_head.$(OBJ) scroll16.$(OBJ)
+16LIBOBJS = 16_in.$(OBJ) modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) wcpu.$(OBJ) lib_head.$(OBJ) scroll16.$(OBJ)
 
 all: 16.exe test.exe pcxtest.exe test2.exe scroll.exe palettec.exe maptest.exe maptest0.exe emsdump.exe emmtest.exe fmemtest.exe fonttest.exe inputest.exe
 
@@ -25,8 +25,8 @@ all: 16.exe test.exe pcxtest.exe test2.exe scroll.exe palettec.exe maptest.exe m
 16.exe: 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
 	wcl $(FLAGS) 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
 
-scroll.exe: scroll.$(OBJ) 16.lib mapread.$(OBJ) jsmn.$(OBJ)
-	wcl $(FLAGS) scroll.$(OBJ) 16.lib mapread.$(OBJ) jsmn.$(OBJ)
+scroll.exe: scroll.$(OBJ) 16.lib mapread.$(OBJ) jsmn.$(OBJ) dos_kb.$(OBJ)
+	wcl $(FLAGS) scroll.$(OBJ) 16.lib mapread.$(OBJ) jsmn.$(OBJ) dos_kb.$(OBJ)
 scroll.$(OBJ): $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
 test.exe: test.$(OBJ) modex16.$(OBJ) bitmap.$(OBJ) lib_head.$(OBJ)
@@ -38,8 +38,8 @@ test2.exe: test2.$(OBJ) modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) lib_head.$(OB
 fonttest.exe: 16text.$(OBJ) fonttest.$(OBJ)
 	wcl $(FLAGS) fonttest.$(OBJ) 16text.$(OBJ)
 
-inputest.exe: inputest.$(OBJ) 16_in.$(OBJ) lib_head.$(OBJ)
-	wcl $(FLAGS) inputest.$(OBJ) 16_in.$(OBJ) lib_head.$(OBJ)
+inputest.exe: inputest.$(OBJ) 16.lib
+	wcl $(FLAGS) inputest.$(OBJ) 16.lib
 
 16text.$(OBJ): $(SRCLIB)16text.c
 	wcl -c $(SRCLIB)16text.c
