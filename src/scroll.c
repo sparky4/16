@@ -568,7 +568,6 @@ void main() {
 	if(keyp(2)){ modexShowPage(bg->page); panpagenum=0; }
 	if(keyp(3)){ modexShowPage(spri->page); panpagenum=1; }
 	if(keyp(4)){ modexShowPage(mask->page); panpagenum=2; }
-	if(keyp(0x44)){ bputs(spri->page, player.x+(TILEWH*2), player.y+(TILEWH*2), "wwww"); }	//f10
 	if(keyp(25)){ pdump(bg); pdump(spri); }	//p
 	if(keyp(24)){ modexPalUpdate0(gpal); paloffset=0; pdump(bg); pdump(spri); }
 	if(keyp(22)){
@@ -902,7 +901,7 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x) {
 	/* location in the map array */
 	i=ty * mv->map->width + tx;
 
-	/* We'll copy all of the columns in the screen, 
+	/* We'll copy all of the columns in the screen,
 	   i + 1 row above and one below */
 	for(y=0; y<SCREEN_HEIGHT+mv->dyThresh && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
 	if(i>=0) {
