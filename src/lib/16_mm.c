@@ -507,6 +507,7 @@ void MM_Startup (void)
 // get all available near conventional memory segments
 //
 //----	length=coreleft();
+	_nheapgrow();
 	length=_memavl();
 	start = (void far *)(nearheap = malloc(length));
 
@@ -521,7 +522,8 @@ void MM_Startup (void)
 // get all available far conventional memory segments
 //
 //----	length=farcoreleft();
-	length=_memmax();
+	_fheapgrow();
+	length=_memavl();
 	start = farheap = _fmalloc(length);
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVEFARHEAP;
