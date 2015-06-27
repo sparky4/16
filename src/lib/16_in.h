@@ -33,7 +33,8 @@
 #define	__DEBUG_InputMgr__
 //++++#endif
 
-#define DOMO
+//#define DOMO
+#define TESTKEYIN
 
 #define	KeyInt	9	// The keyboard ISR number
 
@@ -326,5 +327,6 @@ extern	ScanCode	IN_WaitForKey(void);
 extern	word		IN_GetJoyButtonsDB(word joy);
 
 
-//static void interrupt INL_KeyService(void);
+void interrupt INL_KeyService(void);
+boolean IN_qb(byte kee);
 #endif

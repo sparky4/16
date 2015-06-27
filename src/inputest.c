@@ -28,8 +28,14 @@ void
 main(int argc, char *argv[])
 {
 	ControlInfo control;
+	extern boolean Keyboard[NumCodes];
 	IN_Startup();
 	IN_Default(0,ctrl_Keyboard);
-	IN_ReadControl(0,&control);
+	while(!IN_qb(sc_Escape))
+	{
+		IN_ReadControl(0,&control);
+//		printf("%u\n", Keyboard[sc_Escape]);
+
+	}
 	IN_Shutdown();
 }

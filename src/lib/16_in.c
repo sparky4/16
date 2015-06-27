@@ -38,7 +38,6 @@
 #include "src/lib/16_in.h"
 
 //	Internal routines
-
 ///////////////////////////////////////////////////////////////////////////
 //
 //	INL_KeyService() - Handles a keyboard interrupt (key up/down)
@@ -48,8 +47,8 @@ void interrupt
 INL_KeyService(void)
 {
 static	boolean	special;
-		byte	k,c,
-				temp;
+		byte	k,c;
+		register byte temp;
 
 	k = inp(0x60);	// Get the scan code
 
@@ -109,6 +108,9 @@ static	boolean	special;
 
 	if (INL_KeyHook && !special)
 		INL_KeyHook();
+	#ifdef TESTKEYIN
+	printf("%c %x %u\n", c, k, Keyboard[k]);
+	#endif
 	outp(0x20,0x20);
 }
 
@@ -1188,4 +1190,10 @@ IN_UserInput(dword delay,boolean clear)
 		}
 	} while (TimeCount - lasttime < delay);
 	return(false);
+}
+
+boolean IN_qb(byte kee)
+{
+	if(Keyboard[kee]==true) return 1;
+	else return 0;
 }
