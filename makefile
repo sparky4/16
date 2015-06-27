@@ -18,7 +18,7 @@ WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 16LIBOBJS = 16_in.$(OBJ) wcpu.$(OBJ) lib_head.$(OBJ) scroll16.$(OBJ) 16text.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ)
 
-all: 16.exe test.exe pcxtest.exe test2.exe scroll.exe palettec.exe maptest.exe maptest0.exe emsdump.exe emmtest.exe fmemtest.exe fonttest.exe inputest.exe
+all: 16.exe test.exe pcxtest.exe test2.exe scroll.exe palettec.exe maptest.exe maptest0.exe emsdump.exe emmtest.exe fmemtest.exe fonttest.exe inputest.exe exmmtest.exe
 
 #
 #executables
