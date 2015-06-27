@@ -80,7 +80,7 @@
 
 //==========================================================================
 
-typedef void /*_seg*/ * memptr;
+typedef void /*__seg*/ * memptr;
 
 typedef struct
 {
@@ -89,12 +89,84 @@ typedef struct
 
 //==========================================================================
 
-extern	mminfotype	mminfo;
+/*extern	mminfotype	mminfo;
 extern	memptr		bufferseg;
 extern	boolean		mmerror;
 
 extern	void		(* beforesort) (void);
-extern	void		(* aftersort) (void);
+extern	void		(* aftersort) (void);*/
+
+//==========================================================================
+
+/*
+=============================================================================
+
+							LOCAL INFO
+
+=============================================================================
+*/
+
+#define LOCKBIT		0x80	// if set in attributes, block cannot be moved
+#define PURGEBITS	3		// 0-3 level, 0= unpurgable, 3= purge first
+#define PURGEMASK	0xfffc
+#define BASEATTRIBUTES	0	// unlocked, non purgable
+
+#define MAXUMBS		10
+
+typedef struct mmblockstruct
+{
+	unsigned	start,length;
+	unsigned	attributes;
+	memptr		*useptr;	// pointer to the segment start
+	struct mmblockstruct far *next;
+} mmblocktype;
+
+
+//#define GETNEWBLOCK {if(!(mmnew=mmfree))Quit("MM_GETNEWBLOCK: No free blocks!");mmfree=mmfree->next;}
+#define GETNEWBLOCK {if(!mmfree)MML_ClearBlock();mmnew=mmfree;mmfree=mmfree->next;}
+#define FREEBLOCK(x) {*x->useptr=NULL;x->next=mmfree;mmfree=x;}
+
+/*
+=============================================================================
+
+						 GLOBAL VARIABLES
+
+=============================================================================
+*/
+
+mminfotype	mminfo;
+memptr		bufferseg;
+boolean		mmerror;
+
+void		(* beforesort) (void);
+void		(* aftersort) (void);
+
+static	char *ParmStringsexmm[] = {"noems","noxms",""};
+
+/*
+=============================================================================
+
+						 LOCAL VARIABLES
+
+=============================================================================
+*/
+
+boolean		mmstarted;
+
+void huge	*hugeheap;
+void far	*farheap;
+void		*nearheap;
+
+mmblocktype	far mmblocks[MAXBLOCKS]
+			,far *mmhead,far *mmfree,far *mmrover,far *mmnew;
+
+boolean		bombonerror;
+
+unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
+
+void		(* XMSaddr) (void);		// far pointer to XMS driver
+
+unsigned	numUMBs,UMBbase[MAXUMBS];
 
 //==========================================================================
 

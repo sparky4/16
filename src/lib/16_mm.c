@@ -45,75 +45,6 @@ EMS / XMS unmanaged routines
 #include "src/lib/16_mm.h"
 
 /*
-=============================================================================
-
-							LOCAL INFO
-
-=============================================================================
-*/
-
-#define LOCKBIT		0x80	// if set in attributes, block cannot be moved
-#define PURGEBITS	3		// 0-3 level, 0= unpurgable, 3= purge first
-#define PURGEMASK	0xfffc
-#define BASEATTRIBUTES	0	// unlocked, non purgable
-
-#define MAXUMBS		10
-
-typedef struct mmblockstruct
-{
-	unsigned	start,length;
-	unsigned	attributes;
-	memptr		*useptr;	// pointer to the segment start
-	struct mmblockstruct far *next;
-} mmblocktype;
-
-
-//#define GETNEWBLOCK {if(!(mmnew=mmfree))Quit("MM_GETNEWBLOCK: No free blocks!");mmfree=mmfree->next;}
-#define GETNEWBLOCK {if(!mmfree)MML_ClearBlock();mmnew=mmfree;mmfree=mmfree->next;}
-#define FREEBLOCK(x) {*x->useptr=NULL;x->next=mmfree;mmfree=x;}
-
-/*
-=============================================================================
-
-						 GLOBAL VARIABLES
-
-=============================================================================
-*/
-
-mminfotype	mminfo;
-memptr		bufferseg;
-boolean		mmerror;
-
-void		(* beforesort) (void);
-void		(* aftersort) (void);
-
-/*
-=============================================================================
-
-						 LOCAL VARIABLES
-
-=============================================================================
-*/
-
-boolean		mmstarted;
-
-void huge	*hugeheap;
-void far	*farheap;
-void		*nearheap;
-
-mmblocktype	far mmblocks[MAXBLOCKS]
-			,far *mmhead,far *mmfree,far *mmrover,far *mmnew;
-
-boolean		bombonerror;
-
-unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
-
-void		(* XMSaddr) (void);		// far pointer to XMS driver
-
-unsigned	numUMBs,UMBbase[MAXUMBS];
-
-
-/*
 ======================
 =
 = MML_CheckForEMS
@@ -536,8 +467,6 @@ void MML_ClearBlock (void)
 ===================
 */
 
-static	char *ParmStringsexmm[] = {"noems","noxms",""};
-
 void MM_Startup (void)
 {
 	int i;
@@ -613,6 +542,7 @@ void MM_Startup (void)
 
 	if (MML_CheckForEMS())
 	{
+		printf("EMS!\n");
 		MML_SetupEMS();					// allocate space
 		MML_UseSpace (EMSpageframe,EMSpagesmapped*0x400);
 		MM_MapEMS();					// map in used pages
@@ -631,7 +561,10 @@ emsskip:
 	}
 
 	if (MML_CheckForXMS())
+	{
+		printf("XMS!\n");
 		MML_SetupXMS();					// allocate as many UMBs as possible
+	}
 
 //
 // allocate the misc buffer
@@ -1009,7 +942,7 @@ void MM_SortMem (void)
 void MM_ShowMemory (void)
 {
 	mmblocktype far *scan;
-	unsigned color,temp;
+	unsigned color,temp;//, i;
 	long	end,owner;
 	char    scratch[80],str[10];
 
@@ -1039,12 +972,14 @@ void MM_ShowMemory (void)
 			return;
 		}
 		end = scan->start+scan->length-1;
-//****		VW_Hlin(scan->start,(unsigned)end,0,color);
-//****		VW_Plot(scan->start,0,15);
-//****		if (scan->next->start > end+1)
-//****			VW_Hlin(end+1,scan->next->start,0,0);	// black = free
+//++++		VW_Hlin(scan->start,(unsigned)end,0,color);
+//++++		VW_Plot(scan->start,0,15);
+		if (scan->next->start > end+1)
+//++++			VW_Hlin(end+1,scan->next->start,0,0);	// black = free
 
 //****#if 0
+printf("Location:");
+printf("%Fp\t", scan->start);
 strcpy (scratch,"Size:");
 ltoa ((long)scan->length*16,str,10);
 strcat (scratch,str);
@@ -1054,7 +989,7 @@ ultoa (owner,str,16);
 strcat (scratch,str);
 strcat (scratch,"\n");
 //++++write (debughandle,scratch,strlen(scratch));
-printf("%s\n", scratch);
+fprintf(stdout, "%s", scratch);
 //****#endif
 
 		scan = scan->next;
