@@ -44,7 +44,7 @@
 //	INL_KeyService() - Handles a keyboard interrupt (key up/down)
 //
 ///////////////////////////////////////////////////////////////////////////
-static void interrupt
+void interrupt
 INL_KeyService(void)
 {
 static	boolean	special;
@@ -112,7 +112,7 @@ static	boolean	special;
 	outp(0x20,0x20);
 }
 
-static void
+void
 Mouse(int x)
 {
 	union REGS CPURegs;
@@ -652,6 +652,7 @@ IN_ReadCursor(CursorInfo *info)
 	}
 }
 
+#ifndef DOMO
 ///////////////////////////////////////////////////////////////////////////
 //
 //	IN_ReadControl() - Reads the device associated with the specified
@@ -728,14 +729,14 @@ register	KeyboardDef	*def;
 			type = ctrl_Keyboard1;
 			def = &KbdDefs[type - ctrl_Keyboard];
 
-			if (Keyboard[def->upleft])
+/*			if (Keyboard[def->upleft])
 				mx = motion_Left,my = motion_Up;
 			else if (Keyboard[def->upright])
 				mx = motion_Right,my = motion_Up;
 			else if (Keyboard[def->downleft])
 				mx = motion_Left,my = motion_Down;
 			else if (Keyboard[def->downright])
-				mx = motion_Right,my = motion_Down;
+				mx = motion_Right,my = motion_Down;*/
 
 			if (Keyboard[def->up])
 				my = motion_Up;
@@ -803,7 +804,7 @@ register	KeyboardDef	*def;
 #endif
 }
 
-#if 0
+#else
 ///////////////////////////////////////////////////////////////////////////
 //
 //	IN_ReadControl() - Reads the device associated with the specified
@@ -853,14 +854,14 @@ register	KeyboardDef	*def;
 		case ctrl_Keyboard2:
 			def = &KbdDefs[type - ctrl_Keyboard];
 
-			if (Keyboard[def->upleft])
+/*			if (Keyboard[def->upleft])
 				mx = motion_Left,my = motion_Up;
 			else if (Keyboard[def->upright])
 				mx = motion_Right,my = motion_Up;
 			else if (Keyboard[def->downleft])
 				mx = motion_Left,my = motion_Down;
 			else if (Keyboard[def->downright])
-				mx = motion_Right,my = motion_Down;
+				mx = motion_Right,my = motion_Down;*/
 
 			if (Keyboard[def->up])
 				my = motion_Up;

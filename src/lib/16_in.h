@@ -29,9 +29,11 @@
 #include "src/lib/lib_head.h"
 //#include "src/lib/16_us.h"
 
-#ifdef	__DEBUG__
+//++++#ifdef	__DEBUG__
 #define	__DEBUG_InputMgr__
-#endif
+//++++#endif
+
+#define DOMO
 
 #define	KeyInt	9	// The keyboard ISR number
 
@@ -154,10 +156,10 @@ typedef	enum		{
 						motion_Right = 1,motion_Down = 1
 					} Motion;
 typedef	enum		{
-						dir_North,dir_NorthEast,
-						dir_East,dir_SouthEast,
-						dir_South,dir_SouthWest,
-						dir_West,dir_NorthWest,
+						dir_North,//dir_NorthEast,
+						dir_East,//dir_SouthEast,
+						dir_South,//dir_SouthWest,
+						dir_West,//dir_NorthWest,
 						dir_None
 					} Direction;
 typedef	struct		{
@@ -167,11 +169,17 @@ typedef	struct		{
 						Direction	dir;
 					} CursorInfo;
 typedef	CursorInfo	ControlInfo;
+
 typedef	struct		{
 						ScanCode	button0,button1,
-									upleft,		up,		upright,
+									//upleft,
+									up,
+									//upright,
 									left,				right,
-									downleft,	down,	downright;
+									//downleft,
+									down
+									//,downright
+									;
 					} KeyboardDef;
 typedef	struct		{
 						word		joyMinX,joyMinY,
@@ -271,9 +279,12 @@ static	ScanCode	CurCode,LastCode;
 
 static	Direction	DirTable[] =		// Quick lookup for total direction
 					{
-						dir_NorthWest,	dir_North,	dir_NorthEast,
+						//dir_NorthWest,
+						dir_North,
+						//dir_NorthEast,
 						dir_West,		dir_None,	dir_East,
-						dir_SouthWest,	dir_South,	dir_SouthEast
+						//dir_SouthWest,
+						dir_South//,dir_SouthEast
 					};
 
 static	void			(*INL_KeyHook)(void);
@@ -297,6 +308,7 @@ extern	void		IN_Startup(void),IN_Shutdown(void),
 					IN_GetJoyAbs(word joy,word *xp,word *yp),
 					IN_SetupJoy(word joy,word minx,word maxx,
 								word miny,word maxy),
+					Mouse(int x),
 #ifdef DEMO0
 					IN_StartDemoPlayback(byte __segment *buffer,word bufsize),
 					IN_StopDemo(void),IN_FreeDemoBuffer(void),
@@ -312,6 +324,7 @@ extern	byte		*IN_GetScanName(ScanCode);
 extern	char		IN_WaitForASCII(void);
 extern	ScanCode	IN_WaitForKey(void);
 extern	word		IN_GetJoyButtonsDB(word joy);
+
 
 //static void interrupt INL_KeyService(void);
 #endif

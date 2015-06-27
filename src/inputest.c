@@ -27,5 +27,9 @@
 void
 main(int argc, char *argv[])
 {
-
+	ControlInfo control;
+	IN_Startup();
+	IN_Default(0,ctrl_Keyboard);
+	IN_ReadControl(0,&control);
+	IN_Shutdown();
 }
