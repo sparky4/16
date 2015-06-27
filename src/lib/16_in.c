@@ -37,6 +37,27 @@
 
 #include "src/lib/16_in.h"
 
+/*
+=============================================================================
+
+					GLOBAL VARIABLES
+
+=============================================================================
+*/
+// 	Global variables
+		boolean JoystickCalibrated=false;		// MDM (GAMERS EDGE) - added
+		ControlType ControlTypeUsed;				// MDM (GAMERS EDGE) - added
+		boolean		Keyboard[NumCodes];
+		boolean		Paused;
+		char		LastASCII;
+		ScanCode	LastScan;
+
+		//KeyboardDef	KbdDefs = {0x1d,0x38,0x47,0x48,0x49,0x4b,0x4d,0x4f,0x50,0x51};
+		JoystickDef	JoyDefs[MaxJoys];
+		ControlType	Controls[MaxPlayers];
+
+		dword	MouseDownCount;
+
 //	Internal routines
 ///////////////////////////////////////////////////////////////////////////
 //

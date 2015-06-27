@@ -205,21 +205,21 @@ static boolean			MousePresent;
 static boolean			JoysPresent[MaxJoys];
 static boolean			JoyPadPresent;
 
-
 // 	Global variables
-		static boolean JoystickCalibrated=false;		// MDM (GAMERS EDGE) - added
-		static ControlType ControlTypeUsed;				// MDM (GAMERS EDGE) - added
+		extern boolean JoystickCalibrated;		// MDM (GAMERS EDGE) - added
+		extern ControlType ControlTypeUsed;				// MDM (GAMERS EDGE) - added
 
-		static boolean		Keyboard[NumCodes];
-		static boolean		Paused;
-		static char		LastASCII;
-		static ScanCode	LastScan;
+		extern boolean		Keyboard[NumCodes];
+		extern boolean		Paused;
+		extern char		LastASCII;
+		extern ScanCode	LastScan;
 
+		//extern KeyboardDef	KbdDefs[];
 		static KeyboardDef	KbdDefs[] = {0x1d,0x38,0x47,0x48,0x49,0x4b,0x4d,0x4f,0x50,0x51};
-		static JoystickDef	JoyDefs[MaxJoys];
-		static ControlType	Controls[MaxPlayers];
+		extern JoystickDef	JoyDefs[MaxJoys];
+		extern ControlType	Controls[MaxPlayers];
 
-		static dword	MouseDownCount;
+		extern dword	MouseDownCount;
 
 #ifdef DEMO0
 		static Demo		DemoMode = demo_Off;
