@@ -1036,6 +1036,7 @@ dword MM_UnusedMemory (void)
 	}
 
 	return free*16l;
+//	return free;
 }
 
 //==========================================================================
@@ -1068,6 +1069,7 @@ dword MM_TotalFree (void)
 	}
 
 	return free*16l;
+//	return free;
 }
 
 //==========================================================================
@@ -1093,6 +1095,9 @@ void MM_Report(void)
 	printf("mainmem=%lu\n", mminfo.mainmem);
 	printf("UnusedMemory=%lu\n", MM_UnusedMemory());
 	printf("TotalFree=%lu\n", MM_TotalFree());
+	printf("\n");
+	printf("UnusedMemory=%lu kb\n", MM_UnusedMemory()/10248);
+	printf("TotalFree=%lu kb\n", MM_TotalFree()/10248);
 }
 
 //==========================================================================

@@ -79,8 +79,8 @@
 #define	XMS_FREEUMB		0x11
 
 //==========================================================================
-
-typedef void /*__seg*/ * memptr;
+__segment                seg;
+typedef void __based(seg) * memptr;
 
 typedef struct
 {
