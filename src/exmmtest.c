@@ -27,5 +27,6 @@
 void
 main(int argc, char *argv[])
 {
-
+	MM_Startup();
+	MM_Shutdown();
 }

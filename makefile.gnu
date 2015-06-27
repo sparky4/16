@@ -42,9 +42,6 @@ fonttest.exe: fonttest.$(OBJ) 16.lib
 inputest.exe: inputest.$(OBJ) 16.lib
 	wcl $(FLAGS) inputest.$(OBJ) 16.lib
 
-exmmtest.exe: exmmtest.$(OBJ) 16.lib
-	wcl $(FLAGS) $(MFLAGS) exmmtest.$(OBJ) 16.lib
-
 pcxtest.exe: pcxtest.$(OBJ) 16.lib
 	wcl $(FLAGS) pcxtest.$(OBJ) 16.lib
 
@@ -65,6 +62,9 @@ emsdump.exe: emsdump.$(OBJ) memory.$(OBJ)
 
 fmemtest.exe: fmemtest.$(OBJ)# memory.$(OBJ)
 	wcl $(FLAGS) $(MFLAGS) fmemtest.$(OBJ)# memory.$(OBJ)
+
+exmmtest.exe: exmmtest.$(OBJ) 16_mm.$(OBJ)
+        wcl $(FLAGS) $(MFLAGS) exmmtest.$(OBJ) 16_mm.$(OBJ)
 
 #
 #executable's objects

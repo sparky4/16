@@ -24,13 +24,13 @@
 #include <string.h>
 #include <malloc.h>
 #include "src/lib/lib_head.h"
-#include "src/lib/16_in.h"
+//++++mh	#include "src/lib/16_in.h"
 
-#if 1		// 1 == Debug/Dev  ;  0 == Production/final
+//****#if 1		// 1 == Debug/Dev  ;  0 == Production/final
 #define OUT_OF_MEM_MSG	"MM_GetPtr: Out of memory!\nYou were short :%ld bytes"
-#else
-#define OUT_OF_MEM_MSG	"\npee\n"
-#endif
+//****#else
+//****#define OUT_OF_MEM_MSG	"\npee\n"
+//****#endif
 
 
 #define SAVENEARHEAP	0x400		// space to leave in data segment
@@ -129,6 +129,8 @@ boolean 	MML_CheckForXMS (void);
 void 		MML_ShutdownXMS (void);
 void		MML_UseSpace (unsigned segstart, unsigned seglength);
 void 		MML_ClearBlock (void);
+
+int US_CheckParm(char *parm,char **strings);
 
 //==========================================================================
 
