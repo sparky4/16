@@ -27,6 +27,10 @@
 void
 main(int argc, char *argv[])
 {
+	printf("start!\n");
 	MM_Startup();
+	printf("done!\n");
+	printf("stop!\n");
 	MM_Shutdown();
+	printf("done!\n");
 }

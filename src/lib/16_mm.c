@@ -1055,6 +1055,7 @@ ultoa (owner,str,16);
 strcat (scratch,str);
 strcat (scratch,"\n");
 //++++write (debughandle,scratch,strlen(scratch));
+printf("%s\n", scratch);
 //****#endif
 
 		scan = scan->next;
