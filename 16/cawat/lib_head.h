@@ -32,8 +32,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
+#include <strings.h>
 //#include <time.h>
-#include "types.h"
+#include "../../src/lib/types.h"
 
 dword far* clockdw= (dword far*) 0x046C; /* 18.2hz clock */
 

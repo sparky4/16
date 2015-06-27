@@ -42,11 +42,8 @@ fonttest.exe: fonttest.$(OBJ) 16.lib
 inputest.exe: inputest.$(OBJ) 16.lib
 	wcl $(FLAGS) inputest.$(OBJ) 16.lib
 
-16text.$(OBJ): $(SRCLIB)16text.c
-	wcl -c $(SRCLIB)16text.c
-
-fonttest.$(OBJ): $(SRC)fonttest.c
-	wcl -c $(SRC)fonttest.c
+exmmtest.exe: exmmtest.$(OBJ) 16.lib
+	wcl $(FLAGS) $(MFLAGS) exmmtest.$(OBJ) 16.lib
 
 pcxtest.exe: pcxtest.$(OBJ) 16.lib
 	wcl $(FLAGS) pcxtest.$(OBJ) 16.lib
@@ -102,8 +99,14 @@ emsdump.$(OBJ): $(SRC)emsdump.c
 fmemtest.$(OBJ): $(SRC)fmemtest.c
 	wcl $(FLAGS) $(MFLAGS) -c $(SRC)fmemtest.c
 
+fonttest.$(OBJ): $(SRC)fonttest.c
+	wcl -c $(SRC)fonttest.c
+
 inputest.$(OBJ): $(SRC)inputest.c
 	wcl $(FLAGS) -c $(SRC)inputest.c
+
+exmmtest.$(OBJ): $(SRC)exmmtest.c
+	wcl $(FLAGS) $(MFLAGS) -c $(SRC)exmmtest.c
 
 #
 #non executable objects libraries
@@ -132,6 +135,9 @@ scroll16.$(OBJ): $(SRCLIB)scroll16.h $(SRCLIB)scroll16.c
 wcpu.$(OBJ): $(WCPULIB)wcpu.h $(WCPULIB)wcpu.c
 	wcl $(FLAGS) -c $(WCPULIB)wcpu.c
 
+16text.$(OBJ): $(SRCLIB)16text.c
+	wcl -c $(SRCLIB)16text.c
+
 mapread.$(OBJ): $(SRCLIB)mapread.h $(SRCLIB)mapread.c 16.lib
 	wcl $(FLAGS) -c $(SRCLIB)mapread.c 16.lib
 
@@ -140,6 +146,9 @@ fmapread.$(OBJ): $(SRCLIB)fmapread.h $(SRCLIB)fmapread.c 16.lib
 
 16_in.$(OBJ): $(SRCLIB)16_in.h $(SRCLIB)16_in.c
 	wcl $(FLAGS) -c $(SRCLIB)16_in.c
+
+16_mm.$(OBJ): $(SRCLIB)16_mm.h $(SRCLIB)16_mm.c
+	wcl $(FLAGS) $(MFLAGS) -c $(SRCLIB)16_mm.c
 
 lib_head.$(OBJ): $(SRCLIB)lib_head.h $(SRCLIB)lib_head.c
 	wcl $(FLAGS) -c $(SRCLIB)lib_head.c
