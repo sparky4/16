@@ -399,7 +399,7 @@ void MML_UseSpace (unsigned segstart, unsigned seglength)
 		printf("MML_UseSpace: Segment spans two blocks!");
 		return;
 	}
-		
+
 
 	if (segstart == scan->start)
 	{
@@ -542,10 +542,13 @@ void MM_Startup (void)
 
 	if (MML_CheckForEMS())
 	{
-		printf("EMS!\n");
+		//printf("EMS1\n");
 		MML_SetupEMS();					// allocate space
+		//printf("EMS2\n");
 		MML_UseSpace (EMSpageframe,EMSpagesmapped*0x400);
+		//printf("EMS3\n");
 		MM_MapEMS();					// map in used pages
+		//printf("EMS4\n");
 		mminfo.EMSmem = EMSpagesmapped*0x4000l;
 	}
 
@@ -562,7 +565,7 @@ emsskip:
 
 	if (MML_CheckForXMS())
 	{
-		printf("XMS!\n");
+//		printf("XMS!\n");
 		MML_SetupXMS();					// allocate as many UMBs as possible
 	}
 

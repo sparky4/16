@@ -134,14 +134,12 @@ typedef struct mmblockstruct
 =============================================================================
 */
 
-mminfotype	mminfo;
-memptr		bufferseg;
-boolean		mmerror;
+static mminfotype	mminfo;
+static memptr		bufferseg;
+static boolean		mmerror;
 
-void		(* beforesort) (void);
-void		(* aftersort) (void);
-
-static	char *ParmStringsexmm[] = {"noems","noxms",""};
+static void		(* beforesort) (void);
+static void		(* aftersort) (void);
 
 /*
 =============================================================================
@@ -151,22 +149,24 @@ static	char *ParmStringsexmm[] = {"noems","noxms",""};
 =============================================================================
 */
 
-boolean		mmstarted;
+static boolean		mmstarted;
 
-void huge	*hugeheap;
-void far	*farheap;
-void		*nearheap;
+static void huge	*hugeheap;
+static void far	*farheap;
+static void		*nearheap;
 
-mmblocktype	far mmblocks[MAXBLOCKS]
+static mmblocktype	far mmblocks[MAXBLOCKS]
 			,far *mmhead,far *mmfree,far *mmrover,far *mmnew;
 
-boolean		bombonerror;
+static boolean		bombonerror;
 
-unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
+static unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
 
-void		(* XMSaddr) (void);		// far pointer to XMS driver
+static void		(* XMSaddr) (void);		// far pointer to XMS driver
 
-unsigned	numUMBs,UMBbase[MAXUMBS];
+static unsigned	numUMBs,UMBbase[MAXUMBS];
+
+static	char *ParmStringsexmm[] = {"noems","noxms",""};
 
 //==========================================================================
 
