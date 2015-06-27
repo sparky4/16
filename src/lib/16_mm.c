@@ -997,8 +997,7 @@ void MM_SortMem (void)
 
 //==========================================================================
 
-//****
-#if 0
+//****#if 0
 /*
 =====================
 =
@@ -1016,8 +1015,8 @@ void MM_ShowMemory (void)
 
 //****	VW_SetDefaultColors();
 //****	VW_SetLineWidth(40);
-	temp = bufferofs;
-	bufferofs = 0;
+//++++mh	temp = bufferofs;
+//++++mh	bufferofs = 0;
 //****	VW_SetScreen (0,0);
 
 	scan = mmhead;
@@ -1065,10 +1064,9 @@ printf("%s\n", scratch);
 
 //++++mh	IN_Ack();
 //****	VW_SetLineWidth(64);
-	bufferofs = temp;
+//++++mh	bufferofs = temp;
 }
-//****
-#endif
+//****#endif
 
 //==========================================================================
 

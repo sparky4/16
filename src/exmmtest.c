@@ -30,6 +30,7 @@ main(int argc, char *argv[])
 	printf("start!\n");
 	MM_Startup();
 	printf("done!\n");
+	MM_ShowMemory();
 	printf("stop!\n");
 	MM_Shutdown();
 	printf("done!\n");
