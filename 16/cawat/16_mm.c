@@ -128,9 +128,9 @@ boolean MML_CheckForEMS (void)
 {
 	boolean emmcfems;
 	char	emmname[] = "EMMXXXX0";
-
+//		mov	dx,OFFSET emmname
 	__asm {
-		mov	dx,OFF=emmname
+		LEA	DX, emmname	//fix by andrius4669
 		mov	ax,0x3d00
 		int	0x21		// try to open EMMXXXX0 device
 		jc	error
