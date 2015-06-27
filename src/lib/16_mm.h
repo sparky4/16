@@ -161,6 +161,7 @@ static mmblocktype	far mmblocks[MAXBLOCKS]
 static boolean		bombonerror;
 
 static unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
+static unsigned int EMSVer;
 
 static void		(* XMSaddr) (void);		// far pointer to XMS driver
 
@@ -183,8 +184,10 @@ void MM_SortMem (void);
 
 void MM_ShowMemory (void);
 
-long MM_UnusedMemory (void);
-long MM_TotalFree (void);
+dword MM_UnusedMemory (void);
+dword MM_TotalFree (void);
+void MM_Report(void);
+//int MM_EMSVer(void);
 
 void MM_BombOnError (boolean bomb);
 

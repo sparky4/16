@@ -115,6 +115,7 @@ void MML_SetupEMS (void)
 	boolean errorflag=false;
 	union REGS CPURegs;
 
+	EMSVer = 0;
 	totalEMSpages = freeEMSpages = EMSpageframe = EMSpagesmapped = 0;
 
 	__asm
@@ -128,6 +129,7 @@ void MML_SetupEMS (void)
 		int	EMS_INT
 		or	ah,ah
 		jnz	error
+		mov	[EMSVer],ax				//	set EMSVer
 		cmp	al,0x32						// only work on ems 3.2 or greater
 		jb	error
 
@@ -1019,7 +1021,7 @@ fprintf(stdout, "%s", scratch);
 ======================
 */
 
-long MM_UnusedMemory (void)
+dword MM_UnusedMemory (void)
 {
 	unsigned free;
 	mmblocktype far *scan;
@@ -1049,7 +1051,7 @@ long MM_UnusedMemory (void)
 ======================
 */
 
-long MM_TotalFree (void)
+dword MM_TotalFree (void)
 {
 	unsigned free;
 	mmblocktype far *scan;
@@ -1073,6 +1075,48 @@ long MM_TotalFree (void)
 /*
 =====================
 =
+= MM_Report
+=
+=====================
+*/
+
+void MM_Report(void)
+{
+	printf("EMM %x available\n", EMSVer);
+	printf("totalEMSpages=%u\n", totalEMSpages);
+	printf("freeEMSpages=%u\n", freeEMSpages);
+	printf("EMSpageframe=%Fp\n", EMSpageframe);
+	printf("UnusedMemory=%lu\n", MM_UnusedMemory());
+	printf("TotalFree=%lu\n", MM_TotalFree());
+}
+
+//==========================================================================
+
+/*
+=====================
+=
+= MM_EMSVer
+=
+=====================
+
+
+int MM_EMSVer(void)
+{
+	int EMSver;
+	__asm
+	{
+		mov		ah,EMS_VERSION
+		int		EMS_INT
+		mov		EMSver,ax
+	}
+	return(EMSver);
+}*/
+
+//==========================================================================
+
+/*
+=====================
+=
 = MM_BombOnError
 =
 =====================
@@ -1082,6 +1126,8 @@ void MM_BombOnError (boolean bomb)
 {
 	bombonerror = bomb;
 }
+
+//==========================================================================
 
 ///////////////////////////////////////////////////////////////////////////
 //
