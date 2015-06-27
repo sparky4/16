@@ -84,7 +84,8 @@ typedef void /*__seg*/ * memptr;
 
 typedef struct
 {
-	long	nearheap,farheap,EMSmem,XMSmem,mainmem;
+	dword	nearheap,farheap,EMSmem,XMSmem,mainmem;
+	boolean		mmstarted, bombonerror, mmerror;
 } mminfotype;
 
 //==========================================================================
@@ -136,7 +137,6 @@ typedef struct mmblockstruct
 
 static mminfotype	mminfo;
 static memptr		bufferseg;
-static boolean		mmerror;
 
 static void		(* beforesort) (void);
 static void		(* aftersort) (void);
@@ -149,8 +149,6 @@ static void		(* aftersort) (void);
 =============================================================================
 */
 
-static boolean		mmstarted;
-
 static void huge	*hugeheap;
 static void far	*farheap;
 static void		*nearheap;
@@ -158,7 +156,6 @@ static void		*nearheap;
 static mmblocktype	far mmblocks[MAXBLOCKS]
 			,far *mmhead,far *mmfree,far *mmrover,far *mmnew;
 
-static boolean		bombonerror;
 
 static unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
 static unsigned int EMSVer;

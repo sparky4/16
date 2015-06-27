@@ -476,12 +476,12 @@ void MM_Startup (void)
 	void far 	*start;
 	unsigned 	segstart,seglength,endfree;
 
-	if (mmstarted)
+	if (mminfo.mmstarted)
 		MM_Shutdown ();
 
 
-	mmstarted = true;
-	bombonerror = true;
+	mminfo.mmstarted = true;
+	mminfo.bombonerror = true;
 //
 // set up the linked list (everything in the free list;
 //
@@ -594,7 +594,7 @@ xmsskip:
 
 void MM_Shutdown (void)
 {
-  if (!mmstarted)
+  if (!mminfo.mmstarted)
 	return;
 
   _ffree (farheap);
@@ -699,10 +699,10 @@ void MM_GetPtr (memptr *baseptr,dword size)
 		}
 	}
 
-	if (bombonerror)
+	if (mminfo.bombonerror)
 		printf(OUT_OF_MEM_MSG,(size-mminfo.nearheap));
 	else
-		mmerror = true;
+		mminfo.mmerror = true;
 }
 
 //==========================================================================
@@ -1086,6 +1086,11 @@ void MM_Report(void)
 	printf("totalEMSpages=%u\n", totalEMSpages);
 	printf("freeEMSpages=%u\n", freeEMSpages);
 	printf("EMSpageframe=%Fp\n", EMSpageframe);
+	printf("near=%lu\n", mminfo.nearheap);
+	printf("far=%lu\n", mminfo.farheap);
+	printf("EMSmem=%lu\n", mminfo.EMSmem);
+	printf("XMSmem=%lu\n", mminfo.XMSmem);
+	printf("mainmem=%lu\n", mminfo.mainmem);
 	printf("UnusedMemory=%lu\n", MM_UnusedMemory());
 	printf("TotalFree=%lu\n", MM_TotalFree());
 }
@@ -1124,7 +1129,7 @@ int MM_EMSVer(void)
 
 void MM_BombOnError (boolean bomb)
 {
-	bombonerror = bomb;
+	mminfo.bombonerror = bomb;
 }
 
 //==========================================================================
