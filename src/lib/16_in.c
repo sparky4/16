@@ -19,8 +19,9 @@
 //
 //	ID Engine
 //	ID_IN.c - Input Manager
-//	v1.0d1
+//	v1.0d1w
 //	By Jason Blochowiak
+// Open Watcom port by sparky4
 //
 
 //
@@ -463,14 +464,14 @@ IN_SetupJoy(word joy,word minx,word maxx,word miny,word maxy)
 	def->joyMinX = minx;
 	def->joyMaxX = maxx;
 	r = maxx - minx;
-	d = r / 5;
+	d = r / 3;
 	def->threshMinX = ((r / 2) - d) + minx;
 	def->threshMaxX = ((r / 2) + d) + minx;
 
 	def->joyMinY = miny;
 	def->joyMaxY = maxy;
 	r = maxy - miny;
-	d = r / 5;
+	d = r / 3;
 	def->threshMinY = ((r / 2) - d) + miny;
 	def->threshMaxY = ((r / 2) + d) + miny;
 
@@ -534,7 +535,7 @@ IN_Startup(void)
 	checkmouse = true;
 	for (i = 1;i < __argc;i++)
 	{
-		switch (US_CheckParm(__argv[i],ParmStrings))
+		switch (US_CheckParm(__argv[i],ParmStringsIN))
 		{
 		case 0:
 			checkjoys = false;
@@ -618,8 +619,7 @@ IN_ClearKeysDown(void)
 
 	LastScan = sc_None;
 	LastASCII = key_None;
-	for (i = 0;i < NumCodes;i++)
-		Keyboard[i] = false;
+	memset (Keyboard,0,sizeof(Keyboard));
 }
 
 ///////////////////////////////////////////////////////////////////////////

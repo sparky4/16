@@ -30,7 +30,7 @@ main(int argc, char *argv[])
 	ControlInfo control;
 	extern boolean Keyboard[NumCodes];
 	IN_Startup();
-	IN_Default(0,ctrl_Keyboard);
+	IN_Default(0,ctrl_Joystick);
 	while(!IN_qb(sc_Escape))
 	{
 		IN_ReadControl(0,&control);

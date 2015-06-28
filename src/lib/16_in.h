@@ -19,13 +19,15 @@
 //
 //	ID Engine
 //	ID_IN.h - Header file for Input Manager
-//	v1.0d1
+//	v1.0d1w
 //	By Jason Blochowiak
+// Open Watcom port by sparky4
 //
 
 #ifndef	__16_IN__
 #define	__16_IN__
 
+#include <string.h>
 #include "src/lib/lib_head.h"
 //#include "src/lib/16_us.h"
 
@@ -291,7 +293,7 @@ static	Direction	DirTable[] =		// Quick lookup for total direction
 static	void			(*INL_KeyHook)(void);
 static	void interrupt	(*OldKeyVect)(void);
 
-static	char			*ParmStrings[] = {"nojoys","nomouse",nil};
+static	char			*ParmStringsIN[] = {"nojoys","nomouse",nil};
 
 // Function prototypes
 #define	IN_KeyDown(code)	(Keyboard[(code)])
