@@ -35,8 +35,9 @@
 #define	__DEBUG_InputMgr__
 //++++#endif
 
-//#define DOMO
+//#define DUMU
 #define TESTKEYIN
+#define TESTCONTROLNOISY
 
 #define	KeyInt	9	// The keyboard ISR number
 
@@ -133,6 +134,10 @@ typedef	byte		ScanCode;
 #define	key_BackSpace	0x08
 #define	key_Tab			0x09
 #define	key_Delete		0x7f
+
+#define	key_LSuper			0x5b
+#define	key_RSuper			0x5c
+#define	key_Menu			0x5d
 
 // 	Stuff for the mouse
 #define	MReset		0

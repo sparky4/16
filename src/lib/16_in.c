@@ -675,7 +675,7 @@ IN_ReadCursor(CursorInfo *info)
 	}
 }
 
-#ifndef DOMO
+#ifndef DUMU
 ///////////////////////////////////////////////////////////////////////////
 //
 //	IN_ReadControl() - Reads the device associated with the specified
