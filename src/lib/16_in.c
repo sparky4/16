@@ -151,10 +151,13 @@ static	Direction	DirTable[] =		// Quick lookup for total direction
 					{
 						//dir_Nortinest,
 						dir_North,
+						dir_West,
+						dir_None,	
+						dir_East,
+						dir_South
 						//dir_NorthEast,
-						dir_West,		dir_None,	dir_East,
 						//dir_Soutinest,
-						dir_South//,dir_SouthEast
+						//,dir_SouthEast
 					};
 #ifdef __cplusplus
 }
@@ -674,7 +677,7 @@ IN_Default(boolean gotit,player_t *player,ControlType nt)
 	|| 	((nt == ctrl_Joypad2) && !inpu.JoyPadPresent[1])
 	)
 		nt = ctrl_Keyboard1;
-	inpu.KbdDefs[0].button0 = 0x1d;
+	inpu.KbdDefs[0].button0 = 0x1c;
 	inpu.KbdDefs[0].button1 = 0x38;
 	//in.KbdDefs[0].upleft = 0x47;
 	inpu.KbdDefs[0].up = 0x48;
@@ -846,18 +849,18 @@ register	KeyboardDef	*def;
 			else if (Keyboard[def->downright])
 				mx = motion_Right,my = motion_Down;*/
 
-			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
+			//if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
 			if (inpu.Keyboard[def->up])
 				my = motion_Up;
 			else if (inpu.Keyboard[def->down])
 				my = motion_Down;
 
-			}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
+			//}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
 			if (inpu.Keyboard[def->left])
 				mx = motion_Left;
 			else if (inpu.Keyboard[def->right])
 				mx = motion_Right;
-			}
+			//}
 			if (inpu.Keyboard[def->button0])
 				buttons += 1 << 0;
 			if (inpu.Keyboard[def->button1])
@@ -903,7 +906,8 @@ register	KeyboardDef	*def;
 	player[playnum].info.button1 = buttons & (1 << 1);
 	player[playnum].info.button2 = buttons & (1 << 2);
 	player[playnum].info.button3 = buttons & (1 << 3);
-	player[playnum].info.dir = DirTable[((my + 1) * 3) + (mx + 1)];
+//	player[playnum].info.dir = DirTable[((my + 1) * 3) + (mx + 1)];
+	player[playnum].info.dir = DirTable[(((my + 1) * 2) + (mx + 1))-1];
 
 #if DEMO0
 	if (DemoMode == demo_Record)
@@ -931,7 +935,12 @@ register	KeyboardDef	*def;
 	}
 #endif
 #ifdef TESTCONTROLNOISY
-printf("dir=%d\n", player[playnum].info.dir);
+if(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right])
+{
+	printf("(mx)=%d	", mx);
+	printf("(my)=%d	", my);
+	printf("dir=%d\n", player[playnum].info.dir);
+}
 #endif
 }
 

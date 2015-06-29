@@ -30,12 +30,14 @@
 #include <string.h>
 #include "src/lib/lib_head.h"
 
-//++++#ifdef	__DEBUG__
+#ifdef	__DEBUG__
 #define	__DEBUG_InputMgr__
-//++++#endif
+#endif
 
+#ifdef	__DEBUG_InputMgr__
 #define TESTKEYIN
-//#define TESTCONTROLNOISY
+#define TESTCONTROLNOISY
+#endif
 
 #define	KeyInt	9	// The keyboard ISR number
 
@@ -166,10 +168,10 @@ typedef	enum		{
 					} Motion;
 typedef	enum		{
 						dir_North,//dir_NorthEast,
-						dir_East,//dir_SouthEast,
-						dir_South,//dir_Soutinest,
 						dir_West,//dir_Nortinest,
-						dir_None
+						dir_None,
+						dir_East,//,dir_SouthEast,
+						dir_South,//dir_Soutinest,
 					} Direction;
 typedef	struct		{
 						boolean		button0,button1,button2,button3;
@@ -182,10 +184,11 @@ typedef	struct		{
 						ScanCode	button0,button1,
 									//upleft,
 									up,
+									down,
+									left,
+									right
 									//upright,
-									left,				right,
 									//downleft,
-									down
 									//,downright
 									;
 					} KeyboardDef;

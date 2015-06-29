@@ -127,6 +127,8 @@ static dword far* clockdw= (dword far*) 0x046C; /* 18.2hz clock */
 
 #define	nil	((void *)0)
 
+#define __DEBUG__
+
 #define peekb(segm,ofs) (*(byte far*)MK_FP((segm),(ofs)))
 #define peekw(segm,ofs) (*(word far*)MK_FP((segm),(ofs)))
 #define pokeb(segm,ofs,value) (peekb((segm),(ofs)) = (byte)(value))
