@@ -28,32 +28,16 @@ void
 main(int argc, char *argv[])
 {
 	player_t player[MaxPlayers];
-	inconfig in;
-	//word i=0;
 
-	in.KbdDefs[0].button0 = 0x1d;
-	in.KbdDefs[0].button1 = 0x38;
-	//in.KbdDefs[0].upleft = 0x47;
-	in.KbdDefs[0].up = 0x48;
-	//in.KbdDefs[0].upright = 0x49;
-	in.KbdDefs[0].left = 0x4b;
-	in.KbdDefs[0].right = 0x4d;
-	//in.KbdDefs[0].downleft = 0x4f;
-	in.KbdDefs[0].down = 0x50;
-	//in.KbdDefs[0].downright = 0x51;
-
-	if(IN_Startup(&in))
+	IN_Startup();
+	IN_Default(0,&player,ctrl_Joystick);
+	//while(!IN_KeyDown(sc_Escape))
+	while(!IN_KeyDown(sc_Escape))
 	{
-		IN_Default(0,&player,ctrl_Joystick, &in);
-		while(!in.Keyboard[sc_Escape])
-		{
-			IN_ReadControl(0,&player, &in);
-			//printf("%u\n", in.Keyboard[sc_Escape]);
-			//printf("i=%u\n", i);
-			printf("");
-			//i++;
-		}
-		IN_Shutdown(&in);
+		IN_ReadControl(0,&player);
+		//printf("%u\n", IN_KeyDown(sc_Escape));
+		//printf("%u\n", IN_qb(sc_Escape));
 	}
+	IN_Shutdown();
 	//printf("%u\n", in.Keyboard[sc_Escape]);
 }

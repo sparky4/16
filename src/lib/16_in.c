@@ -41,13 +41,51 @@
 /*
 =============================================================================
 
+					GLOBAL VARIABLES
+
+=============================================================================
+*/
+struct inconfig
+{
+	boolean			MousePresent;
+	boolean			JoysPresent[MaxJoys];
+	boolean			JoyPadPresent[MaxPads];
+	boolean		Keyboard[NumCodes];
+	boolean		Paused;
+	char		LastASCII;
+	ScanCode	LastScan;
+
+	KeyboardDef	KbdDefs[MaxKbds];// = {0x1d,0x38,/*0x47,*/0x48,/*0x49,*/0x4b,0x4d,/*0x4f,*/0x50/*,0x51*/};
+	JoystickDef	JoyDefs[MaxJoys];
+	JoypadDef	JoypadDefs[MaxPads];
+} inpu;
+
+//struct inconfig in;
+
+//inpu.KbdDefs = {0x1d,0x38,/*0x47,*/0x48,/*0x49,*/0x4b,0x4d,/*0x4f,*/0x50/*,0x51*/};
+
+/*
+=============================================================================
+
 					LOCAL VARIABLES
 
 =============================================================================
 */
+
 #ifdef __cplusplus		/* Function must be declared C style */
 extern "C" {
 #endif
+
+static struct instat {
+	boolean		IN_Started;
+	boolean		CapsLock;
+	ScanCode	CurCode,LastCode;
+} inst;
+
+static	void			(*INL_KeyHook)(void);
+static	void interrupt	(*OldKeyVect)(void);
+static	char			*ParmStringsIN[] = {"nojoys","nomouse",nil};
+
 static	byte        far ASCIINames[] =		// Unshifted ASCII for scan codes
 					{
 //	 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
@@ -119,14 +157,6 @@ static	Direction	DirTable[] =		// Quick lookup for total direction
 						//dir_Soutinest,
 						dir_South//,dir_SouthEast
 					};
-
-static	boolean		IN_Started;
-static	boolean		CapsLock;
-static	ScanCode	CurCode,LastCode;
-
-static	void			(*INL_KeyHook)(void);
-static	void interrupt	(*OldKeyVect)(void);
-static	char			*ParmStringsIN[] = {"nojoys","nomouse",nil};
 #ifdef __cplusplus
 }
 #endif
@@ -138,7 +168,7 @@ static	char			*ParmStringsIN[] = {"nojoys","nomouse",nil};
 //
 ///////////////////////////////////////////////////////////////////////////
 void interrupt
-INL_KeyService(inconfig *in)
+INL_KeyService()
 {
 static	boolean	special;
 		byte	k,c;
@@ -153,7 +183,7 @@ static	boolean	special;
 	if (k == 0xe0)		// Special key prefix
 		special = true;
 	else if (k == 0xe1)	// Handle Pause key
-		in->Paused = true;
+		inpu.Paused = true;
 	else
 	{
 		if (k & 0x80)	// Break code
@@ -162,13 +192,13 @@ static	boolean	special;
 
 // DEBUG - handle special keys: ctl-alt-delete, print scrn
 
-			in->Keyboard[k] = false;
+			inpu.Keyboard[k] = false;
 		}
 		else			// Make code
 		{
-			LastCode = CurCode;
-			CurCode = in->LastScan = k;
-			in->Keyboard[k] = true;
+			inst.LastCode = inst.CurCode;
+			inst.CurCode = inpu.LastScan = k;
+			inpu.Keyboard[k] = true;
 
 			if (special)
 				c = SpecialNames[k];
@@ -176,25 +206,25 @@ static	boolean	special;
 			{
 				if (k == sc_CapsLock)
 				{
-					CapsLock ^= true;
+					inst.CapsLock ^= true;
 					// DEBUG - make caps lock light work
 				}
 
-				if (in->Keyboard[sc_LShift] || in->Keyboard[sc_RShift])	// If shifted
+				if (inpu.Keyboard[sc_LShift] || inpu.Keyboard[sc_RShift])	// If shifted
 				{
 					c = ShiftNames[k];
-					if ((c >= 'A') && (c <= 'Z') && CapsLock)
+					if ((c >= 'A') && (c <= 'Z') && inst.CapsLock)
 						c += 'a' - 'A';
 				}
 				else
 				{
 					c = ASCIINames[k];
-					if ((c >= 'a') && (c <= 'z') && CapsLock)
+					if ((c >= 'a') && (c <= 'z') && inst.CapsLock)
 						c -= 'a' - 'A';
 				}
 			}
 			if (c)
-				in->LastASCII = c;
+				inpu.LastASCII = c;
 		}
 
 		special = false;
@@ -203,7 +233,7 @@ static	boolean	special;
 	if (INL_KeyHook && !special)
 		INL_KeyHook();
 	#ifdef TESTKEYIN
-	printf("%c %x %u\n", c, k, in->Keyboard[k]);
+	printf("%c %x %u\n", c, k, inpu.Keyboard[k]);
 	#endif
 	outp(0x20,0x20);
 }
@@ -335,7 +365,7 @@ done:
 //
 ///////////////////////////////////////////////////////////////////////////
 static void
-INL_GetJoyDelta(word joy,int *dx,int *dy,boolean adaptive, inconfig *in)
+INL_GetJoyDelta(word joy,int *dx,int *dy,boolean adaptive)
 {
 	word		x,y;
 	dword	time;
@@ -344,7 +374,7 @@ INL_GetJoyDelta(word joy,int *dx,int *dy,boolean adaptive, inconfig *in)
 static	dword	lasttime;
 
 	IN_GetJoyAbs(joy,&x,&y);
-	def = in->JoyDefs + joy;
+	def = inpu.JoyDefs + joy;
 
 	if (x < def->threshMinX)
 	{
@@ -453,11 +483,11 @@ IN_GetJoyButtonsDB(word joy)
 //
 ///////////////////////////////////////////////////////////////////////////
 static void
-INL_StartKbd(inconfig *in)
+INL_StartKbd()
 {
 	INL_KeyHook = 0;	// Clear key hook
 
-	IN_ClearKeysDown(in);
+	IN_ClearKeysDown();
 
 	OldKeyVect = _dos_getvect(KeyInt);
 	_dos_setvect(KeyInt,INL_KeyService);
@@ -508,11 +538,11 @@ INL_ShutMouse(void)
 //	INL_SetJoyScale() - Sets up scaling values for the specified joystick
 //
 static void
-INL_SetJoyScale(word joy, inconfig *in)
+INL_SetJoyScale(word joy)
 {
 	JoystickDef	*def;
 
-	def = &(in->JoyDefs[joy]);
+	def = &(inpu.JoyDefs[joy]);
 	def->joyMultXL = JoyScaleMax / (def->threshMinX - def->joyMinX);
 	def->joyMultXH = JoyScaleMax / (def->joyMaxX - def->threshMaxX);
 	def->joyMultYL = JoyScaleMax / (def->threshMinY - def->joyMinY);
@@ -526,12 +556,12 @@ INL_SetJoyScale(word joy, inconfig *in)
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-IN_SetupJoy(word joy,word minx,word maxx,word miny,word maxy, inconfig *in)
+IN_SetupJoy(word joy,word minx,word maxx,word miny,word maxy)
 {
 	word		d,r;
 	JoystickDef	*def;
 
-	def = &(in->JoyDefs[joy]);
+	def = &(inpu.JoyDefs[joy]);
 
 	def->joyMinX = minx;
 	def->joyMaxX = maxx;
@@ -547,7 +577,7 @@ IN_SetupJoy(word joy,word minx,word maxx,word miny,word maxy, inconfig *in)
 	def->threshMinY = ((r / 2) - d) + miny;
 	def->threshMaxY = ((r / 2) + d) + miny;
 
-	INL_SetJoyScale(joy, in);
+	INL_SetJoyScale(joy);
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -557,7 +587,7 @@ IN_SetupJoy(word joy,word minx,word maxx,word miny,word maxy, inconfig *in)
 //
 ///////////////////////////////////////////////////////////////////////////
 static boolean
-INL_StartJoy(word joy, inconfig *in)
+INL_StartJoy(word joy)
 {
 	word		x,y;
 
@@ -571,7 +601,7 @@ INL_StartJoy(word joy, inconfig *in)
 		return(false);
 	else
 	{
-		IN_SetupJoy(joy,0,x * 2,0,y * 2, in);
+		IN_SetupJoy(joy,0,x * 2,0,y * 2);
 		return(true);
 	}
 }
@@ -582,9 +612,9 @@ INL_StartJoy(word joy, inconfig *in)
 //
 ///////////////////////////////////////////////////////////////////////////
 static void
-INL_ShutJoy(word joy, inconfig *in)
+INL_ShutJoy(word joy)
 {
-	in->JoysPresent[joy] = false;
+	inpu.JoysPresent[joy] = false;
 }
 
 //	Public routines
@@ -594,16 +624,14 @@ INL_ShutJoy(word joy, inconfig *in)
 //	IN_Startup() - Starts up the Input Mgr
 //
 ///////////////////////////////////////////////////////////////////////////
-boolean
-IN_Startup(inconfig *in)
+void
+IN_Startup()
 {
 	boolean	checkjoys,checkmouse;
 	word	i;
 
-	if (IN_Started)
-	{
-		return false;
-	}
+	if (inst.IN_Started)
+		return;
 
 	checkjoys = true;
 	checkmouse = true;
@@ -620,14 +648,13 @@ IN_Startup(inconfig *in)
 		}
 	}
 
-	INL_StartKbd(in);
-	in->MousePresent = checkmouse? INL_StartMouse() : false;
+	INL_StartKbd();
+	inpu.MousePresent = checkmouse? INL_StartMouse() : false;
 
 	for (i = 0;i < MaxJoys;i++)
-		in->JoysPresent[i] = checkjoys? INL_StartJoy(i, in) : false;
+		inpu.JoysPresent[i] = checkjoys? INL_StartJoy(i) : false;
 
-	IN_Started = true;
-	return true;
+	inst.IN_Started = true;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -636,16 +663,16 @@ IN_Startup(inconfig *in)
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-IN_Default(boolean gotit,player_t *player,ControlType nt, inconfig *in)
+IN_Default(boolean gotit,player_t *player,ControlType nt)
 {
 	if
 	(
 		(!gotit)
-	|| 	((nt == ctrl_Joystick1) && !in->JoysPresent[0])
-	|| 	((nt == ctrl_Joystick2) && !in->JoysPresent[1])
-	|| 	((nt == ctrl_Mouse) && !in->MousePresent)
-	|| 	((nt == ctrl_Joypad1) && !in->JoyPadPresent[0])
-	|| 	((nt == ctrl_Joypad2) && !in->JoyPadPresent[1])
+	|| 	((nt == ctrl_Joystick1) && !inpu.JoysPresent[0])
+	|| 	((nt == ctrl_Joystick2) && !inpu.JoysPresent[1])
+	|| 	((nt == ctrl_Mouse) && !inpu.MousePresent)
+	|| 	((nt == ctrl_Joypad1) && !inpu.JoyPadPresent[0])
+	|| 	((nt == ctrl_Joypad2) && !inpu.JoyPadPresent[1])
 	)
 		nt = ctrl_Keyboard1;
 	IN_SetControlType(0,player,nt);
@@ -656,23 +683,20 @@ IN_Default(boolean gotit,player_t *player,ControlType nt, inconfig *in)
 //	IN_Shutdown() - Shuts down the Input Mgr
 //
 ///////////////////////////////////////////////////////////////////////////
-boolean
-IN_Shutdown(inconfig *in)
+void
+IN_Shutdown()
 {
 	word	i;
 
-	if (!IN_Started)
-	{
-		return false;
-	}
+	if (!inst.IN_Started)
+		return;
 
 	INL_ShutMouse();
 	for (i = 0;i < MaxJoys;i++)
-		INL_ShutJoy(i, in);
+		INL_ShutJoy(i);
 	INL_ShutKbd();
 
-	IN_Started = false;
-	return true;
+	inst.IN_Started = false;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -693,13 +717,13 @@ IN_SetKeyHook(void (*hook)())
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-IN_ClearKeysDown(inconfig *in)
+IN_ClearKeysDown()
 {
 	int	i;
 
-	in->LastScan = sc_None;
-	in->LastASCII = key_None;
-	memset (in->Keyboard,0,sizeof(in->Keyboard));
+	inpu.LastScan = sc_None;
+	inpu.LastASCII = key_None;
+	memset (inpu.Keyboard,0,sizeof(inpu.Keyboard));
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -726,7 +750,7 @@ INL_AdjustCursor(CursorInfo *info,word buttons,int dx,int dy)
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-IN_ReadCursor(CursorInfo *info, inconfig *in)
+IN_ReadCursor(CursorInfo *info)
 {
 	word	i,
 			buttons;
@@ -735,7 +759,7 @@ IN_ReadCursor(CursorInfo *info, inconfig *in)
 	info->x = info->y = 0;
 	info->button0 = info->button1 = false;
 
-	if (in->MousePresent)
+	if (inpu.MousePresent)
 	{
 		buttons = INL_GetMouseButtons();
 		INL_GetMouseDelta(&dx,&dy);
@@ -744,11 +768,11 @@ IN_ReadCursor(CursorInfo *info, inconfig *in)
 
 	for (i = 0;i < MaxJoys;i++)
 	{
-		if (!in->JoysPresent[i])
+		if (!inpu.JoysPresent[i])
 			continue;
 
 		buttons = INL_GetJoyButtons(i);
-		INL_GetJoyDelta(i,&dx,&dy,true, in);
+		INL_GetJoyDelta(i,&dx,&dy,true);
 		dx /= 64;
 		dy /= 64;
 		INL_AdjustCursor(info,buttons,dx,dy);
@@ -762,7 +786,7 @@ IN_ReadCursor(CursorInfo *info, inconfig *in)
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-IN_ReadControl(int playnum,player_t *player, inconfig *in)
+IN_ReadControl(int playnum,player_t *player)
 {
 			boolean		realdelta;
 			byte		dbyte;
@@ -802,7 +826,7 @@ register	KeyboardDef	*def;
 		{
 		case ctrl_Keyboard1:
 		case ctrl_Keyboard2:
-			def = &(in->KbdDefs[type - ctrl_Keyboard]);
+			def = &(inpu.KbdDefs[type - ctrl_Keyboard]);
 
 /*			if (Keyboard[def->upleft])
 				mx = motion_Left,my = motion_Up;
@@ -813,25 +837,25 @@ register	KeyboardDef	*def;
 			else if (Keyboard[def->downright])
 				mx = motion_Right,my = motion_Down;*/
 
-			if (in->Keyboard[def->up])
+			if (inpu.Keyboard[def->up])
 				my = motion_Up;
-			else if (in->Keyboard[def->down])
+			else if (inpu.Keyboard[def->down])
 				my = motion_Down;
 
-			if (in->Keyboard[def->left])
+			if (inpu.Keyboard[def->left])
 				mx = motion_Left;
-			else if (in->Keyboard[def->right])
+			else if (inpu.Keyboard[def->right])
 				mx = motion_Right;
 
-			if (in->Keyboard[def->button0])
+			if (inpu.Keyboard[def->button0])
 				buttons += 1 << 0;
-			if (in->Keyboard[def->button1])
+			if (inpu.Keyboard[def->button1])
 				buttons += 1 << 1;
 			realdelta = false;
 			break;
 		case ctrl_Joystick1:
 		case ctrl_Joystick2:
-			INL_GetJoyDelta(type - ctrl_Joystick,&dx,&dy,false, in);
+			INL_GetJoyDelta(type - ctrl_Joystick,&dx,&dy,false);
 			buttons = INL_GetJoyButtons(type - ctrl_Joystick);
 			realdelta = true;
 			break;
@@ -1000,13 +1024,13 @@ IN_GetScanName(ScanCode scan)
 //
 ///////////////////////////////////////////////////////////////////////////
 ScanCode
-IN_WaitForKey(inconfig *in)
+IN_WaitForKey()
 {
 	ScanCode	result;
 
-	while (!(result = in->LastScan))
+	while (!(result = inpu.LastScan))
 		;
-	in->LastScan = 0;
+	inpu.LastScan = 0;
 	return(result);
 }
 
@@ -1017,13 +1041,13 @@ IN_WaitForKey(inconfig *in)
 //
 ///////////////////////////////////////////////////////////////////////////
 char
-IN_WaitForASCII(inconfig *in)
+IN_WaitForASCII()
 {
 	char		result;
 
-	while (!(result = in->LastASCII))
+	while (!(result = inpu.LastASCII))
 		;
-	in->LastASCII = '\0';
+	inpu.LastASCII = '\0';
 	return(result);
 }
 
@@ -1033,13 +1057,13 @@ IN_WaitForASCII(inconfig *in)
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-IN_AckBack(inconfig *in)
+IN_AckBack()
 {
 	word	i;
 
-	while (!in->LastScan)
+	while (!inpu.LastScan)
 	{
-		if (in->MousePresent)
+		if (inpu.MousePresent)
 		{
 			if (INL_GetMouseButtons())
 			{
@@ -1051,7 +1075,7 @@ IN_AckBack(inconfig *in)
 
 		for (i = 0;i < MaxJoys;i++)
 		{
-			if (in->JoysPresent[i])
+			if (inpu.JoysPresent[i])
 			{
 				if (IN_GetJoyButtonsDB(i))
 				{
@@ -1063,8 +1087,8 @@ IN_AckBack(inconfig *in)
 		}
 	}
 
-	IN_ClearKey(in->LastScan, in);
-	in->LastScan = sc_None;
+	IN_ClearKey(inpu.LastScan);
+	inpu.LastScan = sc_None;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -1073,22 +1097,22 @@ IN_AckBack(inconfig *in)
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-IN_Ack(inconfig *in)
+IN_Ack()
 {
 	word	i;
 
-	IN_ClearKey(in->LastScan, in);
-	in->LastScan = sc_None;
+	IN_ClearKey(inpu.LastScan);
+	inpu.LastScan = sc_None;
 
-	if (in->MousePresent)
+	if (inpu.MousePresent)
 		while (INL_GetMouseButtons())
 					;
 	for (i = 0;i < MaxJoys;i++)
-		if (in->JoysPresent[i])
+		if (inpu.JoysPresent[i])
 			while (IN_GetJoyButtonsDB(i))
 				;
 
-	IN_AckBack(in);
+	IN_AckBack();
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -1098,19 +1122,19 @@ IN_Ack(inconfig *in)
 //
 ///////////////////////////////////////////////////////////////////////////
 boolean
-IN_IsUserInput(inconfig *in)
+IN_IsUserInput()
 {
 	boolean	result;
 	word	i;
 
-	result = in->LastScan;
+	result = inpu.LastScan;
 
-	if (in->MousePresent)
+	if (inpu.MousePresent)
 		if (INL_GetMouseButtons())
 			result = true;
 
 	for (i = 0;i < MaxJoys;i++)
-		if (in->JoysPresent[i])
+		if (inpu.JoysPresent[i])
 			if (INL_GetJoyButtons(i))
 				result = true;
 
@@ -1126,7 +1150,7 @@ IN_IsUserInput(inconfig *in)
 //
 ///////////////////////////////////////////////////////////////////////////
 boolean
-IN_UserInput(dword delay,boolean clear, inconfig *in)
+IN_UserInput(dword delay,boolean clear)
 {
 	dword TimeCount = *clockdw;
 	dword	lasttime;
@@ -1134,24 +1158,31 @@ IN_UserInput(dword delay,boolean clear, inconfig *in)
 	lasttime = TimeCount;
 	do
 	{
-		if (IN_IsUserInput(in))
+		if (IN_IsUserInput())
 		{
 			if (clear)
-				IN_AckBack(in);
+				IN_AckBack();
 			return(true);
 		}
 	} while (TimeCount - lasttime < delay);
 	return(false);
 }
 
-boolean IN_KeyDown(byte code, inconfig *in)
+boolean IN_KeyDown(byte code)
 {
-	return in->Keyboard[(code)];
+	return inpu.Keyboard[code];
 }
 
-void IN_ClearKey(byte code, inconfig *in)
+void IN_ClearKey(byte code)
 {
-	in->Keyboard[code] = false;
-	if(code == in->LastScan)
-		in->LastScan = sc_None;
+	inpu.Keyboard[code] = false;
+	if(code == inpu.LastScan)
+		inpu.LastScan = sc_None;
 	}
+
+boolean IN_qb(byte kee)
+{
+	printf("%u\n", inpu.Keyboard[kee]);
+	if(inpu.Keyboard[kee]==true) return 1;
+	else return 0;
+}

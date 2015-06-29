@@ -208,69 +208,56 @@ typedef	struct
 	ControlType	Controls;
 } player_t;
 
-typedef	struct
-{
-	boolean			MousePresent;
-	boolean			JoysPresent[MaxJoys];
-	boolean			JoyPadPresent[MaxPads];
-	boolean		Keyboard[NumCodes];
-	boolean		Paused;
-	char		LastASCII;
-	ScanCode	LastScan;
-
-	KeyboardDef	KbdDefs[MaxKbds];
-	JoystickDef	JoyDefs[MaxJoys];
-	JoypadDef	JoypadDefs[MaxPads];
-} inconfig;
-
 #ifdef DEMO0
 		static Demo		DemoMode = demo_Off;
 		static byte /*_seg*/	*DemoBuffer;
 		static word		DemoOffset,DemoSize;
 #endif
 
+//extern struct inconfig in;
 extern dword far* clockdw;
 
 //	Internal routines
-void interrupt INL_KeyService(inconfig *in);
-void Mouse(int x);
+extern void interrupt INL_KeyService();
+extern void Mouse(int x);
 //static void INL_GetMouseDelta(int *x,int *y);
 //static word INL_GetMouseButtons(void);
-void IN_GetJoyAbs(word joy,word *xp,word *yp);
+extern void IN_GetJoyAbs(word joy,word *xp,word *yp);
 //static void INL_GetJoyDelta(word joy,int *dx,int *dy,boolean adaptive);
 //static word INL_GetJoyButtons(word joy);
-word IN_GetJoyButtonsDB(word joy);
+extern word IN_GetJoyButtonsDB(word joy);
 //static void INL_StartKbd(void);
 //static void INL_ShutKbd(void);
 //static boolean INL_StartMouse(void);
 //static void INL_ShutMouse(void);
 //static void INL_SetJoyScale(word joy);
-void IN_SetupJoy(word joy,word minx,word maxx,word miny,word maxy, inconfig *in);
+extern void IN_SetupJoy(word joy,word minx,word maxx,word miny,word maxy);
 //static boolean INL_StartJoy(word joy);
 //static void INL_ShutJoy(word joy);
-boolean IN_Startup(inconfig *in);
-void IN_Default(boolean gotit,player_t *player,ControlType nt, inconfig *in);
-boolean IN_Shutdown(inconfig *in);
-void IN_SetKeyHook(void (*hook)());
-void IN_ClearKeysDown(inconfig *in);
+extern void IN_Startup();
+extern void IN_Default(boolean gotit,player_t *player,ControlType nt);
+extern void IN_Shutdown();
+extern void IN_SetKeyHook(void (*hook)());
+extern void IN_ClearKeysDown();
 //static void INL_AdjustCursor(CursorInfo *info,word buttons,int dx,int dy);
-void IN_ReadCursor(CursorInfo *info, inconfig *in);
-void IN_ReadControl(int playnum,player_t *player, inconfig *in);
-void IN_SetControlType(word playnum,player_t *player,ControlType type);
+extern void IN_ReadCursor(CursorInfo *info);
+extern void IN_ReadControl(int playnum,player_t *player);
+extern void IN_SetControlType(word playnum,player_t *player,ControlType type);
 #if DEMO0
-boolean IN_StartDemoRecord(word bufsize);
-void IN_StartDemoPlayback(byte /*__segment*/ *buffer,word bufsize);
-void IN_StopDemo(void);
-void IN_FreeDemoBuffer(void);
+extern boolean IN_StartDemoRecord(word bufsize);
+extern void IN_StartDemoPlayback(byte /*__segment*/ *buffer,word bufsize);
+extern void IN_StopDemo(void);
+extern void IN_FreeDemoBuffer(void);
 #endif
-byte *IN_GetScanName(ScanCode scan);
-ScanCode IN_WaitForKey(inconfig *in);
-char IN_WaitForASCII(inconfig *in);
-void IN_AckBack(inconfig *in);
-void IN_Ack(inconfig *in);
-boolean IN_IsUserInput(inconfig *in);
-boolean IN_UserInput(dword delay,boolean clear, inconfig *in);
-boolean IN_KeyDown(byte code, inconfig *in);
-void IN_ClearKey(byte code, inconfig *in);
+extern byte *IN_GetScanName(ScanCode scan);
+extern ScanCode IN_WaitForKey();
+extern char IN_WaitForASCII();
+extern void IN_AckBack();
+extern void IN_Ack();
+extern boolean IN_IsUserInput();
+extern boolean IN_UserInput(dword delay,boolean clear);
+extern boolean IN_KeyDown(byte code);
+extern void IN_ClearKey(byte code);
+extern boolean IN_qb(byte kee);
 
 #endif
