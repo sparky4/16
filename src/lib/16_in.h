@@ -47,6 +47,7 @@
 #define	MaxPlayers	4
 #define	MaxKbds		2
 #define	MaxJoys		2
+#define	MaxPads		2
 #define	NumCodes	128
 
 typedef	byte		ScanCode;
@@ -166,8 +167,8 @@ typedef	enum		{
 typedef	enum		{
 						dir_North,//dir_NorthEast,
 						dir_East,//dir_SouthEast,
-						dir_South,//dir_SouthWest,
-						dir_West,//dir_NorthWest,
+						dir_South,//dir_Soutinest,
+						dir_West,//dir_Nortinest,
 						dir_None
 					} Direction;
 typedef	struct		{
@@ -196,11 +197,36 @@ typedef	struct		{
 									joyMultXL,joyMultYL,
 									joyMultXH,joyMultYH;
 					} JoystickDef;
-
-/*typedef	struct
+typedef	struct
 {
-	CursorInfo;
-}	ControlInfo;*/
+	boolean w;
+} JoypadDef;
+
+typedef	struct
+{
+	CursorInfo	info;
+	ControlType	Controls;
+} player_t;
+
+typedef	struct
+{
+	boolean			MousePresent;
+	boolean			JoysPresent[MaxJoys];
+	boolean			JoyPadPresent[MaxPads];
+	boolean		Keyboard[NumCodes];
+	boolean		Paused;
+	char		LastASCII;
+	ScanCode	LastScan;
+
+	boolean		IN_Started;
+	boolean		CapsLock;
+	ScanCode	CurCode,LastCode;
+
+	KeyboardDef	KbdDefs[MaxKbds];
+	JoystickDef	JoyDefs[MaxJoys];
+	JoypadDef	JoypadDefs[MaxPads];
+} inconfig;
+
 /*
 =============================================================================
 
@@ -212,25 +238,25 @@ typedef	struct		{
 //
 // configuration variables
 //
-static boolean			MousePresent;
-static boolean			JoysPresent[MaxJoys];
-static boolean			JoyPadPresent;
+//static boolean			MousePresent;
+//static boolean			JoysPresent[MaxJoys];
+//static boolean			JoyPadPresent[MaxPads];
 
 // 	Global variables
 //		extern boolean JoystickCalibrated;		// MDM (GAMERS EDGE) - added
 //		extern ControlType ControlTypeUsed;				// MDM (GAMERS EDGE) - added
 
-		extern boolean		Keyboard[NumCodes];
-		extern boolean		Paused;
-		extern char		LastASCII;
-		extern ScanCode	LastScan;
+		//extern boolean		Keyboard[NumCodes];
+		//extern boolean		Paused;
+		//extern char		LastASCII;
+		//extern ScanCode	LastScan;
 
 		//extern KeyboardDef	KbdDefs[];
-		static KeyboardDef	KbdDefs[MaxKbds] = {0x1d,0x38,0x47,0x48,0x49,0x4b,0x4d,0x4f,0x50,0x51};
-		extern JoystickDef	JoyDefs[MaxJoys];
-		extern ControlType	Controls[MaxPlayers];
+		//static KeyboardDef	KbdDefs[MaxKbds] = {0x1d,0x38,0x47,0x48,0x49,0x4b,0x4d,0x4f,0x50,0x51};
+		//extern JoystickDef	JoyDefs[MaxJoys];
+		//extern ControlType	Controls[MaxPlayers];
 
-		extern dword	MouseDownCount;
+		//extern dword	MouseDownCount;
 
 #ifdef DEMO0
 		static Demo		DemoMode = demo_Off;
@@ -309,17 +335,13 @@ static	byte        far ASCIINames[] =		// Unshifted ASCII for scan codes
 	"Down","Left","Right",""
 					};
 
-static	boolean		IN_Started;
-static	boolean		CapsLock;
-static	ScanCode	CurCode,LastCode;
-
 static	Direction	DirTable[] =		// Quick lookup for total direction
 					{
-						//dir_NorthWest,
+						//dir_Nortinest,
 						dir_North,
 						//dir_NorthEast,
 						dir_West,		dir_None,	dir_East,
-						//dir_SouthWest,
+						//dir_Soutinest,
 						dir_South//,dir_SouthEast
 					};
 
@@ -333,7 +355,7 @@ static	char			*ParmStringsIN[] = {"nojoys","nomouse",nil};
 #define	IN_ClearKey(code)	{Keyboard[code] = false; if (code == LastScan) LastScan = sc_None;}
 
 //	Internal routines
-void interrupt INL_KeyService(void);
+void interrupt INL_KeyService(inconfig *in);
 void Mouse(int x);
 //static void INL_GetMouseDelta(int *x,int *y);
 //static word INL_GetMouseButtons(void);
@@ -346,18 +368,18 @@ word IN_GetJoyButtonsDB(word joy);
 //static boolean INL_StartMouse(void);
 //static void INL_ShutMouse(void);
 //static void INL_SetJoyScale(word joy);
-void IN_SetupJoy(word joy,word minx,word maxx,word miny,word maxy);
+void IN_SetupJoy(word joy,word minx,word maxx,word miny,word maxy, inconfig *in);
 //static boolean INL_StartJoy(word joy);
 //static void INL_ShutJoy(word joy);
-void IN_Startup(void);
-void IN_Default(boolean gotit,ControlType in);
-void IN_Shutdown(void);
+void IN_Startup(inconfig *in);
+void IN_Default(boolean gotit,player_t *player,ControlType nt, inconfig *in);
+void IN_Shutdown(inconfig *in);
 void IN_SetKeyHook(void (*hook)());
-void IN_ClearKeysDown(void);
+void IN_ClearKeysDown(inconfig *in);
 //static void INL_AdjustCursor(CursorInfo *info,word buttons,int dx,int dy);
 void IN_ReadCursor(CursorInfo *info);
-void IN_ReadControl(int player,CursorInfo *info);
-void IN_SetControlType(int player,ControlType type);
+void IN_ReadControl(int playnum,player_t *player);
+void IN_SetControlType(word playnum,player_t *player,ControlType type);
 #if DEMO0
 boolean IN_StartDemoRecord(word bufsize);
 void IN_StartDemoPlayback(byte /*__segment*/ *buffer,word bufsize);
@@ -371,7 +393,6 @@ void IN_AckBack(void);
 void IN_Ack(void);
 boolean IN_IsUserInput(void);
 boolean IN_UserInput(dword delay,boolean clear);
-
 
 /*extern	void		IN_Startup(void),IN_Shutdown(void),
 					IN_Default(boolean gotit,ControlType in),
@@ -400,7 +421,5 @@ extern	char		IN_WaitForASCII(void);
 extern	ScanCode	IN_WaitForKey(void);
 extern	word		IN_GetJoyButtonsDB(word joy);*/
 
-
-void interrupt INL_KeyService(void);
 boolean IN_qb(byte kee);
 #endif
