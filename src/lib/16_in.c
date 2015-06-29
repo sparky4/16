@@ -928,6 +928,9 @@ register	KeyboardDef	*def;
 		}
 	}
 #endif
+#ifdef TESTCONTROLNOISY
+printf("dir=%d\n", player[playnum].info.dir);
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////
