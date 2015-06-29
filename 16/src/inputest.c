@@ -28,6 +28,7 @@ void
 main(int argc, char *argv[])
 {
 	player_t player[MaxPlayers];
+	//inconfig inpu;
 	//extern struct inconfig inpu;
 
 	IN_Startup();

@@ -55,11 +55,12 @@ struct inconfig
 	char		LastASCII;
 	ScanCode	LastScan;
 
-	KeyboardDef	KbdDefs[MaxKbds];// = {0x1d,0x38,/*0x47,*/0x48,/*0x49,*/0x4b,0x4d,/*0x4f,*/0x50/*,0x51*/};
+	KeyboardDef	KbdDefs[MaxKbds];
 	JoystickDef	JoyDefs[MaxJoys];
 	JoypadDef	JoypadDefs[MaxPads];
 } inpu;
 
+//extern inconfig inpu;
 //inpu.KbdDefs = {0x1d,0x38,/*0x47,*/0x48,/*0x49,*/0x4b,0x4d,/*0x4f,*/0x50/*,0x51*/};
 
 /*

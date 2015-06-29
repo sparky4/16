@@ -215,7 +215,7 @@ typedef	struct
 
 =============================================================================
 */
-/*extern struct inconfig
+/*typedef struct
 {
 	boolean			MousePresent;
 	boolean			JoysPresent[MaxJoys];
@@ -228,7 +228,7 @@ typedef	struct
 	KeyboardDef	KbdDefs[MaxKbds];
 	JoystickDef	JoyDefs[MaxJoys];
 	JoypadDef	JoypadDefs[MaxPads];
-} inpu;*/
+} inconfig;*/
 
 #ifdef DEMO0
 		static Demo		DemoMode = demo_Off;
@@ -236,6 +236,7 @@ typedef	struct
 		static word		DemoOffset,DemoSize;
 #endif
 
+//extern inconfig inpu;
 extern dword far* clockdw;
 
 //	Internal routines
