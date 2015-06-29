@@ -28,6 +28,7 @@ void
 main(int argc, char *argv[])
 {
 	player_t player[MaxPlayers];
+	//extern struct inconfig inpu;
 
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);

@@ -208,13 +208,34 @@ typedef	struct
 	ControlType	Controls;
 } player_t;
 
+/*
+=============================================================================
+
+					GLOBAL VARIABLES
+
+=============================================================================
+*/
+/*extern struct inconfig
+{
+	boolean			MousePresent;
+	boolean			JoysPresent[MaxJoys];
+	boolean			JoyPadPresent[MaxPads];
+	boolean		Keyboard[NumCodes];
+	boolean		Paused;
+	char		LastASCII;
+	ScanCode	LastScan;
+
+	KeyboardDef	KbdDefs[MaxKbds];
+	JoystickDef	JoyDefs[MaxJoys];
+	JoypadDef	JoypadDefs[MaxPads];
+} inpu;*/
+
 #ifdef DEMO0
 		static Demo		DemoMode = demo_Off;
 		static byte /*_seg*/	*DemoBuffer;
 		static word		DemoOffset,DemoSize;
 #endif
 
-//extern struct inconfig in;
 extern dword far* clockdw;
 
 //	Internal routines
