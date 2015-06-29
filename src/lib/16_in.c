@@ -717,8 +717,8 @@ register	KeyboardDef	*def;
 	else if (DemoMode == demo_PlayDone)
 		Quit("Demo playback exceeded");
 	else
-#endif
 	{
+#endif
 															// MDM begin (GAMERS EDGE) - added this block
 		ControlTypeUsed = ctrl_None;
 
@@ -869,8 +869,8 @@ register	KeyboardDef	*def;
 	else if (DemoMode == demo_PlayDone)
 		Quit("Demo playback exceeded");
 	else
-#endif
 	{
+#endif
 		switch (type = Controls[player])
 		{
 		case ctrl_Keyboard1:
