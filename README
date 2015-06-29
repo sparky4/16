@@ -1,6 +1,6 @@
 Open watcom to compile the code of project 16
-/ = copy of pngwen's code
-16/ = the current code sparky4 is working with
+/ = root of project where executables are at~
+16/ = experimental branch and example codes~
 16/modex16/ = pngwen's code archived
 src/ = source of project~
 
@@ -17,7 +17,7 @@ DONE! YAY! wwww 9. map rendering~
 10. map and item interation (working currently on this!)
 11. item inventory~
 ==working== 12. Memory management (EMS + XMS)
-13. case switch with keyboard code (when your holding 2 arrow keys and a key is released the keyboard controller dose not read input from the port anymore for some weired reason)
+==working== 13. case switch with keyboard code (when your holding 2 arrow keys and a key is released the keyboard controller dose not read input from the port anymore for some weired reason)
 14. masking layer! (i think this is not easy to accomplish!)
 DONE 15. 8088 detection to turn off vsync!
 
@@ -28,10 +28,12 @@ not needed ... really... 17. merge map system and interperator from verge 2
 19. (also important) interperator! and possibly custom map system
 20. (also important) lua scripting system!
 21. extend the map system!
-==working== 22. opl2/3 audio!!!!
+22. opl2/3 audio!!!!
 
-use IN_ReadControl!!
+DONE! use IN_ReadControl!!
 
+23. engine core!
+24. engine core!! wwww
 
 To compile:
 You need Open Watcom stable to compile and just run wmake
