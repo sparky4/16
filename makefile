@@ -2,7 +2,7 @@
 #-zk0 = kanji support~
 #-zkl = current codepage
 
-MFLAGS=-mh# -zm
+MFLAGS=-m# -zm
 CFLAGS=-zkl -wo -x#### -mc# -zdp# -zp16 -zq
 OFLAGS=-ot -ox -ob -oh -or# -om -ol -ol+
 FLAGS=-0 -d2 -lr $(OFLAGS) $(CFLAGS)
