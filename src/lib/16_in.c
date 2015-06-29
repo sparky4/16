@@ -1040,7 +1040,6 @@ IN_FreeDemoBuffer(void)
 #endif
 
 
-#if 0
 ///////////////////////////////////////////////////////////////////////////
 //
 //	IN_GetScanName() - Returns a string containing the name of the
@@ -1059,8 +1058,6 @@ IN_GetScanName(ScanCode scan)
 
 	return(ScanNames[scan]);
 }
-#endif
-
 
 ///////////////////////////////////////////////////////////////////////////
 //

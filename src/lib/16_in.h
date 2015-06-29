@@ -29,13 +29,11 @@
 
 #include <string.h>
 #include "src/lib/lib_head.h"
-//#include "src/lib/16_us.h"
 
 //++++#ifdef	__DEBUG__
 #define	__DEBUG_InputMgr__
 //++++#endif
 
-//#define DUMU
 #define TESTKEYIN
 #define TESTCONTROLNOISY
 
@@ -156,7 +154,8 @@ typedef	enum		{
 							ctrl_Keyboard1 = ctrl_Keyboard,ctrl_Keyboard2,
 						ctrl_Joystick,
 							ctrl_Joystick1 = ctrl_Joystick,ctrl_Joystick2,
-						ctrl_Mouse
+						ctrl_Mouse,
+						ctrl_Joypad
 					} ControlType;
 typedef	enum		{
 						motion_Left = -1,motion_Up = -1,
@@ -171,7 +170,7 @@ typedef	enum		{
 						dir_None
 					} Direction;
 typedef	struct		{
-						boolean		button0,button1;
+						boolean		button0,button1,button2,button3;
 						int			x,y;
 						Motion		xaxis,yaxis;
 						Direction	dir;
@@ -213,8 +212,8 @@ static boolean			JoysPresent[MaxJoys];
 static boolean			JoyPadPresent;
 
 // 	Global variables
-		extern boolean JoystickCalibrated;		// MDM (GAMERS EDGE) - added
-		extern ControlType ControlTypeUsed;				// MDM (GAMERS EDGE) - added
+//		extern boolean JoystickCalibrated;		// MDM (GAMERS EDGE) - added
+//		extern ControlType ControlTypeUsed;				// MDM (GAMERS EDGE) - added
 
 		extern boolean		Keyboard[NumCodes];
 		extern boolean		Paused;
@@ -302,11 +301,112 @@ static	char			*ParmStringsIN[] = {"nojoys","nomouse",nil};
 
 // Function prototypes
 #define	IN_KeyDown(code)	(Keyboard[(code)])
-#define	IN_ClearKey(code)	{Keyboard[code] = false;\
-							if (code == LastScan) LastScan = sc_None;}
+#define	IN_ClearKey(code)	{Keyboard[code] = false; if (code == LastScan) LastScan = sc_None;}
 
 // DEBUG - put names in prototypes
-extern	void		IN_Startup(void),IN_Shutdown(void),
+/* Catacomb Armageddon Source Code
+ * Copyright (C) 1993-2014 Flat Rock Software
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
+//
+//	ID Engine
+//	ID_IN.c - Input Manager
+//	v1.0d1w
+//	By Jason Blochowiak
+// Open Watcom port by sparky4
+//
+
+//
+//	This module handles dealing with the various input devices
+//
+//	Depends on: Memory Mgr (for demo recording), Sound Mgr (for timing stuff),
+//				User Mgr (for command line parms)
+//
+//	Globals:
+//		LastScan - The keyboard scan code of the last key pressed
+//		LastASCII - The ASCII value of the last key pressed
+//	DEBUG - there are more globals
+//
+
+#include "src/lib/16_in.h"
+
+/*
+=============================================================================
+
+					GLOBAL VARIABLES
+
+=============================================================================
+*/
+// 	Global variables
+		boolean JoystickCalibrated=false;		// MDM (GAMERS EDGE) - added
+		ControlType ControlTypeUsed;				// MDM (GAMERS EDGE) - added
+		boolean		Keyboard[NumCodes];
+		boolean		Paused;
+		char		LastASCII;
+		ScanCode	LastScan;
+
+		//KeyboardDef	KbdDefs = {0x1d,0x38,0x47,0x48,0x49,0x4b,0x4d,0x4f,0x50,0x51};
+		JoystickDef	JoyDefs[MaxJoys];
+		ControlType	Controls[MaxPlayers];
+
+		dword	MouseDownCount;
+
+//	Internal routines
+void interrupt INL_KeyService(void);
+void Mouse(int x);
+//static void INL_GetMouseDelta(int *x,int *y);
+//static word INL_GetMouseButtons(void);
+void IN_GetJoyAbs(word joy,word *xp,word *yp);
+//static void INL_GetJoyDelta(word joy,int *dx,int *dy,boolean adaptive);
+//static word INL_GetJoyButtons(word joy);
+word IN_GetJoyButtonsDB(word joy);
+//static void INL_StartKbd(void);
+//static void INL_ShutKbd(void);
+//static boolean INL_StartMouse(void);
+//static void INL_ShutMouse(void);
+//static void INL_SetJoyScale(word joy);
+void IN_SetupJoy(word joy,word minx,word maxx,word miny,word maxy);
+//static boolean INL_StartJoy(word joy);
+//static void INL_ShutJoy(word joy);
+void IN_Startup(void);
+void IN_Default(boolean gotit,ControlType in);
+void IN_Shutdown(void);
+void IN_SetKeyHook(void (*hook)());
+void IN_ClearKeysDown(void);
+//static void INL_AdjustCursor(CursorInfo *info,word buttons,int dx,int dy);
+void IN_ReadCursor(CursorInfo *info);
+void IN_ReadControl(int player,ControlInfo *info);
+void IN_SetControlType(int player,ControlType type);
+#if DEMO0
+boolean IN_StartDemoRecord(word bufsize);
+void IN_StartDemoPlayback(byte /*__segment*/ *buffer,word bufsize);
+void IN_StopDemo(void);
+void IN_FreeDemoBuffer(void);
+#endif
+byte *IN_GetScanName(ScanCode scan);
+ScanCode IN_WaitForKey(void);
+char IN_WaitForASCII(void);
+void IN_AckBack(void);
+void IN_Ack(void);
+boolean IN_IsUserInput(void);
+boolean IN_UserInput(dword delay,boolean clear);
+
+
+/*extern	void		IN_Startup(void),IN_Shutdown(void),
 					IN_Default(boolean gotit,ControlType in),
 					IN_SetKeyHook(void (*)()),
 					IN_ClearKeysDown(void),
@@ -331,7 +431,7 @@ extern	boolean		IN_UserInput(dword delay,boolean clear),
 extern	byte		*IN_GetScanName(ScanCode);
 extern	char		IN_WaitForASCII(void);
 extern	ScanCode	IN_WaitForKey(void);
-extern	word		IN_GetJoyButtonsDB(word joy);
+extern	word		IN_GetJoyButtonsDB(word joy);*/
 
 
 void interrupt INL_KeyService(void);
