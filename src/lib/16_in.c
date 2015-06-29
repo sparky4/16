@@ -846,11 +846,13 @@ register	KeyboardDef	*def;
 			else if (Keyboard[def->downright])
 				mx = motion_Right,my = motion_Down;*/
 
+			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
 			if (inpu.Keyboard[def->up])
 				my = motion_Up;
 			else if (inpu.Keyboard[def->down])
 				my = motion_Down;
 
+			}else//if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down])
 			if (inpu.Keyboard[def->left])
 				mx = motion_Left;
 			else if (inpu.Keyboard[def->right])
