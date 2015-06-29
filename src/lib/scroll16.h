@@ -23,5 +23,11 @@
 #ifndef __SCROLL16_H_
 #define __SCROLL16_H_
 
+#include "src/lib/16_in.h"
+
+//#define TILEWH 16
+//#define SPEED 4
+
+//void animatePlayer(player_t *player, short scrolloffsetswitch, int ls, bitmap_t *bmp);
 
 #endif /*__SCROLL16_H_*/

@@ -207,6 +207,18 @@ typedef	struct
 
 typedef	struct
 {
+	int x; //player exact position on the viewable map
+	int y; //player exact position on the viewable map
+	int tx; //player tile position on the viewable map
+	int ty; //player tile position on the viewable map
+	int triggerx; //player's trigger box tile position on the viewable map
+	int triggery; //player's trigger box tile position on the viewable map
+	int setx; //NOT USED YET! player sprite sheet set on the image x
+	int sety; //NOT USED YET! player sprite sheet set on the image y
+	word q; //loop variable
+//	word d; //direction
+	//bitmap_t data; //supposively the sprite sheet data
+	int hp; //hitpoints of the player
 	CursorInfo	info;
 	ControlType	Controls;
 } player_t;
