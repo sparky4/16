@@ -20,25 +20,18 @@
  *
  */
 /*
-	input test
-*/
-#include "16_in.h"
+ * Just some handy typedefs that make it easier to think about the low
+ * level code
+ */
 
-void
-main(int argc, char *argv[])
-{
-	player_t player[MaxPlayers];
-	//extern struct inconfig inpu;
+#ifndef _TYPE_H_
+#define _TYPE_H_
 
-	IN_Startup();
-	IN_Default(0,&player,ctrl_Joystick);
-	//while(!IN_KeyDown(sc_Escape))
-	while(!IN_KeyDown(sc_Escape))
-	{
-		IN_ReadControl(0,&player);
-		//printf("%u\n", IN_KeyDown(sc_Escape));
-		//printf("%u\n", IN_qb(sc_Escape));
-	}
-	IN_Shutdown();
-	//printf("%u\n", in.Keyboard[sc_Escape]);
-}
+typedef unsigned char byte;
+typedef unsigned short word;
+typedef unsigned long  dword;
+typedef signed char sbyte;
+typedef signed short sword;
+typedef signed long sdword;
+
+#endif/*_TYPE_H_*/
