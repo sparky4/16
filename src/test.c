@@ -32,7 +32,7 @@ void main() {
     byte *pal, *pal2=NULL;
 
     /* load our palette */
-    modexLoadPalFile("gfx.pal", &pal2);
+    modexLoadPalFile("data/default.pal", &pal2);
 
     /* save the palette */
     pal  = modexNewPal();

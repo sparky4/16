@@ -3,7 +3,7 @@
 #-zkl = current codepage
 
 MFLAGS=-mh# -zm
-CFLAGS=-zkl -wo -x#### -mc# -zdp# -zp16 -zq
+CFLAGS=-zkl -wo -x -mc# -zdp# -zp16 -zq
 OFLAGS=-ot -ox -ob -oh -or# -om -ol -ol+
 FLAGS=-0 -d2 -lr $(OFLAGS) $(CFLAGS)
 REMOVECOMMAND=rm
@@ -18,7 +18,7 @@ WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 16LIBOBJS = 16_in.$(OBJ) wcpu.$(OBJ) lib_head.$(OBJ) scroll16.$(OBJ) 16text.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ)
 
-all: 16.exe test.exe pcxtest.exe test2.exe scroll.exe palettec.exe maptest.exe maptest0.exe emsdump.exe emmtest.exe fmemtest.exe fonttest.exe inputest.exe exmmtest.exe
+all: 16.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe maptest0.exe emsdump.exe emmtest.exe fmemtest.exe fonttest.exe inputest.exe exmmtest.exe
 
 #
 #executables
@@ -166,8 +166,8 @@ memory.$(OBJ): $(EXMMLIB)memory.h $(EXMMLIB)memory.c
 #other~
 #
 clean: .symbolic
-#       @$(REMOVECOMMAND) *.$(OBJ)
-        @$(REMOVECOMMAND) *.OBJ
+       @$(REMOVECOMMAND) *.$(OBJ)
+#        @$(REMOVECOMMAND) *.OBJ
 #       @$(REMOVECOMMAND) *.out
 #       @$(REMOVECOMMAND) *.OUT
         @$(REMOVECOMMAND) makefi~1
