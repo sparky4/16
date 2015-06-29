@@ -55,11 +55,12 @@ struct inconfig
 	char		LastASCII;
 	ScanCode	LastScan;
 
-	KeyboardDef	KbdDefs[MaxKbds];// = {0x1d,0x38,/*0x47,*/0x48,/*0x49,*/0x4b,0x4d,/*0x4f,*/0x50/*,0x51*/};
+	KeyboardDef	KbdDefs[MaxKbds];
 	JoystickDef	JoyDefs[MaxJoys];
 	JoypadDef	JoypadDefs[MaxPads];
 } inpu;
 
+//extern inconfig inpu;
 //inpu.KbdDefs = {0x1d,0x38,/*0x47,*/0x48,/*0x49,*/0x4b,0x4d,/*0x4f,*/0x50/*,0x51*/};
 
 /*
@@ -673,6 +674,16 @@ IN_Default(boolean gotit,player_t *player,ControlType nt)
 	|| 	((nt == ctrl_Joypad2) && !inpu.JoyPadPresent[1])
 	)
 		nt = ctrl_Keyboard1;
+	inpu.KbdDefs[0].button0 = 0x1d;
+	inpu.KbdDefs[0].button1 = 0x38;
+	//in.KbdDefs[0].upleft = 0x47;
+	inpu.KbdDefs[0].up = 0x48;
+	//in.KbdDefs[0].upright = 0x49;
+	inpu.KbdDefs[0].left = 0x4b;
+	inpu.KbdDefs[0].right = 0x4d;
+	//in.KbdDefs[0].downleft = 0x4f;
+	inpu.KbdDefs[0].down = 0x50;
+	//in.KbdDefs[0].downright = 0x51;
 	IN_SetControlType(0,player,nt);
 }
 
