@@ -218,45 +218,10 @@ typedef	struct
 	char		LastASCII;
 	ScanCode	LastScan;
 
-	boolean		IN_Started;
-	boolean		CapsLock;
-	ScanCode	CurCode,LastCode;
-
 	KeyboardDef	KbdDefs[MaxKbds];
 	JoystickDef	JoyDefs[MaxJoys];
 	JoypadDef	JoypadDefs[MaxPads];
 } inconfig;
-
-/*
-=============================================================================
-
-					GLOBAL VARIABLES
-
-=============================================================================
-*/
-
-//
-// configuration variables
-//
-//static boolean			MousePresent;
-//static boolean			JoysPresent[MaxJoys];
-//static boolean			JoyPadPresent[MaxPads];
-
-// 	Global variables
-//		extern boolean JoystickCalibrated;		// MDM (GAMERS EDGE) - added
-//		extern ControlType ControlTypeUsed;				// MDM (GAMERS EDGE) - added
-
-		//extern boolean		Keyboard[NumCodes];
-		//extern boolean		Paused;
-		//extern char		LastASCII;
-		//extern ScanCode	LastScan;
-
-		//extern KeyboardDef	KbdDefs[];
-		//static KeyboardDef	KbdDefs[MaxKbds] = {0x1d,0x38,0x47,0x48,0x49,0x4b,0x4d,0x4f,0x50,0x51};
-		//extern JoystickDef	JoyDefs[MaxJoys];
-		//extern ControlType	Controls[MaxPlayers];
-
-		//extern dword	MouseDownCount;
 
 #ifdef DEMO0
 		static Demo		DemoMode = demo_Off;
@@ -265,94 +230,6 @@ typedef	struct
 #endif
 
 extern dword far* clockdw;
-
-/*
-=============================================================================
-
-					LOCAL VARIABLES
-
-=============================================================================
-*/
-static	byte        far ASCIINames[] =		// Unshifted ASCII for scan codes
-					{
-//	 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
-	0  ,27 ,'1','2','3','4','5','6','7','8','9','0','-','=',8  ,9  ,	// 0
-	'q','w','e','r','t','y','u','i','o','p','[',']',13 ,0  ,'a','s',	// 1
-	'd','f','g','h','j','k','l',';',39 ,'`',0  ,92 ,'z','x','c','v',	// 2
-	'b','n','m',',','.','/',0  ,'*',0  ,' ',0  ,0  ,0  ,0  ,0  ,0  ,	// 3
-	0  ,0  ,0  ,0  ,0  ,0  ,0  ,'7','8','9','-','4','5','6','+','1',	// 4
-	'2','3','0',127,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 5
-	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 6
-	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0		// 7
-					},
-					far ShiftNames[] =		// Shifted ASCII for scan codes
-					{
-//	 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
-	0  ,27 ,'!','@','#','$','%','^','&','*','(',')','_','+',8  ,9  ,	// 0
-	'Q','W','E','R','T','Y','U','I','O','P','{','}',13 ,0  ,'A','S',	// 1
-	'D','F','G','H','J','K','L',':',34 ,'~',0  ,'|','Z','X','C','V',	// 2
-	'B','N','M','<','>','?',0  ,'*',0  ,' ',0  ,0  ,0  ,0  ,0  ,0  ,	// 3
-	0  ,0  ,0  ,0  ,0  ,0  ,0  ,'7','8','9','-','4','5','6','+','1',	// 4
-	'2','3','0',127,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 5
-	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 6
-	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0   	// 7
-					},
-					far SpecialNames[] =	// ASCII for 0xe0 prefixed codes
-					{
-//	 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
-	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 0
-	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,13 ,0  ,0  ,0  ,	// 1
-	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 2
-	0  ,0  ,0  ,0  ,0  ,'/',0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 3
-	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 4
-	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 5
-	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 6
-	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0   	// 7
-					},
-					*ScanNames[] =		// Scan code names with single chars
-					{
-	"?","?","1","2","3","4","5","6","7","8","9","0","-","+","?","?",
-	"Q","W","E","R","T","Y","U","I","O","P","[","]","|","?","A","S",
-	"D","F","G","H","J","K","L",";","\"","?","?","?","Z","X","C","V",
-	"B","N","M",",",".","/","?","?","?","?","?","?","?","?","?","?",
-	"?","?","?","?","?","?","?","?","\xf","?","-","\x15","5","\x11","+","?",
-	"\x13","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?",
-	"?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?",
-	"?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"
-					},	// DEBUG - consolidate these
-					far ExtScanCodes[] =	// Scan codes with >1 char names
-					{
-	1,0xe,0xf,0x1d,0x2a,0x39,0x3a,0x3b,0x3c,0x3d,0x3e,
-	0x3f,0x40,0x41,0x42,0x43,0x44,0x57,0x59,0x46,0x1c,0x36,
-	0x37,0x38,0x47,0x49,0x4f,0x51,0x52,0x53,0x45,0x48,
-	0x50,0x4b,0x4d,0x00
-					},
-					*ExtScanNames[] =	// Names corresponding to ExtScanCodes
-					{
-	"Esc","BkSp","Tab","Ctrl","LShft","Space","CapsLk","F1","F2","F3","F4",
-	"F5","F6","F7","F8","F9","F10","F11","F12","ScrlLk","Enter","RShft",
-	"PrtSc","Alt","Home","PgUp","End","PgDn","Ins","Del","NumLk","Up",
-	"Down","Left","Right",""
-					};
-
-static	Direction	DirTable[] =		// Quick lookup for total direction
-					{
-						//dir_Nortinest,
-						dir_North,
-						//dir_NorthEast,
-						dir_West,		dir_None,	dir_East,
-						//dir_Soutinest,
-						dir_South//,dir_SouthEast
-					};
-
-static	void			(*INL_KeyHook)(void);
-static	void interrupt	(*OldKeyVect)(void);
-
-static	char			*ParmStringsIN[] = {"nojoys","nomouse",nil};
-
-// Function prototypes
-#define	IN_KeyDown(code)	(Keyboard[(code)])
-#define	IN_ClearKey(code)	{Keyboard[code] = false; if (code == LastScan) LastScan = sc_None;}
 
 //	Internal routines
 void interrupt INL_KeyService(inconfig *in);
@@ -371,14 +248,14 @@ word IN_GetJoyButtonsDB(word joy);
 void IN_SetupJoy(word joy,word minx,word maxx,word miny,word maxy, inconfig *in);
 //static boolean INL_StartJoy(word joy);
 //static void INL_ShutJoy(word joy);
-void IN_Startup(inconfig *in);
+boolean IN_Startup(inconfig *in);
 void IN_Default(boolean gotit,player_t *player,ControlType nt, inconfig *in);
-void IN_Shutdown(inconfig *in);
+boolean IN_Shutdown(inconfig *in);
 void IN_SetKeyHook(void (*hook)());
 void IN_ClearKeysDown(inconfig *in);
 //static void INL_AdjustCursor(CursorInfo *info,word buttons,int dx,int dy);
-void IN_ReadCursor(CursorInfo *info);
-void IN_ReadControl(int playnum,player_t *player);
+void IN_ReadCursor(CursorInfo *info, inconfig *in);
+void IN_ReadControl(int playnum,player_t *player, inconfig *in);
 void IN_SetControlType(word playnum,player_t *player,ControlType type);
 #if DEMO0
 boolean IN_StartDemoRecord(word bufsize);
@@ -387,39 +264,13 @@ void IN_StopDemo(void);
 void IN_FreeDemoBuffer(void);
 #endif
 byte *IN_GetScanName(ScanCode scan);
-ScanCode IN_WaitForKey(void);
-char IN_WaitForASCII(void);
-void IN_AckBack(void);
-void IN_Ack(void);
-boolean IN_IsUserInput(void);
-boolean IN_UserInput(dword delay,boolean clear);
+ScanCode IN_WaitForKey(inconfig *in);
+char IN_WaitForASCII(inconfig *in);
+void IN_AckBack(inconfig *in);
+void IN_Ack(inconfig *in);
+boolean IN_IsUserInput(inconfig *in);
+boolean IN_UserInput(dword delay,boolean clear, inconfig *in);
+boolean IN_KeyDown(byte code, inconfig *in);
+void IN_ClearKey(byte code, inconfig *in);
 
-/*extern	void		IN_Startup(void),IN_Shutdown(void),
-					IN_Default(boolean gotit,ControlType in),
-					IN_SetKeyHook(void (*)()),
-					IN_ClearKeysDown(void),
-					IN_ReadCursor(CursorInfo *),
-					IN_ReadControl(int,ControlInfo *),
-					IN_SetControlType(int,ControlType),
-					IN_GetJoyAbs(word joy,word *xp,word *yp),
-					IN_SetupJoy(word joy,word minx,word maxx,
-								word miny,word maxy),
-					Mouse(int x),
-#ifdef DEMO0
-					IN_StartDemoPlayback(byte __segment *buffer,word bufsize),
-					IN_StopDemo(void),IN_FreeDemoBuffer(void),
-#endif
-					IN_Ack(void),IN_AckBack(void);
-extern	boolean		IN_UserInput(dword delay,boolean clear),
-					IN_IsUserInput(void)
-#ifdef DEMO0
-					, IN_StartDemoRecord(word bufsize)
-#endif
-;
-extern	byte		*IN_GetScanName(ScanCode);
-extern	char		IN_WaitForASCII(void);
-extern	ScanCode	IN_WaitForKey(void);
-extern	word		IN_GetJoyButtonsDB(word joy);*/
-
-boolean IN_qb(byte kee);
 #endif

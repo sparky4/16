@@ -27,20 +27,33 @@
 void
 main(int argc, char *argv[])
 {
-//	CursorInfo control;
 	player_t player[MaxPlayers];
-	hwconfig hw;
-	player.KbdDefs = {0x1d,0x38,0x47,0x48,0x49,0x4b,0x4d,0x4f,0x50,0x51};
+	inconfig in;
+	//word i=0;
 
-	extern boolean Keyboard[NumCodes];
-	IN_Startup();
-	IN_Default(0,&player,ctrl_Joystick);
-//	IN_Default(0,ctrl_Joystick);
-	while(!IN_qb(sc_Escape))
+	in.KbdDefs[0].button0 = 0x1d;
+	in.KbdDefs[0].button1 = 0x38;
+	//in.KbdDefs[0].upleft = 0x47;
+	in.KbdDefs[0].up = 0x48;
+	//in.KbdDefs[0].upright = 0x49;
+	in.KbdDefs[0].left = 0x4b;
+	in.KbdDefs[0].right = 0x4d;
+	//in.KbdDefs[0].downleft = 0x4f;
+	in.KbdDefs[0].down = 0x50;
+	//in.KbdDefs[0].downright = 0x51;
+
+	if(IN_Startup(&in))
 	{
-		IN_ReadControl(0,&control);
-//		printf("%u\n", Keyboard[sc_Escape]);
-
+		IN_Default(0,&player,ctrl_Joystick, &in);
+		while(!in.Keyboard[sc_Escape])
+		{
+			IN_ReadControl(0,&player, &in);
+			//printf("%u\n", in.Keyboard[sc_Escape]);
+			//printf("i=%u\n", i);
+			printf("");
+			//i++;
+		}
+		IN_Shutdown(&in);
 	}
-	IN_Shutdown();
+	//printf("%u\n", in.Keyboard[sc_Escape]);
 }
