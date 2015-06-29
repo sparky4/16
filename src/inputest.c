@@ -27,7 +27,7 @@
 void
 main(int argc, char *argv[])
 {
-	ControlInfo control;
+	CursorInfo control;
 	extern boolean Keyboard[NumCodes];
 	IN_Startup();
 	IN_Default(0,ctrl_Joystick);

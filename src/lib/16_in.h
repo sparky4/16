@@ -1,4 +1,4 @@
-/* Catacomb Armageddon Source Code
+/* Catacomb Apocalypse Source Code
  * Copyright (C) 1993-2014 Flat Rock Software
  *
  * This program is free software; you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 //	ID_IN.h - Header file for Input Manager
 //	v1.0d1w
 //	By Jason Blochowiak
-// Open Watcom port by sparky4
+//	Open Watcom port by sparky4
 //
 
 #ifndef	__16_IN__
@@ -149,13 +149,14 @@ typedef	enum		{
 					} Demo;
 #endif
 typedef	enum		{
-						ctrl_None,				// MDM (GAMERS EDGE) - added
+						//ctrl_None,				// MDM (GAMERS EDGE) - added
 						ctrl_Keyboard,
 							ctrl_Keyboard1 = ctrl_Keyboard,ctrl_Keyboard2,
 						ctrl_Joystick,
 							ctrl_Joystick1 = ctrl_Joystick,ctrl_Joystick2,
 						ctrl_Mouse,
-						ctrl_Joypad
+						ctrl_Joypad,
+							ctrl_Joypad1 = ctrl_Joypad,ctrl_Joypad2
 					} ControlType;
 typedef	enum		{
 						motion_Left = -1,motion_Up = -1,
@@ -175,7 +176,6 @@ typedef	struct		{
 						Motion		xaxis,yaxis;
 						Direction	dir;
 					} CursorInfo;
-typedef	CursorInfo	ControlInfo;
 
 typedef	struct		{
 						ScanCode	button0,button1,
@@ -196,6 +196,11 @@ typedef	struct		{
 									joyMultXL,joyMultYL,
 									joyMultXH,joyMultYH;
 					} JoystickDef;
+
+/*typedef	struct
+{
+	CursorInfo;
+}	ControlInfo;*/
 /*
 =============================================================================
 
@@ -221,7 +226,7 @@ static boolean			JoyPadPresent;
 		extern ScanCode	LastScan;
 
 		//extern KeyboardDef	KbdDefs[];
-		static KeyboardDef	KbdDefs[] = {0x1d,0x38,0x47,0x48,0x49,0x4b,0x4d,0x4f,0x50,0x51};
+		static KeyboardDef	KbdDefs[MaxKbds] = {0x1d,0x38,0x47,0x48,0x49,0x4b,0x4d,0x4f,0x50,0x51};
 		extern JoystickDef	JoyDefs[MaxJoys];
 		extern ControlType	Controls[MaxPlayers];
 
@@ -277,8 +282,32 @@ static	byte        far ASCIINames[] =		// Unshifted ASCII for scan codes
 	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 5
 	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 6
 	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0   	// 7
+					},
+					*ScanNames[] =		// Scan code names with single chars
+					{
+	"?","?","1","2","3","4","5","6","7","8","9","0","-","+","?","?",
+	"Q","W","E","R","T","Y","U","I","O","P","[","]","|","?","A","S",
+	"D","F","G","H","J","K","L",";","\"","?","?","?","Z","X","C","V",
+	"B","N","M",",",".","/","?","?","?","?","?","?","?","?","?","?",
+	"?","?","?","?","?","?","?","?","\xf","?","-","\x15","5","\x11","+","?",
+	"\x13","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?",
+	"?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?",
+	"?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"
+					},	// DEBUG - consolidate these
+					far ExtScanCodes[] =	// Scan codes with >1 char names
+					{
+	1,0xe,0xf,0x1d,0x2a,0x39,0x3a,0x3b,0x3c,0x3d,0x3e,
+	0x3f,0x40,0x41,0x42,0x43,0x44,0x57,0x59,0x46,0x1c,0x36,
+	0x37,0x38,0x47,0x49,0x4f,0x51,0x52,0x53,0x45,0x48,
+	0x50,0x4b,0x4d,0x00
+					},
+					*ExtScanNames[] =	// Names corresponding to ExtScanCodes
+					{
+	"Esc","BkSp","Tab","Ctrl","LShft","Space","CapsLk","F1","F2","F3","F4",
+	"F5","F6","F7","F8","F9","F10","F11","F12","ScrlLk","Enter","RShft",
+	"PrtSc","Alt","Home","PgUp","End","PgDn","Ins","Del","NumLk","Up",
+	"Down","Left","Right",""
 					};
-
 
 static	boolean		IN_Started;
 static	boolean		CapsLock;
@@ -302,68 +331,6 @@ static	char			*ParmStringsIN[] = {"nojoys","nomouse",nil};
 // Function prototypes
 #define	IN_KeyDown(code)	(Keyboard[(code)])
 #define	IN_ClearKey(code)	{Keyboard[code] = false; if (code == LastScan) LastScan = sc_None;}
-
-// DEBUG - put names in prototypes
-/* Catacomb Armageddon Source Code
- * Copyright (C) 1993-2014 Flat Rock Software
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- */
-
-//
-//	ID Engine
-//	ID_IN.c - Input Manager
-//	v1.0d1w
-//	By Jason Blochowiak
-// Open Watcom port by sparky4
-//
-
-//
-//	This module handles dealing with the various input devices
-//
-//	Depends on: Memory Mgr (for demo recording), Sound Mgr (for timing stuff),
-//				User Mgr (for command line parms)
-//
-//	Globals:
-//		LastScan - The keyboard scan code of the last key pressed
-//		LastASCII - The ASCII value of the last key pressed
-//	DEBUG - there are more globals
-//
-
-#include "src/lib/16_in.h"
-
-/*
-=============================================================================
-
-					GLOBAL VARIABLES
-
-=============================================================================
-*/
-// 	Global variables
-		boolean JoystickCalibrated=false;		// MDM (GAMERS EDGE) - added
-		ControlType ControlTypeUsed;				// MDM (GAMERS EDGE) - added
-		boolean		Keyboard[NumCodes];
-		boolean		Paused;
-		char		LastASCII;
-		ScanCode	LastScan;
-
-		//KeyboardDef	KbdDefs = {0x1d,0x38,0x47,0x48,0x49,0x4b,0x4d,0x4f,0x50,0x51};
-		JoystickDef	JoyDefs[MaxJoys];
-		ControlType	Controls[MaxPlayers];
-
-		dword	MouseDownCount;
 
 //	Internal routines
 void interrupt INL_KeyService(void);
@@ -389,7 +356,7 @@ void IN_SetKeyHook(void (*hook)());
 void IN_ClearKeysDown(void);
 //static void INL_AdjustCursor(CursorInfo *info,word buttons,int dx,int dy);
 void IN_ReadCursor(CursorInfo *info);
-void IN_ReadControl(int player,ControlInfo *info);
+void IN_ReadControl(int player,CursorInfo *info);
 void IN_SetControlType(int player,ControlType type);
 #if DEMO0
 boolean IN_StartDemoRecord(word bufsize);

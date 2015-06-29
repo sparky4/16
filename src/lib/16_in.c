@@ -1,4 +1,4 @@
-/* Catacomb Armageddon Source Code
+/* Catacomb Apocalypse Source Code
  * Copyright (C) 1993-2014 Flat Rock Software
  *
  * This program is free software; you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 //	ID_IN.c - Input Manager
 //	v1.0d1w
 //	By Jason Blochowiak
-// Open Watcom port by sparky4
+//	Open Watcom port by sparky4
 //
 
 //
@@ -46,8 +46,8 @@
 =============================================================================
 */
 // 	Global variables
-		boolean JoystickCalibrated=false;		// MDM (GAMERS EDGE) - added
-		ControlType ControlTypeUsed;				// MDM (GAMERS EDGE) - added
+//		boolean JoystickCalibrated=false;		// MDM (GAMERS EDGE) - added
+//		ControlType ControlTypeUsed;				// MDM (GAMERS EDGE) - added
 		boolean		Keyboard[NumCodes];
 		boolean		Paused;
 		char		LastASCII;
@@ -675,7 +675,6 @@ IN_ReadCursor(CursorInfo *info)
 	}
 }
 
-#ifndef DUMU
 ///////////////////////////////////////////////////////////////////////////
 //
 //	IN_ReadControl() - Reads the device associated with the specified
@@ -683,159 +682,7 @@ IN_ReadCursor(CursorInfo *info)
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-IN_ReadControl(int player,ControlInfo *info)
-{
-			boolean		realdelta=false;				// MDM (GAMERS EDGE)
-			byte		dbyte;
-			word		buttons;
-			int			dx,dy;
-			Motion		mx,my;
-			ControlType	type;
-register	KeyboardDef	*def;
-
-	dx = dy = 0;
-	mx = my = motion_None;
-	buttons = 0;
-
-#if DEMO0
-	if (DemoMode == demo_Playback)
-	{
-		dbyte = DemoBuffer[DemoOffset + 1];
-		my = (dbyte & 3) - 1;
-		mx = ((dbyte >> 2) & 3) - 1;
-		buttons = (dbyte >> 4) & 3;
-
-		if (!(--DemoBuffer[DemoOffset]))
-		{
-			DemoOffset += 2;
-			if (DemoOffset >= DemoSize)
-				DemoMode = demo_PlayDone;
-		}
-
-		realdelta = false;
-	}
-	else if (DemoMode == demo_PlayDone)
-		Quit("Demo playback exceeded");
-	else
-#endif
-	{
-															// MDM begin (GAMERS EDGE) - added this block
-		ControlTypeUsed = ctrl_None;
-
-		// Handle mouse input...
-		//
-		if ((MousePresent) && (ControlTypeUsed == ctrl_None))
-		{
-			INL_GetMouseDelta(&dx,&dy);
-			buttons = INL_GetMouseButtons();
-			realdelta = true;
-			if (dx || dy || buttons)
-				ControlTypeUsed = ctrl_Mouse;
-		}
-
-		// Handle joystick input...
-		//
-		if ((JoystickCalibrated) && (ControlTypeUsed == ctrl_None))
-		{
-			type = ctrl_Joystick1;
-			INL_GetJoyDelta(type - ctrl_Joystick,&dx,&dy,false);
-			buttons = INL_GetJoyButtons(type - ctrl_Joystick);
-			realdelta = true;
-			if (dx || dy || buttons)
-				ControlTypeUsed = ctrl_Joystick;
-		}
-
-		// Handle keyboard input...
-		//
-		if (ControlTypeUsed == ctrl_None)
-		{
-			type = ctrl_Keyboard1;
-			def = &KbdDefs[type - ctrl_Keyboard];
-
-/*			if (Keyboard[def->upleft])
-				mx = motion_Left,my = motion_Up;
-			else if (Keyboard[def->upright])
-				mx = motion_Right,my = motion_Up;
-			else if (Keyboard[def->downleft])
-				mx = motion_Left,my = motion_Down;
-			else if (Keyboard[def->downright])
-				mx = motion_Right,my = motion_Down;*/
-
-			if (Keyboard[def->up])
-				my = motion_Up;
-			else if (Keyboard[def->down])
-				my = motion_Down;
-
-			if (Keyboard[def->left])
-				mx = motion_Left;
-			else if (Keyboard[def->right])
-				mx = motion_Right;
-
-			if (Keyboard[def->button0])
-				buttons += 1 << 0;
-			if (Keyboard[def->button1])
-				buttons += 1 << 1;
-			realdelta = false;
-			if (mx || my || buttons)
-				ControlTypeUsed = ctrl_Keyboard;
-		}													// MDM end (GAMERS EDGE)
-	}
-
-	if (realdelta)
-	{
-		mx = (dx < 0)? motion_Left : ((dx > 0)? motion_Right : motion_None);
-		my = (dy < 0)? motion_Up : ((dy > 0)? motion_Down : motion_None);
-	}
-	else
-	{
-		dx = mx * 127;
-		dy = my * 127;
-	}
-
-	info->x = dx;
-	info->xaxis = mx;
-	info->y = dy;
-	info->yaxis = my;
-	info->button0 = buttons & (1 << 0);
-	info->button1 = buttons & (1 << 1);
-	info->dir = DirTable[((my + 1) * 3) + (mx + 1)];
-
-#if DEMO0
-	if (DemoMode == demo_Record)
-	{
-		// Pack the control info into a byte
-		dbyte = (buttons << 4) | ((mx + 1) << 2) | (my + 1);
-
-		if
-		(
-			(DemoBuffer[DemoOffset + 1] == dbyte)
-		&&	(DemoBuffer[DemoOffset] < 255)
-		)
-			(DemoBuffer[DemoOffset])++;
-		else
-		{
-			if (DemoOffset || DemoBuffer[DemoOffset])
-				DemoOffset += 2;
-
-			if (DemoOffset >= DemoSize)
-				Quit("Demo buffer overflow");
-
-			DemoBuffer[DemoOffset] = 1;
-			DemoBuffer[DemoOffset + 1] = dbyte;
-		}
-	}
-#endif
-}
-
-#else
-///////////////////////////////////////////////////////////////////////////
-//
-//	IN_ReadControl() - Reads the device associated with the specified
-//		player and fills in the control info struct
-//
-///////////////////////////////////////////////////////////////////////////
-void
-IN_ReadControl(int player,ControlInfo *info)
+IN_ReadControl(int player,CursorInfo *info)
 {
 			boolean		realdelta;
 			byte		dbyte;
@@ -869,8 +716,8 @@ register	KeyboardDef	*def;
 	else if (DemoMode == demo_PlayDone)
 		Quit("Demo playback exceeded");
 	else
-#endif
 	{
+#endif
 		switch (type = Controls[player])
 		{
 		case ctrl_Keyboard1:
@@ -913,8 +760,14 @@ register	KeyboardDef	*def;
 			buttons = INL_GetMouseButtons();
 			realdelta = true;
 			break;
+		case ctrl_Joypad1:
+		case ctrl_Joypad2:
+			printf("wwww");
+			break;
 		}
+#ifdef DEMO0
 	}
+#endif
 
 	if (realdelta)
 	{
@@ -933,6 +786,8 @@ register	KeyboardDef	*def;
 	info->yaxis = my;
 	info->button0 = buttons & (1 << 0);
 	info->button1 = buttons & (1 << 1);
+	info->button2 = buttons & (1 << 2);
+	info->button3 = buttons & (1 << 3);
 	info->dir = DirTable[((my + 1) * 3) + (mx + 1)];
 
 #if DEMO0
@@ -961,7 +816,6 @@ register	KeyboardDef	*def;
 	}
 #endif
 }
-#endif
 
 ///////////////////////////////////////////////////////////////////////////
 //
