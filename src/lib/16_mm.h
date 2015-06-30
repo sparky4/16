@@ -135,11 +135,11 @@ typedef struct mmblockstruct
 =============================================================================
 */
 
-static mminfotype	mminfo;
+/*static mminfotype	mminfo;
 static memptr		bufferseg;
 
 static void		(* beforesort) (void);
-static void		(* aftersort) (void);
+static void		(* aftersort) (void);*/
 
 /*
 =============================================================================
@@ -149,7 +149,7 @@ static void		(* aftersort) (void);
 =============================================================================
 */
 
-static void huge	*hugeheap;
+/*static void huge	*hugeheap;
 static void far	*farheap;
 static void		*nearheap;
 
@@ -162,9 +162,7 @@ static unsigned int EMSVer;
 
 static void		(* XMSaddr) (void);		// far pointer to XMS driver
 
-static unsigned	numUMBs,UMBbase[MAXUMBS];
-
-static	char *ParmStringsexmm[] = {"noems","noxms",""};
+static unsigned	numUMBs,UMBbase[MAXUMBS];*/
 
 //==========================================================================
 

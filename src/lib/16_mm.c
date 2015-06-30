@@ -45,6 +45,48 @@ EMS / XMS unmanaged routines
 #include "src/lib/16_mm.h"
 
 /*
+=============================================================================
+
+						 GLOBAL VARIABLES
+
+=============================================================================
+*/
+
+mminfotype	mminfo;
+memptr		bufferseg;
+boolean		mmerror;
+
+void		(* beforesort) (void);
+void		(* aftersort) (void);
+
+/*
+=============================================================================
+
+						 LOCAL VARIABLES
+
+=============================================================================
+*/
+
+boolean		mmstarted;
+
+void far	*farheap;
+void		*nearheap;
+
+mmblocktype	far mmblocks[MAXBLOCKS]
+			,far *mmhead,far *mmfree,far *mmrover,far *mmnew;
+
+boolean		bombonerror;
+
+unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
+unsigned int EMSVer;
+
+void		(* XMSaddr) (void);		// far pointer to XMS driver
+
+unsigned	numUMBs,UMBbase[MAXUMBS];
+
+static	char *ParmStringsexmm[] = {"noems","noxms",""};
+
+/*
 ======================
 =
 = MML_CheckForEMS
@@ -570,7 +612,7 @@ emsskip:
 	if (MML_CheckForXMS())
 	{
 //		printf("XMS!\n");
-		MML_SetupXMS();					// allocate as many UMBs as possible
+//++++		MML_SetupXMS();					// allocate as many UMBs as possible
 	}
 
 //
@@ -600,10 +642,15 @@ void MM_Shutdown (void)
 	return;
 
   _ffree (farheap);
+  printf("far freed\n");
   free (nearheap);
-  hfree(hugeheap);
+  printf("near freed\n");
+  //hfree(hugeheap);
+  printf("huge freed\n");
   MML_ShutdownEMS ();
-  MML_ShutdownXMS ();
+  printf("EMS freed\n");
+//++++  MML_ShutdownXMS ();
+  printf("XMS freed\n");
 }
 
 //==========================================================================
@@ -1175,4 +1222,3 @@ US_CheckParm(char *parm,char **strings)
 	}
 	return(-1);
 }
-
