@@ -13,7 +13,7 @@ TARGET_OS = dos
 #-zkl = current codepage
 
 #MFLAGS=-mc# -zm
-CFLAGS=-zkl -wo -x#### -mc# -zdp# -zp16 -zq
+CFLAGS=-zkl -wo -x -mc# -zdp# -zp16 -zq
 OFLAGS=-ot -ox -ob -oh -or# -om -ol -ol+
 FLAGS=-0 -d2 -lr $(OFLAGS) $(CFLAGS)
 SRC=src$(DIRSEP)
