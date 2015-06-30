@@ -150,7 +150,7 @@ boolean MML_CheckForEMS (void)
 =======================
 */
 
-void MML_SetupEMS (void)
+unsigned MML_SetupEMS (void)
 {
 	char	str[80],str2[10];
 	unsigned	err;
@@ -215,7 +215,9 @@ End:
 		itoa(err,str2,16);
 		strcpy(str,str2);
 		printf("%s\n",str);
+		return err;
 	}
+	return 0;
 }
 
 
@@ -257,7 +259,7 @@ void MML_ShutdownEMS (void)
 ====================
 */
 
-void MM_MapEMS (void)
+unsigned MM_MapEMS (void)
 {
 	char	str[80],str2[10];
 	unsigned	err;
@@ -288,9 +290,10 @@ void MM_MapEMS (void)
 			itoa(err,str2,16);
 			strcpy(str,str2);
 			printf("%s\n",str);
+			return err;
 		}
 	}
-	return;
+	return 0;
 }
 
 //==========================================================================
@@ -1084,8 +1087,8 @@ dword MM_UnusedMemory (void)
 		scan = scan->next;
 	}
 
-//	return free*16l;
-	return free;
+	return free*16l;
+//	return free;
 }
 
 //==========================================================================
@@ -1117,8 +1120,8 @@ dword MM_TotalFree (void)
 		scan = scan->next;
 	}
 
-//	return free*16l;
-	return free;
+	return free*16l;
+//	return free;
 }
 
 //==========================================================================

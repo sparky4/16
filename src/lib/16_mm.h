@@ -26,11 +26,11 @@
 #include "src/lib/lib_head.h"
 //++++mh	#include "src/lib/16_in.h"
 
-//****#if 1		// 1 == Debug/Dev  ;  0 == Production/final
+#ifdef __DEBUG__		// 1 == Debug/Dev  ;  0 == Production/final
 #define OUT_OF_MEM_MSG	"MM_GetPtr: Out of memory!\nYou were short :%ld bytes"
-//****#else
-//****#define OUT_OF_MEM_MSG	"\npee\n"
-//****#endif
+#else
+#define OUT_OF_MEM_MSG	"\npee\n"
+#endif
 
 
 #define SAVENEARHEAP	0x400		// space to leave in data segment
@@ -79,6 +79,7 @@
 #define	XMS_FREEUMB		0x11
 
 //==========================================================================
+//I hope this is correct!
 //__segment                seg;
 typedef void __based(__self) * memptr; //__based(seg) * memptr;
 
@@ -192,8 +193,9 @@ void MM_BombOnError (boolean bomb);
 //
 
 boolean		MML_CheckForEMS (void);
+unsigned		MML_SetupEMS (void);
 void 		MML_ShutdownEMS (void);
-void 		MM_MapEMS (void);
+unsigned 		MM_MapEMS (void);
 boolean 	MML_CheckForXMS (void);
 void 		MML_ShutdownXMS (void);
 void		MML_UseSpace (unsigned segstart, unsigned seglength);
