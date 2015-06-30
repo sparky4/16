@@ -28,6 +28,8 @@ main(int argc, char *argv[])
 	int x=420;
 	int huge *ptr=&x;
 	int *ptr0=&x;
+	void __based(__self) *pee;
+	void __near *npee;
 	//word csw=0,dsw=0,esw=0,ssw=0,ipw=0;
 
 	//ptr=&x;
@@ -55,4 +57,6 @@ main(int argc, char *argv[])
 	//printf("cs=%u\n", csw);
 	//printf("ds=%u\n", dsw);
 	//printf("es=%u\n", esw);
+	printf("pee=%Fp\n", pee);
+	printf("npee=%Fp\n", npee);
 }
