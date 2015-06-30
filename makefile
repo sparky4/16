@@ -3,7 +3,7 @@ REMOVECOMMAND=rm
 DIRSEP=/
 OBJ=o
 !else
-REMOVECOMMAND=del 
+REMOVECOMMAND=del
 DIRSEP=\
 OBJ=obj
 !endif
@@ -22,7 +22,7 @@ JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
 EXMMLIB=$(SRCLIB)exmm$(DIRSEP)
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
-16LIBOBJS = 16_in.$(OBJ) wcpu.$(OBJ) lib_head.$(OBJ) scroll16.$(OBJ) 16text.$(OBJ)
+16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) lib_head.$(OBJ) scroll16.$(OBJ) 16text.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ)
 
 all: 16.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe inputest.exe exmmtest.exe
@@ -37,11 +37,11 @@ scroll.exe: scroll.$(OBJ) 16.lib mapread.$(OBJ) jsmn.$(OBJ) dos_kb.$(OBJ)
 	wcl $(FLAGS) scroll.$(OBJ) 16.lib mapread.$(OBJ) jsmn.$(OBJ) dos_kb.$(OBJ)
 scroll.$(OBJ): $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
-test.exe: test.$(OBJ) 16.lib
-	wcl $(FLAGS) test.$(OBJ) 16.lib
+test.exe: test.$(OBJ) gfx.lib
+	wcl $(FLAGS) test.$(OBJ) gfx.lib
 
-test2.exe: test2.$(OBJ) 16.lib
-	wcl $(FLAGS) test2.$(OBJ) 16.lib
+test2.exe: test2.$(OBJ) gfx.lib
+	wcl $(FLAGS) test2.$(OBJ) gfx.lib
 
 fonttest.exe: fonttest.$(OBJ) 16.lib
 	wcl $(FLAGS) fonttest.$(OBJ) 16.lib
@@ -49,8 +49,8 @@ fonttest.exe: fonttest.$(OBJ) 16.lib
 inputest.exe: inputest.$(OBJ) 16.lib
 	wcl $(FLAGS) inputest.$(OBJ) 16.lib
 
-pcxtest.exe: pcxtest.$(OBJ) 16.lib
-	wcl $(FLAGS) pcxtest.$(OBJ) 16.lib
+pcxtest.exe: pcxtest.$(OBJ) gfx.lib
+	wcl $(FLAGS) pcxtest.$(OBJ) gfx.lib
 
 palettec.exe: palettec.$(OBJ) modex16.$(OBJ)
 	wcl $(FLAGS) palettec.$(OBJ) modex16.$(OBJ)
@@ -67,11 +67,11 @@ maptest.exe: maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
 #emsdump.exe: emsdump.$(OBJ) memory.$(OBJ)
 #	wcl $(FLAGS) $(MFLAGS) emsdump.$(OBJ) memory.$(OBJ)
 
-fmemtest.exe: fmemtest.$(OBJ)
-	wcl $(FLAGS) fmemtest.$(OBJ)
+fmemtest.exe: fmemtest.$(OBJ) 16.lib
+	wcl $(FLAGS) fmemtest.$(OBJ) 16.lib
 
-exmmtest.exe: exmmtest.$(OBJ) 16_mm.$(OBJ)
-        wcl $(FLAGS) exmmtest.$(OBJ) 16_mm.$(OBJ)
+exmmtest.exe: exmmtest.$(OBJ) 16.lib
+        wcl $(FLAGS) exmmtest.$(OBJ) 16.lib
 
 #
 #executable's objects

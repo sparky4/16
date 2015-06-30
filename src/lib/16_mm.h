@@ -200,8 +200,6 @@ void 		MML_ShutdownXMS (void);
 void		MML_UseSpace (unsigned segstart, unsigned seglength);
 void 		MML_ClearBlock (void);
 
-int US_CheckParm(char *parm,char **strings);
-
 //==========================================================================
 
 #endif
