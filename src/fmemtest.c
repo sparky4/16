@@ -19,8 +19,8 @@
  * Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-
 #include <stdio.h>
+#include "src/lib/types.h"
 
 void
 main(int argc, char *argv[])
@@ -28,6 +28,7 @@ main(int argc, char *argv[])
 	int x=420;
 	int huge *ptr=&x;
 	int *ptr0=&x;
+	//word csw=0,dsw=0,esw=0,ssw=0,ipw=0;
 
 	//ptr=&x;
 	printf("&main()=%Fp\n", *argv[0]);
@@ -40,4 +41,18 @@ main(int argc, char *argv[])
 	printf("address of *ptr=%Fp\n", *ptr);
 	printf("&x=%Fp\n", &x);
 	printf("x=%d\n", x);
+	printf("\n");
+	/*__asm
+	{
+		//lea csw,cs
+		//lds DS,dsw
+		//les ES,esw
+//		mov ss,ssw
+//		mov ip,ipw
+	}*/
+	//printf("ip=%u\n", ipw);
+	//printf("ss=%u\n", ssw);
+	//printf("cs=%u\n", csw);
+	//printf("ds=%u\n", dsw);
+	//printf("es=%u\n", esw);
 }
