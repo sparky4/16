@@ -1,3 +1,13 @@
+!ifdef __LINUX__
+REMOVECOMMAND=rm
+DIRSEP=/
+OBJ=o
+!else
+REMOVECOMMAND=del 
+DIRSEP=\
+OBJ=obj
+!endif
+TARGET_OS = dos
 #-zk0u = translate kanji to unicode... wwww
 #-zk0 = kanji support~
 #-zkl = current codepage
@@ -6,9 +16,6 @@
 CFLAGS=-zkl -wo -x#### -mc# -zdp# -zp16 -zq
 OFLAGS=-ot -ox -ob -oh -or# -om -ol -ol+
 FLAGS=-0 -d2 -lr $(OFLAGS) $(CFLAGS)
-REMOVECOMMAND=del
-DIRSEP=\
-OBJ=obj
 SRC=src$(DIRSEP)
 SRCLIB=$(SRC)lib$(DIRSEP)
 JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
@@ -174,3 +181,4 @@ clean: .symbolic
 	@$(REMOVECOMMAND) __WCL__.LNK
 #	@$(REMOVECOMMAND) *.smp
 	@$(REMOVECOMMAND) *.SMP
+
