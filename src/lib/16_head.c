@@ -20,7 +20,7 @@
  *
  */
 
-#include "src/lib/lib_head.h"
+#include "src/lib/16_head.h"
 
 /* local function */
 void wait(clock_t wait);

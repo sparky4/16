@@ -26,7 +26,7 @@
 #ifndef BITMAP_H
 #define BITMAP_H
 #include "src/lib/types.h"
-#include "src/lib/lib_head.h"
+#include "src/lib/16_head.h"
 
 typedef struct {
 	byte *data;

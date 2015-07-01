@@ -23,6 +23,7 @@
 #ifndef __SCROLL16_H_
 #define __SCROLL16_H_
 
+#include "src/lib/16_head.h"
 #include "src/lib/16_in.h"
 
 //#define TILEWH 16

@@ -28,7 +28,7 @@
 #define	__16_IN__
 
 #include <string.h>
-#include "src/lib/lib_head.h"
+#include "src/lib/16_head.h"
 
 #ifdef	__DEBUG__
 #define	__DEBUG_InputMgr__

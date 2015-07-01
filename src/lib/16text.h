@@ -6,7 +6,7 @@
  */
 #ifndef TEXT_H
 #define TEXT_H
-#include "types.h"
+#include "src/lib/types.h"
 
 /* font information type */
 typedef struct font {
