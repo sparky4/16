@@ -20,8 +20,30 @@
  *
  */
 
+#include "src/16.h"
+
 void
 main(int argc, char *argv[])
 {
-
+	const char *cpus;
+	byte *dpal, *gpal;
+	/* save the palette */
+	dpal = modexNewPal();
+	modexPalSave(dpal);
+	modexFadeOff(4, dpal);
+	printf("pal load\n");
+	gpal = modexNewPal();
+	modexPalSave(gpal);
+	modexSavePalFile("data/g.pal", gpal);
+	modexPalBlack();	//so player will not see loadings~
+	printf("wwww loop wwww\n");
+	switch(detectcpu())
+	{
+		case 0: cpus = "8086/8088 or 186/88"; break;
+		case 1: cpus = "286"; break;
+		case 2: cpus = "386 or newer"; break;
+		default: cpus = "internal error"; break;
+	}
+	printf("detected CPU type: %s\n", cpus);
+	modexFadeOn(4, dpal);
 }

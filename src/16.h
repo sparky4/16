@@ -23,5 +23,9 @@
 #ifndef __16_H_
 #define __16_H_
 
+#include "src/lib/lib_head.h"
+#include "src/lib/modex16.h"
+#include "src/lib/wcpu/wcpu.h"
+#include "src/lib/planar.h"
 
 #endif /*__16_H_*/
