@@ -125,7 +125,7 @@ typedef struct
 	memptr bufferseg;
 	boolean		mmstarted, bombonerror, mmerror;
 	//void	huge *hugeheap;
-	void huge/*far*/	*farheap;
+	void huge	*farheap;
 	void		*nearheap;
 	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
 	unsigned int EMSVer;

@@ -414,7 +414,7 @@ void MML_ShutdownXMS(mminfo_t *mm)
 
 void MML_UseSpace(unsigned segstart, unsigned seglength, mminfo_t *mm)
 {
-	mmblocktype far *scan,far *last;
+	mmblocktype huge *scan,huge *last;
 	unsigned	oldend;
 	//++++if(mm->EMSVer)
 	long		extra;
@@ -478,7 +478,7 @@ void MML_UseSpace(unsigned segstart, unsigned seglength, mminfo_t *mm)
 
 void MML_ClearBlock(mminfo_t *mm)
 {
-	mmblocktype far *scan,far *last;
+	mmblocktype huge *scan,huge *last;
 
 	scan = mm->mmhead->next;
 
@@ -565,7 +565,8 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //----	length=farcoreleft();
 	_fheapgrow();
 	length=_memavl();
-	start = mm->farheap = _fmalloc(length);
+	start = mm->farheap = halloc(length, 1);
+	//start = mm->farheap = _fmalloc(length);
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVEFARHEAP;
 	seglength = length / 16;			// now in paragraphs
@@ -604,10 +605,10 @@ emsskip:
 	mmi->XMSmem = 0;
 	for(i = 1;i < __argc;i++)
 	{
-		if( US_CheckParm(__argv[i],ParmStringsexmm) == 0)
+		if(US_CheckParm(__argv[i],ParmStringsexmm) == 0)
 			goto xmsskip;				// param NOXMS
 	}
-	printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+//	printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	if(MML_CheckForXMS(mm))
 	{
 //printf("XMS!\n");
@@ -664,8 +665,8 @@ void MM_Shutdown(mminfo_t *mm)
 
 void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi)
 {
-	mmblocktype far *scan,far *lastscan,far *endscan
-				,far *purge,far *next;
+	mmblocktype huge *scan,huge *lastscan,huge *endscan
+				,huge *purge,huge *next;
 	int			search;
 	unsigned	needed,startseg;
 
@@ -765,7 +766,7 @@ void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi)
 
 void MM_FreePtr(memptr *baseptr, mminfo_t *mm)
 {
-	mmblocktype far *scan,far *last;
+	mmblocktype huge *scan,huge *last;
 
 	last = mm->mmhead;
 	scan = last->next;
@@ -803,7 +804,7 @@ void MM_FreePtr(memptr *baseptr, mminfo_t *mm)
 
 void MM_SetPurge(memptr *baseptr, int purge, mminfo_t *mm)
 {
-	mmblocktype far *start;
+	mmblocktype huge *start;
 
 	start = mm->mmrover;
 
@@ -842,7 +843,7 @@ void MM_SetPurge(memptr *baseptr, int purge, mminfo_t *mm)
 
 void MM_SetLock(memptr *baseptr, boolean locked, mminfo_t *mm)
 {
-	mmblocktype far *start;
+	mmblocktype huge *start;
 
 	start = mm->mmrover;
 
@@ -881,7 +882,7 @@ void MM_SetLock(memptr *baseptr, boolean locked, mminfo_t *mm)
 
 void MM_SortMem(mminfo_t *mm)
 {
-	mmblocktype far *scan,far *last,far *next;
+	mmblocktype huge *scan,huge *last,huge *next;
 	unsigned	start,length,source,dest,oldborder;
 	int			playing;
 
@@ -992,7 +993,7 @@ void MM_SortMem(mminfo_t *mm)
 
 void MM_ShowMemory(mminfo_t *mm)
 {
-	mmblocktype far *scan;
+	mmblocktype huge *scan;
 	unsigned color,temp;//, i;
 	long	end,owner;
 	char    scratch[80],str[10];
@@ -1070,7 +1071,7 @@ fprintf(stdout, "%s", scratch);
 dword MM_UnusedMemory(mminfo_t *mm)
 {
 	unsigned free;
-	mmblocktype far *scan;
+	mmblocktype huge *scan;
 
 	free = 0;
 	scan = mm->mmhead;
@@ -1101,7 +1102,7 @@ dword MM_UnusedMemory(mminfo_t *mm)
 dword MM_TotalFree(mminfo_t *mm)
 {
 	unsigned free;
-	mmblocktype far *scan;
+	mmblocktype huge *scan;
 
 	free = 0;
 	scan = mm->mmhead;
