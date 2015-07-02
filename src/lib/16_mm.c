@@ -435,7 +435,7 @@ void MML_UseSpace(unsigned segstart, dword seglength, mminfo_t *mm)
 	oldend = scan->start + scan->length;
 	extra = oldend - (segstart+seglength);
 	//++++emsver stuff!
-	if(extra > 0xffffl)
+	if(extra > 0xfffflu)
 	{
 		printf("MML_UseSpace: Segment spans two blocks!\n");
 		//return;
@@ -451,7 +451,7 @@ void MML_UseSpace(unsigned segstart, dword seglength, mminfo_t *mm)
 	else
 		scan->length = segstart-scan->start;	// shorten block
 
-	if(extra > 0)
+	if(0xfffflu > extra > 0)
 	{
 		MM_GetNewBlock(mm);
 		mm->mmnew->next = scan->next;
