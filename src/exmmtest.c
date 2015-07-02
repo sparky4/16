@@ -29,6 +29,7 @@ main(int argc, char *argv[])
 {
 	mminfo_t mm; mminfotype mmi;
 	memptr	bigbuffer;
+	__segment segu;
 	mm.mmstarted=0;
 	printf("start!\n");
 	MM_Startup(&mm, &mmi);
@@ -36,7 +37,7 @@ main(int argc, char *argv[])
 	printf("&main()=%Fp\n", *argv[0]);
 	MM_GetPtr(&bigbuffer, mmi.nearheap, &mm, &mmi);
 	//hmm functions in cache system use the buffered stuff
-	printf("size of big buffer~=%ul\n", _msize(bigbuffer));
+	printf("size of big buffer~=%ul\n", _bmsize(segu, bigbuffer));
 	MM_ShowMemory(&mm);
 	MM_Report(&mm, &mmi);
 	printf("stop!\n");
