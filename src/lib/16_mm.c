@@ -537,7 +537,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	MM_GetNewBlock(mm);
 	mm->mmhead = mm->mmnew;				// this will allways be the first node
 	mm->mmnew->start = 0;
-	mm->mmnew->length = 0xffff;
+	mm->mmnew->length = 0xffff;			//todo: mm make it fucking massive as fuck!~
 	mm->mmnew->attributes = LOCKBIT;
 	mm->mmnew->next = NULL;
 	mm->mmrover = mm->mmhead;
@@ -590,6 +590,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //printf("EMS1\n");
 		MML_SetupEMS(mm);					// allocate space
 		printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+		printf("TODO: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!\N");
 		MML_UseSpace(mm->EMSpageframe,mm->EMSpagesmapped*0x400, mm);
 //printf("EMS3\n");
 		MM_MapEMS(mm);					// map in used pages
