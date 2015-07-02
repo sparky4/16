@@ -458,7 +458,7 @@ void MML_UseSpace(unsigned segstart, unsigned seglength, mminfo_t *mm)
 	}
 
 
-	if (segstart == scan->start)
+	if(segstart == scan->start)
 	{
 		last->next = scan->next;			// unlink block
 		MM_FreeBlock(scan, mm);
@@ -467,7 +467,7 @@ void MML_UseSpace(unsigned segstart, unsigned seglength, mminfo_t *mm)
 	else
 		scan->length = segstart-scan->start;	// shorten block
 
-	if (extra > 0)
+	if(extra > 0)
 	{
 		MM_GetNewBlock(mm);
 		mm->mmnew->next = scan->next;
@@ -550,7 +550,6 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 // locked block of all memory until we punch out free space
 //
-	//GETNEWBLOCK;
 	MM_GetNewBlock(mm);
 	mm->mmhead = mm->mmnew;				// this will allways be the first node
 	mm->mmnew->start = 0;
@@ -603,15 +602,13 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 
 	if(MML_CheckForEMS())
 	{
-		printf("EMS1\n");
+//printf("EMS1\n");
 		MML_SetupEMS(mm);					// allocate space
-		printf("EMS2\n");
-printf("segstart=%x\n", segstart);
-printf("mm->EMSpageframe=%x\n", mm->EMSpageframe);
+printf("EMS2\t"); printf("segstart=%x\t", segstart); printf("mm->EMSpageframe=%x\n", mm->EMSpageframe);	//bug
 		MML_UseSpace(mm->EMSpageframe,mm->EMSpagesmapped*0x400, mm);
-		printf("EMS3\n");
+//printf("EMS3\n");
 		MM_MapEMS(mm);					// map in used pages
-		printf("EMS4\n");
+//printf("EMS4\n");
 		mmi->EMSmem = mm->EMSpagesmapped*0x4000l;
 	}
 
@@ -622,13 +619,13 @@ emsskip:
 	mmi->XMSmem = 0;
 	for(i = 1;i < __argc;i++)
 	{
-		if ( US_CheckParm(__argv[i],ParmStringsexmm) == 0)
+		if( US_CheckParm(__argv[i],ParmStringsexmm) == 0)
 			goto xmsskip;				// param NOXMS
 	}
 
 	if(MML_CheckForXMS(mm))
 	{
-		printf("XMS!\n");
+//printf("XMS!\n");
 		MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
 	}
 
@@ -909,7 +906,7 @@ void MM_SortMem(mminfo_t *mm)
 	// lock down a currently playing sound
 	//
 /*++++	playing = SD_SoundPlaying ();
-	if (playing)
+	if(playing)
 	{
 		switch (SoundMode)
 		{
@@ -994,7 +991,7 @@ void MM_SortMem(mminfo_t *mm)
 
 //	VW_ColorBorder (oldborder);
 
-/*++++	if (playing)
+/*++++	if(playing)
 		MM_SetLock(&(memptr)audiosegs[playing],false);*/
 }
 
@@ -1031,7 +1028,7 @@ void MM_ShowMemory(mminfo_t *mm)
 
 	while (scan)
 	{
-		if (scan->attributes & PURGEBITS)
+		if(scan->attributes & PURGEBITS)
 			color = 5;		// dark purple = purgable
 		else
 			color = 9;		// medium blue = non purgable
@@ -1050,7 +1047,7 @@ void MM_ShowMemory(mminfo_t *mm)
 
 //****#if 0
 printf("Location:");
-printf("%Fp\t", scan->start);
+printf("%x\t", scan->start);
 strcpy (scratch,"Size:");
 ltoa ((long)scan->length*16,str,10);
 strcat (scratch,str);
