@@ -36,10 +36,10 @@ main(int argc, char *argv[])
 	printf("&main()=%Fp\n", *argv[0]);
 	MM_GetPtr(&bigbuffer, 65535UL, &mm, &mmi);
 	printf("size of big buffer~=%ul\n", _msize(bigbuffer));
-	MM_FreePtr(&bigbuffer, &mm);
 	MM_ShowMemory(&mm);
 	MM_Report(&mm, &mmi);
 	printf("stop!\n");
+	MM_FreePtr(&bigbuffer, &mm);
 	MM_Shutdown(&mm);
 	printf("done!\n");
 }
