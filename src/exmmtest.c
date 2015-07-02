@@ -28,12 +28,15 @@ void
 main(int argc, char *argv[])
 {
 	mminfo_t mm; mminfotype mmi;
-
+	memptr	bigbuffer;
 	mm.mmstarted=0;
 	printf("start!\n");
 	MM_Startup(&mm, &mmi);
 	printf("done!\n");
 	printf("&main()=%Fp\n", *argv[0]);
+	MM_GetPtr(&bigbuffer, 65535UL, &mm, &mmi);
+	printf("size of big buffer~=%ul\n", _msize(bigbuffer));
+	MM_FreePtr(&bigbuffer, &mm);
 	MM_ShowMemory(&mm);
 	MM_Report(&mm, &mmi);
 	printf("stop!\n");
