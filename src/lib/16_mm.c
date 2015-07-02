@@ -566,7 +566,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	_fheapgrow();
 	length=_memavl();
 	//length-=farlen;
-	start = mm->farheap = halloc(length, 1);
+	start = mm->farheap = halloc(length, sizeof(length));
 	//start = mm->farheap = _fmalloc(length);
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVEFARHEAP;
