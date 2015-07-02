@@ -628,8 +628,8 @@ emsskip:
 
 	if(MML_CheckForXMS(mm))
 	{
-//		printf("XMS!\n");
-//++++		MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
+		printf("XMS!\n");
+		MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
 	}
 
 //
@@ -666,8 +666,8 @@ void MM_Shutdown(mminfo_t *mm)
 	//printf("huge freed\n");
 	MML_ShutdownEMS(mm);
 	printf("EMS freed\n");
-//++++		MML_ShutdownXMS(mm);
-//	printf("XMS freed\n");
+	MML_ShutdownXMS(mm);
+	printf("XMS freed\n");
 }
 
 //==========================================================================
