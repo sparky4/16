@@ -160,7 +160,7 @@ unsigned MM_MapEMS(mminfo_t *mm);
 boolean MML_CheckForXMS(mminfo_t *mm);
 void MML_SetupXMS(mminfo_t *mm, mminfotype *mmi);
 void MML_ShutdownXMS(mminfo_t *mm);
-void MML_UseSpace(unsigned segstart, unsigned seglength, mminfo_t *mm);
+void MML_UseSpace(unsigned segstart, dword seglength, mminfo_t *mm);
 void MML_ClearBlock(mminfo_t *mm);
 
 void MM_Startup(mminfo_t *mm, mminfotype *mmi);
@@ -175,7 +175,7 @@ void MM_ShowMemory(mminfo_t *mm);
 dword MM_UnusedMemory(mminfo_t *mm);
 dword MM_TotalFree(mminfo_t *mm);
 void MM_Report(mminfo_t *mm, mminfotype *mmi);
-int MM_EMSVer(void);
+//int MM_EMSVer(void);
 void MM_BombOnError(boolean bomb, mminfo_t *mm);
 void MM_GetNewBlock(mminfo_t *mm);
 void MM_FreeBlock(mmblocktype *x, mminfo_t *mm);
