@@ -219,9 +219,14 @@ void CAL_GetGrChunkLength (int chunk)
 boolean CA_FarRead (int handle, byte huge *dest, dword length)
 {
 	boolean flag;
-	boolean fat;
-	if (length>0xffffl) fat=true;
+	dword fat=0;
+	word segm=0;
+	while(length>0xffffl)
+	{
+		fat=length-0xffffl;
+		segm++;
 //		printf("CA_FarRead doesn't support 64K reads yet!\n");
+	}
 
 	__asm
 	{
@@ -264,9 +269,14 @@ End:
 boolean CA_FarWrite (int handle, byte huge *source, dword length)
 {
 	boolean flag;
-	boolean fat;
-	if (length>0xffffl) fat=true;
-//		printf("CA_FarWrite doesn't support 64K reads yet!\n");
+	dword fat=0;
+	word segm=0;
+	while(length>0xffffl)
+	{
+		fat=length-0xffffl;
+		segm++;
+//		printf("CA_FarRead doesn't support 64K reads yet!\n");
+	}
 
 	__asm
 	{

@@ -38,7 +38,7 @@ main(int argc, char *argv[])
 //	memset(bakapee, 0, 64);
 	mm.mmstarted=0;
 
-	if(argv[1]) bakapee = strdup(argv[1]);
+	if(argv[1]) bakapee = argv[1];
 	else bakapee = "data/koishi~~.pcx";
 	
 	printf("start!\n");

@@ -590,7 +590,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //printf("EMS1\n");
 		MML_SetupEMS(mm);					// allocate space
 		printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
-		printf("TODO: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!\N");
+		//TODO: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!
 		MML_UseSpace(mm->EMSpageframe,mm->EMSpagesmapped*0x400, mm);
 //printf("EMS3\n");
 		MM_MapEMS(mm);					// map in used pages
