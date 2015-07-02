@@ -599,7 +599,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 		if(US_CheckParm(__argv[i],ParmStringsexmm) == 0)
 			goto emsskip;				// param NOEMS
 	}
-
+	printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	if(MML_CheckForEMS())
 	{
 //printf("EMS1\n");
@@ -622,7 +622,7 @@ emsskip:
 		if( US_CheckParm(__argv[i],ParmStringsexmm) == 0)
 			goto xmsskip;				// param NOXMS
 	}
-
+	printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	if(MML_CheckForXMS(mm))
 	{
 //printf("XMS!\n");
@@ -661,10 +661,8 @@ void MM_Shutdown(mminfo_t *mm)
 	printf("near freed\n");
 	//hfree(mm->hugeheap);
 	//printf("huge freed\n");
-	MML_ShutdownEMS(mm);
-	printf("EMS freed\n");
-	MML_ShutdownXMS(mm);
-	printf("XMS freed\n");
+	if(MML_CheckForEMS()){ MML_ShutdownEMS(mm); printf("EMS freed\n"); }
+	if(MML_CheckForXMS(mm)){ MML_ShutdownXMS(mm); printf("XMS freed\n"); }
 }
 
 //==========================================================================
@@ -1147,10 +1145,13 @@ dword MM_TotalFree(mminfo_t *mm)
 
 void MM_Report(mminfo_t *mm, mminfotype *mmi)
 {
-	printf("EMM %x available\n", mm->EMSVer);
-	printf("totalEMSpages=%u\n", mm->totalEMSpages);
-	printf("freeEMSpages=%u\n", mm->freeEMSpages);
-	printf("EMSpageframe=%Fp\n", mm->EMSpageframe);
+	if(MML_CheckForEMS())
+	{
+		printf("EMM %x available\n", mm->EMSVer);
+		printf("totalEMSpages=%u\n", mm->totalEMSpages);
+		printf("freeEMSpages=%u\n", mm->freeEMSpages);
+		printf("EMSpageframe=%Fp\n", mm->EMSpageframe);
+	}
 	printf("near=%lu\n", mmi->nearheap);
 	printf("far=%lu\n", mmi->farheap);
 	printf("EMSmem=%lu\n", mmi->EMSmem);

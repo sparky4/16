@@ -35,7 +35,7 @@ main(int argc, char *argv[])
 	printf("done!\n");
 	printf("&main()=%Fp\n", *argv[0]);
 	MM_ShowMemory(&mm);
-//++++	MM_Report(&mm, &mmi);
+	MM_Report(&mm, &mmi);
 	printf("stop!\n");
 	MM_Shutdown(&mm);
 	printf("done!\n");
