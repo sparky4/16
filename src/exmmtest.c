@@ -34,7 +34,7 @@ main(int argc, char *argv[])
 	MM_Startup(&mm, &mmi);
 	printf("done!\n");
 	printf("&main()=%Fp\n", *argv[0]);
-	MM_GetPtr(&bigbuffer, 65535UL, &mm, &mmi);
+	MM_GetPtr(&bigbuffer, mmi.farheap, &mm, &mmi);
 	printf("size of big buffer~=%ul\n", _msize(bigbuffer));
 	MM_ShowMemory(&mm);
 	MM_Report(&mm, &mmi);

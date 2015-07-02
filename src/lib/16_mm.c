@@ -1136,7 +1136,7 @@ void MM_Report(mminfo_t *mm, mminfotype *mmi)
 		printf("EMM %x available\n", mm->EMSVer);
 		printf("totalEMSpages=%u\n", mm->totalEMSpages);
 		printf("freeEMSpages=%u\n", mm->freeEMSpages);
-		printf("EMSpageframe=%Fp\n", mm->EMSpageframe);
+		printf("EMSpageframe=%x\n", mm->EMSpageframe);
 	}
 	if(MML_CheckForXMS(mm)) printf("XMSaddr=%x\n", *XMSaddr);
 	printf("near=%lu\n", mmi->nearheap);
