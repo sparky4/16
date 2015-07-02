@@ -20,8 +20,9 @@
 #ifndef __16_CA__
 #define __16_CA__
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
 
 #ifndef __16_MM__
 #include "src/lib/16_head.h"
@@ -88,7 +89,7 @@ void CA_CloseDebug (void);
 boolean CA_FarRead (int handle, byte far *dest, dword length);
 boolean CA_FarWrite (int handle, byte far *source, dword length);
 boolean CA_ReadFile (char *filename, memptr *ptr);
-boolean CA_LoadFile (char *filename, memptr *ptr);
+boolean CA_LoadFile (char *filename, memptr *ptr, mminfo_t *mm, mminfotype *mmi);
 
 //long CA_RLEWCompress (unsigned huge *source, long length, unsigned huge *dest,unsigned rlewtag);
 
