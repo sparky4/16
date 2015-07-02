@@ -436,6 +436,7 @@ void MML_UseSpace(unsigned segstart, unsigned seglength, mminfo_t *mm)
 //
 	oldend = scan->start + scan->length;
 	extra = oldend - (segstart+seglength);
+	//++++emsver stuff!
 	if(extra < 0)
 	{
 		printf("MML_UseSpace: Segment spans two blocks!");
@@ -665,8 +666,7 @@ void MM_Shutdown(mminfo_t *mm)
 
 void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi)
 {
-	mmblocktype huge *scan,huge *lastscan,huge *endscan
-				,huge *purge,huge *next;
+	mmblocktype huge *scan,huge *lastscan,huge *endscan,huge *purge,huge *next;
 	int			search;
 	unsigned	needed,startseg;
 
@@ -1138,6 +1138,7 @@ void MM_Report(mminfo_t *mm, mminfotype *mmi)
 		printf("freeEMSpages=%u\n", mm->freeEMSpages);
 		printf("EMSpageframe=%Fp\n", mm->EMSpageframe);
 	}
+	if(MML_CheckForXMS(mm)) printf("XMSaddr=%x\n", *XMSaddr);
 	printf("near=%lu\n", mmi->nearheap);
 	printf("far=%lu\n", mmi->farheap);
 	printf("EMSmem=%lu\n", mmi->EMSmem);
