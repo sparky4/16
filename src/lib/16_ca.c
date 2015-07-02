@@ -90,7 +90,7 @@ void	(*finishcachebox)	(void);
 =============================================================================
 */
 
-extern	long	far	CGAhead;
+/*extern	long	far	CGAhead;
 extern	long	far	EGAhead;
 extern	byte	CGAdict;
 extern	byte	EGAdict;
@@ -128,13 +128,13 @@ SDMode		oldsoundmode;
 
 void	CAL_DialogDraw (char *title,unsigned numcache);
 void	CAL_DialogUpdate (void);
-void	CAL_DialogFinish (void);
+void	CAL_DialogFinish (void);*/
 void	CAL_CarmackExpand (unsigned far *source, unsigned far *dest,
 		unsigned length);
 
 
-#ifdef THREEBYTEGRSTARTS
-#define FILEPOSSIZE	3
+/*#ifdef THREEBYTEGRSTARTS
+#define FILEPOSSIZE	3*/
 //#define	GRFILEPOS(c) (*(long far *)(((byte far *)grstarts)+(c)*3)&0xffffff)
 long GRFILEPOS(int c)
 {
@@ -219,24 +219,30 @@ void CAL_GetGrChunkLength (int chunk)
 
 boolean CA_FarRead (int handle, byte far *dest, long length)
 {
+	union REGS CPURegs;
 	if (length>0xffffl)
 		printf("CA_FarRead doesn't support 64K reads yet!\n");
 
-asm		push	ds
-asm		mov	bx,[handle]
-asm		mov	cx,[WORD PTR length]
-asm		mov	dx,[WORD PTR dest]
-asm		mov	ds,[WORD PTR dest+2]
-asm		mov	ah,0x3f				// READ w/handle
-asm		int	21h
-asm		pop	ds
-asm		jnc	good
-	errno = _AX;
+	__asm
+	{
+		push	ds
+		mov	bx,[handle]
+		mov	cx,[WORD PTR length]
+		mov	dx,[WORD PTR dest]
+		mov	ds,[WORD PTR dest+2]
+		mov	ah,0x3f				// READ w/handle
+		int	21h
+		pop	ds
+		jnc	good
+	}
+	errno = CPURegs.x.ax;
 	return	false;
+	__asm
+	{
 good:
-asm		cmp	ax,[WORD PTR length]
-asm		je	done
-	errno = EINVFMT;			// user manager knows this is bad read
+		cmp	ax,[WORD PTR length]
+		je	done
+		errno = EINVFMT;			// user manager knows this is bad read
 	return	false;
 done:
 	return	true;

@@ -335,16 +335,14 @@ void MML_SetupXMS(mminfo_t *mm, mminfotype *mmi)
 {
 	unsigned	base,size;
 
+getmemory:
 	__asm
 	{
 		mov	ax,0x4310
 		int	0x2f
 		mov	[WORD PTR XMSaddr],bx
 		mov	[WORD PTR XMSaddr+2],es		// function pointer to XMS driver
-	}
-getmemory:
-	__asm
-	{
+
 		mov	ah,XMS_ALLOCUMB
 		mov	dx,0xffff					// try for largest block possible
 		call	[DWORD PTR XMSaddr]
