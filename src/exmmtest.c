@@ -36,7 +36,7 @@ main(int argc, char *argv[])
 	MM_Startup(&mm, &mmi);
 	printf("done!\n");
 	printf("&main()=%Fp\n", *argv[0]);
-	if(CA_LoadFile("data/chikyuu.pcx", &bigbuffer, &mm, &mmi)) printf("\nyay!\n");
+	if(CA_LoadFile("data/koishi~~.pcx", &bigbuffer, &mm, &mmi)) printf("\nyay!\n");
 	//MM_GetPtr(&bigbuffer, mmi.nearheap, &mm, &mmi);
 	//hmm functions in cache system use the buffered stuff
 	printf("size of big buffer~=%ul\n", _bmsize(segu, bigbuffer));
