@@ -31,12 +31,20 @@ main(int argc, char *argv[])
 	mminfo_t mm; mminfotype mmi;
 	memptr	bigbuffer;
 	__segment segu;
+	char *bakapee;
+
+	bakapee = malloc(64);
+//	memset(bakapee, 0, 64);
 	mm.mmstarted=0;
+
+	if(argv[1]) bakapee = strdup(argv[1]);
+	else bakapee = "data/koishi~~.pcx";
+	
 	printf("start!\n");
 	MM_Startup(&mm, &mmi);
 	printf("done!\n");
 	printf("&main()=%Fp\n", *argv[0]);
-	if(CA_LoadFile("data/koishi~~.pcx", &bigbuffer, &mm, &mmi)) printf("\nyay!\n");
+	if(CA_LoadFile(bakapee, &bigbuffer, &mm, &mmi)) printf("\nyay!\n");
 	//MM_GetPtr(&bigbuffer, mmi.nearheap, &mm, &mmi);
 	//hmm functions in cache system use the buffered stuff
 	printf("size of big buffer~=%ul\n", _bmsize(segu, bigbuffer));
@@ -46,4 +54,5 @@ main(int argc, char *argv[])
 	MM_FreePtr(&bigbuffer, &mm);
 	MM_Shutdown(&mm);
 	printf("done!\n");
+	free(bakapee);
 }
