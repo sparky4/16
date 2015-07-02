@@ -41,7 +41,11 @@ EMS / XMS unmanaged routines
 
 =============================================================================
 */
+/*
 
+Open Watcom port by sparky4
+
+*/
 #include "src/lib/16_mm.h"
 
 /*
@@ -51,10 +55,6 @@ EMS / XMS unmanaged routines
 
 =============================================================================
 */
-
-//mminfo_t	mminfo;
-//memptr		bufferseg;
-//boolean		mmerror;
 
 void		(* beforesort) (void);
 void		(* aftersort) (void);
@@ -67,22 +67,6 @@ void		(* XMSaddr) (void);		// far pointer to XMS driver
 
 =============================================================================
 */
-
-//boolean		mmstarted;
-
-//void far	*farheap;
-//void		*nearheap;
-
-//mmblocktype	far mmblocks[MAXBLOCKS],far *mmhead,far *mmfree,far *mmrover,far *mmnew;
-
-//boolean		bombonerror;
-
-//unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
-//unsigned int EMSVer;
-
-//void		(* XMSaddr) (void);		// far pointer to XMS driver
-
-//unsigned	numUMBs,UMBbase[MAXUMBS];
 
 static	char *ParmStringsexmm[] = {"noems","noxms",""};
 
@@ -432,6 +416,7 @@ void MML_UseSpace(unsigned segstart, unsigned seglength, mminfo_t *mm)
 {
 	mmblocktype far *scan,far *last;
 	unsigned	oldend;
+	//++++if(mm->EMSVer)
 	long		extra;
 
 	scan = last = mm->mmhead;
@@ -528,7 +513,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 {
 	int i;
 	dword length;
-	void far	*start;
+	void huge	*start;
 	unsigned	segstart,seglength,endfree;
 
 	if(mm->mmstarted)
@@ -565,7 +550,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //----	length=coreleft();
 	_nheapgrow();
 	length=_memavl();
-	start = (void far *)(mm->nearheap = malloc(length));
+	start = (void huge *)(mm->nearheap = malloc(length));
 
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;

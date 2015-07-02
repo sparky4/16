@@ -90,10 +90,6 @@ typedef struct
 
 //==========================================================================
 
-/*extern	mminfotype	mminfo;
-extern	memptr		bufferseg;
-extern	boolean		mmerror;*/
-
 extern	void		(* beforesort) (void);
 extern	void		(* aftersort) (void);
 extern void		(* XMSaddr) (void);		// far pointer to XMS driver
@@ -120,7 +116,7 @@ typedef struct mmblockstruct
 	unsigned	start,length;
 	unsigned	attributes;
 	memptr		*useptr;	// pointer to the segment start
-	struct mmblockstruct far *next;
+	struct mmblockstruct huge *next;
 } mmblocktype;
 
 
@@ -137,11 +133,6 @@ typedef struct
 	mmblocktype	huge mmblocks[MAXBLOCKS],huge *mmhead,huge *mmfree,huge *mmrover,huge *mmnew;
 } mminfo_t;
 
-
-//#define GETNEWBLOCK {if(!(mmnew=mmfree))Quit("MM_GETNEWBLOCK: No free blocks!");mmfree=mmfree->next;}
-//#define GETNEWBLOCK {if(!mmfree)MML_ClearBlock();mmnew=mmfree;mmfree=mmfree->next;}
-//#define FREEBLOCK(x) {*x->useptr=NULL;x->next=mmfree;mmfree=x;}
-
 /*
 =============================================================================
 
@@ -150,11 +141,6 @@ typedef struct
 =============================================================================
 */
 
-/*static mminfotype	mminfo;
-static memptr		bufferseg;
-
-static void		(* beforesort) (void);
-static void		(* aftersort) (void);*/
 
 /*
 =============================================================================
@@ -163,21 +149,6 @@ static void		(* aftersort) (void);*/
 
 =============================================================================
 */
-
-/*static void huge	*hugeheap;
-static void far	*farheap;
-static void		*nearheap;
-
-static mmblocktype	far mmblocks[MAXBLOCKS]
-			,far *mmhead,far *mmfree,far *mmrover,far *mmnew;
-
-
-static unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
-static unsigned int EMSVer;
-
-static void		(* XMSaddr) (void);		// far pointer to XMS driver
-
-static unsigned	numUMBs,UMBbase[MAXUMBS];*/
 
 //==========================================================================
 
