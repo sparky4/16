@@ -604,7 +604,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	{
 //printf("EMS1\n");
 		MML_SetupEMS(mm);					// allocate space
-printf("EMS2\t"); printf("segstart=%x\t", segstart); printf("mm->EMSpageframe=%x\n", mm->EMSpageframe);	//bug
+		printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 		MML_UseSpace(mm->EMSpageframe,mm->EMSpagesmapped*0x400, mm);
 //printf("EMS3\n");
 		MM_MapEMS(mm);					// map in used pages
