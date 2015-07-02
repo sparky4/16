@@ -174,7 +174,7 @@ unsigned MML_SetupEMS(mminfo_t *mm)
 		mov	[freeEMSpages],bx
 		or	bx,bx
 		jz	noEMS						// no EMS at all to allocate
-
+//++++EXPAND DONG!!!!
 		cmp	bx,4
 		jle	getpages					// there is only 1,2,3,or 4 pages
 		mov	bx,4						// we can't use more than 4 pages
@@ -413,8 +413,9 @@ void MML_ShutdownXMS(mminfo_t *mm)
 void MML_UseSpace(unsigned segstart, dword seglength, mminfo_t *mm)
 {
 	mmblocktype huge *scan,huge *last;
-	unsigned	oldend;
-	//++++if(mm->EMSVer)
+	dword	oldend;
+	dword fat=0;
+	word segm=0;
 	dword		extra;
 
 	scan = last = mm->mmhead;
@@ -435,13 +436,19 @@ void MML_UseSpace(unsigned segstart, dword seglength, mminfo_t *mm)
 	oldend = scan->start + scan->length;
 	extra = oldend - (segstart+seglength);
 	//++++emsver stuff!
-	if(extra > 0xfffflu)
+	if(extra>0xfffflu)
 	{
+		segm=(extra%(0xfffflu))-1;
+		fat=segm*(0xfffflu);
+		extra-=fat;
+//printf("extra=%lu	", extra);
+//printf("segm=%lu\n", segm);
 		printf("MML_UseSpace: Segment spans two blocks!\n");
-		//return;
 	}
 
-
+//segu:
+//++++todo: linked list of segment!
+//printf("segm=%lu\n", segm);
 	if(segstart == scan->start)
 	{
 		last->next = scan->next;			// unlink block
@@ -451,6 +458,8 @@ void MML_UseSpace(unsigned segstart, dword seglength, mminfo_t *mm)
 	else
 		scan->length = segstart-scan->start;	// shorten block
 
+//	segm--;
+
 	if(0xfffflu > extra > 0)
 	{
 		MM_GetNewBlock(mm);
@@ -459,7 +468,7 @@ void MML_UseSpace(unsigned segstart, dword seglength, mminfo_t *mm)
 		mm->mmnew->start = segstart+seglength;
 		mm->mmnew->length = extra;
 		mm->mmnew->attributes = LOCKBIT;
-	}
+	}//else if(segm>0) goto segu;
 
 }
 
@@ -593,13 +602,13 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 		MML_SetupEMS(mm);					// allocate space
 		printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 		//TODO: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!
-		if(mm->EMSVer>=0x40) MML_UseSpace(mm->EMSpageframe,((dword)mm->EMSpagesmapped)*((dword)mm->freeEMSpages), mm);
-		else MML_UseSpace(mm->EMSpageframe,mm->EMSpagesmapped*0x400, mm);
+		if(mm->EMSVer>=0x40) MML_UseSpace(mm->EMSpageframe,((dword)mm->EMSpagesmapped)*0x4000lu, mm);
+		else MML_UseSpace(mm->EMSpageframe,mm->EMSpagesmapped*0x4000lu, mm);
 //printf("EMS3\n");
 		MM_MapEMS(mm);					// map in used pages
 //printf("EMS4\n");
-		if(mm->EMSVer>=0x40) mmi->EMSmem = ((dword)mm->EMSpagesmapped)*((dword)mm->freeEMSpages);
-		else mmi->EMSmem = mm->EMSpagesmapped*0x4000l;
+		if(mm->EMSVer>=0x40) mmi->EMSmem = ((dword)mm->EMSpagesmapped)*0x4000lu;
+		else mmi->EMSmem = mm->EMSpagesmapped*0x4000lu;
 	}
 
 //

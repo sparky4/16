@@ -216,43 +216,47 @@ void CAL_GetGrChunkLength (int chunk)
 ==========================
 */
 
-boolean CA_FarRead (int handle, byte huge *dest, dword length)
+boolean CA_FarRead(int handle, byte huge *dest, dword length)
 {
 	boolean flag;
 	dword fat=0;
 	word segm=0;
-	while(length>0xffffl)
+	if(length>0xfffflu)
 	{
-		fat=length-0xffffl;
-		segm++;
+		segm=(length%0xfffflu)-1;
+		fat=segm*0xfffflu;
+		length-=fat;
 //		printf("CA_FarRead doesn't support 64K reads yet!\n");
 	}
 
-	__asm
+	if(!fat&&!segm)
 	{
-		push	ds
-		mov	bx,[handle]
-		mov	cx,[WORD PTR length]
-		mov	dx,[WORD PTR dest]
-		mov	ds,[WORD PTR dest+2]
-		mov	ah,0x3f				// READ w/handle
-		int	21h
-		pop	ds
-		jnc	good
-		mov	errno,ax
-		mov	flag,0
-		jmp End
+		__asm
+		{
+			push	ds
+			mov	bx,[handle]
+			mov	cx,[WORD PTR length]
+			mov	dx,[WORD PTR dest]
+			mov	ds,[WORD PTR dest+2]
+			mov	ah,0x3f				// READ w/handle
+			int	21h
+			pop	ds
+			jnc	good
+			mov	errno,ax
+			mov	flag,0
+			jmp End
 good:
-		cmp	ax,[WORD PTR length]
-		je	done
-//		errno = EINVFMT;			// user manager knows this is bad read
-		mov	flag,0
-		jmp End
+			cmp	ax,[WORD PTR length]
+			je	done
+//			errno = EINVFMT;			// user manager knows this is bad read
+			mov	flag,0
+			jmp End
 done:
-		mov	flag,1
+			mov	flag,1
 End:
-	}
+		}
 	return flag;
+	}else return 0;//todo: EXPAND!!!
 }
 
 
@@ -266,43 +270,47 @@ End:
 ==========================
 */
 
-boolean CA_FarWrite (int handle, byte huge *source, dword length)
+boolean CA_FarWrite(int handle, byte huge *source, dword length)
 {
 	boolean flag;
 	dword fat=0;
 	word segm=0;
-	while(length>0xffffl)
+	if(length>0xfffflu)
 	{
-		fat=length-0xffffl;
-		segm++;
+		segm=(length%0xfffflu)-1;
+		fat=segm*0xfffflu;
+		length-=fat;
 //		printf("CA_FarRead doesn't support 64K reads yet!\n");
 	}
 
-	__asm
+	if(!fat&&!segm)
 	{
-		push	ds
-		mov	bx,[handle]
-		mov	cx,[WORD PTR length]
-		mov	dx,[WORD PTR source]
-		mov	ds,[WORD PTR source+2]
-		mov	ah,0x40			// WRITE w/handle
-		int	21h
-		pop	ds
-		jnc	good
-		mov	errno,ax
-		mov flag,0
-		jmp End
+		__asm
+		{
+			push	ds
+			mov	bx,[handle]
+			mov	cx,[WORD PTR length]
+			mov	dx,[WORD PTR source]
+			mov	ds,[WORD PTR source+2]
+			mov	ah,0x40			// WRITE w/handle
+			int	21h
+			pop	ds
+			jnc	good
+			mov	errno,ax
+			mov flag,0
+			jmp End
 good:
-		cmp	ax,[WORD PTR length]
-		je	done
-	//errno = ENOMEM;				// user manager knows this is bad write
-		mov	flag,0
-		jmp End
+			cmp	ax,[WORD PTR length]
+			je	done
+			//errno = ENOMEM;				// user manager knows this is bad write
+			mov	flag,0
+			jmp End
 done:
-		mov	flag,1
+			mov	flag,1
 End:
-	}
+		}
 	return flag;
+	}else return 0;
 }
 
 
