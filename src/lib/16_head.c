@@ -163,3 +163,66 @@ US_CheckParm(char *parm,char **strings)
 	}
 	return(-1);
 }
+
+/*
+==========================
+=
+= Quit
+=
+==========================
+*/
+
+/*void Quit(char *error, ...)
+{
+	short exit_code=0;
+	unsigned	finscreen;
+
+	va_list ap;
+
+	va_start(ap,error);
+
+#ifndef CATALOG
+	if (!error)
+	{
+		CA_SetAllPurge ();
+		CA_CacheGrChunk (PIRACY);
+		finscreen = (unsigned)grsegs[PIRACY];
+	}
+#endif
+
+	//ShutdownId ();
+
+	if (error && *error)
+	{
+		vprintf(error,ap);
+		exit_code = 1;
+	}
+#ifndef CATALOG
+	else
+	if (!NoWait)
+	{
+		movedata (finscreen,0,0xb800,0,4000);
+		bioskey (0);
+	}
+#endif
+
+	va_end(ap);
+
+#ifndef CATALOG
+	if (!error)
+	{
+		_argc = 2;
+		_argv[1] = "LAST.SHL";
+		_argv[2] = "ENDSCN.SCN";
+		_argv[3] = NULL;
+		if (execv("LOADSCN.EXE", _argv) == -1)
+		{
+			clrscr();
+			puts("Couldn't find executable LOADSCN.EXE.\n");
+			exit(1);
+		}
+	}
+#endif
+
+	exit(exit_code);
+}*/

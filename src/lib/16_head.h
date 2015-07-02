@@ -142,5 +142,6 @@ void* AllocateLargestFreeBlock(size_t* Size);
 size_t GetFreeSize(void);
 long int filesize(FILE *fp);
 int US_CheckParm(char *parm,char **strings);
+//void Quit(char *error, ...);
 
 #endif/*_LIBHEAD_H_*/

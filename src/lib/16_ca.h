@@ -18,16 +18,8 @@
 
 // ID_CA.H
 
-#ifndef __TYPES__
-#include "ID_TYPES.H"
-#endif
-
 #ifndef __ID_MM__
 #include "ID_MM.H"
-#endif
-
-#ifndef __ID_GLOB__
-#include "ID_GLOB.H"
 #endif
 
 #define __ID_CA__
@@ -38,26 +30,26 @@
 //#define NOGRAPHICS
 //#define NOAUDIO
 
-#define MAPHEADERLINKED
-#define GRHEADERLINKED
-#define AUDIOHEADERLINKED
+//#define MAPHEADERLINKED
+//#define GRHEADERLINKED
+//#define AUDIOHEADERLINKED
 
-#define NUMMAPS		39
-#define MAPPLANES		3
+//#define NUMMAPS		39
+//#define MAPPLANES		3
 
 //===========================================================================
 
-typedef	struct
+/*typedef	struct
 {
 	long		planestart[3];
 	unsigned	planelength[3];
 	unsigned	width,height;
 	char		name[16];
-} maptype;
+} maptype;*/
 
 //===========================================================================
 
-extern	byte 		_seg	*tinf;
+/*extern	byte 		_seg	*tinf;
 extern	int			mapon;
 
 extern	unsigned	_seg	*mapsegs[3];
@@ -70,7 +62,7 @@ extern	byte		ca_levelbit,ca_levelnum;
 
 extern	char		*titleptr[8];
 
-extern	int			profilehandle,debughandle;
+extern	int			profilehandle,debughandle;*/
 
 //
 // hooks for custom cache dialogs
@@ -83,8 +75,7 @@ extern	void	(*finishcachebox)	(void);
 
 // just for the score box reshifting
 
-void CAL_ShiftSprite (unsigned segment,unsigned source,unsigned dest,
-	unsigned width, unsigned height, unsigned pixshift, boolean domask);
+//void CAL_ShiftSprite (unsigned segment,unsigned source,unsigned dest,unsigned width, unsigned height, unsigned pixshift, boolean domask);
 
 //===========================================================================
 
@@ -95,19 +86,17 @@ boolean CA_FarWrite (int handle, byte far *source, long length);
 boolean CA_ReadFile (char *filename, memptr *ptr);
 boolean CA_LoadFile (char *filename, memptr *ptr);
 
-long CA_RLEWCompress (unsigned huge *source, long length, unsigned huge *dest,
-  unsigned rlewtag);
+long CA_RLEWCompress (unsigned huge *source, long length, unsigned huge *dest,unsigned rlewtag);
 
-void CA_RLEWexpand (unsigned huge *source, unsigned huge *dest,long length,
-  unsigned rlewtag);
+void CA_RLEWexpand (unsigned huge *source, unsigned huge *dest,long length,unsigned rlewtag);
 
 void CA_Startup (void);
 void CA_Shutdown (void);
 
-void CA_CacheAudioChunk (int chunk);
-void CA_LoadAllSounds (void);
+//void CA_CacheAudioChunk (int chunk);
+//void CA_LoadAllSounds (void);
 
-void CA_UpLevel (void);
+/*void CA_UpLevel (void);
 void CA_DownLevel (void);
 
 void CA_SetAllPurge (void);
@@ -120,5 +109,5 @@ void CA_ClearAllMarks (void);
 void CA_CacheGrChunk (int chunk);
 void CA_CacheMap (int mapnum);
 
-void CA_CacheMarks (char *title);
+void CA_CacheMarks (char *title);*/
 

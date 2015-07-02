@@ -30,14 +30,10 @@ loaded into the data segment
 =============================================================================
 */
 
-#include "ID_HEADS.H"
-#pragma hdrstop
-#include "ID_STRS.H"
+#include "src/lib/16_head.h"
+//#include "ID_STRS.H"
 
-#pragma warn -pro
-#pragma warn -use
-
-#define THREEBYTEGRSTARTS
+//#define THREEBYTEGRSTARTS
 
 /*
 =============================================================================
@@ -53,12 +49,12 @@ typedef struct
 } huffnode;
 
 
-typedef struct
+/*typedef struct
 {
 	unsigned	RLEWtag;
 	long		headeroffsets[100];
 	byte		tileinfo[];
-} mapfiletype;
+} mapfiletype;*/
 
 
 /*
@@ -69,7 +65,7 @@ typedef struct
 =============================================================================
 */
 
-byte 		_seg	*tinf;
+/*byte 		_seg	*tinf;
 int			mapon;
 
 unsigned	_seg	*mapsegs[3];
@@ -80,7 +76,7 @@ void		_seg	*grsegs[NUMCHUNKS];
 byte		far	grneeded[NUMCHUNKS];
 byte		ca_levelbit,ca_levelnum;
 
-int			profilehandle,debughandle;
+int			profilehandle,debughandle;*/
 
 void	(*drawcachebox)		(char *title, unsigned numcache);
 void	(*updatecachebox)	(void);
@@ -224,7 +220,7 @@ void CAL_GetGrChunkLength (int chunk)
 boolean CA_FarRead (int handle, byte far *dest, long length)
 {
 	if (length>0xffffl)
-		Quit ("CA_FarRead doesn't support 64K reads yet!");
+		printf("CA_FarRead doesn't support 64K reads yet!\n");
 
 asm		push	ds
 asm		mov	bx,[handle]
@@ -364,7 +360,7 @@ boolean CA_LoadFile (char *filename, memptr *ptr)
 ===============
 */
 
-void CAL_OptimizeNodes (huffnode *table)
+void CAL_OptimizeNodes(huffnode *table)
 {
   huffnode *node;
   int i;
@@ -2187,4 +2183,3 @@ void CA_CacheMarks (char *title)
 		if (dialog && finishcachebox)
 			finishcachebox();
 }
-
