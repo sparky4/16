@@ -27,13 +27,16 @@
 void
 main(int argc, char *argv[])
 {
+	mminfo_t mm;
+	mminfotype mmi;
+	mm.mmstarted=0;
 	printf("start!\n");
-	MM_Startup();
+	MM_Startup(&mm, &mmi);
 	printf("done!\n");
 	printf("&main()=%Fp\n", *argv[0]);
-	MM_ShowMemory();
-	MM_Report();
+	MM_ShowMemory(&mm);
+	MM_Report(&mm, &mmi);
 	printf("stop!\n");
-	MM_Shutdown();
+	MM_Shutdown(&mm);
 	printf("done!\n");
 }

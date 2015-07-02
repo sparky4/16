@@ -85,18 +85,18 @@ typedef void __based(__self) * memptr; //__based(seg) * memptr;
 
 typedef struct
 {
-	dword	nearheap,farheap,EMSmem,XMSmem,mainmem;
-	boolean		mmstarted, bombonerror, mmerror;
+	dword	nearheap,farheap/*,hugeheap*/,EMSmem,XMSmem,mainmem;
 } mminfotype;
 
 //==========================================================================
 
 /*extern	mminfotype	mminfo;
 extern	memptr		bufferseg;
-extern	boolean		mmerror;
+extern	boolean		mmerror;*/
 
 extern	void		(* beforesort) (void);
-extern	void		(* aftersort) (void);*/
+extern	void		(* aftersort) (void);
+extern void		(* XMSaddr) (void);		// far pointer to XMS driver
 
 //==========================================================================
 
@@ -124,9 +124,23 @@ typedef struct mmblockstruct
 } mmblocktype;
 
 
+typedef struct
+{
+	memptr bufferseg;
+	boolean		mmstarted, bombonerror, mmerror;
+	//void	huge *hugeheap;
+	void huge/*far*/	*farheap;
+	void		*nearheap;
+	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
+	unsigned int EMSVer;
+	unsigned	numUMBs,UMBbase[MAXUMBS];
+	mmblocktype	huge mmblocks[MAXBLOCKS],huge *mmhead,huge *mmfree,huge *mmrover,huge *mmnew;
+} mminfo_t;
+
+
 //#define GETNEWBLOCK {if(!(mmnew=mmfree))Quit("MM_GETNEWBLOCK: No free blocks!");mmfree=mmfree->next;}
-#define GETNEWBLOCK {if(!mmfree)MML_ClearBlock();mmnew=mmfree;mmfree=mmfree->next;}
-#define FREEBLOCK(x) {*x->useptr=NULL;x->next=mmfree;mmfree=x;}
+//#define GETNEWBLOCK {if(!mmfree)MML_ClearBlock();mmnew=mmfree;mmfree=mmfree->next;}
+//#define FREEBLOCK(x) {*x->useptr=NULL;x->next=mmfree;mmfree=x;}
 
 /*
 =============================================================================
@@ -167,39 +181,32 @@ static unsigned	numUMBs,UMBbase[MAXUMBS];*/
 
 //==========================================================================
 
-void MM_Startup (void);
-void MM_Shutdown (void);
+boolean MML_CheckForEMS(void);
+unsigned MML_SetupEMS(mminfo_t *mm);
+void MML_ShutdownEMS(mminfo_t *mm);
+unsigned MM_MapEMS(mminfo_t *mm);
+boolean MML_CheckForXMS(mminfo_t *mm);
+void MML_SetupXMS(mminfo_t *mm, mminfotype *mmi);
+void MML_ShutdownXMS(mminfo_t *mm);
+void MML_UseSpace(unsigned segstart, unsigned seglength, mminfo_t *mm);
+void MML_ClearBlock(mminfo_t *mm);
 
-void MM_GetPtr (memptr *baseptr,dword size);
-void MM_FreePtr (memptr *baseptr);
+void MM_Startup(mminfo_t *mm, mminfotype *mmi);
+void MM_Shutdown(mminfo_t *mm);
 
-void MM_SetPurge (memptr *baseptr, int purge);
-void MM_SetLock (memptr *baseptr, boolean locked);
-void MM_SortMem (void);
-
-void MM_ShowMemory (void);
-
-dword MM_UnusedMemory (void);
-dword MM_TotalFree (void);
-void MM_Report(void);
-//int MM_EMSVer(void);
-
-void MM_BombOnError (boolean bomb);
-
-//==========================================================================
-
-//
-// local prototypes
-//
-
-boolean		MML_CheckForEMS (void);
-unsigned		MML_SetupEMS (void);
-void 		MML_ShutdownEMS (void);
-unsigned 		MM_MapEMS (void);
-boolean 	MML_CheckForXMS (void);
-void 		MML_ShutdownXMS (void);
-void		MML_UseSpace (unsigned segstart, unsigned seglength);
-void 		MML_ClearBlock (void);
+void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi);
+void MM_FreePtr(memptr *baseptr, mminfo_t *mm);
+void MM_SetPurge(memptr *baseptr, int purge, mminfo_t *mm);
+void MM_SetLock(memptr *baseptr, boolean locked, mminfo_t *mm);
+void MM_SortMem(mminfo_t *mm);
+void MM_ShowMemory(mminfo_t *mm);
+dword MM_UnusedMemory(mminfo_t *mm);
+dword MM_TotalFree(mminfo_t *mm);
+void MM_Report(mminfo_t *mm, mminfotype *mmi);
+int MM_EMSVer(void);
+void MM_BombOnError(boolean bomb, mminfo_t *mm);
+void MM_GetNewBlock(mminfo_t *mm);
+void MM_FreeBlock(mmblocktype *x, mminfo_t *mm);
 
 //==========================================================================
 
