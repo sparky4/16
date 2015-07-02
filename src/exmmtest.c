@@ -32,6 +32,7 @@ main(int argc, char *argv[])
 	memptr	bigbuffer;
 	__segment segu;
 	char *bakapee;
+	word baka;
 
 	bakapee = malloc(64);
 //	memset(bakapee, 0, 64);
@@ -44,7 +45,8 @@ main(int argc, char *argv[])
 	MM_Startup(&mm, &mmi);
 	printf("done!\n");
 	printf("&main()=%Fp\n", *argv[0]);
-	if(CA_LoadFile(bakapee, &bigbuffer, &mm, &mmi)) printf("\nyay!\n");
+	if(CA_LoadFile(bakapee, &bigbuffer, &mm, &mmi)) baka=1;
+	else baka=0;
 	//MM_GetPtr(&bigbuffer, mmi.nearheap, &mm, &mmi);
 	//hmm functions in cache system use the buffered stuff
 	printf("size of big buffer~=%ul\n", _bmsize(segu, bigbuffer));
@@ -55,4 +57,6 @@ main(int argc, char *argv[])
 	MM_Shutdown(&mm);
 	printf("done!\n");
 	free(bakapee);
+	if(baka) printf("\nyay!\n");
+	else printf("\npoo!\n");
 }
