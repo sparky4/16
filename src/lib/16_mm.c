@@ -1033,7 +1033,7 @@ void MM_ShowMemory(mminfo_t *mm)
 printf("Location:");
 printf("%x\t", scan->start);
 strcpy (scratch,"Size:");
-ltoa ((long)scan->length*16,str,10);
+ltoa ((dword)scan->length*16,str,10);
 strcat (scratch,str);
 strcat (scratch,"\tOwner:0x");
 owner = (unsigned)scan->useptr;
