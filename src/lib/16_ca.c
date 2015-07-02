@@ -30,7 +30,7 @@ loaded into the data segment
 =============================================================================
 */
 
-#include "src/lib/16_head.h"
+#include "src/lib/16_ca.h"
 //#include "ID_STRS.H"
 
 //#define THREEBYTEGRSTARTS
@@ -129,12 +129,11 @@ SDMode		oldsoundmode;
 void	CAL_DialogDraw (char *title,unsigned numcache);
 void	CAL_DialogUpdate (void);
 void	CAL_DialogFinish (void);*/
-void	CAL_CarmackExpand (unsigned far *source, unsigned far *dest,
-		unsigned length);
+//void	CAL_CarmackExpand (unsigned far *source, unsigned far *dest,unsigned length);
 
 
-/*#ifdef THREEBYTEGRSTARTS
-#define FILEPOSSIZE	3*/
+/*++++#ifdef THREEBYTEGRSTARTS
+#define FILEPOSSIZE	3
 //#define	GRFILEPOS(c) (*(long far *)(((byte far *)grstarts)+(c)*3)&0xffffff)
 long GRFILEPOS(int c)
 {
@@ -155,7 +154,7 @@ long GRFILEPOS(int c)
 #else
 #define FILEPOSSIZE	4
 #define	GRFILEPOS(c) (grstarts[c])
-#endif
+#endif*/
 
 /*
 =============================================================================
@@ -174,17 +173,17 @@ long GRFILEPOS(int c)
 =
 ============================
 */
-
-void CA_OpenDebug (void)
+/*++++
+void CA_OpenDebug(void)
 {
-	unlink ("DEBUG.TXT");
+	unlink("DEBUG.TXT");
 	debughandle = open("DEBUG.TXT", O_CREAT | O_WRONLY | O_TEXT);
 }
 
-void CA_CloseDebug (void)
+void CA_CloseDebug(void)
 {
-	close (debughandle);
-}
+	close debughandle);
+}*/
 
 
 
@@ -198,13 +197,13 @@ void CA_CloseDebug (void)
 =
 ============================
 */
-
+/*++++
 void CAL_GetGrChunkLength (int chunk)
 {
 	lseek(grhandle,GRFILEPOS(chunk),SEEK_SET);
 	read(grhandle,&chunkexplen,sizeof(chunkexplen));
 	chunkcomplen = GRFILEPOS(chunk+1)-GRFILEPOS(chunk)-4;
-}
+}*/
 
 
 /*
@@ -217,9 +216,9 @@ void CAL_GetGrChunkLength (int chunk)
 ==========================
 */
 
-boolean CA_FarRead (int handle, byte far *dest, long length)
+boolean CA_FarRead (int handle, byte far *dest, dword length)
 {
-	union REGS CPURegs;
+	boolean flag;
 	if (length>0xffffl)
 		printf("CA_FarRead doesn't support 64K reads yet!\n");
 
@@ -234,18 +233,20 @@ boolean CA_FarRead (int handle, byte far *dest, long length)
 		int	21h
 		pop	ds
 		jnc	good
-	}
-	errno = CPURegs.x.ax;
-	return	false;
-	__asm
-	{
+		mov	errno,ax
+		mov	flag,0
+		jmp End
 good:
 		cmp	ax,[WORD PTR length]
 		je	done
-		errno = EINVFMT;			// user manager knows this is bad read
-	return	false;
+//		errno = EINVFMT;			// user manager knows this is bad read
+		mov	flag,0
+		jmp End
 done:
-	return	true;
+		mov	flag,1
+End:
+	}
+	return flag;
 }
 
 
@@ -259,30 +260,37 @@ done:
 ==========================
 */
 
-boolean CA_FarWrite (int handle, byte far *source, long length)
+boolean CA_FarWrite (int handle, byte far *source, dword length)
 {
+	boolean flag;
 	if (length>0xffffl)
-		Quit ("CA_FarWrite doesn't support 64K reads yet!");
+		printf("CA_FarWrite doesn't support 64K reads yet!\n");
 
-asm		push	ds
-asm		mov	bx,[handle]
-asm		mov	cx,[WORD PTR length]
-asm		mov	dx,[WORD PTR source]
-asm		mov	ds,[WORD PTR source+2]
-asm		mov	ah,0x40			// WRITE w/handle
-asm		int	21h
-asm		pop	ds
-asm		jnc	good
-	errno = _AX;
-	return	false;
+	__asm
+	{
+		push	ds
+		mov	bx,[handle]
+		mov	cx,[WORD PTR length]
+		mov	dx,[WORD PTR source]
+		mov	ds,[WORD PTR source+2]
+		mov	ah,0x40			// WRITE w/handle
+		int	21h
+		pop	ds
+		jnc	good
+		mov	errno,ax
+		mov flag,0
+		jmp End
 good:
-asm		cmp	ax,[WORD PTR length]
-asm		je	done
-	errno = ENOMEM;				// user manager knows this is bad write
-	return	false;
-
+		cmp	ax,[WORD PTR length]
+		je	done
+	//errno = ENOMEM;				// user manager knows this is bad write
+		mov	flag,0
+		jmp End
 done:
-	return	true;
+		mov	flag,1
+End:
+	}
+	return flag;
 }
 
 
@@ -296,21 +304,21 @@ done:
 ==========================
 */
 
-boolean CA_ReadFile (char *filename, memptr *ptr)
+boolean CA_ReadFile(char *filename, memptr *ptr)
 {
 	int handle;
-	long size;
+	dword size;
 
-	if ((handle = open(filename,O_RDONLY | O_BINARY, S_IREAD)) == -1)
+	if((handle = open(filename,O_RDONLY | O_BINARY, S_IREAD)) == -1)
 		return false;
 
-	size = filelength (handle);
-	if (!CA_FarRead (handle,*ptr,size))
+	size = filelength(handle);
+	if(!CA_FarRead(handle,*ptr,size))
 	{
-		close (handle);
+		close(handle);
 		return false;
 	}
-	close (handle);
+	close(handle);
 	return true;
 }
 
@@ -326,22 +334,22 @@ boolean CA_ReadFile (char *filename, memptr *ptr)
 ==========================
 */
 
-boolean CA_LoadFile (char *filename, memptr *ptr)
+boolean CA_LoadFile(char *filename, memptr *ptr)
 {
 	int handle;
 	long size;
 
-	if ((handle = open(filename,O_RDONLY | O_BINARY, S_IREAD)) == -1)
+	if((handle = open(filename,O_RDONLY | O_BINARY, S_IREAD)) == -1)
 		return false;
 
 	size = filelength (handle);
 	MM_GetPtr (ptr,size);
-	if (!CA_FarRead (handle,*ptr,size))
+	if(!CA_FarRead (handle,*ptr,size))
 	{
 		close (handle);
 		return false;
 	}
-	close (handle);
+	close(handle);
 	return true;
 }
 
@@ -395,7 +403,7 @@ void CAL_OptimizeNodes(huffnode *table)
 ======================
 */
 
-void CAL_HuffExpand (byte huge *source, byte huge *dest,
+/*++++void CAL_HuffExpand (byte huge *source, byte huge *dest,
   long length,huffnode *hufftable)
 {
 //  unsigned bit,byte,node,code;
@@ -429,25 +437,27 @@ void CAL_HuffExpand (byte huge *source, byte huge *dest,
 // expand less than 64k of data
 //--------------------------
 
-asm mov	bx,[headptr]
+	__asm
+	{
+		mov	bx,[headptr]
 
-asm	mov	si,[sourceoff]
-asm	mov	di,[destoff]
-asm	mov	es,[destseg]
-asm	mov	ds,[sourceseg]
-asm	mov	ax,[endoff]
+		mov	si,[sourceoff]
+		mov	di,[destoff]
+		mov	es,[destseg]
+		mov	ds,[sourceseg]
+		mov	ax,[endoff]
 
-asm	mov	ch,[si]				// load first byte
-asm	inc	si
-asm	mov	cl,1
+		mov	ch,[si]				// load first byte
+		inc	si
+		mov	cl,1
 
 expandshort:
-asm	test	ch,cl			// bit set?
-asm	jnz	bit1short
-asm	mov	dx,[ss:bx]			// take bit0 path from node
-asm	shl	cl,1				// advance to next bit position
-asm	jc	newbyteshort
-asm	jnc	sourceupshort
+		test	ch,cl			// bit set?
+		jnz	bit1short
+		mov	dx,[ss:bx]			// take bit0 path from node
+		shl	cl,1				// advance to next bit position
+		jc	newbyteshort
+		jnc	sourceupshort
 
 bit1short:
 asm	mov	dx,[ss:bx+2]		// take bit1 path
@@ -473,6 +483,7 @@ asm	mov	bx,[headptr]		// back to the head node for next bit
 asm	cmp	di,ax				// done?
 asm	jne	expandshort
 	}
+	}
 	else
 	{
 
@@ -482,6 +493,8 @@ asm	jne	expandshort
 
   length--;
 
+	__asm
+	{
 asm mov	bx,[headptr]
 asm	mov	cl,1
 
@@ -536,13 +549,16 @@ asm	sub	[WORD PTR ss:length],1
 asm	jnc	expand
 asm  	dec	[WORD PTR ss:length+2]
 asm	jns	expand		// when length = ffff ffff, done
-
+	}
 	}
 
-asm	mov	ax,ss
-asm	mov	ds,ax
+	__asm
+	{
+		mov	ax,ss
+		mov	ds,ax
+	}
 
-}
+}*/
 
 
 /*
@@ -554,7 +570,7 @@ asm	mov	ds,ax
 =
 ======================
 */
-
+/*++++
 #define NEARTAG	0xa7
 #define FARTAG	0xa8
 
@@ -615,7 +631,7 @@ void CAL_CarmackExpand (unsigned far *source, unsigned far *dest, unsigned lengt
 		}
 	}
 }
-
+*/
 
 
 /*
@@ -625,7 +641,7 @@ void CAL_CarmackExpand (unsigned far *source, unsigned far *dest, unsigned lengt
 =
 ======================
 */
-
+/*++++
 long CA_RLEWCompress (unsigned huge *source, long length, unsigned huge *dest,
   unsigned rlewtag)
 {
@@ -672,7 +688,7 @@ long CA_RLEWCompress (unsigned huge *source, long length, unsigned huge *dest,
   complength = 2*(dest-start);
   return complength;
 }
-
+*/
 
 /*
 ======================
@@ -682,7 +698,7 @@ long CA_RLEWCompress (unsigned huge *source, long length, unsigned huge *dest,
 =
 ======================
 */
-
+/*++++
 void CA_RLEWexpand (unsigned huge *source, unsigned huge *dest,long length,
   unsigned rlewtag)
 {
@@ -790,7 +806,7 @@ asm	mov	ax,ss
 asm	mov	ds,ax
 
 }
-
+*/
 
 
 /*
@@ -809,7 +825,7 @@ asm	mov	ds,ax
 ======================
 */
 
-void CAL_SetupGrFile (void)
+/*void CAL_SetupGrFile (void)
 {
 	int handle;
 	memptr compseg;
@@ -894,7 +910,7 @@ void CAL_SetupGrFile (void)
 	MM_FreePtr(&compseg);
 #endif
 
-}
+}*/
 
 //==========================================================================
 
@@ -907,7 +923,7 @@ void CAL_SetupGrFile (void)
 ======================
 */
 
-void CAL_SetupMapFile (void)
+/*void CAL_SetupMapFile (void)
 {
 	int handle;
 	long length;
@@ -941,7 +957,7 @@ void CAL_SetupMapFile (void)
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
 		Quit ("Can't open MAPTEMP."EXT"!");
 #endif
-}
+}*/
 
 //==========================================================================
 
@@ -954,7 +970,7 @@ void CAL_SetupMapFile (void)
 ======================
 */
 
-void CAL_SetupAudioFile (void)
+/*void CAL_SetupAudioFile (void)
 {
 	int handle;
 	long length;
@@ -988,7 +1004,7 @@ void CAL_SetupAudioFile (void)
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
 		Quit ("Can't open AUDIO."EXT"!");
 #endif
-}
+}*/
 
 //==========================================================================
 
@@ -1003,22 +1019,22 @@ void CAL_SetupAudioFile (void)
 ======================
 */
 
-void CA_Startup (void)
+void CA_Startup(void)
 {
 #ifdef PROFILE
-	unlink ("PROFILE.TXT");
+	unlink("PROFILE.TXT");
 	profilehandle = open("PROFILE.TXT", O_CREAT | O_WRONLY | O_TEXT);
 #endif
-
+/*++++
 // MDM begin - (GAMERS EDGE)
 //
-	if (!FindFile("AUDIO."EXT,NULL,2))
+	if(!FindFile("AUDIO."EXT,NULL,2))
 		Quit("CA_Startup(): Can't find audio files.");
 //
 // MDM end
 
 #ifndef NOAUDIO
-	CAL_SetupAudioFile ();
+	CAL_SetupAudioFile();
 #endif
 
 // MDM begin - (GAMERS EDGE)
@@ -1049,7 +1065,7 @@ void CA_Startup (void)
 
 	drawcachebox	= CAL_DialogDraw;
 	updatecachebox  = CAL_DialogUpdate;
-	finishcachebox	= CAL_DialogFinish;
+	finishcachebox	= CAL_DialogFinish;*/
 }
 
 //==========================================================================
@@ -1065,15 +1081,15 @@ void CA_Startup (void)
 ======================
 */
 
-void CA_Shutdown (void)
+void CA_Shutdown(void)
 {
 #ifdef PROFILE
-	close (profilehandle);
+	close(profilehandle);
 #endif
-
-	close (maphandle);
-	close (grhandle);
-	close (audiohandle);
+/*++++
+	close(maphandle);
+	close(grhandle);
+	close(audiohandle);*/
 }
 
 //===========================================================================
@@ -1085,7 +1101,7 @@ void CA_Shutdown (void)
 =
 ======================
 */
-
+/*++++
 void CA_CacheAudioChunk (int chunk)
 {
 	long	pos,compressed;
@@ -1153,7 +1169,7 @@ done:
 	if (compressed>BUFFERSIZE)
 		MM_FreePtr(&bigbufferseg);
 #endif
-}
+}*/
 
 //===========================================================================
 
@@ -1166,7 +1182,7 @@ done:
 =
 ======================
 */
-
+/*++++
 void CA_LoadAllSounds (void)
 {
 	unsigned	start,i;
@@ -1205,11 +1221,11 @@ cachein:
 		CA_CacheAudioChunk (start);
 
 	oldsoundmode = SoundMode;
-}
+}*/
 
 //===========================================================================
 
-#if GRMODE == EGAGR
+//++++#if GRMODE == EGAGR
 
 /*
 ======================
@@ -1220,7 +1236,7 @@ cachein:
 =
 ======================
 */
-
+/*++++
 unsigned	static	sheight,swidth;
 boolean static dothemask;
 
@@ -1317,7 +1333,7 @@ asm	mov	ds,ax
 }
 
 #endif
-
+*/
 //===========================================================================
 
 /*
@@ -1329,7 +1345,7 @@ asm	mov	ds,ax
 =
 ======================
 */
-
+/*++++
 void CAL_CacheSprite (int chunk, byte far *compressed)
 {
 	int i;
@@ -1447,7 +1463,7 @@ void CAL_CacheSprite (int chunk, byte far *compressed)
 	}
 
 #endif
-}
+}*/
 
 //===========================================================================
 
@@ -1461,7 +1477,7 @@ void CAL_CacheSprite (int chunk, byte far *compressed)
 =
 ======================
 */
-
+/*++++
 void CAL_ExpandGrChunk (int chunk, byte far *source)
 {
 	long	expanded;
@@ -1519,7 +1535,7 @@ void CAL_ExpandGrChunk (int chunk, byte far *source)
 		CAL_HuffExpand (source,grsegs[chunk],expanded,grhuffman);
 	}
 }
-
+*/
 
 /*
 ======================
@@ -1530,7 +1546,7 @@ void CAL_ExpandGrChunk (int chunk, byte far *source)
 =
 ======================
 */
-
+/*++++
 void CAL_ReadGrChunk (int chunk)
 {
 	long	pos,compressed;
@@ -1574,7 +1590,7 @@ void CAL_ReadGrChunk (int chunk)
 	if (compressed>BUFFERSIZE)
 		MM_FreePtr(&bigbufferseg);
 }
-
+*/
 /*
 ======================
 =
@@ -1584,7 +1600,7 @@ void CAL_ReadGrChunk (int chunk)
 =
 ======================
 */
-
+/*++++
 void CA_CacheGrChunk (int chunk)
 {
 	long	pos,compressed;
@@ -1640,7 +1656,7 @@ void CA_CacheGrChunk (int chunk)
 	if (compressed>BUFFERSIZE)
 		MM_FreePtr(&bigbufferseg);
 }
-
+*/
 
 
 //==========================================================================
@@ -1652,7 +1668,7 @@ void CA_CacheGrChunk (int chunk)
 =
 ======================
 */
-
+/*++++
 void CA_CacheMap (int mapnum)
 {
 	long	pos,compressed;
@@ -1759,7 +1775,7 @@ void CA_CacheMap (int mapnum)
 		if (compressed>BUFFERSIZE)
 			MM_FreePtr(&bigbufferseg);
 	}
-}
+}*/
 
 //===========================================================================
 
@@ -1773,7 +1789,7 @@ void CA_CacheMap (int mapnum)
 =
 ======================
 */
-
+/*++++
 void CA_UpLevel (void)
 {
 	if (ca_levelnum==7)
@@ -1781,7 +1797,7 @@ void CA_UpLevel (void)
 
 	ca_levelbit<<=1;
 	ca_levelnum++;
-}
+}*/
 
 //===========================================================================
 
@@ -1795,7 +1811,7 @@ void CA_UpLevel (void)
 =
 ======================
 */
-
+/*++
 void CA_DownLevel (void)
 {
 	if (!ca_levelnum)
@@ -1803,7 +1819,7 @@ void CA_DownLevel (void)
 	ca_levelbit>>=1;
 	ca_levelnum--;
 	CA_CacheMarks(NULL);
-}
+}*/
 
 //===========================================================================
 
@@ -1816,7 +1832,7 @@ void CA_DownLevel (void)
 =
 ======================
 */
-
+/*
 void CA_ClearMarks (void)
 {
 	int i;
@@ -1824,7 +1840,7 @@ void CA_ClearMarks (void)
 	for (i=0;i<NUMCHUNKS;i++)
 		grneeded[i]&=~ca_levelbit;
 }
-
+*/
 
 //===========================================================================
 
@@ -1837,14 +1853,14 @@ void CA_ClearMarks (void)
 =
 ======================
 */
-
+/*
 void CA_ClearAllMarks (void)
 {
 	_fmemset (grneeded,0,sizeof(grneeded));
 	ca_levelbit = 1;
 	ca_levelnum = 0;
 }
-
+*/
 
 //===========================================================================
 
@@ -1855,7 +1871,7 @@ void CA_ClearAllMarks (void)
 =
 ======================
 */
-
+/*++++
 void CA_FreeGraphics (void)
 {
 	int	i;
@@ -1864,7 +1880,7 @@ void CA_FreeGraphics (void)
 		if (grsegs[i])
 			MM_SetPurge (&(memptr)grsegs[i],3);
 }
-
+*/
 
 /*
 ======================
@@ -1875,7 +1891,7 @@ void CA_FreeGraphics (void)
 =
 ======================
 */
-
+/*++++++++
 void CA_SetAllPurge (void)
 {
 	int i;
@@ -1922,7 +1938,7 @@ void CA_SetGrPurge (void)
 	for (i=0;i<NUMCHUNKS;i++)
 		if (grsegs[i])
 			MM_SetPurge (&(memptr)grsegs[i],3);
-}
+}*/
 
 
 //===========================================================================
@@ -1935,7 +1951,7 @@ void CA_SetGrPurge (void)
 =
 ======================
 */
-
+/*
 #define NUMBARS	(17l*8)
 #define BARSTEP	8
 
@@ -1985,7 +2001,7 @@ void	CAL_DialogDraw (char *title,unsigned numcache)
 
 	VW_UpdateScreen();
 }
-
+*/
 
 /*
 ======================
@@ -1994,7 +2010,7 @@ void	CAL_DialogDraw (char *title,unsigned numcache)
 =
 ======================
 */
-
+/*
 void	CAL_DialogUpdate (void)
 {
 	unsigned	x,xh;
@@ -2013,7 +2029,7 @@ void	CAL_DialogUpdate (void)
 		lastx = xh;
 		VW_UpdateScreen();
 	}
-}
+}*/
 
 /*
 ======================
@@ -2022,7 +2038,7 @@ void	CAL_DialogUpdate (void)
 =
 ======================
 */
-
+/*
 void	CAL_DialogFinish (void)
 {
 	unsigned	x,xh;
@@ -2037,7 +2053,7 @@ void	CAL_DialogFinish (void)
 #endif
 	VW_UpdateScreen();
 
-}
+}*/
 
 //===========================================================================
 
@@ -2047,7 +2063,7 @@ void	CAL_DialogFinish (void)
 = CA_CacheMarks
 =
 ======================
-*/
+*//*
 #define MAXEMPTYREAD	1024
 
 void CA_CacheMarks (char *title)
@@ -2188,4 +2204,4 @@ void CA_CacheMarks (char *title)
 //
 		if (dialog && finishcachebox)
 			finishcachebox();
-}
+}*/

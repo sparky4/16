@@ -17,12 +17,16 @@
  */
 
 // ID_CA.H
+#ifndef __16_CA__
+#define __16_CA__
 
-#ifndef __ID_MM__
-#include "ID_MM.H"
+#include <stdio.h>
+#include <stdlib.h>
+
+#ifndef __16_MM__
+#include "src/lib/16_head.h"
+#include "src/lib/16_mm.h"
 #endif
-
-#define __ID_CA__
 
 //===========================================================================
 
@@ -81,14 +85,14 @@ extern	void	(*finishcachebox)	(void);
 
 void CA_OpenDebug (void);
 void CA_CloseDebug (void);
-boolean CA_FarRead (int handle, byte far *dest, long length);
-boolean CA_FarWrite (int handle, byte far *source, long length);
+boolean CA_FarRead (int handle, byte far *dest, dword length);
+boolean CA_FarWrite (int handle, byte far *source, dword length);
 boolean CA_ReadFile (char *filename, memptr *ptr);
 boolean CA_LoadFile (char *filename, memptr *ptr);
 
-long CA_RLEWCompress (unsigned huge *source, long length, unsigned huge *dest,unsigned rlewtag);
+//long CA_RLEWCompress (unsigned huge *source, long length, unsigned huge *dest,unsigned rlewtag);
 
-void CA_RLEWexpand (unsigned huge *source, unsigned huge *dest,long length,unsigned rlewtag);
+//void CA_RLEWexpand (unsigned huge *source, unsigned huge *dest,long length,unsigned rlewtag);
 
 void CA_Startup (void);
 void CA_Shutdown (void);
@@ -110,4 +114,4 @@ void CA_CacheGrChunk (int chunk);
 void CA_CacheMap (int mapnum);
 
 void CA_CacheMarks (char *title);*/
-
+#endif

@@ -22,6 +22,7 @@
 /*
 	input test
 */
+#include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 
 void
