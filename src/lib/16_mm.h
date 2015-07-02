@@ -23,6 +23,7 @@
 
 #include <string.h>
 #include <malloc.h>
+//#include <bios.h>
 #include "src/lib/16_head.h"
 //++++mh	#include "src/lib/16_in.h"
 

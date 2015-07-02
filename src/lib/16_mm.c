@@ -511,7 +511,7 @@ void MML_ClearBlock(mminfo_t *mm)
 void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 {
 	int i;
-	dword length;
+	dword length;//,farlen;
 	void huge	*start;
 	unsigned	segstart,seglength,endfree;
 
@@ -542,6 +542,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	mm->mmnew->next = NULL;
 	mm->mmrover = mm->mmhead;
 
+//	farlen=_bios_memsize()*1024;
 
 //
 // get all available near conventional memory segments
@@ -564,6 +565,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //----	length=farcoreleft();
 	_fheapgrow();
 	length=_memavl();
+	//length-=farlen;
 	start = mm->farheap = halloc(length, 1);
 	//start = mm->farheap = _fmalloc(length);
 	length -= 16-(FP_OFF(start)&15);
