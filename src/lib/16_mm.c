@@ -610,13 +610,11 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 		MML_SetupEMS(mm);					// allocate space
 		printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 		//TODO: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!
-		if(mm->EMSVer>=0x40) MML_UseSpace(mm->EMSpageframe,((dword)mm->EMSpagesmapped)*0x4000lu, mm);
-		else MML_UseSpace(mm->EMSpageframe,mm->EMSpagesmapped*0x4000lu, mm);
+		MML_UseSpace(mm->EMSpageframe,((dword)mm->EMSpagesmapped)*0x4000lu, mm);
 //printf("EMS3\n");
 		MM_MapEMS(mm);					// map in used pages
 //printf("EMS4\n");
-		if(mm->EMSVer>=0x40) mmi->EMSmem = ((dword)mm->EMSpagesmapped)*0x4000lu;
-		else mmi->EMSmem = mm->EMSpagesmapped*0x4000lu;
+		mmi->EMSmem = ((dword)mm->EMSpagesmapped)*0x4000lu;
 	}
 
 //
@@ -1090,7 +1088,7 @@ fprintf(stdout, "%s", scratch);
 
 dword MM_UnusedMemory(mminfo_t *mm)
 {
-	unsigned free;
+	dword free;
 	mmblocktype huge *scan;
 
 	free = 0;
@@ -1098,7 +1096,7 @@ dword MM_UnusedMemory(mminfo_t *mm)
 
 	while(scan->next)
 	{
-		free += scan->next->start - (scan->start + scan->length);
+		free += (dword)scan->next->start - (scan->start + scan->length);
 		scan = scan->next;
 	}
 
@@ -1121,7 +1119,7 @@ dword MM_UnusedMemory(mminfo_t *mm)
 
 dword MM_TotalFree(mminfo_t *mm)
 {
-	unsigned free;
+	dword free;
 	mmblocktype huge *scan;
 
 	free = 0;
@@ -1130,8 +1128,8 @@ dword MM_TotalFree(mminfo_t *mm)
 	while(scan->next)
 	{
 		if((scan->attributes&PURGEBITS) && !(scan->attributes&LOCKBIT))
-			free += scan->length;
-		free += scan->next->start - (scan->start + scan->length);
+			free += (dword)scan->length;
+		free += (dword)scan->next->start - (scan->start + scan->length);
 		scan = scan->next;
 	}
 

@@ -86,9 +86,9 @@ extern	void	(*finishcachebox)	(void);
 
 void CA_OpenDebug (void);
 void CA_CloseDebug (void);
-boolean CA_FarRead (int handle, byte huge *dest, dword length);
-boolean CA_FarWrite (int handle, byte huge *source, dword length);
-boolean CA_ReadFile (char *filename, memptr *ptr);
+boolean CA_FarRead (int handle, byte huge *dest, dword length, mminfo_t *mm);
+boolean CA_FarWrite (int handle, byte huge *source, dword length, mminfo_t *mm);
+boolean CA_ReadFile (char *filename, memptr *ptr, mminfo_t *mm);
 boolean CA_LoadFile (char *filename, memptr *ptr, mminfo_t *mm, mminfotype *mmi);
 
 //long CA_RLEWCompress (unsigned huge *source, long length, unsigned huge *dest,unsigned rlewtag);

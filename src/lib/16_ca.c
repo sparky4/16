@@ -216,13 +216,15 @@ void CAL_GetGrChunkLength (int chunk)
 ==========================
 */
 
-boolean CA_FarRead(int handle, byte huge *dest, dword length)
+boolean CA_FarRead(int handle, byte huge *dest, dword length, mminfo_t *mm)
 {
 	boolean flag;
 	dword fat=0;
 	word segm=0;
+	//if(mm->EMSVer<0x40)
 	if(length>0xfffflu)
 	{
+		printf("pee\n");
 		segm=(length%0xfffflu)-1;
 		fat=segm*0xfffflu;
 		length-=fat;
@@ -270,13 +272,15 @@ End:
 ==========================
 */
 
-boolean CA_FarWrite(int handle, byte huge *source, dword length)
+boolean CA_FarWrite(int handle, byte huge *source, dword length, mminfo_t *mm)
 {
 	boolean flag;
 	dword fat=0;
 	word segm=0;
+	//if(mm->EMSVer<0x40)
 	if(length>0xfffflu)
 	{
+		printf("pee\n");
 		segm=(length%0xfffflu)-1;
 		fat=segm*0xfffflu;
 		length-=fat;
@@ -324,7 +328,7 @@ End:
 ==========================
 */
 
-boolean CA_ReadFile(char *filename, memptr *ptr)
+boolean CA_ReadFile(char *filename, memptr *ptr, mminfo_t *mm)
 {
 	int handle;
 	dword size;
@@ -333,7 +337,7 @@ boolean CA_ReadFile(char *filename, memptr *ptr)
 		return false;
 
 	size = filelength(handle);
-	if(!CA_FarRead(handle,*ptr,size))
+	if(!CA_FarRead(handle,*ptr,size, mm))
 	{
 		close(handle);
 		return false;
@@ -364,7 +368,7 @@ boolean CA_LoadFile(char *filename, memptr *ptr, mminfo_t *mm, mminfotype *mmi)
 
 	size = filelength (handle);
 	MM_GetPtr(ptr,size, mm, mmi);
-	if(!CA_FarRead(handle,*ptr,size))
+	if(!CA_FarRead(handle,*ptr,size, mm))
 	{
 		close(handle);
 		return false;

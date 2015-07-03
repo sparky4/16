@@ -40,13 +40,14 @@ main(int argc, char *argv[])
 
 	if(argv[1]) bakapee = argv[1];
 	else bakapee = "data/koishi~~.pcx";
-	
+
 	printf("start!\n");
 	MM_Startup(&mm, &mmi);
 	printf("done!\n");
 	printf("&main()=%Fp\n", *argv[0]);
 	if(CA_LoadFile(bakapee, &bigbuffer, &mm, &mmi)) baka=1;
-	else baka=0;
+	else
+		baka=0;
 	//MM_GetPtr(&bigbuffer, mmi.nearheap, &mm, &mmi);
 	//hmm functions in cache system use the buffered stuff
 	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
