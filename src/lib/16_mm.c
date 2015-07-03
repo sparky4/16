@@ -175,6 +175,14 @@ unsigned MML_SetupEMS(mminfo_t *mm)
 		or	bx,bx
 		jz	noEMS						// no EMS at all to allocate
 //++++EXPAND DONG!!!!
+		cmp	[EMSVer],0x40
+		jb	low
+		cmp	bx,[freeEMSpages]
+		jle	getpages
+		mov	bx,[freeEMSpages]
+		jmp	getpages
+
+low:
 		cmp	bx,4
 		jle	getpages					// there is only 1,2,3,or 4 pages
 		mov	bx,4						// we can't use more than 4 pages
