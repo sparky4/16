@@ -598,6 +598,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 // detect EMS and allocate up to 64K at page frame
 //
+	printf("EMS\n\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	mmi->EMSmem = 0;
 	for(i = 1;i < __argc;i++)
 	{
