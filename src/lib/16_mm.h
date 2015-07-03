@@ -114,7 +114,8 @@ extern void		(* XMSaddr) (void);		// far pointer to XMS driver
 
 typedef struct mmblockstruct
 {
-	unsigned	start,length;
+	//unsigned	start,length;
+	dword	start,length;
 	unsigned	attributes;
 	memptr		*useptr;	// pointer to the segment start
 	struct mmblockstruct huge *next;
@@ -130,7 +131,7 @@ typedef struct
 	void		*nearheap;
 	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
 	unsigned int EMSVer;
-	unsigned	numUMBs,UMBbase[MAXUMBS];
+	word	numUMBs,UMBbase[MAXUMBS];
 	mmblocktype	huge mmblocks[MAXBLOCKS],huge *mmhead,huge *mmfree,huge *mmrover,huge *mmnew;
 } mminfo_t;
 

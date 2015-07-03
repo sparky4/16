@@ -341,7 +341,7 @@ boolean MML_CheckForXMS(mminfo_t *mm)
 
 void MML_SetupXMS(mminfo_t *mm, mminfotype *mmi)
 {
-	unsigned	base,size;
+	word	base,size;
 
 getmemory:
 	__asm
@@ -353,6 +353,7 @@ getmemory:
 
 		mov	ah,XMS_ALLOCUMB
 		mov	dx,0xffff					// try for largest block possible
+		//mov     ax,dx						// Set available Kbytes.
 		call	[DWORD PTR XMSaddr]
 		or	ax,ax
 		jnz	gotone
