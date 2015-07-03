@@ -373,8 +373,8 @@ done:
 	}
 	printf("base=%u	", base); printf("size=%u\n", size);
 	MML_UseSpace(base,size, mm);
-	mmi->XMSmem += ((dword)size)*16;
-	mm->UMBbase[mm->numUMBs] = (dword)base;
+	mmi->XMSmem += size*16;
+	mm->UMBbase[mm->numUMBs] = base;
 	mm->numUMBs++;
 	if(mm->numUMBs < MAXUMBS)
 		goto getmemory;
@@ -420,13 +420,13 @@ void MML_ShutdownXMS(mminfo_t *mm)
 ======================
 */
 
-void MML_UseSpace(unsigned segstart, dword seglength, mminfo_t *mm)
+void MML_UseSpace(/*d*/word segstart, /*d*/word seglength, mminfo_t *mm)
 {
 	mmblocktype huge *scan,huge *last;
-	dword	oldend;
-	dword fat=0;
+	/*d*/word	oldend;
+	/*d*/word fat=0;
 	word segm=0;
-	dword		extra;
+	/*d*/word		extra;
 
 	scan = last = mm->mmhead;
 	mm->mmrover = mm->mmhead;		// reset rover to start of memory
@@ -443,8 +443,8 @@ void MML_UseSpace(unsigned segstart, dword seglength, mminfo_t *mm)
 //
 // take the given range out of the block
 //
-	oldend = scan->start + (dword)scan->length;
-	extra = oldend - (dword)(segstart+seglength);
+	oldend = scan->start + scan->length;
+	extra = oldend - (segstart+seglength);
 	//++++emsver stuff!
 	if(extra>0xfffflu)
 	{
@@ -614,11 +614,11 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 		MML_SetupEMS(mm);					// allocate space
 		printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 		//TODO: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!
-		MML_UseSpace(mm->EMSpageframe,(mm->EMSpagesmapped)*0x4000lu, mm);
+		MML_UseSpace(mm->EMSpageframe,(/*mm->EMSpagesmapped*/4)*0x4000lu, mm);
 //printf("EMS3\n");
 		MM_MapEMS(mm);					// map in used pages
 //printf("EMS4\n");
-		mmi->EMSmem = (mm->EMSpagesmapped)*0x4000lu;
+		mmi->EMSmem = (/*mm->EMSpagesmapped*/4)*0x4000lu;
 	}
 
 //

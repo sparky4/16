@@ -86,7 +86,7 @@ typedef void __based(__self) * memptr; //__based(seg) * memptr;
 
 typedef struct
 {
-	dword	nearheap,farheap/*,hugeheap*/,EMSmem,XMSmem,mainmem;
+	dword	nearheap,farheap,EMSmem,XMSmem,mainmem;
 } mminfotype;
 
 //==========================================================================
@@ -114,7 +114,7 @@ extern void		(* XMSaddr) (void);		// far pointer to XMS driver
 
 typedef struct mmblockstruct
 {
-	unsigned	start,length;
+	word	start,length;
 	//dword	start,length;
 	unsigned	attributes;
 	memptr		*useptr;	// pointer to the segment start
@@ -126,12 +126,11 @@ typedef struct
 {
 	memptr bufferseg;
 	boolean		mmstarted, bombonerror, mmerror;
-	//void	huge *hugeheap;
 	void huge	*farheap;
 	void		*nearheap;
 	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
 	unsigned int EMSVer;
-	unsigned	numUMBs,UMBbase[MAXUMBS];
+	word numUMBs,UMBbase[MAXUMBS];
 	//dword	numUMBs,UMBbase[MAXUMBS];
 	mmblocktype	huge mmblocks[MAXBLOCKS],huge *mmhead,huge *mmfree,huge *mmrover,huge *mmnew;
 } mminfo_t;
@@ -162,7 +161,7 @@ unsigned MM_MapEMS(mminfo_t *mm);
 boolean MML_CheckForXMS(mminfo_t *mm);
 void MML_SetupXMS(mminfo_t *mm, mminfotype *mmi);
 void MML_ShutdownXMS(mminfo_t *mm);
-void MML_UseSpace(unsigned segstart, dword seglength, mminfo_t *mm);
+void MML_UseSpace(/*d*/word segstart, /*d*/word seglength, mminfo_t *mm);
 void MML_ClearBlock(mminfo_t *mm);
 
 void MM_Startup(mminfo_t *mm, mminfotype *mmi);
