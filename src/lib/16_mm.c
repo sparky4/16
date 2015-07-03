@@ -341,7 +341,7 @@ boolean MML_CheckForXMS(mminfo_t *mm)
 
 void MML_SetupXMS(mminfo_t *mm, mminfotype *mmi)
 {
-	word	base,size;
+	unsigned	base,size;
 
 getmemory:
 	__asm
@@ -371,9 +371,10 @@ gotone:
 		mov	[size],dx
 done:
 	}
+	printf("base=%u	", base); printf("size=%u\n", size);
 	MML_UseSpace(base,size, mm);
-	mmi->XMSmem += size*16;
-	mm->UMBbase[mm->numUMBs] = base;
+	mmi->XMSmem += ((dword)size)*16;
+	mm->UMBbase[mm->numUMBs] = (dword)base;
 	mm->numUMBs++;
 	if(mm->numUMBs < MAXUMBS)
 		goto getmemory;
@@ -442,16 +443,17 @@ void MML_UseSpace(unsigned segstart, dword seglength, mminfo_t *mm)
 //
 // take the given range out of the block
 //
-	oldend = scan->start + scan->length;
-	extra = oldend - (segstart+seglength);
+	oldend = scan->start + (dword)scan->length;
+	extra = oldend - (dword)(segstart+seglength);
 	//++++emsver stuff!
 	if(extra>0xfffflu)
 	{
-		segm=(extra%(0xfffflu))-1;
+		/*segm=(extra%(0xfffflu))-1;
 		fat=segm*(0xfffflu);
-		extra-=fat;
-//printf("extra=%lu	", extra);
-//printf("segm=%lu\n", segm);
+		extra-=fat;*/
+/*printf("extra=%lu	", extra);
+printf("oldend=%lu	", oldend);
+printf("segm=%lu\n", segm);*/
 		printf("MML_UseSpace: Segment spans two blocks!\n");
 	}
 
@@ -469,7 +471,7 @@ void MML_UseSpace(unsigned segstart, dword seglength, mminfo_t *mm)
 
 //	segm--;
 
-	if(0xfffflu > extra > 0)
+	if(extra > 0)
 	{
 		MM_GetNewBlock(mm);
 		mm->mmnew->next = scan->next;
@@ -598,7 +600,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 // detect EMS and allocate up to 64K at page frame
 //
-	printf("EMS\n\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+	printf("EMS!\n\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	mmi->EMSmem = 0;
 	for(i = 1;i < __argc;i++)
 	{
@@ -612,11 +614,11 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 		MML_SetupEMS(mm);					// allocate space
 		printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 		//TODO: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!
-		MML_UseSpace(mm->EMSpageframe,((dword)mm->EMSpagesmapped)*0x4000lu, mm);
+		MML_UseSpace(mm->EMSpageframe,(mm->EMSpagesmapped)*0x4000lu, mm);
 //printf("EMS3\n");
 		MM_MapEMS(mm);					// map in used pages
 //printf("EMS4\n");
-		mmi->EMSmem = ((dword)mm->EMSpagesmapped)*0x4000lu;
+		mmi->EMSmem = (mm->EMSpagesmapped)*0x4000lu;
 	}
 
 //
@@ -632,7 +634,7 @@ emsskip:
 //	printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	if(MML_CheckForXMS(mm))
 	{
-//printf("XMS!\n");
+		printf("XMS!\n");
 		MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
 	}
 
@@ -1158,7 +1160,7 @@ void MM_Report(mminfo_t *mm, mminfotype *mmi)
 		printf("freeEMSpages=%u\n", mm->freeEMSpages);
 		printf("EMSpageframe=%x\n", mm->EMSpageframe);
 	}
-	if(MML_CheckForXMS(mm)) printf("XMSaddr=%x\n", *XMSaddr);
+	if(MML_CheckForXMS(mm)) printf("XMSaddr=%Fp\n", *XMSaddr);
 	printf("near=%lu\n", mmi->nearheap);
 	printf("far=%lu\n", mmi->farheap);
 	printf("EMSmem=%lu\n", mmi->EMSmem);

@@ -110,12 +110,12 @@ extern void		(* XMSaddr) (void);		// far pointer to XMS driver
 #define PURGEMASK	0xfffc
 #define BASEATTRIBUTES	0	// unlocked, non purgable
 
-#define MAXUMBS		10
+#define MAXUMBS		12
 
 typedef struct mmblockstruct
 {
-	//unsigned	start,length;
-	dword	start,length;
+	unsigned	start,length;
+	//dword	start,length;
 	unsigned	attributes;
 	memptr		*useptr;	// pointer to the segment start
 	struct mmblockstruct huge *next;
@@ -131,7 +131,8 @@ typedef struct
 	void		*nearheap;
 	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
 	unsigned int EMSVer;
-	word	numUMBs,UMBbase[MAXUMBS];
+	unsigned	numUMBs,UMBbase[MAXUMBS];
+	//dword	numUMBs,UMBbase[MAXUMBS];
 	mmblocktype	huge mmblocks[MAXBLOCKS],huge *mmhead,huge *mmfree,huge *mmrover,huge *mmnew;
 } mminfo_t;
 
