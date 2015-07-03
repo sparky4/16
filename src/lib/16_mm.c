@@ -508,7 +508,7 @@ void MML_ClearBlock(mminfo_t *mm)
 		scan = scan->next;
 	}
 
-	printf("MM_ClearBlock: No purgable blocks!");
+	printf("MM_ClearBlock: No purgable blocks!\n");
 }
 
 
@@ -1096,7 +1096,7 @@ dword MM_UnusedMemory(mminfo_t *mm)
 
 	while(scan->next)
 	{
-		free += (dword)scan->next->start - (scan->start + scan->length);
+		free += scan->next->start - (scan->start + scan->length);
 		scan = scan->next;
 	}
 
@@ -1128,8 +1128,8 @@ dword MM_TotalFree(mminfo_t *mm)
 	while(scan->next)
 	{
 		if((scan->attributes&PURGEBITS) && !(scan->attributes&LOCKBIT))
-			free += (dword)scan->length;
-		free += (dword)scan->next->start - (scan->start + scan->length);
+			free += scan->length;
+		free += scan->next->start - (scan->start + scan->length);
 		scan = scan->next;
 	}
 
