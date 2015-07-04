@@ -420,13 +420,13 @@ void MML_ShutdownXMS(mminfo_t *mm)
 ======================
 */
 
-void MML_UseSpace(/*d*/word segstart, /*d*/word seglength, mminfo_t *mm)
+void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 {
 	mmblocktype huge *scan,huge *last;
-	/*d*/word	oldend;
+	dword	oldend;
 	/*d*/word fat=0;
 	word segm=0;
-	/*d*/word		extra;
+	dword		extra;
 
 	scan = last = mm->mmhead;
 	mm->mmrover = mm->mmhead;		// reset rover to start of memory
@@ -614,11 +614,11 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 		MML_SetupEMS(mm);					// allocate space
 		printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 		//TODO: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!
-		MML_UseSpace(mm->EMSpageframe,(/*mm->EMSpagesmapped*/4)*0x4000lu, mm);
+		MML_UseSpace(mm->EMSpageframe,(mm->EMSpagesmapped)*0x4000lu, mm);
 //printf("EMS3\n");
 		MM_MapEMS(mm);					// map in used pages
 //printf("EMS4\n");
-		mmi->EMSmem = (/*mm->EMSpagesmapped*/4)*0x4000lu;
+		mmi->EMSmem = (mm->EMSpagesmapped)*0x4000lu;
 	}
 
 //
@@ -1230,3 +1230,30 @@ void MM_FreeBlock(mmblocktype *x, mminfo_t *mm)
 	x->next=mm->mmfree;
 	mm->mmfree=x;
 }
+
+void MM_seguin(void)
+{
+	__asm
+	{
+		push ds
+		inc ds
+	}
+}
+
+void MM_segude(void)
+	__asm
+	{
+		pop ds
+	}
+}
+
+/*
+pull data from far and put it into ds var
+mov ax,es:si
+mov x,ax
+*/
+/*
+ss stack segment
+sp top of stack
+bp bottem of stack
+*/

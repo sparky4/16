@@ -116,6 +116,8 @@ typedef struct mmblockstruct
 {
 	word	start,length;
 	//dword	start,length;
+	//word	start;
+	//dword length;
 	unsigned	attributes;
 	memptr		*useptr;	// pointer to the segment start
 	struct mmblockstruct huge *next;
@@ -161,7 +163,7 @@ unsigned MM_MapEMS(mminfo_t *mm);
 boolean MML_CheckForXMS(mminfo_t *mm);
 void MML_SetupXMS(mminfo_t *mm, mminfotype *mmi);
 void MML_ShutdownXMS(mminfo_t *mm);
-void MML_UseSpace(/*d*/word segstart, /*d*/word seglength, mminfo_t *mm);
+void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm);
 void MML_ClearBlock(mminfo_t *mm);
 
 void MM_Startup(mminfo_t *mm, mminfotype *mmi);
