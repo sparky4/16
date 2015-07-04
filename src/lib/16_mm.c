@@ -457,7 +457,8 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 		}*/
 printf("extra=%lu	", extra);
 printf("oldend=%lu	", oldend);
-printf("length=%lu	", scan->length);
+printf("length=%u	", scan->length);
+printf("segstart=%u	", segstart);
 printf("seglength=%lu\n", seglength);
 
 //MML_UseSpace(?segstart?, ?length?, mm);
