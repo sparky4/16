@@ -1235,12 +1235,15 @@ void MM_seguin(void)
 {
 	__asm
 	{
-		push ds
-		inc ds
+		push	ds
+		mov	ax,ds
+		inc		ax
+		mov	ds,ax
 	}
 }
 
 void MM_segude(void)
+{
 	__asm
 	{
 		pop ds
