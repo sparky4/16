@@ -424,8 +424,8 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 {
 	mmblocktype huge *scan,huge *last;
 	dword	oldend;
-	/*d*/word fat=0;
-	word segm=0;
+	///*d*/word fat=0;
+	//word segm=0;
 	dword		extra;
 
 	scan = last = mm->mmhead;
@@ -448,13 +448,25 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 	//++++emsver stuff!
 	if(extra>0xfffflu)
 	{
-		/*segm=(extra%(0xfffflu))-1;
-		fat=segm*(0xfffflu);
-		extra-=fat;*/
-/*printf("extra=%lu	", extra);
+		/*__asm
+		{
+			push	ds
+			mov	ax,ds
+			inc		ax
+			mov	ds,ax
+		}*/
+printf("extra=%lu	", extra);
 printf("oldend=%lu	", oldend);
-printf("segm=%lu\n", segm);*/
-		printf("MML_UseSpace: Segment spans two blocks!\n");
+printf("length=%lu	", scan->length);
+printf("seglength=%lu\n", seglength);
+
+//MML_UseSpace(?segstart?, ?length?, mm);
+
+		/*__asm
+		{
+			pop ds
+		}*/
+		//printf("MML_UseSpace: Segment spans two blocks!\n");
 	}
 
 //segu:
