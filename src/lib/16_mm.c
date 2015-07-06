@@ -425,11 +425,12 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 	mmblocktype huge *scan,huge *last;
 	dword	oldend;
 	///*d*/word fat=0;
-	word segm=0;
 	dword		extra;
 
 	scan = last = mm->mmhead;
 	mm->mmrover = mm->mmhead;		// reset rover to start of memory
+	scan->segm=1;
+	scan->segmlen=seglength;
 
 //
 // search for the block that contains the range of segments
@@ -440,9 +441,10 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 		scan = scan->next;
 	}
 
+	//find out how many blocks it span!
 	if(seglength>0xfffflu)
 	{
-		segm=seglength/0xfffflu;
+		scan->segm=seglength/0xfffflu;
 	}
 
 //
@@ -460,8 +462,8 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 			inc		ax
 			mov	ds,ax
 		}*/
+printf("segm=%u	", scan->segm);
 printf("ex=%lu	", extra);
-printf("segm=%u	", segm);
 printf("len=%u	", scan->length);
 printf("segsta=%u	", segstart);
 printf("seglen=%lu\n", seglength);
