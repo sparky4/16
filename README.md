@@ -1,8 +1,9 @@
 彼岸花 Project 01 話の地球 //Higanbana Project 01 ~ Story of Chikyuu
 ==============
+
 Open watcom to compile the code of project 16
 -----------
-```
+
 16.exe = actual planned game executable!
 / = root of project where executables are at
 16/ = experimental branch and example codes
@@ -10,10 +11,10 @@ Open watcom to compile the code of project 16
 src/ = source of project~
 doc/ = documentation of the project~
 doc/faq.txt = frequently asked questions file!
-```
+
 TODO not in particular order~:
 -----------
-```
+
 DONE 1. SCROLLING!!!!!!!
 2. Fix pngwen's pcx rendering code it dose not render large relolution pcx files well at all!
 almost done  3. tweak animation frame perloop and make the dpad controls a case switch (look at commander keen code?) and vsync horizontal animation
@@ -48,7 +49,8 @@ DONE! use IN_ReadControl!!
 get dos_sj.rar
 
 It may be very useful to us...
-```
+
+
 
 To compile:
 -----------
