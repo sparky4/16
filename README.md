@@ -1,4 +1,4 @@
-彼岸花 Project 01 話の地球 //Higanbana Project 01 ‾ Story of Chikyuu
+彼岸花 Project 01 話の地球 //Higanbana Project 01 ~ Story of Chikyuu
 ==============
 Open watcom to compile the code of project 16
 -----------
