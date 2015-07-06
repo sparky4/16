@@ -1045,7 +1045,7 @@ void MM_ShowMemory(mminfo_t *mm)
 
 //CA_OpenDebug ();
 
-	while (scan)
+	while(scan)
 	{
 		if(scan->attributes & PURGEBITS)
 			color = 5;		// dark purple = purgable
@@ -1055,7 +1055,8 @@ void MM_ShowMemory(mminfo_t *mm)
 			color = 12;		// red = locked
 		if(scan->start<=end)
 		{
-			printf("MM_ShowMemory: Memory block order currupted!");
+			printf("scan->start=%d\n", scan->start);
+			printf("MM_ShowMemory: Memory block order currupted!\n");
 			return;
 		}
 		end = scan->start+scan->length-1;
