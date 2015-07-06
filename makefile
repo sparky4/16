@@ -177,6 +177,7 @@ jsmn.$(OBJ): $(JSMNLIB)jsmn.h $(JSMNLIB)jsmn.c
 #
 clean: .symbolic
 	@$(REMOVECOMMAND) *.$(OBJ)
+	@echo "" > *.lib
 #	@$(REMOVECOMMAND) *.OBJ
 #	@$(REMOVECOMMAND) *.out
 #	@$(REMOVECOMMAND) *.OUT
