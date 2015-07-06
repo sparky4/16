@@ -425,7 +425,7 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 	mmblocktype huge *scan,huge *last;
 	dword	oldend;
 	///*d*/word fat=0;
-	//word segm=0;
+	word segm=0;
 	dword		extra;
 
 	scan = last = mm->mmhead;
@@ -438,6 +438,11 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 	{
 		last = scan;
 		scan = scan->next;
+	}
+
+	if(seglength>0xfffflu)
+	{
+		segm=seglength/0xfffflu;
 	}
 
 //
@@ -455,11 +460,11 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 			inc		ax
 			mov	ds,ax
 		}*/
-printf("extra=%lu	", extra);
-printf("oldend=%lu	", oldend);
-printf("length=%u	", scan->length);
-printf("segstart=%u	", segstart);
-printf("seglength=%lu\n", seglength);
+printf("ex=%lu	", extra);
+printf("segm=%u	", segm);
+printf("len=%u	", scan->length);
+printf("segsta=%u	", segstart);
+printf("seglen=%lu\n", seglength);
 
 //MML_UseSpace(?segstart?, ?length?, mm);
 
