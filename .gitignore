@@ -13,6 +13,9 @@ FUCK
 *.lib
 *.LIB
 makefile~
+README~
+TODO~
+LICENCE~
 !boop.sh
 !awoo.sh
 !lowcase.sh

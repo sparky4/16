@@ -20,6 +20,14 @@
  *
  */
 
+#if !defined(__LARGE__) && !defined(__COMPACT__) && !defined(__HUGE__)
+#error Invalid memory model for compiling project 16
+#endif
+
+#if !defined(__i86__) && defined(__i386__)
+#error i8088 only
+#endif
+
 #ifndef _LIBHEAD_H_
 #define _LIBHEAD_H_
 #include <i86.h>

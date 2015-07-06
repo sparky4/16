@@ -183,6 +183,7 @@ clean: .symbolic
 #	@$(REMOVECOMMAND) *.out
 #	@$(REMOVECOMMAND) *.OUT
 	@$(REMOVECOMMAND) makefi~1
+	@$(REMOVECOMMAND) makefile~
 	@$(REMOVECOMMAND) __WCL__.LNK
 #	@$(REMOVECOMMAND) *.smp
 	@$(REMOVECOMMAND) *.SMP
