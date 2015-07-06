@@ -174,7 +174,7 @@ unsigned MML_SetupEMS(mminfo_t *mm)
 		mov	[freeEMSpages],bx
 		or	bx,bx
 		jz	noEMS						// no EMS at all to allocate
-//++++EXPAND DONG!!!!
+											//EXPAND DONG!!!!
 		cmp	[EMSVer],0x40
 		jb	low
 		cmp	bx,[freeEMSpages]
@@ -648,7 +648,7 @@ emsskip:
 	if(MML_CheckForXMS(mm))
 	{
 		printf("XMS!\n");
-		MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
+		//++++++++MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
 	}
 
 //
