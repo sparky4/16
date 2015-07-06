@@ -634,11 +634,11 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 		MML_SetupEMS(mm);					// allocate space
 		printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 		//TODO: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!
-		MML_UseSpace(mm->EMSpageframe,(/*++++mm->EMSpagesmapped++++*/4)*0x4000lu, mm);
+		MML_UseSpace(mm->EMSpageframe,(mm->EMSpagesmapped)*0x4000lu, mm);
 //printf("EMS3\n");
 		MM_MapEMS(mm);					// map in used pages
 //printf("EMS4\n");
-		mmi->EMSmem = (/*++++mm->EMSpagesmapped++++*/4)*0x4000lu;
+		mmi->EMSmem = (mm->EMSpagesmapped)*0x4000lu;
 	}
 
 //
@@ -655,7 +655,7 @@ emsskip:
 	if(MML_CheckForXMS(mm))
 	{
 		printf("XMS!\n");
-		//++++++++MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
+		MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
 	}
 
 //
