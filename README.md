@@ -5,17 +5,11 @@
 
 
 16.exe = actual planned game executable!
-
 / = root of project where executables are at
-
 16/ = experimental branch and example codes
-
 16/modex16/ = pngwen's code archived~
-
 src/ = source of project~
-
 doc/ = documentation of the project~
-
 doc/faq.txt = frequently asked questions file!
 
 
