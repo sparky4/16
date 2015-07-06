@@ -177,13 +177,14 @@ jsmn.$(OBJ): $(JSMNLIB)jsmn.h $(JSMNLIB)jsmn.c
 #
 clean: .symbolic
 	@$(REMOVECOMMAND) *.$(OBJ)
-	@echo "" > 16.lib
-	@echo "" > gfx.lib
+	@$(REMOVECOMMAND) *.lib
+	@wlib -n 16.lib
+	@wlib -n  gfx.lib
 #	@$(REMOVECOMMAND) *.OBJ
 #	@$(REMOVECOMMAND) *.out
 #	@$(REMOVECOMMAND) *.OUT
-	@$(REMOVECOMMAND) makefi~1
-	@$(REMOVECOMMAND) makefile~
+#	@$(REMOVECOMMAND) makefi~1
+#	@$(REMOVECOMMAND) makefile~
 	@$(REMOVECOMMAND) __WCL__.LNK
 #	@$(REMOVECOMMAND) *.smp
 	@$(REMOVECOMMAND) *.SMP

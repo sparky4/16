@@ -634,11 +634,11 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 		MML_SetupEMS(mm);					// allocate space
 		printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 		//TODO: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!
-		MML_UseSpace(mm->EMSpageframe,(mm->EMSpagesmapped)*0x4000lu, mm);
+		MML_UseSpace(mm->EMSpageframe,(/*++++mm->EMSpagesmapped++++*/4)*0x4000lu, mm);
 //printf("EMS3\n");
 		MM_MapEMS(mm);					// map in used pages
 //printf("EMS4\n");
-		mmi->EMSmem = (mm->EMSpagesmapped)*0x4000lu;
+		mmi->EMSmem = (/*++++mm->EMSpagesmapped++++*/4)*0x4000lu;
 	}
 
 //
@@ -1038,7 +1038,7 @@ void MM_ShowMemory(mminfo_t *mm)
 	mmblocktype huge *scan;
 	unsigned color,temp;//, i;
 	long	end,owner;
-	char    scratch[80],str[10];
+	char    scratch[160],str[16];
 
 //****	VW_SetDefaultColors();
 //****	VW_SetLineWidth(40);
@@ -1062,8 +1062,7 @@ void MM_ShowMemory(mminfo_t *mm)
 			color = 12;		// red = locked
 		if(scan->start<=end)
 		{
-			printf("scan->start=%d\n", scan->start);
-			printf("MM_ShowMemory: Memory block order currupted!\n");
+			printf("\nMM_ShowMemory: Memory block order currupted!\n");
 			return;
 		}
 		end = scan->start+scan->length-1;
@@ -1073,9 +1072,11 @@ void MM_ShowMemory(mminfo_t *mm)
 //++++			VW_Hlin(end+1,scan->next->start,0,0);	// black = free
 
 //****#if 0
-printf("Location:");
-printf("%x\t", scan->start);
-strcpy (scratch,"Size:");
+printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+strcpy(scratch,"Location:");
+ultoa (scan->start,str,16);
+strcat (scratch,str);
+strcat (scratch,"\tSize:");
 ltoa ((dword)scan->length*16,str,10);
 strcat (scratch,str);
 strcat (scratch,"\tOwner:0x");
