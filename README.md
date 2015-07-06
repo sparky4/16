@@ -1,8 +1,7 @@
 彼岸花 Project 01 話の地球 //Higanbana Project 01 ~ Story of Chikyuu
 ==============
 
-Open watcom to compile the code of project 16
------------
+**Open watcom to compile the code of project 16**
 
 16.exe = actual planned game executable!
 / = root of project where executables are at
@@ -12,8 +11,7 @@ src/ = source of project~
 doc/ = documentation of the project~
 doc/faq.txt = frequently asked questions file!
 
-TODO not in particular order~:
------------
+**TODO not in particular order~:**
 
 DONE 1. SCROLLING!!!!!!!
 2. Fix pngwen's pcx rendering code it dose not render large relolution pcx files well at all!
@@ -52,8 +50,7 @@ It may be very useful to us...
 
 
 
-To compile:
------------
+**To compile:**
 ```
 You need Open Watcom stable to compile and just run wmake
 ```
