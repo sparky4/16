@@ -28,8 +28,8 @@ doc/faq.txt = frequently asked questions file!
 + 11. item inventory~
 + ==working on extending== DONE! but needs work! 12. Memory management (EMS + XMS) done but not tested...  
 + 13. case switch with keyboard code (when your holding 2 arrow keys and a key is released the keyboard controller dose not read input from the port anymore for some weired reason)  
-+ 14. masking layer! (i think this is not easy to accomplish!)  
-+ DONE 15. 8088 detection to turn off vsync!  
++ 14. masking layer! (i think this is not easy to accomplish!)
++ DONE 15. 8088 detection to turn off vsync!
 
 + ==working== 16. (very important!) optoimize draw row and draw col
 
