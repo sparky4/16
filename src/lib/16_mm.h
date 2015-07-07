@@ -118,7 +118,7 @@ typedef struct mmblockstruct
 	//dword	start,length;
 	//word	start;
 	//dword length;
-	//++++word sega;				//how many 64kb segment blocks it takes up if there is many data!
+	//byte segm;				//how many 64kb segment blocks it takes up if there is many data!
 	unsigned	attributes;
 	memptr		*useptr;	// pointer to the segment start
 	struct mmblockstruct huge *next;

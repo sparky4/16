@@ -423,6 +423,7 @@ void MML_ShutdownXMS(mminfo_t *mm)
 void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 {
 	mmblocktype huge *scan,huge *last;
+	word		segm;
 	dword	oldend;
 	dword		extra;
 
@@ -439,11 +440,11 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 	}
 
 	//find out how many blocks it spans!
-	/*++++if(seglength>0xffffu)
+	if(seglength>0xffffu)
 	{
-		scan->sega=(word)seglength/0xffffu;
+		segm=seglength/0x4000u;
 	}
-	else scan->sega=1;*/
+	else segm=1;
 
 //
 // take the given range out of the block
@@ -460,7 +461,7 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 			inc		ax
 			mov	ds,ax
 		}*/
-//++++printf("sega=%u	", scan->sega);
+printf("segm=%u	", segm);
 printf("ex=%lu	", extra);
 printf("len=%u	", scan->length);
 printf("segsta=%x	", segstart);
