@@ -438,12 +438,12 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 		scan = scan->next;
 	}
 
-	//find out how many blocks it span!
-	if(seglength>0xfffflu)
+	//find out how many blocks it spans!
+	/*++++if(seglength>0xffffu)
 	{
-		scan->segm=seglength/0xffffu;
+		scan->sega=(word)seglength/0xffffu;
 	}
-	else scan->segm=1;
+	else scan->sega=1;*/
 
 //
 // take the given range out of the block
@@ -460,7 +460,7 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 			inc		ax
 			mov	ds,ax
 		}*/
-printf("segm=%u	", scan->segm);
+//++++printf("sega=%u	", scan->sega);
 printf("ex=%lu	", extra);
 printf("len=%u	", scan->length);
 printf("segsta=%x	", segstart);
@@ -549,7 +549,7 @@ void MML_ClearBlock(mminfo_t *mm)
 void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 {
 	int i;
-	dword length;//,farlen;
+	dword length;
 	void huge	*start;
 	unsigned	segstart,seglength,endfree;
 
@@ -575,7 +575,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	MM_GetNewBlock(mm);
 	mm->mmhead = mm->mmnew;				// this will allways be the first node
 	mm->mmnew->start = 0;
-	mm->mmnew->length = 0xffff;			//todo: mm make it fucking massive as fuck!~
+	mm->mmnew->length = 0xffff;
 	mm->mmnew->attributes = LOCKBIT;
 	mm->mmnew->next = NULL;
 	mm->mmrover = mm->mmhead;
@@ -589,13 +589,13 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	_nheapgrow();
 	length=_memavl();
 	start = (void huge *)(mm->nearheap = malloc(length));
-
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;
 	seglength = length / 16;			// now in paragraphs
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->nearheap = length;
+	//printf("near heap ok!\n");
 
 //
 // get all available far conventional memory segments
@@ -603,8 +603,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //----	length=farcoreleft();
 	_fheapgrow();
 	length=_memavl();
-	//length-=farlen;
-	start = mm->farheap = halloc(length, sizeof(dword));
+	start = mm->farheap = halloc(length, sizeof(byte));
 	//start = mm->farheap = _fmalloc(length);
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVEFARHEAP;
@@ -613,6 +612,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->farheap = length;
 	mmi->mainmem = mmi->nearheap + mmi->farheap;
+	//printf("far heap ok!\n");
 
 
 //
@@ -1034,7 +1034,7 @@ void MM_SortMem(mminfo_t *mm)
 void MM_ShowMemory(mminfo_t *mm)
 {
 	mmblocktype huge *scan;
-	unsigned color,temp;//, i;
+	unsigned color,temp;
 	long	end,owner;
 	char    scratch[160],str[16];
 
