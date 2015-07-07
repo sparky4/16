@@ -424,13 +424,13 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 {
 	mmblocktype huge *scan,huge *last;
 	dword	oldend;
-	///*d*/word fat=0;
+	//----/*d*/word fat=0;
 	dword		extra;
 
 	scan = last = mm->mmhead;
 	mm->mmrover = mm->mmhead;		// reset rover to start of memory
 	scan->segm=1;
-	scan->segmlen=seglength;
+	//----scan->segmlen=seglength;
 
 //
 // search for the block that contains the range of segments
@@ -651,7 +651,7 @@ emsskip:
 		if(US_CheckParm(__argv[i],ParmStringsexmm) == 0)
 			goto xmsskip;				// param NOXMS
 	}
-//	printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+	printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	if(MML_CheckForXMS(mm))
 	{
 		printf("XMS!\n");
