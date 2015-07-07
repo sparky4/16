@@ -424,13 +424,11 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 {
 	mmblocktype huge *scan,huge *last;
 	dword	oldend;
-	//----/*d*/word fat=0;
 	dword		extra;
 
 	scan = last = mm->mmhead;
 	mm->mmrover = mm->mmhead;		// reset rover to start of memory
 	scan->segm=1;
-	//----scan->segmlen=seglength;
 
 //
 // search for the block that contains the range of segments
