@@ -428,7 +428,6 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 
 	scan = last = mm->mmhead;
 	mm->mmrover = mm->mmhead;		// reset rover to start of memory
-	scan->segm=1;
 
 //
 // search for the block that contains the range of segments
@@ -444,6 +443,7 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 	{
 		scan->segm=seglength/0xfffflu;
 	}
+	else scan->segm=1;
 
 //
 // take the given range out of the block
