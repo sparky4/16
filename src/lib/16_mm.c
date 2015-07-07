@@ -441,7 +441,7 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 	//find out how many blocks it span!
 	if(seglength>0xfffflu)
 	{
-		scan->segm=seglength/0xfffflu;
+		scan->segm=seglength/0xffffu;
 	}
 	else scan->segm=1;
 
@@ -463,7 +463,7 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 printf("segm=%u	", scan->segm);
 printf("ex=%lu	", extra);
 printf("len=%u	", scan->length);
-printf("segsta=%u	", segstart);
+printf("segsta=%x	", segstart);
 printf("seglen=%lu\n", seglength);
 
 //MML_UseSpace(?segstart?, ?length?, mm);
