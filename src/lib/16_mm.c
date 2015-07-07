@@ -443,6 +443,7 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 	if(seglength>0xffffu)
 	{
 		segm=seglength/0x4000u;
+//		segm=seglength/0xffffu;
 	}
 	else segm=1;
 
