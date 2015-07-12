@@ -806,6 +806,7 @@ IN_ReadControl(int playnum,player_t *player)
 			int			dx,dy;
 			Motion		mx,my;
 			ControlType	type;
+			word conpee;
 register	KeyboardDef	*def;
 
 	dx = dy = 0;
@@ -908,7 +909,9 @@ register	KeyboardDef	*def;
 	player[playnum].info.button2 = buttons & (1 << 2);
 	player[playnum].info.button3 = buttons & (1 << 3);
 //	player[playnum].info.dir = DirTable[((my + 1) * 3) + (mx + 1)];
-	player[playnum].info.dir = DirTable[(((my + 1) * 2) + (mx + 1))-1];
+	conpee=(((my + 1) * 2) + (mx + 1));
+	if(conpee) conpee--;
+	player[playnum].info.dir = DirTable[conpee];
 
 #if DEMO0
 	if (DemoMode == demo_Record)
