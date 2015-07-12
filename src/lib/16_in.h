@@ -35,8 +35,8 @@
 #endif
 
 #ifdef	__DEBUG_InputMgr__
-#define TESTKEYIN
-//#define TESTCONTROLNOISY
+//#define TESTKEYIN
+#define TESTCONTROLNOISY
 #endif
 
 #define	KeyInt	9	// The keyboard ISR number
