@@ -131,8 +131,8 @@
 #define KEY_MENU		(0x75)
 */
 
-//static dword far* clockdw= (dword far*) 0x046C; /* 18.2hz clock */
-static dword clockdw=0;
+static dword far* clockdw= (dword far*) 0x046C; /* 18.2hz clock */
+//static dword clockdw=0;
 
 #define	nil	((void *)0)
 

@@ -371,7 +371,7 @@ INL_GetJoyDelta(word joy,int *dx,int *dy,boolean adaptive)
 {
 	word		x,y;
 	dword	time;
-	dword TimeCount = /***/clockdw;
+	dword TimeCount = *clockdw;
 	JoystickDef	*def;
 static	dword	lasttime;
 
@@ -465,7 +465,7 @@ register	word	result;
 word
 IN_GetJoyButtonsDB(word joy)
 {
-	dword TimeCount = /***/clockdw;
+	dword TimeCount = *clockdw;
 	dword	lasttime;
 	word		result1,result2;
 
@@ -1176,7 +1176,7 @@ IN_IsUserInput()
 boolean
 IN_UserInput(dword delay,boolean clear)
 {
-	dword TimeCount = /***/clockdw;
+	dword TimeCount = *clockdw;
 	dword	lasttime;
 
 	lasttime = TimeCount;
