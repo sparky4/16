@@ -806,7 +806,7 @@ IN_ReadControl(int playnum,player_t *player)
 			int			dx,dy;
 			Motion		mx,my;
 			ControlType	type;
-			word conpee;
+			sword conpee;
 register	KeyboardDef	*def;
 
 	dx = dy = 0;
