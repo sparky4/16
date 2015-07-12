@@ -850,19 +850,19 @@ register	KeyboardDef	*def;
 			else if (Keyboard[def->downright])
 				mx = motion_Right,my = motion_Down;*/
 
-			//if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
+			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
 			
 			if((inpu.Keyboard[def->up] && player[playnum].info.dir == 2))// || player[playnum].info.dir == 0)
 				my = motion_Up;
 			else if((inpu.Keyboard[def->down] && player[playnum].info.dir == 2))// || player[playnum].info.dir == 4)
 				my = motion_Down;
 
-			//}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
+			}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
 			if((inpu.Keyboard[def->left] && player[playnum].info.dir == 2))// || player[playnum].info.dir == 1)
 				mx = motion_Left;
 			else if((inpu.Keyboard[def->right] && player[playnum].info.dir == 2))// || player[playnum].info.dir == 3)
 				mx = motion_Right;
-			//}
+			}
 			if (inpu.Keyboard[def->button0])
 				buttons += 1 << 0;
 			if (inpu.Keyboard[def->button1])
