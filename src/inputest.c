@@ -38,6 +38,7 @@ main(int argc, char *argv[])
 		IN_ReadControl(0,&player);
 		//printf("%u\n", IN_KeyDown(sc_Escape));
 		//printf("%u\n", IN_qb(sc_Escape));
+		clockdw++;
 	}
 	IN_Shutdown();
 	//printf("%u\n", in.Keyboard[sc_Escape]);

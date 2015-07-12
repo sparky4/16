@@ -251,7 +251,7 @@ typedef	struct
 		static word		DemoOffset,DemoSize;
 #endif
 
-extern dword far* clockdw;
+extern dword /*far**/ clockdw;
 
 //	Internal routines
 extern void interrupt INL_KeyService();
