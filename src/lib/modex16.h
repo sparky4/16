@@ -92,11 +92,11 @@ void modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset);
 void modexPalUpdate1(byte *p);
 void modexPalUpdate0(byte *p);
 void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, word *offset*/);
+void bputs(/*bmp_t *bmp, */unsigned x, unsigned y, const char *s);
 void modexWaitBorder();
 
 /* -======================= Constants & Vars ==========================- */
 extern byte far*  VGA;  /* The VGA Memory */
-//extern word text_mask[16];
 #define SCREEN_SEG		0xa000
 #define VIDEO_INT		0x10
 #define SET_MODE		0x00

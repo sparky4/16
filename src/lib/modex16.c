@@ -942,6 +942,23 @@ no... wait.... no wwww
 		free(pal);
 }
 
+void bputs(/*bmp_t *bmp, */unsigned x, unsigned y, const char *s)
+{
+	byte far *font;
+	//bmp_t src;
+
+	//font = bios_8x8_font();
+	//src.wd = 8;
+	//src.ht = 8;
+	//src.ops = &g_ops1;
+	for(; *s != '\0'; s++)
+	{
+		//src.raster = font + 8 * (*s);
+		//blit1(&src, bmp, x, y);
+		x += 8;
+	}
+}
+
 void
 modexWaitBorder() {
     while(inp(INPUT_STATUS_1)  & 8)  {
