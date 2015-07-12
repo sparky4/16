@@ -936,7 +936,7 @@ register	KeyboardDef	*def;
 	}
 #endif
 #ifdef TESTCONTROLNOISY
-if(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right])
+if((inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right])&& player[playnum].info.dir!=2)
 {
 	printf("(mx)=%d	", mx);
 	printf("(my)=%d	", my);
