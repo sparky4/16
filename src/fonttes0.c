@@ -33,8 +33,8 @@ void main(int argc, char near *argv[])
     char c;
     word s, o, t, w;
     word addr = (word) l;
-    byte *pal, *pal2, fond;
-	bitmap_t fontdata;
+    //byte *pal, *pal2, fond;
+	//bitmap_t fontdata;
 	page_t page;
     textInit();
 
@@ -102,9 +102,9 @@ void main(int argc, char near *argv[])
     }
 
     //load our palette
-    modexLoadPalFile("data/default.pal", &pal2);
+    //modexLoadPalFile("data/default.pal", &pal2);
 
-	fontdata.width=8;
+	/*fontdata.width=8;
 	fontdata.height=w;
 	fontdata.palette=pal2;
 
@@ -115,7 +115,7 @@ void main(int argc, char near *argv[])
 		j=1<<8;
 		while(j)
 		{
-			fond=(byte)l[i] & j;
+			fond=(byte)l[i] & j ? '1':'0';
 			fontdata.data=&(fond);
 			printf("%02x ", *(fontdata.data));
 			j>>=1;
@@ -127,16 +127,16 @@ void main(int argc, char near *argv[])
 	while(!getch())
 	{
 		//DrawPBuf(&page, 0, 0, p, 0);
-	}
+	}*/
 
     // save the palette
-    pal  = modexNewPal();
+    /*pal  = modexNewPal();
     modexPalSave(pal);
     modexFadeOff(4, pal);
     modexPalBlack();
-
+*/
     modexEnter();
-    modexPalBlack();
+/*    modexPalBlack();*/
 
     // set up the page, but with 16 pixels on all borders in offscreen mem
     page=modexDefaultPage();
@@ -145,34 +145,33 @@ void main(int argc, char near *argv[])
 	modexShowPage(&page);
 	modexClearRegion(&page, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 1);
 	// fade in
-	modexFadeOn(4, pal2);
+	//modexFadeOn(4, pal2);
 
 	//render the letter in ascii art
-	/*for(i=0; i<w; i++) {
-	j=1<<8;
-	while(j)
+	for(i=0; i<w; i++)
 	{
-		//printf("j=%d\n", j);
-	    //printf("%c", l[i] & j ? '*':' ');
-	    //====printf("%02x ", l[i] & j);
-		modexClearRegion(&page, 120, 120, 1, 1, l[i] & j);
-	    j>>=1;
-		dcount++;
+		j=1<<8;
+		while(j)
+		{
+			//printf("j=%d\n", j);
+			//printf("%c", l[i] & j ? '*':' ');
+			//====printf("%02x ", l[i] & j);
+			modexClearRegion(&page, 0, 0, 8, w, l[i] & j ? 1:8);
+		j>>=1;
+		}
+		//====printf("\n");
 	}
-	//====printf("\n");
-	dcount++;
-    }*/
-	modexDrawSprite(&page, 0, 0, &fontdata);
+	//modexDrawSprite(&page, 0, 0, &fontdata);
 	while(!getch())
 	{
 		//DrawPBuf(&page, 0, 0, p, 0);
 	}
 
 	// fade back to text mode
-	modexFadeOff(4, pal2);
-	modexPalBlack();
+	/*modexFadeOff(4, pal2);
+	modexPalBlack();*/
 	modexLeave();
-	modexPalBlack();
-	modexFadeOn(4, pal);
+	/*modexPalBlack();
+	modexFadeOn(4, pal);*/
 
 }
