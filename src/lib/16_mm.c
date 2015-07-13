@@ -465,6 +465,7 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 		}*/
 printf("segm=%u	", segm);
 printf("ex=%lu	", extra);
+printf("start+seglen=%lu	", segstart+seglength);
 printf("len=%u	", scan->length);
 printf("segsta=%x	", segstart);
 printf("seglen=%lu\n", seglength);
