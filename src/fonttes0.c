@@ -169,9 +169,9 @@ void main(int argc, char near *argv[])
 			//printf("l[i]=%d	", l[i]);
 			//printf("j=%d	", j);
 			//printf("%02x\n", l[i] & j);
-				modexClearRegion(&page, xp, i*4, 4, 4, l[i] & j ? 15:0);
+				modexClearRegion(&page, xp, i, 4, 4, l[i] & j ? 15:0);
 //while(!getch());
-			xp+=4;
+			xp++;
 			j>>=1;
 		}
 		//====
