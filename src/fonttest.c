@@ -24,7 +24,7 @@
 #include "lib/types.h"
 #include "lib/16text.h"
 
-void main(int argc, char *argv[])
+void main(int argc, char near *argv[])
 {
     int i;
     int j;

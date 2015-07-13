@@ -25,7 +25,7 @@
 #include "lib/16text.h"
 #include "lib/modex16.h"
 
-void main(int argc, char *argv[])
+void main(int argc, char near *argv[])
 {
     int i;
     int j;
@@ -99,43 +99,44 @@ void main(int argc, char *argv[])
 		DEC CX
 		JNZ L1
     }
-    /* load our palette */
+    /*//load our palette
     modexLoadPalFile("data/default.pal", &pal2);
 
-    /* save the palette */
+    // save the palette
     pal  = modexNewPal();
     modexPalSave(pal);
-    modexFadeOff(1, pal);
+    modexFadeOff(4, pal);
     modexPalBlack();
 
     modexEnter();
     modexPalBlack();
 
-    /* set up the page, but with 16 pixels on all borders in offscreen mem */
+    // set up the page, but with 16 pixels on all borders in offscreen mem
     page=modexDefaultPage();
     page.width += 32;
     page.height += 32;
 	modexShowPage(&page);
-	/* fade in */
-	modexFadeOn(1, pal2);
+	// fade in
+	modexFadeOn(4, pal2);*/
 
 	//render the letter in ascii art
 	for(i=0; i<w; i++) {
 	j=1<<8;
-	while(j) {
-	    //printf("%c", l[i] & j ? '*':' ');
+	while(j)
+	{
+	    printf("%c", l[i] & j ? '*':' ');
 	    //====printf("%02x ", l[i] & j/* ? '*':' '*/);
-		modexClearRegion(&page, 4, 4, 1, 1, l[i] & j);
+		//modexClearRegion(&page, l[i] & j, l[i] & j, 1, 1, l[i] & j);
 	    j>>=1;
 	}
 	printf("\n");
     }
 
-	/* fade back to text mode */
-	modexFadeOff(1, pal2);
+	/*// fade back to text mode
+	modexFadeOff(4, pal2);
 	modexPalBlack();
 	modexLeave();
 	modexPalBlack();
-	modexFadeOn(1, pal);
+	modexFadeOn(4, pal);*/
 
 }
