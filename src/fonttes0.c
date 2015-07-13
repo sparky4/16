@@ -33,7 +33,8 @@ void main(int argc, char near *argv[])
     char c;
     word s, o, t, w;
     word addr = (word) l;
-    byte *pal, *pal2;
+    byte *pal, *pal2, fond;
+	bitmap_t fontdata;
 	page_t page;
     textInit();
 
@@ -99,8 +100,34 @@ void main(int argc, char near *argv[])
 		DEC CX
 		JNZ L1
     }
-    /*//load our palette
+
+    //load our palette
     modexLoadPalFile("data/default.pal", &pal2);
+
+	fontdata.width=8;
+	fontdata.height=w;
+	fontdata.palette=pal2;
+
+	fontdata.data=malloc(256);
+
+	for(i=0; i<w; i++)
+	{
+		j=1<<8;
+		while(j)
+		{
+			fond=(byte)l[i] & j;
+			fontdata.data=&(fond);
+			printf("%02x ", *(fontdata.data));
+			j>>=1;
+		}
+		printf("\n");
+	}
+
+	printf("\n\nok hit a key~\n");
+	while(!getch())
+	{
+		//DrawPBuf(&page, 0, 0, p, 0);
+	}
 
     // save the palette
     pal  = modexNewPal();
@@ -113,30 +140,39 @@ void main(int argc, char near *argv[])
 
     // set up the page, but with 16 pixels on all borders in offscreen mem
     page=modexDefaultPage();
-    page.width += 32;
-    page.height += 32;
+    //page.width += 32;
+    //page.height += 32;
 	modexShowPage(&page);
+	modexClearRegion(&page, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 1);
 	// fade in
-	modexFadeOn(4, pal2);*/
+	modexFadeOn(4, pal2);
 
 	//render the letter in ascii art
-	for(i=0; i<w; i++) {
+	/*for(i=0; i<w; i++) {
 	j=1<<8;
 	while(j)
 	{
-	    printf("%c", l[i] & j ? '*':' ');
-	    //====printf("%02x ", l[i] & j/* ? '*':' '*/);
-		//modexClearRegion(&page, l[i] & j, l[i] & j, 1, 1, l[i] & j);
+		//printf("j=%d\n", j);
+	    //printf("%c", l[i] & j ? '*':' ');
+	    //====printf("%02x ", l[i] & j);
+		modexClearRegion(&page, 120, 120, 1, 1, l[i] & j);
 	    j>>=1;
+		dcount++;
 	}
-	printf("\n");
-    }
+	//====printf("\n");
+	dcount++;
+    }*/
+	modexDrawSprite(&page, 0, 0, &fontdata);
+	while(!getch())
+	{
+		//DrawPBuf(&page, 0, 0, p, 0);
+	}
 
-	/*// fade back to text mode
+	// fade back to text mode
 	modexFadeOff(4, pal2);
 	modexPalBlack();
 	modexLeave();
 	modexPalBlack();
-	modexFadeOn(4, pal);*/
+	modexFadeOn(4, pal);
 
 }
