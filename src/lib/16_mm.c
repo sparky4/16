@@ -292,7 +292,7 @@ unsigned MM_MapEMS(mminfo_t *mm)
 			strcpy(str,"MM_MapEMS: EMS error 0x");
 			itoa(err,str2,16);
 			strcpy(str,str2);
-			printf("%s\n",str);
+			//printf("%s\n",str);
 			printf("FACK! %u\n", err);
 			return err;
 		}
