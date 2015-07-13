@@ -29,7 +29,7 @@ void main(int argc, char near *argv[])
     int i;
     int j;
 	char l[16];
-    char c;
+    char c,ct;
     word s, o, t, w;
     word addr = (word) l;
     textInit();
@@ -40,37 +40,46 @@ void main(int argc, char near *argv[])
 	printf("%d: %x:%x\n", i, romFonts[i].seg, romFonts[i].off);
     }
 
-	printf("*argv[1]=%d\n", *argv[1]);
+//	printf("*argv[1]=%d\n", *argv[1]);
 
-    printf("Character: ");
-    scanf("%c", &c);
+	printf("Font type: ");
+	gets(&ct);
 
-	if(*argv[1]!=1)
-	switch(*argv[1])
+	printf("Character: ");
+	gets(&c);
+
+	if(ct!=1)
+	switch(ct)
 	{
 		case 48:
+			printf("type 0\n");
 			t=0;
 			w=14;
 		break;
 		case 49:
+			printf("type 1\n");
 			t=1;
 			w=8;
 		break;
 		case 50:
+			printf("type 2\n");
 			t=2;
 			w=8;
 		break;
 		case 51:
+			printf("type 3\n");
 			t=3;
 			w=16;
 		break;
 		default:
+			printf("type 3\n");
 			t=3;
 			w=16;
 		break;
 	}
 	else
 	{
+		printf("type 3\n");
 		t=3;
 		w=16;	
 	}
