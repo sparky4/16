@@ -270,7 +270,7 @@ unsigned MM_MapEMS(mminfo_t *mm)
 	union REGS CPURegs;
 	EMShandle=mm->EMShandle;
 
-	for (i=0;i<mm->EMSpagesmapped;i++)
+	for (i=0;i<4/*mm->EMSpagesmapped*/;i++)
 	{
 		__asm
 		{
