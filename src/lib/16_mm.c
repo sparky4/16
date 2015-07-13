@@ -83,10 +83,11 @@ static	char *ParmStringsexmm[] = {"noems","noxms",""};
 boolean MML_CheckForEMS(void)
 {
 	boolean emmcfems;
-	char	emmname[] = "EMMXXXX0";
+	static char	emmname[] = "EMMXXXX0";	//fix by andrius4669
 //		mov	dx,OFFSET emmname
 	__asm {
-		LEA	DX, emmname	//fix by andrius4669
+		//LEA	DX, emmname	//fix by andrius4669
+		mov	dx,OFFSET emmname	//fix by andrius4669
 		mov	ax,0x3d00
 		int	0x21		// try to open EMMXXXX0 device
 		jc	error
