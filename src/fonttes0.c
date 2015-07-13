@@ -124,9 +124,8 @@ void main(int argc, char *argv[])
 	j=1<<8;
 	while(j) {
 	    //printf("%c", l[i] & j ? '*':' ');
-	    //printf("%02x ", l[i]/* & j ? '*':' '*/);
-	    //printf("%02x ", /*l[i] & */j/* ? '*':' '*/);
-	    printf("%02x ", l[i] & j/* ? '*':' '*/);
+	    //====printf("%02x ", l[i] & j/* ? '*':' '*/);
+		modexClearRegion(&page, 4, 4, 1, 1, l[i] & j);
 	    j>>=1;
 	}
 	printf("\n");
