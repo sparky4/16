@@ -25,7 +25,7 @@ WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16text.$(OBJ) 16_ca.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ)
 
-all: 16.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe inputest.exe exmmtest.exe
+all: 16.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe inputest.exe exmmtest.exe fonttes0.exe
 
 #
 #executables
@@ -45,6 +45,9 @@ test2.exe: test2.$(OBJ) gfx.lib
 
 fonttest.exe: fonttest.$(OBJ) 16.lib
 	wcl $(FLAGS) fonttest.$(OBJ) 16.lib
+
+fonttes0.exe: fonttes0.$(OBJ) 16.lib
+        wcl $(FLAGS) fonttes0.$(OBJ) 16.lib
 
 inputest.exe: inputest.$(OBJ) 16.lib
 	wcl $(FLAGS) inputest.$(OBJ) 16.lib
@@ -108,6 +111,9 @@ fmemtest.$(OBJ): $(SRC)fmemtest.c
 
 fonttest.$(OBJ): $(SRC)fonttest.c
 	wcl -c $(SRC)fonttest.c
+
+fonttes0.$(OBJ): $(SRC)fonttes0.c
+        wcl -c $(SRC)fonttes0.c
 
 inputest.$(OBJ): $(SRC)inputest.c
 	wcl $(FLAGS) -c $(SRC)inputest.c
