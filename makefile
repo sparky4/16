@@ -110,10 +110,10 @@ fmemtest.$(OBJ): $(SRC)fmemtest.c
 	wcl $(FLAGS) -c $(SRC)fmemtest.c
 
 fonttest.$(OBJ): $(SRC)fonttest.c
-	wcl -c $(SRC)fonttest.c
+	wcl $(FLAGS) -c $(SRC)fonttest.c
 
 fonttes0.$(OBJ): $(SRC)fonttes0.c
-        wcl -c $(SRC)fonttes0.c
+        wcl $(FLAGS) -c $(SRC)fonttes0.c
 
 inputest.$(OBJ): $(SRC)inputest.c
 	wcl $(FLAGS) -c $(SRC)inputest.c
@@ -149,7 +149,7 @@ wcpu.$(OBJ): $(WCPULIB)wcpu.h $(WCPULIB)wcpu.c
 	wcl $(FLAGS) -c $(WCPULIB)wcpu.c
 
 16text.$(OBJ): $(SRCLIB)16text.c
-	wcl -c $(SRCLIB)16text.c
+	wcl $(FLAGS) -c $(SRCLIB)16text.c
 
 mapread.$(OBJ): $(SRCLIB)mapread.h $(SRCLIB)mapread.c 16.lib
 	wcl $(FLAGS) -c $(SRCLIB)mapread.c 16.lib

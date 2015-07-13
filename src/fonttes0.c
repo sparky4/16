@@ -23,6 +23,7 @@
 #include <conio.h>
 #include "lib/types.h"
 #include "lib/16text.h"
+#include "lib/modex16.h"
 
 void main(int argc, char *argv[])
 {
@@ -32,6 +33,8 @@ void main(int argc, char *argv[])
     char c;
     word s, o, t, w;
     word addr = (word) l;
+    byte *pal, *pal2;
+	page_t page;
     textInit();
 
     //print the addresses of the fonts
@@ -96,9 +99,28 @@ void main(int argc, char *argv[])
 		DEC CX
 		JNZ L1
     }
+    /* load our palette */
+    modexLoadPalFile("data/default.pal", &pal2);
 
-    //render the letter in ascii art
-    for(i=0; i<w; i++) {
+    /* save the palette */
+    pal  = modexNewPal();
+    modexPalSave(pal);
+    modexFadeOff(1, pal);
+    modexPalBlack();
+
+    modexEnter();
+    modexPalBlack();
+
+    /* set up the page, but with 16 pixels on all borders in offscreen mem */
+    page=modexDefaultPage();
+    page.width += 32;
+    page.height += 32;
+	modexShowPage(&page);
+	/* fade in */
+	modexFadeOn(1, pal2);
+
+	//render the letter in ascii art
+	for(i=0; i<w; i++) {
 	j=1<<8;
 	while(j) {
 	    //printf("%c", l[i] & j ? '*':' ');
@@ -109,4 +131,12 @@ void main(int argc, char *argv[])
 	}
 	printf("\n");
     }
+
+	/* fade back to text mode */
+	modexFadeOff(1, pal2);
+	modexPalBlack();
+	modexLeave();
+	modexPalBlack();
+	modexFadeOn(1, pal);
+
 }
