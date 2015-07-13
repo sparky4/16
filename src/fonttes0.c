@@ -27,7 +27,7 @@
 
 void main(int argc, char near *argv[])
 {
-    int i;
+    int i, p;
     int j;
 	char l[16];
     char c;
@@ -148,6 +148,7 @@ void main(int argc, char near *argv[])
 	//modexFadeOn(4, pal2);
 
 	//render the letter in ascii art
+	p=0;
 	for(i=0; i<w; i++)
 	{
 		j=1<<8;
@@ -156,7 +157,9 @@ void main(int argc, char near *argv[])
 			//printf("j=%d\n", j);
 			//printf("%c", l[i] & j ? '*':' ');
 			//====printf("%02x ", l[i] & j);
-			modexClearRegion(&page, 0, 0, 8, w, l[i] & j ? 1:8);
+				modexClearRegion(&page, 0, p, 8, 1, l[i] & j ? 8:0);
+while(!getch());
+			p++;
 		j>>=1;
 		}
 		//====printf("\n");
@@ -173,5 +176,20 @@ void main(int argc, char near *argv[])
 	modexLeave();
 	/*modexPalBlack();
 	modexFadeOn(4, pal);*/
+	//render the letter in ascii art
+	for(i=0; i<w; i++)
+	{
+		j=1<<8;
+		while(j)
+		{
+			printf("%c", l[i] & j ? '*':' ');
+			//====printf("%02x ", l[i] & j);
+//while(!getch());
+		j>>=1;
+		}
+		printf("\n");
+	}
+	printf("\ni=%d\n", i);
+	printf("j=%d\n", j);
 
 }
