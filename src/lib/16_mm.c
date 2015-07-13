@@ -325,6 +325,10 @@ SUB EMS.MapXPages (PhysicalStart, LogicalStart, NumPages, Handle)
 
 END SUB
 */
+void MM_MapXEMS(mminfo_t *mm)
+{
+
+}
 
 //==========================================================================
 
