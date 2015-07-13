@@ -101,7 +101,10 @@ void main(int argc, char *argv[])
     for(i=0; i<w; i++) {
 	j=1<<8;
 	while(j) {
-	    printf("%c", l[i] & j ? '*':' ');
+	    //printf("%c", l[i] & j ? '*':' ');
+	    //printf("%02x ", l[i]/* & j ? '*':' '*/);
+	    //printf("%02x ", /*l[i] & */j/* ? '*':' '*/);
+	    printf("%02x ", l[i] & j/* ? '*':' '*/);
 	    j>>=1;
 	}
 	printf("\n");
