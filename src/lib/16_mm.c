@@ -443,8 +443,8 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 	//find out how many blocks it spans!
 	if(seglength>0xffffu)
 	{
-		segm=seglength/0x4000u;
-//		segm=seglength/0xffffu;
+//		segm=seglength/0x4000u;
+		segm=seglength/0xffffu;
 	}
 	else segm=1;
 
@@ -454,7 +454,7 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 	oldend = scan->start + scan->length;
 	extra = oldend - (segstart+seglength);
 	//++++emsver stuff!
-	if(extra>0xfffflu)
+	if(segm>1/*extra>0xfffflu*/)
 	{
 		/*__asm
 		{
@@ -656,7 +656,7 @@ emsskip:
 	if(MML_CheckForXMS(mm))
 	{
 		printf("XMS!\n");
-		MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
+		//MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
 	}
 
 //
