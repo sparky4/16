@@ -293,6 +293,7 @@ unsigned MM_MapEMS(mminfo_t *mm)
 			itoa(err,str2,16);
 			strcpy(str,str2);
 			printf("%s\n",str);
+			printf("FACK! %u\n", err);
 			return err;
 		}
 	}
@@ -448,11 +449,6 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 	}
 	else segm=1;
 
-//
-// take the given range out of the block
-//
-	oldend = scan->start + scan->length;
-	extra = oldend - (segstart+seglength);
 	//++++emsver stuff!
 	if(segm>1/*extra>0xfffflu*/)
 	{
@@ -463,12 +459,7 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 			inc		ax
 			mov	ds,ax
 		}*/
-printf("segm=%u	", segm);
-printf("ex=%lu	", extra);
-printf("start+seglen=%lu	", segstart+seglength);
-printf("len=%u	", scan->length);
-printf("segsta=%x	", segstart);
-printf("seglen=%lu\n", seglength);
+
 
 //MML_UseSpace(?segstart?, ?length?, mm);
 
@@ -478,6 +469,19 @@ printf("seglen=%lu\n", seglength);
 		}*/
 		//printf("MML_UseSpace: Segment spans two blocks!\n");
 	}
+
+//
+// take the given range out of the block
+//
+	oldend = scan->start + scan->length;
+	extra = oldend - (segstart+seglength);
+
+printf("segm=%u	", segm);
+printf("ex=%lu	", extra);
+printf("start+seglen=%lu	", segstart+seglength);
+printf("len=%u	", scan->length);
+printf("segsta=%x	", segstart);
+printf("seglen=%lu\n", seglength);
 
 //segu:
 //++++todo: linked list of segment!
