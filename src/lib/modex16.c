@@ -941,6 +941,38 @@ no... wait.... no wwww
 		printf("chkcolor end~\n");
 		free(pal);
 }
+/*
+; on entry X,Y = location and C = color (0-15)
+putpixel   proc near uses ax bx cx dx
+
+; byte offset = Y * (horz_res / 8) + int(X / 8)
+
+           mov  ax,Y                    ; calculate offset
+           mov  dx,80                   ;
+           mul  dx                      ; ax = y * 80
+           mov  bx,X                    ;
+           mov  cl,bl                   ; save low byte for below
+           shr  bx,03                   ; div by 8
+           add  bx,ax                   ; bx = offset this group of 8 pixels
+
+           mov  dx,03CEh                ; set to video hardware controller
+
+           and  cl,07h                  ; Compute bit mask from X-coordinates
+           xor  cl,07h                  ;  and put in ah
+           mov  ah,01h                  ;
+           shl  ah,cl                   ;
+           mov  al,08h                  ; bit mask register
+           out  dx,ax                   ;
+
+           mov  ax,0205h                ; read mode 0, write mode 2
+           out  dx,ax                   ;
+
+           mov  al,es:[bx]              ; load to latch register
+           mov  al,Color
+           mov  es:[bx],al              ; write to register
+
+           ret
+putpixel   endp*/
 
 void bputs(/*bmp_t *bmp, */unsigned x, unsigned y, const char *s)
 {
