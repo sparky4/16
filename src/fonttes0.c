@@ -27,7 +27,7 @@
 
 void main(int argc, char near *argv[])
 {
-    int i, p;
+    int i, xp;
     int j;
 	char l[16];
     char c;
@@ -148,21 +148,25 @@ void main(int argc, char near *argv[])
 	//modexFadeOn(4, pal2);
 
 	//render the letter in ascii art
-	p=0;
 	for(i=0; i<w; i++)
 	{
 		j=1<<8;
+		xp=0;
 		while(j)
 		{
 			//printf("j=%d\n", j);
 			//printf("%c", l[i] & j ? '*':' ');
 			//====printf("%02x ", l[i] & j);
-				modexClearRegion(&page, 0, p, 8, 1, l[i] & j ? 8:0);
-while(!getch());
-			p++;
-		j>>=1;
+			//printf("l[i]=%d	", l[i]);
+			//printf("j=%d	", j);
+			//printf("%02x\n", l[i] & j);
+				modexClearRegion(&page, xp, i*4, 4, 4, l[i] & j ? 15:0);
+//while(!getch());
+			xp+=4;
+			j>>=1;
 		}
-		//====printf("\n");
+		//====
+		//printf("\n");
 	}
 	//modexDrawSprite(&page, 0, 0, &fontdata);
 	while(!getch())
