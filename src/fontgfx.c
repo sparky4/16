@@ -28,7 +28,7 @@
 void main(int argc, char near *argv[])
 {
 	//JMOJI
-	byte e;
+	static byte e;
 	word chx, chy, colpee;
 	textInit();
 	modexEnter();
@@ -36,22 +36,24 @@ void main(int argc, char near *argv[])
 	//getch();
 	chx=0;
 	chy=0;
-	colpee=0;
-	for(e=' '; e<='~'; e++)
+	colpee=32;
+	for(e=0x01; e<=0xFE; e++)
 	{
-		if(chx+8>(SCREEN_WIDTH/2)-1)
+		if(chx+8>(SCREEN_WIDTH/2)-16)
 		{
 			chx=0;
 			chy+=8;
 			modexprint(200, 200, 1, 47, 0, &e);
+			//getch();
 		}
 		modexprint(chx, chy, 1, 0, colpee, &e);
 		chx+=9;
 		colpee++;
+		if(colpee>=32+24) colpee=32;
 	}
-	modexprint(100, 100, 1, 47, 0, "wwww");
+	//modexprint(100, 100, 1, 47, 0, "wwww");
 	getch();
 	modexLeave();
-	printf("\n\n%u %c", '');
-	printf("\n%c\n", e);
+	//printf("\nh=%d\n", '8');
+	//printf("\n%c\n", e);
 }

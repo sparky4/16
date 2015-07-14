@@ -1003,7 +1003,7 @@ void modexprint(word x, word y, word t, word col, word bgcol, const byte *str)
 	for(; *str != '\0'; str++)
 	{
 	if(chw>=SCREEN_WIDTH-1) y+=w;
-	c = *(str);
+	c = (*str);
 	//load the letter 'A'
 	__asm {
 		MOV DI, addr
