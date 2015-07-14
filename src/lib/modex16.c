@@ -28,7 +28,7 @@
 #include <stdlib.h>
 #include "src/lib/modex16.h"
 
-byte far* VGA=(byte far*) 0xA0000000; 	/* this points to video memory. */
+byte far* VGA=(byte far*) 0xA0000000;   /* this points to video memory. */
 
 static void fadePalette(sbyte fade, sbyte start, word iter, byte *palette);
 static byte tmppal[PAL_SIZE];
@@ -50,16 +50,16 @@ modexEnter() {
     word i;
     dword far*ptr=(dword far*)VGA;      /* used for faster screen clearing */
     word CRTParms[] = {
-	0x0d06,		/* vertical total */
-	0x3e07,		/* overflow (bit 8 of vertical counts) */
-	0x4109,		/* cell height (2 to double-scan */
-	0xea10,		/* v sync start */
-	0xac11,		/* v sync end and protect cr0-cr7 */
-	0xdf12,		/* vertical displayed */
-	0x0014,		/* turn off dword mode */
-	0xe715,		/* v blank start */
-	0x0616,		/* v blank end */
-	0xe317		/* turn on byte mode */
+        0x0d06,         /* vertical total */
+        0x3e07,         /* overflow (bit 8 of vertical counts) */
+        0x4109,         /* cell height (2 to double-scan */
+        0xea10,         /* v sync start */
+        0xac11,         /* v sync end and protect cr0-cr7 */
+        0xdf12,         /* vertical displayed */
+        0x0014,         /* turn off dword mode */
+        0xe715,         /* v blank start */
+        0x0616,         /* v blank end */
+        0xe317          /* turn on byte mode */
     };
     int CRTParmCount = sizeof(CRTParms) / sizeof(CRTParms[0]);
 
@@ -84,13 +84,13 @@ modexEnter() {
 
     /* send the CRTParms */
     for(i=0; i<CRTParmCount; i++) {
-	outpw(CRTC_INDEX, CRTParms[i]);
+        outpw(CRTC_INDEX, CRTParms[i]);
     }
 
     /* clear video memory */
     outpw(SC_INDEX, 0x0f02);
     for(i=0; i<0x8000; i++) {
-	ptr[i] = 0x0000;
+        ptr[i] = 0x0000;
     }
 }
 
@@ -112,7 +112,7 @@ modexDefaultPage() {
     page.dy = 0;
     page.width = SCREEN_WIDTH;
     page.height = SCREEN_HEIGHT;
-	page.id = 0;
+        page.id = 0;
 
     return page;
 }
@@ -129,7 +129,7 @@ modexNextPage(page_t *p) {
     result.dy = 0;
     result.width = p->width;
     result.height = p->height;
-	result.id = p->id+1;
+        result.id = p->id+1;
 
     return result;
 }
@@ -138,14 +138,14 @@ modexNextPage(page_t *p) {
 page_t
 modexNextPage0(page_t *p, word x, word y)
 {
-	page_t result;
+        page_t result;
 
-	result.data = p->data + (p->width/4)*p->height;  /* compute the offset */
-	result.dx = 0;
-	result.dy = 0;
-	result.width = x;
-	result.height = y;
-	result.id = p->id+1;
+        result.data = p->data + (p->width/4)*p->height;  /* compute the offset */
+        result.dx = 0;
+        result.dy = 0;
+        result.width = x;
+        result.height = y;
+        result.id = p->id+1;
 
     return result;
 }
@@ -217,39 +217,39 @@ modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
     }
 
     __asm {
-		MOV AX, SCREEN_SEG      ; go to the VGA memory
-		MOV ES, AX
-		MOV DI, poffset		; go to the first pixel
-		MOV DX, SC_INDEX	; point to the map mask
-		MOV AL, MAP_MASK
-		OUT DX, AL
-		INC DX
-		MOV AL, color		; get ready to write colors
-	SCAN_START:
-		MOV CX, scanCount	; count the line
-		MOV BL, AL		; remember color
-		MOV AL, left		; do the left clip
-		OUT DX, AL		; set the left clip
-		MOV AL, BL		; restore color
-		STOSB			; write the color
-		DEC CX
-		JZ SCAN_DONE		; handle 1 group stuff
+                MOV AX, SCREEN_SEG      ; go to the VGA memory
+                MOV ES, AX
+                MOV DI, poffset         ; go to the first pixel
+                MOV DX, SC_INDEX        ; point to the map mask
+                MOV AL, MAP_MASK
+                OUT DX, AL
+                INC DX
+                MOV AL, color           ; get ready to write colors
+        SCAN_START:
+                MOV CX, scanCount       ; count the line
+                MOV BL, AL              ; remember color
+                MOV AL, left            ; do the left clip
+                OUT DX, AL              ; set the left clip
+                MOV AL, BL              ; restore color
+                STOSB                   ; write the color
+                DEC CX
+                JZ SCAN_DONE            ; handle 1 group stuff
 
-		;-- write the main body of the scanline
-		MOV BL, AL	  	; remember color
-		MOV AL, 0x0f		; write to all pixels
-		OUT DX, AL
-		MOV AL, BL		; restore color
-		REP STOSB		; write the color
-	SCAN_DONE:
-		MOV BL, AL		; remeber color
-		MOV AL, right
-		OUT DX, AL		; do the right clip
-		MOV AL, BL		; restore color
-		STOSB			; write pixel
-		ADD DI, nextRow		; go to the next row
-		DEC h
-		JNZ SCAN_START
+                ;-- write the main body of the scanline
+                MOV BL, AL              ; remember color
+                MOV AL, 0x0f            ; write to all pixels
+                OUT DX, AL
+                MOV AL, BL              ; restore color
+                REP STOSB               ; write the color
+        SCAN_DONE:
+                MOV BL, AL              ; remeber color
+                MOV AL, right
+                OUT DX, AL              ; do the right clip
+                MOV AL, BL              ; restore color
+                STOSB                   ; write pixel
+                ADD DI, nextRow         ; go to the next row
+                DEC h
+                JNZ SCAN_START
     }
 }
 
@@ -257,22 +257,22 @@ modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
 void
 oldDrawBmp(byte far* page, int x, int y, bitmap_t *bmp, byte sprite)
 {
-	byte plane;
-	word px, py;
-	word offset;
+        byte plane;
+        word px, py;
+        word offset;
 
-	/* TODO Make this fast.  It's SLOOOOOOW */
-	for(plane=0; plane < 4; plane++) {
-		modexSelectPlane(PLANE(plane+x));
-		for(px = plane; px < bmp->width; px+=4) {
-			offset=px;
-			for(py=0; py<bmp->height; py++) {
-			if(!sprite || bmp->data[offset])
-				page[PAGE_OFFSET(x+px, y+py)] = bmp->data[offset];
-			offset+=bmp->width;
-			}
-		}
-	}
+        /* TODO Make this fast.  It's SLOOOOOOW */
+        for(plane=0; plane < 4; plane++) {
+                modexSelectPlane(PLANE(plane+x));
+                for(px = plane; px < bmp->width; px+=4) {
+                        offset=px;
+                        for(py=0; py<bmp->height; py++) {
+                        if(!sprite || bmp->data[offset])
+                                page[PAGE_OFFSET(x+px, y+py)] = bmp->data[offset];
+                        offset+=bmp->width;
+                        }
+                }
+        }
 }
 
 
@@ -298,51 +298,51 @@ modexDrawBmpRegion(page_t *page, int x, int y,
     word rowCounter;
     byte planeCounter = 4;
 
-	//code is a bit slow here
+        //code is a bit slow here
     __asm {
-		MOV AX, SCREEN_SEG      ; go to the VGA memory
-		MOV ES, AX
+                MOV AX, SCREEN_SEG      ; go to the VGA memory
+                MOV ES, AX
 
-		MOV DX, SC_INDEX	; point at the map mask register
-		MOV AL, MAP_MASK	;
-		OUT DX, AL		;
+                MOV DX, SC_INDEX        ; point at the map mask register
+                MOV AL, MAP_MASK        ;
+                OUT DX, AL              ;
 
-	PLANE_LOOP:
-		MOV DX, SC_DATA		; select the current plane
-		MOV AL, plane		;
-		OUT DX, AL		;
+        PLANE_LOOP:
+                MOV DX, SC_DATA         ; select the current plane
+                MOV AL, plane           ;
+                OUT DX, AL              ;
 
-		;-- begin plane painting
-		MOV AX, height		; start the row counter
-		MOV rowCounter, AX	;
-		MOV DI, poffset		; go to the first pixel
-		MOV SI, bmpOffset	; go to the bmp pixel
-	ROW_LOOP:
-		MOV CX, width		; count the columns
-	SCAN_LOOP:
-		MOVSB			; copy the pixel
-		SUB CX, 3		; we skip the next 3
-		ADD SI, 3		; skip the bmp pixels
-		LOOP SCAN_LOOP		; finish the scan
+                ;-- begin plane painting
+                MOV AX, height          ; start the row counter
+                MOV rowCounter, AX      ;
+                MOV DI, poffset         ; go to the first pixel
+                MOV SI, bmpOffset       ; go to the bmp pixel
+        ROW_LOOP:
+                MOV CX, width           ; count the columns
+        SCAN_LOOP:
+                MOVSB                   ; copy the pixel
+                SUB CX, 3               ; we skip the next 3
+                ADD SI, 3               ; skip the bmp pixels
+                LOOP SCAN_LOOP          ; finish the scan
 
-		MOV AX, nextPageRow
-		ADD DI, AX		; go to the next row on screen
-		MOV AX, nextBmpRow
-		ADD SI, AX		; go to the next row on bmp
+                MOV AX, nextPageRow
+                ADD DI, AX              ; go to the next row on screen
+                MOV AX, nextBmpRow
+                ADD SI, AX              ; go to the next row on bmp
 
-		DEC rowCounter
-		JNZ ROW_LOOP		; do all the rows
-		;-- end plane painting
+                DEC rowCounter
+                JNZ ROW_LOOP            ; do all the rows
+                ;-- end plane painting
 
-		MOV AL, plane		; advance to the next plane
-		SHL AL, 1		;
-		AND AL, 0x0f		; mask the plane properly
-		MOV plane, AL		; store the plane
+                MOV AL, plane           ; advance to the next plane
+                SHL AL, 1               ;
+                AND AL, 0x0f            ; mask the plane properly
+                MOV plane, AL           ; store the plane
 
-		INC bmpOffset		; start bmp at the right spot
+                INC bmpOffset           ; start bmp at the right spot
 
-		DEC planeCounter
-		JNZ PLANE_LOOP		; do all 4 planes
+                DEC planeCounter
+                JNZ PLANE_LOOP          ; do all 4 planes
     }
 }
 
@@ -350,11 +350,11 @@ modexDrawBmpRegion(page_t *page, int x, int y,
 void
 modexDrawPlanarBuf(page_t *page, int x, int y, planar_buf_t *bmp) {
     /* TODO - adapt from test code */
-	int plane;
-	for(plane=0; plane < 4; plane++)
-	{
-		//fack
-	}
+        int plane;
+        for(plane=0; plane < 4; plane++)
+        {
+                //fack
+        }
 }
 
 
@@ -366,7 +366,7 @@ modexDrawSprite(page_t *page, int x, int y, bitmap_t *bmp) {
 
 void
 modexDrawSpriteRegion(page_t *page, int x, int y,
-		      int rx, int ry, int rw, int rh, bitmap_t *bmp) {
+                      int rx, int ry, int rw, int rh, bitmap_t *bmp) {
     word poffset = (word)page->data + y*(page->width/4) + x/4;
     byte *data = bmp->data;//+bmp->offset;
     word bmpOffset = (word) data + ry * bmp->width + rx;
@@ -380,59 +380,59 @@ modexDrawSpriteRegion(page_t *page, int x, int y,
     byte planeCounter = 4;
 
     __asm {
-		MOV AX, SCREEN_SEG      ; go to the VGA memory
-		MOV ES, AX
+                MOV AX, SCREEN_SEG      ; go to the VGA memory
+                MOV ES, AX
 
-		MOV DX, SC_INDEX	; point at the map mask register
-		MOV AL, MAP_MASK	;
-		OUT DX, AL		;
+                MOV DX, SC_INDEX        ; point at the map mask register
+                MOV AL, MAP_MASK        ;
+                OUT DX, AL              ;
 
-	PLANE_LOOP:
-		MOV DX, SC_DATA		; select the current plane
-		MOV AL, plane		;
-		OUT DX, AL		;
+        PLANE_LOOP:
+                MOV DX, SC_DATA         ; select the current plane
+                MOV AL, plane           ;
+                OUT DX, AL              ;
 
-		;-- begin plane painting
-		MOV AX, height		; start the row counter
-		MOV rowCounter, AX	;
-		MOV DI, poffset		; go to the first pixel
-		MOV SI, bmpOffset	; go to the bmp pixel
-	ROW_LOOP:
-		MOV CX, width		; count the columns
-	SCAN_LOOP:
-		LODSB
-		DEC SI
-		CMP AL, 0
-		JNE DRAW_PIXEL		; draw non-zero pixels
+                ;-- begin plane painting
+                MOV AX, height          ; start the row counter
+                MOV rowCounter, AX      ;
+                MOV DI, poffset         ; go to the first pixel
+                MOV SI, bmpOffset       ; go to the bmp pixel
+        ROW_LOOP:
+                MOV CX, width           ; count the columns
+        SCAN_LOOP:
+                LODSB
+                DEC SI
+                CMP AL, 0
+                JNE DRAW_PIXEL          ; draw non-zero pixels
 
-		INC DI			; skip the transparent pixel
-		ADD SI, 1
-		JMP NEXT_PIXEL
-	DRAW_PIXEL:
-		MOVSB			; copy the pixel
-	NEXT_PIXEL:
-		SUB CX, 3		; we skip the next 3
-		ADD SI, 3		; skip the bmp pixels
-		LOOP SCAN_LOOP		; finish the scan
+                INC DI                  ; skip the transparent pixel
+                ADD SI, 1
+                JMP NEXT_PIXEL
+        DRAW_PIXEL:
+                MOVSB                   ; copy the pixel
+        NEXT_PIXEL:
+                SUB CX, 3               ; we skip the next 3
+                ADD SI, 3               ; skip the bmp pixels
+                LOOP SCAN_LOOP          ; finish the scan
 
-		MOV AX, nextPageRow
-		ADD DI, AX		; go to the next row on screen
-		MOV AX, nextBmpRow
-		ADD SI, AX		; go to the next row on bmp
+                MOV AX, nextPageRow
+                ADD DI, AX              ; go to the next row on screen
+                MOV AX, nextBmpRow
+                ADD SI, AX              ; go to the next row on bmp
 
-		DEC rowCounter
-		JNZ ROW_LOOP		; do all the rows
-		;-- end plane painting
+                DEC rowCounter
+                JNZ ROW_LOOP            ; do all the rows
+                ;-- end plane painting
 
-		MOV AL, plane		; advance to the next plane
-		SHL AL, 1		;
-		AND AL, 0x0f		; mask the plane properly
-		MOV plane, AL		; store the plane
+                MOV AL, plane           ; advance to the next plane
+                SHL AL, 1               ;
+                AND AL, 0x0f            ; mask the plane properly
+                MOV plane, AL           ; store the plane
 
-		INC bmpOffset		; start bmp at the right spot
+                INC bmpOffset           ; start bmp at the right spot
 
-		DEC planeCounter
-		JNZ PLANE_LOOP		; do all 4 planes
+                DEC planeCounter
+                JNZ PLANE_LOOP          ; do all 4 planes
     }
 }
 
@@ -443,9 +443,9 @@ modexDrawSpriteRegion(page_t *page, int x, int y,
  */
 void
 modexCopyPageRegion(page_t *dest, page_t *src,
-		    word sx, word sy,
-		    word dx, word dy,
-		    word width, word height)
+                    word sx, word sy,
+                    word dx, word dy,
+                    word width, word height)
 {
     word doffset = (word)dest->data + dy*(dest->width/4) + dx/4;
     word soffset = (word)src->data + sy*(src->width/4) + sx/4;
@@ -458,54 +458,54 @@ modexCopyPageRegion(page_t *dest, page_t *src,
     byte right = rclip[(sx+width)&0x03];
 
     __asm {
-		MOV AX, SCREEN_SEG	; work in the vga space
-		MOV ES, AX		;
-		MOV DI, doffset		;
-		MOV SI, soffset		;
+                MOV AX, SCREEN_SEG      ; work in the vga space
+                MOV ES, AX              ;
+                MOV DI, doffset         ;
+                MOV SI, soffset         ;
 
-		MOV DX, GC_INDEX	; turn off cpu bits
-		MOV AX, 0008h		;
-		OUT DX, AX
+                MOV DX, GC_INDEX        ; turn off cpu bits
+                MOV AX, 0008h           ;
+                OUT DX, AX
 
-		MOV AX, SC_INDEX	; point to the mask register
-		MOV DX, AX		;
-		MOV AL, MAP_MASK	;
-		OUT DX, AL		;
-		INC DX			;
+                MOV AX, SC_INDEX        ; point to the mask register
+                MOV DX, AX              ;
+                MOV AL, MAP_MASK        ;
+                OUT DX, AL              ;
+                INC DX                  ;
 
-	ROW_START:
-		PUSH DS
-		MOV AX, ES
-		MOV DS, AX
-		MOV CX, scans		; the number of latches
+        ROW_START:
+                PUSH DS
+                MOV AX, ES
+                MOV DS, AX
+                MOV CX, scans           ; the number of latches
 
-		MOV AL, left		; do the left column
-		OUT DX, AL		;
-		MOVSB			;
-		DEC CX			;
+                MOV AL, left            ; do the left column
+                OUT DX, AL              ;
+                MOVSB                   ;
+                DEC CX                  ;
 
-		MOV AL, 0fh		; do the inner columns
-		OUT DX, AL
-		REP MOVSB		; copy the pixels
+                MOV AL, 0fh             ; do the inner columns
+                OUT DX, AL
+                REP MOVSB               ; copy the pixels
 
-		MOV AL, right		; do the right column
-		OUT DX, AL
-		MOVSB
-		POP DS
+                MOV AL, right           ; do the right column
+                OUT DX, AL
+                MOVSB
+                POP DS
 
-		MOV AX, SI		; go the start of the next row
-		ADD AX, nextSrcRow	;
-		MOV SI, AX		;
-		MOV AX, DI		;
-		ADD AX, nextDestRow	;
-		MOV DI, AX		;
+                MOV AX, SI              ; go the start of the next row
+                ADD AX, nextSrcRow      ;
+                MOV SI, AX              ;
+                MOV AX, DI              ;
+                ADD AX, nextDestRow     ;
+                MOV DI, AX              ;
 
-		DEC height		; do the rest of the actions
-		JNZ ROW_START		;
+                DEC height              ; do the rest of the actions
+                JNZ ROW_START           ;
 
-		MOV DX, GC_INDEX+1	; go back to CPU data
-		MOV AL, 0ffh		; none from latches
-		OUT DX, AL		;
+                MOV DX, GC_INDEX+1      ; go back to CPU data
+                MOV AL, 0ffh            ; none from latches
+                OUT DX, AL              ;
     }
 }
 
@@ -542,22 +542,22 @@ fadePalette(sbyte fade, sbyte start, word iter, byte *palette) {
 
     /* handle the case where we just update */
     if(iter == 0) {
-	modexPalUpdate1(palette);
-	return;
+        modexPalUpdate1(palette);
+        return;
     }
 
     while(iter > 0) {  /* FadeLoop */
-	for(i=0; i<PAL_SIZE; i++) { /* loadpal_loop */
-	    tmppal[i] = palette[i] - dim;
-	    if(tmppal[i] > 127) {
-		tmppal[i] = 0;
-	    } else if(tmppal[i] > 63) {
-		tmppal[i] = 63;
-	    }
-	}
+        for(i=0; i<PAL_SIZE; i++) { /* loadpal_loop */
+            tmppal[i] = palette[i] - dim;
+            if(tmppal[i] > 127) {
+                tmppal[i] = 0;
+            } else if(tmppal[i] > 63) {
+                tmppal[i] = 63;
+            }
+        }
         modexPalUpdate1(tmppal);
-	iter--;
-	dim += fade;
+        iter--;
+        dim += fade;
     }
 }
 
@@ -567,9 +567,9 @@ void
 modexPalSave(byte *palette) {
     int  i;
 
-    outp(PAL_READ_REG, 0);	/* start at palette entry 0 */
+    outp(PAL_READ_REG, 0);      /* start at palette entry 0 */
     for(i=0; i<PAL_SIZE; i++) {
-	palette[i] = inp(PAL_DATA_REG); /* read the palette data */
+        palette[i] = inp(PAL_DATA_REG); /* read the palette data */
     }
 }
 
@@ -581,8 +581,8 @@ modexNewPal() {
 
     /* handle errors */
     if(!ptr) {
-	printf("Could not allocate palette.\n");
-	exit(-1);
+        printf("Could not allocate palette.\n");
+        exit(-1);
     }
 
     return ptr;
@@ -596,7 +596,7 @@ modexLoadPalFile(byte *filename, byte **palette) {
 
     /* free the palette if it exists */
     if(*palette) {
-	free(*palette);
+        free(*palette);
     }
 
     /* allocate the new palette */
@@ -605,14 +605,14 @@ modexLoadPalFile(byte *filename, byte **palette) {
     /* open the file */
     file = fopen(filename, "rb");
     if(!file) {
-	printf("Could not open palette file: %s\n", filename);
-	exit(-2);
+        printf("Could not open palette file: %s\n", filename);
+        exit(-2);
     }
 
     /* read the file */
     ptr = *palette;
     while(!feof(file)) {
-	*ptr++ = fgetc(file);
+        *ptr++ = fgetc(file);
     }
 
     fclose(file);
@@ -627,8 +627,8 @@ modexSavePalFile(char *filename, byte *pal) {
     /* open the file for writing */
     file = fopen(filename, "wb");
     if(!file) {
-	printf("Could not open %s for writing\n", filename);
-	exit(-2);
+        printf("Could not open %s for writing\n", filename);
+        exit(-2);
     }
 
     /* write the data to the file */
@@ -654,351 +654,345 @@ modexPalWhite() {
 void
 modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 {
-	byte *p = bmp->palette;
-	word w=0;
-	word q=0;
-	word qq=0;
-	static word a[PAL_SIZE];	//palette array of change values!
-	word z=0, aq=0, aa=0, pp=0;
+        byte *p = bmp->palette;
+        word w=0;
+        word q=0;
+        word qq=0;
+        static word a[PAL_SIZE];        //palette array of change values!
+        word z=0, aq=0, aa=0, pp=0;
 
-	modexWaitBorder();
-	if((*i)==0)
-	{
-		memset(a, -1, sizeof(a));
-		outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
-	}
-	else if(qp==0)
-	{
-		q=(*i);
-	}
-	else
-	{
-		q=(*i);
-		qq=(*i)/3;
-//		printf("q: %02d\n", (q));
-//		printf("qq: %02d\n", (qq));
-		//printf("	(*i)-q=%02d\n", (*i)-q);
-		outp(PAL_WRITE_REG, qq);  /* start at the beginning of palette */
-	}
-	if((*i)<PAL_SIZE/2 && w==0)
-	{
-		for(; (*i)<PAL_SIZE/2; (*i)++)
-		{
-			//if(i%3==0 && (p[i+5]==p[i+4] && p[i+4]==p[i+3] && p[i+3]==p[i+2] && p[i+2]==p[i+1] && p[i+1]==p[i] && p[i+5]==p[i]))
-//____			if((qp>0)&&((*i)-q)%3==0 && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5])) outp(PAL_DATA_REG, p[(*i)-q]); else
-			if(((((*i)-q)%3==0)) && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5]))
-			{
-				w++;
-				break;
-			}
-			else if(qp>0 && (*i)>=(qp) && (*i)<((qp)+3))
-			{
-				//printf("qp=%d\n", qp);
-				//printf("		(*i)=%d	a[%d]=%d\n", (*i), qp, a[qp]);
-				printf("		%d's color=%d\n", (*i), (a[qp])-(bmp->offset*3)+qp);
-				//outp(PAL_DATA_REG, p[((a[qp])-(bmp->offset*3)+qp)]);// fix this shit!
-				if((*i)+1==(qp)+3){ w++; /*(*i)++;*/ break; }
-			}
-			else
-			{
-				if(bmp->offset==0 && (*i)<3 && q==0) outp(PAL_DATA_REG, 0);
-				else
-				if(qp==0) outp(PAL_DATA_REG, p[(*i)-q]);
-				else{ //outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3)+qp)]);
-				printf("p[]=%d	qp=%d	p[]-qp=%d\n", ((*i)-(bmp->offset*3)), qp, ((*i)-(bmp->offset*3))+qp); }
-			}
-		}
-		//if(qp>0) printf("qp=%d\n", qp);
-		//if(qp>0) printf("						(*i)=%d\n", (*i)/3);
-	}
-	modexWaitBorder();	    /* waits one retrace -- less flicker */
-	if((*i)>=PAL_SIZE/2 && w==0)
-	{
-		for(; (*i)<PAL_SIZE; (*i)++)
-		{
-//____			if((qp>0)&&((*i)-q)%3==0 && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5])) outp(PAL_DATA_REG, p[(*i)-q]); else
-			if(((((*i)-q)%3==0)) && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5]))
-			{
-				w++;
-				break;
-			}
-			else if(qp>0 && (*i)>=(qp) && (*i)<((qp)+3))
-			{
-				//printf("qp=%d\n", qp);
-				//printf("		(*i)=%d	a[%d]=%d\n", (*i), qp, a[qp]);
-				printf("		%d's color=%d\n", (*i), (a[qp]-(bmp->offset*3)+qp));
-				//outp(PAL_DATA_REG, p[((a[qp])-(bmp->offset*3)+qp)]);// fix this shit!
-				if((*i)+1==(qp)+3){ w++; /*(*i)++;*/ break; }
-			}
-			else
-			{
-				if(qp==0) outp(PAL_DATA_REG, p[(*i)-q]);
-				else{ //outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3)+qp)]);
-				printf("p[]=%d	qp=%d	p[]-qp=%d\n", ((*i)-(bmp->offset*3)), qp, ((*i)-(bmp->offset*3))+qp); }
-			}
-		}
-		//printf("						(*i)=%d\n", (*i)/3);
-	}
+        modexWaitBorder();
+        if((*i)==0)
+        {
+                memset(a, -1, sizeof(a));
+                outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
+        }
+        else if(qp==0)
+        {
+                q=(*i);
+        }
+        else
+        {
+                q=(*i);
+                qq=(*i)/3;
+//              printf("q: %02d\n", (q));
+//              printf("qq: %02d\n", (qq));
+                //printf("      (*i)-q=%02d\n", (*i)-q);
+                outp(PAL_WRITE_REG, qq);  /* start at the beginning of palette */
+        }
+        if((*i)<PAL_SIZE/2 && w==0)
+        {
+                for(; (*i)<PAL_SIZE/2; (*i)++)
+                {
+                        //if(i%3==0 && (p[i+5]==p[i+4] && p[i+4]==p[i+3] && p[i+3]==p[i+2] && p[i+2]==p[i+1] && p[i+1]==p[i] && p[i+5]==p[i]))
+//____                  if((qp>0)&&((*i)-q)%3==0 && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5])) outp(PAL_DATA_REG, p[(*i)-q]); else
+                        if(((((*i)-q)%3==0)) && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5]))
+                        {
+                                w++;
+                                break;
+                        }
+                        else if(qp>0 && (*i)>=(qp) && (*i)<((qp)+3))
+                        {
+                                //printf("qp=%d\n", qp);
+                                //printf("              (*i)=%d a[%d]=%d\n", (*i), qp, a[qp]);
+                                printf("                %d's color=%d\n", (*i), (a[qp])-(bmp->offset*3)+qp);
+                                //outp(PAL_DATA_REG, p[((a[qp])-(bmp->offset*3)+qp)]);// fix this shit!
+                                if((*i)+1==(qp)+3){ w++; /*(*i)++;*/ break; }
+                        }
+                        else
+                        {
+                                if(bmp->offset==0 && (*i)<3 && q==0) outp(PAL_DATA_REG, 0);
+                                else
+                                if(qp==0) outp(PAL_DATA_REG, p[(*i)-q]);
+                                else{ //outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3)+qp)]);
+                                printf("p[]=%d  qp=%d   p[]-qp=%d\n", ((*i)-(bmp->offset*3)), qp, ((*i)-(bmp->offset*3))+qp); }
+                        }
+                }
+                //if(qp>0) printf("qp=%d\n", qp);
+                //if(qp>0) printf("                                             (*i)=%d\n", (*i)/3);
+        }
+        modexWaitBorder();          /* waits one retrace -- less flicker */
+        if((*i)>=PAL_SIZE/2 && w==0)
+        {
+                for(; (*i)<PAL_SIZE; (*i)++)
+                {
+//____                  if((qp>0)&&((*i)-q)%3==0 && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5])) outp(PAL_DATA_REG, p[(*i)-q]); else
+                        if(((((*i)-q)%3==0)) && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5]))
+                        {
+                                w++;
+                                break;
+                        }
+                        else if(qp>0 && (*i)>=(qp) && (*i)<((qp)+3))
+                        {
+                                //printf("qp=%d\n", qp);
+                                //printf("              (*i)=%d a[%d]=%d\n", (*i), qp, a[qp]);
+                                printf("                %d's color=%d\n", (*i), (a[qp]-(bmp->offset*3)+qp));
+                                //outp(PAL_DATA_REG, p[((a[qp])-(bmp->offset*3)+qp)]);// fix this shit!
+                                if((*i)+1==(qp)+3){ w++; /*(*i)++;*/ break; }
+                        }
+                        else
+                        {
+                                if(qp==0) outp(PAL_DATA_REG, p[(*i)-q]);
+                                else{ //outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3)+qp)]);
+                                printf("p[]=%d  qp=%d   p[]-qp=%d\n", ((*i)-(bmp->offset*3)), qp, ((*i)-(bmp->offset*3))+qp); }
+                        }
+                }
+                //printf("                                              (*i)=%d\n", (*i)/3);
+        }
 
 printf("\nqqqqqqqq\n\n");
 
-	//palette checker~
-	if(q>0 && qp==0)
-	{
-		long lq;
-		long bufSize = (bmp->width * bmp->height);
-		pp = q;
-		//printf("1(*i)=%02d\n", (*i)/3);
-		//printf("1z=%02d\n", z/3);
-		chkcolor(bmp, &q, &a, &aa, &z, i);
-		//printf("2(*i)=%02d\n", (*i)/3);
-		//printf("2z=%02d\n", z/3);
-		aq=0;
+        //palette checker~
+        if(q>0 && qp==0)
+        {
+                long lq;
+                long bufSize = (bmp->width * bmp->height);
+                pp = q;
+                //printf("1(*i)=%02d\n", (*i)/3);
+                //printf("1z=%02d\n", z/3);
+                chkcolor(bmp, &q, &a, &aa, &z, i);
+                //printf("2(*i)=%02d\n", (*i)/3);
+                //printf("2z=%02d\n", z/3);
+                aq=0;
 aqpee:
-		while(aq<=aa)
-		{
-//			printf("a[%02d]=(%d)\n", aq, a[aq]);
-			if(a[aq]==-1) aq++;
-			else { aqoffset++; break; }
-		}
+                while(aq<=aa)
+                {
+//                      printf("a[%02d]=(%d)\n", aq, a[aq]);
+                        if(a[aq]==-1) aq++;
+                        else { aqoffset++; break; }
+                }
 //update the image data here!
-	for(lq=0; lq<bufSize; lq++)
-	{
-				/*
-									note to self
-									use a[qp] instead of bmp->offset for this spot!
-									NO! wwww
-				*/
+        for(lq=0; lq<bufSize; lq++)
+        {
+                                /*
+                                                                        note to self
+                                                                        use a[qp] instead of bmp->offset for this spot!
+                                                                        NO! wwww
+                                */
 
-				/*
-				Facking bloody point the values of the changed palette to correct values.... major confusion! wwww
-				*/
+                                /*
+                                Facking bloody point the values of the changed palette to correct values.... major confusion! wwww
+                                */
 
-		//(offset/bmp->offset)*bmp->offset
+                //(offset/bmp->offset)*bmp->offset
 
 
-		//printf("%02d ",bmp->data[lq]+bmp->offset);
-		//if(lq > 0 && lq%bmp->width==0) printf("\n");
-		//printf("%02d_", bmp->data[lq]+bmp->offset);
-		/*if(bmp->data[lq]+bmp->offset==aq)
-		{
-			//printf("%02d", bmp->data[lq]);
-			//printf("\n%02d\n", bmp->offset);
-			printf("aq=%02d	", aq);
-			printf("a[aq]=%02d	", a[aq]);
-			printf("a[aq]+aqpp=%02d	", a[aq]+aqpp);
-			printf("a[aq]-aqpp=%02d\n", a[aq]-aqpp);
-			//bmp->data[lq]=((bmp->data[lq]+bmp->offset)-a[aq]);
-//++++			bmp->data[lq]=a[aq]-aqpp;
-//			printf("_%d ", bmp->data[lq]);
-			//if(lq > 0 && lq%bmp->width==0) printf("\n");
-		}
-		else if(bmp->data[lq]+bmp->offset < ((*i)/3)-aqpp)
-		{
-			if(bmp->data[lq]+bmp->offset >= aq)
-			{
-				bmp->data[lq]=(bmp->data[lq]+bmp->offset)-aqpp;//-((z-(*i))/3);
-				//printf("_%d ", bmp->data[lq]+bmp->offset)-aqpp-((z-(*i))/3);
-			}
-			else bmp->data[lq]+=(bmp->offset-aqpp);
-		}*/
+                //printf("%02d ",bmp->data[lq]+bmp->offset);
+                //if(lq > 0 && lq%bmp->width==0) printf("\n");
+                //printf("%02d_", bmp->data[lq]+bmp->offset);
+                /*if(bmp->data[lq]+bmp->offset==aq)
+                {
+                        //printf("%02d", bmp->data[lq]);
+                        //printf("\n%02d\n", bmp->offset);
+                        printf("aq=%02d ", aq);
+                        printf("a[aq]=%02d      ", a[aq]);
+                        printf("a[aq]+aqpp=%02d ", a[aq]+aqpp);
+                        printf("a[aq]-aqpp=%02d\n", a[aq]-aqpp);
+                        //bmp->data[lq]=((bmp->data[lq]+bmp->offset)-a[aq]);
+//++++                  bmp->data[lq]=a[aq]-aqpp;
+//                      printf("_%d ", bmp->data[lq]);
+                        //if(lq > 0 && lq%bmp->width==0) printf("\n");
+                }
+                else if(bmp->data[lq]+bmp->offset < ((*i)/3)-aqpp)
+                {
+                        if(bmp->data[lq]+bmp->offset >= aq)
+                        {
+                                bmp->data[lq]=(bmp->data[lq]+bmp->offset)-aqpp;//-((z-(*i))/3);
+                                //printf("_%d ", bmp->data[lq]+bmp->offset)-aqpp-((z-(*i))/3);
+                        }
+                        else bmp->data[lq]+=(bmp->offset-aqpp);
+                }*/
 
-		//printf("%02d`", bmp->data[lq]);
-		//if(lq > 0 && lq%bmp->width==0) printf("\n");
-	}
+                //printf("%02d`", bmp->data[lq]);
+                //if(lq > 0 && lq%bmp->width==0) printf("\n");
+        }
 
-//printf("		aq=%02d\n", aq);
-//printf("		aa=%02d\n", aa);
+//printf("              aq=%02d\n", aq);
+//printf("              aa=%02d\n", aa);
 
-	//update the palette~
-	modexPalUpdate(bmp, &pp, aq, aqoffset);
-	(*i)=pp;
+        //update the palette~
+        modexPalUpdate(bmp, &pp, aq, aqoffset);
+        (*i)=pp;
 
-	if(aq<aa){ pp=q; aq++; goto aqpee; }
-	}
+        if(aq<aa){ pp=q; aq++; goto aqpee; }
+        }
 }
 
 void
 modexPalUpdate1(byte *p)
 {
-	int i;
-	modexWaitBorder();
-	outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
-	for(i=0; i<PAL_SIZE/2; i++)
-	{
-		outp(PAL_DATA_REG, p[i]);
-	}
-	modexWaitBorder();	    /* waits one retrace -- less flicker */
-	for(; i<PAL_SIZE; i++)
-	{
-		outp(PAL_DATA_REG, p[(i)]);
-	}
+        int i;
+        modexWaitBorder();
+        outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
+        for(i=0; i<PAL_SIZE/2; i++)
+        {
+                outp(PAL_DATA_REG, p[i]);
+        }
+        modexWaitBorder();          /* waits one retrace -- less flicker */
+        for(; i<PAL_SIZE; i++)
+        {
+                outp(PAL_DATA_REG, p[(i)]);
+        }
 }
 
 void
 modexPalUpdate0(byte *p)
 {
-	int i;
-	modexWaitBorder();
-	outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
-	for(i=0; i<PAL_SIZE/2; i++)
-	{
-		outp(PAL_DATA_REG, rand());
-	}
-	modexWaitBorder();	    /* waits one retrace -- less flicker */
-	for(; i<PAL_SIZE; i++)
-	{
-		outp(PAL_DATA_REG, rand());
-	}
+        int i;
+        modexWaitBorder();
+        outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
+        for(i=0; i<PAL_SIZE/2; i++)
+        {
+                outp(PAL_DATA_REG, rand());
+        }
+        modexWaitBorder();          /* waits one retrace -- less flicker */
+        for(; i<PAL_SIZE; i++)
+        {
+                outp(PAL_DATA_REG, rand());
+        }
 }
 
 //color checker~
 //i want to make another vesion that checks the palette when the palette is being appened~
 void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, word *offset*/)
 {
-		byte *pal;
-		word zz=0;
-		pal = modexNewPal();
-		modexPalSave(pal);
-		//printf("q: %02d\n", (*q));
-		printf("chkcolor start~\n");
-		printf("1				(*z): %d\n", (*z)/3);
-		printf("1				(*i): %d\n", (*i)/3);
-//		printf("1 offset of color in palette	(*q): %d\n", (*q)/3);
-		printf("wwwwwwwwwwwwwwww\n");
-		//check palette for dups
-		for(; (*z)<PAL_SIZE; (*z)+=3)
-		{
-			//printf("\n		z: %d\n", (*z));
-			//printf("		q: %d\n", (*q));
-			//printf("		z+q: %d\n\n", ((*z)+(*q)));
-			//if((*z)%3==0)
-			//{
-//----				if(pal[(*z)]==pal[(*z)+3] && pal[(*z)+1]==pal[(*z)+4] && pal[(*z)+2]==pal[(*z)+5])
-				if((*z)==(*i))
-				{
-//					printf("\n%d	[%02d][%02d][%02d]\n", (*z), pal[(*z)], pal[(*z)+1], pal[(*z)+2]);
-//					printf("%d	[%02d][%02d][%02d]\n\n", (*z)+3, pal[(*z)+3], pal[(*z)+4], pal[(*z)+5]);
-//0000					(*z)-=3;
-					break;
-				}
-				else for(zz=0; zz<(*q); zz+=3)
-				{
-					//printf("zz: %02d\n", zz/3);
-					if(zz%3==0)
-					{
-						if(pal[((*z)+(*q))]==pal[((*z)+(*q))+3] && pal[((*z)+(*q))+1]==pal[((*z)+(*q))+4] && pal[((*z)+(*q))+2]==pal[((*z)+(*q))+5])	//break if duplicate colors found in palette because it have reached the end of the current data of the palette
-						{
-//							(*z)-=3;
-//							(*i)-=3;
-//							printf("\nzq1:%d[%02d][%02d][%02d]\n", (zz+q), pal[(zz+q)], pal[(zz+q)+1], pal[(zz+q)+2]);
-//							printf("zq2:%d[%02d][%02d][%02d]\n\n", (zz+q)+3, pal[(zz+q)+3], pal[(zz+q)+4], pal[(zz+q)+5]);
-							break;
-						}
-						else if(pal[zz]==pal[((*z)+(*q))] && pal[zz+1]==pal[((*z)+(*q))+1] && pal[zz+2]==pal[((*z)+(*q))+2])
-						{
-//							printf("\n\nwwwwwwwwwwwwwwww\n");
-//							printf("	zq: %d	[%02d][%02d][%02d] value that is needing to be changed~\n", ((*z)+(*q))/3, pal[((*z)+(*q))], pal[((*z)+(*q))+1], pal[((*z)+(*q))+2]);
-//							printf("	zz: %d	[%02d][%02d][%02d] value that the previous value is going to change to~\n", (zz)/3, pal[zz], pal[zz+1], pal[zz+2]);
-//							//printf("	zv: %d	[%02d][%02d][%02d] wwww\n", (zz-z+q)/3, pal[(zz-z+q)], pal[(zz-z+q)+1], pal[(zz-z+q)+2]);
-//							printf("	z : %d	[%02d][%02d][%02d] offset value~\n", (*z)/3, pal[(*z)], pal[(*z)+1], pal[(*z)+2]);
-//++++							(*i)--;
-//							(*z)--;
-							//expand dong here
+                byte *pal;
+                word zz=0;
+                pal = modexNewPal();
+                modexPalSave(pal);
+                //printf("q: %02d\n", (*q));
+                printf("chkcolor start~\n");
+                printf("1                               (*z): %d\n", (*z)/3);
+                printf("1                               (*i): %d\n", (*i)/3);
+//              printf("1 offset of color in palette    (*q): %d\n", (*q)/3);
+                printf("wwwwwwwwwwwwwwww\n");
+                //check palette for dups
+                for(; (*z)<PAL_SIZE; (*z)+=3)
+                {
+                        //printf("\n            z: %d\n", (*z));
+                        //printf("              q: %d\n", (*q));
+                        //printf("              z+q: %d\n\n", ((*z)+(*q)));
+                        //if((*z)%3==0)
+                        //{
+//----                          if(pal[(*z)]==pal[(*z)+3] && pal[(*z)+1]==pal[(*z)+4] && pal[(*z)+2]==pal[(*z)+5])
+                                if((*z)==(*i))
+                                {
+//                                      printf("\n%d    [%02d][%02d][%02d]\n", (*z), pal[(*z)], pal[(*z)+1], pal[(*z)+2]);
+//                                      printf("%d      [%02d][%02d][%02d]\n\n", (*z)+3, pal[(*z)+3], pal[(*z)+4], pal[(*z)+5]);
+//0000                                  (*z)-=3;
+                                        break;
+                                }
+                                else for(zz=0; zz<(*q); zz+=3)
+                                {
+                                        //printf("zz: %02d\n", zz/3);
+                                        if(zz%3==0)
+                                        {
+                                                if(pal[((*z)+(*q))]==pal[((*z)+(*q))+3] && pal[((*z)+(*q))+1]==pal[((*z)+(*q))+4] && pal[((*z)+(*q))+2]==pal[((*z)+(*q))+5])    //break if duplicate colors found in palette because it have reached the end of the current data of the palette
+                                                {
+//                                                      (*z)-=3;
+//                                                      (*i)-=3;
+//                                                      printf("\nzq1:%d[%02d][%02d][%02d]\n", (zz+q), pal[(zz+q)], pal[(zz+q)+1], pal[(zz+q)+2]);
+//                                                      printf("zq2:%d[%02d][%02d][%02d]\n\n", (zz+q)+3, pal[(zz+q)+3], pal[(zz+q)+4], pal[(zz+q)+5]);
+                                                        break;
+                                                }
+                                                else if(pal[zz]==pal[((*z)+(*q))] && pal[zz+1]==pal[((*z)+(*q))+1] && pal[zz+2]==pal[((*z)+(*q))+2])
+                                                {
+//                                                      printf("\n\nwwwwwwwwwwwwwwww\n");
+//                                                      printf("        zq: %d  [%02d][%02d][%02d] value that is needing to be changed~\n", ((*z)+(*q))/3, pal[((*z)+(*q))], pal[((*z)+(*q))+1], pal[((*z)+(*q))+2]);
+//                                                      printf("        zz: %d  [%02d][%02d][%02d] value that the previous value is going to change to~\n", (zz)/3, pal[zz], pal[zz+1], pal[zz+2]);
+//                                                      //printf("      zv: %d  [%02d][%02d][%02d] wwww\n", (zz-z+q)/3, pal[(zz-z+q)], pal[(zz-z+q)+1], pal[(zz-z+q)+2]);
+//                                                      printf("        z : %d  [%02d][%02d][%02d] offset value~\n", (*z)/3, pal[(*z)], pal[(*z)+1], pal[(*z)+2]);
+//++++                                                  (*i)--;
+//                                                      (*z)--;
+                                                        //expand dong here
 /*
 planned features that i plan to implement~
 image that has values on the pallete list!
 wwww
 no... wait.... no wwww
 */
-							//for(zzii=0; zzii<3; zzii++)
-							//{
-								//printf("z+q: %d\n\n", ((*z)+(*q)));
-								a[(((*z)+(*q)))]=zz;
-							//}
-							(*aa)=(((*z)+(*q)));
-							printf("!!					a[%02d]: %d\n", (((*z)+(*q))/3), zz/3);
-//							printf("\n		aa: %d\n\n", (*aa));
-//							printf("	a[%02d]=(%02d) offset array i think the palette should be updated again~\n", ((*z)+(*q))/3, a[((*z)+(*q))/3]);
-//							printf("wwwwwwwwwwwwwwww\n\n");
-						}
-						/*else
-						{
-							printf("================\n");
-							printf("zq: %d	[%02d][%02d][%02d]\n", ((*z)+(*q))/3, pal[((*z)+(*q))], pal[((*z)+(*q))+1], pal[((*z)+(*q))+2]);
-							printf("zz: %d	[%02d][%02d][%02d]\n", (zz)/3, pal[zz], pal[zz+1], pal[zz+2]);
-							printf("z : %d	[%02d][%02d][%02d]\n", (*z)/3, pal[(*z)], pal[(*z)+1], pal[(*z)+2]);
-							printf("================\n");
-						}*/
-						//printf("[%d]", (zz+q));
-					}
-				}
-		}
-		printf("wwwwwwwwwwwwwwww\n");
-		printf("2				(*z): %d\n", (*z)/3);
-		printf("2				(*i): %d\n", (*i)/3);
-//		printf("2 offset of color in palette	(*q): %d\n", (*q)/3);
-		printf("chkcolor end~\n");
-		free(pal);
+                                                        //for(zzii=0; zzii<3; zzii++)
+                                                        //{
+                                                                //printf("z+q: %d\n\n", ((*z)+(*q)));
+                                                                a[(((*z)+(*q)))]=zz;
+                                                        //}
+                                                        (*aa)=(((*z)+(*q)));
+                                                        printf("!!                                      a[%02d]: %d\n", (((*z)+(*q))/3), zz/3);
+//                                                      printf("\n              aa: %d\n\n", (*aa));
+//                                                      printf("        a[%02d]=(%02d) offset array i think the palette should be updated again~\n", ((*z)+(*q))/3, a[((*z)+(*q))/3]);
+//                                                      printf("wwwwwwwwwwwwwwww\n\n");
+                                                }
+                                                /*else
+                                                {
+                                                        printf("================\n");
+                                                        printf("zq: %d  [%02d][%02d][%02d]\n", ((*z)+(*q))/3, pal[((*z)+(*q))], pal[((*z)+(*q))+1], pal[((*z)+(*q))+2]);
+                                                        printf("zz: %d  [%02d][%02d][%02d]\n", (zz)/3, pal[zz], pal[zz+1], pal[zz+2]);
+                                                        printf("z : %d  [%02d][%02d][%02d]\n", (*z)/3, pal[(*z)], pal[(*z)+1], pal[(*z)+2]);
+                                                        printf("================\n");
+                                                }*/
+                                                //printf("[%d]", (zz+q));
+                                        }
+                                }
+                }
+                printf("wwwwwwwwwwwwwwww\n");
+                printf("2                               (*z): %d\n", (*z)/3);
+                printf("2                               (*i): %d\n", (*i)/3);
+//              printf("2 offset of color in palette    (*q): %d\n", (*q)/3);
+                printf("chkcolor end~\n");
+                free(pal);
 }
 
-void modexpixelwr(word xx, word yy, word PageBase, word Color)
+void modexputPixel(int x, int y, byte color)
 {
-	word x=xx;
-	word y=yy;
-	__asm
-	{
-		push    bp                      //preserve caller’s stack frame
-		mov     bp,sp                   //point to local stack frame
+        /* Each address accesses four neighboring pixels, so set
+           Write Plane Enable according to which pixel we want
+           to modify.  The plane is determined by the two least
+           significant bits of the x-coordinate: */
+	outp(SC_INDEX, 0x02);
+	outp(SC_DATA, 0x01 << (x & 3));
 
-		mov     ax,SCREEN_WIDTH
-		mul     [bp+4/*y*/]                  //offset of pixel’s scan line in page
-		mov     bx,[bp+4/*x*/]
-		shr     bx,1
-		shr     bx,1                    //X/4 = offset of pixel in scan line
-		add     bx,ax                   //offset of pixel in page
-		add     bx,[bp+0/*PageBase*/]        //offset of pixel in display memory
-		mov     ax,SCREEN_SEG
-		mov     es,ax                   //point ES:BX to the pixel’s address
+	/* The offset of the pixel into the video segment is
+	   offset = (width * y + x) / 4, and write the given
+	   color to the plane we selected above.  Heed the active
+	   page start selection. */
+	VGA[(unsigned)((SCREEN_WIDTH/4) * y) + (x / 4) + 0] = color;
 
-		mov     cl,byte ptr [bp+4/*x*/]
-		and	cl,011b                 //CL = pixel’s plane
-		mov	ax,0100h + MAP_MASK     //AL = index in SC of Map Mask reg
-		shl		ah,cl                   //set only the bit for the pixel’s plane to 1
-		mov	dx,SC_INDEX             //set the Map Mask to enable only the
-		out	dx,ax                   // pixel’s plane
+}
 
-		mov	al,byte ptr [bp+15/*Color*/]
-		mov	es:[bx],al              //draw the pixel in the desired color
+byte modexgetPixel(int x, int y)
+{
+	/* Select the plane from which we must read the pixel color: */
+	outpw(GC_INDEX, 0x04);
+	outpw(GC_INDEX+1, x & 3);
 
-		pop     bp                      //restore caller’s stack frame
-	}
+	return VGA[(unsigned)((SCREEN_WIDTH/4) * y) + (x / 4) + 0];
+
 }
 
 void bputs(/*bmp_t *bmp, */unsigned x, unsigned y, const char *s)
 {
-	byte far *font;
-	//bmp_t src;
+        byte far *font;
+        //bmp_t src;
 
-	//font = bios_8x8_font();
-	//src.wd = 8;
-	//src.ht = 8;
-	//src.ops = &g_ops1;
-	for(; *s != '\0'; s++)
-	{
-		//src.raster = font + 8 * (*s);
-		//blit1(&src, bmp, x, y);
-		x += 8;
-	}
+        //font = bios_8x8_font();
+        //src.wd = 8;
+        //src.ht = 8;
+        //src.ops = &g_ops1;
+        for(; *s != '\0'; s++)
+        {
+                //src.raster = font + 8 * (*s);
+                //blit1(&src, bmp, x, y);
+                x += 8;
+        }
 }
 
 void
 modexWaitBorder() {
     while(inp(INPUT_STATUS_1)  & 8)  {
-	/* spin */
+        /* spin */
     }
 
     while(!(inp(INPUT_STATUS_1)  & 8))  {
-	/* spin */
+        /* spin */
     }
 }
