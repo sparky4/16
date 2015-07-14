@@ -36,7 +36,7 @@ void main(int argc, char near *argv[])
 	//getch();
 	chx=0;
 	chy=0;
-	for(e=''; e<='~'; e++)
+	for(e=''; e<=''; e++)
 	{
 		modexprint(chx, chy, 1, 15, &e);
 		chx+=8;
@@ -48,4 +48,6 @@ void main(int argc, char near *argv[])
 	}
 	getch();
 	modexLeave();
+	printf("\n\n%u %c", '');
+	//printf("\n%c", '	');
 }

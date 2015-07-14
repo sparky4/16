@@ -972,7 +972,7 @@ byte modexgetPixel(int x, int y)
 void modexprint(word x, word y, word t, word col, const byte *str)
 {
 	word i, s, o, w, j, xp;
-	char l[16];
+	byte l[16];
 	word addr = (word) l;
 	word chw=0;
 	byte c;
