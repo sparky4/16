@@ -30,6 +30,7 @@
 #include "src/lib/bitmap.h"
 #include "src/lib/planar.h"
 #include "src/lib/16_head.h"
+#include "src/lib/16text.h"
 
 /* -========================== Types & Macros ==========================- */
 #define PAGE_OFFSET(x,y) (((y)<<6)+((y)<<4)+((x)>>2))

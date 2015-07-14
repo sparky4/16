@@ -969,21 +969,47 @@ byte modexgetPixel(int x, int y)
 
 }
 
-void bputs(/*bmp_t *bmp, */unsigned x, unsigned y, const char *s)
+void bputs(word x, unsigned y, , const char *s)
 {
-        byte far *font;
-        //bmp_t src;
+	int j;
+	word s, o, t, w;
+	word addr = (word) l;
+	s=romFonts[t].seg;
+	o=romFonts[t].off;
 
-        //font = bios_8x8_font();
-        //src.wd = 8;
-        //src.ht = 8;
-        //src.ops = &g_ops1;
-        for(; *s != '\0'; s++)
-        {
-                //src.raster = font + 8 * (*s);
-                //blit1(&src, bmp, x, y);
-                x += 8;
-        }
+	//load the letter 'A'
+	__asm {
+		MOV DI, addr
+		MOV SI, o
+		MOV ES, s
+		SUB AH, AH
+		MOV AL, c	; the letter
+		MOV CX, w
+		MUL CX
+		ADD SI, AX	;the address of charcter
+	L1:	MOV AX, ES:SI
+		MOV DS:DI, AX
+		INC SI
+		INC DI
+		DEC CX
+		JNZ L1
+	}
+
+	for(; *s != '\0'; s++)
+	{
+		for(i=0; i<w; i++)
+		{
+			j=1<<8;
+			x=0;
+			while(j)
+			{
+				modexputPixel(x, i, l[i] & j ? 15:0);
+				xp++;
+				j>>=1;
+			}
+		}
+		chw += 8;
+	}
 }
 
 void
