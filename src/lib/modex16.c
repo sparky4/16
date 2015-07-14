@@ -969,10 +969,10 @@ byte modexgetPixel(int x, int y)
 
 }
 
-void modexprint(word x, word y, word t, word col, const byte *str)
+void modexprint(word x, word y, word t, word col, word bgcol, const byte *str)
 {
 	word i, s, o, w, j, xp;
-	byte l[16];
+	byte l[1024];
 	word addr = (word) l;
 	word chw=0;
 	byte c;
@@ -1002,6 +1002,7 @@ void modexprint(word x, word y, word t, word col, const byte *str)
 
 	for(; *str != '\0'; str++)
 	{
+	if(chw>=SCREEN_WIDTH-1) y+=w;
 	c = *(str);
 	//load the letter 'A'
 	__asm {
@@ -1027,12 +1028,12 @@ void modexprint(word x, word y, word t, word col, const byte *str)
 			xp=0;
 			while(j)
 			{
-				modexputPixel(x+xp+chw, y+i, l[i] & j ? col:0);
+				modexputPixel(x+xp+chw, y+i, l[i] & j ? col:bgcol);
 				xp++;
 				j>>=1;
 			}
 		}
-		chw += 8;
+		chw += xp;
 	}
 }
 

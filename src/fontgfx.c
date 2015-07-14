@@ -29,25 +29,29 @@ void main(int argc, char near *argv[])
 {
 	//JMOJI
 	byte e;
-	word chx, chy;
+	word chx, chy, colpee;
 	textInit();
 	modexEnter();
 	//modexprint(16, 16, 1, 15, "wwww");
 	//getch();
 	chx=0;
 	chy=0;
-	for(e=''; e<=''; e++)
+	colpee=0;
+	for(e=' '; e<='~'; e++)
 	{
-		modexprint(chx, chy, 1, 15, &e);
-		chx+=8;
-		if(chx+8>=SCREEN_WIDTH)
+		if(chx+8>(SCREEN_WIDTH/2)-1)
 		{
 			chx=0;
 			chy+=8;
+			modexprint(200, 200, 1, 47, 0, &e);
 		}
+		modexprint(chx, chy, 1, 0, colpee, &e);
+		chx+=9;
+		colpee++;
 	}
+	modexprint(100, 100, 1, 47, 0, "wwww");
 	getch();
 	modexLeave();
 	printf("\n\n%u %c", '');
-	//printf("\n%c", '	');
+	printf("\n%c\n", e);
 }
