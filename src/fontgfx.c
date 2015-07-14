@@ -27,6 +27,7 @@
 
 void main(int argc, char near *argv[])
 {
+	//JMOJI
 	byte e;
 	word chx, chy;
 	textInit();
