@@ -6,6 +6,8 @@
  */
 #ifndef TEXT_H
 #define TEXT_H
+#include <jstring.h>
+#include <jctype.h>
 #include "src/lib/types.h"
 
 /* font information type */

@@ -27,9 +27,24 @@
 
 void main(int argc, char near *argv[])
 {
+	byte e;
+	word chx, chy;
 	textInit();
 	modexEnter();
-	modexprint(16, 16, 1, 15, "wwww");
+	//modexprint(16, 16, 1, 15, "wwww");
+	//getch();
+	chx=0;
+	chy=0;
+	for(e='!'; e<='~'; e++)
+	{
+		modexprint(chx, chy, 1, 15, &e);
+		chx+=8;
+		if(chx+8>=SCREEN_WIDTH)
+		{
+			chx=0;
+			chy+=8;
+		}
+	}
 	getch();
 	modexLeave();
 }
