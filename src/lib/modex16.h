@@ -94,7 +94,7 @@ void modexPalUpdate1(byte *p);
 void modexPalUpdate0(byte *p);
 void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, word *offset*/);
 void modexputPixel(int x, int y, byte color);
-void bputs(/*bmp_t *bmp, */unsigned x, unsigned y, const char *s);
+void modexprint(word x, word y, word t, word col, const byte *str);
 void modexWaitBorder();
 
 /* -======================= Constants & Vars ==========================- */

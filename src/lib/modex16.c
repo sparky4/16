@@ -969,14 +969,40 @@ byte modexgetPixel(int x, int y)
 
 }
 
-void bputs(word x, unsigned y, , const char *s)
+void modexprint(word x, word y, word t, word col, const byte *str)
 {
-	int j;
-	word s, o, t, w;
+	word i, s, o, w, j, xp;
+	char l[16];
 	word addr = (word) l;
+	word chw=0;
+	byte c;
+
+	switch(t)
+	{
+		case 0:
+			w=14;
+		break;
+		case 1:
+			w=8;
+		break;
+		case 2:
+			w=8;
+		break;
+		case 3:
+			w=16;
+		break;
+		default:
+			t=3;
+			w=16;
+		break;
+	}
+
 	s=romFonts[t].seg;
 	o=romFonts[t].off;
 
+	for(; *str != '\0'; str++)
+	{
+	c = *(str);
 	//load the letter 'A'
 	__asm {
 		MOV DI, addr
@@ -995,15 +1021,13 @@ void bputs(word x, unsigned y, , const char *s)
 		JNZ L1
 	}
 
-	for(; *s != '\0'; s++)
-	{
 		for(i=0; i<w; i++)
 		{
 			j=1<<8;
-			x=0;
+			xp=0;
 			while(j)
 			{
-				modexputPixel(x, i, l[i] & j ? 15:0);
+				modexputPixel(x+xp+chw, y+i, l[i] & j ? col:0);
 				xp++;
 				j>>=1;
 			}

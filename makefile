@@ -22,10 +22,10 @@ JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
 EXMMLIB=$(SRCLIB)exmm$(DIRSEP)
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
-16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16text.$(OBJ) 16_ca.$(OBJ)
-GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ)
+16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ)
+GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ)
 
-all: 16.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe inputest.exe exmmtest.exe fonttes0.exe
+all: 16.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe inputest.exe exmmtest.exe fonttes0.exe fontgfx.exe
 
 #
 #executables
@@ -49,14 +49,17 @@ fonttest.exe: fonttest.$(OBJ) 16.lib
 fonttes0.exe: fonttes0.$(OBJ) 16.lib
         wcl $(FLAGS) fonttes0.$(OBJ) 16.lib
 
+fontgfx.exe: fontgfx.$(OBJ) 16.lib
+        wcl $(FLAGS) fontgfx.$(OBJ) 16.lib
+
 inputest.exe: inputest.$(OBJ) 16.lib
 	wcl $(FLAGS) inputest.$(OBJ) 16.lib
 
 pcxtest.exe: pcxtest.$(OBJ) gfx.lib
 	wcl $(FLAGS) pcxtest.$(OBJ) gfx.lib
 
-palettec.exe: palettec.$(OBJ) modex16.$(OBJ)
-	wcl $(FLAGS) palettec.$(OBJ) modex16.$(OBJ)
+palettec.exe: palettec.$(OBJ) 16.lib
+	wcl $(FLAGS) palettec.$(OBJ) 16.lib
 
 maptest.exe: maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
 	wcl $(FLAGS) maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
@@ -114,6 +117,9 @@ fonttest.$(OBJ): $(SRC)fonttest.c
 
 fonttes0.$(OBJ): $(SRC)fonttes0.c
         wcl $(FLAGS) -c $(SRC)fonttes0.c
+
+fontgfx.$(OBJ): $(SRC)fontgfx.c
+        wcl $(FLAGS) -c $(SRC)fontgfx.c
 
 inputest.$(OBJ): $(SRC)inputest.c
 	wcl $(FLAGS) -c $(SRC)inputest.c
