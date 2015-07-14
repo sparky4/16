@@ -170,7 +170,8 @@ void main(int argc, char near *argv[])
 			//printf("j=%d	", j);
 			//printf("%02x\n", l[i] & j);
 				//modexPutPixel(xp, i, l[i] & j ? 15:0);
-				modexClearRegion(&page, xp, i, 4, 4, l[i] & j ? 15:0);
+				//modexpixelwr(xp, i, 0, l[i] & j ? 15:0);
+				modexClearRegion(&page, xp*4, i*4, 4, 4, l[i] & j ? 15:0);
 //while(!getch());
 			xp++;
 			j>>=1;

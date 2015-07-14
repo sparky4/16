@@ -92,7 +92,7 @@ void modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset);
 void modexPalUpdate1(byte *p);
 void modexPalUpdate0(byte *p);
 void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, word *offset*/);
-void modexPutPixel(word x, word y, byte Color);
+void modexpixelwr(word xx, word yy, word PageBase, word Color);
 void bputs(/*bmp_t *bmp, */unsigned x, unsigned y, const char *s);
 void modexWaitBorder();
 

@@ -942,39 +942,36 @@ no... wait.... no wwww
 		free(pal);
 }
 
-void modexPutPixel(word x, word y, byte Color)
+void modexpixelwr(word xx, word yy, word PageBase, word Color)
 {
-// on entry X,Y = location and C = color (0-15)
-//putpixel   proc near uses ax bx cx dx
-// byte offset = Y * (horz_res / 8) + int(X / 8)
-
-// byte offset = Y * (horz_res / 8) + int(X / 8)
-
+	word x=xx;
+	word y=yy;
 	__asm
 	{
-		mov  ax,y                    // calculate offset
-		mov  dx,80
-		mul  dx                      // ax = y * 80
-		mov  bx,x
-		mov  cl,bl                   // save low byte for below
-		//shr  bx,03
-		add  bx,ax                   // bx = offset this group of 8 pixels
+		push    bp                      //preserve caller’s stack frame
+		mov     bp,sp                   //point to local stack frame
 
-		mov  dx,GC_INDEX                // set to video hardware controller
+		mov     ax,SCREEN_WIDTH
+		mul     [bp+4/*y*/]                  //offset of pixel’s scan line in page
+		mov     bx,[bp+4/*x*/]
+		shr     bx,1
+		shr     bx,1                    //X/4 = offset of pixel in scan line
+		add     bx,ax                   //offset of pixel in page
+		add     bx,[bp+0/*PageBase*/]        //offset of pixel in display memory
+		mov     ax,SCREEN_SEG
+		mov     es,ax                   //point ES:BX to the pixel’s address
 
-		and  cl,07h                  // Compute bit mask from X-coordinates
-		xor  cl,07h                  //  and put in ah
-		mov  ah,01h
-		shl  ah,cl
-		mov  al,08h                  // bit mask register
-		out  dx,ax
+		mov     cl,byte ptr [bp+4/*x*/]
+		and	cl,011b                 //CL = pixel’s plane
+		mov	ax,0100h + MAP_MASK     //AL = index in SC of Map Mask reg
+		shl		ah,cl                   //set only the bit for the pixel’s plane to 1
+		mov	dx,SC_INDEX             //set the Map Mask to enable only the
+		out	dx,ax                   // pixel’s plane
 
-		mov  ax,0205h                // read mode 0, write mode 2
-		out  dx,ax
+		mov	al,byte ptr [bp+15/*Color*/]
+		mov	es:[bx],al              //draw the pixel in the desired color
 
-		mov  al,es:[bx]              // load to latch register
-		mov  al,Color
-		mov  es:[bx],al              // write to register
+		pop     bp                      //restore caller’s stack frame
 	}
 }
 
