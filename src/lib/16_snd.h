@@ -25,10 +25,14 @@
 
 #include "src/lib/16_head.h"
 
-#define OPLPORT 388
+#define MIN_REGISTER			0x01
+#define MAX_REGISTER			0xF5
+#define ADLIB_FM_ADDRESS	0x388	/* adlib address/status register */
+#define ADLIB_FM_DATA		0x389	/* adlib data register           */
 
-void opl2out(word data, word reg);
-void opl3out(word data, word reg);
+void opl2out(word reg, word data);
+void opl3out(word reg, word data);
 void opl3exp(word data);
+void FMReset(void/*int percusiveMode*/);
 
 #endif /*__16_SND_H_*/

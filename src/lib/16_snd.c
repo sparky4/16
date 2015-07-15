@@ -23,12 +23,12 @@
 
 #include "src/lib/16_snd.h"
 
-void opl2out(word data, word reg)
+void opl2out(word reg, word data)
 {
 	__asm
 	{
 		mov     ax,reg
-		mov     dx,word ptr [OPLPORT]
+		mov     dx,word ptr [ADLIB_FM_ADDRESS]
 		or      ah,ah
 		jz      @@1
 		add     dx,2
@@ -46,12 +46,12 @@ void opl2out(word data, word reg)
 	}
 }
 
-void opl3out(word data, word reg)
+void opl3out(word reg, word data)
 {
 	__asm
 	{
 		mov     ax,reg
-		mov     dx,word ptr [OPLPORT]
+		mov     dx,word ptr [ADLIB_FM_ADDRESS]
 		or      ah,ah
 		jz      @@1
 		add     dx,2
@@ -71,7 +71,7 @@ void opl3exp(word data)
 	__asm
 	{
 		mov     ax,data
-		mov     dx,word ptr [OPLPORT]
+		mov     dx,word ptr [ADLIB_FM_ADDRESS]
 		add     dx,2
 		out     dx,al
 		mov     cx,6
@@ -85,3 +85,25 @@ void opl3exp(word data)
 		loop    @@2
 	}
 }
+
+/* Function: FMResest *******************************************************
+*
+*     Description:        quick and dirty sound card reset (zeros all
+*                         registers).
+*
+*/
+void FMReset(void/*int percusiveMode*/)
+{
+	int i;
+
+	/* zero all registers */
+	for(i = MIN_REGISTER; i < MAX_REGISTER+1; i++) opl2out(i, 0);
+
+	/* allow FM chips to control the waveform of each operator */
+	opl2out(0x01, 0x20);
+
+	/* set rhythm enabled (6 melodic voices, 5 percussive) */
+	opl2out(0xBD, 0x20);
+
+	//FMSetPercusiveMode(percusiveMode);
+} /* End of FMReset */
