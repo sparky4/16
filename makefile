@@ -20,9 +20,11 @@ SRC=src$(DIRSEP)
 SRCLIB=$(SRC)lib$(DIRSEP)
 JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
 EXMMLIB=$(SRCLIB)exmm$(DIRSEP)
+DOSLIB=$(SRCLIB)doslib$(DIRSEP)
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
-16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ) 16_snd.$(OBJ)
+16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ) adlib.$(OBJ) 8254.$(OBJ) cpu.$(OBJ)
+#16_snd.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ)
 
 all: 16.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe exmmtest.exe fonttes0.exe fontgfx.exe sountest.exe
@@ -48,16 +50,16 @@ fonttest.exe: fonttest.$(OBJ) 16.lib
 	wcl $(FLAGS) fonttest.$(OBJ) 16.lib
 
 fonttes0.exe: fonttes0.$(OBJ) 16.lib
-        wcl $(FLAGS) fonttes0.$(OBJ) 16.lib
+	wcl $(FLAGS) fonttes0.$(OBJ) 16.lib
 
 fontgfx.exe: fontgfx.$(OBJ) 16.lib
-        wcl $(FLAGS) fontgfx.$(OBJ) 16.lib
+	wcl $(FLAGS) fontgfx.$(OBJ) 16.lib
 
 inputest.exe: inputest.$(OBJ) 16.lib
 	wcl $(FLAGS) inputest.$(OBJ) 16.lib
 
 sountest.exe: sountest.$(OBJ) 16.lib
-        wcl $(FLAGS) sountest.$(OBJ) 16.lib
+	wcl $(FLAGS) sountest.$(OBJ) 16.lib
 
 pcxtest.exe: pcxtest.$(OBJ) gfx.lib
 	wcl $(FLAGS) pcxtest.$(OBJ) gfx.lib
@@ -81,7 +83,7 @@ fmemtest.exe: fmemtest.$(OBJ) 16.lib
 	wcl $(FLAGS) fmemtest.$(OBJ) 16.lib
 
 exmmtest.exe: exmmtest.$(OBJ) 16.lib
-        wcl $(FLAGS) exmmtest.$(OBJ) 16.lib
+	wcl $(FLAGS) exmmtest.$(OBJ) 16.lib
 
 #
 #executable's objects
@@ -120,16 +122,16 @@ fonttest.$(OBJ): $(SRC)fonttest.c
 	wcl $(FLAGS) -c $(SRC)fonttest.c
 
 fonttes0.$(OBJ): $(SRC)fonttes0.c
-        wcl $(FLAGS) -c $(SRC)fonttes0.c
+	wcl $(FLAGS) -c $(SRC)fonttes0.c
 
 fontgfx.$(OBJ): $(SRC)fontgfx.c
-        wcl $(FLAGS) -c $(SRC)fontgfx.c
+	wcl $(FLAGS) -c $(SRC)fontgfx.c
 
 inputest.$(OBJ): $(SRC)inputest.c
 	wcl $(FLAGS) -c $(SRC)inputest.c
 
 sountest.$(OBJ): $(SRC)sountest.c
-        wcl $(FLAGS) -c $(SRC)sountest.c
+	wcl $(FLAGS) -c $(SRC)sountest.c
 
 exmmtest.$(OBJ): $(SRC)exmmtest.c
 	wcl $(FLAGS) -c $(SRC)exmmtest.c
@@ -179,8 +181,17 @@ mapread.$(OBJ): $(SRCLIB)mapread.h $(SRCLIB)mapread.c 16.lib
 16_ca.$(OBJ): $(SRCLIB)16_ca.h $(SRCLIB)16_ca.c
 	wcl $(FLAGS) -c $(SRCLIB)16_ca.c
 
-16_snd.$(OBJ): $(SRCLIB)16_snd.h $(SRCLIB)16_snd.c
-        wcl $(FLAGS) -c $(SRCLIB)16_snd.c
+#16_snd.$(OBJ): $(SRCLIB)16_snd.h $(SRCLIB)16_snd.c
+#	wcl $(FLAGS) -c $(SRCLIB)16_snd.c
+
+adlib.$(OBJ): $(DOSLIB)adlib.h $(DOSLIB)adlib.c
+	wcl $(FLAGS) -c $(DOSLIB)adlib.c
+
+8254.$(OBJ): $(DOSLIB)8254.h $(DOSLIB)8254.c
+	wcl $(FLAGS) -c $(DOSLIB)8254.c
+
+cpu.$(OBJ): $(DOSLIB)cpu.h $(DOSLIB)cpu.c
+	wcl $(FLAGS) -c $(DOSLIB)cpu.c
 
 16_head.$(OBJ): $(SRCLIB)16_head.h $(SRCLIB)16_head.c
 	wcl $(FLAGS) -c $(SRCLIB)16_head.c
