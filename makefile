@@ -22,7 +22,7 @@ JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
 EXMMLIB=$(SRCLIB)exmm$(DIRSEP)
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
-16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ)
+16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ) 16_snd.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ)
 
 all: 16.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe inputest.exe exmmtest.exe fonttes0.exe fontgfx.exe
@@ -171,6 +171,9 @@ mapread.$(OBJ): $(SRCLIB)mapread.h $(SRCLIB)mapread.c 16.lib
 
 16_ca.$(OBJ): $(SRCLIB)16_ca.h $(SRCLIB)16_ca.c
 	wcl $(FLAGS) -c $(SRCLIB)16_ca.c
+
+16_snd.$(OBJ): $(SRCLIB)16_snd.h $(SRCLIB)16_snd.c
+        wcl $(FLAGS) -c $(SRCLIB)16_snd.c
 
 16_head.$(OBJ): $(SRCLIB)16_head.h $(SRCLIB)16_head.c
 	wcl $(FLAGS) -c $(SRCLIB)16_head.c

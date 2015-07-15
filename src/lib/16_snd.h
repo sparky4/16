@@ -25,4 +25,10 @@
 
 #include "src/lib/16_head.h"
 
+#define OPLPORT 388
+
+void opl2out(word data, word reg);
+void opl3out(word data, word reg);
+void opl3exp(word data);
+
 #endif /*__16_SND_H_*/
