@@ -131,5 +131,6 @@ void main(int argc, char near *argv[])
 		adlib_update_groupA0(0,&adlib_fm[0]);
 	}
 	printf("!\n");
+	shutdown_adlib();
 	IN_Shutdown();
 }
