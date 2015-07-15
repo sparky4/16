@@ -21,7 +21,7 @@ doc/faq.txt = frequently asked questions file!
 + DONE 4. movement and player movement when reaching edge of map
 + DONE 5. sprite rendering
 + 6. text box rendering
-+ 7. text rendering
++ semi done 7. text rendering
 + DONE! YAY! 8. map loading
 + DONE! YAY! wwww 9. map rendering~
 + 10. map and item interation
@@ -38,12 +38,13 @@ doc/faq.txt = frequently asked questions file!
 + 19. (also important) interperator! and possibly custom map system
 + 20. (also important) lua scripting system!
 + 21. extend the map system!
-+ 22. opl2/3 audio!!!!
++ DONE! 22. opl2/3 audio!!!!
 
 DONE! use IN_ReadControl!!  
 
 + 23. engine core!
 + ==working== 24. (MOST important!) FUCKING MASSIVE DATA MANAGEMENT!!! related to 12.
++ 25. MUSIC PLAYBACK!!!! WWWW
 
 get dos_sj.rar  
 It may be very useful to us...  
