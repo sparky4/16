@@ -40,6 +40,7 @@ void main(int argc, char near *argv[])
 	IN_Startup();
 	FMReset();
 	FMSetVoice(0, &testInst);
+	printf("press Z!\n");
 	printf("p");
 	while(!IN_qb(1))
 	{
