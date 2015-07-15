@@ -30,9 +30,31 @@
 #define ADLIB_FM_ADDRESS	0x388	/* adlib address/status register */
 #define ADLIB_FM_DATA		0x389	/* adlib data register           */
 
+/*
+* FM Instrument definition for .SBI files - SoundBlaster instrument
+* - these are the important parts - we will skip the header, but since
+*   I am not sure where it starts and ends so I have had to guess.
+*   However it SEEMS! to work. Each array has two values, one for
+*   each operator.
+*/
+typedef struct{
+	byte SoundCharacteristic[2];    /* modulator frequency multiple...  */
+	byte Level[2];                  /* modulator frequency level...     */
+	byte AttackDecay[2];            /* modulator attack/decay...        */
+	byte SustainRelease[2];         /* modulator sustain/release...     */
+	byte WaveSelect[2];             /* output waveform distortion       */
+	byte Feedback;                  /* feedback algorithm and strength  */
+} FMInstrument;
+
+
 void opl2out(word reg, word data);
 void opl3out(word reg, word data);
 void opl3exp(word data);
+
+//Unknown licence!
 void FMReset(void/*int percusiveMode*/);
+void FMKeyOff(int voice);
+void FMKeyOn(int voice, int freq, int octave);
+void FMSetVoice(int voiceNum, FMInstrument *ins);
 
 #endif /*__16_SND_H_*/

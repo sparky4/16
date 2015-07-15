@@ -107,3 +107,89 @@ void FMReset(void/*int percusiveMode*/)
 
 	//FMSetPercusiveMode(percusiveMode);
 } /* End of FMReset */
+
+/* Function: FMKeyOff *******************************************************
+*
+*     Parameters:        voice - which voice to turn off.
+*
+*     Description:        turns off the specified voice.
+*
+*/
+void FMKeyOff(int voice)
+{
+	int regNum;
+
+	/* turn voice off */
+	regNum = 0xB0 + voice % 11;//NUMVOICE;
+	opl2out(regNum, 0x0E);
+} /* End of FMKeyOff */
+
+/* Function: FMKeyOn *******************************************************
+*
+*     Parameters:        voice - which voice to turn on.
+*                         freq - its frequency (note).
+*                         octave - its octave.
+*
+*     Description:        turns on a voice of specfied frequency and
+*                         octave.
+*
+*/
+void FMKeyOn(int voice, int freq, int octave)
+{
+	int regNum, tmp;
+
+	regNum = 0xA0 + voice % 11;//NUMVOICE;
+	opl2out(regNum, freq & 0xff);
+	regNum = 0xB0 + voice % 11;//NUMVOICE;
+	tmp = (freq >> 8) | (octave << 2) | 0x20;
+	opl2out(regNum, tmp);
+} /* End of FMKeyOn */
+
+/* Function: FMSetVoice *****************************************************
+*
+*     Parameters:        voiceNum - which voice to set.
+*                         ins - instrument to set voice.
+*
+*     Description:        sets the instrument of a voice.
+*
+*/
+void FMSetVoice(int voiceNum, FMInstrument *ins){
+	int opCellNum, cellOffset;
+
+	voiceNum %= 11;//NUMVOICE;
+	cellOffset = voiceNum % 3 + ((voiceNum / 3) << 3);
+
+	/* set sound characteristic */
+	opCellNum = 0x20 + (char)cellOffset;
+	opl2out(opCellNum, ins->SoundCharacteristic[0]);
+	opCellNum += 3;
+	opl2out(opCellNum, ins->SoundCharacteristic[1]);
+
+	/* set level/output */
+	opCellNum = 0x40 + (char)cellOffset;
+	opl2out(opCellNum, ins->Level[0]);
+	opCellNum += 3;
+	opl2out(opCellNum, ins->Level[1]);
+
+	/* set Attack/Decay */
+	opCellNum = 0x60 + (char)cellOffset;
+	opl2out(opCellNum, ins->AttackDecay[0]);
+	opCellNum += 3;
+	opl2out(opCellNum, ins->AttackDecay[1]);
+
+	/* set Sustain/Release */
+	opCellNum = 0x80 + (char)cellOffset;
+	opl2out(opCellNum, ins->SustainRelease[0]);
+	opCellNum += 3;
+	opl2out(opCellNum, ins->SustainRelease[1]);
+
+	/* set Wave Select */
+	opCellNum = 0xE0 + (char)cellOffset;
+	opl2out(opCellNum, ins->WaveSelect[0]);
+	opCellNum += 3;
+	opl2out(opCellNum, ins->WaveSelect[1]);
+
+	/* set Feedback/Selectivity */
+	opCellNum = (byte)0xC0 + (byte)voiceNum;
+	opl2out(opCellNum, ins->Feedback);
+} /* End of FMSetVoice */

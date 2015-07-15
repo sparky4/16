@@ -1209,7 +1209,9 @@ void IN_ClearKey(byte code)
 
 boolean IN_qb(byte kee)
 {
+	#ifdef TESTKEYIN
 	printf("%u\n", inpu.Keyboard[kee]);
+	#endif
 	if(inpu.Keyboard[kee]==true) return 1;
 	else return 0;
 }

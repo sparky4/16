@@ -31,11 +31,11 @@
 #include "src/lib/16_head.h"
 
 #ifdef	__DEBUG__
-#define	__DEBUG_InputMgr__
+//#define	__DEBUG_InputMgr__
 #endif
 
 #ifdef	__DEBUG_InputMgr__
-//#define TESTKEYIN
+#define TESTKEYIN
 #define TESTCONTROLNOISY
 #endif
 
