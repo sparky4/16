@@ -1002,18 +1002,12 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 
 	for(; *str != '\0'; str++)
 	{
-	if(chw>=page->width-1)
-	{
-		x=chw=0;
-		y+=w;
-		continue;
-	}
 	c = (*str);
 	if(c=='\n' || c=="\
-")
+" || chw>=page->width-1)
 	{
+		chw=0;
 		y+=w;
-		x=chw=0;
 		continue;
 	}
 	//load the letter 'A'
