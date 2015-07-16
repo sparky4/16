@@ -27,7 +27,7 @@
 #include <dos.h>
 
 //#include "src/lib/doslib/vga.h"
-//#include "src/lib/doslib/dos.h"
+#include "src/lib/doslib/dos.h"
 #include "src/lib/16_head.h"
 #include "src/lib/doslib/8254.h"		/* 8254 timer */
 #include "src/lib/doslib/8259.h"

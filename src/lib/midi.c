@@ -423,7 +423,9 @@ void midi_tick_track(unsigned int i) {
 					if (b == 0xFF) {
 						if (c == 0x7F) { /* c=type d=len */
 							unsigned long len = midi_trk_read_delta(t);
-//							fprintf(stderr,"Type 0x7F len=%lu %p/%p/%p\n",len,t->raw,t->read,t->fence);
+//====
+							fprintf(stderr,"Type 0x7F len=%lu %p/%p/%p\n",len,t->raw,t->read,t->fence);
+//====
 							if (len < 512UL) {
 								/* unknown */
 								midi_trk_skip(t,len);
@@ -452,7 +454,9 @@ void midi_tick_track(unsigned int i) {
 								}
 							}
 							else {
-//								fprintf(stderr,"Type 0x%02x len=%lu %p/%p/%p\n",c,d,t->raw,t->read,t->fence);
+//====
+								fprintf(stderr,"Type 0x%02x len=%lu %p/%p/%p\n",c,d,t->raw,t->read,t->fence);
+//====
 							}
 
 							midi_trk_skip(t,d);
@@ -463,7 +467,9 @@ void midi_tick_track(unsigned int i) {
 					}
 					else {
 						unsigned long len = midi_trk_read_delta(t);
-//						fprintf(stderr,"Sysex len=%lu %p/%p/%p\n",len,t->raw,t->read,t->fence);
+//====
+						fprintf(stderr,"Sysex len=%lu %p/%p/%p\n",len,t->raw,t->read,t->fence);
+//====
 						midi_trk_skip(t,len);
 					}
 					} break;
@@ -484,7 +490,7 @@ void midi_tick_track(unsigned int i) {
 	}
 }
 
-void adlib_shut_up();
+//void adlib_shut_up();
 void midi_reset_tracks();
 void midi_reset_channels();
 

@@ -32,7 +32,7 @@ int main(int argc,char **argv) {
 		printf("Cannot init library\n");
 		return 1;
 	}
-	if (!probe_8254()) { // we need the timer to keep time with the music
+	if (!probe_8254()) { /* we need the timer to keep time with the music */
 		printf("8254 timer not found\n");
 		return 1;
 	}
@@ -48,14 +48,14 @@ int main(int argc,char **argv) {
 		return 1;
 	}
 
-	write_8254_system_timer(T8254_REF_CLOCK_HZ / 100); // tick faster at 100Hz please
+	write_8254_system_timer(T8254_REF_CLOCK_HZ / 100); /* tick faster at 100Hz please */
 	irq0_cnt = 0;
 	irq0_add = 182;
-	irq0_max = 1000; // about 18.2Hz
-	old_irq0 = _dos_getvect(8);//IRQ0
+	irq0_max = 1000; /* about 18.2Hz */
+	old_irq0 = _dos_getvect(8);/*IRQ0*/
 	_dos_setvect(8,irq0);
 
-	adlib_shut_up();
+	//adlib_shut_up();
 	midi_reset_channels();
 	midi_reset_tracks();
 	_cli();
@@ -68,8 +68,10 @@ int main(int argc,char **argv) {
 
 		_cli();
 		adv = irq0_ticks - ptick;
+		//adv = ptick;
 		if (adv >= 100UL) adv = 100UL;
 		ptick = irq0_ticks;
+		//ptick++;
 		_sti();
 
 		while (adv != 0) {
@@ -88,15 +90,15 @@ int main(int argc,char **argv) {
 	}
 
 	midi_playing = 0;
-	adlib_shut_up();
+	//adlib_shut_up();
 	shutdown_adlib();
 	_dos_setvect(8,old_irq0);
-	write_8254_system_timer(0); // back to normal 18.2Hz
+	write_8254_system_timer(0); /* back to normal 18.2Hz */
 
 	for (i=0;i < MIDI_MAX_TRACKS;i++) {
 		if (midi_trk[i].raw) {
 #if TARGET_MSDOS == 16 && (defined(__LARGE__) || defined(__COMPACT__))
-			_dos_freemem(FP_SEG(midi_trk[i].raw)); // NTS: Because we allocated with _dos_allocmem
+			_dos_freemem(FP_SEG(midi_trk[i].raw)); /* NTS: Because we allocated with _dos_allocmem */
 #else
 			free(midi_trk[i].raw);
 #endif
