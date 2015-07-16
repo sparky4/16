@@ -1,6 +1,7 @@
 /* Thanks to Alex Russell for example code */
 /* Thanks to Gary Neal for example code */
-#include "dos_kb.h"
+/* working out the licencing~ */
+#include "src/lib/dos_kb.h"
 
 // keyboard buffer
 static byte key[NUM_SCANCODES]; // pressed
@@ -18,7 +19,7 @@ static void interrupt (far *oldkb)(void) = NULL; /* BIOS keyboard handler */
  * Comment out the following #define if you don't want the testing main()
  * to be included.
  */
-#define TESTING
+//#define TESTING
 #define TESTING2
 
 /*****************NEW KEYBOARD 09h ISR***********************/

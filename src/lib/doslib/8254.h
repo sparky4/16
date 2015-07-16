@@ -9,7 +9,7 @@
  *
  * Compiles for intended target environments:
  *   - MS-DOS [pure DOS mode, or Windows or OS/2 DOS Box] */
- 
+
 #ifndef __HW_8254_8254_H
 #define __HW_8254_8254_H
 

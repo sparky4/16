@@ -9,8 +9,8 @@
  *
  * Compiles for intended target environments:
  *   - MS-DOS [pure DOS mode, or Windows or OS/2 DOS Box] */
- 
-#include "src/lib/doslib/cpu.h"
+
+//#include "src/lib/doslib/cpu.h"
 #include "src/lib/doslib/8254.h"		/* 8254 timer */
 #include <stdint.h>
 
@@ -118,7 +118,7 @@ extern struct adlib_fm_channel		adlib_fm_preset_horn;
 
 /* NTS: I have a Creative CT1350B card where we really do have to wait at least
  *      33us per I/O access, because the OPL2 chip on it really is that slow.
- *      
+ *
  *      Peior to this fix, the adlib code would often fail on a real CT1350B
  *      (unless run just after the Sound Blaster test program) and even if it
  *      did run, only about 1/3rd of the voices would work. Upping the delay

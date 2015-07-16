@@ -12,6 +12,7 @@
 #define __HW_DOS_DOS_H
 
 #include "src/lib/doslib/cpu.h"
+//#include "src/lib/16_head.h"
 #include <stdint.h>
 
 #if !defined(TARGET_WINDOWS) && !defined(TARGET_OS2)

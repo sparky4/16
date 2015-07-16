@@ -14,6 +14,7 @@
 
 #include <stdint.h>
 #include <dos.h>
+#include "src/lib/16_head.h"
 
 #if !defined(FAR)
 # if defined(TARGET_WINDOWS)
@@ -229,5 +230,7 @@ static inline void cpu_wrmsr(const uint32_t idx,const uint64_t val);
 uint64_t cpu_rdmsr(const uint32_t idx);
 void cpu_wrmsr(const uint32_t idx,const uint64_t val);
 #endif
+
+int cpu_basic_probe();
 
 #endif /* __HW_CPU_CPU_H */

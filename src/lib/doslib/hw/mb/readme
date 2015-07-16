@@ -1,5 +1,0 @@
-Assorted code, specific to each motherboard chipset.
-
-intel ............ Intel chipsets
-  piix3 .......... PIIX3 (82371SB)
-  

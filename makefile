@@ -12,10 +12,10 @@ TARGET_OS = dos
 #-zk0 = kanji support~
 #-zkl = current codepage
 
-#MFLAGS=-mc# -zm
+DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1# -zm
 CFLAGS=-zk0 -wo -x -mc# -zdp# -zp16 -zq
 OFLAGS=-ot -ox -ob -oh -or# -om -ol -ol+
-FLAGS=-0 -d2 -lr $(OFLAGS) $(CFLAGS)
+FLAGS=-0 -d2 -lr $(OFLAGS) $(CFLAGS) $(DFLAGS)
 SRC=src$(DIRSEP)
 SRCLIB=$(SRC)lib$(DIRSEP)
 JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
@@ -23,12 +23,12 @@ EXMMLIB=$(SRCLIB)exmm$(DIRSEP)
 DOSLIB=$(SRCLIB)doslib$(DIRSEP)
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
-DOSLIBOBJ = adlib.$(OBJ) midi.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) cpu.$(OBJ)
-16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ) $(DOSLIBOBJ)
+DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
+DOSLIBOBJ = adlib.$(OBJ) midi.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
+16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ)
 
-all: 16.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe exmmtest.exe fonttes0.exe fontgfx.exe sountest.exe miditest.exe
-#inputest.exe
+all: 16.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe exmmtest.exe fonttes0.exe fontgfx.exe sountest.exe miditest.exe testemm.exe tsthimem.exe inputest.exe
 
 #
 #executables
@@ -56,13 +56,19 @@ fontgfx.exe: fontgfx.$(OBJ) 16.lib
 	wcl $(FLAGS) fontgfx.$(OBJ) 16.lib
 
 inputest.exe: inputest.$(OBJ) 16.lib
-	wcl $(FLAGS) inputest.$(OBJ) 16.lib
+	wcl $(FLAGS) -D__DEBUG_InputMgr__=1 inputest.$(OBJ) 16.lib
 
 sountest.exe: sountest.$(OBJ) 16.lib
 	wcl $(FLAGS) sountest.$(OBJ) 16.lib
 
 miditest.exe: miditest.$(OBJ) 16.lib
 	wcl $(FLAGS) miditest.$(OBJ) 16.lib
+
+tsthimem.exe: tsthimem.$(OBJ) 16.lib
+	wcl $(FLAGS) tsthimem.$(OBJ) 16.lib
+
+testemm.exe: testemm.$(OBJ) 16.lib
+	wcl $(FLAGS) testemm.$(OBJ) 16.lib
 
 pcxtest.exe: pcxtest.$(OBJ) gfx.lib
 	wcl $(FLAGS) pcxtest.$(OBJ) gfx.lib
@@ -139,17 +145,26 @@ sountest.$(OBJ): $(SRC)sountest.c
 miditest.$(OBJ): $(SRC)miditest.c
 	wcl $(FLAGS) -c $(SRC)miditest.c
 
+testemm.$(OBJ): $(SRC)testemm.c
+	wcl $(FLAGS) -c $(SRC)testemm.c
+
+tsthimem.$(OBJ): $(SRC)tsthimem.c
+	wcl $(FLAGS) -c $(SRC)tsthimem.c
+
 exmmtest.$(OBJ): $(SRC)exmmtest.c
 	wcl $(FLAGS) -c $(SRC)exmmtest.c
 
 #
 #non executable objects libraries
 #
-16.lib: $(16LIBOBJS) gfx.lib
-	wlib -b 16.lib $(16LIBOBJS) gfx.lib
+16.lib: $(16LIBOBJS) gfx.lib doslib.lib
+	wlib -b 16.lib $(16LIBOBJS) gfx.lib doslib.lib
 
 gfx.lib: $(GFXLIBOBJS)
 	wlib -b gfx.lib $(GFXLIBOBJS)
+
+doslib.lib: $(DOSLIBOBJ) $(DOSLIBEXMMOBJ)# $(SRCLIB)cpu.lib
+	wlib -b doslib.lib $(DOSLIBOBJ) $(DOSLIBEXMMOBJ)# $(SRCLIB)cpu.lib
 
 modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c
 	wcl $(FLAGS) -c $(SRCLIB)modex16.c
@@ -190,6 +205,9 @@ mapread.$(OBJ): $(SRCLIB)mapread.h $(SRCLIB)mapread.c 16.lib
 midi.$(OBJ): $(SRCLIB)midi.h $(SRCLIB)midi.c
 	wcl $(FLAGS) -c $(SRCLIB)midi.c
 
+#
+# doslib stuff
+#
 adlib.$(OBJ): $(DOSLIB)adlib.h $(DOSLIB)adlib.c
 	wcl $(FLAGS) -c $(DOSLIB)adlib.c
 
@@ -199,11 +217,19 @@ adlib.$(OBJ): $(DOSLIB)adlib.h $(DOSLIB)adlib.c
 8259.$(OBJ): $(DOSLIB)8259.h $(DOSLIB)8259.c
 	wcl $(FLAGS) -c $(DOSLIB)8259.c
 
+dos.$(OBJ): $(DOSLIB)dos.h $(DOSLIB)dos.c
+	wcl $(FLAGS) -c $(DOSLIB)dos.c
+
 cpu.$(OBJ): $(DOSLIB)cpu.h $(DOSLIB)cpu.c
 	wcl $(FLAGS) -c $(DOSLIB)cpu.c
 
-#dos.$(OBJ): $(DOSLIB)dos.h $(DOSLIB)dos.c
-#	wcl $(FLAGS) -c $(DOSLIB)dos.c
+himemsys.$(OBJ): $(DOSLIB)himemsys.h $(DOSLIB)himemsys.c
+	wcl $(FLAGS) -c $(DOSLIB)himemsys.c
+
+emm.$(OBJ): $(DOSLIB)emm.h $(DOSLIB)emm.c
+	wcl $(FLAGS) -c $(DOSLIB)emm.c
+
+# end
 
 16_head.$(OBJ): $(SRCLIB)16_head.h $(SRCLIB)16_head.c
 	wcl $(FLAGS) -c $(SRCLIB)16_head.c

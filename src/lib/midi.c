@@ -15,6 +15,9 @@
 #include "src/lib/midi.h"
 
 static unsigned int		midi_trk_count=0;
+struct midi_note		midi_notes[ADLIB_FM_VOICES];
+struct midi_channel		midi_ch[MIDI_MAX_CHANNELS];
+struct midi_track		midi_trk[MIDI_MAX_TRACKS];
 
 /* MIDI params. Nobody ever said it was a straightforward standard!
  * NTS: These are for reading reference. Internally we convert everything to 100Hz time base. */

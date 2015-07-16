@@ -40,7 +40,6 @@
 #include <dos.h>
 
 #include "src/lib/doslib/cpu.h"
-//#include <hw/dos/dos.h>
 
 /* DEBUG: Flush out calls that aren't there */
 #ifdef TARGET_OS2
@@ -155,3 +154,28 @@ void cpu_probe() {
 #endif
 }
 
+int cpu_basic_probe()
+{
+	__asm
+	{
+	push		bx
+	push		cx
+	push		dx
+	push		si
+	push		di
+	push		bp
+// BUGFIX: Calling near a function that returns far is like taking a long walk off a short pier
+//	push		cs
+
+//	call		cpu_basic_probe_f_
+
+	pop		bp
+	pop		di
+	pop		si
+	pop		dx
+	pop		cx
+	pop		bx
+	//retnative
+	}
+	return;
+}
