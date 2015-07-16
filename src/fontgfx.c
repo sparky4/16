@@ -90,7 +90,7 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 	//modexprint(100, 100, 1, 47, 0, "wwww");
 	getch();
 //	modexprint(0, 0, 1, 0, colpee, &rose);
-	modexprint(&screen, 0, 0, 1, 0, colpee, &ibmlogo);
+	modexprint(&screen, 0, 0, 0, 0, colpee, &ibmlogo);
 //	modexprint(0, 0, 1, 0, colpee, ROSE);
 	getch();
 	modexLeave();
