@@ -93,8 +93,9 @@ void modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset);
 void modexPalUpdate1(byte *p);
 void modexPalUpdate0(byte *p);
 void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, word *offset*/);
-void modexputPixel(int x, int y, byte color);
+void modexputPixel(page_t *page, int x, int y, byte color);
 void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
+void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
 void modexWaitBorder();
 
 /* -======================= Constants & Vars ==========================- */

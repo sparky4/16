@@ -67,6 +67,7 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 	screen = modexDefaultPage();
 	screen.width += (16*2);
 	screen.height += (16*2);
+//++++	modexShowPage(&screen);
 	//modexprint(16, 16, 1, 15, "wwww");
 	//getch();
 	chx=0;
@@ -90,7 +91,8 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 	//modexprint(100, 100, 1, 47, 0, "wwww");
 	getch();
 //	modexprint(0, 0, 1, 0, colpee, &rose);
-	modexprint(&screen, 0, 0, 0, 0, colpee, &ibmlogo);
+//++++	modexprint(&screen, 0, 0, 0, 0, colpee, &ibmlogo);
+	modexprintbig(&screen, 0, 0, 1, colpee, 0, "IBM");
 //	modexprint(0, 0, 1, 0, colpee, ROSE);
 	getch();
 	modexLeave();

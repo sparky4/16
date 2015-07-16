@@ -942,12 +942,14 @@ no... wait.... no wwww
                 free(pal);
 }
 
-void modexputPixel(int x, int y, byte color)
+void modexputPixel(page_t *page, int x, int y, byte color)
 {
+	word pageOff = (word) page->data;
         /* Each address accesses four neighboring pixels, so set
            Write Plane Enable according to which pixel we want
            to modify.  The plane is determined by the two least
            significant bits of the x-coordinate: */
+	//modexSelectPlane(PLANE(x));
 	outp(SC_INDEX, 0x02);
 	outp(SC_DATA, 0x01 << (x & 3));
 
@@ -955,7 +957,7 @@ void modexputPixel(int x, int y, byte color)
 	   offset = (width * y + x) / 4, and write the given
 	   color to the plane we selected above.  Heed the active
 	   page start selection. */
-	VGA[(unsigned)((SCREEN_WIDTH/4) * y) + (x / 4) + 0] = color;
+	VGA[(unsigned)((SCREEN_WIDTH/4) * y) + (x / 4) + pageOff] = color;
 
 }
 
@@ -1003,8 +1005,9 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 	for(; *str != '\0'; str++)
 	{
 	c = (*str);
-	if(c=='\n' || c=="\
-" || chw>=page->width-1)
+	if((c=='\n'/* || c=="\
+"*/) || chw
+>=page->width)
 	{
 		chw=0;
 		y+=w;
@@ -1034,12 +1037,87 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 			xp=0;
 			while(j)
 			{
-				modexputPixel(x+xp+chw, y+i, l[i] & j ? col:bgcol);
+				modexputPixel(page, x+xp+chw, y+i, l[i] & j ? col:bgcol);
 				xp++;
 				j>>=1;
 			}
 		}
-		chw += xp-1;
+		chw += xp;
+	}
+}
+
+void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str)
+{
+	word i, s, o, w, j, xp;
+	byte l[1024];
+	word addr = (word) l;
+	word chw=0;
+	byte c;
+
+	switch(t)
+	{
+		case 0:
+			w=14;
+		break;
+		case 1:
+			w=8;
+		break;
+		case 2:
+			w=8;
+		break;
+		case 3:
+			w=16;
+		break;
+		default:
+			t=3;
+			w=16;
+		break;
+	}
+
+	s=romFonts[t].seg;
+	o=romFonts[t].off;
+
+	for(; *str != '\0'; str++)
+	{
+	c = (*str);
+	if((c=='\n'/* || c=="\
+"*/)/* || chw>=page->width*/)
+	{
+		chw=0;
+		y+=w;
+		continue;
+	}
+	//load the letter 'A'
+	__asm {
+		MOV DI, addr
+		MOV SI, o
+		MOV ES, s
+		SUB AH, AH
+		MOV AL, c	; the letter
+		MOV CX, w
+		MUL CX
+		ADD SI, AX	;the address of charcter
+	L1:	MOV AX, ES:SI
+		MOV DS:DI, AX
+		INC SI
+		INC DI
+		DEC CX
+		JNZ L1
+	}
+
+		for(i=0; i<w; i++)
+		{
+			j=1<<8;
+			xp=0;
+			while(j)
+			{
+				//modexputPixel(page, x+xp+chw, y+i, l[i] & j ? col:bgcol);
+				modexClearRegion(page, (x+xp+chw)*8, (y+i)*8, 8, 8, l[i] & j ? col:bgcol);
+				xp++;
+				j>>=1;
+			}
+		}
+		chw += xp;
 	}
 }
 
