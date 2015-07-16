@@ -29,7 +29,27 @@ void main(int argc, char near *argv[])
 {
 	//JMOJI
 	static byte e;
+	//word ri;
 	byte pee[2];
+	static byte rose[]="                                              :. ,..\n\
+                                            .' :~.':_.,\n\
+                                          .'   ::.::'.'\n\
+                                         :     ::'  .:\n\
+                                       `.:    .:  .:/\n\
+                                        `::--.:'.::'\n\
+                                          |. _:===-'\n\
+                                         / /\n\
+                        ,---.---.    __,','\n\
+                       (~`.  \   )   )','.,---..\n\
+                        `v`\ | ,' .-'.:,'_____   `.\n\
+                            )|/.-~.--~~--.   ~~~-. \ \n\
+                          _/-'_.-~        ""---.._`.|\n\
+                     _.-~~_.-~                    ""'\n\
+              _..--~~_.(~~\n\
+   __...---~~~_..--~~\n\
+,'___...---~~~\n\
+";
+//	static byte *rosa;
 	static word chx, chy, colpee;
 	textInit();
 	modexEnter();
@@ -55,7 +75,13 @@ void main(int argc, char near *argv[])
 	}
 	//modexprint(100, 100, 1, 47, 0, "wwww");
 	getch();
+	modexprint(0, 0, 1, 0, colpee, &rose);
+//	modexprint(0, 0, 1, 0, colpee, ROSE);
+	getch();
 	modexLeave();
+//	rosa=malloc(sizeof(ROSE));
+//	(*rosa)=(byte)ROSE;
+	printf("\n%s\n", rose);
 	//printf("\nh=%d\n", '8');
-	//printf("\n%c\n", e);
+//	printf("\n%c\n", e);
 }
