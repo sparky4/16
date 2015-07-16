@@ -8,3 +8,7 @@ what?
 font!
 jis!
 memory segmentation!
+
+
+FIX TESTEMM.EXE
+FIX MIDITEST.EXE
