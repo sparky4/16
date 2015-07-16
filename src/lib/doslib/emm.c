@@ -126,7 +126,7 @@ void emm_update_page_count() {
 	}
 }
 
-int probe_emm0() {
+int probe_emm() {
 	void far *emmptr;
 
 	emm_present = 0;

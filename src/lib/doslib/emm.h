@@ -66,7 +66,7 @@ struct emm_phys_page_map {
 };
 #pragma pack(pop)
 
-int probe_emm0();
+int probe_emm();
 void emm_phys_pages_sort();
 void emm_update_page_count();
 int emm_alloc_pages(unsigned int pages);

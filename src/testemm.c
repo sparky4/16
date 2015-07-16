@@ -56,7 +56,7 @@ int main() {
 	}*/
 
 	sanity();
-	if (probe_emm0()) {
+	if (probe_emm()) {
 		int h1,h2,h3;
 
 		sanity();
