@@ -31,28 +31,42 @@ void main(int argc, char near *argv[])
 	static byte e;
 	//word ri;
 	byte pee[2];
-	static byte rose[]="                                              :. ,..\n\
-                                            .' :~.':_.,\n\
-                                          .'   ::.::'.'\n\
-                                         :     ::'  .:\n\
-                                       `.:    .:  .:/\n\
-                                        `::--.:'.::'\n\
-                                          |. _:===-'\n\
-                                         / /\n\
-                        ,---.---.    __,','\n\
-                       (~`.  \   )   )','.,---..\n\
-                        `v`\ | ,' .-'.:,'_____   `.\n\
-                            )|/.-~.--~~--.   ~~~-. \ \n\
-                          _/-'_.-~        ""---.._`.|\n\
-                     _.-~~_.-~                    ""'\n\
-              _..--~~_.(~~\n\
-   __...---~~~_..--~~\n\
-,'___...---~~~\n\
+	page_t screen;
+	static byte ibmlogo[]="IIIIIII  BBBBBBBBB    MMMMM       MMMMM\n\
+IIIIIII  BBBBBBBBBBB  MMMMMM     MMMMMM\n\
+  III     BBB    BBB   MMMMMM   MMMMMM\n\
+  III     BBBBBBBBB    MMMMMMM MMMMMMM\n\
+  III     BBBBBBBBB    MMM MMMMMMM MMM\n\
+  III     BBB    BBB   MMM  MMMMM  MMM\n\
+IIIIIII  BBBBBBBBBBB  MMMM   MMM   MMMM\n\
+IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
+";
+	static byte rose[]="                                              :. ,..\
+                                            .' :~.':_.,\
+                                          .'   ::.::'.'\
+                                         :     ::'  .:\
+                                       `.:    .:  .:/\
+                                        `::--.:'.::'\
+                                          |. _:===-'\
+                                         / /\
+                        ,---.---.    __,','\
+                       (~`.  \   )   )','.,---..\
+                        `v`\ | ,' .-'.:,'_____   `.\
+                            )|/.-~.--~~--.   ~~~-. \\
+                          _/-'_.-~        ""---.._`.|\
+                     _.-~~_.-~                    ""'\
+              _..--~~_.(~~\
+   __...---~~~_..--~~\
+,'___...---~~~\
 ";
 //	static byte *rosa;
 	static word chx, chy, colpee;
 	textInit();
 	modexEnter();
+	/* setup camera and screen~ */
+	screen = modexDefaultPage();
+	screen.width += (16*2);
+	screen.height += (16*2);
 	//modexprint(16, 16, 1, 15, "wwww");
 	//getch();
 	chx=0;
@@ -65,17 +79,18 @@ void main(int argc, char near *argv[])
 			chx=0;
 			chy+=8;
 			sprintf(pee,"%u", colpee);
-			modexprint(200, 200, 1, 47, 0, &pee);
+			modexprint(&screen, 200, 200, 1, 47, 0, &pee);
 			//getch();
 		}
-		modexprint(chx, chy, 1, 0, colpee, &e);
+		modexprint(&screen, chx, chy, 1, 0, colpee, &e);
 		chx+=9;
 		colpee++;
 		if(colpee>=32+24) colpee=32;
 	}
 	//modexprint(100, 100, 1, 47, 0, "wwww");
 	getch();
-	modexprint(0, 0, 1, 0, colpee, &rose);
+//	modexprint(0, 0, 1, 0, colpee, &rose);
+	modexprint(&screen, 0, 0, 1, 0, colpee, &ibmlogo);
 //	modexprint(0, 0, 1, 0, colpee, ROSE);
 	getch();
 	modexLeave();
