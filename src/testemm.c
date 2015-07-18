@@ -106,14 +106,14 @@ int main() {
 		if (h1 >= 0) printf("OK, handle=%u\n",h1);
 		else printf("FAILED\n");
 
-		printf("Allocating EMM pages (1MB): ");
-		h2 = emm_alloc_pages(0x100000UL >> 14UL);
+		printf("Allocating EMM pages (1.6MB): ");
+		h2 = emm_alloc_pages(0x19999AUL >> 14UL);
 		sanity();
 		if (h2 >= 0) printf("OK, handle=%u\n",h2);
 		else printf("FAILED\n");
 
-		printf("Allocating EMM pages (1MB): ");
-		h3 = emm_alloc_pages(0x100000UL >> 14UL);
+		printf("Allocating EMM pages (12MB): ");
+		h3 = emm_alloc_pages(0xC00000UL >> 14UL);
 		sanity();
 		if (h3 >= 0) printf("OK, handle=%u\n",h3);
 		else printf("FAILED\n");
