@@ -112,8 +112,8 @@ int main() {
 		if (h2 >= 0) printf("OK, handle=%u\n",h2);
 		else printf("FAILED\n");
 
-		printf("Allocating EMM pages (12MB): ");
-		h3 = emm_alloc_pages(0xC00000UL >> 14UL);
+		printf("Allocating EMM pages (1MB): ");
+		h3 = emm_alloc_pages(0x100000UL >> 14UL);
 		sanity();
 		if (h3 >= 0) printf("OK, handle=%u\n",h3);
 		else printf("FAILED\n");
@@ -250,6 +250,7 @@ int main() {
 
 		/* we do this test because Microsoft EMM386.EXE seems to max out at 32MB.
 		 * the host could have 256MB of total memory and it would still report 32MB in EMS */
+		printf("we do this test because Microsoft EMM386.EXE seems to max out at 32MB.\n the host could have 256MB of total memory and it would still report 32MB in EMS");
 		printf("Allocating EMM pages (48MB): ");
 		h1 = emm_alloc_pages((48UL << 20UL) >> 14UL);
 		if (h1 >= 0) {
