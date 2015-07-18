@@ -248,6 +248,8 @@ int main() {
 		}
 		else printf("FAILED\n");
 
+		getch();
+
 		/* we do this test because Microsoft EMM386.EXE seems to max out at 32MB.
 		 * the host could have 256MB of total memory and it would still report 32MB in EMS */
 		printf("we do this test because Microsoft EMM386.EXE seems to max out at 32MB.\n the host could have 256MB of total memory and it would still report 32MB in EMS");
