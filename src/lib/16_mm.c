@@ -1104,7 +1104,7 @@ CA_OpenDebug ();
 		if(scan->start<=end)
 		{
 			//printf(");
-			write (debughandle,"\nMM_ShowMemory: Memory block order currupted!\n",strlen("\nMM_ShowMemory: Memory block order currupted!\n"));
+			write(debughandle,"\nMM_ShowMemory: Memory block order currupted!\n",strlen("\nMM_ShowMemory: Memory block order currupted!\n"));
 			//modexprint(&page, chx, chy, 1, 0, 24, "\nMM_ShowMemory: Memory block order currupted!\n");
 			return;
 		}
@@ -1115,10 +1115,11 @@ CA_OpenDebug ();
 //void VW_Hlin(unsigned xl, unsigned xh, unsigned y, unsigned color);
 
 //++++		VW_Plot(scan->start,0,15);
-				modexputPixel(page, scan->start, chy, 15);
+				//modexputPixel(page, scan->start, chy, 15);
+				modexClearRegion(page, scan->start, chy, 4, 4, 15);
 		if(scan->next->start > end+1)
 //++++			VW_Hlin(end+1,scan->next->start,0,0);	// black = free
-					modexhlin(page, end+1,scan->next->start, chy, color);
+					modexhlin(page, end+1,scan->next->start, chy, 9);
 
 //****#if 0
 printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!

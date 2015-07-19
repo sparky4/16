@@ -976,8 +976,9 @@ void modexhlin(page_t *page, word xl, word xh, word y, word color)
 {
 	word x;
 
-	for(x=0;x<xh;x++)
-	modexputPixel(page, x+xl, y, color);
+	for(x=0;x<xh*4;x+=4)
+	modexClearRegion(page, x+xl, y, 4, 4, color);
+	//modexputPixel(page, x+xl, y, color);
 }
 
 void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str)
