@@ -74,9 +74,9 @@ byte		_seg	*audiosegs[NUMSNDCHUNKS];
 void		_seg	*grsegs[NUMCHUNKS];
 
 byte		far	grneeded[NUMCHUNKS];
-byte		ca_levelbit,ca_levelnum;
+byte		ca_levelbit,ca_levelnum;*/
 
-int			profilehandle,debughandle;*/
+int			profilehandle,debughandle;
 
 void	(*drawcachebox)		(char *title, unsigned numcache);
 void	(*updatecachebox)	(void);
@@ -173,7 +173,6 @@ long GRFILEPOS(int c)
 =
 ============================
 */
-/*++++
 void CA_OpenDebug(void)
 {
 	unlink("DEBUG.TXT");
@@ -182,8 +181,8 @@ void CA_OpenDebug(void)
 
 void CA_CloseDebug(void)
 {
-	close debughandle);
-}*/
+	close(debughandle);
+}
 
 
 

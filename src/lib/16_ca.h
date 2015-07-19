@@ -20,10 +20,6 @@
 #ifndef __16_CA__
 #define __16_CA__
 
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-
 #ifndef __16_MM__
 #include "src/lib/16_head.h"
 #include "src/lib/16_mm.h"
@@ -65,9 +61,9 @@ extern	void		_seg	*grsegs[NUMCHUNKS];
 extern	byte		far	grneeded[NUMCHUNKS];
 extern	byte		ca_levelbit,ca_levelnum;
 
-extern	char		*titleptr[8];
+extern	char		*titleptr[8];*/
 
-extern	int			profilehandle,debughandle;*/
+extern	int			profilehandle,debughandle;
 
 //
 // hooks for custom cache dialogs
@@ -88,6 +84,7 @@ void CA_OpenDebug (void);
 void CA_CloseDebug (void);
 boolean CA_FarRead (int handle, byte huge *dest, dword length, mminfo_t *mm);
 boolean CA_FarWrite (int handle, byte huge *source, dword length, mminfo_t *mm);
+
 boolean CA_ReadFile (char *filename, memptr *ptr, mminfo_t *mm);
 boolean CA_LoadFile (char *filename, memptr *ptr, mminfo_t *mm, mminfotype *mmi);
 

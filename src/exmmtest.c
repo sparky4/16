@@ -60,9 +60,13 @@ main(int argc, char *argv[])
 	//MM_GetPtr(&bigbuffer, mmi.nearheap, &mm, &mmi);
 	//hmm functions in cache system use the buffered stuff
 	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
+	printf("dark purple = purgable\n");
+	printf("medium blue = non purgable\n");
+	printf("red = locked\n");
 	getch();
 	modexEnter();
 	MM_ShowMemory(&screen, &mm);
+	MM_DumpData(&mm);
 	getch();
 	MM_Report(&screen, &mm, &mmi);
 	modexLeave();

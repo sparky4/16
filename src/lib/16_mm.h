@@ -26,6 +26,7 @@
 //#include <bios.h>
 #include "src/lib/16_head.h"
 #include "src/lib/modex16.h"
+//#include "src/lib/16_ca.h"
 //++++mh	#include "src/lib/16_in.h"
 
 #ifdef __DEBUG__		// 1 == Debug/Dev  ;  0 == Production/final
@@ -178,6 +179,7 @@ void MM_SetPurge(memptr *baseptr, int purge, mminfo_t *mm);
 void MM_SetLock(memptr *baseptr, boolean locked, mminfo_t *mm);
 void MM_SortMem(mminfo_t *mm);
 void MM_ShowMemory(page_t *page, mminfo_t *mm);
+void MM_DumpData(mminfo_t *mm);
 dword MM_UnusedMemory(mminfo_t *mm);
 dword MM_TotalFree(mminfo_t *mm);
 void MM_Report(page_t *page, mminfo_t *mm, mminfotype *mmi);

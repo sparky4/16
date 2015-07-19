@@ -1087,7 +1087,7 @@ void MM_ShowMemory(page_t *page, mminfo_t *mm)
 
 	end = -1;
 
-//CA_OpenDebug ();
+CA_OpenDebug ();
 
 	chx=0;
 	chy=0;
@@ -1102,20 +1102,22 @@ void MM_ShowMemory(page_t *page, mminfo_t *mm)
 			color = 12;		// red = locked
 		if(scan->start<=end)
 		{
-			//printf("\nMM_ShowMemory: Memory block order currupted!\n");
-			modexprint(&page, chx, chy, 1, 0, 24, "\nMM_ShowMemory: Memory block order currupted!\n");
+			//printf(");
+			write (debughandle,"\nMM_ShowMemory: Memory block order currupted!\n",strlen("\nMM_ShowMemory: Memory block order currupted!\n"));
+			//modexprint(&page, chx, chy, 1, 0, 24, "\nMM_ShowMemory: Memory block order currupted!\n");
 			return;
 		}
 		end = scan->start+scan->length-1;
-//++++				modexhlin(page, scan->start, (unsigned)end, chy, color);
+				modexhlin(page, scan->start, (unsigned)end, chy, color);
 //++++		VW_Hlin(scan->start,(unsigned)end,0,color);
 //void VW_Plot(unsigned x, unsigned y, unsigned color);
 //void VW_Hlin(unsigned xl, unsigned xh, unsigned y, unsigned color);
 
 //++++		VW_Plot(scan->start,0,15);
-//++++				modexputPixel(page, scan->start, chy, 15);
+				modexputPixel(page, scan->start, chy, 15);
 		if(scan->next->start > end+1)
 //++++			VW_Hlin(end+1,scan->next->start,0,0);	// black = free
+					modexhlin(page, end+1,scan->next->start, chy, color);
 
 //****#if 0
 printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
@@ -1130,22 +1132,88 @@ owner = (unsigned)scan->useptr;
 ultoa (owner,str,16);
 strcat (scratch,str);
 strcat (scratch,"\n");
-//++++write (debughandle,scratch,strlen(scratch));
-modexprint(page, chx, chy, 1, 0, 24, &scratch);
-chy+=8;
-//fprintf(stdout, "%s", scratch);
+write (debughandle,scratch,strlen(scratch));
+//modexprint(page, chx, chy, 1, 0, 24, &scratch);
+//chy+=4;
+//fprintf(debughandle, "%s", scratch);
 //****#endif
 
 		scan = scan->next;
 	}
 
-//CA_CloseDebug ();
+CA_CloseDebug ();
 
 //++++mh	IN_Ack();
 //****	VW_SetLineWidth(64);
 //++++mh	bufferofs = temp;
 }
 //****#endif
+
+//==========================================================================
+
+/*
+=====================
+=
+= MM_DumpData
+=
+=====================
+*/
+
+void MM_DumpData(mminfo_t *mm)
+{
+	mmblocktype far *scan,far *best;
+	long	lowest,oldlowest;
+	unsigned	owner;
+	char	lock,purge;
+	FILE	*dumpfile;
+
+
+	free (mm->nearheap);
+	dumpfile = fopen ("mmdump.txt","w");
+	if (!dumpfile){
+		printf("MM_DumpData: Couldn't open MMDUMP.TXT!");
+		return;
+	}
+
+	lowest = -1;
+	do
+	{
+		oldlowest = lowest;
+		lowest = 0xffff;
+
+		scan = mm->mmhead;
+		while (scan)
+		{
+			owner = (unsigned)scan->useptr;
+
+			if (owner && owner<lowest && owner > oldlowest)
+			{
+				best = scan;
+				lowest = owner;
+			}
+
+			scan = scan->next;
+		}
+
+		if (lowest != 0xffff)
+		{
+			if (best->attributes & PURGEBITS)
+				purge = 'P';
+			else
+				purge = '-';
+			if (best->attributes & LOCKBIT)
+				lock = 'L';
+			else
+				lock = '-';
+			fprintf (dumpfile,"0x%p (%c%c) = %u\n"
+			,(unsigned)lowest,lock,purge,best->length);
+		}
+
+	} while (lowest != 0xffff);
+
+	fclose (dumpfile);
+	printf("MMDUMP.TXT created.");
+}
 
 //==========================================================================
 

@@ -37,6 +37,9 @@
 #include <time.h> // just for wait
 #include <stdlib.h>
 #include <ctype.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
 #include "src/lib/types.h"
 
 /* Control codes for all keys on the keyboard */
@@ -133,6 +136,7 @@
 
 static dword far* clockdw= (dword far*) 0x046C; /* 18.2hz clock */
 //static dword clockdw=0;
+extern	int			profilehandle,debughandle;
 
 #define	nil	((void *)0)
 
@@ -152,5 +156,8 @@ size_t GetFreeSize(void);
 long int filesize(FILE *fp);
 int US_CheckParm(char *parm,char **strings);
 //void Quit(char *error, ...);
+
+extern void CA_OpenDebug (void);
+extern void CA_CloseDebug (void);
 
 #endif/*_LIBHEAD_H_*/
