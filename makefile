@@ -28,7 +28,7 @@ DOSLIBOBJ = adlib.$(OBJ) midi.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OB
 16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ)
 
-all: 16.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe exmmtest.exe fonttes0.exe fontgfx.exe sountest.exe miditest.exe testemm.exe tsthimem.exe inputest.exe
+all: 16.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe exmmtest.exe fonttes0.exe fontgfx.exe sountest.exe miditest.exe testemm.exe tsthimem.exe inputest.exe testemm0.exe
 
 #
 #executables
@@ -69,6 +69,9 @@ tsthimem.exe: tsthimem.$(OBJ) 16.lib
 
 testemm.exe: testemm.$(OBJ) 16.lib
 	wcl $(FLAGS) testemm.$(OBJ) 16.lib
+
+testemm0.exe: testemm0.$(OBJ) 16.lib
+	wcl $(FLAGS) testemm0.$(OBJ) 16.lib
 
 pcxtest.exe: pcxtest.$(OBJ) gfx.lib
 	wcl $(FLAGS) pcxtest.$(OBJ) gfx.lib
@@ -147,6 +150,9 @@ miditest.$(OBJ): $(SRC)miditest.c
 
 testemm.$(OBJ): $(SRC)testemm.c
 	wcl $(FLAGS) -c $(SRC)testemm.c
+
+testemm0.$(OBJ): $(SRC)testemm0.c
+	wcl $(FLAGS) -c $(SRC)testemm0.c
 
 tsthimem.$(OBJ): $(SRC)tsthimem.c
 	wcl $(FLAGS) -c $(SRC)tsthimem.c
