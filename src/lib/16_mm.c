@@ -666,14 +666,15 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	if(MML_CheckForEMS())
 	{
-//printf("EMS1\n");
+printf("EMS1\n");
 		MML_SetupEMS(mm);					// allocate space
+printf("EMS2\n");
 		printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 		//TODO: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!
 		MML_UseSpace(mm->EMSpageframe,(MAPPAGES)*0x4000lu, mm);
-//printf("EMS3\n");
+printf("EMS3\n");
 		MM_MapEMS(mm);					// map in used pages
-//printf("EMS4\n");
+printf("EMS4\n");
 		mmi->EMSmem = (MAPPAGES)*0x4000lu;
 	}
 
@@ -1087,7 +1088,7 @@ void MM_ShowMemory(page_t *page, mminfo_t *mm)
 
 	end = -1;
 
-//CA_OpenDebug ();
+CA_OpenDebug ();
 
 	chx=0;
 	chy=0;
@@ -1132,16 +1133,16 @@ owner = (unsigned)scan->useptr;
 ultoa (owner,str,16);
 strcat (scratch,str);
 strcat (scratch,"\n");
-//write(debughandle,scratch,strlen(scratch));
+write(debughandle,scratch,strlen(scratch));
 //modexprint(page, chx, chy, 1, 0, 24, &scratch);
 //chy+=4;
-fprintf(stdout, "%s", scratch);
+//fprintf(stdout, "%s", scratch);
 //****#endif
 
 		scan = scan->next;
 	}
 
-//CA_CloseDebug ();
+CA_CloseDebug ();
 
 //++++mh	IN_Ack();
 //****	VW_SetLineWidth(64);
