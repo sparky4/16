@@ -1111,11 +1111,8 @@ CA_OpenDebug ();
 		end = scan->start+scan->length-1;
 				modexhlin(page, scan->start, (unsigned)end, chy, color);
 //++++		VW_Hlin(scan->start,(unsigned)end,0,color);
-//void VW_Plot(unsigned x, unsigned y, unsigned color);
-//void VW_Hlin(unsigned xl, unsigned xh, unsigned y, unsigned color);
 
 //++++		VW_Plot(scan->start,0,15);
-				//modexputPixel(page, scan->start, chy, 15);
 				modexClearRegion(page, scan->start, chy, 4, 4, 15);
 		if(scan->next->start > end+1)
 //++++			VW_Hlin(end+1,scan->next->start,0,0);	// black = free
@@ -1136,7 +1133,7 @@ strcat (scratch,str);
 strcat (scratch,"\n");
 write(debughandle,scratch,strlen(scratch));
 //modexprint(page, chx, chy, 1, 0, 24, &scratch);
-//chy+=4;
+chy+=4;
 //fprintf(stdout, "%s", scratch);
 //****#endif
 

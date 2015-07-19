@@ -65,6 +65,7 @@ main(int argc, char *argv[])
 	printf("red = locked\n");
 	getch();
 	modexEnter();
+	modexShowPage(&screen);
 	MM_ShowMemory(&screen, &mm);
 	MM_DumpData(&mm);
 	getch();
