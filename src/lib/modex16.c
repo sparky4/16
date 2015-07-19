@@ -961,14 +961,23 @@ void modexputPixel(page_t *page, int x, int y, byte color)
 
 }
 
-byte modexgetPixel(int x, int y)
+byte modexgetPixel(page_t *page, int x, int y)
 {
+	word pageOff = (word) page->data;
 	/* Select the plane from which we must read the pixel color: */
 	outpw(GC_INDEX, 0x04);
 	outpw(GC_INDEX+1, x & 3);
 
-	return VGA[(unsigned)((SCREEN_WIDTH/4) * y) + (x / 4) + 0];
+	return VGA[(unsigned)((SCREEN_WIDTH/4) * y) + (x / 4) + pageOff];
 
+}
+
+void modexhlin(page_t *page, word xl, word xh, word y, word color)
+{
+	word x;
+
+	for(x=0;x<xh;x++)
+	modexputPixel(page, x+xl, y, color);
 }
 
 void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str)

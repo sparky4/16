@@ -670,11 +670,11 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 		MML_SetupEMS(mm);					// allocate space
 		printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 		//TODO: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!
-		MML_UseSpace(mm->EMSpageframe,(mm->EMSpagesmapped)*0x4000lu, mm);
+		MML_UseSpace(mm->EMSpageframe,(MAPPAGES)*0x4000lu, mm);
 //printf("EMS3\n");
 		MM_MapEMS(mm);					// map in used pages
 //printf("EMS4\n");
-		mmi->EMSmem = (mm->EMSpagesmapped)*0x4000lu;
+		mmi->EMSmem = (MAPPAGES)*0x4000lu;
 	}
 
 //
@@ -1069,11 +1069,12 @@ void MM_SortMem(mminfo_t *mm)
 =====================
 */
 
-void MM_ShowMemory(mminfo_t *mm)
+void MM_ShowMemory(page_t *page, mminfo_t *mm)
 {
 	mmblocktype huge *scan;
 	unsigned color,temp;
 	long	end,owner;
+	word chx,chy;
 	char    scratch[160],str[16];
 
 //****	VW_SetDefaultColors();
@@ -1088,6 +1089,9 @@ void MM_ShowMemory(mminfo_t *mm)
 
 //CA_OpenDebug ();
 
+	chx=0;
+	chy=0;
+
 	while(scan)
 	{
 		if(scan->attributes & PURGEBITS)
@@ -1098,18 +1102,24 @@ void MM_ShowMemory(mminfo_t *mm)
 			color = 12;		// red = locked
 		if(scan->start<=end)
 		{
-			printf("\nMM_ShowMemory: Memory block order currupted!\n");
+			//printf("\nMM_ShowMemory: Memory block order currupted!\n");
+			modexprint(&page, chx, chy, 1, 0, 24, "\nMM_ShowMemory: Memory block order currupted!\n");
 			return;
 		}
 		end = scan->start+scan->length-1;
+//++++				modexhlin(page, scan->start, (unsigned)end, chy, color);
 //++++		VW_Hlin(scan->start,(unsigned)end,0,color);
+//void VW_Plot(unsigned x, unsigned y, unsigned color);
+//void VW_Hlin(unsigned xl, unsigned xh, unsigned y, unsigned color);
+
 //++++		VW_Plot(scan->start,0,15);
+//++++				modexputPixel(page, scan->start, chy, 15);
 		if(scan->next->start > end+1)
 //++++			VW_Hlin(end+1,scan->next->start,0,0);	// black = free
 
 //****#if 0
 printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
-strcpy(scratch,"Location:");
+strcpy(scratch,"Seg:");
 ultoa (scan->start,str,16);
 strcat (scratch,str);
 strcat (scratch,"\tSize:");
@@ -1121,7 +1131,9 @@ ultoa (owner,str,16);
 strcat (scratch,str);
 strcat (scratch,"\n");
 //++++write (debughandle,scratch,strlen(scratch));
-fprintf(stdout, "%s", scratch);
+modexprint(page, chx, chy, 1, 0, 24, &scratch);
+chy+=8;
+//fprintf(stdout, "%s", scratch);
 //****#endif
 
 		scan = scan->next;
@@ -1209,11 +1221,11 @@ dword MM_TotalFree(mminfo_t *mm)
 =====================
 */
 
-void MM_Report(mminfo_t *mm, mminfotype *mmi)
+void MM_Report(page_t *page, mminfo_t *mm, mminfotype *mmi)
 {
 	if(MML_CheckForEMS())
 	{
-		printf("EMM %x available\n", mm->EMSVer);
+		printf("EMM v%x.%x available\n", mm->EMSVer>>4,mm->EMSVer&0x0F);
 		printf("totalEMSpages=%u\n", mm->totalEMSpages);
 		printf("freeEMSpages=%u\n", mm->freeEMSpages);
 		printf("EMSpageframe=%x\n", mm->EMSpageframe);

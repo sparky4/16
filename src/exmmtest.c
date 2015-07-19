@@ -24,6 +24,7 @@
 */
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
+#include "src/lib/modex16.h"
 
 void
 main(int argc, char *argv[])
@@ -33,6 +34,7 @@ main(int argc, char *argv[])
 	__segment segu;
 	char *bakapee;
 	word baka;
+	page_t screen;
 
 	bakapee = malloc(64);
 //	memset(bakapee, 0, 64);
@@ -40,6 +42,13 @@ main(int argc, char *argv[])
 
 	if(argv[1]) bakapee = argv[1];
 	else bakapee = "data/koishi~~.pcx";
+
+	textInit();
+
+	/* setup camera and screen~ */
+	screen = modexDefaultPage();
+	screen.width += (16*2);
+	screen.height += (16*2);
 
 	printf("start!\n");
 	MM_Startup(&mm, &mmi);
@@ -51,8 +60,12 @@ main(int argc, char *argv[])
 	//MM_GetPtr(&bigbuffer, mmi.nearheap, &mm, &mmi);
 	//hmm functions in cache system use the buffered stuff
 	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
-	MM_ShowMemory(&mm);
-	MM_Report(&mm, &mmi);
+	getch();
+	modexEnter();
+	MM_ShowMemory(&screen, &mm);
+	getch();
+	MM_Report(&screen, &mm, &mmi);
+	modexLeave();
 	printf("stop!\n");
 	MM_FreePtr(&bigbuffer, &mm);
 	MM_Shutdown(&mm);

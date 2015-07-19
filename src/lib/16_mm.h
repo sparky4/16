@@ -25,6 +25,7 @@
 #include <malloc.h>
 //#include <bios.h>
 #include "src/lib/16_head.h"
+#include "src/lib/modex16.h"
 //++++mh	#include "src/lib/16_in.h"
 
 #ifdef __DEBUG__		// 1 == Debug/Dev  ;  0 == Production/final
@@ -111,6 +112,7 @@ extern void		(* XMSaddr) (void);		// far pointer to XMS driver
 #define BASEATTRIBUTES	0	// unlocked, non purgable
 
 #define MAXUMBS		12
+#define MAPPAGES		4/*mm->EMSpagesmapped*/
 
 typedef struct mmblockstruct
 {
@@ -175,10 +177,10 @@ void MM_FreePtr(memptr *baseptr, mminfo_t *mm);
 void MM_SetPurge(memptr *baseptr, int purge, mminfo_t *mm);
 void MM_SetLock(memptr *baseptr, boolean locked, mminfo_t *mm);
 void MM_SortMem(mminfo_t *mm);
-void MM_ShowMemory(mminfo_t *mm);
+void MM_ShowMemory(page_t *page, mminfo_t *mm);
 dword MM_UnusedMemory(mminfo_t *mm);
 dword MM_TotalFree(mminfo_t *mm);
-void MM_Report(mminfo_t *mm, mminfotype *mmi);
+void MM_Report(page_t *page, mminfo_t *mm, mminfotype *mmi);
 //int MM_EMSVer(void);
 void MM_BombOnError(boolean bomb, mminfo_t *mm);
 void MM_GetNewBlock(mminfo_t *mm);
