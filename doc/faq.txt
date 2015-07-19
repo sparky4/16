@@ -7,3 +7,9 @@ Q1. What is Project 16?
 
 A1. a badass new 16 bit DOSGAME! When I mean 16 bit, I REALLY MEAN 16 BIT! Realmode! i8088! If this scares you, then be a buster!
 Do not question my motives for making this project! I want it to be as GENUINE AS POSSIBLE! None of this fake $#@%!
+
+Q2. Why not 32-bit?
+
+A2. Seriously I do not want to make it if it is not authentic!
+Making it 32 bit will make me quit and commit suicide and basically not want to develop it anymore .... it is in similar spirit with 8088 mph demo
+Pushing the fuck out of the IBM XT and the 8088!
