@@ -134,6 +134,7 @@ typedef struct
 	boolean		mmstarted, bombonerror, mmerror;
 	void huge	*farheap;
 	void		*nearheap;
+	byte		EMS_status;
 	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
 	unsigned int EMSVer;
 	word numUMBs,UMBbase[MAXUMBS];
