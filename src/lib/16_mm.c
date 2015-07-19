@@ -1087,7 +1087,7 @@ void MM_ShowMemory(page_t *page, mminfo_t *mm)
 
 	end = -1;
 
-CA_OpenDebug ();
+//CA_OpenDebug ();
 
 	chx=0;
 	chy=0;
@@ -1132,16 +1132,16 @@ owner = (unsigned)scan->useptr;
 ultoa (owner,str,16);
 strcat (scratch,str);
 strcat (scratch,"\n");
-write (debughandle,scratch,strlen(scratch));
+//write(debughandle,scratch,strlen(scratch));
 //modexprint(page, chx, chy, 1, 0, 24, &scratch);
 //chy+=4;
-//fprintf(debughandle, "%s", scratch);
+fprintf(stdout, "%s", scratch);
 //****#endif
 
 		scan = scan->next;
 	}
 
-CA_CloseDebug ();
+//CA_CloseDebug ();
 
 //++++mh	IN_Ack();
 //****	VW_SetLineWidth(64);
