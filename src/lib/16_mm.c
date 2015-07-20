@@ -1111,14 +1111,14 @@ CA_OpenDebug ();
 			return;
 		}
 		end = scan->start+scan->length-1;
-				modexhlin(page, scan->start, (unsigned)end, chy, color);
+				//modexhlin(page, scan->start, (unsigned)end, chy, color);
 //++++		VW_Hlin(scan->start,(unsigned)end,0,color);
 
 //++++		VW_Plot(scan->start,0,15);
 				modexClearRegion(page, scan->start, chy, 4, 4, 15);
 		if(scan->next->start > end+1)
 //++++			VW_Hlin(end+1,scan->next->start,0,0);	// black = free
-					modexhlin(page, end+1,scan->next->start, chy, 9);
+					//modexhlin(page, end+1,scan->next->start, chy, 9);
 
 //****#if 0
 printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!

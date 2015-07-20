@@ -975,9 +975,13 @@ byte modexgetPixel(page_t *page, int x, int y)
 void modexhlin(page_t *page, word xl, word xh, word y, word color)
 {
 	word x;
+	word yy=0;
 
 	for(x=0;x<xh*4;x+=4)
-	modexClearRegion(page, x+xl, y, 4, 4, color);
+	{
+		if(x+4>=SCREEN_WIDTH-1){ x=0; yy+=4; }
+		modexClearRegion(page, x+xl, y+yy, 4, 4, color);
+	}
 	//modexputPixel(page, x+xl, y, color);
 }
 
