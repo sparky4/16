@@ -143,7 +143,7 @@ unsigned MML_SetupEMS(mminfo_t *mm)
 	union REGS CPURegs;
 
 	unsigned int EMSVer = 0;
-	byte	EMS_status;
+	//byte	EMS_status;
 	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
 	totalEMSpages = freeEMSpages = EMSpageframe = EMSpagesmapped = 0;
 
@@ -152,7 +152,7 @@ unsigned MML_SetupEMS(mminfo_t *mm)
 		mov	ah,EMS_STATUS
 		int	EMS_INT						// make sure EMS hardware is present
 		or	ah,ah
-		mov	[EMS_status],ah
+		//mov	[EMS_status],ah
 		jnz	error
 
 		mov	ah,EMS_VERSION
@@ -863,7 +863,7 @@ void MM_FreePtr(memptr *baseptr, mminfo_t *mm)
 
 	if(!scan)
 	{
-		printf("MM_FreePtr: Block not found!");
+		printf("MM_FreePtr: Block not found!\n");
 		return;
 	}
 
@@ -1194,7 +1194,7 @@ void MM_DumpData(mminfo_t *mm)
 	free (mm->nearheap);
 	dumpfile = fopen ("mmdump.txt","w");
 	if (!dumpfile){
-		printf("MM_DumpData: Couldn't open MMDUMP.TXT!");
+		printf("MM_DumpData: Couldn't open MMDUMP.TXT!\n");
 		return;
 	}
 
@@ -1235,7 +1235,7 @@ void MM_DumpData(mminfo_t *mm)
 	} while (lowest != 0xffff);
 
 	fclose (dumpfile);
-	printf("MMDUMP.TXT created.");
+	printf("MMDUMP.TXT created.\n");
 }
 
 //==========================================================================
