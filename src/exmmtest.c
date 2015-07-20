@@ -42,8 +42,8 @@ main(int argc, char *argv[])
 
 	if(argv[1]) bakapee = argv[1];
 	else bakapee = "data/koishi~~.pcx";
-	if(argv[2])
-		#define FILEINIT
+	//if(argv[2])
+	//	#define FILEINIT
 
 	textInit();
 
@@ -57,8 +57,10 @@ main(int argc, char *argv[])
 	printf("done!\n");
 	printf("&main()=%Fp\n", *argv[0]);
 #ifdef FILEINIT
+	printf("read\n");
 	if(CA_ReadFile(bakapee, &bigbuffer, &mm/*, &mmi*/))
 #else
+	printf("load\n");
 	if(CA_LoadFile(bakapee, &bigbuffer, &mm, &mmi))
 #endif
 		baka=1;
