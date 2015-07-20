@@ -695,6 +695,7 @@ emsskip:
 	if(MML_CheckForXMS(mm))
 	{
 		printf("XMS!\n");
+		//====needs work!
 		//MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
 	}
 
@@ -728,8 +729,6 @@ void MM_Shutdown(mminfo_t *mm)
 	printf("far freed\n");
 	free(mm->nearheap);
 	printf("near freed\n");
-	//hfree(mm->hugeheap);
-	//printf("huge freed\n");
 	if(MML_CheckForEMS()){ MML_ShutdownEMS(mm); printf("EMS freed\n"); }
 	if(MML_CheckForXMS(mm)){ MML_ShutdownXMS(mm); printf("XMS freed\n"); }
 }
@@ -864,7 +863,7 @@ void MM_FreePtr(memptr *baseptr, mminfo_t *mm)
 
 	if(!scan)
 	{
-		printf("MM_FreePtr: Block not found!");
+		printf("MM_FreePtr: Block not found!\n");
 		return;
 	}
 
@@ -901,7 +900,7 @@ void MM_SetPurge(memptr *baseptr, int purge, mminfo_t *mm)
 			mm->mmrover = mm->mmhead;
 		else if(mm->mmrover == start)
 		{
-			printf("MM_SetPurge: Block not found!");
+			printf("MM_SetPurge: Block not found!\n");
 			return;
 		}
 
