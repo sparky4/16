@@ -1167,8 +1167,8 @@ void MM_DumpData(mminfo_t *mm)
 {
 	mmblocktype far *scan,far *best;
 	long	lowest,oldlowest;
-	unsigned	owner;
-	char	lock,purge;
+	word	owner;
+	byte	lock,purge;
 	FILE	*dumpfile;
 
 
@@ -1188,7 +1188,7 @@ void MM_DumpData(mminfo_t *mm)
 		scan = mm->mmhead;
 		while (scan)
 		{
-			owner = (unsigned)scan->useptr;
+			owner = (word)scan->useptr;
 
 			if (owner && owner<lowest && owner > oldlowest)
 			{
@@ -1210,7 +1210,7 @@ void MM_DumpData(mminfo_t *mm)
 			else
 				lock = '-';
 			fprintf (dumpfile,"0x%p (%c%c) = %u\n"
-			,(unsigned)lowest,lock,purge,best->length);
+			,(word)lowest,lock,purge,best->length);
 		}
 
 	} while (lowest != 0xffff);
