@@ -143,7 +143,7 @@ unsigned MML_SetupEMS(mminfo_t *mm)
 	union REGS CPURegs;
 
 	unsigned int EMSVer = 0;
-	byte	EMS_status;
+	byte	EMSstatus;
 	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
 	totalEMSpages = freeEMSpages = EMSpageframe = EMSpagesmapped = 0;
 
@@ -152,7 +152,7 @@ unsigned MML_SetupEMS(mminfo_t *mm)
 		mov	ah,EMS_STATUS
 		int	EMS_INT						// make sure EMS hardware is present
 		or	ah,ah
-		mov	[EMS_status],ah
+		//mov	[EMSstatus],ah
 		jnz	error
 
 		mov	ah,EMS_VERSION
@@ -219,6 +219,7 @@ End:
 	mm->EMSpagesmapped=EMSpagesmapped;
 	mm->EMShandle=EMShandle;
 	mm->EMSVer=EMSVer;
+	//mm->EMSstatus=EMSstatus;
 	return 0;
 }
 
@@ -1315,11 +1316,12 @@ dword MM_TotalFree(mminfo_t *mm)
 
 void MM_Report(page_t *page, mminfo_t *mm, mminfotype *mmi)
 {
+	printf("\n");
 	if(MML_CheckForEMS())
 	{
-		printf("EMM v%x.%x available\n", mm->EMSVer>>4,mm->EMSVer&0x0F);
+		printf("Expanded memory manager present. EMM v%x.%x available\n", mm->EMSVer>>4,mm->EMSVer&0x0F);
 		printf("totalEMSpages=%u\n", mm->totalEMSpages);
-		printf("freeEMSpages=%u\n", mm->freeEMSpages);
+		printf("Page frame @0x%04x\n", mm->freeEMSpages);
 		printf("EMSpageframe=%x\n", mm->EMSpageframe);
 	}
 	if(MML_CheckForXMS(mm)) printf("XMSaddr=%Fp\n", *XMSaddr);

@@ -67,10 +67,10 @@ main(int argc, char *argv[])
 	modexEnter();
 	modexShowPage(&screen);
 	MM_ShowMemory(&screen, &mm);
-	MM_DumpData(&mm);
 	getch();
-	MM_Report(&screen, &mm, &mmi);
+	MM_DumpData(&mm);
 	modexLeave();
+	MM_Report(&screen, &mm, &mmi);
 	printf("stop!\n");
 	MM_FreePtr(&bigbuffer, &mm);
 	MM_Shutdown(&mm);
