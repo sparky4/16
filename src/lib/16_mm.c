@@ -1111,26 +1111,37 @@ CA_OpenDebug ();
 			return;
 		}
 		end = scan->start+scan->length-1;
+		chy = scan->start/320;
+		chx = scan->start%320;
 				//modexhlin(page, scan->start, (unsigned)end, chy, color);
 				//for(chx=scan->start;chx+4>=(word)end;chx+=4)
 				//{
-					chx=scan->start;
 					modexClearRegion(page, chx, chy, 4, 4, color);
 				//}
 
 //++++		VW_Hlin(scan->start,(unsigned)end,0,color);
 
 //++++		VW_Plot(scan->start,0,15);
-				//modexprint(page, scan->start, chy, 1, 47, 0, ((byte *)scan->start));
-				modexClearRegion(page, scan->start, 0, 4, 4, 15);
+				modexClearRegion(page, chx, chy, 4, 4, 15);
 		if(scan->next->start > end+1)
 //++++			VW_Hlin(end+1,scan->next->start,0,0);	// black = free
 			//for(chx=scan->next->start;chx+4>=(word)end+1;chx+=4)
 			//{
-				chx=scan->next->start;
+				chx+=scan->next->start;
 				modexClearRegion(page, chx, chy, 4, 4, 2);
 			//}
 					//modexhlin(page, end+1,scan->next->start, chy, 0);
+
+/*
+		end = scan->length-1;
+		y = scan->start/320;
+		x = scan->start%320;
+		VW_Hlin(x,x+end,y,color);
+		VW_Plot(x,y,15);
+		if (scan->next && scan->next->start > end+1)
+			VW_Hlin(x+end+1,x+(scan->next->start-scan->start),y,0);	// black = free
+
+*/
 
 //****#if 0
 printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
