@@ -1075,10 +1075,10 @@ void MM_SortMem(mminfo_t *mm)
 void MM_ShowMemory(page_t *page, mminfo_t *mm)
 {
 	mmblocktype huge *scan;
-	unsigned color,temp;
+	word color,temp;
 	long	end,owner;
 	word chx,chy;
-	char    scratch[160],str[16];
+	byte    scratch[160],str[16];
 
 //****	VW_SetDefaultColors();
 //****	VW_SetLineWidth(40);
@@ -1112,15 +1112,24 @@ CA_OpenDebug ();
 		}
 		end = scan->start+scan->length-1;
 				//modexhlin(page, scan->start, (unsigned)end, chy, color);
-				modexClearRegion(page, scan->start, (unsigned)end, 4, 4, color);
+				//for(chx=scan->start;chx+4>=(word)end;chx+=4)
+				//{
+					chx=scan->start;
+					modexClearRegion(page, chx, chy, 4, 4, color);
+				//}
+
 //++++		VW_Hlin(scan->start,(unsigned)end,0,color);
 
 //++++		VW_Plot(scan->start,0,15);
 				//modexprint(page, scan->start, chy, 1, 47, 0, ((byte *)scan->start));
-				modexClearRegion(page, scan->start, chy, 4, 4, 15);
+				modexClearRegion(page, scan->start, 0, 4, 4, 15);
 		if(scan->next->start > end+1)
 //++++			VW_Hlin(end+1,scan->next->start,0,0);	// black = free
-					modexClearRegion(page, scan->next->start, end+1, 4, 4, 2);
+			//for(chx=scan->next->start;chx+4>=(word)end+1;chx+=4)
+			//{
+				chx=scan->next->start;
+				modexClearRegion(page, chx, chy, 4, 4, 2);
+			//}
 					//modexhlin(page, end+1,scan->next->start, chy, 0);
 
 //****#if 0
