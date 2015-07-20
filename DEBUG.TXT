@@ -1,6 +1,6 @@
-Seg:0	Size:175904	Owner:0x8370
-Seg:2af2	Size:4096	Owner:0xfb20
-Seg:2bf2	Size:31344	Owner:0x1c58
-Seg:3901	Size:544	Owner:0xe90
-Seg:4752	Size:625376	Owner:0xf476
-Seg:e000	Size:131056	Owner:0x76ff
+Seg:0	Size:175984	Owner:0x84a
+Seg:2af7	Size:4096	Owner:0xfb20
+Seg:2bf7	Size:31344	Owner:0x1c58
+Seg:3926	Size:990512	Owner:0x5657
+Seg:3908	Size:683904	Owner:0x468b
+Seg:e000	Size:131056	Owner:0x80b8
