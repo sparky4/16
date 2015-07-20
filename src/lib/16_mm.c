@@ -273,7 +273,7 @@ unsigned MM_MapEMS(mminfo_t *mm)
 	union REGS CPURegs;
 	EMShandle=mm->EMShandle;
 
-	for (i=0;i<4/*mm->EMSpagesmapped*/;i++)
+	for (i=0;i<mm->EMSpagesmapped;i++)
 	{
 		__asm
 		{
@@ -303,33 +303,33 @@ unsigned MM_MapEMS(mminfo_t *mm)
 	return 0;
 }
 
-/*
-SUB EMS.MapXPages (PhysicalStart, LogicalStart, NumPages, Handle)
+void MM_MapXEMS(mminfo_t *mm)
+{
+	union REGS CPURegs;
 
-  'Maps up to 4 logical EMS pages to physical pages in the page frame, where:
-  '
-  'PhysicalStart = Physical page first logical page is mapped to
-  'LogicalStart  = First logical page to map
-  'NumPages      = Number of pages to map (1 to 4)
-  'Handle        = EMS handle logical pages are allocated to
+//SUB EMS.MapXPages(PhysicalStart, LogicalStart, NumPages, Handle)
 
-  'Create a buffer containing the page information
-  FOR x = 0 TO NumPages - 1
+	//Maps up to 4 logical EMS pages to physical pages in the page frame, where:
+	//
+	//PhysicalStart = Physical page first logical page is mapped to
+	//LogicalStart  = First logical page to map
+	//NumPages      = Number of pages to map (1 to 4)
+	//Handle        = EMS handle logical pages are allocated to
+
+  ///Create a buffer containing the page information
+  /*FOR x = 0 TO NumPages - 1
     MapInfo$ = MapInfo$ + MKI$(LogicalStart + x) + MKI$(PhysicalStart + x)
   NEXT
 
-  Regs.ax = &H5000                           'Map the pages in the buffer
-  Regs.cx = NumPages                         'to the pageframe
-  Regs.dx = Handle
-  Regs.ds = VARSEG(MapInfo$)
-  Regs.si = SADD(MapInfo$)
-  InterruptX &H67, Regs, Regs
-  EMS.Error = (Regs.ax AND &HFF00&) \ &H100  'Store the status code
+	Regs.ax = &H5000                           //Map the pages in the buffer
+	Regs.cx = NumPages                         //to the pageframe
+	Regs.dx = Handle
+	Regs.ds = VARSEG(MapInfo$)
+	Regs.si = SADD(MapInfo$)
+	InterruptX &H67, Regs, Regs
+	EMS.Error = (Regs.ax AND &HFF00&) \ &H100  //Store the status code*/
 
-END SUB
-*/
-void MM_MapXEMS(mminfo_t *mm)
-{
+//END SUB
 
 }
 
@@ -596,7 +596,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 
 	if(mm->mmstarted)
 		MM_Shutdown(mm);
-
+printf(".\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	mm->mmstarted = true;
 	mm->bombonerror = true;
 //
@@ -609,7 +609,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 		mm->mmblocks[i].next = &(mm->mmblocks[i+1]);
 	}
 	mm->mmblocks[i].next = NULL;
-
+printf(".\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 //
 // locked block of all memory until we punch out free space
 //
@@ -620,7 +620,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	mm->mmnew->attributes = LOCKBIT;
 	mm->mmnew->next = NULL;
 	mm->mmrover = mm->mmhead;
-
+printf(".\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 //	farlen=_bios_memsize()*1024;
 
 //
@@ -636,7 +636,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->nearheap = length;
-	//printf("near heap ok!\n");
+	printf("near heap ok!\n");
 
 //
 // get all available far conventional memory segments
@@ -653,7 +653,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->farheap = length;
 	mmi->mainmem = mmi->nearheap + mmi->farheap;
-	//printf("far heap ok!\n");
+	printf("far heap ok!\n");
 
 
 //
@@ -1319,9 +1319,10 @@ void MM_Report(page_t *page, mminfo_t *mm, mminfotype *mmi)
 	if(MML_CheckForEMS())
 	{
 		printf("Expanded memory manager present. EMM v%x.%x available\n", mm->EMSVer>>4,mm->EMSVer&0x0F);
-		printf("totalEMSpages=%u\n", mm->totalEMSpages);
-		printf("Page frame @0x%04x\n", mm->freeEMSpages);
-		printf("EMSpageframe=%x\n", mm->EMSpageframe);
+		printf("totalEMSpages=%u	", mm->totalEMSpages);
+		printf("freeEMSpages=%u\n", mm->freeEMSpages);
+		printf("Page frame @0x%04x\n", mm->EMSpageframe);
+		//printf("EMSpageframe=%x\n", );
 	}
 	if(MML_CheckForXMS(mm)) printf("XMSaddr=%Fp\n", *XMSaddr);
 	printf("near=%lu\n", mmi->nearheap);
