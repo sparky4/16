@@ -143,7 +143,7 @@ unsigned MML_SetupEMS(mminfo_t *mm)
 	union REGS CPURegs;
 
 	unsigned int EMSVer = 0;
-	byte	EMSstatus;
+	//byte	EMSstatus;
 	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
 	totalEMSpages = freeEMSpages = EMSpageframe = EMSpagesmapped = 0;
 
