@@ -143,7 +143,7 @@ unsigned MML_SetupEMS(mminfo_t *mm)
 	union REGS CPURegs;
 
 	unsigned int EMSVer = 0;
-	//byte	EMSstatus;
+	byte	EMS_status;
 	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
 	totalEMSpages = freeEMSpages = EMSpageframe = EMSpagesmapped = 0;
 
@@ -152,7 +152,7 @@ unsigned MML_SetupEMS(mminfo_t *mm)
 		mov	ah,EMS_STATUS
 		int	EMS_INT						// make sure EMS hardware is present
 		or	ah,ah
-		//mov	[EMSstatus],ah
+		mov	[EMS_status],ah
 		jnz	error
 
 		mov	ah,EMS_VERSION
@@ -219,7 +219,6 @@ End:
 	mm->EMSpagesmapped=EMSpagesmapped;
 	mm->EMShandle=EMShandle;
 	mm->EMSVer=EMSVer;
-	//mm->EMSstatus=EMSstatus;
 	return 0;
 }
 
@@ -273,7 +272,7 @@ unsigned MM_MapEMS(mminfo_t *mm)
 	union REGS CPURegs;
 	EMShandle=mm->EMShandle;
 
-	for (i=0;i<mm->EMSpagesmapped;i++)
+	for (i=0;i<4/*mm->EMSpagesmapped*/;i++)
 	{
 		__asm
 		{
@@ -303,33 +302,33 @@ unsigned MM_MapEMS(mminfo_t *mm)
 	return 0;
 }
 
-void MM_MapXEMS(mminfo_t *mm)
-{
-	union REGS CPURegs;
+/*
+SUB EMS.MapXPages (PhysicalStart, LogicalStart, NumPages, Handle)
 
-//SUB EMS.MapXPages(PhysicalStart, LogicalStart, NumPages, Handle)
+  'Maps up to 4 logical EMS pages to physical pages in the page frame, where:
+  '
+  'PhysicalStart = Physical page first logical page is mapped to
+  'LogicalStart  = First logical page to map
+  'NumPages      = Number of pages to map (1 to 4)
+  'Handle        = EMS handle logical pages are allocated to
 
-	//Maps up to 4 logical EMS pages to physical pages in the page frame, where:
-	//
-	//PhysicalStart = Physical page first logical page is mapped to
-	//LogicalStart  = First logical page to map
-	//NumPages      = Number of pages to map (1 to 4)
-	//Handle        = EMS handle logical pages are allocated to
-
-  ///Create a buffer containing the page information
-  /*FOR x = 0 TO NumPages - 1
+  'Create a buffer containing the page information
+  FOR x = 0 TO NumPages - 1
     MapInfo$ = MapInfo$ + MKI$(LogicalStart + x) + MKI$(PhysicalStart + x)
   NEXT
 
-	Regs.ax = &H5000                           //Map the pages in the buffer
-	Regs.cx = NumPages                         //to the pageframe
-	Regs.dx = Handle
-	Regs.ds = VARSEG(MapInfo$)
-	Regs.si = SADD(MapInfo$)
-	InterruptX &H67, Regs, Regs
-	EMS.Error = (Regs.ax AND &HFF00&) \ &H100  //Store the status code*/
+  Regs.ax = &H5000                           'Map the pages in the buffer
+  Regs.cx = NumPages                         'to the pageframe
+  Regs.dx = Handle
+  Regs.ds = VARSEG(MapInfo$)
+  Regs.si = SADD(MapInfo$)
+  InterruptX &H67, Regs, Regs
+  EMS.Error = (Regs.ax AND &HFF00&) \ &H100  'Store the status code
 
-//END SUB
+END SUB
+*/
+void MM_MapXEMS(mminfo_t *mm)
+{
 
 }
 
@@ -596,7 +595,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 
 	if(mm->mmstarted)
 		MM_Shutdown(mm);
-printf(".\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+
 	mm->mmstarted = true;
 	mm->bombonerror = true;
 //
@@ -609,7 +608,7 @@ printf(".\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\
 		mm->mmblocks[i].next = &(mm->mmblocks[i+1]);
 	}
 	mm->mmblocks[i].next = NULL;
-printf(".\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+
 //
 // locked block of all memory until we punch out free space
 //
@@ -620,7 +619,7 @@ printf(".\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\
 	mm->mmnew->attributes = LOCKBIT;
 	mm->mmnew->next = NULL;
 	mm->mmrover = mm->mmhead;
-printf(".\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+
 //	farlen=_bios_memsize()*1024;
 
 //
@@ -636,7 +635,7 @@ printf(".\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->nearheap = length;
-	printf("near heap ok!\n");
+	//printf("near heap ok!\n");
 
 //
 // get all available far conventional memory segments
@@ -653,7 +652,7 @@ printf(".\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->farheap = length;
 	mmi->mainmem = mmi->nearheap + mmi->farheap;
-	printf("far heap ok!\n");
+	//printf("far heap ok!\n");
 
 
 //
@@ -695,7 +694,6 @@ emsskip:
 	if(MML_CheckForXMS(mm))
 	{
 		printf("XMS!\n");
-		//====needs work!
 		//MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
 	}
 
@@ -729,6 +727,8 @@ void MM_Shutdown(mminfo_t *mm)
 	printf("far freed\n");
 	free(mm->nearheap);
 	printf("near freed\n");
+	//hfree(mm->hugeheap);
+	//printf("huge freed\n");
 	if(MML_CheckForEMS()){ MML_ShutdownEMS(mm); printf("EMS freed\n"); }
 	if(MML_CheckForXMS(mm)){ MML_ShutdownXMS(mm); printf("XMS freed\n"); }
 }
@@ -863,7 +863,7 @@ void MM_FreePtr(memptr *baseptr, mminfo_t *mm)
 
 	if(!scan)
 	{
-		printf("MM_FreePtr: Block not found!\n");
+		printf("MM_FreePtr: Block not found!");
 		return;
 	}
 
@@ -900,7 +900,7 @@ void MM_SetPurge(memptr *baseptr, int purge, mminfo_t *mm)
 			mm->mmrover = mm->mmhead;
 		else if(mm->mmrover == start)
 		{
-			printf("MM_SetPurge: Block not found!\n");
+			printf("MM_SetPurge: Block not found!");
 			return;
 		}
 
@@ -1140,7 +1140,6 @@ CA_OpenDebug ();
 		VW_Plot(x,y,15);
 		if (scan->next && scan->next->start > end+1)
 			VW_Hlin(x+end+1,x+(scan->next->start-scan->start),y,0);	// black = free
-
 */
 
 //****#if 0
@@ -1315,14 +1314,12 @@ dword MM_TotalFree(mminfo_t *mm)
 
 void MM_Report(page_t *page, mminfo_t *mm, mminfotype *mmi)
 {
-	printf("\n");
 	if(MML_CheckForEMS())
 	{
-		printf("Expanded memory manager present. EMM v%x.%x available\n", mm->EMSVer>>4,mm->EMSVer&0x0F);
-		printf("totalEMSpages=%u	", mm->totalEMSpages);
+		printf("EMM v%x.%x available\n", mm->EMSVer>>4,mm->EMSVer&0x0F);
+		printf("totalEMSpages=%u\n", mm->totalEMSpages);
 		printf("freeEMSpages=%u\n", mm->freeEMSpages);
-		printf("Page frame @0x%04x\n", mm->EMSpageframe);
-		//printf("EMSpageframe=%x\n", );
+		printf("EMSpageframe=%x\n", mm->EMSpageframe);
 	}
 	if(MML_CheckForXMS(mm)) printf("XMSaddr=%Fp\n", *XMSaddr);
 	printf("near=%lu\n", mmi->nearheap);

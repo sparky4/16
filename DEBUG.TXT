@@ -1,5 +1,5 @@
-Seg:0	Size:140000	Owner:0xb80b
-Seg:222e	Size:4096	Owner:0xfba0
-Seg:3035	Size:1028480	Owner:0x5040
-Seg:3974	Size:682176	Owner:0xeb70
-Seg:e000	Size:131056	Owner:0x1e8d
+Seg:0	Size:177392	Owner:0x7410
+Seg:2b4f	Size:4096	Owner:0xfba0
+Seg:3956	Size:544	Owner:0x30b8
+Seg:479f	Size:624144	Owner:0xbcfe
+Seg:e000	Size:131056	Owner:0xadeb

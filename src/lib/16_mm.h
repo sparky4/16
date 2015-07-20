@@ -35,7 +35,6 @@
 #define OUT_OF_MEM_MSG	"\npee\n"
 #endif
 
-//#define VIDMEMP2			12800	// size of 2nd video memory blob
 
 #define SAVENEARHEAP	0x200		// space to leave in data segment
 #define SAVEFARHEAP		0			// space to leave in far heap
@@ -135,7 +134,7 @@ typedef struct
 	boolean		mmstarted, bombonerror, mmerror;
 	void huge	*farheap;
 	void		*nearheap;
-	//byte		EMSstatus;
+	byte		EMS_status;
 	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
 	unsigned int EMSVer;
 	word numUMBs,UMBbase[MAXUMBS];
