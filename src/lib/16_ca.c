@@ -175,8 +175,8 @@ long GRFILEPOS(int c)
 */
 void CA_OpenDebug(void)
 {
-	unlink("DEBUG.TXT");
-	debughandle = open("DEBUG.TXT", O_CREAT | O_WRONLY | O_TEXT);
+	unlink("debug.txt");
+	debughandle = open("debug.txt", O_CREAT | O_WRONLY | O_TEXT);
 }
 
 void CA_CloseDebug(void)
@@ -223,7 +223,7 @@ boolean CA_FarRead(int handle, byte huge *dest, dword length, mminfo_t *mm)
 	//if(mm->EMSVer<0x40)
 	if(length>0xfffflu)
 	{
-		printf("pee\n");
+		printf("File is a fat bakapee\n");
 		segm=(length%0xfffflu)-1;
 		fat=segm*0xfffflu;
 		length-=fat;
@@ -279,7 +279,7 @@ boolean CA_FarWrite(int handle, byte huge *source, dword length, mminfo_t *mm)
 	//if(mm->EMSVer<0x40)
 	if(length>0xfffflu)
 	{
-		printf("pee\n");
+		printf("File is a fat bakapee\n");
 		segm=(length%0xfffflu)-1;
 		fat=segm*0xfffflu;
 		length-=fat;
