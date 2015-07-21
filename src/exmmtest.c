@@ -45,7 +45,7 @@ main(int argc, char *argv[])
 	if(argv[1]) bakapee = argv[1];
 	else bakapee = "data/koishi~~.pcx";
 	//if(argv[2])
-		#define FILEINIT
+	//	#define FILEINIT
 
 	textInit();
 
