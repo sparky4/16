@@ -36,8 +36,8 @@
 #endif
 
 
-#define SAVENEARHEAP	0x4000		// space to leave in data segment
-#define SAVEFARHEAP	0x4000			// space to leave in far heap
+#define SAVENEARHEAP	0x200		// space to leave in data segment
+#define SAVEFARHEAP	0//x4000			// space to leave in far heap
 
 #define	BUFFERSIZE		0x1000		// miscelanious, allways available buffer
 
@@ -135,7 +135,7 @@ typedef struct
 	memptr bufferseg;
 	boolean		mmstarted, bombonerror, mmerror;
 	void huge	*farheap;
-	void		*nearheap;
+	void 	*nearheap;
 	//byte		EMS_status;
 	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
 	unsigned int EMSVer;

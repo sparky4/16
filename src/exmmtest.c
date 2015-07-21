@@ -26,7 +26,8 @@
 #include "src/lib/16_mm.h"
 #include "src/lib/modex16.h"
 
-#define FILERL
+//#define FILERL
+//#define FILEINIT
 
 void
 main(int argc, char *argv[])
@@ -38,25 +39,32 @@ main(int argc, char *argv[])
 	word baka;
 	page_t screen;
 
-	bakapee = malloc(64);
+	bakapee = _nmalloc(64);
 //	memset(bakapee, 0, 64);
 	mm.mmstarted=0;
 
 	if(argv[1]) bakapee = argv[1];
 	else bakapee = "data/koishi~~.pcx";
-	//if(argv[2])
-	//	#define FILEINIT
 
 	textInit();
 
 	/* setup camera and screen~ */
-	screen = modexDefaultPage();
+	//bug!!!
+	/*screen = modexDefaultPage();
 	screen.width += (16*2);
-	screen.height += (16*2);
+	screen.height += (16*2);*/
 
-	printf("		start!\n");
+	printf("&main()=%Fp	start MM\n", *argv[0]);
 	MM_Startup(&mm, &mmi);
 	printf("		done!\n");
+	/*if(FP_SEG(*argv[0])==0)
+	{
+		MM_Report(&screen, &mm, &mmi);
+		MM_Shutdown(&mm);
+		printf("&main()=%Fp\n", *argv[0]);
+		printf("&main() == %u\n", FP_SEG(*argv[0]));
+		exit(-5);
+	}*/
 	printf("&main()=%Fp\n", *argv[0]);
 #ifdef FILERL
 #ifdef FILEINIT
@@ -80,7 +88,7 @@ main(int argc, char *argv[])
 	modexEnter();
 	modexShowPage(&screen);
 	MM_ShowMemory(&screen, &mm);
-	//getch();
+	getch();
 	MM_DumpData(&mm);
 	modexLeave();
 	MM_Report(&screen, &mm, &mmi);

@@ -662,8 +662,6 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	mm->mmnew->next = NULL;
 	mm->mmrover = mm->mmhead;
 
-//	farlen=_bios_memsize()*1024;
-
 //
 // get all available near conventional memory segments
 //
@@ -671,14 +669,28 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //----	length=coreleft();
 	_nheapgrow();
 	length=_memavl();
-	start = (void huge *)(mm->nearheap = malloc(length));
+	start = (void huge *)(mm->nearheap = _nmalloc(length));
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;
 	seglength = length / 16;			// now in paragraphs
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->nearheap = length;
-	printf("		near heap ok!\n");
+	/*switch( _nheapchk() ) {
+		case _HEAPOK:
+			printf( "OK - nearheap is good\n" );
+		break;
+		case _HEAPEMPTY:
+			printf( "OK - nearheap is empty\n" );
+		break;
+		case _HEAPBADBEGIN:
+			printf( "ERROR - nearheap is damaged\n" );
+		break;
+		case _HEAPBADNODE:
+			printf( "ERROR - bad node in nearheap\n" );
+		break;
+	}*/
+//	printf("		near heap ok!\n");
 
 //
 // get all available far conventional memory segments
@@ -686,7 +698,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //----	length=farcoreleft();
 	printf("		farheap making!\n");
 	_fheapgrow();
-	length=_memavl();
+	length=0xffffUL*4UL;//_memavl();
 	start = mm->farheap = halloc(length, sizeof(byte));
 	//start = mm->farheap = _fmalloc(length);
 	length -= 16-(FP_OFF(start)&15);
@@ -696,33 +708,49 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->farheap = length;
 	mmi->mainmem = mmi->nearheap + mmi->farheap;
-	printf("		far heap ok!\n");
-
+	/*switch( _fheapchk() ) {
+		case _HEAPOK:
+			printf( "OK - farheap is good\n" );
+		break;
+		case _HEAPEMPTY:
+			printf( "OK - farheap is empty\n" );
+		break;
+		case _HEAPBADBEGIN:
+			printf( "ERROR - farheap is damaged\n" );
+		break;
+		case _HEAPBADNODE:
+			printf( "ERROR - bad node in farheap\n" );
+		break;
+	}*/
+	//printf("		far heap ok!\n");
 
 //
 // detect EMS and allocate up to 64K at page frame
 //
-	printf("		EMS1\n\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+printf("		EMS1\n");
+printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	mmi->EMSmem = 0;
 	for(i = 1;i < __argc;i++)
 	{
 		if(US_CheckParm(__argv[i],ParmStringsexmm) == 0)
 			goto emsskip;				// param NOEMS
 	}
-	printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	if(MML_CheckForEMS())
 	{
 printf("		EMS2\n");
+printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 		MML_SetupEMS(mm);					// allocate space
 printf("		EMS3\n");
-		printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 		//TODO: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!
 		MML_UseSpace(mm->EMSpageframe,(MAPPAGES)*0x4000lu, mm);
+printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 printf("		EMS4\n");
-		//if(mm->EMSVer<0x40)
+		if(mm->EMSVer<0x40)
 			MM_MapEMS(mm, mmi);					// map in used pages
-		//else
-		//	MM_MapXEMS(mm, mmi);					// map in used pages
+		else
+			MM_MapXEMS(mm, mmi);					// map in used pages
 	}
 
 //
@@ -735,11 +763,12 @@ emsskip:
 		if(US_CheckParm(__argv[i],ParmStringsexmm) == 0)
 			goto xmsskip;				// param NOXMS
 	}
-	printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	if(MML_CheckForXMS(mm))
 	{
-		printf("		XMS!\n");
-		//MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
+printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+printf("		XMS!\n");
+		//++++		MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
 	}
 
 //
