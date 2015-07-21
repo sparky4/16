@@ -137,7 +137,7 @@ boolean MML_CheckForEMS(void)
 
 byte MML_SetupEMS(mminfo_t *mm)
 {
-	char	str[80];//,str2[10];
+	byte	str[160];
 	byte	err;
 	boolean errorflag=false;
 
@@ -207,9 +207,9 @@ End:
 	if(errorflag==true)
 	{
 		//err = CPURegs.h.ah;
-		strcpy(str,"MM_SetupEMS: EMS error");
+		strcpy(str,"MM_SetupEMS: EMS error ");
 		//itoa(err,str2,16);
-		strcat(str,MM_EMSerr(err));
+		MM_EMSerr(&str, err);
 		printf("%s\n",str);
 		return err;
 	}
@@ -265,7 +265,7 @@ void MML_ShutdownEMS(mminfo_t *mm)
 
 byte MM_MapEMS(mminfo_t *mm, mminfotype *mmi)
 {
-	char	str[80];
+	byte	str[160];
 	unsigned	EMShandle;
 	byte err;
 	boolean	errorflag=false;
@@ -292,9 +292,9 @@ byte MM_MapEMS(mminfo_t *mm, mminfotype *mmi)
 		if(errorflag==true)
 		{
 			//err = CPURegs.h.ah;
-			strcpy(str,"MM_MapEMS: EMS error");
+			strcpy(str,"MM_MapEMS: EMS error ");
 			//itoa(err,str2,16);
-			strcat(str,MM_EMSerr(err));
+			MM_EMSerr(str, err);
 			printf("%s\n",str);
 			//printf("FACK! %x\n", err);
 			return err;
@@ -329,7 +329,7 @@ byte MM_MapXEMS(mminfo_t *mm, mminfotype *mmi)
 //	EMS.Error = (Regs.ax AND 0xFF00&) \ 0x100  //Store the status code
 
 //END SUB
-	char	str[80];
+	byte	str[160];
 	byte err;
 	word	EMShandle;
 	boolean	errorflag=false;
@@ -360,9 +360,9 @@ byte MM_MapXEMS(mminfo_t *mm, mminfotype *mmi)
 		{
 			//err = CPURegs.h.ah;
 			//strcpy(str,"MM_MapXEMS: EMS error 0x");
-			strcpy(str,"MM_MapXEMS: EMS error");
+			strcpy(str,"MM_MapXEMS: EMS error ");
 			//itoa(err,str2,16);
-			strcat(str,MM_EMSerr(err));
+			MM_EMSerr(&str, err);
 			printf("%s\n",str);
 			//printf("%s%x\n",str, err);
 			//printf("FACK! %x\n", err);
@@ -642,6 +642,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 // set up the linked list (everything in the free list;
 //
+	printf("		linked list making!\n");
 	mm->mmhead = NULL;
 	mm->mmfree = &(mm->mmblocks[0]);
 	for(i=0;i<MAXBLOCKS-1;i++)
@@ -653,6 +654,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 // locked block of all memory until we punch out free space
 //
+	printf("		newblock making!\n");
 	MM_GetNewBlock(mm);
 	mm->mmhead = mm->mmnew;				// this will allways be the first node
 	mm->mmnew->start = 0;
@@ -666,6 +668,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 // get all available near conventional memory segments
 //
+	printf("		nearheap making!\n");
 //----	length=coreleft();
 	_nheapgrow();
 	length=_memavl();
@@ -676,12 +679,13 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->nearheap = length;
-	//printf("near heap ok!\n");
+	printf("		near heap ok!\n");
 
 //
 // get all available far conventional memory segments
 //
 //----	length=farcoreleft();
+	printf("		farheap making!\n");
 	_fheapgrow();
 	length=_memavl();
 	start = mm->farheap = halloc(length, sizeof(byte));
@@ -693,13 +697,13 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->farheap = length;
 	mmi->mainmem = mmi->nearheap + mmi->farheap;
-	//printf("far heap ok!\n");
+	printf("		far heap ok!\n");
 
 
 //
 // detect EMS and allocate up to 64K at page frame
 //
-	printf("EMS1\n\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+	printf("		EMS1\n\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	mmi->EMSmem = 0;
 	for(i = 1;i < __argc;i++)
 	{
@@ -709,13 +713,13 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	if(MML_CheckForEMS())
 	{
-printf("EMS2\n");
+printf("		EMS2\n");
 		MML_SetupEMS(mm);					// allocate space
-printf("EMS3\n");
+printf("		EMS3\n");
 		printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 		//TODO: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!
 		MML_UseSpace(mm->EMSpageframe,(MAPPAGES)*0x4000lu, mm);
-printf("EMS4\n");
+printf("		EMS4\n");
 		if(mm->EMSVer<0x40)
 			MM_MapEMS(mm, mmi);					// map in used pages
 		else
@@ -735,7 +739,7 @@ emsskip:
 	printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	if(MML_CheckForXMS(mm))
 	{
-		printf("XMS!\n");
+		printf("		XMS!\n");
 		//MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
 	}
 
@@ -1386,89 +1390,90 @@ void MM_Report(page_t *page, mminfo_t *mm, mminfotype *mmi)
 =====================
 */
 
-byte *MM_EMSerr(byte err)
+static void MM_EMSerr(byte *stri, byte err)
 {
 	//Returns a text string describing the error code in EMS.Error.
 	switch(err)
 	{
 		case 0x0:
-			return "successful";
+			strcat(stri, "successful");
 		case 0x80:
-			return "internal error";
+			strcat(stri, "internal error");
 		case 0x81:
-			return "hardware malfunction";
+			strcat(stri, "hardware malfunction");
 		case 0x82:
-			return "busy .. retry later";
+			strcat(stri, "busy .. retry later");
 		case 0x83:
-			return "invalid handle";
+			strcat(stri, "invalid handle");
 		case 0x84:
-			return "undefined function requested by application";
+			strcat(stri, "undefined function requested by application");
 		case 0x85:
-			return "no more handles available";
+			strcat(stri, "no more handles available");
 		case 0x86:
-			return "error in save or restore of mapping context";
+			strcat(stri, "error in save or restore of mapping context");
 		case 0x87:
-			return "insufficient memory pages in system";
+			strcat(stri, "insufficient memory pages in system");
 		case 0x88:
-			return "insufficient memory pages available";
+			strcat(stri, "insufficient memory pages available");
 		case 0x89:
-			return "zero pages requested";
+			strcat(stri, "zero pages requested");
 		case 0x8A:
-			return "invalid logical page number encountered";
+			strcat(stri, "invalid logical page number encountered");
 		case 0x8B:
-			return "invalid physical page number encountered";
+			strcat(stri, "invalid physical page number encountered");
 		case 0x8C:
-			return "page-mapping hardware state save area is full";
+			strcat(stri, "page-mapping hardware state save area is full");
 		case 0x8D:
-			return "save of mapping context failed";
+			strcat(stri, "save of mapping context failed");
 		case 0x8E:
-			return "restore of mapping context failed";
+			strcat(stri, "restore of mapping context failed");
 		case 0x8F:
-			return "undefined subfunction";
+			strcat(stri, "undefined subfunction");
 		case 0x90:
-			return "undefined attribute type";
+			strcat(stri, "undefined attribute type");
 		case 0x91:
-			return "feature not supported";
+			strcat(stri, "feature not supported");
 		case 0x92:
-			return "successful, but a portion of the source region has been overwritten";
+			strcat(stri, "successful, but a portion of the source region has been overwritten");
 		case 0x93:
-			return "length of source or destination region exceeds length of region allocated to either source or destination handle";
+			strcat(stri, "length of source or destination region exceeds length of region allocated to either source or destination handle");
 		case 0x94:
-			return "conventional and expanded memory regions overlap";
+			strcat(stri, "conventional and expanded memory regions overlap");
 		case 0x95:
-			return "offset within logical page exceeds size of logical page";
+			strcat(stri, "offset within logical page exceeds size of logical page");
 		case 0x96:
-			return "region length exceeds 1 MB";
+			strcat(stri, "region length exceeds 1 MB");
 		case 0x97:
-			return "source and destination EMS regions have same handle and overlap";
+			strcat(stri, "source and destination EMS regions have same handle and overlap");
 		case 0x98:
-			return "memory source or destination type undefined";
+			strcat(stri, "memory source or destination type undefined");
 		case 0x9A:
-			return "specified alternate map register or DMA register set not supported";
+			strcat(stri, "specified alternate map register or DMA register set not supported");
 		case 0x9B:
-			return "all alternate map register or DMA register sets currently allocated";
+			strcat(stri, "all alternate map register or DMA register sets currently allocated");
 		case 0x9C:
-			return "alternate map register or DMA register sets not supported";
+			strcat(stri, "alternate map register or DMA register sets not supported");
 		case 0x9D:
-			return "undefined or unallocated alternate map register or DMA register set";
+			strcat(stri, "undefined or unallocated alternate map register or DMA register set");
 		case 0x9E:
-			return "dedicated DMA channels not supported";
+			strcat(stri, "dedicated DMA channels not supported");
 		case 0x9F:
-			return "specified dedicated DMA channel not supported";
+			strcat(stri, "specified dedicated DMA channel not supported");
 		case 0xA0:
-			return "no such handle name";
+			strcat(stri, "no such handle name");
 		case 0xA1:
-			return "a handle found had no name, or duplicate handle name";
+			strcat(stri, "a handle found had no name, or duplicate handle name");
 		case 0xA2:
-			return "attempted to wrap around 1M conventional address space";
+			strcat(stri, "attempted to wrap around 1M conventional address space");
 		case 0xA3:
-			return "source array corrupted";
+			strcat(stri, "source array corrupted");
 		case 0xA4:
-			return "operating system denied access";
+			strcat(stri, "operating system denied access");
 		default:
-			return "undefined error";
+			strcat(stri, "undefined error");
 	}
 }
+
 
 //==========================================================================
 

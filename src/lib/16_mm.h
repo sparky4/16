@@ -187,7 +187,7 @@ void MM_DumpData(mminfo_t *mm);
 dword MM_UnusedMemory(mminfo_t *mm);
 dword MM_TotalFree(mminfo_t *mm);
 void MM_Report(page_t *page, mminfo_t *mm, mminfotype *mmi);
-byte *MM_EMSerr(byte err);
+static void MM_EMSerr(byte *stri, byte err);
 void MM_BombOnError(boolean bomb, mminfo_t *mm);
 void MM_GetNewBlock(mminfo_t *mm);
 void MM_FreeBlock(mmblocktype *x, mminfo_t *mm);
