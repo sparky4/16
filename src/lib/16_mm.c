@@ -307,7 +307,7 @@ byte MM_MapEMS(mminfo_t *mm)
 	return 0;
 }
 
-void MM_MapXEMS(mminfo_t *mm)
+byte MM_MapXEMS(mminfo_t *mm)
 {
 
 //SUB EMS.MapXPages (PhysicalStart, LogicalStart, NumPages, Handle)
@@ -332,6 +332,46 @@ void MM_MapXEMS(mminfo_t *mm)
 //	EMS.Error = (Regs.ax AND &HFF00&) \ &H100  //Store the status code
 
 //END SUB
+/*
+char	str[80];//,str2[10];
+	unsigned	EMShandle;
+	byte err;
+	boolean	errorflag=false;
+	int	i;
+	union REGS CPURegs;
+	EMShandle=mm->EMShandle;
+
+	for (i=0;i<MAPPAGES;i++)
+	{
+		__asm
+		{
+			mov	ah,EMS_MAPPAGE
+			mov	bx,[i]			// logical page
+			mov	al,bl			// physical page
+			mov	dx,[EMShandle]	// handle
+			int	EMS_INT
+			or	ah,ah
+			jnz	error
+			jmp End
+			error:
+			mov	err,ah
+			mov	errorflag,1
+			End:
+		}
+		if(errorflag==true)
+		{
+			//err = CPURegs.h.ah;
+			strcpy(str,"MM_MapEMS: EMS error 0x");
+			//itoa(err,str2,16);
+			//strcat(str,&err);
+			//printf("%s\n",str);
+			printf("%s%x\n",str, err);
+			//printf("FACK! %x\n", err);
+			return err;
+		}
+	}
+	return 0;
+*/
 }
 
 //==========================================================================

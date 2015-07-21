@@ -166,6 +166,7 @@ boolean MML_CheckForEMS(void);
 byte MML_SetupEMS(mminfo_t *mm);
 void MML_ShutdownEMS(mminfo_t *mm);
 byte MM_MapEMS(mminfo_t *mm);
+byte MM_MapXEMS(mminfo_t *mm);
 boolean MML_CheckForXMS(mminfo_t *mm);
 void MML_SetupXMS(mminfo_t *mm, mminfotype *mmi);
 void MML_ShutdownXMS(mminfo_t *mm);
