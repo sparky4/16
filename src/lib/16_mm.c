@@ -140,7 +140,6 @@ byte MML_SetupEMS(mminfo_t *mm)
 	char	str[80];//,str2[10];
 	byte	err;
 	boolean errorflag=false;
-	union REGS CPURegs;
 
 	unsigned int EMSVer = 0;
 	//byte	EMS_status;
@@ -250,7 +249,7 @@ void MML_ShutdownEMS(mminfo_t *mm)
 		mov	errorflag,1
 		ok:
 	}
-	if(errorflag==true) printf("MML_ShutdownEMS: Error freeing EMS!");	//++++ add something
+	if(errorflag==true) printf("MML_ShutdownEMS: Error freeing EMS!\n");	//++++ add something
 }
 
 /*
@@ -272,10 +271,9 @@ byte MM_MapEMS(mminfo_t *mm)
 	byte err;
 	boolean	errorflag=false;
 	int	i;
-	union REGS CPURegs;
 	EMShandle=mm->EMShandle;
 
-	for (i=0;i<MAPPAGES;i++)
+	for (i=0;i<4/*MAPPAGES*/;i++)
 	{
 		__asm
 		{
@@ -332,21 +330,22 @@ byte MM_MapXEMS(mminfo_t *mm)
 //	EMS.Error = (Regs.ax AND &HFF00&) \ &H100  //Store the status code
 
 //END SUB
-/*
-char	str[80];//,str2[10];
+	char	str[80];//,str2[10];
 	unsigned	EMShandle;
 	byte err;
 	boolean	errorflag=false;
 	int	i;
-	union REGS CPURegs;
 	EMShandle=mm->EMShandle;
+
+	if(mm->EMSVer<0x40)
+		return 5;
 
 	for (i=0;i<MAPPAGES;i++)
 	{
 		__asm
 		{
-			mov	ah,EMS_MAPPAGE
-			mov	bx,[i]			// logical page
+			mov	ah,EMS_MAPXPAGE
+			mov	cx,[i]			// logical page
 			mov	al,bl			// physical page
 			mov	dx,[EMShandle]	// handle
 			int	EMS_INT
@@ -361,7 +360,7 @@ char	str[80];//,str2[10];
 		if(errorflag==true)
 		{
 			//err = CPURegs.h.ah;
-			strcpy(str,"MM_MapEMS: EMS error 0x");
+			strcpy(str,"MM_MapXEMS: EMS error 0x");
 			//itoa(err,str2,16);
 			//strcat(str,&err);
 			//printf("%s\n",str);
@@ -371,7 +370,6 @@ char	str[80];//,str2[10];
 		}
 	}
 	return 0;
-*/
 }
 
 //==========================================================================

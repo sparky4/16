@@ -54,6 +54,7 @@
 #define	EMS_GETPAGES	0x42
 #define	EMS_ALLOCPAGES	0x43
 #define	EMS_MAPPAGE		0x44
+#define	EMS_MAPXPAGE		0x50
 #define	EMS_FREEPAGES	0x45
 #define	EMS_VERSION		0x46
 
