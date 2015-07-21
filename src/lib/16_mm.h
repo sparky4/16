@@ -30,13 +30,13 @@
 //++++mh	#include "src/lib/16_in.h"
 
 #ifdef __DEBUG__		// 1 == Debug/Dev  ;  0 == Production/final
-#define OUT_OF_MEM_MSG	"MM_GetPtr: Out of memory!\nYou were short :%ld bytes"
+#define OUT_OF_MEM_MSG	"MM_GetPtr: Out of memory!\nYou were short :%lu bytes"
 #else
 #define OUT_OF_MEM_MSG	"\npee\n"
 #endif
 
 
-#define SAVENEARHEAP	0x200		// space to leave in data segment
+#define SAVENEARHEAP	0//x400		// space to leave in data segment
 #define SAVEFARHEAP	0//x4000			// space to leave in far heap
 
 #define	BUFFERSIZE		0x1000		// miscelanious, allways available buffer
@@ -115,7 +115,7 @@ extern void		(* XMSaddr) (void);		// far pointer to XMS driver
 #define BASEATTRIBUTES	0	// unlocked, non purgable
 
 #define MAXUMBS		12
-#define MAPPAGES		mm->EMSpagesmapped
+#define MAPPAGES		4//mm->EMSpagesmapped
 
 typedef struct mmblockstruct
 {

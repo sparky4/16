@@ -641,7 +641,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 // set up the linked list (everything in the free list;
 //
-	printf("		linked list making!\n");
+//	printf("		linked list making!\n");
 	mm->mmhead = NULL;
 	mm->mmfree = &(mm->mmblocks[0]);
 	for(i=0;i<MAXBLOCKS-1;i++)
@@ -653,7 +653,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 // locked block of all memory until we punch out free space
 //
-	printf("		newblock making!\n");
+//	printf("		newblock making!\n");
 	MM_GetNewBlock(mm);
 	mm->mmhead = mm->mmnew;				// this will allways be the first node
 	mm->mmnew->start = 0;
@@ -669,6 +669,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //----	length=coreleft();
 	//_nheapgrow();
 	length=_memmax();
+	//printf("	%u\n", length);
 	start = (void huge *)(mm->nearheap = _nmalloc(length));
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;
@@ -747,10 +748,10 @@ printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0
 		MML_UseSpace(mm->EMSpageframe,(MAPPAGES)*0x4000lu, mm);
 printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 printf("		EMS4\n");
-		if(mm->EMSVer<0x40)
+		//if(mm->EMSVer<0x40)
 			MM_MapEMS(mm, mmi);					// map in used pages
-		else
-			MM_MapXEMS(mm, mmi);					// map in used pages
+		//else
+			//MM_MapXEMS(mm, mmi);					// map in used pages
 	}
 
 //
@@ -1265,7 +1266,7 @@ void MM_DumpData(mminfo_t *mm)
 	FILE	*dumpfile;
 
 
-	free (mm->nearheap);
+	//++++free(mm->nearheap);
 	dumpfile = fopen ("mmdump.txt","w");
 	if (!dumpfile){
 		printf("MM_DumpData: Couldn't open MMDUMP.TXT!\n");
@@ -1308,7 +1309,7 @@ void MM_DumpData(mminfo_t *mm)
 
 	} while (lowest != 0xffff);
 
-	fclose (dumpfile);
+	fclose(dumpfile);
 	printf("MMDUMP.TXT created.\n");
 }
 

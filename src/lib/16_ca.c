@@ -218,7 +218,7 @@ void CAL_GetGrChunkLength (int chunk)
 boolean CA_FarRead(int handle, byte huge *dest, dword length, mminfo_t *mm)
 {
 	boolean flag;
-	dword fat=0;
+	/*dword fat=0;
 	word segm=0;
 	//if(mm->EMSVer<0x40)
 	if(length>0xfffflu)
@@ -231,7 +231,7 @@ boolean CA_FarRead(int handle, byte huge *dest, dword length, mminfo_t *mm)
 	}
 
 	if(!fat&&!segm)
-	{
+	{*/
 		__asm
 		{
 			push	ds
@@ -257,7 +257,7 @@ done:
 End:
 		}
 	return flag;
-	}else return 0;//todo: EXPAND!!!
+	//}else return 0;//todo: EXPAND!!!
 }
 
 
@@ -274,7 +274,7 @@ End:
 boolean CA_FarWrite(int handle, byte huge *source, dword length, mminfo_t *mm)
 {
 	boolean flag;
-	dword fat=0;
+	/*dword fat=0;
 	word segm=0;
 	//if(mm->EMSVer<0x40)
 	if(length>0xfffflu)
@@ -287,7 +287,7 @@ boolean CA_FarWrite(int handle, byte huge *source, dword length, mminfo_t *mm)
 	}
 
 	if(!fat&&!segm)
-	{
+	{*/
 		__asm
 		{
 			push	ds
@@ -313,7 +313,7 @@ done:
 End:
 		}
 	return flag;
-	}else return 0;
+	//}else return 0;
 }
 
 

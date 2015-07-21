@@ -26,17 +26,17 @@
 #include "src/lib/16_mm.h"
 #include "src/lib/modex16.h"
 
-//#define FILERL
+#define FILERL
 //#define FILEINIT
 
 void
 main(int argc, char *argv[])
 {
-	mminfo_t mm; mminfotype mmi;
-	memptr	bigbuffer;
-	__segment segu;
-	char *bakapee;
-	word baka;
+	static mminfo_t mm; mminfotype mmi;
+	static memptr	bigbuffer;
+	static __segment segu;
+	static char *bakapee;
+	static word baka;
 	page_t screen;
 
 	printf("&main()=%Fp\n", *argv[0]);
