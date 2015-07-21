@@ -272,7 +272,7 @@ unsigned MM_MapEMS(mminfo_t *mm)
 	union REGS CPURegs;
 	EMShandle=mm->EMShandle;
 
-	for (i=0;i<4/*mm->EMSpagesmapped*/;i++)
+	for (i=0;i<MAPPAGES;i++)
 	{
 		__asm
 		{
@@ -293,9 +293,9 @@ unsigned MM_MapEMS(mminfo_t *mm)
 			err = CPURegs.h.ah;
 			strcpy(str,"MM_MapEMS: EMS error 0x");
 			itoa(err,str2,16);
-			strcpy(str,str2);
-			//printf("%s\n",str);
-			printf("FACK! %u\n", err);
+			strcat(str,str2);
+			printf("%s\n",str);
+			//printf("FACK! %x\n", err);
 			return err;
 		}
 	}
