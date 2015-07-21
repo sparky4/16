@@ -26,6 +26,8 @@
 #include "src/lib/16_mm.h"
 #include "src/lib/modex16.h"
 
+#define FILERL
+
 void
 main(int argc, char *argv[])
 {
@@ -43,7 +45,7 @@ main(int argc, char *argv[])
 	if(argv[1]) bakapee = argv[1];
 	else bakapee = "data/koishi~~.pcx";
 	//if(argv[2])
-	//	#define FILEINIT
+		//#define FILEINIT
 
 	textInit();
 
@@ -56,6 +58,7 @@ main(int argc, char *argv[])
 	MM_Startup(&mm, &mmi);
 	printf("		done!\n");
 	printf("&main()=%Fp\n", *argv[0]);
+#ifdef FILERL
 #ifdef FILEINIT
 	printf("		read\n");
 	if(CA_ReadFile(bakapee, &bigbuffer, &mm/*, &mmi*/))
@@ -66,6 +69,7 @@ main(int argc, char *argv[])
 		baka=1;
 	else
 		baka=0;
+#endif
 	//MM_GetPtr(&bigbuffer, mmi.nearheap, &mm, &mmi);
 	//hmm functions in cache system use the buffered stuff
 	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
@@ -84,8 +88,10 @@ main(int argc, char *argv[])
 	MM_FreePtr(&bigbuffer, &mm);
 	MM_Shutdown(&mm);
 	printf("		done!\n");
+#ifdef FILERL
 	free(bakapee);
 	//printf("_bios_memsize=%u\n", _bios_memsize());
 	if(baka) printf("\nyay!\n");
 	else printf("\npoo!\n");
+#endif
 }
