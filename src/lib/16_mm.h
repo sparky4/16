@@ -37,9 +37,9 @@
 
 
 #define SAVENEARHEAP	0x4000		// space to leave in data segment
-#define SAVEFARHEAP		0			// space to leave in far heap
+#define SAVEFARHEAP	0x4000			// space to leave in far heap
 
-#define	BUFFERSIZE		0x8000		// miscelanious, allways available buffer
+#define	BUFFERSIZE		0x1000		// miscelanious, allways available buffer
 
 #define MAXBLOCKS		720
 
