@@ -770,13 +770,13 @@ void MM_Shutdown(mminfo_t *mm)
 		return;
 
 	_ffree(mm->farheap);
-	printf("far freed\n");
+	printf("		far freed\n");
 	free(mm->nearheap);
-	printf("near freed\n");
+	printf("		near freed\n");
 	//hfree(mm->hugeheap);
 	//printf("huge freed\n");
-	if(MML_CheckForEMS()){ MML_ShutdownEMS(mm); printf("EMS freed\n"); }
-	if(MML_CheckForXMS(mm)){ MML_ShutdownXMS(mm); printf("XMS freed\n"); }
+	if(MML_CheckForEMS()){ MML_ShutdownEMS(mm); printf("		EMS freed\n"); }
+	if(MML_CheckForXMS(mm)){ MML_ShutdownXMS(mm); printf("		XMS freed\n"); }
 }
 
 //==========================================================================
@@ -1390,84 +1390,85 @@ void MM_Report(page_t *page, mminfo_t *mm, mminfotype *mmi)
 =====================
 */
 
-static void MM_EMSerr(byte *stri, byte err)
+void MM_EMSerr(byte *stri, byte err)
 {
 	//Returns a text string describing the error code in EMS.Error.
+	fprintf(stderr, "\n%x\n\n", err);
 	switch(err)
 	{
-		case 0x0:
+		case '0h':
 			strcat(stri, "successful");
-		case 0x80:
+		case '80h':
 			strcat(stri, "internal error");
-		case 0x81:
+		case '81h':
 			strcat(stri, "hardware malfunction");
-		case 0x82:
+		case '82h':
 			strcat(stri, "busy .. retry later");
-		case 0x83:
+		case '83h':
 			strcat(stri, "invalid handle");
-		case 0x84:
+		case '84h':
 			strcat(stri, "undefined function requested by application");
-		case 0x85:
+		case '85h':
 			strcat(stri, "no more handles available");
-		case 0x86:
+		case '86h':
 			strcat(stri, "error in save or restore of mapping context");
-		case 0x87:
+		case '87h':
 			strcat(stri, "insufficient memory pages in system");
-		case 0x88:
+		case '88h':
 			strcat(stri, "insufficient memory pages available");
-		case 0x89:
+		case '89h':
 			strcat(stri, "zero pages requested");
-		case 0x8A:
+		case '8Ah':
 			strcat(stri, "invalid logical page number encountered");
-		case 0x8B:
+		case '8Bh':
 			strcat(stri, "invalid physical page number encountered");
-		case 0x8C:
+		case '8Ch':
 			strcat(stri, "page-mapping hardware state save area is full");
-		case 0x8D:
+		case '8Dh':
 			strcat(stri, "save of mapping context failed");
-		case 0x8E:
+		case '8Eh':
 			strcat(stri, "restore of mapping context failed");
-		case 0x8F:
+		case '8Fh':
 			strcat(stri, "undefined subfunction");
-		case 0x90:
+		case '90h':
 			strcat(stri, "undefined attribute type");
-		case 0x91:
+		case '91h':
 			strcat(stri, "feature not supported");
-		case 0x92:
+		case '92h':
 			strcat(stri, "successful, but a portion of the source region has been overwritten");
-		case 0x93:
+		case '93h':
 			strcat(stri, "length of source or destination region exceeds length of region allocated to either source or destination handle");
-		case 0x94:
+		case '94h':
 			strcat(stri, "conventional and expanded memory regions overlap");
-		case 0x95:
+		case '95h':
 			strcat(stri, "offset within logical page exceeds size of logical page");
-		case 0x96:
+		case '96h':
 			strcat(stri, "region length exceeds 1 MB");
-		case 0x97:
+		case '97h':
 			strcat(stri, "source and destination EMS regions have same handle and overlap");
-		case 0x98:
+		case '98h':
 			strcat(stri, "memory source or destination type undefined");
-		case 0x9A:
+		case '9Ah':
 			strcat(stri, "specified alternate map register or DMA register set not supported");
-		case 0x9B:
+		case '9Bh':
 			strcat(stri, "all alternate map register or DMA register sets currently allocated");
-		case 0x9C:
+		case '9Ch':
 			strcat(stri, "alternate map register or DMA register sets not supported");
-		case 0x9D:
+		case '9Dh':
 			strcat(stri, "undefined or unallocated alternate map register or DMA register set");
-		case 0x9E:
+		case '9Eh':
 			strcat(stri, "dedicated DMA channels not supported");
-		case 0x9F:
+		case '9Fh':
 			strcat(stri, "specified dedicated DMA channel not supported");
-		case 0xA0:
+		case 'A0h':
 			strcat(stri, "no such handle name");
-		case 0xA1:
+		case 'A1h':
 			strcat(stri, "a handle found had no name, or duplicate handle name");
-		case 0xA2:
+		case 'A2h':
 			strcat(stri, "attempted to wrap around 1M conventional address space");
-		case 0xA3:
+		case 'A3h':
 			strcat(stri, "source array corrupted");
-		case 0xA4:
+		case 'A4h':
 			strcat(stri, "operating system denied access");
 		default:
 			strcat(stri, "undefined error");
