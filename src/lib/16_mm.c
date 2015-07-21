@@ -302,34 +302,31 @@ unsigned MM_MapEMS(mminfo_t *mm)
 	return 0;
 }
 
-/*
-SUB EMS.MapXPages (PhysicalStart, LogicalStart, NumPages, Handle)
-
-  'Maps up to 4 logical EMS pages to physical pages in the page frame, where:
-  '
-  'PhysicalStart = Physical page first logical page is mapped to
-  'LogicalStart  = First logical page to map
-  'NumPages      = Number of pages to map (1 to 4)
-  'Handle        = EMS handle logical pages are allocated to
-
-  'Create a buffer containing the page information
-  FOR x = 0 TO NumPages - 1
-    MapInfo$ = MapInfo$ + MKI$(LogicalStart + x) + MKI$(PhysicalStart + x)
-  NEXT
-
-  Regs.ax = &H5000                           'Map the pages in the buffer
-  Regs.cx = NumPages                         'to the pageframe
-  Regs.dx = Handle
-  Regs.ds = VARSEG(MapInfo$)
-  Regs.si = SADD(MapInfo$)
-  InterruptX &H67, Regs, Regs
-  EMS.Error = (Regs.ax AND &HFF00&) \ &H100  'Store the status code
-
-END SUB
-*/
 void MM_MapXEMS(mminfo_t *mm)
 {
 
+//SUB EMS.MapXPages (PhysicalStart, LogicalStart, NumPages, Handle)
+
+	//Maps up to 4 logical EMS pages to physical pages in the page frame, where:
+	//PhysicalStart = Physical page first logical page is mapped to
+	//LogicalStart  = First logical page to map
+	//NumPages      = Number of pages to map (1 to 4)
+	//Handle        = EMS handle logical pages are allocated to
+
+  //Create a buffer containing the page information
+//  FOR x = 0 TO NumPages - 1
+//    MapInfo$ = MapInfo$ + MKI$(LogicalStart + x) + MKI$(PhysicalStart + x)
+//  NEXT
+
+//  Regs.ax = &H5000                           //Map the pages in the buffer
+//  Regs.cx = NumPages                         //to the pageframe
+//  Regs.dx = Handle
+//  Regs.ds = VARSEG(MapInfo$)
+//  Regs.si = SADD(MapInfo$)
+//  InterruptX &H67, Regs, Regs
+//	EMS.Error = (Regs.ax AND &HFF00&) \ &H100  //Store the status code
+
+//END SUB
 }
 
 //==========================================================================
