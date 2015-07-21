@@ -207,11 +207,10 @@ End:
 	if(errorflag==true)
 	{
 		//err = CPURegs.h.ah;
-		strcpy(str,"MML_SetupEMS: EMS error 0x");
+		strcpy(str,"MM_SetupEMS: EMS error");
 		//itoa(err,str2,16);
-		//strcat(str,&err);
-		//printf("%s\n",str);
-		printf("%s%x\n",str,err);
+		strcat(str,MM_EMSerr(err));
+		printf("%s\n",str);
 		return err;
 	}
 	mm->totalEMSpages=totalEMSpages;
@@ -293,11 +292,10 @@ byte MM_MapEMS(mminfo_t *mm, mminfotype *mmi)
 		if(errorflag==true)
 		{
 			//err = CPURegs.h.ah;
-			strcpy(str,"MM_MapEMS: EMS error 0x");
+			strcpy(str,"MM_MapEMS: EMS error");
 			//itoa(err,str2,16);
-			//strcat(str,&err);
-			//printf("%s\n",str);
-			printf("%s%x\n",str, err);
+			strcat(str,MM_EMSerr(err));
+			printf("%s\n",str);
 			//printf("FACK! %x\n", err);
 			return err;
 		}
@@ -322,13 +320,13 @@ byte MM_MapXEMS(mminfo_t *mm, mminfotype *mmi)
 //    MapInfo$ = MapInfo$ + MKI$(LogicalStart + x) + MKI$(PhysicalStart + x)
 //  NEXT*/
 
-//  Regs.ax = &H5000                           //Map the pages in the buffer
+//  Regs.ax = 0x5000                           //Map the pages in the buffer
 //  Regs.cx = NumPages                         //to the pageframe
 //  Regs.dx = Handle
 //  Regs.ds = VARSEG(MapInfo$)
 //  Regs.si = SADD(MapInfo$)
-//  InterruptX &H67, Regs, Regs
-//	EMS.Error = (Regs.ax AND &HFF00&) \ &H100  //Store the status code
+//  InterruptX 0x67, Regs, Regs
+//	EMS.Error = (Regs.ax AND 0xFF00&) \ 0x100  //Store the status code
 
 //END SUB
 	char	str[80];
@@ -361,11 +359,12 @@ byte MM_MapXEMS(mminfo_t *mm, mminfotype *mmi)
 		if(errorflag==true)
 		{
 			//err = CPURegs.h.ah;
-			strcpy(str,"MM_MapXEMS: EMS error 0x");
+			//strcpy(str,"MM_MapXEMS: EMS error 0x");
+			strcpy(str,"MM_MapXEMS: EMS error");
 			//itoa(err,str2,16);
-			//strcat(str,&err);
-			//printf("%s\n",str);
-			printf("%s%x\n",str, err);
+			strcat(str,MM_EMSerr(err));
+			printf("%s\n",str);
+			//printf("%s%x\n",str, err);
 			//printf("FACK! %x\n", err);
 			return err;
 		}
@@ -1382,22 +1381,134 @@ void MM_Report(page_t *page, mminfo_t *mm, mminfotype *mmi)
 /*
 =====================
 =
-= MM_EMSVer
+= MM_EMSerr
 =
 =====================
+*/
 
-
-int MM_EMSVer(void)
+byte *MM_EMSerr(byte err)
 {
-	int EMSver;
-	__asm
+	//Returns a text string describing the error code in EMS.Error.
+	static byte msag[128];
+	switch(err)
 	{
-		mov		ah,EMS_VERSION
-		int		EMS_INT
-		mov		EMSver,ax
+		case 0x0:
+			strcpy(msag, "successful");
+		break;
+		case 0x80:
+			strcpy(msag, "internal error");
+		break;
+		case 0x81:
+			strcpy(msag, "hardware malfunction");
+		break;
+		case 0x82:
+			strcpy(msag, "busy .. retry later");
+		break;
+		case 0x83:
+			strcpy(msag, "invalid handle");
+		break;
+		case 0x84:
+			strcpy(msag, "undefined function requested by application");
+		break;
+		case 0x85:
+			strcpy(msag, "no more handles available");
+		break;
+		case 0x86:
+			strcpy(msag, "error in save or restore of mapping context");
+		break;
+		case 0x87:
+			strcpy(msag, "insufficient memory pages in system");
+		break;
+		case 0x88:
+			strcpy(msag, "insufficient memory pages available");
+		break;
+		case 0x89:
+			strcpy(msag, "zero pages requested");
+		break;
+		case 0x8A:
+			strcpy(msag, "invalid logical page number encountered");
+		break;
+		case 0x8B:
+			strcpy(msag, "invalid physical page number encountered");
+		break;
+		case 0x8C:
+			strcpy(msag, "page-mapping hardware state save area is full");
+		break;
+		case 0x8D:
+			strcpy(msag, "save of mapping context failed");
+		break;
+		case 0x8E:
+			strcpy(msag, "restore of mapping context failed");
+		break;
+		case 0x8F:
+			strcpy(msag, "undefined subfunction");
+		break;
+		case 0x90:
+			strcpy(msag, "undefined attribute type");
+		break;
+		case 0x91:
+			strcpy(msag, "feature not supported");
+		break;
+		case 0x92:
+			strcpy(msag, "successful, but a portion of the source region has been overwritten");
+		break;
+		case 0x93:
+			strcpy(msag, "length of source or destination region exceeds length of region allocated to either source or destination handle");
+		break;
+		case 0x94:
+			strcpy(msag, "conventional and expanded memory regions overlap");
+		break;
+		case 0x95:
+			strcpy(msag, "offset within logical page exceeds size of logical page");
+		break;
+		case 0x96:
+			strcpy(msag, "region length exceeds 1 MB");
+		break;
+		case 0x97:
+			strcpy(msag, "source and destination EMS regions have same handle and overlap");
+		break;
+		case 0x98:
+			strcpy(msag, "memory source or destination type undefined");
+		break;
+		case 0x9A:
+			strcpy(msag, "specified alternate map register or DMA register set not supported");
+		break;
+		case 0x9B:
+			strcpy(msag, "all alternate map register or DMA register sets currently allocated");
+		break;
+		case 0x9C:
+			strcpy(msag, "alternate map register or DMA register sets not supported");
+		break;
+		case 0x9D:
+			strcpy(msag, "undefined or unallocated alternate map register or DMA register set");
+		break;
+		case 0x9E:
+			strcpy(msag, "dedicated DMA channels not supported");
+		break;
+		case 0x9F:
+			strcpy(msag, "specified dedicated DMA channel not supported");
+		break;
+		case 0xA0:
+			strcpy(msag, "no such handle name");
+		break;
+		case 0xA1:
+			strcpy(msag, "a handle found had no name, or duplicate handle name");
+		break;
+		case 0xA2:
+			strcpy(msag, "attempted to wrap around 1M conventional address space");
+		break;
+		case 0xA3:
+			strcpy(msag, "source array corrupted");
+		break;
+		case 0xA4:
+			strcpy(msag, "operating system denied access");
+		break;
+		default:
+			strcpy(msag, "undefined error");
+		break;
 	}
-	return(EMSver);
-}*/
+	return &msag;
+}
 
 //==========================================================================
 
