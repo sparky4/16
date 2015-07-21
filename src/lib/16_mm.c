@@ -313,10 +313,10 @@ void MM_MapXEMS(mminfo_t *mm)
 	//NumPages      = Number of pages to map (1 to 4)
 	//Handle        = EMS handle logical pages are allocated to
 
-  //Create a buffer containing the page information
+  /*//Create a buffer containing the page information
 //  FOR x = 0 TO NumPages - 1
 //    MapInfo$ = MapInfo$ + MKI$(LogicalStart + x) + MKI$(PhysicalStart + x)
-//  NEXT
+//  NEXT*/
 
 //  Regs.ax = &H5000                           //Map the pages in the buffer
 //  Regs.cx = NumPages                         //to the pageframe
