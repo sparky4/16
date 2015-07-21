@@ -548,14 +548,14 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 //
 	oldend = scan->start + scan->length;
 	extra = oldend - (segstart+seglength);
-
+/*
 printf("segm=%u	", segm);
 printf("ex=%lu	", extra);
 printf("start+seglen=%lu	", segstart+seglength);
 printf("len=%u	", scan->length);
 printf("segsta=%x	", segstart);
 printf("seglen=%lu\n", seglength);
-
+*/
 //segu:
 //++++todo: linked list of segment!
 //printf("segm=%lu\n", segm);
@@ -1395,82 +1395,120 @@ void MM_EMSerr(byte *stri, byte err)
 	//Returns a text string describing the error code in EMS.Error.
 	fprintf(stderr, "\n%x\n\n", err);
 	fprintf(stderr, "\n%u\n\n", err);
+	getch();
 	switch(err)
 	{
 		case 0x0:
 			strcat(stri, "successful");
+		break;
 		case 0x80:
 			strcat(stri, "internal error");
+		break;
 		case 0x81:
 			strcat(stri, "hardware malfunction");
+		break;
 		case 0x82:
 			strcat(stri, "busy .. retry later");
+		break;
 		case 0x83:
 			strcat(stri, "invalid handle");
+		break;
 		case 0x84:
 			strcat(stri, "undefined function requested by application");
+		break;
 		case 0x85:
 			strcat(stri, "no more handles available");
+		break;
 		case 0x86:
 			strcat(stri, "error in save or restore of mapping context");
+		break;
 		case 0x87:
 			strcat(stri, "insufficient memory pages in system");
+		break;
 		case 0x88:
 			strcat(stri, "insufficient memory pages available");
+		break;
 		case 0x89:
 			strcat(stri, "zero pages requested");
+		break;
 		case 0x8A:
 			strcat(stri, "invalid logical page number encountered");
+		break;
 		case 0x8B:
 			strcat(stri, "invalid physical page number encountered");
+		break;
 		case 0x8C:
 			strcat(stri, "page-mapping hardware state save area is full");
+		break;
 		case 0x8D:
 			strcat(stri, "save of mapping context failed");
+		break;
 		case 0x8E:
 			strcat(stri, "restore of mapping context failed");
+		break;
 		case 0x8F:
 			strcat(stri, "undefined subfunction");
+		break;
 		case 0x90:
 			strcat(stri, "undefined attribute type");
+		break;
 		case 0x91:
 			strcat(stri, "feature not supported");
+		break;
 		case 0x92:
 			strcat(stri, "successful, but a portion of the source region has been overwritten");
+		break;
 		case 0x93:
 			strcat(stri, "length of source or destination region exceeds length of region allocated to either source or destination handle");
+		break;
 		case 0x94:
 			strcat(stri, "conventional and expanded memory regions overlap");
+		break;
 		case 0x95:
 			strcat(stri, "offset within logical page exceeds size of logical page");
+		break;
 		case 0x96:
 			strcat(stri, "region length exceeds 1 MB");
+		break;
 		case 0x97:
 			strcat(stri, "source and destination EMS regions have same handle and overlap");
+		break;
 		case 0x98:
 			strcat(stri, "memory source or destination type undefined");
+		break;
 		case 0x9A:
 			strcat(stri, "specified alternate map register or DMA register set not supported");
+		break;
 		case 0x9B:
 			strcat(stri, "all alternate map register or DMA register sets currently allocated");
+		break;
 		case 0x9C:
 			strcat(stri, "alternate map register or DMA register sets not supported");
+		break;
 		case 0x9D:
 			strcat(stri, "undefined or unallocated alternate map register or DMA register set");
+		break;
 		case 0x9E:
 			strcat(stri, "dedicated DMA channels not supported");
+		break;
 		case 0x9F:
 			strcat(stri, "specified dedicated DMA channel not supported");
+		break;
 		case 0xA0:
 			strcat(stri, "no such handle name");
+		break;
 		case 0xA1:
 			strcat(stri, "a handle found had no name, or duplicate handle name");
+		break;
 		case 0xA2:
 			strcat(stri, "attempted to wrap around 1M conventional address space");
+		break;
 		case 0xA3:
 			strcat(stri, "source array corrupted");
+		break;
 		case 0xA4:
 			strcat(stri, "operating system denied access");
+		break;
 		default:
 			strcat(stri, "undefined error");
 	}
