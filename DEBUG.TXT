@@ -1,7 +1,5 @@
-Seg:0	Size:114096	Owner:0xfd10
-Seg:1bdb	Size:4096	Owner:0xb512
-Seg:1e4b	Size:8512	Owner:0x8ebc
-Seg:22ef	Size:774416	Owner:0x8e2e
-Seg:e000	Size:31344	Owner:0xd648
-
-MM_ShowMemory: Memory block order currupted!
+Seg:0	Size:143152	Owner:0x9a50
+Seg:22f3	Size:4096	Owner:0x97a0
+Seg:2560	Size:544	Owner:0x90c7
+Seg:280f	Size:753424	Owner:0x70bc
+Seg:e000	Size:131056	Owner:0x8d03
