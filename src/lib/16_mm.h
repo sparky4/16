@@ -133,6 +133,7 @@ typedef struct
 {
 	memptr bufferseg;
 	boolean		mmstarted, bombonerror, mmerror;
+	word segm;
 	void huge	*farheap;
 	void		*nearheap;
 	//byte		EMS_status;
