@@ -39,7 +39,9 @@ main(int argc, char *argv[])
 	word baka;
 	page_t screen;
 
-	bakapee = _nmalloc(64);
+	printf("&main()=%Fp\n", *argv[0]);
+
+	bakapee = malloc(64);
 //	memset(bakapee, 0, 64);
 	mm.mmstarted=0;
 
