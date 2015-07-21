@@ -52,15 +52,15 @@ main(int argc, char *argv[])
 	screen.width += (16*2);
 	screen.height += (16*2);
 
-	printf("start!\n");
+	printf("		start!\n");
 	MM_Startup(&mm, &mmi);
-	printf("done!\n");
+	printf("		done!\n");
 	printf("&main()=%Fp\n", *argv[0]);
 #ifdef FILEINIT
-	printf("read\n");
+	printf("		read\n");
 	if(CA_ReadFile(bakapee, &bigbuffer, &mm/*, &mmi*/))
 #else
-	printf("load\n");
+	printf("		load\n");
 	if(CA_LoadFile(bakapee, &bigbuffer, &mm, &mmi))
 #endif
 		baka=1;
@@ -76,14 +76,14 @@ main(int argc, char *argv[])
 	modexEnter();
 	modexShowPage(&screen);
 	MM_ShowMemory(&screen, &mm);
-	getch();
+	//getch();
 	MM_DumpData(&mm);
 	modexLeave();
 	MM_Report(&screen, &mm, &mmi);
-	printf("stop!\n");
+	printf("		stop!\n");
 	MM_FreePtr(&bigbuffer, &mm);
 	MM_Shutdown(&mm);
-	printf("done!\n");
+	printf("		done!\n");
 	free(bakapee);
 	//printf("_bios_memsize=%u\n", _bios_memsize());
 	if(baka) printf("\nyay!\n");

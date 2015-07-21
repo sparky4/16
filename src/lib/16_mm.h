@@ -39,9 +39,9 @@
 #define SAVENEARHEAP	0x200		// space to leave in data segment
 #define SAVEFARHEAP		0			// space to leave in far heap
 
-#define	BUFFERSIZE		0x2000		// miscelanious, allways available buffer
+#define	BUFFERSIZE		0x1000		// miscelanious, allways available buffer
 
-#define MAXBLOCKS		600
+#define MAXBLOCKS		640
 
 
 
@@ -54,7 +54,7 @@
 #define	EMS_GETPAGES	0x42
 #define	EMS_ALLOCPAGES	0x43
 #define	EMS_MAPPAGE		0x44
-#define	EMS_MAPXPAGE		0x5000
+#define	EMS_MAPXPAGE		0x50
 #define	EMS_FREEPAGES	0x45
 #define	EMS_VERSION		0x46
 

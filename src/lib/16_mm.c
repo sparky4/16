@@ -306,7 +306,6 @@ byte MM_MapEMS(mminfo_t *mm, mminfotype *mmi)
 
 byte MM_MapXEMS(mminfo_t *mm, mminfotype *mmi)
 {
-
 //SUB EMS.MapXPages (PhysicalStart, LogicalStart, NumPages, Handle)
 
 	//Maps up to 4 logical EMS pages to physical pages in the page frame, where:
@@ -343,7 +342,7 @@ byte MM_MapXEMS(mminfo_t *mm, mminfotype *mmi)
 	{
 		__asm
 		{
-			mov	ax,EMS_MAPXPAGE
+			mov	ah,EMS_MAPXPAGE
 			mov	cx,[i]			// logical page
 			mov	al,bl			// physical page
 			mov	dx,[EMShandle]	// handle
@@ -720,10 +719,10 @@ printf("		EMS3\n");
 		//TODO: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!
 		MML_UseSpace(mm->EMSpageframe,(MAPPAGES)*0x4000lu, mm);
 printf("		EMS4\n");
-		if(mm->EMSVer<0x40)
+		//if(mm->EMSVer<0x40)
 			MM_MapEMS(mm, mmi);					// map in used pages
-		else
-			MM_MapXEMS(mm, mmi);					// map in used pages
+		//else
+		//	MM_MapXEMS(mm, mmi);					// map in used pages
 	}
 
 //
@@ -1393,9 +1392,6 @@ void MM_Report(page_t *page, mminfo_t *mm, mminfotype *mmi)
 void MM_EMSerr(byte *stri, byte err)
 {
 	//Returns a text string describing the error code in EMS.Error.
-	fprintf(stderr, "\n%x\n\n", err);
-	fprintf(stderr, "\n%u\n\n", err);
-	getch();
 	switch(err)
 	{
 		case 0x0:
