@@ -34,14 +34,16 @@ main(int argc, char *argv[])
 {
 	static mminfo_t mm; mminfotype mmi;
 	static memptr	bigbuffer;
-	static __segment segu;
+	__segment segu;
 	static char *bakapee;
 	static word baka;
 	page_t screen;
 
 	printf("&main()=%Fp\n", *argv[0]);
+	printf("&argc=%Fp\n", FP_SEG(&argc));
+	printf("&segu=%Fp\n", segu);
 
-	bakapee = malloc(64);
+	bakapee = _nmalloc(64);
 //	memset(bakapee, 0, 64);
 	mm.mmstarted=0;
 
@@ -68,6 +70,8 @@ main(int argc, char *argv[])
 		exit(-5);
 	}*/
 	printf("&main()=%Fp\n", *argv[0]);
+	printf("&argc=%Fp\n", FP_SEG(&argc));
+	printf("&segu=%Fp\n", segu);
 #ifdef FILERL
 #ifdef FILEINIT
 	printf("		read\n");
