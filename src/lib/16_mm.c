@@ -1389,125 +1389,85 @@ void MM_Report(page_t *page, mminfo_t *mm, mminfotype *mmi)
 byte *MM_EMSerr(byte err)
 {
 	//Returns a text string describing the error code in EMS.Error.
-	static byte msag[128];
 	switch(err)
 	{
 		case 0x0:
-			strcpy(msag, "successful");
-		break;
+			return "successful";
 		case 0x80:
-			strcpy(msag, "internal error");
-		break;
+			return "internal error";
 		case 0x81:
-			strcpy(msag, "hardware malfunction");
-		break;
+			return "hardware malfunction";
 		case 0x82:
-			strcpy(msag, "busy .. retry later");
-		break;
+			return "busy .. retry later";
 		case 0x83:
-			strcpy(msag, "invalid handle");
-		break;
+			return "invalid handle";
 		case 0x84:
-			strcpy(msag, "undefined function requested by application");
-		break;
+			return "undefined function requested by application";
 		case 0x85:
-			strcpy(msag, "no more handles available");
-		break;
+			return "no more handles available";
 		case 0x86:
-			strcpy(msag, "error in save or restore of mapping context");
-		break;
+			return "error in save or restore of mapping context";
 		case 0x87:
-			strcpy(msag, "insufficient memory pages in system");
-		break;
+			return "insufficient memory pages in system";
 		case 0x88:
-			strcpy(msag, "insufficient memory pages available");
-		break;
+			return "insufficient memory pages available";
 		case 0x89:
-			strcpy(msag, "zero pages requested");
-		break;
+			return "zero pages requested";
 		case 0x8A:
-			strcpy(msag, "invalid logical page number encountered");
-		break;
+			return "invalid logical page number encountered";
 		case 0x8B:
-			strcpy(msag, "invalid physical page number encountered");
-		break;
+			return "invalid physical page number encountered";
 		case 0x8C:
-			strcpy(msag, "page-mapping hardware state save area is full");
-		break;
+			return "page-mapping hardware state save area is full";
 		case 0x8D:
-			strcpy(msag, "save of mapping context failed");
-		break;
+			return "save of mapping context failed";
 		case 0x8E:
-			strcpy(msag, "restore of mapping context failed");
-		break;
+			return "restore of mapping context failed";
 		case 0x8F:
-			strcpy(msag, "undefined subfunction");
-		break;
+			return "undefined subfunction";
 		case 0x90:
-			strcpy(msag, "undefined attribute type");
-		break;
+			return "undefined attribute type";
 		case 0x91:
-			strcpy(msag, "feature not supported");
-		break;
+			return "feature not supported";
 		case 0x92:
-			strcpy(msag, "successful, but a portion of the source region has been overwritten");
-		break;
+			return "successful, but a portion of the source region has been overwritten";
 		case 0x93:
-			strcpy(msag, "length of source or destination region exceeds length of region allocated to either source or destination handle");
-		break;
+			return "length of source or destination region exceeds length of region allocated to either source or destination handle";
 		case 0x94:
-			strcpy(msag, "conventional and expanded memory regions overlap");
-		break;
+			return "conventional and expanded memory regions overlap";
 		case 0x95:
-			strcpy(msag, "offset within logical page exceeds size of logical page");
-		break;
+			return "offset within logical page exceeds size of logical page";
 		case 0x96:
-			strcpy(msag, "region length exceeds 1 MB");
-		break;
+			return "region length exceeds 1 MB";
 		case 0x97:
-			strcpy(msag, "source and destination EMS regions have same handle and overlap");
-		break;
+			return "source and destination EMS regions have same handle and overlap";
 		case 0x98:
-			strcpy(msag, "memory source or destination type undefined");
-		break;
+			return "memory source or destination type undefined";
 		case 0x9A:
-			strcpy(msag, "specified alternate map register or DMA register set not supported");
-		break;
+			return "specified alternate map register or DMA register set not supported";
 		case 0x9B:
-			strcpy(msag, "all alternate map register or DMA register sets currently allocated");
-		break;
+			return "all alternate map register or DMA register sets currently allocated";
 		case 0x9C:
-			strcpy(msag, "alternate map register or DMA register sets not supported");
-		break;
+			return "alternate map register or DMA register sets not supported";
 		case 0x9D:
-			strcpy(msag, "undefined or unallocated alternate map register or DMA register set");
-		break;
+			return "undefined or unallocated alternate map register or DMA register set";
 		case 0x9E:
-			strcpy(msag, "dedicated DMA channels not supported");
-		break;
+			return "dedicated DMA channels not supported";
 		case 0x9F:
-			strcpy(msag, "specified dedicated DMA channel not supported");
-		break;
+			return "specified dedicated DMA channel not supported";
 		case 0xA0:
-			strcpy(msag, "no such handle name");
-		break;
+			return "no such handle name";
 		case 0xA1:
-			strcpy(msag, "a handle found had no name, or duplicate handle name");
-		break;
+			return "a handle found had no name, or duplicate handle name";
 		case 0xA2:
-			strcpy(msag, "attempted to wrap around 1M conventional address space");
-		break;
+			return "attempted to wrap around 1M conventional address space";
 		case 0xA3:
-			strcpy(msag, "source array corrupted");
-		break;
+			return "source array corrupted";
 		case 0xA4:
-			strcpy(msag, "operating system denied access");
-		break;
+			return "operating system denied access";
 		default:
-			strcpy(msag, "undefined error");
-		break;
+			return "undefined error";
 	}
-	return &msag;
 }
 
 //==========================================================================
