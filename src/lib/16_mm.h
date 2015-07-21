@@ -122,7 +122,7 @@ typedef struct mmblockstruct
 	//dword	start,length;
 	//word	start;
 	//dword length;
-	//byte segm;				//how many 64kb segment blocks it takes up if there is many data!
+	word segm;				//how many 64kb segment blocks it takes up if there is many data!
 	unsigned	attributes;
 	memptr		*useptr;	// pointer to the segment start
 	struct mmblockstruct huge *next;
@@ -133,7 +133,6 @@ typedef struct
 {
 	memptr bufferseg;
 	boolean		mmstarted, bombonerror, mmerror;
-	word segm;
 	void huge	*farheap;
 	void		*nearheap;
 	//byte		EMS_status;

@@ -372,6 +372,7 @@ char	str[80];//,str2[10];
 	}
 	return 0;
 */
+	return 0;
 }
 
 //==========================================================================
@@ -499,7 +500,7 @@ void MML_ShutdownXMS(mminfo_t *mm)
 void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 {
 	mmblocktype huge *scan,huge *last;
-	word		segm;
+	//word		segm;
 	dword	oldend;
 	dword		extra;
 
@@ -518,13 +519,13 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 	//find out how many blocks it spans!
 	if(seglength>0xffffu)
 	{
-//		segm=seglength/0x4000u;
-		segm=seglength/0xffffu;
+//		scan->segm=seglength/0x4000u;
+		scan->segm=seglength/0xffffu;
 	}
-	else segm=1;
+	else scan->segm=1;
 
 	//++++emsver stuff!
-	if(segm>1/*extra>0xfffflu*/)
+	if(scan->segm>1/*extra>0xfffflu*/)
 	{
 		/*__asm
 		{
@@ -550,7 +551,7 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 	oldend = scan->start + scan->length;
 	extra = oldend - (segstart+seglength);
 
-printf("segm=%u	", segm);
+printf("segm=%u	", scan->segm);
 printf("ex=%lu	", extra);
 printf("start+seglen=%lu	", segstart+seglength);
 printf("len=%u	", scan->length);
