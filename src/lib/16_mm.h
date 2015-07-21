@@ -54,7 +54,7 @@
 #define	EMS_GETPAGES	0x42
 #define	EMS_ALLOCPAGES	0x43
 #define	EMS_MAPPAGE		0x44
-#define	EMS_MAPXPAGE		0x50
+#define	EMS_MAPXPAGE		0x5000
 #define	EMS_FREEPAGES	0x45
 #define	EMS_VERSION		0x46
 
@@ -166,8 +166,8 @@ typedef struct
 boolean MML_CheckForEMS(void);
 byte MML_SetupEMS(mminfo_t *mm);
 void MML_ShutdownEMS(mminfo_t *mm);
-byte MM_MapEMS(mminfo_t *mm);
-byte MM_MapXEMS(mminfo_t *mm);
+byte MM_MapEMS(mminfo_t *mm, mminfotype *mmi);
+byte MM_MapXEMS(mminfo_t *mm, mminfotype *mmi);
 boolean MML_CheckForXMS(mminfo_t *mm);
 void MML_SetupXMS(mminfo_t *mm, mminfotype *mmi);
 void MML_ShutdownXMS(mminfo_t *mm);

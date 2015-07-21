@@ -264,10 +264,10 @@ void MML_ShutdownEMS(mminfo_t *mm)
 ====================
 */
 
-byte MM_MapEMS(mminfo_t *mm)
+byte MM_MapEMS(mminfo_t *mm, mminfotype *mmi)
 {
-	char	str[80];//,str2[10];
-	unsigned	/*err, */EMShandle;
+	char	str[80];
+	unsigned	EMShandle;
 	byte err;
 	boolean	errorflag=false;
 	int	i;
@@ -302,10 +302,11 @@ byte MM_MapEMS(mminfo_t *mm)
 			return err;
 		}
 	}
+	mmi->EMSmem = (i)*0x4000lu;
 	return 0;
 }
 
-byte MM_MapXEMS(mminfo_t *mm)
+byte MM_MapXEMS(mminfo_t *mm, mminfotype *mmi)
 {
 
 //SUB EMS.MapXPages (PhysicalStart, LogicalStart, NumPages, Handle)
@@ -330,9 +331,9 @@ byte MM_MapXEMS(mminfo_t *mm)
 //	EMS.Error = (Regs.ax AND &HFF00&) \ &H100  //Store the status code
 
 //END SUB
-	char	str[80];//,str2[10];
-	unsigned	EMShandle;
+	char	str[80];
 	byte err;
+	word	EMShandle;
 	boolean	errorflag=false;
 	int	i;
 	EMShandle=mm->EMShandle;
@@ -344,7 +345,7 @@ byte MM_MapXEMS(mminfo_t *mm)
 	{
 		__asm
 		{
-			mov	ah,EMS_MAPXPAGE
+			mov	ax,EMS_MAPXPAGE
 			mov	cx,[i]			// logical page
 			mov	al,bl			// physical page
 			mov	dx,[EMShandle]	// handle
@@ -369,6 +370,7 @@ byte MM_MapXEMS(mminfo_t *mm)
 			return err;
 		}
 	}
+	mmi->EMSmem = (i)*0x4000lu;
 	return 0;
 }
 
@@ -698,7 +700,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 // detect EMS and allocate up to 64K at page frame
 //
-	printf("EMS!\n\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+	printf("EMS1\n\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	mmi->EMSmem = 0;
 	for(i = 1;i < __argc;i++)
 	{
@@ -708,16 +710,17 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	if(MML_CheckForEMS())
 	{
-printf("EMS1\n");
-		MML_SetupEMS(mm);					// allocate space
 printf("EMS2\n");
+		MML_SetupEMS(mm);					// allocate space
+printf("EMS3\n");
 		printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 		//TODO: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!
 		MML_UseSpace(mm->EMSpageframe,(MAPPAGES)*0x4000lu, mm);
-printf("EMS3\n");
-		MM_MapEMS(mm);					// map in used pages
 printf("EMS4\n");
-		mmi->EMSmem = (MAPPAGES)*0x4000lu;
+		if(mm->EMSVer<0x40)
+			MM_MapEMS(mm, mmi);					// map in used pages
+		else
+			MM_MapXEMS(mm, mmi);					// map in used pages
 	}
 
 //
