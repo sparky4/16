@@ -135,10 +135,10 @@ boolean MML_CheckForEMS(void)
 =======================
 */
 
-unsigned MML_SetupEMS(mminfo_t *mm)
+byte MML_SetupEMS(mminfo_t *mm)
 {
-	char	str[80],str2[10];
-	unsigned	err;
+	char	str[80];//,str2[10];
+	byte	err;
 	boolean errorflag=false;
 	union REGS CPURegs;
 
@@ -199,6 +199,7 @@ getpages:
 		mov	[EMShandle],dx
 		jmp End
 error:
+		mov	err,ah
 		mov	errorflag,1
 		jmp End
 noEMS:
@@ -206,11 +207,12 @@ End:
 	}
 	if(errorflag==true)
 	{
-		err = CPURegs.h.ah;
+		//err = CPURegs.h.ah;
 		strcpy(str,"MML_SetupEMS: EMS error 0x");
-		itoa(err,str2,16);
-		strcpy(str,str2);
-		printf("%s\n",str);
+		//itoa(err,str2,16);
+		//strcat(str,&err);
+		//printf("%s\n",str);
+		printf("%s%x\n",str,err);
 		return err;
 	}
 	mm->totalEMSpages=totalEMSpages;
@@ -263,10 +265,11 @@ void MML_ShutdownEMS(mminfo_t *mm)
 ====================
 */
 
-unsigned MM_MapEMS(mminfo_t *mm)
+byte MM_MapEMS(mminfo_t *mm)
 {
-	char	str[80],str2[10];
-	unsigned	err, EMShandle;
+	char	str[80];//,str2[10];
+	unsigned	/*err, */EMShandle;
+	byte err;
 	boolean	errorflag=false;
 	int	i;
 	union REGS CPURegs;
@@ -285,16 +288,18 @@ unsigned MM_MapEMS(mminfo_t *mm)
 			jnz	error
 			jmp End
 			error:
+			mov	err,ah
 			mov	errorflag,1
 			End:
 		}
 		if(errorflag==true)
 		{
-			err = CPURegs.h.ah;
+			//err = CPURegs.h.ah;
 			strcpy(str,"MM_MapEMS: EMS error 0x");
-			itoa(err,str2,16);
-			strcat(str,str2);
-			printf("%s\n",str);
+			//itoa(err,str2,16);
+			//strcat(str,&err);
+			//printf("%s\n",str);
+			printf("%s%x\n",str, err);
 			//printf("FACK! %x\n", err);
 			return err;
 		}
