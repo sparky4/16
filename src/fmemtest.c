@@ -62,4 +62,5 @@ main(int argc, char *argv[])
 	//printf("es=%u\n", esw);
 	printf("pee=%Fp\n", pee);
 	printf("npee=%Fp\n", npee);
+	printf("&main()=%Fp\n", *argv[0]);
 }
