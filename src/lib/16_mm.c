@@ -705,7 +705,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 //----	length=farcoreleft();
 	//printf("		farheap making!\n");
-	_fheapgrow();
+	/*_fheapgrow();
 	length=0xff;//UL*4UL;//_memavl();
 	start = mm->farheap = halloc(length, sizeof(byte));
 	//start = mm->farheap = _fmalloc(length);
@@ -713,8 +713,8 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	length -= SAVEFARHEAP;
 	seglength = length / 16;			// now in paragraphs
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
-	MML_UseSpace(segstart,seglength, mm);
-	mmi->farheap = length;
+	MML_UseSpace(segstart,seglength, mm);*/
+	mmi->farheap = 0;//length;
 	mmi->mainmem = mmi->nearheap + mmi->farheap;
 	/*switch( _fheapchk() ) {
 		case _HEAPOK:

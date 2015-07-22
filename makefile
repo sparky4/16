@@ -29,7 +29,7 @@ DOSLIBOBJ = adlib.$(OBJ) midi.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OB
 16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ)
 
-all: 16.exe mmtest.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe sountest.exe tsthimem.exe inputest.exe
+all: 16.exe exmmtest.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe sountest.exe tsthimem.exe inputest.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe
 
 #
@@ -96,8 +96,8 @@ maptest.exe: maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
 fmemtest.exe: fmemtest.$(OBJ) 16.lib
 	wcl $(FLAGS) fmemtest.$(OBJ) 16.lib
 
-mmtest.exe: mmtest.$(OBJ) 16.lib
-	wcl $(FLAGS) mmtest.$(OBJ) 16.lib
+exmmtest.exe: exmmtest.$(OBJ) 16.lib
+	wcl $(FLAGS) exmmtest.$(OBJ) 16.lib
 
 #
 #executable's objects
@@ -159,8 +159,8 @@ testemm0.$(OBJ): $(SRC)testemm0.c
 tsthimem.$(OBJ): $(SRC)tsthimem.c
 	wcl $(FLAGS) -c $(SRC)tsthimem.c
 
-mmtest.$(OBJ): $(SRC)mmtest.c
-	wcl $(FLAGS) -c $(SRC)mmtest.c
+exmmtest.$(OBJ): $(SRC)exmmtest.c
+	wcl $(FLAGS) -c $(SRC)exmmtest.c
 
 #
 #non executable objects libraries

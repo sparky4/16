@@ -23,14 +23,14 @@
 	exmm test
 */
 #include <stdio.h>
-#include <dos.h>
+#include <bios.h>
 
 #include "src/lib/16_head.h"
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 //#include "src/lib/modex16.h"
 
-#define FILERL
+//#define FILERL
 //#define FILEINIT
 
 void
@@ -114,4 +114,5 @@ main(int argc, char *argv[])
 	if(baka) printf("\nyay!\n");
 	else printf("\npoo!\n");
 #endif
+	printf("_bios_memsize=%u\n", _bios_memsize());
 }
