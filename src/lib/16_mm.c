@@ -47,6 +47,10 @@ Open Watcom port by sparky4
 
 */
 #include "src/lib/16_mm.h"
+#pragma hdrstop
+
+#pragma warn -pro
+#pragma warn -use
 
 /*
 =============================================================================
