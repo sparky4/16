@@ -634,10 +634,10 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 {
 	int i;
 	dword length,seglength;
+	//dword length; word seglength;
 	void huge	*start;
-	unsigned	segstart,endfree;
+	word	segstart;//,endfree;
 
-	//printf("mmi->segu=%Fp\n", (mmi->segu));
 	if(mm->mmstarted)
 		MM_Shutdown(mm);
 
@@ -647,7 +647,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 // set up the linked list (everything in the free list;
 //
-	printf("		linked list making!\n");
+	//printf("		linked list making!\n");
 	mm->mmhead = NULL;
 	mm->mmfree = &(mm->mmblocks[0]);
 	for(i=0;i<MAXBLOCKS-1;i++)
@@ -655,12 +655,11 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 		mm->mmblocks[i].next = &(mm->mmblocks[i+1]);
 	}
 	mm->mmblocks[i].next = NULL;
-	//printf("mmi->segu=%Fp\n", (mmi->segu));
 
 //
 // locked block of all memory until we punch out free space
 //
-	printf("		newblock making!\n");
+	//printf("		newblock making!\n");
 	MM_GetNewBlock(mm);
 	mm->mmhead = mm->mmnew;				// this will allways be the first node
 	mm->mmnew->start = 0;
@@ -668,7 +667,6 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	mm->mmnew->attributes = LOCKBIT;
 	mm->mmnew->next = NULL;
 	mm->mmrover = mm->mmhead;
-	//printf("mmi->segu=%Fp\n", (mmi->segu));
 
 //
 // get all available near conventional memory segments
@@ -676,14 +674,15 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	printf("		nearheap making!\n");
 //----	length=coreleft();
 	_nheapgrow();
-	length=GetFreeSize();//_memmax();
-	start = /*(void huge *)*/(mm->nearheap = _nmalloc(length));
+	length=_memmax();
+	start = (void huge *)(mm->nearheap = malloc(length));
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;
 	seglength = length / 16;			// now in paragraphs
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->nearheap = length;
+	printf("start=%Fp	segstart=%x	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
 	/*switch( _nheapchk() ) {
 		case _HEAPOK:
 			printf( "OK - nearheap is good\n" );
@@ -706,7 +705,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //----	length=farcoreleft();
 	printf("		farheap making!\n");
 	_fheapgrow();
-	length=_memavl();//0xffffUL*4UL;
+	length=0xffffUL*4UL;
 	start = mm->farheap = halloc(length, sizeof(byte));
 	//start = mm->farheap = _fmalloc(length);
 	length -= 16-(FP_OFF(start)&15);
@@ -716,6 +715,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->farheap = length;
 	mmi->mainmem = mmi->nearheap + mmi->farheap;
+	printf("start=%Fp	segstart=%x	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
 	/*switch( _fheapchk() ) {
 		case _HEAPOK:
 			printf( "OK - farheap is good\n" );

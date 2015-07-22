@@ -92,8 +92,6 @@ typedef struct
 {
 	dword	nearheap,farheap,EMSmem,XMSmem,mainmem;
 	//__segment segu;
-	//word segu;
-//
 } mminfotype;
 
 //==========================================================================
@@ -118,15 +116,12 @@ extern void		(* XMSaddr) (void);		// far pointer to XMS driver
 #define BASEATTRIBUTES	0	// unlocked, non purgable
 
 #define MAXUMBS		12
-#define MAPPAGES		4//mm->EMSpagesmapped
+#define MAPPAGES		mm->EMSpagesmapped
 
 typedef struct mmblockstruct
 {
-	word	start;//,length;
-	//dword	start,length;
-	//word	start;
-	dword length;
-	//byte segm;				//how many 64kb segment blocks it takes up if there is many data!
+	//word	start,length;
+	word	start;	dword length;
 	unsigned	attributes;
 	memptr		*useptr;	// pointer to the segment start
 	struct mmblockstruct huge *next;
