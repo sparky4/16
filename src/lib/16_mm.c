@@ -670,7 +670,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	//_nheapgrow();
 	length=_memmax();
 	//printf("	%Fp\n", mmi->segu);
-	start = (void huge *)(mm->nearheap = _nmalloc(length));
+	start = (void huge *)(mm->nearheap = malloc(length));
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;
 	seglength = length / 16;			// now in paragraphs

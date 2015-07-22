@@ -36,8 +36,8 @@
 #endif
 
 
-#define SAVENEARHEAP	0x400		// space to leave in data segment
-#define SAVEFARHEAP	0//x4000			// space to leave in far heap
+#define SAVENEARHEAP	0x200		// space to leave in data segment
+#define SAVEFARHEAP	0			// space to leave in far heap
 
 #define	BUFFERSIZE		0x1000		// miscelanious, allways available buffer
 
@@ -86,7 +86,7 @@
 //==========================================================================
 //I hope this is correct!
 //__segment                seg;
-typedef void __based(__self) *memptr; //__based(seg) * memptr;
+typedef void __based(__self) * memptr; //__based(seg) * memptr;
 
 typedef struct
 {

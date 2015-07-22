@@ -12,8 +12,8 @@ TARGET_OS = dos
 #-zk0 = kanji support~
 #-zkl = current codepage
 
-DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1# -zm
-CFLAGS=-zk0 -wo -x -mc -zu -k32768#16384# -zdp# -zp16 -zq
+DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 -zm
+CFLAGS=-zk0 -wo -x -mc -zu# -k16384# -zdp# -zp16 -zq
 OFLAGS=-ot -ox -ob -oh -or# -om -ol -ol+
 FLAGS=-0 -d2 -lr $(OFLAGS) $(CFLAGS) $(DFLAGS)
 SRC=src$(DIRSEP)
@@ -28,7 +28,7 @@ DOSLIBOBJ = adlib.$(OBJ) midi.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OB
 16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ)
 
-all: 16.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe exmmtest.exe fontgfx.exe sountest.exe tsthimem.exe inputest.exe
+all: 16.exe exmmtest.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe sountest.exe tsthimem.exe inputest.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe
 
 #
@@ -62,17 +62,17 @@ inputest.exe: inputest.$(OBJ) 16.lib
 sountest.exe: sountest.$(OBJ) 16.lib
 	wcl $(FLAGS) sountest.$(OBJ) 16.lib
 
-miditest.exe: miditest.$(OBJ) 16.lib
-	wcl $(FLAGS) miditest.$(OBJ) 16.lib
+miditest.exe: miditest.$(OBJ) 16.lib $(DOSLIBEXMMOBJ)
+	wcl $(FLAGS) miditest.$(OBJ) 16.lib $(DOSLIBEXMMOBJ)
 
-tsthimem.exe: tsthimem.$(OBJ) 16.lib
-	wcl $(FLAGS) tsthimem.$(OBJ) 16.lib
+tsthimem.exe: tsthimem.$(OBJ) 16.lib $(DOSLIBEXMMOBJ)
+	wcl $(FLAGS) tsthimem.$(OBJ) 16.lib $(DOSLIBEXMMOBJ)
 
-testemm.exe: testemm.$(OBJ) 16.lib
-	wcl $(FLAGS) testemm.$(OBJ) 16.lib
+testemm.exe: testemm.$(OBJ) 16.lib $(DOSLIBEXMMOBJ)
+	wcl $(FLAGS) testemm.$(OBJ) 16.lib $(DOSLIBEXMMOBJ)
 
-testemm0.exe: testemm0.$(OBJ) 16.lib
-	wcl $(FLAGS) testemm0.$(OBJ) 16.lib
+testemm0.exe: testemm0.$(OBJ) 16.lib $(DOSLIBEXMMOBJ)
+	wcl $(FLAGS) testemm0.$(OBJ) 16.lib $(DOSLIBEXMMOBJ)
 
 pcxtest.exe: pcxtest.$(OBJ) gfx.lib
 	wcl $(FLAGS) pcxtest.$(OBJ) gfx.lib
@@ -170,8 +170,8 @@ exmmtest.$(OBJ): $(SRC)exmmtest.c
 gfx.lib: $(GFXLIBOBJS)
 	wlib -b gfx.lib $(GFXLIBOBJS)
 
-doslib.lib: $(DOSLIBOBJ) $(DOSLIBEXMMOBJ)# $(SRCLIB)cpu.lib
-	wlib -b doslib.lib $(DOSLIBOBJ) $(DOSLIBEXMMOBJ)# $(SRCLIB)cpu.lib
+doslib.lib: $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
+	wlib -b doslib.lib $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
 
 modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c
 	wcl $(FLAGS) -c $(SRCLIB)modex16.c
