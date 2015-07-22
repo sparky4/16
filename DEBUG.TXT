@@ -1,4 +1,4 @@
-Seg:0	Size:105968	Owner:0x46f6
-Seg:19df	Size:4096	Owner:0x56f8
-Seg:216f	Size:8592	Owner:0x2ef7
-Seg:6386	Size:640912	Owner:0x8003
+Seg:0	Size:105952	Owner:0xfc46
+Seg:19de	Size:4096	Owner:0x56f8
+Seg:218e	Size:8080	Owner:0x46f6
+Seg:6385	Size:640928	Owner:0x2ef7

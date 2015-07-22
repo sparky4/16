@@ -673,7 +673,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 	printf("		nearheap making!\n");
 //----	length=coreleft();
-	_nheapgrow();
+	_heapgrow();
 	length=_memmax();
 	start = (void huge *)(mm->nearheap = malloc(length));
 	length -= 16-(FP_OFF(start)&15);

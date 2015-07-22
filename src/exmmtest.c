@@ -34,8 +34,9 @@
 #pragma warn -pro
 #pragma warn -use
 
+//file load or read definition
 //#define FILERL
-//#define FILEINIT
+//#define FILEREAD
 
 void
 main(int argc, char *argv[])
@@ -89,7 +90,7 @@ main(int argc, char *argv[])
 	printf("&segu=%p\n", (segu));
 	//printf("mmi.segu=%p\n", (mmi.segu));
 #ifdef FILERL
-#ifdef FILEINIT
+#ifdef FILEREAD
 	printf("		read\n");
 	if(CA_ReadFile(bakapee, &bigbuffer, &mm))
 #else
