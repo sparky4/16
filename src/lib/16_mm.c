@@ -637,7 +637,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	void huge	*start;
 	unsigned	segstart,endfree;
 
-	printf("mmi->segu=%Fp\n", (mmi->segu));
+	//printf("mmi->segu=%Fp\n", (mmi->segu));
 	if(mm->mmstarted)
 		MM_Shutdown(mm);
 
@@ -655,7 +655,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 		mm->mmblocks[i].next = &(mm->mmblocks[i+1]);
 	}
 	mm->mmblocks[i].next = NULL;
-	printf("mmi->segu=%Fp\n", (mmi->segu));
+	//printf("mmi->segu=%Fp\n", (mmi->segu));
 
 //
 // locked block of all memory until we punch out free space
@@ -668,7 +668,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	mm->mmnew->attributes = LOCKBIT;
 	mm->mmnew->next = NULL;
 	mm->mmrover = mm->mmhead;
-	printf("mmi->segu=%Fp\n", (mmi->segu));
+	//printf("mmi->segu=%Fp\n", (mmi->segu));
 
 //
 // get all available near conventional memory segments
@@ -677,7 +677,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //----	length=coreleft();
 	//_nheapgrow();
 	length=_memmax();
-	start = /*(void *)*/(mm->nearheap = _nmalloc(length));
+	start = (void huge *)(mm->nearheap = _nmalloc(length));
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;
 	seglength = length / 16;			// now in paragraphs
@@ -705,8 +705,8 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 //----	length=farcoreleft();
 	//printf("		farheap making!\n");
-	//_fheapgrow();
-	length=0xffffUL*4UL;//_memavl();
+	_fheapgrow();
+	length=0xff;//UL*4UL;//_memavl();
 	start = mm->farheap = halloc(length, sizeof(byte));
 	//start = mm->farheap = _fmalloc(length);
 	length -= 16-(FP_OFF(start)&15);

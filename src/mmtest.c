@@ -43,11 +43,11 @@ main(int argc, char *argv[])
 	word baka;
 	//static page_t screen;
 
-	mmi.segu=FP_SEG(segu);
+	//mmi.segu=FP_SEG(segu);
 
 	printf("&main()=%Fp\n", *argv[0]);
 	printf("&segu=%p\n", (segu));
-	printf("mmi.segu=%p\n", (mmi.segu));
+	//printf("mmi.segu=%p\n", (mmi.segu));
 
 	bakapee = _nmalloc(64);
 //	memset(bakapee, 0, 64);
@@ -77,7 +77,7 @@ main(int argc, char *argv[])
 	}*/
 	printf("&main()=%Fp\n", *argv[0]);
 	printf("&segu=%p\n", (segu));
-	printf("mmi.segu=%p\n", (mmi.segu));
+	//printf("mmi.segu=%p\n", (mmi.segu));
 #ifdef FILERL
 #ifdef FILEINIT
 	printf("		read\n");
@@ -99,12 +99,14 @@ main(int argc, char *argv[])
 	//++++modexEnter();
 	//++++modexShowPage(&screen);
 	MM_ShowMemory(/*&screen, */&mm);
-	getch();
+	//getch();
 	MM_DumpData(&mm);
 	//++++modexLeave();
 	MM_Report(&mm, &mmi);
 	printf("		stop!\n");
+#ifdef FILERL
 	MM_FreePtr(&bigbuffer, &mm);
+#endif
 	MM_Shutdown(&mm);
 	printf("		done!\n");
 #ifdef FILERL

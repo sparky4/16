@@ -12,10 +12,11 @@ TARGET_OS = dos
 #-zk0 = kanji support~
 #-zkl = current codepage
 
-DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 -zm
-CFLAGS=-zk0 -wo -x -mc -zu -k32768#16384# -zdp# -zp16 -zq
-OFLAGS=-ot -ox -ob -oh -or# -om -ol -ol+
-FLAGS=-0 -d2 -lr $(OFLAGS) $(CFLAGS) $(DFLAGS)
+ZFLAGS=-zk0 -zc# -zu -zm# -zdp# -zp16 -zq
+DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1
+CFLAGS=-wo -x -mc -wo -k32768#16384#
+OFLAGS=-ot -ox -ob -oh -or -om -ol# -ol+
+FLAGS=-0 -d2 -lr $(OFLAGS) $(CFLAGS) $(DFLAGS) $(ZFLAGS)
 SRC=src$(DIRSEP)
 SRCLIB=$(SRC)lib$(DIRSEP)
 JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)

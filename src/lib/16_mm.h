@@ -37,7 +37,7 @@
 
 
 #define SAVENEARHEAP	0x200		// space to leave in data segment
-#define SAVEFARHEAP	0			// space to leave in far heap
+#define SAVEFARHEAP	0//x2000			// space to leave in far heap
 
 #define	BUFFERSIZE		0x1000		// miscelanious, allways available buffer
 
@@ -92,7 +92,7 @@ typedef struct
 {
 	dword	nearheap,farheap,EMSmem,XMSmem,mainmem;
 	//__segment segu;
-	word segu;
+	//word segu;
 //
 } mminfotype;
 
