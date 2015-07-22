@@ -151,12 +151,14 @@ extern	int			profilehandle,debughandle;
 typedef union REGPACK	regs_t;
 typedef	enum	{false,true}	boolean;
 
+/* local function */
 void wait(clock_t wait);
 void* AllocateLargestFreeBlock(size_t* Size);
 size_t GetFreeSize(void);
+void far *AllocateLargestFarFreeBlock(size_t far* Size);
+size_t GetFarFreeSize(void);
 long int filesize(FILE *fp);
 int US_CheckParm(char *parm,char **strings);
-//void Quit(char *error, ...);
 
 extern void CA_OpenDebug (void);
 extern void CA_CloseDebug (void);

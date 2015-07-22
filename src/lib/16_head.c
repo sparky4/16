@@ -22,12 +22,6 @@
 
 #include "src/lib/16_head.h"
 
-/* local function */
-void wait(clock_t wait);
-void* AllocateLargestFreeBlock(size_t* Size);
-size_t GetFreeSize(void);
-long int filesize(FILE *fp);
-
 /* Function: Wait **********************************************************
 *
 *     Parameters:    wait - time in microseconds
@@ -115,6 +109,69 @@ size_t GetFreeSize(void)
   }
 
   return total;
+}
+
+void far* AllocateLargestFarFreeBlock(size_t far* Size)
+{
+	size_t s0, s1;
+	void far* p;
+
+	s0 = ~(size_t)0 ^ (~(size_t)0 >> 1);
+	while (s0 && (p = _fmalloc(s0)) == NULL)
+		s0 >>= 1;
+
+	if (p)
+		_ffree(p);
+
+	s1 = s0 >> 1;
+	while (s1)
+	{
+		if ((p = _fmalloc(s0 + s1)) != NULL)
+		{
+			s0 += s1;
+			_ffree(p);
+		}
+	s1 >>= 1;
+	}
+	while (s0 && (p = _fmalloc(s0)) == NULL)
+		s0 ^= s0 & -s0;
+
+	*Size = s0;
+	return p;
+}
+
+size_t GetFarFreeSize(void)
+{
+	size_t total = 0;
+	void far* pFirst = NULL;
+	void far* pLast = NULL;
+	for(;;)
+	{
+		size_t largest;
+		void far* p = AllocateLargestFarFreeBlock(&largest);
+		if (largest < sizeof(void far*))
+		{
+			if (p != NULL)
+			_ffree(p);
+			break;
+		}
+		*(void far* far*)p = NULL;
+		total += largest;
+		if (pFirst == NULL)
+			pFirst = p;
+
+		if (pLast != NULL)
+			*(void far* far*)pLast = p;
+		pLast = p;
+	}
+
+	while (pFirst != NULL)
+	{
+		void far* p = *(void far* far*)pFirst;
+		_ffree(pFirst);
+		pFirst = p;
+	}
+	return total;
 }
 
 long int

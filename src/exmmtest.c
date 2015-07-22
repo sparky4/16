@@ -35,8 +35,8 @@
 #pragma warn -use
 
 //file load or read definition
-//#define FILERL
-//#define FILEREAD
+#define FILERL
+#define FILEREAD
 
 void
 main(int argc, char *argv[])
@@ -44,8 +44,9 @@ main(int argc, char *argv[])
 	mminfo_t mm; mminfotype mmi;
 	__segment segu;
 #ifdef FILERL
-	memptr	bigbuffer;
-	static char *bakapee;
+	memptr bigbuffer;
+	char *bakapee;
+//	int bakapeehandle;
 	word baka;
 #endif
 	//static page_t screen;
@@ -77,6 +78,9 @@ main(int argc, char *argv[])
 
 	printf("main()=%Fp	start MM\n", *argv[0]);
 	MM_Startup(&mm, &mmi);
+	//PM_Startup();
+	//PM_UnlockMainMem();
+	CA_Startup();
 	printf("		done!\n");
 	/*if(FP_SEG(*argv[0])==0)
 	{
@@ -90,6 +94,9 @@ main(int argc, char *argv[])
 	printf("&segu=%p\n", (segu));
 	//printf("mmi.segu=%p\n", (mmi.segu));
 #ifdef FILERL
+//	bakapeehandle = open(bakapee,O_RDONLY | O_BINARY, S_IREAD);
+	printf("size of big buffer~=%lu\n", _bmsize(segu, bigbuffer));
+//	if(CA_FarRead(bakapeehandle,(void far *)&bigbuffer,sizeof(bigbuffer),&mm))
 #ifdef FILEREAD
 	printf("		read\n");
 	if(CA_ReadFile(bakapee, &bigbuffer, &mm))
@@ -100,6 +107,7 @@ main(int argc, char *argv[])
 		baka=1;
 	else
 		baka=0;
+//	close(bakapeehandle);
 	//hmm functions in cache system use the buffered stuff
 	printf("size of big buffer~=%lu\n", _bmsize(segu, bigbuffer));
 #endif
@@ -118,6 +126,8 @@ main(int argc, char *argv[])
 #ifdef FILERL
 	MM_FreePtr(&bigbuffer, &mm);
 #endif
+	//PM_Shutdown();
+	CA_Shutdown();
 	MM_Shutdown(&mm);
 	printf("		done!\n");
 #ifdef FILERL

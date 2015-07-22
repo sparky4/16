@@ -175,8 +175,8 @@ long GRFILEPOS(int c)
 */
 void CA_OpenDebug(void)
 {
-	unlink("debug.txt");
-	debughandle = open("debug.txt", O_CREAT | O_WRONLY | O_TEXT);
+	unlink("debug.16");
+	debughandle = open("debug.16", O_CREAT | O_WRONLY | O_TEXT);
 }
 
 void CA_CloseDebug(void)
@@ -331,6 +331,7 @@ boolean CA_ReadFile(char *filename, memptr *ptr, mminfo_t *mm)
 {
 	int handle;
 	dword size;
+	//long size;
 
 	if((handle = open(filename,O_RDONLY | O_BINARY, S_IREAD)) == -1)
 		return false;
@@ -360,7 +361,8 @@ boolean CA_ReadFile(char *filename, memptr *ptr, mminfo_t *mm)
 boolean CA_LoadFile(char *filename, memptr *ptr, mminfo_t *mm, mminfotype *mmi)
 {
 	int handle;
-	long size;
+	dword size;
+	//long size;
 
 	if((handle = open(filename,O_RDONLY | O_BINARY, S_IREAD)) == -1)
 		return false;
@@ -1045,8 +1047,8 @@ asm	mov	ds,ax
 void CA_Startup(void)
 {
 #ifdef PROFILE
-	unlink("PROFILE.TXT");
-	profilehandle = open("PROFILE.TXT", O_CREAT | O_WRONLY | O_TEXT);
+	unlink("profile.16");
+	profilehandle = open("profile.16", O_CREAT | O_WRONLY | O_TEXT);
 #endif
 /*++++
 // MDM begin - (GAMERS EDGE)

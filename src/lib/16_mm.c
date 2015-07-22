@@ -671,10 +671,10 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 // get all available near conventional memory segments
 //
-	printf("		nearheap making!\n");
 //----	length=coreleft();
+	printf("		nearheap making!\n");
 	_heapgrow();
-	length=_memmax();
+	length=_memmax();//(dword)GetFreeSize();
 	start = (void huge *)(mm->nearheap = malloc(length));
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;
@@ -682,21 +682,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->nearheap = length;
-	printf("start=%Fp	segstart=%x	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
-	/*switch( _nheapchk() ) {
-		case _HEAPOK:
-			printf( "OK - nearheap is good\n" );
-		break;
-		case _HEAPEMPTY:
-			printf( "OK - nearheap is empty\n" );
-		break;
-		case _HEAPBADBEGIN:
-			printf( "ERROR - nearheap is damaged\n" );
-		break;
-		case _HEAPBADNODE:
-			printf( "ERROR - bad node in nearheap\n" );
-		break;
-	}*/
+	printf("start=%FP	segstart=%X	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
 	printf("		near heap ok!\n");
 
 //
@@ -705,37 +691,26 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //----	length=farcoreleft();
 	printf("		farheap making!\n");
 	_fheapgrow();
-	length=0xffffUL*4UL;
-	start = mm->farheap = halloc(length, sizeof(byte));
-	//start = mm->farheap = _fmalloc(length);
+	length=(dword)GetFarFreeSize();//0xffffUL*4UL;
+	//start = mm->farheap = halloc(length, 1);
+	start = mm->farheap = _fmalloc(length);
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVEFARHEAP;
 	seglength = length / 16;			// now in paragraphs
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->farheap = length;
-	mmi->mainmem = mmi->nearheap + mmi->farheap;
-	printf("start=%Fp	segstart=%x	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
-	/*switch( _fheapchk() ) {
-		case _HEAPOK:
-			printf( "OK - farheap is good\n" );
-		break;
-		case _HEAPEMPTY:
-			printf( "OK - farheap is empty\n" );
-		break;
-		case _HEAPBADBEGIN:
-			printf( "ERROR - farheap is damaged\n" );
-		break;
-		case _HEAPBADNODE:
-			printf( "ERROR - bad node in farheap\n" );
-		break;
-	}*/
+	printf("start=%FP	segstart=%X	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
 	printf("		far heap ok!\n");
+
+	mmi->mainmem = mmi->nearheap + mmi->farheap;
+
+	getch();
 
 //
 // detect EMS and allocate up to 64K at page frame
 //
-/*printf("		EMS1\n");
+printf("		EMS1\n");
 printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	mmi->EMSmem = 0;
 	for(i = 1;i < __argc;i++)
@@ -764,7 +739,7 @@ printf("		EMS4\n");
 //
 // detect XMS and get upper memory blocks
 //
-emsskip:
+emsskip:/*
 	mmi->XMSmem = 0;
 	for(i = 1;i < __argc;i++)
 	{
@@ -784,8 +759,8 @@ printf("		XMS!\n");
 //
 xmsskip:*/
 /*mmi->nearheap = 0;
-mmi->farheap = 0;*/
-mmi->EMSmem = 0;
+mmi->farheap = 0;
+mmi->EMSmem = 0;*/
 mmi->XMSmem = 0;
 	mm->mmrover = mm->mmhead;		// start looking for space after low block
 
@@ -809,12 +784,8 @@ void MM_Shutdown(mminfo_t *mm)
 	if(!(mm->mmstarted))
 		return;
 
-	_ffree(mm->farheap);
-	printf("		far freed\n");
-	free(mm->nearheap);
-	printf("		near freed\n");
-	//hfree(mm->hugeheap);
-	//printf("huge freed\n");
+	_ffree(mm->farheap);	printf("		far freed\n");
+	free(mm->nearheap);	printf("		near freed\n");
 	if(MML_CheckForEMS()){ MML_ShutdownEMS(mm); printf("		EMS freed\n"); }
 	if(MML_CheckForXMS(mm)){ MML_ShutdownXMS(mm); printf("		XMS freed\n"); }
 }
@@ -914,7 +885,10 @@ void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi)
 	}
 
 	if (mm->bombonerror)
+	{
 		printf(OUT_OF_MEM_MSG,(size-mmi->nearheap));
+		exit(-5);
+	}
 	else
 		mm->mmerror = true;
 }
@@ -1278,9 +1252,9 @@ void MM_DumpData(mminfo_t *mm)
 
 
 	//++++free(mm->nearheap);
-	dumpfile = fopen ("mmdump.txt","w");
+	dumpfile = fopen ("mmdump.16","w");
 	if (!dumpfile){
-		printf("MM_DumpData: Couldn't open MMDUMP.TXT!\n");
+		printf("MM_DumpData: Couldn't open MMDUMP.16!\n");
 		return;
 	}
 
@@ -1321,7 +1295,7 @@ void MM_DumpData(mminfo_t *mm)
 	} while (lowest != 0xffff);
 
 	fclose(dumpfile);
-	printf("MMDUMP.TXT created.\n");
+	printf("MMDUMP.16 created.\n");
 }
 
 //==========================================================================
@@ -1351,8 +1325,8 @@ dword MM_UnusedMemory(mminfo_t *mm)
 		scan = scan->next;
 	}
 
-	return free*16l;
-//	return free;
+//	return free*16l;
+	return free;
 }
 
 //==========================================================================
@@ -1384,8 +1358,8 @@ dword MM_TotalFree(mminfo_t *mm)
 		scan = scan->next;
 	}
 
-	return free*16l;
-//	return free;
+//	return free*16l;
+	return free;
 }
 
 //==========================================================================

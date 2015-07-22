@@ -4,7 +4,7 @@
 //	Primary coder: Jason Blochowiak
 //
 
-#include "ID_HEADS.H"
+#include "src/lib/16_pm.h"
 #pragma hdrstop
 
 //	Main Mem specific variables
@@ -57,14 +57,18 @@ static	char		*ParmStrings[] = {"nomain","noems","noxms",nil};
 void
 PML_MapEMS(word logical,word physical)
 {
-	_AL = physical;
-	_BX = logical;
-	_DX = EMSHandle;
-	_AH = EMS_MAPPAGE;
-asm	int	EMS_INT
+	union REGS CPURegs;
+	CPURegs.h.al = physical;
+	CPURegs.x.bx = logical;
+	CPURegs.x.dx = EMSHandle;
+	CPURegs.h.ah = EMS_MAPPAGE;
+	__asm
+	{
+		int	EMS_INT
+	}
 
-	if (_AH)
-		Quit("PML_MapEMS: Page mapping failed");
+	if(CPURegs.h.ah)
+		printf("PML_MapEMS: Page mapping failed\n");
 }
 
 //
@@ -177,7 +181,7 @@ PML_ShutdownEMS(void)
 	asm	mov	dx,[EMSHandle]
 	asm	int	EMS_INT
 		if (_AH)
-			Quit ("PML_ShutdownEMS: Error freeing EMS");
+			printf("PML_ShutdownEMS: Error freeing EMS\n");
 	}
 }
 
@@ -243,7 +247,7 @@ error:
 void
 PML_XMSCopy(boolean toxms,byte far *addr,word xmspage,word length)
 {
-	longword	xoffset;
+	dword	xoffset;
 	struct
 	{
 		longword	length;
@@ -254,7 +258,7 @@ PML_XMSCopy(boolean toxms,byte far *addr,word xmspage,word length)
 	} copy;
 
 	if (!addr)
-		Quit("PML_XMSCopy: zero address");
+		printf("PML_XMSCopy: zero address\n");
 
 	xoffset = (longword)xmspage * PMPageSize;
 
@@ -1172,7 +1176,10 @@ PM_Startup(void)
 		PML_StartupXMS();
 
 	if (nomain && !EMSPresent)
-		Quit("PM_Startup: No main or EMS");
+	{
+		printf("PM_Startup: No main or EMS\n");
+		return;
+	}
 	else
 		PML_StartupMainMem();
 
