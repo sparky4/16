@@ -1,6 +1,16 @@
-Seg:0	Size:109104	Owner:0xfdba
-Seg:1b9c	Size:16	Owner:0xc31e
-Seg:1b9d	Size:4096	Owner:0xc25c
-Seg:1f42	Size:789472	Owner:0xa8c
-
-MM_ShowMemory: Memory block order currupted!
+Seg:0	Size:6828	Owner:0x1674
+Seg:1ba5	Size:1	Owner:0x46c7
+Seg:1ba6	Size:256	Owner:0xc25c
+Seg:1f4b	Size:45238	Owner:0x90c3
+Seg:d022	Size:4294967263	Owner:0x91e8
+Seg:d022	Size:4294967263	Owner:0x8b04
+Seg:d022	Size:4294967263	Owner:0x26b8
+Seg:d022	Size:4294967263	Owner:0xf04e
+Seg:d022	Size:4294967263	Owner:0x7f94
+Seg:d022	Size:4294967263	Owner:0xc01b
+Seg:d022	Size:4294967263	Owner:0x1a2
+Seg:d022	Size:4294967263	Owner:0x9005
+Seg:d022	Size:4294967263	Owner:0x3350
+Seg:d022	Size:4294967263	Owner:0x2b8
+Seg:d022	Size:419	Owner:0x2eb8
+Seg:e000	Size:4294909951	Owner:0xc02b

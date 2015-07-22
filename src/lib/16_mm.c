@@ -739,7 +739,7 @@ printf("		EMS4\n");
 //
 // detect XMS and get upper memory blocks
 //
-emsskip:/*
+emsskip:
 	mmi->XMSmem = 0;
 	for(i = 1;i < __argc;i++)
 	{
@@ -751,17 +751,13 @@ printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0
 	{
 printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 printf("		XMS!\n");
-		//++++		MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
+		MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
 	}
 
 //
 // allocate the misc buffer
 //
-xmsskip:*/
-/*mmi->nearheap = 0;
-mmi->farheap = 0;
-mmi->EMSmem = 0;*/
-mmi->XMSmem = 0;
+xmsskip:
 	mm->mmrover = mm->mmhead;		// start looking for space after low block
 
 	MM_GetPtr(&(mm->bufferseg),BUFFERSIZE, mm, mmi);
@@ -1208,7 +1204,7 @@ strcpy(scratch,"Seg:");
 ultoa (scan->start,str,16);
 strcat (scratch,str);
 strcat (scratch,"\tSize:");
-ltoa ((dword)scan->length*16,str,10);
+ultoa ((dword)scan->length,str,10);
 strcat (scratch,str);
 strcat (scratch,"\tOwner:0x");
 owner = (unsigned)scan->useptr;
@@ -1381,7 +1377,7 @@ void MM_Report(/*page_t *page, */mminfo_t *mm, mminfotype *mmi)
 		printf("freeEMSpages=%u\n", mm->freeEMSpages);
 		printf("EMSpageframe=%x\n", mm->EMSpageframe);
 	}
-	if(MML_CheckForXMS(mm)) printf("XMSaddr=%Fp\n", *XMSaddr);
+	if(MML_CheckForXMS(mm)) printf("XMSaddr=%X\n", *XMSaddr);
 	printf("near=%lu\n", mmi->nearheap);
 	printf("far=%lu\n", mmi->farheap);
 	printf("EMSmem=%lu\n", mmi->EMSmem);
@@ -1389,6 +1385,8 @@ void MM_Report(/*page_t *page, */mminfo_t *mm, mminfotype *mmi)
 	printf("mainmem=%lu\n", mmi->mainmem);
 	printf("UnusedMemory=%lu\n", MM_UnusedMemory(mm));
 	printf("TotalFree=%lu\n", MM_TotalFree(mm));
+	//mmi->nearheap+mmi->farheap+
+	printf("TotalUsed=%lu\n", mmi->mainmem+mmi->EMSmem+mmi->XMSmem);//+);
 //	printf("\n");
 //	printf("UnusedMemory=%lu kb\n", MM_UnusedMemory()/10248);
 //	printf("TotalFree=%lu kb\n", MM_TotalFree()/10248);

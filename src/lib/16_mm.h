@@ -85,8 +85,10 @@
 
 //==========================================================================
 //I hope this is correct!
-//__segment                seg;
-typedef void __based(__self) * memptr; //__based(seg) * memptr;
+typedef void __based(void)* memptr;
+//__segment            sega;
+//__self
+//typedef void __based( sega ) * memptr;
 
 typedef struct
 {
@@ -116,7 +118,7 @@ extern void		(* XMSaddr) (void);		// far pointer to XMS driver
 #define BASEATTRIBUTES	0	// unlocked, non purgable
 
 #define MAXUMBS		12
-#define MAPPAGES		mm->EMSpagesmapped
+#define MAPPAGES		4//mm->EMSpagesmapped
 
 typedef struct mmblockstruct
 {
