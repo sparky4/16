@@ -42,6 +42,10 @@ scroll.exe: scroll.$(OBJ) 16.lib mapread.$(OBJ) jsmn.$(OBJ) dos_kb.$(OBJ)
 	wcl $(FLAGS) scroll.$(OBJ) 16.lib mapread.$(OBJ) jsmn.$(OBJ) dos_kb.$(OBJ)
 scroll.$(OBJ): $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
+sega.exe: sega.$(OBJ)
+	wcl $(FLAGS) -c sega.$(OBJ)
+sega.$(OBJ): $(SRC)sega.c
+	wcl $(FLAGS) -c $(SRC)sega.c
 test.exe: test.$(OBJ) gfx.lib
 	wcl $(FLAGS) test.$(OBJ) gfx.lib
 

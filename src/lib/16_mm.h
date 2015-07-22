@@ -85,10 +85,10 @@
 
 //==========================================================================
 //I hope this is correct!
-typedef void __based(void)* memptr;
+// void __segment(void)* memptr;
 //__segment            sega;
 //__self
-//typedef void __based( sega ) * memptr;
+typedef void __based(__self) * memptr;
 
 typedef struct
 {
