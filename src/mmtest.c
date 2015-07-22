@@ -37,7 +37,7 @@ main(int argc, char *argv[])
 	//memptr	bigbuffer;
 	//__segment segu;
 	//char *bakapee;
-	word baka;
+	//word baka;
 	//static page_t screen;
 
 	printf("&main()=%Fp\n", *argv[0]);
@@ -73,10 +73,10 @@ main(int argc, char *argv[])
 	printf("&main()=%Fp\n", *argv[0]);
 	printf("&argc=%Fp\n", FP_SEG(&argc));
 //++++	printf("&segu=%Fp\n", segu);
-#ifdef FILERL
+/*++++#ifdef FILERL
 #ifdef FILEINIT
 	printf("		read\n");
-	if(CA_ReadFile(bakapee, &bigbuffer, &mm/*, &mmi*/))
+	if(CA_ReadFile(bakapee, &bigbuffer, &mm))
 #else
 	printf("		load\n");
 	if(CA_LoadFile(bakapee, &bigbuffer, &mm, &mmi))
@@ -84,7 +84,7 @@ main(int argc, char *argv[])
 		baka=1;
 	else
 		baka=0;
-#endif
+#endif*/
 	//hmm functions in cache system use the buffered stuff
 //++++	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
 	printf("dark purple = purgable\n");
@@ -102,9 +102,9 @@ main(int argc, char *argv[])
 //++++	MM_FreePtr(&bigbuffer, &mm);
 //++++	MM_Shutdown(&mm);
 	printf("		done!\n");
-#ifdef FILERL
+/*#ifdef FILERL
 	//++++free(bakapee);
 	if(baka) printf("\nyay!\n");
 	else printf("\npoo!\n");
-#endif
+#endif*/
 }
