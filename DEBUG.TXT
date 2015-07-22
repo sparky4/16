@@ -1,4 +1,3 @@
-Seg:0	Size:88400	Owner:0x0
-Seg:1595	Size:4096	Owner:0x420
-Seg:1a3a	Size:810080	Owner:0x0
-Seg:e000	Size:-917520	Owner:0x0
+Seg:ffff	Size:917520	Owner:0x0
+
+MM_ShowMemory: Memory block order currupted!

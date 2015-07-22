@@ -29,18 +29,24 @@
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 //#include "src/lib/modex16.h"
+#pragma hdrstop
 
-//#define FILERL
+#pragma warn -pro
+#pragma warn -use
+
+#define FILERL
 //#define FILEINIT
 
 void
 main(int argc, char *argv[])
 {
-	static mminfo_t mm; mminfotype mmi;
-	static const __segment segu;
-	static memptr	bigbuffer;
+	mminfo_t mm; mminfotype mmi;
+	__segment segu;
+#ifdef FILERL
+	memptr	bigbuffer;
 	static char *bakapee;
 	word baka;
+#endif
 	//static page_t screen;
 
 	//mmi.segu=FP_SEG(segu);
@@ -49,12 +55,16 @@ main(int argc, char *argv[])
 	printf("&segu=%p\n", (segu));
 	//printf("mmi.segu=%p\n", (mmi.segu));
 
-	bakapee = _nmalloc(64);
+#ifdef FILERL
+	bakapee = malloc(64);
 //	memset(bakapee, 0, 64);
+#endif
 	mm.mmstarted=0;
 
+#ifdef FILERL
 	if(argv[1]) bakapee = argv[1];
 	else bakapee = "data/koishi~~.pcx";
+#endif
 
 	textInit();
 
@@ -89,9 +99,9 @@ main(int argc, char *argv[])
 		baka=1;
 	else
 		baka=0;
-#endif
 	//hmm functions in cache system use the buffered stuff
 	printf("size of big buffer~=%lu\n", _bmsize(segu, bigbuffer));
+#endif
 	printf("dark purple = purgable\n");
 	printf("medium blue = non purgable\n");
 	printf("red = locked\n");
