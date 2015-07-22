@@ -36,12 +36,12 @@
 #endif
 
 
-#define SAVENEARHEAP	0//x400		// space to leave in data segment
+#define SAVENEARHEAP	0x400		// space to leave in data segment
 #define SAVEFARHEAP	0//x4000			// space to leave in far heap
 
 #define	BUFFERSIZE		0x1000		// miscelanious, allways available buffer
 
-#define MAXBLOCKS		720
+#define MAXBLOCKS		600//720
 
 
 
@@ -86,11 +86,13 @@
 //==========================================================================
 //I hope this is correct!
 //__segment                seg;
-typedef void __based(__self) * memptr; //__based(seg) * memptr;
+typedef void __based(__self) *memptr; //__based(seg) * memptr;
 
 typedef struct
 {
 	dword	nearheap,farheap,EMSmem,XMSmem,mainmem;
+	//word __based(__segname("_CODE")) segu;
+//
 } mminfotype;
 
 //==========================================================================
@@ -182,11 +184,11 @@ void MM_FreePtr(memptr *baseptr, mminfo_t *mm);
 void MM_SetPurge(memptr *baseptr, int purge, mminfo_t *mm);
 void MM_SetLock(memptr *baseptr, boolean locked, mminfo_t *mm);
 void MM_SortMem(mminfo_t *mm);
-void MM_ShowMemory(page_t *page, mminfo_t *mm);
+void MM_ShowMemory(/*page_t *page, */mminfo_t *mm);
 void MM_DumpData(mminfo_t *mm);
 dword MM_UnusedMemory(mminfo_t *mm);
 dword MM_TotalFree(mminfo_t *mm);
-void MM_Report(page_t *page, mminfo_t *mm, mminfotype *mmi);
+void MM_Report(/*page_t *page, */mminfo_t *mm, mminfotype *mmi);
 static void MM_EMSerr(byte *stri, byte err);
 void MM_BombOnError(boolean bomb, mminfo_t *mm);
 void MM_GetNewBlock(mminfo_t *mm);

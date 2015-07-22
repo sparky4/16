@@ -15,7 +15,7 @@ TARGET_OS = dos
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1# -zm
 CFLAGS=-zk0 -wo -x -mc -zu -k32768#16384# -zdp# -zp16 -zq
 OFLAGS=-ot -ox -ob -oh -or# -om -ol -ol+
-FLAGS=-0 -lr $(OFLAGS) $(CFLAGS) $(DFLAGS) -d2
+FLAGS=-0 -d2 -lr $(OFLAGS) $(CFLAGS) $(DFLAGS)
 SRC=src$(DIRSEP)
 SRCLIB=$(SRC)lib$(DIRSEP)
 JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)

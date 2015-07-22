@@ -641,7 +641,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 // set up the linked list (everything in the free list;
 //
-//	printf("		linked list making!\n");
+	printf("		linked list making!\n");
 	mm->mmhead = NULL;
 	mm->mmfree = &(mm->mmblocks[0]);
 	for(i=0;i<MAXBLOCKS-1;i++)
@@ -653,11 +653,11 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 // locked block of all memory until we punch out free space
 //
-//	printf("		newblock making!\n");
+	printf("		newblock making!\n");
 	MM_GetNewBlock(mm);
 	mm->mmhead = mm->mmnew;				// this will allways be the first node
 	mm->mmnew->start = 0;
-	mm->mmnew->length = 0xffff;
+	mm->mmnew->length = 0x1;
 	mm->mmnew->attributes = LOCKBIT;
 	mm->mmnew->next = NULL;
 	mm->mmrover = mm->mmhead;
@@ -669,7 +669,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //----	length=coreleft();
 	//_nheapgrow();
 	length=_memmax();
-	//printf("	%u\n", length);
+	//printf("	%Fp\n", mmi->segu);
 	start = (void huge *)(mm->nearheap = _nmalloc(length));
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;
@@ -691,7 +691,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 			printf( "ERROR - bad node in nearheap\n" );
 		break;
 	}*/
-//	printf("		near heap ok!\n");
+	printf("		near heap ok!\n");
 
 //
 // get all available far conventional memory segments
@@ -700,6 +700,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	printf("		farheap making!\n");
 	_fheapgrow();
 	length=0xffffUL*4UL;//_memavl();
+	//printf("	%Fp\n", mmi->segu);
 	start = mm->farheap = halloc(length, sizeof(byte));
 	//start = mm->farheap = _fmalloc(length);
 	length -= 16-(FP_OFF(start)&15);
@@ -723,7 +724,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 			printf( "ERROR - bad node in farheap\n" );
 		break;
 	}*/
-	//printf("		far heap ok!\n");
+	printf("		far heap ok!\n");
 
 //
 // detect EMS and allocate up to 64K at page frame
@@ -769,13 +770,18 @@ printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0
 	{
 printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 printf("		XMS!\n");
-		//++++		MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
+		//++++
+		MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
 	}
 
 //
 // allocate the misc buffer
 //
 xmsskip:
+/*mmi->nearheap = 0;
+mmi->farheap = 0;
+mmi->EMSmem = 0;
+mmi->XMSmem = 0;*/
 	mm->mmrover = mm->mmhead;		// start looking for space after low block
 
 	MM_GetPtr(&(mm->bufferseg),BUFFERSIZE, mm, mmi);
@@ -1147,7 +1153,7 @@ void MM_SortMem(mminfo_t *mm)
 =====================
 */
 
-void MM_ShowMemory(page_t *page, mminfo_t *mm)
+void MM_ShowMemory(/*page_t *page, */mminfo_t *mm)
 {
 	mmblocktype huge *scan;
 	word color,temp;
@@ -1191,19 +1197,19 @@ CA_OpenDebug ();
 				//modexhlin(page, scan->start, (unsigned)end, chy, color);
 				//for(chx=scan->start;chx+4>=(word)end;chx+=4)
 				//{
-					modexClearRegion(page, chx, chy, 4, 4, color);
+//++++					modexClearRegion(page, chx, chy, 4, 4, color);
 				//}
 
 //++++		VW_Hlin(scan->start,(unsigned)end,0,color);
 
 //++++		VW_Plot(scan->start,0,15);
-				modexClearRegion(page, chx, chy, 4, 4, 15);
+//++++				modexClearRegion(page, chx, chy, 4, 4, 15);
 		if(scan->next->start > end+1)
 //++++			VW_Hlin(end+1,scan->next->start,0,0);	// black = free
 			//for(chx=scan->next->start;chx+4>=(word)end+1;chx+=4)
 			//{
-				chx+=scan->next->start;
-				modexClearRegion(page, chx, chy, 4, 4, 2);
+//++++				chx+=scan->next->start;
+//++++				modexClearRegion(page, chx, chy, 4, 4, 2);
 			//}
 					//modexhlin(page, end+1,scan->next->start, chy, 0);
 
@@ -1232,7 +1238,7 @@ strcat (scratch,str);
 strcat (scratch,"\n");
 write(debughandle,scratch,strlen(scratch));
 //modexprint(page, chx, chy, 1, 0, 24, &scratch);
-chy+=4;
+//++++chy+=4;
 //fprintf(stdout, "%s", scratch);
 //****#endif
 
@@ -1387,7 +1393,7 @@ dword MM_TotalFree(mminfo_t *mm)
 =====================
 */
 
-void MM_Report(page_t *page, mminfo_t *mm, mminfotype *mmi)
+void MM_Report(/*page_t *page, */mminfo_t *mm, mminfotype *mmi)
 {
 	if(MML_CheckForEMS())
 	{

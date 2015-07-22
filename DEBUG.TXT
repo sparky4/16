@@ -1,3 +1,5 @@
-Seg:5500	Size:968880	Owner:0x768b
-Seg:f000	Size:67072	Owner:0x1060
-Seg:38fe	Size:48	Owner:0x0
+Seg:0	Size:46544	Owner:0x0
+Seg:b5d	Size:4096	Owner:0x1586
+Seg:199b	Size:9264	Owner:0x0
+Seg:5bdc	Size:541248	Owner:0x0
+Seg:e000	Size:131056	Owner:0x0

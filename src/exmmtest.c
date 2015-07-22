@@ -24,7 +24,7 @@
 */
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
-#include "src/lib/modex16.h"
+//#include "src/lib/modex16.h"
 
 #define FILERL
 //#define FILEINIT
@@ -34,10 +34,10 @@ main(int argc, char *argv[])
 {
 	static mminfo_t mm; mminfotype mmi;
 	static memptr	bigbuffer;
-	__segment segu;
+	static __segment segu;
 	static char *bakapee;
-	static word baka;
-	page_t screen;
+	word baka;
+	//static page_t screen;
 
 	printf("&main()=%Fp\n", *argv[0]);
 	printf("&argc=%Fp\n", FP_SEG(&argc));
@@ -54,12 +54,13 @@ main(int argc, char *argv[])
 
 	/* setup camera and screen~ */
 	//bug!!!
-	/*screen = modexDefaultPage();
-	screen.width += (16*2);
+	//screen = modexDefaultPage();
+	/*screen.width += (16*2);
 	screen.height += (16*2);*/
 
 	printf("&main()=%Fp	start MM\n", *argv[0]);
 	MM_Startup(&mm, &mmi);
+	//segu=mmi.segu;
 	printf("		done!\n");
 	/*if(FP_SEG(*argv[0])==0)
 	{
@@ -91,13 +92,13 @@ main(int argc, char *argv[])
 	printf("medium blue = non purgable\n");
 	printf("red = locked\n");
 	getch();
-	modexEnter();
-	modexShowPage(&screen);
-	MM_ShowMemory(&screen, &mm);
-	getch();
+	//modexEnter();
+	//modexShowPage(&screen);
+	MM_ShowMemory(/*&screen, */&mm);
+	//getch();
 	MM_DumpData(&mm);
-	modexLeave();
-	MM_Report(&screen, &mm, &mmi);
+	//modexLeave();
+	MM_Report(&mm, &mmi);
 	printf("		stop!\n");
 	MM_FreePtr(&bigbuffer, &mm);
 	MM_Shutdown(&mm);
