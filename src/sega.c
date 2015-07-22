@@ -3,7 +3,7 @@
 #include <malloc.h>
 
 typedef struct {
-	struct a __based( __self ) *next;
+	a_t __based( __self ) *next;
 	int                         number;
 }a_t;
 
