@@ -22,36 +22,41 @@
 /*
 	exmm test
 */
+#include <stdio.h>
+#include <dos.h>
+
 #include "src/lib/16_head.h"
-//#include "src/lib/16_ca.h"
-//#include "src/lib/16_mm.h"
+#include "src/lib/16_ca.h"
+#include "src/lib/16_mm.h"
 //#include "src/lib/modex16.h"
 
-//#define FILERL
+#define FILERL
 //#define FILEINIT
 
 void
 main(int argc, char *argv[])
 {
-	//mminfo_t mm; mminfotype mmi;
-	//memptr	bigbuffer;
-	//__segment segu;
-	//char *bakapee;
-	//word baka;
+	static mminfo_t mm; mminfotype mmi;
+	static const __segment segu;
+	static memptr	bigbuffer;
+	static char *bakapee;
+	word baka;
 	//static page_t screen;
 
+	mmi.segu=FP_SEG(segu);
+
 	printf("&main()=%Fp\n", *argv[0]);
-	printf("&argc=%Fp\n", FP_SEG(&argc));
-//++++	printf("&segu=%Fp\n", segu);
+	printf("&segu=%p\n", (segu));
+	printf("mmi.segu=%p\n", (mmi.segu));
 
-	//++++bakapee = malloc(64);
+	bakapee = _nmalloc(64);
 //	memset(bakapee, 0, 64);
-//++++	mm.mmstarted=0;
+	mm.mmstarted=0;
 
-	/*if(argv[1]) bakapee = argv[1];
-	else bakapee = "data/koishi~~.pcx";*/
+	if(argv[1]) bakapee = argv[1];
+	else bakapee = "data/koishi~~.pcx";
 
-//++++	textInit();
+	textInit();
 
 	/* setup camera and screen~ */
 	//bug!!!
@@ -59,8 +64,8 @@ main(int argc, char *argv[])
 	/*screen.width += (16*2);
 	screen.height += (16*2);*/
 
-	printf("&main()=%Fp	start MM\n", *argv[0]);
-//++++	MM_Startup(&mm, &mmi);
+	printf("main()=%Fp	start MM\n", *argv[0]);
+	MM_Startup(&mm, &mmi);
 	printf("		done!\n");
 	/*if(FP_SEG(*argv[0])==0)
 	{
@@ -71,9 +76,9 @@ main(int argc, char *argv[])
 		exit(-5);
 	}*/
 	printf("&main()=%Fp\n", *argv[0]);
-	printf("&argc=%Fp\n", FP_SEG(&argc));
-//++++	printf("&segu=%Fp\n", segu);
-/*++++#ifdef FILERL
+	printf("&segu=%p\n", (segu));
+	printf("mmi.segu=%p\n", (mmi.segu));
+#ifdef FILERL
 #ifdef FILEINIT
 	printf("		read\n");
 	if(CA_ReadFile(bakapee, &bigbuffer, &mm))
@@ -84,27 +89,27 @@ main(int argc, char *argv[])
 		baka=1;
 	else
 		baka=0;
-#endif*/
+#endif
 	//hmm functions in cache system use the buffered stuff
-//++++	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
+	printf("size of big buffer~=%lu\n", _bmsize(segu, bigbuffer));
 	printf("dark purple = purgable\n");
 	printf("medium blue = non purgable\n");
 	printf("red = locked\n");
-	//++++getch();
+	getch();
 	//++++modexEnter();
 	//++++modexShowPage(&screen);
-	//++++MM_ShowMemory(/*&screen, */&mm);
-	//++++getch();
-	//++++MM_DumpData(&mm);
+	MM_ShowMemory(/*&screen, */&mm);
+	getch();
+	MM_DumpData(&mm);
 	//++++modexLeave();
-	//++++MM_Report(&mm, &mmi);
+	MM_Report(&mm, &mmi);
 	printf("		stop!\n");
-//++++	MM_FreePtr(&bigbuffer, &mm);
-//++++	MM_Shutdown(&mm);
+	MM_FreePtr(&bigbuffer, &mm);
+	MM_Shutdown(&mm);
 	printf("		done!\n");
-/*#ifdef FILERL
-	//++++free(bakapee);
+#ifdef FILERL
+	free(bakapee);
 	if(baka) printf("\nyay!\n");
 	else printf("\npoo!\n");
-#endif*/
+#endif
 }

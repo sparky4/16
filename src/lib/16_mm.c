@@ -629,19 +629,21 @@ void MML_ClearBlock(mminfo_t *mm)
 void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 {
 	int i;
-	dword length;
+	dword length,seglength;
 	void huge	*start;
-	unsigned	segstart,seglength,endfree;
+	unsigned	segstart,endfree;
 
+	printf("mmi->segu=%Fp\n", (mmi->segu));
 	if(mm->mmstarted)
 		MM_Shutdown(mm);
 
 	mm->mmstarted = true;
 	mm->bombonerror = true;
+
 //
 // set up the linked list (everything in the free list;
 //
-	printf("		linked list making!\n");
+	//printf("		linked list making!\n");
 	mm->mmhead = NULL;
 	mm->mmfree = &(mm->mmblocks[0]);
 	for(i=0;i<MAXBLOCKS-1;i++)
@@ -649,28 +651,29 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 		mm->mmblocks[i].next = &(mm->mmblocks[i+1]);
 	}
 	mm->mmblocks[i].next = NULL;
+	printf("mmi->segu=%Fp\n", (mmi->segu));
 
 //
 // locked block of all memory until we punch out free space
 //
-	printf("		newblock making!\n");
+	//printf("		newblock making!\n");
 	MM_GetNewBlock(mm);
 	mm->mmhead = mm->mmnew;				// this will allways be the first node
 	mm->mmnew->start = 0;
-	mm->mmnew->length = 0x1;
+	mm->mmnew->length = 0xffff;
 	mm->mmnew->attributes = LOCKBIT;
 	mm->mmnew->next = NULL;
 	mm->mmrover = mm->mmhead;
+	printf("mmi->segu=%Fp\n", (mmi->segu));
 
 //
 // get all available near conventional memory segments
 //
-	printf("		nearheap making!\n");
+	//printf("		nearheap making!\n");
 //----	length=coreleft();
 	//_nheapgrow();
 	length=_memmax();
-	//printf("	%Fp\n", mmi->segu);
-	start = (void huge *)(mm->nearheap = malloc(length));
+	start = /*(void *)*/(mm->nearheap = _nmalloc(length));
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;
 	seglength = length / 16;			// now in paragraphs
@@ -691,16 +694,15 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 			printf( "ERROR - bad node in nearheap\n" );
 		break;
 	}*/
-	printf("		near heap ok!\n");
+	//printf("		near heap ok!\n");
 
 //
 // get all available far conventional memory segments
 //
 //----	length=farcoreleft();
-	printf("		farheap making!\n");
-	_fheapgrow();
+	//printf("		farheap making!\n");
+	//_fheapgrow();
 	length=0xffffUL*4UL;//_memavl();
-	//printf("	%Fp\n", mmi->segu);
 	start = mm->farheap = halloc(length, sizeof(byte));
 	//start = mm->farheap = _fmalloc(length);
 	length -= 16-(FP_OFF(start)&15);
@@ -724,7 +726,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 			printf( "ERROR - bad node in farheap\n" );
 		break;
 	}*/
-	printf("		far heap ok!\n");
+	//printf("		far heap ok!\n");
 
 //
 // detect EMS and allocate up to 64K at page frame
@@ -770,8 +772,7 @@ printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0
 	{
 printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 printf("		XMS!\n");
-		//++++
-		MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
+		//++++		MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
 	}
 
 //

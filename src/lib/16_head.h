@@ -36,6 +36,7 @@
 #include <conio.h> // just for wait
 #include <time.h> // just for wait
 #include <stdlib.h>
+#include <malloc.h>
 #include <ctype.h>
 #include <unistd.h>
 #include <fcntl.h>

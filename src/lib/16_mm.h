@@ -41,7 +41,7 @@
 
 #define	BUFFERSIZE		0x1000		// miscelanious, allways available buffer
 
-#define MAXBLOCKS		600//720
+#define MAXBLOCKS		720
 
 
 
@@ -91,7 +91,8 @@ typedef void __based(__self) * memptr; //__based(seg) * memptr;
 typedef struct
 {
 	dword	nearheap,farheap,EMSmem,XMSmem,mainmem;
-	//word __based(__segname("_CODE")) segu;
+	//__segment segu;
+	word segu;
 //
 } mminfotype;
 
@@ -121,10 +122,10 @@ extern void		(* XMSaddr) (void);		// far pointer to XMS driver
 
 typedef struct mmblockstruct
 {
-	word	start,length;
+	word	start;//,length;
 	//dword	start,length;
 	//word	start;
-	//dword length;
+	dword length;
 	//byte segm;				//how many 64kb segment blocks it takes up if there is many data!
 	unsigned	attributes;
 	memptr		*useptr;	// pointer to the segment start
