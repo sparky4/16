@@ -1,35 +1,32 @@
-bee=18DC:FFF4
-pee=18DC:18DC
-pee=18DC
-pee=18dc
-pee=6364
-"===="
-bee=0354:FFF4
-pee=0354:0354
-pee=0354
-pee=354
-pee=852
-"===="
-bee=035A:FFF2
-pee=035A:035A
-pee=035A
-pee=35a
-pee=858
-"===="
-bee=051E:1000
-pee=0388:0388
-pee=0388:0388
-pee=388
-pee=904
-"===="
-bee=052B:0FFE
-pee=038E:038E
-pee=038E:038E
-pee=38e
-pee=910
-"===="
-bee=054A:0FFE
-pee=050B:03E2
-pee=050B:03E2
+==This is the results of borland c's segment pointers==
+These are the various memory models of the 8088 that are demonstrated here!
+==tiny==
+local variable bee=18E4:FFF4
+pee=18E4:18E4
+pee=18E4
+pee=18e4
+==small==
+local variable bee=035C:FFF4
+pee=035C:035C
+pee=035C
+pee=35c
+==medium==
+local variable bee=0362:FFF2
+pee=0362:0362
+pee=0362
+pee=362
+==compact is what project 16 uses==
+local variable bee=051E:1000
+pee=0390:0390
+pee=0390:0390
+pee=390
+==large==
+local variable bee=052A:0FFE
+pee=0396:0396
+pee=0396:0396
+pee=396
+==HUGE GUTS!==
+local variable bee=054B:0FFE
+pee=050C:03E2
+pee=050C:03E2
 pee=3e2
-pee=994

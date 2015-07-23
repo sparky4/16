@@ -33,11 +33,10 @@ typedef void _seg * memptr;
 void
 main(/*int argc, char *argv[]*/)
 {
-	short bee=0;
+	unsigned bee=0;
 	memptr pee;
-	printf("bee=%Fp\n", &bee);
+	printf("local variable bee=%Fp\n", &bee);
 	printf("pee=%Fp\n", pee);
 	printf("pee=%p\n", pee);
 	printf("pee=%x\n", pee);
-	printf("pee=%u\n", pee);
 }

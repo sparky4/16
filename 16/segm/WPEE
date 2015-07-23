@@ -1,35 +1,32 @@
-bee=054A:0FFE
-pee=050B:03E2
-pee=050B:03E2
+==This is the results of open watcom's base pointers==
+These are the various memory models of the 8088 that are demonstrated here!
+==tiny is not found so default==
+local variable bee=054B:0FFE
+pee=050C:03E2
+pee=050C:03E2
 pee=3e2
-pee=994
-"===="
-bee=054A:0FFE
-pee=050B:03E2
-pee=050B:03E2
+==small==
+local variable bee=054B:0FFE
+pee=050C:03E2
+pee=050C:03E2
 pee=3e2
-pee=994
-"===="
-bee=054A:0FFE
-pee=050B:03E2
-pee=050B:03E2
+==medium==
+local variable bee=054B:0FFE
+pee=050C:03E2
+pee=050C:03E2
 pee=3e2
-pee=994
-"===="
-bee=054A:0FFE
-pee=050B:03E2
-pee=050B:03E2
+==compact is what project 16 uses==
+local variable bee=054B:0FFE
+pee=050C:03E2
+pee=050C:03E2
 pee=3e2
-pee=994
-"===="
-bee=054A:0FFE
-pee=050B:03E2
-pee=050B:03E2
+==large==
+local variable bee=054B:0FFE
+pee=050C:03E2
+pee=050C:03E2
 pee=3e2
-pee=994
-"===="
-bee=06af:0bcc
-pee=06af:0000
-pee=06af:0000
-pee=0
+==HUGE GUTS!==
+local variable bee=06ae:0bcc
+pee=06ae:0000
+pee=06ae:0000
 pee=0
