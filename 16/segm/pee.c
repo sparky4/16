@@ -31,8 +31,11 @@ typedef void _seg * memptr;
 #endif
 
 void
-main(int argc, char *argv[])
+main(/*int argc, char *argv[]*/)
 {
 	memptr pee;
-	printf("pee=%FP\n", pee);
+	printf("pee=%Fp\n", pee);
+	printf("pee=%p\n", pee);
+	printf("pee=%x\n", pee);
+	printf("pee=%u\n", pee);
 }
