@@ -51,7 +51,6 @@ void opl2out(word reg, word data);
 void opl3out(word reg, word data);
 void opl3exp(word data);
 
-//Unknown licence!
 void FMReset(void/*int percusiveMode*/);
 void FMKeyOff(int voice);
 void FMKeyOn(int voice, int freq, int octave);
