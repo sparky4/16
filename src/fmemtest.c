@@ -31,12 +31,17 @@ main(int argc, char *argv[])
 	int x=420;
 	int huge *ptr=&x;
 	int *ptr0=&x;
-	void __based(__self) *pee;
+	//void __based(__self) *pee;
+	memptr pee;
 	void __near *npee;
-	memptr bigbuffer;
+	void __far *fpee;
+	void *dpee;
 	__segment segu;
 	//word csw=0,dsw=0,esw=0,ssw=0,ipw=0;
 
+	_nheapgrow();
+	_fheapgrow();
+	_heapgrow();
 	//ptr=&x;
 	printf("&main()=%Fp\n", *argv[0]);
 	printf("ptr0=%Fp\n", ptr0);
@@ -62,8 +67,11 @@ main(int argc, char *argv[])
 	//printf("cs=%u\n", csw);
 	//printf("ds=%u\n", dsw);
 	//printf("es=%u\n", esw);
-	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
-	printf("size of pee~=%u\n", _bmsize(segu, pee));
+	printf("memavl=%u\n", _memavl());
+	printf("size of based pee~=%u	%FP\n", _bmsize(segu, pee), pee);
+	printf("size of default pee~=%u	%FP\n", _msize(dpee), dpee);
+	printf("size of near pee~=%u	%FP\n", _nmsize(npee), npee);
+	printf("size of far pee~=%u	%FP\n", _fmsize(fpee), fpee);
 	printf("pee=%Fp\n", pee);
 	printf("npee=%Fp\n", npee);
 	printf("&main()=%Fp\n", *argv[0]);
