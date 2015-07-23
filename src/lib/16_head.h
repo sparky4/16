@@ -150,6 +150,9 @@ extern	int			profilehandle,debughandle;
 
 typedef union REGPACK	regs_t;
 typedef	enum	{false,true}	boolean;
+//I hope this is correct!
+//__self
+typedef void __based(__self) * memptr;
 
 /* local function */
 void wait(clock_t wait);

@@ -33,6 +33,8 @@ main(int argc, char *argv[])
 	int *ptr0=&x;
 	void __based(__self) *pee;
 	void __near *npee;
+	memptr bigbuffer;
+	__segment segu;
 	//word csw=0,dsw=0,esw=0,ssw=0,ipw=0;
 
 	//ptr=&x;
@@ -60,6 +62,8 @@ main(int argc, char *argv[])
 	//printf("cs=%u\n", csw);
 	//printf("ds=%u\n", dsw);
 	//printf("es=%u\n", esw);
+	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
+	printf("size of pee~=%u\n", _bmsize(segu, pee));
 	printf("pee=%Fp\n", pee);
 	printf("npee=%Fp\n", npee);
 	printf("&main()=%Fp\n", *argv[0]);
