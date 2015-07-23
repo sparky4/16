@@ -95,7 +95,7 @@ main(int argc, char *argv[])
 	//printf("mmi.segu=%p\n", (mmi.segu));
 #ifdef FILERL
 //	bakapeehandle = open(bakapee,O_RDONLY | O_BINARY, S_IREAD);
-	printf("size of big buffer~=%lu\n", _bmsize(segu, bigbuffer));
+	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
 //	if(CA_FarRead(bakapeehandle,(void far *)&bigbuffer,sizeof(bigbuffer),&mm))
 #ifdef FILEREAD
 	printf("		read\n");
@@ -109,7 +109,7 @@ main(int argc, char *argv[])
 		baka=0;
 //	close(bakapeehandle);
 	//hmm functions in cache system use the buffered stuff
-	printf("size of big buffer~=%lu\n", _bmsize(segu, bigbuffer));
+	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
 #endif
 	printf("dark purple = purgable\n");
 	printf("medium blue = non purgable\n");
