@@ -1,5 +1,5 @@
 !ifdef __LINUX__
-REMOVECOMMAND=rm
+REMOVECOMMAND=rm -f
 DIRSEP=/
 OBJ=o
 !else
@@ -279,9 +279,9 @@ clean: .symbolic
 	@wlib -n  gfx.lib
 	@wlib -n  doslib.lib
 	@$(REMOVECOMMAND) *.16
-#	@$(REMOVECOMMAND) *.OBJ
-#	@$(REMOVECOMMAND) makefi~1
-#	@$(REMOVECOMMAND) makefile~
-#	@$(REMOVECOMMAND) __WCL__.LNK
+	@$(REMOVECOMMAND) *.OBJ
+	@$(REMOVECOMMAND) makefi~1
+	@$(REMOVECOMMAND) makefile~
+	@$(REMOVECOMMAND) __WCL__.LNK
 #	@$(REMOVECOMMAND) *.smp
-#	@$(REMOVECOMMAND) *.SMP
+	@$(REMOVECOMMAND) *.SMP

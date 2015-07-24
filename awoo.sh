@@ -1,4 +1,4 @@
 #!/bin/bash
 git add .
 bash ./boop.sh
-cp exmmtest.exe /var/www/html/
+cp -p *.exe /var/www/html/
