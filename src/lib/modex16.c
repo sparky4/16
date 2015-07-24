@@ -44,17 +44,17 @@ void VGAmodeX(sword vq)
 	{ // deinit the video
 		// change to the video mode we were in before we switched to mode 13h
 		modexLeave();
-		//in.h.ah = 0x00;
-		//in.h.al = old_mode;
-		//int86(0x10, &in, &out);
+		in.h.ah = 0x00;
+		in.h.al = old_mode;
+		int86(0x10, &in, &out);
 
 	}
 	else if(vq==1)
 	{ // init the video
 		// get old video mode
-		//in.h.ah = 0xf;
-		//int86(0x10, &in, &out);
-		//old_mode = out.h.al;
+		in.h.ah = 0xf;
+		int86(0x10, &in, &out);
+		old_mode = out.h.al;
 		// enter mode
 		modexEnter();
 	}
@@ -984,7 +984,7 @@ void modexputPixel(page_t *page, int x, int y, byte color)
 	   offset = (width * y + x) / 4, and write the given
 	   color to the plane we selected above.  Heed the active
 	   page start selection. */
-	VGA[(unsigned)((SCREEN_WIDTH/4) * y) + (x / 4) + pageOff] = color;
+	VGA[(unsigned)((page->width/4) * y) + (x / 4) + pageOff] = color;
 
 }
 
@@ -995,7 +995,7 @@ byte modexgetPixel(page_t *page, int x, int y)
 	outpw(GC_INDEX, 0x04);
 	outpw(GC_INDEX+1, x & 3);
 
-	return VGA[(unsigned)((SCREEN_WIDTH/4) * y) + (x / 4) + pageOff];
+	return VGA[(unsigned)((page->width/4) * y) + (x / 4) + pageOff];
 
 }
 
