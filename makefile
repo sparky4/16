@@ -12,11 +12,6 @@ TARGET_OS = dos
 #-zk0 = kanji support~
 #-zkl = current codepage
 
-ZFLAGS=-zk0 -zu -zc# -zm# -zdp# -zp16 -zq
-DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1
-CFLAGS=-ei -wo -x -mc -r -fh=16.hed -k60000#16384#
-OFLAGS=-ot -ox -ob -oh -or -om -ol# -ol+
-FLAGS=-0 -d2 -lr $(OFLAGS) $(CFLAGS) $(DFLAGS) $(ZFLAGS)
 SRC=src$(DIRSEP)
 SRCLIB=$(SRC)lib$(DIRSEP)
 JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
@@ -24,28 +19,43 @@ JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
 DOSLIB=$(SRCLIB)doslib$(DIRSEP)
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
+ZFLAGS=-zk0 -zu -zc# -zm# -zdp# -zp16 -zq
+DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1
+CFLAGS=-ei -wo -x -mc -r -fh=16.hed -k60000#16384#
+OFLAGS=-ot -ox -ob -oh -or -om -ol# -ol+
+FLAGS=-0 -d2 -lr $(OFLAGS) $(CFLAGS) $(DFLAGS) $(ZFLAGS)
+
 DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) midi.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
-16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ)
+16LIBOBJS = bakapee.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ)
 
-all: 16.exe exmmtest.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe sountest.exe tsthimem.exe inputest.exe
+TESTEXEC =  exmmtest.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe sountest.exe tsthimem.exe inputest.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe
+EXEC = 16.exe bakapi.exe $(TESTEXEC)
+
+all: $(EXEC)
 
 #
-#executables
+#game and bakapi executables
 #
 16.exe: 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
 	wcl $(FLAGS) 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
 
-scroll.exe: scroll.$(OBJ) 16.lib mapread.$(OBJ) jsmn.$(OBJ) dos_kb.$(OBJ)
-	wcl $(FLAGS) scroll.$(OBJ) 16.lib mapread.$(OBJ) jsmn.$(OBJ) dos_kb.$(OBJ)
+bakapi.exe: bakapi.$(OBJ) 16.lib
+	wcl $(FLAGS) bakapi.$(OBJ) 16.lib
+#
+#Test Executables!
+#
+scroll.exe: scroll.$(OBJ) 16.lib mapread.$(OBJ) jsmn.$(OBJ)# dos_kb.$(OBJ)
+	wcl $(FLAGS) scroll.$(OBJ) 16.lib mapread.$(OBJ) jsmn.$(OBJ)# dos_kb.$(OBJ)
 scroll.$(OBJ): $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
 sega.exe: sega.$(OBJ)
 	wcl $(FLAGS) -c sega.$(OBJ)
 sega.$(OBJ): $(SRC)sega.c
 	wcl $(FLAGS) -c $(SRC)sega.c
+
 test.exe: test.$(OBJ) gfx.lib
 	wcl $(FLAGS) test.$(OBJ) gfx.lib
 
@@ -108,6 +118,9 @@ exmmtest.exe: exmmtest.$(OBJ) 16.lib
 #
 16.$(OBJ): $(SRC)16.h $(SRC)16.c
 	wcl $(FLAGS) -c $(SRC)16.c
+
+bakapi.$(OBJ): $(SRC)bakapi.h $(SRC)bakapi.c
+	wcl $(FLAGS) -c $(SRC)bakapi.c
 
 test.$(OBJ): $(SRC)test.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)test.c
@@ -181,8 +194,8 @@ doslib.lib: $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
 modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c
 	wcl $(FLAGS) -c $(SRCLIB)modex16.c
 
-#dos_kb.$(OBJ): $(SRCLIB)dos_kb.h $(SRCLIB)dos_kb.c
-#	wcl $(FLAGS) -c $(SRCLIB)dos_kb.c
+bakapee.$(OBJ): $(SRCLIB)bakapee.h $(SRCLIB)bakapee.c
+	wcl $(FLAGS) -c $(SRCLIB)bakapee.c
 
 bitmap.$(OBJ): $(SRCLIB)bitmap.h $(SRCLIB)bitmap.c
 	wcl $(FLAGS) -c $(SRCLIB)bitmap.c
@@ -241,7 +254,7 @@ himemsys.$(OBJ): $(DOSLIB)himemsys.h $(DOSLIB)himemsys.c
 emm.$(OBJ): $(DOSLIB)emm.h $(DOSLIB)emm.c
 	wcl $(FLAGS) -c $(DOSLIB)emm.c
 
-# end
+# end of doslib stuff
 
 16_head.$(OBJ): $(SRCLIB)16_head.h $(SRCLIB)16_head.c
 	wcl $(FLAGS) -c $(SRCLIB)16_head.c
@@ -259,16 +272,16 @@ jsmn.$(OBJ): $(JSMNLIB)jsmn.h $(JSMNLIB)jsmn.c
 #other~
 #
 clean: .symbolic
+	@$(REMOVECOMMAND) $(EXEC)
 	@$(REMOVECOMMAND) *.$(OBJ)
 	@$(REMOVECOMMAND) *.lib
 	@wlib -n 16.lib
 	@wlib -n  gfx.lib
+	@wlib -n  doslib.lib
+	@$(REMOVECOMMAND) *.16
 #	@$(REMOVECOMMAND) *.OBJ
-#	@$(REMOVECOMMAND) *.out
-#	@$(REMOVECOMMAND) *.OUT
 #	@$(REMOVECOMMAND) makefi~1
 #	@$(REMOVECOMMAND) makefile~
 #	@$(REMOVECOMMAND) __WCL__.LNK
 #	@$(REMOVECOMMAND) *.smp
 #	@$(REMOVECOMMAND) *.SMP
-

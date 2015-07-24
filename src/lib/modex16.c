@@ -20,9 +20,6 @@
  *
  */
 
-#include <dos.h>
-#include <string.h>
-#include <mem.h>
 #include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>

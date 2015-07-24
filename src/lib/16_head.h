@@ -41,6 +41,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <mem.h>
 #include "src/lib/types.h"
 
 /* Control codes for all keys on the keyboard */

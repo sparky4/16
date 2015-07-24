@@ -1,4 +1,5 @@
-@rem wmake clean
-@rem wmakescroll.exe > scroll.out
-@rem wmake maptest.exemaptest.exe > maptest.out
-wmake maptest0.exemaptest0.exe
+@echo off
+wmake clean
+wmake exmmtest.exe > exmmtest.16
+@rem wmakescroll.exe > scroll.16
+@rem wmake maptest.exemaptest.exe > maptest.16
