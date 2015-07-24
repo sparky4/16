@@ -24,51 +24,545 @@
 */
 #include "src/lib/scroll16.h"
 
-/*void animatePlayer(player_t *player,word playnum, short scrolloffsetswitch, int ls, bitmap_t *bmp)
+void walk(map_view_t *pip, player_t *player, word pn)
+{
+	#define INC_PER_FRAME if(player[pn].q&1) player[pn].persist_aniframe++; if(player[pn].persist_aniframe>4) player[pn].persist_aniframe = 1;
+	//right movement
+	switch(player[pn].info.dir)
+	{
+		case 3:
+			if(pip[0].tx >= 0 && pip[0].tx+20 < pip[0].map->width && player[pn].tx == pip[0].tx + 10 &&
+			!(pip[0].map->data[(player[pn].tx)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx+1 == TRIGGX && player[pn].ty == TRIGGY))	//collision detection!
+			{
+				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				{
+					INC_PER_FRAME;
+					animatePlayer(pip, player, pn, 1);
+					mapScrollRight(pip, player, 0, pn);
+					mapScrollRight(pip, player, 1, pn);
+					modexShowPage(pip[1].page);
+					player[pn].q++;
+				} else { player[pn].q = 1; player[pn].info.dir = 0; player[pn].tx++; }
+			}
+			else if(player[pn].tx < pip[0].map->width && !(pip[0].map->data[(player[pn].tx)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx+1 == TRIGGX && player[pn].ty == TRIGGY))
+			{
+				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				{
+					INC_PER_FRAME;
+					player[pn].x+=(player[pn].speed);
+					animatePlayer(pip, player, pn, 0);
+					modexShowPage(pip[1].page);
+					player[pn].q++;
+				} else { player[pn].q = 1; player[pn].info.dir = 0; player[pn].tx++; }
+			}
+			else
+			{
+				modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x-4, player[pn].y-TILEWH, player[pn].x-4, player[pn].y-TILEWH, 24, 32);
+				modexDrawSpriteRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 24, 32, &player[pn].data);
+				modexShowPage(pip[1].page);
+				player[pn].info.dir = 0;
+			}
+			player[pn].triggerx = player[pn].tx+1;
+			player[pn].triggery = player[pn].ty;
+		break;
+
+		//left movement
+		case 1:
+			if(pip[0].tx > 0 && pip[0].tx+20 <= pip[0].map->width && player[pn].tx == pip[0].tx + 10 &&
+			!(pip[0].map->data[(player[pn].tx-2)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx-1 == TRIGGX && player[pn].ty == TRIGGY))	//collision detection!
+			{
+				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				{
+					INC_PER_FRAME;
+					animatePlayer(pip, player, pn, 1);
+					mapScrollLeft(pip, player, 0, pn);
+					mapScrollLeft(pip, player, 1, pn);
+					modexShowPage(pip[1].page);
+					player[pn].q++;
+				} else { player[pn].q = 1; player[pn].info.dir = 0; player[pn].tx--; }
+			}
+			else if(player[pn].tx > 1 && !(pip[0].map->data[(player[pn].tx-2)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx-1 == TRIGGX && player[pn].ty == TRIGGY))
+			{
+				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				{
+					INC_PER_FRAME;
+					player[pn].x-=(player[pn].speed);
+					animatePlayer(pip, player, pn, 0);
+					modexShowPage(pip[1].page);
+					player[pn].q++;
+				} else { player[pn].q = 1; player[pn].info.dir = 0; player[pn].tx--; }
+			}
+			else
+			{
+				modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x-4, player[pn].y-TILEWH, player[pn].x-4, player[pn].y-TILEWH, 24, 32);
+				modexDrawSpriteRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 96, 24, 32, &player[pn].data);
+				modexShowPage(pip[1].page);
+				player[pn].info.dir = 0;
+			}
+			player[pn].triggerx = player[pn].tx-1;
+			player[pn].triggery = player[pn].ty;
+		break;
+
+		//down movement
+		case 4:
+			if(pip[0].ty >= 0 && pip[0].ty+15 < pip[0].map->height && player[pn].ty == pip[0].ty + 8 &&
+			!(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty))] == 0))//!(player[pn].tx == TRIGGX && player[pn].ty+1 == TRIGGY))	//collision detection!
+			{
+				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				{
+					INC_PER_FRAME;
+					animatePlayer(pip, player, pn, 1);
+					mapScrollDown(pip, player, 0, pn);
+					mapScrollDown(pip, player, 1, pn);
+					modexShowPage(pip[1].page);
+					player[pn].q++;
+				} else { player[pn].q = 1; player[pn].info.dir = 0; player[pn].ty++; }
+			}
+			else if(player[pn].ty < pip[0].map->height && !(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty))] == 0))//!(player[pn].tx == TRIGGX && player[pn].ty+1 == TRIGGY))
+			{
+				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				{
+					INC_PER_FRAME;
+					player[pn].y+=(player[pn].speed);
+					animatePlayer(pip, player, pn, 0);
+					modexShowPage(pip[1].page);
+					player[pn].q++;
+				} else { player[pn].q = 1; player[pn].info.dir = 0; player[pn].ty++; }
+			}
+			else
+			{
+				modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x-4, player[pn].y-TILEWH, player[pn].x-4, player[pn].y-TILEWH, 24, 32);
+				modexDrawSpriteRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 64, 24, 32, &player[pn].data);
+				modexShowPage(pip[1].page);
+				player[pn].info.dir = 0;
+			}
+			player[pn].triggerx = player[pn].tx;
+			player[pn].triggery = player[pn].ty+1;
+		break;
+
+		//up movement
+		case 0:
+			if(pip[0].ty > 0 && pip[0].ty+15 <= pip[0].map->height && player[pn].ty == pip[0].ty + 8 &&
+			!(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty-2))] == 0))//!(player[pn].tx == TRIGGX && player[pn].ty-1 == TRIGGY))	//collision detection!
+			{
+				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				{
+					INC_PER_FRAME;
+					animatePlayer(pip, player, pn, 1);
+					mapScrollUp(pip, player, 0, pn);
+					mapScrollUp(pip, player, 1, pn);
+					modexShowPage(pip[1].page);
+					player[pn].q++;
+				} else { player[pn].q = 1; player[pn].info.dir = 0; player[pn].ty--; }
+			}
+			else if(player[pn].ty > 1 && !(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty-2))] == 0))//!(player[pn].tx == TRIGGX &&  player[pn].ty-1 == TRIGGY))
+			{
+				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				{
+					INC_PER_FRAME;
+					player[pn].y-=(player[pn].speed);
+					animatePlayer(pip, player, 0, pn);
+					modexShowPage(pip[1].page);
+					player[pn].q++;
+				} else { player[pn].q = 1; player[pn].info.dir = 0; player[pn].ty--; }
+			}
+			else
+			{
+				modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x-4, player[pn].y-TILEWH, player[pn].x-4, player[pn].y-TILEWH, 24, 32);
+				modexDrawSpriteRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 0, 24, 32, &player[pn].data);
+				modexShowPage(pip[1].page);
+				player[pn].info.dir = 0;
+			}
+			player[pn].triggerx = player[pn].tx;
+			player[pn].triggery = player[pn].ty-1;
+		break;
+	}
+}
+
+/*map_t
+allocMap(int w, int h) {
+	map_t result;
+
+	result.width =w;
+	result.height=h;
+	result.data = malloc(sizeof(byte) * w * h);
+	//result.data = (byte *)alloc_emem(((int)sizeof(byte) * w * h)/1024);
+	if(isEMS() || checkEMS())
+	{
+		XMOVE mm;
+		//emmhandle = mallocEMS(coretotalEMS());//alloc_emem((int)sizeof(map))
+		mm.length=sizeof(result);
+		mm.sourceH=0;
+		mm.sourceOff=ptr2long(&result);
+		mm.destH=emmhandle;
+		mm.destOff=0;
+		ist = move_emem(&mm);
+		if(!ist){ dealloc_emem(emmhandle); exit(5); }
+		printf("%d\n", coretotalEMS());
+	}
+
+	return result;
+}*/
+
+/*void
+initMap(map_t *map) {
+	// just a place holder to fill out an alternating pattern
+	int x, y, xx, yy;
+	int i, q;
+//	int tile = 1;
+	//if(!isEMS() || !checkEMS())
+//		map->tiles = malloc(sizeof(tiles_t));
+	//else
+	//	map->tiles = (tiles_t *)alloc_emem(sizeof(tiles_t));
+
+	 //create the tile set
+	//if(!isEMS() || !checkEMS())
+//		map->tiles->data = malloc(sizeof(bitmap_t));
+	//else
+	//	map->tiles->data = (bitmap_t *)alloc_emem(sizeof(bitmap_t));
+//	map->tiles->data->width = (TILEWH);
+//	map->tiles->data->height= TILEWH;
+	//if(!isEMS() || !checkEMS())
+//		map->tiles->data->data = malloc((TILEWH*2)*TILEWH);
+	//else
+	//	map->tiles->data->data = (byte *)alloc_emem((TILEWH*2)*TILEWH);
+//	map->tiles->tileHeight = TILEWH;
+//	map->tiles->tileWidth =TILEWH;
+//	map->tiles->rows = 1;
+//	map->tiles->cols = 1;//2;
+
+	q=0;
+	//for(y=0; y<map->height; y++) {
+	//for(x=0; x<map->width; x++) {
+	i=0;
+	for(yy=0; yy<TILEWH; yy++) {
+	for(xx=0; xx<(TILEWH); xx++) {
+		//if(x<TILEWH){
+		  map->tiles->data->data[i+1] = map->data[q];//28;//0x24;
+//		  printf("[%d]", map->tiles->data->data[i]);
+		//}else{
+		  //map->tiles->data->data[i] = map->data[q];//0;//0x34;
+		  //printf("]%d[==[%d]", i, map->tiles->data->data[i]);
+		//}
+		i++;
+	}
+//	printf("\n");
+	}
+//	printf("[%d]", map->data[q]);
+	q++;
+//	}
+	//printf("\n\n");
+//	}
+
+	i=0;
+	for(y=0; y<map->height; y++) {
+		for(x=0; x<map->width; x++) {
+//			map->data[i]=255;
+			printf("[%d]", map->data[i]);
+			//tile = tile ? 0 : 1;
+			i++;
+		}
+		//tile = tile ? 0 : 1;
+	}
+}*/
+
+void mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
+{
+	word x, y;  /* coordinate for drawing */
+
+	/* increment the pixel position and update the page */
+	mv[id].page->dx += player[plid].speed;
+
+	/* check to see if this changes the tile */
+	if(mv[id].page->dx >= mv[id].dxThresh )
+	{
+	/* go forward one tile */
+	mv[id].tx++;
+	/* Snap the origin forward */
+	mv[id].page->data += 4;
+	mv[id].page->dx = mv[id].map->tiles->tileWidth;
+	}
+
+	/* draw the next column */
+	x= SCREEN_WIDTH + mv[id].map->tiles->tileWidth;
+	if(player[plid].q%4)
+		if(id==0)
+			mapDrawCol(&mv[0], mv[0].tx + 20 , mv[0].ty-1, x, player, mv->page->dx);
+		else
+			modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*17);
+	//}
+}
+
+
+void mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
+{
+	word x, y;  /* coordinate for drawing */
+
+	/* increment the pixel position and update the page */
+	mv[id].page->dx -= player[plid].speed;
+
+	/* check to see if this changes the tile */
+	if(mv[id].page->dx == 0)
+	{
+	/* go backward one tile */
+	mv[id].tx--;
+
+	/* Snap the origin backward */
+	mv[id].page->data -= 4;
+	mv[id].page->dx = mv[id].map->tiles->tileWidth;
+	}
+
+	/* draw the next column */
+	x= 0;
+	if(player[plid].q%4)
+		if(id==0)
+			mapDrawCol(&mv[0], mv[0].tx - 1, mv[0].ty-1, x, player, mv->page->dx);
+		else
+			modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*17);
+	//}
+}
+
+
+void mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
+{
+	word x, y;  /* coordinate for drawing */
+
+	/* increment the pixel position and update the page */
+	mv[id].page->dy -= player[plid].speed;
+
+	/* check to see if this changes the tile */
+	if(mv[id].page->dy == 0 )
+	{
+	/* go down one tile */
+	mv[id].ty--;
+	/* Snap the origin downward */
+	mv[id].page->data -= mv[id].page->width*4;
+	mv[id].page->dy = mv[id].map->tiles->tileHeight;
+	}
+
+	/* draw the next row */
+	y= 0;
+	if(player[plid].q%3)
+		if(id==0)
+			mapDrawRow(&mv[0], mv[0].tx - 1, mv[0].ty-1, y, player, mv->page->dy);
+		else
+			modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*22, mv[id].map->tiles->tileHeight);
+	//}
+}
+
+void mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
+{
+	word x, y;  /* coordinate for drawing */
+
+	/* increment the pixel position and update the page */
+	mv[id].page->dy += player[plid].speed;
+
+	/* check to see if this changes the tile */
+	if(mv[id].page->dy >= mv[id].dyThresh )
+	{
+	/* go down one tile */
+	mv[id].ty++;
+	/* Snap the origin downward */
+	mv[id].page->data += mv[id].page->width*4;
+	mv[id].page->dy = mv[id].map->tiles->tileHeight;
+	}
+
+	/* draw the next row */
+	y= SCREEN_HEIGHT + mv[id].map->tiles->tileHeight;
+	if(player[plid].q%3)
+		if(id==0)
+			mapDrawRow(&mv[0], mv[0].tx - 1, mv[0].ty+15, y, player, mv->page->dy);
+		else
+			modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*22, mv[id].map->tiles->tileHeight);
+	//}
+}
+
+
+void mapGoTo(map_view_t *mv, int tx, int ty)
+{
+	int px, py;
+	unsigned int i;
+
+	/* set up the coordinates */
+	mv->tx = tx;
+	mv->ty = ty;
+	mv->page->dx = mv->map->tiles->tileWidth;
+	mv->page->dy = mv->map->tiles->tileHeight;
+
+	/* set up the thresholds */
+	mv->dxThresh = mv->map->tiles->tileWidth * 2;
+	mv->dyThresh = mv->map->tiles->tileHeight * 2;
+
+	/* draw the tiles */
+	modexClearRegion(mv->page, 0, 0, mv->page->width, mv->page->height, 0);
+	py=0;
+	i=mv->ty * mv->map->width + mv->tx;
+	for(ty=mv->ty-1; py < SCREEN_HEIGHT+mv->dyThresh && ty < mv->map->height; ty++, py+=mv->map->tiles->tileHeight) {
+		mapDrawWRow(mv, tx-1, ty, py);
+	i+=mv->map->width - tx;
+	}
+}
+
+
+void
+mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
+{
+	word rx;
+	word ry;
+	//if(i==0) i=2;
+	if(i==0)
+	{
+		//wwww
+		modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, 0); //currently the over scan color!
+	}
+	else
+	{
+	rx = (((i-1) % ((t->data->width)/t->tileWidth)) * t->tileWidth);
+	ry = (((i-1) / ((t->data->height)/t->tileHeight)) * t->tileHeight);
+////0000	printf("i=%d\n", i);
+	//mxPutTile(t->data, x, y, t->tileWidth, t->tileHeight);
+	modexDrawBmpRegion(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
+	}
+}
+
+void mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *p, word poopoffset)
+{
+	word x;
+	int i;
+	poopoffset%=p[0].speed;
+//printf("y: %d\n", poopoffset);
+	/* the position within the map array */
+	i=ty * mv->map->width + tx;
+	for(x=poopoffset; x<(SCREEN_WIDTH+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width; x+=mv->map->tiles->tileWidth, tx++) {
+	if(i>=0) {
+		/* we are in the map, so copy! */
+		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
+	}
+	i++; /* next! */
+	}
+}
+
+void mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *p, word poopoffset)
+{
+	int y;
+	int i;
+	poopoffset%=p[0].speed;
+//printf("x: %d\n", poopoffset);
+	/* location in the map array */
+	i=ty * mv->map->width + tx;
+
+	/* We'll copy all of the columns in the screen,
+	   i + 1 row above and one below */
+	for(y=poopoffset; y<(SCREEN_HEIGHT+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
+	if(i>=0) {
+		/* we are in the map, so copy away! */
+		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
+	}
+	i += mv->map->width;
+	}
+}
+
+void mapDrawWRow(map_view_t *mv, int tx, int ty, word y)
+{
+	word x;
+	int i;
+
+	/* the position within the map array */
+	i=ty * mv->map->width + tx;
+	for(x=0; x<SCREEN_WIDTH+mv->dxThresh && tx < mv->map->width; x+=mv->map->tiles->tileWidth, tx++) {
+	if(i>=0) {
+		/* we are in the map, so copy! */
+		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
+	}
+	i++; /* next! */
+	}
+}
+
+void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
+{
+	int y;
+	int i;
+
+	/* location in the map array */
+	i=ty * mv->map->width + tx;
+
+	/* We'll copy all of the columns in the screen,
+	   i + 1 row above and one below */
+	for(y=0; y<SCREEN_HEIGHT+mv->dyThresh && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
+	if(i>=0) {
+		/* we are in the map, so copy away! */
+		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
+	}
+	i += mv->map->width;
+	}
+}
+
+void qclean()
+{
+	modexLeave();
+	//setkb(0);
+}
+
+void pdump(page_t *pee)
+{
+	int mult=(QUADWH);
+	int palq=(mult)*TILEWH;
+	int palcol=0;
+	int palx, paly;
+	for(paly=0; paly<palq; paly+=mult){
+		for(palx=0; palx<palq; palx+=mult){
+				modexClearRegion(pee, palx+TILEWH, paly+TILEWH, mult, mult, palcol);
+			palcol++;
+		}
+	}
+}
+
+void animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch)
 {
 	sword dire=32; //direction
 	sword qq; //scroll offset
+	word ls = player[playnum].persist_aniframe;
 
-	if(scrolloffsetswitch==0) qq = 0;
-	else qq = ((player[playnum]->p)*player[playnum]->speed);
-	switch (player[playnum]->dir)
+	if(scrollswitch==0) qq = 0;
+	else qq = ((player[playnum].persist_aniframe)*player[playnum].speed);
+	switch (player[playnum].info.dir)
 	{
 		case 0:
 			//up
-			dire*=player[playnum]->dir;
-			player[playnum]->x=player[playnum]->x-4;
-			player[playnum]->y=player[playnum]->y-qq-TILEWH;
+			dire*=player[playnum].info.dir;
+			player[playnum].x=player[playnum].x-4;
+			player[playnum].y=player[playnum].y-qq-TILEWH;
 		break;
 		case 1:
 			// right
-			dire*=(player[playnum]->dir-2);
-			player[playnum]->x=player[playnum]->x+qq-4;
-			player[playnum]->y=player[playnum]->y-TILEWH;
+			dire*=(player[playnum].info.dir-2);
+			player[playnum].x=player[playnum].x+qq-4;
+			player[playnum].y=player[playnum].y-TILEWH;
 		break;
 		case 2:
 		break;
 		case 3:
 			//down
-			dire*=(player[playnum]->dir-2)
-			player[playnum]->x=player[playnum]->x-4;
-			player[playnum]->y=player[playnum]->y+qq-TILEWH;
+			dire*=(player[playnum].info.dir-2);
+			player[playnum].x=player[playnum].x-4;
+			player[playnum].y=player[playnum].y+qq-TILEWH;
 		break;
 		case 4:
 			//left
-			dire*=(player[playnum]->dir+2)
-			player[playnum]->x=player[playnum]->x-qq-4;
-			player[playnum]->y=player[playnum]->y-TILEWH;
+			dire*=(player[playnum].info.dir+2);
+			player[playnum].x=player[playnum].x-qq-4;
+			player[playnum].y=player[playnum].y-TILEWH;
 		break;
 	}
-//	modexCopyPageRegion(dest->page, src->page, x-4, y-4, x-4, y-4, 28, 40);
-//	if(2>ls && ls>=1) { modexDrawSpriteRegion(dest->page, x, y, 48, dire, 24, 32, bmp); }else
-//	if(3>ls && ls>=2) { modexDrawSpriteRegion(dest->page, x, y, 24, dire, 24, 32, bmp); }else
-//	if(4>ls && ls>=3) { modexDrawSpriteRegion(dest->page, x, y, 0, dire, 24, 32, bmp); }else
-//	if(5>ls && ls>=4) { modexDrawSpriteRegion(dest->page, x, y, 24, dire, 24, 32, bmp); }
+	modexCopyPageRegion(pip[1].page, pip[0].page, player[playnum].x-4, player[playnum].y-4, player[playnum].x-4, player[playnum].y-4, 28, 40);
+	if(2>ls && ls>=1) { modexDrawSpriteRegion(pip[1].page, player[playnum].x, player[playnum].y, 48, dire, 24, 32, &player[playnum].data); }else
+	if(3>ls && ls>=2) { modexDrawSpriteRegion(pip[1].page, player[playnum].x, player[playnum].y, 24, dire, 24, 32, &player[playnum].data); }else
+	if(4>ls && ls>=3) { modexDrawSpriteRegion(pip[1].page, player[playnum].x, player[playnum].y, 0, dire, 24, 32, &player[playnum].data); }else
+	if(5>ls && ls>=4) { modexDrawSpriteRegion(pip[1].page, player[playnum].x, player[playnum].y, 24, dire, 24, 32, &player[playnum].data); }
 	//TODO: mask copy //modexCopyPageRegion(dest->page, src->page, x-4, y-4, x-4, y-4, 28, 40);
 	//modexClearRegion(top->page, 66, 66, 2, 40, 0);
 	//modexCopyPageRegion(dest->page, top->page, 66, 66, 66, 66, 2, 40);
 	//turn this off if XT
 	//XTif(detectcpu() > 0)
-//	modexWaitBorder();
-}*/
+	modexWaitBorder();
+}

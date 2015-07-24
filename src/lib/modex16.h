@@ -55,6 +55,7 @@ typedef union
 
 /* -============================ Functions =============================- */
 /* mode switching, page, and plane functions */
+void VGAmodeX(sword vq);
 void modexEnter();
 void modexLeave();
 page_t modexDefaultPage();
@@ -102,6 +103,7 @@ void modexWaitBorder();
 
 /* -======================= Constants & Vars ==========================- */
 extern byte far*  VGA;  /* The VGA Memory */
+extern int old_mode;
 #define SCREEN_SEG		0xa000
 #define VIDEO_INT		0x10
 #define SET_MODE		0x00

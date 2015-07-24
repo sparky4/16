@@ -29,6 +29,36 @@ byte far* VGA=(byte far*) 0xA0000000;   /* this points to video memory. */
 
 static void fadePalette(sbyte fade, sbyte start, word iter, byte *palette);
 static byte tmppal[PAL_SIZE];
+int old_mode;
+
+/////////////////////////////////////////////////////////////////////////////
+//																														//
+// setvideo() - This function Manages the video modes												//
+//																														//
+/////////////////////////////////////////////////////////////////////////////
+void VGAmodeX(sword vq)
+{
+	union REGS in, out;
+
+	if(!vq)
+	{ // deinit the video
+		// change to the video mode we were in before we switched to mode 13h
+		modexLeave();
+		//in.h.ah = 0x00;
+		//in.h.al = old_mode;
+		//int86(0x10, &in, &out);
+
+	}
+	else if(vq==1)
+	{ // init the video
+		// get old video mode
+		//in.h.ah = 0xf;
+		//int86(0x10, &in, &out);
+		//old_mode = out.h.al;
+		// enter mode
+		modexEnter();
+	}
+}
 
 static void
 vgaSetMode(byte mode)

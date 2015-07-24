@@ -1,4 +1,4 @@
-/* Project 16 Source Code‾
+/* Project 16 Source Code~
  * Copyright (C) 2012-2015 sparky4 & pngwen & andrius4669
  *
  * This file is part of Project 16.
@@ -28,8 +28,7 @@
 void
 main(int argc, char *argv[])
 {
-	global_game_variables_t gamevars;
-	bakapee_t bakapee;
+	static bakapee_t bakapee;
 	page_t screen;
 	word key,d,xpos,ypos,xdir,ydir;
 	int ch=0x0;
@@ -42,13 +41,15 @@ main(int argc, char *argv[])
 	ydir=1;
 	bakapee.xx = rand()&0%SCREEN_WIDTH;
 	bakapee.yy = rand()&0%SCREEN_HEIGHT;
-	bakapee.gq = LGQ;
+	bakapee.qq = 0;
+	bakapee.gq = 0;
 	bakapee.sx=0;
 	bakapee.sy=0;
 	bakapee.bakax=0;
 	bakapee.bakay=0;
+	bakapee.coor=0;
 
-	/* setup camera and screen‾ */
+	/* setup camera and screen~ */
 	screen = modexDefaultPage();
 	screen.width += (TILEWH*2);
 	screen.height += (TILEWH*2);
@@ -57,6 +58,9 @@ main(int argc, char *argv[])
 	//modexPalUpdate(bmp.palette); //____
 	//modexDrawBmp(VGA, 0, 0, &bmp, 0); //____
 	//getch(); //____
+
+	VGAmodeX(1);
+	modexShowPage(&screen);
 
 // screen savers
 #ifdef BOINK
@@ -68,17 +72,22 @@ main(int argc, char *argv[])
 		}
 		else
 		{
-			setVGAmodeX(&gamevars, 0);
+			VGAmodeX(0);
+			//modexLeave();
 			// user imput switch
-			printf("Enter 1, 2, 3, 4, or 6 to run a screensaver, or enter 0 to quit.¥n", getch());  // prompt the user
+			printf("Enter 1, 2, 3, 4, or 6 to run a screensaver, or enter 0 to quit.\n", getch());  // prompt the user
 			scanf("%d", &key);
 			//if(key==3){xx=yy=0;} // crazy screen saver wwww
-			if(key==0) d=0;
-			setVGAmodeX(&gamevars, 1);
+			if(key==0){ d=0; }else{
+				screen = modexDefaultPage();
+				screen.width += (TILEWH*2);
+				screen.height += (TILEWH*2);
+				VGAmodeX(1);
+				modexShowPage(&screen);
+			}
 		}
 	}
 #else
-	setVGAmodeX(&gamevars, 1);
 	while(1)
 	{ // conditions of screen saver
 		while(!kbhit())
@@ -118,7 +127,7 @@ main(int argc, char *argv[])
 		mxOutText(xpos+1, ypos+SCREEN_HEIGHT-24, "|    |$line3");
 		mxOutText(xpos+1, ypos+SCREEN_HEIGHT-16, "|    |$line4");
 		mxOutText(xpos+1, ypos+SCREEN_HEIGHT-8,  "========================================");
-		mxFillBox(xpos+QUADWH, ypos+QUADWH+(TILEWH*12), TILEWH*2, TILEWH*2, 9, OP_SET); //portriat‾
+		mxFillBox(xpos+QUADWH, ypos+QUADWH+(TILEWH*12), TILEWH*2, TILEWH*2, 9, OP_SET); //portriat~
 		getch();
 		mxBitBlt(0, BS, SCREEN_WIDTH, TILEWH*BUFFMX, xpos, ypos+(TILEWH*12)); //copy background
 		getch();++++*/
@@ -151,8 +160,8 @@ main(int argc, char *argv[])
 	if(ch==0x71)break; // 'q'
 	if(ch==0x1b)break; // 'ESC'
 	}
-	setVGAmodeX(&gamevars, 0);
+//	VGAmodeX(0);
 #endif
-	printf("bakapi ver. 1.04.13.04¥nis made by sparky4（≧ω≦） feel free to use it ^^¥nLicence: GPL v3¥n");
+	printf("bakapi ver. 1.04.13.04\nis made by sparky4�i���ց��j feel free to use it ^^\nLicence: GPL v3\n");
 }
 //pee!

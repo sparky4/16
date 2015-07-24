@@ -22,33 +22,6 @@
 
 #include "src/lib/bakapee.h"
 
-/////////////////////////////////////////////////////////////////////////////
-//                                                                         //
-// setvideo() - This function Manages the video modes					  //
-//                                                                         //
-/////////////////////////////////////////////////////////////////////////////
-void setVGAmodeX(global_game_variables_t *vid, boolean vq)
-{
-	union REGS in, out;
-
-	if(!vq)
-	{ // deinit the video
-		// change to the video mode we were in before we switched to mode 13h
-		modexLeave();
-		in.h.ah = 0x00;
-		in.h.al = vid->old_mode;
-		int86(0x10, &in, &out);
-
-	}else if(vq==1){ // init the video
-		// get old video mode
-		in.h.ah = 0xf;
-		int86(0x10, &in, &out);
-		vid->old_mode = out.h.al;
-		// enter mode
-		modexEnter();
-	}
-}
-
 void pdump(page_t *pee)
 {
 	int mult=(QUADWH);
@@ -141,7 +114,7 @@ void dingo(bakapee_t *pee)
 
 void dingas(bakapee_t *pee)
 {
-	if(pee->gq == BONK) dingu(pee);
+	if(pee->qq == BONK) dingu(pee);
 	if(!pee->bakax)
 	{
 		#ifdef TILE
@@ -181,8 +154,10 @@ void dingu(bakapee_t *pee)
 	if(pee->coor < HGQ && pee->coor < LGQ) pee->coor = LGQ;
 	if(pee->coor < HGQ)
 	{
+		pee->qq++;
 		pee->coor++;
 	}else{ pee->coor = LGQ;
+		pee->qq = 0;
 		pee->bakax = rand()%3; pee->bakay = rand()%3;
 	}
 }
@@ -196,32 +171,33 @@ void ding(page_t *page, bakapee_t *pee, word q)
 	switch(q)
 	{
 		case 1:
-			if(pee->gq<BONK)
+			if(pee->qq<BONK)
 			{
 				if(pee->xx==SCREEN_WIDTH){pee->bakax=0;}
 				if(pee->xx==0){pee->bakax=1;}
 				if(pee->yy==SCREEN_HEIGHT){pee->bakay=0;}
 				if(pee->yy==0){pee->bakay=1;}
-				pee->gq++;
-			}else pee->gq = LGQ;
+				pee->qq++;
+			}else pee->qq = 0;
 		break;
 		case 2:
-			if(pee->gq<BONK)
+			if(pee->qq<BONK)
 			{
+				dingu(pee);
 				dingas(pee);
 				dingo(pee);
 				dingpp(page, pee);	//plot the pixel/tile
 #ifdef TILE
-				modexClearRegion(page, (rand()*TILEWH)%SCREEN_WIDTH, (rand()*TILEWH)%(SCREEN_HEIGHT), TILEWH, TILEWH, 0);
+				modexClearRegion(page, (rand()*TILEWH)%page->width, (rand()*TILEWH)%(page->height), TILEWH, TILEWH, 0);
 #else
-				modexputPixel(page, rand()%SCREEN_WIDTH, rand()%(SCREEN_HEIGHT), 0);
+				modexputPixel(page, rand()%page->width, rand()%page->height, 0);
 #endif
 				pee->bakax = rand()%3; pee->bakay = rand()%3;
-				pee->gq++;
-			}else pee->gq = LGQ;
+				pee->qq++;
+			}else pee->qq = 0;
 		break;
 		case 3:
-			if(pee->gq<BONK)
+			if(pee->qq<BONK)
 			{
 				if(pee->xx!=SCREEN_WIDTH||pee->yy!=SCREEN_HEIGHT)
 				{
@@ -251,18 +227,19 @@ void ding(page_t *page, bakapee_t *pee, word q)
 				{
 					pee->xx++;
 				}
-				pee->gq++;
-			}else pee->gq = LGQ;
+				pee->qq++;
+			}else pee->qq = 0;
 		break;
 		case 4:
-			if(pee->gq<BONK)
+			if(pee->qq<BONK)
 			{
+				dingu(pee);
 				dingas(pee);
 				dingo(pee);
 				dingpp(page, pee);	//plot the pixel/tile
 				pee->bakax = rand()%3; pee->bakay = rand()%3;
-				pee->gq++;
-			}else pee->gq = LGQ;
+				pee->qq++;
+			}else pee->qq = 0;
 		break;
 		case 5:
 			colortest(page, pee);
@@ -297,31 +274,29 @@ void ding(page_t *page, bakapee_t *pee, word q)
 		break;
 
 		case 16:	//interesting effects
-			if(pee->gq<BONK)
+			if(pee->qq<BONK)
 			{
 				if(!pee->bakax){ pee->xx--;}
 				else if(pee->bakax>0){ pee->xx++; }
 				if(!pee->bakay){ pee->yy--;}
 				else if(pee->bakay>0){ pee->yy++; }
+				dingu(pee);
 				dingas(pee);
 				tx+=pee->xx+TILEWH+4;
 				ty+=pee->yy+TILEWH+4;
 				modexClearRegion(page, tx, ty, 4, 4, pee->coor);
 #ifdef TILE
-				modexClearRegion(page, (rand()*TILEWH)%SCREEN_WIDTH, (rand()*TILEWH)%(SCREEN_HEIGHT), TILEWH, TILEWH, 0);
+				modexClearRegion(page, (rand()*TILEWH)%page->width, (rand()*TILEWH)%(page->height), TILEWH, TILEWH, 0);
 #else
-				modexputPixel(page, rand()%SCREEN_WIDTH, rand()%(SCREEN_HEIGHT), 0);
+				modexputPixel(page, rand()%page->width, rand()%(page->height), 0);
 #endif
 				pee->bakax = rand()%3; pee->bakay = rand()%3;
 				//printf("%d %d %d %d %d %d\n", pee->xx, pee->yy, tx, ty, TILEWH);
-				pee->gq++;
-			}else pee->gq = LGQ;
-		break;
-		case 0:
-		return;
+				pee->qq++;
+			}else pee->qq = 0;
 		break;
 		default:
-		return;
 		break;
 	}
+	//pee->coor++;
 }

@@ -32,19 +32,16 @@
 #define LGQ	     32
 #define HGQ	     55
 
+#define TILE
+
 typedef struct {
 	word gq;
+	word qq;
 	sword bakax, bakay;
 	sword xx, yy, sx, sy;
 	byte coor;
 } bakapee_t;
 
-typedef struct
-{
-	int old_mode;	//old video mode before game!
-} global_game_variables_t;
-
-void setVGAmodeX(global_game_variables_t *vid, boolean vq);
 void pdump(page_t *pee);
 void cls(page_t *page, byte color, byte *Where);
 void colortest(page_t *page, bakapee_t *pee);

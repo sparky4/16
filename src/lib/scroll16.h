@@ -24,11 +24,45 @@
 #define __SCROLL16_H_
 
 #include "src/lib/16_head.h"
+#include "src/lib/modex16.h"
 #include "src/lib/16_in.h"
+#include "src/lib/bitmap.h"
+#include "src/lib/planar.h"
+#include "src/lib/mapread.h"
 
-//#define TILEWH 16
-//#define SPEED 4
+typedef struct {
+	map_t *map;
+	page_t *page;
+	int tx; //appears to be the top left tile position on the viewable screen map
+	int ty; //appears to be the top left tile position on the viewable screen map
+	word dxThresh; //????
+	word dyThresh; //????
+} map_view_t;
 
-//void animatePlayer(player_t *player, short scrolloffsetswitch, int ls, bitmap_t *bmp);
+typedef struct
+{
+	map_view_t *mv;
+} map_view_db_t;
+
+#define TILEWH 16
+#define QUADWH			TILEWH/2
+//#define LOOPMAX (TILEWH/(player[0].speed))
+
+//map_t allocMap(int w, int h);
+//void initMap(map_t *map);
+void walk(map_view_t *pip, player_t *player, word pn);
+void mapScrollRight(map_view_t *mv, player_t *player, word id, word plid);
+void mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid);
+void mapScrollUp(map_view_t *mv, player_t *player, word id, word plid);
+void mapScrollDown(map_view_t *mv, player_t *player, word id, word plid);
+void mapGoTo(map_view_t *mv, int tx, int ty);
+void mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
+void mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *p, word poopoffset);
+void mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *p, word poopoffset);
+void mapDrawWRow(map_view_t *mv, int tx, int ty, word y);
+void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
+void pdump(page_t *pee);
+void qclean();
+void animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch);
 
 #endif /*__SCROLL16_H_*/

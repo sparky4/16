@@ -29,6 +29,7 @@
 
 #include <string.h>
 #include "src/lib/16_head.h"
+#include "src/lib/bitmap.h"
 
 #ifdef	__DEBUG__
 //#define	__DEBUG_InputMgr__
@@ -216,9 +217,10 @@ typedef	struct
 	int setx; //NOT USED YET! player sprite sheet set on the image x
 	int sety; //NOT USED YET! player sprite sheet set on the image y
 	word q; //loop variable
-//	word d; //direction
-	//bitmap_t data; //supposively the sprite sheet data
+	word speed;		//player speed!
+	bitmap_t data; //supposively the sprite sheet data
 	int hp; //hitpoints of the player
+	word persist_aniframe;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	CursorInfo	info;
 	ControlType	Controls;
 } player_t;

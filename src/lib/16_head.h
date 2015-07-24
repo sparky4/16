@@ -138,7 +138,7 @@
 
 static dword far* clockdw= (dword far*) 0x046C; /* 18.2hz clock */
 //static dword clockdw=0;
-extern	int			profilehandle,debughandle;
+extern	int			profilehandle,debughandle;	//make it into game global
 
 #define	nil	((void *)0)
 
@@ -154,6 +154,10 @@ typedef	enum	{false,true}	boolean;
 //I hope this is correct!
 //__self
 typedef void __based(__self) * memptr;
+typedef struct
+{
+	int old_mode;	//old video mode before game!
+} global_game_variables_t;
 
 /* local function */
 void wait(clock_t wait);

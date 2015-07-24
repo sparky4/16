@@ -56,7 +56,7 @@ void mapDrawRow(map_view_t *mv, int tx, int ty, word y, word poopoffset);
 void mapDrawCol(map_view_t *mv, int tx, int ty, word x, word poopoffset);
 void mapDrawWRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
-void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp);
+void animatePlayer(map_view_t *src, map_view_t *dest, short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp);
 
 #define TILEWH 16
 #define QUADWH (TILEWH/4)
@@ -72,7 +72,7 @@ void main() {
 	bitmap_t ptmp; // player sprite
 	word q=1;
 	const char *cpus;
-	static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
+	//static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	page_t screen, screen2, screen3;
 	map_t map;
 	map_view_t mv, mv2, mv3;
@@ -132,7 +132,7 @@ void main() {
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
 
-	#define INC_PER_FRAME if(q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;	
+	#define INC_PER_FRAME if(q&1) persist_aniframe++; if(persist_aniframe>4) persist_aniframe = 1;
 
 	//temp testing
 		/*if(bg->tx >= 0 && bg->tx+20 < MAPX && player.tx == bg->tx + 10)
@@ -442,7 +442,7 @@ mapScrollLeft(map_view_t *mv, byte offset, short lp) {
 	if(mv->page->dx == 0) {
 	/* go backward one tile */
 	mv->tx--;
-		
+
 	/* Snap the origin backward */
 	mv->page->data -= 4;
 	mv->page->dx = mv->map->tiles->tileWidth;
@@ -539,7 +539,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y) {
 }
 
 
-void 
+void
 mapDrawRow(map_view_t *mv, int tx, int ty, word y, word poopoffset) {
 	word x;
 	int i;
@@ -557,7 +557,7 @@ mapDrawRow(map_view_t *mv, int tx, int ty, word y, word poopoffset) {
 }
 
 
-void 
+void
 mapDrawCol(map_view_t *mv, int tx, int ty, word x, word poopoffset) {
 	int y;
 	int i;
@@ -566,7 +566,7 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x, word poopoffset) {
 	/* location in the map array */
 	i=ty * mv->map->width + tx;
 
-	/* We'll copy all of the columns in the screen, 
+	/* We'll copy all of the columns in the screen,
 	   i + 1 row above and one below */
 	for(y=poopoffset; y<(SCREEN_HEIGHT+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
 	if(i>=0) {
@@ -577,7 +577,7 @@ mapDrawCol(map_view_t *mv, int tx, int ty, word x, word poopoffset) {
 	}
 }
 
-void 
+void
 mapDrawWRow(map_view_t *mv, int tx, int ty, word y) {
 	word x;
 	int i;
@@ -593,7 +593,7 @@ mapDrawWRow(map_view_t *mv, int tx, int ty, word y) {
 	}
 }
 
-void 
+void
 mapDrawWCol(map_view_t *mv, int tx, int ty, word x) {
 	int y;
 	int i;
@@ -601,7 +601,7 @@ mapDrawWCol(map_view_t *mv, int tx, int ty, word x) {
 	/* location in the map array */
 	i=ty * mv->map->width + tx;
 
-	/* We'll copy all of the columns in the screen, 
+	/* We'll copy all of the columns in the screen,
 	   i + 1 row above and one below */
 	for(y=0; y<SCREEN_HEIGHT+mv->dyThresh && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
 	if(i>=0) {
@@ -612,8 +612,11 @@ mapDrawWCol(map_view_t *mv, int tx, int ty, word x) {
 	}
 }
 
-void
-animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp)
+//		animatePlayer(map_view_t *src, map_view_t *dest, 1, 1, player.x, player.y, persist_aniframe, q, &ptmp);
+//		animatePlayer(bg, spri, 0, 1, player.x, player.y, persist_aniframe, q, &ptmp);
+//		animatePlayer(bg, spri, 0, 0, player.x, player.y, persist_aniframe, q, &ptmp);
+//		animatePlayer(map_view_t *src, map_view_t *dest, player_t *player, word playnum, sword scrolloffsetswitch, int ls, bitmap_t *bmp)
+void	animatePlayer(map_view_t *src, map_view_t *dest, short d1, short d2, int x, int y, int ls, int lp, bitmap_t *bmp)
 {
 	short dire=32*d1; //direction
 	short qq; //scroll offset
