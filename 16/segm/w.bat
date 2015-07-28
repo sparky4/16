@@ -1,6 +1,7 @@
 @echo off
 echo ==This is the results of open watcom's base pointers== > wpee
 echo These are the various memory models of the 8088 that are demonstrated here! >> wpee
+@del pee.obj
 echo ==tiny is not found so default== >> wpee
 wcc -0 pee.c
 pee.exe >> wpee

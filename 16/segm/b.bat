@@ -1,6 +1,7 @@
 @echo off
 echo ==This is the results of borland c's segment pointers== > bpee
 echo These are the various memory models of the 8088 that are demonstrated here! >> bpee
+@del pee.obj
 echo ==tiny== >> bpee
 bcc -mt pee.c
 pee.exe >> bpee
