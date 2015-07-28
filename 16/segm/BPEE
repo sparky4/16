@@ -1,32 +1,26 @@
 ==This is the results of borland c's segment pointers==
 These are the various memory models of the 8088 that are demonstrated here!
 ==tiny==
-local variable bee=18E4:FFF4
-pee=18E4:18E4
-pee=18E4
-pee=18e4
+local variable bee=		168E:FFF4
+far pointer value of pee=	168E:168E
+pointer value of pee=		168E
 ==small==
-local variable bee=035C:FFF4
-pee=035C:035C
-pee=035C
-pee=35c
+local variable bee=		0116:FFF4
+far pointer value of pee=	0116:0116
+pointer value of pee=		0116
 ==medium==
-local variable bee=0362:FFF2
-pee=0362:0362
-pee=0362
-pee=362
+local variable bee=		02FB:FFF2
+far pointer value of pee=	02FB:02FB
+pointer value of pee=		02FB
 ==compact is what project 16 uses==
-local variable bee=051E:1000
-pee=0390:0390
-pee=0390:0390
-pee=390
+local variable bee=		04DC:1000
+far pointer value of pee=	0104:0104
+pointer value of pee=		0104:0104
 ==large==
-local variable bee=052A:0FFE
-pee=0396:0396
-pee=0396:0396
-pee=396
+local variable bee=		04E7:0FFE
+far pointer value of pee=	02FB:02FB
+pointer value of pee=		02FB:02FB
 ==HUGE GUTS!==
-local variable bee=054B:0FFE
-pee=050C:03E2
-pee=050C:03E2
-pee=3e2
+local variable bee=		0508:0FFE
+far pointer value of pee=	04C9:0134
+pointer value of pee=		04C9:0134
