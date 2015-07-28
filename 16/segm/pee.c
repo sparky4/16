@@ -35,8 +35,7 @@ main(/*int argc, char *argv[]*/)
 {
 	unsigned bee=0;
 	memptr pee;
-	printf("local variable bee=%Fp\n", &bee);
-	printf("pee=%Fp\n", pee);
-	printf("pee=%p\n", pee);
-	printf("pee=%x\n", pee);
+	printf("local variable bee=		%Fp\n", &bee);
+	printf("far pointer value of pee=	%Fp\n", pee);
+	printf("pointer value of pee=		%p\n", pee);
 }
