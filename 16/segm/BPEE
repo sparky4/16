@@ -1,26 +1,32 @@
 ==This is the results of borland c's segment pointers==
 These are the various memory models of the 8088 that are demonstrated here!
 ==tiny==
-local variable bee=		168E:FFF4
-far pointer value of pee=	168E:168E
-pointer value of pee=		168E
+local variable bee=		16B8:FFF4
+local variable bee=		FFF4
+far pointer value of pee=	16B8:16B8
+pointer value of pee=		16B8
 ==small==
-local variable bee=		0116:FFF4
-far pointer value of pee=	0116:0116
-pointer value of pee=		0116
+local variable bee=		0130:FFF4
+local variable bee=		FFF4
+far pointer value of pee=	0130:0130
+pointer value of pee=		0130
 ==medium==
-local variable bee=		02FB:FFF2
-far pointer value of pee=	02FB:02FB
-pointer value of pee=		02FB
+local variable bee=		0340:FFF2
+local variable bee=		FFF2
+far pointer value of pee=	0340:0340
+pointer value of pee=		0340
 ==compact is what project 16 uses==
-local variable bee=		04DC:1000
-far pointer value of pee=	0104:0104
-pointer value of pee=		0104:0104
+local variable bee=		0524:1000
+local variable bee=		0524:1000
+far pointer value of pee=	011E:011E
+pointer value of pee=		011E:011E
 ==large==
-local variable bee=		04E7:0FFE
-far pointer value of pee=	02FB:02FB
-pointer value of pee=		02FB:02FB
+local variable bee=		0530:0FFE
+local variable bee=		0530:0FFE
+far pointer value of pee=	0340:0340
+pointer value of pee=		0340:0340
 ==HUGE GUTS!==
-local variable bee=		0508:0FFE
-far pointer value of pee=	04C9:0134
-pointer value of pee=		04C9:0134
+local variable bee=		054F:0FFE
+local variable bee=		054F:0FFE
+far pointer value of pee=	0510:0134
+pointer value of pee=		0510:0134
