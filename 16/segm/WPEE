@@ -1,30 +1,25 @@
 ==This is the results of open watcom's base pointers==
 These are the various memory models of the 8088 that are demonstrated here!
 ==tiny is not found so default==
-local variable bee=066a:0bcc
-pee=066a:0000
-pee=066a:0000
-pee=0
+local variable bee=		0508:0FFE
+far pointer value of pee=	04C9:0134
+pointer value of pee=		04C9:0134
 ==small==
-local variable bee=066a:0bcc
-pee=066a:0000
-pee=066a:0000
-pee=0
+local variable bee=		0508:0FFE
+far pointer value of pee=	04C9:0134
+pointer value of pee=		04C9:0134
 ==medium==
-local variable bee=066a:0bcc
-pee=066a:0000
-pee=066a:0000
-pee=0
+local variable bee=		0508:0FFE
+far pointer value of pee=	04C9:0134
+pointer value of pee=		04C9:0134
 ==compact is what project 16 uses==
-local variable bee=066a:0bcc
-pee=066a:0000
-pee=066a:0000
-pee=0
+local variable bee=		0508:0FFE
+far pointer value of pee=	04C9:0134
+pointer value of pee=		04C9:0134
 ==large==
-local variable bee=066a:0bcc
-pee=066a:0000
-pee=066a:0000
-pee=0
+local variable bee=		0508:0FFE
+far pointer value of pee=	04C9:0134
+pointer value of pee=		04C9:0134
 ==HUGE GUTS!==
 local variable bee=		0669:0bfc
 far pointer value of pee=	0669:0000
