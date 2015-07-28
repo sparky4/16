@@ -32,7 +32,7 @@
 #define LGQ	     32
 #define HGQ	     55
 
-#define TILE
+//#define TILE
 
 typedef struct {
 	word gq;
@@ -51,6 +51,7 @@ void dingpp(page_t *page, bakapee_t *pee);
 void dingo(bakapee_t *pee);
 void dingas(bakapee_t *pee);
 void dingu(bakapee_t *pee);
+void dingq(bakapee_t *pee);
 void ding(page_t *page, bakapee_t *pee, word q);
 
 #endif /*__BAKAPEE_H_*/

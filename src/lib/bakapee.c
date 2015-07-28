@@ -154,12 +154,24 @@ void dingu(bakapee_t *pee)
 	if(pee->coor < HGQ && pee->coor < LGQ) pee->coor = LGQ;
 	if(pee->coor < HGQ)
 	{
-		pee->qq++;
 		pee->coor++;
-	}else{ pee->coor = LGQ;
-		pee->qq = 0;
-		pee->bakax = rand()%3; pee->bakay = rand()%3;
+	}else{
+		pee->coor = LGQ;
 	}
+}
+
+void dingq(bakapee_t *pee)
+{
+	if(pee->qq<BONK)
+	{
+		pee->qq++;
+	}
+	else
+	{
+		dingu(pee);
+		pee->qq = 0;
+	}
+	pee->bakax = rand()%3; pee->bakay = rand()%3;
 }
 
 /*-----------ding-------------*/
@@ -171,75 +183,60 @@ void ding(page_t *page, bakapee_t *pee, word q)
 	switch(q)
 	{
 		case 1:
-			if(pee->qq<BONK)
-			{
-				if(pee->xx==SCREEN_WIDTH){pee->bakax=0;}
-				if(pee->xx==0){pee->bakax=1;}
-				if(pee->yy==SCREEN_HEIGHT){pee->bakay=0;}
-				if(pee->yy==0){pee->bakay=1;}
-				pee->qq++;
-			}else pee->qq = 0;
+			dingq(pee);
+			if(pee->xx==SCREEN_WIDTH){pee->bakax=0;}
+			if(pee->xx==0){pee->bakax=1;}
+			if(pee->yy==SCREEN_HEIGHT){pee->bakay=0;}
+			if(pee->yy==0){pee->bakay=1;}
 		break;
 		case 2:
-			if(pee->qq<BONK)
-			{
-				dingu(pee);
-				dingas(pee);
-				dingo(pee);
-				dingpp(page, pee);	//plot the pixel/tile
+			dingq(pee);
+			dingas(pee);
+			dingo(pee);
+			dingpp(page, pee);	//plot the pixel/tile
 #ifdef TILE
-				modexClearRegion(page, (rand()*TILEWH)%page->width, (rand()*TILEWH)%(page->height), TILEWH, TILEWH, 0);
+			modexClearRegion(page, (rand()*TILEWH)%page->width, (rand()*TILEWH)%(page->height), TILEWH, TILEWH, 0);
 #else
-				modexputPixel(page, rand()%page->width, rand()%page->height, 0);
+			modexputPixel(page, rand()%page->width, rand()%page->height, 0);
 #endif
-				pee->bakax = rand()%3; pee->bakay = rand()%3;
-				pee->qq++;
-			}else pee->qq = 0;
 		break;
 		case 3:
-			if(pee->qq<BONK)
+			dingq(pee);
+			if(pee->xx!=SCREEN_WIDTH||pee->yy!=SCREEN_HEIGHT)
 			{
-				if(pee->xx!=SCREEN_WIDTH||pee->yy!=SCREEN_HEIGHT)
+				if(pee->xx==0){pee->bakax=1;pee->bakay=-1;d3y=1;}
+				if(pee->yy==0){pee->bakax=1;pee->bakay=0;d3y=1;}
+				if(pee->xx==SCREEN_WIDTH){pee->bakax=-1;pee->bakay=-1;d3y=1;}
+				if(pee->yy==SCREEN_HEIGHT){pee->bakax=1;pee->bakay=0;d3y=1;}
+			}else if(pee->xx==SCREEN_WIDTH&&pee->yy==SCREEN_HEIGHT) pee->xx=pee->yy=0;
+			if(d3y)
+			{
+				if(pee->bakay<0)
 				{
-					if(pee->xx==0){pee->bakax=1;pee->bakay=-1;d3y=1;}
-					if(pee->yy==0){pee->bakax=1;pee->bakay=0;d3y=1;}
-					if(pee->xx==SCREEN_WIDTH){pee->bakax=-1;pee->bakay=-1;d3y=1;}
-					if(pee->yy==SCREEN_HEIGHT){pee->bakax=1;pee->bakay=0;d3y=1;}
-				}else if(pee->xx==SCREEN_WIDTH&&pee->yy==SCREEN_HEIGHT) pee->xx=pee->yy=0;
-				if(d3y)
-				{
-					if(pee->bakay<0)
-					{
-						pee->yy--;
-						d3y--;
-					}else
-					if(pee->bakay>0)
-					{
-						pee->yy++;
-						d3y--;
-					}
-				}
-				if(pee->bakax<0)
-				{
-					pee->xx--;
+					pee->yy--;
+					d3y--;
 				}else
-				if(pee->bakax>0)
+				if(pee->bakay>0)
 				{
-					pee->xx++;
+					pee->yy++;
+					d3y--;
 				}
-				pee->qq++;
-			}else pee->qq = 0;
+			}
+			if(pee->bakax<0)
+			{
+				pee->xx--;
+			}else
+			if(pee->bakax>0)
+			{
+				pee->xx++;
+			}
+			dingpp(page, pee);	//plot the pixel/tile
 		break;
 		case 4:
-			if(pee->qq<BONK)
-			{
-				dingu(pee);
-				dingas(pee);
-				dingo(pee);
-				dingpp(page, pee);	//plot the pixel/tile
-				pee->bakax = rand()%3; pee->bakay = rand()%3;
-				pee->qq++;
-			}else pee->qq = 0;
+			dingq(pee);
+			dingas(pee);
+			dingo(pee);
+			dingpp(page, pee);	//plot the pixel/tile
 		break;
 		case 5:
 			colortest(page, pee);
@@ -274,26 +271,21 @@ void ding(page_t *page, bakapee_t *pee, word q)
 		break;
 
 		case 16:	//interesting effects
-			if(pee->qq<BONK)
-			{
-				if(!pee->bakax){ pee->xx--;}
-				else if(pee->bakax>0){ pee->xx++; }
-				if(!pee->bakay){ pee->yy--;}
-				else if(pee->bakay>0){ pee->yy++; }
-				dingu(pee);
-				dingas(pee);
-				tx+=pee->xx+TILEWH+4;
-				ty+=pee->yy+TILEWH+4;
-				modexClearRegion(page, tx, ty, 4, 4, pee->coor);
+			dingq(pee);
+			if(!pee->bakax){ pee->xx--;}
+			else if(pee->bakax>0){ pee->xx++; }
+			if(!pee->bakay){ pee->yy--;}
+			else if(pee->bakay>0){ pee->yy++; }
+			dingas(pee);
+			tx+=pee->xx+TILEWH+4;
+			ty+=pee->yy+TILEWH+4;
+			modexClearRegion(page, tx, ty, 4, 4, pee->coor);
 #ifdef TILE
-				modexClearRegion(page, (rand()*TILEWH)%page->width, (rand()*TILEWH)%(page->height), TILEWH, TILEWH, 0);
+			modexClearRegion(page, (rand()*TILEWH)%page->width, (rand()*TILEWH)%(page->height), TILEWH, TILEWH, 0);
 #else
-				modexputPixel(page, rand()%page->width, rand()%(page->height), 0);
+			modexputPixel(page, rand()%page->width, rand()%(page->height), 0);
 #endif
-				pee->bakax = rand()%3; pee->bakay = rand()%3;
-				//printf("%d %d %d %d %d %d\n", pee->xx, pee->yy, tx, ty, TILEWH);
-				pee->qq++;
-			}else pee->qq = 0;
+			//printf("%d %d %d %d %d %d\n", pee->xx, pee->yy, tx, ty, TILEWH);
 		break;
 		default:
 		break;
