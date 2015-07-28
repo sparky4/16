@@ -36,7 +36,6 @@
 
 typedef struct {
 	word gq;
-	word qq;
 	sword bakax, bakay;
 	sword xx, yy, sx, sy;
 	byte coor;

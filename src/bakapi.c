@@ -41,7 +41,6 @@ main(int argc, char *argv[])
 	ydir=1;
 	bakapee.xx = rand()&0%SCREEN_WIDTH;
 	bakapee.yy = rand()&0%SCREEN_HEIGHT;
-	bakapee.qq = 0;
 	bakapee.gq = 0;
 	bakapee.sx=0;
 	bakapee.sy=0;

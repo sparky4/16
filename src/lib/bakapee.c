@@ -51,21 +51,21 @@ void cls(page_t *page, byte color, byte *Where)
 //color ‚Ä‚·‚Æ
 void colortest(page_t *page, bakapee_t *pee)
 {
-	if(pee->gq < 256)
+	if(pee->coor < 256)
 	{
-		cls(page, pee->gq, VGA);
-		pee->gq++;
-	}else pee->gq = 0;
+		cls(page, pee->coor, VGA);
+		pee->coor++;
+	}else pee->coor = 0;
 }
 
 //color ‚Ä‚·‚Æ
 void colorz(page_t *page, bakapee_t *pee)
 {
-	if(pee->gq <= HGQ)
+	if(pee->coor <= HGQ)
 	{
-		cls(page, pee->gq, VGA);
-		pee->gq++;
-	}else pee->gq = LGQ;
+		cls(page, pee->coor, VGA);
+		pee->coor++;
+	}else pee->coor = LGQ;
 }
 
 //slow spectrum down
@@ -76,7 +76,8 @@ void ssd(page_t *page, bakapee_t *pee, word svq)
 		if(pee->sx < SCREEN_WIDTH+1)
 		{
 			//mxPutPixel(sx, sy, coor);
-			printf("%d %d %d %d\n", pee->sx, pee->sy, svq, pee->coor);
+			//printf("%d %d %d %d\n", pee->sx, pee->sy, svq, pee->coor);
+			dingpp(page, pee);
 			pee->sx++;
 		}else pee->sx = 0;
 		if(pee->sx == SCREEN_WIDTH)
@@ -114,7 +115,7 @@ void dingo(bakapee_t *pee)
 
 void dingas(bakapee_t *pee)
 {
-	if(pee->qq == BONK) dingu(pee);
+	if(pee->gq == BONK) dingu(pee);
 	if(!pee->bakax)
 	{
 		#ifdef TILE
@@ -162,14 +163,14 @@ void dingu(bakapee_t *pee)
 
 void dingq(bakapee_t *pee)
 {
-	if(pee->qq<BONK)
+	if(pee->gq<BONK)
 	{
-		pee->qq++;
+		pee->gq++;
 	}
 	else
 	{
 		dingu(pee);
-		pee->qq = 0;
+		pee->gq = 0;
 	}
 	pee->bakax = rand()%3; pee->bakay = rand()%3;
 }
@@ -246,22 +247,22 @@ void ding(page_t *page, bakapee_t *pee, word q)
 			cls(page, pee->coor, VGA);
 		break;
 		case 7:
-			if(pee->gq <= HGQ)
+			if(pee->coor <= HGQ)
 			{
 				ssd(page, pee, q);
-				pee->gq++;
-			}else pee->gq = LGQ;
+				pee->coor++;
+			}else pee->coor = LGQ;
 		break;
 		case 8:
 			colorz(page, pee);
 			modexprint(page, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1, 47, 0, "bakapi");
 		break;
 		case 9:
-			if(pee->gq <= HGQ)
+			if(pee->coor <= HGQ)
 			{
-				ssd(page, pee, q); pee->coor++;
-				pee->gq++;
-			}else pee->gq = LGQ;
+				ssd(page, pee, q);
+				pee->coor++;
+			}else pee->coor = LGQ;
 		break;
 		case 10:
 			ssd(page, pee, q); /*printf("%d\n", pee->coor);*/
