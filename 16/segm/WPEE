@@ -1,25 +1,30 @@
 ==This is the results of open watcom's base pointers==
 These are the various memory models of the 8088 that are demonstrated here!
 ==tiny is not found so default==
-local variable bee=		06ae:0bfc
-far pointer value of pee=	06ae:0000
-pointer value of pee=		06ae:0000
+local variable bee=		06af:0c0a
+local variable bee=		06af:0c0a
+far pointer value of pee=	06af:0000
+pointer value of pee=		06af:0000
 ==small==
-local variable bee=		06ae:0bfc
-far pointer value of pee=	06ae:0000
-pointer value of pee=		06ae:0000
+local variable bee=		06af:0c0a
+local variable bee=		06af:0c0a
+far pointer value of pee=	06af:0000
+pointer value of pee=		06af:0000
 ==medium==
-local variable bee=		06ae:0bfc
-far pointer value of pee=	06ae:0000
-pointer value of pee=		06ae:0000
+local variable bee=		06af:0c0a
+local variable bee=		06af:0c0a
+far pointer value of pee=	06af:0000
+pointer value of pee=		06af:0000
 ==compact is what project 16 uses==
-local variable bee=		06ae:0bfc
-far pointer value of pee=	06ae:0000
-pointer value of pee=		06ae:0000
+local variable bee=		06af:0c0a
+local variable bee=		06af:0c0a
+far pointer value of pee=	06af:0000
+pointer value of pee=		06af:0000
 ==large==
-local variable bee=		06ae:0bfc
-far pointer value of pee=	06ae:0000
-pointer value of pee=		06ae:0000
+local variable bee=		06af:0c0a
+local variable bee=		06af:0c0a
+far pointer value of pee=	06af:0000
+pointer value of pee=		06af:0000
 ==HUGE GUTS!==
 local variable bee=		06af:0c0a
 local variable bee=		06af:0c0a
