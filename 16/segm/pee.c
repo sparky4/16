@@ -23,13 +23,11 @@
 	Segment experiment!
 */
 #include <stdio.h>
-
-__segment                segu;
-
 #ifdef __WATCOMC__
+//__segment                segu;
 //typedef void __based(__self) * memptr;
-//typedef __segment * memptr;
-typedef void __based(segu) * memptr;
+typedef __segment * memptr;
+//typedef void __based(segu) * memptr;
 #endif
 #ifdef __BORLANDC__
 typedef void _seg * memptr;
