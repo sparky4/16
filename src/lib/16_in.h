@@ -219,7 +219,7 @@ typedef	struct
 	word q; //loop variable
 	word speed;		//player speed!
 	bitmap_t data; //supposively the sprite sheet data
-	int hp; //hitpoints of the player
+	sword hp; //hitpoints of the player
 	word persist_aniframe;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	CursorInfo	info;
 	ControlType	Controls;

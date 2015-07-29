@@ -37,7 +37,7 @@ void main()
 	const char *cpus;
 	//static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	page_t screen, screen2, screen3;
-	map_t map;
+	static map_t map;
 	map_view_t mv[3];
 	map_view_t *bg, *spri, *mask;//, *tmp;
 	//map_view_db_t pgid[4];
@@ -81,9 +81,9 @@ void main()
 
 	/* create the map */
 //0000	printf("Total used @ before map load:			%zu\n", oldfreemem-GetFreeSize());
-//0000	fprintf(stderr, "testing~\n");
+fprintf(stderr, "testing~\n");
 	loadmap("data/test.map", &map);
-//0000	fprintf(stderr, "yay map loaded~~\n");
+fprintf(stderr, "yay map loaded~~\n");
 //----	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
 //----	initMap(&map);
@@ -391,15 +391,15 @@ void main()
 	//else printf("\nplayer[0].y: %d\n", player[0].y);
 	printf("player[0].tx: %d", player[0].tx); printf("		player[0].ty: %d\n", player[0].ty);
 	printf("player[0].triggx: %d", player[0].triggerx); printf("	player[0].triggy: %d\n", player[0].triggery);
-	printf("player[0].hp: %d", player[0].hp);	printf("	player[0].q: %d", player[0].q);	printf("	player[0].info.dir: %d\n", player[0].info.dir);
+	printf("player[0].hp: %d", (player[0].hp));	printf("	player[0].q: %d", player[0].q);	printf("	player[0].info.dir: %d\n", player[0].info.dir);
 	printf("tile data value at player trigger position: %d\n", bg->map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))]);
 	printf("palette offset:	%d\n", paloffset/3);
 //++++	printf("Total used: %zu\n", oldfreemem-GetFreeSize());
 //++++	printf("Total free: %zu\n", GetFreeSize());
 	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
 	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
-	printf("Screen: %dx", screen.width);	printf("%d\n", screen.height);
-	printf("Screen2: %dx", screen2.width);	printf("%d\n", screen2.height);
+	printf("Screen: %d", screen.width);	printf("%d\n", screen.height);
+	printf("Screen2: %d", screen2.width);	printf("%d\n", screen2.height);
 	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", bg->map->width, bg->map->height, bg->map->data[0]);
 	//xmsfree(&map);
 	//xmsfree(bg);

@@ -213,8 +213,8 @@ wcpu.$(OBJ): $(WCPULIB)wcpu.h $(WCPULIB)wcpu.c
 16text.$(OBJ): $(SRCLIB)16text.c
 	wcl $(FLAGS) -c $(SRCLIB)16text.c
 
-mapread.$(OBJ): $(SRCLIB)mapread.h $(SRCLIB)mapread.c 16.lib
-	wcl $(FLAGS) -c $(SRCLIB)mapread.c 16.lib
+mapread.$(OBJ): $(SRCLIB)mapread.h $(SRCLIB)mapread.c
+	wcl $(FLAGS) -c $(SRCLIB)mapread.c
 
 #fmapread.$(OBJ): $(SRCLIB)fmapread.h $(SRCLIB)fmapread.c 16.lib
 #	wcl $(FLAGS) $(MFLAGS) -c $(SRCLIB)fmapread.c 16.lib
@@ -286,3 +286,5 @@ clean: .symbolic
 	@$(REMOVECOMMAND) __WCL__.LNK
 #	@$(REMOVECOMMAND) *.smp
 	@$(REMOVECOMMAND) *.SMP
+	@$(REMOVECOMMAND) 16.hed
+	
