@@ -84,9 +84,9 @@ void main()
 	printf("Total free @ before map load:			%zu\n", GetFreeSize());
 	printf("Total far free @ before map load:			%zu\n", GetFarFreeSize());
 	getch();
-	fprintf(stderr, "testing~\n");
-	loadmap("data/test.map", &map);
-	fprintf(stderr, "yay map loaded~~\n");
+//0000	fprintf(stderr, "testing~\n");
+//	loadmap("data/test.map", &map);
+//0000	fprintf(stderr, "yay map loaded~~\n");
 //----	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
 //----	initMap(&map);
@@ -401,8 +401,8 @@ void main()
 //++++	printf("Total free: %zu\n", GetFreeSize());
 	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
 	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
-	printf("Screen: %d", screen.width);	printf("%d\n", screen.height);
-	printf("Screen2: %d", screen2.width);	printf("%d\n", screen2.height);
+	printf("Screen: %dx", screen.width);	printf("%d\n", screen.height);
+	printf("Screen2: %dx", screen2.width);	printf("%d\n", screen2.height);
 	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", bg->map->width, bg->map->height, bg->map->data[0]);
 	//xmsfree(&map);
 	//xmsfree(bg);
