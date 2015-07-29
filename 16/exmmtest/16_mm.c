@@ -152,8 +152,7 @@ byte MML_SetupEMS(mminfo_t *mm)
 	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
 	totalEMSpages = freeEMSpages = EMSpageframe = EMSpagesmapped = 0;
 
-	__asm
-		{
+	__asm {
 		mov	ah,EMS_STATUS
 		int	EMS_INT						// make sure EMS hardware is present
 		or	ah,ah
