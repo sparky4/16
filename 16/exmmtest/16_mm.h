@@ -49,7 +49,7 @@
 
 #define	EMS_INT			0x67
 
-//#define	EMS_STATUS		0x40
+#define	EMS_STATUS		0x40
 #define	EMS_GETFRAME	0x41
 #define	EMS_GETPAGES	0x42
 #define	EMS_ALLOCPAGES	0x43

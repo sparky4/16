@@ -42,7 +42,6 @@ void
 main(int argc, char *argv[])
 {
 	mminfo_t mm; mminfotype mmi;
-	__segment segu;
 #ifdef FILERL
 	memptr bigbuffer;
 	char *bakapee;
@@ -54,7 +53,7 @@ main(int argc, char *argv[])
 	//mmi.segu=FP_SEG(segu);
 
 	printf("&main()=%Fp\n", *argv[0]);
-	printf("&segu=%p\n", (segu));
+	printf("&bigbuffer=%Fp\n", &bigbuffer);
 	//printf("mmi.segu=%p\n", (mmi.segu));
 
 #ifdef FILERL
@@ -91,11 +90,11 @@ main(int argc, char *argv[])
 		exit(-5);
 	}*/
 	printf("&main()=%Fp\n", *argv[0]);
-	printf("&segu=%p\n", (segu));
+	printf("&bigbuffer=%Fp\n", &bigbuffer);
 	//printf("mmi.segu=%p\n", (mmi.segu));
 #ifdef FILERL
 //	bakapeehandle = open(bakapee,O_RDONLY | O_BINARY, S_IREAD);
-	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
+//	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
 //	if(CA_FarRead(bakapeehandle,(void far *)&bigbuffer,sizeof(bigbuffer),&mm))
 #ifdef FILEREAD
 	printf("		read\n");
@@ -109,7 +108,7 @@ main(int argc, char *argv[])
 		baka=0;
 //	close(bakapeehandle);
 	//hmm functions in cache system use the buffered stuff
-	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
+//	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
 #endif
 	printf("dark purple = purgable\n");
 	printf("medium blue = non purgable\n");
@@ -135,5 +134,7 @@ main(int argc, char *argv[])
 	if(baka) printf("\nyay!\n");
 	else printf("\npoo!\n");
 #endif
-	printf("_bios_memsize=%u\n", _bios_memsize());
+	//printf("_bios_memsize=%u\n", _bios_memsize());
+	printf("bigbuffer=	%Fp\n", bigbuffer);
+	printf("&bigbuffer=	%Fp\n", &bigbuffer);
 }

@@ -42,6 +42,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <mem.h>
+//#include <fenv.h>
 #include "src/lib/types.h"
 
 /* Control codes for all keys on the keyboard */
@@ -140,9 +141,11 @@ static dword far* clockdw= (dword far*) 0x046C; /* 18.2hz clock */
 //static dword clockdw=0;
 extern	int			profilehandle,debughandle;	//make it into game global
 
-#define	nil	((void *)0)
-
 #define __DEBUG__
+
+//#define _SEGU(__p) ((unsigned)((unsigned long)(void __huge*)(__p) >> 16))
+
+#define	nil	((void *)0)
 
 #define peekb(segm,ofs) (*(byte far*)MK_FP((segm),(ofs)))
 #define peekw(segm,ofs) (*(word far*)MK_FP((segm),(ofs)))
@@ -152,9 +155,9 @@ extern	int			profilehandle,debughandle;	//make it into game global
 typedef union REGPACK	regs_t;
 typedef	enum	{false,true}	boolean;
 //I hope this is correct!
-//__self
 typedef void __based(__self) * memptr;
 //typedef __segment * memptr;
+//typedef fenp.op_ptr_seg * memptr;//=fenv_t.;
 typedef struct
 {
 	int old_mode;	//old video mode before game!

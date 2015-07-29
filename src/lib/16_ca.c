@@ -215,7 +215,7 @@ void CAL_GetGrChunkLength (int chunk)
 ==========================
 */
 
-boolean CA_FarRead(int handle, byte huge *dest, dword length, mminfo_t *mm)
+boolean CA_FarRead(int handle, word huge *dest, dword length, mminfo_t *mm)
 {
 	boolean flag;
 	/*dword fat=0;
@@ -271,7 +271,7 @@ End:
 ==========================
 */
 
-boolean CA_FarWrite(int handle, byte huge *source, dword length, mminfo_t *mm)
+boolean CA_FarWrite(int handle, word huge *source, dword length, mminfo_t *mm)
 {
 	boolean flag;
 	/*dword fat=0;

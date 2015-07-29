@@ -16,8 +16,8 @@ local variable bee=		0bce
 far pointer value of pee=	0000:0000
 pointer value of pee=		0000
 ==compact is what project 16 uses==
-local variable bee=		05d5:0c32
-local variable bee=		05d5:0c32
+local variable bee=		05d4:0c32
+local variable bee=		05d4:0c32
 far pointer value of pee=	0000:0000
 pointer value of pee=		0000:0000
 ==large==

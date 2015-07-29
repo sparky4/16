@@ -32,7 +32,7 @@
 
 #ifndef _LIBHEAD_H_
 #define _LIBHEAD_H_
-//#include <i86.h>
+#include <io.h>
 #include <dos.h>
 #include <stdio.h>
 #include <conio.h> // just for wait
@@ -42,7 +42,7 @@
 #include <ctype.h>
 //#include <unistd.h>
 #include <fcntl.h>
-//#include <sys/stat.h>
+#include <sys/stat.h>
 #include <mem.h>
 #include "../../src/lib/types.h"
 

@@ -52,6 +52,13 @@ Open Watcom port by sparky4
 #pragma warn -pro
 #pragma warn -use
 
+/*#define GETNEWBLOCK {if(!(mmnew=mmfree))Quit("MM_GETNEWBLOCK: No free blocks!")\
+	;mmfree=mmfree->next;}
+
+//#define GETNEWBLOCK {if(!mmfree)MML_ClearBlock();mmnew=mmfree;mmfree=mmfree->next;}
+
+#define FREEBLOCK(x) {*x->useptr=NULL;x->next=mmfree;mmfree=x;}*/
+
 /*
 =============================================================================
 
@@ -120,15 +127,15 @@ boolean MML_CheckForEMS(void)
 		//
 		mov     emmcfems,1
 		jmp End
+	}
 		error:
+	__asm {
 		//
 		// EMS is bad
 		//
 		mov     emmcfems,0
-		End:
 	}
-	End:
-	error:
+		End:
 	return(emmcfems);
 }
 
@@ -188,13 +195,17 @@ byte MML_SetupEMS(mminfo_t *mm)
 		jle	getpages
 		mov	bx,[freeEMSpages]
 		jmp	getpages
+	}
 
 low:
+	__asm {
 		cmp	bx,4
 		jle	getpages					// there is only 1,2,3,or 4 pages
 		mov	bx,4						// we can't use more than 4 pages
+	}
 
 getpages:
+	__asm {
 		mov	[EMSpagesmapped],bx
 		mov	ah,EMS_ALLOCPAGES			// allocate up to 64k of EMS
 		int	EMS_INT
@@ -202,19 +213,21 @@ getpages:
 		jnz	error
 		mov	[EMShandle],dx
 		jmp End
+	}
 error:
+	__asm {
 		mov	err,ah
 		mov	errorflag,1
 		jmp End
+	}
 noEMS:
 End:
-	}
 	if(errorflag==true)
 	{
 		//err = CPURegs.h.ah;
 		strcpy(str,"MM_SetupEMS: EMS error ");
 		//itoa(err,str2,16);
-		MM_EMSerr(&str, err);
+		MM_EMSerr(str, err);
 		printf("%s\n",str);
 		return err;
 	}
@@ -243,16 +256,15 @@ void MML_ShutdownEMS(mminfo_t *mm)
 
 	if(!EMShandle)
 		return;
-	__asm
-	{
+	__asm {
 		mov	ah,EMS_FREEPAGES
 		mov	dx,[EMShandle]
 		int	EMS_INT
 		or	ah,ah
 		jz	ok
 		mov	errorflag,1
-		ok:
 	}
+		ok:
 	if(errorflag==true) printf("MML_ShutdownEMS: Error freeing EMS!\n");	//++++ add something
 }
 
@@ -279,8 +291,7 @@ byte MM_MapEMS(mminfo_t *mm, mminfotype *mmi)
 
 	for (i=0;i<4/*MAPPAGES*/;i++)
 	{
-		__asm
-		{
+		__asm {
 			mov	ah,EMS_MAPPAGE
 			mov	bx,[i]			// logical page
 			mov	al,bl			// physical page
@@ -289,11 +300,13 @@ byte MM_MapEMS(mminfo_t *mm, mminfotype *mmi)
 			or	ah,ah
 			jnz	error
 			jmp End
+		}
 			error:
+		__asm {
 			mov	err,ah
 			mov	errorflag,1
-			End:
 		}
+			End:
 		if(errorflag==true)
 		{
 			//err = CPURegs.h.ah;
@@ -345,8 +358,7 @@ byte MM_MapXEMS(mminfo_t *mm, mminfotype *mmi)
 
 	for (i=0;i<MAPPAGES;i++)
 	{
-		__asm
-		{
+		__asm {
 			mov	ah,EMS_MAPXPAGE
 			mov	cx,[i]			// logical page
 			mov	al,bl			// physical page
@@ -355,18 +367,20 @@ byte MM_MapXEMS(mminfo_t *mm, mminfotype *mmi)
 			or	ah,ah
 			jnz	error
 			jmp End
+		}
 			error:
+		__asm {
 			mov	err,ah
 			mov	errorflag,1
-			End:
 		}
+			End:
 		if(errorflag==true)
 		{
 			//err = CPURegs.h.ah;
 			//strcpy(str,"MM_MapXEMS: EMS error 0x");
 			strcpy(str,"MM_MapXEMS: EMS error ");
 			//itoa(err,str2,16);
-			MM_EMSerr(&str, err);
+			MM_EMSerr(str, err);
 			printf("%s\n",str);
 			//printf("%s%x\n",str, err);
 			//printf("FACK! %x\n", err);
@@ -394,15 +408,14 @@ boolean MML_CheckForXMS(mminfo_t *mm)
 	boolean	errorflag=false;
 	mm->numUMBs = 0;
 
-	__asm
-	{
+	__asm {
 		mov	ax,0x4300
 		int	0x2f				// query status of installed diver
 		cmp	al,0x80
 		je	good
 		mov	errorflag,1
-		good:
 	}
+		good:
 	if(errorflag==true) return false;
 	else return true;
 }
@@ -423,8 +436,7 @@ void MML_SetupXMS(mminfo_t *mm, mminfotype *mmi)
 	unsigned	base,size;
 
 getmemory:
-	__asm
-	{
+	__asm {
 		mov	ax,0x4310
 		int	0x2f
 		mov	[WORD PTR XMSaddr],bx
@@ -444,12 +456,13 @@ getmemory:
 		call	[DWORD PTR XMSaddr]		// DX holds largest available UMB
 		or	ax,ax
 		jz	done						// another error...
-
+	}
 gotone:
+	__asm {
 		mov	[base],bx
 		mov	[size],dx
-done:
 	}
+done:
 	printf("base=%u	", base); printf("size=%u\n", size);
 	MML_UseSpace(base,size, mm);
 	mmi->XMSmem += size*16;
@@ -476,8 +489,7 @@ void MML_ShutdownXMS(mminfo_t *mm)
 	for (i=0;i<mm->numUMBs;i++)
 	{
 		base = mm->UMBbase[i];
-		__asm
-		{
+		__asm {
 			mov	ah,XMS_FREEUMB
 			mov	dx,[base]
 			call	[DWORD PTR XMSaddr]
@@ -672,10 +684,10 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 // get all available near conventional memory segments
 //
-//----	length=coreleft();
+	length=coreleft();
 	printf("		nearheap making!\n");
-	_heapgrow();
-	length=_memmax();//(dword)GetFreeSize();
+	//_heapgrow();
+	//length=_memmax();//(dword)GetFreeSize();
 	start = (void huge *)(mm->nearheap = malloc(length));
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;
@@ -683,16 +695,16 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->nearheap = length;
-	printf("start=%FP	segstart=%X	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
+	printf("start=%Fp	segstart=%x	seglen=%l	len=%l\n", start, segstart, seglength, length);
 	printf("		near heap ok!\n");
 
 //
 // get all available far conventional memory segments
 //
-//----	length=farcoreleft();
-	printf("		farheap making!\n");
-	_fheapgrow();
-	length=(dword)GetFarFreeSize();//0xffffUL*4UL;
+	length=farcoreleft();
+	//printf("		farheap making!\n");
+	//_fheapgrow();
+	//length=(dword)GetFarFreeSize();//0xffffUL*4UL;
 	//start = mm->farheap = halloc(length, 1);
 	start = mm->farheap = _fmalloc(length);
 	length -= 16-(FP_OFF(start)&15);
@@ -701,7 +713,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->farheap = length;
-	printf("start=%FP	segstart=%X	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
+	printf("start=%Fp	segstart=%x	seglen=%l	len=%l\n", start, segstart, seglength, length);
 	printf("		far heap ok!\n");
 
 	mmi->mainmem = mmi->nearheap + mmi->farheap;
@@ -714,9 +726,9 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 printf("		EMS1\n");
 printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	mmi->EMSmem = 0;
-	for(i = 1;i < __argc;i++)
+	for(i = 1;i < _argc;i++)
 	{
-		if(US_CheckParm(__argv[i],ParmStringsexmm) == 0)
+		if(US_CheckParm(_argv[i],ParmStringsexmm) == 0)
 			goto emsskip;				// param NOEMS
 	}
 printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
@@ -742,9 +754,9 @@ printf("		EMS4\n");
 //
 emsskip:
 	mmi->XMSmem = 0;
-	for(i = 1;i < __argc;i++)
+	for(i = 1;i < _argc;i++)
 	{
-		if(US_CheckParm(__argv[i],ParmStringsexmm) == 0)
+		if(US_CheckParm(_argv[i],ParmStringsexmm) == 0)
 			goto xmsskip;				// param NOXMS
 	}
 printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
@@ -1545,12 +1557,12 @@ void MM_GetNewBlock(mminfo_t *mm)
 		MML_ClearBlock(mm);
 	mm->mmnew=mm->mmfree;
 	mm->mmfree=mm->mmfree->next;
-	/*if(!(mm->mmnew=mm->mmfree))
-	{
-		printf("MM_GETNEWBLOCK: No free blocks!");
-		return;
-	}
-	mm->mmfree=mm->mmfree->next;*/
+	//if(!(mm->mmnew=mm->mmfree))
+	//{
+		//printf("MM_GETNEWBLOCK: No free blocks!");
+//		return;
+	//}
+	//mm->mmfree=mm->mmfree->next;
 }
 
 void MM_FreeBlock(mmblocktype *x, mminfo_t *mm)
@@ -1560,7 +1572,7 @@ void MM_FreeBlock(mmblocktype *x, mminfo_t *mm)
 	mm->mmfree=x;
 }
 
-void MM_seguin(void)
+/*void MM_seguin(void)
 {
 	__asm
 	{
@@ -1577,7 +1589,7 @@ void MM_segude(void)
 	{
 		pop ds
 	}
-}
+}*/
 
 /*
 pull data from far and put it into ds var
