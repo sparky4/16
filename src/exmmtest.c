@@ -36,7 +36,7 @@
 
 //file load or read definition
 #define FILERL
-#define FILEREAD
+//#define FILEREAD
 
 void
 main(int argc, char *argv[])

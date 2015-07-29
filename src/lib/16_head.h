@@ -153,7 +153,8 @@ typedef union REGPACK	regs_t;
 typedef	enum	{false,true}	boolean;
 //I hope this is correct!
 //__self
-typedef void __based(__self) * memptr;
+//typedef void __based(__self) * memptr;
+typedef __segment * memptr;
 typedef struct
 {
 	int old_mode;	//old video mode before game!
