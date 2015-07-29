@@ -127,6 +127,8 @@ boolean MML_CheckForEMS(void)
 		mov     emmcfems,0
 		End:
 	}
+	End:
+	error:
 	return(emmcfems);
 }
 

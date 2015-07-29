@@ -32,10 +32,10 @@
 #include "16_ca.h"
 #include "16_mm.h"
 //#include "src/lib/modex16.h"
-#pragma hdrstop
+/*#pragma hdrstop
 
 #pragma warn -pro
-#pragma warn -use
+#pragma warn -use*/
 
 //file load or read definition
 #define FILERL
@@ -71,7 +71,7 @@ main(int argc, char *argv[])
 	else bakapee = "../../data/koishi~~.pcx";
 #endif
 
-	textInit();
+	//textInit();
 
 	/* setup camera and screen~ */
 	//bug!!!
