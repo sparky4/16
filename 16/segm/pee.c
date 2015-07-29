@@ -26,7 +26,7 @@
 #ifdef __WATCOMC__
 //typedef void __based(__self) * memptr;
 //typedef __segment * memptr;
-typedef _segment * memptr;
+typedef __segment * memptr;
 #endif
 #ifdef __BORLANDC__
 typedef void _seg * memptr;
