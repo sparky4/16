@@ -153,9 +153,12 @@ extern	int			profilehandle,debughandle;	//make it into game global
 #define pokew(segm,ofs,value) (peekw((segm),(ofs)) = (word)(value))
 
 typedef union REGPACK	regs_t;
+//typedef struct SREGS sregs_t;
+//sregs_t sregs;
 typedef	enum	{false,true}	boolean;
 //I hope this is correct!
 typedef void __based(__self) * memptr;
+//typedef sregs.w.es * memptr
 //typedef __segment * memptr;
 //typedef fenp.op_ptr_seg * memptr;//=fenv_t.;
 typedef struct

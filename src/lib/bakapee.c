@@ -51,11 +51,11 @@ void cls(page_t *page, byte color, byte *Where)
 //color ‚Ä‚·‚Æ
 void colortest(page_t *page, bakapee_t *pee)
 {
-	if(pee->coor < 256)
-	{
+	//if(pee->coor < 256)
+	//{
 		cls(page, pee->coor, VGA);
 		pee->coor++;
-	}else pee->coor = 0;
+	//}else pee->coor = 0;
 }
 
 //color ‚Ä‚·‚Æ

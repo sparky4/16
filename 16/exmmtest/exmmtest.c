@@ -45,9 +45,8 @@ void
 main(int argc, char *argv[])
 {
 	mminfo_t mm; mminfotype mmi;
-	//unsigned __far *segu;
-#ifdef FILERL
 	memptr bigbuffer;
+#ifdef FILERL
 	char *bakapee;
 //	int bakapeehandle;
 	word baka;
@@ -60,7 +59,8 @@ main(int argc, char *argv[])
 	//printf("segu=	%Fp\n", segu);
 	printf("bigbuffer=	%Fp\n", bigbuffer);
 	printf("&bigbuffer=	%Fp\n", &bigbuffer);
-	//printf("mmi.segu=%p\n", (mmi.segu));
+	printf("bigbuffer=	%04x\n", bigbuffer);
+	printf("&bigbuffer=	%04x\n", &bigbuffer);
 
 #ifdef FILERL
 	bakapee = malloc(64);
@@ -99,7 +99,8 @@ main(int argc, char *argv[])
 	//printf("segu=	%Fp\n", segu);
 	printf("bigbuffer=	%Fp\n", bigbuffer);
 	printf("&bigbuffer=	%Fp\n", &bigbuffer);
-	//printf("mmi.segu=%p\n", (mmi.segu));
+	printf("bigbuffer=	%04x\n", bigbuffer);
+	printf("&bigbuffer=	%04x\n", &bigbuffer);
 #ifdef FILERL
 //	bakapeehandle = open(bakapee,O_RDONLY | O_BINARY, S_IREAD);
 //wat	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
@@ -144,4 +145,6 @@ main(int argc, char *argv[])
 #endif
 	printf("bigbuffer=	%Fp\n", bigbuffer);
 	printf("&bigbuffer=	%Fp\n", &bigbuffer);
+	printf("bigbuffer=	%04x\n", bigbuffer);
+	printf("&bigbuffer=	%04x\n", &bigbuffer);
 }

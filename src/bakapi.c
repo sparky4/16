@@ -63,7 +63,7 @@ main(int argc, char *argv[])
 
 // screen savers
 #ifdef BOINK
-	while(d!=0)	// on!
+	while(d>0)	// on!
 	{
 		if(!kbhit())
 		{ // conditions of screen saver

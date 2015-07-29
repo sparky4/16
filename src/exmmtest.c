@@ -35,15 +35,15 @@
 #pragma warn -use
 
 //file load or read definition
-#define FILERL
+//#define FILERL
 //#define FILEREAD
 
 void
 main(int argc, char *argv[])
 {
 	mminfo_t mm; mminfotype mmi;
-#ifdef FILERL
 	memptr bigbuffer;
+#ifdef FILERL
 	char *bakapee;
 //	int bakapeehandle;
 	word baka;
@@ -54,7 +54,9 @@ main(int argc, char *argv[])
 
 	printf("&main()=	%Fp\n", *argv[0]);
 	printf("bigbuffer=	%Fp\n", bigbuffer);
-	printf("&bigbuffer=%Fp\n", &bigbuffer);
+	printf("&bigbuffer=	%Fp\n", &bigbuffer);
+	printf("bigbuffer=	%04x\n", bigbuffer);
+	printf("&bigbuffer=	%04x\n", &bigbuffer);
 
 #ifdef FILERL
 	bakapee = malloc(64);
@@ -92,6 +94,8 @@ main(int argc, char *argv[])
 	printf("&main()=	%Fp\n", *argv[0]);
 	printf("bigbuffer=	%Fp\n", bigbuffer);
 	printf("&bigbuffer=	%Fp\n", &bigbuffer);
+	printf("bigbuffer=	%04x\n", bigbuffer);
+	printf("&bigbuffer=	%04x\n", &bigbuffer);
 #ifdef FILERL
 //	bakapeehandle = open(bakapee,O_RDONLY | O_BINARY, S_IREAD);
 //	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
@@ -137,4 +141,6 @@ main(int argc, char *argv[])
 	//printf("_bios_memsize=%u\n", _bios_memsize());
 	printf("bigbuffer=	%Fp\n", bigbuffer);
 	printf("&bigbuffer=	%Fp\n", &bigbuffer);
+	printf("bigbuffer=	%04x\n", bigbuffer);
+	printf("&bigbuffer=	%04x\n", &bigbuffer);
 }

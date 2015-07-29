@@ -83,8 +83,8 @@ extern	void	(*finishcachebox)	(void);
 
 void CA_OpenDebug (void);
 void CA_CloseDebug (void);
-boolean CA_FarRead (int handle, word huge *dest, dword length, mminfo_t *mm);
-boolean CA_FarWrite (int handle, word huge *source, dword length, mminfo_t *mm);
+boolean CA_FarRead (int handle, byte huge *dest, dword length, mminfo_t *mm);
+boolean CA_FarWrite (int handle, byte huge *source, dword length, mminfo_t *mm);
 
 boolean CA_ReadFile (char *filename, memptr *ptr, mminfo_t *mm);
 boolean CA_LoadFile (char *filename, memptr *ptr, mminfo_t *mm, mminfotype *mmi);
