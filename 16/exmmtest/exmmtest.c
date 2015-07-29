@@ -45,7 +45,7 @@ void
 main(int argc, char *argv[])
 {
 	mminfo_t mm; mminfotype mmi;
-	unsigned __far *segu;
+	//unsigned __far *segu;
 #ifdef FILERL
 	memptr bigbuffer;
 	char *bakapee;
@@ -56,8 +56,8 @@ main(int argc, char *argv[])
 
 	//mmi.segu=FP_SEG(segu);
 
-	printf("&main()=%Fp\n", *argv[0]);
-	printf("&segu=%Fp\n", &segu);
+	printf("&main()=	%Fp\n", *argv[0]);
+	//printf("segu=	%Fp\n", segu);
 	printf("bigbuffer=	%Fp\n", bigbuffer);
 	printf("&bigbuffer=	%Fp\n", &bigbuffer);
 	//printf("mmi.segu=%p\n", (mmi.segu));
@@ -95,8 +95,8 @@ main(int argc, char *argv[])
 		printf("&main() == %u\n", FP_SEG(*argv[0]));
 		exit(-5);
 	}*/
-	printf("&main()=%Fp\n", *argv[0]);
-	printf("&segu=%Fp\n", &segu);
+	printf("&main()=	%Fp\n", *argv[0]);
+	//printf("segu=	%Fp\n", segu);
 	printf("bigbuffer=	%Fp\n", bigbuffer);
 	printf("&bigbuffer=	%Fp\n", &bigbuffer);
 	//printf("mmi.segu=%p\n", (mmi.segu));

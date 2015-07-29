@@ -36,7 +36,7 @@
 
 //file load or read definition
 #define FILERL
-#define FILEREAD
+//#define FILEREAD
 
 void
 main(int argc, char *argv[])
@@ -52,9 +52,9 @@ main(int argc, char *argv[])
 
 	//mmi.segu=FP_SEG(segu);
 
-	printf("&main()=%Fp\n", *argv[0]);
+	printf("&main()=	%Fp\n", *argv[0]);
+	printf("bigbuffer=	%Fp\n", bigbuffer);
 	printf("&bigbuffer=%Fp\n", &bigbuffer);
-	//printf("mmi.segu=%p\n", (mmi.segu));
 
 #ifdef FILERL
 	bakapee = malloc(64);
@@ -89,9 +89,9 @@ main(int argc, char *argv[])
 		printf("&main() == %u\n", FP_SEG(*argv[0]));
 		exit(-5);
 	}*/
-	printf("&main()=%Fp\n", *argv[0]);
-	printf("&bigbuffer=%Fp\n", &bigbuffer);
-	//printf("mmi.segu=%p\n", (mmi.segu));
+	printf("&main()=	%Fp\n", *argv[0]);
+	printf("bigbuffer=	%Fp\n", bigbuffer);
+	printf("&bigbuffer=	%Fp\n", &bigbuffer);
 #ifdef FILERL
 //	bakapeehandle = open(bakapee,O_RDONLY | O_BINARY, S_IREAD);
 //	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
