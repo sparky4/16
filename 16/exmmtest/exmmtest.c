@@ -20,14 +20,17 @@
  *
  */
 /*
-	exmm test
+	exmm test borland c ver
 */
 #include <stdio.h>
 #include <bios.h>
 
-#include "src/lib/16_head.h"
+/*#include "src/lib/16_head.h"
 #include "src/lib/16_ca.h"
-#include "src/lib/16_mm.h"
+#include "src/lib/16_mm.h"*/
+#include "16_head.h"
+#include "16_ca.h"
+#include "16_mm.h"
 //#include "src/lib/modex16.h"
 #pragma hdrstop
 
@@ -42,7 +45,7 @@ void
 main(int argc, char *argv[])
 {
 	mminfo_t mm; mminfotype mmi;
-	__segment segu;
+	void _seg * segu;
 #ifdef FILERL
 	memptr bigbuffer;
 	char *bakapee;
@@ -65,7 +68,7 @@ main(int argc, char *argv[])
 
 #ifdef FILERL
 	if(argv[1]) bakapee = argv[1];
-	else bakapee = "data/koishi~~.pcx";
+	else bakapee = "../../data/koishi~~.pcx";
 #endif
 
 	textInit();
@@ -95,7 +98,7 @@ main(int argc, char *argv[])
 	//printf("mmi.segu=%p\n", (mmi.segu));
 #ifdef FILERL
 //	bakapeehandle = open(bakapee,O_RDONLY | O_BINARY, S_IREAD);
-	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
+//wat	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
 //	if(CA_FarRead(bakapeehandle,(void far *)&bigbuffer,sizeof(bigbuffer),&mm))
 #ifdef FILEREAD
 	printf("		read\n");
