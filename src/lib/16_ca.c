@@ -337,7 +337,7 @@ boolean CA_ReadFile(char *filename, memptr *ptr, mminfo_t *mm)
 		return false;
 
 	size = filelength(handle);
-	if(!CA_FarRead(handle, (void huge *)ptr,size, mm))
+	if(!CA_FarRead(handle,*ptr,size, mm))
 	{
 		close(handle);
 		return false;
@@ -369,7 +369,7 @@ boolean CA_LoadFile(char *filename, memptr *ptr, mminfo_t *mm, mminfotype *mmi)
 
 	size = filelength (handle);
 	MM_GetPtr(ptr,size, mm, mmi);
-	if(!CA_FarRead(handle,(void huge *)ptr,size, mm))
+	if(!CA_FarRead(handle,*ptr,size, mm))
 	{
 		close(handle);
 		return false;
