@@ -1,36 +1,52 @@
 #include <stdio.h>
-#include <dos.h>
+#include <stdlib.h>
 #include <malloc.h>
 
-typedef struct {
-	a_t __based( __self ) *next;
-	int                         number;
-}a_t;
+struct list {
+    struct list __based(__self) *next;
+    int         value;
+};
 
-void PrintLastTwo( a_t far *list );
+void main(int argc, char *argv[])
+  {
+    int         i;
+    __segment   segu;
+    struct list __based(segu) *head;
+    struct list __based(segu) *p;
 
-void
-main(int argc, char *argv[])
-{
-	a_t far *list;
-	PrintLastTwo(list);
+    /* allocate based heap */
+    segu = _bheapseg( 1024 );
+    if( segu == _NULLSEG ) {
+      printf( "Unable to allocate based heap\n" );
+      exit( 1 );
+    }
+
+    /* create a linked list in the based heap */
+    head = 0;
+    for( i = 1; i < 10; i++ ) {
+      p = _bmalloc( segu, sizeof( struct list ) );
+      if( p == _NULLOFF ) {
+        printf( "_bmalloc failed\n" );
+        break;
+      }
+      p->next = head;
+      p->value = i;
+      head = p;
+    }
+
+    /* traverse the linked list, printing out values */
+    for( p = head; p != 0; p = p->next ) {
+	printf("Segu = %04X %FP", p, p);
+      printf( "	Value = %d\n", p->value );
+    }
+
+    /* free all the elements of the linked list */
+    for( ; p = head; ) {
+      head = p->next;
+      _bfree( segu, p );
+    }
+    /* free the based heap */
+    _bfreeseg( segu );
+	printf("program=%P\n", *argv[0]);
+	printf("seg=%P\n", segu);
 }
-
-     void PrintLastTwo( a_t far *list )
-     {
-       __segment                seg;
-       a_t __based( seg ) *aptr;
-
-       seg  = FP_SEG( list );
-       aptr = FP_OFF( list );
-       for( ; aptr != _NULLOFF; aptr = aptr->next ) {
-         if( aptr->next == _NULLOFF ) {
-           printf( "Last item is %d\n",
-                   aptr->number );
-         } else if( aptr->next->next == _NULLOFF ) {
-           printf( "Second last item is %d\n",
-                   aptr->number );
-         }
-       }
-     }
-     

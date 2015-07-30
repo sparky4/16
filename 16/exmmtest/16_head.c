@@ -111,7 +111,7 @@ size_t GetFreeSize(void)
   return total;
 }
 
-void far* AllocateLargestFarFreeBlock(size_t far* Size)
+void far* AllocateLargestFarFreeBlock(size_t* Size)
 {
 	size_t s0, s1;
 	void far* p;

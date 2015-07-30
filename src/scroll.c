@@ -62,7 +62,7 @@ void main()
 	printf("Total free @ before map load:			%zu\n", GetFreeSize());
 	printf("Total near free @ before map load:			%zu\n", GetNearFreeSize());
 	printf("Total far free @ before map load:			%zu\n", GetFarFreeSize());
-	getch();
+//	getch();
 //0000	fprintf(stderr, "testing~\n");
 //	loadmap("data/test.map", &map);
 	map.width=0;

@@ -38,144 +38,7 @@ void wait(clock_t wait){
 	while((goal > clock()) && !kbhit()) ;
 } /* End of wait */
 
-void* AllocateLargestFreeBlock(size_t* Size)
-{
-  size_t s0, s1;
-  void* p;
-
-  s0 = ~(size_t)0 ^ (~(size_t)0 >> 1);
-
-  while (s0 && (p = malloc(s0)) == NULL)
-    s0 >>= 1;
-
-  if (p)
-    free(p);
-
-  s1 = s0 >> 1;
-
-  while (s1)
-  {
-    if ((p = malloc(s0 + s1)) != NULL)
-    {
-      s0 += s1;
-      free(p);
-    }
-    s1 >>= 1;
-  }
-
-  while (s0 && (p = malloc(s0)) == NULL)
-    s0 ^= s0 & -s0;
-
-  *Size = s0;
-  return p;
-}
-
-size_t GetFreeSize(void)
-{
-  size_t total = 0;
-  void* pFirst = NULL;
-  void* pLast = NULL;
-
-  for (;;)
-  {
-    size_t largest;
-    void* p = AllocateLargestFreeBlock(&largest);
-
-    if (largest < sizeof(void*))
-    {
-      if (p != NULL)
-        free(p);
-      break;
-    }
-
-    *(void**)p = NULL;
-
-    total += largest;
-
-    if (pFirst == NULL)
-      pFirst = p;
-
-    if (pLast != NULL)
-      *(void**)pLast = p;
-
-    pLast = p;
-  }
-
-  while (pFirst != NULL)
-  {
-    void* p = *(void**)pFirst;
-    free(pFirst);
-    pFirst = p;
-  }
-
-  return total;
-}
-
-void far* AllocateLargestFarFreeBlock(size_t far* Size)
-{
-	size_t s0, s1;
-	void far* p;
-
-	s0 = ~(size_t)0 ^ (~(size_t)0 >> 1);
-	while (s0 && (p = _fmalloc(s0)) == NULL)
-		s0 >>= 1;
-
-	if (p)
-		_ffree(p);
-
-	s1 = s0 >> 1;
-	while (s1)
-	{
-		if ((p = _fmalloc(s0 + s1)) != NULL)
-		{
-			s0 += s1;
-			_ffree(p);
-		}
-	s1 >>= 1;
-	}
-	while (s0 && (p = _fmalloc(s0)) == NULL)
-		s0 ^= s0 & -s0;
-
-	*Size = s0;
-	return p;
-}
-
-size_t GetFarFreeSize(void)
-{
-	size_t total = 0;
-	void far* pFirst = NULL;
-	void far* pLast = NULL;
-	for(;;)
-	{
-		size_t largest;
-		void far* p = AllocateLargestFarFreeBlock(&largest);
-		if (largest < sizeof(void far*))
-		{
-			if (p != NULL)
-			_ffree(p);
-			break;
-		}
-		*(void far* far*)p = NULL;
-		total += largest;
-		if (pFirst == NULL)
-			pFirst = p;
-
-		if (pLast != NULL)
-			*(void far* far*)pLast = p;
-		pLast = p;
-	}
-
-	while (pFirst != NULL)
-	{
-		void far* p = *(void far* far*)pFirst;
-		_ffree(pFirst);
-		pFirst = p;
-	}
-	return total;
-}
-
-//near versions
-void __near* AllocateLargestNearFreeBlock(size_t* Size)
+void __near* LargestFreeBlock(size_t* Size)
 {
 	size_t s0, s1;
 	void __near* p;
@@ -204,7 +67,7 @@ void __near* AllocateLargestNearFreeBlock(size_t* Size)
 	return p;
 }
 
-size_t GetNearFreeSize(void)
+size_t _coreleft(void)
 {
 	size_t total = 0;
 	void __near* pFirst = NULL;
@@ -212,7 +75,7 @@ size_t GetNearFreeSize(void)
 	for(;;)
 	{
 		size_t largest;
-		void __near* p = AllocateLargestNearFreeBlock(&largest);
+		void __near* p = LargestFreeBlock(&largest);
 		if (largest < sizeof(void __near*))
 		{
 			if (p != NULL)
@@ -238,6 +101,260 @@ size_t GetNearFreeSize(void)
 	return total;
 }
 
+void far* LargestFarFreeBlock(size_t* Size)
+{
+	size_t s0, s1;
+	void far* p;
+
+	s0 = ~(size_t)0 ^ (~(size_t)0 >> 1);
+	while (s0 && (p = _fmalloc(s0)) == NULL)
+		s0 >>= 1;
+
+	if (p)
+		_ffree(p);
+
+	s1 = s0 >> 1;
+	while (s1)
+	{
+		if ((p = _fmalloc(s0 + s1)) != NULL)
+		{
+			s0 += s1;
+			_ffree(p);
+		}
+	s1 >>= 1;
+	}
+	while (s0 && (p = _fmalloc(s0)) == NULL)
+		s0 ^= s0 & -s0;
+
+	*Size = s0;
+	return p;
+}
+
+size_t _farcoreleft(void)
+{
+	size_t total = 0;
+	void far* pFirst = NULL;
+	void far* pLast = NULL;
+	for(;;)
+	{
+		size_t largest;
+		void far* p = LargestFarFreeBlock(&largest);
+		if (largest < sizeof(void far*))
+		{
+			if (p != NULL)
+			_ffree(p);
+			break;
+		}
+		*(void far* far*)p = NULL;
+		total += largest;
+		if (pFirst == NULL)
+			pFirst = p;
+
+		if (pLast != NULL)
+			*(void far* far*)pLast = p;
+		pLast = p;
+	}
+
+	while (pFirst != NULL)
+	{
+		void far* p = *(void far* far*)pFirst;
+		_ffree(pFirst);
+		pFirst = p;
+	}
+	return total;
+}
+
+void huge* LargestHugeFreeBlock(size_t* Size)
+{
+	size_t s0, s1;
+	void huge* p;
+
+	s0 = ~(size_t)0 ^ (~(size_t)0 >> 1);
+	while (s0 && (p = halloc((dword)s0, 1)) == NULL)
+		s0 >>= 1;
+
+	if (p)
+		hfree(p);
+
+	s1 = s0 >> 1;
+	while (s1)
+	{
+		if ((p = halloc((dword)(s0 + s1), 1)) != NULL)
+		{
+			s0 += s1;
+			hfree(p);
+		}
+	s1 >>= 1;
+	}
+	while (s0 && (p = halloc((dword)s0, 1)) == NULL)
+		s0 ^= s0 & -s0;
+
+	*Size = s0;
+	return p;
+}
+
+size_t _hugecoreleft(void)
+{
+	size_t total = 0;
+	void huge* pFirst = NULL;
+	void huge* pLast = NULL;
+	for(;;)
+	{
+		size_t largest;
+		void huge* p = LargestHugeFreeBlock(&largest);
+		if (largest < sizeof(void huge*))
+		{
+			if (p != NULL)
+			hfree(p);
+			break;
+		}
+		*(void huge* huge*)p = NULL;
+		total += largest;
+		if (pFirst == NULL)
+			pFirst = p;
+
+		if (pLast != NULL)
+			*(void huge* huge*)pLast = p;
+		pLast = p;
+	}
+
+	while (pFirst != NULL)
+	{
+		void huge* p = *(void huge* huge*)pFirst;
+		hfree(pFirst);
+		pFirst = p;
+	}
+	return total;
+}
+
+/*void __based(__self)* LargestBasedFreeBlock(size_t* Size)
+{
+	__segment segu;
+	size_t s0, s1;
+	void __based(__self)* p;
+
+	s0 = ~(size_t)0 ^ (~(size_t)0 >> 1);
+	while (s0 && (p = _bmalloc(segu, s0)) == NULL)
+		s0 >>= 1;
+
+	if (p)
+		_ffree(p);
+
+	s1 = s0 >> 1;
+	while (s1)
+	{
+		if ((p = _bmalloc(segu, s0 + s1)) != NULL)
+		{
+			s0 += s1;
+			_ffree(p);
+		}
+	s1 >>= 1;
+	}
+	while (s0 && (p = _bmalloc(segu, s0)) == NULL)
+		s0 ^= s0 & -s0;
+
+	*Size = s0;
+	return p;
+}
+
+size_t _basedcoreleft(void)
+{
+	__segment segu;
+	size_t total = 0;
+	void __based(segu)* pFirst = NULL;
+	void __based(segu)* pLast = NULL;
+	// allocate based heap
+	segu = _bheapseg( 1024 );
+	if( segu == _NULLSEG ) {
+		printf( "Unable to allocate based heap\n" );
+		return 0;
+		//exit( 1 );
+	}
+	else
+
+	for(;;)
+	{
+		size_t largest;
+		void __based(segu)* p = LargestBasedFreeBlock(&largest);
+		if (largest < sizeof(void far*))
+		{
+			if (p != NULL)
+			_ffree(p);
+			break;
+		}
+		*(void far* far*)p = NULL;
+		total += largest;
+		if (pFirst == NULL)
+			pFirst = p;
+
+		if (pLast != NULL)
+			*(void far* far*)pLast = p;
+		pLast = p;
+	}
+
+	while (pFirst != NULL)
+	{
+		void far* p = *(void far* far*)pFirst;
+		_ffree(pFirst);
+		pFirst = p;
+	}
+	return total;
+}*/
+
+size_t GetFreeSize(void)
+{
+	struct _heapinfo h_info;
+	int heap_status;
+	size_t h_free=0, h_total=0, h_used=0;
+
+	h_info._pentry = NULL;
+	for(;;) {
+		heap_status = _heapwalk( &h_info );
+		if( heap_status != _HEAPOK ) break;
+		if((h_info._useflag == _USEDENTRY ? "USED" : "FREE")=="FREE") h_free += h_info._size;
+		if((h_info._useflag == _USEDENTRY ? "USED" : "FREE")=="USED") h_used += h_info._size;
+		h_total += h_info._size;
+	}
+	heapstat(heap_status);
+	return h_free;
+}
+
+size_t GetFarFreeSize(void)
+{
+	struct _heapinfo fh_info;
+	int heap_status;
+	size_t fh_free=0, fh_total=0, fh_used=0;
+
+	fh_info._pentry = NULL;
+	for(;;) {
+		heap_status = _fheapwalk( &fh_info );
+		if( heap_status != _HEAPOK ) break;
+		if((fh_info._useflag == _USEDENTRY ? "USED" : "FREE")=="FREE") fh_free += fh_info._size;
+		if((fh_info._useflag == _USEDENTRY ? "USED" : "FREE")=="USED") fh_used += fh_info._size;
+		fh_total += fh_info._size;
+	}
+	heapstat(heap_status);
+	return fh_free;
+}
+
+size_t GetNearFreeSize(void)
+{
+	struct _heapinfo nh_info;
+	int heap_status;
+	size_t nh_free=0, nh_total=0, nh_used=0;
+
+	nh_info._pentry = NULL;
+	for(;;) {
+		heap_status = _nheapwalk( &nh_info );
+		if( heap_status != _HEAPOK ) break;
+		if((nh_info._useflag == _USEDENTRY ? "USED" : "FREE")=="FREE") nh_free += nh_info._size;
+		if((nh_info._useflag == _USEDENTRY ? "USED" : "FREE")=="USED") nh_used += nh_info._size;
+		nh_total += nh_info._size;
+	}
+	heapstat(heap_status);
+	return nh_free;
+}
+
 long int
 filesize(FILE *fp)
 {
@@ -249,6 +366,139 @@ filesize(FILE *fp)
 	fseek(fp, save_pos, SEEK_SET);
 	return(size_of_file);
 }
+
+void print_normal_entry(char *text, dword total, dword used, dword free)
+{
+	printf("%-17s", text);
+	convert("%8sB ", total);
+	convert("%9sB ", used);
+	convert("%9sB\n", free);
+}
+
+/*
+ * As for printf(), but format may only contain a single format specifier,
+ * which must be "%s" and is replaced with the string form of num with commas
+ * separating groups of three digits.
+ *
+ * e.g. convert("%s bytes", 1234567) -> "1,234,567 bytes"
+ */
+void convert(const char *format, dword num)
+{
+    int c, i, j, n;
+    char des[4*sizeof(dword)+3];
+    union REGS regs;
+    struct SREGS sregs;
+    char mycountry[48]; /* probably 34 bytes are enough... */
+    char ksep = ',';    /* or . */
+
+    regs.x.ax = 0x3800;
+    sregs.ds = FP_SEG(&mycountry);
+    regs.x.dx = FP_OFF(&mycountry);
+    intdosx(&regs,&regs,&sregs);
+    if (regs.x.cflag == 0) {
+      ksep = mycountry[7];        /* 1000's separator  */
+      /* dsep = mycountry[9];     ** decimal separator */
+    }
+
+    n = sprintf(des, "%lu", num);
+    /* insert commas in the string */
+    c = 3;
+    for (i = n - 3; i > 0; i--) {
+        if (c%3==0) {
+            for (j = n; j >= i; j--)
+                des[j+1] = des[j];
+            des[i]=ksep;        /* ',' */
+            n++;
+        }
+        c++;
+    }
+    printf(format, des);
+}
+
+void heapdump(void)
+{
+	struct _heapinfo fh_info, nh_info, h_info;
+	int heap_status;
+	size_t h_free, nh_free, fh_free, h_total, nh_total, fh_total, h_used, nh_used, fh_used;
+
+	printf("\n	== default ==\n\n");
+	h_info._pentry = NULL;
+	h_free=0; h_total=0; h_used=0;
+	for(;;) {
+		heap_status = _heapwalk( &h_info );
+		if( heap_status != _HEAPOK ) break;
+		printf( "  %s block at %Fp of size %4.4X\n",
+(h_info._useflag == _USEDENTRY ? "USED" : "FREE"),
+h_info._pentry, h_info._size );
+		if((h_info._useflag == _USEDENTRY ? "USED" : "FREE")=="FREE") h_free += h_info._size;
+		if((h_info._useflag == _USEDENTRY ? "USED" : "FREE")=="USED") h_used += h_info._size;
+		h_total += h_info._size;
+	}
+	heapstat(heap_status);
+
+	//near
+	printf("\n	== near ==\n\n");
+	nh_info._pentry = NULL;
+	nh_free=0; nh_total=0; nh_used=0;
+	for(;;) {
+		heap_status = _nheapwalk( &nh_info );
+		if( heap_status != _HEAPOK ) break;
+		printf( "  %s block at %Fp of size %4.4X\n",
+(nh_info._useflag == _USEDENTRY ? "USED" : "FREE"),
+nh_info._pentry, nh_info._size );
+		if((nh_info._useflag == _USEDENTRY ? "USED" : "FREE")=="FREE") nh_free += nh_info._size;
+		if((nh_info._useflag == _USEDENTRY ? "USED" : "FREE")=="USED") nh_used += nh_info._size;
+		nh_total += nh_info._size;
+	}
+	heapstat(heap_status);
+
+	//far
+	printf("\n	== far ==\n\n");
+	fh_info._pentry = NULL;
+	fh_free=0; fh_total=0; fh_used=0;
+	for(;;) {
+		heap_status = _fheapwalk( &fh_info );
+		if( heap_status != _HEAPOK ) break;
+		printf( "  %s block at %Fp of size %4.4X\n",
+(fh_info._useflag == _USEDENTRY ? "USED" : "FREE"),
+fh_info._pentry, fh_info._size );
+		if((fh_info._useflag == _USEDENTRY ? "USED" : "FREE")=="FREE") fh_free += fh_info._size;
+		if((fh_info._useflag == _USEDENTRY ? "USED" : "FREE")=="USED") fh_used += fh_info._size;
+		fh_total += fh_info._size;
+	}
+	heapstat(heap_status);
+
+printf("\n");
+printf(kittengets(2,0,"Memory Type         Total      Used       Free\n"));
+printf(      "----------------  --------   --------   --------\n");
+print_normal_entry(kittengets(2,1,"Default"), (dword)h_total, (dword)h_used, (dword)h_free);
+print_normal_entry(kittengets(2,1,"Near"), (dword)nh_total, (dword)nh_used, (dword)nh_free);
+print_normal_entry(kittengets(2,1,"Far"), (dword)fh_total, (dword)fh_used, (dword)fh_free);
+printf(      "----------------  --------   --------   --------\n");
+//printf("memavl = %lu\n", (dword)_memavl());
+printf("stackavail = %u\n", stackavail());
+}
+
+void heapstat(int heap_status)
+{
+	switch( heap_status ) {
+		case _HEAPEND:
+			//printf( "OK - end of heap\n" );
+		break;
+		case _HEAPEMPTY:
+			//printf( "OK - heap is empty\n" );
+		break;
+		case _HEAPBADBEGIN:
+			printf( "ERROR - heap is damaged\n" );
+		break;
+		case _HEAPBADPTR:
+			printf( "ERROR - bad pointer to heap\n" );
+		break;
+		case _HEAPBADNODE:
+			printf( "ERROR - bad node in heap\n" );
+	}
+}
+
 
 ///////////////////////////////////////////////////////////////////////////
 //

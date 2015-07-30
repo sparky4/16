@@ -15,24 +15,28 @@ TARGET_OS = dos
 SRC=src$(DIRSEP)
 SRCLIB=$(SRC)lib$(DIRSEP)
 JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
+NYANLIB=$(SRCLIB)nyan$(DIRSEP)
 #EXMMLIB=$(SRCLIB)exmm$(DIRSEP)
 DOSLIB=$(SRCLIB)doslib$(DIRSEP)
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
 16FLAGS=-fh=16.hed
 BAKAPIFLAGS=-fh=bakapi.hed
-ZFLAGS=-zk0 -zu -zc# -zm# -zdp# -zp16 -zq
-DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1
-CFLAGS=-ei -wo -x -r -mc -k57344
+SEGAFLAGS=-0 -d2 -lr $(OFLAGS)
+
+SFLAGS=-k32768#51200#49152
+DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
+ZFLAGS=-zk0 -zq# -zu -zm# -zc# -zdp# -zp16 -zq
+CFLAGS=-ei -wo -x -r -mc
 OFLAGS=-ot -ox -ob -oh -or -om -ol# -ol+
 FLAGS=-0 -d2 -lr $(OFLAGS) $(CFLAGS) $(DFLAGS) $(ZFLAGS)
 
 DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) midi.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
-16LIBOBJS = bakapee.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ) timer.$(OBJ)
+16LIBOBJS = bakapee.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ) timer.$(OBJ) kitten.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ)
 
-TESTEXEC =  exmmtest.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe sountest.exe tsthimem.exe inputest.exe scroll.exe
+TESTEXEC =  exmmtest.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe sountest.exe tsthimem.exe inputest.exe scroll.exe sega.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe
 EXEC = 16.exe bakapi.exe $(TESTEXEC)
 
@@ -42,7 +46,7 @@ all: $(EXEC)
 #game and bakapi executables
 #
 16.exe: 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
-	wcl $(FLAGS) $(16FLAGS)  16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
+	wcl $(FLAGS) $(16FLAGS) 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
 
 bakapi.exe: bakapi.$(OBJ) 16.lib
 	wcl $(FLAGS) $(BAKAPIFLAGS) bakapi.$(OBJ) 16.lib
@@ -55,9 +59,9 @@ scroll.$(OBJ): $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
 
 sega.exe: sega.$(OBJ)
-	wcl $(FLAGS) -c sega.$(OBJ)
+	wcl $(SEGAFLAGS) sega.$(OBJ)
 sega.$(OBJ): $(SRC)sega.c
-	wcl $(FLAGS) -c $(SRC)sega.c
+	wcl $(SEGAFLAGS) -c $(SRC)sega.c
 
 test.exe: test.$(OBJ) gfx.lib
 	wcl $(FLAGS) test.$(OBJ) gfx.lib
@@ -267,6 +271,9 @@ emm.$(OBJ): $(DOSLIB)emm.h $(DOSLIB)emm.c
 
 jsmn.$(OBJ): $(JSMNLIB)jsmn.h $(JSMNLIB)jsmn.c
 	wcl $(FLAGS) -c $(JSMNLIB)jsmn.c
+
+kitten.$(OBJ): $(NYANLIB)kitten.h $(NYANLIB)kitten.c
+        wcl $(FLAGS) -c $(NYANLIB)kitten.c
 
 #farjsmn.$(OBJ): $(JSMNLIB)farjsmn.h $(JSMNLIB)farjsmn.c
 #	wcl $(FLAGS) $(MFLAGS) -c $(JSMNLIB)farjsmn.c

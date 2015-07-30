@@ -147,4 +147,11 @@ main(int argc, char *argv[])
 	printf("&bigbuffer=	%Fp\n", &bigbuffer);
 	printf("bigbuffer=	%04x\n", bigbuffer);
 	printf("&bigbuffer=	%04x\n", &bigbuffer);
+	printf("\n\n");
+	printf("Total free:			%lu\n", (dword)(GetFreeSize()));
+	//printf("Total near free:			%zu\n", GetNearFreeSize());
+	printf("Total far free:			%lu\n", (dword)(GetFarFreeSize()));
+	printf("\n");
+	printf("core left:			%u\n", coreleft());
+	printf("far core left:			%lu\n", farcoreleft());
 }

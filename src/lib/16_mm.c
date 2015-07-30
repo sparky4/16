@@ -1561,8 +1561,7 @@ void MM_FreeBlock(mmblocktype *x, mminfo_t *mm)
 
 void MM_seguin(void)
 {
-	__asm
-	{
+	__asm {
 		push	ds
 		mov	ax,ds
 		inc		ax
@@ -1572,8 +1571,7 @@ void MM_seguin(void)
 
 void MM_segude(void)
 {
-	__asm
-	{
+	__asm {
 		pop ds
 	}
 }

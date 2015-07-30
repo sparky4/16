@@ -117,7 +117,7 @@ main(int argc, char *argv[])
 	printf("dark purple = purgable\n");
 	printf("medium blue = non purgable\n");
 	printf("red = locked\n");
-	getch();
+//	getch();
 	//++++modexEnter();
 	//++++modexShowPage(&screen);
 	MM_ShowMemory(/*&screen, */&mm);
@@ -143,4 +143,15 @@ main(int argc, char *argv[])
 	printf("&bigbuffer=	%Fp\n", &bigbuffer);
 	printf("bigbuffer=	%04x\n", bigbuffer);
 	printf("&bigbuffer=	%04x\n", &bigbuffer);
+	printf("\n\n");
+	printf("Total free:			%lu\n", (dword)(GetFreeSize()));
+	printf("Total near free:		%lu\n", (dword)(GetNearFreeSize()));
+	printf("Total far free:			%lu\n", (dword)(GetFarFreeSize()));
+	getch();
+	printf("\n");
+	heapdump();
+	printf("core left:			%lu\n", (dword)_coreleft());
+	printf("far core left:			%lu\n", (dword)_farcoreleft());
+	//printf("based core left:			%lu\n", (dword)_basedcoreleft());
+	//printf("huge core left:			%lu\n", (dword)_hugecoreleft());
 }

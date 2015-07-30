@@ -167,7 +167,7 @@ typedef struct
 void wait(clock_t wait);
 void* AllocateLargestFreeBlock(size_t* Size);
 size_t GetFreeSize(void);
-void far *AllocateLargestFarFreeBlock(size_t far* Size);
+void far *AllocateLargestFarFreeBlock(size_t* Size);
 size_t GetFarFreeSize(void);
 long int filesize(FILE *fp);
 int US_CheckParm(char *parm,char **strings);

@@ -42,7 +42,14 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <mem.h>
+#include <alloca.h>
+#include "src/lib/nyan/kitten.h"
 #include "src/lib/types.h"
+
+struct list {
+	struct list __based(__self) *next;
+	int         value;
+};
 
 /* Control codes for all keys on the keyboard */
 //here temperarly
@@ -169,13 +176,22 @@ typedef struct
 
 /* local function */
 void wait(clock_t wait);
-void* AllocateLargestFreeBlock(size_t* Size);
+void __near* LargestFreeBlock(size_t* Size);
+size_t _coreleft(void);
+void far* LargestFarFreeBlock(size_t* Size);
+size_t _farcoreleft(void);
+void huge* LargestHugeFreeBlock(size_t* Size);
+size_t _hugecoreleft(void);
+//void __based(__self)* LargestBasedFreeBlock(size_t* Size);
+//size_t _basedcoreleft(void);
 size_t GetFreeSize(void);
-void far *AllocateLargestFarFreeBlock(size_t far* Size);
 size_t GetFarFreeSize(void);
-void __near *AllocateLargestNearFreeBlock(size_t* Size);
 size_t GetNearFreeSize(void);
 long int filesize(FILE *fp);
+void print_normal_entry(char *text, dword total, dword used, dword free);
+void convert(const char *format, dword num);
+void heapdump(void);
+void heapstat(int heap_status);
 int US_CheckParm(char *parm,char **strings);
 
 extern void CA_OpenDebug (void);
