@@ -11,11 +11,12 @@ void main(int argc, char *argv[])
   {
     int         i;
     __segment   segu;
+	void __based(__self) *pee;
     struct list __based(segu) *head;
     struct list __based(segu) *p;
 
     /* allocate based heap */
-    segu = _bheapseg( 1024 );
+    segu = _bheapseg( 65536 );
     if( segu == _NULLSEG ) {
       printf( "Unable to allocate based heap\n" );
       exit( 1 );
@@ -23,7 +24,7 @@ void main(int argc, char *argv[])
 
     /* create a linked list in the based heap */
     head = 0;
-    for( i = 1; i < 10; i++ ) {
+    for( i = 1; i < 4096; i++ ) {
       p = _bmalloc( segu, sizeof( struct list ) );
       if( p == _NULLOFF ) {
         printf( "_bmalloc failed\n" );
@@ -36,9 +37,13 @@ void main(int argc, char *argv[])
 
     /* traverse the linked list, printing out values */
     for( p = head; p != 0; p = p->next ) {
-	printf("Segu = %04X %FP", p, p);
-      printf( "	Value = %d\n", p->value );
+		if(p==head || p->next==0 || p==pee){
+			printf("Segu = %04X", p); printf( "	Value = %d\n", p->value );
+		}
     }
+
+	printf("program=%FP\n", *argv[0]);
+	printf("seg=%04X\n", segu);
 
     /* free all the elements of the linked list */
     for( ; p = head; ) {
@@ -47,6 +52,4 @@ void main(int argc, char *argv[])
     }
     /* free the based heap */
     _bfreeseg( segu );
-	printf("program=%P\n", *argv[0]);
-	printf("seg=%P\n", segu);
 }

@@ -22,12 +22,11 @@ WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
 16FLAGS=-fh=16.hed
 BAKAPIFLAGS=-fh=bakapi.hed
-SEGAFLAGS=-0 -d2 -lr $(OFLAGS)
 
 SFLAGS=-k32768#51200#49152
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
 ZFLAGS=-zk0 -zq# -zu -zm# -zc# -zdp# -zp16 -zq
-CFLAGS=-ei -wo -x -r -mc
+CFLAGS=-mc -ei -wo -x# -r
 OFLAGS=-ot -ox -ob -oh -or -om -ol# -ol+
 FLAGS=-0 -d2 -lr $(OFLAGS) $(CFLAGS) $(DFLAGS) $(ZFLAGS)
 
@@ -59,9 +58,9 @@ scroll.$(OBJ): $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
 
 sega.exe: sega.$(OBJ)
-	wcl $(SEGAFLAGS) sega.$(OBJ)
+	wcl $(FLAGS) sega.$(OBJ)
 sega.$(OBJ): $(SRC)sega.c
-	wcl $(SEGAFLAGS) -c $(SRC)sega.c
+	wcl $(FLAGS) -c $(SRC)sega.c
 
 test.exe: test.$(OBJ) gfx.lib
 	wcl $(FLAGS) test.$(OBJ) gfx.lib
