@@ -27,7 +27,7 @@ SFLAGS=-k32768#51200#49152
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
 ZFLAGS=-zk0 -zq# -zu -zm# -zc# -zdp# -zp16 -zq
 CFLAGS=-mc -ei -wo -x# -r
-OFLAGS=-ot -ox -ob -oh -or -om -ol# -ol+
+OFLAGS=-otexanbhrml -ol+
 FLAGS=-0 -d2 -lr $(OFLAGS) $(CFLAGS) $(DFLAGS) $(ZFLAGS)
 
 DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
