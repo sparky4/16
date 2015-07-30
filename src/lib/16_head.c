@@ -174,6 +174,70 @@ size_t GetFarFreeSize(void)
 	return total;
 }
 
+//near versions
+void __near* AllocateLargestNearFreeBlock(size_t* Size)
+{
+	size_t s0, s1;
+	void __near* p;
+
+	s0 = ~(size_t)0 ^ (~(size_t)0 >> 1);
+	while (s0 && (p = _nmalloc(s0)) == NULL)
+		s0 >>= 1;
+
+	if (p)
+		_nfree(p);
+
+	s1 = s0 >> 1;
+	while (s1)
+	{
+		if ((p = _nmalloc(s0 + s1)) != NULL)
+		{
+			s0 += s1;
+			_nfree(p);
+		}
+	s1 >>= 1;
+	}
+	while (s0 && (p = _nmalloc(s0)) == NULL)
+		s0 ^= s0 & -s0;
+
+	*Size = s0;
+	return p;
+}
+
+size_t GetNearFreeSize(void)
+{
+	size_t total = 0;
+	void __near* pFirst = NULL;
+	void __near* pLast = NULL;
+	for(;;)
+	{
+		size_t largest;
+		void __near* p = AllocateLargestNearFreeBlock(&largest);
+		if (largest < sizeof(void __near*))
+		{
+			if (p != NULL)
+			_nfree(p);
+			break;
+		}
+		*(void __near* __near*)p = NULL;
+		total += largest;
+		if (pFirst == NULL)
+			pFirst = p;
+
+		if (pLast != NULL)
+			*(void __near* __near*)pLast = p;
+		pLast = p;
+	}
+
+	while (pFirst != NULL)
+	{
+		void __near* p = *(void __near* __near*)pFirst;
+		_nfree(pFirst);
+		pFirst = p;
+	}
+	return total;
+}
+
 long int
 filesize(FILE *fp)
 {

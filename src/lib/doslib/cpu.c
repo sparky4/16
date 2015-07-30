@@ -177,5 +177,5 @@ int cpu_basic_probe()
 	pop		bx
 	//retnative
 	}
-	return;
+	return 0;
 }

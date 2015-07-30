@@ -42,7 +42,6 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <mem.h>
-//#include <fenv.h>
 #include "src/lib/types.h"
 
 /* Control codes for all keys on the keyboard */
@@ -160,10 +159,12 @@ typedef	enum	{false,true}	boolean;
 typedef void __based(__self) * memptr;
 //typedef sregs.w.es * memptr
 //typedef __segment * memptr;
-//typedef fenp.op_ptr_seg * memptr;//=fenv_t.;
+//typedef fenp.op_ptr_seg * memptr;
 typedef struct
 {
 	int old_mode;	//old video mode before game!
+	word frames_per_second;
+	clock_t t;
 } global_game_variables_t;
 
 /* local function */
@@ -172,6 +173,8 @@ void* AllocateLargestFreeBlock(size_t* Size);
 size_t GetFreeSize(void);
 void far *AllocateLargestFarFreeBlock(size_t far* Size);
 size_t GetFarFreeSize(void);
+void __near *AllocateLargestNearFreeBlock(size_t* Size);
+size_t GetNearFreeSize(void);
 long int filesize(FILE *fp);
 int US_CheckParm(char *parm,char **strings);
 

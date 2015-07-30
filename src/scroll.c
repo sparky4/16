@@ -23,13 +23,14 @@
 #include "src/lib/scroll16.h"
 #include "src/lib/mapread.h"
 #include "src/lib/wcpu/wcpu.h"
-//====#include "src\lib\ems.c"
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 
 void main()
 {
+	dword tiku = 0;
 //	word panswitch=0, panq=1, pand=0;
+	global_game_variables_t gvar;
 	word panpagenum=0; //for panning!
 	int i;
 	static word paloffset=0;
@@ -44,48 +45,29 @@ void main()
 	byte *dpal, *gpal;
 	byte *ptr;
 	byte *mappalptr;
+	byte *mesg=malloc(sizeof(dword));
 	player_t player[MaxPlayers];
 
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
+
+	start_timer(&gvar);
+	gvar.frames_per_second = 60;
 	//extern struct inconfig inpu;
 
-	//player_t npc0;
-
 //	atexit(qclean());
-	/*if(!emmtest())
-	{
-		printf("Expanded memory is not present\n");
-		exit(0);
-	}
-
-	if(!emmok())
-	{
-		printf("Expanded memory manager is not present\n");
-		exit(0);
-	}
-
-	emsavail = emmavail();
-	if(emsavail == -1)
-	{
-		printf("Expanded memory manager error\n");
-		exit(0);
-	}
-	printf("There are %ld pages available\n",emsavail);
-
-	if((emmhandle = emmalloc(emsavail)) < 0)
-	{
-		printf("Insufficient pages available\n");
-		exit(0);
-	}*/
 
 	/* create the map */
 	//printf("Total used @ before map load:			%zu\n", oldfreemem-GetFreeSize());
 	printf("Total free @ before map load:			%zu\n", GetFreeSize());
+	printf("Total near free @ before map load:			%zu\n", GetNearFreeSize());
 	printf("Total far free @ before map load:			%zu\n", GetFarFreeSize());
 	getch();
 //0000	fprintf(stderr, "testing~\n");
 //	loadmap("data/test.map", &map);
+	map.width=0;
+	map.height=0;
+	chkmap(&map, 1);
 //0000	fprintf(stderr, "yay map loaded~~\n");
 //----	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
 	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
@@ -107,37 +89,6 @@ void main()
 	p = planar_buf_from_bitmap(&player[0].data);
 //0000	printf("Total used @ after planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
 
-	/*if(isEMS())
-	{
-		XMOVE mm;
-		mm.length=sizeof(map);
-		mm.sourceH=0;
-		mm.sourceOff=(long)&map;
-		mm.destH=emmhandle;
-		mm.destOff=1;
-		//halp!
-		ist = move_emem(&mm);
-		printf("%d\n", coretotalEMS());
-		if(!ist){ dealloc_emem(emmhandle); exit(5); }
-		//printf("%d\n", emmhandle);
-	}
-
-	if(isEMS())
-	{
-		XMOVE mm;
-		mm.length=emmhandle;
-		mm.sourceH=0;
-		mm.sourceOff=(long)&ptmp;
-		mm.destH=emmhandle;
-		mm.destOff=0;
-		//halp!
-		ist = move_emem(&mm);
-		printf("%d\n", coretotalEMS());
-		if(!ist){ dealloc_emem(emmhandle); exit(5); }
-		//printf("%d\n", emmhandle);
-	}
-*/
-
 	/*	input!	*/
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
@@ -147,6 +98,7 @@ void main()
 	modexPalSave(dpal);
 	modexFadeOff(4, dpal);
 
+	textInit();
 	VGAmodeX(1);
 	modexPalBlack();	//reset the palette~
 //	printf("Total used @ before palette initiation:		%zu\n", oldfreemem-GetFreeSize());
@@ -156,9 +108,9 @@ void main()
 	//printf("1:	%d\n", paloffset);
 	map.tiles->data->offset=(paloffset/3);
 	//XTmodexPalUpdate(map.tiles->data, &paloffset, 0, 0);
-	printf("\n====\n");
-	printf("0	paloffset=	%d\n", paloffset/3);
-	printf("====\n\n");
+//	printf("\n====\n");
+//	printf("0	paloffset=	%d\n", paloffset/3);
+//	printf("====\n\n");
 	gpal = modexNewPal();
 	modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);
@@ -214,6 +166,9 @@ void main()
 	modexFadeOn(4, gpal);
 	while(!IN_KeyDown(sc_Escape) && player[0].hp>0)
 	{
+		sprintf(mesg, "%lu", tiku);
+		modexprint(mv[1].page, 0, 0, 1, 15, 0, mesg);
+		shinku(mv[1].page, &gvar);
 		IN_ReadControl(0,&player);
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
@@ -377,6 +332,7 @@ void main()
 
 	if((player[0].q==1) && !(player[0].x%TILEWH==0 && player[0].y%TILEWH==0)) break;	//incase things go out of sync!
 
+	tiku++;
 	}
 
 	/* fade back to text mode */

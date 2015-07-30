@@ -29,6 +29,7 @@
 #include "src/lib/bitmap.h"
 #include "src/lib/planar.h"
 #include "src/lib/mapread.h"
+#include "src/lib/timer.h"
 
 typedef struct {
 	map_t *map;
@@ -46,7 +47,9 @@ typedef struct
 
 #define TILEWH 16
 #define QUADWH			TILEWH/2
-//#define LOOPMAX (TILEWH/(player[0].speed))
+//for null map!
+#define MAPW	40
+#define MAPH	30
 
 //map_t allocMap(int w, int h);
 //void initMap(map_t *map);
@@ -55,6 +58,7 @@ void mapScrollRight(map_view_t *mv, player_t *player, word id, word plid);
 void mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid);
 void mapScrollUp(map_view_t *mv, player_t *player, word id, word plid);
 void mapScrollDown(map_view_t *mv, player_t *player, word id, word plid);
+sword chkmap(map_t *map, word q);
 void mapGoTo(map_view_t *mv, int tx, int ty);
 void mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
 void mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *p, word poopoffset);
@@ -63,6 +67,7 @@ void mapDrawWRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 void pdump(page_t *pee);
 void qclean();
+void shinku(page_t *page, global_game_variables_t *gv);
 void animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch);
 
 #endif /*__SCROLL16_H_*/

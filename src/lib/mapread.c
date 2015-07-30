@@ -69,8 +69,8 @@ word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, 
 		{
 //			fprintf(stdout, "[[[[%d|%d]]]]\n", &(t+1)->size, (t+1)->size);
 //			fprintf(stdout, "\n%.*s[xx[%d|%d]xx]\n", (t+1)->end - (t+1)->start, js+(t+1)->start, &(t+1)->size, (t+1)->size);
-			map->data = _nmalloc(sizeof(byte) * (t+1)->size);
-			map->tiles = _nmalloc(sizeof(tiles_t));
+			map->data = malloc(sizeof(byte) * (t+1)->size);
+			map->tiles = malloc(sizeof(tiles_t));
 			//map->tiles->data = malloc(sizeof(bitmap_t));
 			//fix this to be far~
 			bp = bitmapLoadPcx("data/ed.pcx");

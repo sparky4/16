@@ -19,15 +19,17 @@ JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
 DOSLIB=$(SRCLIB)doslib$(DIRSEP)
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
+16FLAGS=-fh=16.hed
+BAKAPIFLAGS=-fh=bakapi.hed
 ZFLAGS=-zk0 -zu -zc# -zm# -zdp# -zp16 -zq
-#DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1
-CFLAGS=-ei -wo -x -r -fh=16.hed -mc -k60000#16384#
+DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1
+CFLAGS=-ei -wo -x -r -mc -k57344
 OFLAGS=-ot -ox -ob -oh -or -om -ol# -ol+
 FLAGS=-0 -d2 -lr $(OFLAGS) $(CFLAGS) $(DFLAGS) $(ZFLAGS)
 
 DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) midi.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
-16LIBOBJS = bakapee.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ)
+16LIBOBJS = bakapee.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ) timer.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ)
 
 TESTEXEC =  exmmtest.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe sountest.exe tsthimem.exe inputest.exe scroll.exe
@@ -40,10 +42,10 @@ all: $(EXEC)
 #game and bakapi executables
 #
 16.exe: 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
-	wcl $(FLAGS) 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
+	wcl $(FLAGS) $(16FLAGS)  16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
 
 bakapi.exe: bakapi.$(OBJ) 16.lib
-	wcl $(FLAGS) bakapi.$(OBJ) 16.lib
+	wcl $(FLAGS) $(BAKAPIFLAGS) bakapi.$(OBJ) 16.lib
 #
 #Test Executables!
 #
@@ -219,6 +221,9 @@ mapread.$(OBJ): $(SRCLIB)mapread.h $(SRCLIB)mapread.c
 #fmapread.$(OBJ): $(SRCLIB)fmapread.h $(SRCLIB)fmapread.c 16.lib
 #	wcl $(FLAGS) $(MFLAGS) -c $(SRCLIB)fmapread.c 16.lib
 
+timer.$(OBJ): $(SRCLIB)timer.h $(SRCLIB)timer.c
+        wcl $(FLAGS) -c $(SRCLIB)timer.c
+
 16_in.$(OBJ): $(SRCLIB)16_in.h $(SRCLIB)16_in.c
 	wcl $(FLAGS) -c $(SRCLIB)16_in.c
 
@@ -287,4 +292,4 @@ clean: .symbolic
 #	@$(REMOVECOMMAND) *.smp
 	@$(REMOVECOMMAND) *.SMP
 	@$(REMOVECOMMAND) 16.hed
-	
+	@$(REMOVECOMMAND) bakapi.hed
