@@ -102,11 +102,11 @@ void main()
 	VGAmodeX(1);
 	modexPalBlack();	//reset the palette~
 //	printf("Total used @ before palette initiation:		%zu\n", oldfreemem-GetFreeSize());
-	player[0].data.offset=(paloffset/3);
-	modexPalUpdate(&player[0].data, &paloffset, 0, 0);
+//++++	player[0].data.offset=(paloffset/3);
+//++++	modexPalUpdate(&player[0].data, &paloffset, 0, 0);
 	//printf("	%d\n", sizeof(ptmp->data));
 	//printf("1:	%d\n", paloffset);
-	map.tiles->data->offset=(paloffset/3);
+//++++	map.tiles->data->offset=(paloffset/3);
 	//XTmodexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 //	printf("\n====\n");
 //	printf("0	paloffset=	%d\n", paloffset/3);
@@ -163,7 +163,8 @@ void main()
 	modexShowPage(spri->page);
 //	printf("Total used @ before loop:			%zu\n", oldfreemem-GetFreeSize());
 	modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 1);
-	modexFadeOn(4, gpal);
+//++++	modexFadeOn(4, gpal);
+	modexFadeOn(4, dpal);
 	while(!IN_KeyDown(sc_Escape) && player[0].hp>0)
 	{
 		sprintf(mesg, "%lu", tiku);

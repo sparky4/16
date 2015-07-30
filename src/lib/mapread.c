@@ -82,6 +82,7 @@ word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, 
 			map->tiles->tileWidth = 16;
 			map->tiles->rows = 1;
 			map->tiles->cols = 1;
+			map->tiles->debug_text=false;
 			strcpy(js_sv, "data");//strdup(js+t->start);//, t->end - t->start);
 		}
 		else

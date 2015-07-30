@@ -21,6 +21,8 @@ typedef struct {
 	word tileWidth;
 	unsigned int rows;
 	unsigned int cols;
+	boolean debug_text;	//show the value of the tile! wwww
+	byte *debug_data;
 } tiles_t;
 
 typedef struct {
