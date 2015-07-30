@@ -3,17 +3,29 @@
 #include <malloc.h>
 
 struct list {
-    struct list __based(__self) *next;
-    int         value;
+#ifdef __WATCOMC__
+	struct list __based(__self) *next;
+#endif
+#ifdef __BORLANDC__
+	struct list _seg *next;
+#endif
+	int         value;
 };
 
 void main(int argc, char *argv[])
-  {
-    int         i;
-    __segment   segu;
+{
+	int         i;
+#ifdef __WATCOMC__
+	__segment   segu;
 	void __based(__self) *pee;
-    struct list __based(segu) *head;
-    struct list __based(segu) *p;
+	struct list __based(segu) *head;
+	struct list __based(segu) *p;
+#endif
+#ifdef __BORLANDC__
+	void _seg *pee;
+	struct list _seg *head;
+	struct list _seg *p;
+#endif
 
     /* allocate based heap */
     segu = _bheapseg( 65536 );

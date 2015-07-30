@@ -23,19 +23,27 @@
 	Segment experiment!
 */
 #include <stdio.h>
+#include <malloc.h>
 #ifdef __WATCOMC__
-//typedef void __based(__self) * memptr;
-typedef __segment memptr;
+typedef void __based(__self) * memptr;
+//typedef __segment memptr;
 #endif
 #ifdef __BORLANDC__
 typedef void _seg * memptr;
 #endif
 
 void
-main(/*int argc, char *argv[]*/)
+main(int argc, char *argv[])
 {
+	__segment segu;
 	unsigned bee=0;
+#ifdef __WATCOMC__
+	void __based(segu)* pee;
+#endif
+#ifdef __BORLANDC__
 	memptr pee;
+#endif
+	argc=argc;
 	printf("local variable bee=		%Fp\n", &bee);
 	printf("local variable bee=		%p\n", &bee);
 	printf("far pointer value of pee=	%Fp\n", pee);
