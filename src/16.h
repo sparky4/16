@@ -24,8 +24,16 @@
 #define __16_H_
 
 #include "src/lib/16_head.h"
+#include "src/lib/16_in.h"
 #include "src/lib/modex16.h"
 #include "src/lib/wcpu/wcpu.h"
 #include "src/lib/planar.h"
+
+typedef enum {
+	ENGI_EXIT,
+	ENGI_QUIT,
+	ENGI_RUN,
+	ENGI_INPUT
+} engi_stat_t;
 
 #endif /*__16_H_*/

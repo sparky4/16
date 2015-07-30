@@ -25,18 +25,31 @@
 void
 main(int argc, char *argv[])
 {
+	engi_stat_t engi_stat;
 	const char *cpus;
 	byte *dpal, *gpal;
+	player_t player[MaxPlayers];
+
+	engi_stat = ENGI_RUN;
+
 	/* save the palette */
 	dpal = modexNewPal();
 	modexPalSave(dpal);
 	modexFadeOff(4, dpal);
-	printf("pal load\n");
-	gpal = modexNewPal();
-	modexPalSave(gpal);
-	modexSavePalFile("data/g.pal", gpal);
-	modexPalBlack();	//so player will not see loadings~
+	//printf("pal load\n");
+	//gpal = modexNewPal();
+	/*modexPalSave(gpal);
+	modexSavePalFile("data/g.pal", gpal);*/
 	printf("wwww loop wwww\n");
+	VGAmodeX(1);
+	modexPalBlack();	//so player will not see loadings~
+	IN_Startup();
+	IN_Default(0,&player,ctrl_Joystick);
+	while(ENGI_EXIT != engi_stat)
+	{
+		IN_ReadControl(0,&player);
+		if(IN_KeyDown(sc_Escape)) engi_stat = ENGI_EXIT;
+	}
 	switch(detectcpu())
 	{
 		case 0: cpus = "8086/8088 or 186/88"; break;
@@ -45,5 +58,7 @@ main(int argc, char *argv[])
 		default: cpus = "internal error"; break;
 	}
 	printf("detected CPU type: %s\n", cpus);
+	VGAmodeX(0);
+	IN_Shutdown();
 	modexFadeOn(4, dpal);
 }
