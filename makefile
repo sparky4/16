@@ -20,8 +20,8 @@ DOSLIB=$(SRCLIB)doslib$(DIRSEP)
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
 ZFLAGS=-zk0 -zu -zc# -zm# -zdp# -zp16 -zq
-DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1
-CFLAGS=-ei -wo -x -mc -r -k60000 -fh=16.hed#16384#
+#DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1
+CFLAGS=-ei -wo -x -r -fh=16.hed -mc -k60000#16384#
 OFLAGS=-ot -ox -ob -oh -or -om -ol# -ol+
 FLAGS=-0 -d2 -lr $(OFLAGS) $(CFLAGS) $(DFLAGS) $(ZFLAGS)
 
