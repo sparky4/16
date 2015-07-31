@@ -23,7 +23,7 @@ WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 16FLAGS=-fh=16.hed
 BAKAPIFLAGS=-fh=bakapi.hed
 #-st -zu
-SFLAGS=-k24576#32768#51200#49152
+SFLAGS=-k32768#51200#49152#24576
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
 ZFLAGS=-zk0 -zq# -zu# -zm# -zc# -zdp# -zp16 -zq
 CFLAGS=-mc -ei -wo -x
