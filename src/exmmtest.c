@@ -80,14 +80,6 @@ main(int argc, char *argv[])
 	//PM_UnlockMainMem();
 	CA_Startup();
 	printf("		done!\n");
-	/*if(FP_SEG(*argv[0])==0)
-	{
-		MM_Report(&screen, &mm, &mmi);
-		MM_Shutdown(&mm);
-		printf("&main()=%Fp\n", *argv[0]);
-		printf("&main() == %u\n", FP_SEG(*argv[0]));
-		exit(-5);
-	}*/
 	printf("&main()=	%Fp\n", *argv[0]);
 	printf("bigbuffer=	%Fp\n", bigbuffer);
 	printf("&bigbuffer=	%Fp\n", &bigbuffer);

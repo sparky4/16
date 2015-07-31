@@ -887,6 +887,7 @@ void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi)
 
 	if (mm->bombonerror)
 	{
+		heapdump();
 		printf(OUT_OF_MEM_MSG,(size-mmi->nearheap));
 		printf("for stability reasons the program will shut down! wwww\n");
 		MM_Shutdown(mm);
