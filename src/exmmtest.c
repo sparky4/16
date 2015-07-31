@@ -35,14 +35,15 @@
 #pragma warn -use
 
 //file load or read definition
-//#define FILERL
+#define FILERL
 //#define FILEREAD
 
 void
 main(int argc, char *argv[])
 {
 	mminfo_t mm; mminfotype mmi;
-	__segment bigbuffer;
+	__segment sega;
+	void __based(sega)* bigbuffer;
 #ifdef FILERL
 	char *bakapee;
 	word baka;
