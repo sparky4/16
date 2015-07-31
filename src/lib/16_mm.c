@@ -702,7 +702,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->farheap = length;
 	printf("start=%FP	segstart=%X	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
-	heapdump();
+	//heapdump();
 
 	mmi->mainmem = mmi->nearheap + mmi->farheap;
 
