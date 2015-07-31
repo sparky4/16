@@ -24,6 +24,8 @@
 #include "src/lib/mapread.h"
 #include "src/lib/wcpu/wcpu.h"
 
+//#define FADE
+
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 
 void main()
@@ -42,7 +44,9 @@ void main()
 	map_view_t mv[3];
 	map_view_t *bg, *spri, *mask;//, *tmp;
 	//map_view_db_t pgid[4];
+#ifdef FADE
 	byte *dpal, *gpal;
+#endif
 	byte *ptr;
 	byte *mappalptr;
 	byte *mesg=malloc(sizeof(dword));
@@ -94,13 +98,17 @@ void main()
 	IN_Default(0,&player,ctrl_Joystick);
 
 	/* save the palette */
+#ifdef FADE
 	dpal = modexNewPal();
 	modexPalSave(dpal);
 	modexFadeOff(4, dpal);
+#endif
 
 	textInit();
 	VGAmodeX(1);
+#ifdef FADE
 	modexPalBlack();	//reset the palette~
+#endif
 //	printf("Total used @ before palette initiation:		%zu\n", oldfreemem-GetFreeSize());
 //++++	player[0].data.offset=(paloffset/3);
 //++++	modexPalUpdate(&player[0].data, &paloffset, 0, 0);
@@ -111,10 +119,12 @@ void main()
 //	printf("\n====\n");
 //	printf("0	paloffset=	%d\n", paloffset/3);
 //	printf("====\n\n");
+#ifdef FADE
 	gpal = modexNewPal();
 	modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);
 	modexPalBlack();	//so player will not see loadings~
+#endif
 
 	/* setup camera and screen~ */
 	screen = modexDefaultPage();
@@ -163,12 +173,13 @@ void main()
 	modexShowPage(spri->page);
 //	printf("Total used @ before loop:			%zu\n", oldfreemem-GetFreeSize());
 	modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 1);
-//++++	modexFadeOn(4, gpal);
-	modexFadeOn(4, dpal);
+#ifdef FADE
+	modexFadeOn(4, gpal);
+#endif
 	while(!IN_KeyDown(sc_Escape) && player[0].hp>0)
 	{
 		sprintf(mesg, "%lu", tiku);
-		modexprint(mv[1].page, 0, 0, 1, 15, 0, mesg);
+		modexprint(mv[1].page, 16, 16, 1, 15, 0, mesg);
 		shinku(mv[1].page, &gvar);
 		IN_ReadControl(0,&player);
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
@@ -310,6 +321,7 @@ void main()
 	if(IN_KeyDown(3)){ modexShowPage(spri->page); panpagenum=1; }
 	if(IN_KeyDown(4)){ modexShowPage(mask->page); panpagenum=2; }
 	if(IN_KeyDown(25)){ pdump(bg->page); pdump(spri->page); }	//p
+#ifdef FADE
 	if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; pdump(bg->page); pdump(spri->page); }
 	if(IN_KeyDown(22)){
 	paloffset=0; modexPalBlack(); modexPalUpdate(&player[0].data, &paloffset, 0, 0);
@@ -317,6 +329,7 @@ void main()
 	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	printf("2paloffset	=	%d\n", paloffset/3);
 	 pdump(bg->page); pdump(spri->page); }
+#endif
 	//pan switch
 	//if(IN_KeyDown(88)){if(!panswitch) panswitch++; else panswitch--; }	//f12
 	//TSR
@@ -338,9 +351,11 @@ void main()
 
 	/* fade back to text mode */
 	/* but 1st lets save the game palette~ */
+#ifdef FADE
 	modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);
 	modexFadeOff(4, gpal);
+#endif
 	VGAmodeX(0);
 	IN_Shutdown();
 	printf("Project 16 scroll.exe\n");
@@ -377,5 +392,7 @@ void main()
 		default: cpus = "internal error"; break;
 	}
 	printf("detected CPU type: %s\n", cpus);
+#ifdef FADE
 	modexFadeOn(4, dpal);
+#endif
 }

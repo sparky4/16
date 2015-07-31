@@ -34,6 +34,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			if(pip[0].tx >= 0 && pip[0].tx+20 < pip[0].map->width && player[pn].tx == pip[0].tx + 10 &&
 			!(pip[0].map->data[(player[pn].tx)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx+1 == TRIGGX && player[pn].ty == TRIGGY))	//collision detection!
 			{
+				modexprint(pip[1].page, 320, (player[pn].q*8), 1, player[pn].q, 0, (byte *)player[pn].q);
 				if(player[pn].q<=(TILEWH/(player[pn].speed)))
 				{
 					INC_PER_FRAME;
@@ -71,6 +72,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			if(pip[0].tx > 0 && pip[0].tx+20 <= pip[0].map->width && player[pn].tx == pip[0].tx + 10 &&
 			!(pip[0].map->data[(player[pn].tx-2)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx-1 == TRIGGX && player[pn].ty == TRIGGY))	//collision detection!
 			{
+				modexprint(pip[1].page, 320, (player[pn].q*8), 1, player[pn].q, 0, (byte *)player[pn].q);
 				if(player[pn].q<=(TILEWH/(player[pn].speed)))
 				{
 					INC_PER_FRAME;
@@ -108,6 +110,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			if(pip[0].ty >= 0 && pip[0].ty+15 < pip[0].map->height && player[pn].ty == pip[0].ty + 8 &&
 			!(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty))] == 0))//!(player[pn].tx == TRIGGX && player[pn].ty+1 == TRIGGY))	//collision detection!
 			{
+				modexprint(pip[1].page, 320, (player[pn].q*8), 1, player[pn].q, 0, (byte *)player[pn].q);
 				if(player[pn].q<=(TILEWH/(player[pn].speed)))
 				{
 					INC_PER_FRAME;
@@ -145,6 +148,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			if(pip[0].ty > 0 && pip[0].ty+15 <= pip[0].map->height && player[pn].ty == pip[0].ty + 8 &&
 			!(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty-2))] == 0))//!(player[pn].tx == TRIGGX && player[pn].ty-1 == TRIGGY))	//collision detection!
 			{
+				modexprint(pip[1].page, 320, (player[pn].q*8), 1, player[pn].q, 0, (byte *)player[pn].q);
 				if(player[pn].q<=(TILEWH/(player[pn].speed)))
 				{
 					INC_PER_FRAME;
@@ -434,8 +438,8 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 {
 	word rx;
 	word ry;
-	word textx;
-	word texty;
+	word textx=0;
+	word texty=0;
 	//if(i==0) i=2;
 	if(i==0)
 	{
@@ -453,12 +457,13 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 				modexDrawBmpRegion(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
 			break;
 			case 1:
+				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, ((word)(t->debug_data))); //currently the over scan color!
 				//modexprintbig(page, x, y, 1, 15, 0, (t->debug_data));
 				/*for(texty=0; texty<2; texty++)
 				{
 					for(textx=0; textx<2; textx++)
 					{*/
-						modexprint(page, x+(textx*8), y+(texty*8), 1, (word)(t->debug_data), 0, (t->debug_data));
+//						modexprint(page, x+(textx*8), y+(texty*8), 1, (word)(t->debug_data), 0, (t->debug_data));
 /*					}
 				}*/
 			break;
