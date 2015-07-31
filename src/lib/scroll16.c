@@ -42,7 +42,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					mapScrollRight(pip, player, 1, pn);
 					modexShowPage(pip[1].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].info.dir = 0; player[pn].tx++; }
+				} else { player[pn].q = 1; player[pn].info.dir = 2; player[pn].tx++; }
 			}
 			else if(player[pn].tx < pip[0].map->width && !(pip[0].map->data[(player[pn].tx)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx+1 == TRIGGX && player[pn].ty == TRIGGY))
 			{
@@ -53,14 +53,14 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 0);
 					modexShowPage(pip[1].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].info.dir = 0; player[pn].tx++; }
+				} else { player[pn].q = 1; player[pn].info.dir = 2; player[pn].tx++; }
 			}
 			else
 			{
 				modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x-4, player[pn].y-TILEWH, player[pn].x-4, player[pn].y-TILEWH, 24, 32);
 				modexDrawSpriteRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 24, 32, &player[pn].data);
 				modexShowPage(pip[1].page);
-				player[pn].info.dir = 0;
+				player[pn].info.dir = 2;
 			}
 			player[pn].triggerx = player[pn].tx+1;
 			player[pn].triggery = player[pn].ty;
@@ -79,7 +79,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					mapScrollLeft(pip, player, 1, pn);
 					modexShowPage(pip[1].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].info.dir = 0; player[pn].tx--; }
+				} else { player[pn].q = 1; player[pn].info.dir = 2; player[pn].tx--; }
 			}
 			else if(player[pn].tx > 1 && !(pip[0].map->data[(player[pn].tx-2)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx-1 == TRIGGX && player[pn].ty == TRIGGY))
 			{
@@ -90,14 +90,14 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 0);
 					modexShowPage(pip[1].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].info.dir = 0; player[pn].tx--; }
+				} else { player[pn].q = 1; player[pn].info.dir = 2; player[pn].tx--; }
 			}
 			else
 			{
 				modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x-4, player[pn].y-TILEWH, player[pn].x-4, player[pn].y-TILEWH, 24, 32);
 				modexDrawSpriteRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 96, 24, 32, &player[pn].data);
 				modexShowPage(pip[1].page);
-				player[pn].info.dir = 0;
+				player[pn].info.dir = 2;
 			}
 			player[pn].triggerx = player[pn].tx-1;
 			player[pn].triggery = player[pn].ty;
@@ -116,7 +116,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					mapScrollDown(pip, player, 1, pn);
 					modexShowPage(pip[1].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].info.dir = 0; player[pn].ty++; }
+				} else { player[pn].q = 1; player[pn].info.dir = 2; player[pn].ty++; }
 			}
 			else if(player[pn].ty < pip[0].map->height && !(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty))] == 0))//!(player[pn].tx == TRIGGX && player[pn].ty+1 == TRIGGY))
 			{
@@ -127,14 +127,14 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 0);
 					modexShowPage(pip[1].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].info.dir = 0; player[pn].ty++; }
+				} else { player[pn].q = 1; player[pn].info.dir = 2; player[pn].ty++; }
 			}
 			else
 			{
 				modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x-4, player[pn].y-TILEWH, player[pn].x-4, player[pn].y-TILEWH, 24, 32);
 				modexDrawSpriteRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 64, 24, 32, &player[pn].data);
 				modexShowPage(pip[1].page);
-				player[pn].info.dir = 0;
+				player[pn].info.dir = 2;
 			}
 			player[pn].triggerx = player[pn].tx;
 			player[pn].triggery = player[pn].ty+1;
@@ -153,7 +153,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					mapScrollUp(pip, player, 1, pn);
 					modexShowPage(pip[1].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].info.dir = 0; player[pn].ty--; }
+				} else { player[pn].q = 1; player[pn].info.dir = 2; player[pn].ty--; }
 			}
 			else if(player[pn].ty > 1 && !(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty-2))] == 0))//!(player[pn].tx == TRIGGX &&  player[pn].ty-1 == TRIGGY))
 			{
@@ -164,14 +164,14 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, 0, pn);
 					modexShowPage(pip[1].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].info.dir = 0; player[pn].ty--; }
+				} else { player[pn].q = 1; player[pn].info.dir = 2; player[pn].ty--; }
 			}
 			else
 			{
 				modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x-4, player[pn].y-TILEWH, player[pn].x-4, player[pn].y-TILEWH, 24, 32);
 				modexDrawSpriteRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 0, 24, 32, &player[pn].data);
 				modexShowPage(pip[1].page);
-				player[pn].info.dir = 0;
+				player[pn].info.dir = 2;
 			}
 			player[pn].triggerx = player[pn].tx;
 			player[pn].triggery = player[pn].ty-1;
@@ -434,6 +434,8 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 {
 	word rx;
 	word ry;
+	word textx;
+	word texty;
 	//if(i==0) i=2;
 	if(i==0)
 	{
@@ -451,7 +453,14 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 				modexDrawBmpRegion(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
 			break;
 			case 1:
-				modexprintbig(page, x, y, 1, 15, 0, (t->debug_data));
+				//modexprintbig(page, x, y, 1, 15, 0, (t->debug_data));
+				for(texty=0; texty<2; texty++)
+				{
+					for(textx=0; textx<2; textx++)
+					{
+						modexprint(page, x+(textx*8), y+(texty*8), 1, (word)(t->debug_data), 0, (t->debug_data));
+					}
+				}
 			break;
 		}
 	}
@@ -553,18 +562,19 @@ void pdump(page_t *pee)
 void shinku(page_t *page, global_game_variables_t *gv)
 {
 	byte *pee;
-	word x = (SCREEN_WIDTH/2);
-	word y = (SCREEN_HEIGHT/2);
+	word x = (16);
+	word y = (8+16);
 	word col = 15;
 	word bgcol = 0;
 	word type = 1;
+	dword far* clockdww= (dword far*) 0x046C; /* 18.2hz clock */
 	if(elapsed_timer(gv) >= (1.0 / gv->frames_per_second))
 	{
 		pee = malloc(sizeof(double));
-		sprintf(pee, "%f", (((0x046C)-(gv->t)) /18.2));
+		sprintf(pee, "%f", ((*clockdww-(gv->t)) /18.2));
 		modexprint(page, x, y, type, col, bgcol, pee);
 		sprintf(pee, "%f", elapsed_timer(gv));
-		modexprint(page, x, y+16, type, col, bgcol, pee);
+		modexprint(page, x, y+8, type, col, bgcol, pee);
 	}
 }
 
