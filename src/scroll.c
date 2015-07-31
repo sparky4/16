@@ -361,6 +361,7 @@ void main()
 	printf("Screen: %dx", screen.width);	printf("%d\n", screen.height);
 	printf("Screen2: %dx", screen2.width);	printf("%d\n", screen2.height);
 	printf("map: %dx%d\n", map.width, map.height);
+	printf("player[0].info.dir: %u\n", player[0].info.dir);
 	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", bg->map->width, bg->map->height, bg->map->data[0]);
 	//xmsfree(&map);
 	//xmsfree(bg);
