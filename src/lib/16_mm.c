@@ -708,6 +708,8 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 
 	getch();
 
+//goto xmsskip;
+
 //
 // detect EMS and allocate up to 64K at page frame
 //
@@ -752,7 +754,7 @@ printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0
 	{
 printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 printf("		XMS!\n");
-		//MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
+		MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
 	}
 
 //
@@ -884,6 +886,8 @@ void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi)
 	if (mm->bombonerror)
 	{
 		printf(OUT_OF_MEM_MSG,(size-mmi->nearheap));
+		printf("for stability reasons the program will shut down! wwww\n");
+		MM_Shutdown(mm);
 		exit(-1);
 	}
 	else
