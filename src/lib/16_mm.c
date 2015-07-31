@@ -739,6 +739,8 @@ printf("		EMS4\n");
 			//MM_MapXEMS(mm, mmi);					// map in used pages
 	}
 
+goto xmsskip;
+
 //
 // detect XMS and get upper memory blocks
 //
