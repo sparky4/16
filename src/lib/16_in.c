@@ -849,17 +849,15 @@ register	KeyboardDef	*def;
 				mx = motion_Left,my = motion_Down;
 			else if (Keyboard[def->downright])
 				mx = motion_Right,my = motion_Down;*/
-
 			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
-			if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down] && player[playnum].info.dir == 2) || player[playnum].info.dir == 0)
+			if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down] && player[playnum].d == 2))// || player[playnum].info.dir == 0)
 				my = motion_Up;
-			if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up] && player[playnum].info.dir == 2) || player[playnum].info.dir == 4)
+			if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up] && player[playnum].d == 2))// || player[playnum].info.dir == 4)
 				my = motion_Down;
-
 			}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
-			if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right] && player[playnum].info.dir == 2) || player[playnum].info.dir == 1)
+			if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right] && player[playnum].d == 2))// || player[playnum].info.dir == 1)
 				mx = motion_Left;
-			if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left] && player[playnum].info.dir == 2) || player[playnum].info.dir == 3)
+			if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left] && player[playnum].d == 2))// || player[playnum].info.dir == 3)
 				mx = motion_Right;
 			}
 			if (inpu.Keyboard[def->button0])
@@ -895,8 +893,8 @@ register	KeyboardDef	*def;
 	}
 	else
 	{
-		dx = mx * 127;
-		dy = my * 127;
+		dx = mx;// * 127;
+		dy = my;// * 127;
 	}
 
 	player[playnum].info.x = dx;
@@ -911,6 +909,10 @@ register	KeyboardDef	*def;
 	conpee=(((my + 1) * 2) + (mx + 1));
 	if(conpee) conpee--;
 	player[playnum].info.dir = DirTable[conpee];
+	if(player[playnum].q==1 && (mx!=motion_None || my!=motion_None))
+	{
+		player[playnum].d = player[playnum].info.dir;
+	}
 
 #if DEMO0
 	if (DemoMode == demo_Record)

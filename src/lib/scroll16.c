@@ -27,7 +27,7 @@
 void walk(map_view_t *pip, player_t *player, word pn)
 {
 	#define INC_PER_FRAME if(player[pn].q&1) player[pn].persist_aniframe++; if(player[pn].persist_aniframe>4) player[pn].persist_aniframe = 1;
-	switch(player[pn].info.dir)
+	switch(player[pn].d)
 	{
 		//right movement
 		case 3:
@@ -42,7 +42,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					mapScrollRight(pip, player, 1, pn);
 					modexShowPage(pip[1].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].info.dir = 2; player[pn].tx++; }
+				} else { player[pn].q = 1; player[pn].d = 2; player[pn].tx++; }
 			}
 			else if(player[pn].tx < pip[0].map->width && !(pip[0].map->data[(player[pn].tx)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx+1 == TRIGGX && player[pn].ty == TRIGGY))
 			{
@@ -53,7 +53,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 0);
 					modexShowPage(pip[1].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].info.dir = 2; player[pn].tx++; }
+				} else { player[pn].q = 1; player[pn].d = 2; player[pn].tx++; }
 			}
 			else
 			{
@@ -64,7 +64,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 14);
 #endif
 				modexShowPage(pip[1].page);
-				player[pn].info.dir = 2;
+				player[pn].d = 2;
 			}
 			player[pn].triggerx = player[pn].tx+1;
 			player[pn].triggery = player[pn].ty;
@@ -83,7 +83,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					mapScrollLeft(pip, player, 1, pn);
 					modexShowPage(pip[1].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].info.dir = 2; player[pn].tx--; }
+				} else { player[pn].q = 1; player[pn].d = 2; player[pn].tx--; }
 			}
 			else if(player[pn].tx > 1 && !(pip[0].map->data[(player[pn].tx-2)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx-1 == TRIGGX && player[pn].ty == TRIGGY))
 			{
@@ -95,7 +95,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 0);
 					modexShowPage(pip[1].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].info.dir = 2; player[pn].tx--; }
+				} else { player[pn].q = 1; player[pn].d = 2; player[pn].tx--; }
 			}
 			else
 			{
@@ -106,7 +106,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 10);
 #endif
 				modexShowPage(pip[1].page);
-				player[pn].info.dir = 2;
+				player[pn].d = 2;
 			}
 			player[pn].triggerx = player[pn].tx-1;
 			player[pn].triggery = player[pn].ty;
@@ -125,7 +125,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					mapScrollDown(pip, player, 1, pn);
 					modexShowPage(pip[1].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].info.dir = 2; player[pn].ty++; }
+				} else { player[pn].q = 1; player[pn].d = 2; player[pn].ty++; }
 			}
 			else if(player[pn].ty < pip[0].map->height && !(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty))] == 0))//!(player[pn].tx == TRIGGX && player[pn].ty+1 == TRIGGY))
 			{
@@ -136,7 +136,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 0);
 					modexShowPage(pip[1].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].info.dir = 2; player[pn].ty++; }
+				} else { player[pn].q = 1; player[pn].d = 2; player[pn].ty++; }
 			}
 			else
 			{
@@ -147,7 +147,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 9);
 #endif
 				modexShowPage(pip[1].page);
-				player[pn].info.dir = 2;
+				player[pn].d = 2;
 			}
 			player[pn].triggerx = player[pn].tx;
 			player[pn].triggery = player[pn].ty+1;
@@ -166,7 +166,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					mapScrollUp(pip, player, 1, pn);
 					modexShowPage(pip[1].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].info.dir = 2; player[pn].ty--; }
+				} else { player[pn].q = 1; player[pn].d = 2; player[pn].ty--; }
 			}
 			else if(player[pn].ty > 1 && !(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty-2))] == 0))//!(player[pn].tx == TRIGGX &&  player[pn].ty-1 == TRIGGY))
 			{
@@ -178,7 +178,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, 0, pn);
 					modexShowPage(pip[1].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].info.dir = 2; player[pn].ty--; }
+				} else { player[pn].q = 1; player[pn].d = 2; player[pn].ty--; }
 			}
 			else
 			{
@@ -189,7 +189,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 12);
 #endif
 				modexShowPage(pip[1].page);
-				player[pn].info.dir = 2;
+				player[pn].d = 2;
 			}
 			player[pn].triggerx = player[pn].tx;
 			player[pn].triggery = player[pn].ty-1;
@@ -607,17 +607,17 @@ void animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scroll
 
 	if(!scrollswitch) qq = 0;
 	else qq = ((ls)*player[playnum].speed);
-	switch (player[playnum].info.dir)
+	switch (player[playnum].d)
 	{
 		case 0:
 			//up
-			dire*=player[playnum].info.dir;
+			dire*=player[playnum].d;
 			x-=4;
 			y-=(qq-TILEWH);
 		break;
 		case 3:
 			// right
-			dire*=(player[playnum].info.dir-2);
+			dire*=(player[playnum].d-2);
 			x+=(qq-4);
 			y-=TILEWH;
 		break;
@@ -625,13 +625,13 @@ void animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scroll
 		break;
 		case 4:
 			//down
-			dire*=(player[playnum].info.dir-2);
+			dire*=(player[playnum].d-2);
 			x-=4;
 			y+=(qq-TILEWH);
 		break;
 		case 1:
 			//left
-			dire*=(player[playnum].info.dir+2);
+			dire*=(player[playnum].d+2);
 			x-=(qq-4);
 			y-=TILEWH;
 		break;

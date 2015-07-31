@@ -156,11 +156,14 @@ void main()
 	player[0].y = player[0].ty*TILEWH;
 	player[0].triggerx = player[0].tx;
 	player[0].triggery = player[0].ty+1;
+/*	player[0].info.x = player[0].tx;
+	player[0].info.xaxis = player[0].tx*TILEWH;
+	player[0].info.y = player[0].ty;
+	player[0].info.yaxis = player[0].ty*TILEWH;*/
 	player[0].q=1;
-	player[0].info.dir=2;
+	player[0].d=2;
 	player[0].hp=4;
-	player[0].speed=4;
-	player[0].persist_aniframe=0;
+//	player[0].persist_aniframe=0;
 	//npc
 	/*npc0.tx = bg->tx + 1;
 	npc0.ty = bg->ty + 1;
@@ -373,7 +376,7 @@ void main()
 	//else printf("\nplayer[0].y: %d\n", player[0].y);
 	printf("player[0].tx: %d", player[0].tx); printf("		player[0].ty: %d\n", player[0].ty);
 	printf("player[0].triggx: %d", player[0].triggerx); printf("	player[0].triggy: %d\n", player[0].triggery);
-	printf("player[0].hp: %d", (player[0].hp));	printf("	player[0].q: %d", player[0].q);	printf("	player[0].info.dir: %d\n", player[0].info.dir);
+	printf("player[0].hp: %d", (player[0].hp));	printf("	player[0].q: %d", player[0].q);	printf("	player[0].info.dir: %d", player[0].info.dir);	printf("	player[0].d: %d\n", player[0].d);
 	printf("tile data value at player trigger position: %d\n", bg->map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))]);
 	printf("palette offset:	%d\n", paloffset/3);
 //++++	printf("Total used: %zu\n", oldfreemem-GetFreeSize());
@@ -383,6 +386,9 @@ void main()
 	printf("Screen: %dx", screen.width);	printf("%d\n", screen.height);
 	printf("Screen2: %dx", screen2.width);	printf("%d\n", screen2.height);
 	printf("map: %dx%d\n", map.width, map.height);
+	printf("\n");
+//	printf("player[0].info.x: %d", player[0].info.xaxis); printf("		player[0].info.y: %d\n", player[0].info.yaxis);
+//	printf("player[0].info.tx: %d", player[0].info.x); printf("		player[0].info.ty: %d\n", player[0].info.y);
 	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", bg->map->width, bg->map->height, bg->map->data[0]);
 	//xmsfree(&map);
 	//xmsfree(bg);

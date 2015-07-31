@@ -216,6 +216,7 @@ typedef	struct
 	int triggery; //player's trigger box tile position on the viewable map
 	int setx; //NOT USED YET! player sprite sheet set on the image x
 	int sety; //NOT USED YET! player sprite sheet set on the image y
+	word d;	//direction!! wwww
 	word q; //loop variable
 	word speed;		//player speed!
 	bitmap_t data; //supposively the sprite sheet data
