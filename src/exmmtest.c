@@ -42,15 +42,12 @@ void
 main(int argc, char *argv[])
 {
 	mminfo_t mm; mminfotype mmi;
-	memptr bigbuffer;
+	__segment bigbuffer;
 #ifdef FILERL
 	char *bakapee;
-//	int bakapeehandle;
 	word baka;
 #endif
 	//static page_t screen;
-
-	//mmi.segu=FP_SEG(segu);
 
 	printf("&main()=	%Fp\n", *argv[0]);
 	printf("bigbuffer=	%Fp\n", bigbuffer);
@@ -60,7 +57,6 @@ main(int argc, char *argv[])
 
 #ifdef FILERL
 	bakapee = malloc(64);
-//	memset(bakapee, 0, 64);
 #endif
 	mm.mmstarted=0;
 
