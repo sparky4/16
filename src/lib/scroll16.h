@@ -31,6 +31,8 @@
 #include "src/lib/mapread.h"
 #include "src/lib/timer.h"
 
+//#define SPRITE
+
 typedef struct {
 	map_t *map;
 	page_t *page;

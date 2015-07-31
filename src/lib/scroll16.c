@@ -27,14 +27,13 @@
 void walk(map_view_t *pip, player_t *player, word pn)
 {
 	#define INC_PER_FRAME if(player[pn].q&1) player[pn].persist_aniframe++; if(player[pn].persist_aniframe>4) player[pn].persist_aniframe = 1;
-	//right movement
 	switch(player[pn].info.dir)
 	{
+		//right movement
 		case 3:
 			if(pip[0].tx >= 0 && pip[0].tx+20 < pip[0].map->width && player[pn].tx == pip[0].tx + 10 &&
 			!(pip[0].map->data[(player[pn].tx)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx+1 == TRIGGX && player[pn].ty == TRIGGY))	//collision detection!
 			{
-				modexprint(pip[1].page, 320, (player[pn].q*8), 1, player[pn].q, 0, (byte *)player[pn].q);
 				if(player[pn].q<=(TILEWH/(player[pn].speed)))
 				{
 					INC_PER_FRAME;
@@ -59,7 +58,11 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			else
 			{
 				modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x-4, player[pn].y-TILEWH, player[pn].x-4, player[pn].y-TILEWH, 24, 32);
+#ifdef SPRITE
 				modexDrawSpriteRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 24, 32, &player[pn].data);
+#else
+				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 14);
+#endif
 				modexShowPage(pip[1].page);
 				player[pn].info.dir = 2;
 			}
@@ -72,7 +75,6 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			if(pip[0].tx > 0 && pip[0].tx+20 <= pip[0].map->width && player[pn].tx == pip[0].tx + 10 &&
 			!(pip[0].map->data[(player[pn].tx-2)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx-1 == TRIGGX && player[pn].ty == TRIGGY))	//collision detection!
 			{
-				modexprint(pip[1].page, 320, (player[pn].q*8), 1, player[pn].q, 0, (byte *)player[pn].q);
 				if(player[pn].q<=(TILEWH/(player[pn].speed)))
 				{
 					INC_PER_FRAME;
@@ -85,6 +87,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			}
 			else if(player[pn].tx > 1 && !(pip[0].map->data[(player[pn].tx-2)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx-1 == TRIGGX && player[pn].ty == TRIGGY))
 			{
+				modexprint(pip[1].page, 320, (player[pn].q*8), 1, player[pn].q, 0, (byte *)(player[pn].q));
 				if(player[pn].q<=(TILEWH/(player[pn].speed)))
 				{
 					INC_PER_FRAME;
@@ -97,7 +100,11 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			else
 			{
 				modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x-4, player[pn].y-TILEWH, player[pn].x-4, player[pn].y-TILEWH, 24, 32);
+#ifdef SPRITE
 				modexDrawSpriteRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 96, 24, 32, &player[pn].data);
+#else
+				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 10);
+#endif
 				modexShowPage(pip[1].page);
 				player[pn].info.dir = 2;
 			}
@@ -110,7 +117,6 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			if(pip[0].ty >= 0 && pip[0].ty+15 < pip[0].map->height && player[pn].ty == pip[0].ty + 8 &&
 			!(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty))] == 0))//!(player[pn].tx == TRIGGX && player[pn].ty+1 == TRIGGY))	//collision detection!
 			{
-				modexprint(pip[1].page, 320, (player[pn].q*8), 1, player[pn].q, 0, (byte *)player[pn].q);
 				if(player[pn].q<=(TILEWH/(player[pn].speed)))
 				{
 					INC_PER_FRAME;
@@ -135,7 +141,11 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			else
 			{
 				modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x-4, player[pn].y-TILEWH, player[pn].x-4, player[pn].y-TILEWH, 24, 32);
+#ifdef SPRITE
 				modexDrawSpriteRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 64, 24, 32, &player[pn].data);
+#else
+				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 9);
+#endif
 				modexShowPage(pip[1].page);
 				player[pn].info.dir = 2;
 			}
@@ -148,7 +158,6 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			if(pip[0].ty > 0 && pip[0].ty+15 <= pip[0].map->height && player[pn].ty == pip[0].ty + 8 &&
 			!(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty-2))] == 0))//!(player[pn].tx == TRIGGX && player[pn].ty-1 == TRIGGY))	//collision detection!
 			{
-				modexprint(pip[1].page, 320, (player[pn].q*8), 1, player[pn].q, 0, (byte *)player[pn].q);
 				if(player[pn].q<=(TILEWH/(player[pn].speed)))
 				{
 					INC_PER_FRAME;
@@ -161,6 +170,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			}
 			else if(player[pn].ty > 1 && !(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty-2))] == 0))//!(player[pn].tx == TRIGGX &&  player[pn].ty-1 == TRIGGY))
 			{
+				modexprint(pip[1].page, 320, (player[pn].q*8), 1, player[pn].q, 0, (byte *)(player[pn].q));
 				if(player[pn].q<=(TILEWH/(player[pn].speed)))
 				{
 					INC_PER_FRAME;
@@ -173,7 +183,11 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			else
 			{
 				modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x-4, player[pn].y-TILEWH, player[pn].x-4, player[pn].y-TILEWH, 24, 32);
+#ifdef SPRITE
 				modexDrawSpriteRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 0, 24, 32, &player[pn].data);
+#else
+				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 12);
+#endif
 				modexShowPage(pip[1].page);
 				player[pn].info.dir = 2;
 			}
@@ -457,7 +471,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 				modexDrawBmpRegion(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
 			break;
 			case 1:
-				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, ((word)(t->debug_data))); //currently the over scan color!
+				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, (t->debug_data[(x+(t->data->width*y))]));
 				//modexprintbig(page, x, y, 1, 15, 0, (t->debug_data));
 				/*for(texty=0; texty<2; texty++)
 				{
@@ -591,7 +605,7 @@ void animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scroll
 	sword qq; //scroll offset
 	word ls = player[playnum].persist_aniframe;
 
-	if(scrollswitch==0) qq = 0;
+	if(!scrollswitch) qq = 0;
 	else qq = ((ls)*player[playnum].speed);
 	switch (player[playnum].info.dir)
 	{
@@ -601,32 +615,43 @@ void animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scroll
 			x-=4;
 			y-=(qq-TILEWH);
 		break;
-		case 1:
+		case 3:
 			// right
 			dire*=(player[playnum].info.dir-2);
-			x+=qq-4;
+			x+=(qq-4);
 			y-=TILEWH;
 		break;
 		case 2:
 		break;
-		case 3:
+		case 4:
 			//down
 			dire*=(player[playnum].info.dir-2);
 			x-=4;
 			y+=(qq-TILEWH);
 		break;
-		case 4:
+		case 1:
 			//left
 			dire*=(player[playnum].info.dir+2);
-			x-=qq-4;
+			x-=(qq-4);
 			y-=TILEWH;
 		break;
 	}
+#ifdef SPRITE
+#define FRAME1 modexDrawSpriteRegion(pip[1].page, x, y, 48, dire, 24, 32, &player[playnum].data);
+#define FRAME2 modexDrawSpriteRegion(pip[1].page, x, y, 24, dire, 24, 32, &player[playnum].data)
+#define FRAME3 modexDrawSpriteRegion(pip[1].page, x, y, 0, dire, 24, 32, &player[playnum].data);
+#define FRAME4 modexDrawSpriteRegion(pip[1].page, x, y, 24, dire, 24, 32, &player[playnum].data);
+#else
+#define FRAME1 modexClearRegion(pip[1].page, x, y, 24, 32, 2+dire);
+#define FRAME2 modexClearRegion(pip[1].page, x, y, 24, 32, 1+dire);
+#define FRAME3 modexClearRegion(pip[1].page, x, y, 24, 32, dire);
+#define FRAME4 modexClearRegion(pip[1].page, x, y, 24, 32, 1+dire);
+#endif
 	modexCopyPageRegion(pip[1].page, pip[0].page, x-4, y-4, x-4, y-4, 28, 40);
-	if(2>ls && ls>=1) { modexDrawSpriteRegion(pip[1].page, x, y, 48, dire, 24, 32, &player[playnum].data); }else
-	if(3>ls && ls>=2) { modexDrawSpriteRegion(pip[1].page, x, y, 24, dire, 24, 32, &player[playnum].data); }else
-	if(4>ls && ls>=3) { modexDrawSpriteRegion(pip[1].page, x, y, 0, dire, 24, 32, &player[playnum].data); }else
-	if(5>ls && ls>=4) { modexDrawSpriteRegion(pip[1].page, x, y, 24, dire, 24, 32, &player[playnum].data); }
+	if(2>ls && ls>=1) { FRAME1 }else
+	if(3>ls && ls>=2) { FRAME2 }else
+	if(4>ls && ls>=3) { FRAME3 }else
+	if(5>ls && ls>=4) { FRAME4 }
 	//TODO: mask copy //modexCopyPageRegion(dest->page, src->page, x-4, y-4, x-4, y-4, 28, 40);
 	//modexClearRegion(top->page, 66, 66, 2, 40, 0);
 	//modexCopyPageRegion(dest->page, top->page, 66, 66, 66, 66, 2, 40);

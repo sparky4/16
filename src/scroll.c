@@ -25,6 +25,7 @@
 #include "src/lib/wcpu/wcpu.h"
 
 //#define FADE
+//#define SPRITE
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 
@@ -158,6 +159,8 @@ void main()
 	player[0].q=1;
 	player[0].info.dir=2;
 	player[0].hp=4;
+	player[0].speed=4;
+	player[0].persist_aniframe=0;
 	//npc
 	/*npc0.tx = bg->tx + 1;
 	npc0.ty = bg->ty + 1;
@@ -168,7 +171,11 @@ void main()
 	npc0.q=1;
 	npc0.d=0;
 	modexDrawSpriteRegion(spri->page, npc0.x-4, npc0.y-TILEWH, 24, 64, 24, 32, &npctmp);*/
+#ifdef	SPRITE
 	modexDrawSpriteRegion(spri->page, player[0].x-4, player[0].y-TILEWH, 24, 64, 24, 32, &player[0].data);
+#else
+	modexClearRegion(mv[1].page, player[0].x-4, player[0].y-TILEWH, 24, 32, 15);
+#endif
 
 	modexShowPage(spri->page);
 //	printf("Total used @ before loop:			%zu\n", oldfreemem-GetFreeSize());
@@ -376,7 +383,6 @@ void main()
 	printf("Screen: %dx", screen.width);	printf("%d\n", screen.height);
 	printf("Screen2: %dx", screen2.width);	printf("%d\n", screen2.height);
 	printf("map: %dx%d\n", map.width, map.height);
-	printf("player[0].info.dir: %u\n", player[0].info.dir);
 	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", bg->map->width, bg->map->height, bg->map->data[0]);
 	//xmsfree(&map);
 	//xmsfree(bg);
