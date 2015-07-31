@@ -469,7 +469,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 				modexDrawBmpRegion(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
 			break;
 			case 1:
-				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, (t->debug_data[i]));
+				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, (t->debug_data[i])+1);
 				//modexprintbig(page, x, y, 1, 15, 0, (t->debug_data));
 				/*for(texty=0; texty<2; texty++)
 				{
@@ -584,14 +584,13 @@ void shinku(page_t *page, global_game_variables_t *gv)
 	word col = 15;
 	word bgcol = 0;
 	word type = 1;
-	dword far* clockdww= (dword far*) 0x046C; /* 18.2hz clock */
 	if(elapsed_timer(gv) >= (1.0 / gv->frames_per_second))
 	{
 		pee = malloc(sizeof(double));
-		sprintf(pee, "%f", ((*clockdww-(gv->t)) /18.2));
+		sprintf(pee, "%f", ((*gv->clock) /18.2));
 		modexprint(page, x, y, type, col, bgcol, pee);
-		sprintf(pee, "%f", elapsed_timer(gv));
-		modexprint(page, x, y+8, type, col, bgcol, pee);
+		//sprintf(pee, "%f", /*gv->tiku/*/time_in_seconds(gv));
+		//modexprint(page, x, y+8, type, col, bgcol, pee);
 	}
 }
 

@@ -172,6 +172,8 @@ typedef struct
 	int old_mode;	//old video mode before game!
 	word frames_per_second;
 	clock_t t;
+	dword tiku;
+	word far* clock;
 } global_game_variables_t;
 
 /* local function */

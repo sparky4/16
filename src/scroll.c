@@ -31,7 +31,6 @@
 
 void main()
 {
-	dword tiku = 0;
 //	word panswitch=0, panq=1, pand=0;
 	global_game_variables_t gvar;
 	word panpagenum=0; //for panning!
@@ -188,7 +187,7 @@ void main()
 #endif
 	while(!IN_KeyDown(sc_Escape) && player[0].hp>0)
 	{
-		sprintf(mesg, "%lu", tiku);
+		sprintf(mesg, "%lu", gvar.tiku);
 		modexprint(mv[1].page, 16, 16, 1, 15, 0, mesg);
 		shinku(mv[1].page, &gvar);
 		IN_ReadControl(0,&player);
@@ -356,7 +355,7 @@ void main()
 
 	if((player[0].q==1) && !(player[0].x%TILEWH==0 && player[0].y%TILEWH==0)) break;	//incase things go out of sync!
 
-	tiku++;
+	gvar.tiku++;
 	}
 
 	/* fade back to text mode */

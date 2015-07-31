@@ -26,6 +26,8 @@ clock_t start_timer(global_game_variables_t *gv)
 {
 	//time(&(this->t));
 	gv->t = clock();
+	gv->tiku = 0;
+	gv->clock = (word far*) 0x046C; /* 18.2hz clock */
 	return gv->t;
 }
 
