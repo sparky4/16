@@ -221,7 +221,7 @@ typedef	struct
 	word speed;		//player speed!
 	bitmap_t data; //supposively the sprite sheet data
 	sword hp; //hitpoints of the player
-	sword persist_aniframe;    /* gonna be increased to 1 before being used, so 0 is ok for default */
+	int persist_aniframe;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	CursorInfo	info;
 	ControlType	Controls;
 } player_t;

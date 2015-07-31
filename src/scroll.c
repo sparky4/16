@@ -387,6 +387,7 @@ void main()
 	printf("Screen2: %dx", screen2.width);	printf("%d\n", screen2.height);
 	printf("map: %dx%d\n", map.width, map.height);
 	printf("\n");
+	printf("player[0].persist_aniframe: %d\n", player[0].persist_aniframe);
 //	printf("player[0].info.x: %d", player[0].info.xaxis); printf("		player[0].info.y: %d\n", player[0].info.yaxis);
 //	printf("player[0].info.tx: %d", player[0].info.x); printf("		player[0].info.ty: %d\n", player[0].info.y);
 	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", bg->map->width, bg->map->height, bg->map->data[0]);
