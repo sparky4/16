@@ -30,7 +30,7 @@
 //++++mh	#include "src/lib/16_in.h"
 
 #ifdef __DEBUG__		// 1 == Debug/Dev  ;  0 == Production/final
-#define OUT_OF_MEM_MSG	"MM_GetPtr: Out of memory!\nYou were short :%lu bytes"
+#define OUT_OF_MEM_MSG	"MM_GetPtr: Out of memory!\nYou were short :%lu bytes\n"
 #else
 #define OUT_OF_MEM_MSG	"\npee\n"
 #endif
