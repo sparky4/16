@@ -673,9 +673,9 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 //----	length=coreleft();
 	printf("		nearheap making!\n");
-	_heapgrow();
-	length=_memmax();//(dword)GetFreeSize();
-	start = (void huge *)(mm->nearheap = malloc(length));
+	_nheapgrow();
+	length=(dword)_coreleft();//(dword)_memmax();//(dword)GetFreeSize();
+	start = (void huge *)(mm->nearheap = _nmalloc(length));
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;
 	seglength = length / 16;			// now in paragraphs
@@ -683,7 +683,8 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->nearheap = length;
 	printf("start=%FP	segstart=%X	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
-	printf("		near heap ok!\n");
+	//heapdump();
+	//getch();
 
 //
 // get all available far conventional memory segments
@@ -691,7 +692,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //----	length=farcoreleft();
 	printf("		farheap making!\n");
 	_fheapgrow();
-	length=(dword)GetFarFreeSize();//0xffffUL*4UL;
+	length=(dword)_farcoreleft();//(dword)GetFarFreeSize();//0xffffUL*4UL;
 	//start = mm->farheap = halloc(length, 1);
 	start = mm->farheap = _fmalloc(length);
 	length -= 16-(FP_OFF(start)&15);
@@ -701,7 +702,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->farheap = length;
 	printf("start=%FP	segstart=%X	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
-	printf("		far heap ok!\n");
+	heapdump();
 
 	mmi->mainmem = mmi->nearheap + mmi->farheap;
 
@@ -751,7 +752,7 @@ printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0
 	{
 printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 printf("		XMS!\n");
-		MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
+		//MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
 	}
 
 //
@@ -781,7 +782,7 @@ void MM_Shutdown(mminfo_t *mm)
 		return;
 
 	_ffree(mm->farheap);	printf("		far freed\n");
-	free(mm->nearheap);	printf("		near freed\n");
+	_nfree(mm->nearheap);	printf("		near freed\n");
 	if(MML_CheckForEMS()){ MML_ShutdownEMS(mm); printf("		EMS freed\n"); }
 	if(MML_CheckForXMS(mm)){ MML_ShutdownXMS(mm); printf("		XMS freed\n"); }
 }
@@ -883,7 +884,7 @@ void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi)
 	if (mm->bombonerror)
 	{
 		printf(OUT_OF_MEM_MSG,(size-mmi->nearheap));
-		exit(-5);
+		exit(-1);
 	}
 	else
 		mm->mmerror = true;

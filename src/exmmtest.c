@@ -93,6 +93,7 @@ main(int argc, char *argv[])
 	printf("&bigbuffer=	%Fp\n", &bigbuffer);
 	printf("bigbuffer=	%04x\n", bigbuffer);
 	printf("&bigbuffer=	%04x\n", &bigbuffer);
+	getch();
 #ifdef FILERL
 //	bakapeehandle = open(bakapee,O_RDONLY | O_BINARY, S_IREAD);
 //	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
@@ -109,12 +110,12 @@ main(int argc, char *argv[])
 		baka=0;
 //	close(bakapeehandle);
 	//hmm functions in cache system use the buffered stuff
-//	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
+	printf("size of big buffer~=%u\n", _bmsize(sega, bigbuffer));
 #endif
 	printf("dark purple = purgable\n");
 	printf("medium blue = non purgable\n");
 	printf("red = locked\n");
-//	getch();
+	getch();
 	//++++modexEnter();
 	//++++modexShowPage(&screen);
 	MM_ShowMemory(/*&screen, */&mm);
@@ -135,7 +136,6 @@ main(int argc, char *argv[])
 	if(baka) printf("\nyay!\n");
 	else printf("\npoo!\n");
 #endif
-	//printf("_bios_memsize=%u\n", _bios_memsize());
 	printf("bigbuffer=	%Fp\n", bigbuffer);
 	printf("&bigbuffer=	%Fp\n", &bigbuffer);
 	printf("bigbuffer=	%04x\n", bigbuffer);

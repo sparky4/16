@@ -475,7 +475,9 @@ print_normal_entry(kittengets(2,1,"Default"), (dword)h_total, (dword)h_used, (dw
 print_normal_entry(kittengets(2,1,"Near"), (dword)nh_total, (dword)nh_used, (dword)nh_free);
 print_normal_entry(kittengets(2,1,"Far"), (dword)fh_total, (dword)fh_used, (dword)fh_free);
 printf(      "----------------  --------   --------   --------\n");
-//printf("memavl = %lu\n", (dword)_memavl());
+printf("coreleft = %lu\n", (dword)_coreleft());
+printf("farcoreleft = %lu\n", (dword)_farcoreleft());
+printf("memavl = %lu\n", (dword)_memavl());
 printf("stackavail = %u\n", stackavail());
 }
 
