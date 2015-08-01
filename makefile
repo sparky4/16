@@ -22,13 +22,12 @@ WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
 16FLAGS=-fh=16.hed
 BAKAPIFLAGS=-fh=bakapi.hed
-#-st -zu
-SFLAGS=-k32768#51200#49152#24576
+SFLAGS=-sg -st -of+ -k32768#51200#49152#24576
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
-ZFLAGS=-zk0 -zq# -zu# -zm# -zc# -zdp# -zp16 -zq
-CFLAGS=-mc -ei -wo -x
-OFLAGS=-otexanbhrml -ol+
-FLAGS=-0 -d2 -lr $(OFLAGS) $(CFLAGS) $(DFLAGS) $(ZFLAGS)
+ZFLAGS=-zk0 -zq -zu# -zm# -zc# -zdp# -zp16
+CFLAGS=-mc -lr -l=dos -wo -x -d2
+OFLAGS=-onatx -oh -oi -ei -zp8 -0 -fpi87#-oebrml -ol+
+FLAGS=$(OFLAGS) $(CFLAGS) $(DFLAGS) $(ZFLAGS)
 
 DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) midi.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
