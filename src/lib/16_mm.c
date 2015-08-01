@@ -713,32 +713,33 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 // detect EMS and allocate up to 64K at page frame
 //
-printf("		EMS1\n");
-printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+//printf("		EMS1\n");
+//printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	mmi->EMSmem = 0;
 	for(i = 1;i < __argc;i++)
 	{
 		if(US_CheckParm(__argv[i],ParmStringsexmm) == 0)
 			goto emsskip;				// param NOEMS
 	}
-printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+//printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	if(MML_CheckForEMS())
 	{
-printf("		EMS2\n");
-printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+//printf("		EMS2\n");
+//printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 		MML_SetupEMS(mm);					// allocate space
-printf("		EMS3\n");
-printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+//printf("		EMS3\n");
+//printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 		//TODO: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!
 		MML_UseSpace(mm->EMSpageframe,(MAPPAGES)*0x4000lu, mm);
-printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
-printf("		EMS4\n");
+//printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+//printf("		EMS4\n");
 		//if(mm->EMSVer<0x40)
 			MM_MapEMS(mm, mmi);					// map in used pages
 		//else
 			//MM_MapXEMS(mm, mmi);					// map in used pages
 	}
 
+mmi->XMSmem=0;
 goto xmsskip;
 
 //
@@ -751,11 +752,11 @@ emsskip:
 		if(US_CheckParm(__argv[i],ParmStringsexmm) == 0)
 			goto xmsskip;				// param NOXMS
 	}
-printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+//printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	if(MML_CheckForXMS(mm))
 	{
-printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
-printf("		XMS!\n");
+//printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+//printf("		XMS!\n");
 		MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
 	}
 
@@ -1552,12 +1553,12 @@ void MM_GetNewBlock(mminfo_t *mm)
 		MML_ClearBlock(mm);
 	mm->mmnew=mm->mmfree;
 	mm->mmfree=mm->mmfree->next;
-	/*if(!(mm->mmnew=mm->mmfree))
+	if(!(mm->mmnew=mm->mmfree))
 	{
-		printf("MM_GETNEWBLOCK: No free blocks!");
+		printf("MM_GETNEWBLOCK: No free blocks!\n");
 		return;
 	}
-	mm->mmfree=mm->mmfree->next;*/
+	mm->mmfree=mm->mmfree->next;
 }
 
 void MM_FreeBlock(mmblocktype *x, mminfo_t *mm)
