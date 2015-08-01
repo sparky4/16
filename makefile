@@ -25,8 +25,8 @@ BAKAPIFLAGS=-fh=bakapi.hed
 SFLAGS=-sg -st -of+ -k32768#51200#49152#24576
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
 ZFLAGS=-zk0 -zq -zu# -zm# -zc# -zdp# -zp16
-CFLAGS=-mc -lr -l=dos -wo -x -d2
-OFLAGS=-onatx -oh -oi -ei -zp8 -0 -fpi87  -oebrml -ol+
+CFLAGS=-mc -lr -l=dos -wo -x## -d2
+OFLAGS=-obmiler -out -oh -ei -zp8 -0 -fpi87  -onac -ol+ -ok####x
 FLAGS=$(OFLAGS) $(CFLAGS) $(DFLAGS) $(ZFLAGS)
 
 DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
