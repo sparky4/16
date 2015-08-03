@@ -28,6 +28,7 @@
 #include "src/lib/16_head.h"
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
+#include "src/lib/16_hc.h"
 //#include "src/lib/modex16.h"
 #pragma hdrstop
 
@@ -85,7 +86,7 @@ main(int argc, char *argv[])
 	printf("&bigbuffer=	%Fp\n", &bigbuffer);
 	printf("bigbuffer=	%04x\n", bigbuffer);
 	printf("&bigbuffer=	%04x\n", &bigbuffer);
-	getch();
+//	getch();
 #ifdef FILERL
 //	bakapeehandle = open(bakapee,O_RDONLY | O_BINARY, S_IREAD);
 //	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
@@ -132,15 +133,15 @@ main(int argc, char *argv[])
 	printf("&bigbuffer=	%Fp\n", &bigbuffer);
 	printf("bigbuffer=	%04x\n", bigbuffer);
 	printf("&bigbuffer=	%04x\n", &bigbuffer);
-	printf("\n\n");
+	/*printf("\n\n");
 	printf("Total free:			%lu\n", (dword)(GetFreeSize()));
 	printf("Total near free:		%lu\n", (dword)(GetNearFreeSize()));
 	printf("Total far free:			%lu\n", (dword)(GetFarFreeSize()));
-	getch();
+	getch();*/
 	printf("\n");
 	heapdump();
-	printf("core left:			%lu\n", (dword)_coreleft());
-	printf("far core left:			%lu\n", (dword)_farcoreleft());
+	//printf("core left:			%lu\n", (dword)_coreleft());
+	//printf("far core left:			%lu\n", (dword)_farcoreleft());
 	//printf("based core left:			%lu\n", (dword)_basedcoreleft());
 	//printf("huge core left:			%lu\n", (dword)_hugecoreleft());
 }

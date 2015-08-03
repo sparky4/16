@@ -46,6 +46,7 @@
 #include "src/lib/nyan/kitten.h"
 #include "src/lib/types.h"
 
+//0000 test type def wwww
 struct list {
 	struct list __based(__self) *next;
 	int         value;
@@ -144,12 +145,9 @@ struct list {
 */
 
 static dword far* clockdw= (dword far*) 0x046C; /* 18.2hz clock */
-//static dword clockdw=0;
 extern	int			profilehandle,debughandle;	//make it into game global
 
 #define __DEBUG__
-
-//#define _SEGU(__p) ((unsigned)((unsigned long)(void __huge*)(__p) >> 16))
 
 #define	nil	((void *)0)
 
@@ -164,9 +162,6 @@ typedef union REGPACK	regs_t;
 typedef	enum	{false,true}	boolean;
 //I hope this is correct!
 typedef void __based(__self) * memptr;
-//typedef sregs.w.es * memptr
-//typedef __segment * memptr;
-//typedef fenp.op_ptr_seg * memptr;
 typedef struct
 {
 	int old_mode;	//old video mode before game!
@@ -174,26 +169,17 @@ typedef struct
 	clock_t t;
 	dword tiku;
 	word far* clock;
+	//handles for log files of the game gose here if wwww
+	//int heaphandle;
 } global_game_variables_t;
 
 /* local function */
 void wait(clock_t wait);
-void __near* LargestFreeBlock(size_t* Size);
-size_t _coreleft(void);
-void far* LargestFarFreeBlock(size_t* Size);
-size_t _farcoreleft(void);
-void huge* LargestHugeFreeBlock(size_t* Size);
-size_t _hugecoreleft(void);
-//void __based(__self)* LargestBasedFreeBlock(size_t* Size);
-//size_t _basedcoreleft(void);
-size_t GetFreeSize(void);
-size_t GetFarFreeSize(void);
-size_t GetNearFreeSize(void);
+
 long int filesize(FILE *fp);
-void print_normal_entry(char *text, dword total, dword used, dword free);
+void printmeminfoline(byte *strc, const byte *pee, size_t h_total, size_t h_used, size_t h_free);
+void print_normal_entry(char *text, dword total, dword used, dword free, byte *str);
 void convert(const char *format, dword num);
-void heapdump(void);
-void heapstat(int heap_status);
 int US_CheckParm(char *parm,char **strings);
 
 extern void CA_OpenDebug (void);

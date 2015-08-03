@@ -22,7 +22,7 @@ WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
 16FLAGS=-fh=16.hed
 BAKAPIFLAGS=-fh=bakapi.hed
-SFLAGS=-sg -st -of+ -k32768#51200#49152#24576
+SFLAGS=-sg -st -of+ -k32768 -zu -zdp#51200#49152#24576
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
 ZFLAGS=-zk0 -zq -zu -zc -zm# -zdp# -zp16
 CFLAGS=-mc -lr -l=dos -wo -x## -d2
@@ -31,7 +31,7 @@ FLAGS=$(OFLAGS) $(CFLAGS) $(DFLAGS) $(ZFLAGS)
 
 DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
-16LIBOBJS = bakapee.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ) timer.$(OBJ) kitten.$(OBJ)
+16LIBOBJS = bakapee.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ) timer.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ)
 
 TESTEXEC =  exmmtest.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe sountest.exe tsthimem.exe inputest.exe scroll.exe sega.exe
@@ -266,6 +266,9 @@ emm.$(OBJ): $(DOSLIB)emm.h $(DOSLIB)emm.c
 
 16_head.$(OBJ): $(SRCLIB)16_head.h $(SRCLIB)16_head.c
 	wcl $(FLAGS) -c $(SRCLIB)16_head.c
+
+16_hc.$(OBJ): $(SRCLIB)16_hc.h $(SRCLIB)16_hc.c
+	wcl $(FLAGS) -c $(SRCLIB)16_hc.c
 
 jsmn.$(OBJ): $(JSMNLIB)jsmn.h $(JSMNLIB)jsmn.c
 	wcl $(FLAGS) -c $(JSMNLIB)jsmn.c

@@ -684,7 +684,6 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	mmi->nearheap = length;
 	printf("start=%FP	segstart=%X	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
 	//heapdump();
-	//getch();
 
 //
 // get all available far conventional memory segments
@@ -706,7 +705,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 
 	mmi->mainmem = mmi->nearheap + mmi->farheap;
 
-	getch();
+//	getch();
 
 //goto xmsskip;
 
@@ -811,14 +810,15 @@ void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi)
 	unsigned	needed,startseg;
 
 	needed = (size+15)/16;		// convert size from bytes to paragraphs
-
+printf(".");	//0000
 	MM_GetNewBlock(mm);				// fill in start and next after a spot is found
 	mm->mmnew->length = needed;
 	mm->mmnew->useptr = baseptr;
 	mm->mmnew->attributes = BASEATTRIBUTES;
-
+printf(".");	//0000
 	for(search = 0; search<3; search++)
 	{
+printf("|[case]");	//0000
 	//
 	// first search:	try to allocate right after the rover, then on up
 	// second search: 	search from the head pointer up to the rover
@@ -829,16 +829,19 @@ void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi)
 		switch(search)
 		{
 		case 0:
+printf("0");	//0000
 			lastscan = mm->mmrover;
 			scan = mm->mmrover->next;
 			endscan = NULL;
 			break;
 		case 1:
+printf("1");	//0000
 			lastscan = mm->mmhead;
 			scan = mm->mmhead->next;
 			endscan = mm->mmrover;
 			break;
 		case 2:
+printf("2");	//0000
 			MM_SortMem(mm);
 			lastscan = mm->mmhead;
 			scan = mm->mmhead->next;
@@ -850,8 +853,10 @@ void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi)
 
 		while(scan != endscan)
 		{
+printf(",");	//0000
 			if(scan->start - startseg >= needed)
 			{
+printf("\\");	//0000
 			//
 			// got enough space between the end of lastscan and
 			// the start of scan, so throw out anything in the middle
@@ -863,6 +868,7 @@ void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi)
 				mm->mmnew->next = scan;
 				while(purge != scan)
 				{	// free the purgable block
+printf("		freeing block~\n");	//0000
 					next = purge->next;
 					MM_FreeBlock(purge, mm);
 					purge = next;		// purge another if not at scan
@@ -877,6 +883,7 @@ void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi)
 			if((scan->attributes & LOCKBIT)
 				|| !(scan->attributes & PURGEBITS) )
 			{
+printf("/[lock]");	//0000
 				lastscan = scan;
 				startseg = lastscan->start + lastscan->length;
 			}
@@ -1208,7 +1215,7 @@ CA_OpenDebug ();
 */
 
 //****#if 0
-printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+//printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 strcpy(scratch,"Seg:");
 ultoa (scan->start,str,16);
 strcat (scratch,str);
