@@ -1,10 +1,11 @@
 
 	== default ==
 
-  USED block at 1bda0016 of size 88
-  USED block at 1bda009e of size 42
-  USED block at 1bda00e0 of size 1f1e
-  FREE block at 1bda1ffe of size 1ffe
+  USED block at 1bb10016 of size 136
+  USED block at 1bb1009e of size 66
+  FREE block at 1bb100e0 of size 7966
+  USED block at 1bb11ffe of size 20
+  FREE block at 1bb12012 of size 8170
 OK - end of heap
 
 	== near ==
@@ -26,18 +27,19 @@ OK - end of heap
   USED block at 0 of size 0
   USED block at 0 of size 0
   USED block at 0 of size 0
+  USED block at 0 of size 0
 OK - end of heap
 
 Memory Type         Total      Used       Free
 ----------------  --------   --------   --------
-Default		   16358	8168	8190
-Near		   31286	31286	0
-Far		   16358	8168	8190
+Default		   16358	222	16136
+Near		   31286	436	30850
+Far		   16358	222	16136
 ----------------  --------   --------   --------
-coreleft = 0
-farcoreleft = 7996
-GetFreeSize = 8014
-GetNearFreeSize = 0
-GetFarFreeSize = 8014
-memavl = 0
-stackavail = 17041
+coreleft = 30848
+farcoreleft = 46788
+GetFreeSize = 15960
+GetNearFreeSize = 30850
+GetFarFreeSize = 15960
+memavl = 30848
+stackavail = 17131
