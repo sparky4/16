@@ -62,20 +62,17 @@ void main()
 //	atexit(qclean());
 
 	/* create the map */
-	//printf("Total used @ before map load:			%zu\n", oldfreemem-GetFreeSize());
-	printf("Total free @ before map load:			%zu\n", GetFreeSize());
-	printf("Total near free @ before map load:			%zu\n", GetNearFreeSize());
-	printf("Total far free @ before map load:			%zu\n", GetFarFreeSize());
+	//0000printf("Total used @ before map load:			%zu\n", oldfreemem-GetFreeSize());
+//0000	printf("Total free @ before map load:			%zu\n", GetFreeSize());
+//0000	printf("Total near free @ before map load:			%zu\n", GetNearFreeSize());
+//0000	printf("Total far free @ before map load:			%zu\n", GetFarFreeSize());
 //	getch();
 //0000	fprintf(stderr, "testing~\n");
-//	loadmap("data/test.map", &map);
+//++++	loadmap("data/test.map", &map);
 	map.width=0;
 	map.height=0;
 	chkmap(&map, 1);
 //0000	fprintf(stderr, "yay map loaded~~\n");
-//----	map = allocMap(map.width,map.height); //20x15 is the resolution of the screen you can make maps smaller than 20x15 but the null space needs to be drawn properly
-	//if(isEMS()) printf("%d tesuto\n", coretotalEMS());
-//----	initMap(&map);
 	mv[0].map = &map;
 	mv[1].map = &map;
 	mv[2].map = &map;
@@ -85,7 +82,7 @@ void main()
 	mappalptr = map.tiles->data->palette;
 	/* data */
 //0000	printf("Total used @ before image loading:		%zu\n", oldfreemem-GetFreeSize());
-	player[0].data = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
+//++++	player[0].data = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 
 	/* create the planar buffer */
@@ -188,7 +185,7 @@ void main()
 	while(!IN_KeyDown(sc_Escape) && player[0].hp>0)
 	{
 		sprintf(mesg, "%lu", gvar.tiku);
-		modexprint(mv[1].page, 16, 16, 1, 15, 0, mesg);
+//++++		modexprint(mv[1].page, 16, 16, 1, 15, 0, mesg);
 		shinku(mv[1].page, &gvar);
 		IN_ReadControl(0,&player);
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
@@ -367,7 +364,7 @@ void main()
 #endif
 	VGAmodeX(0);
 	IN_Shutdown();
-	printf("Project 16 scroll.exe\n");
+	printf("Project 16 scroll.exe. This is just a test file!\n");
 	printf("tx: %d\n", bg->tx);
 	printf("ty: %d\n", bg->ty);
 	printf("player[0].x: %d", player[0].x); printf("		player[0].y: %d\n", player[0].y);
@@ -377,25 +374,19 @@ void main()
 	printf("player[0].triggx: %d", player[0].triggerx); printf("	player[0].triggy: %d\n", player[0].triggery);
 	printf("player[0].hp: %d", (player[0].hp));	printf("	player[0].q: %d", player[0].q);	printf("	player[0].info.dir: %d", player[0].info.dir);	printf("	player[0].d: %d\n", player[0].d);
 	printf("tile data value at player trigger position: %d\n", bg->map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))]);
-	printf("palette offset:	%d\n", paloffset/3);
+//	printf("palette offset:	%d\n", paloffset/3);
 //++++	printf("Total used: %zu\n", oldfreemem-GetFreeSize());
 //++++	printf("Total free: %zu\n", GetFreeSize());
-	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
-	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
-	printf("Screen: %dx", screen.width);	printf("%d\n", screen.height);
-	printf("Screen2: %dx", screen2.width);	printf("%d\n", screen2.height);
-	printf("map: %dx%d\n", map.width, map.height);
-	printf("\n");
-	printf("player[0].persist_aniframe: %d\n", player[0].persist_aniframe);
+//not used now	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
+//not used now	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
+//	printf("Screen: %dx", screen.width);	printf("%d\n", screen.height);
+//	printf("Screen2: %dx", screen2.width);	printf("%d\n", screen2.height);
+//	printf("map: %dx%d\n", map.width, map.height);
+//	printf("\n");
 //	printf("player[0].info.x: %d", player[0].info.xaxis); printf("		player[0].info.y: %d\n", player[0].info.yaxis);
 //	printf("player[0].info.tx: %d", player[0].info.x); printf("		player[0].info.ty: %d\n", player[0].info.y);
 	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", bg->map->width, bg->map->height, bg->map->data[0]);
-	//xmsfree(&map);
-	//xmsfree(bg);
-	//xmsfree(spri);
-	//xmsfree(mask);
-	//xmsreport();
-	//emmclose(emmhandle);
+	
 	switch(detectcpu())
 	{
 		case 0: cpus = "8086/8088 or 186/88"; break;

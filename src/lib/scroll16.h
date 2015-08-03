@@ -32,6 +32,7 @@
 #include "src/lib/timer.h"
 
 //#define SPRITE
+//#define BMPTYPE
 
 typedef struct {
 	map_t *map;

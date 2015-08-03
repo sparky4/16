@@ -30,7 +30,7 @@ OFLAGS=-obmiler -out -oh -ei -zp8 -0 -fpi87  -onac -ol+ -ok####x
 FLAGS=$(OFLAGS) $(CFLAGS) $(DFLAGS) $(ZFLAGS)
 
 DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
-DOSLIBOBJ = adlib.$(OBJ) midi.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
+DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 16LIBOBJS = bakapee.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ) timer.$(OBJ) kitten.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ)
 
@@ -82,8 +82,8 @@ inputest.exe: inputest.$(OBJ) 16.lib
 sountest.exe: sountest.$(OBJ) 16.lib
 	wcl $(FLAGS) sountest.$(OBJ) 16.lib
 
-miditest.exe: miditest.$(OBJ) 16.lib $(DOSLIBEXMMOBJ)
-	wcl $(FLAGS) miditest.$(OBJ) 16.lib $(DOSLIBEXMMOBJ)
+miditest.exe: miditest.$(OBJ) 16.lib $(DOSLIBEXMMOBJ) midi.$(OBJ)
+	wcl $(FLAGS) miditest.$(OBJ) 16.lib $(DOSLIBEXMMOBJ) midi.$(OBJ)
 
 tsthimem.exe: tsthimem.$(OBJ) 16.lib $(DOSLIBEXMMOBJ)
 	wcl $(FLAGS) tsthimem.$(OBJ) 16.lib $(DOSLIBEXMMOBJ)
