@@ -25,6 +25,8 @@
 
 #include "src/lib/16_hc.h"
 
+int heaphandle;
+
 void __near* LargestFreeBlock(size_t* Size)
 {
 	size_t s0, s1;

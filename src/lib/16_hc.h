@@ -28,7 +28,7 @@
 
 #include "src/lib/16_head.h"
 
-int heaphandle;
+extern int heaphandle;
 
 void __near* LargestFreeBlock(size_t* Size);
 size_t _coreleft(void);

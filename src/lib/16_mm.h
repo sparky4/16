@@ -136,6 +136,7 @@ typedef struct
 	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
 	unsigned int EMSVer;
 	word numUMBs,UMBbase[MAXUMBS];
+	word	endid;	//end of list
 	//dword	numUMBs,UMBbase[MAXUMBS];
 	mmblocktype	huge mmblocks[MAXBLOCKS],huge *mmhead,huge *mmfree,huge *mmrover,huge *mmnew;
 } mminfo_t;

@@ -518,10 +518,10 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 	}
 
 	//find out how many blocks it spans!
-	if(seglength>0xffffu)
+	if((word)seglength>0xffffu)
 	{
 //		segm=seglength/0x4000u;
-		segm=seglength/0xffffu;
+		segm=(word)seglength/0xffffu;
 	}
 	else segm=1;
 
@@ -643,6 +643,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 
 	mm->mmstarted = true;
 	mm->bombonerror = true;
+	mm->endid=0;
 
 //
 // set up the linked list (everything in the free list;
@@ -807,7 +808,8 @@ void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi)
 {
 	mmblocktype huge *scan,huge *lastscan,huge *endscan,huge *purge,huge *next;
 	int			search;
-	unsigned	needed,startseg;
+	dword	needed;
+	word	startseg;
 
 	needed = (size+15)/16;		// convert size from bytes to paragraphs
 printf(".");	//0000
@@ -816,9 +818,9 @@ printf(".");	//0000
 	mm->mmnew->useptr = baseptr;
 	mm->mmnew->attributes = BASEATTRIBUTES;
 printf(".");	//0000
-	for(search = 0; search<3; search++)
+	for(search = 0; search<mm->endid; search++)
 	{
-printf("|[case]");	//0000
+printf("	[case]");	//0000
 	//
 	// first search:	try to allocate right after the rover, then on up
 	// second search: 	search from the head pointer up to the rover
@@ -829,19 +831,19 @@ printf("|[case]");	//0000
 		switch(search)
 		{
 		case 0:
-printf("0");	//0000
+printf("0	");	//0000
 			lastscan = mm->mmrover;
 			scan = mm->mmrover->next;
 			endscan = NULL;
 			break;
 		case 1:
-printf("1");	//0000
+printf("1	");	//0000
 			lastscan = mm->mmhead;
 			scan = mm->mmhead->next;
 			endscan = mm->mmrover;
 			break;
 		case 2:
-printf("2");	//0000
+printf("2	");	//0000
 			MM_SortMem(mm);
 			lastscan = mm->mmhead;
 			scan = mm->mmhead->next;
@@ -849,14 +851,14 @@ printf("2");	//0000
 			break;
 		}
 
-		startseg = lastscan->start + lastscan->length;
+		startseg = lastscan->start + (word)lastscan->length;
 
 		while(scan != endscan)
 		{
-printf(",");	//0000
+//printf(",");	//0000
 			if(scan->start - startseg >= needed)
 			{
-printf("\\");	//0000
+printf(".");	//0000
 			//
 			// got enough space between the end of lastscan and
 			// the start of scan, so throw out anything in the middle
@@ -864,7 +866,7 @@ printf("\\");	//0000
 			//
 				purge = lastscan->next;
 				lastscan->next = mm->mmnew;
-				mm->mmnew->start = *(unsigned *)baseptr = startseg;
+				mm->mmnew->start = *(word *)baseptr = startseg;
 				mm->mmnew->next = scan;
 				while(purge != scan)
 				{	// free the purgable block
@@ -883,12 +885,13 @@ printf("		freeing block~\n");	//0000
 			if((scan->attributes & LOCKBIT)
 				|| !(scan->attributes & PURGEBITS) )
 			{
-printf("/[lock]");	//0000
+printf("	[lock] ");	//0000
+printf("len=%lu ", scan->length);
 				lastscan = scan;
-				startseg = lastscan->start + lastscan->length;
+				startseg = lastscan->start + (word)lastscan->length;
 			}
 
-
+printf("\n");
 			scan=scan->next;		// look at next line
 		}
 	}
@@ -898,6 +901,7 @@ printf("/[lock]");	//0000
 		heapdump();
 		printf(OUT_OF_MEM_MSG,(size-mmi->nearheap));
 		printf("for stability reasons the program will shut down! wwww\n");
+		printf("		endid=%u\n",(mm->endid));
 		MM_Shutdown(mm);
 		exit(-1);
 	}
@@ -1566,6 +1570,7 @@ void MM_GetNewBlock(mminfo_t *mm)
 		return;
 	}
 	mm->mmfree=mm->mmfree->next;
+	mm->endid++;	//end of list
 }
 
 void MM_FreeBlock(mmblocktype *x, mminfo_t *mm)
@@ -1573,6 +1578,7 @@ void MM_FreeBlock(mmblocktype *x, mminfo_t *mm)
 	x->useptr=NULL;
 	x->next=mm->mmfree;
 	mm->mmfree=x;
+	mm->endid--;	//end of list
 }
 
 void MM_seguin(void)
