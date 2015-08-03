@@ -675,7 +675,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //----	length=coreleft();
 	printf("		nearheap making!\n");
 	_nheapgrow();
-	length=(dword)_memavl();//(dword)GetFreeSize();
+	length=(dword)_memmax();//(dword)GetFreeSize();
 	start = (void huge *)(mm->nearheap = _nmalloc(length));
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;
