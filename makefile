@@ -1,9 +1,11 @@
 !ifdef __LINUX__
 REMOVECOMMAND=rm -f
+COPYCOMMAND=cp -f
 DIRSEP=/
 OBJ=o
 !else
 REMOVECOMMAND=del
+COPYCOMMAND=copy /y
 DIRSEP=\
 OBJ=obj
 !endif
@@ -12,6 +14,7 @@ TARGET_OS = dos
 #-zk0 = kanji support~
 #-zkl = current codepage
 
+EXMMTESTDIR=16$(DIRSEP)exmmtest$(DIRSEP)
 SRC=src$(DIRSEP)
 SRCLIB=$(SRC)lib$(DIRSEP)
 JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
@@ -301,3 +304,7 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.SMP
 	@$(REMOVECOMMAND) 16.hed
 	@$(REMOVECOMMAND) bakapi.hed
+	@$(COPYCOMMAND) $(SRC)exmmtest.c $(EXMMTESTDIR)$(SRC)
+	@$(COPYCOMMAND) $(SRCLIB)16_mm.* $(EXMMTESTDIR)$(SRCLIB)
+	@$(COPYCOMMAND) $(SRCLIB)16_head.* $(EXMMTESTDIR)$(SRCLIB)
+	@$(COPYCOMMAND) $(SRCLIB)16_ca.* $(EXMMTESTDIR)$(SRCLIB)
