@@ -518,7 +518,7 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 	}
 
 	//find out how many blocks it spans!
-	if((word)seglength>0xffffu)
+	if(seglength>0xffffu)
 	{
 //		segm=seglength/0x4000u;
 		segm=(word)seglength/0xffffu;
