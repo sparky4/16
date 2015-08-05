@@ -43,8 +43,13 @@ void
 main(int argc, char *argv[])
 {
 	mminfo_t mm; mminfotype mmi;
+#ifdef __WATCOMC__
 	__segment sega;
 	void __based(sega)* bigbuffer;
+#endif
+#ifdef __BORLANDC__
+	void memptr* bigbuffer;
+#endif
 #ifdef FILERL
 	char *bakapee;
 	word baka;

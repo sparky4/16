@@ -30,7 +30,6 @@
 
 #ifndef _LIBHEAD_H_
 #define _LIBHEAD_H_
-#include <i86.h>
 #include <dos.h>
 #include <stdio.h>
 #include <conio.h> // just for wait
@@ -38,12 +37,15 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <ctype.h>
-#include <unistd.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <mem.h>
+#ifdef __WATCOMC__
+#include <i86.h>
+#include <unistd.h>
 #include <alloca.h>
 #include "src/lib/nyan/kitten.h"
+#endif
 #include "src/lib/types.h"
 
 //0000 test type def wwww
