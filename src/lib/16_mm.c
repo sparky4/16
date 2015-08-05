@@ -120,13 +120,24 @@ boolean MML_CheckForEMS(void)
 		//
 		mov     emmcfems,1
 		jmp End
+#ifdef __BORLANDC__
+	}
+#endif
 		error:
+#ifdef __BORLANDC__
+	__asm {
+#endif
 		//
 		// EMS is bad
 		//
 		mov     emmcfems,0
-		End:
+#ifdef __BORLANDC__
 	}
+#endif
+		End:
+#ifdef __WATCOMC__
+	}
+#endif
 	return(emmcfems);
 }
 
@@ -150,8 +161,7 @@ byte MML_SetupEMS(mminfo_t *mm)
 	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
 	totalEMSpages = freeEMSpages = EMSpageframe = EMSpagesmapped = 0;
 
-	__asm
-		{
+	__asm {
 		mov	ah,EMS_STATUS
 		int	EMS_INT						// make sure EMS hardware is present
 		or	ah,ah
@@ -187,13 +197,23 @@ byte MML_SetupEMS(mminfo_t *mm)
 		jle	getpages
 		mov	bx,[freeEMSpages]
 		jmp	getpages
-
-low:
+#ifdef __BORLANDC__
+	}
+#endif
+	low:
+#ifdef __BORLANDC__
+	__asm {
+#endif
 		cmp	bx,4
 		jle	getpages					// there is only 1,2,3,or 4 pages
 		mov	bx,4						// we can't use more than 4 pages
-
-getpages:
+#ifdef __BORLANDC__
+	}
+#endif
+	getpages:
+#ifdef __BORLANDC__
+	__asm {
+#endif
 		mov	[EMSpagesmapped],bx
 		mov	ah,EMS_ALLOCPAGES			// allocate up to 64k of EMS
 		int	EMS_INT
@@ -201,19 +221,30 @@ getpages:
 		jnz	error
 		mov	[EMShandle],dx
 		jmp End
-error:
+#ifdef __BORLANDC__
+	}
+#endif
+	error:
+#ifdef __BORLANDC__
+	__asm {
+#endif
 		mov	err,ah
 		mov	errorflag,1
 		jmp End
+#ifdef __BORLANDC__
+	}
+#endif
 noEMS:
 End:
+#ifdef __WATCOMC__
 	}
+#endif
 	if(errorflag==true)
 	{
 		//err = CPURegs.h.ah;
 		strcpy(str,"MM_SetupEMS: EMS error ");
 		//itoa(err,str2,16);
-		MM_EMSerr(&str, err);
+		MM_EMSerr(str, err);
 		printf("%s\n",str);
 		return err;
 	}
@@ -242,16 +273,20 @@ void MML_ShutdownEMS(mminfo_t *mm)
 
 	if(!EMShandle)
 		return;
-	__asm
-	{
+	__asm {
 		mov	ah,EMS_FREEPAGES
 		mov	dx,[EMShandle]
 		int	EMS_INT
 		or	ah,ah
 		jz	ok
 		mov	errorflag,1
-		ok:
+#ifdef __BORLANDC__
 	}
+#endif
+		ok:
+#ifdef __WATCOMC__
+	}
+#endif
 	if(errorflag==true) printf("MML_ShutdownEMS: Error freeing EMS!\n");	//++++ add something
 }
 
@@ -278,8 +313,7 @@ byte MM_MapEMS(mminfo_t *mm, mminfotype *mmi)
 
 	for (i=0;i<4/*MAPPAGES*/;i++)
 	{
-		__asm
-		{
+		__asm {
 			mov	ah,EMS_MAPPAGE
 			mov	bx,[i]			// logical page
 			mov	al,bl			// physical page
@@ -288,11 +322,22 @@ byte MM_MapEMS(mminfo_t *mm, mminfotype *mmi)
 			or	ah,ah
 			jnz	error
 			jmp End
+#ifdef __BORLANDC__
+		}
+#endif
 			error:
+#ifdef __BORLANDC__
+		__asm {
+#endif
 			mov	err,ah
 			mov	errorflag,1
-			End:
+#ifdef __BORLANDC__
 		}
+#endif
+			End:
+#ifdef __WATCOMC__
+		}
+#endif
 		if(errorflag==true)
 		{
 			//err = CPURegs.h.ah;
@@ -344,8 +389,7 @@ byte MM_MapXEMS(mminfo_t *mm, mminfotype *mmi)
 
 	for (i=0;i<MAPPAGES;i++)
 	{
-		__asm
-		{
+		__asm {
 			mov	ah,EMS_MAPXPAGE
 			mov	cx,[i]			// logical page
 			mov	al,bl			// physical page
@@ -354,18 +398,29 @@ byte MM_MapXEMS(mminfo_t *mm, mminfotype *mmi)
 			or	ah,ah
 			jnz	error
 			jmp End
+#ifdef __BORLANDC__
+		}
+#endif
 			error:
+#ifdef __BORLANDC__
+		__asm {
+#endif
 			mov	err,ah
 			mov	errorflag,1
-			End:
+#ifdef __BORLANDC__
 		}
+#endif
+			End:
+#ifdef __WATCOMC__
+		}
+#endif
 		if(errorflag==true)
 		{
 			//err = CPURegs.h.ah;
 			//strcpy(str,"MM_MapXEMS: EMS error 0x");
 			strcpy(str,"MM_MapXEMS: EMS error ");
 			//itoa(err,str2,16);
-			MM_EMSerr(&str, err);
+			MM_EMSerr(str, err);
 			printf("%s\n",str);
 			//printf("%s%x\n",str, err);
 			//printf("FACK! %x\n", err);
@@ -393,15 +448,19 @@ boolean MML_CheckForXMS(mminfo_t *mm)
 	boolean	errorflag=false;
 	mm->numUMBs = 0;
 
-	__asm
-	{
+	__asm {
 		mov	ax,0x4300
 		int	0x2f				// query status of installed diver
 		cmp	al,0x80
 		je	good
 		mov	errorflag,1
-		good:
+#ifdef __BORLANDC__
 	}
+#endif
+		good:
+#ifdef __WATCOMC__
+	}
+#endif
 	if(errorflag==true) return false;
 	else return true;
 }
@@ -422,8 +481,7 @@ void MML_SetupXMS(mminfo_t *mm, mminfotype *mmi)
 	unsigned	base,size;
 
 getmemory:
-	__asm
-	{
+	__asm {
 		mov	ax,0x4310
 		int	0x2f
 		mov	[WORD PTR XMSaddr],bx
@@ -443,12 +501,22 @@ getmemory:
 		call	[DWORD PTR XMSaddr]		// DX holds largest available UMB
 		or	ax,ax
 		jz	done						// another error...
-
-gotone:
+#ifdef __BORLANDC__
+	}
+#endif
+		gotone:
+#ifdef __BORLANDC__
+	__asm {
+#endif
 		mov	[base],bx
 		mov	[size],dx
-done:
+#ifdef __BORLANDC__
 	}
+#endif
+		done:
+#ifdef __WATCOMC__
+	}
+#endif
 	printf("base=%u	", base); printf("size=%u\n", size);
 	MML_UseSpace(base,size, mm);
 	mmi->XMSmem += size*16;
@@ -475,8 +543,7 @@ void MML_ShutdownXMS(mminfo_t *mm)
 	for (i=0;i<mm->numUMBs;i++)
 	{
 		base = mm->UMBbase[i];
-		__asm
-		{
+		__asm {
 			mov	ah,XMS_FREEUMB
 			mov	dx,[base]
 			call	[DWORD PTR XMSaddr]
@@ -672,27 +739,36 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 // get all available near conventional memory segments
 //
-//----	length=coreleft();
-	printf("		nearheap making!\n");
+//	printf("		nearheap making!\n");
+#ifdef __WATCOMC__
 	_nheapgrow();
 	length=(dword)_memmax();//(dword)GetFreeSize();
 	start = (void huge *)(mm->nearheap = _nmalloc(length));
+#endif
+#ifdef __BORLANDC__
+	length=coreleft();
+	start = (void huge *)(mm->nearheap = malloc(length));
+#endif
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;
 	seglength = length / 16;			// now in paragraphs
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->nearheap = length;
-	printf("start=%FP	segstart=%X	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
+	printf("start=%Fp	segstart=%x	seglen=%l	len=%l\n", start, segstart, seglength, length);
 	//heapdump();
 
 //
 // get all available far conventional memory segments
 //
-//----	length=farcoreleft();
-	printf("		farheap making!\n");
+//	printf("		farheap making!\n");
+#ifdef __WATCOMC__
 	_fheapgrow();
 	length=(dword)GetFarFreeSize();//0xffffUL*4UL;
+#endif
+#ifdef __BORLANDC__
+	length=farcoreleft();
+#endif
 	//start = mm->farheap = halloc(length, 1);
 	start = mm->farheap = _fmalloc(length);
 	length -= 16-(FP_OFF(start)&15);
@@ -701,7 +777,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->farheap = length;
-	printf("start=%FP	segstart=%X	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
+	printf("start=%Fp	segstart=%x	seglen=%l	len=%l\n", start, segstart, seglength, length);
 	//heapdump();
 
 	mmi->mainmem = mmi->nearheap + mmi->farheap;
@@ -716,9 +792,23 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //printf("		EMS1\n");
 //printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	mmi->EMSmem = 0;
-	for(i = 1;i < __argc;i++)
+	for(i = 1;i <
+#ifdef __WATCOMC__
+	__argc
+#endif
+#ifdef __BORLANDC__
+	_argc
+#endif
+	;i++)
 	{
-		if(US_CheckParm(__argv[i],ParmStringsexmm) == 0)
+		if(US_CheckParm(
+#ifdef __WATCOMC__
+	__argv[i]
+#endif
+#ifdef __BORLANDC__
+	_argv[i]
+#endif
+			,ParmStringsexmm) == 0)
 			goto emsskip;				// param NOEMS
 	}
 //printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
@@ -747,9 +837,23 @@ goto xmsskip;
 //
 emsskip:
 	mmi->XMSmem = 0;
-	for(i = 1;i < __argc;i++)
+	for(i = 1;i <
+#ifdef __WATCOMC__
+	__argc
+#endif
+#ifdef __BORLANDC__
+	_argc
+#endif
+	;i++)
 	{
-		if(US_CheckParm(__argv[i],ParmStringsexmm) == 0)
+		if(US_CheckParm(
+#ifdef __WATCOMC__
+	__argv[i]
+#endif
+#ifdef __BORLANDC__
+	_argv[i]
+#endif
+			,ParmStringsexmm) == 0)
 			goto xmsskip;				// param NOXMS
 	}
 //printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
@@ -787,7 +891,12 @@ void MM_Shutdown(mminfo_t *mm)
 		return;
 
 	_ffree(mm->farheap);	printf("		far freed\n");
+#ifdef __WATCOMC__
 	_nfree(mm->nearheap);	printf("		near freed\n");
+#endif
+#ifdef __BORLANDC__
+	free(mm->nearheap);	printf("		near freed\n");
+#endif
 	if(MML_CheckForEMS()){ MML_ShutdownEMS(mm); printf("		EMS freed\n"); }
 	if(MML_CheckForXMS(mm)){ MML_ShutdownXMS(mm); printf("		XMS freed\n"); }
 }
@@ -898,7 +1007,9 @@ printf("\n");
 
 	if (mm->bombonerror)
 	{
+#ifdef __WATCOMC__
 		heapdump();
+#endif
 		printf(OUT_OF_MEM_MSG,(size-mmi->nearheap));
 		printf("for stability reasons the program will shut down! wwww\n");
 		printf("		endid=%u\n",(mm->endid));
@@ -1151,9 +1262,10 @@ void MM_SortMem(mminfo_t *mm)
 void MM_ShowMemory(/*page_t *page, */mminfo_t *mm)
 {
 	mmblocktype huge *scan;
-	word color,temp;
+//++++	word color;
+	word temp;
 	long	end,owner;
-	word chx,chy;
+//++++	word chx,chy;
 	byte    scratch[160],str[16];
 
 //****	VW_SetDefaultColors();
@@ -1168,17 +1280,17 @@ void MM_ShowMemory(/*page_t *page, */mminfo_t *mm)
 
 CA_OpenDebug ();
 
-	chx=0;
-	chy=0;
+//++++	chx=0;
+//++++	chy=0;
 
 	while(scan)
 	{
-		if(scan->attributes & PURGEBITS)
+/*++++		if(scan->attributes & PURGEBITS)
 			color = 5;		// dark purple = purgable
 		else
 			color = 9;		// medium blue = non purgable
 		if(scan->attributes & LOCKBIT)
-			color = 12;		// red = locked
+			color = 12;		// red = locked*/
 		if(scan->start<=end)
 		{
 			//printf(");
@@ -1187,8 +1299,8 @@ CA_OpenDebug ();
 			return;
 		}
 		end = scan->start+scan->length-1;
-		chy = scan->start/320;
-		chx = scan->start%320;
+//++++		chy = scan->start/320;
+//++++		chx = scan->start%320;
 				//modexhlin(page, scan->start, (unsigned)end, chy, color);
 				//for(chx=scan->start;chx+4>=(word)end;chx+=4)
 				//{

@@ -57,54 +57,6 @@ void printmeminfoline(byte *strc, const byte *pee, size_t h_total, size_t h_used
 	strcat(strc,"\n");
 }
 
-void print_normal_entry(char *text, dword total, dword used, dword free, byte *str)
-{
-	printf("%-17s", text);
-	convert("%8sB ", total);
-	convert("%9sB ", used);
-	convert("%9sB\n", free);
-}
-
-/*
- * As for printf(), but format may only contain a single format specifier,
- * which must be "%s" and is replaced with the string form of num with commas
- * separating groups of three digits.
- *
- * e.g. convert("%s bytes", 1234567) -> "1,234,567 bytes"
- */
-void convert(const char *format, dword num)
-{
-    int c, i, j, n;
-    char des[4*sizeof(dword)+3];
-    union REGS regs;
-    struct SREGS sregs;
-    char mycountry[48]; /* probably 34 bytes are enough... */
-    char ksep = ',';    /* or . */
-
-    regs.x.ax = 0x3800;
-    sregs.ds = FP_SEG(&mycountry);
-    regs.x.dx = FP_OFF(&mycountry);
-    intdosx(&regs,&regs,&sregs);
-    if (regs.x.cflag == 0) {
-      ksep = mycountry[7];        /* 1000's separator  */
-      /* dsep = mycountry[9];     ** decimal separator */
-    }
-
-    n = sprintf(des, "%lu", num);
-    /* insert commas in the string */
-    c = 3;
-    for (i = n - 3; i > 0; i--) {
-        if (c%3==0) {
-            for (j = n; j >= i; j--)
-                des[j+1] = des[j];
-            des[i]=ksep;        /* ',' */
-            n++;
-        }
-        c++;
-    }
-    printf(format, des);
-}
-
 ///////////////////////////////////////////////////////////////////////////
 //
 //      US_CheckParm() - checks to see if a string matches one of a set of

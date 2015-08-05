@@ -32,27 +32,29 @@
 #define _LIBHEAD_H_
 #include <dos.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <conio.h> // just for wait
 #include <time.h> // just for wait
-#include <stdlib.h>
 #include <malloc.h>
 #include <ctype.h>
 #include <fcntl.h>
+#include <io.h>
 #include <sys/stat.h>
 #include <mem.h>
+#include <string.h>
 #ifdef __WATCOMC__
 #include <i86.h>
 #include <unistd.h>
 #include <alloca.h>
-#include "src/lib/nyan/kitten.h"
 #endif
+#include "src/lib/nyan/kitten.h"
 #include "src/lib/types.h"
 
 //0000 test type def wwww
-struct list {
+/*struct list {
 	struct list __based(__self) *next;
 	int         value;
-};
+};*/
 
 /* Control codes for all keys on the keyboard */
 //here temperarly
@@ -186,8 +188,6 @@ void wait(clock_t wait);
 
 long int filesize(FILE *fp);
 void printmeminfoline(byte *strc, const byte *pee, size_t h_total, size_t h_used, size_t h_free);
-void print_normal_entry(char *text, dword total, dword used, dword free, byte *str);
-void convert(const char *format, dword num);
 int US_CheckParm(char *parm,char **strings);
 
 extern void CA_OpenDebug (void);

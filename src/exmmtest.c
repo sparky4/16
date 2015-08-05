@@ -48,7 +48,7 @@ main(int argc, char *argv[])
 	void __based(sega)* bigbuffer;
 #endif
 #ifdef __BORLANDC__
-	void memptr* bigbuffer;
+	memptr bigbuffer;
 #endif
 #ifdef FILERL
 	char *bakapee;
@@ -72,7 +72,7 @@ main(int argc, char *argv[])
 	else bakapee = "data/koishi~.pcx";
 #endif
 
-	textInit();
+//	textInit();
 
 	/* setup camera and screen~ */
 	//bug!!!
@@ -108,7 +108,9 @@ main(int argc, char *argv[])
 		baka=0;
 //	close(bakapeehandle);
 	//hmm functions in cache system use the buffered stuff
+#ifdef __WATCOMC__
 	printf("size of big buffer~=%u\n", _bmsize(sega, bigbuffer));
+#endif
 #endif
 	printf("dark purple = purgable\n");
 	printf("medium blue = non purgable\n");
@@ -144,7 +146,9 @@ main(int argc, char *argv[])
 	printf("Total far free:			%lu\n", (dword)(GetFarFreeSize()));
 	getch();*/
 	printf("\n");
+#ifdef __WATCOMC__
 	heapdump();
+#endif
 	//printf("core left:			%lu\n", (dword)_coreleft());
 	//printf("far core left:			%lu\n", (dword)_farcoreleft());
 	//printf("based core left:			%lu\n", (dword)_basedcoreleft());

@@ -33,23 +33,48 @@ void __near* LargestFreeBlock(size_t* Size)
 	void __near* p;
 
 	s0 = ~(size_t)0 ^ (~(size_t)0 >> 1);
+#ifdef __BORLANDC__
+	while (s0 && (p = malloc(s0)) == NULL)
+#endif
+#ifdef __WATCOMC__
 	while (s0 && (p = _nmalloc(s0)) == NULL)
+#endif
 		s0 >>= 1;
 
 	if (p)
+#ifdef __BORLANDC__
+		free(p);
+#endif
+#ifdef __WATCOMC__
 		_nfree(p);
+#endif
 
 	s1 = s0 >> 1;
 	while (s1)
 	{
+#ifdef __BORLANDC__
+		if ((p = malloc(s0 + s1)) != NULL)
+#endif
+#ifdef __WATCOMC__
 		if ((p = _nmalloc(s0 + s1)) != NULL)
+#endif
 		{
 			s0 += s1;
+#ifdef __BORLANDC__
+			free(p);
+#endif
+#ifdef __WATCOMC__
 			_nfree(p);
+#endif
 		}
 	s1 >>= 1;
 	}
+#ifdef __BORLANDC__
+	while (s0 && (p = malloc(s0)) == NULL)
+#endif
+#ifdef __WATCOMC__
 	while (s0 && (p = _nmalloc(s0)) == NULL)
+#endif
 		s0 ^= s0 & -s0;
 
 	*Size = s0;
@@ -68,7 +93,12 @@ size_t _coreleft(void)
 		if (largest < sizeof(void __near*))
 		{
 			if (p != NULL)
+#ifdef __BORLANDC__
+			free(p);
+#endif
+#ifdef __WATCOMC__
 			_nfree(p);
+#endif
 			break;
 		}
 		*(void __near* __near*)p = NULL;
@@ -84,7 +114,12 @@ size_t _coreleft(void)
 	while (pFirst != NULL)
 	{
 		void __near* p = *(void __near* __near*)pFirst;
+#ifdef __BORLANDC__
+		free(pFirst);
+#endif
+#ifdef __WATCOMC__
 		_nfree(pFirst);
+#endif
 		pFirst = p;
 	}
 	return total;
@@ -153,6 +188,7 @@ size_t _farcoreleft(void)
 	return total;
 }
 
+#ifdef __WATCOMC__
 void huge* LargestHugeFreeBlock(size_t* Size)
 {
 	size_t s0, s1;
@@ -367,7 +403,7 @@ void heapdump(void)
 		write(heaphandle,scratch,strlen(scratch));
 	}
 	heapstat(heap_status, &scratch);
-	
+
 	//near
 	strcpy(scratch,"\n	== near ==\n\n");
 	write(heaphandle,scratch,strlen(scratch));
@@ -432,7 +468,7 @@ void heapstat(int heap_status, byte *str)
 		break;
 		case _HEAPEMPTY:
 			strcpy((str),"OK - heap is empty\n");
-			
+
 		break;
 		case _HEAPBADBEGIN:
 			strcpy((str),"ERROR - heap is damaged\n");
@@ -454,7 +490,7 @@ void heapstat0(int heap_status)
 		break;
 		case _HEAPEMPTY:
 			//printf("OK - heap is empty\n");
-			
+
 		break;
 		case _HEAPBADBEGIN:
 			printf("ERROR - heap is damaged\n");
@@ -466,7 +502,7 @@ void heapstat0(int heap_status)
 			printf("ERROR - bad node in heap\n");
 	}
 }
-
+#endif
 /*
 ============================
 =

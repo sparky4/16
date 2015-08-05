@@ -232,8 +232,7 @@ boolean CA_FarRead(int handle, byte huge *dest, dword length, mminfo_t *mm)
 
 	if(!fat&&!segm)
 	{*/
-		__asm
-		{
+		__asm {
 			push	ds
 			mov	bx,[handle]
 			mov	cx,[WORD PTR length]
@@ -246,16 +245,33 @@ boolean CA_FarRead(int handle, byte huge *dest, dword length, mminfo_t *mm)
 			mov	errno,ax
 			mov	flag,0
 			jmp End
+#ifdef __BORLANDC__
+		}
+#endif
 good:
+#ifdef __BORLANDC__
+		__asm {
+#endif
 			cmp	ax,[WORD PTR length]
 			je	done
 //			errno = EINVFMT;			// user manager knows this is bad read
 			mov	flag,0
 			jmp End
-done:
-			mov	flag,1
-End:
+#ifdef __BORLANDC__
 		}
+#endif
+done:
+#ifdef __BORLANDC__
+		__asm {
+#endif
+			mov	flag,1
+#ifdef __BORLANDC__
+		}
+#endif
+End:
+#ifdef __WATCOMC__
+		}
+#endif
 	return flag;
 	//}else return 0;//todo: EXPAND!!!
 }
@@ -288,8 +304,7 @@ boolean CA_FarWrite(int handle, byte huge *source, dword length, mminfo_t *mm)
 
 	if(!fat&&!segm)
 	{*/
-		__asm
-		{
+		__asm {
 			push	ds
 			mov	bx,[handle]
 			mov	cx,[WORD PTR length]
@@ -302,16 +317,33 @@ boolean CA_FarWrite(int handle, byte huge *source, dword length, mminfo_t *mm)
 			mov	errno,ax
 			mov flag,0
 			jmp End
+#ifdef __BORLANDC__
+		}
+#endif
 good:
+#ifdef __BORLANDC__
+		__asm {
+#endif
 			cmp	ax,[WORD PTR length]
 			je	done
 			//errno = ENOMEM;				// user manager knows this is bad write
 			mov	flag,0
 			jmp End
-done:
-			mov	flag,1
-End:
+#ifdef __BORLANDC__
 		}
+#endif
+done:
+#ifdef __BORLANDC__
+		__asm {
+#endif
+			mov	flag,1
+#ifdef __BORLANDC__
+		}
+#endif
+End:
+#ifdef __WATCOMC__
+		}
+#endif
 	return flag;
 	//}else return 0;
 }
