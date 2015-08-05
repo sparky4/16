@@ -31,7 +31,10 @@ loaded into the data segment
 */
 
 #include "src/lib/16_ca.h"
-//#include "ID_STRS.H"
+#pragma hdrstop
+
+#pragma warn -pro
+#pragma warn -use
 
 //#define THREEBYTEGRSTARTS
 

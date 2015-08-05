@@ -22,8 +22,8 @@
 /*
 	exmm test
 */
-#include <stdio.h>
-#include <bios.h>
+//#include <stdio.h>
+//#include <bios.h>
 
 #include "src/lib/16_head.h"
 #include "src/lib/16_ca.h"

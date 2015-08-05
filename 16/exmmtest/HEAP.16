@@ -1,10 +1,10 @@
 
 	== default ==
 
-  USED block at 1cf30016 of size 136
-  USED block at 1cf3009e of size 66
-  USED block at 1cf300e0 of size 7966
-  FREE block at 1cf31ffe of size 8190
+  USED block at 1d270016 of size 514
+  USED block at 1d270218 of size 66
+  USED block at 1d27025a of size 7588
+  FREE block at 1d271ffe of size 8190
 OK - end of heap
 
 	== near ==
@@ -40,4 +40,4 @@ GetFreeSize = 65358
 GetNearFreeSize = 0
 GetFarFreeSize = 65358
 memavl = 0
-stackavail = 17047
+stackavail = 17036
