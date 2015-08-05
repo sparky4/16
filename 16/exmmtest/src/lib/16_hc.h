@@ -30,7 +30,12 @@
 
 extern int heaphandle;
 
+#ifdef __BORLANDC__
+void * LargestFreeBlock(size_t* Size);
+#endif
+#ifdef __WATCOMC__
 void __near* LargestFreeBlock(size_t* Size);
+#endif
 size_t _coreleft(void);
 void far* LargestFarFreeBlock(size_t* Size);
 size_t _farcoreleft(void);

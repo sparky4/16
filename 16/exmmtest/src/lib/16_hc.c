@@ -27,10 +27,20 @@
 
 int heaphandle;
 
+#ifdef __BORLANDC__
+void * LargestFreeBlock(size_t* Size)
+#endif
+#ifdef __WATCOMC__
 void __near* LargestFreeBlock(size_t* Size)
+#endif
 {
 	size_t s0, s1;
+#ifdef __BORLANDC__
+	void * p;
+#endif
+#ifdef __WATCOMC__
 	void __near* p;
+#endif
 
 	s0 = ~(size_t)0 ^ (~(size_t)0 >> 1);
 #ifdef __BORLANDC__

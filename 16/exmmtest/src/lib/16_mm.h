@@ -36,6 +36,11 @@
 #define OUT_OF_MEM_MSG	"\npee\n"
 #endif
 
+//#define GETNEWBLOCK {if(!(mmnew=mmfree))Quit("MM_GETNEWBLOCK: No free blocks!") ;mmfree=mmfree->next;}
+#define GETNEWBLOCK {if(!mm->mmfree)MML_ClearBlock(mm);mm->mmnew=mm->mmfree;mm->mmfree=mm->mmfree->next;}
+
+#define FREEBLOCK(x) {*x->useptr=NULL;x->next=mm->mmfree;mm->mmfree=x;}
+
 
 #define SAVENEARHEAP	0//_memavl()/4		// space to leave in data segment
 #define SAVEFARHEAP	0//x400			// space to leave in far heap
@@ -186,8 +191,8 @@ dword MM_TotalFree(mminfo_t *mm);
 void MM_Report(/*page_t *page, */mminfo_t *mm, mminfotype *mmi);
 static void MM_EMSerr(byte *stri, byte err);
 void MM_BombOnError(boolean bomb, mminfo_t *mm);
-void MM_GetNewBlock(mminfo_t *mm);
-void MM_FreeBlock(mmblocktype *x, mminfo_t *mm);
+//void MM_GetNewBlock(mminfo_t *mm);
+//void MM_FreeBlock(mmblocktype *x, mminfo_t *mm);
 
 //==========================================================================
 

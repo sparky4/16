@@ -56,6 +56,7 @@ main(int argc, char *argv[])
 #endif
 	//static page_t screen;
 
+	argc=argc;
 	printf("&main()=	%Fp\n", *argv[0]);
 	printf("bigbuffer=	%Fp\n", bigbuffer);
 	printf("&bigbuffer=	%Fp\n", &bigbuffer);

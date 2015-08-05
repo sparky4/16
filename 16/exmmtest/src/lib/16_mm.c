@@ -632,7 +632,7 @@ printf("seglen=%lu\n", seglength);
 	if(segstart == scan->start)
 	{
 		last->next = scan->next;			// unlink block
-		MM_FreeBlock(scan, mm);
+		FREEBLOCK(scan);
 		scan = last;
 	}
 	else
@@ -642,7 +642,8 @@ printf("seglen=%lu\n", seglength);
 
 	if(extra > 0)
 	{
-		MM_GetNewBlock(mm);
+		//MM_GetNewBlock(mm);
+		GETNEWBLOCK;
 		mm->mmnew->next = scan->next;
 		scan->next = mm->mmnew;
 		mm->mmnew->start = segstart+seglength;
@@ -728,7 +729,8 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 // locked block of all memory until we punch out free space
 //
 	//printf("		newblock making!\n");
-	MM_GetNewBlock(mm);
+	//MM_GetNewBlock(mm);
+	GETNEWBLOCK;
 	mm->mmhead = mm->mmnew;				// this will allways be the first node
 	mm->mmnew->start = 0;
 	mm->mmnew->length = 0xffff;
@@ -743,11 +745,11 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 #ifdef __WATCOMC__
 	_nheapgrow();
 	length=(dword)_memmax();//(dword)GetFreeSize();
-	start = (void huge *)(mm->nearheap = _nmalloc(length));
+	start = (mm->nearheap = (void huge *)_nmalloc(length));
 #endif
 #ifdef __BORLANDC__
 	length=coreleft();
-	start = (void huge *)(mm->nearheap = malloc(length));
+	start = (mm->nearheap = malloc(length));
 #endif
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;
@@ -922,7 +924,8 @@ void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi)
 
 	needed = (size+15)/16;		// convert size from bytes to paragraphs
 printf(".");	//0000
-	MM_GetNewBlock(mm);				// fill in start and next after a spot is found
+	//MM_GetNewBlock(mm);
+	GETNEWBLOCK;				// fill in start and next after a spot is found
 	mm->mmnew->length = needed;
 	mm->mmnew->useptr = baseptr;
 	mm->mmnew->attributes = BASEATTRIBUTES;
@@ -981,7 +984,8 @@ printf(".");	//0000
 				{	// free the purgable block
 printf("		freeing block~\n");	//0000
 					next = purge->next;
-					MM_FreeBlock(purge, mm);
+					FREEBLOCK(purge);
+					//MM_FreeBlock(purge, mm);
 					purge = next;		// purge another if not at scan
 				}
 				mm->mmrover = mm->mmnew;
@@ -1056,7 +1060,8 @@ void MM_FreePtr(memptr *baseptr, mminfo_t *mm)
 
 	last->next = scan->next;
 
-	MM_FreeBlock(scan, mm);
+	FREEBLOCK(scan);
+	//MM_FreeBlock(scan, mm);
 }
 //==========================================================================
 
@@ -1201,7 +1206,8 @@ void MM_SortMem(mminfo_t *mm)
 			// throw out the purgable block
 			//
 				next = scan->next;
-				MM_FreeBlock(scan, mm);
+				FREEBLOCK(scan);
+				//MM_FreeBlock(scan, mm);
 				last->next = next;
 				scan = next;
 				continue;
@@ -1372,7 +1378,7 @@ CA_CloseDebug ();
 
 void MM_DumpData(mminfo_t *mm)
 {
-	mmblocktype far *scan,far *best;
+	mmblocktype huge *scan,huge *best;
 	long	lowest,oldlowest;
 	word	owner;
 	byte	lock,purge;
@@ -1670,7 +1676,7 @@ void MM_BombOnError(boolean bomb, mminfo_t *mm)
 	mm->bombonerror = bomb;
 }
 
-void MM_GetNewBlock(mminfo_t *mm)
+/*void MM_GetNewBlock(mminfo_t *mm)
 {
 	if(!mm->mmfree)
 		MML_ClearBlock(mm);
@@ -1691,7 +1697,7 @@ void MM_FreeBlock(mmblocktype *x, mminfo_t *mm)
 	x->next=mm->mmfree;
 	mm->mmfree=x;
 	mm->endid--;	//end of list
-}
+}*/
 
 void MM_seguin(void)
 {
