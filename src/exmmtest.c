@@ -104,10 +104,10 @@ main(int argc, char *argv[])
 //	if(CA_FarRead(bakapeehandle,(void far *)&bigbuffer,sizeof(bigbuffer),&mm))
 #ifdef FILEREAD
 	printf("		read\n");
-	if(CA_ReadFile(&bakapee, &bigbuffer, &mm))
+	if(CA_ReadFile(bakapee, &bigbuffer, &mm))
 #else
 	printf("		load\n");
-	if(CA_LoadFile(&bakapee, &bigbuffer, &mm, &mmi))
+	if(CA_LoadFile(bakapee, &bigbuffer, &mm, &mmi))
 #endif
 		baka=1;
 	else

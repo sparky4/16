@@ -36,9 +36,9 @@
 #endif
 
 //#define GETNEWBLOCK {if(!(mmnew=mmfree))Quit("MM_GETNEWBLOCK: No free blocks!") ;mmfree=mmfree->next;}
-#define GETNEWBLOCK {if(!mm->mmfree)MML_ClearBlock(mm);mm->mmnew=mm->mmfree;mm->mmfree=mm->mmfree->next;}
+#define GETNEWBLOCK {if(!mm->mmfree)MML_ClearBlock(mm);mm->mmnew=mm->mmfree;mm->mmfree=mm->mmfree->next;mm->endid++;}
 
-#define FREEBLOCK(x) {*x->useptr=NULL;x->next=mm->mmfree;mm->mmfree=x;}
+#define FREEBLOCK(x) {*x->useptr=NULL;x->next=mm->mmfree;mm->mmfree=x;mm->endid--;}
 
 
 #define SAVENEARHEAP	0//_memavl()/4		// space to leave in data segment
