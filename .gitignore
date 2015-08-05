@@ -6,6 +6,7 @@
 !proj16.bfproject
 *.obj
 *.OBJ
+*.[O]
 *.*~
 FUCK
 *.err

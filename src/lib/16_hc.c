@@ -24,10 +24,6 @@
 */
 
 #include "src/lib/16_hc.h"
-#pragma hdrstop
-
-#pragma warn -pro
-#pragma warn -use
 
 int heaphandle;
 

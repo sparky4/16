@@ -764,13 +764,15 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 // get all available far conventional memory segments
 //
 //	printf("		farheap making!\n");
+	printf("_FARCORELEFT				%lu\n", _FCORELEFT);
 #ifdef __WATCOMC__
 	_fheapgrow();
-	length=(dword)GetFarFreeSize();//0xffffUL*4UL;
 #endif
 #ifdef __BORLANDC__
-	length=farcoreleft();
+	printf("				%lu\n", farcoreleft());
+	printf("				%d\n", (sword)((farcoreleft()+32)-_FCORELEFT));
 #endif
+	length=_FCORELEFT;//_fcoreleft();//(dword)GetFarFreeSize();//0xffffUL*4UL;
 	start = mm->farheap = _fmalloc(length);
 	//start = mm->farheap = halloc(length, 1);
 	length -= 16-(FP_OFF(start)&15);

@@ -149,7 +149,7 @@ void dos_close(int file)
 /* Functions */
 
 char *
-pascal kittengets(int set_number, int message_number, char *message)
+__pascal kittengets(int set_number, int message_number, char *message)
 {
   /* get message from a message _kitten_catalog */
 

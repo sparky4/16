@@ -154,8 +154,12 @@ extern	int			profilehandle,debughandle;	//make it into game global
 #define __DEBUG__
 
 #define	nil	((void *)0)
-
+#ifdef __BORLANDC__
+#define _FCORELEFT 0x90000UL-16UL
+#endif
 #ifdef __WATCOMC__
+#define _FCORELEFT 0x90000UL+16UL
+
 #define peekb(segm,ofs) (*(byte far*)MK_FP((segm),(ofs)))
 #define peekw(segm,ofs) (*(word far*)MK_FP((segm),(ofs)))
 #define pokeb(segm,ofs,value) (peekb((segm),(ofs)) = (byte)(value))

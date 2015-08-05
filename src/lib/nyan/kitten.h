@@ -24,6 +24,8 @@
 #ifndef _CATGETS_H
 #define _CATGETS_H
 
+#include <string.h>
+
 #ifdef NOCATS
 
 /* #define NOCATS to disable that stuff completely */
@@ -58,7 +60,7 @@ extern "C" {
 #define catclose(catalog)  kittenclose()
 
 
-  char *  pascal kittengets( int set_number, int message_number,char *message);
+  char *  __pascal kittengets( int set_number, int message_number,char *message);
   nl_catd kittenopen(char *name);
   void    kittenclose (void);
 
