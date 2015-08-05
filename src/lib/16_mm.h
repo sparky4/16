@@ -41,7 +41,7 @@
 #define FREEBLOCK(x) {*x->useptr=NULL;x->next=mm->mmfree;mm->mmfree=x;mm->endid--;}
 
 
-#define SAVENEARHEAP	0//_memavl()/4		// space to leave in data segment
+#define SAVENEARHEAP	0x200		// space to leave in data segment
 #define SAVEFARHEAP	0//x400			// space to leave in far heap
 
 #define	BUFFERSIZE		0x1000		// miscelanious, allways available buffer

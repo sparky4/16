@@ -771,8 +771,8 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 #ifdef __BORLANDC__
 	length=farcoreleft();
 #endif
-	//start = mm->farheap = halloc(length, 1);
 	start = mm->farheap = _fmalloc(length);
+	//start = mm->farheap = halloc(length, 1);
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVEFARHEAP;
 	seglength = length / 16;			// now in paragraphs
