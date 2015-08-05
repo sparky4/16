@@ -1,8 +1,8 @@
-0	Size:5558	Owner:0x6
-0	Size:5558	Owner:0x6
+0	Size:5558	Owner:0x0
+0	Size:5558	Owner:0x0
 15b6	Size:256	Owner:0x4cde
 Seg:16b6	Size:273	Owner:0x857a
-Seg:1d04	Size:49	Owner:0x4d66
-Seg:1d04	Size:49	Owner:0x4d66
-1f25	Size:49371	Owner:0x4d3e
-Seg:e000	Size:4294909951	Owner:0x4d52
+Seg:1d04	Size:49	Owner:0x0
+Seg:1d04	Size:49	Owner:0x0
+1f25	Size:49371	Owner:0x0
+Seg:e000	Size:4294909951	Owner:0x0
