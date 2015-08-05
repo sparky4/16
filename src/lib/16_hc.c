@@ -99,7 +99,7 @@ size_t _coreleft(void)
 	for(;;)
 	{
 		size_t largest;
-		void __near* p = LargestFreeBlock(&largest);
+		void __near* p = (void __near *)LargestFreeBlock(&largest);
 		if (largest < sizeof(void __near*))
 		{
 			if (p != NULL)

@@ -23,7 +23,6 @@
 
 #include <string.h>
 #include <malloc.h>
-//#include <bios.h>
 #include "src/lib/16_head.h"
 #include "src/lib/16_hc.h"
 //#include "src/lib/modex16.h"
@@ -94,7 +93,6 @@
 typedef struct
 {
 	dword	nearheap,farheap,EMSmem,XMSmem,mainmem;
-	//__segment segu;
 } mminfotype;
 
 //==========================================================================
@@ -136,7 +134,12 @@ typedef struct
 	memptr bufferseg;
 	boolean		mmstarted, bombonerror, mmerror;
 	void huge	*farheap;
+#ifdef __BORLANDC__
+	void	*nearheap;
+#endif
+#ifdef __WATCOMC__
 	void __near	*nearheap;
+#endif
 	//byte		EMS_status;
 	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
 	unsigned int EMSVer;

@@ -744,12 +744,12 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //	printf("		nearheap making!\n");
 #ifdef __WATCOMC__
 	_nheapgrow();
-	length=(dword)_memmax();//(dword)GetFreeSize();
-	start = (mm->nearheap = (void huge *)_nmalloc(length));
+	length=(dword)_memavl();//(dword)GetFreeSize();
+	start = (void huge *)(mm->nearheap = _nmalloc(length));
 #endif
 #ifdef __BORLANDC__
 	length=coreleft();
-	start = (mm->nearheap = malloc(length));
+	start = (void huge *)(mm->nearheap = malloc(length));
 #endif
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;

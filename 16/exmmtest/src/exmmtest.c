@@ -56,7 +56,9 @@ main(int argc, char *argv[])
 #endif
 	//static page_t screen;
 
+#ifdef __BORLANDC__
 	argc=argc;
+#endif
 	printf("&main()=	%Fp\n", *argv[0]);
 	printf("bigbuffer=	%Fp\n", bigbuffer);
 	printf("&bigbuffer=	%Fp\n", &bigbuffer);
