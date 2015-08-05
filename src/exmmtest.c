@@ -51,6 +51,7 @@ main(int argc, char *argv[])
 	memptr bigbuffer;
 #endif
 #ifdef FILERL
+	//static byte bakapee[64];
 	char *bakapee;
 	word baka;
 #endif
@@ -71,17 +72,19 @@ main(int argc, char *argv[])
 	mm.mmstarted=0;
 
 #ifdef FILERL
+//	printf("filename!: ");
+//	scanf("%[^\n]", &bakapee);
 	if(argv[1]) bakapee = argv[1];
 	else bakapee = "data/koishi~.pcx";
 #endif
 
 //	textInit();
 
-	/* setup camera and screen~ */
+	// setup camera and screen~
 	//bug!!!
 	//screen = modexDefaultPage();
-	/*screen.width += (16*2);
-	screen.height += (16*2);*/
+	//screen.width += (16*2);
+	//screen.height += (16*2);
 
 	printf("main()=%Fp	start MM\n", *argv[0]);
 	MM_Startup(&mm, &mmi);
@@ -101,10 +104,10 @@ main(int argc, char *argv[])
 //	if(CA_FarRead(bakapeehandle,(void far *)&bigbuffer,sizeof(bigbuffer),&mm))
 #ifdef FILEREAD
 	printf("		read\n");
-	if(CA_ReadFile(bakapee, &bigbuffer, &mm))
+	if(CA_ReadFile(&bakapee, &bigbuffer, &mm))
 #else
 	printf("		load\n");
-	if(CA_LoadFile(bakapee, &bigbuffer, &mm, &mmi))
+	if(CA_LoadFile(&bakapee, &bigbuffer, &mm, &mmi))
 #endif
 		baka=1;
 	else
@@ -121,7 +124,7 @@ main(int argc, char *argv[])
 	getch();
 	//++++modexEnter();
 	//++++modexShowPage(&screen);
-	MM_ShowMemory(/*&screen, */&mm);
+	MM_ShowMemory(&mm);
 	//getch();
 	MM_DumpData(&mm);
 	//++++modexLeave();
@@ -143,11 +146,11 @@ main(int argc, char *argv[])
 	printf("&bigbuffer=	%Fp\n", &bigbuffer);
 	printf("bigbuffer=	%04x\n", bigbuffer);
 	printf("&bigbuffer=	%04x\n", &bigbuffer);
-	/*printf("\n\n");
-	printf("Total free:			%lu\n", (dword)(GetFreeSize()));
-	printf("Total near free:		%lu\n", (dword)(GetNearFreeSize()));
-	printf("Total far free:			%lu\n", (dword)(GetFarFreeSize()));
-	getch();*/
+	//printf("\n\n");
+	//printf("Total free:			%lu\n", (dword)(GetFreeSize()));
+	//printf("Total near free:		%lu\n", (dword)(GetNearFreeSize()));
+	//printf("Total far free:			%lu\n", (dword)(GetFarFreeSize()));
+	//getch();
 	printf("\n");
 #ifdef __WATCOMC__
 	heapdump();

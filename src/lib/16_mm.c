@@ -706,8 +706,8 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	void huge	*start;
 	word	segstart;//,endfree;
 
-	if(mm->mmstarted)
-		MM_Shutdown(mm);
+//	if(mm->mmstarted)
+//		MM_Shutdown(mm);
 
 	mm->mmstarted = true;
 	mm->bombonerror = true;

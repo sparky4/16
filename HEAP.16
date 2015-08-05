@@ -1,9 +1,10 @@
 
 	== default ==
 
-  USED block at 1d240016 of size 136
-  USED block at 1d24009e of size 8032
-  FREE block at 1d241ffe of size 8190
+  USED block at 1d260016 of size 136
+  USED block at 1d26009e of size 66
+  USED block at 1d2600e0 of size 7966
+  FREE block at 1d261ffe of size 8190
 OK - end of heap
 
 	== near ==
@@ -24,12 +25,13 @@ OK - end of heap
   USED block at 0 of size 0
   USED block at 0 of size 0
   USED block at 0 of size 0
+  USED block at 0 of size 0
 OK - end of heap
 
 Memory Type         Total      Used       Free
 ----------------  --------   --------   --------
 Default		   16358	8168	8190
-Near		   31302	31302	0
+Near		   31318	31318	0
 Far		   16358	8168	8190
 ----------------  --------   --------   --------
 coreleft = 0
