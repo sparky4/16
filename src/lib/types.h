@@ -34,4 +34,7 @@ typedef signed char sbyte;
 typedef signed short sword;
 typedef signed long sdword;
 
+typedef unsigned int iword;
+typedef signed int siword;
+
 #endif/*_TYPE_H_*/
