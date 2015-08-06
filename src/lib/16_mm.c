@@ -478,7 +478,7 @@ boolean MML_CheckForXMS(mminfo_t *mm)
 
 void MML_SetupXMS(mminfo_t *mm, mminfotype *mmi)
 {
-	unsigned	base,size;
+	word	base,size;
 
 getmemory:
 	__asm {
@@ -517,7 +517,7 @@ getmemory:
 #ifdef __WATCOMC__
 	}
 #endif
-	printf("base=%u	", base); printf("size=%u\n", size);
+//	printf("base=%u	", base); printf("size=%u\n", size);
 	MML_UseSpace(base,size, mm);
 	mmi->XMSmem += size*16;
 	mm->UMBbase[mm->numUMBs] = base;
@@ -833,9 +833,6 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 			//MM_MapXEMS(mm, mmi);					// map in used pages
 	}
 
-mmi->XMSmem=0;
-goto xmsskip;
-
 //
 // detect XMS and get upper memory blocks
 //
@@ -894,15 +891,15 @@ void MM_Shutdown(mminfo_t *mm)
 	if(!(mm->mmstarted))
 		return;
 
-	_ffree(mm->farheap);	printf("		far freed\n");
+	_ffree(mm->farheap);//	printf("		far freed\n");
 #ifdef __WATCOMC__
-	_nfree(mm->nearheap);	printf("		near freed\n");
+	_nfree(mm->nearheap);//	printf("		near freed\n");
 #endif
 #ifdef __BORLANDC__
-	free(mm->nearheap);	printf("		near freed\n");
+	free(mm->nearheap);//	printf("		near freed\n");
 #endif
-	if(MML_CheckForEMS()){ MML_ShutdownEMS(mm); printf("		EMS freed\n"); }
-	if(MML_CheckForXMS(mm)){ MML_ShutdownXMS(mm); printf("		XMS freed\n"); }
+	if(MML_CheckForEMS()){ MML_ShutdownEMS(mm); }//printf("		EMS freed\n"); }
+	if(MML_CheckForXMS(mm)){ MML_ShutdownXMS(mm); }//printf("		XMS freed\n"); }
 }
 
 //==========================================================================
@@ -1461,8 +1458,8 @@ dword MM_UnusedMemory(mminfo_t *mm)
 		scan = scan->next;
 	}
 
-//	return free*16l;
-	return free;
+	return free*16lu;
+//	return free;
 }
 
 //==========================================================================
@@ -1494,8 +1491,8 @@ dword MM_TotalFree(mminfo_t *mm)
 		scan = scan->next;
 	}
 
-//	return free*16l;
-	return free;
+	return free*16lu;
+//	return free;
 }
 
 //==========================================================================
