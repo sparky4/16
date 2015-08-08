@@ -976,9 +976,9 @@ void modexputPixel(page_t *page, int x, int y, byte color)
            Write Plane Enable according to which pixel we want
            to modify.  The plane is determined by the two least
            significant bits of the x-coordinate: */
-	//modexSelectPlane(PLANE(x));
-	outp(SC_INDEX, 0x02);
-	outp(SC_DATA, 0x01 << (x & 3));
+	modexSelectPlane(PLANE(x));
+	//outp(SC_INDEX, 0x02);
+	//outp(SC_DATA, 0x01 << (x & 3));
 
 	/* The offset of the pixel into the video segment is
 	   offset = (width * y + x) / 4, and write the given

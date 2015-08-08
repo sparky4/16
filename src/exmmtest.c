@@ -87,12 +87,12 @@ main(int argc, char *argv[])
 	//screen.width += (16*2);
 	//screen.height += (16*2);
 
-	printf("main()=%Fp	start MM\n", *argv[0]);
+//	printf("main()=%Fp	start MM\n", *argv[0]);
 	MM_Startup(&mm, &mmi);
 	//PM_Startup();
 	//PM_UnlockMainMem();
 	CA_Startup(&gvar);
-	printf("		done!\n");
+//	printf("		done!\n");
 	printf("&main()=	%Fp\n", *argv[0]);
 	printf("bigbuffer=	%Fp\n", bigbuffer);
 	printf("&bigbuffer=	%Fp\n", &bigbuffer);
@@ -130,14 +130,14 @@ main(int argc, char *argv[])
 	MM_DumpData(&mm);
 	//++++modexLeave();
 	MM_Report(&mm, &mmi);
-	printf("		stop!\n");
+//	printf("		stop!\n");
 #ifdef FILERL
 	MM_FreePtr(&bigbuffer, &mm);
 #endif
 	//PM_Shutdown();
 	CA_Shutdown(&gvar);
 	MM_Shutdown(&mm);
-	printf("		done!\n");
+//	printf("		done!\n");
 #ifdef FILERL
 	free(bakapee);
 	if(baka) printf("\nyay!\n");

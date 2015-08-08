@@ -1252,10 +1252,8 @@ void MM_SortMem(mminfo_t *mm)
 		MM_SetLock(&(memptr)audiosegs[playing],false);*/
 }
 
-
 //==========================================================================
 
-//****#if 0
 /*
 =====================
 =
@@ -1267,12 +1265,12 @@ void MM_SortMem(mminfo_t *mm)
 void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 {
 	mmblocktype huge *scan;
-//++++	word color;
+	//byte color;
 	word temp;
 	long	end,owner;
-//++++	word chx,chy;
-	byte    scratch[160],str[16];
-
+	word chx,chy;
+	byte    scratch[160],scratch0[4096],str[16];
+	byte d = "#";
 //****	VW_SetDefaultColors();
 //****	VW_SetLineWidth(40);
 //++++mh	temp = bufferofs;
@@ -1280,28 +1278,24 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 //****	VW_SetScreen (0,0);
 
 	scan = mm->mmhead;
-
 	end = -1;
 
 CA_OpenDebug (gvar);
-
-//++++	chx=0;
+	chx=0;
 //++++	chy=0;
-
 	while(scan)
 	{
-/*++++		if(scan->attributes & PURGEBITS)
-			color = 5;		// dark purple = purgable
+		if(scan->attributes & PURGEBITS)
+			strcpy(scratch0, AAMAGENTA);		// dark purple = purgable
 		else
-			color = 9;		// medium blue = non purgable
+			strcpy(scratch0, AABLUE);		// medium blue = non purgable
 		if(scan->attributes & LOCKBIT)
-			color = 12;		// red = locked*/
+ 			strcpy(scratch0, AARED);		// red = locked
 		if(scan->start<=end)
 		{
-			//printf(");
 			write(gvar->handle.debughandle,"\nMM_ShowMemory: Memory block order currupted!\n",strlen("\nMM_ShowMemory: Memory block order currupted!\n"));
 			//modexprint(&page, chx, chy, 1, 0, 24, "\nMM_ShowMemory: Memory block order currupted!\n");
-			return;
+			break;
 		}
 		end = scan->start+scan->length-1;
 //++++		chy = scan->start/320;
@@ -1311,32 +1305,45 @@ CA_OpenDebug (gvar);
 				//{
 //++++					modexClearRegion(page, chx, chy, 4, 4, color);
 				//}
-
 //++++		VW_Hlin(scan->start,(unsigned)end,0,color);
-
+ 		for(chx=scan->start;chx>=(word)end;chx++)
+		{
+			strcat(scratch0,&d);
+ 		}
+		strcat (scratch0,AAWHITE); strcat(scratch0,&d);
 //++++		VW_Plot(scan->start,0,15);
 //++++				modexClearRegion(page, chx, chy, 4, 4, 15);
-		if(scan->next->start > end+1)
 //++++			VW_Hlin(end+1,scan->next->start,0,0);	// black = free
+ 		if(scan->next->start > end+1)
+ 		{
+			strcat(scratch0,AABLACK);
+			for(chx=end+1;chx>=(word)scan->next->start;chx++)
+			{
+				strcat(scratch0,&d);
+			}
+ 		}
 			//for(chx=scan->next->start;chx+4>=(word)end+1;chx+=4)
 			//{
-//++++				chx+=scan->next->start;
-//++++				modexClearRegion(page, chx, chy, 4, 4, 2);
+//				chx+=scan->next->start;
+//				modexClearRegion(page, chx, chy, 4, 4, 2);
 			//}
 					//modexhlin(page, end+1,scan->next->start, chy, 0);
-
-/*
-		end = scan->length-1;
-		y = scan->start/320;
+/*		y = scan->start/320;
 		x = scan->start%320;
 		VW_Hlin(x,x+end,y,color);
 		VW_Plot(x,y,15);
-		if (scan->next && scan->next->start > end+1)
-			VW_Hlin(x+end+1,x+(scan->next->start-scan->start),y,0);	// black = free
-*/
-
-//****#if 0
-//printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
+ 		if (scan->next && scan->next->start > end+1)
+ 		{
+			//write(gvar->handle.showmemhandle,AABLACK,strlen(AABLACK));
+			//for(chx=scan->start;chx>=(word)end;chx++)
+			//{
+				//write(gvar->handle.showmemhandle,"_",1);
+			//}
+			//write(gvar->handle.showmemhandle,"\n",strlen("\n"));
+		strcat(scratch0,AABLACK); strcat(scratch0,0x10);
+ 		}*/
+//++++			VW_Hlin(x+end+1,x+(scan->next->start-scan->start),y,0);	// black = free
+write(gvar->handle.showmemhandle,scratch0,strlen(scratch0));
 strcpy(scratch,"Seg:");
 ultoa (scan->start,str,16);
 strcat (scratch,str);
@@ -1352,7 +1359,6 @@ write(gvar->handle.debughandle,scratch,strlen(scratch));
 //modexprint(page, chx, chy, 1, 0, 24, &scratch);
 //++++chy+=4;
 //fprintf(stdout, "%s", scratch);
-//****#endif
 
 		scan = scan->next;
 	}
@@ -1363,7 +1369,6 @@ CA_CloseDebug (gvar);
 //****	VW_SetLineWidth(64);
 //++++mh	bufferofs = temp;
 }
-//****#endif
 
 //==========================================================================
 
@@ -1383,8 +1388,7 @@ void MM_DumpData(mminfo_t *mm)
 	byte	lock,purge;
 	FILE	*dumpfile;
 
-
-	//++++free(mm->nearheap);
+	free(mm->nearheap);
 	dumpfile = fopen ("mmdump.16","w");
 	if (!dumpfile){
 		printf("MM_DumpData: Couldn't open MMDUMP.16!\n");

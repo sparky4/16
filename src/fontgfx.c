@@ -65,8 +65,8 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 	modexEnter();
 	/* setup camera and screen~ */
 	screen = modexDefaultPage();
-	screen.width += (16*2);
-	screen.height += (16*2);
+	//screen.width += (16*2);
+	//screen.height += (16*2);
 //++++	modexShowPage(&screen);
 	//modexprint(16, 16, 1, 15, "wwww");
 	//getch();
@@ -75,7 +75,7 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 	colpee=32;
 	for(e=0x00; e<=0xFE; e++)
 	{
-		if(chx+8>(SCREEN_WIDTH/2)-16)
+		if(chx+8>(screen.width/2))
 		{
 			chx=0;
 			chy+=8;
