@@ -179,7 +179,7 @@ typedef void _seg * memptr;
 
 typedef struct
 {
-	int showmemhandle;
+// 	int showmemhandle;
 	int			profilehandle,debughandle;
 	int heaphandle;
 } handle_t;

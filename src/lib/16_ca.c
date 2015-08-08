@@ -1083,8 +1083,8 @@ void CA_Startup(global_game_variables_t *gvar)
 	unlink("profile.16");
 	gvar->handle.profilehandle = open("profile.16", O_CREAT | O_WRONLY | O_TEXT);
 #endif
-	unlink("debug0.16");
-	gvar->handle.showmemhandle = open("debug0.16", O_CREAT | O_WRONLY | O_TEXT);
+// 	unlink("debug0.16");
+// 	gvar->handle.showmemhandle = open("debug0.16", O_CREAT | O_WRONLY | O_TEXT);
 /*++++
 // MDM begin - (GAMERS EDGE)
 //
@@ -1146,7 +1146,7 @@ void CA_Shutdown(global_game_variables_t *gvar)
 #ifdef PROFILE
 	close(gvar->handle.profilehandle);
 #endif
-	close(gvar->handle.showmemhandle);
+// 	close(gvar->handle.showmemhandle);
 /*++++
 	close(maphandle);
 	close(grhandle);

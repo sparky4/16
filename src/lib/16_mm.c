@@ -610,7 +610,7 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 		{
 			pop ds
 		}*/
-		//printf("MML_UseSpace: Segment spans two blocks!\n");
+		printf("MML_UseSpace: Segment spans two blocks!\n");
 	}
 
 //
@@ -838,6 +838,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 emsskip:
 	mmi->XMSmem = 0;
+	goto xmsskip;
 	for(i = 1;i <
 #ifdef __WATCOMC__
 	__argc
@@ -1267,24 +1268,24 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 	mmblocktype huge *scan;
 	//byte color;
 	word temp;
-	long	end,owner;
-	word chx,chy;
+	sdword	end,owner;
+	//word chx,chy;
+	word w;
 	byte    scratch[160],scratch0[4096],str[16];
-	byte d = "#";
+	byte d = '#';
 //****	VW_SetDefaultColors();
 //****	VW_SetLineWidth(40);
 //++++mh	temp = bufferofs;
 //++++mh	bufferofs = 0;
 //****	VW_SetScreen (0,0);
-
 	scan = mm->mmhead;
 	end = -1;
 
-CA_OpenDebug (gvar);
-	chx=0;
-//++++	chy=0;
+	CA_OpenDebug (gvar);
+	w=0;
 	while(scan)
 	{
+		strcpy(scratch, AARESET);
 		if(scan->attributes & PURGEBITS)
 			strcpy(scratch0, AAMAGENTA);		// dark purple = purgable
 		else
@@ -1293,11 +1294,19 @@ CA_OpenDebug (gvar);
  			strcpy(scratch0, AARED);		// red = locked
 		if(scan->start<=end)
 		{
-			write(gvar->handle.debughandle,"\nMM_ShowMemory: Memory block order currupted!\n",strlen("\nMM_ShowMemory: Memory block order currupted!\n"));
+			printf("\n%d\n\n", end);
+			strcat(scratch, "MM_ShowMemory: Memory block order currupted!\n");
+			strcat(scratch, "End's Size: ");
+			ultoa (end,str,10);
+			strcat (scratch,str);
+			strcat(scratch, "\nscan->start's Size: ");
+			ultoa (scan->start,str,10);
+			strcat (scratch,str);
+			write(gvar->handle.debughandle,scratch,strlen(scratch));
 			//modexprint(&page, chx, chy, 1, 0, 24, "\nMM_ShowMemory: Memory block order currupted!\n");
 			break;
 		}
-		end = scan->start+scan->length-1;
+		end = scan->start+(word)scan->length-1;
 //++++		chy = scan->start/320;
 //++++		chx = scan->start%320;
 				//modexhlin(page, scan->start, (unsigned)end, chy, color);
@@ -1306,22 +1315,31 @@ CA_OpenDebug (gvar);
 //++++					modexClearRegion(page, chx, chy, 4, 4, color);
 				//}
 //++++		VW_Hlin(scan->start,(unsigned)end,0,color);
- 		for(chx=scan->start;chx>=(word)end;chx++)
-		{
-			strcat(scratch0,&d);
- 		}
-		strcat (scratch0,AAWHITE); strcat(scratch0,&d);
+// 		for(w=0;w>=(word)scan->length/80;w++)
+// 		{
+//			printf("+	%lu\n", w);
+		//ultoa (w,str,10);
+		//strcat (scratch0,str);
+			strcat(scratch0, "+");
+//		}
+		strcat(scratch0, AARESET); strcat(scratch0, AAGREY); strcat(scratch0,"_");
 //++++		VW_Plot(scan->start,0,15);
 //++++				modexClearRegion(page, chx, chy, 4, 4, 15);
 //++++			VW_Hlin(end+1,scan->next->start,0,0);	// black = free
- 		if(scan->next->start > end+1)
- 		{
-			strcat(scratch0,AABLACK);
-			for(chx=end+1;chx>=(word)scan->next->start;chx++)
-			{
-				strcat(scratch0,&d);
-			}
- 		}
+		if(scan->next->start > end+1)
+		{
+			strcat(scratch0, AARESET);
+			//ultoa (w,str,10);
+			//strcat (scratch0,str);
+			strcat(scratch0,AAGREEN);
+// 			for(w=(scan->next->start)/80;w>=(word)((scan->length+1)/80);w++)
+// 			{
+//				printf("0	%lu\n", w);
+				strcat(scratch0,"0");
+// 			}
+		}
+		strcat(scratch0, AARESET);
+		strcat(scratch0,"\n");
 			//for(chx=scan->next->start;chx+4>=(word)end+1;chx+=4)
 			//{
 //				chx+=scan->next->start;
@@ -1331,31 +1349,21 @@ CA_OpenDebug (gvar);
 /*		y = scan->start/320;
 		x = scan->start%320;
 		VW_Hlin(x,x+end,y,color);
-		VW_Plot(x,y,15);
- 		if (scan->next && scan->next->start > end+1)
- 		{
-			//write(gvar->handle.showmemhandle,AABLACK,strlen(AABLACK));
-			//for(chx=scan->start;chx>=(word)end;chx++)
-			//{
-				//write(gvar->handle.showmemhandle,"_",1);
-			//}
-			//write(gvar->handle.showmemhandle,"\n",strlen("\n"));
-		strcat(scratch0,AABLACK); strcat(scratch0,0x10);
- 		}*/
+		VW_Plot(x,y,15);*/
 //++++			VW_Hlin(x+end+1,x+(scan->next->start-scan->start),y,0);	// black = free
-write(gvar->handle.showmemhandle,scratch0,strlen(scratch0));
-strcpy(scratch,"Seg:");
-ultoa (scan->start,str,16);
-strcat (scratch,str);
-strcat (scratch,"\tSize:");
-ultoa ((dword)scan->length,str,10);
-strcat (scratch,str);
-strcat (scratch,"\tOwner:0x");
-owner = (unsigned)scan->useptr;
-ultoa (owner,str,16);
-strcat (scratch,str);
-strcat (scratch,"\n");
-write(gvar->handle.debughandle,scratch,strlen(scratch));
+		strcat(scratch,"Seg:");
+		ultoa (scan->start,str,16);
+		strcat (scratch,str);
+		strcat (scratch,"\tSize:");
+		ultoa ((dword)scan->length,str,10);
+		strcat (scratch,str);
+		strcat (scratch,"\tOwner:0x");
+		owner = (unsigned)scan->useptr;
+		ultoa (owner,str,16);
+		strcat (scratch,str);
+		strcat (scratch,"\n");
+		write(gvar->handle.debughandle,scratch,strlen(scratch));
+		write(gvar->handle.debughandle,scratch0,strlen(scratch0));
 //modexprint(page, chx, chy, 1, 0, 24, &scratch);
 //++++chy+=4;
 //fprintf(stdout, "%s", scratch);
@@ -1363,7 +1371,7 @@ write(gvar->handle.debughandle,scratch,strlen(scratch));
 		scan = scan->next;
 	}
 
-CA_CloseDebug (gvar);
+	CA_CloseDebug (gvar);
 
 //++++mh	IN_Ack();
 //****	VW_SetLineWidth(64);

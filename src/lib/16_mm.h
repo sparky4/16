@@ -40,11 +40,14 @@
 
 #define FREEBLOCK(x) {*x->useptr=NULL;x->next=mm->mmfree;mm->mmfree=x;mm->endid--;}
 
-#define AAMAGENTA	"\x1b[35;35m"
-#define AABLUE		"\x1b[34;34m"
-#define AARED		"\x1b[31;31m"
-#define AABLACK	"\x1b[40;40m"
-#define AAWHITE		"\x1b[37;37m"
+#define AARED		"\x1b[41;31m"
+#define AABLUE		"\x1b[44;34m"
+#define AAGREEN	"\x1b[42;32m"
+#define AAYELLOW	"\x1b[43;33m"
+#define AAGREY		"\x1b[47;37m"
+#define AABLACK	"\x1b[40;30m"
+#define AAWHITE		"\x1b[47;37m"
+#define AAMAGENTA	"\x1b[45;35m"
 #define AARESET	"\x1b[0m"
 
 #define SAVENEARHEAP	0x200		// space to leave in data segment
