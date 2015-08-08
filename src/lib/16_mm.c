@@ -1011,7 +1011,7 @@ printf("\n");
 	if (mm->bombonerror)
 	{
 #ifdef __WATCOMC__
-		heapdump();
+		//heapdump();
 #endif
 		printf(OUT_OF_MEM_MSG,(size-mmi->nearheap));
 		printf("for stability reasons the program will shut down! wwww\n");
@@ -1264,7 +1264,7 @@ void MM_SortMem(mminfo_t *mm)
 =====================
 */
 
-void MM_ShowMemory(/*page_t *page, */mminfo_t *mm)
+void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 {
 	mmblocktype huge *scan;
 //++++	word color;
@@ -1283,7 +1283,7 @@ void MM_ShowMemory(/*page_t *page, */mminfo_t *mm)
 
 	end = -1;
 
-CA_OpenDebug ();
+CA_OpenDebug (gvar);
 
 //++++	chx=0;
 //++++	chy=0;
@@ -1299,7 +1299,7 @@ CA_OpenDebug ();
 		if(scan->start<=end)
 		{
 			//printf(");
-			write(debughandle,"\nMM_ShowMemory: Memory block order currupted!\n",strlen("\nMM_ShowMemory: Memory block order currupted!\n"));
+			write(gvar->handle.debughandle,"\nMM_ShowMemory: Memory block order currupted!\n",strlen("\nMM_ShowMemory: Memory block order currupted!\n"));
 			//modexprint(&page, chx, chy, 1, 0, 24, "\nMM_ShowMemory: Memory block order currupted!\n");
 			return;
 		}
@@ -1348,7 +1348,7 @@ owner = (unsigned)scan->useptr;
 ultoa (owner,str,16);
 strcat (scratch,str);
 strcat (scratch,"\n");
-write(debughandle,scratch,strlen(scratch));
+write(gvar->handle.debughandle,scratch,strlen(scratch));
 //modexprint(page, chx, chy, 1, 0, 24, &scratch);
 //++++chy+=4;
 //fprintf(stdout, "%s", scratch);
@@ -1357,7 +1357,7 @@ write(debughandle,scratch,strlen(scratch));
 		scan = scan->next;
 	}
 
-CA_CloseDebug ();
+CA_CloseDebug (gvar);
 
 //++++mh	IN_Ack();
 //****	VW_SetLineWidth(64);

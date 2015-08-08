@@ -64,7 +64,7 @@ extern	byte		ca_levelbit,ca_levelnum;
 
 extern	char		*titleptr[8];*/
 
-extern	int			profilehandle,debughandle;
+//extern
 
 //
 // hooks for custom cache dialogs
@@ -81,8 +81,8 @@ extern	void	(*finishcachebox)	(void);
 
 //===========================================================================
 
-void CA_OpenDebug (void);
-void CA_CloseDebug (void);
+void CA_OpenDebug (global_game_variables_t *gvar);
+void CA_CloseDebug (global_game_variables_t *gvar);
 boolean CA_FarRead (int handle, byte huge *dest, dword length, mminfo_t *mm);
 boolean CA_FarWrite (int handle, byte huge *source, dword length, mminfo_t *mm);
 
@@ -93,8 +93,8 @@ boolean CA_LoadFile (char *filename, memptr *ptr, mminfo_t *mm, mminfotype *mmi)
 
 //void CA_RLEWexpand (unsigned huge *source, unsigned huge *dest,long length,unsigned rlewtag);
 
-void CA_Startup (void);
-void CA_Shutdown (void);
+void CA_Startup (global_game_variables_t *gvar);
+void CA_Shutdown (global_game_variables_t *gvar);
 
 //void CA_CacheAudioChunk (int chunk);
 //void CA_LoadAllSounds (void);

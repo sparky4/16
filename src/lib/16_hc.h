@@ -28,8 +28,6 @@
 
 #include "src/lib/16_head.h"
 
-extern int heaphandle;
-
 #ifdef __BORLANDC__
 void * LargestFreeBlock(size_t* Size);
 #endif
@@ -46,11 +44,11 @@ size_t _hugecoreleft(void);
 size_t GetFreeSize(void);
 size_t GetFarFreeSize(void);
 size_t GetNearFreeSize(void);
-void heapdump(void);
-void heapstat(int heap_status, byte *str);
+void heapdump(global_game_variables_t *gvar);
+void heapstat(global_game_variables_t *gvar, int heap_status, byte *str);
 void heapstat0(int heap_status);
 
-void HC_OpenDebug();
-void HC_CloseDebug();
+void HC_OpenDebug(global_game_variables_t *gvar);
+void HC_CloseDebug(global_game_variables_t *gvar);
 
 #endif /* __16HC__ */

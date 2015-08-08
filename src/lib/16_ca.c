@@ -79,8 +79,6 @@ void		_seg	*grsegs[NUMCHUNKS];
 byte		far	grneeded[NUMCHUNKS];
 byte		ca_levelbit,ca_levelnum;*/
 
-int			profilehandle,debughandle;
-
 void	(*drawcachebox)		(char *title, unsigned numcache);
 void	(*updatecachebox)	(void);
 void	(*finishcachebox)	(void);
@@ -176,15 +174,15 @@ long GRFILEPOS(int c)
 =
 ============================
 */
-void CA_OpenDebug(void)
+void CA_OpenDebug(global_game_variables_t *gvar)
 {
 	unlink("debug.16");
-	debughandle = open("debug.16", O_CREAT | O_WRONLY | O_TEXT);
+	gvar->handle.debughandle = open("debug.16", O_CREAT | O_WRONLY | O_TEXT);
 }
 
-void CA_CloseDebug(void)
+void CA_CloseDebug(global_game_variables_t *gvar)
 {
-	close(debughandle);
+	close(gvar->handle.debughandle);
 }
 
 
@@ -1079,11 +1077,11 @@ asm	mov	ds,ax
 ======================
 */
 
-void CA_Startup(void)
+void CA_Startup(global_game_variables_t *gvar)
 {
 #ifdef PROFILE
 	unlink("profile.16");
-	profilehandle = open("profile.16", O_CREAT | O_WRONLY | O_TEXT);
+	gvar->handle.profilehandle = open("profile.16", O_CREAT | O_WRONLY | O_TEXT);
 #endif
 /*++++
 // MDM begin - (GAMERS EDGE)
@@ -1141,10 +1139,10 @@ void CA_Startup(void)
 ======================
 */
 
-void CA_Shutdown(void)
+void CA_Shutdown(global_game_variables_t *gvar)
 {
 #ifdef PROFILE
-	close(profilehandle);
+	close(gvar->handle.profilehandle);
 #endif
 /*++++
 	close(maphandle);

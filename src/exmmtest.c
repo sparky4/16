@@ -42,6 +42,7 @@
 void
 main(int argc, char *argv[])
 {
+	global_game_variables_t gvar;
 	mminfo_t mm; mminfotype mmi;
 #ifdef __WATCOMC__
 	__segment sega;
@@ -90,7 +91,7 @@ main(int argc, char *argv[])
 	MM_Startup(&mm, &mmi);
 	//PM_Startup();
 	//PM_UnlockMainMem();
-	CA_Startup();
+	CA_Startup(&gvar);
 	printf("		done!\n");
 	printf("&main()=	%Fp\n", *argv[0]);
 	printf("bigbuffer=	%Fp\n", bigbuffer);
@@ -124,7 +125,7 @@ main(int argc, char *argv[])
 	getch();
 	//++++modexEnter();
 	//++++modexShowPage(&screen);
-	MM_ShowMemory(&mm);
+	MM_ShowMemory(&gvar, &mm);
 	//getch();
 	MM_DumpData(&mm);
 	//++++modexLeave();
@@ -134,7 +135,7 @@ main(int argc, char *argv[])
 	MM_FreePtr(&bigbuffer, &mm);
 #endif
 	//PM_Shutdown();
-	CA_Shutdown();
+	CA_Shutdown(&gvar);
 	MM_Shutdown(&mm);
 	printf("		done!\n");
 #ifdef FILERL
@@ -153,7 +154,7 @@ main(int argc, char *argv[])
 	//getch();
 //	printf("\n");
 #ifdef __WATCOMC__
-	heapdump();
+	heapdump(&gvar);
 #endif
 	//printf("core left:			%lu\n", (dword)_coreleft());
 	//printf("far core left:			%lu\n", (dword)_farcoreleft());
