@@ -577,13 +577,15 @@ void MML_UseSpace(word segstart, dword seglength, mminfo_t *mm)
 	{
 		last = scan;
 		scan = scan->next;
+		//printf("		start=%x",scan->start);
+		//printf("		seglen=%lu\n", scan->length);
 	}
 
 	//find out how many blocks it spans!
 	//
-	for(;seglength>0x10000;seglength-=0xffff)
+	for(;segmlen>0x10000;segmlen-=0x10000)
 	{
-		printf("		seglen=%lu\n", seglength);
+		//printf("	seglen=%lu\n", segmlen);
 		segm++;
 	}
 
@@ -593,7 +595,7 @@ void MML_UseSpace(word segstart, dword seglength, mminfo_t *mm)
 	oldend = scan->start + scan->length;
 	extra = oldend - (segstart+(word)seglength);
 	//++++emsver stuff!
-	if(segm>1 || extra>0x10000lu)
+	if(segm>1 || extra>=0x10000lu)
 	//if(extra>0xfffflu)
 	{
 		scan->blob=segm;
@@ -1239,6 +1241,7 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 	sdword	end,owner;
 	//word chx,chy;
 	word w;
+	dword wwww;
 	byte    scratch[160],scratch0[4096],str[16];
 	//byte d = '#';
 //****	VW_SetDefaultColors();
@@ -1274,7 +1277,6 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 			//modexprint(&page, chx, chy, 1, 0, 24, "\nMM_ShowMemory: Memory block order currupted!\n");
 			break;
 		}
-		//for(;scan->length>0xfffflu;scan->length-=0xfffflu);
 		end = scan->start+(scan->length)-1;
 //++++		chy = scan->start/320;
 //++++		chx = scan->start%320;
@@ -1293,27 +1295,38 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 //++++		VW_Plot(scan->start,0,15);
 //++++				modexClearRegion(page, chx, chy, 4, 4, 15);
 //++++			VW_Hlin(end+1,scan->next->start,0,0);	// black = free
-		if((scan->next->start != 0xe000) > end)
+
+		wwww=(dword)(scan->next->start)-(dword)scan->start;
+		//wwww=(dword)scan->start+(dword)(scan->next->start);
+		if (scan->next && scan->next->start >= end+1)
 		{
 			strcat(scratch0, AARESET);
+			strcat(scratch0, "\n");
 			strcat(scratch0,AAGREEN);
-			for(w=0;w<=((scan->length+1)/80);w++)
+			for(w=(end+1)/80;w<=(wwww/80);w++)
 			{
 				//printf("0	%x	%u	%lu\n", scan->next->start, w, scan->length);
 				strcat(scratch0,"0");
 			}
-		}else{
+			//printf("==================\n");
+			//printf("w=%x	start=%x	next=%x	end=%u	%lu\n", w, scan->start, (scan->next->start), end+1, wwww);
+			//printf("==================\n");
+		}/*else {//if(scan->next->start <= scan->start){
+			scan->next->start=scan->start+0x1000;
+			wwww=(dword)(scan->next->start)-(dword)scan->start;
 			strcat(scratch0, AARESET);
+			strcat(scratch0, "\n");
 			strcat(scratch0,AAGREEN);
-			for(w=0;w<=((scan->length+1)/80);w++)
+			for(w=(end+1);w<=(0x1000/80);w++)
 			{
-				//printf("0	%x	%u	%lu\n", scan->next->start, w, scan->length);
+				//printf("0	%x	%x	%u\n", scan->start, w);
 				strcat(scratch0,"0");
 			}
-			printf("================\nstart=%x	length==%lu\n		next=%x	end=%x\nscan->start+(scan->length)==%x\n================\n", scan->start, scan->length, scan->next->start, end, scan->start+(scan->length));
-			printf("w=%u	(scan->length+1)/80)=%lu\n\n", w, (scan->length+1)/80);
-			//getch();
-		}
+			printf("================\n");
+			printf("w=%x	start=%x	next=%x	end=%u	%lu\n", w, scan->start, (scan->next->start), end+1, wwww);
+			printf("================\n");
+//			getch();
+		}*/
 		strcat(scratch0, AARESET);
 		strcat(scratch0,"\n");
 			//for(chx=scan->next->start;chx+4>=(word)end+1;chx+=4)

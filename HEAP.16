@@ -1,11 +1,11 @@
 
 	== default ==
 
-  USED block at 1be40016 of size 66
-  FREE block at 1be40058 of size 18
-  USED block at 1be4006a of size 136
-  USED block at 1be400f2 of size 20
-  FREE block at 1be40106 of size 7926
+  USED block at 1bc90016 of size 66
+  FREE block at 1bc90058 of size 18
+  USED block at 1bc9006a of size 136
+  USED block at 1bc900f2 of size 20
+  FREE block at 1bc90106 of size 7926
 OK - end of heap
 
 	== near ==
