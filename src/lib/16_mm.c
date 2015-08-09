@@ -350,6 +350,7 @@ byte MM_MapEMS(mminfo_t *mm, mminfotype *mmi)
 		}
 	}
 	mmi->EMSmem = (i)*0x4000lu;
+	printf("		mmi->EMSmem=%lu\n", mmi->EMSmem);
 	return 0;
 }
 
@@ -595,6 +596,7 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 	//++++emsver stuff!
 	if(segm>1/*extra>0xfffflu*/)
 	{
+		scan->blob=segm;
 		/*__asm
 		{
 			push	ds
@@ -604,7 +606,7 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 		}*/
 
 
-//MML_UseSpace(?segstart?, ?length?, mm);
+		//MML_UseSpace(segstart, seglength, mm);
 
 		/*__asm
 		{
@@ -1306,7 +1308,8 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 			//modexprint(&page, chx, chy, 1, 0, 24, "\nMM_ShowMemory: Memory block order currupted!\n");
 			break;
 		}
-		end = scan->start+(word)scan->length-1;
+		for(;scan->length>0xfffflu;scan->length-=0xfffflu);
+		end = scan->start+(scan->length)-1;
 //++++		chy = scan->start/320;
 //++++		chx = scan->start%320;
 				//modexhlin(page, scan->start, (unsigned)end, chy, color);
@@ -1315,13 +1318,12 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 //++++					modexClearRegion(page, chx, chy, 4, 4, color);
 				//}
 //++++		VW_Hlin(scan->start,(unsigned)end,0,color);
-// 		for(w=0;w>=(word)scan->length/80;w++)
-// 		{
-//			printf("+	%lu\n", w);
-		//ultoa (w,str,10);
-		//strcat (scratch0,str);
+		for(w=(scan->start)/80;w<=end/80;w++)
+		{
+			//printf("+	%u	%lu\n", w, scan->length);
+			//if(w==48) getch();
 			strcat(scratch0, "+");
-//		}
+		}
 		strcat(scratch0, AARESET); strcat(scratch0, AAGREY); strcat(scratch0,"_");
 //++++		VW_Plot(scan->start,0,15);
 //++++				modexClearRegion(page, chx, chy, 4, 4, 15);
@@ -1329,14 +1331,15 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 		if(scan->next->start > end+1)
 		{
 			strcat(scratch0, AARESET);
-			//ultoa (w,str,10);
-			//strcat (scratch0,str);
 			strcat(scratch0,AAGREEN);
-// 			for(w=(scan->next->start)/80;w>=(word)((scan->length+1)/80);w++)
-// 			{
-//				printf("0	%lu\n", w);
+			for(w=(scan->next->start)/80;w<=((scan->length+1)/80);w++)
+			{
+				//printf("0	%u	%u	%lu\n", scan->next->start, w, scan->length);
 				strcat(scratch0,"0");
-// 			}
+			}
+		}else{
+			printf("start=%x	next=%x	end+1=%x\n", scan->start, scan->next->start, end+1);
+			//getch();
 		}
 		strcat(scratch0, AARESET);
 		strcat(scratch0,"\n");
@@ -1355,7 +1358,7 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 		ultoa (scan->start,str,16);
 		strcat (scratch,str);
 		strcat (scratch,"\tSize:");
-		ultoa ((dword)scan->length,str,10);
+		ultoa ((word)scan->length,str,10);
 		strcat (scratch,str);
 		strcat (scratch,"\tOwner:0x");
 		owner = (unsigned)scan->useptr;
@@ -1535,7 +1538,7 @@ void MM_Report(/*page_t *page, */mminfo_t *mm, mminfotype *mmi)
 	printf("UnusedMemory=%lu\n", MM_UnusedMemory(mm));
 	printf("TotalFree=%lu\n", MM_TotalFree(mm));
 	//mmi->nearheap+mmi->farheap+
-	printf("TotalUsed=%lu\n", mmi->mainmem+mmi->EMSmem+mmi->XMSmem);//+);
+	printf("TotalUsed=%lu\n", mmi->mainmem+mmi->EMSmem+mmi->XMSmem+mmi->XMSmem);
 //	printf("\n");
 //	printf("UnusedMemory=%lu kb\n", MM_UnusedMemory()/10248);
 //	printf("TotalFree=%lu kb\n", MM_TotalFree()/10248);

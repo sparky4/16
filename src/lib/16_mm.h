@@ -132,6 +132,7 @@ typedef struct mmblockstruct
 {
 	//word	start,length;
 	word	start;	dword length;
+	word	blob;	//fore data larger than 64k
 	unsigned	attributes;
 	memptr		*useptr;	// pointer to the segment start
 	struct mmblockstruct huge *next;
