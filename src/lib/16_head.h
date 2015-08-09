@@ -201,7 +201,4 @@ long int filesize(FILE *fp);
 void printmeminfoline(byte *strc, const byte *pee, size_t h_total, size_t h_used, size_t h_free);
 int US_CheckParm(char *parm,char **strings);
 
-extern void CA_OpenDebug (global_game_variables_t *gvar);
-extern void CA_CloseDebug (global_game_variables_t *gvar);
-
 #endif/*_LIBHEAD_H_*/
