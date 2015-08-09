@@ -186,7 +186,7 @@ byte MM_MapXEMS(mminfo_t *mm, mminfotype *mmi);
 boolean MML_CheckForXMS(mminfo_t *mm);
 void MML_SetupXMS(mminfo_t *mm, mminfotype *mmi);
 void MML_ShutdownXMS(mminfo_t *mm);
-void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm);
+void MML_UseSpace(word segstart, dword seglength, mminfo_t *mm);
 void MML_ClearBlock(mminfo_t *mm);
 
 void MM_Startup(mminfo_t *mm, mminfotype *mmi);

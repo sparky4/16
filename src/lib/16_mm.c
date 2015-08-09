@@ -90,7 +90,6 @@ boolean MML_CheckForEMS(void)
 	static char	emmname[] = "EMMXXXX0";	//fix by andrius4669
 //		mov	dx,OFFSET emmname
 	__asm {
-		//LEA	DX, emmname	//fix by andrius4669
 		mov	dx,OFFSET emmname	//fix by andrius4669
 		mov	ax,0x3d00
 		int	0x21		// try to open EMMXXXX0 device
@@ -241,9 +240,7 @@ End:
 #endif
 	if(errorflag==true)
 	{
-		//err = CPURegs.h.ah;
 		strcpy(str,"MM_SetupEMS: EMS error ");
-		//itoa(err,str2,16);
 		MM_EMSerr(str, err);
 		printf("%s\n",str);
 		return err;
@@ -340,17 +337,14 @@ byte MM_MapEMS(mminfo_t *mm, mminfotype *mmi)
 #endif
 		if(errorflag==true)
 		{
-			//err = CPURegs.h.ah;
 			strcpy(str,"MM_MapEMS: EMS error ");
-			//itoa(err,str2,16);
 			MM_EMSerr(str, err);
 			printf("%s\n",str);
-			//printf("FACK! %x\n", err);
 			return err;
 		}
 	}
 	mmi->EMSmem = (i)*0x4000lu;
-	printf("		mmi->EMSmem=%lu\n", mmi->EMSmem);
+	//printf("		mmi->EMSmem=%lu\n", mmi->EMSmem);
 	return 0;
 }
 
@@ -417,7 +411,6 @@ byte MM_MapXEMS(mminfo_t *mm, mminfotype *mmi)
 #endif
 		if(errorflag==true)
 		{
-			//err = CPURegs.h.ah;
 			//strcpy(str,"MM_MapXEMS: EMS error 0x");
 			strcpy(str,"MM_MapXEMS: EMS error ");
 			//itoa(err,str2,16);
@@ -566,11 +559,12 @@ void MML_ShutdownXMS(mminfo_t *mm)
 ======================
 */
 
-void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
+void MML_UseSpace(word segstart, dword seglength, mminfo_t *mm)
 {
 	mmblocktype huge *scan,huge *last;
-	word		segm;
-	dword	oldend;
+	word		segm=1;
+	word	oldend;
+	dword		segmlen=seglength;
 	dword		extra;
 
 	scan = last = mm->mmhead;
@@ -586,15 +580,21 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 	}
 
 	//find out how many blocks it spans!
-	if(seglength>0xffffu)
+	//
+	for(;seglength>0x10000;seglength-=0xffff)
 	{
-//		segm=seglength/0x4000u;
-		segm=(word)seglength/0xffffu;
+		printf("		seglen=%lu\n", seglength);
+		segm++;
 	}
-	else segm=1;
 
+//
+// take the given range out of the block
+//
+	oldend = scan->start + scan->length;
+	extra = oldend - (segstart+(word)seglength);
 	//++++emsver stuff!
-	if(segm>1/*extra>0xfffflu*/)
+	if(segm>1 || extra>0x10000lu)
+	//if(extra>0xfffflu)
 	{
 		scan->blob=segm;
 		/*__asm
@@ -613,24 +613,19 @@ void MML_UseSpace(/*d*/word segstart, dword seglength, mminfo_t *mm)
 			pop ds
 		}*/
 		printf("MML_UseSpace: Segment spans two blocks!\n");
+	//}
+	printf("========================================\n");
+	printf("segm=%u		", segm);
+	printf("ex=%lu	", extra);
+	printf("old=%u	", oldend);
+	printf("start+seglen=%lu\n", segstart+seglength);
+	printf("segsta=%x	", segstart);
+	printf("len=%lu	", scan->length);
+	printf("seglen=%lu	", seglength);
+	printf("segmlen=%lu\n", segmlen);
+	printf("========================================\n");
 	}
-
-//
-// take the given range out of the block
-//
-	oldend = scan->start + scan->length;
-	extra = oldend - (segstart+seglength);
-/*
-printf("segm=%u	", segm);
-printf("ex=%lu	", extra);
-printf("start+seglen=%lu	", segstart+seglength);
-printf("len=%u	", scan->length);
-printf("segsta=%x	", segstart);
-printf("seglen=%lu\n", seglength);
-*/
-//segu:
 //++++todo: linked list of segment!
-//printf("segm=%lu\n", segm);
 	if(segstart == scan->start)
 	{
 		last->next = scan->next;			// unlink block
@@ -640,11 +635,8 @@ printf("seglen=%lu\n", seglength);
 	else
 		scan->length = segstart-scan->start;	// shorten block
 
-//	segm--;
-
 	if(extra > 0)
 	{
-		//MM_GetNewBlock(mm);
 		GETNEWBLOCK;
 		mm->mmnew->next = scan->next;
 		scan->next = mm->mmnew;
@@ -718,7 +710,6 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 // set up the linked list (everything in the free list;
 //
-	//printf("		linked list making!\n");
 	mm->mmhead = NULL;
 	mm->mmfree = &(mm->mmblocks[0]);
 	for(i=0;i<MAXBLOCKS-1;i++)
@@ -730,8 +721,6 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 // locked block of all memory until we punch out free space
 //
-	//printf("		newblock making!\n");
-	//MM_GetNewBlock(mm);
 	GETNEWBLOCK;
 	mm->mmhead = mm->mmnew;				// this will allways be the first node
 	mm->mmnew->start = 0;
@@ -743,7 +732,6 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 // get all available near conventional memory segments
 //
-//	printf("		nearheap making!\n");
 #ifdef __WATCOMC__
 	_nheapgrow();
 	length=(dword)_memavl();//(dword)GetFreeSize();
@@ -759,20 +747,18 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->nearheap = length;
-	printf("start=%Fp	segstart=%x	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
-	//heapdump();
+	//printf("start=%Fp	segstart=%x	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
 
 //
 // get all available far conventional memory segments
 //
-//	printf("		farheap making!\n");
-	printf("_FARCORELEFT				%lu\n", _FCORELEFT);
+	//printf("_FARCORELEFT				%lu\n", _FCORELEFT);
 #ifdef __WATCOMC__
 	_fheapgrow();
 #endif
 #ifdef __BORLANDC__
-	printf("				%lu\n", farcoreleft());
-	printf("				%d\n", (sword)((farcoreleft()+32)-_FCORELEFT));
+	printf("farcoreleft()				%lu\n", farcoreleft());
+	printf("(farcoreleft()+32)-_FCORELEFT	%d\n", (sword)((farcoreleft()+32)-_FCORELEFT));
 #endif
 	length=_FCORELEFT;//_fcoreleft();//(dword)GetFarFreeSize();//0xffffUL*4UL;
 	start = mm->farheap = _fmalloc(length);
@@ -783,20 +769,13 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
 	MML_UseSpace(segstart,seglength, mm);
 	mmi->farheap = length;
-	printf("start=%Fp	segstart=%x	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
-	//heapdump();
+	//printf("start=%Fp	segstart=%x	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
 
 	mmi->mainmem = mmi->nearheap + mmi->farheap;
-
-//	getch();
-
-//goto xmsskip;
 
 //
 // detect EMS and allocate up to 64K at page frame
 //
-//printf("		EMS1\n");
-//printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	mmi->EMSmem = 0;
 	for(i = 1;i <
 #ifdef __WATCOMC__
@@ -817,18 +796,11 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 			,ParmStringsexmm) == 0)
 			goto emsskip;				// param NOEMS
 	}
-//printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	if(MML_CheckForEMS())
 	{
-//printf("		EMS2\n");
-//printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 		MML_SetupEMS(mm);					// allocate space
-//printf("		EMS3\n");
-//printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 		//TODO: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!
 		MML_UseSpace(mm->EMSpageframe,(MAPPAGES)*0x4000lu, mm);
-//printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
-//printf("		EMS4\n");
 		//if(mm->EMSVer<0x40)
 			MM_MapEMS(mm, mmi);					// map in used pages
 		//else
@@ -840,7 +812,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 //
 emsskip:
 	mmi->XMSmem = 0;
-	goto xmsskip;
+goto xmsskip;//0000
 	for(i = 1;i <
 #ifdef __WATCOMC__
 	__argc
@@ -860,11 +832,8 @@ emsskip:
 			,ParmStringsexmm) == 0)
 			goto xmsskip;				// param NOXMS
 	}
-//printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
 	if(MML_CheckForXMS(mm))
 	{
-//printf("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");	//bug!
-//printf("		XMS!\n");
 		MML_SetupXMS(mm, mmi);					// allocate as many UMBs as possible
 	}
 
@@ -926,7 +895,6 @@ void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi)
 
 	needed = (size+15)/16;		// convert size from bytes to paragraphs
 printf(".");	//0000
-	//MM_GetNewBlock(mm);
 	GETNEWBLOCK;				// fill in start and next after a spot is found
 	mm->mmnew->length = needed;
 	mm->mmnew->useptr = baseptr;
@@ -1063,7 +1031,6 @@ void MM_FreePtr(memptr *baseptr, mminfo_t *mm)
 	last->next = scan->next;
 
 	FREEBLOCK(scan);
-	//MM_FreeBlock(scan, mm);
 }
 //==========================================================================
 
@@ -1274,7 +1241,7 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 	//word chx,chy;
 	word w;
 	byte    scratch[160],scratch0[4096],str[16];
-	byte d = '#';
+	//byte d = '#';
 //****	VW_SetDefaultColors();
 //****	VW_SetLineWidth(40);
 //++++mh	temp = bufferofs;
@@ -1296,7 +1263,7 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
  			strcpy(scratch0, AARED);		// red = locked
 		if(scan->start<=end)
 		{
-			printf("\n%d\n\n", end);
+			printf("\nend==%d\n\n", end);
 			strcat(scratch, "MM_ShowMemory: Memory block order currupted!\n");
 			strcat(scratch, "End's Size: ");
 			ultoa (end,str,10);
@@ -1308,7 +1275,7 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 			//modexprint(&page, chx, chy, 1, 0, 24, "\nMM_ShowMemory: Memory block order currupted!\n");
 			break;
 		}
-		for(;scan->length>0xfffflu;scan->length-=0xfffflu);
+		//for(;scan->length>0xfffflu;scan->length-=0xfffflu);
 		end = scan->start+(scan->length)-1;
 //++++		chy = scan->start/320;
 //++++		chx = scan->start%320;
@@ -1328,17 +1295,25 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 //++++		VW_Plot(scan->start,0,15);
 //++++				modexClearRegion(page, chx, chy, 4, 4, 15);
 //++++			VW_Hlin(end+1,scan->next->start,0,0);	// black = free
-		if(scan->next->start > end+1)
+		if((scan->next->start != 0xe000) > end)
 		{
 			strcat(scratch0, AARESET);
 			strcat(scratch0,AAGREEN);
-			for(w=(scan->next->start)/80;w<=((scan->length+1)/80);w++)
+			for(w=0;w<=((scan->length+1)/80);w++)
 			{
-				//printf("0	%u	%u	%lu\n", scan->next->start, w, scan->length);
+				//printf("0	%x	%u	%lu\n", scan->next->start, w, scan->length);
 				strcat(scratch0,"0");
 			}
 		}else{
-			printf("start=%x	next=%x	end+1=%x\n", scan->start, scan->next->start, end+1);
+			strcat(scratch0, AARESET);
+			strcat(scratch0,AAGREEN);
+			for(w=0;w<=((scan->length+1)/80);w++)
+			{
+				//printf("0	%x	%u	%lu\n", scan->next->start, w, scan->length);
+				strcat(scratch0,"0");
+			}
+			printf("================\nstart=%x	length==%lu\n		next=%x	end=%x\nscan->start+(scan->length)==%x\n================\n", scan->start, scan->length, scan->next->start, end, scan->start+(scan->length));
+			printf("w=%u	(scan->length+1)/80)=%lu\n\n", w, (scan->length+1)/80);
 			//getch();
 		}
 		strcat(scratch0, AARESET);
@@ -1537,11 +1512,7 @@ void MM_Report(/*page_t *page, */mminfo_t *mm, mminfotype *mmi)
 	printf("mainmem=%lu\n", mmi->mainmem);
 	printf("UnusedMemory=%lu\n", MM_UnusedMemory(mm));
 	printf("TotalFree=%lu\n", MM_TotalFree(mm));
-	//mmi->nearheap+mmi->farheap+
 	printf("TotalUsed=%lu\n", mmi->mainmem+mmi->EMSmem+mmi->XMSmem+mmi->XMSmem);
-//	printf("\n");
-//	printf("UnusedMemory=%lu kb\n", MM_UnusedMemory()/10248);
-//	printf("TotalFree=%lu kb\n", MM_TotalFree()/10248);
 }
 
 //==========================================================================

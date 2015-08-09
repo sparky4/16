@@ -24,6 +24,7 @@
 #define __SCROLL16_H_
 
 #include "src/lib/16_head.h"
+#include "src/lib/bakapee.h"
 #include "src/lib/modex16.h"
 #include "src/lib/16_in.h"
 #include "src/lib/bitmap.h"
@@ -68,7 +69,6 @@ void mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *p, word poopof
 void mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *p, word poopoffset);
 void mapDrawWRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
-void pdump(page_t *pee);
 void qclean();
 void shinku(page_t *page, global_game_variables_t *gv);
 void animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch);

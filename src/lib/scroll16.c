@@ -576,20 +576,6 @@ void qclean()
 	//setkb(0);
 }
 
-void pdump(page_t *pee)
-{
-	int mult=(QUADWH);
-	int palq=(mult)*TILEWH;
-	int palcol=0;
-	int palx, paly;
-	for(paly=0; paly<palq; paly+=mult){
-		for(palx=0; palx<palq; palx+=mult){
-				modexClearRegion(pee, palx+TILEWH, paly+TILEWH, mult, mult, palcol);
-			palcol++;
-		}
-	}
-}
-
 //sync!
 void shinku(page_t *page, global_game_variables_t *gv)
 {

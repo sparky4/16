@@ -61,11 +61,11 @@ main(int argc, char *argv[])
 #ifdef __BORLANDC__
 	argc=argc;
 #endif
-	printf("&main()=	%Fp\n", *argv[0]);
-	printf("bigbuffer=	%Fp\n", bigbuffer);
-	printf("&bigbuffer=	%Fp\n", &bigbuffer);
-	printf("bigbuffer=	%04x\n", bigbuffer);
-	printf("&bigbuffer=	%04x\n", &bigbuffer);
+	//printf("&main()=	%Fp\n", *argv[0]);
+	//printf("bigbuffer=	%Fp\n", bigbuffer);
+	//printf("&bigbuffer=	%Fp\n", &bigbuffer);
+	//printf("bigbuffer=	%04x\n", bigbuffer);
+	//printf("&bigbuffer=	%04x\n", &bigbuffer);
 
 #ifdef FILERL
 	bakapee = malloc(64);
@@ -93,11 +93,11 @@ main(int argc, char *argv[])
 	//PM_UnlockMainMem();
 	CA_Startup(&gvar);
 //	printf("		done!\n");
-	printf("&main()=	%Fp\n", *argv[0]);
-	printf("bigbuffer=	%Fp\n", bigbuffer);
-	printf("&bigbuffer=	%Fp\n", &bigbuffer);
-	printf("bigbuffer=	%04x\n", bigbuffer);
-	printf("&bigbuffer=	%04x\n", &bigbuffer);
+	//printf("&main()=	%Fp\n", *argv[0]);
+	//printf("bigbuffer=	%Fp\n", bigbuffer);
+	//printf("&bigbuffer=	%Fp\n", &bigbuffer);
+	//printf("bigbuffer=	%04x\n", bigbuffer);
+	//printf("&bigbuffer=	%04x\n", &bigbuffer);
 //	getch();
 #ifdef FILERL
 //	bakapeehandle = open(bakapee,O_RDONLY | O_BINARY, S_IREAD);
@@ -119,9 +119,10 @@ main(int argc, char *argv[])
 	printf("size of big buffer~=%u\n", _bmsize(sega, bigbuffer));
 #endif
 #endif
-	printf("dark purple = purgable\n");
-	printf("medium blue = non purgable\n");
-	printf("red = locked\n");
+	//printf("dark purple = purgable\n");
+	//printf("medium blue = non purgable\n");
+	//printf("red = locked\n");
+	printf("press any key to continue!\n");
 	getch();
 	//++++modexEnter();
 	//++++modexShowPage(&screen);
