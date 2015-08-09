@@ -1235,7 +1235,6 @@ void MM_SortMem(mminfo_t *mm)
 void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 {
 	mmblocktype huge *scan;
-	//byte color;
 	word temp;
 	sdword	end,owner;
 	//word chx,chy;
@@ -1288,7 +1287,6 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 		for(w=(scan->start)/80;w<=end/80;w++)
 		{
 			//printf("+	%u	%lu\n", w, scan->length);
-			//if(w==48) getch();
 			strcat(scratch0, "+");
 		}
 		strcat(scratch0, AARESET); strcat(scratch0, AAGREY); strcat(scratch0,"_");
@@ -1684,7 +1682,7 @@ void MM_FreeBlock(mmblocktype *x, mminfo_t *mm)
 	mm->endid--;	//end of list
 }*/
 
-void MM_seguin(void)
+/*void MM_seguin(void)
 {
 	__asm {
 		push	ds
@@ -1699,7 +1697,7 @@ void MM_segude(void)
 	__asm {
 		pop ds
 	}
-}
+}*/
 
 /*
 pull data from far and put it into ds var
