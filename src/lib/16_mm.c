@@ -578,8 +578,6 @@ void MML_UseSpace(word segstart, dword seglength, mminfo_t *mm)
 	{
 		last = scan;
 		scan = scan->next;
-		//printf("		start=%x",scan->start);
-		//printf("		seglen=%lu\n", scan->length);
 	}
 
 //
