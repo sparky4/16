@@ -25,6 +25,7 @@
 void
 main(int argc, char *argv[])
 {
+	global_game_variables_t gvar;
 	engi_stat_t engi_stat;
 	const char *cpus;
 	byte *dpal, *gpal;
@@ -41,7 +42,7 @@ main(int argc, char *argv[])
 	/*modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);*/
 	printf("wwww loop wwww\n");
-	VGAmodeX(1);
+	VGAmodeX(1, &gvar);
 	modexPalBlack();	//so player will not see loadings~
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
@@ -58,7 +59,7 @@ main(int argc, char *argv[])
 		default: cpus = "internal error"; break;
 	}
 	printf("detected CPU type: %s\n", cpus);
-	VGAmodeX(0);
+	VGAmodeX(0, &gvar);
 	IN_Shutdown();
 	modexFadeOn(4, dpal);
 }

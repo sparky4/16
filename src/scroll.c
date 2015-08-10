@@ -102,7 +102,7 @@ void main()
 #endif
 
 	textInit();
-	VGAmodeX(1);
+	VGAmodeX(1, &gvar);
 #ifdef FADE
 	modexPalBlack();	//reset the palette~
 #endif
@@ -341,7 +341,7 @@ void main()
 	//TSR
 	if(IN_KeyDown(87))	//f11
 	{
-		VGAmodeX(0);
+		VGAmodeX(0, &gvar);
 		IN_Shutdown();
 		__asm
 		{
@@ -362,7 +362,7 @@ void main()
 	modexSavePalFile("data/g.pal", gpal);
 	modexFadeOff(4, gpal);
 #endif
-	VGAmodeX(0);
+	VGAmodeX(0, &gvar);
 	IN_Shutdown();
 	printf("Project 16 scroll.exe. This is just a test file!\n");
 	printf("tx: %d\n", bg->tx);
@@ -386,7 +386,7 @@ void main()
 //	printf("player[0].info.x: %d", player[0].info.xaxis); printf("		player[0].info.y: %d\n", player[0].info.yaxis);
 //	printf("player[0].info.tx: %d", player[0].info.x); printf("		player[0].info.ty: %d\n", player[0].info.y);
 	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", bg->map->width, bg->map->height, bg->map->data[0]);
-	
+
 	switch(detectcpu())
 	{
 		case 0: cpus = "8086/8088 or 186/88"; break;

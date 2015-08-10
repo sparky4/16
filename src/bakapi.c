@@ -28,6 +28,7 @@
 void
 main(int argc, char *argv[])
 {
+	global_game_variables_t gvar;
 	static bakapee_t bakapee;
 	page_t screen;
 	word key,d,xpos,ypos,xdir,ydir;
@@ -58,7 +59,7 @@ main(int argc, char *argv[])
 	//modexDrawBmp(VGA, 0, 0, &bmp, 0); //____
 	//getch(); //____
 
-	VGAmodeX(1);
+	VGAmodeX(1, &gvar);
 	modexShowPage(&screen);
 
 // screen savers
@@ -71,7 +72,7 @@ main(int argc, char *argv[])
 		}
 		else
 		{
-			VGAmodeX(0);
+			VGAmodeX(0, &gvar);
 			//modexLeave();
 			// user imput switch
 			printf("Enter 1, 2, 3, 4, or 6 to run a screensaver, or enter 0 to quit.\n", getch());  // prompt the user
@@ -81,7 +82,7 @@ main(int argc, char *argv[])
 				screen = modexDefaultPage();
 				screen.width += (TILEWH*2);
 				screen.height += (TILEWH*2);
-				VGAmodeX(1);
+				VGAmodeX(1, &gvar);
 				modexShowPage(&screen);
 			}
 		}
@@ -159,7 +160,7 @@ main(int argc, char *argv[])
 	if(ch==0x71)break; // 'q'
 	if(ch==0x1b)break; // 'ESC'
 	}
-//	VGAmodeX(0);
+//	VGAmodeX(0, &gvar);
 #endif
 	printf("bakapi ver. 1.04.13.04\nis made by sparky4ÅiÅÜÉ÷ÅÖÅj feel free to use it ^^\nLicence: GPL v3\n");
 }
