@@ -35,9 +35,9 @@
 #endif
 
 //#define GETNEWBLOCK {if(!(mmnew=mmfree))Quit("MM_GETNEWBLOCK: No free blocks!") ;mmfree=mmfree->next;}
-#define GETNEWBLOCK {if(!mm->mmfree)MML_ClearBlock(mm);mm->mmnew=mm->mmfree;mm->mmfree=mm->mmfree->next;mm->endid++;}
+#define GETNEWBLOCK {if(!mm->mmfree)MML_ClearBlock(mm);mm->mmnew=mm->mmfree;mm->mmfree=mm->mmfree->next;}
 
-#define FREEBLOCK(x) {*x->useptr=NULL;x->next=mm->mmfree;mm->mmfree=x;mm->endid--;}
+#define FREEBLOCK(x) {*x->useptr=NULL;x->next=mm->mmfree;mm->mmfree=x;}
 
 #define AARED		"\x1b[41;31m"
 #define AABLUE		"\x1b[44;34m"
@@ -153,7 +153,6 @@ typedef struct
 	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
 	unsigned int EMSVer;
 	word numUMBs,UMBbase[MAXUMBS];
-	word	endid;	//end of list
 	//dword	numUMBs,UMBbase[MAXUMBS];
 	mmblocktype	huge mmblocks[MAXBLOCKS],huge *mmhead,huge *mmfree,huge *mmrover,huge *mmnew;
 } mminfo_t;

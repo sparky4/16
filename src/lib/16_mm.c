@@ -641,6 +641,8 @@ void MML_UseSpace(word segstart, dword seglength, mminfo_t *mm)
 	if(extra > 0)
 	{
 		GETNEWBLOCK;
+		mm->mmnew->useptr = NULL;
+
 		mm->mmnew->next = scan->next;
 		scan->next = mm->mmnew;
 		mm->mmnew->start = segstart+seglength;
@@ -708,7 +710,6 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 
 	mm->mmstarted = true;
 	mm->bombonerror = true;
-	mm->endid=0;
 
 //
 // set up the linked list (everything in the free list;
@@ -997,7 +998,6 @@ printf("boop\n");//0000
 #endif
 		printf(OUT_OF_MEM_MSG,(size-mmi->nearheap));
 		printf("for stability reasons the program will shut down! wwww\n");
-		printf("		endid=%u\n",(mm->endid));
 		MM_Shutdown(mm);
 		exit(-1);
 	}
@@ -1693,7 +1693,6 @@ void MM_BombOnError(boolean bomb, mminfo_t *mm)
 		return;
 	}
 	mm->mmfree=mm->mmfree->next;
-	mm->endid++;	//end of list
 }
 
 void MM_FreeBlock(mmblocktype *x, mminfo_t *mm)
@@ -1701,7 +1700,6 @@ void MM_FreeBlock(mmblocktype *x, mminfo_t *mm)
 	x->useptr=NULL;
 	x->next=mm->mmfree;
 	mm->mmfree=x;
-	mm->endid--;	//end of list
 }*/
 
 /*void MM_seguin(void)
