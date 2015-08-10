@@ -904,7 +904,7 @@ void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi)
 	mm->mmnew->useptr = baseptr;
 	mm->mmnew->attributes = BASEATTRIBUTES;
 //printf(".");	//0000
-	for(search = 0; search<mm->endid; search++)
+	for(search = 0; search<3; search++)
 	{
 printf("\n	[case]");	//0000
 	//
