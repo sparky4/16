@@ -47,6 +47,7 @@ Open Watcom port by sparky4
 
 */
 #include "src/lib/16_mm.h"
+#include "src/lib/16_ca.h"
 #pragma hdrstop
 
 #pragma warn -pro
@@ -779,6 +780,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 // detect EMS and allocate up to 64K at page frame
 //
 	mmi->EMSmem = 0;
+//goto emsskip;	//0000
 	for(i = 1;i <
 #ifdef __WATCOMC__
 	__argc
@@ -896,15 +898,15 @@ void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi)
 	word	startseg;
 
 	needed = (size+15)/16;		// convert size from bytes to paragraphs
-printf(".");	//0000
+//printf(".");	//0000
 	GETNEWBLOCK;				// fill in start and next after a spot is found
 	mm->mmnew->length = needed;
 	mm->mmnew->useptr = baseptr;
 	mm->mmnew->attributes = BASEATTRIBUTES;
-printf(".");	//0000
+//printf(".");	//0000
 	for(search = 0; search<mm->endid; search++)
 	{
-printf("	[case]");	//0000
+printf("\n	[case]");	//0000
 	//
 	// first search:	try to allocate right after the rover, then on up
 	// second search: 	search from the head pointer up to the rover
@@ -935,11 +937,11 @@ printf("2	");	//0000
 			break;
 		}
 
-		startseg = lastscan->start + (word)lastscan->length;
-
+		startseg = lastscan->start + lastscan->length;
+printf(" %x\n", startseg);
 		while(scan != endscan)
 		{
-//printf(",");	//0000
+printf(",");	//0000
 			if(scan->start - startseg >= needed)
 			{
 printf(".");	//0000
@@ -957,7 +959,6 @@ printf(".");	//0000
 printf("		freeing block~\n");	//0000
 					next = purge->next;
 					FREEBLOCK(purge);
-					//MM_FreeBlock(purge, mm);
 					purge = next;		// purge another if not at scan
 				}
 				mm->mmrover = mm->mmnew;
@@ -971,13 +972,21 @@ printf("		freeing block~\n");	//0000
 				|| !(scan->attributes & PURGEBITS) )
 			{
 printf("	[lock] ");	//0000
-printf("len=%lu ", scan->length);
 				lastscan = scan;
-				startseg = lastscan->start + (word)lastscan->length;
+printf("start=%x ", lastscan->start);
+printf("len=%x ", lastscan->length);
+printf("\n");	//0000
+printf("	%x", lastscan->start + lastscan->length);	//0000
+printf("	%x", lastscan->start + (word)lastscan->length);	//0000
+printf("	%x", (word)lastscan->start + (word)lastscan->length);	//0000
+printf("\n");	//0000
+				startseg = (word)lastscan->start + (word)lastscan->length+1;
+printf("startseg =%x	ok", startseg);	//0000
 			}
 
-printf("\n");
+printf("	end\n");
 			scan=scan->next;		// look at next line
+printf("boop\n");//0000
 		}
 	}
 
