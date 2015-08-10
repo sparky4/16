@@ -565,7 +565,7 @@ void MML_UseSpace(word segstart, dword seglength, mminfo_t *mm)
 	mmblocktype huge *scan,huge *last;
 	word		segm=1;
 	word	oldend;
-	dword		segmlen=seglength;
+	dword		segmlen;
 	dword		extra;
 
 	scan = last = mm->mmhead;
@@ -582,21 +582,24 @@ void MML_UseSpace(word segstart, dword seglength, mminfo_t *mm)
 		//printf("		seglen=%lu\n", scan->length);
 	}
 
-	//find out how many blocks it spans!
-	//
+//
+// take the given range out of the block
+//
+	oldend = scan->start + scan->length;
+	extra = oldend - (segstart+seglength);
+
+	segmlen=extra;
+//
+// find out how many blocks it spans!
+//
 	for(;segmlen>0x10000;segmlen-=0x10000)
 	{
 		//printf("	seglen=%lu\n", segmlen);
 		segm++;
 	}
 
-//
-// take the given range out of the block
-//
-	oldend = scan->start + scan->length;
-	extra = oldend - (segstart+(word)seglength);
 	//++++emsver stuff!
-	if(segm>1 || extra>=0x10000lu)
+	if(segm>1/* || extra>=0x10000lu*/)
 	//if(extra>0xfffflu)
 	{
 		scan->blob=segm;
@@ -891,47 +894,44 @@ void MM_Shutdown(mminfo_t *mm)
 ====================
 */
 
-void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi)
+void MM_GetPtr (memptr *baseptr, dword size, mminfo_t *mm, mminfotype *mmi)
 {
-	mmblocktype huge *scan,huge *lastscan,huge *endscan,huge *purge,huge *next;
+	mmblocktype huge *scan,huge *lastscan,huge *endscan
+				,huge *purge,huge *next;
 	int			search;
-	dword	needed;
-	word	startseg;
+	unsigned	needed,startseg;
 
 	needed = (size+15)/16;		// convert size from bytes to paragraphs
-//printf(".");	//0000
+
 	GETNEWBLOCK;				// fill in start and next after a spot is found
 	mm->mmnew->length = needed;
 	mm->mmnew->useptr = baseptr;
 	mm->mmnew->attributes = BASEATTRIBUTES;
-//printf(".");	//0000
-	for(search = 0; search<3; search++)
+
+//tryagain:
+	for (search = 0; search<3; search++)
 	{
-printf("\n	[case]");	//0000
 	//
 	// first search:	try to allocate right after the rover, then on up
 	// second search: 	search from the head pointer up to the rover
 	// third search:	compress memory, then scan from start
-		if(search == 1 && mm->mmrover == mm->mmhead)
+		if (search == 1 && mm->mmrover == mm->mmhead)
 			search++;
 
-		switch(search)
+		switch (search)
 		{
 		case 0:
-printf("0	");	//0000
 			lastscan = mm->mmrover;
 			scan = mm->mmrover->next;
 			endscan = NULL;
 			break;
 		case 1:
-printf("1	");	//0000
 			lastscan = mm->mmhead;
 			scan = mm->mmhead->next;
 			endscan = mm->mmrover;
 			break;
 		case 2:
-printf("2	");	//0000
-			MM_SortMem(mm);
+			MM_SortMem (mm);
 			lastscan = mm->mmhead;
 			scan = mm->mmhead->next;
 			endscan = NULL;
@@ -939,13 +939,11 @@ printf("2	");	//0000
 		}
 
 		startseg = lastscan->start + lastscan->length;
-printf(" %x\n", startseg);
-		while(scan != endscan)
+
+		while (scan != endscan)
 		{
-printf(",");	//0000
-			if(scan->start - startseg >= needed)
+			if (scan->start - startseg >= needed)
 			{
-printf(".");	//0000
 			//
 			// got enough space between the end of lastscan and
 			// the start of scan, so throw out anything in the middle
@@ -953,11 +951,10 @@ printf(".");	//0000
 			//
 				purge = lastscan->next;
 				lastscan->next = mm->mmnew;
-				mm->mmnew->start = *(word *)baseptr = startseg;
+				mm->mmnew->start = *(unsigned *)baseptr = startseg;
 				mm->mmnew->next = scan;
-				while(purge != scan)
+				while ( purge != scan)
 				{	// free the purgable block
-printf("		freeing block~\n");	//0000
 					next = purge->next;
 					FREEBLOCK(purge);
 					purge = next;		// purge another if not at scan
@@ -969,25 +966,15 @@ printf("		freeing block~\n");	//0000
 			//
 			// if this block is purge level zero or locked, skip past it
 			//
-			if((scan->attributes & LOCKBIT)
+			if ( (scan->attributes & LOCKBIT)
 				|| !(scan->attributes & PURGEBITS) )
 			{
-printf("	[lock] ");	//0000
 				lastscan = scan;
-printf("start=%x ", lastscan->start);
-printf("len=%x ", lastscan->length);
-printf("\n");	//0000
-printf("	%x", lastscan->start + lastscan->length);	//0000
-printf("	%x", lastscan->start + (word)lastscan->length);	//0000
-printf("	%x", (word)lastscan->start + (word)lastscan->length);	//0000
-printf("\n");	//0000
-				startseg = (word)lastscan->start + (word)lastscan->length+1;
-printf("startseg =%x	ok", startseg);	//0000
+				startseg = lastscan->start + lastscan->length;
 			}
 
-printf("	end\n");
+
 			scan=scan->next;		// look at next line
-printf("boop\n");//0000
 		}
 	}
 
