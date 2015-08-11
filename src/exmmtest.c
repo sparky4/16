@@ -145,21 +145,23 @@ main(int argc, char *argv[])
 	else printf("\npoo!\n");
 #endif
 	printf("========================================\n");
-	printf("near=%Fp	", mm.nearheap);
-	printf("far=%Fp	\n", mm.farheap);
-	printf("near=%Fp	", &(mm.nearheap));
-	printf("far=%Fp	\n", &(mm.farheap));
-	printf("bigbuffer=	%Fp\n", bigbuffer);
-	printf("&bigbuffer=	%Fp\n", &bigbuffer);
-	printf("bigbuffer=	%04x\n", bigbuffer);
-	printf("&bigbuffer=	%04x\n", &bigbuffer);
-	//printf("\n\n");
-	//printf("Total free:			%lu\n", (dword)(GetFreeSize()));
-	//printf("Total near free:		%lu\n", (dword)(GetNearFreeSize()));
-	//printf("Total far free:			%lu\n", (dword)(GetFarFreeSize()));
-	//getch();
-//	printf("\n");
+	printf("near=	%Fp ", mm.nearheap);
+	printf("far=	%Fp", mm.farheap);
+	printf("\n");
+	printf("&near=	%Fp ", &(mm.nearheap));
+	printf("&far=	%Fp", &(mm.farheap));
+	printf("\n");
+	printf("bigb=	%Fp ", bigbuffer);
+	//printf("bigbr=	%04x", bigbuffer);
+	//printf("\n");
+	printf("&bigb=%Fp ", &bigbuffer);
+	//printf("&bigb=%04x", &bigbuffer);
+	printf("\n");
+	printf("========================================\n");
 #ifdef __WATCOMC__
+	printf("Total free:			%lu\n", (dword)(GetFreeSize()));
+	printf("Total near free:		%lu\n", (dword)(GetNearFreeSize()));
+	printf("Total far free:			%lu\n", (dword)(GetFarFreeSize()));
 	heapdump(&gvar);
 #endif
 	//printf("core left:			%lu\n", (dword)_coreleft());

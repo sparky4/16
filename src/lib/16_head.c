@@ -53,7 +53,10 @@ filesize(FILE *fp)
 void printmeminfoline(byte *strc, const byte *pee, size_t h_total, size_t h_used, size_t h_free)
 {
 	byte str[64];
-	strcat(strc,pee); strcat(strc,"		   "); ultoa((dword)h_total,str,10); strcat(strc,str); strcat(strc,"	"); ultoa((dword)h_used,str,10); strcat(strc,str); strcat(strc,"	"); ultoa((dword)h_free,str,10); strcat(strc,str);
+	strcat(strc,pee); strcat(strc,"		   "); ultoa((dword)h_total,str,10); strcat(strc,str);
+	if(strlen(str)<=4) strcat(strc,"	"); //printf("%u\n", strlen(str));
+	strcat(strc,"	"); ultoa((dword)h_used,str,10); strcat(strc,str); strcat(strc,"	"); strcat(strc,"  ");
+	ultoa((dword)h_free,str,10); strcat(strc,str);
 	strcat(strc,"\n");
 }
 
