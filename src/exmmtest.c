@@ -130,7 +130,7 @@ main(int argc, char *argv[])
 	//getch();
 	MM_DumpData(&mm);
 	//++++modexLeave();
-	MM_Report(&mm, &mmi);
+	//++++MM_Report(&mm, &mmi);
 //	printf("		stop!\n");
 #ifdef FILERL
 	MM_FreePtr(&bigbuffer, &mm);

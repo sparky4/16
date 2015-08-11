@@ -1346,15 +1346,17 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 			strcat(scratch0, AARESET);
 			strcat(scratch0, "\n");
 			strcat(scratch0,AAGREEN);
-			for(w=(end+1)/80;w<=(wwww/80);w++)
+			for(w=(wwww)/80;w<=((end+1)/80);w++)
+			//for(w=(end+1)/80;w<=((wwww)/80);w++)
 			{
 				//printf("0	%x	%u	%lu\n", scan->next->start, w, scan->length);
 				strcat(scratch0,"0");
 			}
 			printf("==================\n");
-			printf("w=%x	start=%x	next=%x	end=%u	%lu\n", w, scan->start, (scan->next->start), end+1, wwww);
+			printf("w=%u	wwww=%lu	start=%04x	next=%04x	end=%lu\n", w/80, wwww/80, scan->start, (scan->next->start), end+1);
 			printf("==================\n");
 			strcat(scratch0, "\n");
+			//getch();
 		}/*else {//if(scan->next->start <= scan->start){
 			scan->next->start=scan->start+0x1000;
 			wwww=(dword)(scan->next->start)-(dword)scan->start;
@@ -1369,7 +1371,7 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 			printf("================\n");
 			printf("w=%x	start=%x	next=%x	end=%u	%lu\n", w, scan->start, (scan->next->start), end+1, wwww);
 			printf("================\n");
-//			getch();
+			getch();
 		}*/
 		strcat(scratch0, AARESET);
 		//strcat(scratch0,"\n");
