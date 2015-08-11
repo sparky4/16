@@ -89,7 +89,6 @@ boolean MML_CheckForEMS(void)
 {
 	boolean emmcfems;
 	static char	emmname[] = "EMMXXXX0";	//fix by andrius4669
-//		mov	dx,OFFSET emmname
 	__asm {
 		mov	dx,OFFSET emmname	//fix by andrius4669
 		mov	ax,0x3d00
@@ -562,7 +561,7 @@ void MML_ShutdownXMS(mminfo_t *mm)
 ======================
 */
 
-void MML_UseSpace(word segstart, dword seglength, mminfo_t *mm)
+/*void MML_UseSpace(word segstart, dword seglength, mminfo_t *mm)
 {
 	mmblocktype huge *scan,huge *last;
 	word		segm=1;
@@ -589,38 +588,17 @@ void MML_UseSpace(word segstart, dword seglength, mminfo_t *mm)
 	extra = oldend - (segstart+seglength);
 
 	segmlen=extra;
-//
-// find out how many blocks it spans!
-//
-	for(;segmlen>0x10000;segmlen-=0x10000)
-	{
-		//printf("	seglen=%lu\n", segmlen);
-		segm++;
-	}
 
 	//++++emsver stuff!
-	if(segm>1/* || extra>=0x10000lu*/)
+	if(segm>1)/// || extra>=0x10000lu)
 	//if(extra>0xfffflu)
 	{
 		scan->blob=segm;
-		/*__asm
-		{
-			push	ds
-			mov	ax,ds
-			inc		ax
-			mov	ds,ax
-		}*/
-
 
 		//MML_UseSpace(segstart, seglength, mm);
 
-		/*__asm
-		{
-			pop ds
-		}*/
 		printf("MML_UseSpace: Segment spans two blocks!\n");
 	//}
-	printf("========================================\n");
 	printf("segm=%u		", segm);
 	printf("ex=%lu	", extra);
 	printf("old=%u	", oldend);
@@ -629,7 +607,6 @@ void MML_UseSpace(word segstart, dword seglength, mminfo_t *mm)
 	printf("len=%lu	", scan->length);
 	printf("seglen=%lu	", seglength);
 	printf("segmlen=%lu\n", segmlen);
-	printf("========================================\n");
 	}
 //++++todo: linked list of segment!
 	if(segstart == scan->start)
@@ -652,6 +629,76 @@ void MML_UseSpace(word segstart, dword seglength, mminfo_t *mm)
 		mm->mmnew->length = extra;
 		mm->mmnew->attributes = LOCKBIT;
 	}//else if(segm>0) goto segu;
+
+}*/
+void MML_UseSpace(word segstart, dword seglength, mminfo_t *mm)
+{
+	mmblocktype far *scan,far *last;
+	word	oldend;
+	sdword		extra;
+	word segm=1;
+
+	scan = last = mm->mmhead;
+	mm->mmrover = mm->mmhead;		// reset rover to start of memory
+
+//
+// search for the block that contains the range of segments
+//
+	while (scan->start+scan->length < segstart)
+	{
+		last = scan;
+		scan = scan->next;
+	}
+
+//
+// find out how many blocks it spans!
+//
+	/*for(;seglength>=0x10000;seglength-=0xFFFF)
+	{
+		//printf("	seglen=%lu\n", segmlen);
+		segm++;
+	}*/
+
+//
+// take the given range out of the block
+//
+	oldend = scan->start + scan->length;
+	extra = oldend - (segstart+((word)seglength));
+	if (extra < 0)
+	{
+		printf("========================================\n");
+		printf("start=%x	", scan->start);
+		printf("old=%u	", oldend);
+		printf("start+seglen=%lu\n", segstart+seglength);
+		printf("segsta=%x	", segstart);
+		printf("len=%lu	", scan->length);
+		printf("seglen=%lu	", seglength);
+		printf("\n");
+		printf("MML_UseSpace: Segment spans two blocks!	%d\n", extra);
+		printf("========================================\n");
+		//return;
+	}
+
+	if (segstart == scan->start)
+	{
+		last->next = scan->next;			// unlink block
+		FREEBLOCK(scan);
+		scan = last;
+	}
+	else
+		scan->length = segstart-scan->start;	// shorten block
+
+	if (extra > 0)
+	{
+		GETNEWBLOCK;
+		mm->mmnew->useptr = NULL;
+
+		mm->mmnew->next = scan->next;
+		scan->next = mm->mmnew;
+		mm->mmnew->start = segstart+seglength;
+		mm->mmnew->length = extra;
+		mm->mmnew->attributes = LOCKBIT;
+	}
 
 }
 

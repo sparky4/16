@@ -144,10 +144,15 @@ main(int argc, char *argv[])
 	if(baka) printf("\nyay!\n");
 	else printf("\npoo!\n");
 #endif
-	//printf("bigbuffer=	%Fp\n", bigbuffer);
-	//printf("&bigbuffer=	%Fp\n", &bigbuffer);
-	//printf("bigbuffer=	%04x\n", bigbuffer);
-	//printf("&bigbuffer=	%04x\n", &bigbuffer);
+	printf("========================================\n");
+	printf("near=%Fp	", mm.nearheap);
+	printf("far=%Fp	\n", mm.farheap);
+	printf("near=%Fp	", &(mm.nearheap));
+	printf("far=%Fp	\n", &(mm.farheap));
+	printf("bigbuffer=	%Fp\n", bigbuffer);
+	printf("&bigbuffer=	%Fp\n", &bigbuffer);
+	printf("bigbuffer=	%04x\n", bigbuffer);
+	printf("&bigbuffer=	%04x\n", &bigbuffer);
 	//printf("\n\n");
 	//printf("Total free:			%lu\n", (dword)(GetFreeSize()));
 	//printf("Total near free:		%lu\n", (dword)(GetNearFreeSize()));

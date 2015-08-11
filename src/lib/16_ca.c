@@ -219,20 +219,21 @@ void CAL_GetGrChunkLength (int chunk)
 boolean CA_FarRead(int handle, byte huge *dest, dword length, mminfo_t *mm)
 {
 	boolean flag;
-	/*dword fat=0;
-	word segm=0;
+	//dword fat=0;
+	//word segm=0;
 	//if(mm->EMSVer<0x40)
 	if(length>0xfffflu)
 	{
 		printf("File is a fat bakapee\n");
-		segm=(length%0xfffflu)-1;
-		fat=segm*0xfffflu;
-		length-=fat;
+		//segm=(length%0xfffflu)-1;
+		//fat=segm*0xfffflu;
+		//length-=fat;
 //		printf("CA_FarRead doesn't support 64K reads yet!\n");
+		return 0;
 	}
 
-	if(!fat&&!segm)
-	{*/
+	//if(!fat&&!segm)
+	//{
 		__asm {
 			push	ds
 			mov	bx,[handle]
@@ -291,20 +292,21 @@ End:
 boolean CA_FarWrite(int handle, byte huge *source, dword length, mminfo_t *mm)
 {
 	boolean flag;
-	/*dword fat=0;
-	word segm=0;
+	//dword fat=0;
+	//word segm=0;
 	//if(mm->EMSVer<0x40)
 	if(length>0xfffflu)
 	{
 		printf("File is a fat bakapee\n");
-		segm=(length%0xfffflu)-1;
-		fat=segm*0xfffflu;
-		length-=fat;
+		//segm=(length%0xfffflu)-1;
+		//fat=segm*0xfffflu;
+		//length-=fat;
 //		printf("CA_FarRead doesn't support 64K reads yet!\n");
+		return 0;
 	}
 
-	if(!fat&&!segm)
-	{*/
+	//if(!fat&&!segm)
+	//{
 		__asm {
 			push	ds
 			mov	bx,[handle]
@@ -363,7 +365,7 @@ End:
 boolean CA_ReadFile(char *filename, memptr *ptr, mminfo_t *mm)
 {
 	int handle;
-	dword size;
+	sdword size;
 	//long size;
 
 	if((handle = open(filename,O_RDONLY | O_BINARY, S_IREAD)) == -1)
@@ -394,7 +396,7 @@ boolean CA_ReadFile(char *filename, memptr *ptr, mminfo_t *mm)
 boolean CA_LoadFile(char *filename, memptr *ptr, mminfo_t *mm, mminfotype *mmi)
 {
 	int handle;
-	dword size;
+	sdword size;
 	//long size;
 
 	if((handle = open(filename,O_RDONLY | O_BINARY, S_IREAD)) == -1)
