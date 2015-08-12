@@ -663,7 +663,7 @@ void MML_UseSpace(word segstart, dword seglength, mminfo_t *mm)
 // take the given range out of the block
 //
 	oldend = scan->start + scan->length;
-	extra = oldend - (segstart+((word)seglength));
+	extra = oldend - (segstart+((unsigned)seglength));
 	if (extra < 0)
 	{
 		printf("========================================\n");
@@ -754,6 +754,7 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	//dword length; word seglength;
 	void huge	*start;
 	word	segstart;//,endfree;
+	//memptr *peeonself;
 
 //	if(mm->mmstarted)
 //		MM_Shutdown(mm);
@@ -781,8 +782,11 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 	mm->mmnew->length = 0xffff;
 	mm->mmnew->attributes = LOCKBIT;
 	mm->mmnew->next = NULL;
+	//mm->mmnew->useptr = peeonself;
 	mm->mmrover = mm->mmhead;
 
+	//printf("		%x\n", peeonself);
+	//printf("		%x\n", *peeonself);
 //
 // get all available near conventional memory segments
 //
@@ -953,6 +957,11 @@ void MM_GetPtr (memptr *baseptr, dword size, mminfo_t *mm, mminfotype *mmi)
 	GETNEWBLOCK;				// fill in start and next after a spot is found
 	mm->mmnew->length = needed;
 	mm->mmnew->useptr = baseptr;
+	//if(mm->mmnew->useptr==NULL){
+	printf("baseptr=%04x	", baseptr); printf("useptr=%04x\n", mm->mmnew->useptr);
+	printf("*baseptr=%04x	", *baseptr); printf("*useptr=%04x\n", *(mm->mmnew->useptr));
+	//printf("*baseptr=%Fp	", *baseptr); printf("*useptr=%Fp\n", *(mm->mmnew->useptr));
+	//exit(-5); }
 	mm->mmnew->attributes = BASEATTRIBUTES;
 
 //tryagain:
@@ -1391,7 +1400,7 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 		ultoa (scan->start,str,16);
 		strcat (scratch,str);
 		strcat (scratch,"\tSize:");
-		ultoa ((word)scan->length,str,10);
+		ultoa ((unsigned)scan->length,str,10);
 		strcat (scratch,str);
 		strcat (scratch,"\tOwner:0x");
 		owner = (unsigned)scan->useptr;
@@ -1463,7 +1472,7 @@ void MM_DumpData(mminfo_t *mm)
 		scan = mm->mmhead;
 		while (scan)
 		{
-			owner = (word)scan->useptr;
+			owner = (unsigned)scan->useptr;
 
 			if (owner && owner<lowest && owner > oldlowest)
 			{
@@ -1485,7 +1494,7 @@ void MM_DumpData(mminfo_t *mm)
 			else
 				lock = '-';
 			fprintf (dumpfile,"0x%p (%c%c) = %u\n"
-			,(word)lowest,lock,purge,best->length);
+			,(unsigned)lowest,lock,purge,best->length);
 		}
 
 	} while (lowest != 0xffff);
