@@ -1285,7 +1285,7 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 	//word chx,chy;
 	word w;
 	//dword wwww;
-	byte    scratch[160],scratch0[4096],str[16];
+	byte    scratch[160],scratch0[4096],scratch1[160],str[16];
 	//byte d = '#';
 //****	VW_SetDefaultColors();
 //****	VW_SetLineWidth(40);
@@ -1406,6 +1406,21 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 
 		scan = scan->next;
 	}
+	/*strcpy(scratch1, AARESET);
+	strcat(scratch1, "========================================\n");
+	strcat(scratch1, "near=	 ");
+	ultoa (*(mm->nearheap),str,10);
+	strcat (scratch1,str);
+	strcat(scratch1, "	far= ");
+	ultoa (*(mm->farheap),str,10);
+	strcat (scratch1,str);
+	strcat(scratch1, "\n");
+	//strcat(scratch1, "&near=	%Fp ", &(mm->nearheap));
+	//strcat(scratch1, "&far=	%Fp", &(mm->farheap));
+	//strcat(scratch1, "\n");
+	strcat(scratch1, "========================================\n");
+	write(gvar->handle.debughandle,scratch1,strlen(scratch1));*/
+
 
 	CA_CloseDebug (gvar);
 

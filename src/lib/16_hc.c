@@ -420,7 +420,7 @@ void heapdump(global_game_variables_t *gvar)
 	for(;;) {
 		heap_status = _nheapwalk( &nh_info );
 		if( heap_status != _HEAPOK ) break;
-		strcpy(scratch,"  "); strcat(scratch,(h_info._useflag == _USEDENTRY ? "USED" : "FREE")); strcat(scratch," block at "); ultoa((dword)h_info._pentry,str,16); strcat(scratch,str); strcat(scratch," of size "); ultoa(h_info._size,str,10); strcat(scratch,str); strcat(scratch,"\n");
+		strcpy(scratch,"  "); strcat(scratch,(h_info._useflag == _USEDENTRY ? "USED" : "FREE")); strcat(scratch," block at "); ultoa((dword)nh_info._pentry,str,16); strcat(scratch,str); strcat(scratch," of size "); ultoa(nh_info._size,str,10); strcat(scratch,str); strcat(scratch,"\n");
 /*		printf( "  %s block at %Fp of size %4.4X\n",
 (nh_info._useflag == _USEDENTRY ? "USED" : "FREE"),
 nh_info._pentry, nh_info._size );*/
@@ -439,7 +439,7 @@ nh_info._pentry, nh_info._size );*/
 	for(;;) {
 		heap_status = _fheapwalk( &fh_info );
 		if( heap_status != _HEAPOK ) break;
-		strcpy(scratch,"  "); strcat(scratch,(h_info._useflag == _USEDENTRY ? "USED" : "FREE")); strcat(scratch," block at "); ultoa((dword)h_info._pentry,str,16); strcat(scratch,str); strcat(scratch," of size "); ultoa(h_info._size,str,10); strcat(scratch,str); strcat(scratch,"\n");
+		strcpy(scratch,"  "); strcat(scratch,(h_info._useflag == _USEDENTRY ? "USED" : "FREE")); strcat(scratch," block at "); ultoa((dword)fh_info._pentry,str,16); strcat(scratch,str); strcat(scratch," of size "); ultoa(fh_info._size,str,10); strcat(scratch,str); strcat(scratch,"\n");
 		/*printf( "  %s block at %Fp of size %4.4X\n",
 (fh_info._useflag == _USEDENTRY ? "USED" : "FREE"),
 fh_info._pentry, fh_info._size );*/
