@@ -129,8 +129,8 @@ extern void		(* XMSaddr) (void);		// far pointer to XMS driver
 
 typedef struct mmblockstruct
 {
-	//word	start,length;
-	word	start;	dword length;
+	word	start,length;
+	//word	start;	dword length;
 	word	blob;	//for data larger than 64k
 	unsigned	attributes;
 	memptr		*useptr;	// pointer to the segment start

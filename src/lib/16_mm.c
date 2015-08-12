@@ -636,7 +636,7 @@ void MML_UseSpace(word segstart, dword seglength, mminfo_t *mm)
 	mmblocktype far *scan,far *last;
 	word	oldend;
 	sdword		extra;
-	word segm=1;
+	//word segm=1;
 
 	scan = last = mm->mmhead;
 	mm->mmrover = mm->mmhead;		// reset rover to start of memory
@@ -1284,7 +1284,7 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 	sdword	end,owner;
 	//word chx,chy;
 	word w;
-	dword wwww;
+	//dword wwww;
 	byte    scratch[160],scratch0[4096],str[16];
 	//byte d = '#';
 //****	VW_SetDefaultColors();
@@ -1339,22 +1339,23 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 //++++				modexClearRegion(page, chx, chy, 4, 4, 15);
 //++++			VW_Hlin(end+1,scan->next->start,0,0);	// black = free
 
-		wwww=(dword)(scan->next->start)-(dword)scan->start;
+		//wwww=(dword)(scan->next->start)-(dword)scan->start;
 		//wwww=(dword)scan->start+(dword)(scan->next->start);
 		if (scan->next && scan->next->start >= end+1)
 		{
 			strcat(scratch0, AARESET);
 			strcat(scratch0, "\n");
 			strcat(scratch0,AAGREEN);
-			for(w=(wwww)/80;w<=((end+1)/80);w++)
+			for(w=(end+1)/80;w<=((scan->next->start-scan->start)/80);w++)
+			//for(w=(wwww)/80;w<=((end+1)/80);w++)
 			//for(w=(end+1)/80;w<=((wwww)/80);w++)
 			{
 				//printf("0	%x	%u	%lu\n", scan->next->start, w, scan->length);
 				strcat(scratch0,"0");
 			}
-			printf("==================\n");
-			printf("w=%u	wwww=%lu	start=%04x	next=%04x	end=%lu\n", w/80, wwww/80, scan->start, (scan->next->start), end+1);
-			printf("==================\n");
+			//printf("==================\n");
+			//printf("w=%u	wwww=%lu	start=%04x	next=%04x	end=%lu\n", w/80, wwww/80, scan->start, (scan->next->start), end+1);
+			//printf("==================\n");
 			strcat(scratch0, "\n");
 			//getch();
 		}/*else {//if(scan->next->start <= scan->start){

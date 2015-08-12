@@ -176,8 +176,14 @@ long GRFILEPOS(int c)
 */
 void CA_OpenDebug(global_game_variables_t *gvar)
 {
-	unlink("debug.16");
-	gvar->handle.debughandle = open("debug.16", O_CREAT | O_WRONLY | O_TEXT);
+#ifdef __BORLANDC__
+	unlink("debug.16b");
+	gvar->handle.debughandle = open("debug.16b", O_CREAT | O_WRONLY | O_TEXT);
+#endif
+#ifdef __WATCOMC__
+	unlink("debug.16w");
+	gvar->handle.debughandle = open("debug.16w", O_CREAT | O_WRONLY | O_TEXT);
+#endif
 }
 
 void CA_CloseDebug(global_game_variables_t *gvar)
