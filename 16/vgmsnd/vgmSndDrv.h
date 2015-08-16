@@ -6,7 +6,7 @@ extern "C"
 {
 #endif
 
-#include <stdtype.h>
+#include "stdtype.h"
 
 typedef struct _vgm_file_header
 {

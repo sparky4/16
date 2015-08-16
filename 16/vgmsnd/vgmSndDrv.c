@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <common.h>
+#include "common.h"
 #include "vgmSndDrv.h"
 
 
@@ -46,7 +46,7 @@ typedef struct _vgm_playback
 	UINT32 vgmSmplPos;
 	UINT32 pbSmplPos;
 	VGM_FILE* file;
-	
+
 	// oplChnMask:
 	//	Music: mask of channels used/overridden by SFX
 	//	SFX:   ID of channel used by SFX (all commands are forces to it)
@@ -145,16 +145,16 @@ UINT8 OpenVGMFile(const char* FileName, VGM_FILE* vgmFile)
 	VGM_BASE_HDR vgmBaseHdr;
 	FILE* hFile;
 	UINT32 CurPos;
-	
+
 	memset(vgmFile, 0x00, sizeof(VGM_FILE));
-	
+
 	hFile = fopen(FileName, "rb");
 	if (hFile == NULL)
 		return 0xFF;
-	
+
 	hdrSize = sizeof(VGM_BASE_HDR);
 	readEl = fread(&vgmBaseHdr, hdrSize, 0x01, hFile);
-	if (readEl <= 0)
+	if (readEl == 0)
 	{
 		fclose(hFile);
 		return 0xFE;	// read error
@@ -169,7 +169,7 @@ UINT8 OpenVGMFile(const char* FileName, VGM_FILE* vgmFile)
 		fclose(hFile);
 		return 0x81;	// We don't support VGM v1.10 and earlier
 	}
-	
+
 	vgmFile->dataLen = vgmBaseHdr.lngEOFOffset + 0x04;
 	vgmFile->data = (UINT8*)malloc(vgmFile->dataLen);
 	if (vgmFile->data == NULL)
@@ -186,11 +186,11 @@ UINT8 OpenVGMFile(const char* FileName, VGM_FILE* vgmFile)
 		//return 0xFE;	// read error
 		vgmFile->dataLen = hdrSize + readEl;
 	}
-	
+
 	fclose(hFile);
-	
+
 	memcpy(&vgmFile->header, vgmFile->data, sizeof(VGM_HEADER));
-	
+
 	// relative -> absolute addresses
 	vgmFile->header.lngEOFOffset += 0x04;
 	if (vgmFile->header.lngGD3Offset)
@@ -200,14 +200,14 @@ UINT8 OpenVGMFile(const char* FileName, VGM_FILE* vgmFile)
 	if (! vgmFile->header.lngDataOffset)
 		vgmFile->header.lngDataOffset = 0x0C;
 	vgmFile->header.lngDataOffset += 0x34;
-	
+
 	CurPos = vgmFile->header.lngDataOffset;
 	if (vgmFile->header.lngVersion < 0x0150)
 		CurPos = 0x40;
 	hdrSize = sizeof(VGM_HEADER);
 	if (hdrSize > CurPos)
 		memset((UINT8*)&vgmFile->header + CurPos, 0x00, hdrSize - CurPos);
-	
+
 	fclose(hFile);
 	return 0x00;
 }
@@ -216,7 +216,7 @@ void FreeVGMFile(VGM_FILE* vgmFile)
 {
 	free(vgmFile->data);	vgmFile->data = NULL;
 	vgmFile->dataLen = 0;
-	
+
 	return;
 }
 
@@ -224,16 +224,16 @@ void FreeVGMFile(VGM_FILE* vgmFile)
 static bool DoVgmLoop(VGM_PBK* vgmPlay)
 {
 	const VGM_HEADER* vgmHdr = &vgmPlay->file->header;
-	
+
 	if (! vgmHdr->lngLoopOffset)
 		return false;
-	
+
 	vgmPlay->curLoopCnt ++;
-	
+
 	vgmPlay->vgmPos = vgmHdr->lngLoopOffset;
 	vgmPlay->vgmSmplPos -= vgmHdr->lngLoopSamples;
 	vgmPlay->pbSmplPos -= vgmHdr->lngLoopSamples;
-	
+
 	return true;
 }
 
@@ -247,7 +247,7 @@ static void UpdateVGM(VGM_PBK* vgmPlay, UINT16 Samples)
 	UINT8 Command;
 	UINT8 blockType;
 	UINT32 blockLen;
-	
+
 	vgmPlay->pbSmplPos += Samples;
 	VGMPos = vgmPlay->vgmPos;
 	VGMSmplPos = vgmPlay->vgmSmplPos;
@@ -373,7 +373,7 @@ static void UpdateVGM(VGM_PBK* vgmPlay, UINT16 Samples)
 			vgmPlay->vgmEnd = 0x01;
 			return;
 		}
-		
+
 		if (VGMPos >= vgmLen)
 			vgmPlay->vgmEnd = 0x01;
 	}
@@ -381,7 +381,7 @@ static void UpdateVGM(VGM_PBK* vgmPlay, UINT16 Samples)
 	vgmPlay->vgmSmplPos = VGMSmplPos;
 	if (vgmPlay->vgmEnd)
 		StopPlayback(vgmPlay);
-	
+
 	return;
 }
 
@@ -392,14 +392,14 @@ void InitEngine(void)
 {
 	UINT8 curSFX;
 	UINT8 curReg;
-	
+
 	memset(oplRegs_Music, 0x00, 0x100);
 	memset(&vgmPbMusic, 0x00, sizeof(VGM_PBK));
 	vgmPbMusic.pbMode = PBMODE_MUSIC;
 	vgmPbMusic.vgmEnd = 0xFF;
 	vgmPbMusic.oplChnMask = 0x0000;
 	vgmPbMusic.oplRegCache = oplRegs_Music;
-	
+
 	for (curSFX = 0; curSFX < SFX_CHN_COUNT; curSFX ++)
 	{
 		memset(&oplRegs_SFX[curSFX], 0x00, sizeof(VGM_PBK));
@@ -409,7 +409,7 @@ void InitEngine(void)
 		vgmPbSFX[curSFX].oplChnMask = curSFX;
 		vgmPbSFX[curSFX].oplRegCache = oplRegs_SFX[curSFX];
 	}
-	
+
 	// reset OPL2 chip
 	curReg = 0x00;
 	do
@@ -417,26 +417,26 @@ void InitEngine(void)
 		curReg --;
 		OPL2_Write(curReg, 0x00);
 	} while(curReg > 0x20);
-	
+
 	OPL2_Write(0x02, TIMER1_RATE);	// set Timer 1 Period
 	OPL2_Write(0x04, 0x01);	// Timer 1 on/unmasked, Timer 2 off
 	OPL2_Write(0x04, 0x80);	// Reset Timer/IRQ Status Flags
-	
+
 	OPL2_Write(0x01, 0x20);	// Waveform Select: Enable
-	
+
 	return;
 }
 
 void DeinitEngine(void)
 {
 	UINT8 curSFX;
-	
+
 	StopPlayback(&vgmPbMusic);
 	for (curSFX = 0; curSFX < SFX_CHN_COUNT; curSFX ++)
 		StopPlayback(&vgmPbSFX[curSFX]);
-	
+
 	OPL2_Write(0x04, 0x00);	// disable all timers
-	
+
 	return;
 }
 
@@ -444,33 +444,33 @@ void DeinitEngine(void)
 UINT8 PlayMusic(VGM_FILE* vgmFile)
 {
 	VGM_PBK* vgmPb = &vgmPbMusic;
-	
+
 	if (! vgmPb->vgmEnd)
 		StopPlayback(vgmPb);
-	
+
 	vgmPb->file = vgmFile;
-	
+
 	StartPlayback(vgmPb);
-	
+
 	return 0x00;
 }
 
 UINT8 PlaySFX(VGM_FILE* vgmFile, UINT8 sfxChnID)
 {
 	VGM_PBK* vgmPb;
-	
+
 	if (sfxChnID >= SFX_CHN_COUNT)
 		return 0xFF;
-	
+
 	vgmPb = &vgmPbSFX[sfxChnID];
-	
+
 	if (! vgmPb->vgmEnd)
 		StopPlayback(vgmPb);
-	
+
 	vgmPb->file = vgmFile;
-	
+
 	StartPlayback(vgmPb);
-	
+
 	return 0x00;
 }
 
@@ -488,10 +488,10 @@ UINT8 StopSFX(UINT8 sfxChnID)
 			StopPlayback(&vgmPbSFX[sfxChnID]);
 		return 0x00;
 	}
-	
+
 	if (sfxChnID >= SFX_CHN_COUNT)
 		return 0xFF;
-	
+
 	StopPlayback(&vgmPbSFX[sfxChnID]);
 	return 0x00;
 }
@@ -504,10 +504,10 @@ UINT8 PauseMusic(void)
 		return 0x80;	// finished playing already
 	if (vgmPbMusic.vgmEnd == 0x02)
 		return 0x01;	// is already paused
-	
+
 	StopPlayback(&vgmPbMusic);
 	vgmPbMusic.vgmEnd = 0x02;
-	
+
 	return 0x00;
 }
 
@@ -519,9 +519,9 @@ UINT8 ResumeMusic(void)
 		return 0x80;	// finished playing already
 	if (! (vgmPbMusic.vgmEnd & 0x02))
 		return 0x01;	// is not paused
-	
+
 	vgmPbMusic.vgmEnd &= ~0x02;
-	
+
 	return 0x00;
 }
 
@@ -533,25 +533,25 @@ static void StartPlayback(VGM_PBK* vgmPb)
 		vgmPb->vgmEnd = 0xFF;
 		return;
 	}
-	
+
 	vgmPb->vgmEnd = 0x00;	// set to 'running'
 	vgmPb->vgmPos = vgmPb->file->header.lngDataOffset;
 	vgmPb->vgmSmplPos = 0;
 	vgmPb->pbSmplPos = 0;
 	vgmPb->curLoopCnt = 0;
 	memset(vgmPb->workRAM, 0x00, 0x04);
-	
+
 	if (vgmPb->pbMode == PBMODE_SFX)
 	{
 		UINT8 curReg;
-		
+
 		curReg = 0xB0 | vgmPb->oplChnMask;
 		if (oplRegs_Music[curReg] & 0x20)
 			OPL2_Write(curReg, oplRegs_Music[curReg] & ~0x20);	// send Key Off
-		
+
 		vgmPbMusic.oplChnMask |= (1 << vgmPb->oplChnMask);	// mask out music channel
 	}
-	
+
 	return;
 }
 
@@ -559,12 +559,12 @@ static void StopPlayback(VGM_PBK* vgmPb)
 {
 	if (vgmPb->vgmEnd & 0x80)
 		return;
-	
+
 	if (vgmPb->pbMode == PBMODE_MUSIC)
 	{
 		UINT8 curReg;
 		UINT16 chnMask;
-		
+
 		chnMask = 0x0001;
 		for (curReg = 0xB0; curReg < 0xB9; curReg ++, chnMask <<= 1)
 		{
@@ -582,7 +582,7 @@ static void StopPlayback(VGM_PBK* vgmPb)
 			vgmPb->oplRegCache[curReg] &= ~0x1F;
 			OPL2_Write(curReg, vgmPb->oplRegCache[curReg]);	// send Key Off
 		}
-		
+
 		vgmPb->vgmEnd = 0x01;
 	}
 	else //if (vgmPb->pbMode == PBMODE_SFX)
@@ -590,16 +590,16 @@ static void StopPlayback(VGM_PBK* vgmPb)
 		UINT8 regID;
 		UINT8 curReg;
 		UINT8 opMask;
-		
+
 		curReg = 0xB0 | vgmPb->oplChnMask;
 		if (vgmPb->oplRegCache[0x0C] & 0x20)
 		{
 			vgmPb->oplRegCache[0x0C] &= ~0x20;
 			OPL2_Write(curReg, vgmPb->oplRegCache[0x0C]);	// send Key Off
 		}
-		
+
 		vgmPb->vgmEnd = 0x01;
-		
+
 		if (! vgmPbMusic.vgmEnd)	// if (music is playing)
 		{
 			opMask = CHN_OPMASK[vgmPb->oplChnMask];
@@ -613,11 +613,11 @@ static void StopPlayback(VGM_PBK* vgmPb)
 				curReg = SFX_REGS[regID] | vgmPb->oplChnMask;
 				OPL2_Write(curReg, oplRegs_Music[curReg]);	// restore Music register
 			}
-			
+
 			vgmPbMusic.oplChnMask &= ~(1 << vgmPb->oplChnMask);
 		}
 	}
-	
+
 	return;
 }
 
@@ -627,13 +627,13 @@ static void OPL_CachedWrite(VGM_PBK* vgmPb, UINT8 reg, UINT8 data)
 {
 	UINT8 regChn;
 	UINT8 ramOfs;
-	
+
 	if (vgmPb->pbMode == PBMODE_MUSIC)
 	{
 		if (reg == 0x01)
 			data |= 0x20;	// enforce "Waveform Select Enable" bit
 		vgmPb->oplRegCache[reg] = data;
-		
+
 		ramOfs = SFX_REGS_REV[reg >> 4];
 		if (ramOfs < 0x0A)	// Operator 20/40/60/80/E0
 		{
@@ -652,11 +652,11 @@ static void OPL_CachedWrite(VGM_PBK* vgmPb, UINT8 reg, UINT8 data)
 	{
 		if (reg == 0xBD)
 			return;	// no rhythm register for SFX
-		
+
 		ramOfs = SFX_REGS_REV[reg >> 4];
 		if (ramOfs == 0xFF)
 			return;
-		
+
 		if (ramOfs < 0x0A)	// Operator 20/40/60/80/E0
 		{
 			regChn = CHN_OPMASK_REV[reg & 0x1F];
@@ -665,7 +665,7 @@ static void OPL_CachedWrite(VGM_PBK* vgmPb, UINT8 reg, UINT8 data)
 			ramOfs += (regChn & 0x80) >> 7;
 			regChn &= 0x7F;
 			vgmPb->oplRegCache[ramOfs] = data;
-			
+
 			if (regChn != vgmPb->oplChnMask)
 			{
 				// force command to current channel
@@ -678,11 +678,11 @@ static void OPL_CachedWrite(VGM_PBK* vgmPb, UINT8 reg, UINT8 data)
 			if (regChn >= 0x09)
 				return;	// ignore writes to invalid channels
 			vgmPb->oplRegCache[ramOfs] = data;
-			
+
 			reg = (reg & 0xF0) | vgmPb->oplChnMask;
 		}
 	}
-	
+
 	OPL2_Write(reg, data);
 	return;
 }
@@ -704,7 +704,7 @@ static void ym3812_write(VGM_PBK* vgmPb, UINT8 reg, UINT8 data)
 		if (! vgmPb->workRAM[0x00])	// "Wave Select Enable" off?
 			data = 0x00;	// disable waveforms
 	}
-	
+
 	OPL_CachedWrite(vgmPb, reg, data);
 	return;
 }
@@ -722,7 +722,7 @@ static void ym3512_write(VGM_PBK* vgmPb, UINT8 reg, UINT8 data)
 		else
 			return;	// ignore Y8950 DeltaT writes
 	}
-	
+
 	OPL_CachedWrite(vgmPb, reg, data);
 	return;
 }
@@ -738,12 +738,12 @@ void UpdateSoundEngine(void)
 {
 	UINT8 tmrMask;
 	UINT8 curSFX;
-	
+
 	tmrMask = OPL2_ReadStatus();
 	if (! (tmrMask & 0x40))
 		return;	// wait for overflow
 	OPL2_Write(0x04, 0x80);	// Reset Timer/IRQ Status Flags
-	
+
 	if (! vgmPbMusic.vgmEnd)
 		UpdateVGM(&vgmPbMusic, VGM_UPD_RATE);
 	for (curSFX = 0; curSFX < SFX_CHN_COUNT; curSFX ++)
@@ -751,6 +751,6 @@ void UpdateSoundEngine(void)
 		if (! vgmPbSFX[curSFX].vgmEnd)
 			UpdateVGM(&vgmPbSFX[curSFX], VGM_UPD_RATE);
 	}
-	
+
 	return;
 }
