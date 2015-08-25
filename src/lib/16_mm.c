@@ -563,7 +563,7 @@ void MML_ShutdownXMS(mminfo_t *mm)
 
 /*void MML_UseSpace(word segstart, dword seglength, mminfo_t *mm)
 {
-	mmblocktype huge *scan,huge *last;
+	//huge mmblocktype huge *scan,huge *last;
 	word		segm=1;
 	word	oldend;
 	dword		segmlen;
@@ -716,7 +716,8 @@ void MML_UseSpace(word segstart, dword seglength, mminfo_t *mm)
 
 void MML_ClearBlock(mminfo_t *mm)
 {
-	mmblocktype huge *scan,huge *last;
+	//huge mmblocktype huge *scan,huge *last;
+	mmblocktype far *scan,far *last;
 
 	scan = mm->mmhead->next;
 
@@ -750,9 +751,10 @@ void MML_ClearBlock(mminfo_t *mm)
 void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 {
 	int i;
-	dword length,seglength;
-	//dword length; word seglength;
-	void huge	*start;
+	//dword length,seglength;
+	dword length; word seglength;
+	//huge void huge	*start;
+	void far	*start;
 	word	segstart;//,endfree;
 	//memptr *peeonself;
 
@@ -793,11 +795,13 @@ void MM_Startup(mminfo_t *mm, mminfotype *mmi)
 #ifdef __WATCOMC__
 	_nheapgrow();
 	length=(dword)_memavl();//(dword)GetFreeSize();
-	start = (void huge *)(mm->nearheap = _nmalloc(length));
+	//huge start = (void huge *)(mm->nearheap = _nmalloc(length));
+	start = (void far *)(mm->nearheap = _nmalloc(length));
 #endif
 #ifdef __BORLANDC__
 	length=coreleft();
-	start = (void huge *)(mm->nearheap = malloc(length));
+	//huge start = (void huge *)(mm->nearheap = malloc(length));
+	start = (void far *)(mm->nearheap = malloc(length));
 #endif
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;
@@ -947,8 +951,8 @@ void MM_Shutdown(mminfo_t *mm)
 
 void MM_GetPtr (memptr *baseptr, dword size, mminfo_t *mm, mminfotype *mmi)
 {
-	mmblocktype huge *scan,huge *lastscan,huge *endscan
-				,huge *purge,huge *next;
+	//huge mmblocktype huge *scan,huge *lastscan,huge *endscan,huge *purge,huge *next;
+	mmblocktype far *scan,far *lastscan,far *endscan,far *purge,far *next;
 	int			search;
 	unsigned	needed,startseg;
 
@@ -1062,7 +1066,8 @@ void MM_GetPtr (memptr *baseptr, dword size, mminfo_t *mm, mminfotype *mmi)
 
 void MM_FreePtr(memptr *baseptr, mminfo_t *mm)
 {
-	mmblocktype huge *scan,huge *last;
+	//huge mmblocktype huge *scan,huge *last;
+	mmblocktype far *scan,far *last;
 
 	last = mm->mmhead;
 	scan = last->next;
@@ -1100,7 +1105,8 @@ void MM_FreePtr(memptr *baseptr, mminfo_t *mm)
 
 void MM_SetPurge(memptr *baseptr, int purge, mminfo_t *mm)
 {
-	mmblocktype huge *start;
+	//huge mmblocktype huge *start;
+	mmblocktype far *start;
 
 	start = mm->mmrover;
 
@@ -1139,7 +1145,8 @@ void MM_SetPurge(memptr *baseptr, int purge, mminfo_t *mm)
 
 void MM_SetLock(memptr *baseptr, boolean locked, mminfo_t *mm)
 {
-	mmblocktype huge *start;
+	//huge mmblocktype huge *start;
+	mmblocktype far *start;
 
 	start = mm->mmrover;
 
@@ -1178,7 +1185,8 @@ void MM_SetLock(memptr *baseptr, boolean locked, mminfo_t *mm)
 
 void MM_SortMem(mminfo_t *mm)
 {
-	mmblocktype huge *scan,huge *last,huge *next;
+	//huge mmblocktype huge *scan,huge *last,huge *next;
+	mmblocktype far *scan,far *last,far *next;
 	unsigned	start,length,source,dest,oldborder;
 	int			playing;
 
@@ -1288,7 +1296,8 @@ void MM_SortMem(mminfo_t *mm)
 
 void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 {
-	mmblocktype huge *scan;
+	//huge mmblocktype huge *scan;
+	mmblocktype far *scan;
 	word temp;
 	sdword	end,owner;
 	//word chx,chy;
@@ -1450,7 +1459,8 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 
 void MM_DumpData(mminfo_t *mm)
 {
-	mmblocktype huge *scan,huge *best;
+	//huge mmblocktype huge *scan,huge *best;
+	mmblocktype far *scan,far *best;
 	long	lowest,oldlowest;
 	word	owner;
 	byte	lock,purge;
@@ -1519,7 +1529,8 @@ void MM_DumpData(mminfo_t *mm)
 dword MM_UnusedMemory(mminfo_t *mm)
 {
 	dword free;
-	mmblocktype huge *scan;
+	//huge mmblocktype huge *scan;
+	mmblocktype far *scan;
 
 	free = 0;
 	scan = mm->mmhead;
@@ -1550,7 +1561,8 @@ dword MM_UnusedMemory(mminfo_t *mm)
 dword MM_TotalFree(mminfo_t *mm)
 {
 	dword free;
-	mmblocktype huge *scan;
+	//huge mmblocktype huge *scan;
+	mmblocktype far *scan;
 
 	free = 0;
 	scan = mm->mmhead;

@@ -134,7 +134,8 @@ typedef struct mmblockstruct
 	word	blob;	//for data larger than 64k
 	unsigned	attributes;
 	memptr		*useptr;	// pointer to the segment start
-	struct mmblockstruct huge *next;
+	//huge struct mmblockstruct huge *next;
+	struct mmblockstruct far *next;
 } mmblocktype;
 
 
@@ -142,7 +143,8 @@ typedef struct
 {
 	memptr bufferseg;
 	boolean		mmstarted, bombonerror, mmerror;
-	void huge	*farheap;
+	//huge void huge	*farheap;
+	void far	*farheap;
 #ifdef __BORLANDC__
 	void	*nearheap;
 #endif
@@ -154,7 +156,8 @@ typedef struct
 	unsigned int EMSVer;
 	word numUMBs,UMBbase[MAXUMBS];
 	//dword	numUMBs,UMBbase[MAXUMBS];
-	mmblocktype	huge mmblocks[MAXBLOCKS],huge *mmhead,huge *mmfree,huge *mmrover,huge *mmnew;
+	//huge mmblocktype	huge mmblocks[MAXBLOCKS],huge *mmhead,huge *mmfree,huge *mmrover,huge *mmnew;
+	mmblocktype	far mmblocks[MAXBLOCKS],far *mmhead,far *mmfree,far *mmrover,far *mmnew;
 } mminfo_t;
 
 /*
