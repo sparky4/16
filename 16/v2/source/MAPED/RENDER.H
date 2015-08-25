@@ -43,7 +43,6 @@ extern void DoCHRdealy();
 extern void BlitBackLayer(char l);
 extern void LucentBlitLayer(char l);
 extern void TransBlitLayer(char l);
-extern void TransBlitLayer_(char l);
 extern void BlitLayer(char c);
 extern void DrawObstructions();
 extern void DrawZones();

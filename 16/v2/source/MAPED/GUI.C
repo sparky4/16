@@ -260,7 +260,7 @@ void MainMenu(int dx, int dy)
        if (my>dy+47 && my<dy+54) { done=1; WaitRelease(); MPDialog(); break; }
        if (my>dy+53 && my<dy+60) { done=1; WaitRelease(); CDDialog(); break; }
        if (my>dy+59 && my<dy+66) { done=1; WaitRelease(); Columns(); break; }
-       if (my>dy+65 && my<dy+72) { done=1; WaitRelease(); ExecuteSubMenu(0, 0); break; }
+       if (my>dy+65 && my<dy+72) { done=1; WaitRelease(); ExecuteSubMenu(); break; }
        if (my>dy+71 && my<dy+78) { done=1; WaitRelease(); key[SCAN_X]=1; key[SCAN_ALT]=1; break; }
        if (my>dy+80 && my<dy+87) { done=1; About(); break; }
     }
