@@ -304,6 +304,7 @@ clean: .symbolic
 #	@$(REMOVECOMMAND) *.smp
 	@$(REMOVECOMMAND) *.SMP
 	@$(REMOVECOMMAND) *.hed
+	@$(COPYCOMMAND) .git/config git_con.fig
 #	@$(COPYCOMMAND) $(SRC)exmmtest.c $(EXMMTESTDIR)$(SRC)
 #	@$(COPYCOMMAND) $(SRCLIB)16_mm.* $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(SRCLIB)16_head.* $(EXMMTESTDIR)$(SRCLIB)
