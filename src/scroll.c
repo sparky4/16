@@ -94,6 +94,7 @@ void main()
 //0000	printf("Total used @ after planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
 
 	/*	input!	*/
+	getch();
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
 
