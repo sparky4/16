@@ -325,6 +325,10 @@ modexDrawBmpRegion(page_t *page, int x, int y,
     word rowCounter;
     byte planeCounter = 4;
 
+	printf("bmp->data=%Fp\n",bmp->data);
+	printf("*bmp->data=%Fp\n",*(bmp->data));
+	printf("&bmp->data=%Fp\n",&(bmp->data));
+
         //code is a bit slow here
     __asm {
                 MOV AX, SCREEN_SEG      ; go to the VGA memory

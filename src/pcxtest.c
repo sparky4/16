@@ -80,52 +80,53 @@ void main() {
 
 	/* non sprite comparison */
 	start = *clockw;
-	for(i=0; i<100 ;i++) {
+	//for(i=0; i<100 ;i++) {
 		oldDrawBmp(VGA, 20, 20, &bmp, 0);
-	}
+	//}
 
 	start = *clockw;
-	for(i=0; i<100 ;i++) {
+	//for(i=0; i<100 ;i++) {
 //0000		modexDrawBmp(&page, 20, 20, &bmp);
-		modexDrawBmp(&page, 0, 0, &bmp);
-	}
+		modexDrawBmp(&page, 100, 100, &bmp);
+	//}
 	t1 = (*clockw-start) /18.2;
 
 	start = *clockw;
-	for(i=0; i<100; i++) {
+	//for(i=0; i<100; i++) {
 //0000		modexCopyPageRegion(&page, &page, 20, 20, 128, 20, 64, 64);
 		modexCopyPageRegion(&page, &page, 0, 0, 0, 0, 320, 240);
-	}
+	//}
 	t2 = (*clockw-start)/18.2;
 
 
 	start = *clockw;
-	for(i=0; i<100 ;i++) {
+	//for(i=0; i<100 ;i++) {
 		oldDrawBmp(VGA, 20, 20, &bmp, 1);
-	}
+	//}
 
 
 	start = *clockw;
-	for(i=0; i<100 ;i++) {
+	//for(i=0; i<100 ;i++) {
 //0000		modexDrawSprite(&page, 20, 20, &bmp);
-		modexDrawSprite(&page, 0, 0, &bmp);
-	}
+		modexDrawSprite(&page, 100, 100, &bmp);
+	//}
 	//_fmemset(MK_FP(0xA000, 0), (int)p->plane, SCREEN_WIDTH*(SCREEN_HEIGHT*2));
-	modexDrawBmp(&page, 0, 0, &bmp);
+	//modexDrawBmp(&page, 0, 0, &bmp);
 	while(!kbhit())
 	{
 		//DrawPBuf(&page, 0, 0, p, 0);
 	}
 	modexLeave();
+	printf("main=%Fp\n", &i);
 
 	printf("\n%d\n", sizeof(p->plane));
 	printf("%d\n", sizeof(bmp));
 
-	for(i=0; i<(320*240); i++)
+	/*for(i=0; i<(320*240); i++)
 	{
 		fprintf(stdout, "%d", bmp.data[i]);
 		if(i%320==0) fprintf(stdout, "\n");
-	}
+	}*/
 	printf("CPU to VGA: %f\n", t1);
 	printf("VGA to VGA: %f\n", t2);
 	return;
