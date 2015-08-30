@@ -314,7 +314,7 @@ void
 modexDrawBmpRegion(page_t *page, int x, int y,
                    int rx, int ry, int rw, int rh, bitmap_t *bmp) {
     word poffset = (word) page->data  + y*(page->width/4) + x/4;
-    byte *data = bmp->data;//+bmp->offset;
+    byte far *data = bmp->data;//+bmp->offset;
     word bmpOffset = (word) data + ry * bmp->width + rx;
     word width = rw;
     word height = rh;
@@ -325,9 +325,9 @@ modexDrawBmpRegion(page_t *page, int x, int y,
     word rowCounter;
     byte planeCounter = 4;
 
-	printf("bmp->data=%Fp\n",bmp->data);
+/*	printf("bmp->data=%Fp\n",bmp->data);
 	printf("*bmp->data=%Fp\n",*(bmp->data));
-	printf("&bmp->data=%Fp\n",&(bmp->data));
+	printf("&bmp->data=%Fp\n",&(bmp->data));*/
 
         //code is a bit slow here
     __asm {
