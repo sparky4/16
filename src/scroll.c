@@ -89,8 +89,8 @@ void main()
 
 	/* create the planar buffer */
 //0000	printf("Total used @ before planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
-	p = planar_buf_from_bitmap(&player[0].data);
-	printf("planar buffer ok\n");
+//++++	p = planar_buf_from_bitmap(&player[0].data);
+//	printf("planar buffer ok\n");
 //0000	printf("Total used @ after planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
 
 	/*	input!	*/
