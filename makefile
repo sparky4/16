@@ -27,10 +27,10 @@ WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 BAKAPIFLAGS=-fh=bakapi.hed
 SFLAGS=-sg -st -of+ -k32768 -zu -zdf -zff -zgf#49152#24576
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
-ZFLAGS=-zk0 -zq -zc -zp8## -zm
+ZFLAGS=-zk0 -zq -zc -zp8# -zm
 CFLAGS=-mc -lr -l=dos -wo -x# -d2##wwww
 OFLAGS=-obmiler -out -oh -ei -zp8 -0 -fpi87  -onac -ol+ -ok####x
-FLAGS=$(OFLAGS) $(CFLAGS) $(DFLAGS) $(ZFLAGS)
+FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 
 DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
