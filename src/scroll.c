@@ -21,7 +21,7 @@
  */
 
 #include "src/lib/scroll16.h"
-#include "src/lib/mapread.h"
+//#include "src/lib/mapread.h"
 #include "src/lib/wcpu/wcpu.h"
 
 //#define FADE
@@ -54,10 +54,10 @@ void main()
 
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
-	printf("starting timer\n");
-	start_timer(&gvar);
-	gvar.frames_per_second = 60;
-	printf("ok\n");
+	//0000printf("starting timer\n");
+//++++	start_timer(&gvar);
+//++++	gvar.frames_per_second = 60;
+//0000	printf("ok\n");
 	//extern struct inconfig inpu;
 
 //	atexit(qclean());
@@ -73,7 +73,7 @@ void main()
 	map.width=0;
 	map.height=0;
 	chkmap(&map, 1);
-	printf("chkmap ok\n");
+//	printf("chkmap ok\n");
 //0000	fprintf(stderr, "yay map loaded~~\n");
 	mv[0].map = &map;
 	mv[1].map = &map;
@@ -84,17 +84,17 @@ void main()
 	mappalptr = map.tiles->data->palette;
 	/* data */
 //0000	printf("Total used @ before image loading:		%zu\n", oldfreemem-GetFreeSize());
-//++++	player[0].data = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
+	player[0].data = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 
 	/* create the planar buffer */
 //0000	printf("Total used @ before planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
-//++++	p = planar_buf_from_bitmap(&player[0].data);
-//	printf("planar buffer ok\n");
+	p = planar_buf_from_bitmap(&player[0].data);
+//0000	printf("planar buffer ok\n");
 //0000	printf("Total used @ after planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
 
 	/*	input!	*/
-	getch();
+//0000	getch();
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
 
