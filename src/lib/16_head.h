@@ -50,12 +50,6 @@
 #include "src/lib/nyan/kitten.h"
 #include "src/lib/types.h"
 
-//0000 test type def wwww
-/*struct list {
-	struct list __based(__self) *next;
-	int         value;
-};*/
-
 /* Control codes for all keys on the keyboard */
 //here temperarly
 /*
