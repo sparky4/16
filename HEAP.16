@@ -1,45 +1,45 @@
 
 	== default ==
 
-  USED block at 1cd00016 of size 66
-  FREE block at 1cd00058 of size 18
-  USED block at 1cd0006a of size 136
-  USED block at 1cd000f2 of size 20
-  FREE block at 1cd00106 of size 7926
+  USED block at 1ba40016 of size 66
+  FREE block at 1ba40058 of size 18
+  USED block at 1ba4006a of size 136
+  USED block at 1ba400f2 of size 20
+  FREE block at 1ba40106 of size 7926
 OK - end of heap
 
 	== near ==
 
-  USED block at ccf85b6 of size 12
-  USED block at ccf85c2 of size 692
-  USED block at ccf8876 of size 92
-  USED block at ccf88d2 of size 20
-  USED block at ccf88e6 of size 20
-  USED block at ccf88fa of size 20
-  USED block at ccf890e of size 20
-  USED block at ccf8922 of size 20
-  USED block at ccf8936 of size 30406
+  USED block at ba3c5b6 of size 12
+  USED block at ba3c5c2 of size 294
+  USED block at ba3c6e8 of size 42
+  USED block at ba3c712 of size 20
+  USED block at ba3c726 of size 20
+  USED block at ba3c73a of size 20
+  USED block at ba3c74e of size 20
+  USED block at ba3c762 of size 20
+  USED block at ba3c776 of size 14470
 OK - end of heap
 
 	== far ==
 
-  USED block at 1cd00016 of size 66
-  USED block at 1cd00058 of size 18
-  USED block at 1cd0006a of size 136
-  USED block at 1cd000f2 of size 20
-  USED block at 1cd00106 of size 7926
+  USED block at 1ba40016 of size 66
+  USED block at 1ba40058 of size 18
+  USED block at 1ba4006a of size 136
+  USED block at 1ba400f2 of size 20
+  USED block at 1ba40106 of size 7926
 OK - end of heap
 
 Memory Type         Total      Used       Free
 ----------------  --------   --------   --------
 Default		   8166		222	  7944
-Near		   31302	896	  30406
+Near		   14918	448	  14470
 Far		   8166		222	  7944
 ----------------  --------   --------   --------
-coreleft = 30404
-farcoreleft = 38152
-GetFreeSize = 7768
-GetNearFreeSize = 30406
-GetFarFreeSize = 7768
-memavl = 30404
-stackavail = 15125
+coreleft = 14468
+farcoreleft = 30408
+GetFreeSize = 15960
+GetNearFreeSize = 14470
+GetFarFreeSize = 15960
+memavl = 14468
+stackavail = 31509
