@@ -55,7 +55,8 @@ void main()
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
 	//0000printf("starting timer\n");
-//++++	start_timer(&gvar);
+//++++
+	start_timer(&gvar);
 //++++	gvar.frames_per_second = 60;
 //0000	printf("ok\n");
 	//extern struct inconfig inpu;
