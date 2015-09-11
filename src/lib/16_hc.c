@@ -521,8 +521,14 @@ void heapstat0(int heap_status)
 */
 void HC_OpenDebug(global_game_variables_t *gvar)
 {
-	unlink("heap.16");
-	gvar->handle.heaphandle = open("heap.16", O_CREAT | O_WRONLY | O_TEXT);
+#ifdef __BORLANDC__
+	unlink("heap.16b");
+	gvar->handle.heaphandle = open("heap.16b", O_CREAT | O_WRONLY | O_TEXT);
+#endif
+#ifdef __WATCOMC__
+	unlink("heap.16w");
+	gvar->handle.heaphandle = open("heap.16w", O_CREAT | O_WRONLY | O_TEXT);
+#endif
 }
 
 void HC_CloseDebug(global_game_variables_t *gvar)

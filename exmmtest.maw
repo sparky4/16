@@ -1,6 +1,6 @@
 Open Watcom Linker Version 1.9
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/09/11 09:57:30
+Created on:       15/09/11 10:07:12
 Executable Image: exmmtest.exe
 creating a DOS executable
 
@@ -92,27 +92,27 @@ Module: 16.lib(/dos/z/16/src/lib/16_mm.c)
 098d:0442+     _aftersort
 098d:0444+     _XMSaddr
 Module: 16.lib(/dos/z/16/src/lib/16_ca.c)
-0000:304c      CA_OpenDebug_
-0000:3080      CA_CloseDebug_
-0000:309c+     CA_FarRead_
-0000:3114*     CA_FarWrite_
-0000:318c*     CA_ReadFile_
-0000:31fa      CA_LoadFile_
-0000:3290*     CAL_OptimizeNodes_
-0000:32e2      CA_Startup_
-0000:3316      CA_Shutdown_
+0000:304e      CA_OpenDebug_
+0000:3082      CA_CloseDebug_
+0000:309e+     CA_FarRead_
+0000:3116*     CA_FarWrite_
+0000:318e*     CA_ReadFile_
+0000:31fc      CA_LoadFile_
+0000:3292*     CAL_OptimizeNodes_
+0000:32e4      CA_Startup_
+0000:3318      CA_Shutdown_
 098d:0446*     _finishcachebox
 098d:0448*     _drawcachebox
 098d:044a*     _updatecachebox
 Module: /dos/fdos/watcom/lib286/dos/clibc.lib(printf.c)
-0000:3332      printf_
+0000:3334      printf_
 Module: /dos/fdos/watcom/lib286/dos/clibc.lib(bmsize.c)
-0000:335f      _bmsize_
+0000:3361      _bmsize_
 Module: /dos/fdos/watcom/lib286/dos/clibc.lib(getch.c)
-0000:3370      getch_
+0000:3372      getch_
 Module: /dos/fdos/watcom/lib286/dos/clibc.lib(ffree.c)
-0000:338a      _ffree_
-0000:338a      free_
+0000:338c      _ffree_
+0000:338c      free_
 Module: 16.lib(/dos/z/16/src/lib/16_hc.c)
 0000:357c+     LargestFreeBlock_
 0000:35fc+     _coreleft_
@@ -495,4 +495,4 @@ Module: /dos/fdos/watcom/lib286/dos/clibc.lib(clearenv.c)
 Stack size:  8000 (32768.)
 Memory size:  00011e70 (73328.)
 Entry point address: 0000:47f4
-Link time: 00:00.00
+Link time: 00:00.01

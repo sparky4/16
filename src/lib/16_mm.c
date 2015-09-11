@@ -1467,7 +1467,12 @@ void MM_DumpData(mminfo_t *mm)
 	FILE	*dumpfile;
 
 	free(mm->nearheap);
-	dumpfile = fopen ("mmdump.16","w");
+#ifdef __BORLANDC__
+		dumpfile = fopen ("mmdump.16b","w");
+#endif
+#ifdef __WATCOMC__
+		dumpfile = fopen ("mmdump.16w","w");
+#endif
 	if (!dumpfile){
 		printf("MM_DumpData: Couldn't open MMDUMP.16!\n");
 		return;

@@ -1088,8 +1088,14 @@ asm	mov	ds,ax
 void CA_Startup(global_game_variables_t *gvar)
 {
 #ifdef PROFILE
-	unlink("profile.16");
-	gvar->handle.profilehandle = open("profile.16", O_CREAT | O_WRONLY | O_TEXT);
+#ifdef __BORLANDC__
+	unlink("profile.16b");
+	gvar->handle.profilehandle = open("profile.16b", O_CREAT | O_WRONLY | O_TEXT);
+#endif
+#ifdef __WATCOMC__
+	unlink("profile.16w");
+	gvar->handle.profilehandle = open("profile.16w", O_CREAT | O_WRONLY | O_TEXT);
+#endif
 #endif
 // 	unlink("debug0.16");
 // 	gvar->handle.showmemhandle = open("debug0.16", O_CREAT | O_WRONLY | O_TEXT);
