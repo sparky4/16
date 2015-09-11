@@ -19,22 +19,21 @@
  * Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-
-#include "src/lib/vgmsnd/vgmSnd.h"
-
 /*
  * soundtest
  */
 
-#define VGM_SLOTS	4
+#include "src/lib/vgmsnd/vgmSnd.h"
 
-VGM_FILE vgmFiles[VGM_SLOTS];
+//#define VGM_SLOTS	4
+
+//VGM_FILE vgmFiles[VGM_SLOTS];
 
 void main()
 {
-	InitEngine(void);
 	global_game_variables_t gvar;
-	VGM_FILE* tempVgmFile;
+	InitEngine();
+	/*VGM_FILE* tempVgmFile;
 	UINT8 vgmChn;
 	UINT8 vgmId;
 
@@ -43,6 +42,6 @@ void main()
 	if (vgmChn == 0x7F)
 		PlayMusic(tempVgmFile);
 	else
-		PlaySFX(tempVgmFile, vgmChn);
-	DeinitEngine(void);
+		PlaySFX(tempVgmFile, vgmChn);*/
+	DeinitEngine();
 }
