@@ -18,6 +18,10 @@ makefile~
 README~
 TODO~
 LICENCE~
+*.map
+#*.MAP
+!exmmtest.map
+!scroll.map
 !boop.sh
 !awoo.sh
 !lowcase.sh

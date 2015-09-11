@@ -49,15 +49,15 @@ all: $(EXEC)
 #game and bakapi executables
 #
 16.exe: 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
-	wcl $(FLAGS) $(16FLAGS) 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib -fm=16.maw
+	wcl $(FLAGS) $(16FLAGS) 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib -fm=16.map
 
 bakapi.exe: bakapi.$(OBJ) 16.lib
-	wcl $(FLAGS) $(BAKAPIFLAGS) bakapi.$(OBJ) 16.lib -fm=bakapi.maw
+	wcl $(FLAGS) $(BAKAPIFLAGS) bakapi.$(OBJ) 16.lib -fm=bakapi.map
 #
 #Test Executables!
 #
 scroll.exe: scroll.$(OBJ) 16.lib mapread.$(OBJ) jsmn.$(OBJ)
-	wcl $(FLAGS) scroll.$(OBJ) 16.lib mapread.$(OBJ) jsmn.$(OBJ) -fm=scroll.maw
+	wcl $(FLAGS) scroll.$(OBJ) 16.lib mapread.$(OBJ) jsmn.$(OBJ) -fm=scroll.map
 scroll.$(OBJ): $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
 
@@ -67,22 +67,22 @@ scroll.$(OBJ): $(SRC)scroll.c
 #	wcl $(FLAGS) -c $(SRC)sega.c
 
 test.exe: test.$(OBJ) gfx.lib
-	wcl $(FLAGS) test.$(OBJ) gfx.lib -fm=test.maw
+	wcl $(FLAGS) test.$(OBJ) gfx.lib -fm=test.map
 
 test2.exe: test2.$(OBJ) gfx.lib
-	wcl $(FLAGS) test2.$(OBJ) gfx.lib -fm=test2.maw
+	wcl $(FLAGS) test2.$(OBJ) gfx.lib -fm=test2.map
 
 fonttest.exe: fonttest.$(OBJ) 16.lib
-	wcl $(FLAGS) fonttest.$(OBJ) 16.lib# -fm=fonttest.maw
+	wcl $(FLAGS) fonttest.$(OBJ) 16.lib# -fm=fonttest.map
 
 #fonttes0.exe: fonttes0.$(OBJ) 16.lib
 #	wcl $(FLAGS) fonttes0.$(OBJ) 16.lib
 
 fontgfx.exe: fontgfx.$(OBJ) 16.lib
-	wcl $(FLAGS) fontgfx.$(OBJ) 16.lib -fm=fontgfx.maw
+	wcl $(FLAGS) fontgfx.$(OBJ) 16.lib -fm=fontgfx.map
 
 inputest.exe: inputest.$(OBJ) 16.lib
-	wcl $(FLAGS) -D__DEBUG_InputMgr__=1 inputest.$(OBJ) 16.lib -fm=inputest.maw
+	wcl $(FLAGS) -D__DEBUG_InputMgr__=1 inputest.$(OBJ) 16.lib -fm=inputest.map
 
 #sountest.exe: sountest.$(OBJ) 16.lib
 #	wcl $(FLAGS) sountest.$(OBJ) 16.lib
@@ -91,7 +91,7 @@ inputest.exe: inputest.$(OBJ) 16.lib
 #	wcl $(FLAGS) miditest.$(OBJ) 16.lib $(DOSLIBEXMMOBJ) midi.$(OBJ)
 
 tsthimem.exe: tsthimem.$(OBJ) 16.lib $(DOSLIBEXMMOBJ)
-	wcl $(FLAGS) tsthimem.$(OBJ) 16.lib $(DOSLIBEXMMOBJ) -fm=tsthimem.maw
+	wcl $(FLAGS) tsthimem.$(OBJ) 16.lib $(DOSLIBEXMMOBJ) -fm=tsthimem.map
 
 #testemm.exe: testemm.$(OBJ) 16.lib $(DOSLIBEXMMOBJ)
 #	wcl $(FLAGS) testemm.$(OBJ) 16.lib $(DOSLIBEXMMOBJ)
@@ -100,13 +100,13 @@ tsthimem.exe: tsthimem.$(OBJ) 16.lib $(DOSLIBEXMMOBJ)
 #	wcl $(FLAGS) testemm0.$(OBJ) 16.lib $(DOSLIBEXMMOBJ)
 
 pcxtest.exe: pcxtest.$(OBJ) gfx.lib
-	wcl $(FLAGS) pcxtest.$(OBJ) gfx.lib -fm=pcxtest.maw
+	wcl $(FLAGS) pcxtest.$(OBJ) gfx.lib -fm=pcxtest.map
 
 palettec.exe: palettec.$(OBJ) 16.lib
-	wcl $(FLAGS) palettec.$(OBJ) 16.lib -fm=palettec.maw
+	wcl $(FLAGS) palettec.$(OBJ) 16.lib -fm=palettec.map
 
 maptest.exe: maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
-	wcl $(FLAGS) maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib -fm=maptest.maw
+	wcl $(FLAGS) maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib -fm=maptest.map
 
 #maptest0.exe: maptest0.$(OBJ) fmapread.$(OBJ) farjsmn.$(OBJ)# 16.lib
 #	wcl $(FLAGS) $(MFLAGS) maptest0.$(OBJ) fmapread.$(OBJ) farjsmn.$(OBJ)# 16.lib
@@ -118,13 +118,13 @@ maptest.exe: maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
 #	wcl $(FLAGS) $(MFLAGS) emsdump.$(OBJ) memory.$(OBJ)
 
 fmemtest.exe: fmemtest.$(OBJ) 16.lib
-	wcl $(FLAGS) fmemtest.$(OBJ) 16.lib -fm=fmemtest.maw
+	wcl $(FLAGS) fmemtest.$(OBJ) 16.lib -fm=fmemtest.map
 
 exmmtest.exe: exmmtest.$(OBJ) 16.lib
-	wcl $(FLAGS) exmmtest.$(OBJ) 16.lib -fm=exmmtest.maw
+	wcl $(FLAGS) exmmtest.$(OBJ) 16.lib -fm=exmmtest.map
 
 vgmtest.exe: vgmtest.$(OBJ) 16.lib
-	wcl $(FLAGS) vgmtest.$(OBJ) 16.lib -fm=vgmtest.maw
+	wcl $(FLAGS) vgmtest.$(OBJ) 16.lib -fm=vgmtest.map
 
 #
 #executable's objects
@@ -318,7 +318,7 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.SMP
 	@$(REMOVECOMMAND) *.hed
 	@$(REMOVECOMMAND) *.MAP
-	@$(REMOVECOMMAND) *.maw
+	@$(REMOVECOMMAND) *.map
 	@$(COPYCOMMAND) .git/config git_con.fig
 #	@$(COPYCOMMAND) $(SRC)exmmtest.c $(EXMMTESTDIR)$(SRC)
 #	@$(COPYCOMMAND) $(SRCLIB)16_mm.* $(EXMMTESTDIR)$(SRCLIB)
