@@ -310,6 +310,7 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.16W
 	@$(REMOVECOMMAND) *.16B
 	@$(REMOVECOMMAND) *.OBJ
+	@$(REMOVECOMMAND) *.o
 	@$(REMOVECOMMAND) *.BCO
 	@$(REMOVECOMMAND) makefi~1
 	@$(REMOVECOMMAND) makefile~
