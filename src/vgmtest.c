@@ -26,9 +26,19 @@
  * soundtest
  */
 
+#define VGM_SLOTS	4
+
+VGM_FILE vgmFiles[VGM_SLOTS];
+
 void main()
 {
 	global_game_variables_t gvar;
+	VGM_FILE* tempVgmFile;
+	UINT8 vgmChn;
+	UINT8 vgmId;
+
+	tempVgmFile = &vgmFiles[vgmId];
+
 	if (vgmChn == 0x7F)
 		PlayMusic(tempVgmFile);
 	else

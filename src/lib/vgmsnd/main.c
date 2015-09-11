@@ -45,12 +45,12 @@ int main(int argc, char* argv[])
 	UINT32 idWavOutDev;
 	AUDDRV_INFO* drvInfo;
 	AUDIO_OPTS* opts;
-	
+
 	Audio_Init();
 	drvCount = Audio_GetDriverCount();
 	if (! drvCount)
 		goto Exit_Deinit;
-	
+
 	idWavOut = 0;
 	idWavOutDev = 0;
 	Audio_GetDriverInfo(idWavOut, &drvInfo);
@@ -61,16 +61,16 @@ int main(int argc, char* argv[])
 		printf("WaveOut: Drv Init Error: %02X\n", retVal);
 		goto Exit_Deinit;
 	}
-	
+
 	opts = AudioDrv_GetOptions(audDrv);
 	opts->numChannels = 1;
 	opts->numBitsPerSmpl = 16;
 	CHIP_SAMPLE_RATE = opts->sampleRate;
-	
+
 	device_start_ym3812(0, 3579545);
 	device_reset_ym3812(0);
 	InitEngine();
-	
+
 	AudioDrv_SetCallback(audDrv, FillBuffer);
 	printf("Opening Device %u ...\n", idWavOutDev);
 	retVal = AudioDrv_Start(audDrv, idWavOutDev);
@@ -79,13 +79,13 @@ int main(int argc, char* argv[])
 		printf("Dev Init Error: %02X\n", retVal);
 		goto Exit_DrvDeinit;
 	}
-	
+
 	/*getchar();
 	printf("Current Latency: %u ms\n", AudioDrv_GetLatency(audDrv));*/
 	EngineControlCUI();
-	
+
 	retVal = AudioDrv_Stop(audDrv);
-	
+
 Exit_DrvDeinit:
 	DeinitEngine();
 	device_stop_ym3812(0);
@@ -93,12 +93,12 @@ Exit_DrvDeinit:
 Exit_Deinit:
 	Audio_Deinit();
 	printf("Done.\n");
-	
+
 #if _DEBUG
 	if (_CrtDumpMemoryLeaks())
 		_getch();
 #endif
-	
+
 	return 0;
 }
 
@@ -112,7 +112,7 @@ static UINT32 FillBuffer(void* Params, UINT32 bufSize, void* data)
 	INT16* SmplPtr16;
 	UINT32 curSmpl;
 	INT32 chipSmplsFin;
-	
+
 	smplCount = bufSize / 2;
 	SmplPtr16 = (INT16*)data;
 	for (curSmpl = 0; curSmpl < smplCount; curSmpl ++)
@@ -120,16 +120,16 @@ static UINT32 FillBuffer(void* Params, UINT32 bufSize, void* data)
 		ym3812_stream_update(0, chipSmpls, 1);
 		UpdateSoundEngine();
 		smplLastIrq ++;
-		
+
 		chipSmplsFin = chipSmplL[0];
-		
+
 #if 0
 		if ((curSmpl / (smplCount / 16)) < 15)
 			chipSmplsFin += +0x0100;
 		else
 			chipSmplsFin += -0x0100;
 #endif
-		
+
 		if (chipSmplsFin < -0x7FFF)
 			chipSmplsFin = -0x7FFF;
 		else if (chipSmplsFin > 0x7FFF)
@@ -186,7 +186,7 @@ void EngineControlCUI(void)
 	UINT8 vgmId;
 	UINT8 vgmChn;
 	UINT8 retVal;
-	
+
 	printf("Commands:\n");
 	printf("Ls File.vgm - Load File.vgm into Slot s\n");
 	printf("Pcs - Play Slot s on Channel c\n");
@@ -196,10 +196,10 @@ void EngineControlCUI(void)
 	printf("R - Resume Music\n");
 	printf("Channels: M = music, 0-5 = SFX\n");
 	printf("Slots: M, 0-3 (M equals slot 0)\n");
-	
+
 	for (curSFX = 0; curSFX < VGM_SLOTS; curSFX ++)
 		memset(&vgmFiles[curSFX], 0x00, sizeof(VGM_FILE));
-	
+
 	while(1)
 	{
 		tempStr = fgets(inLine, 0x100, stdin);
@@ -209,7 +209,7 @@ void EngineControlCUI(void)
 		if (tempPos <= 1)
 			break;
 		inLine[tempPos-1] = '\0';
-		
+
 		switch(toupper(inLine[0]))
 		{
 		case 'L':	// load
@@ -264,14 +264,14 @@ void EngineControlCUI(void)
 			break;
 		}
 	}
-	
+
 	StopMusic();
 	StopSFX(0xFF);
 	for (curSFX = 0; curSFX < VGM_SLOTS; curSFX ++)
 		FreeVGMFile(&vgmFiles[curSFX]);
-	
+
 	printf("Quit.\n");
 	_getch();
-	
+
 	return;
 }
