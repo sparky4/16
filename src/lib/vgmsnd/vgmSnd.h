@@ -6,11 +6,11 @@ extern "C"
 {
 #endif
 
-#include "stdtype.h"
+#include "src/lib/vgmsnd/stdtype.h"
 
 typedef struct _vgm_file_header
 {
-	UINT32 fccVGM;
+	sdword fccVGM;
 	UINT32 lngEOFOffset;
 	UINT32 lngVersion;
 	UINT32 lngHzPSG;

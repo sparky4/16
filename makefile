@@ -20,6 +20,7 @@ SRCLIB=$(SRC)lib$(DIRSEP)
 JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
 NYANLIB=$(SRCLIB)nyan$(DIRSEP)
 #EXMMLIB=$(SRCLIB)exmm$(DIRSEP)
+VGMSNDLIB=$(SRCLIB)vgmsnd$(DIRSEP)
 DOSLIB=$(SRCLIB)doslib$(DIRSEP)
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
@@ -34,7 +35,7 @@ FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 
 DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
-16LIBOBJS = bakapee.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ) timer.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ)
+16LIBOBJS = bakapee.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ) timer.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) vgmSnd.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ)
 
 TESTEXEC =  exmmtest.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe tsthimem.exe inputest.exe scroll.exe
@@ -160,8 +161,8 @@ fmemtest.$(OBJ): $(SRC)fmemtest.c
 fonttest.$(OBJ): $(SRC)fonttest.c
 	wcl $(FLAGS) -c $(SRC)fonttest.c
 
-fonttes0.$(OBJ): $(SRC)fonttes0.c
-	wcl $(FLAGS) -c $(SRC)fonttes0.c
+#fonttes0.$(OBJ): $(SRC)fonttes0.c
+#	wcl $(FLAGS) -c $(SRC)fonttes0.c
 
 fontgfx.$(OBJ): $(SRC)fontgfx.c
 	wcl $(FLAGS) -c $(SRC)fontgfx.c
@@ -169,17 +170,17 @@ fontgfx.$(OBJ): $(SRC)fontgfx.c
 inputest.$(OBJ): $(SRC)inputest.c
 	wcl $(FLAGS) -c $(SRC)inputest.c
 
-sountest.$(OBJ): $(SRC)sountest.c
-	wcl $(FLAGS) -c $(SRC)sountest.c
+#sountest.$(OBJ): $(SRC)sountest.c
+#	wcl $(FLAGS) -c $(SRC)sountest.c
 
-miditest.$(OBJ): $(SRC)miditest.c
-	wcl $(FLAGS) -c $(SRC)miditest.c
+#miditest.$(OBJ): $(SRC)miditest.c
+#	wcl $(FLAGS) -c $(SRC)miditest.c
 
-testemm.$(OBJ): $(SRC)testemm.c
-	wcl $(FLAGS) -c $(SRC)testemm.c
+#testemm.$(OBJ): $(SRC)testemm.c
+#	wcl $(FLAGS) -c $(SRC)testemm.c
 
-testemm0.$(OBJ): $(SRC)testemm0.c
-	wcl $(FLAGS) -c $(SRC)testemm0.c
+#testemm0.$(OBJ): $(SRC)testemm0.c
+#	wcl $(FLAGS) -c $(SRC)testemm0.c
 
 tsthimem.$(OBJ): $(SRC)tsthimem.c
 	wcl $(FLAGS) -c $(SRC)tsthimem.c
@@ -278,6 +279,9 @@ jsmn.$(OBJ): $(JSMNLIB)jsmn.h $(JSMNLIB)jsmn.c
 
 kitten.$(OBJ): $(NYANLIB)kitten.h $(NYANLIB)kitten.c
 	wcl $(FLAGS) -c $(NYANLIB)kitten.c
+
+vgmSnd.$(OBJ): $(VGMSNDLIB)vgmSnd.h $(VGMSNDLIB)vgmSnd.c
+	wcl $(FLAGS) -c $(VGMSNDLIB)vgmSnd.c
 
 #farjsmn.$(OBJ): $(JSMNLIB)farjsmn.h $(JSMNLIB)farjsmn.c
 #	wcl $(FLAGS) $(MFLAGS) -c $(JSMNLIB)farjsmn.c

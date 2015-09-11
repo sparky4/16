@@ -8,8 +8,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "common.h"
-#include "vgmSndDrv.h"
+#include "src/lib/vgmsnd/common.h"
+#include "src/lib/vgmsnd/vgmSnd.h"
 
 
 #define QUICK_READ
@@ -21,7 +21,7 @@
 
 typedef struct _vgm_file_header_base
 {
-	UINT32 fccVGM;			// 00
+	sdword fccVGM;			// 00
 	UINT32 lngEOFOffset;	// 04
 	UINT32 lngVersion;		// 08
 	UINT32 lngSkip1[2];		// 0C
@@ -81,7 +81,7 @@ INLINE UINT32 ReadLE32(const UINT8* buffer)
 //UINT8 OpenVGMFile(const char* FileName, VGM_FILE* vgmFile);
 //void FreeVGMFile(VGM_FILE* vgmFile);
 
-static bool DoVgmLoop(VGM_PBK* vgmPlay);
+static boolean DoVgmLoop(VGM_PBK* vgmPlay);
 static void UpdateVGM(VGM_PBK* vgmPlay, UINT16 Samples);
 
 //void InitEngine(void);
@@ -221,7 +221,7 @@ void FreeVGMFile(VGM_FILE* vgmFile)
 }
 
 
-static bool DoVgmLoop(VGM_PBK* vgmPlay)
+static boolean DoVgmLoop(VGM_PBK* vgmPlay)
 {
 	const VGM_HEADER* vgmHdr = &vgmPlay->file->header;
 
@@ -528,7 +528,8 @@ UINT8 ResumeMusic(void)
 static void StartPlayback(VGM_PBK* vgmPb)
 {
 	if (vgmPb->file == NULL || vgmPb->file->data == NULL ||
-		vgmPb->file->header.fccVGM != FCC_VGM)
+		vgmPb->file->header.fccVGM != FCC_VGM
+)
 	{
 		vgmPb->vgmEnd = 0xFF;
 		return;
