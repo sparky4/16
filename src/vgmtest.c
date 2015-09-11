@@ -32,6 +32,7 @@ VGM_FILE vgmFiles[VGM_SLOTS];
 
 void main()
 {
+	InitEngine(void);
 	global_game_variables_t gvar;
 	VGM_FILE* tempVgmFile;
 	UINT8 vgmChn;
@@ -43,4 +44,5 @@ void main()
 		PlayMusic(tempVgmFile);
 	else
 		PlaySFX(tempVgmFile, vgmChn);
+	DeinitEngine(void);
 }
