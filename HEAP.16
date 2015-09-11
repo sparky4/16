@@ -1,45 +1,45 @@
 
 	== default ==
 
-  USED block at 1cd00016 of size 66
-  FREE block at 1cd00058 of size 18
-  USED block at 1cd0006a of size 136
-  USED block at 1cd000f2 of size 20
-  FREE block at 1cd00106 of size 7926
+  USED block at 1ba90016 of size 66
+  FREE block at 1ba90058 of size 18
+  USED block at 1ba9006a of size 136
+  USED block at 1ba900f2 of size 20
+  FREE block at 1ba90106 of size 7926
 OK - end of heap
 
 	== near ==
 
-  USED block at ccf85b6 of size 16
-  USED block at ccf85c6 of size 694
-  USED block at ccf887c of size 92
-  USED block at ccf88d8 of size 20
-  USED block at ccf88ec of size 20
-  USED block at ccf8900 of size 20
-  USED block at ccf8914 of size 20
-  USED block at ccf8928 of size 20
-  USED block at ccf893c of size 30400
+  USED block at ba885b6 of size 12
+  USED block at ba885c2 of size 294
+  USED block at ba886e8 of size 42
+  USED block at ba88712 of size 20
+  USED block at ba88726 of size 20
+  USED block at ba8873a of size 20
+  USED block at ba8874e of size 20
+  USED block at ba88762 of size 20
+  USED block at ba88776 of size 30854
 OK - end of heap
 
 	== far ==
 
-  USED block at 1cd00016 of size 66
-  USED block at 1cd00058 of size 18
-  USED block at 1cd0006a of size 136
-  USED block at 1cd000f2 of size 20
-  USED block at 1cd00106 of size 7926
+  USED block at 1ba90016 of size 66
+  USED block at 1ba90058 of size 18
+  USED block at 1ba9006a of size 136
+  USED block at 1ba900f2 of size 20
+  USED block at 1ba90106 of size 7926
 OK - end of heap
 
 Memory Type         Total      Used       Free
 ----------------  --------   --------   --------
 Default		   8166		222	  7944
-Near		   31302	886	  30416
+Near		   31302	448	  30854
 Far		   8166		222	  7944
 ----------------  --------   --------   --------
-coreleft = 30412
-farcoreleft = 38160
-GetFreeSize = 7768
-GetNearFreeSize = 30416
-GetFarFreeSize = 7768
-memavl = 30412
+coreleft = 30852
+farcoreleft = 46792
+GetFreeSize = 15960
+GetNearFreeSize = 30854
+GetFarFreeSize = 15960
+memavl = 30852
 stackavail = 15125

@@ -5,10 +5,10 @@ code it! thw cuttef
 
 what?
 
-font!
-jis!
+font! ok
+jis! ...
 memory segmentation!
 
 
 FIX TESTEMM.EXE
-FIX MIDITEST.EXE
+FIX SCROLL.EXE
