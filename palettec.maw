@@ -1,6 +1,6 @@
 Open Watcom Linker Version 1.9
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/09/11 12:56:33
+Created on:       15/09/11 13:50:36
 Executable Image: palettec.exe
 creating a DOS executable
 
@@ -395,4 +395,4 @@ Module: /usr/watcom/lib286/dos/clibc.lib(bexpand.c)
 Stack size:  8000 (32768.)
 Memory size:  e570 (58736.)
 Entry point address: 0000:17da
-Link time: 00:00.00
+Link time: 00:00.01
