@@ -47,15 +47,15 @@ all: $(EXEC)
 #game and bakapi executables
 #
 16.exe: 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
-	wcl $(FLAGS) $(16FLAGS) 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
+	wcl $(FLAGS) $(16FLAGS) 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib -fm=16.map
 
 bakapi.exe: bakapi.$(OBJ) 16.lib
-	wcl $(FLAGS) $(BAKAPIFLAGS) bakapi.$(OBJ) 16.lib
+	wcl $(FLAGS) $(BAKAPIFLAGS) bakapi.$(OBJ) 16.lib -fm=bakapi.map
 #
 #Test Executables!
 #
 scroll.exe: scroll.$(OBJ) 16.lib mapread.$(OBJ) jsmn.$(OBJ)
-	wcl $(FLAGS) scroll.$(OBJ) 16.lib mapread.$(OBJ) jsmn.$(OBJ)
+	wcl $(FLAGS) scroll.$(OBJ) 16.lib mapread.$(OBJ) jsmn.$(OBJ) -fm=scroll.map
 scroll.$(OBJ): $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
 
@@ -119,7 +119,7 @@ fmemtest.exe: fmemtest.$(OBJ) 16.lib
 	wcl $(FLAGS) fmemtest.$(OBJ) 16.lib
 
 exmmtest.exe: exmmtest.$(OBJ) 16.lib
-	wcl $(FLAGS) exmmtest.$(OBJ) 16.lib
+	wcl $(FLAGS) exmmtest.$(OBJ) 16.lib -fm=exmmtest.map
 
 #
 #executable's objects
