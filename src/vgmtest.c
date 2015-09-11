@@ -24,6 +24,7 @@
  */
 
 #include "src/lib/vgmsnd/vgmSnd.h"
+#include "src/lib/vgmsnd/3812intf.h"
 
 //#define VGM_SLOTS	4
 
