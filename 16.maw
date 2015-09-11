@@ -1,6 +1,6 @@
 Open Watcom Linker Version 1.9
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/09/11 09:40:21
+Created on:       15/09/11 09:54:44
 Executable Image: 16.exe
 creating a DOS executable
 
@@ -479,4 +479,4 @@ Module: /dos/fdos/watcom/lib286/dos/clibc.lib(mbinit.c)
 Stack size:  8000 (32768.)
 Memory size:  00011b00 (72448.)
 Entry point address: 0000:3674
-Link time: 00:00.04
+Link time: 00:00.00
