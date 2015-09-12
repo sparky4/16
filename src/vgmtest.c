@@ -54,15 +54,15 @@ main(int argc, char *argv[])
 	player_t player[MaxPlayers];
 
 	//opl2out(0x105, 0x00);
-	if(!init_adlib())
+	/*if(!init_adlib())
 	{
 		printf("Cannot init library\n");
 		exit(-5);
-	}
-	InitEngine();
+	}*/
 	OpenVGMFile("data/0.vgm", &pee[0]);
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
+	InitEngine();
 	PlayMusic(&pee[0]);
 	while(!IN_KeyDown(sc_Escape))
 	{
@@ -72,6 +72,6 @@ main(int argc, char *argv[])
 	StopMusic();
 	FreeVGMFile(&pee[0]);
 	DeinitEngine();
-	shutdown_adlib();
+	//shutdown_adlib();
 	IN_Shutdown();
 }
