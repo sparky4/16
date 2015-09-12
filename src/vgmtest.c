@@ -51,6 +51,7 @@ main(int argc, char *argv[])
 	VGM_FILE pee[9];
 	player_t player[MaxPlayers];
 
+	//opl2out(0x105, 0x00);
 	InitEngine();
 	OpenVGMFile("data/0.vgm", &pee[0]);
 	IN_Startup();
