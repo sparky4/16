@@ -17,9 +17,9 @@
 *
 ******************************************************************************/
 #include <stddef.h>
-#include "mamedef.h"
-#include "3812intf.h"
-#include "fmopl.h"
+//#include "src/lib/vgmsnd/mamedef.h"
+#include "src/lib/vgmsnd/3812intf.h"
+//#include "fmopl.h"
 
 
 typedef struct _ym3812_state ym3812_state;
@@ -53,10 +53,10 @@ int device_start_ym3812(UINT8 ChipID, int clock)
 {
 	ym3812_state *info;
 	int rate;
-	
+
 	if (ChipID >= MAX_CHIPS)
 		return 0;
-	
+
 	info = &YM3812Data[ChipID];
 	//rate = clock /72;
 	rate = CHIP_SAMPLE_RATE;

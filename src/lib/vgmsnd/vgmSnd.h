@@ -73,8 +73,8 @@ void UpdateSoundEngine(void);
 
 
 // Functions that must be supplied by external library:
-//extern void OPL2_Write(UINT8 reg, UINT8 data);
-//extern UINT8 OPL2_ReadStatus(void);
+extern void OPL2_Write(UINT8 reg, UINT8 data);
+extern UINT8 OPL2_ReadStatus(void);
 
 
 #ifdef __cplusplus

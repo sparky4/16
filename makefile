@@ -35,11 +35,11 @@ FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 
 DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
-16LIBOBJS = bakapee.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ) timer.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) vgmSnd.$(OBJ)
+16LIBOBJS = bakapee.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ) timer.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) vgmSnd.$(OBJ) 16_snd.$(OBJ)
+#3812intf.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ)
 
-TESTEXEC =  exmmtest.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe tsthimem.exe inputest.exe scroll.exe
-#++++vgmtest.exe
+TESTEXEC =  exmmtest.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe tsthimem.exe inputest.exe scroll.exe vgmtest.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe sega.exe sountest.exe
 EXEC = 16.exe bakapi.exe $(TESTEXEC)
 
@@ -281,6 +281,9 @@ emm.$(OBJ): $(DOSLIB)emm.h $(DOSLIB)emm.c
 16_hc.$(OBJ): $(SRCLIB)16_hc.h $(SRCLIB)16_hc.c
 	wcl $(FLAGS) -c $(SRCLIB)16_hc.c
 
+16_snd.$(OBJ): $(SRCLIB)16_snd.h $(SRCLIB)16_snd.c
+	wcl $(FLAGS) -c $(SRCLIB)16_snd.c
+
 jsmn.$(OBJ): $(JSMNLIB)jsmn.h $(JSMNLIB)jsmn.c
 	wcl $(FLAGS) -c $(JSMNLIB)jsmn.c
 
@@ -289,6 +292,9 @@ kitten.$(OBJ): $(NYANLIB)kitten.h $(NYANLIB)kitten.c
 
 vgmSnd.$(OBJ): $(VGMSNDLIB)vgmSnd.h $(VGMSNDLIB)vgmSnd.c
 	wcl $(FLAGS) -c $(VGMSNDLIB)vgmSnd.c
+
+#3812intf.$(OBJ): $(VGMSNDLIB)3812intf.h $(VGMSNDLIB)3812intf.c
+#	wcl $(FLAGS) -c $(VGMSNDLIB)3812intf.c
 
 #farjsmn.$(OBJ): $(JSMNLIB)farjsmn.h $(JSMNLIB)farjsmn.c
 #	wcl $(FLAGS) $(MFLAGS) -c $(JSMNLIB)farjsmn.c

@@ -24,16 +24,44 @@
  */
 
 #include "src/lib/vgmsnd/vgmSnd.h"
-#include "src/lib/vgmsnd/3812intf.h"
+#include "src/lib/16_snd.h"
+#include "src/lib/16_in.h"
 
-//#define VGM_SLOTS	4
+void OPL2_Write(UINT8 reg, UINT8 data);
+UINT8 OPL2_ReadStatus(void);
 
-//VGM_FILE vgmFiles[VGM_SLOTS];
+void OPL2_Write(UINT8 reg, UINT8 data)
+{
+	//ym3812_w(0, 0, reg);
+	//ym3812_w(0, 1, data);
+	opl2out(reg, data);
+	return;
+}
 
-void main()
+UINT8 OPL2_ReadStatus(void)
+{
+	return 0;
+	//return ym3812_r(0, 0);
+}
+
+void
+main(int argc, char *argv[])
 {
 	global_game_variables_t gvar;
+	VGM_FILE pee;
+	player_t player[MaxPlayers];
+
 	InitEngine();
+	OpenVGMFile("data\0.vgm", &pee);
+	IN_Startup();
+	IN_Default(0,&player,ctrl_Joystick);
+	PlayMusic(&pee);
+	while(!IN_KeyDown(sc_Escape))
+	{
+		IN_ReadControl(0,&player);
+		UpdateSoundEngine();
+	}
+	StopMusic();
 	/*VGM_FILE* tempVgmFile;
 	UINT8 vgmChn;
 	UINT8 vgmId;
@@ -44,5 +72,7 @@ void main()
 		PlayMusic(tempVgmFile);
 	else
 		PlaySFX(tempVgmFile, vgmChn);*/
+	FreeVGMFile(&pee);
 	DeinitEngine();
+	IN_Shutdown();
 }

@@ -1,6 +1,6 @@
 Open Watcom Linker Version 1.9
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/09/11 15:04:18
+Created on:       15/09/11 22:58:16
 Executable Image: scroll.exe
 creating a DOS executable
 
@@ -600,4 +600,4 @@ Module: /usr/watcom/lib286/dos/clibc.lib(hugeval.c)
 Stack size:  8000 (32768.)
 Memory size:  000164b0 (91312.)
 Entry point address: 0000:5fe4
-Link time: 00:00.02
+Link time: 00:00.01
