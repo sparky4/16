@@ -28,22 +28,20 @@
 //#include "src/lib/doslib/adlib.h"
 #include "src/lib/16_in.h"
 
-void OPL2_Write(UINT8 reg, UINT8 data);
-UINT8 OPL2_ReadStatus(void);
+void OPL2_Write(byte reg, byte data);
+byte OPL2_ReadStatus(void);
 
-void OPL2_Write(UINT8 reg, UINT8 data)
+void OPL2_Write(byte reg, byte data)
 {
 	//ym3812_w(0, 0, reg);
 	//ym3812_w(0, 1, data);
 	opl2out(reg, data);
-	//adlib_write((word) reg,(byte)data);
 	return;
 }
 
-UINT8 OPL2_ReadStatus(void)
+byte OPL2_ReadStatus(void)
 {
 	return(inp(ADLIB_FM_ADDRESS));
-	//return (UINT8)adlib_read(0);
 	//return ym3812_r(0, 0);
 }
 
@@ -53,26 +51,25 @@ main(int argc, char *argv[])
 	global_game_variables_t gvar;
 	VGM_FILE pee[9];
 	player_t player[MaxPlayers];
+	char *bakapee;
 
-	//opl2out(0x105, 0x00);
-	/*if(!init_adlib())
-	{
-		printf("Cannot init library\n");
-		exit(-5);
-	}*/
-	printf("%x\n", OpenVGMFile("data/0.vgm", &pee[0]));
+	bakapee = malloc(64);
+	if(argv[1]) bakapee = argv[1];
+	else bakapee = "data/0.vgm";
+	printf("%x\n", OpenVGMFile(bakapee, &pee[0]));
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
 	InitEngine();
 	PlayMusic(&pee[0]);
 	while(!IN_KeyDown(sc_Escape))
+	//while(!getch())
 	{
 		IN_ReadControl(0,&player);
 		UpdateSoundEngine();
 	}
 	StopMusic();
 	FreeVGMFile(&pee[0]);
+	//IN_Shutdown();
 	DeinitEngine();
-	//shutdown_adlib();
 	IN_Shutdown();
 }
