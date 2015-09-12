@@ -52,26 +52,16 @@ main(int argc, char *argv[])
 	player_t player[MaxPlayers];
 
 	InitEngine();
-	OpenVGMFile("data\0.vgm", &pee);
+	OpenVGMFile("data/0.vgm", &pee);
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
-	PlayMusic(&pee);
 	while(!IN_KeyDown(sc_Escape))
 	{
+		PlayMusic(&pee);
 		IN_ReadControl(0,&player);
 		UpdateSoundEngine();
 	}
 	StopMusic();
-	/*VGM_FILE* tempVgmFile;
-	UINT8 vgmChn;
-	UINT8 vgmId;
-
-	tempVgmFile = &vgmFiles[vgmId];
-
-	if (vgmChn == 0x7F)
-		PlayMusic(tempVgmFile);
-	else
-		PlaySFX(tempVgmFile, vgmChn);*/
 	FreeVGMFile(&pee);
 	DeinitEngine();
 	IN_Shutdown();
