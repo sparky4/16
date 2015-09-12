@@ -59,7 +59,7 @@ main(int argc, char *argv[])
 	{
 		PlayMusic(&pee);
 		IN_ReadControl(0,&player);
-		UpdateSoundEngine();
+		//UpdateSoundEngine();
 	}
 	StopMusic();
 	FreeVGMFile(&pee);
