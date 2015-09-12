@@ -1,7 +1,7 @@
 #ifndef __COMMON_H__
 #define __COMMON_H__
 
-#include "src/lib/vgmsnd/stdtype.h"
+//#include "src/lib/vgmsnd/stdtype.h"
 //#include "src/lib/16_head.h"
 //#include "src/lib/vgmsnd/stdbool.h"
 

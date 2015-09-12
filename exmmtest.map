@@ -1,6 +1,6 @@
 Open Watcom Linker Version 1.9
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/09/12 03:14:20
+Created on:       15/09/12 12:47:11
 Executable Image: exmmtest.exe
 creating a DOS executable
 
@@ -495,4 +495,4 @@ Module: /usr/watcom/lib286/dos/clibc.lib(clearenv.c)
 Stack size:  8000 (32768.)
 Memory size:  00011e70 (73328.)
 Entry point address: 0000:47f4
-Link time: 00:00.02
+Link time: 00:00.01

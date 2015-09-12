@@ -22,54 +22,54 @@
 typedef struct _vgm_file_header_base
 {
 	sdword fccVGM;			// 00
-	UINT32 lngEOFOffset;	// 04
-	UINT32 lngVersion;		// 08
-	UINT32 lngSkip1[2];		// 0C
-	UINT32 lngGD3Offset;	// 14
-	UINT32 lngTotalSamples;	// 18
-	UINT32 lngLoopOffset;	// 1C
-	UINT32 lngLoopSamples;	// 20
-	UINT32 lngRate;			// 24
-	UINT32 lngSkip2[3];		// 28
-	UINT32 lngDataOffset;	// 34
-	UINT32 lngSkip3[2];		// 38
+	sdword lngEOFOffset;	// 04
+	sdword lngVersion;		// 08
+	sdword lngSkip1[2];		// 0C
+	sdword lngGD3Offset;	// 14
+	sdword lngTotalSamples;	// 18
+	sdword lngLoopOffset;	// 1C
+	sdword lngLoopSamples;	// 20
+	sdword lngRate;			// 24
+	sdword lngSkip2[3];		// 28
+	sdword lngDataOffset;	// 34
+	sdword lngSkip3[2];		// 38
 } VGM_BASE_HDR;
 
 #define PBMODE_MUSIC	0x00
 #define PBMODE_SFX		0x01
 typedef struct _vgm_playback
 {
-	UINT8 pbMode;
-	UINT8 vgmEnd;	// 00 - running, 01 - finished, FF - not loaded
-	UINT16 curLoopCnt;
-	UINT32 vgmPos;
-	UINT32 vgmSmplPos;
-	UINT32 pbSmplPos;
+	byte pbMode;
+	byte vgmEnd;	// 00 - running, 01 - finished, FF - not loaded
+	sword/**/ curLoopCnt;
+	sdword vgmPos;
+	sdword vgmSmplPos;
+	sdword pbSmplPos;
 	VGM_FILE* file;
 
 	// oplChnMask:
 	//	Music: mask of channels used/overridden by SFX
 	//	SFX:   ID of channel used by SFX (all commands are forces to it)
-	UINT16 oplChnMask;
-	UINT8* oplRegCache;
-	UINT8 workRAM[0x04];
+	sword/**/ oplChnMask;
+	byte* oplRegCache;
+	byte workRAM[0x04];
 } VGM_PBK;
 
 
 
-INLINE UINT16 ReadLE16(const UINT8* buffer)
+INLINE sword/**/ ReadLE16(const byte* buffer)
 {
 #ifdef QUICK_READ
-	return *(UINT16*)buffer;
+	return *(sword/**/*)buffer;
 #else
 	return (buffer[0x00] << 0) | (buffer[0x01] << 8);
 #endif
 }
 
-INLINE UINT32 ReadLE32(const UINT8* buffer)
+INLINE sdword ReadLE32(const byte* buffer)
 {
 #ifdef QUICK_READ
-	return *(UINT32*)buffer;
+	return *(sword*)buffer;
 #else
 	return	(buffer[0x00] <<  0) | (buffer[0x01] <<  8) |
 			(buffer[0x02] << 16) | (buffer[0x03] << 24);
@@ -78,35 +78,35 @@ INLINE UINT32 ReadLE32(const UINT8* buffer)
 
 
 // Function Prototypes
-//UINT8 OpenVGMFile(const char* FileName, VGM_FILE* vgmFile);
+//byte OpenVGMFile(const char* FileName, VGM_FILE* vgmFile);
 //void FreeVGMFile(VGM_FILE* vgmFile);
 
 static boolean DoVgmLoop(VGM_PBK* vgmPlay);
-static void UpdateVGM(VGM_PBK* vgmPlay, UINT16 Samples);
+static void UpdateVGM(VGM_PBK* vgmPlay, sword/**/ Samples);
 
 //void InitEngine(void);
 //void DeinitEngine(void);
 
-//UINT8 PlayMusic(VGM_FILE* vgmFile);
-//UINT8 PlaySFX(VGM_FILE* vgmFile, UINT8 sfxChnID);
-//UINT8 StopMusic(void);
-//UINT8 StopSFX(UINT8 sfxChnID);	// Note: sfxChnID == 0xFF -> stop all SFX
-//UINT8 PauseMusic(void);
-//UINT8 ResumeMusic(void);
+//byte PlayMusic(VGM_FILE* vgmFile);
+//byte PlaySFX(VGM_FILE* vgmFile, byte sfxChnID);
+//byte StopMusic(void);
+//byte StopSFX(byte sfxChnID);	// Note: sfxChnID == 0xFF -> stop all SFX
+//byte PauseMusic(void);
+//byte ResumeMusic(void);
 static void StartPlayback(VGM_PBK* vgmPb);
 static void StopPlayback(VGM_PBK* vgmPb);
 
-static void ym2413_write(VGM_PBK* vgmPb, UINT8 reg, UINT8 data);
-static void ym3812_write(VGM_PBK* vgmPb, UINT8 reg, UINT8 data);
-static void ym3512_write(VGM_PBK* vgmPb, UINT8 reg, UINT8 data);
-static void ymf262_write(VGM_PBK* vgmPb, UINT8 port, UINT8 reg, UINT8 data);
+static void ym2413_write(VGM_PBK* vgmPb, byte reg, byte data);
+static void ym3812_write(VGM_PBK* vgmPb, byte reg, byte data);
+static void ym3512_write(VGM_PBK* vgmPb, byte reg, byte data);
+static void ymf262_write(VGM_PBK* vgmPb, byte port, byte reg, byte data);
 
 //void UpdateSoundEngine(void);
 
 
 // Functions that must be supplied by external library
-extern void OPL2_Write(UINT8 reg, UINT8 data);
-extern UINT8 OPL2_ReadStatus(void);
+extern void OPL2_Write(byte reg, byte data);
+extern byte OPL2_ReadStatus(void);
 
 
 
@@ -119,32 +119,32 @@ extern UINT8 OPL2_ReadStatus(void);
 static VGM_PBK vgmPbMusic;
 static VGM_PBK vgmPbSFX[SFX_CHN_COUNT];
 
-static UINT8 oplRegs_Music[0x100];
-static UINT8 oplRegs_SFX[SFX_CHN_COUNT][0x0D];	// 20 23 40 43 60 63 80 83 E0 E3 C0 A0 B0
+static byte oplRegs_Music[0x100];
+static byte oplRegs_SFX[SFX_CHN_COUNT][0x0D];	// 20 23 40 43 60 63 80 83 E0 E3 C0 A0 B0
 
-static const UINT8 SFX_REGS[0x0D] =
+static const byte SFX_REGS[0x0D] =
 {	0x20, 0x23, 0x40, 0x43, 0x60, 0x63, 0x80, 0x83,
 	0xE0, 0xE3, 0xC0, 0xA0, 0xB0};
-static const UINT8 SFX_REGS_REV[0x10] =	// 20/30 -> 0, 40/50 -> 2, ...
+static const byte SFX_REGS_REV[0x10] =	// 20/30 -> 0, 40/50 -> 2, ...
 {	0xFF, 0xFF, 0x00, 0x00, 0x02, 0x02, 0x04, 0x04,
 	0x06, 0x06, 0x0B, 0x0C, 0x0A, 0xFF, 0x08, 0x08};
-static const UINT8 CHN_OPMASK[0x09] =
+static const byte CHN_OPMASK[0x09] =
 {	0x00, 0x01, 0x02, 0x08, 0x09, 0x0A, 0x10, 0x11, 0x12};
-static const UINT8 CHN_OPMASK_REV[0x20] =
+static const byte CHN_OPMASK_REV[0x20] =
 {	0x00, 0x01, 0x02, 0x80, 0x81, 0x82, 0xFF, 0xFF,
 	0x03, 0x04, 0x05, 0x83, 0x84, 0x85, 0xFF, 0xFF,
 	0x06, 0x07, 0x08, 0x86, 0x87, 0x88, 0xFF, 0xFF,
 	0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 
-UINT8 OpenVGMFile(const char* FileName, VGM_FILE* vgmFile)
+byte OpenVGMFile(const char* FileName, VGM_FILE* vgmFile)
 {
 	size_t hdrSize;
 	size_t readEl;	// 'elements' read from file
 	size_t bytesToRead;
 	VGM_BASE_HDR vgmBaseHdr;
 	FILE* hFile;
-	UINT32 CurPos;
+	sdword CurPos;
 
 	memset(vgmFile, 0x00, sizeof(VGM_FILE));
 
@@ -171,7 +171,7 @@ UINT8 OpenVGMFile(const char* FileName, VGM_FILE* vgmFile)
 	}
 
 	vgmFile->dataLen = vgmBaseHdr.lngEOFOffset + 0x04;
-	vgmFile->data = (UINT8*)malloc(vgmFile->dataLen);
+	vgmFile->data = (byte*)malloc(vgmFile->dataLen);
 	if (vgmFile->data == NULL)
 	{
 		fclose(hFile);
@@ -206,7 +206,7 @@ UINT8 OpenVGMFile(const char* FileName, VGM_FILE* vgmFile)
 		CurPos = 0x40;
 	hdrSize = sizeof(VGM_HEADER);
 	if (hdrSize > CurPos)
-		memset((UINT8*)&vgmFile->header + CurPos, 0x00, hdrSize - CurPos);
+		memset((byte*)&vgmFile->header + CurPos, 0x00, hdrSize - CurPos);
 
 	fclose(hFile);
 	return 0x00;
@@ -237,16 +237,16 @@ static boolean DoVgmLoop(VGM_PBK* vgmPlay)
 	return true;
 }
 
-static void UpdateVGM(VGM_PBK* vgmPlay, UINT16 Samples)
+static void UpdateVGM(VGM_PBK* vgmPlay, sword/**/ Samples)
 {
-	const UINT32 vgmLen = vgmPlay->file->dataLen;
-	const UINT8* vgmData = vgmPlay->file->data;
-	const UINT8* VGMPnt;
-	UINT32 VGMPos;
-	UINT32 VGMSmplPos;
-	UINT8 Command;
-	UINT8 blockType;
-	UINT32 blockLen;
+	const sdword vgmLen = vgmPlay->file->dataLen;
+	const byte* vgmData = vgmPlay->file->data;
+	const byte* VGMPnt;
+	sdword VGMPos;
+	sdword VGMSmplPos;
+	byte Command;
+	byte blockType;
+	sdword blockLen;
 
 	vgmPlay->pbSmplPos += Samples;
 	VGMPos = vgmPlay->vgmPos;
@@ -390,8 +390,8 @@ static void UpdateVGM(VGM_PBK* vgmPlay, UINT16 Samples)
 
 void InitEngine(void)
 {
-	UINT8 curSFX;
-	UINT8 curReg;
+	byte curSFX;
+	byte curReg;
 
 	memset(oplRegs_Music, 0x00, 0x100);
 	memset(&vgmPbMusic, 0x00, sizeof(VGM_PBK));
@@ -429,7 +429,7 @@ void InitEngine(void)
 
 void DeinitEngine(void)
 {
-	UINT8 curSFX;
+	byte curSFX;
 
 	StopPlayback(&vgmPbMusic);
 	for (curSFX = 0; curSFX < SFX_CHN_COUNT; curSFX ++)
@@ -441,7 +441,7 @@ void DeinitEngine(void)
 }
 
 
-UINT8 PlayMusic(VGM_FILE* vgmFile)
+byte PlayMusic(VGM_FILE* vgmFile)
 {
 	VGM_PBK* vgmPb = &vgmPbMusic;
 
@@ -455,7 +455,7 @@ UINT8 PlayMusic(VGM_FILE* vgmFile)
 	return 0x00;
 }
 
-UINT8 PlaySFX(VGM_FILE* vgmFile, UINT8 sfxChnID)
+byte PlaySFX(VGM_FILE* vgmFile, byte sfxChnID)
 {
 	VGM_PBK* vgmPb;
 
@@ -474,13 +474,13 @@ UINT8 PlaySFX(VGM_FILE* vgmFile, UINT8 sfxChnID)
 	return 0x00;
 }
 
-UINT8 StopMusic(void)
+byte StopMusic(void)
 {
 	StopPlayback(&vgmPbMusic);
 	return 0x00;
 }
 
-UINT8 StopSFX(UINT8 sfxChnID)
+byte StopSFX(byte sfxChnID)
 {
 	if (sfxChnID == 0xFF)
 	{
@@ -496,7 +496,7 @@ UINT8 StopSFX(UINT8 sfxChnID)
 	return 0x00;
 }
 
-UINT8 PauseMusic(void)
+byte PauseMusic(void)
 {
 	if (vgmPbMusic.vgmEnd == 0xFF)
 		return 0xFF;	// not playing
@@ -511,7 +511,7 @@ UINT8 PauseMusic(void)
 	return 0x00;
 }
 
-UINT8 ResumeMusic(void)
+byte ResumeMusic(void)
 {
 	if (vgmPbMusic.vgmEnd == 0xFF)
 		return 0xFF;	// not playing
@@ -544,7 +544,7 @@ static void StartPlayback(VGM_PBK* vgmPb)
 
 	if (vgmPb->pbMode == PBMODE_SFX)
 	{
-		UINT8 curReg;
+		byte curReg;
 
 		curReg = 0xB0 | vgmPb->oplChnMask;
 		if (oplRegs_Music[curReg] & 0x20)
@@ -563,8 +563,8 @@ static void StopPlayback(VGM_PBK* vgmPb)
 
 	if (vgmPb->pbMode == PBMODE_MUSIC)
 	{
-		UINT8 curReg;
-		UINT16 chnMask;
+		byte curReg;
+		sword/**/ chnMask;
 
 		chnMask = 0x0001;
 		for (curReg = 0xB0; curReg < 0xB9; curReg ++, chnMask <<= 1)
@@ -588,9 +588,9 @@ static void StopPlayback(VGM_PBK* vgmPb)
 	}
 	else //if (vgmPb->pbMode == PBMODE_SFX)
 	{
-		UINT8 regID;
-		UINT8 curReg;
-		UINT8 opMask;
+		byte regID;
+		byte curReg;
+		byte opMask;
 
 		curReg = 0xB0 | vgmPb->oplChnMask;
 		if (vgmPb->oplRegCache[0x0C] & 0x20)
@@ -624,10 +624,10 @@ static void StopPlayback(VGM_PBK* vgmPb)
 
 
 
-static void OPL_CachedWrite(VGM_PBK* vgmPb, UINT8 reg, UINT8 data)
+static void OPL_CachedWrite(VGM_PBK* vgmPb, byte reg, byte data)
 {
-	UINT8 regChn;
-	UINT8 ramOfs;
+	byte regChn;
+	byte ramOfs;
 
 	if (vgmPb->pbMode == PBMODE_MUSIC)
 	{
@@ -689,12 +689,12 @@ static void OPL_CachedWrite(VGM_PBK* vgmPb, UINT8 reg, UINT8 data)
 }
 
 
-static void ym2413_write(VGM_PBK* vgmPb, UINT8 reg, UINT8 data)
+static void ym2413_write(VGM_PBK* vgmPb, byte reg, byte data)
 {
 	return;	// unsupported for now
 }
 
-static void ym3812_write(VGM_PBK* vgmPb, UINT8 reg, UINT8 data)
+static void ym3812_write(VGM_PBK* vgmPb, byte reg, byte data)
 {
 	if (reg == 0x01)
 	{
@@ -710,7 +710,7 @@ static void ym3812_write(VGM_PBK* vgmPb, UINT8 reg, UINT8 data)
 	return;
 }
 
-static void ym3512_write(VGM_PBK* vgmPb, UINT8 reg, UINT8 data)
+static void ym3512_write(VGM_PBK* vgmPb, byte reg, byte data)
 {
 	if ((reg & 0xE0) == 0xE0)
 	{
@@ -728,7 +728,7 @@ static void ym3512_write(VGM_PBK* vgmPb, UINT8 reg, UINT8 data)
 	return;
 }
 
-static void ymf262_write(VGM_PBK* vgmPb, UINT8 port, UINT8 reg, UINT8 data)
+static void ymf262_write(VGM_PBK* vgmPb, byte port, byte reg, byte data)
 {
 	return;	// unsupported for now
 }
@@ -737,8 +737,8 @@ static void ymf262_write(VGM_PBK* vgmPb, UINT8 port, UINT8 reg, UINT8 data)
 
 void UpdateSoundEngine(void)
 {
-	UINT8 tmrMask;
-	UINT8 curSFX;
+	byte tmrMask;
+	byte curSFX;
 
 	tmrMask = OPL2_ReadStatus();
 	if (! (tmrMask & 0x40))
