@@ -48,21 +48,21 @@ void
 main(int argc, char *argv[])
 {
 	global_game_variables_t gvar;
-	VGM_FILE pee;
+	VGM_FILE pee[9];
 	player_t player[MaxPlayers];
 
 	InitEngine();
-	OpenVGMFile("data/0.vgm", &pee);
+	OpenVGMFile("data/0.vgm", &pee[0]);
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
 	while(!IN_KeyDown(sc_Escape))
 	{
-		PlayMusic(&pee);
+		PlayMusic(&pee[0]);
 		IN_ReadControl(0,&player);
-		//UpdateSoundEngine();
+		UpdateSoundEngine();
 	}
 	StopMusic();
-	FreeVGMFile(&pee);
+	FreeVGMFile(&pee[0]);
 	DeinitEngine();
 	IN_Shutdown();
 }
