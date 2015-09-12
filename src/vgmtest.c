@@ -24,7 +24,7 @@
  */
 
 #include "src/lib/vgmsnd/vgmSnd.h"
-#include "src/lib/16_snd.h"
+#include "src/lib/doslib/adlib.h"
 #include "src/lib/16_in.h"
 
 void OPL2_Write(UINT8 reg, UINT8 data);
@@ -34,13 +34,15 @@ void OPL2_Write(UINT8 reg, UINT8 data)
 {
 	//ym3812_w(0, 0, reg);
 	//ym3812_w(0, 1, data);
-	opl2out(reg, data);
+	//opl2out(reg, data);
+	adlib_write((word) reg,(byte)data);
 	return;
 }
 
 UINT8 OPL2_ReadStatus(void)
 {
-	return(inp(ADLIB_FM_ADDRESS));
+	//return(inp(ADLIB_FM_ADDRESS));
+	return (UINT8)adlib_read(0);
 	//return ym3812_r(0, 0);
 }
 
