@@ -55,9 +55,9 @@ main(int argc, char *argv[])
 	OpenVGMFile("data/0.vgm", &pee[0]);
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
+	PlayMusic(&pee[0]);
 	while(!IN_KeyDown(sc_Escape))
 	{
-		PlayMusic(&pee[0]);
 		IN_ReadControl(0,&player);
 		UpdateSoundEngine();
 	}
