@@ -40,7 +40,7 @@ void OPL2_Write(UINT8 reg, UINT8 data)
 
 UINT8 OPL2_ReadStatus(void)
 {
-	return 0;
+	return(inp(ADLIB_FM_ADDRESS));
 	//return ym3812_r(0, 0);
 }
 
