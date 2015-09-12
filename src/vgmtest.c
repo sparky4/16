@@ -60,7 +60,7 @@ main(int argc, char *argv[])
 		printf("Cannot init library\n");
 		exit(-5);
 	}*/
-	OpenVGMFile("data/0.vgm", &pee[0]);
+	printf("%x\n", OpenVGMFile("data/0.vgm", &pee[0]));
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
 	InitEngine();
