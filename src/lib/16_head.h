@@ -50,6 +50,8 @@
 #include "src/lib/nyan/kitten.h"
 #include "src/lib/types.h"
 
+#define VERSION __DATE__ " " __TIME__
+
 /* Control codes for all keys on the keyboard */
 //here temperarly
 /*

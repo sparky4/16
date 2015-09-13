@@ -11,36 +11,36 @@ extern "C"
 
 typedef struct _vgm_file_header
 {
-	UINT32 fccVGM;
-	UINT32 lngEOFOffset;
-	UINT32 lngVersion;
-	UINT32 lngHzPSG;
-	UINT32 lngHzYM2413;
-	UINT32 lngGD3Offset;
-	UINT32 lngTotalSamples;
-	UINT32 lngLoopOffset;
-	UINT32 lngLoopSamples;
-	UINT32 lngRate;
+	dword/*32*/ fccVGM;
+	dword/*32*/ lngEOFOffset;
+	dword/*32*/ lngVersion;
+	dword/*32*/ lngHzPSG;
+	dword/*32*/ lngHzYM2413;
+	dword/*32*/ lngGD3Offset;
+	dword/*32*/ lngTotalSamples;
+	dword/*32*/ lngLoopOffset;
+	dword/*32*/ lngLoopSamples;
+	dword/*32*/ lngRate;
 	UINT8 bytPSGCfg[4];
-	UINT32 lngHzYM2612;
-	UINT32 lngHzYM2151;
-	UINT32 lngDataOffset;
-	UINT32 lngHzSPCM;
-	UINT32 lngSPCMIntf;
-	UINT32 lngHzRF5C68;
-	UINT32 lngHzYM2203;
-	UINT32 lngHzYM2608;
-	UINT32 lngHzYM2610;
-	UINT32 lngHzYM3812;
-	UINT32 lngHzYM3526;
-	UINT32 lngHzY8950;
-	UINT32 lngHzYMF262;
-	UINT32 lngHzYMF278B;
-	UINT32 lngHzYMF271;
-	UINT32 lngHzYMZ280B;
-	UINT32 lngHzRF5C164;
-	UINT32 lngHzPWM;
-	UINT32 lngHzAY8910;
+	dword/*32*/ lngHzYM2612;
+	dword/*32*/ lngHzYM2151;
+	dword/*32*/ lngDataOffset;
+	dword/*32*/ lngHzSPCM;
+	dword/*32*/ lngSPCMIntf;
+	dword/*32*/ lngHzRF5C68;
+	dword/*32*/ lngHzYM2203;
+	dword/*32*/ lngHzYM2608;
+	dword/*32*/ lngHzYM2610;
+	dword/*32*/ lngHzYM3812;
+	dword/*32*/ lngHzYM3526;
+	dword/*32*/ lngHzY8950;
+	dword/*32*/ lngHzYMF262;
+	dword/*32*/ lngHzYMF278B;
+	dword/*32*/ lngHzYMF271;
+	dword/*32*/ lngHzYMZ280B;
+	dword/*32*/ lngHzRF5C164;
+	dword/*32*/ lngHzPWM;
+	dword/*32*/ lngHzAY8910;
 	UINT8 bytAYCfg[4];
 	UINT8 bytVolumeModifier;
 	UINT8 bytReserved2;
@@ -50,7 +50,7 @@ typedef struct _vgm_file_header
 
 typedef struct _vgm_file
 {
-	UINT32 dataLen;
+	dword/*32*/ dataLen;
 	UINT8* data;
 	VGM_HEADER header;
 } VGM_FILE;
@@ -73,8 +73,8 @@ void UpdateSoundEngine(void);
 
 
 // Functions that must be supplied by external library:
-//extern void OPL2_Write(UINT8 reg, UINT8 data);
-//extern UINT8 OPL2_ReadStatus(void);
+extern void OPL2_Write(UINT8 reg, UINT8 data);
+extern UINT8 OPL2_ReadStatus(void);
 
 
 #ifdef __cplusplus

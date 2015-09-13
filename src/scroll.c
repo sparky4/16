@@ -370,7 +370,7 @@ void main()
 	VGAmodeX(0, &gvar);
 	IN_Shutdown();
 	printf("Project 16 scroll.exe. This is just a test file!\n");
-	printf("version %s %s\n", __DATE__, __TIME__);
+	printf("version %s\n", VERSION);
 	printf("tx: %d\n", bg->tx);
 	printf("ty: %d\n", bg->ty);
 	printf("player[0].x: %d", player[0].x); printf("		player[0].y: %d\n", player[0].y);

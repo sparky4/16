@@ -34,8 +34,9 @@ OFLAGS=-obmiler -out -oh -ei -zp8 -0 -fpi87  -onac -ol+ -ok####x
 FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 
 DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
+VGMSNDOBJ = 16_snd.$(OBJ) vgmSnd.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
-16LIBOBJS = bakapee.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ) timer.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) vgmSnd.$(OBJ) 16_snd.$(OBJ)
+16LIBOBJS = bakapee.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) scroll16.$(OBJ) 16_ca.$(OBJ) timer.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ)
 #3812intf.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ)
 
@@ -123,8 +124,10 @@ fmemtest.exe: fmemtest.$(OBJ) 16.lib
 exmmtest.exe: exmmtest.$(OBJ) 16.lib
 	wcl $(FLAGS) exmmtest.$(OBJ) 16.lib -fm=exmmtest.map
 
-vgmtest.exe: vgmtest.$(OBJ) 16.lib
-	wcl $(FLAGS) vgmtest.$(OBJ) 16.lib -fm=vgmtest.map
+vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib
+	wcl $(FLAGS) vgmtest.$(OBJ) vgmsnd.lib -fm=vgmtest.map
+	#====wcl -mc vgmtest.$(OBJ) $(VGMSNDOBJ) -fm=vgmtest.map
+
 
 #
 #executable's objects
@@ -194,18 +197,22 @@ exmmtest.$(OBJ): $(SRC)exmmtest.c
 
 vgmtest.$(OBJ): $(SRC)vgmtest.c
 	wcl $(FLAGS) -c $(SRC)vgmtest.c
+	#====wcl -mc -c $(SRC)vgmtest.c
 
 #
 #non executable objects libraries
 #
-16.lib: $(16LIBOBJS) gfx.lib doslib.lib
-	wlib -b 16.lib $(16LIBOBJS) gfx.lib doslib.lib
+16.lib: $(16LIBOBJS) gfx.lib doslib.lib vgmsnd.lib
+	wlib -b -q 16.lib $(16LIBOBJS) gfx.lib doslib.lib vgmsnd.lib
 
 gfx.lib: $(GFXLIBOBJS)
-	wlib -b gfx.lib $(GFXLIBOBJS)
+	wlib -b -q gfx.lib $(GFXLIBOBJS)
 
 doslib.lib: $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
-	wlib -b doslib.lib $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
+	wlib -b -q doslib.lib $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
+
+vgmsnd.lib: $(VGMSNDOBJ)
+	wlib -b -q vgmsnd.lib $(VGMSNDOBJ)
 
 modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c
 	wcl $(FLAGS) -c $(SRCLIB)modex16.c
@@ -283,6 +290,7 @@ emm.$(OBJ): $(DOSLIB)emm.h $(DOSLIB)emm.c
 
 16_snd.$(OBJ): $(SRCLIB)16_snd.h $(SRCLIB)16_snd.c
 	wcl $(FLAGS) -c $(SRCLIB)16_snd.c
+	#====wcl -mc -c $(SRCLIB)16_snd.c
 
 jsmn.$(OBJ): $(JSMNLIB)jsmn.h $(JSMNLIB)jsmn.c
 	wcl $(FLAGS) -c $(JSMNLIB)jsmn.c
@@ -292,6 +300,7 @@ kitten.$(OBJ): $(NYANLIB)kitten.h $(NYANLIB)kitten.c
 
 vgmSnd.$(OBJ): $(VGMSNDLIB)vgmSnd.h $(VGMSNDLIB)vgmSnd.c
 	wcl $(FLAGS) -c $(VGMSNDLIB)vgmSnd.c
+	#====wcl -c -mc $(VGMSNDLIB)vgmSnd.c
 
 #3812intf.$(OBJ): $(VGMSNDLIB)3812intf.h $(VGMSNDLIB)3812intf.c
 #	wcl $(FLAGS) -c $(VGMSNDLIB)3812intf.c
@@ -312,6 +321,7 @@ clean: .symbolic
 	@wlib -n 16.lib
 	@wlib -n  gfx.lib
 	@wlib -n  doslib.lib
+	@wlib -n  vgmsnd.lib
 	@$(REMOVECOMMAND) *.16
 	@$(REMOVECOMMAND) *.16W
 	@$(REMOVECOMMAND) *.16B
@@ -326,6 +336,7 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.hed
 	@$(REMOVECOMMAND) *.MAP
 	@$(REMOVECOMMAND) *.map
+	@$(REMOVECOMMAND) *.err
 	@$(COPYCOMMAND) .git/config git_con.fig
 #	@$(COPYCOMMAND) $(SRC)exmmtest.c $(EXMMTESTDIR)$(SRC)
 #	@$(COPYCOMMAND) $(SRCLIB)16_mm.* $(EXMMTESTDIR)$(SRCLIB)

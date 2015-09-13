@@ -21,18 +21,18 @@
 
 typedef struct _vgm_file_header_base
 {
-	UINT32 fccVGM;			// 00
-	UINT32 lngEOFOffset;	// 04
-	UINT32 lngVersion;		// 08
-	UINT32 lngSkip1[2];		// 0C
-	UINT32 lngGD3Offset;	// 14
-	UINT32 lngTotalSamples;	// 18
-	UINT32 lngLoopOffset;	// 1C
-	UINT32 lngLoopSamples;	// 20
-	UINT32 lngRate;			// 24
-	UINT32 lngSkip2[3];		// 28
-	UINT32 lngDataOffset;	// 34
-	UINT32 lngSkip3[2];		// 38
+	dword fccVGM;			// 00
+	dword/*32*/ lngEOFOffset;	// 04
+	dword/*32*/ lngVersion;		// 08
+	dword/*32*/ lngSkip1[2];		// 0C
+	dword/*32*/ lngGD3Offset;	// 14
+	dword/*32*/ lngTotalSamples;	// 18
+	dword/*32*/ lngLoopOffset;	// 1C
+	dword/*32*/ lngLoopSamples;	// 20
+	dword/*32*/ lngRate;			// 24
+	dword/*32*/ lngSkip2[3];		// 28
+	dword/*32*/ lngDataOffset;	// 34
+	dword/*32*/ lngSkip3[2];		// 38
 } VGM_BASE_HDR;
 
 #define PBMODE_MUSIC	0x00
@@ -42,9 +42,9 @@ typedef struct _vgm_playback
 	UINT8 pbMode;
 	UINT8 vgmEnd;	// 00 - running, 01 - finished, FF - not loaded
 	UINT16 curLoopCnt;
-	UINT32 vgmPos;
-	UINT32 vgmSmplPos;
-	UINT32 pbSmplPos;
+	dword/*32*/ vgmPos;
+	dword/*32*/ vgmSmplPos;
+	dword/*32*/ pbSmplPos;
 	VGM_FILE* file;
 
 	// oplChnMask:
@@ -66,10 +66,10 @@ INLINE UINT16 ReadLE16(const UINT8* buffer)
 #endif
 }
 
-INLINE UINT32 ReadLE32(const UINT8* buffer)
+INLINE dword/*32*/ ReadLE32(const UINT8* buffer)
 {
 #ifdef QUICK_READ
-	return *(UINT32*)buffer;
+	return *(dword/*32*/*)buffer;
 #else
 	return	(buffer[0x00] <<  0) | (buffer[0x01] <<  8) |
 			(buffer[0x02] << 16) | (buffer[0x03] << 24);
@@ -144,7 +144,7 @@ UINT8 OpenVGMFile(const char* FileName, VGM_FILE* vgmFile)
 	size_t bytesToRead;
 	VGM_BASE_HDR vgmBaseHdr;
 	FILE* hFile;
-	UINT32 CurPos;
+	dword/*32*/ CurPos;
 
 	memset(vgmFile, 0x00, sizeof(VGM_FILE));
 
@@ -239,14 +239,14 @@ static boolean DoVgmLoop(VGM_PBK* vgmPlay)
 
 static void UpdateVGM(VGM_PBK* vgmPlay, UINT16 Samples)
 {
-	const UINT32 vgmLen = vgmPlay->file->dataLen;
+	const dword/*32*/ vgmLen = vgmPlay->file->dataLen;
 	const UINT8* vgmData = vgmPlay->file->data;
 	const UINT8* VGMPnt;
-	UINT32 VGMPos;
-	UINT32 VGMSmplPos;
+	dword/*32*/ VGMPos;
+	dword/*32*/ VGMSmplPos;
 	UINT8 Command;
 	UINT8 blockType;
-	UINT32 blockLen;
+	dword/*32*/ blockLen;
 
 	vgmPlay->pbSmplPos += Samples;
 	VGMPos = vgmPlay->vgmPos;
