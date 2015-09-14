@@ -129,8 +129,8 @@ fmemtest.exe: fmemtest.$(OBJ) 16.lib
 exmmtest.exe: exmmtest.$(OBJ) 16.lib
 	wcl $(FLAGS) exmmtest.$(OBJ) 16.lib -fm=exmmtest.map
 
-vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib 16.lib
-	wcl $(FLAGS) vgmtest.$(OBJ) vgmsnd.lib -fm=vgmtest.map 16.lib
+vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib 16_in.$(OBJ) 16_head.$(OBJ)
+	wcl $(FLAGS) vgmtest.$(OBJ) vgmsnd.lib -fm=vgmtest.map 16_in.$(OBJ) 16_head.$(OBJ)
 	#====wcl -mc vgmtest.$(OBJ) $(VGMSNDOBJ) -fm=vgmtest.map
 
 
