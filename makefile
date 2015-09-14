@@ -45,7 +45,8 @@ DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 #3812intf.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ)
 
-TESTEXEC =  exmmtest.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe tsthimem.exe inputest.exe scroll.exe vgmtest.exe
+TESTEXEC =  exmmtest.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe inputest.exe scroll.exe vgmtest.exe
+#tsthimem.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe sega.exe sountest.exe
 EXEC = 16.exe bakapi.exe $(TESTEXEC)
 
@@ -126,8 +127,8 @@ maptest.exe: maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
 fmemtest.exe: fmemtest.$(OBJ) 16.lib
 	wcl $(FLAGS) fmemtest.$(OBJ) 16.lib -fm=fmemtest.map
 
-exmmtest.exe: exmmtest.$(OBJ) 16.lib
-	wcl $(FLAGS) exmmtest.$(OBJ) 16.lib -fm=exmmtest.map
+exmmtest.exe: exmmtest.$(OBJ) 16_head.$(OBJ) 16_mm.$(OBJ) 16_ca.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ)
+	wcl $(FLAGS) exmmtest.$(OBJ) 16_head.$(OBJ) 16_mm.$(OBJ) 16_ca.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ) -fm=exmmtest.map
 
 vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib 16_in.$(OBJ) 16_head.$(OBJ)
 	wcl $(FLAGS) vgmtest.$(OBJ) vgmsnd.lib -fm=vgmtest.map 16_in.$(OBJ) 16_head.$(OBJ)
@@ -207,8 +208,8 @@ vgmtest.$(OBJ): $(SRC)vgmtest.c
 #
 #non executable objects libraries
 #
-16.lib: $(16LIBOBJS) gfx.lib doslib.lib vgmsnd.lib
-	wlib -b -q 16.lib $(16LIBOBJS) gfx.lib doslib.lib vgmsnd.lib
+16.lib: $(16LIBOBJS) gfx.lib# doslib.lib vgmsnd.lib
+	wlib -b -q 16.lib $(16LIBOBJS) gfx.lib# doslib.lib vgmsnd.lib
 
 gfx.lib: $(GFXLIBOBJS)
 	wlib -b -q gfx.lib $(GFXLIBOBJS)
