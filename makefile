@@ -1,6 +1,3 @@
-!ifndef INCLUDE
-IN=../../fdos/watcom2/h
-!endif
 !ifdef __LINUX__
 REMOVECOMMAND=rm -f
 COPYCOMMAND=cp -f
@@ -12,6 +9,11 @@ COPYCOMMAND=copy /y
 DIRSEP=\
 OBJ=obj
 !endif
+!ifndef INCLUDE
+IN=..$(DIRSEP)..$(DIRSEP)fdos$(DIRSEP)watcom2$(DIRSEP)h
+IFLAGS=-i=$(IN)
+!endif
+
 TARGET_OS = dos
 #-zk0u = translate kanji to unicode... wwww
 #-zk0 = kanji support~
@@ -32,9 +34,9 @@ BAKAPIFLAGS=-fh=bakapi.hed
 SFLAGS=-sg -st -of+ -k32768 -zu -zdf -zff -zgf#49152#24576
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
 ZFLAGS=-zk0 -zq -zc -zp8# -zm
-CFLAGS=-mc -lr -l=dos -wo -x# -d2##wwww
+CFLAGS=$(IFLAGS) -mc -lr -l=dos -wo -x# -d2##wwww
 OFLAGS=-obmiler -out -oh -ei -zp8 -0 -fpi87  -onac -ol+ -ok####x
-FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS) -i=$(IN)
+FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 
 DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
 VGMSNDOBJ = 16_snd.$(OBJ) vgmSnd.$(OBJ)
