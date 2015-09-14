@@ -44,7 +44,7 @@ DONE! use IN_ReadControl!!
 
 + 23. engine core!
 + ==working== 24. (MOST important!) FUCKING MASSIVE DATA MANAGEMENT!!! related to 12.
-+ 25. MUSIC PLAYBACK!!!! WWWW
+SEMI DONE~ + 25. MUSIC PLAYBACK!!!! WWWW
 
 get dos_sj.rar  
 It may be very useful to us...  

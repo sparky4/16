@@ -7,7 +7,7 @@ what?
 
 font! ok
 jis! ...
-memory segmentation!
+memory segmentation! trying ow2
 
 
 FIX TESTEMM.EXE
