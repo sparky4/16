@@ -56,7 +56,7 @@ void main()
 	player[0].speed=4;
 	//0000printf("starting timer\n");
 //++++
-	start_timer(&gvar);
+	//++++????start_timer(&gvar);
 //++++	gvar.frames_per_second = 60;
 //0000	printf("ok\n");
 	//extern struct inconfig inpu;
@@ -74,7 +74,7 @@ void main()
 	map.width=0;
 	map.height=0;
 	chkmap(&map, 1);
-//	printf("chkmap ok\n");
+//0000	printf("chkmap ok\n");
 //0000	fprintf(stderr, "yay map loaded~~\n");
 	mv[0].map = &map;
 	mv[1].map = &map;

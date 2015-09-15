@@ -52,8 +52,8 @@ typedef struct
 #define TILEWH 16
 #define QUADWH			TILEWH/2
 //for null map!
-#define MAPW	40
-#define MAPH	30
+#define MAPW	20
+#define MAPH	15
 
 //map_t allocMap(int w, int h);
 //void initMap(map_t *map);
