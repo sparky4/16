@@ -1,45 +1,45 @@
 
 	== default ==
 
-  USED block at 1bab0016 of size 66
-  FREE block at 1bab0058 of size 18
-  USED block at 1bab006a of size 136
-  USED block at 1bab00f2 of size 20
-  FREE block at 1bab0106 of size 7926
+  USED block at 1baa0016 of size 66
+  FREE block at 1baa0058 of size 18
+  USED block at 1baa006a of size 136
+  USED block at 1baa00f2 of size 20
+  FREE block at 1baa0106 of size 7926
 OK - end of heap
 
 	== near ==
 
-  USED block at baaf016 of size 32
-  USED block at baaf036 of size 312
-  USED block at baaf16e of size 42
-  USED block at baaf198 of size 20
-  USED block at baaf1ac of size 20
-  USED block at baaf1c0 of size 20
-  USED block at baaf1d4 of size 20
-  USED block at baaf1e8 of size 20
-  USED block at baaf1fc of size 3584
+  USED block at ba9f016 of size 12
+  USED block at ba9f022 of size 294
+  USED block at ba9f148 of size 42
+  USED block at ba9f172 of size 20
+  USED block at ba9f186 of size 20
+  USED block at ba9f19a of size 20
+  USED block at ba9f1ae of size 20
+  USED block at ba9f1c2 of size 20
+  USED block at ba9f1d6 of size 3622
 OK - end of heap
 
 	== far ==
 
-  USED block at 1bab0016 of size 66
-  USED block at 1bab0058 of size 18
-  USED block at 1bab006a of size 136
-  USED block at 1bab00f2 of size 20
-  USED block at 1bab0106 of size 7926
+  USED block at 1baa0016 of size 66
+  USED block at 1baa0058 of size 18
+  USED block at 1baa006a of size 136
+  USED block at 1baa00f2 of size 20
+  USED block at 1baa0106 of size 7926
 OK - end of heap
 
 Memory Type         Total      Used       Free
 ----------------  --------   --------   --------
 Default		   8166		222	  7944
-Near		   4070		454	  3616
+Near		   4070		448	  3622
 Far		   8166		222	  7944
 ----------------  --------   --------   --------
-coreleft = 3612
-farcoreleft = 19552
+coreleft = 3620
+farcoreleft = 19560
 GetFreeSize = 15960
-GetNearFreeSize = 3616
+GetNearFreeSize = 3622
 GetFarFreeSize = 15960
-memavl = 3612
-stackavail = 42341
+memavl = 3620
+stackavail = 42358
