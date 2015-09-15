@@ -29,20 +29,23 @@
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 
+global_game_variables_t gvar;
+static map_t map;
+player_t player[MaxPlayers];
+page_t screen, screen2, screen3;
+map_view_t mv[3];
+map_view_t *bg, *spri, *mask;//, *tmp;
+planar_buf_t *p;
+
 void main()
 {
 //	word panswitch=0, panq=1, pand=0;
-	global_game_variables_t gvar;
 	word panpagenum=0; //for panning!
 	int i;
 	static word paloffset=0;
-	planar_buf_t *p;
 	const char *cpus;
 	//static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
-	page_t screen, screen2, screen3;
-	static map_t map;
-	map_view_t mv[3];
-	map_view_t *bg, *spri, *mask;//, *tmp;
+
 	//map_view_db_t pgid[4];
 #ifdef FADE
 	byte *dpal, *gpal;
@@ -50,7 +53,6 @@ void main()
 	byte *ptr;
 	byte *mappalptr;
 	byte *mesg=malloc(sizeof(dword));
-	player_t player[MaxPlayers];
 
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
