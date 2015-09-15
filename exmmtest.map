@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Sep 14 2015 12:40:28 (32-bit)
 Copyright (c) 2002-2015 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/09/15 10:56:45
+Created on:       15/09/15 11:12:18
 Executable Image: exmmtest.exe
 creating a DOS executable
 
@@ -13,7 +13,7 @@ creating a DOS executable
 Group                           Address              Size
 =====                           =======              ====
 
-DGROUP                          098e:0000            000085a0
+DGROUP                          098e:0000            0000f000
 
 
 
@@ -41,7 +41,7 @@ YIE                    DATA           DGROUP         09d1:000c       00000000
 STRINGS                DATA           DGROUP         09d1:000c       00000000
 DATA                   DATA           DGROUP         09d1:000c       00000000
 _BSS                   BSS            DGROUP         09d2:0000       00000153
-STACK                  STACK          DGROUP         09e8:0000       00008000
+STACK                  STACK          DGROUP         09e8:0000       0000ea60
 
 
                         +----------------+
@@ -487,7 +487,7 @@ Module: /dos/fdos/watcom2/lib286/dos/clibc.lib(bexpand.c)
                         |   Linker Statistics   |
                         +-----------------------+
 
-Stack size:  8000 (32768.)
-Memory size:  00011e80 (73344.)
+Stack size:  ea60 (60000.)
+Memory size:  000188e0 (100576.)
 Entry point address: 0000:51da
 Link time: 00:00.00
