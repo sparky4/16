@@ -66,7 +66,7 @@ bakapi.exe: bakapi.$(OBJ) 16.lib
 #Test Executables!
 #
 scroll.exe: scroll.$(OBJ) scroll16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib#gfx.lib 16_head.$(OBJ) bakapee.$(OBJ) 16_in.$(OBJ) wcpu.$(OBJ)
-	wcl $(FLAGS) scroll.$(OBJ) scroll16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ)  16.lib#gfx.lib 16_head.$(OBJ) bakapee.$(OBJ)  16_in.$(OBJ) wcpu.$(OBJ) -fm=scroll.map
+	wcl $(FLAGS) scroll.$(OBJ) scroll16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib -fm=scroll.map#gfx.lib 16_head.$(OBJ) bakapee.$(OBJ)  16_in.$(OBJ) wcpu.$(OBJ)
 scroll.$(OBJ): $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
 
