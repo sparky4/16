@@ -1,0 +1,759 @@
+
+ Start  Stop   Length Name               Class
+
+ 00000H 05F44H 05F45H _TEXT              CODE
+ 05F50H 05F50H 00000H _FARDATA           FAR_DATA
+ 05F50H 05F50H 00000H _FARBSS            FAR_BSS
+ 05F50H 05F50H 00000H _OVERLAY_          OVRINFO
+ 05F50H 05F50H 00000H _1STUB_            STUBSEG
+ 05F50H 07013H 010C4H _DATA              DATA
+ 07014H 07015H 00002H _CVTSEG            DATA
+ 07016H 0701BH 00006H _SCNSEG            DATA
+ 0701CH 0701CH 00000H _CONST             CONST
+ 0701CH 07033H 00018H _INIT_             INITDATA
+ 07034H 07034H 00000H _INITEND_          INITDATA
+ 07034H 07034H 00000H _EXIT_             EXITDATA
+ 07034H 07034H 00000H _EXITEND_          EXITDATA
+ 07034H 0B105H 040D2H _BSS               BSS
+ 0B106H 0B106H 00000H _BSSEND            BSSEND
+ 0B110H 0B18FH 00080H _STACK             STACK
+
+
+Detailed map of segments
+
+ 0000:0000 028F C=CODE   S=_TEXT          G=(none)  M=c0.ASM     ACBP=28
+ 0000:028F 067F C=CODE   S=_TEXT          G=(none)  M=SRC\LIB\NYAN\KITTEN.C ACBP=28
+ 0000:090E 02FD C=CODE   S=_TEXT          G=(none)  M=SRC\LIB\16_HC.C ACBP=28
+ 0000:0C0B 01AA C=CODE   S=_TEXT          G=(none)  M=SRC\EXMMTEST.C ACBP=28
+ 0000:0DB5 029D C=CODE   S=_TEXT          G=(none)  M=SRC\LIB\16_CA.C ACBP=28
+ 0000:1052 02FE C=CODE   S=_TEXT          G=(none)  M=SRC\LIB\16_HEAD.C ACBP=28
+ 0000:1350 1EAD C=CODE   S=_TEXT          G=(none)  M=SRC\LIB\16_MM.C ACBP=28
+ 0000:31FD 0024 C=CODE   S=_TEXT          G=(none)  M=ATEXIT     ACBP=28
+ 0000:3221 0049 C=CODE   S=_TEXT          G=(none)  M=CLOCK      ACBP=28
+ 0000:326A 0000 C=CODE   S=_TEXT          G=(none)  M=CTYPE      ACBP=28
+ 0000:326A 003D C=CODE   S=_TEXT          G=(none)  M=DOSFATTR   ACBP=28
+ 0000:32A7 0089 C=CODE   S=_TEXT          G=(none)  M=EXIT       ACBP=28
+ 0000:3330 0000 C=CODE   S=_TEXT          G=(none)  M=FILES      ACBP=28
+ 0000:3330 0000 C=CODE   S=_TEXT          G=(none)  M=FILES2     ACBP=28
+ 0000:3330 0000 C=CODE   S=_TEXT          G=(none)  M=FMODE      ACBP=28
+ 0000:3330 00AE C=CODE   S=_TEXT          G=(none)  M=H_LDIV     ACBP=28
+ 0000:33DE 0021 C=CODE   S=_TEXT          G=(none)  M=H_LLSH     ACBP=28
+ 0000:33FF 0021 C=CODE   S=_TEXT          G=(none)  M=H_LURSH    ACBP=28
+ 0000:3420 0060 C=CODE   S=_TEXT          G=(none)  M=H_PADD     ACBP=28
+ 0000:3480 0028 C=CODE   S=_TEXT          G=(none)  M=H_PSBP     ACBP=28
+ 0000:34A8 004B C=CODE   S=_TEXT          G=(none)  M=IOERROR    ACBP=28
+ 0000:34F3 0011 C=CODE   S=_TEXT          G=(none)  M=ISATTY     ACBP=28
+ 0000:3504 00A2 C=CODE   S=_TEXT          G=(none)  M=LONGTOA    ACBP=28
+ 0000:35A6 0029 C=CODE   S=_TEXT          G=(none)  M=LSEEK      ACBP=28
+ 0000:35CF 00B0 C=CODE   S=_TEXT          G=(none)  M=MKNAME     ACBP=28
+ 0000:367F 0021 C=CODE   S=_TEXT          G=(none)  M=N_PCMP     ACBP=28
+ 0000:36A0 002F C=CODE   S=_TEXT          G=(none)  M=READA      ACBP=28
+ 0000:36CF 00B2 C=CODE   S=_TEXT          G=(none)  M=SETUPIO    ACBP=28
+ 0000:3781 0000 C=CODE   S=_TEXT          G=(none)  M=STKLEN     ACBP=28
+ 0000:3781 002C C=CODE   S=_TEXT          G=(none)  M=TOLOWER    ACBP=28
+ 0000:37AD 0018 C=CODE   S=_TEXT          G=(none)  M=UNLINK     ACBP=28
+ 0000:37C5 04DB C=CODE   S=_TEXT          G=(none)  M=VPRINTER   ACBP=28
+ 0000:3CA0 009F C=CODE   S=_TEXT          G=(none)  M=VRAM       ACBP=28
+ 0000:3D3F 0000 C=CODE   S=_TEXT          G=(none)  M=WSCROLL    ACBP=28
+ 0000:3D3F 0030 C=CODE   S=_TEXT          G=(none)  M=_STPCPY    ACBP=28
+ 0000:3D6F 0004 C=CODE   S=_TEXT          G=(none)  M=CORELEFT   ACBP=28
+ 0000:3D73 014E C=CODE   S=_TEXT          G=(none)  M=CPRINTF    ACBP=28
+ 0000:3EC1 01A5 C=CODE   S=_TEXT          G=(none)  M=CRTINIT    ACBP=28
+ 0000:4066 001F C=CODE   S=_TEXT          G=(none)  M=CVTFAK     ACBP=28
+ 0000:4085 042D C=CODE   S=_TEXT          G=(none)  M=FARHEAP    ACBP=28
+ 0000:44B2 013E C=CODE   S=_TEXT          G=(none)  M=FBRK       ACBP=28
+ 0000:45F0 0050 C=CODE   S=_TEXT          G=(none)  M=FCORELFT   ACBP=28
+ 0000:4640 0054 C=CODE   S=_TEXT          G=(none)  M=GETCH      ACBP=28
+ 0000:4694 00AC C=CODE   S=_TEXT          G=(none)  M=GPTEXT     ACBP=28
+ 0000:4740 0029 C=CODE   S=_TEXT          G=(none)  M=IOCTL      ACBP=28
+ 0000:4769 0012 C=CODE   S=_TEXT          G=(none)  M=KBHIT      ACBP=28
+ 0000:477B 009D C=CODE   S=_TEXT          G=(none)  M=MOVETEXT   ACBP=28
+ 0000:4818 0017 C=CODE   S=_TEXT          G=(none)  M=PUTCH      ACBP=28
+ 0000:482F 0004 C=CODE   S=_TEXT          G=(none)  M=REALCVT    ACBP=28
+ 0000:4833 01C7 C=CODE   S=_TEXT          G=(none)  M=SCREEN     ACBP=28
+ 0000:49FA 0184 C=CODE   S=_TEXT          G=(none)  M=SCROLL     ACBP=28
+ 0000:4B7E 0129 C=CODE   S=_TEXT          G=(none)  M=SETARGV    ACBP=28
+ 0000:4CA7 001C C=CODE   S=_TEXT          G=(none)  M=SETBLOCK   ACBP=28
+ 0000:4CC3 0054 C=CODE   S=_TEXT          G=(none)  M=SETENVP    ACBP=28
+ 0000:4D17 002C C=CODE   S=_TEXT          G=(none)  M=WHEREXY    ACBP=28
+ 0000:4D43 001D C=CODE   S=_TEXT          G=(none)  M=CHMODA     ACBP=28
+ 0000:4D60 0026 C=CODE   S=_TEXT          G=(none)  M=CLOSE      ACBP=28
+ 0000:4D86 001E C=CODE   S=_TEXT          G=(none)  M=CLOSEA     ACBP=28
+ 0000:4DA4 00B0 C=CODE   S=_TEXT          G=(none)  M=FCLOSE     ACBP=28
+ 0000:4E54 00C6 C=CODE   S=_TEXT          G=(none)  M=FFLUSH     ACBP=28
+ 0000:4F1A 0041 C=CODE   S=_TEXT          G=(none)  M=FLENGTH    ACBP=28
+ 0000:4F5B 0040 C=CODE   S=_TEXT          G=(none)  M=FLUSHALL   ACBP=28
+ 0000:4F9B 01FE C=CODE   S=_TEXT          G=(none)  M=FOPEN      ACBP=28
+ 0000:5199 001C C=CODE   S=_TEXT          G=(none)  M=FPRINTF    ACBP=28
+ 0000:51B5 01D8 C=CODE   S=_TEXT          G=(none)  M=FSEEK      ACBP=28
+ 0000:538D 0070 C=CODE   S=_TEXT          G=(none)  M=GETENV     ACBP=28
+ 0000:53FD 0070 C=CODE   S=_TEXT          G=(none)  M=LTOA1      ACBP=28
+ 0000:546D 0024 C=CODE   S=_TEXT          G=(none)  M=MEMCPY     ACBP=28
+ 0000:5491 0022 C=CODE   S=_TEXT          G=(none)  M=MOVEDATA   ACBP=28
+ 0000:54B3 018D C=CODE   S=_TEXT          G=(none)  M=OPEN       ACBP=28
+ 0000:5640 004F C=CODE   S=_TEXT          G=(none)  M=OPENA      ACBP=28
+ 0000:568F 001B C=CODE   S=_TEXT          G=(none)  M=PRINTF     ACBP=28
+ 0000:56AA 03A4 C=CODE   S=_TEXT          G=(none)  M=PUTC       ACBP=28
+ 0000:5A4E 00CB C=CODE   S=_TEXT          G=(none)  M=READ       ACBP=28
+ 0000:5B19 0003 C=CODE   S=_TEXT          G=(none)  M=READU      ACBP=28
+ 0000:5B1C 0111 C=CODE   S=_TEXT          G=(none)  M=SETVBUF    ACBP=28
+ 0000:5C2D 0081 C=CODE   S=_TEXT          G=(none)  M=SPRINTF    ACBP=28
+ 0000:5CAE 003F C=CODE   S=_TEXT          G=(none)  M=STRCAT     ACBP=28
+ 0000:5CED 0040 C=CODE   S=_TEXT          G=(none)  M=STRDUP     ACBP=28
+ 0000:5D2D 001F C=CODE   S=_TEXT          G=(none)  M=STRLEN     ACBP=28
+ 0000:5D4C 0149 C=CODE   S=_TEXT          G=(none)  M=WRITE      ACBP=28
+ 0000:5E95 003C C=CODE   S=_TEXT          G=(none)  M=WRITEA     ACBP=28
+ 0000:5ED1 0003 C=CODE   S=_TEXT          G=(none)  M=WRITEU     ACBP=28
+ 0000:5ED4 003B C=CODE   S=_TEXT          G=(none)  M=XFCLOSE    ACBP=28
+ 0000:5F0F 0036 C=CODE   S=_TEXT          G=(none)  M=XFFLUSH    ACBP=28
+ 05F5:0000 0000 C=FAR_DATA S=_FARDATA       G=(none)  M=c0.ASM     ACBP=68
+ 05F5:0000 0000 C=FAR_BSS S=_FARBSS        G=(none)  M=c0.ASM     ACBP=68
+ 05F5:0000 0000 C=OVRINFO S=_OVERLAY_      G=(none)  M=c0.ASM     ACBP=68
+ 05F5:0000 0000 C=STUBSEG S=_1STUB_        G=(none)  M=c0.ASM     ACBP=68
+ 05F5:0000 0093 C=DATA   S=_DATA          G=DGROUP  M=c0.ASM     ACBP=68
+ 05F5:0094 0045 C=DATA   S=_DATA          G=DGROUP  M=SRC\LIB\NYAN\KITTEN.C ACBP=48
+ 05F5:00DA 0016 C=DATA   S=_DATA          G=DGROUP  M=SRC\LIB\16_HC.C ACBP=48
+ 05F5:00F0 00E1 C=DATA   S=_DATA          G=DGROUP  M=SRC\EXMMTEST.C ACBP=48
+ 05F5:01D2 005E C=DATA   S=_DATA          G=DGROUP  M=SRC\LIB\16_CA.C ACBP=48
+ 05F5:0230 0015 C=DATA   S=_DATA          G=DGROUP  M=SRC\LIB\16_HEAD.C ACBP=48
+ 05F5:0246 0A7C C=DATA   S=_DATA          G=DGROUP  M=SRC\LIB\16_MM.C ACBP=48
+ 05F5:0CC2 0002 C=DATA   S=_DATA          G=DGROUP  M=ATEXIT     ACBP=48
+ 05F5:0CC4 0000 C=DATA   S=_DATA          G=DGROUP  M=CLOCK      ACBP=48
+ 05F5:0CC4 0101 C=DATA   S=_DATA          G=DGROUP  M=CTYPE      ACBP=48
+ 05F5:0DC6 0000 C=DATA   S=_DATA          G=DGROUP  M=DOSFATTR   ACBP=48
+ 05F5:0DC6 0006 C=DATA   S=_DATA          G=DGROUP  M=EXIT       ACBP=48
+ 05F5:0DCC 0190 C=DATA   S=_DATA          G=DGROUP  M=FILES      ACBP=48
+ 05F5:0F5C 002A C=DATA   S=_DATA          G=DGROUP  M=FILES2     ACBP=48
+ 05F5:0F86 0004 C=DATA   S=_DATA          G=DGROUP  M=FMODE      ACBP=48
+ 05F5:0F8A 0000 C=DATA   S=_DATA          G=DGROUP  M=H_LDIV     ACBP=48
+ 05F5:0F8A 0000 C=DATA   S=_DATA          G=DGROUP  M=H_LLSH     ACBP=48
+ 05F5:0F8A 0000 C=DATA   S=_DATA          G=DGROUP  M=H_LURSH    ACBP=48
+ 05F5:0F8A 0000 C=DATA   S=_DATA          G=DGROUP  M=H_PADD     ACBP=48
+ 05F5:0F8A 0000 C=DATA   S=_DATA          G=DGROUP  M=H_PSBP     ACBP=48
+ 05F5:0F8A 005B C=DATA   S=_DATA          G=DGROUP  M=IOERROR    ACBP=48
+ 05F5:0FE6 0000 C=DATA   S=_DATA          G=DGROUP  M=ISATTY     ACBP=48
+ 05F5:0FE6 0000 C=DATA   S=_DATA          G=DGROUP  M=LONGTOA    ACBP=48
+ 05F5:0FE6 0000 C=DATA   S=_DATA          G=DGROUP  M=LSEEK      ACBP=48
+ 05F5:0FE6 0009 C=DATA   S=_DATA          G=DGROUP  M=MKNAME     ACBP=48
+ 05F5:0FF0 0000 C=DATA   S=_DATA          G=DGROUP  M=N_PCMP     ACBP=48
+ 05F5:0FF0 0000 C=DATA   S=_DATA          G=DGROUP  M=READA      ACBP=48
+ 05F5:0FF0 0000 C=DATA   S=_DATA          G=DGROUP  M=SETUPIO    ACBP=48
+ 05F5:0FF0 0002 C=DATA   S=_DATA          G=DGROUP  M=STKLEN     ACBP=48
+ 05F5:0FF2 0000 C=DATA   S=_DATA          G=DGROUP  M=TOLOWER    ACBP=48
+ 05F5:0FF2 0000 C=DATA   S=_DATA          G=DGROUP  M=UNLINK     ACBP=48
+ 05F5:0FF2 0067 C=DATA   S=_DATA          G=DGROUP  M=VPRINTER   ACBP=48
+ 05F5:105A 0000 C=DATA   S=_DATA          G=DGROUP  M=VRAM       ACBP=48
+ 05F5:105A 0002 C=DATA   S=_DATA          G=DGROUP  M=WSCROLL    ACBP=48
+ 05F5:105C 0000 C=DATA   S=_DATA          G=DGROUP  M=_STPCPY    ACBP=48
+ 05F5:105C 0000 C=DATA   S=_DATA          G=DGROUP  M=CORELEFT   ACBP=48
+ 05F5:105C 0000 C=DATA   S=_DATA          G=DGROUP  M=CPRINTF    ACBP=48
+ 05F5:105C 0018 C=DATA   S=_DATA          G=DGROUP  M=CRTINIT    ACBP=48
+ 05F5:1074 0031 C=DATA   S=_DATA          G=DGROUP  M=CVTFAK     ACBP=48
+ 05F5:10A6 0000 C=DATA   S=_DATA          G=DGROUP  M=FARHEAP    ACBP=48
+ 05F5:10A6 0002 C=DATA   S=_DATA          G=DGROUP  M=FBRK       ACBP=48
+ 05F5:10A8 0000 C=DATA   S=_DATA          G=DGROUP  M=FCORELFT   ACBP=48
+ 05F5:10A8 0000 C=DATA   S=_DATA          G=DGROUP  M=GETCH      ACBP=48
+ 05F5:10A8 0000 C=DATA   S=_DATA          G=DGROUP  M=GPTEXT     ACBP=48
+ 05F5:10A8 0000 C=DATA   S=_DATA          G=DGROUP  M=IOCTL      ACBP=48
+ 05F5:10A8 0002 C=DATA   S=_DATA          G=DGROUP  M=KBHIT      ACBP=48
+ 05F5:10AA 0000 C=DATA   S=_DATA          G=DGROUP  M=MOVETEXT   ACBP=48
+ 05F5:10AA 0000 C=DATA   S=_DATA          G=DGROUP  M=PUTCH      ACBP=48
+ 05F5:10AA 0000 C=DATA   S=_DATA          G=DGROUP  M=REALCVT    ACBP=48
+ 05F5:10AA 0000 C=DATA   S=_DATA          G=DGROUP  M=SCREEN     ACBP=48
+ 05F5:10AA 0000 C=DATA   S=_DATA          G=DGROUP  M=SCROLL     ACBP=48
+ 05F5:10AA 0010 C=DATA   S=_DATA          G=DGROUP  M=SETARGV    ACBP=48
+ 05F5:10BA 0000 C=DATA   S=_DATA          G=DGROUP  M=SETBLOCK   ACBP=48
+ 05F5:10BA 0004 C=DATA   S=_DATA          G=DGROUP  M=SETENVP    ACBP=48
+ 05F5:10BE 0000 C=DATA   S=_DATA          G=DGROUP  M=WHEREXY    ACBP=48
+ 05F5:10BE 0000 C=DATA   S=_DATA          G=DGROUP  M=CHMODA     ACBP=48
+ 05F5:10BE 0000 C=DATA   S=_DATA          G=DGROUP  M=CLOSE      ACBP=48
+ 05F5:10BE 0000 C=DATA   S=_DATA          G=DGROUP  M=CLOSEA     ACBP=48
+ 05F5:10BE 0000 C=DATA   S=_DATA          G=DGROUP  M=FCLOSE     ACBP=48
+ 05F5:10BE 0000 C=DATA   S=_DATA          G=DGROUP  M=FFLUSH     ACBP=48
+ 05F5:10BE 0000 C=DATA   S=_DATA          G=DGROUP  M=FLENGTH    ACBP=48
+ 05F5:10BE 0000 C=DATA   S=_DATA          G=DGROUP  M=FLUSHALL   ACBP=48
+ 05F5:10BE 0000 C=DATA   S=_DATA          G=DGROUP  M=FOPEN      ACBP=48
+ 05F5:10BE 0000 C=DATA   S=_DATA          G=DGROUP  M=FPRINTF    ACBP=48
+ 05F5:10BE 0000 C=DATA   S=_DATA          G=DGROUP  M=FSEEK      ACBP=48
+ 05F5:10BE 0000 C=DATA   S=_DATA          G=DGROUP  M=GETENV     ACBP=48
+ 05F5:10BE 0000 C=DATA   S=_DATA          G=DGROUP  M=LTOA1      ACBP=48
+ 05F5:10BE 0000 C=DATA   S=_DATA          G=DGROUP  M=MEMCPY     ACBP=48
+ 05F5:10BE 0000 C=DATA   S=_DATA          G=DGROUP  M=MOVEDATA   ACBP=48
+ 05F5:10BE 0000 C=DATA   S=_DATA          G=DGROUP  M=OPEN       ACBP=48
+ 05F5:10BE 0000 C=DATA   S=_DATA          G=DGROUP  M=OPENA      ACBP=48
+ 05F5:10BE 0000 C=DATA   S=_DATA          G=DGROUP  M=PRINTF     ACBP=48
+ 05F5:10BE 0001 C=DATA   S=_DATA          G=DGROUP  M=PUTC       ACBP=48
+ 05F5:10C0 0000 C=DATA   S=_DATA          G=DGROUP  M=READ       ACBP=48
+ 05F5:10C0 0000 C=DATA   S=_DATA          G=DGROUP  M=READU      ACBP=48
+ 05F5:10C0 0004 C=DATA   S=_DATA          G=DGROUP  M=SETVBUF    ACBP=48
+ 05F5:10C4 0000 C=DATA   S=_DATA          G=DGROUP  M=SPRINTF    ACBP=48
+ 05F5:10C4 0000 C=DATA   S=_DATA          G=DGROUP  M=STRCAT     ACBP=48
+ 05F5:10C4 0000 C=DATA   S=_DATA          G=DGROUP  M=STRDUP     ACBP=48
+ 05F5:10C4 0000 C=DATA   S=_DATA          G=DGROUP  M=STRLEN     ACBP=48
+ 05F5:10C4 0000 C=DATA   S=_DATA          G=DGROUP  M=WRITE      ACBP=48
+ 05F5:10C4 0000 C=DATA   S=_DATA          G=DGROUP  M=WRITEA     ACBP=48
+ 05F5:10C4 0000 C=DATA   S=_DATA          G=DGROUP  M=WRITEU     ACBP=48
+ 05F5:10C4 0000 C=DATA   S=_DATA          G=DGROUP  M=XFCLOSE    ACBP=48
+ 05F5:10C4 0000 C=DATA   S=_DATA          G=DGROUP  M=XFFLUSH    ACBP=48
+ 05F5:10C4 0000 C=DATA   S=_CVTSEG        G=DGROUP  M=c0.ASM     ACBP=48
+ 05F5:10C4 0002 C=DATA   S=_CVTSEG        G=DGROUP  M=CVTFAK     ACBP=48
+ 05F5:10C6 0000 C=DATA   S=_CVTSEG        G=DGROUP  M=REALCVT    ACBP=48
+ 05F5:10C6 0000 C=DATA   S=_SCNSEG        G=DGROUP  M=c0.ASM     ACBP=48
+ 05F5:10C6 0006 C=DATA   S=_SCNSEG        G=DGROUP  M=CVTFAK     ACBP=48
+ 05F5:10CC 0000 C=CONST  S=_CONST         G=DGROUP  M=c0.ASM     ACBP=48
+ 05F5:10CC 0000 C=INITDATA S=_INIT_         G=DGROUP  M=c0.ASM     ACBP=48
+ 05F5:10CC 0006 C=INITDATA S=_INIT_         G=DGROUP  M=SETUPIO    ACBP=48
+ 05F5:10D2 0006 C=INITDATA S=_INIT_         G=DGROUP  M=CRTINIT    ACBP=48
+ 05F5:10D8 0006 C=INITDATA S=_INIT_         G=DGROUP  M=SETARGV    ACBP=48
+ 05F5:10DE 0006 C=INITDATA S=_INIT_         G=DGROUP  M=SETENVP    ACBP=48
+ 05F5:10E4 0000 C=INITDATA S=_INITEND_      G=DGROUP  M=c0.ASM     ACBP=28
+ 05F5:10E4 0000 C=EXITDATA S=_EXIT_         G=DGROUP  M=c0.ASM     ACBP=48
+ 05F5:10E4 0000 C=EXITDATA S=_EXITEND_      G=DGROUP  M=c0.ASM     ACBP=28
+ 05F5:10E4 0000 C=BSS    S=_BSS           G=DGROUP  M=c0.ASM     ACBP=48
+ 05F5:10E4 0004 C=BSS    S=_BSS           G=DGROUP  M=SRC\LIB\NYAN\KITTEN.C ACBP=48
+ 05F5:10E8 0000 C=BSS    S=_BSS           G=DGROUP  M=SRC\LIB\16_HC.C ACBP=48
+ 05F5:10E8 4070 C=BSS    S=_BSS           G=DGROUP  M=SRC\EXMMTEST.C ACBP=48
+ 05F5:5158 0006 C=BSS    S=_BSS           G=DGROUP  M=SRC\LIB\16_CA.C ACBP=48
+ 05F5:515E 0000 C=BSS    S=_BSS           G=DGROUP  M=SRC\LIB\16_HEAD.C ACBP=48
+ 05F5:515E 0006 C=BSS    S=_BSS           G=DGROUP  M=SRC\LIB\16_MM.C ACBP=48
+ 05F5:5164 0040 C=BSS    S=_BSS           G=DGROUP  M=ATEXIT     ACBP=48
+ 05F5:51A4 0001 C=BSS    S=_BSS           G=DGROUP  M=CLOCK      ACBP=48
+ 05F5:51A6 0000 C=BSS    S=_BSS           G=DGROUP  M=DOSFATTR   ACBP=48
+ 05F5:51A6 0000 C=BSS    S=_BSS           G=DGROUP  M=IOERROR    ACBP=48
+ 05F5:51A6 0000 C=BSS    S=_BSS           G=DGROUP  M=ISATTY     ACBP=48
+ 05F5:51A6 0000 C=BSS    S=_BSS           G=DGROUP  M=LONGTOA    ACBP=48
+ 05F5:51A6 0000 C=BSS    S=_BSS           G=DGROUP  M=LSEEK      ACBP=48
+ 05F5:51A6 000D C=BSS    S=_BSS           G=DGROUP  M=MKNAME     ACBP=48
+ 05F5:51B4 0000 C=BSS    S=_BSS           G=DGROUP  M=READA      ACBP=48
+ 05F5:51B4 0000 C=BSS    S=_BSS           G=DGROUP  M=SETUPIO    ACBP=48
+ 05F5:51B4 0000 C=BSS    S=_BSS           G=DGROUP  M=UNLINK     ACBP=48
+ 05F5:51B4 0000 C=BSS    S=_BSS           G=DGROUP  M=VPRINTER   ACBP=48
+ 05F5:51B4 0000 C=BSS    S=_BSS           G=DGROUP  M=VRAM       ACBP=48
+ 05F5:51B4 0000 C=BSS    S=_BSS           G=DGROUP  M=CORELEFT   ACBP=48
+ 05F5:51B4 0000 C=BSS    S=_BSS           G=DGROUP  M=CRTINIT    ACBP=48
+ 05F5:51B4 0000 C=BSS    S=_BSS           G=DGROUP  M=GETCH      ACBP=48
+ 05F5:51B4 0000 C=BSS    S=_BSS           G=DGROUP  M=IOCTL      ACBP=48
+ 05F5:51B4 0000 C=BSS    S=_BSS           G=DGROUP  M=KBHIT      ACBP=48
+ 05F5:51B4 0000 C=BSS    S=_BSS           G=DGROUP  M=SETBLOCK   ACBP=48
+ 05F5:51B4 0000 C=BSS    S=_BSS           G=DGROUP  M=CHMODA     ACBP=48
+ 05F5:51B4 0000 C=BSS    S=_BSS           G=DGROUP  M=CLOSEA     ACBP=48
+ 05F5:51B4 0000 C=BSS    S=_BSS           G=DGROUP  M=FLENGTH    ACBP=48
+ 05F5:51B4 0000 C=BSS    S=_BSS           G=DGROUP  M=GETENV     ACBP=48
+ 05F5:51B4 0000 C=BSS    S=_BSS           G=DGROUP  M=MEMCPY     ACBP=48
+ 05F5:51B4 0000 C=BSS    S=_BSS           G=DGROUP  M=MOVEDATA   ACBP=48
+ 05F5:51B4 0000 C=BSS    S=_BSS           G=DGROUP  M=OPEN       ACBP=48
+ 05F5:51B4 0000 C=BSS    S=_BSS           G=DGROUP  M=OPENA      ACBP=48
+ 05F5:51B4 0001 C=BSS    S=_BSS           G=DGROUP  M=PUTC       ACBP=48
+ 05F5:51B6 0000 C=BSS    S=_BSS           G=DGROUP  M=READ       ACBP=48
+ 05F5:51B6 0000 C=BSS    S=_BSS           G=DGROUP  M=STRCAT     ACBP=48
+ 05F5:51B6 0000 C=BSS    S=_BSS           G=DGROUP  M=STRLEN     ACBP=48
+ 05F5:51B6 0000 C=BSS    S=_BSS           G=DGROUP  M=WRITEA     ACBP=48
+ 05F5:51B6 0000 C=BSSEND S=_BSSEND        G=DGROUP  M=c0.ASM     ACBP=28
+ 0B11:0000 0080 C=STACK  S=_STACK         G=(none)  M=c0.ASM     ACBP=74
+
+  Address         Publics by Name
+
+ 05F5:0000 idle  DATASEG@
+ 0000:028B idle  DGROUP@
+ 0000:3333 idle  F_LDIV@
+ 0000:3342 idle  F_LMOD@
+ 0000:333A idle  F_LUDIV@
+ 0000:334A idle  F_LUMOD@
+ 0000:33E1 idle  F_LXLSH@
+ 0000:3402 idle  F_LXURSH@
+ 0000:3423 idle  F_PADD@
+ 0000:3483 idle  F_PSBP@
+ 0000:3452 idle  F_PSUB@
+ 0000:028F idle  KITTENGETS
+ 0000:3333 idle  LDIV@
+ 0000:3342 idle  LMOD@
+ 0000:333A idle  LUDIV@
+ 0000:334A idle  LUMOD@
+ 0000:33E1 idle  LXLSH@
+ 0000:3402 idle  LXURSH@
+ 0000:3330       N_LDIV@
+ 0000:333F idle  N_LMOD@
+ 0000:3337 idle  N_LUDIV@
+ 0000:3347 idle  N_LUMOD@
+ 0000:33DE       N_LXLSH@
+ 0000:33FF       N_LXURSH@
+ 0000:3420       N_PADD@
+ 0000:367F       N_PCMP@
+ 0000:3480       N_PSBP@
+ 0000:344F idle  N_PSUB@
+ 0000:3423 idle  PADD@
+ 0000:3483 idle  PSBP@
+ 0000:3452 idle  PSUB@
+ 0000:0276       _abort
+ 05F5:5160 idle  _aftersort
+ 0000:31FD idle  _atexit
+ 05F5:5162 idle  _beforesort
+ 0000:0FA9 idle  _CAL_OptimizeNodes
+ 0000:04F2 idle  _catread
+ 0000:0DDB       _CA_CloseDebug
+ 0000:0DED idle  _CA_FarRead
+ 0000:0E48 idle  _CA_FarWrite
+ 0000:0F17       _CA_LoadFile
+ 0000:0DB5       _CA_OpenDebug
+ 0000:0EA3 idle  _CA_ReadFile
+ 0000:1040       _CA_Shutdown
+ 0000:101A       _CA_Startup
+ 0000:3221       _clock
+ 0000:4D60       _close
+ 0000:3D6F       _coreleft
+ 0000:3EA5 idle  _cprintf
+ 0000:07F4 idle  _db_fetch
+ 0000:085C idle  _db_insert
+ 05F5:106B       _directvideo
+ 05F5:515C idle  _drawcachebox
+ 05F5:10BA       _environ
+ 05F5:007F       _errno
+ 0000:32F5       _exit
+ 0000:45F0       _farcoreleft
+ 0000:41C5       _farfree
+ 0000:42D9       _farmalloc
+ 0000:443A idle  _farrealloc
+ 0000:4DA4       _fclose
+ 0000:4E54       _fflush
+ 0000:4F1A       _filelength
+ 0000:108D idle  _filesize
+ 05F5:5158 idle  _finishcachebox
+ 0000:4F5B       _flushall
+ 0000:5164       _fopen
+ 0000:5199       _fprintf
+ 0000:56C4 idle  _fputc
+ 0000:584D idle  _fputchar
+ 0000:41C5       _free
+ 0000:5237       _fseek
+ 0000:52B3       _ftell
+ 0000:4640       _getch
+ 0000:4659 idle  _getche
+ 0000:538D       _getenv
+ 0000:4694       _gettext
+ 0000:079F idle  _get_line
+ 05F5:5142 idle  _gvar
+ 0000:0BF9 idle  _HC_CloseDebug
+ 0000:0BD3 idle  _HC_OpenDebug
+ 0000:4740       _ioctl
+ 0000:34F3       _isatty
+ 0000:53FD idle  _itoa
+ 0000:4769       _kbhit
+ 0000:05A0 idle  _kittenclose
+ 0000:02DE idle  _kittenopen
+ 0000:0A4B idle  _LargestFarFreeBlock
+ 0000:090E idle  _LargestFreeBlock
+ 0000:35A6       _lseek
+ 0000:5445 idle  _ltoa
+ 0000:0C0B       _main
+ 0000:42CF       _malloc
+ 0000:546D       _memcpy
+ 05F5:10FC idle  _mm
+ 05F5:10E8 idle  _mmi
+ 0000:1350 idle  _MML_CheckForEMS
+ 0000:1611 idle  _MML_CheckForXMS
+ 0000:1971 idle  _MML_ClearBlock
+ 0000:1393 idle  _MML_SetupEMS
+ 0000:1646 idle  _MML_SetupXMS
+ 0000:148D idle  _MML_ShutdownEMS
+ 0000:16C7 idle  _MML_ShutdownXMS
+ 0000:1709 idle  _MML_UseSpace
+ 0000:31EE idle  _MM_BombOnError
+ 0000:29FE       _MM_DumpData
+ 0000:212C       _MM_FreePtr
+ 0000:1DAD       _MM_GetPtr
+ 0000:14CD idle  _MM_MapEMS
+ 0000:1567 idle  _MM_MapXEMS
+ 0000:2C6B idle  _MM_Report
+ 0000:22DB idle  _MM_SetLock
+ 0000:222B idle  _MM_SetPurge
+ 0000:251C       _MM_ShowMemory
+ 0000:1D4D       _MM_Shutdown
+ 0000:2390 idle  _MM_SortMem
+ 0000:19E2       _MM_Startup
+ 0000:2BD5 idle  _MM_TotalFree
+ 0000:2B5D idle  _MM_UnusedMemory
+ 0000:5491       _movedata
+ 0000:477B       _movetext
+ 0000:05A7 idle  _mystrtoul
+ 0000:54E0       _open
+ 0000:568F       _printf
+ 0000:10EC idle  _printmeminfoline
+ 0000:0643 idle  _processEscChars
+ 0000:4818       _putch
+ 0000:46EA       _puttext
+ 0000:5B19       _read
+ 0000:4433 idle  _realloc
+ 0000:4CA7       _setblock
+ 0000:5B1C       _setvbuf
+ 0000:5C6B       _sprintf
+ 0000:5CAE       _strcat
+ 0000:5CED       _strdup
+ 0000:5D2D       _strlen
+ 0000:3781       _tolower
+ 0000:5428       _ultoa
+ 0000:4676 idle  _ungetch
+ 0000:37AD       _unlink
+ 05F5:515A idle  _updatecachebox
+ 0000:1281       _US_CheckParm
+ 0000:5C8D idle  _vsprintf
+ 0000:1052 idle  _wait
+ 0000:4D21 idle  _wherex
+ 0000:4D30 idle  _wherey
+ 0000:5ED1       _write
+ 05F5:515E idle  _XMSaddr
+ 0000:1000 idle  __AHINCR
+ 0000:000C idle  __AHSHIFT
+ 05F5:10AA       __argc
+ 05F5:10AC       __argv
+ 05F5:0CC2       __atexitcnt
+ 05F5:5164       __atexittbl
+ 0000:4526       __brk
+ 05F5:008B       __brklvl
+ 05F5:006B       __C0argc
+ 05F5:006D       __C0argv
+ 0000:3F87 idle  __c0crtinit
+ 05F5:0071       __C0environ
+ 05F5:10A9       __cChar
+ 0000:3316 idle  __cexit
+ 05F5:10A8       __cFlag
+ 0000:0166       __checknull
+ 0000:4D43       __chmod
+ 0000:0153       __cleanup
+ 0000:4D86       __close
+ 0000:09C0 idle  __coreleft
+ 0000:3D73       __CPUTN
+ 0000:3FA4 idle  __crtinit
+ 05F5:0CC4       __ctype
+ 0000:0000  Abs  __cvtfak
+ 0000:3324 idle  __c_exit
+ 05F5:0F8A       __doserrno
+ 0000:34E1       __DOSERROR
+ 05F5:0F8C idle  __dosErrorToSV
+ 0000:326A       __dos_getfileattr
+ 0000:328A idle  __dos_setfileattr
+ 05F5:0075       __envLng
+ 05F5:0077       __envseg
+ 05F5:0079       __envSize
+ 0000:3304       __exit
+ 05F5:0DC6       __exitbuf
+ 05F5:0DC8       __exitfopen
+ 05F5:0DCA idle  __exitopen
+ 0000:0B06 idle  __farcoreleft
+ 05F5:0F86       __fmode
+ 0000:56AA idle  __fputc
+ 0000:5860       __FPUTN
+ 0000:511A idle  __GETFP
+ 05F5:0087       __heapbase
+ 05F5:008F       __heaptop
+ 05F5:005B idle  __Int0Vector
+ 05F5:005F idle  __Int4Vector
+ 05F5:0063 idle  __Int5Vector
+ 05F5:0067 idle  __Int6Vector
+ 0000:34A8       __IOERROR
+ 05F5:0094 idle  __kitten_catalog
+ 0000:3504       __LONGTOA
+ 0000:35CF       __MKNAME
+ 0000:028D idle  __MMODEL
+ 05F5:0F5C       __nfile
+ 0000:4659 idle  __Ngetche
+ 05F5:0F88       __notUmask
+ 0000:4676 idle  __Nungetch
+ 0000:5640       __open
+ 05F5:0F5E       __openfd
+ 0000:5051 idle  __OPENFP
+ 05F5:007D       __osmajor
+ 05F5:007E idle  __osminor
+ 05F5:007D idle  __osversion
+ 05F5:007B       __psp
+ 0000:36A0       __read
+ 0000:482F       __REALCVT
+ 05F5:10C4       __RealCvtVector
+ 0000:01BC       __restorezero
+ 0000:4565       __sbrk
+ 05F5:10C6 idle  __ScanTodVector
+ 0000:4969       __SCREENIO
+ 0000:4A1C       __SCROLL
+ 0000:0000  Abs  __setargv__
+ 0000:0000 idle  __setenvp__
+ 0000:36CF       __setupio
+ 05F5:0081       __StartTime
+ 05F5:0FF0       __stklen
+ 0000:3D3F       __stpcpy
+ 05F5:0DCC       __streams
+ 0000:0167       __terminate
+ 0000:3628 idle  __TMPNAM
+ 0000:0000 idle  __turboCrt
+ 0000:3586       __UTOA
+ 0000:49A5       __VALIDATEXY
+ 05F5:007D idle  __version
+ 05F5:105C       __video
+ 0000:3EFC       __VideoInt
+ 0000:37DD       __VPRINTER
+ 0000:3CA0       __VPTR
+ 0000:3CC5       __VRAM
+ 0000:4D17       __wherexy
+ 0000:5E95       __write
+ 05F5:105A       __wscroll
+ 0000:5ED4       __xfclose
+ 0000:5F0F       __xfflush
+ 05F5:0085 idle  ___brklvl
+ 0000:4085 idle  ___first
+ 0000:4087 idle  ___last
+ 0000:5A4E       ___read
+ 0000:4089 idle  ___rover
+ 0000:5D4C       ___write
+
+  Address         Publics by Value
+
+ 0000:0000  Abs  __setargv__
+ 0000:0000 idle  __turboCrt
+ 0000:0000  Abs  __cvtfak
+ 0000:0000 idle  __setenvp__
+ 0000:000C idle  __AHSHIFT
+ 0000:0153       __cleanup
+ 0000:0166       __checknull
+ 0000:0167       __terminate
+ 0000:01BC       __restorezero
+ 0000:0276       _abort
+ 0000:028B idle  DGROUP@
+ 0000:028D idle  __MMODEL
+ 0000:028F idle  KITTENGETS
+ 0000:02DE idle  _kittenopen
+ 0000:04F2 idle  _catread
+ 0000:05A0 idle  _kittenclose
+ 0000:05A7 idle  _mystrtoul
+ 0000:0643 idle  _processEscChars
+ 0000:079F idle  _get_line
+ 0000:07F4 idle  _db_fetch
+ 0000:085C idle  _db_insert
+ 0000:090E idle  _LargestFreeBlock
+ 0000:09C0 idle  __coreleft
+ 0000:0A4B idle  _LargestFarFreeBlock
+ 0000:0B06 idle  __farcoreleft
+ 0000:0BD3 idle  _HC_OpenDebug
+ 0000:0BF9 idle  _HC_CloseDebug
+ 0000:0C0B       _main
+ 0000:0DB5       _CA_OpenDebug
+ 0000:0DDB       _CA_CloseDebug
+ 0000:0DED idle  _CA_FarRead
+ 0000:0E48 idle  _CA_FarWrite
+ 0000:0EA3 idle  _CA_ReadFile
+ 0000:0F17       _CA_LoadFile
+ 0000:0FA9 idle  _CAL_OptimizeNodes
+ 0000:1000 idle  __AHINCR
+ 0000:101A       _CA_Startup
+ 0000:1040       _CA_Shutdown
+ 0000:1052 idle  _wait
+ 0000:108D idle  _filesize
+ 0000:10EC idle  _printmeminfoline
+ 0000:1281       _US_CheckParm
+ 0000:1350 idle  _MML_CheckForEMS
+ 0000:1393 idle  _MML_SetupEMS
+ 0000:148D idle  _MML_ShutdownEMS
+ 0000:14CD idle  _MM_MapEMS
+ 0000:1567 idle  _MM_MapXEMS
+ 0000:1611 idle  _MML_CheckForXMS
+ 0000:1646 idle  _MML_SetupXMS
+ 0000:16C7 idle  _MML_ShutdownXMS
+ 0000:1709 idle  _MML_UseSpace
+ 0000:1971 idle  _MML_ClearBlock
+ 0000:19E2       _MM_Startup
+ 0000:1D4D       _MM_Shutdown
+ 0000:1DAD       _MM_GetPtr
+ 0000:212C       _MM_FreePtr
+ 0000:222B idle  _MM_SetPurge
+ 0000:22DB idle  _MM_SetLock
+ 0000:2390 idle  _MM_SortMem
+ 0000:251C       _MM_ShowMemory
+ 0000:29FE       _MM_DumpData
+ 0000:2B5D idle  _MM_UnusedMemory
+ 0000:2BD5 idle  _MM_TotalFree
+ 0000:2C6B idle  _MM_Report
+ 0000:31EE idle  _MM_BombOnError
+ 0000:31FD idle  _atexit
+ 0000:3221       _clock
+ 0000:326A       __dos_getfileattr
+ 0000:328A idle  __dos_setfileattr
+ 0000:32F5       _exit
+ 0000:3304       __exit
+ 0000:3316 idle  __cexit
+ 0000:3324 idle  __c_exit
+ 0000:3330       N_LDIV@
+ 0000:3333 idle  LDIV@
+ 0000:3333 idle  F_LDIV@
+ 0000:3337 idle  N_LUDIV@
+ 0000:333A idle  F_LUDIV@
+ 0000:333A idle  LUDIV@
+ 0000:333F idle  N_LMOD@
+ 0000:3342 idle  F_LMOD@
+ 0000:3342 idle  LMOD@
+ 0000:3347 idle  N_LUMOD@
+ 0000:334A idle  LUMOD@
+ 0000:334A idle  F_LUMOD@
+ 0000:33DE       N_LXLSH@
+ 0000:33E1 idle  LXLSH@
+ 0000:33E1 idle  F_LXLSH@
+ 0000:33FF       N_LXURSH@
+ 0000:3402 idle  LXURSH@
+ 0000:3402 idle  F_LXURSH@
+ 0000:3420       N_PADD@
+ 0000:3423 idle  F_PADD@
+ 0000:3423 idle  PADD@
+ 0000:344F idle  N_PSUB@
+ 0000:3452 idle  F_PSUB@
+ 0000:3452 idle  PSUB@
+ 0000:3480       N_PSBP@
+ 0000:3483 idle  PSBP@
+ 0000:3483 idle  F_PSBP@
+ 0000:34A8       __IOERROR
+ 0000:34E1       __DOSERROR
+ 0000:34F3       _isatty
+ 0000:3504       __LONGTOA
+ 0000:3586       __UTOA
+ 0000:35A6       _lseek
+ 0000:35CF       __MKNAME
+ 0000:3628 idle  __TMPNAM
+ 0000:367F       N_PCMP@
+ 0000:36A0       __read
+ 0000:36CF       __setupio
+ 0000:3781       _tolower
+ 0000:37AD       _unlink
+ 0000:37DD       __VPRINTER
+ 0000:3CA0       __VPTR
+ 0000:3CC5       __VRAM
+ 0000:3D3F       __stpcpy
+ 0000:3D6F       _coreleft
+ 0000:3D73       __CPUTN
+ 0000:3EA5 idle  _cprintf
+ 0000:3EFC       __VideoInt
+ 0000:3F87 idle  __c0crtinit
+ 0000:3FA4 idle  __crtinit
+ 0000:4085 idle  ___first
+ 0000:4087 idle  ___last
+ 0000:4089 idle  ___rover
+ 0000:41C5       _free
+ 0000:41C5       _farfree
+ 0000:42CF       _malloc
+ 0000:42D9       _farmalloc
+ 0000:4433 idle  _realloc
+ 0000:443A idle  _farrealloc
+ 0000:4526       __brk
+ 0000:4565       __sbrk
+ 0000:45F0       _farcoreleft
+ 0000:4640       _getch
+ 0000:4659 idle  __Ngetche
+ 0000:4659 idle  _getche
+ 0000:4676 idle  __Nungetch
+ 0000:4676 idle  _ungetch
+ 0000:4694       _gettext
+ 0000:46EA       _puttext
+ 0000:4740       _ioctl
+ 0000:4769       _kbhit
+ 0000:477B       _movetext
+ 0000:4818       _putch
+ 0000:482F       __REALCVT
+ 0000:4969       __SCREENIO
+ 0000:49A5       __VALIDATEXY
+ 0000:4A1C       __SCROLL
+ 0000:4CA7       _setblock
+ 0000:4D17       __wherexy
+ 0000:4D21 idle  _wherex
+ 0000:4D30 idle  _wherey
+ 0000:4D43       __chmod
+ 0000:4D60       _close
+ 0000:4D86       __close
+ 0000:4DA4       _fclose
+ 0000:4E54       _fflush
+ 0000:4F1A       _filelength
+ 0000:4F5B       _flushall
+ 0000:5051 idle  __OPENFP
+ 0000:511A idle  __GETFP
+ 0000:5164       _fopen
+ 0000:5199       _fprintf
+ 0000:5237       _fseek
+ 0000:52B3       _ftell
+ 0000:538D       _getenv
+ 0000:53FD idle  _itoa
+ 0000:5428       _ultoa
+ 0000:5445 idle  _ltoa
+ 0000:546D       _memcpy
+ 0000:5491       _movedata
+ 0000:54E0       _open
+ 0000:5640       __open
+ 0000:568F       _printf
+ 0000:56AA idle  __fputc
+ 0000:56C4 idle  _fputc
+ 0000:584D idle  _fputchar
+ 0000:5860       __FPUTN
+ 0000:5A4E       ___read
+ 0000:5B19       _read
+ 0000:5B1C       _setvbuf
+ 0000:5C6B       _sprintf
+ 0000:5C8D idle  _vsprintf
+ 0000:5CAE       _strcat
+ 0000:5CED       _strdup
+ 0000:5D2D       _strlen
+ 0000:5D4C       ___write
+ 0000:5E95       __write
+ 0000:5ED1       _write
+ 0000:5ED4       __xfclose
+ 0000:5F0F       __xfflush
+ 05F5:0000 idle  DATASEG@
+ 05F5:005B idle  __Int0Vector
+ 05F5:005F idle  __Int4Vector
+ 05F5:0063 idle  __Int5Vector
+ 05F5:0067 idle  __Int6Vector
+ 05F5:006B       __C0argc
+ 05F5:006D       __C0argv
+ 05F5:0071       __C0environ
+ 05F5:0075       __envLng
+ 05F5:0077       __envseg
+ 05F5:0079       __envSize
+ 05F5:007B       __psp
+ 05F5:007D idle  __osversion
+ 05F5:007D       __osmajor
+ 05F5:007D idle  __version
+ 05F5:007E idle  __osminor
+ 05F5:007F       _errno
+ 05F5:0081       __StartTime
+ 05F5:0085 idle  ___brklvl
+ 05F5:0087       __heapbase
+ 05F5:008B       __brklvl
+ 05F5:008F       __heaptop
+ 05F5:0094 idle  __kitten_catalog
+ 05F5:0CC2       __atexitcnt
+ 05F5:0CC4       __ctype
+ 05F5:0DC6       __exitbuf
+ 05F5:0DC8       __exitfopen
+ 05F5:0DCA idle  __exitopen
+ 05F5:0DCC       __streams
+ 05F5:0F5C       __nfile
+ 05F5:0F5E       __openfd
+ 05F5:0F86       __fmode
+ 05F5:0F88       __notUmask
+ 05F5:0F8A       __doserrno
+ 05F5:0F8C idle  __dosErrorToSV
+ 05F5:0FF0       __stklen
+ 05F5:105A       __wscroll
+ 05F5:105C       __video
+ 05F5:106B       _directvideo
+ 05F5:10A8       __cFlag
+ 05F5:10A9       __cChar
+ 05F5:10AA       __argc
+ 05F5:10AC       __argv
+ 05F5:10BA       _environ
+ 05F5:10C4       __RealCvtVector
+ 05F5:10C6 idle  __ScanTodVector
+ 05F5:10E8 idle  _mmi
+ 05F5:10FC idle  _mm
+ 05F5:5142 idle  _gvar
+ 05F5:5158 idle  _finishcachebox
+ 05F5:515A idle  _updatecachebox
+ 05F5:515C idle  _drawcachebox
+ 05F5:515E idle  _XMSaddr
+ 05F5:5160 idle  _aftersort
+ 05F5:5162 idle  _beforesort
+ 05F5:5164       __atexittbl
+
+Program entry point at 0000:0000
+

@@ -1,43 +1,45 @@
 
 	== default ==
 
-  USED block at 1cd30016 of size 66
-  FREE block at 1cd30058 of size 18
-  USED block at 1cd3006a of size 136
-  FREE block at 1cd300f2 of size 7946
+  USED block at 1cd20016 of size 66
+  FREE block at 1cd20058 of size 18
+  USED block at 1cd2006a of size 136
+  USED block at 1cd200f2 of size 20
+  FREE block at 1cd20106 of size 7926
 OK - end of heap
 
 	== near ==
 
-  USED block at cd2f206 of size 32
-  USED block at cd2f226 of size 710
-  USED block at cd2f4ec of size 92
-  USED block at cd2f548 of size 20
-  USED block at cd2f55c of size 20
-  USED block at cd2f570 of size 20
-  USED block at cd2f584 of size 20
-  USED block at cd2f598 of size 20
-  USED block at cd2f5ac of size 2640
+  USED block at cd1f206 of size 12
+  USED block at cd1f212 of size 692
+  USED block at cd1f4c6 of size 92
+  USED block at cd1f522 of size 20
+  USED block at cd1f536 of size 20
+  USED block at cd1f54a of size 20
+  USED block at cd1f55e of size 20
+  USED block at cd1f572 of size 20
+  USED block at cd1f586 of size 2678
 OK - end of heap
 
 	== far ==
 
-  USED block at 1cd30016 of size 66
-  USED block at 1cd30058 of size 18
-  USED block at 1cd3006a of size 136
-  USED block at 1cd300f2 of size 7946
+  USED block at 1cd20016 of size 66
+  USED block at 1cd20058 of size 18
+  USED block at 1cd2006a of size 136
+  USED block at 1cd200f2 of size 20
+  USED block at 1cd20106 of size 7926
 OK - end of heap
 
 Memory Type         Total      Used       Free
 ----------------  --------   --------   --------
-Default		   8166		202	  7964
-Near		   3574		902	  2672
-Far		   8166		202	  7964
+Default		   8166		222	  7944
+Near		   3574		896	  2678
+Far		   8166		222	  7944
 ----------------  --------   --------   --------
-coreleft = 2668
-farcoreleft = 10436
-GetFreeSize = 7788
-GetNearFreeSize = 2672
-GetFarFreeSize = 7788
-memavl = 2668
-stackavail = 42837
+coreleft = 2676
+farcoreleft = 10424
+GetFreeSize = 7768
+GetNearFreeSize = 2678
+GetFarFreeSize = 7768
+memavl = 2676
+stackavail = 42853
