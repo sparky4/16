@@ -34,7 +34,7 @@ BAKAPIFLAGS=-fh=bakapi.hed
 SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#60000
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
 ZFLAGS=-zk0 -zq -zc -zp8# -zm
-CFLAGS=$(IFLAGS) -mh -lr -l=dos -wo# -d2##wwww
+CFLAGS=$(IFLAGS) -mc-lr -l=dos -wo# -d2##wwww
 OFLAGS=-obmiler -out -oh -ei -zp8 -0 -fpi87  -onac -ol+ -ok####x
 FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 
