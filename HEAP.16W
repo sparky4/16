@@ -10,14 +10,14 @@ OK - end of heap
 	== near ==
 
   USED block at cd2f206 of size 32
-  USED block at cd2f226 of size 712
-  USED block at cd2f4ee of size 92
-  USED block at cd2f54a of size 20
-  USED block at cd2f55e of size 20
-  USED block at cd2f572 of size 20
-  USED block at cd2f586 of size 20
-  USED block at cd2f59a of size 20
-  USED block at cd2f5ae of size 2638
+  USED block at cd2f226 of size 710
+  USED block at cd2f4ec of size 92
+  USED block at cd2f548 of size 20
+  USED block at cd2f55c of size 20
+  USED block at cd2f570 of size 20
+  USED block at cd2f584 of size 20
+  USED block at cd2f598 of size 20
+  USED block at cd2f5ac of size 2640
 OK - end of heap
 
 	== far ==
@@ -31,13 +31,13 @@ OK - end of heap
 Memory Type         Total      Used       Free
 ----------------  --------   --------   --------
 Default		   8166		202	  7964
-Near		   3574		904	  2670
+Near		   3574		902	  2672
 Far		   8166		202	  7964
 ----------------  --------   --------   --------
-coreleft = 2666
-farcoreleft = 10434
+coreleft = 2668
+farcoreleft = 10436
 GetFreeSize = 7788
-GetNearFreeSize = 2670
+GetNearFreeSize = 2672
 GetFarFreeSize = 7788
-memavl = 2666
+memavl = 2668
 stackavail = 42837
