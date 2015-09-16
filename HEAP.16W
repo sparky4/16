@@ -1,31 +1,45 @@
 
 	== default ==
 
-  USED block at 1f4c0016 of size 66
-  FREE block at 1f4c0058 of size 18
-  USED block at 1f4c006a of size 136
-  USED block at 1f4c00f2 of size 20
-  FREE block at 1f4c0106 of size 7926
+  USED block at 1f490016 of size 66
+  FREE block at 1f490058 of size 18
+  USED block at 1f49006a of size 136
+  USED block at 1f4900f2 of size 20
+  FREE block at 1f490106 of size 7926
 OK - end of heap
 
 	== near ==
 
-  USED block at f4bc636 of size 12
-  USED block at f4bc642 of size 692
-  USED block at f4bc8f6 of size 92
-  USED block at f4bc952 of size 20
-  USED block at f4bc966 of size 20
-  USED block at f4bc97a of size 20
-  USED block at f4bc98e of size 20
-  USED block at f4bc9a2 of size 20
-  USED block at f4bc9b6 of size 13894
+  USED block at f48e0a6 of size 12
+  USED block at f48e0b2 of size 692
+  USED block at f48e366 of size 92
+  USED block at f48e3c2 of size 20
+  USED block at f48e3d6 of size 20
+  USED block at f48e3ea of size 20
+  USED block at f48e3fe of size 20
+  USED block at f48e412 of size 20
+  USED block at f48e426 of size 7126
 OK - end of heap
 
 	== far ==
 
-  USED block at 1f4c0016 of size 66
-  USED block at 1f4c0058 of size 18
-  USED block at 1f4c006a of size 136
-  USED block at 1f4c00f2 of size 20
-  USED block at 1f4c0106 of size 7926
+  USED block at 1f490016 of size 66
+  USED block at 1f490058 of size 18
+  USED block at 1f49006a of size 136
+  USED block at 1f4900f2 of size 20
+  USED block at 1f490106 of size 7926
 OK - end of heap
+
+Memory Type         Total      Used       Free
+----------------  --------   --------   --------
+Default		   8166		222	  7944
+Near		   8022		896	  7126
+Far		   8166		222	  7944
+----------------  --------   --------   --------
+coreleft = 7120
+farcoreleft = 6676
+GetFreeSize = 65106
+GetNearFreeSize = 7126
+GetFarFreeSize = 65106
+memavl = 7124
+stackavail = 38356

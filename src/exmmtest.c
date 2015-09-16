@@ -40,11 +40,11 @@
 //#define FILEREAD
 
 global_game_variables_t gvar;
-mminfo_t mm; mminfotype mmi;
 
 void
 main(int argc, char *argv[])
 {
+	mminfo_t mm; mminfotype mmi;
 #ifdef __WATCOMC__
 	__segment sega;
 	void __based(sega)* bigbuffer;
