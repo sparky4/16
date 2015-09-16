@@ -39,18 +39,19 @@
 #define FILERL
 //#define FILEREAD
 
+global_game_variables_t gvar;
+mminfo_t mm; mminfotype mmi;
+#ifdef __WATCOMC__
+__segment sega;
+void __based(sega)* bigbuffer;
+#endif
+#ifdef __BORLANDC__
+memptr bigbuffer;
+#endif
+
 void
 main(int argc, char *argv[])
 {
-	global_game_variables_t gvar;
-	mminfo_t mm; mminfotype mmi;
-#ifdef __WATCOMC__
-	__segment sega;
-	void __based(sega)* bigbuffer;
-#endif
-#ifdef __BORLANDC__
-	memptr bigbuffer;
-#endif
 #ifdef FILERL
 	//static byte bakapee[64];
 	char *bakapee;
