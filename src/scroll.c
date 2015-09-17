@@ -26,6 +26,7 @@
 
 //#define FADE
 //#define SPRITE
+//#define MODEX	//this is for mode x initiating
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 
@@ -109,7 +110,9 @@ void main()
 #endif
 
 	textInit();
+#ifdef MODEX
 	VGAmodeX(1, &gvar);
+#endif
 #ifdef FADE
 	modexPalBlack();	//reset the palette~
 #endif
@@ -369,7 +372,9 @@ void main()
 	modexSavePalFile("data/g.pal", gpal);
 	modexFadeOff(4, gpal);
 #endif
+#ifdef MODEX
 	VGAmodeX(0, &gvar);
+#endif
 	IN_Shutdown();
 	printf("Project 16 scroll.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
