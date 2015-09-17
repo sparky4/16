@@ -26,7 +26,7 @@
 
 //#define FADE
 //#define SPRITE
-//#define MODEX	//this is for mode x initiating
+#define MODEX	//this is for mode x initiating
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 
@@ -67,42 +67,36 @@ void main()
 //	atexit(qclean());
 
 	/* create the map */
-	//0000printf("Total used @ before map load:			%zu\n", oldfreemem-GetFreeSize());
-//0000	printf("Total free @ before map load:			%zu\n", GetFreeSize());
-//0000	printf("Total near free @ before map load:			%zu\n", GetNearFreeSize());
-//0000	printf("Total far free @ before map load:			%zu\n", GetFarFreeSize());
-//	getch();
-//0000	fprintf(stderr, "testing~\n");
+	fprintf(stderr, "testing map load~\n");
 //++++	loadmap("data/test.map", &map);
 	map.width=0;
 	map.height=0;
 	chkmap(&map, 1);
-//0000	printf("chkmap ok\n");
-//0000	fprintf(stderr, "yay map loaded~~\n");
+	printf("chkmap ok\n");
+	fprintf(stderr, "yay map loaded~~\n");
 	mv[0].map = &map;
 	mv[1].map = &map;
 	mv[2].map = &map;
 
 	/* draw the tiles */
+#ifdef MODEX
 	ptr = map.data;
 	mappalptr = map.tiles->data->palette;
+
 	/* data */
-//0000	printf("Total used @ before image loading:		%zu\n", oldfreemem-GetFreeSize());
 	player[0].data = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 
 	/* create the planar buffer */
-//0000	printf("Total used @ before planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
 	p = planar_buf_from_bitmap(&player[0].data);
 //0000	printf("planar buffer ok\n");
-//0000	printf("Total used @ after planar buffer creation:	%zu\n", oldfreemem-GetFreeSize());
-
+#endif
 	/*	input!	*/
-//0000	getch();
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
 
 	/* save the palette */
+#ifdef MODEX
 #ifdef FADE
 	dpal = modexNewPal();
 	modexPalSave(dpal);
@@ -110,11 +104,10 @@ void main()
 #endif
 
 	textInit();
-#ifdef MODEX
 	VGAmodeX(1, &gvar);
-#endif
 #ifdef FADE
 	modexPalBlack();	//reset the palette~
+#endif
 #endif
 //	printf("Total used @ before palette initiation:		%zu\n", oldfreemem-GetFreeSize());
 //++++	player[0].data.offset=(paloffset/3);
@@ -126,11 +119,13 @@ void main()
 //	printf("\n====\n");
 //	printf("0	paloffset=	%d\n", paloffset/3);
 //	printf("====\n\n");
+#ifdef MODEX
 #ifdef FADE
 	gpal = modexNewPal();
 	modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);
 	modexPalBlack();	//so player will not see loadings~
+#endif
 #endif
 
 	/* setup camera and screen~ */
@@ -189,8 +184,10 @@ void main()
 	modexShowPage(spri->page);
 //	printf("Total used @ before loop:			%zu\n", oldfreemem-GetFreeSize());
 	modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 1);
+#ifdef MODEX
 #ifdef FADE
 	modexFadeOn(4, gpal);
+#endif
 #endif
 	while(!IN_KeyDown(sc_Escape) && player[0].hp>0)
 	{
@@ -337,6 +334,7 @@ void main()
 	if(IN_KeyDown(3)){ modexShowPage(spri->page); panpagenum=1; }
 	if(IN_KeyDown(4)){ modexShowPage(mask->page); panpagenum=2; }
 	if(IN_KeyDown(25)){ pdump(bg->page); pdump(spri->page); }	//p
+#ifdef MODEX
 #ifdef FADE
 	if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; pdump(bg->page); pdump(spri->page); }
 	if(IN_KeyDown(22)){
@@ -345,6 +343,7 @@ void main()
 	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	printf("2paloffset	=	%d\n", paloffset/3);
 	 pdump(bg->page); pdump(spri->page); }
+#endif
 #endif
 	//pan switch
 	//if(IN_KeyDown(88)){if(!panswitch) panswitch++; else panswitch--; }	//f12
@@ -367,12 +366,12 @@ void main()
 
 	/* fade back to text mode */
 	/* but 1st lets save the game palette~ */
+#ifdef MODEX
 #ifdef FADE
 	modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);
 	modexFadeOff(4, gpal);
 #endif
-#ifdef MODEX
 	VGAmodeX(0, &gvar);
 #endif
 	IN_Shutdown();
@@ -408,7 +407,9 @@ void main()
 		default: cpus = "internal error"; break;
 	}
 	printf("detected CPU type: %s\n", cpus);
+#ifdef MODEX
 #ifdef FADE
 	modexFadeOn(4, dpal);
+#endif
 #endif
 }
