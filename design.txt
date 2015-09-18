@@ -1,0 +1,28 @@
+Near functions should be for frequently used functions that update the game engine are are time critial
+
+far functions are for like menus, file loaders, and such
+
+
+
+"
+It is also possible to use the small code option, and to override certain functions and pointers to functions as
+being
+ far.
+  However, this method may lead to problems.  The Open Watcom C
+16
+ compiler generates special
+function calls that the programmer doesn’t see, such as checking for stack overflow when a function is
+invoked.  These calls are either
+ near
+ or
+ far
+ depending entirely on the memory model chosen when the
+module is compiled.  If the small code model is being used, all calls will be near calls.  If, however, several
+code groups are created with far calls between them, they will all need to access the stack overflow
+checking routines.  The linker can only place these special routines in one of the code groups, leaving the
+other functions without access to them, causing an error.
+To resolve this problem, mixing code models requires that all modules be compiled with the big code
+model, overriding certain functions as being near.  In this manner, the stack checking routines can be placed
+in any code group, which the other code groups can still access.  Alternatively, a command-line switch may
+be used to turn off stack checking, so no stack checking routines get called.
+"
