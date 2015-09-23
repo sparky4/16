@@ -33,6 +33,7 @@
 #include "src/lib/timer.h"
 
 #define SPRITE
+//#define TILESPRITE
 //#define BMPTYPE
 
 typedef struct {
