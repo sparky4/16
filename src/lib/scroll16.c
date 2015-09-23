@@ -703,6 +703,6 @@ void animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scroll
 	//modexClearRegion(top->page, 66, 66, 2, 40, 0);
 	//modexCopyPageRegion(dest->page, top->page, 66, 66, 66, 66, 2, 40);
 	//turn this off if XT
-	//XTif(detectcpu() > 0)
+	if(detectcpu() > 0)
 	modexWaitBorder();
 }

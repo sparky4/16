@@ -31,6 +31,7 @@
 #include "src/lib/planar.h"
 #include "src/lib/mapread.h"
 #include "src/lib/timer.h"
+#include "src/lib/wcpu/wcpu.h"
 
 #define SPRITE
 //#define BMPTYPE
