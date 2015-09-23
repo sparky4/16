@@ -42,8 +42,8 @@ void main()
 {
 //	word panswitch=0, panq=1, pand=0;
 	word panpagenum=0; //for panning!
-	int i;
-	static word paloffset=0;
+	unsigned int i;
+	//static word paloffset=0;
 	const char *cpus;
 	//static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 

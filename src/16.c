@@ -22,16 +22,19 @@
 
 #include "src/16.h"
 
+global_game_variables_t gvar;
+engi_stat_t engi_stat;
+const char *cpus;
+byte *dpal, *gpal;
+player_t player[MaxPlayers];
+//page_t screen;
+
 void
 main(int argc, char *argv[])
 {
-	global_game_variables_t gvar;
-	engi_stat_t engi_stat;
-	const char *cpus;
-	byte *dpal, *gpal;
-	player_t player[MaxPlayers];
-
+	//screen = modexDefaultPage();
 	engi_stat = ENGI_RUN;
+	//textInit();
 
 	/* save the palette */
 	dpal = modexNewPal();
@@ -46,6 +49,7 @@ main(int argc, char *argv[])
 	modexPalBlack();	//so player will not see loadings~
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
+	//modexprint(&screen, 32, 32, 1, 2, 0, "a");
 	while(ENGI_EXIT != engi_stat)
 	{
 		IN_ReadControl(0,&player);
@@ -58,8 +62,10 @@ main(int argc, char *argv[])
 		case 2: cpus = "386 or newer"; break;
 		default: cpus = "internal error"; break;
 	}
-	printf("detected CPU type: %s\n", cpus);
 	VGAmodeX(0, &gvar);
+	printf("Project 16 16.exe. This is supposed to be the actual finished game executable!\n");
+	printf("version %s\n", VERSION);
+	printf("detected CPU type: %s\n", cpus);
 	IN_Shutdown();
 	modexFadeOn(4, dpal);
 }
