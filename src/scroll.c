@@ -70,7 +70,7 @@ void main()
 	loadmap("data/test.map", &map);
 //0000	map.width=0;
 //0000	map.height=0;
-	chkmap(&map, 1);
+	chkmap(&map, 0);
 	printf("chkmap ok\n");
 	fprintf(stderr, "yay map loaded~~\n");
 	mv[0].map = &map;
