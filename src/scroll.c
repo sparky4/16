@@ -67,9 +67,9 @@ void main()
 
 	/* create the map */
 	fprintf(stderr, "testing map load~\n");
-//++++	loadmap("data/test.map", &map);
-	map.width=0;
-	map.height=0;
+	loadmap("data/test.map", &map);
+//0000	map.width=0;
+//0000	map.height=0;
 	chkmap(&map, 1);
 	printf("chkmap ok\n");
 	fprintf(stderr, "yay map loaded~~\n");

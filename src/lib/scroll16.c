@@ -467,12 +467,9 @@ sword chkmap(map_t *map, word q)
 		map->tiles->tileWidth = 16;
 		map->tiles->rows = 1;
 		map->tiles->cols = 1;
-#ifndef TILESPRITE
 		map->tiles->debug_text = true;
-#else
-		map->tiles->debug_text = false;
-#endif
 	}
+	else map->tiles->debug_text = false;
 	return 0;
 }
 
