@@ -32,7 +32,7 @@
 #include "src/lib/mapread.h"
 #include "src/lib/timer.h"
 
-//#define SPRITE
+#define SPRITE
 //#define BMPTYPE
 
 typedef struct {
@@ -69,8 +69,8 @@ void mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *p, word poopof
 void mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *p, word poopoffset);
 void mapDrawWRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
-void qclean();
-void shinku(page_t *page, global_game_variables_t *gv);
+//void qclean();
+//void shinku(page_t *page, global_game_variables_t *gv);
 void animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch);
 
 #endif /*__SCROLL16_H_*/

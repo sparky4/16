@@ -608,14 +608,14 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 	}
 }
 
-void qclean()
+/*void qclean()
 {
 	modexLeave();
 	//setkb(0);
-}
+}*/
 
 //sync!
-void shinku(page_t *page, global_game_variables_t *gv)
+/*void shinku(page_t *page, global_game_variables_t *gv)
 {
 	byte *pee;
 	word x = (16);
@@ -628,10 +628,10 @@ void shinku(page_t *page, global_game_variables_t *gv)
 	//	pee = malloc(sizeof(double));
 	//	sprintf(pee, "%f", ((*gv->clock) /18.2));
 //++++		modexprint(page, x, y, type, col, bgcol, pee);
-		//sprintf(pee, "%f", /*gv->tiku/*/time_in_seconds(gv));
+		//sprintf(pee, "%f", *gv->tiku/\*time_in_seconds(gv));
 		//modexprint(page, x, y+8, type, col, bgcol, pee);
 	//}
-}
+}*/
 
 void animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch)
 {
@@ -683,7 +683,7 @@ void animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scroll
 #define FRAME4 oldDrawBmp(VGA, x, y, &player[playnum].data, 1);
 #else
 #define FRAME1 modexDrawSpriteRegion(pip[1].page, x, y, 48, dire, 24, 32, &player[playnum].data);
-#define FRAME2 modexDrawSpriteRegion(pip[1].page, x, y, 24, dire, 24, 32, &player[playnum].data)
+#define FRAME2 modexDrawSpriteRegion(pip[1].page, x, y, 24, dire, 24, 32, &player[playnum].data);
 #define FRAME3 modexDrawSpriteRegion(pip[1].page, x, y, 0, dire, 24, 32, &player[playnum].data);
 #define FRAME4 modexDrawSpriteRegion(pip[1].page, x, y, 24, dire, 24, 32, &player[playnum].data);
 #endif

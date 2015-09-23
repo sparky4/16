@@ -25,7 +25,6 @@
 #include "src/lib/wcpu/wcpu.h"
 
 //#define FADE
-//#define SPRITE
 #define MODEX	//this is for mode x initiating
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
@@ -176,7 +175,11 @@ void main()
 	npc0.d=0;
 	modexDrawSpriteRegion(spri->page, npc0.x-4, npc0.y-TILEWH, 24, 64, 24, 32, &npctmp);*/
 #ifdef	SPRITE
+#ifdef BMPTYPE
+	oldDrawBmp(VGA, player[0].x-4, player[0].y-TILEWH, &player[0].data, 1);
+#else
 	modexDrawSpriteRegion(spri->page, player[0].x-4, player[0].y-TILEWH, 24, 64, 24, 32, &player[0].data);
+#endif
 #else
 	modexClearRegion(mv[1].page, player[0].x-4, player[0].y-TILEWH, 24, 32, 15);
 #endif
@@ -193,7 +196,7 @@ void main()
 	{
 		sprintf(mesg, "%lu", gvar.tiku);
 //++++		modexprint(mv[1].page, 16, 16, 1, 15, 0, mesg);
-		shinku(mv[1].page, &gvar);
+		//++++shinku(mv[1].page, &gvar);
 		IN_ReadControl(0,&player);
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
