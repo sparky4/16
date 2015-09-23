@@ -451,7 +451,7 @@ sword chkmap(map_t *map, word q)
 1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	\
 1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	3,	3,	3,	3,	1,	2,	3,	4 };*/
 	//check for failed to load map
-	if((map->width == map->height == 0) || (q>0))
+	if((map->width == map->height == 0) && (q>0))
 	{
 		//initiate a null map!
 		map->width=MAPW;///2;
