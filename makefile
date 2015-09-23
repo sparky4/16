@@ -52,7 +52,7 @@ TESTEXEC =  exmmtest.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe sega.exe sountest.exe
 EXEC = 16.exe bakapi.exe $(TESTEXEC)
 
-all: $(EXEC)
+all: $(EXEC) compress
 
 #
 #game and bakapi executables
@@ -355,3 +355,6 @@ clean: .symbolic
 #	@$(COPYCOMMAND) $(NYANLIB)* $(EXMMTESTDIR)$(NYANLIB)
 	@echo $(watcom)
 	@echo $(INCLUDE)
+
+compress: .symbolic
+	upx $(EXEC)
