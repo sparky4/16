@@ -152,7 +152,7 @@ static	Direction	DirTable[] =		// Quick lookup for total direction
 						//dir_Nortinest,
 						dir_North,
 						dir_West,
-						dir_None,	
+						dir_None,
 						dir_East,
 						dir_South
 						//dir_NorthEast,
@@ -797,7 +797,7 @@ IN_ReadCursor(CursorInfo *info)
 //		player and fills in the control info struct
 //
 ///////////////////////////////////////////////////////////////////////////
-void
+void near
 IN_ReadControl(int playnum,player_t *player)
 {
 			boolean		realdelta;

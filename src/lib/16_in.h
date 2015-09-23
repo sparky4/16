@@ -175,14 +175,14 @@ typedef	enum		{
 						dir_South,//dir_Soutinest,
 					} Direction;
 typedef	struct		{
-						boolean		button0,button1,button2,button3;
-						int			x,y;
-						Motion		xaxis,yaxis;
-						Direction	dir;
+						boolean	near	button0,button1,button2,button3;
+						int	near		x,y;
+						Motion	near	xaxis,yaxis;
+						Direction near	dir;
 					} CursorInfo;
 
 typedef	struct		{
-						ScanCode	button0,button1,
+						ScanCode near	button0,button1,
 									//upleft,
 									up,
 									down,
@@ -194,7 +194,7 @@ typedef	struct		{
 									;
 					} KeyboardDef;
 typedef	struct		{
-						word		joyMinX,joyMinY,
+						word	near	joyMinX,joyMinY,
 									threshMinX,threshMinY,
 									threshMaxX,threshMaxY,
 									joyMaxX,joyMaxY,
@@ -280,7 +280,7 @@ extern void IN_SetKeyHook(void (*hook)());
 extern void IN_ClearKeysDown();
 //static void INL_AdjustCursor(CursorInfo *info,word buttons,int dx,int dy);
 extern void IN_ReadCursor(CursorInfo *info);
-extern void IN_ReadControl(int playnum,player_t *player);
+extern void near IN_ReadControl(int playnum,player_t *player);
 extern void IN_SetControlType(word playnum,player_t *player,ControlType type);
 #if DEMO0
 extern boolean IN_StartDemoRecord(word bufsize);
