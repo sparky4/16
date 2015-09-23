@@ -18,7 +18,7 @@ makefile~
 README~
 TODO~
 LICENCE~
-*.map
+!*.map
 #*.MAP
 boop.sh
 !awoo.sh
