@@ -353,8 +353,8 @@ clean: .symbolic
 #	@$(COPYCOMMAND) $(SRCLIB)16_hc.* $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(SRCLIB)types.h $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(NYANLIB)* $(EXMMTESTDIR)$(NYANLIB)
-	@echo $(watcom)
-	@echo $(INCLUDE)
+#	@echo $(watcom)
+#	@echo $(INCLUDE)
 
-compress: .symbolic
-	upx $(EXEC)
+comp: .symbolic
+	upx -9 $(EXEC)
