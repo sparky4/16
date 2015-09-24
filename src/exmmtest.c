@@ -120,6 +120,9 @@ main(int argc, char *argv[])
 	printf("size of big buffer~=%u\n", _bmsize(sega, bigbuffer));
 #endif
 #endif
+	printf("press any key to continue!\n");
+	getch();
+	printf("[\n%s\n]\n", bigbuffer);
 	//printf("dark purple = purgable\n");
 	//printf("medium blue = non purgable\n");
 	//printf("red = locked\n");
