@@ -89,6 +89,7 @@ void ssd(page_t *page, bakapee_t *pee, word svq)
 	}else pee->sy = 0;
 }
 
+//plot pixel
 void dingpp(page_t *page, bakapee_t *pee)
 {
 #ifdef TILE
@@ -113,6 +114,7 @@ void dingo(bakapee_t *pee)
 	#endif
 }
 
+//assigning values from randomizer
 void dingas(bakapee_t *pee)
 {
 	if(pee->gq == BONK) dingu(pee);
@@ -161,6 +163,7 @@ void dingu(bakapee_t *pee)
 	}
 }
 
+//randomizer
 void dingq(bakapee_t *pee)
 {
 	if(pee->gq<BONK)
