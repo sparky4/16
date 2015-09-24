@@ -10,15 +10,15 @@ OK - end of heap
 
 	== near ==
 
-  USED block at f44e0a6 of size 24
-  USED block at f44e0be of size 578
-  USED block at f44e300 of size 76
-  USED block at f44e34c of size 20
-  USED block at f44e360 of size 20
-  USED block at f44e374 of size 20
-  USED block at f44e388 of size 20
-  USED block at f44e39c of size 20
-  USED block at f44e3b0 of size 7244
+  USED block at f44e0a6 of size 28
+  USED block at f44e0c2 of size 582
+  USED block at f44e308 of size 76
+  USED block at f44e354 of size 20
+  USED block at f44e368 of size 20
+  USED block at f44e37c of size 20
+  USED block at f44e390 of size 20
+  USED block at f44e3a4 of size 20
+  USED block at f44e3b8 of size 7236
 OK - end of heap
 
 	== far ==
@@ -33,13 +33,13 @@ OK - end of heap
 Memory Type         Total      Used       Free
 ----------------  --------   --------   --------
 Default		   8166		222	  7944
-Near		   8022		754	  7268
+Near		   8022		758	  7264
 Far		   8166		222	  7944
 ----------------  --------   --------   --------
-coreleft = 7258
-farcoreleft = 6816
+coreleft = 7256
+farcoreleft = 6812
 GetFreeSize = 65106
-GetNearFreeSize = 7268
+GetNearFreeSize = 7264
 GetFarFreeSize = 65106
-memavl = 7264
-stackavail = 38347
+memavl = 7260
+stackavail = 38343
