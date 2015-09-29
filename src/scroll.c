@@ -134,7 +134,7 @@ void main()
 	mv[0].page = &screen;
 	screen2 = modexNextPage(mv[0].page);
 	mv[1].page = &screen2;
-	screen3 = modexNextPageAppend(mv[1].page, 320, 240);	//(352*176)+1024 is the remaining amount of memory left wwww
+	screen3 = modexNextPageFlexibleSize(mv[1].page, 320, 240);	//(352*176)+1024 is the remaining amount of memory left wwww
 	//screen3 = modexNextPage0(mv2.page, 320, 192);	//(352*176)+1024 is the remaining amount of memory left wwww
 	mv[2].page = &screen3;
 

@@ -151,19 +151,19 @@ page_t
 modexNextPage(page_t *p) {
     page_t result;
 
-    result.data = p->data + (p->width/4)*p->height;  /* compute the offset */
+    /*result.data = p->data + (p->width/4)*p->height;
     result.dx = 0;
     result.dy = 0;
     result.width = p->width;
     result.height = p->height;
-        result.id = p->id+1;
-
+        result.id = p->id+1;*/
+	result = modexNextPageFlexibleSize(&p, p->width, p->height);
     return result;
 }
 
 //next page with defined dimentions~
 page_t
-modexNextPageAppend(page_t *p, word x, word y)
+modexNextPageFlexibleSize(page_t *p, word x, word y)
 {
         page_t result;
 
