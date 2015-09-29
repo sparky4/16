@@ -157,8 +157,9 @@ modexNextPage(page_t *p) {
     result.width = p->width;
     result.height = p->height;
         result.id = p->id+1;
-	//result = modexNextPageFlexibleSize(&p, p->width, p->height);
+
     return result;
+// 	return modexNextPageFlexibleSize(&p, p->width, p->height);
 }
 
 //next page with defined dimentions~
