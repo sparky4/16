@@ -2,7 +2,7 @@ Open Watcom Linker Version 2.0 beta Sep 21 2015 09:27:06 (32-bit)
 Copyright (c) 2002-2015 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
 Created on:       15/09/29 14:45:32
-Executable Image: pcxtest.exe
+Executable Image: pcxtest2.exe
 creating a DOS executable
 
 
@@ -24,7 +24,7 @@ DGROUP                          0b26:0000            0000ecc0
 Segment                Class          Group          Address         Size
 =======                =====          =====          =======         ====
 
-pcxtest_TEXT           CODE           AUTO           0000:0000       00000203
+pcxtest2_TEXT          CODE           AUTO           0000:0000       0000020b
 _TEXT                  CODE           AUTO           0000:0210       00008567
 modex16_TEXT           CODE           AUTO           0000:8780       00002180
 bitmap_TEXT            CODE           AUTO           0000:a900       000005c9
@@ -60,7 +60,7 @@ STACK                  STACK          DGROUP         0c46:0000       0000dac0
 Address        Symbol
 =======        ======
 
-Module: pcxtest.o(/dos/z/16/src/pcxtest.c)
+Module: pcxtest2.o(/dos/z/16/src/pcxtest2.c)
 0000:0060      main_
 0b26:01d4+     _clockw
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(stk086.asm)

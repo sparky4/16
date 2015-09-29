@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Sep 21 2015 09:27:06 (32-bit)
 Copyright (c) 2002-2015 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/09/29 14:07:45
+Created on:       15/09/29 14:45:32
 Executable Image: exmmtest.exe
 creating a DOS executable
 
@@ -26,12 +26,12 @@ Segment                Class          Group          Address         Size
 
 exmmtest_TEXT          CODE           AUTO           0000:0000       00000373
 _TEXT                  CODE           AUTO           0000:0380       0000643a
-16_mm_TEXT             CODE           AUTO           0000:67c0       00003306
+16_mm_TEXT             CODE           AUTO           0000:67c0       00003308
 16_ca_TEXT             CODE           AUTO           0000:9ad0       000003fd
-16_hc_TEXT             CODE           AUTO           0000:9ed0       00001585
+16_hc_TEXT             CODE           AUTO           0000:9ed0       0000158b
 16_head_TEXT           CODE           AUTO           0000:b460       00000405
-kitten_TEXT            CODE           AUTO           0000:b870       0000080e
-FAR_DATA               FAR_DATA       AUTO           0c07:000e       00000000
+kitten_TEXT            CODE           AUTO           0000:b870       0000080a
+FAR_DATA               FAR_DATA       AUTO           0c07:000a       00000000
 _NULL                  BEGDATA        DGROUP         0c08:0000       00000020
 _AFTERNULL             BEGDATA        DGROUP         0c0a:0000       00000002
 CONST                  DATA           DGROUP         0c0a:0002       00000076
@@ -86,18 +86,18 @@ Module: 16.lib(/dos/z/16/src/lib/16_mm.c)
 0000:7812+     MML_UseSpace_
 0000:79f0+     MML_ClearBlock_
 0000:7a74      MM_Startup_
-0000:7ea4      MM_Shutdown_
-0000:7f3a      MM_GetPtr_
-0000:8334      MM_FreePtr_
-0000:842c*     MM_SetPurge_
-0000:8506*     MM_SetLock_
-0000:85de+     MM_SortMem_
-0000:87cc      MM_ShowMemory_
-0000:8e6c      MM_DumpData_
-0000:8fc6+     MM_UnusedMemory_
-0000:904a+     MM_TotalFree_
-0000:90e0*     MM_Report_
-0000:9a98*     MM_BombOnError_
+0000:7ea6      MM_Shutdown_
+0000:7f3c      MM_GetPtr_
+0000:8336      MM_FreePtr_
+0000:842e*     MM_SetPurge_
+0000:8508*     MM_SetLock_
+0000:85e0+     MM_SortMem_
+0000:87ce      MM_ShowMemory_
+0000:8e6e      MM_DumpData_
+0000:8fc8+     MM_UnusedMemory_
+0000:904c+     MM_TotalFree_
+0000:90e2*     MM_Report_
+0000:9a9a*     MM_BombOnError_
 0c08:0460+     _beforesort
 0c08:0464+     _aftersort
 0c08:0468+     _XMSaddr
@@ -134,10 +134,10 @@ Module: 16.lib(/dos/z/16/src/lib/16_hc.c)
 0000:a504      GetFarFreeSize_
 0000:a54e      GetNearFreeSize_
 0000:a59c      heapdump_
-0000:b238+     heapstat_
-0000:b376+     heapstat0_
-0000:b3d8+     HC_OpenDebug_
-0000:b428*     HC_CloseDebug_
+0000:b23e+     heapstat_
+0000:b37c+     heapstat0_
+0000:b3de+     HC_OpenDebug_
+0000:b42e*     HC_CloseDebug_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(cstart)
 0c08:0000*     __nullarea
 0c08:01e4*     __ovlflag
@@ -264,10 +264,10 @@ Module: 16.lib(/dos/z/16/src/lib/nyan/kitten.c)
 0000:bb5a+     catread_
 0000:bc0e*     kittenclose_
 0000:bc2a+     mystrtoul_
-0000:bce2+     processEscChars_
-0000:be68+     get_line_
-0000:beda+     db_fetch_
-0000:bf70+     db_insert_
+0000:bcde+     processEscChars_
+0000:be64+     get_line_
+0000:bed6+     db_fetch_
+0000:bf6c+     db_insert_
 0c08:0394+     __kitten_catalog
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(stack086.c)
 0000:232d      stackavail_

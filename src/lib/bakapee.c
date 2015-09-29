@@ -36,18 +36,6 @@ void pdump(page_t *pee)
 	}
 }
 
-/////////////////////////////////////////////////////////////////////////////
-//																		 //
-// cls() - This clears the screen to the specified color, on the VGA or on //
-//		 the Virtual screen.											 //
-//																		 //
-/////////////////////////////////////////////////////////////////////////////
-void cls(page_t *page, byte color, byte *Where)
-{
-	//modexClearRegion(page, 0, 0, page->width, page->height, color);
-	_fmemset(Where, color, page->width*(page->height*2));
-}
-
 //color ‚Ä‚·‚Æ
 void colortest(page_t *page, bakapee_t *pee)
 {

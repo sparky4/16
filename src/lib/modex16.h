@@ -66,6 +66,7 @@ void modexPanPage(page_t *page, int dx, int dy);
 void modexSelectPlane(byte plane);
 void modexClearRegion(page_t *page, int x, int y, int w, int h, byte color);
 void oldDrawBmp(byte far* page, int x, int y, bitmap_t *bmp, byte sprite);
+//void CDrawBmp(byte far* vgamem, page_t* page, int x, int y, bitmap_t *bmp, byte sprite);
 void modexDrawBmp(page_t *page, int x, int y, bitmap_t *bmp);
 void modexDrawBmpRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp);
 void modexDrawPlanarBuf(page_t *page, int x, int y, planar_buf_t *bmp);
@@ -99,6 +100,7 @@ byte modexgetPixel(page_t *page, int x, int y);
 void modexhlin(page_t *page, word xl, word xh, word y, word color);
 void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
 void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
+void cls(page_t *page, byte color, byte *Where);
 void modexWaitBorder();
 
 /* -======================= Constants & Vars ==========================- */

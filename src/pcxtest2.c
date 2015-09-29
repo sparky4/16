@@ -64,7 +64,8 @@ void main() {
 	float t1, t2;
 
 	page=modexDefaultPage();
-
+	page.width+=32;
+	page.height+=32;
 //0000	bmp = bitmapLoadPcx("data/koishi~~.pcx");
 //	bmp = bitmapLoadPcx("data/chikyuu.pcx");
 	bmp = bitmapLoadPcx("data/koishi^^.pcx");

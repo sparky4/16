@@ -42,7 +42,6 @@ typedef struct {
 } bakapee_t;
 
 void pdump(page_t *pee);
-void cls(page_t *page, byte color, byte *Where);
 void colortest(page_t *page, bakapee_t *pee);
 void colorz(page_t *page, bakapee_t *pee);
 void ssd(page_t *page, bakapee_t *pee, word svq);

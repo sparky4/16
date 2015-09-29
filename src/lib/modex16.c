@@ -284,24 +284,46 @@ modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
 void
 oldDrawBmp(byte far* page, int x, int y, bitmap_t *bmp, byte sprite)
 {
-        byte plane;
-        word px, py;
-        word offset;
+	byte plane;
+	word px, py;
+	word offset;
 
-        /* TODO Make this fast.  It's SLOOOOOOW */
-        for(plane=0; plane < 4; plane++) {
-                modexSelectPlane(PLANE(plane+x));
-                for(px = plane; px < bmp->width; px+=4) {
-                        offset=px;
-                        for(py=0; py<bmp->height; py++) {
-                        if(!sprite || bmp->data[offset])
-                                page[PAGE_OFFSET(x+px, y+py)] = bmp->data[offset];
-                        offset+=bmp->width;
-                        }
-                }
-        }
+	/* TODO Make this fast.  It's SLOOOOOOW */
+	for(plane=0; plane < 4; plane++) {
+		modexSelectPlane(PLANE(plane+x));
+		for(px = plane; px < bmp->width; px+=4) {
+			offset=px;
+			for(py=0; py<bmp->height; py++) {
+			if(!sprite || bmp->data[offset])
+				page[PAGE_OFFSET(x+px, y+py)] = bmp->data[offset];
+			offset+=bmp->width;
+			}
+		}
+	}
 }
 
+void
+CDrawBmp(byte far* vgamem, page_t* page, int x, int y, bitmap_t *bmp, byte sprite)
+{
+	byte plane;
+	word px, py;
+	word offset=0;
+
+
+	/* TODO Make this fast.  It's SLOOOOOOW */
+	for(plane=0; plane < 4; plane++) {
+		modexSelectPlane(PLANE(plane+x));
+		for(px = plane; px < bmp->width; px+=4) {
+			offset=px;
+			for(py=0; py<bmp->height; py++) {
+			if(!sprite || bmp->data[offset])
+				//modexputPixel(page, x+px, y+py, bmp->data[offset]);
+				vgamem[PAGE_OFFSET(x+px, y+py)] = bmp->data[offset];
+			offset+=bmp->width;
+			}
+		}
+	}
+}
 
 void
 modexDrawBmp(page_t *page, int x, int y, bitmap_t *bmp) {
@@ -1164,6 +1186,21 @@ void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, c
 		}
 		chw += xp;
 	}
+}
+
+/////////////////////////////////////////////////////////////////////////////
+//																		 //
+// cls() - This clears the screen to the specified color, on the VGA or on //
+//		 the Virtual screen.											 //
+//																		 //
+/////////////////////////////////////////////////////////////////////////////
+void cls(page_t *page, byte color, byte *Where)
+{
+	//modexClearRegion(page, 0, 0, page->width, page->height, color);
+	/* set map mask to all 4 planes */
+	outpw(SC_INDEX, 0xff02);
+	//_fmemset(VGA, color, 16000);
+	_fmemset(Where, color, page->width*(page->height));
 }
 
 void
