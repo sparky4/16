@@ -58,20 +58,20 @@ typedef struct
 
 //map_t allocMap(int w, int h);
 //void initMap(map_t *map);
-void walk(map_view_t *pip, player_t *player, word pn);
-void mapScrollRight(map_view_t *mv, player_t *player, word id, word plid);
-void mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid);
-void mapScrollUp(map_view_t *mv, player_t *player, word id, word plid);
-void mapScrollDown(map_view_t *mv, player_t *player, word id, word plid);
+void near walk(map_view_t *pip, player_t *player, word pn);
+void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid);
+void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid);
+void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid);
+void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid);
 sword chkmap(map_t *map, word q);
 void mapGoTo(map_view_t *mv, int tx, int ty);
-void mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
-void mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *p, word poopoffset);
-void mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *p, word poopoffset);
+void near mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
+void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *p, word poopoffset);
+void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *p, word poopoffset);
 void mapDrawWRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 //void qclean();
 //void shinku(page_t *page, global_game_variables_t *gv);
-void animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch);
+void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch);
 
 #endif /*__SCROLL16_H_*/

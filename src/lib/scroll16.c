@@ -24,7 +24,7 @@
 */
 #include "src/lib/scroll16.h"
 
-void walk(map_view_t *pip, player_t *player, word pn)
+void near walk(map_view_t *pip, player_t *player, word pn)
 {
 	#define INC_PER_FRAME if(player[pn].q&1) player[pn].persist_aniframe++; if(player[pn].persist_aniframe>4) player[pn].persist_aniframe = 1;
 	switch(player[pn].d)
@@ -282,7 +282,7 @@ initMap(map_t *map) {
 	}
 }*/
 
-void mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
+void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 {
 	word x, y;  /* coordinate for drawing */
 
@@ -310,7 +310,7 @@ void mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 }
 
 
-void mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
+void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 {
 	word x, y;  /* coordinate for drawing */
 
@@ -339,7 +339,7 @@ void mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 }
 
 
-void mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
+void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 {
 	word x, y;  /* coordinate for drawing */
 
@@ -366,7 +366,7 @@ void mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 	//}
 }
 
-void mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
+void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 {
 	word x, y;  /* coordinate for drawing */
 
@@ -499,7 +499,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 }
 
 
-void
+void near
 mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 {
 	word rx;
@@ -537,7 +537,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 	}
 }
 
-void mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *p, word poopoffset)
+void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *p, word poopoffset)
 {
 	word x;
 	int i;
@@ -554,7 +554,7 @@ void mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *p, word poopof
 	}
 }
 
-void mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *p, word poopoffset)
+void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *p, word poopoffset)
 {
 	int y;
 	int i;
@@ -634,7 +634,7 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 	//}
 }*/
 
-void animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch)
+void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch)
 {
 	sword x = player[playnum].x;
 	sword y = player[playnum].y;
