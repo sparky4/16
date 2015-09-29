@@ -50,7 +50,7 @@ GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ)
 TESTEXEC =  exmmtest.exe test.exe pcxtest.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe inputest.exe scroll.exe vgmtest.exe
 #tsthimem.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe sega.exe sountest.exe
-EXEC = 16.exe bakapi.exe $(TESTEXEC)
+EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
 
 all: $(EXEC)
 
@@ -69,6 +69,11 @@ scroll.exe: scroll.$(OBJ) scroll16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib#gfx.
 	wcl $(FLAGS) scroll.$(OBJ) scroll16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib -fm=scroll.map#gfx.lib 16_head.$(OBJ) bakapee.$(OBJ)  16_in.$(OBJ) wcpu.$(OBJ)
 scroll.$(OBJ): $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
+
+tesuto.exe: tesuto.$(OBJ)
+	wcl -mh -d2 tesuto.$(OBJ)
+tesuto.$(OBJ): $(SRC)tesuto.c
+	wcl $(FLAGS) -c $(SRC)tesuto.c
 
 #sega.exe: sega.$(OBJ)
 #	wcl $(FLAGS) sega.$(OBJ)
