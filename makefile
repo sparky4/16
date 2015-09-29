@@ -73,7 +73,7 @@ scroll.$(OBJ): $(SRC)scroll.c
 tesuto.exe: tesuto.$(OBJ)
 	wcl -mh -d2 tesuto.$(OBJ)
 tesuto.$(OBJ): $(SRC)tesuto.c
-	wcl $(FLAGS) -c $(SRC)tesuto.c
+	wcl -mh -d2 -c $(SRC)tesuto.c
 
 #sega.exe: sega.$(OBJ)
 #	wcl $(FLAGS) sega.$(OBJ)
