@@ -24,7 +24,7 @@
 */
 #include "src/lib/scroll16.h"
 
-void near walk(map_view_t *pip, player_t *player, word pn)
+void walk(map_view_t *pip, player_t *player, word pn)
 {
 	#define INC_PER_FRAME if(player[pn].q&1) player[pn].persist_aniframe++; if(player[pn].persist_aniframe>4) player[pn].persist_aniframe = 1;
 	switch(player[pn].d)

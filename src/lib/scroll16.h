@@ -58,7 +58,7 @@ typedef struct
 
 //map_t allocMap(int w, int h);
 //void initMap(map_t *map);
-void near walk(map_view_t *pip, player_t *player, word pn);
+void walk(map_view_t *pip, player_t *player, word pn);
 void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid);
