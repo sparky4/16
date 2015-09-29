@@ -151,13 +151,13 @@ page_t
 modexNextPage(page_t *p) {
     page_t result;
 
-    /*result.data = p->data + (p->width/4)*p->height;
+    result.data = p->data + (p->width/4)*p->height;
     result.dx = 0;
     result.dy = 0;
     result.width = p->width;
     result.height = p->height;
-        result.id = p->id+1;*/
-	result = modexNextPageFlexibleSize(&p, p->width, p->height);
+        result.id = p->id+1;
+	//result = modexNextPageFlexibleSize(&p, p->width, p->height);
     return result;
 }
 
