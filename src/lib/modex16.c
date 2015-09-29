@@ -163,7 +163,7 @@ modexNextPage(page_t *p) {
 
 //next page with defined dimentions~
 page_t
-modexNextPage0(page_t *p, word x, word y)
+modexNextPageAppend(page_t *p, word x, word y)
 {
         page_t result;
 

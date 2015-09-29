@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Sep 21 2015 09:27:06 (32-bit)
 Copyright (c) 2002-2015 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/09/29 14:45:32
+Created on:       15/09/29 14:50:47
 Executable Image: test.exe
 creating a DOS executable
 
@@ -68,7 +68,7 @@ Module: gfx.lib(/dos/z/16/src/lib/modex16.c)
 0000:5ecc      modexLeave_
 0000:5ee4      modexDefaultPage_
 0000:5f3e      modexNextPage_
-0000:5ffa*     modexNextPage0_
+0000:5ffa*     modexNextPageAppend_
 0000:609e      modexShowPage_
 0000:619a*     modexPanPage_
 0000:61ea*     modexSelectPlane_

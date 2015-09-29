@@ -60,7 +60,7 @@ void modexEnter();
 void modexLeave();
 page_t modexDefaultPage();
 page_t modexNextPage(page_t *p);
-page_t modexNextPage0(page_t *p, word x, word y);
+page_t modexNextPageAppend(page_t *p, word x, word y);
 void modexShowPage(page_t *page);
 void modexPanPage(page_t *page, int dx, int dy);
 void modexSelectPlane(byte plane);

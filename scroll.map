@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Sep 21 2015 09:27:06 (32-bit)
 Copyright (c) 2002-2015 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/09/29 14:45:32
+Created on:       15/09/29 14:50:47
 Executable Image: scroll.exe
 creating a DOS executable
 
@@ -160,7 +160,7 @@ Module: 16.lib(/dos/z/16/src/lib/modex16.c)
 0e13:02fc*     modexLeave_
 0e13:0314      modexDefaultPage_
 0e13:036e      modexNextPage_
-0e13:042a      modexNextPage0_
+0e13:042a      modexNextPageAppend_
 0e13:04ce      modexShowPage_
 0e13:05ca*     modexPanPage_
 0e13:061a*     modexSelectPlane_
