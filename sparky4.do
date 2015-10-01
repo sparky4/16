@@ -9,4 +9,6 @@ font! ok
 jis! ...
 memory segmentation! trying ow2
 
-update mapreading!
+update mapreading! to the new system!
+	replace png with pcx ^^;
+		so the game can read it~
