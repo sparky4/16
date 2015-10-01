@@ -12,11 +12,12 @@ What needs to be done
 - [ ] map and item interation
 - [ ] item inventory~
 * ==working on extending==
-- [ ] Memory management (EMS + XMS) done but not tested...
-- [ ] case switch with keyboard code (when your holding 2 arrow keys and a key is released the keyboard controller dose not read input from the port anymore for some weired reason)
-- [ ] masking layer! (i think this is not easy to accomplish!)
+- [ ] Memory management [EMS + XMS] done but not tested...
+- [ ] case switch with keyboard code
+- when your holding 2 arrow keys and a key is released the keyboard controller dose not read input from the port anymore for some weired reason
+- [ ] masking layer! [i think this is not easy to accomplish!]
 - [x] 8088 detection to turn off vsync!
-- [ ] (very important!) optimize draw row and draw col
+- [ ] *very important!* optimize draw row and draw col
 - [ ] Study verge2's map system,
 - [ ] save feature!
 - [ ] *also important* interperator! and possibly custom map system
@@ -25,14 +26,11 @@ What needs to be done
 - [x] opl2/3 audio!!!!
 - [ ] engine core!
 * ==working==
-- [ ] (MOST important!) FUCKING MASSIVE DATA MANAGEMENT!!!
+- [ ] *MOST important!* FUCKING MASSIVE DATA MANAGEMENT!!!
 - [ ] MUSIC PLAYBACK!!!! WWWW
 - [ ] basic SFX from opl2 + pc speaker!
 - [ ] clean up repository after event 1.
-
 - [ ] script system for text and interaction
-
-
 - [ ] ====00 IMPORTANT! 00==== AS PART OF FINISHING THE GRAPHICAL LIB. Make a palette manager that updates the display palette with the pallet of images and sprites. in a stack and reuse same colors in the pallette on the image by changing the image's values to the matching color.
 - Use a little database to keep track of the images loaded and have manipulated the display pallette.
 
