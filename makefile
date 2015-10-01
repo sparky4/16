@@ -9,10 +9,10 @@ COPYCOMMAND=copy /y
 DIRSEP=\
 OBJ=obj
 !endif
-!ifndef INCLUDE
-IN=..$(DIRSEP)..$(DIRSEP)fdos$(DIRSEP)watcom2$(DIRSEP)h
-IFLAGS=-i=$(IN)
-!endif
+#!ifndef INCLUDE
+#IN=..$(DIRSEP)..$(DIRSEP)fdos$(DIRSEP)watcom2$(DIRSEP)h
+#IFLAGS=-i=$(IN)
+#!endif
 
 TARGET_OS = dos
 #-zk0u = translate kanji to unicode... wwww
@@ -369,3 +369,8 @@ clean: .symbolic
 
 comp: .symbolic
 	upx -9 $(EXEC)
+
+updatelibs: .symbolic
+	cd $(JSMNLIB)
+	git pull
+	cd ../../../
