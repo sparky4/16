@@ -521,7 +521,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 		{
 			case 0:
 #ifndef SPRITE
-				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, (t->debug_data[i])+1);
+				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, ((t->debug_data[i])+1)*2);
 				//cannot print number value du to it being slow as bakapee
 #else
 				modexDrawBmpRegion(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
