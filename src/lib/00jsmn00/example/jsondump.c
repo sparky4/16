@@ -2,12 +2,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-#include "../jsmn.h"
+#include "../jsmn.c"
 
 /*
  * An example of reading JSON from stdin and printing its content to stdout.
  * The output looks like YAML, but I'm not sure if it's really compatible.
  */
+static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
+	if (tok->type == JSMN_STRING && (int) strlen(s) == tok->end - tok->start &&
+			strncmp(json + tok->start, s, tok->end - tok->start) == 0) {
+		return 0;
+	}
+	return -1;
+}
 
 static int dump(const char *js, jsmntok_t *t, size_t count, int indent) {
 	int i, j, k;
@@ -18,6 +25,11 @@ static int dump(const char *js, jsmntok_t *t, size_t count, int indent) {
 		printf("%.*s", t->end - t->start, js+t->start);
 		return 1;
 	} else if (t->type == JSMN_STRING) {
+				if(jsoneq(js, t, "data") == 0 )
+		{
+//			printf("[[[[%d|%d]]]]\n", &(t+1)->size, (t+1)->size);
+			printf("\n%.*s[xx[%d|%d]xx]\n", (t+1)->end - (t+1)->start, js+(t+1)->start, &(t+1)->size, (t+1)->size);
+		}
 		printf("'%.*s'", t->end - t->start, js+t->start);
 		return 1;
 	} else if (t->type == JSMN_OBJECT) {
