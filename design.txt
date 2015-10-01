@@ -2,6 +2,8 @@ Near functions should be for frequently used functions that update the game engi
 
 far functions are for like menus, file loaders, and such
 
+	Make a palette manager that updates the display palette with the pallet of images and sprites. in a stack and reuse same colors in the pallette on the image by changing the image's values to the matching color.
+		Use a little database to keep track of the images loaded and have manipulated the display pallette.
 
 
 "
