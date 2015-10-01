@@ -36,6 +36,7 @@ page_t screen, screen2, screen3;
 map_view_t mv[3];
 map_view_t *bg, *spri, *mask;//, *tmp;
 planar_buf_t *p;
+float t;
 
 void main()
 {
@@ -56,7 +57,7 @@ void main()
 
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
-	gvar.clock=*hwclockw;
+	gvar.clock_start=*hwclockw;
 	//0000printf("starting timer\n");
 //++++
 	//++++????start_timer(&gvar);

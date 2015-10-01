@@ -144,7 +144,7 @@
 #define KEY_MENU		(0x75)
 */
 
-static dword far* hwclockdw= (dword far*) 0x046C; /* 18.2hz clock */
+static dword far* clockdw= (dword far*) 0x046C; /* 18.2hz clock */
 static word far* hwclockw= (word far*) 0x046C; /* 18.2hz clock */
 extern	int			profilehandle,debughandle;	//make it into game global
 
@@ -185,9 +185,10 @@ typedef struct
 {
 	int old_mode;	//old video mode before game!
 	word frames_per_second;
-	clock_t t;
-	dword tiku;
-	word clock;
+	//clock_t t;
+	dword tiku;		//frames passed
+	word clock_start;	//timer start
+	//word clock;		//current time on clock
 	handle_t handle;	//handles for file logging
 } global_game_variables_t;
 
