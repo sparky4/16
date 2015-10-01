@@ -7,20 +7,20 @@ What needs to be done
 - [x] sprite rendering
 - [ ] text box rendering
 - [x] text rendering
-- [x]! YAY! map loading
-- [x]! YAY! wwww map rendering~
+- [x] YAY! map loading
+- [x] YAY! wwww map rendering~
 - [ ] map and item interation
 - [ ] item inventory~
 * ==working on extending==
 - [ ] Memory management (EMS + XMS) done but not tested...
-- [ ] case switch with keyboard code (when your holding 2 arrow keys and a key is released the keyboard controller dose not read input from the port anymore for some weired reason)  
+- [ ] case switch with keyboard code (when your holding 2 arrow keys and a key is released the keyboard controller dose not read input from the port anymore for some weired reason)
 - [ ] masking layer! (i think this is not easy to accomplish!)
 - [x] 8088 detection to turn off vsync!
 - [ ] (very important!) optimize draw row and draw col
 - [ ] Study verge2's map system,
 - [ ] save feature!
-- [ ] (also important) interperator! and possibly custom map system
-- [ ] (also important) lua scripting system!
+- [ ] *also important* interperator! and possibly custom map system
+- [ ] *also important* lua scripting system!
 - [ ] extend the map system!
 - [x] opl2/3 audio!!!!
 - [ ] engine core!
