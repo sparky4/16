@@ -79,6 +79,11 @@ void main() {
 	/* clear and draw one sprite and one bitmap */
 	modexClearRegion(&page, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 1);
 
+	/* update display~*/
+	page.dx+=16;
+	page.dy+=16;
+	modexShowPage(&page);
+
 	/* non sprite comparison */
 	start = *clockw;
 	//for(i=0; i<100 ;i++) {
