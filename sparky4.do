@@ -12,3 +12,7 @@ memory segmentation! trying ow2
 update mapreading! to the new system!
 	replace png with pcx ^^;
 		so the game can read it~
+
+
+dro from dosbox
+dro to vgm get
