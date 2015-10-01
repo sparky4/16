@@ -237,6 +237,8 @@ boolean CA_FarRead(int handle, byte huge *dest, dword length, mminfo_t *mm)
 //		printf("CA_FarRead doesn't support 64K reads yet!\n");
 		//return 0;
 	}
+	else
+	{
 
 	//if(!fat&&!segm)
 	//{
@@ -282,6 +284,7 @@ End:
 #endif
 	return flag;
 	//}else return 0;//todo: EXPAND!!!
+	}
 }
 
 
@@ -310,6 +313,8 @@ boolean CA_FarWrite(int handle, byte huge *source, dword length, mminfo_t *mm)
 //		printf("CA_FarRead doesn't support 64K reads yet!\n");
 		//return 0;
 	}
+	else
+	{
 
 	//if(!fat&&!segm)
 	//{
@@ -355,6 +360,7 @@ End:
 #endif
 	return flag;
 	//}else return 0;
+	}
 }
 
 

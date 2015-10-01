@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Sep 21 2015 09:27:06 (32-bit)
 Copyright (c) 2002-2015 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/10/01 13:01:37
+Created on:       15/10/01 13:03:15
 Executable Image: exmmtest.exe
 creating a DOS executable
 
@@ -27,7 +27,7 @@ Segment                Class          Group          Address         Size
 exmmtest_TEXT          CODE           AUTO           0000:0000       00000373
 _TEXT                  CODE           AUTO           0000:0380       0000643a
 16_mm_TEXT             CODE           AUTO           0000:67c0       00003308
-16_ca_TEXT             CODE           AUTO           0000:9ad0       000003e5
+16_ca_TEXT             CODE           AUTO           0000:9ad0       000003e9
 16_hc_TEXT             CODE           AUTO           0000:9ec0       0000158b
 16_head_TEXT           CODE           AUTO           0000:b450       00000405
 kitten_TEXT            CODE           AUTO           0000:b860       0000080a
@@ -105,12 +105,12 @@ Module: 16.lib(/dos/z/16/src/lib/16_ca.c)
 0000:9afe      CA_OpenDebug_
 0000:9b4e      CA_CloseDebug_
 0000:9b7c+     CA_FarRead_
-0000:9bf0*     CA_FarWrite_
-0000:9c64*     CA_ReadFile_
-0000:9ce0      CA_LoadFile_
-0000:9d88*     CAL_OptimizeNodes_
-0000:9e38      CA_Startup_
-0000:9e88      CA_Shutdown_
+0000:9bf2*     CA_FarWrite_
+0000:9c68*     CA_ReadFile_
+0000:9ce4      CA_LoadFile_
+0000:9d8c*     CAL_OptimizeNodes_
+0000:9e3c      CA_Startup_
+0000:9e8c      CA_Shutdown_
 0c07:0470*     _finishcachebox
 0c07:0474*     _drawcachebox
 0c07:0478*     _updatecachebox
