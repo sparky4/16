@@ -33,7 +33,7 @@
 #include "src/lib/timer.h"
 #include "src/lib/wcpu/wcpu.h"
 
-#define SPRITE
+//#define SPRITE
 //#define BMPTYPE
 
 typedef struct {
@@ -50,6 +50,7 @@ typedef struct
 	map_view_t *mv;
 } map_view_db_t;
 
+//temp defines
 #define TILEWH 16
 #define QUADWH			TILEWH/2
 //for null map!
