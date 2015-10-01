@@ -39,16 +39,16 @@ OFLAGS=-obmiler -out -oh -ei -zp8 -0 -fpi87  -onac -ol+ -ok####x
 FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 
 DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
-VGMSNDOBJ = vgmSnd.$(OBJ)#16_snd.$(OBJ)
+VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
-16LIBOBJS = bakapee.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ)
-#scroll16.$(OBJ)
+16LIBOBJS = bakapee.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) scroll16.$(OBJ)
 #timer.$(OBJ)
 #3812intf.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ)
 
-TESTEXEC =  exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe inputest.exe scroll.exe vgmtest.exe
-#tsthimem.exe
+TESTEXEC =  exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe
+# tsthimem.exe
+#inputest.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe sega.exe sountest.exe
 EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
 
@@ -65,8 +65,8 @@ bakapi.exe: bakapi.$(OBJ) 16.lib
 #
 #Test Executables!
 #
-scroll.exe: scroll.$(OBJ) scroll16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib#gfx.lib 16_head.$(OBJ) bakapee.$(OBJ) 16_in.$(OBJ) wcpu.$(OBJ)
-	wcl $(FLAGS) scroll.$(OBJ) scroll16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib -fm=scroll.map#gfx.lib 16_head.$(OBJ) bakapee.$(OBJ)  16_in.$(OBJ) wcpu.$(OBJ)
+scroll.exe: scroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib#gfx.lib 16_head.$(OBJ) bakapee.$(OBJ) 16_in.$(OBJ) wcpu.$(OBJ)
+	wcl $(FLAGS) scroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib -fm=scroll.map#gfx.lib 16_head.$(OBJ) bakapee.$(OBJ)  16_in.$(OBJ) wcpu.$(OBJ)
 scroll.$(OBJ): $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
 
