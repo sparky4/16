@@ -26,14 +26,15 @@ What needs to be done
 + DONE! 22. opl2/3 audio!!!!
 + 23. engine core!
 + ==working== 24. (MOST important!) FUCKING MASSIVE DATA MANAGEMENT!!! related to 12.
-SEMI DONE~ + 25. MUSIC PLAYBACK!!!! WWWW
++ 25. MUSIC PLAYBACK!!!! WWWW
 + 26. basic SFX from opl2 + pc speaker!
 + 27. clean up repository after event 1.
 
 + 30. script system for text and interaction
 
+
 + 40. ====00 IMPORTANT! 00==== AS PART OF FINISHING THE GRAPHICAL LIB. Make a palette manager that updates the display palette with the pallet of images and sprites. in a stack and reuse same colors in the pallette on the image by changing the image's values to the matching color.
-- Use a little database to keep track of the images loaded and have manipulated the display pallette.
+Use a little database to keep track of the images loaded and have manipulated the display pallette.
 
 + 9000. fix any bugs found
 + 9001. make the game wwww
