@@ -16,3 +16,6 @@ doc/faq.txt = frequently asked questions file!
 ### To compile:
 
 You need Open Watcom stable to compile and just run wmake
+
+###TODO
+https://github.com/sparky4/16/blob/master/TODO.md
