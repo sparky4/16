@@ -621,7 +621,7 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 }*/
 
 //sync!
-/*void shinku(page_t *page, global_game_variables_t *gv)
+void shinku(page_t *page, global_game_variables_t *gv)
 {
 	byte *pee;
 	word x = (16);
@@ -631,13 +631,13 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 	word type = 1;
 	//if(elapsed_timer(gv) >= (1.0 / gv->frames_per_second))
 	//{
-	//	pee = malloc(sizeof(double));
-	//	sprintf(pee, "%f", ((*gv->clock) /18.2));
+		pee = malloc(sizeof(double));
+//++++		sprintf(pee, "%f", ((*gv->clock) /18.2));
 //++++		modexprint(page, x, y, type, col, bgcol, pee);
 		//sprintf(pee, "%f", *gv->tiku/\*time_in_seconds(gv));
 		//modexprint(page, x, y+8, type, col, bgcol, pee);
 	//}
-}*/
+}
 
 void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch)
 {

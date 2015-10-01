@@ -56,6 +56,7 @@ void main()
 
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
+	gvar.clock=*hwclockw;
 	//0000printf("starting timer\n");
 //++++
 	//++++????start_timer(&gvar);
@@ -195,8 +196,8 @@ void main()
 	while(!IN_KeyDown(sc_Escape) && player[0].hp>0)
 	{
 		sprintf(mesg, "%lu", gvar.tiku);
-//++++		modexprint(mv[1].page, 16, 16, 1, 15, 0, mesg);
-		//++++shinku(mv[1].page, &gvar);
+		modexprint(mv[1].page, 16, 16, 1, 15, 0, mesg);
+		shinku(mv[1].page, &gvar);
 		IN_ReadControl(0,&player);
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
