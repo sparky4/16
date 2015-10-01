@@ -634,7 +634,9 @@ void shinku(page_t *page, global_game_variables_t *gv)
 	t=(((*hwclockw)-gv->clock_start) /18.2);
 	//if(elapsed_timer(gv) >= (1.0 / gv->frames_per_second))
 	//{
-		pee = _fmalloc(sizeof(float));
+		pee = _fmalloc(sizeof(byte)*64);
+		sprintf(pee, "%lu", gv->tiku);
+		modexprint(page, 16, 16, 1, 15, 0, pee);
 		//sprintf(pee, "%f", gv->tiku/t);
 		modexprint(page, x, y, type, col, bgcol, pee);
 		//sprintf(pee, "%f", *gv->tiku/\*time_in_seconds(gv));

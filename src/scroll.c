@@ -196,8 +196,6 @@ void main()
 #endif
 	while(!IN_KeyDown(sc_Escape) && player[0].hp>0)
 	{
-		sprintf(mesg, "%lu", gvar.tiku);
-		modexprint(mv[1].page, 16, 16, 1, 15, 0, mesg);
 		shinku(mv[1].page, &gvar);
 		IN_ReadControl(0,&player);
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
