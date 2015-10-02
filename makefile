@@ -41,10 +41,10 @@ FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
-16LIBOBJS = bakapee.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) scroll16.$(OBJ)
+16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ)
 #timer.$(OBJ)
 #3812intf.$(OBJ)
-GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ)
+GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ)
 
 TESTEXEC =  exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe
 # tsthimem.exe
@@ -137,13 +137,13 @@ maptest.exe: maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) 16.lib
 fmemtest.exe: fmemtest.$(OBJ) 16.lib
 	wcl $(FLAGS) fmemtest.$(OBJ) 16.lib -fm=fmemtest.map
 
-exmmtest.exe: exmmtest.$(OBJ) 16.lib#16_head.$(OBJ) 16_mm.$(OBJ) 16_ca.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ)
-	wcl $(FLAGS) exmmtest.$(OBJ) 16.lib -fm=exmmtest.map#16_head.$(OBJ) 16_mm.$(OBJ) 16_ca.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ)
+exmmtest.exe: exmmtest.$(OBJ) $(16LIBOBJS)
+	wcl $(FLAGS) exmmtest.$(OBJ) -fm=exmmtest.map $(16LIBOBJS)
 
-vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib 16_in.$(OBJ) 16_head.$(OBJ)
- 	wcl $(FLAGS) vgmtest.$(OBJ) vgmsnd.lib -fm=vgmtest.map 16_in.$(OBJ) 16_head.$(OBJ)
-#vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib 16.lib
-#	wcl $(FLAGS) vgmtest.$(OBJ) vgmsnd.lib -fm=vgmtest.map 16.lib
+# vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib 16_in.$(OBJ) 16_head.$(OBJ)
+# 	wcl $(FLAGS) vgmtest.$(OBJ) vgmsnd.lib -fm=vgmtest.map 16_in.$(OBJ) 16_head.$(OBJ)
+vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib $(16LIBOBJS)
+	wcl $(FLAGS) vgmtest.$(OBJ) vgmsnd.lib -fm=vgmtest.map $(16LIBOBJS)
 	#====wcl -mc vgmtest.$(OBJ) $(VGMSNDOBJ) -fm=vgmtest.map
 
 
