@@ -140,8 +140,10 @@ fmemtest.exe: fmemtest.$(OBJ) 16.lib
 exmmtest.exe: exmmtest.$(OBJ) 16.lib#16_head.$(OBJ) 16_mm.$(OBJ) 16_ca.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ)
 	wcl $(FLAGS) exmmtest.$(OBJ) 16.lib -fm=exmmtest.map#16_head.$(OBJ) 16_mm.$(OBJ) 16_ca.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ)
 
-vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib 16_in.$(OBJ) 16_head.$(OBJ)
-	wcl $(FLAGS) vgmtest.$(OBJ) vgmsnd.lib -fm=vgmtest.map 16_in.$(OBJ) 16_head.$(OBJ)
+# vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib 16_in.$(OBJ) 16_head.$(OBJ)
+# 	wcl $(FLAGS) vgmtest.$(OBJ) vgmsnd.lib -fm=vgmtest.map 16_in.$(OBJ) 16_head.$(OBJ)
+vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib 16.lib
+	wcl $(FLAGS) vgmtest.$(OBJ) vgmsnd.lib -fm=vgmtest.map 16.lib
 	#====wcl -mc vgmtest.$(OBJ) $(VGMSNDOBJ) -fm=vgmtest.map
 
 
