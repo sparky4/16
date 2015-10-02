@@ -1,9 +1,9 @@
 #!/bin/bash
 git add .
 . ./boop.sh "$*"
-cp -fp *.exe /var/www/html/
+cp -fp *.exe /var/www/
 if [ -e "*.exe" ]
 	then
-zip /var/www/html/scroll scroll.exe
-zip /var/www/html/exmmtest exmmtest.exe
+zip /var/www/scroll scroll.exe
+zip /var/www/exmmtest exmmtest.exe
 fi

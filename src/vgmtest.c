@@ -55,7 +55,7 @@ main(int argc, char *argv[])
 
 	bakapee = malloc(64);
 	if(argv[1]) bakapee = argv[1];
-	else bakapee = "data/0.vgm";
+	else bakapee = "data/adlib.vgm";
 	printf("%x\n", OpenVGMFile(bakapee, &pee[0]));
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);

@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Sep 21 2015 10:22:11 (32-bit)
 Copyright (c) 2002-2015 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/10/01 16:58:38
+Created on:       15/10/01 19:59:51
 Executable Image: vgmtest.exe
 creating a DOS executable
 
@@ -24,7 +24,7 @@ DGROUP                          09cc:0000            0000e660
 Segment                Class          Group          Address         Size
 =======                =====          =====          =======         ====
 
-vgmtest_TEXT           CODE           AUTO           0000:0000       00000114
+vgmtest_TEXT           CODE           AUTO           0000:0000       00000118
 16_in_TEXT             CODE           AUTO           0000:0120       00001d43
 16_head_TEXT           CODE           AUTO           0000:1e70       00000405
 _TEXT                  CODE           AUTO           0000:2280       0000601c
@@ -60,9 +60,9 @@ Address        Symbol
 =======        ======
 
 Module: vgmtest.o(/dos/z/16/src/vgmtest.c)
-0000:0010      OPL2_Write_
-0000:0036      OPL2_ReadStatus_
-0000:0050      main_
+0000:0014      OPL2_Write_
+0000:003a      OPL2_ReadStatus_
+0000:0054      main_
 Module: 16_in.o(/dos/z/16/src/lib/16_in.c)
 0000:0238+     INL_KeyService_
 0000:0482+     Mouse_
