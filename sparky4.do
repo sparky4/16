@@ -16,3 +16,6 @@ update mapreading! to the new system!
 
 dro from dosbox
 dro to vgm get
+
+
+fix 16.lib
