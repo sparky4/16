@@ -623,7 +623,7 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 //sync!
 void shinku(page_t *page, global_game_variables_t *gv)
 {
-	byte *pee;
+	/*byte *pee;
 	word x = (16);
 	word y = (8+16);
 	word col = 15;
@@ -640,8 +640,11 @@ void shinku(page_t *page, global_game_variables_t *gv)
 		//modexprint(page, x, y, type, col, bgcol, pee);
 		//sprintf(pee, "%f", *gv->tiku/\*time_in_seconds(gv));
 		//modexprint(page, x, y+8, type, col, bgcol, pee);
-	//}
+	//}*/
 	(gv->clock_start)=*clockdw;
+	//turn this off if XT
+	if(detectcpu() > 0)
+	modexWaitBorder();
 }
 
 void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch)
@@ -712,7 +715,4 @@ void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword s
 	//TODO: mask copy //modexCopyPageRegion(dest->page, src->page, x-4, y-4, x-4, y-4, 28, 40);
 	//modexClearRegion(top->page, 66, 66, 2, 40, 0);
 	//modexCopyPageRegion(dest->page, top->page, 66, 66, 66, 66, 2, 40);
-	//turn this off if XT
-	if(detectcpu() > 0)
-	modexWaitBorder();
 }
