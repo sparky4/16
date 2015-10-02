@@ -27,13 +27,14 @@ engi_stat_t engi_stat;
 const char *cpus;
 byte *dpal, *gpal;
 player_t player[MaxPlayers];
-//page_t screen;
+page_t screen;
 
 void
 main(int argc, char *argv[])
 {
 	//screen = modexDefaultPage();
 	engi_stat = ENGI_RUN;
+	gvar.clock_start=*clockdw;
 	//textInit();
 
 	/* save the palette */
@@ -54,6 +55,8 @@ main(int argc, char *argv[])
 	{
 		IN_ReadControl(0,&player);
 		if(IN_KeyDown(sc_Escape)) engi_stat = ENGI_EXIT;
+		shinku(&screen, &gvar);
+		gvar.tiku++;
 	}
 	switch(detectcpu())
 	{

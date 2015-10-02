@@ -28,6 +28,7 @@
 #include "src/lib/modex16.h"
 #include "src/lib/wcpu/wcpu.h"
 #include "src/lib/planar.h"
+#include "src/lib/scroll16.h"
 
 typedef enum {
 	ENGI_EXIT,

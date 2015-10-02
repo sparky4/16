@@ -623,6 +623,8 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 //sync!
 void shinku(page_t *page, global_game_variables_t *gv)
 {
+	if(((*clockdw)!=gv->clock_start)&&gv->tiku>0)
+	{
 	byte *pee;
 	word x = (16);
 	word y = (8+16);
@@ -631,18 +633,26 @@ void shinku(page_t *page, global_game_variables_t *gv)
 	word type = 1;
 	float t;
 	//gv->clock=*hwclockw;
-	t=(((*hwclockw)-gv->clock_start) /18.2);
-	//if(elapsed_timer(gv) >= (1.0 / gv->frames_per_second))
-	//{
+		t=((*clockdw)-gv->clock_start)/18.2;
+		//if(gv->tiku<=0) return;
+		//if(elapsed_timer(gv) >= (1.0 / gv->frames_per_second))
+		//{
 		pee = _fmalloc(sizeof(byte)*64);
 		sprintf(pee, "%lu", gv->tiku);
 		modexprint(page, 16, 16, 1, 15, 0, pee);
-		//sprintf(pee, "%f", gv->tiku/t);
-		modexprint(page, x, y, type, col, bgcol, pee);
+		//sprintf(pee, "%f", t);
+		//modexprint(page, x, y, type, col, bgcol, pee);
+		//printf("%f time\n", t);
+		/*printf("%lu gv->cs	", gv->clock_start);
+		printf("%lu time	", (*clockdw));
+		printf("%f fps	", gv->tiku/t);
+		printf("%lu tiku\n", gv->tiku);*/
+		gv->tiku=0;
+	}
 		//sprintf(pee, "%f", *gv->tiku/\*time_in_seconds(gv));
 		//modexprint(page, x, y+8, type, col, bgcol, pee);
 	//}
-	(gv->clock_start)=*hwclockw;
+	(gv->clock_start)=*clockdw;
 }
 
 void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch)
