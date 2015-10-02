@@ -630,19 +630,18 @@ void shinku(page_t *page, global_game_variables_t *gv)
 	word bgcol = 0;
 	word type = 1;
 	float t;
-	//gv->clock=*hwclockw;
-	t=(((*hwclockw)-gv->clock_start) /18.2);
+	t=(((*clockdw)-gv->clock_start) /18.2);
 	//if(elapsed_timer(gv) >= (1.0 / gv->frames_per_second))
 	//{
 		pee = _fmalloc(sizeof(byte)*64);
 		sprintf(pee, "%lu", gv->tiku);
 		modexprint(page, 16, 16, 1, 15, 0, pee);
 		//sprintf(pee, "%f", gv->tiku/t);
-		modexprint(page, x, y, type, col, bgcol, pee);
+		//modexprint(page, x, y, type, col, bgcol, pee);
 		//sprintf(pee, "%f", *gv->tiku/\*time_in_seconds(gv));
 		//modexprint(page, x, y+8, type, col, bgcol, pee);
 	//}
-	(gv->clock_start)=*hwclockw;
+	(gv->clock_start)=*clockdw;
 }
 
 void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch)
