@@ -57,7 +57,7 @@ void main()
 
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
-	gvar.clock_start=*hwclockw;
+	gvar.clock_start=*clockdw;
 	//0000printf("starting timer\n");
 //++++
 	//++++????start_timer(&gvar);

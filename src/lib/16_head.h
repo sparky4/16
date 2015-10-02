@@ -145,7 +145,7 @@
 */
 
 static dword far* clockdw= (dword far*) 0x046C; /* 18.2hz clock */
-static word far* hwclockw= (word far*) 0x046C; /* 18.2hz clock */
+//static word far* hwclockw= (word far*) 0x046C; /* 18.2hz clock */
 extern	int			profilehandle,debughandle;	//make it into game global
 
 #define __DEBUG__
