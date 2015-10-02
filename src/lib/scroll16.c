@@ -625,34 +625,34 @@ void shinku(page_t *page, global_game_variables_t *gv)
 {
 	if(((*clockdw)!=gv->clock_start)&&gv->tiku>0)
 	{
-	byte *pee;
-	word x = (16);
-	word y = (8+16);
-	word col = 15;
-	word bgcol = 0;
-	word type = 1;
-	float t;
-	//gv->clock=*hwclockw;
-		t=((*clockdw)-gv->clock_start)/18.2;
-		//if(gv->tiku<=0) return;
+		byte *pee;//,*peepee;
+		word x = (16);
+		word y = (8+16);
+		word col = 15;
+		word bgcol = 0;
+		word type = 1;
+		float t;
+		t=(float)(((*clockdw)-gv->clock_start)/18.2);
 		//if(elapsed_timer(gv) >= (1.0 / gv->frames_per_second))
-		//{
-		pee = _fmalloc(sizeof(byte)*64);
+		pee = _fmalloc(sizeof(dword));
+		//peepee = _fmalloc(sizeof(word));
 		sprintf(pee, "%lu", gv->tiku);
 		modexprint(page, 16, 16, 1, 15, 0, pee);
-		//sprintf(pee, "%f", t);
-		//modexprint(page, x, y, type, col, bgcol, pee);
-		//printf("%f time\n", t);
+		//sprintf(peepee, "%lu", (*clockdw)-gv->clock_start);
+		//modexprint(page, x, y, type, col, bgcol, peepee);
+		//printf("%f fps\n", (float)gv->tiku/t);
 		/*printf("%lu gv->cs	", gv->clock_start);
 		printf("%lu time	", (*clockdw));
 		printf("%f fps	", gv->tiku/t);
 		printf("%lu tiku\n", gv->tiku);*/
 		gv->tiku=0;
+		(gv->clock_start)=*clockdw;
 	}
 		//sprintf(pee, "%f", *gv->tiku/\*time_in_seconds(gv));
 		//modexprint(page, x, y+8, type, col, bgcol, pee);
-	//}
-	(gv->clock_start)=*clockdw;
+	//turn this off if XT
+	if(detectcpu() > 0)
+	modexWaitBorder();
 }
 
 void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch)
@@ -723,7 +723,4 @@ void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword s
 	//TODO: mask copy //modexCopyPageRegion(dest->page, src->page, x-4, y-4, x-4, y-4, 28, 40);
 	//modexClearRegion(top->page, 66, 66, 2, 40, 0);
 	//modexCopyPageRegion(dest->page, top->page, 66, 66, 66, 66, 2, 40);
-	//turn this off if XT
-	if(detectcpu() > 0)
-	modexWaitBorder();
 }
