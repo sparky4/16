@@ -595,7 +595,7 @@ void shinku(page_t *page, global_game_variables_t *gv)
 		word col = 15;
 		word bgcol = 0;
 		word type = 1;
-		pee = _fmalloc(sizeof(byte)*2);
+		pee = _nmalloc(sizeof(byte)*2);
 		//t=(((*(gv->clock))-gv->clock_start) /18.2);
 		sprintf(pee, "%f fps", (double)gv->kurokku.tiku/ticktock(gv));
 		modexprint(page, 16, 16, 1, 15, 0, pee);

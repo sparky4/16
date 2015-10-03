@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Sep 21 2015 09:27:06 (32-bit)
 Copyright (c) 2002-2015 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/10/03 14:56:12
+Created on:       15/10/03 16:42:51
 Executable Image: scroll.exe
 creating a DOS executable
 
@@ -36,7 +36,7 @@ kitten_TEXT            CODE           AUTO           0000:7840       0000080a
 16_hc_TEXT             CODE           AUTO           0000:8050       0000158b
 timer_TEXT             CODE           AUTO           0000:95e0       00000209
 _TEXT                  CODE           AUTO           097f:0000       00009f29
-scroll16_TEXT          CODE           AUTO           097f:9f30       00003471
+scroll16_TEXT          CODE           AUTO           097f:9f30       00003475
 bitmap_TEXT            CODE           AUTO           097f:d3b0       000005c9
 planar_TEXT            CODE           AUTO           097f:d980       00000275
 16text_TEXT            CODE           AUTO           097f:dc00       0000010d
@@ -230,7 +230,7 @@ Module: gfx.lib(/dos/z/16/src/lib/scroll16.c)
 097f:cd32+     mapDrawWRow_
 097f:ce60*     mapDrawWCol_
 097f:cfaa      shinku_
-097f:d11c+     animatePlayer_
+097f:d120+     animatePlayer_
 Module: gfx.lib(/dos/z/16/src/lib/bitmap.c)
 097f:d6b2      bitmapLoadPcx_
 097f:d80e*     bitmapLoadPcxTiles_
