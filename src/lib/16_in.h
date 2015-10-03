@@ -36,12 +36,12 @@
 //#define	__DEBUG_InputMgr__
 #endif
 
-extern boolean testkeyin,testcontrolnoisy;
-
 #ifdef	__DEBUG_InputMgr__
 //#define TESTKEYIN
 //#define TESTCONTROLNOISY
 #endif
+
+static boolean testkeyin,testcontrolnoisy;
 
 #define	KeyInt	9	// The keyboard ISR number
 

@@ -29,8 +29,8 @@ main(int argc, char *argv[])
 {
 	player_t player[MaxPlayers];
 	//extern struct inconfig inpu;
-	static boolean testkeyin=true;
-	static boolean testcontrolnoisy=true;
+	testkeyin=1;
+	testcontrolnoisy=1;
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
 	//while(!IN_KeyDown(sc_Escape))

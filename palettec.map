@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Sep 21 2015 09:27:06 (32-bit)
 Copyright (c) 2002-2015 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/10/03 13:41:19
+Created on:       15/10/03 14:03:27
 Executable Image: palettec.exe
 creating a DOS executable
 
@@ -13,7 +13,7 @@ creating a DOS executable
 Group                           Address              Size
 =====                           =======              ====
 
-DGROUP                          1148:0000            0000f080
+DGROUP                          1148:0000            0000f060
 
 
 
@@ -53,8 +53,8 @@ STRINGS                DATA           DGROUP         11c1:0004       00000000
 DATA                   DATA           DGROUP         11c1:0004       00000000
 _emu_init_start        EMU            DGROUP         11c1:0004       00000000
 _emu_init_end          EMU            DGROUP         11c1:0004       00000000
-_BSS                   BSS            DGROUP         11c2:0000       00000e1e
-STACK                  STACK          DGROUP         12a4:0000       0000dac0
+_BSS                   BSS            DGROUP         11c2:0000       00000df2
+STACK                  STACK          DGROUP         12a2:0000       0000dac0
 
 
                         +----------------+
@@ -70,7 +70,7 @@ Address        Symbol
 Module: palettec.o(/dos/z/16/src/palettec.c)
 0000:0012      main_
 Module: 16_in.o(/dos/z/16/src/lib/16_in.c)
-1148:07be+     _inpu
+1148:07ae+     _inpu
 0000:0190+     INL_KeyService_
 0000:042a+     Mouse_
 0000:0482+     IN_GetJoyAbs_
@@ -95,9 +95,6 @@ Module: 16_in.o(/dos/z/16/src/lib/16_in.c)
 0000:1db2+     IN_ClearKey_
 0000:1e2a*     IN_qb_
 Module: 16_mm.o(/dos/z/16/src/lib/16_mm.c)
-1148:0920+     _beforesort
-1148:0924+     _aftersort
-1148:0928+     _XMSaddr
 0000:28b4+     MML_CheckForEMS_
 0000:2910+     MML_SetupEMS_
 0000:2ac8+     MML_ShutdownEMS_
@@ -121,6 +118,9 @@ Module: 16_mm.o(/dos/z/16/src/lib/16_mm.c)
 0000:475c+     MM_TotalFree_
 0000:47f2*     MM_Report_
 0000:51aa*     MM_BombOnError_
+1148:0910+     _beforesort
+1148:0914+     _aftersort
+1148:0918+     _XMSaddr
 Module: wcpu.o(/dos/z/16/src/lib/wcpu/wcpu.c)
 0000:51e0      detectcpu_
 Module: 16_head.o(/dos/z/16/src/lib/16_head.c)
@@ -129,9 +129,6 @@ Module: 16_head.o(/dos/z/16/src/lib/16_head.c)
 0000:5300      printmeminfoline_
 0000:54ec      US_CheckParm_
 Module: 16_ca.o(/dos/z/16/src/lib/16_ca.c)
-1148:0940*     _finishcachebox
-1148:0944*     _drawcachebox
-1148:0948*     _updatecachebox
 0000:567e      CA_OpenDebug_
 0000:56ce      CA_CloseDebug_
 0000:56fc+     CA_FarRead_
@@ -141,6 +138,9 @@ Module: 16_ca.o(/dos/z/16/src/lib/16_ca.c)
 0000:5920*     CAL_OptimizeNodes_
 0000:59d0*     CA_Startup_
 0000:5a20*     CA_Shutdown_
+1148:0920*     _finishcachebox
+1148:0924*     _updatecachebox
+1148:0928*     _drawcachebox
 Module: kitten.o(/dos/z/16/src/lib/nyan/kitten.c)
 0000:5a8c      KITTENGETS
 0000:5aec*     kittenopen_
@@ -248,10 +248,10 @@ Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(i4d.asm)
 0000:7efc      __I4D
 0000:7f4b      __U4D
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(argcv.c)
-1148:1260      __argv
-1148:1264      ___argv
-1148:1268      __argc
-1148:126a      ___argc
+1148:1234      __argv
+1148:1238      ___argv
+1148:123c      __argc
+1148:123e      ___argc
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(heapgrow.c)
 0000:7fcf*     _heapgrow_
 0000:7fcf      _fheapgrow_
@@ -274,7 +274,7 @@ Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ffree.c)
 0000:82dc      free_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(nfree.c)
 0000:8349      _nfree_
-1148:126c+     ___MiniHeapFreeRover
+1148:1240+     ___MiniHeapFreeRover
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(exit.c)
 0000:8444+     _null_exit_rtn_
 0000:8444+     __null_int23_exit_
@@ -300,7 +300,7 @@ Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fclose.c)
 0000:8e29      __doclose_
 0000:8f73      __shutdown_stream_
 0000:8f8d      fclose_
-1148:126e+     ___RmTmpFileFn
+1148:1242+     ___RmTmpFileFn
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(clockdos.c)
 0000:8ff8+     __ibm_bios_get_ticks_
 0000:906f      clock_
@@ -381,7 +381,7 @@ Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(rand.c)
 0000:a409*     srand_
 Module: gfx.lib(/dos/z/16/src/lib/16text.c)
 0f04:21f6*     textInit_
-1148:1276      _romFonts
+1148:124a      _romFonts
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(cmain086.c)
 0000:a42c      __CMain
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(initrtns.c)
@@ -395,8 +395,8 @@ Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(dosseg)
 0000:a552      __DOSseg__
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(iob.c)
 1148:0544      ___iob
-1148:128e      ___ClosedStreams
-1148:1292      ___OpenStreams
+1148:1262      ___ClosedStreams
+1148:1266      ___OpenStreams
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fprtf.c)
 0000:a56d      __fprtf_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(intr.c)
@@ -432,7 +432,7 @@ Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(dosret.c)
 0000:b24d*     __set_errno_dos_reterr_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(errno.c)
 0000:b258*     __get_errno_ptr_
-1148:129a      _errno
+1148:126e      _errno
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(iomode.c)
 0000:b25f      __GetIOMode_
 0000:b294      __SetIOMode_nogrow_
@@ -470,7 +470,7 @@ Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(isatt.c)
 0000:b8dc      isatty_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(doserrno.c)
 0000:b8f8*     __get_doserrno_ptr_
-1148:129c      __doserrno
+1148:1270      __doserrno
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(umaskval.c)
 1148:06f2      ___umaskval
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(creatdos.c)
@@ -483,9 +483,9 @@ Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(stiomode.c)
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(vsprintf.c)
 0000:bb2c      vsprintf_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(environ.c)
-1148:12a0      ___env_mask
-1148:12a4      _environ
-1148:12a8*     __wenviron
+1148:1274      ___env_mask
+1148:1278      _environ
+1148:127c*     __wenviron
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbterm.c)
 0000:bb6e      _mbterm_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbsnextc.c)
@@ -521,8 +521,8 @@ Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(qwrit.c)
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fputc.c)
 0000:c41a      fputc_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(___argc.c)
-1148:12ac      ____Argv
-1148:12b0      ____Argc
+1148:1280      ____Argv
+1148:1284      ____Argc
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(amblksiz.c)
 1148:0714      __amblksiz
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(sgdef086)
@@ -540,7 +540,7 @@ Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(prtf.c)
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(dointr)
 0000:d998      _DoINTR_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(histsplt.c)
-1148:12b2      ___historical_splitparms
+1148:1286      ___historical_splitparms
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(heapen.c)
 0000:dd11*     _heapenable_
 1148:0716      ___heap_enabled
@@ -559,7 +559,7 @@ Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbisdbcs.c)
 1148:0718      ___IsDBCS
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbislead.c)
 0000:e083*     _ismbblead_
-1148:12b8      ___MBCSIsTable
+1148:128c      ___MBCSIsTable
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbinit.c)
 0000:e0dd      __mbinit_
 1148:071a      ___MBCodePage
@@ -629,6 +629,6 @@ gfx.lib
                         +-----------------------+
 
 Stack size:  dac0 (56000.)
-Memory size:  00020500 (132352.)
+Memory size:  000204e0 (132320.)
 Entry point address: 0000:7a42
 Link time: 00:00.00

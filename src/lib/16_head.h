@@ -190,8 +190,6 @@ typedef struct
 	boolean fpscap;	//cap the fps var
 } kurokku_t;
 
-static boolean testkeyin,testcontrolnoisy;
-
 typedef struct
 {
 	int old_mode;	//old video mode before game!

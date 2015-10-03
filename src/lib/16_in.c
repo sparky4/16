@@ -235,7 +235,7 @@ static	boolean	special;
 	if (INL_KeyHook && !special)
 		INL_KeyHook();
 //#ifdef TESTKEYIN
-	if(testkeyin) printf("%c %x %u\n", c, k, inpu.Keyboard[k]);
+	if(testkeyin > 0) printf("%c %x %u\n", c, k, inpu.Keyboard[k]);
 //endif
 	outp(0x20,0x20);
 }
@@ -940,7 +940,7 @@ register	KeyboardDef	*def;
 	}
 #endif
 //#ifdef TESTCONTROLNOISY
-if(testcontrolnoisy)
+if(testcontrolnoisy > 0)
 if((inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right])&& player[playnum].info.dir!=2)
 {
 	printf("(mx)=%d	", mx);
@@ -1212,7 +1212,7 @@ void IN_ClearKey(byte code)
 boolean IN_qb(byte kee)
 {
 //#ifdef TESTKEYIN
-	if(testkeyin) printf("%u\n", inpu.Keyboard[kee]);
+	if(testkeyin > 0) printf("%u\n", inpu.Keyboard[kee]);
 //#endif
 	if(inpu.Keyboard[kee]==true) return 1;
 	else return 0;
