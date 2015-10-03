@@ -29,14 +29,17 @@
 
 #include <string.h>
 #include "src/lib/16_head.h"
+#include "src/lib/timer.h"
 #include "src/lib/bitmap.h"
 
 #ifdef	__DEBUG__
 //#define	__DEBUG_InputMgr__
 #endif
 
+extern boolean testkeyin,testcontrolnoisy;
+
 #ifdef	__DEBUG_InputMgr__
-#define TESTKEYIN
+//#define TESTKEYIN
 //#define TESTCONTROLNOISY
 #endif
 
@@ -253,8 +256,6 @@ typedef	struct
 		static byte /*_seg*/	*DemoBuffer;
 		static word		DemoOffset,DemoSize;
 #endif
-
-extern dword far* clockdw;
 
 //	Internal routines
 extern void interrupt INL_KeyService();

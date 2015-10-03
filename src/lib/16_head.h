@@ -144,8 +144,7 @@
 #define KEY_MENU		(0x75)
 */
 
-static dword far* clockdw= (dword far*) 0x046C; /* 18.2hz clock */
-//static word far* hwclockw= (word far*) 0x046C; /* 18.2hz clock */
+static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 extern	int			profilehandle,debughandle;	//make it into game global
 
 #define __DEBUG__
@@ -183,14 +182,21 @@ typedef struct
 
 typedef struct
 {
-	int old_mode;	//old video mode before game!
 	word frames_per_second;
 	clock_t t;
 	word tiku;		//frames passed
-	dword clock_start;	//timer start
-	dword *clock;		//current time on clock
-	handle_t handle;	//handles for file logging
+	word clock_start;	//timer start
+	word *clock;	//current time on clock
 	boolean fpscap;	//cap the fps var
+} kurokku_t;
+
+static boolean testkeyin,testcontrolnoisy;
+
+typedef struct
+{
+	int old_mode;	//old video mode before game!
+	handle_t handle;	//handles for file logging
+	kurokku_t kurokku;	//clock struct
 } global_game_variables_t;
 
 /* local function */

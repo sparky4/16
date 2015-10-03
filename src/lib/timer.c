@@ -24,34 +24,40 @@
 
 clock_t start_timer(global_game_variables_t *gv)
 {
-	//time(&(this->t));
-	gv->t = clock();
-	gv->tiku = 0;
-	gv->clock_start = *clockdw;
-	gv->clock = clockdw;
-	gv->frames_per_second = 60;
+	gv->kurokku.t = clock();
+	gv->kurokku.tiku = 0;
+	gv->kurokku.clock_start = *clockw;
+	gv->kurokku.clock = clockw;
+	gv->kurokku.frames_per_second = 60;
 	//turn this off if XT
-	if(detectcpu() > 0) gv->fpscap=1;
-	else gv->fpscap=0;
-	return gv->t;
+	switch(detectcpu())
+	{
+		case 0:
+			gv->kurokku.fpscap=0;
+		break;
+		default:
+			gv->kurokku.fpscap=1;
+		break;
+	}
+	return gv->kurokku.t;
 }
 
 double elapsed_timer(global_game_variables_t *gv)
 {
-	return (clock() - gv->t) / CLOCKS_PER_SEC;
+	return (clock() - gv->kurokku.t) / CLOCKS_PER_SEC;
 }
 
 double ticktock(global_game_variables_t *gv)
 {
 	double clocku;
-	clocku = (clock() - gv->t) / CLOCKS_PER_SEC;
-	gv->t = clock();
+	clocku = (clock() - gv->kurokku.t) / CLOCKS_PER_SEC;
+	gv->kurokku.t = clock();
 	return clocku;
 }
 
 double time_in_seconds(global_game_variables_t *gv)
 {
-	return (gv->t) / CLOCKS_PER_SEC;
+	return (gv->kurokku.t) / CLOCKS_PER_SEC;
 }
 
 /*double time_in_seconds(time_t in_t)

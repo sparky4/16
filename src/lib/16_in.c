@@ -234,9 +234,9 @@ static	boolean	special;
 
 	if (INL_KeyHook && !special)
 		INL_KeyHook();
-	#ifdef TESTKEYIN
-	printf("%c %x %u\n", c, k, inpu.Keyboard[k]);
-	#endif
+//#ifdef TESTKEYIN
+	if(testkeyin) printf("%c %x %u\n", c, k, inpu.Keyboard[k]);
+//endif
 	outp(0x20,0x20);
 }
 
@@ -370,10 +370,10 @@ static void
 INL_GetJoyDelta(word joy,int *dx,int *dy,boolean adaptive)
 {
 	word		x,y;
-	dword	time;
-	dword TimeCount = *clockdw;
+	word	time;
+	word TimeCount = *clockw;
 	JoystickDef	*def;
-static	dword	lasttime;
+static	word	lasttime;
 
 	IN_GetJoyAbs(joy,&x,&y);
 	def = inpu.JoyDefs + joy;
@@ -465,8 +465,8 @@ register	word	result;
 word
 IN_GetJoyButtonsDB(word joy)
 {
-	dword TimeCount = *clockdw;
-	dword	lasttime;
+	word TimeCount = *clockw;
+	word	lasttime;
 	word		result1,result2;
 
 	do
@@ -849,17 +849,17 @@ register	KeyboardDef	*def;
 				mx = motion_Left,my = motion_Down;
 			else if (Keyboard[def->downright])
 				mx = motion_Right,my = motion_Down;*/
-			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
+			//if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
 			if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down] && player[playnum].d == 2))// || player[playnum].info.dir == 0)
 				my = motion_Up;
 			if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up] && player[playnum].d == 2))// || player[playnum].info.dir == 4)
 				my = motion_Down;
-			}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
+			//}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
 			if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right] && player[playnum].d == 2))// || player[playnum].info.dir == 1)
 				mx = motion_Left;
 			if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left] && player[playnum].d == 2))// || player[playnum].info.dir == 3)
 				mx = motion_Right;
-			}
+			//}
 			if (inpu.Keyboard[def->button0])
 				buttons += 1 << 0;
 			if (inpu.Keyboard[def->button1])
@@ -939,14 +939,15 @@ register	KeyboardDef	*def;
 		}
 	}
 #endif
-#ifdef TESTCONTROLNOISY
+//#ifdef TESTCONTROLNOISY
+if(testcontrolnoisy)
 if((inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right])&& player[playnum].info.dir!=2)
 {
 	printf("(mx)=%d	", mx);
 	printf("(my)=%d	", my);
 	printf("dir=%d\n", player[playnum].info.dir);
 }
-#endif
+//#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -1180,8 +1181,8 @@ IN_IsUserInput()
 boolean
 IN_UserInput(dword delay,boolean clear)
 {
-	dword TimeCount = *clockdw;
-	dword	lasttime;
+	word TimeCount = *clockw;
+	word	lasttime;
 
 	lasttime = TimeCount;
 	do
@@ -1210,9 +1211,9 @@ void IN_ClearKey(byte code)
 
 boolean IN_qb(byte kee)
 {
-	#ifdef TESTKEYIN
-	printf("%u\n", inpu.Keyboard[kee]);
-	#endif
+//#ifdef TESTKEYIN
+	if(testkeyin) printf("%u\n", inpu.Keyboard[kee]);
+//#endif
 	if(inpu.Keyboard[kee]==true) return 1;
 	else return 0;
 }

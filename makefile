@@ -46,9 +46,8 @@ DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 #3812intf.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ)
 
-TESTEXEC =  exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe
+TESTEXEC =  exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe
 # tsthimem.exe
-#inputest.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe sega.exe sountest.exe
 EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
 
@@ -71,9 +70,9 @@ scroll.$(OBJ): $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
 
 tesuto.exe: tesuto.$(OBJ)
-	wcl -mh -d2 tesuto.$(OBJ)
+	wcl -zq -mh -d2 tesuto.$(OBJ)
 tesuto.$(OBJ): $(SRC)tesuto.c
-	wcl -mh -d2 -c $(SRC)tesuto.c
+	wcl -zq -mh -d2 -c $(SRC)tesuto.c
 
 #sega.exe: sega.$(OBJ)
 #	wcl $(FLAGS) sega.$(OBJ)
@@ -96,7 +95,7 @@ fontgfx.exe: fontgfx.$(OBJ) $(16LIBOBJS) gfx.lib
 	wcl $(FLAGS) fontgfx.$(OBJ) $(16LIBOBJS) gfx.lib -fm=fontgfx.map
 
 inputest.exe: inputest.$(OBJ) $(16LIBOBJS)
-	wcl $(FLAGS) -D__DEBUG_InputMgr__=1 inputest.$(OBJ) $(16LIBOBJS) -fm=inputest.map
+	wcl $(FLAGS) inputest.$(OBJ) $(16LIBOBJS) -fm=inputest.map
 
 #sountest.exe: sountest.$(OBJ) $(16LIBOBJS)
 #	wcl $(FLAGS) sountest.$(OBJ) $(16LIBOBJS)

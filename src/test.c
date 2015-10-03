@@ -23,8 +23,6 @@
 #include <stdio.h>
 #include "src/lib/modex16.h"
 
-word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
-
 void main() {
     int i, j;
     word start, end;

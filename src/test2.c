@@ -26,8 +26,6 @@
 #include "src/lib/planar.h"
 //#include "src/lib/bitmap.h"
 
-word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
-
 void main() {
 	FILE *file;
     bitmap_t bmp;

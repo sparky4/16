@@ -23,6 +23,7 @@
 #ifndef _TIMER_H_
 #define _TIMER_H_
 #include "src/lib/16_head.h"
+#include "src/lib/wcpu/wcpu.h"
 
 clock_t start_timer(global_game_variables_t *gv);
 double elapsed_timer(global_game_variables_t *gv);

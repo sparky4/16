@@ -27,8 +27,6 @@
 #include "src/lib/bitmap.h"
 #include "src/lib/planar.h"
 
-word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
-
 /*
 void
 DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, byte sprite)

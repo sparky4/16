@@ -359,17 +359,18 @@ void main()
 			int 21h
 		}
 	}
-	if(IN_KeyDown(88))	//f12
+	if(IN_KeyDown(88))	//s
 	{
-		switch(gvar.fpscap)
+		switch(gvar.kurokku.fpscap)
 		{
 			case 0:
-				gvar.fpscap=1;
+				gvar.kurokku.fpscap=1;
 			break;
 			case 1:
-				gvar.fpscap=0;
+				gvar.kurokku.fpscap=0;
 			break;
 		}
+		IN_Ack();
 	}
 
 	if((player[0].q==1) && !(player[0].x%TILEWH==0 && player[0].y%TILEWH==0)) break;	//incase things go out of sync!
