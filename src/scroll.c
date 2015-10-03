@@ -21,7 +21,7 @@
  */
 
 #include "src/lib/scroll16.h"
-//#include "src/lib/mapread.h"
+#include "src/lib/timer.h"
 #include "src/lib/wcpu/wcpu.h"
 
 //#define FADE
@@ -57,12 +57,10 @@ void main()
 
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
-	gvar.clock_start=*clockdw;
-	//0000printf("starting timer\n");
-//++++
-	//++++????start_timer(&gvar);
-//++++	gvar.frames_per_second = 60;
-//0000	printf("ok\n");
+
+	printf("starting timer\n");
+	start_timer(&gvar);
+	printf("ok\n");
 	//extern struct inconfig inpu;
 
 //	atexit(qclean());
@@ -363,8 +361,6 @@ void main()
 	}
 
 	if((player[0].q==1) && !(player[0].x%TILEWH==0 && player[0].y%TILEWH==0)) break;	//incase things go out of sync!
-
-	gvar.tiku++;
 	}
 
 	/* fade back to text mode */

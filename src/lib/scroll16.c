@@ -623,28 +623,32 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 //sync!
 void shinku(page_t *page, global_game_variables_t *gv)
 {
-	/*byte *pee;
-	word x = (16);
-	word y = (8+16);
-	word col = 15;
-	word bgcol = 0;
-	word type = 1;
-	float t;
-	t=(((*clockdw)-gv->clock_start) /18.2);
-	//if(elapsed_timer(gv) >= (1.0 / gv->frames_per_second))
-	//{
+	//float t;
+	if(elapsed_timer(gv) >= (1.0 / gv->frames_per_second))
+	{
+		byte *pee;
+		word x = (16);
+		word y = (8+16);
+		word col = 15;
+		word bgcol = 0;
+		word type = 1;
+		//t=(((*(gv->clock))-gv->clock_start) /18.2);
 		pee = _fmalloc(sizeof(byte)*64);
-		sprintf(pee, "%lu", gv->tiku);
+		sprintf(pee, "%f", (double)gv->tiku/ticktock(gv));
 		modexprint(page, 16, 16, 1, 15, 0, pee);
-		//sprintf(pee, "%f", gv->tiku/t);
-		//modexprint(page, x, y, type, col, bgcol, pee);
-		//sprintf(pee, "%f", *gv->tiku/\*time_in_seconds(gv));
-		//modexprint(page, x, y+8, type, col, bgcol, pee);
-	//}*/
-	(gv->clock_start)=*clockdw;
-	//turn this off if XT
-	if(detectcpu() > 0)
-	modexWaitBorder();
+		//(gv->clock_start)=*(gv->clock);
+		gv->tiku=0;
+	}
+	gv->tiku++;
+	switch(gv->fpscap)
+	{
+		case 0:
+		break;
+		case 1:
+			//turn this off if XT
+			modexWaitBorder();
+		break;
+	}
 }
 
 void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch)

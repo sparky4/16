@@ -27,7 +27,12 @@ clock_t start_timer(global_game_variables_t *gv)
 	//time(&(this->t));
 	gv->t = clock();
 	gv->tiku = 0;
-	gv->clock = (word far*) 0x046C; /* 18.2hz clock */
+	gv->clock_start = *clockdw;
+	gv->clock = clockdw;
+	gv->frames_per_second = 60;
+	//turn this off if XT
+	if(detectcpu() > 0) gv->fpscap=1;
+	else gv->fpscap=0;
 	return gv->t;
 }
 
@@ -36,12 +41,20 @@ double elapsed_timer(global_game_variables_t *gv)
 	return (clock() - gv->t) / CLOCKS_PER_SEC;
 }
 
-/*double time_in_seconds(global_game_variables_t *gv)
+double ticktock(global_game_variables_t *gv)
+{
+	double clocku;
+	clocku = (clock() - gv->t) / CLOCKS_PER_SEC;
+	gv->t = clock();
+	return clocku;
+}
+
+double time_in_seconds(global_game_variables_t *gv)
 {
 	return (gv->t) / CLOCKS_PER_SEC;
-}*/
+}
 
-double time_in_seconds(time_t in_t)
+/*double time_in_seconds(time_t in_t)
 {
 	return (in_t) / CLOCKS_PER_SEC;
-}
+}*/

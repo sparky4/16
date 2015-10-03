@@ -185,11 +185,12 @@ typedef struct
 {
 	int old_mode;	//old video mode before game!
 	word frames_per_second;
-	//clock_t t;
-	dword tiku;		//frames passed
-	word clock_start;	//timer start
-	//word clock;		//current time on clock
+	clock_t t;
+	word tiku;		//frames passed
+	dword clock_start;	//timer start
+	dword *clock;		//current time on clock
 	handle_t handle;	//handles for file logging
+	boolean fpscap;	//cap the fps var
 } global_game_variables_t;
 
 /* local function */
