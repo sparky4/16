@@ -364,7 +364,7 @@ clean: .symbolic
 #	@echo $(INCLUDE)
 
 comp: .symbolic
-	upx -9 $(EXEC)
+	upx -9 -qqq $(EXEC)
 
 updatelibs: .symbolic
 	cd $(JSMNLIB)
