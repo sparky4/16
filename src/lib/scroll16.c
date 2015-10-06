@@ -584,10 +584,11 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 }*/
 
 /*	sync	*/
-void shinku(page_t *page, global_game_variables_t *gv)
+void shinku(map_view_t *pip, global_game_variables_t *gv)
 {
 	//float t;
 	static byte *pee;
+	//modexCopyPageRegion(pip[1].page, pip[2].page, 16, 16, 16, 16, (14*8)+4, 8+4);
 	if(elapsed_timer(gv) >= (1.0 / gv->kurokku.frames_per_second))
 	{
 		word x = (16);
@@ -598,7 +599,7 @@ void shinku(page_t *page, global_game_variables_t *gv)
 		pee = _nmalloc(sizeof(byte)*2);
 		//t=(((*(gv->clock))-gv->clock_start) /18.2);
 		sprintf(pee, "%f fps", (double)gv->kurokku.tiku/ticktock(gv));
-		modexprint(page, 16, 16, 1, 15, 0, pee);
+		modexprint(pip[1].page, 16, 16, 1, 15, 0, pee);
 		//(gv->clock_start)=*(gv->clock);
 		gv->kurokku.tiku=0;
 	}
@@ -679,6 +680,7 @@ void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword s
 #define FRAME4 modexClearRegion(pip[1].page, x, y, 24, 32, 1+dire);
 #endif
 	modexCopyPageRegion(pip[1].page, pip[0].page, x-4, y-4, x-4, y-4, 28, 40);
+	//modexCopyPageRegion(pip[2].page, pip[1].page, 16, 16, 16, 16, (14*8)+4, 8+4);
 	if(2>ls && ls>=1) { FRAME1 }else
 	if(3>ls && ls>=2) { FRAME2 }else
 	if(4>ls && ls>=3) { FRAME3 }else

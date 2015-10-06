@@ -185,7 +185,6 @@ void main()
 #endif
 
 	modexShowPage(spri->page);
-//	printf("Total used @ before loop:			%zu\n", oldfreemem-GetFreeSize());
 	modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 1);
 #ifdef MODEX
 #ifdef FADE
@@ -194,7 +193,7 @@ void main()
 #endif
 	while(!IN_KeyDown(sc_Escape) && player[0].hp>0)
 	{
-		shinku(mv[1].page, &gvar);
+		shinku(mv, &gvar);
 		IN_ReadControl(0,&player);
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction

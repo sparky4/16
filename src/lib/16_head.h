@@ -184,7 +184,7 @@ typedef struct
 {
 	word frames_per_second;
 	clock_t t;
-	word tiku;		//frames passed
+	dword tiku;		//frames passed
 	word clock_start;	//timer start
 	word *clock;	//current time on clock
 	boolean fpscap;	//cap the fps var

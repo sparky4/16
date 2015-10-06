@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Sep 21 2015 09:27:06 (32-bit)
 Copyright (c) 2002-2015 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/10/03 16:42:51
+Created on:       15/10/06 15:01:00
 Executable Image: exmmtest.exe
 creating a DOS executable
 
@@ -32,7 +32,7 @@ wcpu_TEXT              CODE           AUTO           0000:5510       00000058
 16_ca_TEXT             CODE           AUTO           0000:5980       000003fd
 kitten_TEXT            CODE           AUTO           0000:5d80       0000080a
 16_hc_TEXT             CODE           AUTO           0000:6590       0000158b
-timer_TEXT             CODE           AUTO           0000:7b20       00000209
+timer_TEXT             CODE           AUTO           0000:7b20       0000020d
 _TEXT                  CODE           AUTO           0000:7d30       00006ed3
 16_in13_DATA           FAR_DATA       AUTO           0ec1:0000       000001a4
 FAR_DATA               FAR_DATA       AUTO           0edb:0004       00000000
@@ -168,9 +168,9 @@ Module: 16_hc.o(/dos/z/16/src/lib/16_hc.c)
 0000:7aee*     HC_CloseDebug_
 Module: timer.o(/dos/z/16/src/lib/timer.c)
 0000:7b20*     start_timer_
-0000:7c20*     elapsed_timer_
-0000:7c72*     ticktock_
-0000:7cde*     time_in_seconds_
+0000:7c24*     elapsed_timer_
+0000:7c76*     ticktock_
+0000:7ce2*     time_in_seconds_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(stk086.asm)
 0000:7d35      __STK
 0000:7d55      __STKOVERFLOW_
