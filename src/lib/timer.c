@@ -29,6 +29,7 @@ clock_t start_timer(global_game_variables_t *gv)
 	gv->kurokku.clock_start = *clockw;
 	gv->kurokku.clock = clockw;
 	gv->kurokku.frames_per_second = 60;
+	gv->pee = _nmalloc(sizeof(byte)*2);
 	//turn this off if XT
 	switch(detectcpu())
 	{

@@ -587,7 +587,6 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 void shinku(map_view_t *pip, global_game_variables_t *gv)
 {
 	//float t;
-	static byte *pee;
 	//modexCopyPageRegion(pip[1].page, pip[2].page, 16, 16, 16, 16, (14*8)+4, 8+4);
 	if(elapsed_timer(gv) >= (1.0 / gv->kurokku.frames_per_second))
 	{
@@ -596,10 +595,9 @@ void shinku(map_view_t *pip, global_game_variables_t *gv)
 		word col = 15;
 		word bgcol = 0;
 		word type = 1;
-		pee = _nmalloc(sizeof(byte)*2);
 		//t=(((*(gv->clock))-gv->clock_start) /18.2);
-		sprintf(pee, "%f fps", (double)gv->kurokku.tiku/ticktock(gv));
-		modexprint(pip[1].page, 16, 16, 1, 15, 0, pee);
+		sprintf(gv->pee, "%f fps", (double)gv->kurokku.tiku/ticktock(gv));
+		modexprint(pip[1].page, 16, 16, 1, 15, 0, gv->pee);
 		//(gv->clock_start)=*(gv->clock);
 		gv->kurokku.tiku=0;
 	}
