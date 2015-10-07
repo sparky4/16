@@ -1,2 +1,2 @@
-dosbox -conf data/winrun.cfg -exit
+db\dosbox -conf data\winrun.cfg -exit
 exit
