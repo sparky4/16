@@ -371,6 +371,11 @@ void main()
 		}
 		IN_Ack();
 	}
+	if(IN_KeyDown(4+1))	//4
+	{
+		outpw(SC_INDEX, 0xff02);
+		_fmemset(VGA, 15, 64);
+	}
 
 	if((player[0].q==1) && !(player[0].x%TILEWH==0 && player[0].y%TILEWH==0)) break;	//incase things go out of sync!
 	}
