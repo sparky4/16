@@ -35,6 +35,10 @@
 //320x240 = 20x15
 //256x192 = 16x12
 
+//temp defines
+#define TILEWH 16
+#define QUADWH			TILEWH/2
+
 /* -========================== Types & Macros ==========================- */
 #define PAGE_OFFSET(x,y) (((y)<<6)+((y)<<4)+((x)>>2))
 #define PLANE(x) (1<< (x&3))
@@ -47,6 +51,8 @@ typedef struct {
     word dy;		/* row we are viewing on the virtual screen */
     word width;		/* virtual width of the page */
     word height;	/* virtual height of the page */
+    word tw;
+    word th;
 } page_t;
 
 typedef union

@@ -139,7 +139,9 @@ modexDefaultPage() {
     page.dy = 0;
     page.width = SCREEN_WIDTH;
     page.height = SCREEN_HEIGHT;
-        page.id = 0;
+	page.tw = page.width/TILEWH;
+	page.th = page.height/TILEWH;
+	page.id = 0;
 
     return page;
 }
@@ -156,9 +158,11 @@ modexNextPage(page_t *p) {
     result.dy = 0;
     result.width = p->width;
     result.height = p->height;
-        result.id = p->id+1;
+	result.tw = p->width/TILEWH;
+	result.th = p->height/TILEWH;
+	result.id = p->id+1;
 
-    return result;
+	return result;
 // 	return modexNextPageFlexibleSize(&p, p->width, p->height);
 }
 
@@ -166,16 +170,18 @@ modexNextPage(page_t *p) {
 page_t
 modexNextPageFlexibleSize(page_t *p, word x, word y)
 {
-        page_t result;
+	page_t result;
 
-        result.data = p->data + (p->width/4)*p->height;  /* compute the offset */
-        result.dx = 0;
-        result.dy = 0;
-        result.width = x;
-        result.height = y;
-        result.id = p->id+1;
+	result.data = p->data + (p->width/4)*p->height;  /* compute the offset */
+	result.dx = 0;
+	result.dy = 0;
+	result.width = x;
+	result.height = y;
+	result.tw = p->width/TILEWH;
+	result.th = p->height/TILEWH;
+	result.id = p->id+1;
 
-    return result;
+	return result;
 }
 
 
