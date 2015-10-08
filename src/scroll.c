@@ -373,7 +373,7 @@ void main()
 	}
 	if(IN_KeyDown(4+1))	//4
 	{
-		outpw(SC_INDEX, 0xff02);
+		SELECT_ALL_PLANES();
 		_fmemset(VGA, 15, 64);
 	}
 
