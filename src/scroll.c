@@ -377,7 +377,6 @@ void main()
 	{
 		pg=1;
 		SELECT_ALL_PLANES();
-		//_fmemset(VGA, 15, 64);
 		_fmemset(((mv[pg].page->data+4)+(16*(mv[pg].page->width/4))), 15, 4);
 	}
 
