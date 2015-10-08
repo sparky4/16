@@ -48,6 +48,7 @@ void main()
 	//static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 
 	//map_view_db_t pgid[4];
+	word pg;
 #ifdef FADE
 	byte *dpal, *gpal;
 #endif
@@ -374,8 +375,10 @@ void main()
 	//TODO fmemtest into page
 	if(IN_KeyDown(4+1))	//4
 	{
+		pg=1;
 		SELECT_ALL_PLANES();
-		_fmemset(VGA, 15, 64);
+		//_fmemset(VGA, 15, 64);
+		_fmemset(((mv[pg].page->data+4)+(16*(mv[pg].page->width/4))), 15, 4);
 	}
 
 	if((player[0].q==1) && !(player[0].x%TILEWH==0 && player[0].y%TILEWH==0)) break;	//incase things go out of sync!
