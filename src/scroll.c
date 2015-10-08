@@ -371,6 +371,7 @@ void main()
 		}
 		IN_Ack();
 	}
+	//TODO fmemtest into page
 	if(IN_KeyDown(4+1))	//4
 	{
 		SELECT_ALL_PLANES();
