@@ -32,6 +32,9 @@
 #include "src/lib/16_head.h"
 #include "src/lib/16text.h"
 
+//320x240 = 20x15
+//256x192 = 16x12
+
 /* -========================== Types & Macros ==========================- */
 #define PAGE_OFFSET(x,y) (((y)<<6)+((y)<<4)+((x)>>2))
 #define PLANE(x) (1<< (x&3))
