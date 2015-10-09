@@ -46,13 +46,13 @@
 
 typedef struct {
 	word id;	/* the Identification number of the page~ For layering~ */
-    byte far* data;	/* the data for the page */
-    word dx;		/* col we are viewing on the virtual screen */
-    word dy;		/* row we are viewing on the virtual screen */
-    word width;		/* virtual width of the page */
-    word height;	/* virtual height of the page */
-    word tw;
-    word th;
+	byte far* data;	/* the data for the page */
+	word dx;		/* col we are viewing on the virtual screen */
+	word dy;		/* row we are viewing on the virtual screen */
+	word width;		/* virtual width of the page */
+	word height;	/* virtual height of the page */
+	word tw;
+	word th;
 } page_t;
 
 typedef union
@@ -78,6 +78,7 @@ void oldDrawBmp(byte far* page, int x, int y, bitmap_t *bmp, byte sprite);
 //void CDrawBmp(byte far* vgamem, page_t* page, int x, int y, bitmap_t *bmp, byte sprite);
 void modexDrawBmp(page_t *page, int x, int y, bitmap_t *bmp);
 void modexDrawBmpRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp);
+void modex_sparky4_DrawBmpRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp);
 void modexDrawPlanarBuf(page_t *page, int x, int y, planar_buf_t *bmp);
 void modexDrawSprite(page_t *page, int x, int y, bitmap_t *bmp);
 void modexDrawSpriteRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp);
@@ -137,8 +138,8 @@ extern int old_mode;
 #define INPUT_STATUS_1		0x03da
 #define DISPLAY_ENABLE		0x01
 #define MAP_MASK		0x02
-#define PAL_READ_REG            0x03C7   /* Color register, read address */
-#define PAL_WRITE_REG           0x03C8   /* Color register, write address */
-#define PAL_DATA_REG            0x03C9   /* Color register, data port */
-#define PAL_SIZE                (256 * 3)
+#define PAL_READ_REG			0x03C7   /* Color register, read address */
+#define PAL_WRITE_REG		   0x03C8   /* Color register, write address */
+#define PAL_DATA_REG			0x03C9   /* Color register, data port */
+#define PAL_SIZE				(256 * 3)
 #endif
