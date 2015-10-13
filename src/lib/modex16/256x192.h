@@ -25,7 +25,7 @@
 
 #include "src/lib/types.h"
 
-static const word ModeX_256x224regs[75] =
+/*static const word ModeX_256x224regs[75] =
 {
     0x3c2, 0x00, 0xe3,
     0x3d4, 0x00, 0x5f,
@@ -52,6 +52,24 @@ static const word ModeX_256x224regs[75] =
     0x3ce, 0x06, 0x05,
     0x3c0, 0x10, 0x41,
     0x3c0, 0x13, 0x00
+};*/
+
+static const word ModeX_256x192regs[] = {
+	0x3f01,		/* horizontal display enable end */
+	0x4002,		/* Start horizontal blanking */
+	0x4a04,		/* End horizontal blanking */
+	0x9a05,		/* End horizontal retrace */
+	0x0806,         /* vertical total */
+	0x3e07,         /* overflow (bit 8 of vertical counts) */
+	0x4109,         /* cell height (2 to double-scan */
+	0xca10,         /* v sync start */
+	0x8c11,         /* v sync end and protect cr0-cr7 */
+	0xaf12,         /* vertical displayed */
+	0x2013,		/* offset/logical width */
+	0x0014,         /* turn off dword mode */
+	0xa715,         /* v blank start */
+	0x0216,         /* v blank end */
+	0xe317          /* turn on byte mode */
 };
 
 #endif /*_DIX_H_*/
