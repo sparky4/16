@@ -72,7 +72,7 @@ DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 #3812intf.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ)
 
-TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe
+TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe
 # tsthimem.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe sega.exe sountest.exe
 EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
@@ -144,6 +144,9 @@ pcxtest.exe: pcxtest.$(OBJ) gfx.lib
 palettec.exe: palettec.$(OBJ) $(16LIBOBJS) gfx.lib
 	wcl $(FLAGS) palettec.$(OBJ) $(16LIBOBJS) gfx.lib -fm=palettec.map
 
+palettel.exe: palettel.$(OBJ) $(16LIBOBJS) gfx.lib
+	wcl $(FLAGS) palettel.$(OBJ) $(16LIBOBJS) gfx.lib -fm=palettel.map
+
 pcxtest2.exe: pcxtest2.$(OBJ) gfx.lib
 	wcl $(FLAGS) pcxtest2.$(OBJ) gfx.lib -fm=pcxtest2.map
 
@@ -193,6 +196,9 @@ pcxtest2.$(OBJ): $(SRC)pcxtest2.c $(SRCLIB)modex16.h
 
 palettec.$(OBJ): $(SRC)palettec.c
 	wcl $(FLAGS) -c $(SRC)palettec.c
+
+palettel.$(OBJ): $(SRC)palettel.c
+	wcl $(FLAGS) -c $(SRC)palettel.c
 
 maptest.$(OBJ): $(SRC)maptest.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)maptest.c
