@@ -77,17 +77,19 @@ modexEnter() {
     word i;
     dword far*ptr=(dword far*)VGA;      /* used for faster screen clearing */
     word CRTParms[] = {
-        0x0d06,         /* vertical total */
-        0x3e07,         /* overflow (bit 8 of vertical counts) */
-        0x4109,         /* cell height (2 to double-scan */
-        0xea10,         /* v sync start */
-        0xac11,         /* v sync end and protect cr0-cr7 */
-        0xdf12,         /* vertical displayed */
+//		0x5f00,		/* horizontal total */
+//		0x3f01,		/* horizontal display enable end */
+		0x0d06,         /* vertical total */
+		0x3e07,         /* overflow (bit 8 of vertical counts) */
+		0x4109,         /* cell height (2 to double-scan */
+		0xea10,         /* v sync start */
+		0xac11,         /* v sync end and protect cr0-cr7 */
+		0xdf12,         /* vertical displayed */
 //		0x2013,		/* offset/logical width */
-        0x0014,         /* turn off dword mode */
-        0xe715,         /* v blank start */
-        0x0616,         /* v blank end */
-        0xe317          /* turn on byte mode */
+		0x0014,         /* turn off dword mode */
+		0xe715,         /* v blank start */
+		0x0616,         /* v blank end */
+		0xe317          /* turn on byte mode */
     };
     int CRTParmCount = sizeof(CRTParms) / sizeof(CRTParms[0]);
 
