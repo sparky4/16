@@ -77,15 +77,18 @@ modex__320x240_256__Enter(global_game_variables_t *gv)
 	word i;
 	dword far*ptr=(dword far*)VGA;      /* used for faster screen clearing */
 	word CRTParms[] = {
-//		0x5f00,		/* horizontal total */
-//		0x3f01,		/* horizontal display enable end */
+//		0xe300,		/* horizontal total */
+		0x4f01,		/* horizontal display enable end */
+		0x5002,		/*  */
+		0x5404,		/*  */
+		0x8005,		/*  */
 		0x0d06,         /* vertical total */
 		0x3e07,         /* overflow (bit 8 of vertical counts) */
 		0x4109,         /* cell height (2 to double-scan */
 		0xea10,         /* v sync start */
 		0xac11,         /* v sync end and protect cr0-cr7 */
 		0xdf12,         /* vertical displayed */
-//		0x2013,		/* offset/logical width */
+		0x2813,		/* offset/logical width */
 		0x0014,         /* turn off dword mode */
 		0xe715,         /* v blank start */
 		0x0616,         /* v blank end */
@@ -95,9 +98,6 @@ modex__320x240_256__Enter(global_game_variables_t *gv)
 	int CRTParmCount = sizeof(CRTParms) / sizeof(CRTParms[0]);
 	/* width and height */
 	//TODO WWWW
-
-	/* TODO save current video mode and palette */
-	vgaSetMode(VGA_256_COLOR_MODE);
 
 	/* disable chain4 mode */
 	outpw(SC_INDEX, 0x0604);
@@ -127,6 +127,23 @@ modex__320x240_256__Enter(global_game_variables_t *gv)
 	}
 }
 
+//    setBaseXMode() does the initialization to make the VGA ready to
+//    accept any combination of configuration register settings.  This
+//    involves enabling writes to index 0 to 7 of the CRT controller (port
+//    0x3D4), by clearing the most significant bit (bit 7) of index 0x11.
+void
+modexsetBaseXMode(void)
+{
+	int temp;
+
+	/* TODO save current video mode and palette */
+	vgaSetMode(VGA_256_COLOR_MODE);
+
+	outp(CRTC_INDEX, 0x11);
+	temp = inp(CRTC_DATA) & 0x7F;
+	outp(CRTC_INDEX, 0x11);
+	outp(CRTC_DATA, temp);
+}
 
 void
 modexLeave() {
