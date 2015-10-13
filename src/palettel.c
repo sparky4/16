@@ -36,7 +36,7 @@ main(int argc, char *argv[])
 	modexPalBlack();
 
 	modexLoadPalFile("data/default.pal", &pal);
-
+	modexFadeOn(1, pal);
 
 	modexLeave();
 }
