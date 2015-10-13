@@ -28,7 +28,7 @@ main(int argc, char *argv[])
 	byte *pal;
 	char *bakapee;
 
-	modexEnter();
+	//modexEnter();
 
 	pal = modexNewPal();
 	bakapee = malloc(64);
@@ -42,5 +42,5 @@ main(int argc, char *argv[])
 	modexFadeOn(1, pal);
 	modexPalUpdate1(pal);
 
-	modexLeave();
+	//modexLeave();
 }
