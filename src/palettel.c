@@ -38,7 +38,7 @@ main(int argc, char *argv[])
 //	modexPalSave(pal);
 	modexPalBlack();
 
-	modexLoadPalFile(bakapee, &pal);
+	modexLoadPalFile(bakapee, *pal);
 	modexFadeOn(1, pal);
 	modexPalUpdate1(pal);
 
