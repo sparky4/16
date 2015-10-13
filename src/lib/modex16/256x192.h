@@ -60,15 +60,15 @@ static const word ModeX_256x192regs[] = {
 	0x4a04,		/* End horizontal blanking */
 	0x9a05,		/* End horizontal retrace */
 	0x0b06,		 /* vertical total */
-	0x8f07,		 /* overflow (bit 8 of vertical counts) */
+	0x3e07,		 /* overflow (bit 8 of vertical counts) */
 	0x4109,		 /* cell height (2 to double-scan */
-	0x9c10,		 /* v sync start */
-	0xb811,		 /* v sync end and protect cr0-cr7 */
-	0x8f12,		 /* vertical displayed */
+	0xda10,		 /* v sync start */
+	0x9c11,		 /* v sync end and protect cr0-cr7 */
+	0x7f12,		 /* vertical displayed */
 	0x2013,		/* offset/logical width */
 	0x0014,		 /* turn off dword mode */
-	0xa715,		 /* v blank start */
-	0x0216,		 /* v blank end */
+	0xc715,		 /* v blank start */
+	0x0416,		 /* v blank end */
 	0xe317		  /* turn on byte mode */
 };
 
