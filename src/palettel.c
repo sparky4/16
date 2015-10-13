@@ -32,10 +32,13 @@ main(int argc, char *argv[])
 
 	pal = modexNewPal();
 	bakapee = malloc(64);
+
+	if(argv[1]) bakapee = argv[1];
+	else bakapee = "data/default.pal";
 //	modexPalSave(pal);
 	modexPalBlack();
 
-	modexLoadPalFile("data/default.pal", &pal);
+	modexLoadPalFile(bakapee, &pal);
 	modexFadeOn(1, pal);
 
 	modexLeave();

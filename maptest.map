@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Sep 16 2015 10:14:10 (64-bit)
 Copyright (c) 2002-2015 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/10/13 10:19:32
+Created on:       15/10/13 10:22:05
 Executable Image: maptest.exe
 creating a DOS executable
 
@@ -655,4 +655,4 @@ gfx.lib
 Stack size:  dac0 (56000.)
 Memory size:  000225c0 (140736.)
 Entry point address: 08d3:0072
-Link time: 00:00.27
+Link time: 00:00.07
