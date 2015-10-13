@@ -40,6 +40,7 @@ main(int argc, char *argv[])
 
 	modexLoadPalFile(bakapee, &pal);
 	modexFadeOn(1, pal);
+	modexPalUpdate1(pal);
 
 	modexLeave();
 }
