@@ -99,6 +99,9 @@ modex__320x240_256__Enter(global_game_variables_t *gv)
 	/* width and height */
 	//TODO WWWW
 
+	/* TODO save current video mode and palette */
+	vgaSetMode(VGA_256_COLOR_MODE);
+
 	/* disable chain4 mode */
 	outpw(SC_INDEX, 0x0604);
 
