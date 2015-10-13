@@ -49,6 +49,7 @@ main(int argc, char *argv[])
 	pdump(&page);
 	getch();
 	modexLeave();//VGAmodeX(0, &gvar);
+	modexPalUpdate1(pal);
 	/*for(i=0;i<768;i++)
 	{
 		printf("%02X ", pal[i]);
