@@ -56,8 +56,8 @@ void VGAmodeX(sword vq, global_game_variables_t *gv)
 		int86(0x10, &in, &out);
 		gv->old_mode = out.h.al;
 		// enter mode
-		//modex__320x240_256__Enter(gv);
-		modex__256x192_256__Enter(gv);
+		modex__320x240_256__Enter(gv);
+		//modex__256x192_256__Enter(gv);
 	}
 }
 

@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Sep 16 2015 10:14:10 (64-bit)
 Copyright (c) 2002-2015 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/10/13 15:11:00
+Created on:       15/10/13 15:26:27
 Executable Image: scroll.exe
 creating a DOS executable
 
@@ -243,8 +243,8 @@ Module: gfx.lib(/dos/z/16/src/lib/16text.c)
 1a81:1140      _romFonts
 Module: gfx.lib(/dos/z/16/src/lib/modex16.c)
 176a:01f4      VGAmodeX_
-176a:029e*     modex__320x240_256__Enter_
-176a:02fe+     modex__256x192_256__Enter_
+176a:029e+     modex__320x240_256__Enter_
+176a:02fe*     modex__256x192_256__Enter_
 176a:035e*     modexLeave_
 176a:0376+     modexsetBaseXMode_
 176a:03c8      modexDefaultPage_
@@ -755,4 +755,4 @@ gfx.lib
 Stack size:  dac0 (56000.)
 Memory size:  0002a070 (172144.)
 Entry point address: 0990:027c
-Link time: 00:00.67
+Link time: 00:00.86

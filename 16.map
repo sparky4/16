@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Sep 16 2015 10:14:10 (64-bit)
 Copyright (c) 2002-2015 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/10/13 15:11:00
+Created on:       15/10/13 15:26:27
 Executable Image: 16.exe
 creating a DOS executable
 
@@ -193,8 +193,8 @@ Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(stk086.asm)
 08e3:0025      __STKOVERFLOW_
 Module: gfx.lib(/dos/z/16/src/lib/modex16.c)
 08e3:7db4      VGAmodeX_
-08e3:7e5e*     modex__320x240_256__Enter_
-08e3:7ebe+     modex__256x192_256__Enter_
+08e3:7e5e+     modex__320x240_256__Enter_
+08e3:7ebe*     modex__256x192_256__Enter_
 08e3:7f1e*     modexLeave_
 08e3:7f36+     modexsetBaseXMode_
 08e3:7f88*     modexDefaultPage_
@@ -663,4 +663,4 @@ gfx.lib
 Stack size:  dac0 (56000.)
 Memory size:  000228e0 (141536.)
 Entry point address: 08e3:0072
-Link time: 00:00.52
+Link time: 00:00.13
