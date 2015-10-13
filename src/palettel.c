@@ -30,7 +30,7 @@ main(int argc, char *argv[])
 
 	//modexEnter();
 
-	pal = modexNewPal();
+	//pal = modexNewPal();
 	bakapee = malloc(64);
 
 	if(argv[1]) bakapee = argv[1];
