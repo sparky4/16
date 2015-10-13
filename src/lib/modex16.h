@@ -69,6 +69,7 @@ typedef union
 void VGAmodeX(sword vq, global_game_variables_t *gv);
 void modex__320x240_256__Enter(global_game_variables_t *gv);
 void modexLeave();
+void modexsetBaseXMode(void);
 page_t modexDefaultPage();
 page_t modexNextPage(page_t *p);
 page_t modexNextPageFlexibleSize(page_t *p, word x, word y);

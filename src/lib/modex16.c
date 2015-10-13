@@ -77,8 +77,7 @@ modex__320x240_256__Enter(global_game_variables_t *gv)
 	word i;
 	dword far*ptr=(dword far*)VGA;      /* used for faster screen clearing */
 	word CRTParms[] = {
-//		0xe300,		/* horizontal total */
-//		0x4f01,		/* horizontal display enable end */
+		0x4f01,		/* horizontal display enable end */
 		0x5002,		/*  */
 		0x5404,		/*  */
 		0x8005,		/*  */
@@ -99,6 +98,35 @@ modex__320x240_256__Enter(global_game_variables_t *gv)
 	/* width and height */
 	//TODO WWWW
 
+	/* common mode X initiation stuff~ */
+	modexsetBaseXMode();
+
+	/* send the CRTParms */
+	for(i=0; i<CRTParmCount; i++) {
+		outpw(CRTC_INDEX, CRTParms[i]);
+	}
+
+	/* clear video memory */
+	outpw(SC_INDEX, 0x0f02);
+	for(i=0; i<0x8000; i++) {
+		ptr[i] = 0x0000;
+	}
+}
+
+void
+modexLeave() {
+    /* TODO restore original mode and palette */
+    vgaSetMode(TEXT_MODE);
+}
+
+//    setBaseXMode() does the initialization to make the VGA ready to
+//    accept any combination of configuration register settings.  This
+//    involves enabling writes to index 0 to 7 of the CRT controller (port
+//    0x3D4), by clearing the most significant bit (bit 7) of index 0x11.
+void
+modexsetBaseXMode(void)
+{
+	word temp;
 	/* TODO save current video mode and palette */
 	vgaSetMode(VGA_256_COLOR_MODE);
 
@@ -116,44 +144,11 @@ modex__320x240_256__Enter(global_game_variables_t *gv)
 
 	/* reprogram the CRT controller */
 	outp(CRTC_INDEX, 0x11); /* VSync End reg contains register write prot */
-	outp(CRTC_DATA, 0x7f);  /* get current write protect on varios regs */
-
-	/* send the CRTParms */
-	for(i=0; i<CRTParmCount; i++) {
-		outpw(CRTC_INDEX, CRTParms[i]);
-	}
-
-	/* clear video memory */
-	outpw(SC_INDEX, 0x0f02);
-	for(i=0; i<0x8000; i++) {
-		ptr[i] = 0x0000;
-	}
-}
-
-//    setBaseXMode() does the initialization to make the VGA ready to
-//    accept any combination of configuration register settings.  This
-//    involves enabling writes to index 0 to 7 of the CRT controller (port
-//    0x3D4), by clearing the most significant bit (bit 7) of index 0x11.
-void
-modexsetBaseXMode(void)
-{
-	int temp;
-
-	/* TODO save current video mode and palette */
-	vgaSetMode(VGA_256_COLOR_MODE);
-
-	outp(CRTC_INDEX, 0x11);
 	temp = inp(CRTC_DATA) & 0x7F;
 	outp(CRTC_INDEX, 0x11);
-	outp(CRTC_DATA, temp);
+	//outp(CRTC_DATA, 0x7f);  /* get current write protect on varios regs */
+	outp(CRTC_DATA, temp);  /* get current write protect on varios regs */
 }
-
-void
-modexLeave() {
-    /* TODO restore original mode and palette */
-    vgaSetMode(TEXT_MODE);
-}
-
 
 page_t
 modexDefaultPage() {
