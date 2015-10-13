@@ -59,12 +59,12 @@ static const word ModeX_320x240regs[] = {
 	0x5002,		/* Start horizontal blanking */
 	0x5404,		/* End horizontal blanking */
 	0x8005,		/* End horizontal retrace */
-	0xbf06,		 /* vertical total */
-	0x1f07,		 /* overflow (bit 8 of vertical counts) */
+	0x0d06,		 /* vertical total */
+	0x3e07,		 /* overflow (bit 8 of vertical counts) */
 	0x4109,		 /* cell height (2 to double-scan */
-	0x9c10,		 /* v sync start */
-	0xb811,		 /* v sync end and protect cr0-cr7 */
-	0x8f12,		 /* vertical displayed */
+	0xea10,		 /* v sync start */
+	0xac11,		 /* v sync end and protect cr0-cr7 */
+	0xdf12,		 /* vertical displayed */
 	0x2813,		/* offset/logical width */
 	0x0014,		 /* turn off dword mode */
 	0xe715,		 /* v blank start */

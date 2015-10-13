@@ -40,24 +40,31 @@ void VGAmodeX(sword vq, global_game_variables_t *gv)
 {
 	union REGS in, out;
 
-	if(!vq)
-	{ // deinit the video
-		// change to the video mode we were in before we switched to mode 13h
-		modexLeave();
-		in.h.ah = 0x00;
-		in.h.al = gv->old_mode;
-		int86(0x10, &in, &out);
-
-	}
-	else if(vq==1)
-	{ // init the video
-		// get old video mode
-		in.h.ah = 0xf;
-		int86(0x10, &in, &out);
-		gv->old_mode = out.h.al;
-		// enter mode
-		modex__320x240_256__Enter(gv);
-		//modex__256x192_256__Enter(gv);
+	switch (vq)
+	{
+		case 0: // deinit the video
+			// change to the video mode we were in before we switched to mode 13h
+			modexLeave();
+			in.h.ah = 0x00;
+			in.h.al = gv->old_mode;
+			int86(0x10, &in, &out);
+		break;
+		case 1: // init the video
+			// get old video mode
+			in.h.ah = 0xf;
+			int86(0x10, &in, &out);
+			gv->old_mode = out.h.al;
+			// enter mode
+			modex__320x240_256__Enter(gv);
+		break;
+		case 2: // init the video
+			// get old video mode
+			in.h.ah = 0xf;
+			int86(0x10, &in, &out);
+			gv->old_mode = out.h.al;
+			// enter mode
+			modex__256x192_256__Enter(gv);
+		break;
 	}
 }
 
@@ -153,10 +160,10 @@ modexsetBaseXMode(void)
 
 	/* reprogram the CRT controller */
 	outp(CRTC_INDEX, 0x11); /* VSync End reg contains register write prot */
-	temp = inp(CRTC_DATA) & 0x7F;
-	outp(CRTC_INDEX, 0x11);
-	//outp(CRTC_DATA, 0x7f);  /* get current write protect on varios regs */
-	outp(CRTC_DATA, temp);  /* get current write protect on varios regs */
+//	temp = inp(CRTC_DATA) & 0x7F;
+//	outp(CRTC_INDEX, 0x11);
+	outp(CRTC_DATA, 0x7f);  /* get current write protect on varios regs */
+//	outp(CRTC_DATA, temp);  /* get current write protect on varios regs */
 }
 
 page_t
