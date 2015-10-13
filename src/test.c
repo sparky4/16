@@ -23,73 +23,75 @@
 #include <stdio.h>
 #include "src/lib/modex16.h"
 
+global_game_variables_t gvar;
+
 void main() {
-    int i, j;
-    word start, end;
-    page_t page, page2;
-    byte *pal, *pal2=NULL;
+	int i, j;
+	word start, end;
+	page_t page, page2;
+	byte *pal, *pal2=NULL;
 
-    /* load our palette */
-    modexLoadPalFile("data/default.pal", &pal2);
+	/* load our palette */
+	modexLoadPalFile("data/default.pal", &pal2);
 
-    /* save the palette */
-    pal  = modexNewPal();
-    modexPalSave(pal);
-    modexFadeOff(1, pal);
-    modexPalBlack();
+	/* save the palette */
+	pal  = modexNewPal();
+	modexPalSave(pal);
+	modexFadeOff(1, pal);
+	modexPalBlack();
 
-    modexEnter();
-    modexPalBlack();
+	VGAmodeX(1, &gvar);
+	modexPalBlack();
 
-    /* set up the page, but with 16 pixels on all borders in offscreen mem */
-    page=modexDefaultPage();
-    page2 = modexNextPage(&page);
-    page.width += 32;
-    page.height += 32;
-
-
-    /* fill the page with one color, but with a black border */
-    modexShowPage(&page2);
-    modexClearRegion(&page, 16, 16, SCREEN_WIDTH, SCREEN_HEIGHT, 128);
-    modexClearRegion(&page, 32, 32, SCREEN_WIDTH-32, SCREEN_HEIGHT-32, 42);
-    modexClearRegion(&page, 48, 48, SCREEN_WIDTH-64, SCREEN_HEIGHT-64, 128);
-    modexShowPage(&page);
-
-    /* fade in */
-    modexFadeOn(1, pal2);
+	/* set up the page, but with 16 pixels on all borders in offscreen mem */
+	page=modexDefaultPage();
+	page2 = modexNextPage(&page);
+	page.width += 32;
+	page.height += 32;
 
 
-    start = *clockw;
-    for(i=0; i<5; i++) {
+	/* fill the page with one color, but with a black border */
+	modexShowPage(&page2);
+	modexClearRegion(&page, 16, 16, SCREEN_WIDTH, SCREEN_HEIGHT, 128);
+	modexClearRegion(&page, 32, 32, SCREEN_WIDTH-32, SCREEN_HEIGHT-32, 42);
+	modexClearRegion(&page, 48, 48, SCREEN_WIDTH-64, SCREEN_HEIGHT-64, 128);
+	modexShowPage(&page);
+
+	/* fade in */
+	modexFadeOn(1, pal2);
+
+
+	start = *clockw;
+	for(i=0; i<5; i++) {
 	/* go right */
 	for(j=0; j<32; j++) {
-	    page.dx++;
-	    modexShowPage(&page);
+		page.dx++;
+		modexShowPage(&page);
 	}
 	/* go left */
 	for(j=0; j<32; j++) {
-	    page.dx--;
-	    modexShowPage(&page);
+		page.dx--;
+		modexShowPage(&page);
 	}
 	/* go up */
 	for(j=0; j<32; j++) {
-	    page.dy++;
-	    modexShowPage(&page);
+		page.dy++;
+		modexShowPage(&page);
 	}
 
 	/* go down */
 	for(j=0; j<32; j++) {
-	    page.dy--;
-	    modexShowPage(&page);
+		page.dy--;
+		modexShowPage(&page);
 	}
-    }
+	}
 
-    end = *clockw;
+	end = *clockw;
 
-    /* fade back to text mode */
-    modexFadeOff(1, pal2);
-    modexPalBlack();
-    modexLeave();
-    modexPalBlack();
-    modexFadeOn(1, pal);
+	/* fade back to text mode */
+	modexFadeOff(1, pal2);
+	modexPalBlack();
+	VGAmodeX(0, &gvar);
+	modexPalBlack();
+	modexFadeOn(1, pal);
 }

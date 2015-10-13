@@ -579,7 +579,6 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 
 /*void qclean()
 {
-	modexLeave();
 	//setkb(0);
 }*/
 

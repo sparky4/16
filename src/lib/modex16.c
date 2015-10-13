@@ -56,7 +56,7 @@ void VGAmodeX(sword vq, global_game_variables_t *gv)
 		int86(0x10, &in, &out);
 		gv->old_mode = out.h.al;
 		// enter mode
-		modexEnter();
+		modex__320x240_256__Enter(gv);
 	}
 }
 
@@ -73,10 +73,11 @@ vgaSetMode(byte mode)
 
 /* -========================= Entry  Points ==========================- */
 void
-modexEnter() {
-    word i;
-    dword far*ptr=(dword far*)VGA;      /* used for faster screen clearing */
-    word CRTParms[] = {
+modex__320x240_256__Enter(global_game_variables_t *gv)
+{
+	word i;
+	dword far*ptr=(dword far*)VGA;      /* used for faster screen clearing */
+	word CRTParms[] = {
 //		0x5f00,		/* horizontal total */
 //		0x3f01,		/* horizontal display enable end */
 		0x0d06,         /* vertical total */
@@ -90,38 +91,41 @@ modexEnter() {
 		0xe715,         /* v blank start */
 		0x0616,         /* v blank end */
 		0xe317          /* turn on byte mode */
-    };
-    int CRTParmCount = sizeof(CRTParms) / sizeof(CRTParms[0]);
+	};
 
-    /* TODO save current video mode and palette */
-    vgaSetMode(VGA_256_COLOR_MODE);
+	int CRTParmCount = sizeof(CRTParms) / sizeof(CRTParms[0]);
+	/* width and height */
+	//TODO WWWW
 
-    /* disable chain4 mode */
-    outpw(SC_INDEX, 0x0604);
+	/* TODO save current video mode and palette */
+	vgaSetMode(VGA_256_COLOR_MODE);
 
-    /* synchronous reset while setting Misc Output */
-    outpw(SC_INDEX, 0x0100);
+	/* disable chain4 mode */
+	outpw(SC_INDEX, 0x0604);
 
-    /* select 25 MHz dot clock & 60 Hz scanning rate */
-    outp(MISC_OUTPUT, 0xe3);
+	/* synchronous reset while setting Misc Output */
+	outpw(SC_INDEX, 0x0100);
 
-    /* undo reset (restart sequencer) */
-    outpw(SC_INDEX, 0x0300);
+	/* select 25 MHz dot clock & 60 Hz scanning rate */
+	outp(MISC_OUTPUT, 0xe3);
 
-    /* reprogram the CRT controller */
-    outp(CRTC_INDEX, 0x11); /* VSync End reg contains register write prot */
-    outp(CRTC_DATA, 0x7f);  /* get current write protect on varios regs */
+	/* undo reset (restart sequencer) */
+	outpw(SC_INDEX, 0x0300);
 
-    /* send the CRTParms */
-    for(i=0; i<CRTParmCount; i++) {
-        outpw(CRTC_INDEX, CRTParms[i]);
-    }
+	/* reprogram the CRT controller */
+	outp(CRTC_INDEX, 0x11); /* VSync End reg contains register write prot */
+	outp(CRTC_DATA, 0x7f);  /* get current write protect on varios regs */
 
-    /* clear video memory */
-    outpw(SC_INDEX, 0x0f02);
-    for(i=0; i<0x8000; i++) {
-        ptr[i] = 0x0000;
-    }
+	/* send the CRTParms */
+	for(i=0; i<CRTParmCount; i++) {
+		outpw(CRTC_INDEX, CRTParms[i]);
+	}
+
+	/* clear video memory */
+	outpw(SC_INDEX, 0x0f02);
+	for(i=0; i<0x8000; i++) {
+		ptr[i] = 0x0000;
+	}
 }
 
 

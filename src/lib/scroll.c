@@ -91,7 +91,7 @@ void main() {
 	/*data\\*/
 	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
 	setkb(1);
-	modexEnter();
+	VGAmodeX(1, &gvar);
 	modexPalUpdate(ptmp.palette);
 	screen = modexDefaultPage();
 	screen.width += (TILEWH*2);
@@ -329,7 +329,7 @@ break;
 	}
 	}
 
-	modexLeave();
+	VGAmodeX(0, &gvar);
 	setkb(0);
 	printf("Project 16 scroll.exe\n");
 	printf("tx: %d\n", bg->tx);

@@ -25,6 +25,8 @@
 #include "lib/16text.h"
 #include "lib/modex16.h"
 
+global_game_variables_t gvar;
+
 void main(int argc, char near *argv[])
 {
     int i, xp;
@@ -85,7 +87,7 @@ void main(int argc, char near *argv[])
 	{
 		printf("type 3\n");
 		t=3;
-		w=16;	
+		w=16;
 	}
 
 
@@ -144,7 +146,7 @@ void main(int argc, char near *argv[])
     modexFadeOff(4, pal);
     modexPalBlack();
 */
-    modexEnter();
+    VGAmodeX(1, &gvar);
 /*    modexPalBlack();*/
 
     // set up the page, but with 16 pixels on all borders in offscreen mem
@@ -189,7 +191,7 @@ void main(int argc, char near *argv[])
 	// fade back to text mode
 	/*modexFadeOff(4, pal2);
 	modexPalBlack();*/
-	modexLeave();
+	VGAmodeX(0, &gvar);
 	/*modexPalBlack();
 	modexFadeOn(4, pal);*/
 	//render the letter in ascii art

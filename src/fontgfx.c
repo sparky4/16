@@ -25,6 +25,8 @@
 //#include "lib/16text.h"
 #include "lib/modex16.h"
 
+global_game_variables_t gvar;
+
 void main(int argc, char near *argv[])
 {
 	//JMOJI
@@ -62,7 +64,7 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 //	static byte *rosa;
 	static word chx, chy, colpee;
 	textInit();
-	modexEnter();
+	VGAmodeX(1, &gvar);
 	/* setup camera and screen~ */
 	screen = modexDefaultPage();
 	//screen.width += (16*2);
@@ -95,7 +97,7 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 	modexprintbig(&screen, 0, 0, 1, colpee, 0, "IBM");
 //	modexprint(0, 0, 1, 0, colpee, ROSE);
 	getch();
-	modexLeave();
+	VGAmodeX(0, &gvar);
 //	rosa=malloc(sizeof(ROSE));
 //	(*rosa)=(byte)ROSE;
 	printf("\n%s\n", rose);

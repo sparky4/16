@@ -22,6 +22,8 @@
 
 #include "src/lib/modex16.h"
 
+global_game_variables_t gvar;
+
 void
 main(int argc, char *argv[])
 {
@@ -32,13 +34,13 @@ main(int argc, char *argv[])
 	if(argv[1]) bakapee = argv[1];
 	else bakapee = "data/default.pal";
 
-	modexEnter();
+	VGAmodeX(1, &gvar);
 
 	pal = modexNewPal();
 	modexPalSave(pal);
 
 	modexSavePalFile(bakapee, pal);
 
-	modexLeave();
+	VGAmodeX(0, &gvar);
 
 }

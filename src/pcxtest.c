@@ -27,6 +27,8 @@
 #include "src/lib/bitmap.h"
 #include "src/lib/planar.h"
 
+global_game_variables_t gvar;
+
 /*
 void
 DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, byte sprite)
@@ -68,7 +70,7 @@ void main() {
 	bmp = bitmapLoadPcx("data/koishi^^.pcx");
 //	bmp = bitmapLoadPcx("16/PCX_LIB/chikyuu.pcx");
 	p = planar_buf_from_bitmap(&bmp);
-	modexEnter();
+	VGAmodeX(1, &gvar);
 
 	/* fix up the palette and everything */
 	modexPalUpdate1(bmp.palette);
@@ -114,7 +116,7 @@ void main() {
 	{
 		//DrawPBuf(&page, 0, 0, p, 0);
 	}
-	modexLeave();
+	VGAmodeX(0, &gvar);
 	/*printf("\nmain=%Fp\n\n", &i);
 	printf("bmp.data=%Fp\n", bmp.data);
 	printf("*bmp.data=%Fp\n", *(bmp.data));
