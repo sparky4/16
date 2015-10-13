@@ -48,7 +48,7 @@ main(int argc, char *argv[])
 	modexFadeOn(1, pal);
 	pdump(&page);
 	getch();
-	VGAmodeX(0, &gvar);
+	modexLeave();//VGAmodeX(0, &gvar);
 	/*for(i=0;i<768;i++)
 	{
 		printf("%02X ", pal[i]);
