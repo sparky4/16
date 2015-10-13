@@ -70,7 +70,6 @@ vgaSetMode(byte mode)
   int86(VIDEO_INT, &regs, &regs);
 }
 
-
 /* -========================= Entry  Points ==========================- */
 void
 modex__320x240_256__Enter(global_game_variables_t *gv)

@@ -31,6 +31,8 @@
 #include "src/lib/planar.h"
 #include "src/lib/16_head.h"
 #include "src/lib/16text.h"
+#include "src/lib/modex16/320x240.h"
+#include "src/lib/modex16/256x192.h"
 
 //320x240 = 20x15
 //256x192 = 16x12
