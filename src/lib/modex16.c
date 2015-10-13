@@ -78,7 +78,7 @@ modex__320x240_256__Enter(global_game_variables_t *gv)
 	dword far*ptr=(dword far*)VGA;      /* used for faster screen clearing */
 	word CRTParms[] = {
 //		0xe300,		/* horizontal total */
-		0x4f01,		/* horizontal display enable end */
+//		0x4f01,		/* horizontal display enable end */
 		0x5002,		/*  */
 		0x5404,		/*  */
 		0x8005,		/*  */
