@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Sep 16 2015 10:14:10 (64-bit)
 Copyright (c) 2002-2015 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/10/13 10:22:05
+Created on:       15/10/13 10:44:31
 Executable Image: pcxtest.exe
 creating a DOS executable
 
@@ -26,7 +26,7 @@ Segment                Class          Group          Address         Size
 
 pcxtest_TEXT           CODE           AUTO           0000:0000       00000203
 _TEXT                  CODE           AUTO           0000:0210       00008567
-modex16_TEXT           CODE           AUTO           0000:8780       00002338
+modex16_TEXT           CODE           AUTO           0000:8780       0000233a
 bitmap_TEXT            CODE           AUTO           0000:aac0       000005c9
 planar_TEXT            CODE           AUTO           0000:b090       00000275
 16text_TEXT            CODE           AUTO           0000:b310       0000010d
@@ -68,44 +68,44 @@ Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(stk086.asm)
 Module: gfx.lib(/dos/z/16/src/lib/modex16.c)
 0000:8938*     VGAmodeX_
 0000:89e0      modexEnter_
-0000:8a7a      modexLeave_
-0000:8a92      modexDefaultPage_
-0000:8af8*     modexNextPage_
-0000:8bc8*     modexNextPageFlexibleSize_
-0000:8c9c*     modexShowPage_
-0000:8d98*     modexPanPage_
-0000:8de8*     modexSelectPlane_
-0000:8e0c      modexClearRegion_
-0000:8f24      oldDrawBmp_
-0000:908a*     CDrawBmp_
-0000:91ee      modexDrawBmp_
-0000:9254+     modexDrawBmpRegion_
-0000:93be*     modex_sparky4_DrawBmpRegion_
-0000:9528*     modexDrawPlanarBuf_
-0000:9546      modexDrawSprite_
-0000:95ac+     modexDrawSpriteRegion_
-0000:9724      modexCopyPageRegion_
-0000:988e*     modexFadeOn_
-0000:98be*     modexFadeOff_
-0000:98ec*     modexFlashOn_
-0000:991a*     modexFlashOff_
-0000:99ea+     modexPalSave_
-0000:9a40      modexNewPal_
-0000:9a90*     modexLoadPalFile_
-0000:9b72*     modexSavePalFile_
-0000:9bea*     modexPalBlack_
-0000:9c14*     modexPalWhite_
-0000:9c3e+     modexPalUpdate_
-0000:a1ae      modexPalUpdate1_
-0000:a228*     modexPalUpdate0_
-0000:a274+     chkcolor_
-0000:a58c+     modexputPixel_
-0000:a61a*     modexgetPixel_
-0000:a6a0*     modexhlin_
-0000:a70c*     modexprint_
-0000:a8a6*     modexprintbig_
-0000:aa22*     cls_
-0000:aa90+     modexWaitBorder_
+0000:8a7c      modexLeave_
+0000:8a94      modexDefaultPage_
+0000:8afa*     modexNextPage_
+0000:8bca*     modexNextPageFlexibleSize_
+0000:8c9e*     modexShowPage_
+0000:8d9a*     modexPanPage_
+0000:8dea*     modexSelectPlane_
+0000:8e0e      modexClearRegion_
+0000:8f26      oldDrawBmp_
+0000:908c*     CDrawBmp_
+0000:91f0      modexDrawBmp_
+0000:9256+     modexDrawBmpRegion_
+0000:93c0*     modex_sparky4_DrawBmpRegion_
+0000:952a*     modexDrawPlanarBuf_
+0000:9548      modexDrawSprite_
+0000:95ae+     modexDrawSpriteRegion_
+0000:9726      modexCopyPageRegion_
+0000:9890*     modexFadeOn_
+0000:98c0*     modexFadeOff_
+0000:98ee*     modexFlashOn_
+0000:991c*     modexFlashOff_
+0000:99ec+     modexPalSave_
+0000:9a42      modexNewPal_
+0000:9a92*     modexLoadPalFile_
+0000:9b74*     modexSavePalFile_
+0000:9bec*     modexPalBlack_
+0000:9c16*     modexPalWhite_
+0000:9c40+     modexPalUpdate_
+0000:a1b0      modexPalUpdate1_
+0000:a22a*     modexPalUpdate0_
+0000:a276+     chkcolor_
+0000:a58e+     modexputPixel_
+0000:a61c*     modexgetPixel_
+0000:a6a2*     modexhlin_
+0000:a70e*     modexprint_
+0000:a8a8*     modexprintbig_
+0000:aa24*     cls_
+0000:aa92+     modexWaitBorder_
 0b42:01e4      _VGA
 Module: gfx.lib(/dos/z/16/src/lib/bitmap.c)
 0000:adc2      bitmapLoadPcx_
@@ -503,4 +503,4 @@ gfx.lib
 Stack size:  dac0 (56000.)
 Memory size:  0001a0e0 (106720.)
 Entry point address: 0000:0298
-Link time: 00:00.33
+Link time: 00:00.62

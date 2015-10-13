@@ -21,26 +21,36 @@
  */
 
 #include "src/lib/modex16.h"
+#include "src/lib/bakapee.h"
+
+global_game_variables_t gvar;
+byte *pal;
+char *bakapee;
+word i;
+page_t page;
 
 void
 main(int argc, char *argv[])
 {
-	byte *pal;
-	char *bakapee;
-
-	//modexEnter();
-
-	//pal = modexNewPal();
+	page = modexDefaultPage();
+	//page.width += 32;
+	//page.height += 32;
+	pal = modexNewPal();
 	bakapee = malloc(64);
-
 	if(argv[1]) bakapee = argv[1];
 	else bakapee = "data/default.pal";
 //	modexPalSave(pal);
+	VGAmodeX(1, &gvar);
 	modexPalBlack();
 
-	modexLoadPalFile(bakapee, *pal);
-	modexFadeOn(1, pal);
+	modexLoadPalFile(bakapee, &pal);
 	modexPalUpdate1(pal);
-
-	//modexLeave();
+	modexFadeOn(1, pal);
+	pdump(&page);
+	getch();
+	VGAmodeX(0, &gvar);
+	for(i=0;i<768;i++)
+	{
+		printf("%02X ", pal[i]);
+	}
 }

@@ -23,15 +23,21 @@
 #include "src/lib/modex16.h"
 
 void
-main() {
+main(int argc, char *argv[])
+{
 	byte *pal;
+	byte *bakapee;
+
+	bakapee = malloc(64);
+	if(argv[1]) bakapee = argv[1];
+	else bakapee = "data/default.pal";
 
 	modexEnter();
 
 	pal = modexNewPal();
 	modexPalSave(pal);
 
-	modexSavePalFile("data/default.pal", pal);
+	modexSavePalFile(bakapee, pal);
 
 	modexLeave();
 

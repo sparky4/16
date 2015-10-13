@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Sep 16 2015 10:14:10 (64-bit)
 Copyright (c) 2002-2015 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/10/13 10:22:05
+Created on:       15/10/13 10:44:31
 Executable Image: 16.exe
 creating a DOS executable
 
@@ -36,7 +36,7 @@ kitten_TEXT            CODE           AUTO           0000:6de0       0000080a
 16_hc_TEXT             CODE           AUTO           0000:75f0       0000158b
 timer_TEXT             CODE           AUTO           0000:8b80       00000235
 _TEXT                  CODE           AUTO           08dc:0000       00007bbb
-modex16_TEXT           CODE           AUTO           08dc:7bc0       00002338
+modex16_TEXT           CODE           AUTO           08dc:7bc0       0000233a
 bitmap_TEXT            CODE           AUTO           08dc:9f00       000005c9
 16text_TEXT            CODE           AUTO           08dc:a4d0       0000010d
 16_in13_DATA           FAR_DATA       AUTO           133a:0000       000001a4
@@ -194,52 +194,52 @@ Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(stk086.asm)
 Module: gfx.lib(/dos/z/16/src/lib/modex16.c)
 08dc:7d78      VGAmodeX_
 08dc:7e20+     modexEnter_
-08dc:7eba*     modexLeave_
-08dc:7ed2*     modexDefaultPage_
-08dc:7f38*     modexNextPage_
-08dc:8008*     modexNextPageFlexibleSize_
-08dc:80dc*     modexShowPage_
-08dc:81d8*     modexPanPage_
-08dc:8228*     modexSelectPlane_
-08dc:824c+     modexClearRegion_
-08dc:8364*     oldDrawBmp_
-08dc:84ca*     CDrawBmp_
-08dc:862e*     modexDrawBmp_
-08dc:8694+     modexDrawBmpRegion_
-08dc:87fe*     modex_sparky4_DrawBmpRegion_
-08dc:8968*     modexDrawPlanarBuf_
-08dc:8986*     modexDrawSprite_
-08dc:89ec+     modexDrawSpriteRegion_
-08dc:8b64*     modexCopyPageRegion_
-08dc:8cce      modexFadeOn_
-08dc:8cfe      modexFadeOff_
-08dc:8d2c*     modexFlashOn_
-08dc:8d5a*     modexFlashOff_
-08dc:8e2a      modexPalSave_
-08dc:8e80      modexNewPal_
-08dc:8ed0*     modexLoadPalFile_
-08dc:8fb2*     modexSavePalFile_
-08dc:902a      modexPalBlack_
-08dc:9054*     modexPalWhite_
-08dc:907e+     modexPalUpdate_
-08dc:95ee+     modexPalUpdate1_
-08dc:9668*     modexPalUpdate0_
-08dc:96b4+     chkcolor_
-08dc:99cc+     modexputPixel_
-08dc:9a5a*     modexgetPixel_
-08dc:9ae0*     modexhlin_
-08dc:9b4c*     modexprint_
-08dc:9ce6*     modexprintbig_
-08dc:9e62*     cls_
-08dc:9ed0+     modexWaitBorder_
+08dc:7ebc*     modexLeave_
+08dc:7ed4*     modexDefaultPage_
+08dc:7f3a*     modexNextPage_
+08dc:800a*     modexNextPageFlexibleSize_
+08dc:80de*     modexShowPage_
+08dc:81da*     modexPanPage_
+08dc:822a*     modexSelectPlane_
+08dc:824e+     modexClearRegion_
+08dc:8366*     oldDrawBmp_
+08dc:84cc*     CDrawBmp_
+08dc:8630*     modexDrawBmp_
+08dc:8696+     modexDrawBmpRegion_
+08dc:8800*     modex_sparky4_DrawBmpRegion_
+08dc:896a*     modexDrawPlanarBuf_
+08dc:8988*     modexDrawSprite_
+08dc:89ee+     modexDrawSpriteRegion_
+08dc:8b66*     modexCopyPageRegion_
+08dc:8cd0      modexFadeOn_
+08dc:8d00      modexFadeOff_
+08dc:8d2e*     modexFlashOn_
+08dc:8d5c*     modexFlashOff_
+08dc:8e2c      modexPalSave_
+08dc:8e82      modexNewPal_
+08dc:8ed2*     modexLoadPalFile_
+08dc:8fb4*     modexSavePalFile_
+08dc:902c      modexPalBlack_
+08dc:9056*     modexPalWhite_
+08dc:9080+     modexPalUpdate_
+08dc:95f0+     modexPalUpdate1_
+08dc:966a*     modexPalUpdate0_
+08dc:96b6+     chkcolor_
+08dc:99ce+     modexputPixel_
+08dc:9a5c*     modexgetPixel_
+08dc:9ae2*     modexhlin_
+08dc:9b4e*     modexprint_
+08dc:9ce8*     modexprintbig_
+08dc:9e64*     cls_
+08dc:9ed2+     modexWaitBorder_
 1355:04d4+     _VGA
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(printf.c)
 08dc:0042      printf_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(cstart)
 1355:0000*     __nullarea
-1355:04fe*     __ovlflag
-1355:04ff*     __intno
-1355:0500*     __ovlvec
+1355:04fc*     __ovlflag
+1355:04fd*     __intno
+1355:04fe*     __ovlvec
 08dc:0072      _cstart_
 08dc:0145*     _Not_Enough_Memory_
 08dc:0277      __exit_
@@ -261,9 +261,9 @@ Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(strncmp.c)
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fmalloc.c)
 08dc:0359      _fmalloc_
 08dc:0359      malloc_
-1355:0504      ___fheap
-1355:0506      ___fheapRover
-1355:0508      ___LargestSizeB4Rover
+1355:0502      ___fheap
+1355:0504      ___fheapRover
+1355:0506      ___LargestSizeB4Rover
 Module: gfx.lib(/dos/z/16/src/lib/bitmap.c)
 08dc:a202      bitmapLoadPcx_
 08dc:a35e*     bitmapLoadPcxTiles_
@@ -661,4 +661,4 @@ gfx.lib
 Stack size:  dac0 (56000.)
 Memory size:  00022790 (141200.)
 Entry point address: 08dc:0072
-Link time: 00:00.52
+Link time: 00:00.87
