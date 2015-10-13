@@ -83,6 +83,7 @@ modexEnter() {
         0xea10,         /* v sync start */
         0xac11,         /* v sync end and protect cr0-cr7 */
         0xdf12,         /* vertical displayed */
+	0x2013,		/* offset/logical width */
         0x0014,         /* turn off dword mode */
         0xe715,         /* v blank start */
         0x0616,         /* v blank end */

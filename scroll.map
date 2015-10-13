@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Sep 21 2015 10:22:11 (32-bit)
 Copyright (c) 2002-2015 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/10/09 14:10:26
+Created on:       15/10/13 02:29:56
 Executable Image: scroll.exe
 creating a DOS executable
 
@@ -40,7 +40,7 @@ scroll16_TEXT          CODE           AUTO           0989:9f70       00003487
 bitmap_TEXT            CODE           AUTO           0989:d400       000005c9
 planar_TEXT            CODE           AUTO           0989:d9d0       00000275
 16text_TEXT            CODE           AUTO           0989:dc50       0000010d
-modex16_TEXT           CODE           AUTO           175f:0000       0000233a
+modex16_TEXT           CODE           AUTO           175f:0000       00002338
 bakapee_TEXT           CODE           AUTO           175f:2340       00000b86
 16_in13_DATA           FAR_DATA       AUTO           1a4c:0000       000001a4
 FAR_DATA               FAR_DATA       AUTO           1a66:0004       00000000
@@ -244,44 +244,44 @@ Module: gfx.lib(/dos/z/16/src/lib/16text.c)
 Module: gfx.lib(/dos/z/16/src/lib/modex16.c)
 175f:01b8      VGAmodeX_
 175f:0260+     modexEnter_
-175f:02fc*     modexLeave_
-175f:0314      modexDefaultPage_
-175f:037a      modexNextPage_
-175f:044a      modexNextPageFlexibleSize_
-175f:051e      modexShowPage_
-175f:061a*     modexPanPage_
-175f:066a*     modexSelectPlane_
-175f:068e      modexClearRegion_
-175f:07a6*     oldDrawBmp_
-175f:090c*     CDrawBmp_
-175f:0a70*     modexDrawBmp_
-175f:0ad6+     modexDrawBmpRegion_
-175f:0c40*     modex_sparky4_DrawBmpRegion_
-175f:0daa*     modexDrawPlanarBuf_
-175f:0dc8*     modexDrawSprite_
-175f:0e2e+     modexDrawSpriteRegion_
-175f:0fa6      modexCopyPageRegion_
-175f:1110*     modexFadeOn_
-175f:1140*     modexFadeOff_
-175f:116e*     modexFlashOn_
-175f:119c*     modexFlashOff_
-175f:126c+     modexPalSave_
-175f:12c2      modexNewPal_
-175f:1312*     modexLoadPalFile_
-175f:13f4*     modexSavePalFile_
-175f:146c*     modexPalBlack_
-175f:1496*     modexPalWhite_
-175f:14c0+     modexPalUpdate_
-175f:1a30+     modexPalUpdate1_
-175f:1aaa*     modexPalUpdate0_
-175f:1af6+     chkcolor_
-175f:1e0e      modexputPixel_
-175f:1e9c*     modexgetPixel_
-175f:1f22*     modexhlin_
-175f:1f8e      modexprint_
-175f:2128*     modexprintbig_
-175f:22a4      cls_
-175f:2312      modexWaitBorder_
+175f:02fa*     modexLeave_
+175f:0312      modexDefaultPage_
+175f:0378      modexNextPage_
+175f:0448      modexNextPageFlexibleSize_
+175f:051c      modexShowPage_
+175f:0618*     modexPanPage_
+175f:0668*     modexSelectPlane_
+175f:068c      modexClearRegion_
+175f:07a4*     oldDrawBmp_
+175f:090a*     CDrawBmp_
+175f:0a6e*     modexDrawBmp_
+175f:0ad4+     modexDrawBmpRegion_
+175f:0c3e*     modex_sparky4_DrawBmpRegion_
+175f:0da8*     modexDrawPlanarBuf_
+175f:0dc6*     modexDrawSprite_
+175f:0e2c+     modexDrawSpriteRegion_
+175f:0fa4      modexCopyPageRegion_
+175f:110e*     modexFadeOn_
+175f:113e*     modexFadeOff_
+175f:116c*     modexFlashOn_
+175f:119a*     modexFlashOff_
+175f:126a+     modexPalSave_
+175f:12c0      modexNewPal_
+175f:1310*     modexLoadPalFile_
+175f:13f2*     modexSavePalFile_
+175f:146a*     modexPalBlack_
+175f:1494*     modexPalWhite_
+175f:14be+     modexPalUpdate_
+175f:1a2e+     modexPalUpdate1_
+175f:1aa8*     modexPalUpdate0_
+175f:1af4+     chkcolor_
+175f:1e0c      modexputPixel_
+175f:1e9a*     modexgetPixel_
+175f:1f20*     modexhlin_
+175f:1f8c      modexprint_
+175f:2126*     modexprintbig_
+175f:22a2      cls_
+175f:2310      modexWaitBorder_
 1a67:0b54      _VGA
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(sound.c)
 0989:0234      sound_
@@ -753,4 +753,4 @@ gfx.lib
 Stack size:  dac0 (56000.)
 Memory size:  00029ee0 (171744.)
 Entry point address: 0989:027c
-Link time: 00:00.10
+Link time: 00:00.00
