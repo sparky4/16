@@ -22,8 +22,8 @@
 # -0    8088/8086 class code generation
 # -s    disable stack overflow checking
 
+#%.C
 #wwww will add these
-
 !ifdef __LINUX__
 REMOVECOMMAND=rm -f
 COPYCOMMAND=cp -f
