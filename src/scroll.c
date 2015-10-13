@@ -37,8 +37,9 @@ map_view_t mv[3];
 map_view_t *bg, *spri, *mask;//, *tmp;
 planar_buf_t *p;
 float t;
+sword bakapee;
 
-void main()
+void main(int argc, char *argv[])
 {
 //	word panswitch=0, panq=1, pand=0;
 	word panpagenum=0; //for panning!
@@ -55,6 +56,10 @@ void main()
 	byte *ptr;
 	byte *mappalptr;
 	byte *mesg=malloc(sizeof(dword));
+
+
+	if(argv[1]) bakapee = atoi(argv[1]);
+	else bakapee = 1;
 
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
@@ -104,7 +109,7 @@ void main()
 #endif
 
 	textInit();
-	VGAmodeX(1, &gvar);
+	VGAmodeX(bakapee, &gvar);
 #ifdef FADE
 	modexPalBlack();	//reset the palette~
 #endif
