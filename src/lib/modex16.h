@@ -32,7 +32,7 @@
 #include "src/lib/16_head.h"
 #include "src/lib/16text.h"
 #include "src/lib/modex16/320x240.h"
-#include "src/lib/modex16/256x192.h"
+#include "src/lib/modex16/192x144.h"
 
 //320x240 = 20x15
 //256x192 = 16x12
@@ -68,7 +68,7 @@ typedef union
 /* mode switching, page, and plane functions */
 void VGAmodeX(sword vq, global_game_variables_t *gv);
 void modex__320x240_256__Enter(global_game_variables_t *gv);
-void modex__256x192_256__Enter(global_game_variables_t *gv);
+void modex__192x144_256__Enter(global_game_variables_t *gv);
 void modexLeave();
 void modexsetBaseXMode(void);
 page_t modexDefaultPage();

@@ -63,7 +63,7 @@ void VGAmodeX(sword vq, global_game_variables_t *gv)
 			int86(0x10, &in, &out);
 			gv->old_mode = out.h.al;
 			// enter mode
-			modex__256x192_256__Enter(gv);
+			modex__192x144_256__Enter(gv);
 		break;
 	}
 }
@@ -105,12 +105,12 @@ modex__320x240_256__Enter(global_game_variables_t *gv)
 }
 
 void
-modex__256x192_256__Enter(global_game_variables_t *gv)
+modex__192x144_256__Enter(global_game_variables_t *gv)
 {
 	word i;
 	dword far*ptr=(dword far*)VGA;      /* used for faster screen clearing */
 
-	int CRTParmCount = sizeof(ModeX_256x192regs) / sizeof(ModeX_256x192regs[0]);
+	int CRTParmCount = sizeof(ModeX_192x144regs) / sizeof(ModeX_192x144regs[0]);
 	/* width and height */
 	//TODO WWWW
 
@@ -119,7 +119,7 @@ modex__256x192_256__Enter(global_game_variables_t *gv)
 
 	/* send the CRTParms */
 	for(i=0; i<CRTParmCount; i++) {
-		outpw(CRTC_INDEX, ModeX_256x192regs[i]);
+		outpw(CRTC_INDEX, ModeX_192x144regs[i]);
 	}
 
 	/* clear video memory */

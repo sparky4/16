@@ -20,8 +20,8 @@
  *
  */
 
-#ifndef _UNX_H_
-#define _UNX_H_
+#ifndef _SMALLMODEXRES_H_
+#define _SMALLMODEXRES_H_
 
 #include "src/lib/types.h"
 
@@ -54,7 +54,7 @@
 	0x3c0, 0x13, 0x00
 };*/
 
-static const word ModeX_320x240regs[] = {
+static const word ModeX_192x144regs[] = {
 	0x4f01,		/* horizontal display enable end */
 	0x5002,		/* Start horizontal blanking */
 	0x5404,		/* End horizontal blanking */
@@ -72,4 +72,4 @@ static const word ModeX_320x240regs[] = {
 	0xe317		  /* turn on byte mode */
 };
 
-#endif /*_UNX_H_*/
+#endif /*_SMALLMODEXRES_H_*/
