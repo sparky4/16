@@ -37,4 +37,6 @@ typedef signed long sdword;
 typedef unsigned int iword;
 typedef signed int siword;
 
+typedef	enum	{false,true}	boolean;
+
 #endif/*_TYPE_H_*/

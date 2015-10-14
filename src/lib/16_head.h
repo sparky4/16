@@ -164,8 +164,6 @@ extern	int			profilehandle,debughandle;	//make it into game global
 typedef union REGPACK	regs_t;
 #endif
 
-typedef	enum	{false,true}	boolean;
-
 #ifdef __WATCOMC__
 typedef void __based(__self) * memptr;
 #endif
