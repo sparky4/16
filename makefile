@@ -23,6 +23,7 @@
 # -s    disable stack overflow checking
 
 #%.C
+#192x144
 #wwww will add these
 !ifdef __LINUX__
 REMOVECOMMAND=rm -f
