@@ -190,7 +190,7 @@ typedef struct
 
 typedef struct
 {
-	int old_mode;	//old video mode before game!
+	long old_mode;	//old video mode before game!
 	byte *pee;		// message for fps
 	handle_t handle;	//handles for file logging
 	kurokku_t kurokku;	//clock struct

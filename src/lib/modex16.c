@@ -51,9 +51,9 @@ void VGAmodeX(sword vq, global_game_variables_t *gv)
 		break;
 		case 1: // init the video
 			// get old video mode
-			in.h.ah = 0xf;
-			int86(0x10, &in, &out);
-			gv->old_mode = out.h.al;
+			//in.h.ah = 0xf;
+			//int86(0x10, &in, &out);
+			gv->old_mode = vgaGetMode();//out.h.al;
 			// enter mode
 			modex__320x240_256__Enter(gv);
 		break;
@@ -76,6 +76,22 @@ vgaSetMode(byte mode)
   regs.h.ah = SET_MODE;
   regs.h.al = mode;
   int86(VIDEO_INT, &regs, &regs);
+}
+
+//---------------------------------------------------
+//
+// Use the bios to get the current video mode
+//
+
+long
+vgaGetMode()
+{
+    union REGS rg;
+
+    rg.h.ah = 0x0f;
+    int86(VIDEO_INT, &rg, &rg);
+
+    return rg.h.al;
 }
 
 /* -========================= Entry  Points ==========================- */
