@@ -108,8 +108,8 @@ modexEnter(sword vq, global_game_variables_t *gv)
 			gv->video.page[0].tilesh = gv->video.page[0].sh/TILEWH;
 			//printf("%dx%d\n", gv->video.page[0].tilesw, gv->video.page[0].tilesh);
 			//TODO MAKE FLEXIBLE~
-			gv->video.page[0].tilemidposscreenx = 10;
-			gv->video.page[0].tilemidposscreeny = 8;
+			gv->video.page[0].tilemidposscreenx = gv->video.page[0].tilesw;
+			gv->video.page[0].tilemidposscreeny = (gv->video.page[0].tilesh/2)+1;
 
 			/* send the CRTParms */
 			for(i=0; i<CRTParmCount; i++) {
@@ -188,10 +188,14 @@ modexDefaultPage(page_t *p)
     page.data = VGA;
     page.dx = 0;
     page.dy = 0;
+	page.sw = p->sw;
+	page.sh = p->sh;
 	page.width = p->sw;
 	page.height = p->sh;
 	page.tw = page.sw/TILEWH;
 	page.th = page.sh/TILEWH;
+	page.tilemidposscreenx = page.tw/2;
+	page.tilemidposscreeny = (page.th/2)+1;
 	page.id = 0;
 
     return page;
