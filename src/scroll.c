@@ -181,6 +181,7 @@ void main(int argc, char *argv[])
 	npc0.q=1;
 	npc0.d=0;
 	modexDrawSpriteRegion(spri->page, npc0.x-4, npc0.y-TILEWH, 24, 64, 24, 32, &npctmp);*/
+	modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
 #ifdef	SPRITE
 #ifdef BMPTYPE
 	oldDrawBmp(VGA, player[0].x-4, player[0].y-TILEWH, &player[0].data, 1);
