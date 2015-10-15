@@ -70,7 +70,7 @@ static const word ModeX_192x144regs[] = {
 	0xe715,		 /* v blank start */
 	0x0616,		 /* v blank end */
 	0xe317		  /* turn on byte mode */
-};
+};//12*9
 
 #endif /*_SMALLMODEXRES_H_*/
 /*
