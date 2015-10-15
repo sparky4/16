@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Sep 21 2015 10:22:11 (32-bit)
 Copyright (c) 2002-2015 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/10/15 15:23:42
+Created on:       15/10/15 15:28:50
 Executable Image: fonttest.exe
 creating a DOS executable
 
@@ -588,4 +588,4 @@ gfx.lib
 Stack size:  dac0 (56000.)
 Memory size:  0001d970 (121200.)
 Entry point address: 0000:7d82
-Link time: 00:00.10
+Link time: 00:00.00

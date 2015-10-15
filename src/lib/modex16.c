@@ -173,10 +173,10 @@ modexsetBaseXMode(page_t *page)
 
 	/* reprogram the CRT controller */
 	outp(CRTC_INDEX, 0x11); /* VSync End reg contains register write prot */
-	temp = inp(CRTC_DATA) & 0x7F;
-	outp(CRTC_INDEX, 0x11);
-//	outp(CRTC_DATA, 0x7f);  /* get current write protect on varios regs */
-	outp(CRTC_DATA, temp);  /* get current write protect on varios regs */
+//	temp = inp(CRTC_DATA) & 0x7F;
+//	outp(CRTC_INDEX, 0x11);
+	outp(CRTC_DATA, 0x7f);  /* get current write protect on varios regs */
+//	outp(CRTC_DATA, temp);  /* get current write protect on varios regs */
 }
 
 page_t
