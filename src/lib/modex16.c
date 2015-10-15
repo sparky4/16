@@ -93,14 +93,20 @@ modexEnter(sword vq, global_game_variables_t *gv)
 	dword far*ptr=(dword far*)VGA;      /* used for faster screen clearing */
 	int CRTParmCount;
 	/* common mode X initiation stuff~ */
-	modexsetBaseXMode();
+	modexsetBaseXMode(gv->video.page);
 
 	switch(vq)
 	{
 		case 0:
 			CRTParmCount = sizeof(ModeX_320x240regs) / sizeof(ModeX_320x240regs[0]);
 			/* width and height */
-			//TODO add width and height of screen
+			gv->video.page->sw=320;
+			gv->video.page->sh=240;
+			gv->video.page->tilesw = gv->video.page->sw/TILEWH;
+			gv->video.page->tilesh = gv->video.page->sh/TILEWH;
+			//TODO MAKE FLEXIBLE~
+			gv->video.page->tilemidposscreenx = 10;
+			gv->video.page->tilemidposscreeny = 8;
 
 			/* send the CRTParms */
 			for(i=0; i<CRTParmCount; i++) {
@@ -143,7 +149,7 @@ modexLeave() {
 //    involves enabling writes to index 0 to 7 of the CRT controller (port
 //    0x3D4), by clearing the most significant bit (bit 7) of index 0x11.
 void
-modexsetBaseXMode(void)
+modexsetBaseXMode(page_t *page)
 {
 	word temp;
 	/* TODO save current video mode and palette */
@@ -163,10 +169,10 @@ modexsetBaseXMode(void)
 
 	/* reprogram the CRT controller */
 	outp(CRTC_INDEX, 0x11); /* VSync End reg contains register write prot */
-//	temp = inp(CRTC_DATA) & 0x7F;
-//	outp(CRTC_INDEX, 0x11);
-	outp(CRTC_DATA, 0x7f);  /* get current write protect on varios regs */
-//	outp(CRTC_DATA, temp);  /* get current write protect on varios regs */
+	temp = inp(CRTC_DATA) & 0x7F;
+	outp(CRTC_INDEX, 0x11);
+//	outp(CRTC_DATA, 0x7f);  /* get current write protect on varios regs */
+	outp(CRTC_DATA, temp);  /* get current write protect on varios regs */
 }
 
 page_t

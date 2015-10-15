@@ -63,6 +63,7 @@ void main(int argc, char *argv[])
 
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
+	gvar.video.page=&screen;
 
 	printf("starting timer\n");
 	start_timer(&gvar);
@@ -156,8 +157,8 @@ void main(int argc, char *argv[])
 
 	//TODO: put player in starting position of spot
 	//default player position on the viewable map
-	player[0].tx = bg->tx + 10;
-	player[0].ty = bg->ty + 8;
+	player[0].tx = bg->tx + bg->page->tilemidposscreenx;
+	player[0].ty = bg->ty + bg->page->tilemidposscreeny;
 	player[0].x = player[0].tx*TILEWH;
 	player[0].y = player[0].ty*TILEWH;
 	player[0].triggerx = player[0].tx;

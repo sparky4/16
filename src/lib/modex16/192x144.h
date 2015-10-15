@@ -74,12 +74,8 @@ static const word ModeX_192x144regs[] = {
 
 #endif /*_SMALLMODEXRES_H_*/
 /*
-void
-tg::mode160x120()
-{
-    int crtc11;
-
-    outp(0x3d4, 0x11); // unlock crtc
+voidtg::mode160x120(){
+    int crtc11;    outp(0x3d4, 0x11); // unlock crtc
     crtc11 = inp(0x3d5) & 0x7f;
     outp(0x3d4, 0x11);
     outp(0x3d5, crtc11);

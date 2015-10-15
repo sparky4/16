@@ -46,19 +46,6 @@
 #define PLANE(x) (1<< (x&3))
 #define SELECT_ALL_PLANES() outpw(0x03c4, 0xff02)
 
-typedef struct {
-	word id;	/* the Identification number of the page~ For layering~ */
-	byte far* data;	/* the data for the page */
-	word dx;		/* col we are viewing on the virtual screen */
-	word dy;		/* row we are viewing on the virtual screen */
-	word sw;		/* screen width */
-	word sh;		/* screen heigth */
-	word width;		/* virtual width of the page */
-	word height;	/* virtual height of the page */
-	word tw;
-	word th;
-} page_t;
-
 typedef union
 {
 	byte red;
@@ -72,7 +59,7 @@ void VGAmodeX(sword vq, global_game_variables_t *gv);
 void modexEnter(sword vq, global_game_variables_t *gv);
 long vgaGetMode();
 void modexLeave();
-void modexsetBaseXMode(void);
+void modexsetBaseXMode(page_t *page);
 page_t modexDefaultPage();
 page_t modexNextPage(page_t *p);
 page_t modexNextPageFlexibleSize(page_t *p, word x, word y);

@@ -171,6 +171,28 @@ typedef void __based(__self) * memptr;
 typedef void _seg * memptr;
 #endif
 
+/*
+ * typedefs of the game variables!
+ */
+typedef struct {
+	word id;	/* the Identification number of the page~ For layering~ */
+	byte far* data;	/* the data for the page */
+	word dx;		/* col we are viewing on the virtual screen */
+	word dy;		/* row we are viewing on the virtual screen */
+	word sw;		/* screen width */
+	word sh;		/* screen heigth */
+	word tilesw;		/* screen width in tiles */
+	word tilesh;		/* screen height in tiles */
+	word width;		/* virtual width of the page */
+	word height;	/* virtual height of the page */
+	word tw;
+	word th;
+	sword tilemidposscreenx;	/* middle tile position */
+	sword tilemidposscreeny;	/* middle tile position */
+	sword tileplayerposscreenx;	/* player position on screen */
+	sword tileplayerposscreeny;	/* player position on screen */
+} page_t;
+
 typedef struct
 {
 // 	int showmemhandle;
@@ -191,6 +213,7 @@ typedef struct
 typedef struct
 {
 	long old_mode;	//old video mode before game!
+	page_t *page;	//pointer to root page[0] //TODO
 } video_t;
 
 typedef struct

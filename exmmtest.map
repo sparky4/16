@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Sep 16 2015 10:14:10 (64-bit)
 Copyright (c) 2002-2015 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/10/15 12:30:06
+Created on:       15/10/15 13:12:45
 Executable Image: exmmtest.exe
 creating a DOS executable
 
@@ -138,8 +138,8 @@ Module: 16_ca.o(/dos/z/16/src/lib/16_ca.c)
 0000:5d00      CA_Startup_
 0000:5d50      CA_Shutdown_
 0edf:0910*     _finishcachebox
-0edf:0914*     _drawcachebox
-0edf:0918*     _updatecachebox
+0edf:0914*     _updatecachebox
+0edf:0918*     _drawcachebox
 Module: kitten.o(/dos/z/16/src/lib/nyan/kitten.c)
 0000:5dbc      KITTENGETS
 0000:5e1c*     kittenopen_
@@ -577,4 +577,4 @@ Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fpeint.c)
 Stack size:  dac0 (56000.)
 Memory size:  0001d520 (120096.)
 Entry point address: 0000:8024
-Link time: 00:00.05
+Link time: 00:00.21

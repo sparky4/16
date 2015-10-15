@@ -31,7 +31,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 	{
 		//right movement
 		case 3:
-			if(pip[0].tx >= 0 && pip[0].tx+20 < pip[0].map->width && player[pn].tx == pip[0].tx + 10 &&
+			if(pip[0].tx >= 0 && pip[0].tx+pip[0].page->tilesw < pip[0].map->width && player[pn].tx == pip[0].tx+pip[0].page->tilemidposscreenx &&
 			!(pip[0].map->data[(player[pn].tx)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx+1 == TRIGGX && player[pn].ty == TRIGGY))	//collision detection!
 			{
 				if(player[pn].q<=(TILEWH/(player[pn].speed)))
@@ -72,7 +72,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 
 		//left movement
 		case 1:
-			if(pip[0].tx > 0 && pip[0].tx+20 <= pip[0].map->width && player[pn].tx == pip[0].tx + 10 &&
+			if(pip[0].tx > 0 && pip[0].tx+pip[0].page->tilesw <= pip[0].map->width && player[pn].tx == pip[0].tx+pip[0].page->tilemidposscreenx &&
 			!(pip[0].map->data[(player[pn].tx-2)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx-1 == TRIGGX && player[pn].ty == TRIGGY))	//collision detection!
 			{
 				if(player[pn].q<=(TILEWH/(player[pn].speed)))
@@ -113,7 +113,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 
 		//down movement
 		case 4:
-			if(pip[0].ty >= 0 && pip[0].ty+15 < pip[0].map->height && player[pn].ty == pip[0].ty + 8 &&
+			if(pip[0].ty >= 0 && pip[0].ty+pip[0].page->tilesh < pip[0].map->height && player[pn].ty == pip[0].ty+pip[0].page->tilemidposscreeny &&
 			!(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty))] == 0))//!(player[pn].tx == TRIGGX && player[pn].ty+1 == TRIGGY))	//collision detection!
 			{
 				if(player[pn].q<=(TILEWH/(player[pn].speed)))
@@ -154,7 +154,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 
 		//up movement
 		case 0:
-			if(pip[0].ty > 0 && pip[0].ty+15 <= pip[0].map->height && player[pn].ty == pip[0].ty + 8 &&
+			if(pip[0].ty > 0 && pip[0].ty+pip[0].page->tilesh <= pip[0].map->height && player[pn].ty == pip[0].ty+pip[0].page->tilemidposscreeny &&
 			!(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty-2))] == 0))//!(player[pn].tx == TRIGGX && player[pn].ty-1 == TRIGGY))	//collision detection!
 			{
 				if(player[pn].q<=(TILEWH/(player[pn].speed)))
