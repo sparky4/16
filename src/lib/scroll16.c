@@ -31,6 +31,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 	{
 		//right movement
 		case 3:
+			//printf("pip[0].page->tilesw=%d\n", pip[0].page->tilesw);
 			if(pip[0].tx >= 0 && pip[0].tx+pip[0].page->tilesw < pip[0].map->width && player[pn].tx == pip[0].tx+pip[0].page->tilemidposscreenx &&
 			!(pip[0].map->data[(player[pn].tx)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx+1 == TRIGGX && player[pn].ty == TRIGGY))	//collision detection!
 			{

@@ -228,6 +228,8 @@ modexDefaultPage(page_t *p)
 	page.th = page.sh/TILEWH;
 	page.tilemidposscreenx = page.tw/2;
 	page.tilemidposscreeny = (page.th/2)+1;
+	page.tilesw=p->tilesw;
+	page.tilesh=p->tilesh;
 	//pageSize = p->sw*p->sh;
 	page.id = 0;
 
