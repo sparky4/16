@@ -55,17 +55,19 @@
 };*/
 
 static const word ModeX_192x144regs[] = {
-	0x4f01,		/* horizontal display enable end */
-	0x5002,		/* Start horizontal blanking */
-	0x5404,		/* End horizontal blanking */
-	0x8005,		/* End horizontal retrace */
+	0x3200,		/* Horizontal total */
+	0x2701,		/* horizontal display enable end */
+	0x2802,		/* Start horizontal blanking */
+	0x2003,		/* End horizontal blanking */
+	0x2b04,		/* Start horizontal retrace */
+	0x7005,		/* End horizontal retrace */
 	0x0d06,		 /* vertical total */
 	0x3e07,		 /* overflow (bit 8 of vertical counts) */
-	0x4109,		 /* cell height (2 to double-scan */
+	0x4309,		 /* cell height (2 to double-scan */
 	0xea10,		 /* v sync start */
 	0xac11,		 /* v sync end and protect cr0-cr7 */
 	0xdf12,		 /* vertical displayed */
-	0x2813,		/* offset/logical width */
+	0x1413,		/* offset/logical width */
 	0x0014,		 /* turn off dword mode */
 	0xe715,		 /* v blank start */
 	0x0616,		 /* v blank end */
@@ -75,114 +77,72 @@ static const word ModeX_192x144regs[] = {
 #endif /*_SMALLMODEXRES_H_*/
 /*
 voidtg::mode160x120(){
-    int crtc11;    outp(0x3d4, 0x11); // unlock crtc
-    crtc11 = inp(0x3d5) & 0x7f;
-    outp(0x3d4, 0x11);
-    outp(0x3d5, crtc11);
+	int crtc11;	outp(CRTC_INDEX, 0x11); // unlock crtc
+	crtc11 = inp(CRTC_DATA) & 0x7f;
+	outp(CRTC_INDEX, 0x11);
+	outp(CRTC_DATA, crtc11);
+	width   = 160;
+	height  = 120;
+	maxx	= 159;
+	maxy	= 119;
+	pages   = 13;
+	lineSize = 40;
+	pageSize = 19200;
+	modeName = "160x120";
 
-    width   = 160;
-    height  = 120;
-    maxx    = 159;
-    maxy    = 119;
-    pages   = 13;
-    lineSize = 40;
-    pageSize = 19200;
-    modeName = "160x120";
+	outp(MISC_OUTPUT, 0xe3);   // mor
 
-    outp(0x3c2, 0xe3);   // mor
+	outp(CRTC_INDEX, 0x00); outp(CRTC_DATA, 0x32);
+	outp(CRTC_INDEX, 0x01); outp(CRTC_DATA, 0x27);
+	outp(CRTC_INDEX, 0x02); outp(CRTC_DATA, 0x28);
+	outp(CRTC_INDEX, 0x03); outp(CRTC_DATA, 0x20);
+	outp(CRTC_INDEX, 0x04); outp(CRTC_DATA, 0x2b);
+	outp(CRTC_INDEX, 0x05); outp(CRTC_DATA, 0x70);
+	outp(CRTC_INDEX, 0x06); outp(CRTC_DATA, 0x0d);
+	outp(CRTC_INDEX, 0x07); outp(CRTC_DATA, 0x3e);
+	outp(CRTC_INDEX, 0x08); outp(CRTC_DATA, 0x00);
+	outp(CRTC_INDEX, 0x09); outp(CRTC_DATA, 0x43);
+	outp(CRTC_INDEX, 0x10); outp(CRTC_DATA, 0xea);
+	outp(CRTC_INDEX, 0x11); outp(CRTC_DATA, 0xac);
+	outp(CRTC_INDEX, 0x12); outp(CRTC_DATA, 0xdf);
+	outp(CRTC_INDEX, 0x13); outp(CRTC_DATA, 0x14);
+	outp(CRTC_INDEX, 0x14); outp(CRTC_DATA, 0x00);
+	outp(CRTC_INDEX, 0x15); outp(CRTC_DATA, 0xe7);
+	outp(CRTC_INDEX, 0x16); outp(CRTC_DATA, 0x06);
+	outp(CRTC_INDEX, 0x17); outp(CRTC_DATA, 0xe3);
 
-    outp(0x3d4, 0x00); // crtc
-    outp(0x3d5, 0x32);
+	outp(0xSC_INDEX, 0x01); // seq
+	outp(0xSC_DATA, 0x01);
+	outp(0xSC_INDEX, 0x03); // seq
+	outp(0xSC_DATA, 0x00);
+	outp(0xSC_INDEX, 0x04); // seq
+	outp(0xSC_DATA, 0x06);
 
-    outp(0x3d4, 0x01); // crtc
-    outp(0x3d5, 0x27);
+	outp(GC_INDEX, 0x05); // gcr
+	outp(0x3cf, 0x40);
 
-    outp(0x3d4, 0x02); // crtc
-    outp(0x3d5, 0x28);
+	outp(GC_INDEX, 0x06); // gcr
+	outp(0x3cf, 0x05);
 
-    outp(0x3d4, 0x03); // crtc
-    outp(0x3d5, 0x20);
+	inp(0x3da);		  // acr
+	outp(0x3c0, 0x10 | 0x20);
+	outp(0x3c0, 0x41);
+	inp(0x3da);		  // acr
+	outp(0x3c0, 0x11 | 0x20);
+	outp(0x3c0, 0x00);
+	inp(0x3da);		  // acr
+	outp(0x3c0, 0x12 | 0x20);
+	outp(0x3c0, 0x0f);
+	inp(0x3da);		  // acr
+	outp(0x3c0, 0x13 | 0x20);
+	outp(0x3c0, 0x00);
+	inp(0x3da);		  // acr
+	outp(0x3c0, 0x14 | 0x20);
+	outp(0x3c0, 0x00);
 
-    outp(0x3d4, 0x04); // crtc
-    outp(0x3d5, 0x2b);
-
-    outp(0x3d4, 0x05); // crtc
-    outp(0x3d5, 0x70);
-
-    outp(0x3d4, 0x06); // crtc
-    outp(0x3d5, 0x0d);
-
-    outp(0x3d4, 0x07); // crtc
-    outp(0x3d5, 0x3e);
-
-    outp(0x3d4, 0x08); // crtc
-    outp(0x3d5, 0x00);
-
-    outp(0x3d4, 0x09); // crtc
-    outp(0x3d5, 0x43);
-
-    outp(0x3d4, 0x10); // crtc
-    outp(0x3d5, 0xea);
-
-    outp(0x3d4, 0x11); // crtc
-    outp(0x3d5, 0xac);
-
-    outp(0x3d4, 0x12); // crtc
-    outp(0x3d5, 0xdf);
-
-    outp(0x3d4, 0x13); // crtc
-    outp(0x3d5, 0x14);
-
-    outp(0x3d4, 0x14); // crtc
-    outp(0x3d5, 0x00);
-
-    outp(0x3d4, 0x15); // crtc
-    outp(0x3d5, 0xe7);
-
-    outp(0x3d4, 0x16); // crtc
-    outp(0x3d5, 0x06);
-
-    outp(0x3d4, 0x17); // crtc
-    outp(0x3d5, 0xe3);
-
-    outp(0x3c4, 0x01); // seq
-    outp(0x3c5, 0x01);
-
-    outp(0x3c4, 0x03); // seq
-    outp(0x3c5, 0x00);
-
-    outp(0x3c4, 0x04); // seq
-    outp(0x3c5, 0x06);
-
-    outp(0x3ce, 0x05); // gcr
-    outp(0x3cf, 0x40);
-
-    outp(0x3ce, 0x06); // gcr
-    outp(0x3cf, 0x05);
-
-    inp(0x3da);          // acr
-    outp(0x3c0, 0x10 | 0x20);
-    outp(0x3c0, 0x41);
-
-    inp(0x3da);          // acr
-    outp(0x3c0, 0x11 | 0x20);
-    outp(0x3c0, 0x00);
-
-    inp(0x3da);          // acr
-    outp(0x3c0, 0x12 | 0x20);
-    outp(0x3c0, 0x0f);
-
-    inp(0x3da);          // acr
-    outp(0x3c0, 0x13 | 0x20);
-    outp(0x3c0, 0x00);
-
-    inp(0x3da);          // acr
-    outp(0x3c0, 0x14 | 0x20);
-    outp(0x3c0, 0x00);
-
-    outp(0x3d4, 0x11); // lock crtc
-    crtc11 = inp(0x3d5) | 0x80;
-    outp(0x3d4, 0x11);
-    outp(0x3d5, crtc11);
+	outp(CRTC_INDEX, 0x11); // lock crtc
+	crtc11 = inp(CRTC_DATA) | 0x80;
+	outp(CRTC_INDEX, 0x11);
+	outp(CRTC_DATA, crtc11);
 }
 */

@@ -98,18 +98,11 @@ modexEnter(sword vq, global_game_variables_t *gv)
 	switch(vq)
 	{
 		case 0:
-			case 1://----
+			//case 1://----
 			CRTParmCount = sizeof(ModeX_320x240regs) / sizeof(ModeX_320x240regs[0]);
 			/* width and height */
 			gv->video.page[0].sw=320;
 			gv->video.page[0].sh=240;
-			//printf("%dx%d\n", gv->video.page[0].sw, gv->video.page[0].sh);
-			gv->video.page[0].tilesw = gv->video.page[0].sw/TILEWH;
-			gv->video.page[0].tilesh = gv->video.page[0].sh/TILEWH;
-			//printf("%dx%d\n", gv->video.page[0].tilesw, gv->video.page[0].tilesh);
-			//TODO MAKE FLEXIBLE~
-			gv->video.page[0].tilemidposscreenx = gv->video.page[0].tilesw;
-			gv->video.page[0].tilemidposscreeny = (gv->video.page[0].tilesh/2)+1;
 
 			/* send the CRTParms */
 			for(i=0; i<CRTParmCount; i++) {
@@ -122,10 +115,12 @@ modexEnter(sword vq, global_game_variables_t *gv)
 				ptr[i] = 0x0000;
 			}
 		break;
-		//++++case 1:
+		//++++
+		case 1:
 			CRTParmCount = sizeof(ModeX_192x144regs) / sizeof(ModeX_192x144regs[0]);
 			/* width and height */
-			//TODO add width and height of screen
+			gv->video.page[0].sw=192;
+			gv->video.page[0].sh=144;
 
 			/* send the CRTParms */
 			for(i=0; i<CRTParmCount; i++) {
@@ -139,6 +134,11 @@ modexEnter(sword vq, global_game_variables_t *gv)
 			}
 		break;
 	}
+	gv->video.page[0].tilesw = gv->video.page[0].sw/TILEWH;
+	gv->video.page[0].tilesh = gv->video.page[0].sh/TILEWH;
+	//TODO MAKE FLEXIBLE~
+	gv->video.page[0].tilemidposscreenx = gv->video.page[0].tilesw;
+	gv->video.page[0].tilemidposscreeny = (gv->video.page[0].tilesh/2)+1;
 	#define PAGE_SIZE		(word)(gv->video.page[0].sw/4 * gv->video.page[0].sh)
 }
 
@@ -196,6 +196,7 @@ modexDefaultPage(page_t *p)
 	page.th = page.sh/TILEWH;
 	page.tilemidposscreenx = page.tw/2;
 	page.tilemidposscreeny = (page.th/2)+1;
+	//pageSize = p->sw*p->sh;
 	page.id = 0;
 
     return page;
