@@ -134,8 +134,8 @@ modexEnter(sword vq, global_game_variables_t *gv)
 		case 3:
 			CRTParmCount = sizeof(ModeX_320x200regs) / sizeof(ModeX_320x200regs[0]);
 			/* width and height */
-			gv->video.page[0].sw=256;
-			gv->video.page[0].sh=192;
+			gv->video.page[0].sw=320;
+			gv->video.page[0].sh=200;
 
 			/* send the CRTParms */
 			for(i=0; i<CRTParmCount; i++) {
