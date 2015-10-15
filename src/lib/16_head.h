@@ -191,6 +191,11 @@ typedef struct
 typedef struct
 {
 	long old_mode;	//old video mode before game!
+} video_t;
+
+typedef struct
+{
+	video_t video;	// video settings variable
 	byte *pee;		// message for fps
 	handle_t handle;	//handles for file logging
 	kurokku_t kurokku;	//clock struct

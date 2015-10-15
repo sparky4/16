@@ -29,7 +29,6 @@ byte far* VGA=(byte far*) 0xA0000000;   /* this points to video memory. */
 
 static void fadePalette(sbyte fade, sbyte start, word iter, byte *palette);
 static byte tmppal[PAL_SIZE];
-//int old_mode;
 
 /////////////////////////////////////////////////////////////////////////////
 //																														//
@@ -46,24 +45,16 @@ void VGAmodeX(sword vq, global_game_variables_t *gv)
 			// change to the video mode we were in before we switched to mode 13h
 			modexLeave();
 			in.h.ah = 0x00;
-			in.h.al = gv->old_mode;
+			in.h.al = gv->video.old_mode;
 			int86(0x10, &in, &out);
 		break;
-		case 1: // init the video
+		default: // init the video
 			// get old video mode
 			//in.h.ah = 0xf;
 			//int86(0x10, &in, &out);
-			gv->old_mode = vgaGetMode();//out.h.al;
+			gv->video.old_mode = vgaGetMode();//out.h.al;
 			// enter mode
-			modex__320x240_256__Enter(gv);
-		break;
-		case 2: // init the video
-			// get old video mode
-			in.h.ah = 0xf;
-			int86(0x10, &in, &out);
-			gv->old_mode = out.h.al;
-			// enter mode
-			modex__192x144_256__Enter(gv);
+			modexEnter(vq, gv);
 		break;
 	}
 }
@@ -96,52 +87,48 @@ vgaGetMode()
 
 /* -========================= Entry  Points ==========================- */
 void
-modex__320x240_256__Enter(global_game_variables_t *gv)
+modexEnter(sword vq, global_game_variables_t *gv)
 {
 	word i;
 	dword far*ptr=(dword far*)VGA;      /* used for faster screen clearing */
-
-	int CRTParmCount = sizeof(ModeX_320x240regs) / sizeof(ModeX_320x240regs[0]);
-	/* width and height */
-	//TODO WWWW
-
+	int CRTParmCount;
 	/* common mode X initiation stuff~ */
 	modexsetBaseXMode();
 
-	/* send the CRTParms */
-	for(i=0; i<CRTParmCount; i++) {
-		outpw(CRTC_INDEX, ModeX_320x240regs[i]);
-	}
+	switch(vq)
+	{
+		case 0:
+			CRTParmCount = sizeof(ModeX_320x240regs) / sizeof(ModeX_320x240regs[0]);
+			/* width and height */
+			//TODO add width and height of screen
 
-	/* clear video memory */
-	outpw(SC_INDEX, 0x0f02);
-	for(i=0; i<0x8000; i++) {
-		ptr[i] = 0x0000;
-	}
-}
+			/* send the CRTParms */
+			for(i=0; i<CRTParmCount; i++) {
+				outpw(CRTC_INDEX, ModeX_320x240regs[i]);
+			}
 
-void
-modex__192x144_256__Enter(global_game_variables_t *gv)
-{
-	word i;
-	dword far*ptr=(dword far*)VGA;      /* used for faster screen clearing */
+			/* clear video memory */
+			outpw(SC_INDEX, 0x0f02);
+			for(i=0; i<0x8000; i++) {
+				ptr[i] = 0x0000;
+			}
+		break;
+		case 1:
+			CRTParmCount = sizeof(ModeX_192x144regs) / sizeof(ModeX_192x144regs[0]);
+			/* width and height */
+			//TODO add width and height of screen
 
-	int CRTParmCount = sizeof(ModeX_192x144regs) / sizeof(ModeX_192x144regs[0]);
-	/* width and height */
-	//TODO WWWW
+			/* send the CRTParms */
+			for(i=0; i<CRTParmCount; i++) {
+				outpw(CRTC_INDEX, ModeX_192x144regs[i]);
+			}
 
-	/* common mode X initiation stuff~ */
-	modexsetBaseXMode();
-
-	/* send the CRTParms */
-	for(i=0; i<CRTParmCount; i++) {
-		outpw(CRTC_INDEX, ModeX_192x144regs[i]);
-	}
-
-	/* clear video memory */
-	outpw(SC_INDEX, 0x0f02);
-	for(i=0; i<0x8000; i++) {
-		ptr[i] = 0x0000;
+			/* clear video memory */
+			outpw(SC_INDEX, 0x0f02);
+			for(i=0; i<0x8000; i++) {
+				ptr[i] = 0x0000;
+			}
+		break;
 	}
 }
 
@@ -190,8 +177,8 @@ modexDefaultPage() {
     page.data = VGA;
     page.dx = 0;
     page.dy = 0;
-    page.width = SCREEN_WIDTH;
-    page.height = SCREEN_HEIGHT;
+	page.width = SCREEN_WIDTH;
+	page.height = SCREEN_HEIGHT;
 	page.tw = page.width/TILEWH;
 	page.th = page.height/TILEWH;
 	page.id = 0;
@@ -1311,6 +1298,21 @@ void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, c
 			}
 		}
 		chw += xp;
+	}
+}
+
+/* palette dump on display! */
+void pdump(page_t *pee)
+{
+	int mult=(QUADWH);
+	int palq=(mult)*TILEWH;
+	int palcol=0;
+	int palx, paly;
+	for(paly=0; paly<palq; paly+=mult){
+		for(palx=0; palx<palq; palx+=mult){
+				modexClearRegion(pee, palx+TILEWH, paly+TILEWH, mult, mult, palcol);
+			palcol++;
+		}
 	}
 }
 

@@ -35,7 +35,7 @@
 #include "src/lib/modex16/192x144.h"
 
 //320x240 = 20x15
-//256x192 = 16x12
+//192x144 = 12x9
 
 //temp defines
 #define TILEWH 16
@@ -51,6 +51,8 @@ typedef struct {
 	byte far* data;	/* the data for the page */
 	word dx;		/* col we are viewing on the virtual screen */
 	word dy;		/* row we are viewing on the virtual screen */
+	word sw;		/* screen width */
+	word sh;		/* screen heigth */
 	word width;		/* virtual width of the page */
 	word height;	/* virtual height of the page */
 	word tw;
@@ -67,8 +69,7 @@ typedef union
 /* -============================ Functions =============================- */
 /* mode switching, page, and plane functions */
 void VGAmodeX(sword vq, global_game_variables_t *gv);
-void modex__320x240_256__Enter(global_game_variables_t *gv);
-void modex__192x144_256__Enter(global_game_variables_t *gv);
+void modexEnter(sword vq, global_game_variables_t *gv);
 long vgaGetMode();
 void modexLeave();
 void modexsetBaseXMode(void);
@@ -115,6 +116,7 @@ byte modexgetPixel(page_t *page, int x, int y);
 void modexhlin(page_t *page, word xl, word xh, word y, word color);
 void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
 void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
+void pdump(page_t *pee);
 void cls(page_t *page, byte color, byte *Where);
 void modexWaitBorder();
 
