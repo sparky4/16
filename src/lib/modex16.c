@@ -131,6 +131,22 @@ modexEnter(sword vq, global_game_variables_t *gv)
 				ptr[i] = 0x0000;
 			}
 		break;
+		case 3:
+			CRTParmCount = sizeof(ModeX_320x200regs) / sizeof(ModeX_320x200regs[0]);
+			/* width and height */
+			gv->video.page[0].sw=256;
+			gv->video.page[0].sh=192;
+
+			/* send the CRTParms */
+			for(i=0; i<CRTParmCount; i++) {
+				outpw(CRTC_INDEX, ModeX_320x200regs[i]);
+			}
+
+			/* clear video memory */
+			outpw(SC_INDEX, 0x0f02);
+			for(i=0; i<0x8000; i++) {
+				ptr[i] = 0x0000;
+			}
 		case 5:
 			CRTParmCount = sizeof(ModeX_256x192regs) / sizeof(ModeX_256x192regs[0]);
 			/* width and height */
