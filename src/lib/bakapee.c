@@ -4,7 +4,7 @@
  * This file is part of Project 16.
  *
  * Project 16 is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as publiSCREEN_HEIGHTed by
+ * it under the terms of the GNU General Public License as publipage->shed by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -13,7 +13,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You SCREEN_HEIGHTould have received a copy of the GNU General Public License
+ * You page->should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>, or
  * write to the Free Software Foundation, Inc., 51 Franklin Street,
  * Fifth Floor, Boston, MA 02110-1301 USA.
@@ -45,20 +45,20 @@ void colorz(page_t *page, bakapee_t *pee)
 //slow spectrum down
 void ssd(page_t *page, bakapee_t *pee, word svq)
 {
-	if(pee->sy < SCREEN_HEIGHT+1)
+	if(pee->sy < page->sh+1)
 	{
-		if(pee->sx < SCREEN_WIDTH+1)
+		if(pee->sx < page->sw+1)
 		{
 			//mxPutPixel(sx, sy, coor);
 			//printf("%d %d %d %d\n", pee->sx, pee->sy, svq, pee->coor);
 			dingpp(page, pee);
 			pee->sx++;
 		}else pee->sx = 0;
-		if(pee->sx == SCREEN_WIDTH)
+		if(pee->sx == page->sw)
 		{
 			pee->sy++;
 			if(svq == 7) pee->coor++;
-			if(pee->sy == SCREEN_HEIGHT && svq == 8) pee->coor = rand()%256;
+			if(pee->sy == page->sh && svq == 8) pee->coor = rand()%256;
 		}
 	}else pee->sy = 0;
 }
@@ -73,18 +73,18 @@ void dingpp(page_t *page, bakapee_t *pee)
 #endif
 }
 
-void dingo(bakapee_t *pee)
+void dingo(page_t *page, bakapee_t *pee)
 {
 	#ifdef TILE
-	if(pee->xx<0) pee->xx=(SCREEN_WIDTH-TILEWH);
-	if(pee->yy<0) pee->yy=(SCREEN_HEIGHT-TILEWH);
-	if(pee->xx>(SCREEN_WIDTH-TILEWH)) pee->xx=0;
-	if(pee->yy>(SCREEN_HEIGHT-TILEWH)/*+(TILEWH*BUFFMX)*/) pee->yy=0;
+	if(pee->xx<0) pee->xx=(page->sw-TILEWH);
+	if(pee->yy<0) pee->yy=(page->sh-TILEWH);
+	if(pee->xx>(page->sw-TILEWH)) pee->xx=0;
+	if(pee->yy>(page->sh-TILEWH)/*+(TILEWH*BUFFMX)*/) pee->yy=0;
 	#else
-	if(pee->xx<0) pee->xx=SCREEN_WIDTH;
-	if(pee->yy<0) pee->yy=SCREEN_HEIGHT;
-	if(pee->xx>SCREEN_WIDTH) pee->xx=0;
-	if(pee->yy>SCREEN_HEIGHT) pee->yy=0;
+	if(pee->xx<0) pee->xx=page->sw;
+	if(pee->yy<0) pee->yy=page->sh;
+	if(pee->xx>page->sw) pee->xx=0;
+	if(pee->yy>page->sh) pee->yy=0;
 	#endif
 }
 
@@ -162,15 +162,15 @@ void ding(page_t *page, bakapee_t *pee, word q)
 	{
 		case 1:
 			dingq(pee);
-			if(pee->xx==SCREEN_WIDTH){pee->bakax=0;}
+			if(pee->xx==page->sw){pee->bakax=0;}
 			if(pee->xx==0){pee->bakax=1;}
-			if(pee->yy==SCREEN_HEIGHT){pee->bakay=0;}
+			if(pee->yy==page->sh){pee->bakay=0;}
 			if(pee->yy==0){pee->bakay=1;}
 		break;
 		case 2:
 			dingq(pee);
 			dingas(pee);
-			dingo(pee);
+			dingo(page, pee);
 			dingpp(page, pee);	//plot the pixel/tile
 #ifdef TILE
 			modexClearRegion(page, (rand()*TILEWH)%page->width, (rand()*TILEWH)%(page->height), TILEWH, TILEWH, 0);
@@ -180,13 +180,13 @@ void ding(page_t *page, bakapee_t *pee, word q)
 		break;
 		case 3:
 			dingq(pee);
-			if(pee->xx!=SCREEN_WIDTH||pee->yy!=SCREEN_HEIGHT)
+			if(pee->xx!=page->sw||pee->yy!=page->sh)
 			{
 				if(pee->xx==0){pee->bakax=1;pee->bakay=-1;d3y=1;}
 				if(pee->yy==0){pee->bakax=1;pee->bakay=0;d3y=1;}
-				if(pee->xx==SCREEN_WIDTH){pee->bakax=-1;pee->bakay=-1;d3y=1;}
-				if(pee->yy==SCREEN_HEIGHT){pee->bakax=1;pee->bakay=0;d3y=1;}
-			}else if(pee->xx==SCREEN_WIDTH&&pee->yy==SCREEN_HEIGHT) pee->xx=pee->yy=0;
+				if(pee->xx==page->sw){pee->bakax=-1;pee->bakay=-1;d3y=1;}
+				if(pee->yy==page->sh){pee->bakax=1;pee->bakay=0;d3y=1;}
+			}else if(pee->xx==page->sw&&pee->yy==page->sh) pee->xx=pee->yy=0;
 			if(d3y)
 			{
 				if(pee->bakay<0)
@@ -213,7 +213,7 @@ void ding(page_t *page, bakapee_t *pee, word q)
 		case 4:
 			dingq(pee);
 			dingas(pee);
-			dingo(pee);
+			dingo(page, pee);
 			dingpp(page, pee);	//plot the pixel/tile
 		break;
 		case 5:
@@ -232,7 +232,7 @@ void ding(page_t *page, bakapee_t *pee, word q)
 		break;
 		case 8:
 			colorz(page, pee);
-			modexprint(page, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1, 47, 0, "bakapi");
+			modexprint(page, page->sw/2, page->sh/2, 1, 47, 0, "bakapi");
 		break;
 		case 9:
 			if(pee->coor <= HGQ)

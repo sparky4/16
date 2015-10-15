@@ -45,7 +45,7 @@ void colortest(page_t *page, bakapee_t *pee);
 void colorz(page_t *page, bakapee_t *pee);
 void ssd(page_t *page, bakapee_t *pee, word svq);
 void dingpp(page_t *page, bakapee_t *pee);
-void dingo(bakapee_t *pee);
+void dingo(page_t *page, bakapee_t *pee);
 void dingas(bakapee_t *pee);
 void dingu(bakapee_t *pee);
 void dingq(bakapee_t *pee);

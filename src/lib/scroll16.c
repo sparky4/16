@@ -300,7 +300,7 @@ void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 	}
 
 	/* draw the next column */
-	x= SCREEN_WIDTH + mv[id].map->tiles->tileWidth;
+	x= mv[id].page->sw + mv[id].map->tiles->tileWidth;
 	if(player[plid].q%4)
 		if(id==0)
 			mapDrawCol(&mv[0], mv[0].tx + 20 , mv[0].ty-1, x, player, mv->page->dx);
@@ -384,7 +384,7 @@ void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 	}
 
 	/* draw the next row */
-	y= SCREEN_HEIGHT + mv[id].map->tiles->tileHeight;
+	y= mv[id].page->sh + mv[id].map->tiles->tileHeight;
 	if(player[plid].q%3)
 		if(id==0)
 			mapDrawRow(&mv[0], mv[0].tx - 1, mv[0].ty+15, y, player, mv->page->dy);
@@ -455,7 +455,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 	modexClearRegion(mv->page, 0, 0, mv->page->width, mv->page->height, 0);
 	py=0;
 	i=mv->ty * mv->map->width + mv->tx;
-	for(ty=mv->ty-1; py < SCREEN_HEIGHT+mv->dyThresh && ty < mv->map->height; ty++, py+=mv->map->tiles->tileHeight) {
+	for(ty=mv->ty-1; py < mv->page->sh+mv->dyThresh && ty < mv->map->height; ty++, py+=mv->map->tiles->tileHeight) {
 		mapDrawWRow(mv, tx-1, ty, py);
 	i+=mv->map->width - tx;
 	}
@@ -513,7 +513,7 @@ void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *p, word p
 //printf("y: %d\n", poopoffset);
 	/* the position within the map array */
 	i=ty * mv->map->width + tx;
-	for(x=poopoffset; x<(SCREEN_WIDTH+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width; x+=mv->map->tiles->tileWidth, tx++) {
+	for(x=poopoffset; x<(mv->page->sw+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width; x+=mv->map->tiles->tileWidth, tx++) {
 	if(i>=0) {
 		/* we are in the map, so copy! */
 		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
@@ -533,7 +533,7 @@ void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *p, word p
 
 	/* We'll copy all of the columns in the screen,
 	   i + 1 row above and one below */
-	for(y=poopoffset; y<(SCREEN_HEIGHT+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
+	for(y=poopoffset; y<(mv->page->sh+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
 	if(i>=0) {
 		/* we are in the map, so copy away! */
 		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
@@ -549,7 +549,7 @@ void mapDrawWRow(map_view_t *mv, int tx, int ty, word y)
 
 	/* the position within the map array */
 	i=ty * mv->map->width + tx;
-	for(x=0; x<SCREEN_WIDTH+mv->dxThresh && tx < mv->map->width; x+=mv->map->tiles->tileWidth, tx++) {
+	for(x=0; x<mv->page->sw+mv->dxThresh && tx < mv->map->width; x+=mv->map->tiles->tileWidth, tx++) {
 	if(i>=0) {
 		/* we are in the map, so copy! */
 		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
@@ -568,7 +568,7 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 
 	/* We'll copy all of the columns in the screen,
 	   i + 1 row above and one below */
-	for(y=0; y<SCREEN_HEIGHT+mv->dyThresh && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
+	for(y=0; y<mv->page->sh+mv->dyThresh && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
 	if(i>=0) {
 		/* we are in the map, so copy away! */
 		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
