@@ -98,15 +98,18 @@ modexEnter(sword vq, global_game_variables_t *gv)
 	switch(vq)
 	{
 		case 0:
+			case 1://----
 			CRTParmCount = sizeof(ModeX_320x240regs) / sizeof(ModeX_320x240regs[0]);
 			/* width and height */
-			gv->video.page->sw=320;
-			gv->video.page->sh=240;
-			gv->video.page->tilesw = gv->video.page->sw/TILEWH;
-			gv->video.page->tilesh = gv->video.page->sh/TILEWH;
+			gv->video.page[0].sw=320;
+			gv->video.page[0].sh=240;
+			//printf("%dx%d\n", gv->video.page[0].sw, gv->video.page[0].sh);
+			gv->video.page[0].tilesw = gv->video.page[0].sw/TILEWH;
+			gv->video.page[0].tilesh = gv->video.page[0].sh/TILEWH;
+			//printf("%dx%d\n", gv->video.page[0].tilesw, gv->video.page[0].tilesh);
 			//TODO MAKE FLEXIBLE~
-			gv->video.page->tilemidposscreenx = 10;
-			gv->video.page->tilemidposscreeny = 8;
+			gv->video.page[0].tilemidposscreenx = 10;
+			gv->video.page[0].tilemidposscreeny = 8;
 
 			/* send the CRTParms */
 			for(i=0; i<CRTParmCount; i++) {
@@ -119,7 +122,7 @@ modexEnter(sword vq, global_game_variables_t *gv)
 				ptr[i] = 0x0000;
 			}
 		break;
-		case 1:
+		//++++case 1:
 			CRTParmCount = sizeof(ModeX_192x144regs) / sizeof(ModeX_192x144regs[0]);
 			/* width and height */
 			//TODO add width and height of screen
@@ -136,6 +139,7 @@ modexEnter(sword vq, global_game_variables_t *gv)
 			}
 		break;
 	}
+	#define PAGE_SIZE		(word)(gv->video.page[0].sw/4 * gv->video.page[0].sh)
 }
 
 void
@@ -176,17 +180,18 @@ modexsetBaseXMode(page_t *page)
 }
 
 page_t
-modexDefaultPage() {
+modexDefaultPage(page_t *p)
+{
     page_t page;
 
     /* default page values */
     page.data = VGA;
     page.dx = 0;
     page.dy = 0;
-	page.width = SCREEN_WIDTH;
-	page.height = SCREEN_HEIGHT;
-	page.tw = page.width/TILEWH;
-	page.th = page.height/TILEWH;
+	page.width = p->sw;
+	page.height = p->sh;
+	page.tw = page.sw/TILEWH;
+	page.th = page.sh/TILEWH;
 	page.id = 0;
 
     return page;
@@ -1151,7 +1156,7 @@ void modexhlin(page_t *page, word xl, word xh, word y, word color)
 
 	for(x=0;x<xh*4;x+=4)
 	{
-		if(x+4>=SCREEN_WIDTH-1){ x=0; yy+=4; }
+		if(x+4>=page[0].sw-1){ x=0; yy+=4; }
 		modexClearRegion(page, x+xl, y+yy, 4, 4, color);
 	}
 	//modexputPixel(page, x+xl, y, color);

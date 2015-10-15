@@ -4,7 +4,7 @@
  * This file is part of Project 16.
  *
  * Project 16 is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as publiSCREEN_HEIGHTed by
+ * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -13,7 +13,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You SCREEN_HEIGHTould have received a copy of the GNU General Public License
+ * You screen.heightould have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>, or
  * write to the Free Software Foundation, Inc., 51 Franklin Street,
  * Fifth Floor, Boston, MA 02110-1301 USA.
@@ -25,14 +25,14 @@
 /*
  * BAKAPEE!
  */
+global_game_variables_t gvar;
+static bakapee_t bakapee;
+word key,d,xpos,ypos,xdir,ydir;
+int ch=0x0;
+
 void
-main(int argc, char *argv[])
+main(int argc, char *argvar[])
 {
-	global_game_variables_t gvar;
-	static bakapee_t bakapee;
-	page_t screen;
-	word key,d,xpos,ypos,xdir,ydir;
-	int ch=0x0;
 	// main variables values
 	d=4; // switch variable
 	key=2; // default screensaver number
@@ -40,8 +40,10 @@ main(int argc, char *argv[])
 	ypos=TILEWH*2;
 	xdir=1;
 	ydir=1;
-	bakapee.xx = rand()&0%SCREEN_WIDTH;
-	bakapee.yy = rand()&0%SCREEN_HEIGHT;
+
+	VGAmodeX(1, &gvar);
+	bakapee.xx = rand()&0%gvar.video.page[0].width;
+	bakapee.yy = rand()&0%gvar.video.page[0].height;
 	bakapee.gq = 0;
 	bakapee.sx=0;
 	bakapee.sy=0;
@@ -50,17 +52,16 @@ main(int argc, char *argv[])
 	bakapee.coor=0;
 
 	/* setup camera and screen~ */
-	screen = modexDefaultPage();
-	screen.width += (TILEWH*2);
-	screen.height += (TILEWH*2);
+	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
+	gvar.video.page[0].width += (TILEWH*2);
+	gvar.video.page[0].height += (TILEWH*2);
 	textInit();
 
 	//modexPalUpdate(bmp.palette); //____
 	//modexDrawBmp(VGA, 0, 0, &bmp, 0); //____
 	//getch(); //____
 
-	VGAmodeX(1, &gvar);
-	modexShowPage(&screen);
+	modexShowPage(&gvar.video.page[0]);
 
 // screen savers
 #ifdef BOINK
@@ -68,7 +69,7 @@ main(int argc, char *argv[])
 	{
 		if(!kbhit())
 		{ // conditions of screen saver
-			ding(&screen, &bakapee, key);
+			ding(&gvar.video.page[0], &bakapee, key);
 		}
 		else
 		{
@@ -79,11 +80,11 @@ main(int argc, char *argv[])
 			scanf("%d", &key);
 			//if(key==3){xx=yy=0;} // crazy screen saver wwww
 			if(key==0){ d=0; }else{
-				screen = modexDefaultPage();
-				screen.width += (TILEWH*2);
-				screen.height += (TILEWH*2);
+				gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
+				gvar.video.page[0].width += (TILEWH*2);
+				gvar.video.page[0].height += (TILEWH*2);
 				VGAmodeX(1, &gvar);
-				modexShowPage(&screen);
+				modexShowPage(&gvar.video.page[0]);
 			}
 		}
 	}
@@ -92,18 +93,18 @@ main(int argc, char *argv[])
 	{ // conditions of screen saver
 		while(!kbhit())
 		{
-			ding(&screen, &bakapee, key);
+			ding(&gvar.video.page[0], &bakapee, key);
 		}
 		//end of screen savers
-		/*for(int x = 0; x < screen.width; ++x)
+		/*for(int x = 0; x < gvar.video.page[0].width; ++x)
 		{
 			modexputPixel(&page, x, 0, 15);
-			mxPutPixel(x, SCREEN_HEIGHT-1, 15);
+			mxPutPixel(x, gvar.video.page[0].height-1, 15);
 			}
 		for (int y = 0; y < VH; ++y)
 			{
 				mxPutPixel(0, y, 15);
-				mxPutPixel(SCREEN_WIDTH-1, y, 15);
+				mxPutPixel(gvar.video.page[0].width-1, y, 15);
 			}
 		for (int x = 0; x < VW; ++x)
 			{
@@ -115,46 +116,46 @@ main(int argc, char *argv[])
 				mxPutPixel(0, y, 15);
 				mxPutPixel(VW-1, y, 15);
 			}*/
-		pdump(&screen);
+		pdump(&gvar.video.page[0]);
 		getch();
 		//text box
-		/*++++mxBitBlt(xpos, ypos+(TILEWH*12), SCREEN_WIDTH, TILEWH*BUFFMX, 0, BS); //copy background
-		mxFillBox(xpos, ypos+(TILEWH*12), SCREEN_WIDTH, TILEWH*BUFFMX, 0, OP_SET); // background for text box
+		/*++++mxBitBlt(xpos, ypos+(TILEWH*12), gvar.video.page[0].width, TILEWH*BUFFMX, 0, BS); //copy background
+		mxFillBox(xpos, ypos+(TILEWH*12), gvar.video.page[0].width, TILEWH*BUFFMX, 0, OP_SET); // background for text box
 		//+(QUADWH*6)
-		mxOutText(xpos+1, ypos+SCREEN_HEIGHT-48, "========================================");
-		mxOutText(xpos+1, ypos+SCREEN_HEIGHT-40, "|    |Chikyuu:$line1");
-		mxOutText(xpos+1, ypos+SCREEN_HEIGHT-32, "|    |$line2");
-		mxOutText(xpos+1, ypos+SCREEN_HEIGHT-24, "|    |$line3");
-		mxOutText(xpos+1, ypos+SCREEN_HEIGHT-16, "|    |$line4");
-		mxOutText(xpos+1, ypos+SCREEN_HEIGHT-8,  "========================================");
+		mxOutText(xpos+1, ypos+gvar.video.page[0].height-48, "========================================");
+		mxOutText(xpos+1, ypos+gvar.video.page[0].height-40, "|    |Chikyuu:$line1");
+		mxOutText(xpos+1, ypos+gvar.video.page[0].height-32, "|    |$line2");
+		mxOutText(xpos+1, ypos+gvar.video.page[0].height-24, "|    |$line3");
+		mxOutText(xpos+1, ypos+gvar.video.page[0].height-16, "|    |$line4");
+		mxOutText(xpos+1, ypos+gvar.video.page[0].height-8,  "========================================");
 		mxFillBox(xpos+QUADWH, ypos+QUADWH+(TILEWH*12), TILEWH*2, TILEWH*2, 9, OP_SET); //portriat~
 		getch();
-		mxBitBlt(0, BS, SCREEN_WIDTH, TILEWH*BUFFMX, xpos, ypos+(TILEWH*12)); //copy background
+		mxBitBlt(0, BS, gvar.video.page[0].width, TILEWH*BUFFMX, xpos, ypos+(TILEWH*12)); //copy background
 		getch();++++*/
 		while(!kbhit())
 		{
 			//for(int i=0;i<TILEWH;i++){
-				ding(&screen, &bakapee, key);
-				modexPanPage(&screen, xpos, ypos);
+				ding(&gvar.video.page[0], &bakapee, key);
+				modexPanPage(&gvar.video.page[0], xpos, ypos);
 //++++mxFillBox(384, 304, 384, 304, 10, OP_SET);
-//mxBitBlt(xpos, ypos, SCREEN_WIDTH, SCREEN_HEIGHT, 32, (SCREEN_HEIGHT+64+32));
-//++++mxBitBlt(TILEWH*2, TILEWH*2, SCREEN_WIDTH, SCREEN_HEIGHT, 32, (SCREEN_HEIGHT+64+32));
+//mxBitBlt(xpos, ypos, gvar.video.page[0].width, gvar.video.page[0].height, 32, (gvar.video.page[0].height+64+32));
+//++++mxBitBlt(TILEWH*2, TILEWH*2, gvar.video.page[0].width, gvar.video.page[0].height, 32, (gvar.video.page[0].height+64+32));
 				//for(word o = 0; o<TILEWH; o++){
 					xpos+=xdir;
 					ypos+=ydir;
-					//if(ypos==1 || (ypos==(BH-SCREEN_HEIGHT-1)))delay(500);
-					//if((xpos>(VW-SCREEN_WIDTH-1)) || (xpos<1))delay(500);
+					//if(ypos==1 || (ypos==(BH-gvar.video.page[0].height-1)))delay(500);
+					//if((xpos>(VW-gvar.video.page[0].width-1)) || (xpos<1))delay(500);
 					//mxWaitRetrace();
-//mxBitBlt(32, (SCREEN_HEIGHT+32), SCREEN_WIDTH, SCREEN_HEIGHT, xpos, ypos);
-//++++mxBitBlt(TILEWH*2, (SCREEN_HEIGHT+64+32), SCREEN_WIDTH, SCREEN_HEIGHT, TILEWH*2, TILEWH*2);
+//mxBitBlt(32, (gvar.video.page[0].height+32), gvar.video.page[0].width, gvar.video.page[0].height, xpos, ypos);
+//++++mxBitBlt(TILEWH*2, (gvar.video.page[0].height+64+32), gvar.video.page[0].width, gvar.video.page[0].height, TILEWH*2, TILEWH*2);
 //xpos=ypos=TILEWH*2;
-					//????modexPanPage(&screen, 32, 32);
+					//????modexPanPage(&gvar.video.page[0], 32, 32);
 				//}
-				if( (xpos>(VW-SCREEN_WIDTH-1))  || (xpos<1)){xdir=-xdir;}
-				if( (ypos>(BH-SCREEN_HEIGHT-1)) || (ypos<1)){ydir=-ydir;} // { Hit a boundry, change
+				if( (xpos>(VW-gvar.video.page[0].width-1))  || (xpos<1)){xdir=-xdir;}
+				if( (ypos>(BH-gvar.video.page[0].height-1)) || (ypos<1)){ydir=-ydir;} // { Hit a boundry, change
 			//}//    direction!
-//mxBitBlt(32, (SCREEN_HEIGHT+64+32), SCREEN_WIDTH, SCREEN_HEIGHT, xpos, ypos);
-//mxBitBlt(TILEWH*2, (SCREEN_HEIGHT+64+32), SCREEN_WIDTH, SCREEN_HEIGHT, TILEWH*2, TILEWH*2);
+//mxBitBlt(32, (gvar.video.page[0].height+64+32), gvar.video.page[0].width, gvar.video.page[0].height, xpos, ypos);
+//mxBitBlt(TILEWH*2, (gvar.video.page[0].height+64+32), gvar.video.page[0].width, gvar.video.page[0].height, TILEWH*2, TILEWH*2);
 		}
 	ch=getch();
 	if(ch==0x71)break; // 'q'

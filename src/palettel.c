@@ -27,12 +27,10 @@ global_game_variables_t gvar;
 byte *pal;
 char *bakapee;
 word i;
-page_t page;
 
 void
 main(int argc, char *argv[])
 {
-	page = modexDefaultPage();
 	//page.width += 32;
 	//page.height += 32;
 	pal = modexNewPal();
@@ -41,12 +39,13 @@ main(int argc, char *argv[])
 	else bakapee = "data/default.pal";
 //	modexPalSave(pal);
 	VGAmodeX(1, &gvar);
+	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
 	modexPalBlack();
 
 	modexLoadPalFile(bakapee, &pal);
 	modexPalUpdate1(pal);
 	modexFadeOn(1, pal);
-	pdump(&page);
+	pdump(&gvar.video.page[0]);
 	getch();
 	modexLeave();//VGAmodeX(0, &gvar);
 	modexPalUpdate1(pal);

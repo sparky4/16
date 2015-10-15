@@ -58,31 +58,30 @@ void main() {
 	bitmap_t bmp;
 	planar_buf_t *p;
 	int i;
-	page_t page;
 	word start;
 	int plane;
 	float t1, t2;
 
-	page=modexDefaultPage();
-	page.width+=32;
-	page.height+=32;
 //0000	bmp = bitmapLoadPcx("data/koishi~~.pcx");
 //	bmp = bitmapLoadPcx("data/chikyuu.pcx");
 	bmp = bitmapLoadPcx("data/koishi^^.pcx");
 //	bmp = bitmapLoadPcx("16/PCX_LIB/chikyuu.pcx");
 	p = planar_buf_from_bitmap(&bmp);
 	VGAmodeX(1, &gvar);
+	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
+	gvar.video.page[0].sw+=32;
+	gvar.video.page[0].sh+=32;
 
 	/* fix up the palette and everything */
 	modexPalUpdate1(bmp.palette);
 
 	/* clear and draw one sprite and one bitmap */
-	modexClearRegion(&page, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 1);
+	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].sw, gvar.video.page[0].sh, 1);
 
 	/* update display~*/
-	page.dx+=16;
-	page.dy+=16;
-	modexShowPage(&page);
+	gvar.video.page[0].dx+=16;
+	gvar.video.page[0].dy+=16;
+	modexShowPage(&gvar.video.page[0]);
 
 	/* non sprite comparison */
 	start = *clockw;
@@ -92,15 +91,15 @@ void main() {
 
 	start = *clockw;
 	//for(i=0; i<100 ;i++) {
-//0000		modexDrawBmp(&page, 20, 20, &bmp);
-		modexDrawBmp(&page, 160, 120, &bmp);
+//0000		modexDrawBmp(&gvar.video.page[0], 20, 20, &bmp);
+		modexDrawBmp(&gvar.video.page[0], 160, 120, &bmp);
 	//}
 	t1 = (*clockw-start) /18.2;
 
 	start = *clockw;
 	//for(i=0; i<100; i++) {
-//0000		modexCopyPageRegion(&page, &page, 20, 20, 128, 20, 64, 64);
-		modexCopyPageRegion(&page, &page, 0, 0, 0, 0, 320, 240);
+//0000		modexCopyPageRegion(&gvar.video.page[0], &gvar.video.page[0], 20, 20, 128, 20, 64, 64);
+		modexCopyPageRegion(&gvar.video.page[0], &gvar.video.page[0], 0, 0, 0, 0, 320, 240);
 	//}
 	t2 = (*clockw-start)/18.2;
 
@@ -113,14 +112,14 @@ void main() {
 
 	start = *clockw;
 	//for(i=0; i<100 ;i++) {
-//0000		modexDrawSprite(&page, 20, 20, &bmp);
-		modexDrawSprite(&page, 160, 120, &bmp);
+//0000		modexDrawSprite(&gvar.video.page[0], 20, 20, &bmp);
+		modexDrawSprite(&gvar.video.page[0], 160, 120, &bmp);
 	//}
-	//_fmemset(MK_FP(0xA000, 0), (int)p->plane, SCREEN_WIDTH*(SCREEN_HEIGHT*2));
-	//modexDrawBmp(&page, 0, 0, &bmp);
+	//_fmemset(MK_FP(0xA000, 0), (int)p->plane, gvar.video.page[0].sw*(gvar.video.page[0].sh*2));
+	//modexDrawBmp(&gvar.video.page[0], 0, 0, &bmp);
 	while(!kbhit())
 	{
-		//DrawPBuf(&page, 0, 0, p, 0);
+		//DrawPBuf(&gvar.video.page[0], 0, 0, p, 0);
 	}
 	VGAmodeX(0, &gvar);
 	/*printf("\nmain=%Fp\n\n", &i);
@@ -138,7 +137,7 @@ void main() {
 	}*/
 	printf("CPU to VGA: %f\n", t1);
 	printf("VGA to VGA: %f\n", t2);
-	printf("page.width: %u\n", page.width);
-	printf("page.height: %u\n", page.height);
+	printf("gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
+	printf("gvar.video.page[0].height: %u\n", gvar.video.page[0].height);
 	return;
 }

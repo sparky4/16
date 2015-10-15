@@ -60,7 +60,7 @@ void modexEnter(sword vq, global_game_variables_t *gv);
 long vgaGetMode();
 void modexLeave();
 void modexsetBaseXMode(page_t *page);
-page_t modexDefaultPage();
+page_t modexDefaultPage(page_t *p);
 page_t modexNextPage(page_t *p);
 page_t modexNextPageFlexibleSize(page_t *p, word x, word y);
 void modexShowPage(page_t *page);
@@ -115,9 +115,9 @@ extern byte far*  VGA;  /* The VGA Memory */
 #define SET_MODE		0x00
 #define VGA_256_COLOR_MODE 	0x13
 #define TEXT_MODE		0x03
-#define SCREEN_WIDTH		320
-#define SCREEN_HEIGHT		240
-#define PAGE_SIZE		(word)(SCREEN_WIDTH/4 * SCREEN_HEIGHT)
+//#define SCREEN_WIDTH		320
+//#define SCREEN_HEIGHT		240
+//#define PAGE_SIZE		(word)(SCREEN_WIDTH/4 * SCREEN_HEIGHT)
 
 #define AC_INDEX		0x03c0
 #define SC_INDEX		0x03c4

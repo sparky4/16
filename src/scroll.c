@@ -32,7 +32,7 @@
 global_game_variables_t gvar;
 static map_t map;
 player_t player[MaxPlayers];
-page_t screen, screen2, screen3;
+//page_t screen, gvar.video.page[1], gvar.video.page[2];
 map_view_t mv[3];
 map_view_t *bg, *spri, *mask;//, *tmp;
 planar_buf_t *p;
@@ -63,7 +63,6 @@ void main(int argc, char *argv[])
 
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
-	gvar.video.page=&screen;
 
 	printf("starting timer\n");
 	start_timer(&gvar);
@@ -111,6 +110,7 @@ void main(int argc, char *argv[])
 
 	textInit();
 	VGAmodeX(bakapee, &gvar);
+	printf("%dx%d\n", gvar.video.page[0].sw, gvar.video.page[0].sh);
 #ifdef FADE
 	modexPalBlack();	//reset the palette~
 #endif
@@ -135,15 +135,15 @@ void main(int argc, char *argv[])
 #endif
 
 	/* setup camera and screen~ */
-	screen = modexDefaultPage();
-	screen.width += (TILEWH*2);
-	screen.height += (TILEWH*2);//+QUADWH;
-	mv[0].page = &screen;
-	screen2 = modexNextPage(mv[0].page);
-	mv[1].page = &screen2;
-	screen3 = modexNextPageFlexibleSize(mv[1].page, 320, 240);	//(352*176)+1024 is the remaining amount of memory left wwww
-	//screen3 = modexNextPage0(mv2.page, 320, 192);	//(352*176)+1024 is the remaining amount of memory left wwww
-	mv[2].page = &screen3;
+	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
+	gvar.video.page[0].width += (TILEWH*2);
+	gvar.video.page[0].height += (TILEWH*2);//+QUADWH;
+	mv[0].page = &gvar.video.page[0];
+	gvar.video.page[1] = modexNextPage(mv[0].page);
+	mv[1].page = &gvar.video.page[1];
+	gvar.video.page[2] = modexNextPageFlexibleSize(mv[1].page, 320, 240);	//(352*176)+1024 is the remaining amount of memory left wwww
+	//gvar.video.page[2] = modexNextPage0(mv2.page, 320, 192);	//(352*176)+1024 is the remaining amount of memory left wwww
+	mv[2].page = &gvar.video.page[2];
 
 	/* set up paging */
 	bg = &mv[0];
@@ -416,8 +416,10 @@ void main(int argc, char *argv[])
 //++++	printf("Total free: %zu\n", GetFreeSize());
 //not used now	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
 //not used now	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
-//	printf("Screen: %dx", screen.width);	printf("%d\n", screen.height);
-//	printf("Screen2: %dx", screen2.width);	printf("%d\n", screen2.height);
+	printf("Virtual Screen: %dx", gvar.video.page[0].width);	printf("%d\n", gvar.video.page[0].height);
+	printf("Screen: %dx", gvar.video.page[0].sw);	printf("%d\n", gvar.video.page[0].sh);
+	printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);
+//	printf("Screen2: %dx", gvar.video.page[1].width);	printf("%d\n", gvar.video.page[1].height);
 //	printf("map: %dx%d\n", map.width, map.height);
 //	printf("\n");
 //	printf("player[0].info.x: %d", player[0].info.xaxis); printf("		player[0].info.y: %d\n", player[0].info.yaxis);

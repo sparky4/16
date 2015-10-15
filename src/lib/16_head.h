@@ -213,7 +213,7 @@ typedef struct
 typedef struct
 {
 	long old_mode;	//old video mode before game!
-	page_t *page;	//pointer to root page[0] //TODO
+	page_t page[4];	//pointer to root page[0]
 } video_t;
 
 typedef struct

@@ -33,7 +33,6 @@ void main(int argc, char near *argv[])
 	static byte e;
 	//word ri;
 	byte pee[2];
-	page_t screen;
 	static byte ibmlogo[]="IIIIIII  BBBBBBBBB    MMMMM       MMMMM\n\
 IIIIIII  BBBBBBBBBBB  MMMMMM     MMMMMM\n\
   III     BBB    BBB   MMMMMM   MMMMMM\n\
@@ -66,10 +65,10 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 	textInit();
 	VGAmodeX(1, &gvar);
 	/* setup camera and screen~ */
-	screen = modexDefaultPage();
-	//screen.width += (16*2);
-	//screen.height += (16*2);
-//++++	modexShowPage(&screen);
+	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
+	//gvar.video.page[0].width += (16*2);
+	//gvar.video.page[0].height += (16*2);
+//++++	modexShowPage(&gvar.video.page[0]);
 	//modexprint(16, 16, 1, 15, "wwww");
 	//getch();
 	chx=0;
@@ -77,15 +76,15 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 	colpee=32;
 	for(e=0x00; e<=0xFE; e++)
 	{
-		if(chx+8>(screen.width/2))
+		if(chx+8>(gvar.video.page[0].width/2))
 		{
 			chx=0;
 			chy+=8;
 			sprintf(pee,"%u", colpee);
-			modexprint(&screen, 200, 200, 1, 47, 0, &pee);
+			modexprint(&gvar.video.page[0], 200, 200, 1, 47, 0, &pee);
 			//getch();
 		}
-		modexprint(&screen, chx, chy, 1, 0, colpee, &e);
+		modexprint(&gvar.video.page[0], chx, chy, 1, 0, colpee, &e);
 		chx+=9;
 		colpee++;
 		if(colpee>=32+24) colpee=32;
@@ -93,8 +92,8 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 	//modexprint(100, 100, 1, 47, 0, "wwww");
 	getch();
 //	modexprint(0, 0, 1, 0, colpee, &rose);
-//++++	modexprint(&screen, 0, 0, 0, 0, colpee, &ibmlogo);
-	modexprintbig(&screen, 0, 0, 1, colpee, 0, "IBM");
+//++++	modexprint(&gvar.video.page[0], 0, 0, 0, 0, colpee, &ibmlogo);
+	modexprintbig(&gvar.video.page[0], 0, 0, 1, colpee, 0, "IBM");
 //	modexprint(0, 0, 1, 0, colpee, ROSE);
 	getch();
 	VGAmodeX(0, &gvar);

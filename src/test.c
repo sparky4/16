@@ -28,7 +28,6 @@ global_game_variables_t gvar;
 void main() {
 	int i, j;
 	word start, end;
-	page_t page, page2;
 	byte *pal, *pal2=NULL;
 
 	/* load our palette */
@@ -44,18 +43,18 @@ void main() {
 	modexPalBlack();
 
 	/* set up the page, but with 16 pixels on all borders in offscreen mem */
-	page=modexDefaultPage();
-	page2 = modexNextPage(&page);
-	page.width += 32;
-	page.height += 32;
+	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
+	gvar.video.page[1] = modexNextPage(&gvar.video.page[0]);
+	gvar.video.page[0].width += 32;
+	gvar.video.page[0].height += 32;
 
 
 	/* fill the page with one color, but with a black border */
-	modexShowPage(&page2);
-	modexClearRegion(&page, 16, 16, SCREEN_WIDTH, SCREEN_HEIGHT, 128);
-	modexClearRegion(&page, 32, 32, SCREEN_WIDTH-32, SCREEN_HEIGHT-32, 42);
-	modexClearRegion(&page, 48, 48, SCREEN_WIDTH-64, SCREEN_HEIGHT-64, 128);
-	modexShowPage(&page);
+	modexShowPage(&gvar.video.page[1]);
+	modexClearRegion(&gvar.video.page[0], 16, 16, gvar.video.page[0].sw, gvar.video.page[0].sh, 128);
+	modexClearRegion(&gvar.video.page[0], 32, 32, gvar.video.page[0].sw-32, gvar.video.page[0].sh-32, 42);
+	modexClearRegion(&gvar.video.page[0], 48, 48, gvar.video.page[0].sw-64, gvar.video.page[0].sh-64, 128);
+	modexShowPage(&gvar.video.page[0]);
 
 	/* fade in */
 	modexFadeOn(1, pal2);
@@ -65,24 +64,24 @@ void main() {
 	for(i=0; i<5; i++) {
 	/* go right */
 	for(j=0; j<32; j++) {
-		page.dx++;
-		modexShowPage(&page);
+		gvar.video.page[0].dx++;
+		modexShowPage(&gvar.video.page[0]);
 	}
 	/* go left */
 	for(j=0; j<32; j++) {
-		page.dx--;
-		modexShowPage(&page);
+		gvar.video.page[0].dx--;
+		modexShowPage(&gvar.video.page[0]);
 	}
 	/* go up */
 	for(j=0; j<32; j++) {
-		page.dy++;
-		modexShowPage(&page);
+		gvar.video.page[0].dy++;
+		modexShowPage(&gvar.video.page[0]);
 	}
 
 	/* go down */
 	for(j=0; j<32; j++) {
-		page.dy--;
-		modexShowPage(&page);
+		gvar.video.page[0].dy--;
+		modexShowPage(&gvar.video.page[0]);
 	}
 	}
 
