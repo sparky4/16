@@ -55,8 +55,10 @@
 };*/
 
 static const word ModeX_256x192regs[] = {
+
 	0x3f01,		/* horizontal display enable end */
 	0x4002,		/* Start horizontal blanking */
+	
 	0x4a04,		/* End horizontal blanking */
 	0x9a05,		/* End horizontal retrace */
 	0x0b06,		 /* vertical total */
