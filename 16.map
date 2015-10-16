@@ -1,7 +1,7 @@
-Open Watcom Linker Version 2.0 beta Sep 21 2015 10:22:11 (32-bit)
+Open Watcom Linker Version 2.0 beta Sep 16 2015 10:14:10 (64-bit)
 Copyright (c) 2002-2015 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       15/10/15 20:20:01
+Created on:       15/10/16 14:37:42
 Executable Image: 16.exe
 creating a DOS executable
 
@@ -24,8 +24,8 @@ DGROUP                          13ab:0000            0000f2c0
 Segment                Class          Group          Address         Size
 =======                =====          =====          =======         ====
 
-16_TEXT                CODE           AUTO           0000:0000       000002c1
-mapread_TEXT           CODE           AUTO           0000:02d0       000008f6
+16_TEXT                CODE           AUTO           0000:0000       000002c5
+mapread_TEXT           CODE           AUTO           0000:02d0       000008fa
 jsmn_TEXT              CODE           AUTO           0000:0bd0       00000919
 16_in_TEXT             CODE           AUTO           0000:14f0       00001e80
 16_mm_TEXT             CODE           AUTO           0000:3370       00003308
@@ -35,9 +35,9 @@ wcpu_TEXT              CODE           AUTO           0000:6680       00000058
 kitten_TEXT            CODE           AUTO           0000:6ef0       0000080a
 16_hc_TEXT             CODE           AUTO           0000:7700       0000158b
 timer_TEXT             CODE           AUTO           0000:8c90       00000235
-_TEXT                  CODE           AUTO           08ed:0000       00007bc9
-modex16_TEXT           CODE           AUTO           08ed:7bd0       000026f2
-bitmap_TEXT            CODE           AUTO           08ed:a2d0       0000064d
+_TEXT                  CODE           AUTO           08ed:0000       00007bbb
+modex16_TEXT           CODE           AUTO           08ed:7bc0       000026f6
+bitmap_TEXT            CODE           AUTO           08ed:a2c0       00000651
 16text_TEXT            CODE           AUTO           08ed:a920       0000010d
 16_in13_DATA           FAR_DATA       AUTO           1390:0000       000001a4
 FAR_DATA               FAR_DATA       AUTO           13aa:0004       00000000
@@ -73,15 +73,15 @@ Address        Symbol
 Module: 16.o(/dos/z/16/src/16.c)
 13ab:07a0+     _player
 13ab:08a0+     _gvar
-13ab:0958*     _gpal
-13ab:095c+     _dpal
-13ab:0960+     _cpus
+13ab:0958+     _cpus
+13ab:095c*     _gpal
+13ab:0960+     _dpal
 13ab:0964+     _engi_stat
-0000:0150      main_
+0000:0154      main_
 Module: mapread.o(/dos/z/16/src/lib/mapread.c)
-0000:03f0+     jsoneq_
-0000:0494+     dump_
-0000:0990*     loadmap_
+0000:03f4+     jsoneq_
+0000:0498+     dump_
+0000:0994*     loadmap_
 Module: jsmn.o(/dos/z/16/src/lib/jsmn/jsmn.c)
 0000:0fa2      jsmn_parse_
 0000:149e      jsmn_init_
@@ -155,8 +155,8 @@ Module: 16_ca.o(/dos/z/16/src/lib/16_ca.c)
 0000:6e70*     CA_Startup_
 0000:6ec0*     CA_Shutdown_
 13ab:0b00*     _finishcachebox
-13ab:0b04*     _drawcachebox
-13ab:0b08*     _updatecachebox
+13ab:0b04*     _updatecachebox
+13ab:0b08*     _drawcachebox
 Module: kitten.o(/dos/z/16/src/lib/nyan/kitten.c)
 0000:6f2c      KITTENGETS
 0000:6f8c*     kittenopen_
@@ -192,49 +192,49 @@ Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(stk086.asm)
 08ed:0005      __STK
 08ed:0025      __STKOVERFLOW_
 Module: gfx.lib(/dos/z/16/src/lib/modex16.c)
-08ed:7e0c      VGAmodeX_
-08ed:7e9e+     vgaGetMode_
-08ed:7ede+     modexEnter_
-08ed:815e*     modexLeave_
-08ed:8176+     modexsetBaseXMode_
-08ed:81b4*     modexDefaultPage_
-08ed:8294*     modexNextPage_
-08ed:8360*     modexNextPageFlexibleSize_
-08ed:842e*     modexShowPage_
-08ed:852a*     modexPanPage_
-08ed:857a*     modexSelectPlane_
-08ed:859e+     modexClearRegion_
-08ed:86b6*     oldDrawBmp_
-08ed:881c*     CDrawBmp_
-08ed:8980*     modexDrawBmp_
-08ed:89e6+     modexDrawBmpRegion_
-08ed:8b50*     modex_sparky4_DrawBmpRegion_
-08ed:8cba*     modexDrawPlanarBuf_
-08ed:8cd8*     modexDrawSprite_
-08ed:8d3e+     modexDrawSpriteRegion_
-08ed:8eb6*     modexCopyPageRegion_
-08ed:9020      modexFadeOn_
-08ed:9050      modexFadeOff_
-08ed:907e*     modexFlashOn_
-08ed:90ac*     modexFlashOff_
-08ed:917c      modexPalSave_
-08ed:91d2      modexNewPal_
-08ed:9222*     modexLoadPalFile_
-08ed:9304*     modexSavePalFile_
-08ed:937c      modexPalBlack_
-08ed:93a6*     modexPalWhite_
-08ed:93d0+     modexPalUpdate_
-08ed:9940+     modexPalUpdate1_
-08ed:99ba*     modexPalUpdate0_
-08ed:9a06+     chkcolor_
-08ed:9d1e+     modexputPixel_
-08ed:9dac*     modexgetPixel_
-08ed:9e32*     modexhlin_
-08ed:9eb6*     modexprint_
-08ed:a050*     modexprintbig_
-08ed:a1cc*     pdump_
-08ed:a22c*     cls_
-08ed:a29a+     modexWaitBorder_
+08ed:7e00      VGAmodeX_
+08ed:7e92+     vgaGetMode_
+08ed:7ed2+     modexEnter_
+08ed:8152*     modexLeave_
+08ed:816a+     modexsetBaseXMode_
+08ed:81a8*     modexDefaultPage_
+08ed:8288*     modexNextPage_
+08ed:8354*     modexNextPageFlexibleSize_
+08ed:8422*     modexShowPage_
+08ed:851e*     modexPanPage_
+08ed:856e*     modexSelectPlane_
+08ed:8592+     modexClearRegion_
+08ed:86aa*     oldDrawBmp_
+08ed:8810*     CDrawBmp_
+08ed:8974*     modexDrawBmp_
+08ed:89da+     modexDrawBmpRegion_
+08ed:8b44*     modex_sparky4_DrawBmpRegion_
+08ed:8cae*     modexDrawPlanarBuf_
+08ed:8ccc*     modexDrawSprite_
+08ed:8d32+     modexDrawSpriteRegion_
+08ed:8eaa*     modexCopyPageRegion_
+08ed:9014      modexFadeOn_
+08ed:9044      modexFadeOff_
+08ed:9072*     modexFlashOn_
+08ed:90a0*     modexFlashOff_
+08ed:9170      modexPalSave_
+08ed:91c6      modexNewPal_
+08ed:9216*     modexLoadPalFile_
+08ed:92f8*     modexSavePalFile_
+08ed:9370      modexPalBlack_
+08ed:939a*     modexPalWhite_
+08ed:93c4+     modexPalUpdate_
+08ed:9934+     modexPalUpdate1_
+08ed:99ae*     modexPalUpdate0_
+08ed:99fa+     chkcolor_
+08ed:9d12+     modexputPixel_
+08ed:9da0*     modexgetPixel_
+08ed:9e26*     modexhlin_
+08ed:9eaa*     modexprint_
+08ed:a044*     modexprintbig_
+08ed:a1c0*     pdump_
+08ed:a220*     cls_
+08ed:a28e+     modexWaitBorder_
 13ab:04d4+     _VGA
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(printf.c)
 08ed:0042      printf_
@@ -268,31 +268,31 @@ Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fmalloc.c)
 13ab:04f0      ___fheapRover
 13ab:04f2      ___LargestSizeB4Rover
 Module: gfx.lib(/dos/z/16/src/lib/bitmap.c)
-08ed:a656      bitmapLoadPcx_
-08ed:a7b2*     bitmapLoadPcxTiles_
+08ed:a64a      bitmapLoadPcx_
+08ed:a7a6*     bitmapLoadPcxTiles_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(strstr.c)
 08ed:04ce      strstr_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(atoi.c)
 08ed:05d0      atoi_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fopen.c)
-08ed:066c+     __open_flags_
-08ed:092d+     _fsopen_
-08ed:0994      fopen_
-08ed:0ab7*     freopen_
+08ed:066b+     __open_flags_
+08ed:092c+     _fsopen_
+08ed:0993      fopen_
+08ed:0ab6*     freopen_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fread.c)
-08ed:0b41      fread_
+08ed:0b40      fread_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(errno.c)
-08ed:0eb8      __get_errno_ptr_
+08ed:0eb7      __get_errno_ptr_
 13ab:14a0      _errno
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(iob.c)
 13ab:0504      ___iob
-13ab:14a2      ___OpenStreams
-13ab:14a6      ___ClosedStreams
+13ab:14a2      ___ClosedStreams
+13ab:14a6      ___OpenStreams
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fprintf.c)
-08ed:0ebf      fprintf_
+08ed:0ebe      fprintf_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(frealloc.c)
-08ed:0eee*     _frealloc_
-08ed:0eee      realloc_
+08ed:0eed*     _frealloc_
+08ed:0eed      realloc_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ptc.asm)
 08ed:0fca      __PTC
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(strncpy.c)
@@ -585,66 +585,66 @@ Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(sgdef086)
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(histsplt.c)
 13ab:14e6      ___historical_splitparms
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(heapen.c)
-08ed:6bc8*     _heapenable_
+08ed:6bba*     _heapenable_
 13ab:0722      ___heap_enabled
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(bfree.c)
-08ed:6bd9      _bfree_
+08ed:6bcb      _bfree_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(bexpand.c)
-08ed:6bfe      _bexpand_
+08ed:6bf0      _bexpand_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(dointr)
-08ed:6c58      _DoINTR_
+08ed:6c4a      _DoINTR_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(sbrk.c)
-08ed:6fd1*     sbrk_
-08ed:6fe1      __brk_
+08ed:6fc3*     sbrk_
+08ed:6fd3      __brk_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fsync.c)
-08ed:7049      fsync_
+08ed:703b      fsync_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(setenvp.c)
-08ed:706c      __setenvp_
-08ed:71f8      __freeenvp_
+08ed:705e      __setenvp_
+08ed:71ea      __freeenvp_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbisdbcs.c)
 13ab:0724      ___IsDBCS
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbislead.c)
-08ed:7256*     _ismbblead_
+08ed:7248*     _ismbblead_
 13ab:14ec      ___MBCSIsTable
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbinit.c)
-08ed:72b0      __mbinit_
+08ed:72a2      __mbinit_
 13ab:0726      ___MBCodePage
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbdtoupp.c)
-08ed:738b      _mbdtoupper_
+08ed:737d      _mbdtoupper_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(toupper.c)
-08ed:7399      toupper_
+08ed:738b      toupper_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(8087cw.c)
 13ab:0728      __8087cw
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(save8087.c)
 13ab:072a      ___Save8087
 13ab:072e      ___Rest8087
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(grabfp87.c)
-08ed:73a8      __GrabFP87_
+08ed:739a      __GrabFP87_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ini87086.asm)
-08ed:73da*     __init_8087_emu
-08ed:73e0      __x87id
+08ed:73cc*     __init_8087_emu
+08ed:73d2      __x87id
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(wctomb.c)
-08ed:743d      wctomb_
+08ed:742f      wctomb_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(itoa.c)
-08ed:7488+     utoa_
-08ed:7529      itoa_
+08ed:747a+     utoa_
+08ed:751b      itoa_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(strupr.c)
-08ed:7573      strupr_
+08ed:7565      strupr_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(noefgfmt.c)
 13ab:0732      ___EFG_printf
 13ab:0736*     ___EFG_scanf
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(lltoa.c)
-08ed:75bb      ulltoa_
-08ed:76f8*     lltoa_
+08ed:75ad      ulltoa_
+08ed:76ea*     lltoa_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(filedos.c)
-08ed:7769*     _dos_close_
-08ed:7777      _dos_commit_
+08ed:775b*     _dos_close_
+08ed:7769      _dos_commit_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(clearenv.c)
-08ed:7786      clearenv_
+08ed:7778      clearenv_
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fpe87.asm)
-08ed:78bc      __Init_FPE_handler_
-08ed:78f5      __Fini_FPE_handler_
-08ed:792c*     __FPEHandler
+08ed:78ae      __Init_FPE_handler_
+08ed:78e7      __Fini_FPE_handler_
+08ed:791e*     __FPEHandler
 Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fpeint.c)
 13ab:0750      ___FPE_int
 
@@ -664,4 +664,4 @@ gfx.lib
 Stack size:  dac0 (56000.)
 Memory size:  00022d70 (142704.)
 Entry point address: 08ed:0072
-Link time: 00:00.10
+Link time: 00:00.50
