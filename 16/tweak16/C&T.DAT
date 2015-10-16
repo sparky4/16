@@ -1,0 +1,47 @@
+45
+3c2 00 Misc. output
+3d4 00 Horizontal total
+3d4 01 Horizontal disp. enable
+3d4 02 Horizontal blank start
+3d4 03 Horizontal blank end
+3d4 04 Horizontal retrace start
+3d4 05 Horizontal retrace end
+3d4 06 Vertical total
+3d4 07 Overflow register
+3d4 08 Preset row scan
+3d4 09 Max scan line/char ht.
+3d4 10 Vertical retrace start
+3d4 11 Vertical retrace end
+3d4 12 Vert. disp. enable end
+3d4 13 Offset/Logical width
+3d4 14 Underline location
+3d4 15 Vertical blank start
+3d4 16 Vertical blank end
+3d4 17 Mode control
+3c4 01 Clock mode register
+3c4 02 Color plane write enable
+3c4 03 Character gen. select
+3c4 04 Memory mode register
+3ce 00 Set/reset register
+3ce 01 Set/reset enable
+3ce 02 Color compare
+3ce 03 Data rotate & function
+3ce 05 Mode register
+3ce 06 Miscellaneous register
+3ce 07 Color don't care
+3ce 08 Bit mask register
+3c0 10 Mode control
+3c0 11 Screen border colour
+3c0 12 Color plane enable
+3c0 13 Horizontal panning
+3c0 14 Color select
+103 00 C&T: multiple enable
+3d6 00 C&T: chip/revision info
+3d6 01 C&T: DIP switch states
+3d6 02 C&T: cpu interface
+3d6 04 C&T: memory mapping
+3d6 0b C&T: CPU paging
+3d6 14 C&T: emulation mode
+3d6 2b C&T: default video reg.
+46e8 00 C&T: setup control
+
