@@ -55,22 +55,22 @@
 };*/
 
 static const word ModeX_256x192regs[] = {
-
-	0x3f01,		/* horizontal display enable end */
-	0x4002,		/* Start horizontal blanking */
-
-	0x4a04,		/* End horizontal blanking */
-	0x9a05,		/* End horizontal retrace */
-	0x0b06,		 /* vertical total */
+	0x3200,		/* Horizontal total */
+	0x2701,		/* horizontal display enable end */
+	0x2802,		/* Start horizontal blanking */
+	0x2003,		/* End horizontal blanking */
+	0x2b04,		/* Start horizontal retrace */
+	0x7005,		/* End horizontal retrace */
+	0x0d06,		 /* vertical total */
 	0x3e07,		 /* overflow (bit 8 of vertical counts) */
-	0x4109,		 /* cell height (2 to double-scan */
-	0xda10,		 /* v sync start */
-	0x9c11,		 /* v sync end and protect cr0-cr7 */
-	0x7f12,		 /* vertical displayed */
-	0x2013,		/* offset/logical width */
+	0x4309,		 /* cell height (2 to double-scan */
+	0xea10,		 /* v sync start */
+	0xac11,		 /* v sync end and protect cr0-cr7 */
+	0xdf12,		 /* vertical displayed */
+	0x1413,		/* offset/logical width */
 	0x0014,		 /* turn off dword mode */
-	0xc715,		 /* v blank start */
-	0x0416,		 /* v blank end */
+	0xe715,		 /* v blank start */
+	0x0616,		 /* v blank end */
 	0xe317		  /* turn on byte mode */
 };
 
