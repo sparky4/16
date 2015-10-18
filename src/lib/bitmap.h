@@ -29,7 +29,7 @@
 #include "src/lib/16_head.h"
 
 typedef struct {
-	byte *data;
+	byte huge *data;
 	word width;
 	word height;
 	byte *palette;
