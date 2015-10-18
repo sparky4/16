@@ -616,6 +616,7 @@ modexDrawSpriteRegion(page_t *page, int x, int y,
                 MOV AX, height          ; start the row counter
                 MOV rowCounter, AX      ;
                 MOV DI, poffset         ; go to the first pixel
+//                MOV SI, bmpOffset       ; go to the bmp pixel
                 MOV DI, bmpOffset       ; go to the bmp pixel
         ROW_LOOP:
                 MOV CX, width           ; count the columns
