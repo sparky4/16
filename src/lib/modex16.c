@@ -1071,6 +1071,14 @@ modexPalUpdate0(byte *p)
         }
 }
 
+void
+modexPalOverscan(byte *p, word col)
+{
+	modexWaitBorder();
+	outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
+	outp(PAL_DATA_REG, col);
+}
+
 //color checker~
 //i want to make another vesion that checks the palette when the palette is being appened~
 void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, word *offset*/)

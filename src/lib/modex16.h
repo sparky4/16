@@ -98,6 +98,7 @@ void modexPalWhite();
 void modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset);
 void modexPalUpdate1(byte *p);
 void modexPalUpdate0(byte *p);
+void modexPalOverscan(byte *p, word col);
 void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, word *offset*/);
 void modexputPixel(page_t *page, int x, int y, byte color);
 byte modexgetPixel(page_t *page, int x, int y);

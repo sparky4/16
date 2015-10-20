@@ -51,8 +51,9 @@ void main(int argc, char *argv[])
 	//map_view_db_t pgid[4];
 	word pg;
 #ifdef FADE
-	byte *dpal, *gpal;
+	byte *dpal;
 #endif
+	byte *gpal;
 	byte *ptr;
 	byte *mappalptr;
 	byte *mesg=malloc(sizeof(dword));
@@ -387,6 +388,8 @@ void main(int argc, char *argv[])
 		_fmemset(((mv[pg].page->data+4)+(16*(mv[pg].page->width/4))), 15, 4);
 	}
 
+	//9
+	if(IN_KeyDown(10)) modexPalOverscan(gpal, 4);
 	if((player[0].q==1) && !(player[0].x%TILEWH==0 && player[0].y%TILEWH==0)) break;	//incase things go out of sync!
 	}
 
