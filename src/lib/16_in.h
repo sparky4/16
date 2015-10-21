@@ -41,7 +41,7 @@
 //#define TESTCONTROLNOISY
 #endif
 
-static boolean testkeyin,testcontrolnoisy;
+static word testkeyin,testcontrolnoisy;
 
 #define	KeyInt	9	// The keyboard ISR number
 

@@ -44,15 +44,15 @@ void main(int argc, char *argv[])
 //	word panswitch=0, panq=1, pand=0;
 	word panpagenum=0; //for panning!
 	unsigned int i;
-	//static word paloffset=0;
 	const char *cpus;
 	//static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 
 	//map_view_db_t pgid[4];
 	word pg;
-#ifdef FADE
-	byte *dpal;
-#endif
+//#ifdef FADE
+	static word paloffset=0;
+	byte *dpal, *default_pal;
+//#endif
 	byte *gpal;
 	byte *ptr;
 	byte *mappalptr;
@@ -105,6 +105,8 @@ void main(int argc, char *argv[])
 #ifdef MODEX
 #ifdef FADE
 	dpal = modexNewPal();
+	default_pal = modexNewPal();
+	*default_pal = *dpal;
 	modexPalSave(dpal);
 	modexFadeOff(4, dpal);
 #endif
@@ -389,7 +391,8 @@ void main(int argc, char *argv[])
 	}
 
 	//9
-	if(IN_KeyDown(10)) modexPalOverscan(gpal, 4);
+	if(IN_KeyDown(10)){ modexPalOverscan(default_pal, rand()%56); modexPalUpdate1(default_pal); }
+	//if(IN_KeyDown(11)){ modexPalOverscan(default_pal, 15); }
 	if((player[0].q==1) && !(player[0].x%TILEWH==0 && player[0].y%TILEWH==0)) break;	//incase things go out of sync!
 	}
 
