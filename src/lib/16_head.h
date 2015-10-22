@@ -49,6 +49,7 @@
 #endif
 #include "src/lib/nyan/kitten.h"
 #include "src/lib/types.h"
+#include "src/lib/typdefst.h"
 
 #define VERSION __DATE__ " " __TIME__
 
@@ -170,59 +171,6 @@ typedef void __based(__self) * memptr;
 #ifdef __BORLANDC__
 typedef void _seg * memptr;
 #endif
-
-/*
- * typedefs of the game variables!
- */
-typedef struct {
-	word id;	/* the Identification number of the page~ For layering~ */
-	byte far* data;	/* the data for the page */
-	word dx;		/* col we are viewing on the virtual screen */
-	word dy;		/* row we are viewing on the virtual screen */
-	word sw;		/* screen width */
-	word sh;		/* screen heigth */
-	word tilesw;		/* screen width in tiles */
-	word tilesh;		/* screen height in tiles */
-	word width;		/* virtual width of the page */
-	word height;	/* virtual height of the page */
-	word tw;
-	word th;
-	sword tilemidposscreenx;	/* middle tile position */
-	sword tilemidposscreeny;	/* middle tile position */
-	sword tileplayerposscreenx;	/* player position on screen */
-	sword tileplayerposscreeny;	/* player position on screen */
-} page_t;
-
-typedef struct
-{
-// 	int showmemhandle;
-	int			profilehandle,debughandle;
-	int heaphandle;
-} handle_t;
-
-typedef struct
-{
-	word frames_per_second;
-	clock_t t;
-	dword tiku;		//frames passed
-	word clock_start;	//timer start
-	word *clock;	//current time on clock
-	boolean fpscap;	//cap the fps var
-} kurokku_t;
-
-typedef struct
-{
-	long old_mode;	//old video mode before game!
-	page_t page[4];	//pointer to root page[0]
-} video_t;
-
-typedef struct
-{
-	video_t video;	// video settings variable
-	byte *pee;		// message for fps
-	handle_t handle;	//handles for file logging
-	kurokku_t kurokku;	//clock struct
-} global_game_variables_t;
 
 /* local function */
 void wait(clock_t wait);

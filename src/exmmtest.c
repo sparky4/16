@@ -167,6 +167,8 @@ main(int argc, char *argv[])
 	printf("Total near free:		%lu\n", (dword)(GetNearFreeSize()));
 	printf("Total far free:			%lu\n", (dword)(GetFarFreeSize()));
 	heapdump(&gvar);
+	printf("Project 16 emmtest.exe. This is just a test file!\n");
+	printf("version %s\n", VERSION);
 #endif
 	//printf("core left:			%lu\n", (dword)_coreleft());
 	//printf("far core left:			%lu\n", (dword)_farcoreleft());
