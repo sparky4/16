@@ -29,8 +29,9 @@ player_t player[MaxPlayers];
 
 void main(int argc, char *argv[])
 {
-	int i, j, k;
+	int i, j;
 	word start, end;
+	word p, k;
 	byte *pal, *pal2;
 	sword bakapee;
 
@@ -70,7 +71,7 @@ void main(int argc, char *argv[])
 	/* fade in */
 	modexFadeOn(1, pal2);
 
-	i=0,k=0,j=0;
+	i=0,k=0,j=0,p=0;
 	start = *clockw;
 	while(!IN_KeyDown(sc_Escape) && i<5)
 	{
@@ -79,32 +80,31 @@ void main(int argc, char *argv[])
 		{
 			case 0:
 				/* go right */
-				gvar.video.page[0].dx++;
-				modexShowPage(&gvar.video.page[0]);
+				gvar.video.page[p].dx++;
 				if(j>=32){ k++; j=0; }else j++;
 			break;
 			case 1:
 				/* go left */
-				gvar.video.page[0].dx--;
-				modexShowPage(&gvar.video.page[0]);
+				gvar.video.page[p].dx--;
 				if(j>=32){ k++; j=0; }else j++;
 			break;
 			case 2:
 				/* go up */
-				gvar.video.page[0].dy++;
-				modexShowPage(&gvar.video.page[0]);
+				gvar.video.page[p].dy++;
 				if(j>=32){ k++; j=0; }else j++;
 			break;
 			case 3:
 				/* go down */
-				gvar.video.page[0].dy--;
-				modexShowPage(&gvar.video.page[0]);
+				gvar.video.page[p].dy--;
 				if(j>=32){ k=0; j=0; i++; }else j++;
 			break;
 			default:
 
 			break;
 		}
+		if(IN_KeyDown(2)) p=0;
+		if(IN_KeyDown(3)) p=1;
+		modexShowPage(&gvar.video.page[p]);
 	}
 
 	end = *clockw;
@@ -114,6 +114,8 @@ void main(int argc, char *argv[])
 	modexPalBlack();
 	VGAmodeX(0, &gvar);
 	IN_Shutdown();
+	printf("Project 16 test.exe. This is just a test file!\n");
+	printf("version %s\n", VERSION);
 	modexPalBlack();
 	modexFadeOn(1, pal);
 }
