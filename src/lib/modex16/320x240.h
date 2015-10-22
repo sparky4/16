@@ -58,9 +58,9 @@ static const word ModeX_320x240regs[] = {
 	0x5f00,		/* Horizontal total */
 	0x4f01,		/* horizontal display enable end */
 	0x5002,		/* Start horizontal blanking */
-	0x8203,		/* End horizontal blanking */
+	0x7a03,		/* End horizontal blanking */
 	0x5404,		/* Start horizontal retrace */
-	0x8005,		/* End horizontal retrace */
+	0x7805,		/* End horizontal retrace */
 	0x0d06,		 /* vertical total */
 	0x3e07,		 /* overflow (bit 8 of vertical counts) */
 	0x4109,		 /* cell height (2 to double-scan */
