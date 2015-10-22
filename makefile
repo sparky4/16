@@ -106,8 +106,8 @@ tesuto.$(OBJ): $(SRC)tesuto.c
 #sega.$(OBJ): $(SRC)sega.c
 #	wcl $(FLAGS) -c $(SRC)sega.c
 
-test.exe: test.$(OBJ) gfx.lib
-	wcl $(FLAGS) test.$(OBJ) gfx.lib -fm=test.map
+test.exe: test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ)
+	wcl $(FLAGS) test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ) -fm=test.map
 
 test2.exe: test2.$(OBJ) gfx.lib
 	wcl $(FLAGS) test2.$(OBJ) gfx.lib -fm=test2.map

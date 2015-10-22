@@ -22,12 +22,14 @@
 
 #include <stdio.h>
 #include "src/lib/modex16.h"
+#include "src/lib/16_in.h"
 
 global_game_variables_t gvar;
+player_t player[MaxPlayers];
 
 void main(int argc, char *argv[])
 {
-	int i, j;
+	int i, j, k;
 	word start, end;
 	byte *pal, *pal2;
 	sword bakapee;
@@ -48,6 +50,9 @@ void main(int argc, char *argv[])
 	VGAmodeX(bakapee, &gvar);
 	modexPalBlack();
 
+	IN_Startup();
+	IN_Default(0,&player,ctrl_Joystick);
+
 	/* set up the page, but with 16 pixels on all borders in offscreen mem */
 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 	gvar.video.page[1] = modexNextPage(&gvar.video.page[0]);
@@ -65,8 +70,11 @@ void main(int argc, char *argv[])
 	/* fade in */
 	modexFadeOn(1, pal2);
 
+	i=0,k=0,j=0;
 	start = *clockw;
-	for(i=0; i<5; i++) {
+	while(!IN_KeyDown(sc_Escape) || i<5)
+	{
+		IN_ReadControl(0,&player);
 	/* go right */
 	for(j=0; j<32; j++) {
 		gvar.video.page[0].dx++;
@@ -88,6 +96,14 @@ void main(int argc, char *argv[])
 		gvar.video.page[0].dy--;
 		modexShowPage(&gvar.video.page[0]);
 	}
+// 	switch (j)
+// 	{
+// 		case 31:
+// 		case 32:
+// 			j=0;
+// 		break;
+// 	}
+	i++;
 	}
 
 	end = *clockw;
