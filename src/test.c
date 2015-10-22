@@ -72,38 +72,39 @@ void main(int argc, char *argv[])
 
 	i=0,k=0,j=0;
 	start = *clockw;
-	while(!IN_KeyDown(sc_Escape) || i<5)
+	while(!IN_KeyDown(sc_Escape) && i<5)
 	{
 		IN_ReadControl(0,&player);
-	/* go right */
-	for(j=0; j<32; j++) {
-		gvar.video.page[0].dx++;
-		modexShowPage(&gvar.video.page[0]);
-	}
-	/* go left */
-	for(j=0; j<32; j++) {
-		gvar.video.page[0].dx--;
-		modexShowPage(&gvar.video.page[0]);
-	}
-	/* go up */
-	for(j=0; j<32; j++) {
-		gvar.video.page[0].dy++;
-		modexShowPage(&gvar.video.page[0]);
-	}
+		switch (k)
+		{
+			case 0:
+				/* go right */
+				gvar.video.page[0].dx++;
+				modexShowPage(&gvar.video.page[0]);
+				if(j>=32){ k++; j=0; }else j++;
+			break;
+			case 1:
+				/* go left */
+				gvar.video.page[0].dx--;
+				modexShowPage(&gvar.video.page[0]);
+				if(j>=32){ k++; j=0; }else j++;
+			break;
+			case 2:
+				/* go up */
+				gvar.video.page[0].dy++;
+				modexShowPage(&gvar.video.page[0]);
+				if(j>=32){ k++; j=0; }else j++;
+			break;
+			case 3:
+				/* go down */
+				gvar.video.page[0].dy--;
+				modexShowPage(&gvar.video.page[0]);
+				if(j>=32){ k=0; j=0; i++; }else j++;
+			break;
+			default:
 
-	/* go down */
-	for(j=0; j<32; j++) {
-		gvar.video.page[0].dy--;
-		modexShowPage(&gvar.video.page[0]);
-	}
-// 	switch (j)
-// 	{
-// 		case 31:
-// 		case 32:
-// 			j=0;
-// 		break;
-// 	}
-	i++;
+			break;
+		}
 	}
 
 	end = *clockw;
@@ -112,6 +113,7 @@ void main(int argc, char *argv[])
 	modexFadeOff(1, pal2);
 	modexPalBlack();
 	VGAmodeX(0, &gvar);
+	IN_Shutdown();
 	modexPalBlack();
 	modexFadeOn(1, pal);
 }
