@@ -25,10 +25,16 @@
 
 global_game_variables_t gvar;
 
-void main() {
+void main(int argc, char *argv[])
+{
 	int i, j;
 	word start, end;
-	byte *pal, *pal2=NULL;
+	byte *pal, *pal2;
+	sword bakapee;
+
+	//argument
+	if(argv[1]) bakapee = atoi(argv[1]);
+	else bakapee = 1;
 
 	/* load our palette */
 	modexLoadPalFile("data/default.pal", &pal2);
@@ -39,7 +45,7 @@ void main() {
 	modexFadeOff(1, pal);
 	modexPalBlack();
 
-	VGAmodeX(1, &gvar);
+	VGAmodeX(bakapee, &gvar);
 	modexPalBlack();
 
 	/* set up the page, but with 16 pixels on all borders in offscreen mem */
@@ -58,7 +64,6 @@ void main() {
 
 	/* fade in */
 	modexFadeOn(1, pal2);
-
 
 	start = *clockw;
 	for(i=0; i<5; i++) {
