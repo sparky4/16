@@ -34,13 +34,12 @@ void main(int argc, char *argv[])
 	bitmap_t bmp;
 	planar_buf_t *p;
 	int i;
-	//word start;
+	word start;
 	int plane;
-	//float t1, t2;
+	float t1, t2;
 	int x,y;
 	word px,py;
 	sword baka;
-	//char *pee;
 	char *bakapeee;
 
 	bakapeee = malloc(64);
@@ -62,7 +61,7 @@ baka = 1;
 	modexPalUpdate1(bmp.palette);
 
 	/* clear and draw one sprite and one bitmap */
-	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].sw, gvar.video.page[0].sh, 1);
+	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].sw, gvar.video.page[0].sh, 0);
 
 	/* update display~*/
 	gvar.video.page[0].dx+=32;
@@ -70,9 +69,8 @@ baka = 1;
 	modexShowPage(&gvar.video.page[0]);
 
 	/* non sprite comparison */
-// 	start = *clockw;
+	start = *clockw;
 // 		oldDrawBmp(VGA, 20, 20, &bmp, 0);
-// 	start = *clockw;
 //0000		modexDrawBmp(&gvar.video.page[0], 20, 20, &bmp);
 // 		modexDrawBmp(&gvar.video.page[0], 160, 120, &bmp);
 // 	t1 = (*clockw-start) /18.2;
@@ -82,18 +80,13 @@ baka = 1;
 // 	t2 = (*clockw-start)/18.2;
 // 	start = *clockw;
 // 		oldDrawBmp(VGA, 20, 20, &bmp, 1);
-// 	start = *clockw;
 //0000		modexDrawSprite(&gvar.video.page[0], 20, 20, &bmp);
 // 		modexDrawSprite(&gvar.video.page[0], 160, 120, &bmp);
-//i=0;
-//plane=0;
-//	_fmemset(VGA, (int) p->plane[plane++][i++], p->width*p->height);
-	//modexDrawBmp(&gvar.video.page[0], 0, 0, &bmp);
 	DrawPBuf(&gvar.video.page[0], 0, 0, p, 0);
+	t1 = (*clockw-start) /18.2;
 	while(!kbhit())
 	{
-		//if(argv[2]) pee = strcpy(VGA, &(p->plane[plane][24]));
-	}//gvar.video.page[0].data
+	}
 	VGAmodeX(0, &gvar);
 	/*printf("\nmain=%Fp\n\n", &i);
 	printf("bmp.data=%Fp\n", bmp.data);
@@ -119,8 +112,7 @@ baka = 1;
 	fprintf(stderr,"ppw=%d\n", p->pwidth);
 	fprintf(stderr,"%d\n", sizeof(bmp));
 	planar_buf_free(p);
-// 	fprintf(stderr,"%s\n", *pee);
-// 	fprintf(stderr, "CPU to VGA: %f\n", t1);
+	fprintf(stderr, "CPU to VGA: %f\n", t1);
 // 	fprintf(stderr, "VGA to VGA: %f\n", t2);
 	fprintf(stderr, "gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
 	fprintf(stderr, "gvar.video.page[0].height: %u\n", gvar.video.page[0].height);
