@@ -44,15 +44,13 @@ void main(int argc, char *argv[])
 
 	bakapeee = malloc(64);
 
- 	if(argv[1]) bakapeee = argv[1];
- 	else bakapeee = "data/koishi~.pcx";
+	if(argv[1]) bakapeee = argv[1];
+	else bakapeee = "data/koishi~.pcx";
 
-// 	if(argv[2]) baka = atoi(argv[2]);
-// 	else
-baka = 1;
-//0000	bmp = bitmapLoadPcx("data/koishi~~.pcx");
- 	bmp = bitmapLoadPcx(bakapeee);
-	//bmp = bitmapLoadPcx("data/koishi~.pcx");
+	if(argv[2]) baka = atoi(argv[2]);
+	else baka = 1;
+
+	bmp = bitmapLoadPcx(bakapeee);
 	p = planar_buf_from_bitmap(&bmp);
 	VGAmodeX(baka, &gvar);
 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
