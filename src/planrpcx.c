@@ -33,27 +33,45 @@ void
 DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, byte sprite)
 {
 	word plane;
-	word px, py;
-	word offset;
-	word i;
+	int px, py, i;
+// 	word offset = (word) page->data;
 
+	px=x;
+	py=y;
 	// TODO Make this fast.  It's SLOOOOOOW
+// 	for(plane=0; plane < 4; plane++) {
+// 		i=0;
+// 		modexSelectPlane(PLANE(plane+x));
+// 		for(px = plane; px < p->width; px+=4) {
+// 			offset=px;
+// 			for(py=0; py<p->height/2; py++) {
+// 				//SELECT_ALL_PLANES();
+// 				if(!sprite || p->plane[offset])
+// 					page->data = &(p->plane[offset][i++]);
+// 				offset+=p->width;
+// 				offset++;
+// 			}
+// 		}
+// 	}
+//	z=0;
 	for(plane=0; plane < 4; plane++) {
+		//modexputPixel(page, 120, 90+z, z+1);
+		//z++;
 		i=0;
 		modexSelectPlane(PLANE(plane+x));
-			for(px = plane; px < p->width; px+=4) {
-				offset=px;
-				for(py=0; py<p->height/2; py++) {
-					//SELECT_ALL_PLANES();
-					if(!sprite || p->plane[offset])
-						page->data = &(p->plane[offset][i++]);
-				offset+=p->width;
-				offset++;
+		//modexSelectPlane(plane);
+		for(; y < p->height; y++) {
+			//for(px=0; px < p->width; px++) {
+				//printf("%02X ", (int) p->plane[plane][i++]);
+				strncpy(page->data + (((page->width/4) * (y+page->dy)) + ((x+page->dx) / 4))
+,&(p->plane[plane][i+=p->pwidth]), p->pwidth);
+			//}
 		}
-	}
+		//getch();
+		x=px;
+		y=py;
 	}
 }
-
 
 void main(int argc, char *argv[])
 {
@@ -64,18 +82,27 @@ void main(int argc, char *argv[])
 	int plane;
 	//float t1, t2;
 	int x,y;
-	sword bakapee;
+	word px,py;
+	sword baka;
+	//char *pee;
+	char *bakapeee;
 
-	if(argv[1]) bakapee = atoi(argv[1]);
-	else bakapee = 1;
+	bakapeee = malloc(64);
+
+ 	if(argv[1]) bakapeee = argv[1];
+ 	else bakapeee = "data/koishi~.pcx";
+
+// 	if(argv[2]) baka = atoi(argv[2]);
+// 	else
+baka = 1;
 //0000	bmp = bitmapLoadPcx("data/koishi~~.pcx");
-//	bmp = bitmapLoadPcx("data/chikyuu.pcx");
-	bmp = bitmapLoadPcx("data/koishi^^.pcx");
+ 	bmp = bitmapLoadPcx(bakapeee);
+	//bmp = bitmapLoadPcx("data/koishi~.pcx");
 	p = planar_buf_from_bitmap(&bmp);
-	VGAmodeX(bakapee, &gvar);
+	VGAmodeX(baka, &gvar);
 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
-	gvar.video.page[0].sw+=32;
-	gvar.video.page[0].sh+=32;
+// 	gvar.video.page[0].sw+=32;
+// 	gvar.video.page[0].sh+=32;
 
 	/* fix up the palette and everything */
 	modexPalUpdate1(bmp.palette);
@@ -91,52 +118,52 @@ void main(int argc, char *argv[])
 	/* non sprite comparison */
 // 	start = *clockw;
 // 		oldDrawBmp(VGA, 20, 20, &bmp, 0);
-
 // 	start = *clockw;
 //0000		modexDrawBmp(&gvar.video.page[0], 20, 20, &bmp);
 // 		modexDrawBmp(&gvar.video.page[0], 160, 120, &bmp);
 // 	t1 = (*clockw-start) /18.2;
-
 // 	start = *clockw;
 //0000		modexCopyPageRegion(&gvar.video.page[0], &gvar.video.page[0], 20, 20, 128, 20, 64, 64);
 // 		modexCopyPageRegion(&gvar.video.page[0], &gvar.video.page[0], 0, 0, 0, 0, 320, 240);
 // 	t2 = (*clockw-start)/18.2;
-
-
 // 	start = *clockw;
 // 		oldDrawBmp(VGA, 20, 20, &bmp, 1);
-
-
 // 	start = *clockw;
 //0000		modexDrawSprite(&gvar.video.page[0], 20, 20, &bmp);
 // 		modexDrawSprite(&gvar.video.page[0], 160, 120, &bmp);
-	//_fmemset(MK_FP(0xA000, 0), (int)p->plane, gvar.video.page[0].sw*(gvar.video.page[0].sh*2));
+//i=0;
+//plane=0;
+//	_fmemset(VGA, (int) p->plane[plane++][i++], p->width*p->height);
 	//modexDrawBmp(&gvar.video.page[0], 0, 0, &bmp);
+	DrawPBuf(&gvar.video.page[0], 0, 0, p, 0);
 	while(!kbhit())
 	{
-		DrawPBuf(&gvar.video.page[0], 0, 0, p, 0);
-	}
+		//if(argv[2]) pee = strcpy(VGA, &(p->plane[plane][24]));
+	}//gvar.video.page[0].data
 	VGAmodeX(0, &gvar);
+	planar_buf_free(p);
 	/*printf("\nmain=%Fp\n\n", &i);
 	printf("bmp.data=%Fp\n", bmp.data);
 	printf("*bmp.data=%Fp\n", *(bmp.data));
 	printf("&bmp.data=%Fp\n", &(bmp.data));*/
 
-	printf("\n%d\n", sizeof(p->plane));
-	printf("%d\n", sizeof(bmp));
-
 	/* print out the contents of each plane */
-	for(plane=0; plane < 4; plane++) {
+	/*for(plane=0; plane < 4; plane++) {
 		i=0;
 		printf("Plane %d\n", plane);
-		for(y=0; y < p->height; y++) {
-			for(x=0; x < p->pwidth; x++) {
+		for(py=0; py < p->height; py++) {
+			for(px=0; px < p->pwidth; px++) {
 				printf("%02X ", (int) p->plane[plane][i++]);
 			}
 			printf("\n");
 		}
-	}
-	fprintf(stderr, "\n");
+	}*/
+	fprintf(stderr,"\n%d\n", sizeof(p->plane));
+	fprintf(stderr,"pw=%d\n", p->width);
+	fprintf(stderr,"ph=%d\n", p->height);
+	fprintf(stderr,"ppw=%d\n", p->pwidth);
+	fprintf(stderr,"%d\n", sizeof(bmp));
+// 	fprintf(stderr,"%s\n", *pee);
 // 	fprintf(stderr, "CPU to VGA: %f\n", t1);
 // 	fprintf(stderr, "VGA to VGA: %f\n", t2);
 	fprintf(stderr, "gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
