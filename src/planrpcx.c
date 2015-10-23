@@ -42,13 +42,14 @@ void main(int argc, char *argv[])
 	sword baka;
 	char *bakapeee;
 
-	bakapeee = malloc(64);
+	bakapeee = _nmalloc(64);
 
 	if(argv[1]) bakapeee = argv[1];
 	else bakapeee = "data/koishi~.pcx";
 
-	if(argv[2]) baka = atoi(argv[2]);
-	else baka = 1;
+//	if(argv[2]) baka = atoi(argv[2]);
+//	else
+baka = 1;
 
 	bmp = bitmapLoadPcx(bakapeee);
 	p = planar_buf_from_bitmap(&bmp);
@@ -110,6 +111,7 @@ void main(int argc, char *argv[])
 	fprintf(stderr,"%d\n", sizeof(bmp));
 	fprintf(stderr,"%dx%d\n", gvar.video.page[0].sw-(p->width), gvar.video.page[0].sh-(p->height));
 	planar_buf_free(p);
+	_nfree(bakapeee);
 	fprintf(stderr, "modexDrawBmp:	%f\n", t1);
 	fprintf(stderr, "DrawPBuf:	%f\n", t2);
 	fprintf(stderr, "gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
