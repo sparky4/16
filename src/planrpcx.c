@@ -29,7 +29,7 @@
 
 global_game_variables_t gvar;
 bitmap_t bmp;
-planar_buf_t near *p;
+planar_buf_t *p;
 
 void main(int argc, char *argv[])
 {
