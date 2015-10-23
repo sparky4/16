@@ -32,10 +32,8 @@ global_game_variables_t gvar;
 void
 DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, byte sprite)
 {
-	word plane;
+	int plane;
 	int px, py, i;
-// 	word offset = (word) page->data;
-
 	px=x;
 	py=y;
 	// TODO Make this fast.  It's SLOOOOOOW
@@ -53,18 +51,13 @@ DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, byte sprite)
 // 			}
 // 		}
 // 	}
-//	z=0;
 	for(plane=0; plane < 4; plane++) {
-		//modexputPixel(page, 120, 90+z, z+1);
-		//z++;
 		i=0;
 		modexSelectPlane(PLANE(plane+x));
-		//modexSelectPlane(plane);
 		for(; y < p->height; y++) {
 			//for(px=0; px < p->width; px++) {
 				//printf("%02X ", (int) p->plane[plane][i++]);
-				strncpy(page->data + (((page->width/4) * (y+page->dy)) + ((x+page->dx) / 4))
-,&(p->plane[plane][i+=p->pwidth]), p->pwidth);
+				_fstrncpy(page->data + (((page->width/4) * (y+page->dy)) + ((x+page->dx) / 4)), &(p->plane[plane][i+=p->pwidth]), p->pwidth);
 			//}
 		}
 		//getch();
@@ -101,8 +94,6 @@ baka = 1;
 	p = planar_buf_from_bitmap(&bmp);
 	VGAmodeX(baka, &gvar);
 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
-// 	gvar.video.page[0].sw+=32;
-// 	gvar.video.page[0].sh+=32;
 
 	/* fix up the palette and everything */
 	modexPalUpdate1(bmp.palette);
@@ -141,14 +132,13 @@ baka = 1;
 		//if(argv[2]) pee = strcpy(VGA, &(p->plane[plane][24]));
 	}//gvar.video.page[0].data
 	VGAmodeX(0, &gvar);
-	planar_buf_free(p);
 	/*printf("\nmain=%Fp\n\n", &i);
 	printf("bmp.data=%Fp\n", bmp.data);
 	printf("*bmp.data=%Fp\n", *(bmp.data));
 	printf("&bmp.data=%Fp\n", &(bmp.data));*/
 
 	/* print out the contents of each plane */
-	/*for(plane=0; plane < 4; plane++) {
+	for(plane=0; plane < 4; plane++) {
 		i=0;
 		printf("Plane %d\n", plane);
 		for(py=0; py < p->height; py++) {
@@ -157,12 +147,13 @@ baka = 1;
 			}
 			printf("\n");
 		}
-	}*/
+	}
 	fprintf(stderr,"\n%d\n", sizeof(p->plane));
 	fprintf(stderr,"pw=%d\n", p->width);
 	fprintf(stderr,"ph=%d\n", p->height);
 	fprintf(stderr,"ppw=%d\n", p->pwidth);
 	fprintf(stderr,"%d\n", sizeof(bmp));
+	planar_buf_free(p);
 // 	fprintf(stderr,"%s\n", *pee);
 // 	fprintf(stderr, "CPU to VGA: %f\n", t1);
 // 	fprintf(stderr, "VGA to VGA: %f\n", t2);
