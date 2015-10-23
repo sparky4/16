@@ -422,7 +422,7 @@ DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, byte sprite)
 	for(plane=0; plane < 4; plane++) {
 		i=0;
 		modexSelectPlane(PLANE(plane+x));
-		for(; y < p->height; y++) {
+		for(; y < p->height-1; y++) {
 			//for(px=0; px < p->width; px++) {
 				//printf("%02X ", (int) p->plane[plane][i++]);
 				_fstrncpy(buff, &(p->plane[plane][i+=p->pwidth]), p->pwidth);
