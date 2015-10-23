@@ -115,14 +115,14 @@ modexEnter(sword vq, global_game_variables_t *gv)
 			}
 		break;
 		case 2:
-			CRTParmCount = sizeof(ModeX_192x144regs) / sizeof(ModeX_192x144regs[0]);
+			CRTParmCount = sizeof(ModeX_160x120regs) / sizeof(ModeX_160x120regs[0]);
 			/* width and height */
-			gv->video.page[0].sw=192;
-			gv->video.page[0].sh=144;
+			gv->video.page[0].sw=120;
+			gv->video.page[0].sh=160;
 
 			/* send the CRTParms */
 			for(i=0; i<CRTParmCount; i++) {
-				outpw(CRTC_INDEX, ModeX_192x144regs[i]);
+				outpw(CRTC_INDEX, ModeX_160x120regs[i]);
 			}
 
 			/* clear video memory */
@@ -140,6 +140,23 @@ modexEnter(sword vq, global_game_variables_t *gv)
 			/* send the CRTParms */
 			for(i=0; i<CRTParmCount; i++) {
 				outpw(CRTC_INDEX, ModeX_320x200regs[i]);
+			}
+
+			/* clear video memory */
+			outpw(SC_INDEX, 0x0f02);
+			for(i=0; i<0x8000; i++) {
+				ptr[i] = 0x0000;
+			}
+		break;
+		case 4:
+			CRTParmCount = sizeof(ModeX_192x144regs) / sizeof(ModeX_192x144regs[0]);
+			/* width and height */
+			gv->video.page[0].sw=192;
+			gv->video.page[0].sh=144;
+
+			/* send the CRTParms */
+			for(i=0; i<CRTParmCount; i++) {
+				outpw(CRTC_INDEX, ModeX_192x144regs[i]);
 			}
 
 			/* clear video memory */

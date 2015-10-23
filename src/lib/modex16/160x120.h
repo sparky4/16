@@ -20,8 +20,8 @@
  *
  */
 
-#ifndef _SMALLMODEXRESS_H_
-#define _SMALLMODEXRESS_H_
+#ifndef _SMALLMODEXREST_H_
+#define _SMALLMODEXREST_H_
 
 #include "src/lib/types.h"
 
@@ -54,27 +54,27 @@
 	0x3c0, 0x13, 0x00
 };*/
 
-static const word ModeX_192x144regs[] = {
-	0x3f00,		/* Horizontal total */
-	0x2f01,		/* horizontal display enable end */
-	0x3002,		/* Start horizontal blanking */
-	0x0003,		/* End horizontal blanking */
-	0x3404,		/* Start horizontal retrace */
-	0x4805,		/* End horizontal retrace */
+static const word ModeX_160x120regs[] = {
+	0x3200,		/* Horizontal total */
+	0x2701,		/* horizontal display enable end */
+	0x2802,		/* Start horizontal blanking */
+	0x2003,		/* End horizontal blanking */
+	0x2b04,		/* Start horizontal retrace */
+	0x7005,		/* End horizontal retrace */
 	0x0d06,		 /* vertical total */
 	0x3e07,		 /* overflow (bit 8 of vertical counts) */
-	0x4109,		 /* cell height (2 to double-scan */
+	0x4309,		 /* cell height (2 to double-scan */
 	0xea10,		 /* v sync start */
 	0xac11,		 /* v sync end and protect cr0-cr7 */
-	0x1f12,		 /* vertical displayed */
-	0x1813,		/* offset/logical width */
+	0xdf12,		 /* vertical displayed */
+	0x1413,		/* offset/logical width */
 	0x0014,		 /* turn off dword mode */
 	0xe715,		 /* v blank start */
 	0x0616,		 /* v blank end */
 	0xe317		  /* turn on byte mode */
 };//50 => 30
 
-#endif /*_SMALLMODEXRESS_H_*/
+#endif /*_SMALLMODEXREST_H_*/
 /*#include "TwkUser.h" // get Register definition
 Register 192x144[] =
 	{

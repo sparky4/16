@@ -20,8 +20,8 @@
  *
  */
 
-#ifndef _SMALLMODEXRESS_H_
-#define _SMALLMODEXRESS_H_
+#ifndef _SMALLMODEXRES_H_
+#define _SMALLMODEXRES_H_
 
 #include "src/lib/types.h"
 
@@ -55,12 +55,12 @@
 };*/
 
 static const word ModeX_192x144regs[] = {
-	0x3f00,		/* Horizontal total */
+	0x5f00,		/* Horizontal total */
 	0x2f01,		/* horizontal display enable end */
-	0x3002,		/* Start horizontal blanking */
-	0x0003,		/* End horizontal blanking */
-	0x3404,		/* Start horizontal retrace */
-	0x4805,		/* End horizontal retrace */
+	0x5002,		/* Start horizontal blanking */
+	0x8203,		/* End horizontal blanking */
+	0x5404,		/* Start horizontal retrace */
+	0x8005,		/* End horizontal retrace */
 	0x0d06,		 /* vertical total */
 	0x3e07,		 /* overflow (bit 8 of vertical counts) */
 	0x4109,		 /* cell height (2 to double-scan */
@@ -74,16 +74,17 @@ static const word ModeX_192x144regs[] = {
 	0xe317		  /* turn on byte mode */
 };//50 => 30
 
-#endif /*_SMALLMODEXRESS_H_*/
-/*#include "TwkUser.h" // get Register definition
-Register 192x144[] =
+#endif /*_SMALLMODEXRES_H_*/
+/*
+192x144[] =
 	{
+	{ 0x3c2, 0x0, 0xe3},
 	{ 0x3d4, 0x0, 0x3f},
 	{ 0x3d4, 0x1, 0x2f},
-	{ 0x3d4, 0x2, 0x30},
-	{ 0x3d4, 0x3, 0x0},
-	{ 0x3d4, 0x4, 0x34},
-	{ 0x3d4, 0x5, 0x48},
+	{ 0x3d4, 0x2, 0x50},
+	{ 0x3d4, 0x3, 0x82},
+	{ 0x3d4, 0x4, 0x54},
+	{ 0x3d4, 0x5, 0x80},
 	{ 0x3d4, 0x6, 0xd},
 	{ 0x3d4, 0x7, 0x3e},
 	{ 0x3d4, 0x8, 0x0},
@@ -101,6 +102,6 @@ Register 192x144[] =
 	{ 0x3ce, 0x5, 0x40},
 	{ 0x3ce, 0x6, 0x5},
 	{ 0x3c0, 0x10, 0x41},
-	{ 0x3c0, 0x11, 0xe},
 	{ 0x3c0, 0x13, 0x0}
-	};*/
+	};
+*/

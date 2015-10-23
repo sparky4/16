@@ -151,6 +151,9 @@ palettel.exe: palettel.$(OBJ) $(16LIBOBJS) gfx.lib
 pcxtest2.exe: pcxtest2.$(OBJ) gfx.lib
 	wcl $(FLAGS) pcxtest2.$(OBJ) gfx.lib -fm=pcxtest2.map
 
+pcxtest0.exe: pcxtest0.$(OBJ) gfx.lib
+	wcl $(FLAGS) pcxtest0.$(OBJ) gfx.lib -fm=pcxtest0.map
+
 maptest.exe: maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib
 	wcl $(FLAGS) maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib -fm=maptest.map
 
@@ -191,6 +194,9 @@ test2.$(OBJ): $(SRC)test2.c $(SRCLIB)modex16.h
 
 pcxtest.$(OBJ): $(SRC)pcxtest.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)pcxtest.c
+
+pcxtest0.$(OBJ): $(SRC)pcxtest0.c $(SRCLIB)modex16.h
+	wcl $(FLAGS) -c $(SRC)pcxtest0.c
 
 pcxtest2.$(OBJ): $(SRC)pcxtest2.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)pcxtest2.c
