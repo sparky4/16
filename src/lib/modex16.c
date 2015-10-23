@@ -399,11 +399,11 @@ DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, byte sprite)
 {
 	int plane;
 	int px, py, i;
-	byte *buff;
+	byte near *buff;
 
 	px=x;
 	py=y;
-	buff = _fmalloc(p->pwidth+1);
+	buff = _nmalloc(p->pwidth+1);
 	// TODO Make this fast.  It's SLOOOOOOW
 // 	for(plane=0; plane < 4; plane++) {
 // 		i=0;
@@ -434,7 +434,7 @@ DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, byte sprite)
 		x=px;
 		y=py;
 	}
-	_ffree(buff);
+	_nfree(buff);
 }
 
 void

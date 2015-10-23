@@ -82,7 +82,9 @@ baka = 1;
 // 		oldDrawBmp(VGA, 20, 20, &bmp, 1);
 //0000		modexDrawSprite(&gvar.video.page[0], 20, 20, &bmp);
 // 		modexDrawSprite(&gvar.video.page[0], 160, 120, &bmp);
-	DrawPBuf(&gvar.video.page[0], 0, 0, p, 0);
+	for(i=0; i<100 ;i++) {
+		DrawPBuf(&gvar.video.page[0], 0, 0, p, 0);
+	}
 	t1 = (*clockw-start) /18.2;
 	while(!kbhit())
 	{
