@@ -29,49 +29,6 @@
 
 global_game_variables_t gvar;
 
-void
-DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, byte sprite)
-{
-	int plane;
-	int px, py, i;
-	byte *buff;
-
-	px=x;
-	py=y;
-	buff = _fmalloc(p->pwidth+1);
-	// TODO Make this fast.  It's SLOOOOOOW
-// 	for(plane=0; plane < 4; plane++) {
-// 		i=0;
-// 		modexSelectPlane(PLANE(plane+x));
-// 		for(px = plane; px < p->width; px+=4) {
-// 			offset=px;
-// 			for(py=0; py<p->height/2; py++) {
-// 				//SELECT_ALL_PLANES();
-// 				if(!sprite || p->plane[offset])
-// 					page->data = &(p->plane[offset][i++]);
-// 				offset+=p->width;
-// 				offset++;
-// 			}
-// 		}
-// 	}
-	for(plane=0; plane < 4; plane++) {
-		i=0;
-		modexSelectPlane(PLANE(plane+x));
-		for(; y < p->height; y++) {
-			//for(px=0; px < p->width; px++) {
-				//printf("%02X ", (int) p->plane[plane][i++]);
-				_fstrncpy(buff, &(p->plane[plane][i+=p->pwidth]), p->pwidth);
-				printf("buff %u==%s\n", y, *buff);
-				_fstrncpy(page->data + (((page->width/4) * (y+page->dy)) + ((x+page->dx) / 4)), buff, p->pwidth);
-			//}
-		}
-		//getch();
-		x=px;
-		y=py;
-	}
-	_ffree(buff);
-}
-
 void main(int argc, char *argv[])
 {
 	bitmap_t bmp;
@@ -154,7 +111,9 @@ baka = 1;
 			printf("\n");
 		}
 	}
-	fprintf(stderr,"\n%d\n", sizeof(p->plane));
+	printf("Project 16 planrpcx.exe. This is just a test file!\n");
+	printf("version %s\n", VERSION);
+	fprintf(stderr,"%d\n", sizeof(p->plane));
 	fprintf(stderr,"pw=%d\n", p->width);
 	fprintf(stderr,"ph=%d\n", p->height);
 	fprintf(stderr,"ppw=%d\n", p->pwidth);
