@@ -42,7 +42,7 @@ void main(int argc, char *argv[])
 	sword baka;
 	char *bakapeee;
 
-	bakapeee = _nmalloc(64);
+	bakapeee = malloc(64);
 
 	if(argv[1]) bakapeee = argv[1];
 	else bakapeee = "data/koishi~.pcx";
@@ -111,7 +111,7 @@ baka = 1;
 	fprintf(stderr,"%d\n", sizeof(bmp));
 	fprintf(stderr,"%dx%d\n", gvar.video.page[0].sw-(p->width), gvar.video.page[0].sh-(p->height));
 	planar_buf_free(p);
-	_nfree(bakapeee);
+	free(bakapeee);
 	fprintf(stderr, "modexDrawBmp:	%f\n", t1);
 	fprintf(stderr, "DrawPBuf:	%f\n", t2);
 	fprintf(stderr, "gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
