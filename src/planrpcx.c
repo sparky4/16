@@ -29,23 +29,24 @@
 
 global_game_variables_t gvar;
 
-
 void
 DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, byte sprite)
 {
 	word plane;
 	word px, py;
 	word offset;
+	word i;
 
 	// TODO Make this fast.  It's SLOOOOOOW
 	for(plane=0; plane < 4; plane++) {
+		i=0;
 		modexSelectPlane(PLANE(plane+x));
 			for(px = plane; px < p->width; px+=4) {
 				offset=px;
 				for(py=0; py<p->height/2; py++) {
 					//SELECT_ALL_PLANES();
 					if(!sprite || p->plane[offset])
-						page->data = (p->plane[offset]);
+						page->data = &(p->plane[offset][i++]);
 				offset+=p->width;
 				offset++;
 		}
