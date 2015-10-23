@@ -46,7 +46,6 @@ planar_buf_from_bitmap(bitmap_t *b) {
 	plane=0;
 	for(x=0; x < b->width; x++) {
 		/* copy to each plane */
-		if(!(b->data[bi])) b->data[bi] = 1;
 		p->plane[plane++][pi]=b->data[bi++];
 
 		/* handle the completion of 4 planes. */
