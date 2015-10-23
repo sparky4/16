@@ -28,11 +28,11 @@
 #include "src/lib/planar.h"
 
 global_game_variables_t gvar;
+bitmap_t bmp;
+planar_buf_t near *p;
 
 void main(int argc, char *argv[])
 {
-	bitmap_t bmp;
-	planar_buf_t *p;
 	int i;
 	word start;
 	int plane;
@@ -78,7 +78,7 @@ void main(int argc, char *argv[])
 // 	t2 = (*clockw-start)/18.2;
 	start = *clockw;
 	for(i=0; i<100 ;i++) {
-		DrawPBuf(&gvar.video.page[0], gvar.video.page[0].sw-(p->width), gvar.video.page[0].sh-(p->height), p, 0);
+		DrawPBuf(&gvar.video.page[0], 0, 0, p, 0);
 	}
 	t2 = (*clockw-start) /18.2;
 	while(!kbhit())
@@ -108,6 +108,7 @@ void main(int argc, char *argv[])
 	fprintf(stderr,"ph=%d\n", p->height);
 	fprintf(stderr,"ppw=%d\n", p->pwidth);
 	fprintf(stderr,"%d\n", sizeof(bmp));
+	fprintf(stderr,"%dx%d\n", gvar.video.page[0].sw-(p->width), gvar.video.page[0].sh-(p->height));
 	planar_buf_free(p);
 	fprintf(stderr, "modexDrawBmp:	%f\n", t1);
 	fprintf(stderr, "DrawPBuf:	%f\n", t2);
