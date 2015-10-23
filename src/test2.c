@@ -56,17 +56,17 @@ void main() {
     /* create the planar buffer */
     p = planar_buf_from_bitmap(&bmp);
 
-    /* print out the contents of each plane */
-    for(plane=0; plane < 4; plane++) {
-        i=0;
-	printf("Plane %d\n", plane);
-	for(y=0; y < p->height; y++) {
-	    for(x=0; x < p->pwidth; x++) {
-		printf("%02X ", (int) p->plane[plane][i++]);
-	    }
-	    printf("\n");
+	/* print out the contents of each plane */
+	for(plane=0; plane < 4; plane++) {
+		i=0;
+		printf("Plane %d\n", plane);
+		for(y=0; y < p->height; y++) {
+			for(x=0; x < p->pwidth; x++) {
+				printf("%02X ", (int) p->plane[plane][i++]);
+			}
+			printf("\n");
+		}
 	}
-    }
 		/*__asm
 		{
 			mov ah,31h

@@ -73,10 +73,10 @@ DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 #3812intf.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ)
 
-TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe
+TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe
 # tsthimem.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe sega.exe sountest.exe
-EXEC = 16.exe bakapi.exe $(TESTEXEC) tesutobakapee.exe
+EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
 
 all: $(EXEC) comp
 
@@ -96,10 +96,10 @@ scroll.exe: scroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib
 scroll.$(OBJ): $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
 
-tesutobakapee.exe: tesutobakapee.$(OBJ)
-	wcl -zq -mh -d2 tesutobakapee.$(OBJ)
-tesutobakapee.$(OBJ): $(SRC)tesutobakapee.c
-	wcl -zq -mh -d2 -c $(SRC)tesutobakapee.c
+tesuto.exe: tesuto.$(OBJ)
+	wcl -zq -mh -d2 tesuto.$(OBJ)
+tesuto.$(OBJ): $(SRC)tesuto.c
+	wcl -zq -mh -d2 -c $(SRC)tesuto.c
 
 #sega.exe: sega.$(OBJ)
 #	wcl $(FLAGS) sega.$(OBJ)
@@ -151,8 +151,8 @@ palettel.exe: palettel.$(OBJ) $(16LIBOBJS) gfx.lib
 pcxtest2.exe: pcxtest2.$(OBJ) gfx.lib
 	wcl $(FLAGS) pcxtest2.$(OBJ) gfx.lib -fm=pcxtest2.map
 
-pcxtest0.exe: pcxtest0.$(OBJ) gfx.lib
-	wcl $(FLAGS) pcxtest0.$(OBJ) gfx.lib -fm=pcxtest0.map
+planrpcx.exe: planrpcx.$(OBJ) gfx.lib
+	wcl $(FLAGS) planrpcx.$(OBJ) gfx.lib -fm=planrpcx.map
 
 maptest.exe: maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib
 	wcl $(FLAGS) maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib -fm=maptest.map
@@ -195,8 +195,8 @@ test2.$(OBJ): $(SRC)test2.c $(SRCLIB)modex16.h
 pcxtest.$(OBJ): $(SRC)pcxtest.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)pcxtest.c
 
-pcxtest0.$(OBJ): $(SRC)pcxtest0.c $(SRCLIB)modex16.h
-	wcl $(FLAGS) -c $(SRC)pcxtest0.c
+planrpcx.$(OBJ): $(SRC)planrpcx.c $(SRCLIB)modex16.h
+	wcl $(FLAGS) -c $(SRC)planrpcx.c
 
 pcxtest2.$(OBJ): $(SRC)pcxtest2.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)pcxtest2.c
