@@ -104,8 +104,8 @@ baka = 1;
 			printf("\n");
 		}
 	}
-	printf("Project 16 planrpcx.exe. This is just a test file!\n");
-	printf("version %s\n", VERSION);
+	fprintf(stderr,"Project 16 planrpcx.exe. This is just a test file!\n");
+	fprintf(stderr,"version %s\n", VERSION);
 	fprintf(stderr,"%d\n", sizeof(p->plane));
 	fprintf(stderr,"pw=%d\n", p->width);
 	fprintf(stderr,"ph=%d\n", p->height);
