@@ -71,21 +71,18 @@ baka = 1;
 	/* non sprite comparison */
 	start = *clockw;
 // 		oldDrawBmp(VGA, 20, 20, &bmp, 0);
-//0000		modexDrawBmp(&gvar.video.page[0], 20, 20, &bmp);
-// 		modexDrawBmp(&gvar.video.page[0], 160, 120, &bmp);
-// 	t1 = (*clockw-start) /18.2;
-// 	start = *clockw;
-//0000		modexCopyPageRegion(&gvar.video.page[0], &gvar.video.page[0], 20, 20, 128, 20, 64, 64);
-// 		modexCopyPageRegion(&gvar.video.page[0], &gvar.video.page[0], 0, 0, 0, 0, 320, 240);
-// 	t2 = (*clockw-start)/18.2;
-// 	start = *clockw;
-// 		oldDrawBmp(VGA, 20, 20, &bmp, 1);
-//0000		modexDrawSprite(&gvar.video.page[0], 20, 20, &bmp);
-// 		modexDrawSprite(&gvar.video.page[0], 160, 120, &bmp);
 	for(i=0; i<100 ;i++) {
-		DrawPBuf(&gvar.video.page[0], 0, 0, p, 0);
+		modexDrawBmp(&gvar.video.page[0], 32, 32, &bmp);
 	}
 	t1 = (*clockw-start) /18.2;
+// 	start = *clockw;
+// 		modexCopyPageRegion(&gvar.video.page[0], &gvar.video.page[0], 0, 0, 0, 0, 320, 240);
+// 	t2 = (*clockw-start)/18.2;
+	start = *clockw;
+	for(i=0; i<100 ;i++) {
+		DrawPBuf(&gvar.video.page[0], gvar.video.page[0].sw-(p->width), gvar.video.page[0].sh-(p->height), p, 0);
+	}
+	t2 = (*clockw-start) /18.2;
 	while(!kbhit())
 	{
 	}
@@ -114,8 +111,8 @@ baka = 1;
 	fprintf(stderr,"ppw=%d\n", p->pwidth);
 	fprintf(stderr,"%d\n", sizeof(bmp));
 	planar_buf_free(p);
-	fprintf(stderr, "CPU to VGA: %f\n", t1);
-// 	fprintf(stderr, "VGA to VGA: %f\n", t2);
+	fprintf(stderr, "modexDrawBmp:	%f\n", t1);
+	fprintf(stderr, "DrawPBuf:	%f\n", t2);
 	fprintf(stderr, "gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
 	fprintf(stderr, "gvar.video.page[0].height: %u\n", gvar.video.page[0].height);
 	return;
