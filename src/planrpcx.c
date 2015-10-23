@@ -34,8 +34,11 @@ DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, byte sprite)
 {
 	int plane;
 	int px, py, i;
+	byte *buff;
+
 	px=x;
 	py=y;
+	buff = _fmalloc(p->pwidth+1);
 	// TODO Make this fast.  It's SLOOOOOOW
 // 	for(plane=0; plane < 4; plane++) {
 // 		i=0;
@@ -57,13 +60,16 @@ DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, byte sprite)
 		for(; y < p->height; y++) {
 			//for(px=0; px < p->width; px++) {
 				//printf("%02X ", (int) p->plane[plane][i++]);
-				_fstrncpy(page->data + (((page->width/4) * (y+page->dy)) + ((x+page->dx) / 4)), &(p->plane[plane][i+=p->pwidth]), p->pwidth);
+				_fstrncpy(buff, &(p->plane[plane][i+=p->pwidth]), p->pwidth);
+				printf("buff==%s\n", *buff);
+				_fstrncpy(page->data + (((page->width/4) * (y+page->dy)) + ((x+page->dx) / 4)), buff, p->pwidth);
 			//}
 		}
 		//getch();
 		x=px;
 		y=py;
 	}
+	_ffree(buff);
 }
 
 void main(int argc, char *argv[])
