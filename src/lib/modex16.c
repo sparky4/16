@@ -395,7 +395,7 @@ modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
 }
 
 void
-DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, byte sprite)
+DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, boolean sprite)
 {
 	int plane;
 	int px, py, i;
