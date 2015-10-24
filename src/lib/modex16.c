@@ -1330,7 +1330,7 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 		DEC CX
 		JNZ L1
 	}
-
+//TODO: OPTIMIZE THIS!!!!
 		for(i=0; i<w; i++)
 		{
 			j=1<<8;
