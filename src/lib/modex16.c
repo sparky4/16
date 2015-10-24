@@ -400,7 +400,6 @@ DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, boolean sprite)
 	int plane;
 	int px, py, i;
 // 	byte near *buff;
-
 	px=x;
 	py=y;
 // 	buff = _nmalloc(p->pwidth+1);
@@ -1278,6 +1277,7 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 	word addr = (word) l;
 	word chw=0;
 	byte c;
+	//byte near *bakapee;
 
 	switch(t)
 	{
@@ -1330,9 +1330,14 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 		DEC CX
 		JNZ L1
 	}
+	//bakapee = _nmalloc(sizeof(byte)*8);
 //TODO: OPTIMIZE THIS!!!!
 		for(i=0; i<w; i++)
 		{
+			/*modexSelectPlane(PLANE(x));
+			j=1<<8;
+			*bakapee=(l[i] & j ? col:bgcol);
+			_fmemcpy(page->data + (((page->width/4) * (y+page->dy+i)) + ((x+page->dx+chw) / 4)), bakapee, 8);*/
 			j=1<<8;
 			xp=0;
 			while(j)
@@ -1344,6 +1349,7 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 		}
 		chw += xp;
 	}
+	//_nfree(bakapee);
 }
 
 void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str)

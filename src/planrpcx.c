@@ -42,13 +42,17 @@ void main(int argc, char *argv[])
 	sword baka;
 	char *bakapeee;
 
+	byte l[1024];
+	word j,chw,xp,col,bgcol;
+
+
 	bakapeee = malloc(64);
 
 	if(argv[1]) bakapeee = argv[1];
 	else bakapeee = "data/koishi~.pcx";
 
-	if(argv[2]) baka = atoi(argv[2]);
-	else
+//	if(argv[2]) baka = atoi(argv[2]);
+//	else
 baka = 1;
 
 	bmp = bitmapLoadPcx(bakapeee);
@@ -116,5 +120,26 @@ baka = 1;
 	fprintf(stderr, "DrawPBuf:	%f\n", t2);
 	fprintf(stderr, "gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
 	fprintf(stderr, "gvar.video.page[0].height: %u\n", gvar.video.page[0].height);
+	col=0x0d, bgcol=0;
+	for(i=0; i<8; i++)
+	{
+		/*modexSelectPlane(PLANE(x));
+		j=1<<8;
+		*bakapee=(l[i] & j ? col:bgcol);
+		_fmemcpy(page->data + (((page->width/4) * (y+page->dy+i)) + ((x+page->dx+chw) / 4)), bakapee, 8);*/
+		j=4<<8;
+		fprintf(stderr, "j<<=%u\n", j);
+		xp=0;
+		while(j)
+		{
+			//modexputPixel(page, x+xp+chw, y+i, l[i] & j ? col:bgcol);
+			//fprintf(stderr, "%u", l[i] & j ? col:bgcol);
+			xp++;
+			j>>=4;
+			fprintf(stderr, "	j>>=%u\n", j);
+		}
+		//fprintf(stderr, "\n");
+	}
+	chw += xp;
 	return;
 }
