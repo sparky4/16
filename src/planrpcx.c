@@ -106,20 +106,6 @@ baka = 1;
 			printf("\n");
 		}
 	}
-	fprintf(stderr,"Project 16 planrpcx.exe. This is just a test file!\n");
-	fprintf(stderr,"version %s\n", VERSION);
-	fprintf(stderr,"%d\n", sizeof(p->plane));
-	fprintf(stderr,"pw=%d\n", p->width);
-	fprintf(stderr,"ph=%d\n", p->height);
-	fprintf(stderr,"ppw=%d\n", p->pwidth);
-	fprintf(stderr,"%d\n", sizeof(bmp));
-	fprintf(stderr,"%dx%d\n", gvar.video.page[0].sw-(p->width), gvar.video.page[0].sh-(p->height));
-	planar_buf_free(p);
-	free(bakapeee);
-	fprintf(stderr, "modexDrawBmp:	%f\n", t1);
-	fprintf(stderr, "DrawPBuf:	%f\n", t2);
-	fprintf(stderr, "gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
-	fprintf(stderr, "gvar.video.page[0].height: %u\n", gvar.video.page[0].height);
 	col=0x0d, bgcol=0;
 	for(i=0; i<8; i++)
 	{
@@ -141,5 +127,19 @@ baka = 1;
 		//fprintf(stderr, "\n");
 	}
 	chw += xp;
+	fprintf(stderr,"Project 16 planrpcx.exe. This is just a test file!\n");
+	fprintf(stderr,"version %s\n", VERSION);
+	fprintf(stderr,"%d\n", sizeof(p->plane));
+	fprintf(stderr,"pw=%d\n", p->width);
+	fprintf(stderr,"ph=%d\n", p->height);
+	fprintf(stderr,"ppw=%d\n", p->pwidth);
+	fprintf(stderr,"%d\n", sizeof(bmp));
+	fprintf(stderr,"%dx%d\n", gvar.video.page[0].sw-(p->width), gvar.video.page[0].sh-(p->height));
+	planar_buf_free(p);
+	free(bakapeee);
+	fprintf(stderr, "modexDrawBmp:	%f\n", t1);
+	fprintf(stderr, "DrawPBuf:	%f\n", t2);
+	fprintf(stderr, "gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
+	fprintf(stderr, "gvar.video.page[0].height: %u\n", gvar.video.page[0].height);
 	return;
 }
