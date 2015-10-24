@@ -47,8 +47,8 @@ void main(int argc, char *argv[])
 	if(argv[1]) bakapeee = argv[1];
 	else bakapeee = "data/koishi~.pcx";
 
-//	if(argv[2]) baka = atoi(argv[2]);
-//	else
+	if(argv[2]) baka = atoi(argv[2]);
+	else
 baka = 1;
 
 	bmp = bitmapLoadPcx(bakapeee);
