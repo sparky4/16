@@ -395,8 +395,9 @@ modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
 }
 
 //TODO!
-void
-modexDrawPBufregion(page_t *page, int x, int y, int sx, int sy, int fx, int fy planar_buf_t *p, boolean sprite)
+//void
+//modexDrawBmpRegion	(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp)
+void modexDrawPBufRegion	(page_t *page, int x, int y, int rx, int ry, int rw, int rh, planar_buf_t *p, boolean sprite)
 {
 	int plane;
 	int px, py, i;
@@ -420,7 +421,7 @@ modexDrawPBufregion(page_t *page, int x, int y, int sx, int sy, int fx, int fy p
 // 		}
 // 	}
 	for(plane=0; plane < 4; plane++) {
-		i=0;
+		i=(rx/4)+((rx/4)*ry);
 		modexSelectPlane(PLANE(plane+x));
 		for(; y < py+p->height; y++) {
 			//for(px=0; px < p->width; px++) {
@@ -437,7 +438,7 @@ modexDrawPBufregion(page_t *page, int x, int y, int sx, int sy, int fx, int fy p
 // 	_nfree(buff);
 }
 
-void
+/*void
 DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, boolean sprite)
 {
 	int plane;
@@ -477,7 +478,7 @@ DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, boolean sprite)
 		y=py;
 	}
 // 	_nfree(buff);
-}
+}*/
 
 void
 oldDrawBmp(byte far* page, int x, int y, bitmap_t *bmp, byte sprite)
@@ -494,29 +495,6 @@ oldDrawBmp(byte far* page, int x, int y, bitmap_t *bmp, byte sprite)
 			for(py=0; py<bmp->height; py++) {
 			if(!sprite || bmp->data[offset])
 				page[PAGE_OFFSET(x+px, y+py)] = bmp->data[offset];
-			offset+=bmp->width;
-			}
-		}
-	}
-}
-
-void
-CDrawBmp(byte far* vgamem, page_t* page, int x, int y, bitmap_t *bmp, byte sprite)
-{
-	byte plane;
-	word px, py;
-	word offset=0;
-
-
-	/* TODO Make this fast.  It's SLOOOOOOW */
-	for(plane=0; plane < 4; plane++) {
-		modexSelectPlane(PLANE(plane+x));
-		for(px = plane; px < bmp->width; px+=4) {
-			offset=px;
-			for(py=0; py<bmp->height; py++) {
-			if(!sprite || bmp->data[offset])
-				//modexputPixel(page, x+px, y+py, bmp->data[offset]);
-				vgamem[PAGE_OFFSET(x+px, y+py)] = bmp->data[offset];
 			offset+=bmp->width;
 			}
 		}

@@ -83,7 +83,7 @@ baka = 1;
 // 	t2 = (*clockw-start)/18.2;
 	start = *clockw;
 	for(i=0; i<100 ;i++) {
-		DrawPBuf(&gvar.video.page[0], 0, 0, p, 0);
+		//DrawPBuf(&gvar.video.page[0], 0, 0, p, 0);
 	}
 	t2 = (*clockw-start) /18.2;
 	while(!kbhit())
