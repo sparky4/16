@@ -70,6 +70,7 @@ void modexShowPage(page_t *page);
 void modexPanPage(page_t *page, int dx, int dy);
 void modexSelectPlane(byte plane);
 void modexClearRegion(page_t *page, int x, int y, int w, int h, byte color);
+void modexDrawPBufregion(page_t *page, int x, int y, int sx, int sy, int fx, int fy planar_buf_t *p, boolean sprite);
 void DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, boolean sprite);
 void oldDrawBmp(byte far* page, int x, int y, bitmap_t *bmp, byte sprite);
 //void CDrawBmp(byte far* vgamem, page_t* page, int x, int y, bitmap_t *bmp, byte sprite);
