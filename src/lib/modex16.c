@@ -394,7 +394,7 @@ modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
     }
 }
 
-//TODO!
+//TODO! ADD CLIPPING!!
 //void
 //modexDrawBmpRegion	(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp)
 void modexDrawPBufRegion	(page_t *page, int x, int y, int rx, int ry, int rw, int rh, planar_buf_t *p, boolean sprite)
