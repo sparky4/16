@@ -28,8 +28,8 @@
 #include "src/lib/planar.h"
 
 global_game_variables_t gvar;
-bitmap_t bmp;
-planar_buf_t *p;
+bitmap_t bmp, ptmpbt;
+planar_buf_t *p, *ptmp;
 
 void main(int argc, char *argv[])
 {
@@ -57,6 +57,8 @@ baka = 1;
 
 	bmp = bitmapLoadPcx(bakapeee);
 	p = planar_buf_from_bitmap(&bmp);
+	ptmpbt = bitmapLoadPcx("data/ptmp.pcx");
+	ptmp = planar_buf_from_bitmap(&bmp);
 	VGAmodeX(baka, &gvar);
 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 
@@ -83,9 +85,12 @@ baka = 1;
 // 	t2 = (*clockw-start)/18.2;
 	start = *clockw;
 	for(i=0; i<100 ;i++) {
-		//DrawPBuf(&gvar.video.page[0], 0, 0, p, 0);
+		modexDrawPBuf(&gvar.video.page[0], 0, 0, p, 0);
 	}
 	t2 = (*clockw-start) /18.2;
+	getch();
+	modexPalUpdate1(ptmpbt.palette);
+	modexDrawPBufRegion(&gvar.video.page[0], 140, 140, 48, 32, 24, 32, ptmp, 1);
 	while(!kbhit())
 	{
 	}

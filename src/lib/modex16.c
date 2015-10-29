@@ -413,7 +413,7 @@ void modexDrawPBufRegion	(page_t *page, int x, int y, int rx, int ry, int rw, in
 				//printf("%02X ", (int) p->plane[plane][i++]);
 //			      _fmemcpy(buff, &(p->plane[plane][i+=p->pwidth]), p->pwidth);
 //			      printf("buff %u==%s\n", y, *buff);
-				_fmemcpy(page->data + (((page->width/4) * (y+page->dy)) + ((x+page->dx) / 4)), &(p->plane[plane][i+=rw]), rw/4);
+				_fmemcpy(page->data + (((page->width/4) * (y+page->dy)) + ((x+page->dx) / 4)), &(p->plane[plane][i+=p->pwidth]), rw/4);
 			//}
 		}
 		x=px;
@@ -424,7 +424,7 @@ void modexDrawPBufRegion	(page_t *page, int x, int y, int rx, int ry, int rw, in
 
 /*temp*/
 void
-DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, boolean sprite)
+modexDrawPBuf(page_t *page, int x, int y, planar_buf_t *p, boolean sprite)
 {
 	int plane;
 	int i;

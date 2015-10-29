@@ -121,7 +121,7 @@ void main(int argc, char *argv[])
 //	printf("Total used @ before palette initiation:		%zu\n", oldfreemem-GetFreeSize());
 //++++	player[0].data.offset=(paloffset/3);
 //++++	modexPalUpdate1(&player[0].data, &paloffset, 0, 0);
-		modexPalUpdate1(gpal);
+		modexPalUpdate1(p.palette);
 	//printf("	%d\n", sizeof(ptmp->data));
 	//printf("1:	%d\n", paloffset);
 //++++	map.tiles->data->offset=(paloffset/3);
