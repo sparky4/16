@@ -406,7 +406,7 @@ void modexDrawPBufRegion	(page_t *page, int x, int y, int rx, int ry, int rw, in
 	const int px=x-page->dx;
 	const int py=y-page->dy;
 	for(plane=0; plane < 4; plane++) {
-		i=(rx/4)+((p->pwidth)*ry);
+		i=(rw/4)+((p->pwidth)*ry);
 		modexSelectPlane(PLANE(plane+x));
 		for(; y < py+rh; y++) {
 			//for(px=0; px < p->width; px++) {
