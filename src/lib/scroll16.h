@@ -34,7 +34,7 @@
 #include "src/lib/wcpu/wcpu.h"
 
 #define SPRITE
-//#define BMPTYPE
+#define BMPTYPE
 
 typedef struct {
 	map_t *map;
