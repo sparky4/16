@@ -401,11 +401,12 @@ modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
 void modexDrawPBufRegion	(page_t *page, int x, int y, int rx, int ry, int rw, int rh, planar_buf_t *p, boolean sprite)
 {
 	int plane;
-	int px, py, i;
-	px=x;
-	py=y;
+	//const int px, py;
+	int i;
+	const int px=x-page->dx;
+	const int py=y-page->dy;
 	for(plane=0; plane < 4; plane++) {
-		i=(rx/4)+((rx/4)*ry);
+		i=(rx/4)+((p->pwidth)*ry);
 		modexSelectPlane(PLANE(plane+x));
 		for(; y < py+rh; y++) {
 			//for(px=0; px < p->width; px++) {
@@ -426,10 +427,10 @@ void
 DrawPBuf(page_t *page, int x, int y, planar_buf_t *p, boolean sprite)
 {
 	int plane;
-	int px, py, i;
+	int i;
 // 	byte near *buff;
-	px=x;
-	py=y;
+	const int px=x;
+	const int py=y;
 // 	buff = _nmalloc(p->pwidth+1);
 	// TODO Make this fast.  It's SLOOOOOOW
 // 	for(plane=0; plane < 4; plane++) {
