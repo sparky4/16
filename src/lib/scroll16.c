@@ -65,6 +65,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 #else
 				modexDrawSpriteRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 24, 32, &player[pn].data);
 #endif
+#else
 				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 14);
 #endif
 				modexShowPage(pip[1].page);

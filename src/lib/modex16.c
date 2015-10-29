@@ -400,22 +400,33 @@ modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
 //modexDrawBmpRegion	(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp)
 void modexDrawPBufRegion	(page_t *page, int x, int y, int rx, int ry, int rw, int rh, planar_buf_t *p, boolean sprite)
 {
-	int plane;
-	//const int px, py;
+	sword plane;
 	int i;
-	const int px=x-page->dx;
-	const int py=y-page->dy;
+	const int px=x;//-page->dx;
+	const int py=y;//-page->dy;
+	#define PEEE ((rw)/4)-rx
+	//-(rx/4)
+	#define PEEEE ((p->pwidth)*(ry))
+	//y=py;
+	//x=px;
+	//printf("%d,%d p(%d,%d) r(%d,%d) rwh(%d,%d)\n", x, y, px, py, rx, ry, rw, rh);
 	for(plane=0; plane < 4; plane++) {
-		i=(rw/4)+((p->pwidth)*ry);
+		i=PEEE+PEEEE;
+		//printf("PEEE=%d ", PEEE);
+		//printf("PEEEE=%d ", PEEEE);
+		//printf("i=%d\n", i);
 		modexSelectPlane(PLANE(plane+x));
 		for(; y < py+rh; y++) {
 			//for(px=0; px < p->width; px++) {
 				//printf("%02X ", (int) p->plane[plane][i++]);
 //			      _fmemcpy(buff, &(p->plane[plane][i+=p->pwidth]), p->pwidth);
 //			      printf("buff %u==%s\n", y, *buff);
-				_fmemcpy(page->data + (((page->width/4) * (y+page->dy)) + ((x+page->dx) / 4)), &(p->plane[plane][i+=p->pwidth]), rw/4);
+				_fmemcpy(page->data + (((page->width/4) * y) + (x / 4)), &(p->plane[plane][i+=p->pwidth]), (rw/4));
 			//}
+			//if(plane==3) IN_Ack();
 		}
+		/*printf("y%d=%d ", plane, y);
+		if(plane==3) printf("y%d=%d\n", plane, y);*/
 		x=px;
 		y=py;
 		}
@@ -429,8 +440,10 @@ modexDrawPBuf(page_t *page, int x, int y, planar_buf_t *p, boolean sprite)
 	int plane;
 	int i;
 // 	byte near *buff;
-	const int px=x;
-	const int py=y;
+	const int px=x+page->dx;
+	const int py=y+page->dy;
+	x=px;
+	y=py;
 // 	buff = _nmalloc(p->pwidth+1);
 	// TODO Make this fast.  It's SLOOOOOOW
 // 	for(plane=0; plane < 4; plane++) {
@@ -456,7 +469,7 @@ modexDrawPBuf(page_t *page, int x, int y, planar_buf_t *p, boolean sprite)
 // 				_fmemcpy(buff, &(p->plane[plane][i+=p->pwidth]), p->pwidth);
 // 				printf("buff %u==%s\n", y, *buff);
 // 				_fmemcpy(page->data + (((page->width/4) * (y+page->dy)) + ((x+page->dx) / 4)), buff, p->pwidth);
-				_fmemcpy(page->data + (((page->width/4) * (y+page->dy)) + ((x+page->dx) / 4)), &(p->plane[plane][i+=p->pwidth]), p->pwidth);
+				_fmemcpy(page->data + (((page->width/4) * y) + (x / 4)), &(p->plane[plane][i+=p->pwidth]), p->pwidth);
 			//}
 		}
 		x=px;
@@ -506,10 +519,6 @@ modexDrawBmpRegion(page_t *page, int x, int y,
     word nextBmpRow = (word) bmp->width - width;
     word rowCounter;
     byte planeCounter = 4;
-
-/*	printf("bmp->data=%Fp\n",bmp->data);
-	printf("*bmp->data=%Fp\n",*(bmp->data));
-	printf("&bmp->data=%Fp\n",&(bmp->data));*/
 
 	//code is a bit slow here
     __asm {

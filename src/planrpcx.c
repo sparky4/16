@@ -58,7 +58,7 @@ baka = 1;
 	bmp = bitmapLoadPcx(bakapeee);
 	p = planar_buf_from_bitmap(&bmp);
 	ptmpbt = bitmapLoadPcx("data/ptmp.pcx");
-	ptmp = planar_buf_from_bitmap(&bmp);
+	ptmp = planar_buf_from_bitmap(&ptmpbt);
 	VGAmodeX(baka, &gvar);
 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 
@@ -88,9 +88,8 @@ baka = 1;
 		modexDrawPBuf(&gvar.video.page[0], 0, 0, p, 0);
 	}
 	t2 = (*clockw-start) /18.2;
-	getch();
 	modexPalUpdate1(ptmpbt.palette);
-	modexDrawPBufRegion(&gvar.video.page[0], 140, 140, 48, 32, 24, 32, ptmp, 1);
+	modexDrawPBufRegion(&gvar.video.page[0], 160, 140, 48, 32, 24, 32, ptmp, 1);
 	while(!kbhit())
 	{
 	}
@@ -104,20 +103,20 @@ baka = 1;
 	for(plane=0; plane < 4; plane++) {
 		i=0;
 		printf("Plane %d\n", plane);
-		for(py=0; py < p->height; py++) {
-			for(px=0; px < p->pwidth; px++) {
-				printf("%02X ", (int) p->plane[plane][i++]);
+		for(py=0; py < ptmp->height; py++) {
+			for(px=0; px < ptmp->pwidth; px++) {
+				printf("%02X ", (int) ptmp->plane[plane][i++]);
 			}
 			printf("\n");
 		}
 	}
 	col=0x0d, bgcol=0;
-	for(i=0; i<8; i++)
+	/*for(i=0; i<8; i++)
 	{
-		/*modexSelectPlane(PLANE(x));
-		j=1<<8;
-		*bakapee=(l[i] & j ? col:bgcol);
-		_fmemcpy(page->data + (((page->width/4) * (y+page->dy+i)) + ((x+page->dx+chw) / 4)), bakapee, 8);*/
+		//modexSelectPlane(PLANE(x));
+		//j=1<<8;
+		//*bakapee=(l[i] & j ? col:bgcol);
+		//_fmemcpy(page->data + (((page->width/4) * (y+page->dy+i)) + ((x+page->dx+chw) / 4)), bakapee, 8);
 		j=4<<8;
 		fprintf(stderr, "j<<=%u\n", j);
 		xp=0;
@@ -130,7 +129,7 @@ baka = 1;
 			fprintf(stderr, "	j>>=%u\n", j);
 		}
 		//fprintf(stderr, "\n");
-	}
+	}*/
 	chw += xp;
 	fprintf(stderr,"Project 16 planrpcx.exe. This is just a test file!\n");
 	fprintf(stderr,"version %s\n", VERSION);
