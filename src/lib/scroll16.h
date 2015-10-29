@@ -33,8 +33,7 @@
 #include "src/lib/timer.h"
 #include "src/lib/wcpu/wcpu.h"
 
-#define SPRITE
-#define BMPTYPE
+//#define SPRITE
 
 typedef struct {
 	map_t *map;

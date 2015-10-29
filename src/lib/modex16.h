@@ -77,6 +77,10 @@ void modexDrawBmp(page_t *page, int x, int y, bitmap_t *bmp);
 void modexDrawBmpRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp);
 void modexDrawSprite(page_t *page, int x, int y, bitmap_t *bmp);
 void modexDrawSpriteRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp);
+void modexDrawBmpPBuf(page_t *page, int x, int y, planar_buf_t *bmp); /*pbuf version*/
+void modexDrawBmpPBufRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, planar_buf_t *bmp);
+void modexDrawSpritePBuf(page_t *page, int x, int y, planar_buf_t *bmp);
+void modexDrawSpritePBufRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, planar_buf_t *bmp);
 void modexCopyPageRegion(page_t *dest, page_t *src, word sx, word sy, word dx, word dy, word width, word height);
 
 /* Palette fade and flash effects */

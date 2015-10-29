@@ -16,7 +16,8 @@
 //#define DEBUG_JS
 
 typedef struct {
-	bitmap_t *data;
+	bitmap_t huge *btdata;
+//	planar_buf_t huge *data;
 	word tileHeight;
 	word tileWidth;
 	unsigned int rows;

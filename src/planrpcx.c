@@ -36,7 +36,7 @@ void main(int argc, char *argv[])
 	int i;
 	word start;
 	int plane;
-	float t1, t2;
+	float t1, t2, tpee;
 	int x,y;
 	word px,py;
 	sword baka;
@@ -77,7 +77,7 @@ baka = 1;
 	start = *clockw;
 // 		oldDrawBmp(VGA, 20, 20, &bmp, 0);
 	for(i=0; i<100 ;i++) {
-		modexDrawBmp(&gvar.video.page[0], 32, 32, &bmp);
+		modexDrawBmpPBuf(&gvar.video.page[0], 32, 32, p);
 	}
 	t1 = (*clockw-start) /18.2;
 // 	start = *clockw;
@@ -88,8 +88,9 @@ baka = 1;
 		modexDrawPBuf(&gvar.video.page[0], 0, 0, p, 0);
 	}
 	t2 = (*clockw-start) /18.2;
+	/*getch();
 	modexPalUpdate1(ptmpbt.palette);
-	modexDrawPBufRegion(&gvar.video.page[0], 160, 140, 48, 32, 24, 32, ptmp, 1);
+	modexDrawBmpPBufRegion(&gvar.video.page[0], 64, 64, 48, 32, 24, 32, ptmp);*/
 	while(!kbhit())
 	{
 	}
@@ -141,8 +142,9 @@ baka = 1;
 	fprintf(stderr,"%dx%d\n", gvar.video.page[0].sw-(p->width), gvar.video.page[0].sh-(p->height));
 	planar_buf_free(p);
 	free(bakapeee);
-	fprintf(stderr, "modexDrawBmp:	%f\n", t1);
-	fprintf(stderr, "DrawPBuf:	%f\n", t2);
+	fprintf(stderr, "modexDrawBmpPBuf:	%f\n", t1);
+	fprintf(stderr, "modexDrawPBuf:	%f\n", t2);
+	fprintf(stderr, "speed difference	%f\n", t2/t1);
 	fprintf(stderr, "gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
 	fprintf(stderr, "gvar.video.page[0].height: %u\n", gvar.video.page[0].height);
 	return;
