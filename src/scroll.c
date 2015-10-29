@@ -87,7 +87,7 @@ void main(int argc, char *argv[])
 	/* draw the tiles */
 #ifdef MODEX
 	ptr = map.data;
-	//mappalptr = map.tiles->bt_data->palette;
+	mappalptr = map.tiles->btdata->palette;
 
 	/* data */
 	p = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
@@ -186,7 +186,7 @@ void main(int argc, char *argv[])
 	npc0.d=0;
 	modexDrawSpriteRegion(spri->page, npc0.x-4, npc0.y-TILEWH, 24, 64, 24, 32, &npctmp);*/
 	modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
-#ifndef	SPRITE
+#ifdef	SPRITE
 	modexClearRegion(mv[1].page, player[0].x-4, player[0].y-TILEWH, 24, 32, 15);
 #else
 	modexDrawSpritePBufRegion(spri->page, player[0].x-4, player[0].y-TILEWH, 24, 64, 24, 32, &player[0].data);

@@ -33,7 +33,8 @@
 #include "src/lib/timer.h"
 #include "src/lib/wcpu/wcpu.h"
 
-//#define SPRITE
+#define SPRITE
+#define TILERENDER
 
 typedef struct {
 	map_t *map;
