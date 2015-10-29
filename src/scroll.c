@@ -35,7 +35,7 @@ player_t player[MaxPlayers];
 //page_t screen, gvar.video.page[1], gvar.video.page[2];
 map_view_t mv[3];
 map_view_t *bg, *spri, *mask;//, *tmp;
-planar_buf_t *p;
+bitmap_t p;
 float t;
 sword bakapee;
 
@@ -90,11 +90,11 @@ void main(int argc, char *argv[])
 	mappalptr = map.tiles->data->palette;
 
 	/* data */
-	player[0].data = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
+	p = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 
 	/* create the planar buffer */
-	p = planar_buf_from_bitmap(&player[0].data);
+	(player[0].data) = *planar_buf_from_bitmap(&p);
 //0000	printf("planar buffer ok\n");
 #endif
 	/*	input!	*/
@@ -187,7 +187,7 @@ void main(int argc, char *argv[])
 	modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
 #ifdef	SPRITE
 #ifdef BMPTYPE
-	oldDrawBmp(VGA, player[0].x-4, player[0].y-TILEWH, &player[0].data, 1);
+	//oldDrawBmp(VGA, player[0].x-4, player[0].y-TILEWH, &player[0].data, 1);
 #else
 	modexDrawSpriteRegion(spri->page, player[0].x-4, player[0].y-TILEWH, 24, 64, 24, 32, &player[0].data);
 #endif

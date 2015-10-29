@@ -31,6 +31,7 @@
 #include "src/lib/16_head.h"
 #include "src/lib/timer.h"
 #include "src/lib/bitmap.h"
+#include "src/lib/planar.h"
 
 #ifdef	__DEBUG__
 //#define	__DEBUG_InputMgr__
@@ -222,7 +223,8 @@ typedef	struct
 	word d;	//direction!! wwww
 	word q; //loop variable
 	word speed;		//player speed!
-	bitmap_t data; //supposively the sprite sheet data
+	planar_buf_t data; //supposively the sprite sheet data
+//	bitmap_t data; //supposively the sprite sheet data
 	sword hp; //hitpoints of the player
 	int persist_aniframe;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	CursorInfo	info;
