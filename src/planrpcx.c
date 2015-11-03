@@ -95,7 +95,7 @@ baka = 1;
 	getch();
 	modexPalUpdate1(ptmpbt.palette);
 	//modexDrawBmpPBufRegion(&gvar.video.page[0], 64, 64, 48, 32, 24, 32, &ptmpnp);
-	modexDrawBmpPBuf(&gvar.video.page[0], 64, 64, &ptmpnp);
+	modexDrawPBuf(&gvar.video.page[0], 64, 64, &ptmpnp, 0);
 	while(!kbhit())
 	{
 	}
