@@ -75,7 +75,8 @@ word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, 
 			map->tiles->btdata = malloc(sizeof(bitmap_t));
 			map->tiles->btdata = malloc(sizeof(bitmap_t));
 			//fix this to be far~
-			bp = bitmapLoadPcx("data/ed.pcx");
+//			bp = bitmapLoadPcx("data/ed.pcx");
+			bp = bitmapLoadPcx("data/koishi^^.pcx");
 			bpp = planar_buf_from_bitmap0(&bp);
 			map->tiles->btdata = &bp;
 			//0000++++map->tiles->data = planar_buf_from_bitmap0(&bp);
