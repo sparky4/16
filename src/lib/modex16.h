@@ -31,6 +31,7 @@
 #include "src/lib/planar.h"
 #include "src/lib/16_head.h"
 #include "src/lib/16text.h"
+#include "src/lib/modex16/16render.h"
 #include "src/lib/modex16/320x240.h"
 #include "src/lib/modex16/320x200.h"
 #include "src/lib/modex16/256x192.h"
@@ -70,17 +71,7 @@ void modexShowPage(page_t *page);
 void modexPanPage(page_t *page, int dx, int dy);
 void modexSelectPlane(byte plane);
 void modexClearRegion(page_t *page, int x, int y, int w, int h, byte color);
-void modexDrawPBufRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, planar_buf_t *p, boolean sprite);
-void modexDrawPBuf(page_t *page, int x, int y, planar_buf_t *p, boolean sprite); /*temp*/
-void oldDrawBmp(byte far* page, int x, int y, bitmap_t *bmp, byte sprite);
-void modexDrawBmp(page_t *page, int x, int y, bitmap_t *bmp);
-void modexDrawBmpRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp);
-void modexDrawSprite(page_t *page, int x, int y, bitmap_t *bmp);
-void modexDrawSpriteRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp);
-void modexDrawBmpPBuf(page_t *page, int x, int y, planar_buf_t *bmp); /*pbuf version*/
-void modexDrawBmpPBufRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, planar_buf_t *bmp);
-void modexDrawSpritePBuf(page_t *page, int x, int y, planar_buf_t *bmp);
-void modexDrawSpritePBufRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, planar_buf_t *bmp);
+/* moved to src/lib/modex16/16render.c */
 void modexCopyPageRegion(page_t *dest, page_t *src, word sx, word sy, word dx, word dy, word width, word height);
 
 /* Palette fade and flash effects */
