@@ -60,7 +60,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			{
 				modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x-4, player[pn].y-TILEWH, player[pn].x-4, player[pn].y-TILEWH, 24, 32);
 #ifdef SPRITE
-				modexDrawSpritePBufRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 24, 32, &player[pn].data);
+				PBUFFUN(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 24, 32, &player[pn].data);
 #else
 				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 14);
 #endif
@@ -101,7 +101,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			{
 				modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x-4, player[pn].y-TILEWH, player[pn].x-4, player[pn].y-TILEWH, 24, 32);
 #ifdef SPRITE
-				modexDrawSpritePBufRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 96, 24, 32, &player[pn].data);
+				PBUFFUN(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 96, 24, 32, &player[pn].data);
 #else
 				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 10);
 #endif
@@ -142,7 +142,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			{
 				modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x-4, player[pn].y-TILEWH, player[pn].x-4, player[pn].y-TILEWH, 24, 32);
 #ifdef SPRITE
-				modexDrawSpritePBufRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 64, 24, 32, &player[pn].data);
+				PBUFFUN(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 64, 24, 32, &player[pn].data);
 #else
 				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 9);
 #endif
@@ -183,7 +183,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			{
 				modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x-4, player[pn].y-TILEWH, player[pn].x-4, player[pn].y-TILEWH, 24, 32);
 #ifdef SPRITE
-				modexDrawSpritePBufRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 0, 24, 32, &player[pn].data);
+				PBUFFUN(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 0, 24, 32, &player[pn].data);
 #else
 				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 12);
 #endif
@@ -661,10 +661,10 @@ void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword s
 	}
 
 #ifdef SPRITE
-#define FRAME1 modexDrawSpritePBufRegion(pip[1].page, x, y, 48, dire, 24, 32, &player[playnum].data);
-#define FRAME2 modexDrawSpritePBufRegion(pip[1].page, x, y, 24, dire, 24, 32, &player[playnum].data);
-#define FRAME3 modexDrawSpritePBufRegion(pip[1].page, x, y, 0, dire, 24, 32, &player[playnum].data);
-#define FRAME4 modexDrawSpritePBufRegion(pip[1].page, x, y, 24, dire, 24, 32, &player[playnum].data);
+#define FRAME1 PBUFFUN(pip[1].page, x, y, 48, dire, 24, 32, &player[playnum].data);
+#define FRAME2 PBUFFUN(pip[1].page, x, y, 24, dire, 24, 32, &player[playnum].data);
+#define FRAME3 PBUFFUN(pip[1].page, x, y, 0, dire, 24, 32, &player[playnum].data);
+#define FRAME4 PBUFFUN(pip[1].page, x, y, 24, dire, 24, 32, &player[playnum].data);
 #else
 #define FRAME1 modexClearRegion(pip[1].page, x, y, 24, 32, 2+dire);
 #define FRAME2 modexClearRegion(pip[1].page, x, y, 24, 32, 1+dire);

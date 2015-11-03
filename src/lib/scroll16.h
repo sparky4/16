@@ -34,7 +34,8 @@
 #include "src/lib/wcpu/wcpu.h"
 
 #define SPRITE
-#define TILERENDER
+#define PBUFFUN modexDrawBmpPBufRegion
+//#define TILERENDER
 
 typedef struct {
 	map_t *map;
