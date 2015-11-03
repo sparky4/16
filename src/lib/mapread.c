@@ -13,6 +13,7 @@ word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, 
 	dword i;
 	word j;//, k;
 	bitmap_t bp;
+	planar_buf_t bpp;
 	#ifdef DEBUG_JS
 	if(indent==0)
 	{
@@ -71,10 +72,14 @@ word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, 
 //			fprintf(stdout, "\n%.*s[xx[%d|%d]xx]\n", (t+1)->end - (t+1)->start, js+(t+1)->start, &(t+1)->size, (t+1)->size);
 			map->data = malloc(sizeof(byte) * (t+1)->size);
 			map->tiles = malloc(sizeof(tiles_t));
-			//map->tiles->data = malloc(sizeof(bitmap_t));
+			map->tiles->btdata = malloc(sizeof(bitmap_t));
+			map->tiles->btdata = malloc(sizeof(bitmap_t));
 			//fix this to be far~
 			bp = bitmapLoadPcx("data/ed.pcx");
-			map->tiles->data = planar_buf_from_bitmap0(&bp);
+			bpp = planar_buf_from_bitmap0(&bp);
+			map->tiles->btdata = &bp;
+			//0000++++map->tiles->data = planar_buf_from_bitmap0(&bp);
+			map->tiles->data = bpp;
 			//map->tiles->data->data = malloc((16/**2*/)*16);
 			//map->tiles->data->width = (16/**2*/);
 			//map->tiles->data->height= 16;

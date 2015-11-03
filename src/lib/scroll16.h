@@ -34,7 +34,7 @@
 #include "src/lib/wcpu/wcpu.h"
 
 //#define SPRITE
-#define TILERENDER
+//#define TILERENDER
 
 #define PBUFSFUN		modexDrawSpritePBufRegion
 #define PBUFBFUN		modexDrawBmpPBufRegion
