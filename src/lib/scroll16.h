@@ -33,9 +33,11 @@
 #include "src/lib/timer.h"
 #include "src/lib/wcpu/wcpu.h"
 
-#define SPRITE
-#define PBUFFUN modexDrawBmpPBufRegion
+//#define SPRITE
 //#define TILERENDER
+
+#define PBUFSFUN modexDrawSpritePBufRegion
+#define PBUFBFUN modexDrawBmpPBufRegion
 
 typedef struct {
 	map_t *map;

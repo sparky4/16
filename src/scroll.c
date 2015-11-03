@@ -39,8 +39,6 @@ bitmap_t p;
 float t;
 sword bakapee;
 
-void main(int argc, char *argv[])
-{
 //	word panswitch=0, panq=1, pand=0;
 	word panpagenum=0; //for panning!
 	unsigned int i;
@@ -56,6 +54,10 @@ void main(int argc, char *argv[])
 	byte *gpal;
 	byte *ptr;
 	byte *mappalptr;
+
+void main(int argc, char *argv[])
+{
+
 	byte *mesg=malloc(sizeof(dword));
 
 
@@ -75,8 +77,6 @@ void main(int argc, char *argv[])
 	/* create the map */
 	fprintf(stderr, "testing map load~\n");
 	loadmap("data/test.map", &map);
-//0000	map.width=0;
-//0000	map.height=0;
 	chkmap(&map, 0);
 	printf("chkmap ok\n");
 	fprintf(stderr, "yay map loaded~~\n");
@@ -94,8 +94,8 @@ void main(int argc, char *argv[])
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 
 	/* create the planar buffer */
-	(player[0].data) = *planar_buf_from_bitmap(&p);
-//0000	printf("planar buffer ok\n");
+////++++	(player[0].data) = *planar_buf_from_bitmap(&p);
+
 #endif
 	/*	input!	*/
 	IN_Startup();
@@ -113,7 +113,7 @@ void main(int argc, char *argv[])
 
 	textInit();
 	VGAmodeX(bakapee, &gvar);
-	printf("%dx%d\n", gvar.video.page[0].sw, gvar.video.page[0].sh);
+//	printf("%dx%d\n", gvar.video.page[0].sw, gvar.video.page[0].sh);
 #ifdef FADE
 	modexPalBlack();	//reset the palette~
 #endif
@@ -145,6 +145,7 @@ void main(int argc, char *argv[])
 	mv[0].page = &gvar.video.page[0];
 	gvar.video.page[1] = modexNextPage(mv[0].page);
 	mv[1].page = &gvar.video.page[1];
+
 	gvar.video.page[2] = modexNextPageFlexibleSize(mv[1].page, gvar.video.page[0].sw, gvar.video.page[0].sh);	//(352*176)+1024 is the remaining amount of memory left wwww
 	//gvar.video.page[2] = modexNextPage0(mv2.page, 320, 192);	//(352*176)+1024 is the remaining amount of memory left wwww
 	mv[2].page = &gvar.video.page[2];
@@ -153,12 +154,12 @@ void main(int argc, char *argv[])
 	bg = &mv[0];
 	spri = &mv[1];
 	mask = &mv[2];
-
+//IN_Ack();
 //TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(bg, 0, 0);
 	mapGoTo(spri, 0, 0);
 	//mapGoTo(mask, 0, 0);
-
+//IN_Ack();
 	//TODO: put player in starting position of spot
 	//default player position on the viewable map
 	player[0].tx = bg->tx + bg->page->tilemidposscreenx;
@@ -185,15 +186,16 @@ void main(int argc, char *argv[])
 	npc0.q=1;
 	npc0.d=0;
 	modexDrawSpriteRegion(spri->page, npc0.x-4, npc0.y-TILEWH, 24, 64, 24, 32, &npctmp);*/
+IN_Ack();
 	modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
-#ifdef	SPRITE
+#ifndef	SPRITE
 	modexClearRegion(mv[1].page, player[0].x-4, player[0].y-TILEWH, 24, 32, 15);
 #else
-	modexDrawSpritePBufRegion(spri->page, player[0].x-4, player[0].y-TILEWH, 24, 64, 24, 32, &player[0].data);
+	PBUFSFUN(spri->page, player[0].x-4, player[0].y-TILEWH, 24, 64, 24, 32, &player[0].data);
 #endif
-
+IN_Ack();
 	modexShowPage(spri->page);
-	modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 1);
+	//modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 1);
 #ifdef MODEX
 #ifdef FADE
 	modexFadeOn(4, gpal);
