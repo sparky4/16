@@ -485,7 +485,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 		{
 			case 0:
 #ifndef TILERENDER
-				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, ((t->debug_data[i])+1)*2);
+				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, ((t->debug_data[i])+1));
 				//cannot print number value du to it being slow as bakapee
 #else
 				PBUFBFUN(page, x, y, rx, ry, t->tileWidth, t->tileHeight, &(t->data));
@@ -493,7 +493,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 #endif
 			break;
 			case 1:
-				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, (t->debug_data[i])+1);
+				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, (t->debug_data[i]+1));
 				//modexprintbig(page, x, y, 1, 15, 0, (t->debug_data));
 				/*for(texty=0; texty<2; texty++)
 				{
