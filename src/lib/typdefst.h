@@ -25,6 +25,17 @@
 
 #include "src/lib/types.h"
 
+
+#define AARED		"\x1b[41;31m"
+#define AABLUE		"\x1b[44;34m"
+#define AAGREEN	"\x1b[42;32m"
+#define AAYELLOW	"\x1b[43;33m"
+#define AAGREY		"\x1b[47;37m"
+#define AABLACK	"\x1b[40;30m"
+#define AAWHITE		"\x1b[47;37m"
+#define AAMAGENTA	"\x1b[45;35m"
+#define AARESET	"\x1b[0m"
+
 /*
  * typedefs of the game variables!
  */

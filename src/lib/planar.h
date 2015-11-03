@@ -31,11 +31,14 @@
 #include "src/lib/16_mm.h"
 #include "src/lib/16_hc.h"
 
+extern byte *modexNewPal();
+
 typedef struct {
 	byte huge *plane[4];     /* 4 planes of image data */
 	word width;         /* width of the image (spread across 4 planes) */
 	word height;        /* height of the image (spread across 4 planes) */
 	word pwidth;        /* the number of bytes in each plane */
+	byte *palette;
 } planar_buf_t;
 
 /* creates a planar buffer from the bitmap data.
@@ -43,11 +46,15 @@ typedef struct {
    be destroyed with the planar_buf_free function when no longer
    needed.
  */
-planar_buf_t *planar_buf_from_bitmap(bitmap_t *b);
+planar_buf_t huge *planar_buf_from_bitmap(bitmap_t *b);
 
 /* allocates a planar buffer with specified dimensions */
-planar_buf_t *planar_buf_alloc(word width, word height);
+planar_buf_t huge *planar_buf_alloc(word width, word height);
 
 /* deallocates a planar buffer */
 void planar_buf_free(planar_buf_t *p);
+
+/*	non pointer version~	*/
+planar_buf_t planar_buf_from_bitmap0(bitmap_t *b);
+
 #endif

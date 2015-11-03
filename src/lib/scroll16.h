@@ -34,10 +34,11 @@
 #include "src/lib/wcpu/wcpu.h"
 
 //#define SPRITE
-//#define TILERENDER
+#define TILERENDER
 
-#define PBUFSFUN modexDrawSpritePBufRegion
-#define PBUFBFUN modexDrawBmpPBufRegion
+#define PBUFSFUN		modexDrawSpritePBufRegion
+#define PBUFBFUN		modexDrawBmpPBufRegion
+#define PLAYERBMPDATA	&player[pn].data
 
 typedef struct {
 	map_t *map;

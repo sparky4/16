@@ -28,6 +28,8 @@
 #include "src/lib/types.h"
 #include "src/lib/16_head.h"
 
+#define     PALSIZE            768
+
 typedef struct {
 	byte huge *data;
 	word width;

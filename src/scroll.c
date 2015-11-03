@@ -36,6 +36,8 @@ player_t player[MaxPlayers];
 map_view_t mv[3];
 map_view_t *bg, *spri, *mask;//, *tmp;
 bitmap_t p;
+word pn=0;
+static planar_buf_t pp;
 float t;
 sword bakapee;
 
@@ -57,15 +59,14 @@ sword bakapee;
 
 void main(int argc, char *argv[])
 {
-
 	byte *mesg=malloc(sizeof(dword));
-
 
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
 
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
+	//player[0].data = &pp;
 
 	printf("starting timer\n");
 	start_timer(&gvar);
@@ -87,7 +88,7 @@ void main(int argc, char *argv[])
 	/* draw the tiles */
 #ifdef MODEX
 	ptr = map.data;
-	mappalptr = map.tiles->btdata->palette;
+	//mappalptr = map.tiles->btdata->palette;
 
 	/* data */
 	p = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
@@ -95,6 +96,9 @@ void main(int argc, char *argv[])
 
 	/* create the planar buffer */
 ////++++	(player[0].data) = *planar_buf_from_bitmap(&p);
+	printf("load pee!!\n");
+	pp = planar_buf_from_bitmap0(&p);
+	printf("done!\n");
 
 #endif
 	/*	input!	*/
@@ -186,14 +190,15 @@ void main(int argc, char *argv[])
 	npc0.q=1;
 	npc0.d=0;
 	modexDrawSpriteRegion(spri->page, npc0.x-4, npc0.y-TILEWH, 24, 64, 24, 32, &npctmp);*/
-IN_Ack();
+
 	modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
 #ifndef	SPRITE
 	modexClearRegion(mv[1].page, player[0].x-4, player[0].y-TILEWH, 24, 32, 15);
 #else
-	PBUFSFUN(spri->page, player[0].x-4, player[0].y-TILEWH, 24, 64, 24, 32, &player[0].data);
+	//PBUFSFUN(spri->page, player[0].x-4, player[0].y-TILEWH, 24, 64, 24, 32,	PLAYERBMPDATA);
+	PBUFSFUN(spri->page, player[0].x-4, player[0].y-TILEWH, 24, 64, 24, 32,	&pp);
 #endif
-IN_Ack();
+
 	modexShowPage(spri->page);
 	//modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 1);
 #ifdef MODEX

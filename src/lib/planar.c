@@ -30,10 +30,11 @@
    be destroyed with the planar_buf_free function when no longer
    needed.
  */
-planar_buf_t *
+planar_buf_t huge *
 planar_buf_from_bitmap(bitmap_t *b) {
 	planar_buf_t *p;
 	int plane, bi, pi, x, y;
+	word q;
 
 	/* allocate the buffer */
 	p = planar_buf_alloc(b->width, b->height);
@@ -59,12 +60,18 @@ planar_buf_from_bitmap(bitmap_t *b) {
 	if(plane) pi++;
 	}
 
+	p->palette = modexNewPal();
+	for(;q<PALSIZE;q++)
+	{
+		p->palette[q]=b->palette[q];
+	}
+
 	return p;
 }
 
 
 /* allocates a planar buffer with specified dimensions */
-planar_buf_t *
+planar_buf_t huge *
 planar_buf_alloc(word width, word height) {
 	planar_buf_t *p;
 	int i;
@@ -96,4 +103,42 @@ planar_buf_free(planar_buf_t *p) {
 
 	/* free the structure */
 	free(p);
+}
+
+/*	non pointer version	*/
+planar_buf_t planar_buf_from_bitmap0(bitmap_t *b) {
+	planar_buf_t p;
+	int plane, bi, pi, x, y;
+	word q=0;
+
+	/* allocate the buffer */
+	p = *planar_buf_alloc(b->width, b->height);
+
+	/* copy the bitmap data into the planar format */
+	bi=0;
+	pi=0;
+	for(y=0; y < b->height; y++) {
+	/* start on the first plane */
+	plane=0;
+	for(x=0; x < b->width; x++) {
+		/* copy to each plane */
+		p.plane[plane++][pi]=b->data[bi++];
+
+		/* handle the completion of 4 planes. */
+		if(plane==4) {
+			plane=0;
+			pi++;
+		}
+	}
+
+	/* correct for images not divisible by 4 */
+	if(plane) pi++;
+	}
+	p.palette = modexNewPal();
+	for(;q<PALSIZE;q++)
+	{
+		p.palette[q]=b->palette[q];
+	}
+
+	return p;
 }

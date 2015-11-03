@@ -60,7 +60,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			{
 				modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x-4, player[pn].y-TILEWH, player[pn].x-4, player[pn].y-TILEWH, 24, 32);
 #ifdef SPRITE
-				PBUFSFUN(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 24, 32, &player[pn].data);
+				PBUFSFUN(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 24, 32, PLAYERBMPDATA);
 #else
 				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 14);
 #endif
@@ -101,7 +101,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			{
 				modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x-4, player[pn].y-TILEWH, player[pn].x-4, player[pn].y-TILEWH, 24, 32);
 #ifdef SPRITE
-				PBUFSFUN(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 96, 24, 32, &player[pn].data);
+				PBUFSFUN(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 96, 24, 32, PLAYERBMPDATA);
 #else
 				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 10);
 #endif
@@ -142,7 +142,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			{
 				modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x-4, player[pn].y-TILEWH, player[pn].x-4, player[pn].y-TILEWH, 24, 32);
 #ifdef SPRITE
-				PBUFSFUN(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 64, 24, 32, &player[pn].data);
+				PBUFSFUN(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 64, 24, 32, PLAYERBMPDATA);
 #else
 				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 9);
 #endif
@@ -183,7 +183,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			{
 				modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x-4, player[pn].y-TILEWH, player[pn].x-4, player[pn].y-TILEWH, 24, 32);
 #ifdef SPRITE
-				PBUFSFUN(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 0, 24, 32, &player[pn].data);
+				PBUFSFUN(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 0, 24, 32, PLAYERBMPDATA);
 #else
 				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 12);
 #endif
@@ -478,8 +478,8 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 	}
 	else
 	{
-		rx = (((i-1) % ((t->btdata->width)/t->tileWidth)) * t->tileWidth);
-		ry = (((i-1) / ((t->btdata->height)/t->tileHeight)) * t->tileHeight);
+		rx = (((i-1) % ((t->data.width)/t->tileWidth)) * t->tileWidth);
+		ry = (((i-1) / ((t->data.height)/t->tileHeight)) * t->tileHeight);
 ////0000printf("i=%d\n", i);
 		switch(t->debug_text)
 		{
@@ -488,7 +488,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, ((t->debug_data[i])+1)*2);
 				//cannot print number value du to it being slow as bakapee
 #else
-				PBUFBFUN(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
+				PBUFBFUN(page, x, y, rx, ry, t->tileWidth, t->tileHeight, &(t->data));
 				//modexDrawBmpRegion(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->btdata));
 #endif
 			break;
@@ -618,53 +618,53 @@ void shinku(map_view_t *pip, global_game_variables_t *gv)
 	}
 }
 
-void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch)
+void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch)
 {
-	sword x = player[playnum].x;
-	sword y = player[playnum].y;
+	sword x = player[pn].x;
+	sword y = player[pn].y;
 #ifdef SPRITE
 	word dire=32; //direction
 #else
 	word dire=8; //direction
 #endif
 	sword qq; //scroll offset
-	word ls = player[playnum].persist_aniframe;
+	word ls = player[pn].persist_aniframe;
 
 	if(scrollswitch==0) qq = 0;
-	else qq = ((player[playnum].q)*(player[playnum].speed));
+	else qq = ((player[pn].q)*(player[pn].speed));
 	x-=4;
 	y-=TILEWH;
-	switch (player[playnum].d)
+	switch (player[pn].d)
 	{
 		case 0:
 			//up
-			dire*=player[playnum].d;
+			dire*=player[pn].d;
 			y-=qq;
 		break;
 		case 3:
 			// right
-			dire*=(player[playnum].d-2);
+			dire*=(player[pn].d-2);
 			x+=qq;
 		break;
 		case 2:
 		break;
 		case 4:
 			//down
-			dire*=(player[playnum].d-2);
+			dire*=(player[pn].d-2);
 			y+=qq;
 		break;
 		case 1:
 			//left
-			dire*=(player[playnum].d+2);
+			dire*=(player[pn].d+2);
 			x-=qq;
 		break;
 	}
 
 #ifdef SPRITE
-#define FRAME1 PBUFSFUN(pip[1].page, x, y, 48, dire, 24, 32, &player[playnum].data);
-#define FRAME2 PBUFSFUN(pip[1].page, x, y, 24, dire, 24, 32, &player[playnum].data);
-#define FRAME3 PBUFSFUN(pip[1].page, x, y, 0, dire, 24, 32, &player[playnum].data);
-#define FRAME4 PBUFSFUN(pip[1].page, x, y, 24, dire, 24, 32, &player[playnum].data);
+#define FRAME1 PBUFSFUN(pip[1].page, x, y, 48, dire, 24, 32,	PLAYERBMPDATA);
+#define FRAME2 PBUFSFUN(pip[1].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATA);
+#define FRAME3 PBUFSFUN(pip[1].page, x, y, 0, dire, 24, 32,	PLAYERBMPDATA);
+#define FRAME4 PBUFSFUN(pip[1].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATA);
 #else
 #define FRAME1 modexClearRegion(pip[1].page, x, y, 24, 32, 2+dire);
 #define FRAME2 modexClearRegion(pip[1].page, x, y, 24, 32, 1+dire);
