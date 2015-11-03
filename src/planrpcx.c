@@ -30,6 +30,7 @@
 global_game_variables_t gvar;
 bitmap_t bmp, ptmpbt;
 planar_buf_t *p, *ptmp;
+planar_buf_t pnp;
 
 void main(int argc, char *argv[])
 {
@@ -57,6 +58,7 @@ baka = 1;
 
 	bmp = bitmapLoadPcx(bakapeee);
 	p = planar_buf_from_bitmap(&bmp);
+	pnp = planar_buf_from_bitmap0(&bmp);
 	ptmpbt = bitmapLoadPcx("data/ptmp.pcx");
 	ptmp = planar_buf_from_bitmap(&ptmpbt);
 	VGAmodeX(baka, &gvar);
@@ -77,7 +79,8 @@ baka = 1;
 	start = *clockw;
 // 		oldDrawBmp(VGA, 20, 20, &bmp, 0);
 	for(i=0; i<100 ;i++) {
-		modexDrawBmpPBuf(&gvar.video.page[0], 32, 32, p);
+		modexDrawBmpPBufRegion	(&gvar.video.page[0], 32, 32, 0, 0, pnp.width, pnp.height, &pnp);
+//		modexDrawBmpPBuf		(&gvar.video.page[0], 32, 32, p);
 	}
 	t1 = (*clockw-start) /18.2;
 // 	start = *clockw;
