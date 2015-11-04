@@ -5,6 +5,8 @@ code it!
 
 what?
 
+planar function from pcx must be made~
+
 font! ok
 jis! ...
 memory segmentation! trying ow2
