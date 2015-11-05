@@ -30,7 +30,7 @@
 #include "src/lib/16_head.h"
 #include "src/lib/bitmap.h"
 #include "src/lib/planar.h"
-#include "src/lib/modex16/planar16.h"
+#include "src/lib/modex16/16planar.h"
 #include "src/lib/16text.h"
 #include "src/lib/modex16/16render.h"
 #include "src/lib/modex16/320x240.h"
@@ -50,6 +50,7 @@
 #define PAGE_OFFSET(x,y) (((y)<<6)+((y)<<4)+((x)>>2))
 #define PLANE(x) (1<< (x&3))
 #define SELECT_ALL_PLANES() outpw(0x03c4, 0xff02)
+#define     PALSIZE            768
 
 typedef union
 {

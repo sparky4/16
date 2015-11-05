@@ -40,6 +40,30 @@
  * typedefs of the game variables!
  */
 typedef struct {
+	byte huge *data;
+	word width;
+	word height;
+	byte *palette;
+	word offset;
+} bitmap_t;
+
+typedef struct {
+	byte **data;
+	word ntiles;   /* the number of tiles */
+	word twidth;   /* width of the tiles */
+	word theight;  /* height of the tiles */
+	byte *palette; /* palette for the tile set */
+} tileset_t;
+
+typedef struct {
+	byte huge *plane[4];     /* 4 planes of image data */
+	word width;         /* width of the image (spread across 4 planes) */
+	word height;        /* height of the image (spread across 4 planes) */
+	word pwidth;        /* the number of bytes in each plane */
+	byte *palette;
+} planar_buf_t;
+
+typedef struct {
 	word id;	/* the Identification number of the page~ For layering~ */
 	byte far* data;	/* the data for the page */
 	word dx;		/* col we are viewing on the virtual screen */

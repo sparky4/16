@@ -25,27 +25,8 @@
 
 #ifndef BITMAP_H
 #define BITMAP_H
-#include "src/lib/types.h"
-#include "src/lib/16_head.h"
 
-#define     PALSIZE            768
-
-typedef struct {
-	byte huge *data;
-	word width;
-	word height;
-	byte *palette;
-	word offset;
-//	byte far *font;
-} bitmap_t;
-
-typedef struct {
-	byte **data;
-	word ntiles;   /* the number of tiles */
-	word twidth;   /* width of the tiles */
-	word theight;  /* height of the tiles */
-	byte *palette; /* palette for the tile set */
-} tileset_t;
+#include "src/lib/modex16.h"
 
 bitmap_t bitmapLoadPcx(char *filename);
 tileset_t bitmapLoadPcxTiles(char *filename, word twidth, word theight);

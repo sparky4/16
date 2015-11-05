@@ -23,7 +23,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
-#include "src/lib/modex16/planar16.h"
+#include "src/lib/modex16/16planar.h"
 
 #ifndef PCXHEADER_H
 #define PCXHEADER_H

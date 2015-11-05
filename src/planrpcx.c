@@ -24,7 +24,6 @@
 #include <dos.h>
 #include <string.h>
 #include "src/lib/modex16.h"
-#include "src/lib/modex16/planar16.h"
 
 global_game_variables_t gvar;
 planar_buf_t huge p, ptmp;

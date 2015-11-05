@@ -28,8 +28,6 @@
 
 #include "src/lib/planar.h"
 
-extern byte *modexNewPal();
-
 /* creates a planar buffer from the bitmap data.
    The planar buffer is dynamically allocated, and should
    be destroyed with the planar_buf_free function when no longer

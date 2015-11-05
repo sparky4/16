@@ -26,18 +26,9 @@
 #ifndef PLANAR_H
 #define PLANAR_H
 
-#include "src/lib/types.h"
-#include "src/lib/16_head.h"
-#include "src/lib/bitmap.h"
-//#include "src/lib/modex16.h"
+#include "src/lib/modex16.h"
 
-typedef struct {
-	byte huge *plane[4];     /* 4 planes of image data */
-	word width;         /* width of the image (spread across 4 planes) */
-	word height;        /* height of the image (spread across 4 planes) */
-	word pwidth;        /* the number of bytes in each plane */
-	byte *palette;
-} planar_buf_t;
+extern byte *modexNewPal();
 
 /* creates a planar buffer from the bitmap data.
    The planar buffer is dynamically allocated, and should
