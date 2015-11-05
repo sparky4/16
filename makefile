@@ -278,7 +278,7 @@ modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c
 bakapee.$(OBJ): $(SRCLIB)bakapee.h $(SRCLIB)bakapee.c
 	wcl $(FLAGS) -c $(SRCLIB)bakapee.c
 
-16render.$(OBJ): $(MODEXLIB)16render.h $(MODEXLIB)16render.c
+16render.$(OBJ): $(MODEXLIB)16render.h $(MODEXLIB)16render.c $(MODEXLIB)planar16.h
 	wcl $(FLAGS) -c $(MODEXLIB)16render.c
 
 planar16.$(OBJ): $(MODEXLIB)planar16.h $(MODEXLIB)planar16.c

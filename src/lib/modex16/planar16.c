@@ -24,8 +24,9 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include "src/lib/modex16/planar16.h"
-#include "src/lib/modex16.h"
 
+#ifndef PCXHEADER_H
+#define PCXHEADER_H
 static struct pcxHeader {
 	byte id;
 	byte version;
@@ -45,7 +46,7 @@ static struct pcxHeader {
 	word vScreenSize;
 	byte padding[54];
 } head;
-
+#endif /*PCXHEADER_H*/
 
 static void loadPcxpbufStage1(FILE *file, planar_buf_t *result) {
 	int index;
@@ -168,7 +169,7 @@ planarLoadPcxTiles(char *filename, word twidth, word theight) {
 	}
 
 	/* load the first part of the pcx file */
-	loadPcxStage1(file, &result);
+	loadPcxpbufStage1(file, &result);
 
 	/* get the number of tiles and set up the result structure */
 	ts.twidth = twidth;
@@ -184,7 +185,7 @@ planarLoadPcxTiles(char *filename, word twidth, word theight) {
 	}*/
 
 	/* finish off the file */
-	loadPcxPalette(file, &result);
+	//++++loadPcxPalette(file, &result);
 
 	fclose(file);
 

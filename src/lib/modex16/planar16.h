@@ -28,6 +28,7 @@
 #ifndef PLANW_H
 #define PLANW_H
 
+#include "src/lib/planar.h"
 #include "src/lib/modex16.h"
 
 planar_buf_t planarLoadPcx(char *filename);

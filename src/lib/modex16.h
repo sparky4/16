@@ -27,9 +27,10 @@
 //#include <conio.h>
 
 #include "src/lib/types.h"
+#include "src/lib/16_head.h"
 #include "src/lib/bitmap.h"
 #include "src/lib/planar.h"
-#include "src/lib/16_head.h"
+#include "src/lib/modex16/planar16.h"
 #include "src/lib/16text.h"
 #include "src/lib/modex16/16render.h"
 #include "src/lib/modex16/320x240.h"
@@ -37,7 +38,6 @@
 #include "src/lib/modex16/256x192.h"
 #include "src/lib/modex16/192x144_.h"
 #include "src/lib/modex16/160x120.h"
-#include "src/lib/modex16/planar16.h"
 
 //320x240 = 20x15
 //192x144 = 12x9

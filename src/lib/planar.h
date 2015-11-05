@@ -26,7 +26,10 @@
 #ifndef PLANAR_H
 #define PLANAR_H
 
-#include "src/lib/modex16.h"
+#include "src/lib/types.h"
+#include "src/lib/16_head.h"
+#include "src/lib/bitmap.h"
+//#include "src/lib/modex16.h"
 
 typedef struct {
 	byte huge *plane[4];     /* 4 planes of image data */

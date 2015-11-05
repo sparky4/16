@@ -22,8 +22,13 @@
 /*
  * Implimentation of the planar buffer files.
  */
+#include <stdio.h>
 #include <stdlib.h>
+#include <malloc.h>
+
 #include "src/lib/planar.h"
+
+extern byte *modexNewPal();
 
 /* creates a planar buffer from the bitmap data.
    The planar buffer is dynamically allocated, and should

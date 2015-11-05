@@ -26,6 +26,8 @@
 #include "src/lib/bitmap.h"
 #include "src/lib/modex16.h"
 
+#ifndef PCXHEADER_H
+#define PCXHEADER_H
 static struct pcxHeader {
 	byte id;
 	byte version;
@@ -45,6 +47,7 @@ static struct pcxHeader {
 	word vScreenSize;
 	byte padding[54];
 } head;
+#endif /*PCXHEADER_H*/
 
 
 static void loadPcxStage1(FILE *file, bitmap_t *result) {

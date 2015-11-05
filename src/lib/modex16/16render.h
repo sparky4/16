@@ -23,7 +23,6 @@
 #ifndef __RENDER_H__
 #define __RENDER_H__
 
-#include "src/lib/planar.h"
 #include "src/lib/modex16.h"
 
 void modexDrawPBufRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, planar_buf_t *p, boolean sprite);
