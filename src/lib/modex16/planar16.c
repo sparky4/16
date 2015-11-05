@@ -61,12 +61,11 @@ static void loadPcxStage1(FILE *file, planar_buf_t *result) {
 
 	/* make sure this  is 8bpp */
 	if(head.bpp != 8) {
-		printf("I only know how to handle 8bpp pcx files!\n");
+		fprintf(stderr, "I only know how to handle 8bpp pcx files!\n");
 		fclose(file);
-		exit(-2);
+		//exit(-2);
 	}
 }
-
 
 static void loadPcxPalette(FILE *file, planar_buf_t *result) {
 	byte val;
@@ -111,7 +110,7 @@ planar_buf_t planarLoadPcx(char *filename)
 	loadPcxStage1(file, &result);
 
 	/* allocate the buffer */
-	bufSize = (/*(dword)*/result.pwidth * result.height);
+	bufSize = (/*(dword)*/result.width * result.height);
 	result = *planar_buf_alloc(result.width, result.height);
 	if(!result.plane[0]) {
 		fprintf(stderr, "Could not allocate memory for bitmap data.");
