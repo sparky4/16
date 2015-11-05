@@ -27,9 +27,6 @@
 #define PLANAR_H
 
 #include "src/lib/bitmap.h"
-#include "src/lib/16_ca.h"
-#include "src/lib/16_mm.h"
-#include "src/lib/16_hc.h"
 
 extern byte *modexNewPal();
 
@@ -54,7 +51,5 @@ planar_buf_t huge *planar_buf_alloc(word width, word height);
 /* deallocates a planar buffer */
 void planar_buf_free(planar_buf_t *p);
 
-/*	non pointer version~	*/
-planar_buf_t planar_buf_from_bitmap0(bitmap_t *b);
 
 #endif

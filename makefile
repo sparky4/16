@@ -72,7 +72,7 @@ DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) timer.$(OBJ)
 #
 #3812intf.$(OBJ)
-GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ)
+GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) planar16.$(OBJ)
 
 TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe
 # tsthimem.exe
@@ -280,6 +280,9 @@ bakapee.$(OBJ): $(SRCLIB)bakapee.h $(SRCLIB)bakapee.c
 
 16render.$(OBJ): $(MODEXLIB)16render.h $(MODEXLIB)16render.c
 	wcl $(FLAGS) -c $(MODEXLIB)16render.c
+
+planar16.$(OBJ): $(MODEXLIB)planar16.h $(MODEXLIB)planar16.c
+	wcl $(FLAGS) -c $(MODEXLIB)planar16.c
 
 bitmap.$(OBJ): $(SRCLIB)bitmap.h $(SRCLIB)bitmap.c
 	wcl $(FLAGS) -c $(SRCLIB)bitmap.c

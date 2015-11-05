@@ -24,13 +24,10 @@
 #include <dos.h>
 #include <string.h>
 #include "src/lib/modex16.h"
-#include "src/lib/bitmap.h"
-#include "src/lib/planar.h"
+#include "src/lib/modex16/planar16.h"
 
 global_game_variables_t gvar;
-bitmap_t bmp, ptmpbt;
-//planar_buf_t *p, *ptmp;
-planar_buf_t pnp, ptmpnp;
+planar_buf_t huge p, ptmp;
 
 void main(int argc, char *argv[])
 {
@@ -56,17 +53,13 @@ void main(int argc, char *argv[])
 //	else
 baka = 1;
 
-	bmp = bitmapLoadPcx(bakapeee);
-	//p = planar_buf_from_bitmap(&bmp);
-	pnp = planar_buf_from_bitmap0(&bmp);
-	ptmpbt = bitmapLoadPcx("data/ptmp.pcx");
-	//ptmp = planar_buf_from_bitmap(&ptmpbt);
-	ptmpnp = planar_buf_from_bitmap0(&ptmpbt);
+	p = planarLoadPcx(bakapeee);
+	ptmp = planarLoadPcx("data/ptmp.pcx");
 	VGAmodeX(baka, &gvar);
 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 
 	/* fix up the palette and everything */
-	modexPalUpdate1(bmp.palette);
+	modexPalUpdate1(p.palette);
 
 	/* clear and draw one sprite and one bitmap */
 	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].sw, gvar.video.page[0].sh, 0);
@@ -80,8 +73,8 @@ baka = 1;
 	start = *clockw;
 // 		oldDrawBmp(VGA, 20, 20, &bmp, 0);
 	for(i=0; i<100 ;i++) {
-//		modexDrawBmpPBufRegion	(&gvar.video.page[0], 32, 32, 0, 0, pnp.width, pnp.height, &pnp);
-		modexDrawBmpPBuf		(&gvar.video.page[0], 32, 32, &pnp);
+		modexDrawBmpPBufRegion	(&gvar.video.page[0], 32, 32, 0, 0, p.width, p.height, &p);
+//		modexDrawBmpPBuf		(&gvar.video.page[0], 32, 32, p);
 	}
 	t1 = (*clockw-start) /18.2;
 // 	start = *clockw;
@@ -89,13 +82,13 @@ baka = 1;
 // 	t2 = (*clockw-start)/18.2;
 	start = *clockw;
 	for(i=0; i<100 ;i++) {
-		modexDrawPBuf(&gvar.video.page[0], 0, 0, &pnp, 0);
+		modexDrawPBuf(&gvar.video.page[0], 0, 0, &p, 0);
 	}
 	t2 = (*clockw-start) /18.2;
 	getch();
-	modexPalUpdate1(ptmpbt.palette);
-	//modexDrawBmpPBufRegion(&gvar.video.page[0], 64, 64, 48, 32, 24, 32, &ptmpnp);
-	modexDrawPBuf(&gvar.video.page[0], 64, 64, &ptmpnp, 0);
+	modexPalUpdate1(ptmp.palette);
+	//modexDrawBmpPBufRegion(&gvar.video.page[0], 64, 64, 48, 32, 24, 32, ptmp);
+	modexDrawPBuf(&gvar.video.page[0], 64, 64, &ptmp, 0);
 	while(!kbhit())
 	{
 	}
@@ -105,9 +98,9 @@ baka = 1;
 	for(plane=0; plane < 4; plane++) {
 		i=0;
 		printf("Plane %d\n", plane);
-		for(py=0; py < ptmpnp.height; py++) {
-			for(px=0; px < ptmpnp.pwidth; px++) {
-				printf("%02X ", (int) ptmpnp.plane[plane][i++]);
+		for(py=0; py < ptmp.height; py++) {
+			for(px=0; px < ptmp.pwidth; px++) {
+				printf("%02X ", (int) ptmp.plane[plane][i++]);
 			}
 			printf("\n");
 		}
@@ -135,12 +128,12 @@ baka = 1;
 	chw += xp;
 	fprintf(stderr,"Project 16 planrpcx.exe. This is just a test file!\n");
 	fprintf(stderr,"version %s\n", VERSION);
-	fprintf(stderr,"%d\n", sizeof(pnp.plane));
-	fprintf(stderr,"pw=%d\n", pnp.width);
-	fprintf(stderr,"ph=%d\n", pnp.height);
-	fprintf(stderr,"ppw=%d\n", pnp.pwidth);
-	fprintf(stderr,"%d\n", sizeof(bmp));
-	fprintf(stderr,"%dx%d\n", gvar.video.page[0].sw-(pnp.width), gvar.video.page[0].sh-(pnp.height));
+	fprintf(stderr,"%d\n", sizeof(p.plane));
+	fprintf(stderr,"pw=%d\n", p.width);
+	fprintf(stderr,"ph=%d\n", p.height);
+	fprintf(stderr,"ppw=%d\n", p.pwidth);
+	fprintf(stderr,"%d\n", sizeof(p));
+	fprintf(stderr,"%dx%d\n", gvar.video.page[0].sw-(p.width), gvar.video.page[0].sh-(p.height));
 	//planar_buf_free(p);
 	free(bakapeee);
 	fprintf(stderr, "modexDrawBmpPBuf:	%f\n", t1);

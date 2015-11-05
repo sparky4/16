@@ -37,7 +37,7 @@ map_view_t mv[3];
 map_view_t *bg, *spri, *mask;//, *tmp;
 bitmap_t p;
 word pn=0;
-static planar_buf_t pp;
+static planar_buf_t huge *pp;
 float t;
 sword bakapee;
 
@@ -97,7 +97,7 @@ void main(int argc, char *argv[])
 	/* create the planar buffer */
 ////++++	(player[0].data) = *planar_buf_from_bitmap(&p);
 	printf("load pee!!\n");
-	pp = planar_buf_from_bitmap0(&p);
+	pp = planar_buf_from_bitmap(&p);
 	printf("done!\n");
 
 #endif

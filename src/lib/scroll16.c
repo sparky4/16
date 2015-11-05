@@ -478,8 +478,8 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 	}
 	else
 	{
-		rx = (((i-1) % ((t->data.width)/t->tileWidth)) * t->tileWidth);
-		ry = (((i-1) / ((t->data.height)/t->tileHeight)) * t->tileHeight);
+		rx = (((i-1) % ((t->data->width)/t->tileWidth)) * t->tileWidth);
+		ry = (((i-1) / ((t->data->height)/t->tileHeight)) * t->tileHeight);
 ////0000printf("i=%d\n", i);
 		switch(t->debug_text)
 		{
@@ -488,7 +488,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, ((t->debug_data[i])+1));
 				//cannot print number value du to it being slow as bakapee
 #else
-				PBUFBFUN(page, x, y, rx, ry, t->tileWidth, t->tileHeight, &(t->data));
+				PBUFBFUN(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
 				//modexDrawBmpRegion(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->btdata));
 #endif
 			break;
