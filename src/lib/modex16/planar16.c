@@ -47,7 +47,7 @@ static struct pcxHeader {
 } head;
 
 
-static void loadPcxStage1(FILE *file, planar_buf_t *result) {
+static void loadPcxpbufStage1(FILE *file, planar_buf_t *result) {
 	int index;
 	byte count, val;
 	long int pos;
@@ -67,7 +67,7 @@ static void loadPcxStage1(FILE *file, planar_buf_t *result) {
 	}
 }
 
-static void loadPcxPalette(FILE *file, planar_buf_t *result) {
+static void loadPcxpbufPalette(FILE *file, planar_buf_t *result) {
 	byte val;
 	int index;
 
@@ -107,11 +107,11 @@ planar_buf_t planarLoadPcx(char *filename)
 	}
 
 	/* load the first part of the pcx file */
-	loadPcxStage1(file, &result);
+	loadPcxpbufStage1(file, &result);
 
 	/* allocate the buffer */
 	bufSize = (/*(dword)*/result.width * result.height);
-	result = *planar_buf_alloc(result.width, result.height);
+	//result = pbuf_alloc(result.width, result.height);
 	if(!result.plane[0]) {
 		fprintf(stderr, "Could not allocate memory for bitmap data.");
 		fclose(file);
@@ -146,7 +146,7 @@ planar_buf_t planarLoadPcx(char *filename)
 	}
 	} while(index < bufSize);
 
-	loadPcxPalette(file, &result);
+	//++++loadPcxpbufPalette(file, &result);
 	fclose(file);
 	return result;
 

@@ -55,21 +55,21 @@ baka = 1;
 
 	p = planarLoadPcx(bakapeee);
 	ptmp = planarLoadPcx("data/ptmp.pcx");
-	VGAmodeX(baka, &gvar);
+/*	VGAmodeX(baka, &gvar);
 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 
-	/* fix up the palette and everything */
+	//fix up the palette and everything
 	modexPalUpdate1(p.palette);
 
-	/* clear and draw one sprite and one bitmap */
+	//clear and draw one sprite and one bitmap
 	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].sw, gvar.video.page[0].sh, 0);
 
-	/* update display~*/
+	//update display~
 	gvar.video.page[0].dx+=32;
 	gvar.video.page[0].dy+=32;
 	modexShowPage(&gvar.video.page[0]);
 
-	/* non sprite comparison */
+	//non sprite comparison
 	start = *clockw;
 // 		oldDrawBmp(VGA, 20, 20, &bmp, 0);
 	for(i=0; i<100 ;i++) {
@@ -92,9 +92,9 @@ baka = 1;
 	while(!kbhit())
 	{
 	}
-	VGAmodeX(0, &gvar);
+	VGAmodeX(0, &gvar);*/
 
-	/* print out the contents of each plane */
+	//print out the contents of each plane
 	for(plane=0; plane < 4; plane++) {
 		i=0;
 		printf("Plane %d\n", plane);

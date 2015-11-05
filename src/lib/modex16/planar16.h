@@ -25,13 +25,10 @@
  * Functions and types for loading and manipulating bitmaps.
  */
 
-#ifndef PLANARW_H
-#define PLANARW_H
+#ifndef PLANW_H
+#define PLANW_H
 
-#include "src/lib/16_head.h"
-#include "src/lib/planar.h"
-
-#define     PALSIZE            768
+#include "src/lib/modex16.h"
 
 planar_buf_t planarLoadPcx(char *filename);
 tileset_t planarLoadPcxTiles(char *filename, word twidth, word theight);
