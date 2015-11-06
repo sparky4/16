@@ -26,23 +26,24 @@
 #include "src/lib/modex16.h"
 
 global_game_variables_t gvar;
-planar_buf_t huge p, ptmp;
+planar_buf_t p, ptmp;
+int i;
+word start;//,	w;
+int plane;
+float t1, t2, tpee;
+int x,y;
+word px,py;
+sword baka;
+char *bakapeee;
 
 void main(int argc, char *argv[])
 {
-	int i;
-	word start;
-	int plane;
-	float t1, t2, tpee;
-	int x,y;
-	word px,py;
-	sword baka;
-	char *bakapeee;
 
-	byte l[1024];
+	//byte l[1024];
 	word j,chw,xp,col,bgcol;
 
-
+//w=0;
+//printf("%u ", w++);
 	bakapeee = malloc(64);
 
 	if(argv[1]) bakapeee = argv[1];
@@ -51,10 +52,15 @@ void main(int argc, char *argv[])
 //	if(argv[2]) baka = atoi(argv[2]);
 //	else
 baka = 1;
-
+//fprintf(stderr, "%u ", w++);
 	p = planarLoadPcx(bakapeee);
-	ptmp = planarLoadPcx("data/ptmp.pcx");
-/*	VGAmodeX(baka, &gvar);
+//fprintf(stderr, "%u ", w++);
+//	ptmp = planarLoadPcx("data/ptmp.pcx");
+//fprintf(stderr, "%u ", w++);
+//fprintf(stderr, "^^;", w++);
+//getch();
+
+	VGAmodeX(baka, &gvar);
 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 
 	//fix up the palette and everything
@@ -91,7 +97,7 @@ baka = 1;
 	while(!kbhit())
 	{
 	}
-	VGAmodeX(0, &gvar);*/
+	VGAmodeX(0, &gvar);
 
 	//print out the contents of each plane
 	for(plane=0; plane < 4; plane++) {
@@ -105,7 +111,8 @@ baka = 1;
 		}
 	}
 	col=0x0d, bgcol=0;
-	/*for(i=0; i<8; i++)
+	/*
+	for(i=0; i<8; i++)
 	{
 		//modexSelectPlane(PLANE(x));
 		//j=1<<8;
@@ -127,18 +134,16 @@ baka = 1;
 	chw += xp;
 	fprintf(stderr,"Project 16 planrpcx.exe. This is just a test file!\n");
 	fprintf(stderr,"version %s\n", VERSION);
-	fprintf(stderr,"%d\n", sizeof(p.plane));
-	fprintf(stderr,"pw=%d\n", p.width);
-	fprintf(stderr,"ph=%d\n", p.height);
-	fprintf(stderr,"ppw=%d\n", p.pwidth);
-	fprintf(stderr,"%d\n", sizeof(p));
-	fprintf(stderr,"%dx%d\n", gvar.video.page[0].sw-(p.width), gvar.video.page[0].sh-(p.height));
-	//planar_buf_free(p);
+	//fprintf(stderr,"%d\n", sizeof(p.plane));
+	//fprintf(stderr,"pw=%d\n", p.width);
+	//fprintf(stderr,"ph=%d\n", p.height);
+	//fprintf(stderr,"ppw=%d\n", p.pwidth);
+	//fprintf(stderr,"%d\n", sizeof(p));
+	//fprintf(stderr,"%dx%d\n", gvar.video.page[0].sw-(p.width), gvar.video.page[0].sh-(p.height));
 	free(bakapeee);
-	fprintf(stderr, "modexDrawBmpPBuf:	%f\n", t1);
-	fprintf(stderr, "modexDrawPBuf:	%f\n", t2);
-	fprintf(stderr, "speed difference	%f\n", t2/t1);
-	fprintf(stderr, "gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
-	fprintf(stderr, "gvar.video.page[0].height: %u\n", gvar.video.page[0].height);
-	return;
+	//fprintf(stderr, "modexDrawBmpPBuf:	%f\n", t1);
+	//fprintf(stderr, "modexDrawPBuf:	%f\n", t2);
+	//fprintf(stderr, "speed difference	%f\n", t2/t1);
+	//fprintf(stderr, "gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
+	//fprintf(stderr, "gvar.video.page[0].height: %u\n", gvar.video.page[0].height);
 }

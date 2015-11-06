@@ -87,7 +87,7 @@ planar_buf_alloc(word width, word height) {
 
 	/* allocate the planes */
 	for(i=0; i<4; i++) {
-	p->plane[i] = malloc(p->height * p->pwidth);
+		p->plane[i] = malloc(p->height * p->pwidth);
 	}
 
 	return p;

@@ -28,8 +28,6 @@
 
 #include "src/lib/modex16.h"
 
-extern byte *modexNewPal();
-
 /* creates a planar buffer from the bitmap data.
    The planar buffer is dynamically allocated, and should
    be destroyed with the planar_buf_free function when no longer
@@ -42,6 +40,5 @@ planar_buf_t huge *planar_buf_alloc(word width, word height);
 
 /* deallocates a planar buffer */
 void planar_buf_free(planar_buf_t *p);
-
 
 #endif

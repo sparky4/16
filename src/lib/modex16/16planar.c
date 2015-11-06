@@ -25,46 +25,31 @@
 #include <malloc.h>
 #include "src/lib/modex16/16planar.h"
 
-#ifndef PCXHEADER_H
-#define PCXHEADER_H
-static struct pcxHeader {
-	byte id;
-	byte version;
-	byte encoding;
-	byte bpp;
-	word xmin;
-	word ymin;
-	word xmax;
-	word ymax;
-	word hres;
-	word vres;
-	byte pal16[48];
-	byte res1;
-	word bpplane;
-	word palType;
-	word hScreenSize;
-	word vScreenSize;
-	byte padding[54];
-} head;
-#endif /*PCXHEADER_H*/
+/*
+ *============================================================================
+ */
 
 static void loadPcxpbufStage1(FILE *file, planar_buf_t *result) {
 	int index;
 	byte count, val;
 	long int pos;
 
+//word w=0;
+//fprintf(stderr, "\nplanarLoadPcx: ");
+//fprintf(stderr, "%u ", w++);
 	/* read the header */
 	fread(&head, sizeof(char), sizeof(struct pcxHeader), file);
-
+//fprintf(stderr, "%u ", w++);
 	/* get the width and height */
 	result->width = head.xmax - head.xmin + 1;
 	result->height = head.ymax - head.ymin + 1;
-
+	result->pwidth = result->width / 4 + (result->width%4 ? 1 : 0);
+//fprintf(stderr, "%u ", w++);
 	/* make sure this  is 8bpp */
 	if(head.bpp != 8) {
 		fprintf(stderr, "I only know how to handle 8bpp pcx files!\n");
 		fclose(file);
-		//exit(-2);
+		exit(-2);
 	}
 }
 
@@ -90,37 +75,92 @@ static void loadPcxpbufPalette(FILE *file, planar_buf_t *result) {
 	}
 }
 
+/* allocates a planar buffer with specified dimensions */
+planar_buf_t
+pbuf_alloc(word width, word height) {
+	planar_buf_t p;
+	int i;
+
+	/* allocate the structure and populate sizes */
+	//p=malloc(sizeof(planar_buf_t));
+	p.width  = width;
+	p.height = height;
+	p.pwidth = width / 4 + (width%4 ? 1 : 0);
+	//p.pwidth = width / 4 + (width%4 ? 1 : 0);
+
+	/* allocate the planes */
+	for(i=0; i<4; i++) {
+	p.plane[i] = _fmalloc(p.height * p.pwidth);
+	}
+
+	return p;
+}
+
+/* allocates a planar buffer with specified dimensions */
+void
+pbuf_alloc0(planar_buf_t *p, word width, word height) {
+	int i;
+
+	/* allocate the structure and populate sizes */
+	//p=malloc(sizeof(planar_buf_t));
+	p->width  = width;
+	p->height = height;
+	p->pwidth = width / 4 + (width%4 ? 1 : 0);
+	//p.pwidth = width / 4 + (width%4 ? 1 : 0);
+
+	/* allocate the planes */
+	for(i=0; i<4; i++) {
+	p->plane[i] = _fmalloc(p->height * p->pwidth);
+	}
+}
+
 /*	sparky4's functions~	*/
 planar_buf_t planarLoadPcx(char *filename)
 {
 	FILE *file;
 	planar_buf_t result;
 	dword bufSize;
-	int index, plane, x, y;
+	int index[4], plane;
 	byte count, val;
-	word q;
 
+word w=0;
+fprintf(stderr, "\nplanarLoadPcx: ");
+fprintf(stderr, "%u ", w++);
 	/* open the PCX file for reading */
 	file = fopen(filename, "rb");
+//fprintf(stderr, "%u ", w++);
 	if(!file) {
 		fprintf(stderr, "Could not open %s for reading.\n", filename);
-		//exit(-2);
+		exit(-2);
 	}
-
+//fprintf(stderr, "%u ", w++);
 	/* load the first part of the pcx file */
 	loadPcxpbufStage1(file, &result);
-
+//fprintf(stderr, "%u ", w++);
 	/* allocate the buffer */
 	bufSize = (/*(dword)*/result.width * result.height);
-	//result = pbuf_alloc(result.width, result.height);
-	if(!result.plane[0]) {
+	result = pbuf_alloc(result.width, result.height);
+	//pbuf_alloc0(&result, result.width, result.height);
+//fprintf(stderr, "%u ", w++);
+	printf("&bufSize=%p\n", &bufSize);
+	printf("&result.data=%p\n", result.plane);
+	printf("Size of block is %zu bytes\n", _msize(result.plane));
+	printf("Size of bufSize is %zu bytes\n", bufSize);
+	printf("Size of result.width is %zu \n", result.width);
+	printf("Size of result.height is %zu \n", result.height);
+	printf("Dimensions of result is %lu\n", (dword)result.width*result.height);
+	//exit(0);
+	if(!result.plane) {
 		fprintf(stderr, "Could not allocate memory for bitmap data.");
 		fclose(file);
-		//exit(-1);
+		exit(-1);
 	}
-
+fprintf(stderr, "read the buffer? %u ", w++);
+getch();
 	/*  read the buffer in */
-	index = 0;
+	index[0] = 0,index[1]=0,index[2]=0,index[3]=0;
+	/* start on the first plane */
+	plane=0;
 	do {
 	/* get the run length and the value */
 	count = fgetc(file);
@@ -132,21 +172,28 @@ planar_buf_t planarLoadPcx(char *filename)
 		count = 1;
 	}
 
-	// start on the first plane
-	plane=0;
 	/* write the pixel the specified number of times */
-	for(; count && index < bufSize; count--,index++)  {
+//fprintf(stderr, "\nputting in memory~ %u\n", w++);
+//if(index>=49152) getch();
+	for(; count && (index[0]+index[1]+index[2]+index[3]) < bufSize; count--,index[plane]++)  {
+//fprintf(stderr, "count=%d	index=%d	plane=%d\n", count, index, plane);
 		switch (plane)
 		{
 			case 4:
 				plane=0;
 			break;
+			case 0:
+			case 1:
+			case 2:
+				plane++;
+			break;
 		}
+		//fprintf(stderr, "%d ", result.plane[plane][(index[0]+index[1]+index[2]+index[3])]);
 		// copy to each plane
-		result.plane[plane++][index]=val;
+		result.plane[plane++][index[plane]]=val;
 	}
-	} while(index < bufSize);
-
+	} while((index[0]+index[1]+index[2]+index[3]) < bufSize);
+	getch();
 	//++++loadPcxpbufPalette(file, &result);
 	fclose(file);
 	return result;
