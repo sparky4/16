@@ -88,7 +88,7 @@ void main(int argc, char *argv[])
 	/* draw the tiles */
 #ifdef MODEX
 	ptr = map.data;
-	mappalptr = map.tiles->data->palette;
+	//mappalptr = map.tiles->btdata->palette;
 
 	/* data */
 	p = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
@@ -126,7 +126,7 @@ void main(int argc, char *argv[])
 //++++	player[0].data.offset=(paloffset/3);
 //++++	modexPalUpdate1(&player[0].data, &paloffset, 0, 0);
 		//modexPalUpdate1(p.palette);
-		modexPalUpdate1(map.tiles->data->palette);
+		modexPalUpdate1(map.tiles->btdata->palette);
 	//printf("	%d\n", sizeof(ptmp->data));
 	//printf("1:	%d\n", paloffset);
 //++++	map.tiles->data->offset=(paloffset/3);
@@ -356,9 +356,9 @@ void main(int argc, char *argv[])
 	if(IN_KeyDown(22)){
 	paloffset=0; modexPalBlack(); modexPalUpdate(&player[0].data, &paloffset, 0, 0);
 	printf("1paloffset	=	%d\n", paloffset/3);
-	modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
+	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	printf("2paloffset	=	%d\n", paloffset/3);
-	pdump(bg->page); pdump(spri->page); }
+	 pdump(bg->page); pdump(spri->page); }
 #endif
 #endif
 	//pan switch
