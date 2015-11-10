@@ -97,7 +97,7 @@ baka = 1;
 getch();
 	for(i=0; i<100 ;i++) {
 						//(page_t *page, int x, int y, int rx, int ry, int rw, int rh, planar_buf_t *p, boolean sprite);
-		modexDrawPBufRegion	(&gvar.video.page[0], p.width, 0, p.width-16, p.height-16, 16, 16, &p, 0);//(&gvar.video.page[0], 0, 0, 0+p.width, 0, p.width, p.height, &p, 0);
+		modexDrawPBufRegion	(&gvar.video.page[0], p.width, 0, p.width-(p.width/4), p.height-(p.height/4), p.width/4, p.height/4, &p, 0);//(&gvar.video.page[0], 0, 0, 0+p.width, 0, p.width, p.height, &p, 0);
 	}
 	t4 = (*clockw-start) /18.2;
 	//++++	modexPalUpdate1(ptmp.palette);
