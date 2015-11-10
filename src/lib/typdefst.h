@@ -48,7 +48,7 @@ typedef struct {
 } bitmap_t;
 
 typedef struct {
-	byte **data;
+	byte huge **data;
 	word ntiles;   /* the number of tiles */
 	word twidth;   /* width of the tiles */
 	word theight;  /* height of the tiles */
