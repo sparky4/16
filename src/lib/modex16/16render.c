@@ -287,7 +287,7 @@ void
 modexDrawBmpPBufRegion(page_t *page, int x, int y,
 		   int rx, int ry, int rw, int rh, planar_buf_t *bmp) {
 	word poffset = (word) page->data  + y*(page->width/4) + x/4;
-	byte *data = *bmp->plane;//+bmp->offset;
+	byte *data = *bmp->plane[0];//+bmp->offset;
 	word bmpOffset = (word) data + ry * bmp->width + rx;
 	word width = rw;
 	word height = rh;
@@ -319,7 +319,17 @@ modexDrawBmpPBufRegion(page_t *page, int x, int y,
 	ROW_LOOP:
 		MOV CX, width	   ; count the columns
 	SCAN_LOOP:
+
+
+
+
+
+
+
+
+
 		MOVSB		   ; copy the pixel
+
 		SUB CX, 3	       ; we skip the next 3
 		ADD SI, 3	       ; skip the bmp pixels
 		LOOP SCAN_LOOP	  ; finish the scan
@@ -332,6 +342,7 @@ modexDrawBmpPBufRegion(page_t *page, int x, int y,
 		DEC rowCounter
 		JNZ ROW_LOOP	    ; do all the rows
 		;-- end plane painting
+
 		MOV AL, plane	   ; advance to the next plane
 		SHL AL, 1	       ;
 		AND AL, 0x0f	    ; mask the plane properly
@@ -354,7 +365,7 @@ void
 modexDrawSpritePBufRegion(page_t *page, int x, int y,
 		      int rx, int ry, int rw, int rh, planar_buf_t *bmp) {
 	word poffset = (word)page->data + y*(page->width/4) + x/4;
-	byte *data = *bmp->plane;//+bmp->offset;
+	byte *data = *bmp->plane[0];//+bmp->offset;
 	word bmpOffset = (word) data + ry * bmp->width + rx;
 	word width = rw;
 	word height = rh;
