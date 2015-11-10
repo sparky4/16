@@ -31,33 +31,31 @@
 //modexDrawBmpRegion	(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp)
 void modexDrawPBufRegion	(page_t *page, int x, int y, int rx, int ry, int rw, int rh, planar_buf_t *p, boolean sprite)
 {
-	sword plane;
+	word plane;
 	int i;
-	const int px=x;//-page->dx;
-	const int py=y;//-page->dy;
-	#define PEEE ((rw)/4)-rx
-	//-(rx/4)
-	#define PEEEE ((p->pwidth)*(ry))
-	//y=py;
-	//x=px;
+	const int px=x+page->dx;
+	const int py=y+page->dy;
+	const int prw = rw/4;
+	rx+=1;
+	ry+=1;
+	#define PEEE	rx-prw
+	#define PE		(p->pwidth)
+	#define PEEEE	(PE*(ry))
+	y=py;
+	x=px;
 	//printf("%d,%d p(%d,%d) r(%d,%d) rwh(%d,%d)\n", x, y, px, py, rx, ry, rw, rh);
 	for(plane=0; plane < 4; plane++) {
 		i=PEEE+PEEEE;
-		//printf("PEEE=%d ", PEEE);
-		//printf("PEEEE=%d ", PEEEE);
-		//printf("i=%d\n", i);
-		modexSelectPlane(PLANE(plane+x));
+		modexSelectPlane(PLANE(plane-1));
 		for(; y < py+rh; y++) {
 			//for(px=0; px < p->width; px++) {
 				//printf("%02X ", (int) p->plane[plane][i++]);
 //			      _fmemcpy(buff, &(p->plane[plane][i+=p->pwidth]), p->pwidth);
 //			      printf("buff %u==%s\n", y, *buff);
-				_fmemcpy(page->data + (((page->width/4) * y) + (x / 4)), &(p->plane[plane][i+=p->pwidth]), (rw/4));
+				_fmemcpy(page->data + (((page->width/4) * (y)) + ((x) / 4)), &(p->plane[plane][i]), prw);
+				i+=PE;
 			//}
-			//if(plane==3) IN_Ack();
 		}
-		/*printf("y%d=%d ", plane, y);
-		if(plane==3) printf("y%d=%d\n", plane, y);*/
 		x=px;
 		y=py;
 		}
@@ -68,7 +66,9 @@ void modexDrawPBufRegion	(page_t *page, int x, int y, int rx, int ry, int rw, in
 void
 modexDrawPBuf(page_t *page, int x, int y, planar_buf_t *p, boolean sprite)
 {
-	int plane;
+	modexDrawPBufRegion	(page, x, x, 0, 0, p->width, p->height, p, sprite);
+	/*
+	sword plane;
 	int i;
 // 	byte near *buff;
 	const int px=x+page->dx;
@@ -107,7 +107,7 @@ modexDrawPBuf(page_t *page, int x, int y, planar_buf_t *p, boolean sprite)
 		x=px;
 		y=py;
 	}
-// 	_nfree(buff);
+// 	_nfree(buff);*/
 }
 
 void

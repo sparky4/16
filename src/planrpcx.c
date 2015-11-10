@@ -94,14 +94,15 @@ baka = 1;
 		modexDrawPBuf		(&gvar.video.page[0], 0, 0, &p, 0);
 	}
 	t3 = (*clockw-start) /18.2;
+getch();
 	for(i=0; i<100 ;i++) {
-		//modexDrawPBufRegion	(&gvar.video.page[0], 0, 0, 0+p.width, 0, p.width, p.height, &p, 0);
+						//(page_t *page, int x, int y, int rx, int ry, int rw, int rh, planar_buf_t *p, boolean sprite);
+		modexDrawPBufRegion	(&gvar.video.page[0], p.width, 0, p.width-16, p.height-16, 16, 16, &p, 0);//(&gvar.video.page[0], 0, 0, 0+p.width, 0, p.width, p.height, &p, 0);
 	}
 	t4 = (*clockw-start) /18.2;
 	//++++	modexPalUpdate1(ptmp.palette);
 	//modexDrawBmpPBufRegion(&gvar.video.page[0], 64, 64, 48, 32, 24, 32, ptmp);
 	//modexDrawPBuf(&gvar.video.page[0], 64, 64, &ptmp, 0);
-getch();
 	while(!kbhit())
 	{
 	}
