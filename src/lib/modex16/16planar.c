@@ -120,14 +120,14 @@ planar_buf_t planarLoadPcx(char *filename)
 	FILE *file;
 	planar_buf_t result;
 	dword bufSize;
-	int index[4], plane;
+	word index[4], plane;
 	byte count, val;
 
 	word px,py,i,pla;
 
-word w=0;
+/*word w=0;
 fprintf(stderr, "\nplanarLoadPcx: ");
-fprintf(stderr, "%u ", w++);
+fprintf(stderr, "%u ", w++);*/
 	/* open the PCX file for reading */
 	file = fopen(filename, "rb");
 //fprintf(stderr, "%u ", w++);
@@ -141,24 +141,24 @@ fprintf(stderr, "%u ", w++);
 //fprintf(stderr, "%u ", w++);
 	/* allocate the buffer */
 	bufSize = ((dword)result.width * result.height);
-	//result = pbuf_alloc(result.width, result.height);
-	pbuf_alloc0(&result, result.width, result.height);
+	result = pbuf_alloc(result.width, result.height);
+	//pbuf_alloc0(&result, result.width, result.height);
+
 //fprintf(stderr, "%u ", w++);
-	printf("&bufSize=%p\n", &bufSize);
-	printf("&result.data=%p\n", result.plane);
-	printf("Size of block is %zu bytes\n", _msize(result.plane));
-	printf("Size of bufSize is %zu bytes\n", bufSize);
-	printf("Size of result.width is %zu \n", result.width);
-	printf("Size of result.height is %zu \n", result.height);
-	printf("Dimensions of result is %lu\n", (dword)result.width*result.height);
-	//exit(0);
+// 	printf("&bufSize=%p\n", &bufSize);
+// 	printf("&result.data=%p\n", result.plane);
+// 	printf("Size of block is %zu bytes\n", _msize(result.plane));
+// 	printf("Size of bufSize is %zu bytes\n", bufSize);
+// 	printf("Size of result.width is %zu \n", result.width);
+// 	printf("Size of result.height is %zu \n", result.height);
+// 	printf("Dimensions of result is %lu\n", (dword)result.width*result.height);
+// 	//exit(0);
 	if(!result.plane) {
 		fprintf(stderr, "Could not allocate memory for bitmap data.");
 		fclose(file);
 		exit(-1);
 	}
-fprintf(stderr, "read the buffer? %u ", w++);
-//getch();
+//fprintf(stderr, "read the buffer %u ", w++);
 	/*  read the buffer in */
 	index[0] = 0,index[1]=0,index[2]=0,index[3]=0;
 	/* start on the first plane */
@@ -174,11 +174,14 @@ fprintf(stderr, "read the buffer? %u ", w++);
 		count = 1;
 	}
 
+// if(index[plane]==0 && plane==0) fprintf(stdout, "Val dump of %u[%u]	&&	count=%02X:\n", index[plane], plane, count);
+//fprintf(stdout, "Val dump of %u[%u]	&&	count=%02X:\n", index[plane], plane, count);
+// fprintf(stdout, "%02X ", val);
+// if(index[plane]==result.pwidth-1) fprintf(stdout, "\n");
+
 	/* write the pixel the specified number of times */
 //fprintf(stderr, "\nputting in memory~ %u\n", w++);
-//if(index>=49152) getch();
 	for(; count && (index[0]+index[1]+index[2]+index[3]) < bufSize; count--,index[plane]++)  {
-//fprintf(stderr, "count=%d	index=%d	plane=%d\n", count, index, plane);
 		switch (plane)
 		{
 			case 4:
@@ -189,30 +192,33 @@ fprintf(stderr, "read the buffer? %u ", w++);
 			case 2:
 				plane++;
 			break;
+			default:
+				plane=0;
+			break;
 		}
-		//fprintf(stderr, "%d ", result.plane[plane][(index[0]+index[1]+index[2]+index[3])]);
 		// copy to each plane
 		result.plane[plane][index[plane]]=val;
-		plane++;
+//fprintf(stdout, "count=%02X	index=%u	plane=%u	", count, index[plane], plane);
+//fprintf(stdout, "index val=%02X	val=%02X\n", result.plane[plane][index[plane]], val);
 	}
+// fprintf(stdout, "\nindex=%lu		bufsize=%lu\n\n", (dword)(index[0]+index[1]+index[2]+index[3]),  bufSize);
 	} while((index[0]+index[1]+index[2]+index[3]) < bufSize);
-	//++++loadPcxpbufPalette(file, &result);
+	loadPcxpbufPalette(file, &result);
 	fclose(file);
 
-	//dump value!!
-	for(pla=0; pla < 4; pla++) {
-		i=0;
-		printf("Plane %d\n", pla);
-		for(py=0; py < result.height; py++) {
-			for(px=0; px < result.pwidth; px++) {
-				printf("%02X ", (int) result.plane[pla][i++]);
-			}
-			printf("\n");
-		}
-	}
-	printf("\n\n%s\n", *filename);
-fprintf(stdout, "count=%d	index=%d	plane=%d\n", count, index, pla);
-	exit(0);
+// 	//dump value!!
+// 	for(pla=0; pla < 4; pla++) {
+// 		i=0;
+// 		printf("Plane %d\n", pla);
+// 		for(py=0; py < result.height; py++) {
+// 			for(px=0; px < result.pwidth; px++) {
+// 				printf("%02X ", (int) result.plane[pla][i++]);
+// 			}
+// 			printf("\n");
+// 		}
+// 	}
+// fprintf(stderr, "\n\n%s	count=%d	index=%d	plane=%d\n", filename, count, (dword)(index[0]+index[1]+index[2]+index[3]), pla);
+// exit(0);
 	return result;
 
 }

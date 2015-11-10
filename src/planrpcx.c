@@ -54,7 +54,6 @@ void main(int argc, char *argv[])
 baka = 1;
 //fprintf(stderr, "%u ", w++);
 	p = planarLoadPcx(bakapeee);
-	exit(0);
 //fprintf(stderr, "%u ", w++);
 //	ptmp = planarLoadPcx("data/ptmp.pcx");
 //fprintf(stderr, "%u ", w++);
@@ -79,16 +78,18 @@ baka = 1;
 	start = *clockw;
 // 		oldDrawBmp(VGA, 20, 20, &bmp, 0);
 	for(i=0; i<100 ;i++) {
-//++++		modexDrawBmpPBufRegion	(&gvar.video.page[0], 32, 32, 0, 0, p.width, p.height, &p);
+		modexDrawBmpPBufRegion	(&gvar.video.page[0], 32, 32, 0, 0, p.width, p.height, &p);
 //		modexDrawBmpPBuf		(&gvar.video.page[0], 32, 32, p);
 	}
 	t1 = (*clockw-start) /18.2;
+	getch();
 // 	start = *clockw;
 // 		modexCopyPageRegion(&gvar.video.page[0], &gvar.video.page[0], 0, 0, 0, 0, 320, 240);
 // 	t2 = (*clockw-start)/18.2;
 	start = *clockw;
 	for(i=0; i<100 ;i++) {
-//++++		modexDrawPBuf(&gvar.video.page[0], 0, 0, &p, 0);
+//		modexDrawPBuf(&gvar.video.page[0], 0, 0, &p, 0);
+		modexDrawBmpPBuf		(&gvar.video.page[0], p.width+32, 32, &p);
 	}
 	t2 = (*clockw-start) /18.2;
 //++++	modexPalUpdate1(ptmp.palette);
@@ -103,9 +104,9 @@ baka = 1;
 	for(plane=0; plane < 4; plane++) {
 		i=0;
 		printf("Plane %d\n", plane);
-		for(py=0; py < ptmp.height; py++) {
-			for(px=0; px < ptmp.pwidth; px++) {
-				printf("%02X ", (int) ptmp.plane[plane][i++]);
+		for(py=0; py < p.height; py++) {
+			for(px=0; px < p.pwidth; px++) {
+				printf("%02X ", (int) p.plane[plane][i++]);
 			}
 			printf("\n");
 		}
