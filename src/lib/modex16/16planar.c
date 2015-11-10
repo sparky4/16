@@ -76,7 +76,7 @@ static void loadPcxpbufPalette(FILE *file, planar_buf_t *result) {
 }
 
 /* allocates a planar buffer with specified dimensions */
-planar_buf_t
+static planar_buf_t
 pbuf_alloc(word width, word height) {
 	planar_buf_t p;
 	int i;
@@ -90,19 +90,19 @@ pbuf_alloc(word width, word height) {
 
 	/* allocate the planes */
 	for(i=0; i<4; i++) {
-	p.plane[i] = _fmalloc(p.height * p.pwidth);
+		p.plane[i] = _fmalloc(p.height * p.pwidth);
 	}
 
 	return p;
 }
 
 /* allocates a planar buffer with specified dimensions */
-void
+static void
 pbuf_alloc0(planar_buf_t *p, word width, word height) {
 	int i;
 
 	/* allocate the structure and populate sizes */
-	//p=malloc(sizeof(planar_buf_t));
+	p=_fmalloc(sizeof(planar_buf_t));
 	p->width  = width;
 	p->height = height;
 	p->pwidth = width / 4 + (width%4 ? 1 : 0);
@@ -110,7 +110,7 @@ pbuf_alloc0(planar_buf_t *p, word width, word height) {
 
 	/* allocate the planes */
 	for(i=0; i<4; i++) {
-	p->plane[i] = _fmalloc(p->height * p->pwidth);
+		p->plane[i] = _fmalloc(p->height * p->pwidth);
 	}
 }
 
@@ -122,6 +122,8 @@ planar_buf_t planarLoadPcx(char *filename)
 	dword bufSize;
 	int index[4], plane;
 	byte count, val;
+
+	word px,py,i,pla;
 
 word w=0;
 fprintf(stderr, "\nplanarLoadPcx: ");
@@ -138,9 +140,9 @@ fprintf(stderr, "%u ", w++);
 	loadPcxpbufStage1(file, &result);
 //fprintf(stderr, "%u ", w++);
 	/* allocate the buffer */
-	bufSize = (/*(dword)*/result.width * result.height);
-	result = pbuf_alloc(result.width, result.height);
-	//pbuf_alloc0(&result, result.width, result.height);
+	bufSize = ((dword)result.width * result.height);
+	//result = pbuf_alloc(result.width, result.height);
+	pbuf_alloc0(&result, result.width, result.height);
 //fprintf(stderr, "%u ", w++);
 	printf("&bufSize=%p\n", &bufSize);
 	printf("&result.data=%p\n", result.plane);
@@ -156,7 +158,7 @@ fprintf(stderr, "%u ", w++);
 		exit(-1);
 	}
 fprintf(stderr, "read the buffer? %u ", w++);
-getch();
+//getch();
 	/*  read the buffer in */
 	index[0] = 0,index[1]=0,index[2]=0,index[3]=0;
 	/* start on the first plane */
@@ -190,12 +192,27 @@ getch();
 		}
 		//fprintf(stderr, "%d ", result.plane[plane][(index[0]+index[1]+index[2]+index[3])]);
 		// copy to each plane
-		result.plane[plane++][index[plane]]=val;
+		result.plane[plane][index[plane]]=val;
+		plane++;
 	}
 	} while((index[0]+index[1]+index[2]+index[3]) < bufSize);
-	getch();
 	//++++loadPcxpbufPalette(file, &result);
 	fclose(file);
+
+	//dump value!!
+	for(pla=0; pla < 4; pla++) {
+		i=0;
+		printf("Plane %d\n", pla);
+		for(py=0; py < result.height; py++) {
+			for(px=0; px < result.pwidth; px++) {
+				printf("%02X ", (int) result.plane[pla][i++]);
+			}
+			printf("\n");
+		}
+	}
+	printf("\n\n%s\n", *filename);
+fprintf(stdout, "count=%d	index=%d	plane=%d\n", count, index, pla);
+	exit(0);
 	return result;
 
 }

@@ -54,6 +54,7 @@ void main(int argc, char *argv[])
 baka = 1;
 //fprintf(stderr, "%u ", w++);
 	p = planarLoadPcx(bakapeee);
+	exit(0);
 //fprintf(stderr, "%u ", w++);
 //	ptmp = planarLoadPcx("data/ptmp.pcx");
 //fprintf(stderr, "%u ", w++);
@@ -78,7 +79,7 @@ baka = 1;
 	start = *clockw;
 // 		oldDrawBmp(VGA, 20, 20, &bmp, 0);
 	for(i=0; i<100 ;i++) {
-		modexDrawBmpPBufRegion	(&gvar.video.page[0], 32, 32, 0, 0, p.width, p.height, &p);
+//++++		modexDrawBmpPBufRegion	(&gvar.video.page[0], 32, 32, 0, 0, p.width, p.height, &p);
 //		modexDrawBmpPBuf		(&gvar.video.page[0], 32, 32, p);
 	}
 	t1 = (*clockw-start) /18.2;
@@ -87,11 +88,10 @@ baka = 1;
 // 	t2 = (*clockw-start)/18.2;
 	start = *clockw;
 	for(i=0; i<100 ;i++) {
-		modexDrawPBuf(&gvar.video.page[0], 0, 0, &p, 0);
+//++++		modexDrawPBuf(&gvar.video.page[0], 0, 0, &p, 0);
 	}
 	t2 = (*clockw-start) /18.2;
-	getch();
-	modexPalUpdate1(ptmp.palette);
+//++++	modexPalUpdate1(ptmp.palette);
 	//modexDrawBmpPBufRegion(&gvar.video.page[0], 64, 64, 48, 32, 24, 32, ptmp);
 	modexDrawPBuf(&gvar.video.page[0], 64, 64, &ptmp, 0);
 	while(!kbhit())
