@@ -30,7 +30,7 @@ planar_buf_t p, ptmp;
 int i;
 word start;//,	w;
 int plane;
-float t1, t2, tpee;
+float t1, t2, t3, t4, tpee;
 int x,y;
 word px,py;
 sword baka;
@@ -78,23 +78,30 @@ baka = 1;
 	start = *clockw;
 // 		oldDrawBmp(VGA, 20, 20, &bmp, 0);
 	for(i=0; i<100 ;i++) {
-		modexDrawBmpPBufRegion	(&gvar.video.page[0], 32, 32, 0, 0, p.width, p.height, &p);
-//		modexDrawBmpPBuf		(&gvar.video.page[0], 32, 32, p);
+		modexDrawBmpPBuf		(&gvar.video.page[0], 32, 32, &p);
 	}
 	t1 = (*clockw-start) /18.2;
+	for(i=0; i<100 ;i++) {
+		modexDrawBmpPBufRegion	(&gvar.video.page[0], p.width+32, 32, 0, 0, p.width, p.height, &p);
+	}
+	t2 = (*clockw-start) /18.2;
 	getch();
 // 	start = *clockw;
 // 		modexCopyPageRegion(&gvar.video.page[0], &gvar.video.page[0], 0, 0, 0, 0, 320, 240);
 // 	t2 = (*clockw-start)/18.2;
 	start = *clockw;
 	for(i=0; i<100 ;i++) {
-//		modexDrawPBuf(&gvar.video.page[0], 0, 0, &p, 0);
-		modexDrawBmpPBuf		(&gvar.video.page[0], p.width+32, 32, &p);
+		modexDrawPBuf		(&gvar.video.page[0], 0, 0, &p, 0);
 	}
-	t2 = (*clockw-start) /18.2;
-//++++	modexPalUpdate1(ptmp.palette);
+	t3 = (*clockw-start) /18.2;
+	for(i=0; i<100 ;i++) {
+		modexDrawPBufRegion	(&gvar.video.page[0], 0, 0, 0+p.width, 0, p.width, p.height, &p, 0);
+	}
+	t4 = (*clockw-start) /18.2;
+	//++++	modexPalUpdate1(ptmp.palette);
 	//modexDrawBmpPBufRegion(&gvar.video.page[0], 64, 64, 48, 32, 24, 32, ptmp);
-	modexDrawPBuf(&gvar.video.page[0], 64, 64, &ptmp, 0);
+	//modexDrawPBuf(&gvar.video.page[0], 64, 64, &ptmp, 0);
+getch();
 	while(!kbhit())
 	{
 	}
@@ -135,12 +142,12 @@ baka = 1;
 	chw += xp;
 	fprintf(stderr,"Project 16 planrpcx.exe. This is just a test file!\n");
 	fprintf(stderr,"version %s\n", VERSION);
-	//fprintf(stderr,"%d\n", sizeof(p.plane));
-	//fprintf(stderr,"pw=%d\n", p.width);
-	//fprintf(stderr,"ph=%d\n", p.height);
-	//fprintf(stderr,"ppw=%d\n", p.pwidth);
-	//fprintf(stderr,"%d\n", sizeof(p));
-	//fprintf(stderr,"%dx%d\n", gvar.video.page[0].sw-(p.width), gvar.video.page[0].sh-(p.height));
+	fprintf(stderr,"%d\n", sizeof(p.plane));
+	fprintf(stderr,"pw=%d\n", p.width);
+	fprintf(stderr,"ph=%d\n", p.height);
+	fprintf(stderr,"ppw=%d\n", p.pwidth);
+	fprintf(stderr,"%d\n", sizeof(p));
+	fprintf(stderr,"%dx%d\n", gvar.video.page[0].sw-(p.width), gvar.video.page[0].sh-(p.height));
 	free(bakapeee);
 	//fprintf(stderr, "modexDrawBmpPBuf:	%f\n", t1);
 	//fprintf(stderr, "modexDrawPBuf:	%f\n", t2);

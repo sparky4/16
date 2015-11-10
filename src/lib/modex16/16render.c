@@ -289,8 +289,8 @@ modexDrawBmpPBufRegion(page_t *page, int x, int y,
 	word poffset = (word) page->data  + y*(page->width/4) + x/4;
 	byte *data = *bmp->plane;//+bmp->offset;
 	word bmpOffset = (word) data + ry * bmp->width + rx;
-	word width = rw/4;
-	word height = rh/4;
+	word width = rw;
+	word height = rh;
 	byte plane = 1 << ((byte) x & 0x03);
 	word scanCount = width/4 + (width%4 ? 1 :0);
 	word nextPageRow = page->width/4 - scanCount;
@@ -356,8 +356,8 @@ modexDrawSpritePBufRegion(page_t *page, int x, int y,
 	word poffset = (word)page->data + y*(page->width/4) + x/4;
 	byte *data = *bmp->plane;//+bmp->offset;
 	word bmpOffset = (word) data + ry * bmp->width + rx;
-	word width = rw/4;
-	word height = rh/4;
+	word width = rw;
+	word height = rh;
 	byte plane = 1 << ((byte) x & 0x03);
 	word scanCount = width/4 + (width%4 ? 1 :0);
 	word nextPageRow = page->width/4 - scanCount;

@@ -56,7 +56,7 @@ typedef struct {
 } tileset_t;
 
 typedef struct {
-	byte far *plane[4];     /* 4 planes of image data */
+	byte huge *plane[4];     /* 4 planes of image data */
 	word width;         /* width of the image (spread across 4 planes) */
 	word height;        /* height of the image (spread across 4 planes) */
 	word pwidth;        /* the number of bytes in each plane */

@@ -24,7 +24,6 @@
  */
 #ifndef MODEX16_H
 #define MODEX16_H
-//#include <conio.h>
 
 #include "src/lib/16_head.h"
 #include "src/lib/bitmap.h"
@@ -134,9 +133,6 @@ extern byte far*  VGA;  /* The VGA Memory */
 #define SET_MODE		0x00
 #define VGA_256_COLOR_MODE 	0x13
 #define TEXT_MODE		0x03
-//#define SCREEN_WIDTH		320
-//#define SCREEN_HEIGHT		240
-//#define PAGE_SIZE		(word)(SCREEN_WIDTH/4 * SCREEN_HEIGHT)
 
 #define AC_INDEX		0x03c0
 #define SC_INDEX		0x03c4
