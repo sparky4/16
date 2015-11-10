@@ -123,8 +123,6 @@ planar_buf_t planarLoadPcx(char *filename)
 	word index[4], plane;
 	byte count, val;
 
-	word px,py,i,pla;
-
 /*word w=0;
 fprintf(stderr, "\nplanarLoadPcx: ");
 fprintf(stderr, "%u ", w++);*/
@@ -205,18 +203,6 @@ fprintf(stderr, "%u ", w++);*/
 	} while((index[0]+index[1]+index[2]+index[3]) < bufSize);
 	loadPcxpbufPalette(file, &result);
 	fclose(file);
-
-// 	//dump value!!
-// 	for(pla=0; pla < 4; pla++) {
-// 		i=0;
-// 		printf("Plane %d\n", pla);
-// 		for(py=0; py < result.height; py++) {
-// 			for(px=0; px < result.pwidth; px++) {
-// 				printf("%02X ", (int) result.plane[pla][i++]);
-// 			}
-// 			printf("\n");
-// 		}
-// 	}
 // fprintf(stderr, "\n\n%s	count=%d	index=%d	plane=%d\n", filename, count, (dword)(index[0]+index[1]+index[2]+index[3]), pla);
 // exit(0);
 	return result;
