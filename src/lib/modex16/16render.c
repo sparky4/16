@@ -93,7 +93,7 @@ modexDrawPBuf(page_t *page, int x, int y, planar_buf_t *p, boolean sprite)
 // 	}
 	for(plane=0; plane < 4; plane++) {
 		i=0;
-		modexSelectPlane(PLANE(plane+x));
+		modexSelectPlane(PLANE(plane-1));
 		for(; y < py+p->height; y++) {
 			//for(px=0; px < p->width; px++) {
 				//printf("%02X ", (int) p->plane[plane][i++]);

@@ -90,7 +90,7 @@ pbuf_alloc(word width, word height) {
 
 	/* allocate the planes */
 	for(i=0; i<4; i++) {
-		p.plane[i] = _fmalloc(p.height * p.pwidth);
+		p.plane[i] = _fmalloc((p.height * p.pwidth)+1);
 	}
 
 	return p;
@@ -180,6 +180,9 @@ fprintf(stderr, "%u ", w++);*/
 	/* write the pixel the specified number of times */
 //fprintf(stderr, "\nputting in memory~ %u\n", w++);
 	for(; count && (index[0]+index[1]+index[2]+index[3]) < bufSize; count--,index[plane]++)  {
+		// copy to each plane
+		result.plane[plane][index[plane]]=(word)val;
+//fprintf(stdout, "plane=%u	index val=%02X	val=%02X\n", plane, result.plane[plane][index[plane]], val);
 		switch (plane)
 		{
 			case 4:
@@ -194,17 +197,14 @@ fprintf(stderr, "%u ", w++);*/
 				plane=0;
 			break;
 		}
-		// copy to each plane
-		result.plane[plane][index[plane]]=val;
 //fprintf(stdout, "count=%02X	index=%u	plane=%u	", count, index[plane], plane);
-//fprintf(stdout, "index val=%02X	val=%02X\n", result.plane[plane][index[plane]], val);
 	}
+	//val++;
 // fprintf(stdout, "\nindex=%lu		bufsize=%lu\n\n", (dword)(index[0]+index[1]+index[2]+index[3]),  bufSize);
 	} while((index[0]+index[1]+index[2]+index[3]) < bufSize);
 	loadPcxpbufPalette(file, &result);
 	fclose(file);
 // fprintf(stderr, "\n\n%s	count=%d	index=%d	plane=%d\n", filename, count, (dword)(index[0]+index[1]+index[2]+index[3]), pla);
-// exit(0);
 	return result;
 
 }
