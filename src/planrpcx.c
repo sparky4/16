@@ -78,7 +78,7 @@ baka = 1;
 	start = *clockw;
 // 		oldDrawBmp(VGA, 20, 20, &bmp, 0);
 	for(i=0; i<100 ;i++) {
-		modexDrawBmpPBuf		(&gvar.video.page[0], 32, 32, &p);
+		//modexDrawBmpPBuf		(&gvar.video.page[0], 32, 32, &p);
 	}
 	t1 = (*clockw-start) /18.2;
 	for(i=0; i<100 ;i++) {
@@ -95,7 +95,7 @@ baka = 1;
 	}
 	t3 = (*clockw-start) /18.2;
 	for(i=0; i<100 ;i++) {
-		modexDrawPBufRegion	(&gvar.video.page[0], 0, 0, 0+p.width, 0, p.width, p.height, &p, 0);
+		//modexDrawPBufRegion	(&gvar.video.page[0], 0, 0, 0+p.width, 0, p.width, p.height, &p, 0);
 	}
 	t4 = (*clockw-start) /18.2;
 	//++++	modexPalUpdate1(ptmp.palette);

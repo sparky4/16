@@ -97,12 +97,13 @@ modexDrawPBuf(page_t *page, int x, int y, planar_buf_t *p, boolean sprite)
 		for(; y < py+p->height; y++) {
 			//for(px=0; px < p->width; px++) {
 				//printf("%02X ", (int) p->plane[plane][i++]);
-// 				_fmemcpy(buff, &(p->plane[plane][i+=p->pwidth]), p->pwidth);
-// 				printf("buff %u==%s\n", y, *buff);
-// 				_fmemcpy(page->data + (((page->width/4) * (y+page->dy)) + ((x+page->dx) / 4)), buff, p->pwidth);
+//				_fmemcpy(buff, &(p->plane[plane][i+=p->pwidth]), p->pwidth);
+//				printf("buff %u==%s\n", y, *buff);
+//				_fmemcpy(page->data + (((page->width/4) * (y+page->dy)) + ((x+page->dx) / 4)), buff, p->pwidth);
 				_fmemcpy(page->data + (((page->width/4) * y) + (x / 4)), &(p->plane[plane][i+=p->pwidth]), p->pwidth);
 			//}
 		}
+//getch();
 		x=px;
 		y=py;
 	}
