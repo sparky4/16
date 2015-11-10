@@ -36,6 +36,7 @@ void modexDrawPBufRegion	(page_t *page, int x, int y, int rx, int ry, int rw, in
 	const int px=x+page->dx;
 	const int py=y+page->dy;
 	const int prw = rw/4;
+	int prh;
 
 	//fine tuning
 	rx+=1;
@@ -44,12 +45,13 @@ void modexDrawPBufRegion	(page_t *page, int x, int y, int rx, int ry, int rw, in
 	//^^;
 	#define PEEE	rx-prw
 	#define PE		(p->pwidth)
-	#define PEEEE	(PE*(ry))
+	if(rh<p->height) prh = (PE*(ry-4));
+	else if(rh==p->height) prh = (PE*(ry));
 	y=py;
 	x=px;
 	//printf("%d,%d p(%d,%d) r(%d,%d) rwh(%d,%d)\n", x, y, px, py, rx, ry, rw, rh);
 	for(plane=0; plane < 4; plane++) {
-		i=PEEE+PEEEE;
+		i=PEEE+prh;
 		modexSelectPlane(PLANE(plane-1));
 		for(; y < py+rh; y++) {
 				_fmemcpy(page->data + (((page->width/4) * (y)) + ((x) / 4)), &(p->plane[plane][i]), prw);
