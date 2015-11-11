@@ -11,7 +11,7 @@ Demonstrates RLE encoding to file QUICK and DIRTY
 #include <stdlib.h>
 #include <conio.h>
 #include <ctype.h>
-#include <alloc.h>
+#include <malloc.h>
 #include <dos.h>
 #include "xlib.h"
 #include "xvbitmap.h"

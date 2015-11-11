@@ -13,7 +13,7 @@ Themie Gouthas
 #include <stdlib.h>
 #include <conio.h>
 #include <ctype.h>
-#include <alloc.h>
+#include <malloc.h>
 #include <dos.h>
 #include "xlib.h"
 #include "xpbitmap.h"

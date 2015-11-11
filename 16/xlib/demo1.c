@@ -7,9 +7,9 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <ctype.h>
-#include <alloc.h>
+#include <malloc.h>
 #include <dos.h>
-#include "Xlib_all.h"
+#include "xlib_all.h"
 
 #define MAX_OBJECTS  10
 

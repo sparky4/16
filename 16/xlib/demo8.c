@@ -13,7 +13,7 @@ masked planar bitmap, and video bitmap blits.
 #include <stdlib.h>
 #include <conio.h>
 #include <ctype.h>
-#include <alloc.h>
+#include <malloc.h>
 #include <dos.h>
 #include <dir.h>
 #include <string.h>

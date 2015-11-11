@@ -45,6 +45,3 @@ extern int x_file_RLDecode( /* Uncompress data file                        */
 
 
 #endif
-
-
-
