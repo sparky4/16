@@ -994,9 +994,8 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 //TODO: OPTIMIZE THIS!!!!
 		modexDrawCharPBuf(page, x, y, t, col, bgcol, q);
 
-		if(!q) getch();
+		//if(!q) getch();
 	}
-	//_nfree(bakapee);
 }
 
 void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str)
@@ -1101,7 +1100,7 @@ void cls(page_t *page, byte color, byte *Where)
 	/* set map mask to all 4 planes */
 	outpw(SC_INDEX, 0xff02);
 	//_fmemset(VGA, color, 16000);
-	_fmemset(Where, color, page->width*(page->height));
+	_fmemset(Where, color, page->width*(page->height)/4);
 }
 
 void
