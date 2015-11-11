@@ -434,3 +434,37 @@ modexDrawSpritePBufRegion(page_t *page, int x, int y,
 		JNZ PLANE_LOOP	  ; do all 4 planes
     }
 }
+
+void modexDrawCharPBuf(page_t *page, int x, int y, word t, word col, word bgcol, boolean q)
+{
+	word i, j, k;
+	for(i=0; i<romFonts[t].charSize; i++)
+	{
+		j=1<<8;
+		k=0;
+		//every "pixel" row
+		while(j)
+		{
+			if(q)
+			_fmemcpy(page->data + (((page->width/4) * (y+i)) + ((x+romFontsData.chw+k) / 4)),
+ romFontsData.l[i] & j ?
+ col:bgcol, 2);
+			//modexputPixel(page, x+xp+chw, y+i, l[i] & j ? col:bgcol);
+			else
+				//printf("l[i]=%c j=%02u l[i] & j=%02u %c\n", l[i] , j, l[i] & j, l[i] & j ? '*':' ');
+				//printf("%c", l[i] & j ? '*':' ');
+				romFontsData.z[k]=romFontsData.l[i] & j ? '*':' ';
+			j>>=1;
+			k++;
+		}
+		if(!q)
+		{
+			for(k=0;k<9;k++)
+			{
+				printf("%c", romFontsData.z[k]);
+			}
+			printf("\n");
+		}
+	}
+	romFontsData.chw += k;
+}

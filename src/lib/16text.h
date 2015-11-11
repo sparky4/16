@@ -40,8 +40,17 @@ typedef struct font {
     byte  charSize;  //bytes in each character
 } font_t;
 
+typedef struct fontdata {
+	byte z[9];
+	byte col;	//color
+	byte bgcol;		//bg color!
+	word chw;		//char width
+	byte l[1024];
+} fontdata_t;
+
 /* storage for the rom fonts */
 extern font_t romFonts[4];
+extern fontdata_t romFontsData;
 #define ROM_FONT_8x14     0
 #define ROM_FONT_8x8_LOW  1
 #define ROM_FONT_8x8_HIGH 2

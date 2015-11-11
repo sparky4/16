@@ -24,7 +24,7 @@
 
 /* this array holds the rom font descriptors */
 font_t romFonts[4];
-
+fontdata_t romFontsData;
 
 static void getRomFontAddr(char fontNum, int index) {
     word fontSeg;
@@ -56,4 +56,5 @@ void textInit() {
     romFonts[ROM_FONT_8x8_LOW].charSize=8;
     romFonts[ROM_FONT_8x8_HIGH].charSize=8;
     romFonts[ROM_FONT_8x16].charSize=16;
+	//romFontsData
 }

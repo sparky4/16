@@ -954,46 +954,24 @@ void modexhlin(page_t *page, word xl, word xh, word y, word color)
 
 void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str, boolean q)
 {
-	word i, s, o, w, j, k, xp;
-	byte l[1024];
-	word addr = (word) l;
-	word chw=0;
+	word s, o, w;
+	word addr = (word) romFontsData.l;
 	byte c;
-	byte z[10];
-	//byte near *bakapee;
-
-	switch(t)
-	{
-		case 0:
-			w=14;
-		break;
-		case 1:
-			w=8;
-		break;
-		case 2:
-			w=8;
-		break;
-		case 3:
-			w=16;
-		break;
-		default:
-			t=3;
-			w=16;
-		break;
-	}
 
 	s=romFonts[t].seg;
 	o=romFonts[t].off;
+	w=romFonts[t].charSize;
+	romFontsData.chw=0;
 
 	for(; *str != '\0'; str++)
 	{
 	c = (*str);
 	if((c=='\n'/* || c=="\
-"*/) || chw
+"*/) || romFontsData.chw
 >=page->width)
 	{
-		chw=0;
-		y+=w;
+		romFontsData.chw=0;
+		y+=romFonts[t].charSize;
 		continue;
 	}
 	//load the letter 'A'
@@ -1013,42 +991,10 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 		DEC CX
 		JNZ L1
 	}
-	//bakapee = _nmalloc(sizeof(byte)*8);
 //TODO: OPTIMIZE THIS!!!!
-		for(i=0; i<w; i++)
-		{
-			/*modexSelectPlane(PLANE(x));
-			j=1<<8;
-			*bakapee=(l[i] & j ? col:bgcol);
-			_fmemcpy(page->data + (((page->width/4) * (y+page->dy+i)) + ((x+page->dx+chw) / 4)), bakapee, 8);*/
-			j=1<<8;
-			k=0;
-			xp=0;
-			//every "pixel" row
-			while(j)
-			{
-				if(q)
-				//_fmemcpy(page->data + (((page->width/4) * (y)) + ((x) / 4)), l[i] & j ? col:bgcol, 8);
-				modexputPixel(page, x+xp+chw, y+i, l[i] & j ? col:bgcol);
-				else
-					//printf("l[i]=%c j=%02u l[i] & j=%02u %c\n", l[i] , j, l[i] & j, l[i] & j ? '*':' ');
-					//printf("%c", l[i] & j ? '*':' ');
-					z[k]=l[i] & j ? '*':' ';
-				xp++;
-				j>>=1;
-				k++;
-			}
-			if(!q)
-			{
-				for(k=0;k<10;k++)
-				{
-					printf("%c", z[k]);
-				}
-				printf("\n");
-			}
-		}
+		modexDrawCharPBuf(page, x, y, t, col, bgcol, q);
+
 		if(!q) getch();
-		chw += xp;
 	}
 	//_nfree(bakapee);
 }
