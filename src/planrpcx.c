@@ -154,7 +154,7 @@ getch();
 	free(bakapeee);
 	fprintf(stderr, "modexDrawBmpPBufRegion:	%f\n", t2);
 	fprintf(stderr, "modexDrawPBufRegion:	%f\n", t4);
-	fprintf(stderr, "speed difference	%f\n", t4/t2);
+	fprintf(stderr, "speed difference	%f\n", t2/t4);
 	//fprintf(stderr, "gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
 	//fprintf(stderr, "gvar.video.page[0].height: %u\n", gvar.video.page[0].height);
 }
