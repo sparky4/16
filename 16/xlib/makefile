@@ -14,8 +14,8 @@ CC=wcc
 
 TLIB=wlib
 
-AFLAGS  = /ml /zi /d$(MODEL)
-CFLAGS  = -m$(MODEL)
+AFLAGS  = -0 /zi -m$(MODEL)
+CFLAGS  = -0 -m$(MODEL)
 CPPFLAGS= -m$(MODEL)
 LDFLAGS = -m$(MODEL)
 
