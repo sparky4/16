@@ -20,52 +20,52 @@ CPPFLAGS= -m$(MODEL)
 LDFLAGS = -m$(MODEL)
 
 
-%.c.obj:
+%.o: %.c
    $(CC) -c $(CFLAGS) $<
 
-%.asm.obj:
+%.o: *.asm
    wasm $(AFLAGS) $* \
 
 
-XLIBOBJS= xprintf.obj xpoint.obj xline.obj xmain.obj xpal.obj xpbitmap.obj \
-	 xrect.obj xtext.obj xcbitmap.obj xdetect.obj xbmtools.obj         \
-	 xfileio.obj xrletool.obj xbezier.obj xpbmclip.obj xvbitmap.obj    \
-	 xmakevbm.obj xmouse.obj xcircle.obj xclippbm.obj xcomppbm.obj     \
-	 xpolygon.obj xvsync.obj xfill.obj xcbitm32.obj
+XLIBOBJS= xprintf.o xpoint.o xline.o xmain.o xpal.o xpbitmap.o \
+	 xrect.o xtext.o xcbitmap.o xdetect.o xbmtools.o         \
+	 xfileio.o xrletool.o xbezier.o xpbmclip.o xvbitmap.o    \
+	 xmakevbm.o xmouse.o xcircle.o xclippbm.o xcomppbm.o     \
+	 xpolygon.o xvsync.o xfill.o xcbitm32.o
 
 
 all: demo1.exe demo2.exe demo3.exe demo4.exe demo5.exe demo6.exe demo7.exe \
      demo8.exe demo9.exe demo10.exe
 
-demo1.exe : demo1.obj $(XLIBOBJS) xlib$(XLIB_VERSION)$(MODEL).lib
-  $(CC) $(CFLAGS) demo1.obj xlib$(XLIB_VERSION)$(MODEL).lib
+demo1.exe : demo1.o $(XLIBOBJS) xlib$(XLIB_VERSION)$(MODEL).lib
+  $(CC) $(CFLAGS) demo1.o xlib$(XLIB_VERSION)$(MODEL).lib
 
-demo2.exe : demo2.obj $(XLIBOBJS) xlib$(XLIB_VERSION)$(MODEL).lib
-  $(CC) $(CFLAGS) demo2.obj xlib$(XLIB_VERSION)$(MODEL).lib
+demo2.exe : demo2.o $(XLIBOBJS) xlib$(XLIB_VERSION)$(MODEL).lib
+  $(CC) $(CFLAGS) demo2.o xlib$(XLIB_VERSION)$(MODEL).lib
 
-demo3.exe : demo3.obj $(XLIBOBJS) xlib$(XLIB_VERSION)$(MODEL).lib
-  $(CC) $(CFLAGS) demo3.obj xlib$(XLIB_VERSION)$(MODEL).lib
+demo3.exe : demo3.o $(XLIBOBJS) xlib$(XLIB_VERSION)$(MODEL).lib
+  $(CC) $(CFLAGS) demo3.o xlib$(XLIB_VERSION)$(MODEL).lib
 
-demo4.exe : demo4.obj $(XLIBOBJS) xlib$(XLIB_VERSION)$(MODEL).lib
-  $(CC) $(CFLAGS) demo4.obj xlib$(XLIB_VERSION)$(MODEL).lib
+demo4.exe : demo4.o $(XLIBOBJS) xlib$(XLIB_VERSION)$(MODEL).lib
+  $(CC) $(CFLAGS) demo4.o xlib$(XLIB_VERSION)$(MODEL).lib
 
-demo5.exe : demo5.obj $(XLIBOBJS) xlib$(XLIB_VERSION)$(MODEL).lib
-  $(CC) $(CFLAGS) demo5.obj xlib$(XLIB_VERSION)$(MODEL).lib
+demo5.exe : demo5.o $(XLIBOBJS) xlib$(XLIB_VERSION)$(MODEL).lib
+  $(CC) $(CFLAGS) demo5.o xlib$(XLIB_VERSION)$(MODEL).lib
 
-demo6.exe : demo6.obj $(XLIBOBJS) xlib$(XLIB_VERSION)$(MODEL).lib
-  $(CC) $(CFLAGS) demo6.obj xlib$(XLIB_VERSION)$(MODEL).lib
+demo6.exe : demo6.o $(XLIBOBJS) xlib$(XLIB_VERSION)$(MODEL).lib
+  $(CC) $(CFLAGS) demo6.o xlib$(XLIB_VERSION)$(MODEL).lib
 
-demo7.exe : demo7.obj $(XLIBOBJS) xlib$(XLIB_VERSION)$(MODEL).lib
-  $(CC) $(CFLAGS) demo7.obj xlib$(XLIB_VERSION)$(MODEL).lib
+demo7.exe : demo7.o $(XLIBOBJS) xlib$(XLIB_VERSION)$(MODEL).lib
+  $(CC) $(CFLAGS) demo7.o xlib$(XLIB_VERSION)$(MODEL).lib
 
-demo8.exe : demo8.obj $(XLIBOBJS) xlib$(XLIB_VERSION)$(MODEL).lib
-  $(CC) $(CFLAGS) demo8.obj xlib$(XLIB_VERSION)$(MODEL).lib
+demo8.exe : demo8.o $(XLIBOBJS) xlib$(XLIB_VERSION)$(MODEL).lib
+  $(CC) $(CFLAGS) demo8.o xlib$(XLIB_VERSION)$(MODEL).lib
 
-demo9.exe : demo9.obj $(XLIBOBJS) xlib$(XLIB_VERSION)$(MODEL).lib
-  $(CC) $(CFLAGS) demo9.obj xlib$(XLIB_VERSION)$(MODEL).lib
+demo9.exe : demo9.o $(XLIBOBJS) xlib$(XLIB_VERSION)$(MODEL).lib
+  $(CC) $(CFLAGS) demo9.o xlib$(XLIB_VERSION)$(MODEL).lib
 
-demo10.exe : demo10.obj $(XLIBOBJS) xlib$(XLIB_VERSION)$(MODEL).lib
-  $(CC) $(CFLAGS) demo10.obj xlib$(XLIB_VERSION)$(MODEL).lib
+demo10.exe : demo10.o $(XLIBOBJS) xlib$(XLIB_VERSION)$(MODEL).lib
+  $(CC) $(CFLAGS) demo10.o xlib$(XLIB_VERSION)$(MODEL).lib
 
 
 xlib$(XLIB_VERSION)$(MODEL).lib: $(XLIBOBJS)
@@ -78,27 +78,27 @@ xlib$(XLIB_VERSION)$(MODEL).lib: $(XLIBOBJS)
 
 # Object modules
 
-xprintf.obj : xprintf.c
-xpoint.obj  : xpoint.asm   xpoint.inc   xlib.inc  model.inc
-xline.obj   : xline.asm    xline.inc    xlib.inc  model.inc
-xmain.obj   : xmain.asm    xmain.inc    xlib.inc  model.inc
-xpal.obj    : xpal.asm     xpal.inc     xlib.inc  model.inc
-xpbitmap.obj: xpbitmap.asm xpbitmap.inc xlib.inc  model.inc
-xpbmclip.obj: xpbmclip.asm xpbmclip.inc xlib.inc  model.inc
-xclippbm.obj: xclippbm.asm xclippbm.inc xlib.inc  model.inc
-xrect.obj   : xpal.asm     xpal.inc     xlib.inc  model.inc
-xtext.obj   : xtext.asm    xtext.inc    xlib.inc  model.inc
-xcbitmap.obj: xcbitmap.asm xcbitmap.inc xlib.inc  model.inc
-xcomppbm.obj: xcomppbm.asm xcomppbm.inc xlib.inc  model.inc
-xcbitm32.obj: xcbitm32.c   
-xdetect.obj : xdetect.asm  xdetect.inc            model.inc
-xbmtools.obj: xbmtools.asm xbmtools.inc           model.inc
-xfileio.obj : xfileio.asm  xfileio.inc            model.inc
-xrletool.obj: xrletool.asm xrletool.inc           model.inc
-xvbitmap.obj: xvbitmap.asm xvbitmap.inc xlib.inc  model.inc
-xmakevbm.obj: xmakevbm.c   xvbitmap.h
-xmouse.obj  : xmouse.asm                xlib.inc  model.inc
-xcircle.obj : xcircle.asm  xcircle.inc  xlib.inc  model.inc
-xpolygon.obj: xpolygon.asm xpolygon.inc xlib.inc  model.inc
-xvsync.obj  : xvsync.asm   xvsync.inc   xlib.inc  model.inc
-xfill.obj   : xfill.asm    xfill.inc    xlib.inc  model.inc
+xprintf.o : xprintf.c
+xpoint.o  : xpoint.asm   xpoint.inc   xlib.inc  model.inc
+xline.o   : xline.asm    xline.inc    xlib.inc  model.inc
+xmain.o   : xmain.asm    xmain.inc    xlib.inc  model.inc
+xpal.o    : xpal.asm     xpal.inc     xlib.inc  model.inc
+xpbitmap.o: xpbitmap.asm xpbitmap.inc xlib.inc  model.inc
+xpbmclip.o: xpbmclip.asm xpbmclip.inc xlib.inc  model.inc
+xclippbm.o: xclippbm.asm xclippbm.inc xlib.inc  model.inc
+xrect.o   : xpal.asm     xpal.inc     xlib.inc  model.inc
+xtext.o   : xtext.asm    xtext.inc    xlib.inc  model.inc
+xcbitmap.o: xcbitmap.asm xcbitmap.inc xlib.inc  model.inc
+xcomppbm.o: xcomppbm.asm xcomppbm.inc xlib.inc  model.inc
+xcbitm32.o: xcbitm32.c   
+xdetect.o : xdetect.asm  xdetect.inc            model.inc
+xbmtools.o: xbmtools.asm xbmtools.inc           model.inc
+xfileio.o : xfileio.asm  xfileio.inc            model.inc
+xrletool.o: xrletool.asm xrletool.inc           model.inc
+xvbitmap.o: xvbitmap.asm xvbitmap.inc xlib.inc  model.inc
+xmakevbm.o: xmakevbm.c   xvbitmap.h
+xmouse.o  : xmouse.asm                xlib.inc  model.inc
+xcircle.o : xcircle.asm  xcircle.inc  xlib.inc  model.inc
+xpolygon.o: xpolygon.asm xpolygon.inc xlib.inc  model.inc
+xvsync.o  : xvsync.asm   xvsync.inc   xlib.inc  model.inc
+xfill.o   : xfill.asm    xfill.inc    xlib.inc  model.inc
