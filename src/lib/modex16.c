@@ -952,13 +952,14 @@ void modexhlin(page_t *page, word xl, word xh, word y, word color)
 	//modexputPixel(page, x+xl, y, color);
 }
 
-void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str)
+void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str, boolean q)
 {
-	word i, s, o, w, j, xp;
+	word i, s, o, w, j, k, xp;
 	byte l[1024];
 	word addr = (word) l;
 	word chw=0;
 	byte c;
+	byte z[10];
 	//byte near *bakapee;
 
 	switch(t)
@@ -1021,14 +1022,32 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 			*bakapee=(l[i] & j ? col:bgcol);
 			_fmemcpy(page->data + (((page->width/4) * (y+page->dy+i)) + ((x+page->dx+chw) / 4)), bakapee, 8);*/
 			j=1<<8;
+			k=0;
 			xp=0;
+			//every "pixel" row
 			while(j)
 			{
+				if(q)
+				//_fmemcpy(page->data + (((page->width/4) * (y)) + ((x) / 4)), l[i] & j ? col:bgcol, 8);
 				modexputPixel(page, x+xp+chw, y+i, l[i] & j ? col:bgcol);
+				else
+					//printf("l[i]=%c j=%02u l[i] & j=%02u %c\n", l[i] , j, l[i] & j, l[i] & j ? '*':' ');
+					//printf("%c", l[i] & j ? '*':' ');
+					z[k]=l[i] & j ? '*':' ';
 				xp++;
 				j>>=1;
+				k++;
+			}
+			if(!q)
+			{
+				for(k=0;k<10;k++)
+				{
+					printf("%c", z[k]);
+				}
+				printf("\n");
 			}
 		}
+		if(!q) getch();
 		chw += xp;
 	}
 	//_nfree(bakapee);

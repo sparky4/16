@@ -81,10 +81,10 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 			chx=0;
 			chy+=8;
 			sprintf(pee,"%u", colpee);
-			modexprint(&gvar.video.page[0], 200, 200, 1, 47, 0, &pee);
+			modexprint(&gvar.video.page[0], 200, 200, 1, 47, 0, &pee, 1);
 			//getch();
 		}
-		modexprint(&gvar.video.page[0], chx, chy, 1, 0, colpee, &e);
+		modexprint(&gvar.video.page[0], chx, chy, 1, 0, colpee, &e, 1);
 		chx+=9;
 		colpee++;
 		if(colpee>=32+24) colpee=32;

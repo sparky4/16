@@ -49,7 +49,7 @@ main(int argc, char *argv[])
 	modexPalBlack();	//so player will not see loadings~
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
-	//modexprint(&screen, 32, 32, 1, 2, 0, "a");
+	//modexprint(&screen, 32, 32, 1, 2, 0, "a", 1);
 	while(ENGI_EXIT != engi_stat)
 	{
 		IN_ReadControl(0,&player);

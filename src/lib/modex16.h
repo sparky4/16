@@ -119,7 +119,7 @@ void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, wor
 void modexputPixel(page_t *page, int x, int y, byte color);
 byte modexgetPixel(page_t *page, int x, int y);
 void modexhlin(page_t *page, word xl, word xh, word y, word color);
-void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
+void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str, boolean q);
 void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
 void pdump(page_t *pee);
 void cls(page_t *page, byte color, byte *Where);

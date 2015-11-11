@@ -36,11 +36,14 @@ word px,py;
 sword baka;
 char *bakapeee;
 
+
 void main(int argc, char *argv[])
 {
 
-	//byte l[1024];
-	word j,chw,xp,col,bgcol;
+	byte l[1024];
+	static byte e;
+	static word chx, chy, colpee;
+	byte pee[2];
 
 //w=0;
 //printf("%u ", w++);
@@ -60,6 +63,7 @@ baka = 1;
 //fprintf(stderr, "^^;", w++);
 //getch();
 
+	textInit();
 	VGAmodeX(baka, &gvar);
 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 
@@ -119,28 +123,26 @@ getch();
 			printf("\n");
 		}
 	}
-	col=0x0d, bgcol=0;
-	/*
-	for(i=0; i<8; i++)
+
+	chx=0;
+	chy=0;
+	colpee=32;
+	for(e=0x00; e<=0xFE; e++)
 	{
-		//modexSelectPlane(PLANE(x));
-		//j=1<<8;
-		//*bakapee=(l[i] & j ? col:bgcol);
-		//_fmemcpy(page->data + (((page->width/4) * (y+page->dy+i)) + ((x+page->dx+chw) / 4)), bakapee, 8);
-		j=4<<8;
-		fprintf(stderr, "j<<=%u\n", j);
-		xp=0;
-		while(j)
+		if(chx+8>(gvar.video.page[0].width/2))
 		{
-			//modexputPixel(page, x+xp+chw, y+i, l[i] & j ? col:bgcol);
-			//fprintf(stderr, "%u", l[i] & j ? col:bgcol);
-			xp++;
-			j>>=4;
-			fprintf(stderr, "	j>>=%u\n", j);
+			chx=0;
+			chy+=8;
+			sprintf(pee,"%u", colpee);
+			modexprint(&gvar.video.page[0], 200, 200, 1, 47, 0, &pee, 0);
+			//getch();
 		}
-		//fprintf(stderr, "\n");
-	}*/
-	chw += xp;
+		modexprint(&gvar.video.page[0], chx, chy, 1, 0, colpee, &e, 0);
+		chx+=9;
+		colpee++;
+		if(colpee>=32+24) colpee=32;
+	}
+
 	fprintf(stderr,"Project 16 planrpcx.exe. This is just a test file!\n");
 	fprintf(stderr,"version %s\n", VERSION);
 	fprintf(stderr,"%d\n", sizeof(p.plane));
