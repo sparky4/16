@@ -86,7 +86,7 @@ baka = 1;
 	}
 	t1 = (*clockw-start) /18.2;
 	for(i=0; i<100 ;i++) {
-		modexDrawBmpPBufRegion	(&gvar.video.page[0], p.width+32, 32, 0, 0, p.width, p.height, &p);
+		modexDrawBmpPBufRegion	(&gvar.video.page[0], p.width+32, 32, p.width-(p.width/4), p.height-(p.height/4), p.width/4, p.height/4, &p);
 	}
 	t2 = (*clockw-start) /18.2;
 	getch();
