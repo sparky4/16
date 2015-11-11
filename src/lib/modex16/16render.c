@@ -447,7 +447,7 @@ void modexDrawCharPBuf(page_t *page, int x, int y, word t, word col, word bgcol,
 		{
 			if(q)
 			//_fmemcpy(page->data + (((page->width/4) * (y+i)) + ((x+romFontsData.chw+k) / 4)), romFontsData.l[i] & j ? col:bgcol, 2);
-			modexputPixel(page, x+xp+chw, y+i, l[i] & j ? col:bgcol);
+			modexputPixel(page, x+k+romFontsData.chw, y+i, romFontsData.l[i] & j ? col:bgcol);
 			else
 				//printf("l[i]=%c j=%02u l[i] & j=%02u %c\n", l[i] , j, l[i] & j, l[i] & j ? '*':' ');
 				//printf("%c", l[i] & j ? '*':' ');
