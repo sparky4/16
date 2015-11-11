@@ -93,7 +93,7 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 	getch();
 //	modexprint(0, 0, 1, 0, colpee, &rose);
 //++++	modexprint(&gvar.video.page[0], 0, 0, 0, 0, colpee, &ibmlogo);
-	modexprintbig(&gvar.video.page[0], 0, 0, 1, colpee, 0, "IBM");
+//	modexprintbig(&gvar.video.page[0], 0, 0, 1, colpee, 0, "IBM");
 //	modexprint(0, 0, 1, 0, colpee, ROSE);
 	getch();
 	VGAmodeX(0, &gvar);
