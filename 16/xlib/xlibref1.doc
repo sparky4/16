@@ -1,0 +1,1655 @@
+PART 1 of 2
+-----------------------------------------------------------------------------
+
+  *********      XLIB - Mode X graphics library           ****************
+  *********                                               ****************
+  ********* Written By Themie Gouthas                     ****************
+  *********                                               ****************
+  ********* egg@dstos3.dsto.gov.au                        ****************
+  ********* teg@bart.dsto.gov.au                          ****************
+
+      Some of the code in this library has been contributed by :
+
+               Matthew MacKenzie - matm@eng.umd.edu
+
+                and others. See individual modules.
+
+         I informally reserve all rights to the code in XLIB
+     Rights to contributed code is also assumed to be reserved by
+                   the original authors.
+-----------------------------------------------------------------------------
+
+DISCLAIMER
+
+ This library is distributed AS IS. The author/s specifically disclaim
+ any responsibility for any loss of profit or any incidental, consequen-
+ tial or other damages.
+
+---------------------------------------------------------------------------
+INTRODUCTION
+---------------------------------------------------------------------------
+
+XLIB is a "user supported freeware" graphics library specifically designed
+with game programming in mind.
+
+It has been placed in the public domain for the benefit of all, and
+represents *MANY* hours of work so it is requested that all users comply
+with the the wishes of the author/s as specified in the individual modules
+and:
+a) To leave the code in the public domain
+b) Not distribute any modified or incomplete versions of this library
+
+New contribution and comments are welcome and hopefully there will be
+more releases as the code evolves.
+
+Finally, do not trust this excuse for a manual if in doubt, as this code has
+undergone several revisions. The place to get the answers is in the code
+itself.
+
+REQUIREMENTS
+
+Minimum requirements
+        286 processor,
+	Turbo C 2.0 or higher, or BORLANDC
+	MAKE  2.0 or higher
+	TLIB  2.0 or higher
+	Turbo Assembler 1.01 or higher
+
+
+GENERAL FEATURES
+
+   Support for a number of 256 colour tweaked graphics mode resolutions
+   320x200 320x240 360x200 360x240 376x282 320x400 320x480 360x400 360x480
+   360x360 376x308 376x564
+
+   Please note that some of the new resolutions best suit monitors with
+   adjustable vertical height.
+
+   Virtual screens larger than the physical screen (memory
+   permitting) that can be panned at pixel resolution in all directions
+
+   A split screen capability for status displays etc.
+
+   Text functions supporting 8x8 and 8x14 ROM fonts and user defined fonts
+
+   Support for page flipping
+
+   Graphics primitives such as line and rectangle drawing functions and
+   of course bit block manipulation functions
+
+MODULES COMPRISING XLIB
+   XMAIN    - Main module containig mode setting code and basic functions
+   XPOINT   - Pixel functions
+   XRECT    - Filled Rectangle and VRAM to VRAM block move functions
+   XPAL     - Palette functions
+   XLINE    - Line Functions
+   XTEXT    - Text and Font Functions
+   XPRINTF  - Printf style string output
+   XPBITMAP - Planar Bitmap functions
+   XCBITMAP - Compiled Bitmap functions
+   XVBITMAP - Video Bitmap functions
+   XPBMCLIP - Clipped Planar Bitmap functions
+   XMAKEVBM - Support module for video bitmaps
+   XBMTOOLS - Bitmap format conversion tools
+   XDETECT  - Hardware detection module
+   XFILEIO  - File I/O functions
+   XRLETOOL - RLE encoding/decoding functions
+   XMOUSE   - Mouse functions
+   XBEZIER  - Bezier curve drawing
+
+-------------------------------------------------------------------------
+BUILDING THE LIBRARIES
+-------------------------------------------------------------------------
+
+Building the library had been made simple through the use of make.
+
+To build and examples for one of the two models:
+
+a) edit the makefile for the apropriate model (see note in the makefile)
+b) edit the makefile for the apropriate compiler (again see note in the
+   makefile)
+c) type "make" at the dos prompt.
+
+It should be as simple as that. If problems are encountered then check
+to see if tasm, make, tlib, link and bcc (or tcc) are withinin your path.
+If not either change your path or specify the full path for these programs
+in the makefile. It is preferrable to have your path set correctly.
+
+Individual Compilation
+----------------------
+
+each ASM module can be compiled with the following commandline:
+
+tasm /ml /d<model> <asm module name>
+
+where <model> is s c or l. Where s = small model, c = compact model and
+l = large model.
+
+The resulting libraries are:
+
+  xlib<version>s.lib    - small model library
+  xlib<version>c.lib    - large model library
+  xlib<version>l.lib    - large model library
+
+To link the library with your programs just include the apropriate .lib
+file in your project file or on the BCC or TCC command line.
+
+Using the library with your programs
+------------------------------------
+
+Using the XLIB library in your programs is simple. Knowing the particular
+modules you require, just include the associated header files in your program
+and link your program modules with the library. If you don't want to wory
+about selecting the apropriate header file then just include "XLIB_ALL.H"
+which automatically includes all XLIB header files in your program.
+
+For example compilations see the supplied makefile.
+
+--------------------------------------------------------------------------
+GLOBAL DEFINES (xlib.inc)
+--------------------------------------------------------------------------
+
+Types
+
+ BYTE unsigned char
+ WORD unsigned int
+
+Available X mode resolutions
+
+ X_MODE_320x200  0
+ X_MODE_320x240  1
+ X_MODE_360x200  2
+ X_MODE_360x240  3
+ X_MODE_360x282  4
+ X_MODE_320x400  5
+ X_MODE_320x480  6
+ X_MODE_360x400  7
+ X_MODE_360x480  8
+ X_MODE_360x360  9
+ X_MODE_376x308  10
+ X_MODE_376x564  11
+
+Palette rotation direction directiion
+
+ BACKWARD 0
+ FORWARD  1
+
+
+ X_MODE_INVALID -1
+ ERROR           1
+ OK              0
+
+
+--------------------------------------------------------------------------
+MODULE XMAIN
+--------------------------------------------------------------------------
+
+The Xmain module is the base module of the XLIB library. It contains the
+essential functions that initialize and customize the graphic environment.
+
+
+ASM SOURCES
+
+   xmain.asm xmain.inc xlib.inc model.inc
+
+C HEADER FILE
+
+   xlib.h
+
+EXPORTED VARIABLES
+
+  NOTE: All variables are read only unless otherwise specified. If you modify
+  them manually, the results may be unpredictable.
+
+  InGraphics -  BYTE -  Flag indicating that the xlib graphics system is
+       active. Set by function "x_set_mode".
+
+  CurrXMode - WORD - If the xlib graphics system is active, contains the id
+       of the x mode. Set by function "x_set_mode".
+       See also defines (ie X_MODE_320x200 ... )
+
+  ScrnPhysicalByteWidth - WORD - Physical screen width in bytes. Set by
+       function "x_set_mode"
+
+  ScrnPhysicalPixelWidth - WORD - Physical screen width in pixels. Set by
+       function "x_set_mode"
+
+  ScrnPhysicalHeight - WORD - Physical screen height in pixels. Set by
+       function "x_set_mode".
+
+  ErrorValue - WORD - Contains error value. General use variable to
+       communicate the error status from several functions. The value
+       in this variable usually is only valid for the the last
+       function called that sets it.
+
+  SplitScrnOffs - WORD - Offset in video ram of split screen. Set by
+       function "x_set_splitscrn". The value is only valid if a split
+       screen is active. See also global variable "SplitScrnActive".
+
+  SplitScrnScanLine - WORD - Screen Scan Line the Split Screen starts at
+       initially when set by function "x_set_splitscrn". The value is only
+       valid if a split screen is active. See also global variable
+       "SplitScrnActive".This variable is not updated by "x_hide_splitscrn",
+       "x_adjust_splitscrn".
+
+  SplitScrnVisibleHeight - WORD - The number of rows of the initial split
+       screen which are currently displayed. Modified by "x_hide_splitscrn",
+       "x_adjust_splitscrn" and "x_show_splitscrn".
+
+  Page0_Offs - WORD - Offset in video ram of main virtual screen. Initially
+       set by function "x_set_mode" but is updated by functions
+       "x_set_splitscrn" and "x_set_doublebuffer".
+
+  Page1_Offs - WORD - Offset in video ram of second virtual screen. Set by
+       and only is valid after a call to "x_set_doublebuffer".
+
+  ScrnLogicalByteWidth - WORD - Virtual screen width in bytes. Set by
+       function "x_set_mode".
+
+  ScrnLogicalPixelWidth - WORD - Virtual screen width in pixels. Set
+       by function "x_set_mode".
+
+  ScrnLogicalHeight - WORD - Virtual screen height in pixels. Set
+       initially by function "x_set_mode" but is updated by functions
+       "x_set_splitscrn" and "x_set_doublebuffer".
+
+  MaxScrollX - WORD - Max X pixel position of physical screen within
+       virtual screen. Set by function "x_set_mode".
+
+  MaxScrollY - WORD - Max Y position of physical screen within virtual
+       screen. Set initially by function "x_set_mode" but is updated by
+       functions "x_set_splitscrn" and "x_set_doublebuffer".
+
+  DoubleBufferActive - WORD - Indicates whether double-buffering is on. Set
+       by function "x_set_doublebuffer".
+
+  VisiblePageIdx - WORD - Index number of current visible page. Initially
+       set by function "x_set_doublebuffer" but is updated by "x_page_flip".
+       This variable is only used while double buffering is on.
+
+  HiddenPageOffs - WORD - Offset of hidden page. Initially set by function
+       "x_set_doublebuffer" but is updated by "x_page_flip". This variable
+       is only used while double buffering is on.
+
+  VisiblePageOffs - WORD - Offset of visible page. Initially set by function
+       "x_set_doublebuffer" but is updated by "x_page_flip". This variable
+       is only used while double buffering is on.
+
+  NonVisual_Offs - WORD - Offset of first byte of non-visual ram, the ram
+       that is available for bitmap storage etc. Set initially by function
+       "x_set_mode" but is updated by functions "x_set_splitscrn" and
+       "x_set_doublebuffer".
+
+  TopClip, BottomClip, LeftClip RightClip - WORD - Define the clipping
+       rectangle for Linear and Video clipped bitmap put functions. Set
+       either manually or by "x_set_cliprect". Note X coordinates are in
+       bytes as all clip functions clip to byte boundaries.
+
+  PhysicalStartPixelX - WORD - X pixel Offset of physical (visible) screen
+       relative to the upper left hand corner (0,0) of the virtual screen.
+
+  PhysicalStartByteX - WORD - X byte Offset of physical (visible) screen
+       relative to the upper left hand corner (0,0) of the virtual screen.
+
+  PhysicalStartY - WORD - Y pixel Offset of physical (visible) screen
+       relative to the upper left hand corner (0,0) of the virtual screen.
+
+EXPORTED FUNCTIONS
+
+  x_set_mode
+  ----------
+    C Prototype:  extern WORD x_set_mode(WORD mode,WORD WidthInPixels);
+
+     mode          - The required mode as defined by the "Available X Mode
+                     resolutions" set of defines in the xlib.h header file.
+     WidthInPixels - The required virtual screen width.
+     Returns       - The actual width in pixels of the allocated virtual
+                     screen
+
+  This function initialises the graphics system, setting the apropriate
+  screen resolution and allocating a virtual screen. The virtual screen
+  allocated may not necessarily be of the same size as specified in the
+  "WidthInPixels" parameter as it is rounded down to the nearest
+  multiple of 4.
+
+  The function returns the actual width of the allocated virtual screen
+  in pixels if a valid mode was selected otherwise returns
+  X_MODE_INVALID.
+
+  Saves virtual screen pixel width in "ScrnLogicalPixelWidth".
+  Saves virtual screen byte  width in "ScrnLogicalByteWidth".
+  Physical screen dimensions are set in "ScrnPhysicalPixelWidth".
+  "ScrnPhysicalByteWidth" and "ScrnPhysicalHeight". Other global
+  variables set are "CurrXMode","MaxScrollX", "MaxScrollY",
+  "InGraphics". The variable "SplitScrnScanline" is also initialized
+  to zero.
+
+  See also:
+     Available X Mode resolutions
+     What is Mode X
+
+  x_select_default_plane
+  ----------------------
+
+    C Prototype:  void x_select_default_plane(BYTE plane);
+
+    Enables default Read/Write access to a specified plane
+
+
+  x_set_splitscreen
+  -----------------
+
+    C Prototype:  extern void x_set_splitscreen(WORD line);
+
+    line - The starting scan line of the required split screen.
+
+  This function activates Mode X split screen and sets starting scan
+  line. The split screen resides on the bottom half of the screen and has
+  a starting address of A000:0000 in video RAM.
+
+  It also Updates Page0_Offs to reflect the existence of the split screen
+  region ie "MainScrnOffset" is set to the offset of the first pixel
+  beyond the split screen region. Other variable set are "Page1_Offs" which
+  is set to the same value as "Page0_Offs" (see graphics call sequence
+  below), "ScrnLogicalHeight","ScrnPhysicalHeight", "SplitScrnScanLine" and
+  "MaxScrollY".
+
+  This function cannot be called after double buffering has been activated,
+  it will return an error. To configure your graphics environment the
+  sequence of graphics calls is as follows although either or both steps b
+  and c may be omitted:
+    a) x_set_mode
+    b) x_set_splitscreen
+    c) x_set_doublebuffer
+  Thus when you call this function successfully, double buffering is not
+  active so "Page1_Offs" is set to the same address as "Page0_Offs".
+
+  WARNING: If you use one of the high resolution modes (376x564 as an
+    extreme example) you may not have enough video ram for split screen
+    and double buffering options since VGA video RAM is restricted to
+    64K.
+
+  See Also:
+    What is a Split Screen ?
+    What is double buffering ?
+
+  x_set_doublebuffer
+  ------------------
+
+  C Prototype: extern WORD x_set_doublebuffer(WORD PageHeight);
+
+  PageHeight - The height of the two double buffering virtual screens.
+  Returns    - The closest possible height to the specified.
+
+  This function sets up two double buffering virtual pages. 'ErrorValue"
+  is set according to the success or failure of this command.
+
+  Other variables set are:
+
+    _Page1_Offs	             Offset of second virtual page
+    _NonVisual_Offs          Offset of first non visible video ram byte
+    _DoubleBufferActive      Flag
+    _PageAddrTable           Table of Double buffering pages start offsets
+    _ScrnLogicalHeight       Logical height of the double buffering pages
+    _MaxScrollY              Max vertical start address of physical screen
+                             within the virtual screen
+
+  WARNING: If you use one of the high resolution modes (376x564 as an
+    extreme example) you may not have enough video ram for split screen
+    and double buffering options since VGA video RAM is restricted to
+    64K.
+
+  See Also:
+    What is double buffering ?
+
+  x_hide_splitscreen
+  ------------------
+
+  C Prototype: extern void x_hide_splitscreen(void);
+
+
+  This function hides an existing split screen by setting its starting
+  scan line to the last physical screen scan line.
+  "ScreenPhysicalHeight" is adjusted but the "SplitScreenScanLine" is not
+  altered as it is required for restoring the split screen at a later stage.
+
+  WARNING: Only to be used if SplitScrnLine has been previously called
+	   Disabled for mode 5-11 (320x400-376x564). The memory for
+ 	   the initial split screen is reserved and the size limitations
+	   of these modes means any change in the split screen scan line
+           will encroach on the split screen ram
+           Update: Now disabled for these modes
+
+  See Also:
+
+    What is a split screen ?
+
+  x_show_splitscreen
+  ------------------
+
+  C Prototype: extern void x_show_splitscreen(void);
+
+  Restores split screen start scan line to the initial split screen
+  starting scan line as set by "SplitScrnScanLine".
+  "ScreenPhysicalHeight" is adjusted.
+
+  WARNING: Only to be used if SplitScrnLine has been previously called
+	   Disabled for mode 4-10 (320x400-376x564). The memory for
+ 	   the initial split screen is reserved and the size limitations
+ 	   of these modes means any change in the split screen scan line
+           will encroach on the split screen ram
+
+
+  x_adjust_splitscreen
+  --------------------
+
+  C Prototype: extern void x_adjust_splitscreen(WORD line);
+
+  line - The scan line at which the split screen is to start.
+
+  Sets the split screen start scan line to a new scan line. Valid scan lines
+  are between the initial split screen starting scan line and the last
+  physical screen scan line. "ScreenPhysicalHeight" is also adjusted.
+
+  WARNING: Only to be used if SplitScrnLine has been previously called
+	   Disabled for mode 4-10 (320x400-376x564). The memory for
+ 	   the initial split screen is reserved and the size limitations
+ 	   of these modes means any change in the split screen scan line
+           will encroach on the split screen ram
+
+  x_set_start_addr
+  ----------------
+
+  C Prototype: extern void x_set_start_addr(WORD X,WORD Y);
+
+    X,Y - coordinates of top left corner of physical screen within current
+	  virtual screen.
+
+  Set Mode X non split screen physical start address within current virtual
+  page.
+
+  X must not exceed (Logical screen width - Physical screen width)
+  ie "MaxScrollX" and Y must not exceed (Logical screen height -
+  Physical screen height) ie "MaxScrollY"
+
+  x_page_flip
+  -----------
+
+  C Prototype: extern void x_page_flip(WORD X,WORD Y);
+
+    X,Y - coordinates of top left corner of physical screen within the
+	  the hidden virtual screen if double buffering is active, or
+	  the current virtual screen otherwise.
+
+  Sets the physical screen start address within currently hidden virtual
+  page and then flips pages. If double buffering is not active then this
+  function is functionally equivalent to "x_set_start_addr".
+
+  X must not exceed (Logical screen width - Physical screen width)
+  ie "MaxScrollX" and Y must not exceed (Logical screen height -
+  Physical screen height) ie "MaxScrollY"
+
+  x_text_mode
+  -----------
+
+  C Prototype: extern void x_text_mode(void);
+
+  Disables graphics mode.
+
+  x_set_cliprect
+  --------------
+
+  C Prototype: extern void x_set_cliprect(WORD left,WORD top,WORD right,
+		WORD bottom);
+
+  Defines the clipping rectangle for clipping versions of planar and video
+  bitmap puts.
+
+  NOTE: Compiled bitmaps cannot be clipped.
+
+
+--------------------------------------------------------------------------
+MODULE XPOINT
+--------------------------------------------------------------------------
+
+  Point functions all MODE X 256 Color resolutions
+
+  ASM SOURCES
+
+    xpoint.asm xpoint.inc xlib.inc model.inc
+
+  C HEADER FILE
+
+   xpoint.h
+
+  EXPORTED FUNCTIONS
+
+  x_put_pix
+  ---------
+
+  C Prototype: extern void x_put_pix(WORD X,WORD Y,WORD PageOffset,
+                                     WORD Color);
+
+  Draw a point of specified colour at coordinates X,Y
+  within the virtual page starting at offset PageOffset.
+
+  x_get_pix
+  ---------
+
+  C Prototype: extern WORD x_get_pix(WORD X, WORD Y, WORD PageBase);
+
+  Read a point of at coordinates X,Y within the virtual page starting
+  at offset PageOffset.
+
+
+--------------------------------------------------------------------------
+MODULE XRECT
+--------------------------------------------------------------------------
+
+  Screen rectangle display and manipulation functions
+
+  ASM SOURCES
+
+    xrect.asm xrect.inc xlib.inc model.inc
+
+  C HEADER FILE
+
+    xrect.h
+
+
+  EXPORTED FUNCTIONS
+
+  x_rect_pattern
+  --------------
+
+  C Prototype: extern void x_rect_pattern(WORD StartX, WORD StartY,
+                                          WORD EndX, WORD EndY,
+                                          WORD PageBase,BYTE far *Pattern);
+
+  StartX,StartY - Coordinates of upper left hand corner of rectangle
+  EndX,EndY     - Coordinates of lower right hand corner of rectangle
+  PageBase      - Offset of virtual screen
+  *Pattern      - Pointer to the user defined pattern (16 bytes)
+
+
+  Mode X rectangle 4x4 pattern fill routine.
+
+  Upper left corner of pattern is always aligned to a multiple-of-4
+  row and column. Works on all VGAs. Uses approach of copying the
+  pattern to off-screen display memory, then loading the latches with
+  the pattern for each scan line and filling each scan line four
+  pixels at a time. Fills up to but not including the column at EndX
+  and the row at EndY. No clipping is performed.
+
+  Based on code originally published in DDJ Mag by M. Abrash
+
+  Warning the VGA memory locations PATTERN_BUFFER (A000:FFFc) to
+  A000:FFFF are reserved for the pattern buffer
+
+
+  See Also:
+    Doctor Dobbs Journal references.
+
+
+  x_rect_pattern_clipped
+  ----------------------
+
+  As above but clipped.
+
+  x_rect_fill
+  -----------
+
+  C Prototype: extern void x_rect_fill(WORD StartX,WORD StartY,
+                                       WORD EndX,WORD EndY,
+                                       WORD PageBase,WORD color);
+
+  StartX,StartY - Coordinates of upper left hand corner of rectangle
+  EndX,EndY - Coordinates of lower right hand corner of rectangle
+  PageBase - Offset of virtual screen
+  Color -color to use for fill
+
+  Mode X rectangle solid color fill routine.
+  Based on code originally published in DDJ Mag by M. Abrash
+
+  See Also:
+    Doctor Dobbs Journal references.
+
+  x_rect_fill_clipped
+  -------------------
+
+  as above but clipped.
+
+
+  x_cp_vid_rect
+  -------------
+
+  C Prototype: extern void x_cp_vid_rect(WORD SourceStartX,WORD SourceStartY,
+                          WORD SourceEndX,WORD SourceEndY,
+                          WORD DestStartX,WORD DestStartY,
+                          WORD SourcePageBase,WORD DestPageBase,
+                          WORD SourceBitmapWidth,WORD DestBitmapWidth);
+
+  StartX,StartY- Coordinates of upper left hand corner of source rectangle
+  EndX,EndY    - Coordinates of lower right hand corner of source rectangle
+  DestStartX,DestStartY - Coordinates of rectangle destination
+  SourcePageBase        - source rectangle page offset
+  DestPageBase          - destination rectangles page offset
+  SourceBitmapWidth     - width of bitmap within the source virtual screen
+                          containing the source rectangle
+  DestBitmapWidth       - width of bitmap within the dest. virtual screen
+                          containing the destination rectangle
+
+  Mode X display memory to display memory copy
+  routine. Left edge of source rectangle modulo 4 must equal left edge
+  of destination rectangle modulo 4. Works on all VGAs. Uses approach
+  of reading 4 pixels at a time from the source into the latches, then
+  writing the latches to the destination. Copies up to but not
+  including the column at SrcEndX and the row at SrcEndY. No
+  clipping is performed. Results are not guaranteed if the source and
+  destination overlap.
+
+
+  Based on code originally published in DDJ Mag by M. Abrash
+
+  See Also:
+    Doctor Dobbs Journal references.
+
+  x_shift_rect
+  ------------
+
+  C Prototype:
+  extern void x_shift_rect (WORD SrcLeft, WORD SrcTop,
+			WORD SrcRight, WORD SrcBottom,
+			WORD DestLeft, WORD DestTop, WORD ScreenOffs);
+
+  SrcLeft, SrcTop - Coordinates of upper left hand corner of rectangle
+  SrcRight, SrcBottom - Coordinates of lower right hand corner of rectangle
+  DestLeft, DestTop - Coordinates of upper left corner of destination
+  ScreenOffs    - Offset of virtual screen
+
+  This function copies a rectangle of VRAM onto another area of VRAM,
+  even if the destination overlaps with the source.  It is designed
+  for scrolling text up and down, and for moving large areas of screens
+  around in tiling systems.  It rounds all horizontal coordinates to
+  the nearest byte (4-column chunk) for the sake of speed.  This means
+  that it can NOT perform smooth horizontal scrolling.  For that,
+  either scroll the whole screen (minus the split screen), or copy
+  smaller areas through system memory using the functions in the
+  XPBITMAP module.
+
+  SrcRight is rounded up, and the left edges are rounded down, to
+  ensure that the pixels pointed to by the arguments are inside the
+  the rectangle.  That is, SrcRight is treated as (SrcRight+3) >> 2,
+  and SrcLeft as SrcLeft >> 2.
+
+  The width of the rectangle in bytes (width in pixels / 4)
+  cannot exceed 255.
+
+---------------------------------------------------------------------------
+MODULE XPAL
+---------------------------------------------------------------------------
+
+    Palette functions for VGA 256 color modes.
+
+    All the functions in this module operate on two variations of the
+    pallete buffer, the raw and annotated buffers.
+
+    All those functions ending in "raw" operate on the following palette
+    structure:
+
+       BYTE:r0,g0,b0,r1,g1,b1,...rn,gn,bn
+
+    No reference to the starting colour index or number of colours stored
+    is contained in the structure.
+
+    All those functions ending in "struc" operate on the following palette
+    structure:
+
+       BYTE:c,BYTE:n,BYTE:r0,g0,b0,r1,g1,b1,...rn,gn,bn
+
+    where c is the starting colour and n is the number of colours stored
+
+
+    WARNING: There is no validity checking in these functions. The onus is
+    on the user to supply valid parameters to the functions.
+
+
+  ASM SOURCES
+
+    xpal.asm xpal.inc xlib.inc model.inc
+
+  C HEADER FILE:
+
+    xpal.h
+
+  EXPORTED FUNCTIONS
+
+  x_get_pal_raw
+  -------------
+
+  C Prototype: extern void x_get_pal_raw(BYTE far * pal,WORD num_colrs,
+                                         WORD start_index);
+
+  Read DAC palette into raw buffer with interrupts disabled
+  ie BYTE r1,g1,b1,r1,g2,b2...rn,gn,bn
+
+  WARNING: Memory for the palette buffers must all be pre-allocated.
+
+  x_get_pal_struc
+  ---------------
+
+  C Prototype: extern void x_get_pal_struc(BYTE far * pal,WORD num_colrs,
+                                              WORD start_index);
+
+  Read DAC palette into annotated type buffer with interrupts disabled
+  ie BYTE colours to skip, BYTE colours to set, r1,g1,b1,r1,g2,b2...rn,gn,bn
+
+  WARNING: memory for the palette buffers must all be pre-allocated
+
+  x_put_pal_raw
+  -------------
+
+  C Prototype: extern void x_put_pal_raw(BYTE far * pal,WORD num_colrs,
+                                         WORD start_index);
+
+  Write DAC palette from raw buffer with interrupts disabled
+  ie BYTE r1,g1,b1,r1,g2,b2...rn,gn,bn
+
+  x_put_pal_struc
+  --------------
+
+  C Prototype: extern void x_put_pal_struc(BYTE far * pal);
+
+  Write DAC palette from annotated type buffer with interrupts disabled
+  ie BYTE colours to skip, BYTE colours to set, r1,g1,b1,r1,g2,b2...rn,gn,bn
+
+  x_set_rgb
+  ---------
+
+  C Prototype: extern x_set_rgb(BYTE color,BYTE red_c,BYTE green_c,
+                               BYTE blue_c);
+
+  Set the RGB components of a vga color
+
+  x_rot_pal_struc
+  ---------------
+
+  C Prototype: extern void x_rot_pal_struc(BYTE far * pal,WORD direction);
+
+  Rotate annotated palette buffer entries. Direction 0 = backward,
+  1 = forward.
+
+  x_rot_pal_raw
+  -------------
+
+  C Prototype: extern x_rot_pal_raw(BYTE far * pal,WORD direction,
+                                    WORD num_colrs);
+
+  Rotate a raw palette buffer. Direction 0 = backward,
+  1 = forward.
+
+  x_put_contrast_pal_struc
+  ------------------------
+
+  C Prototype: extern  void x_put_contrast_pal_struc(BYTE far * pal,
+               BYTE  intensity);
+
+  Write DAC palette from annotated type buffer with specified intensity
+  adjustment (ie palette entries are decremented where possible by
+  "intensity" units).
+
+  Designed for fading in or out a palette without using an intermediate
+  working palette buffer ! (Slow but memory efficient ... OK for small
+  pal strucs}
+
+
+  x_transpose_pal_struc
+  ---------------------
+
+  C Prototype: extern void x_transpose_pal_struc(BYTE far * pal,
+                                                 WORD StartColor);
+
+  Write DAC palette from annotated type buffer with interrupts disabled
+  starting at a new palette index.
+
+
+  x_cpcontrast_pal_struc
+  ----------------------
+
+  C Prototype: extern WORD x_cpcontrast_pal_struc(BYTE far *src_pal,
+                                BYTE far *dest_pal,BYTE Intensity);
+
+  Copy one annotated palette buffer to another making the intensity
+  adjustment. Used in fading in and out fast and smoothly.
+
+---------------------------------------------------------------------------
+MODULE XLINE
+---------------------------------------------------------------------------
+
+  Line Drawing functions.
+
+  ASM SOURCES
+
+    xline.asm xline.inc xlib.inc model.inc
+
+  C HEADER FILE
+
+    xline.h
+
+  EXPORTED FUNCTIONS
+
+  x_line
+  ------
+
+  C Prototype: extern void x_line(WORD x0,WORD y0,WORD x1,WORD y1,
+				  WORD color,WORD PageBase);
+
+  Draw a line with the specified end points in the page starting at
+  offset "PageBase".
+
+  No Clipping is performed.
+
+---------------------------------------------------------------------------
+MODULE XTEXT
+---------------------------------------------------------------------------
+
+  ASM SOURCES
+
+    xtext.asm xtext.inc xlib.inc model.inc
+
+  C HEADER FILE
+
+    xtext.h
+
+  MACROS
+
+   FONT_8x8  0
+   FONT_8x15 1
+   FONT_USER 2
+
+  EXPORTED VARIABLES
+
+    NOTE: All variables are read only. I you modify them the results may
+    be unpredictable.
+
+    CharHeight - BYTE - Height of current inbuilt character set
+
+    CharWidth  - BYTE - Width of current inbuilt character set
+
+    FirstChar  - BYTE - First character of current inbuilt character set
+
+    UserCharHeight - BYTE - Height of current user character set
+
+    UserCharWidth - BYTE - Width of current user character set
+
+    UserFirstCh - BYTE - First character of current user character set
+
+
+  EXPORTED FUNCTIONS
+
+  x_text_init
+  -----------
+
+  C Prototype: extern WORD x_text_init(void);
+
+  Initializes the Mode X text driver and sets the default font (VGA ROM 8x8)
+
+  x_set_font
+  ----------
+
+  C Prototype: extern void x_set_font(WORD FontId);
+
+  Select the working font where 0 = VGA ROM 8x8, 1 = VGA ROM 8x14
+  2 = User defined bitmapped font.
+
+  WARNING: A user font must be registered before setting FontID 2
+
+  See Also:
+
+    Defines for this module
+
+  x_register_userfont
+  -------------------
+
+  C Prototype: extern void x_register_userfont(char far *UserFontPtr);
+
+
+  Register a user font for later selection. Only one user font can be
+  registered at any given time. Registering a user font deregisters the
+  previous user font. User fonts may be at most 8 pixels wide.
+
+  USER FONT STRUCTURE
+
+  Word:  ascii code of first char in font
+  Byte:  Height of chars in font
+  Byte:  Width of chars in font
+  n*h*Byte: the font data where n = number of chars and h = height
+	  of chars
+
+  WARNING: The onus is on the program to ensure that all characters
+           drawn whilst this font is active, are within the range of
+           characters defined.
+
+  x_put_char
+  ----------
+
+  C Prototype: extern void x_put_char(char ch,WORD X,WORD Y,WORD PgOffs,
+				      WORD Color);
+
+  Draw a text character at the specified location with the specified
+  color.
+
+  ch       -  char to draw
+  x,y      -  screen coords at which to draw ch
+  ScrnOffs -  Starting offset of page on whih to draw
+  Color    -  Color of the text
+
+  WARNING: InitTextDriver must be called before using this function
+
+
+  **** NOTE ****
+
+  The file "xprintf.c" implements a printf style formatted output function
+
+  x_printf
+  --------
+
+  C Prototype: void x_printf(int x,int y,unsigned ScrnOffs,int color,
+	       char *ln,...);
+
+  x,y      -  screen coords at which to draw ch
+  ScrnOffs -  Starting offset of page on whih to draw
+  Color    -  Color of the text
+
+  Parameters beyond Color conform to the standard printf parameters.
+
+  x_bgprintf
+  ----------
+
+  C Prototype: void x_bgprintf(int x,int y,unsigned ScrnOffs,int fgcolor,
+	       int bgcolor, char *ln,...);
+
+  x,y      -  screen coords at which to draw ch
+  ScrnOffs -  Starting offset of page on whih to draw
+  fgcolor    -  Color of the text foreground
+  bgcolor    -  Color of the text background
+
+  Parameters beyond bgolor conform to the standard printf parameters.
+
+
+  x_get_char_width
+  ----------------
+
+  C Prototype: unsigned int x_get_char_width(char ch)
+
+  ch - character to get width of
+
+--------------------------------------------------------------------------
+MODULE XPBITMAP
+--------------------------------------------------------------------------
+
+  This module implements a set of functions to operate on planar bitmaps.
+  Planar bitmaps as used by these functions have the following structure:
+
+  BYTE 0                 The bitmap width in bytes (4 pixel groups) range 1..255
+  BYTE 1                 The bitmap height in rows range 1..255
+  BYTE 2..n1             The plane 0 pixels width*height bytes
+  BYTE n1..n2            The plane 1 pixels width*height bytes
+  BYTE n2..n3            The plane 2 pixels width*height bytes
+  BYTE n3..n4            The plane 3 pixels width*height bytes
+
+  These functions provide the fastest possible bitmap blts from system ram to
+  to video and further, the single bitmap is applicable to all pixel
+  allignments. The masked functions do not need separate masks since all non
+  zero pixels are considered to be masking pixels, hence if a pixel is 0 the
+  corresponding screen destination pixel is left unchanged.
+
+
+  ASM SOURCES
+
+    xpbitmap.asm xpbitmap.inc xlib.inc model.inc
+
+  C HEADER FILE
+
+    xpbitmap.h
+
+  EXPORT FUNCTIONS
+
+  x_put_masked_pbm
+  ----------------
+
+  C Prototype: extern void x_put_masked_pbm(WORD X,WORD Y,WORD ScrnOffs,
+                 BYTE far * Bitmap);
+
+  Mask write a planar bitmap from system ram to video ram. All zero source
+  bitmap bytes indicate destination byte to be left unchanged.
+
+  Source Bitmap structure:
+
+  Width:byte, Height:byte, Bitmap data (plane 0)...Bitmap data (plane 1)..,
+  Bitmap data (plane 2)..,Bitmap data (plane 3)..
+
+  NOTE: width is in bytes ie lots of 4 pixels
+
+  LIMITATIONS: No clipping is supported
+               Only supports bitmaps with widths which are a multiple of
+               4 pixels
+
+  See Also: XBMTOOLS module for linear <-> planar bitmap conversion
+     functions.
+
+  x_put_pbm
+  ---------
+
+  C Prototype: extern void x_put_pbm(WORD X, WORD Y, WORD ScrnOffs,
+                 BYTE far * Bitmap);
+
+  Write a planar bitmap from system ram to video ram.
+
+  Source Bitmap structure:
+
+  Width:byte, Height:byte, Bitmap data (plane 0)...Bitmap data (plane 1)..,
+  Bitmap data (plane 2)..,Bitmap data (plane 3)..
+
+  NOTE: width is in bytes ie lots of 4 pixels
+
+  LIMITATIONS: No clipping is supported
+               Only supports bitmaps with widths which are a multiple of
+	       4 pixels
+
+
+  See Also: XBMTOOLS module for linear <-> planar bitmap conversion
+     functions.
+
+  x_get_pbm
+  ---------
+
+  C Prototype: extern void x_get_pbm(WORD X, WORD Y,BYTE Bw,BYTE Bh,
+               WORD ScrnOffs, BYTE far * Bitmap);
+
+  Read a planar bitmap to system ram from video ram.
+
+  Source Bitmap structure:
+
+  Width:byte, Height:byte, Bitmap data (plane 0)...Bitmap data (plane 1)..,
+  Bitmap data (plane 2)..,Bitmap data (plane 3)..
+
+  NOTE: width is in bytes ie lots of 4 pixels
+
+  LIMITATIONS: No clipping is supported
+               Only supports bitmaps with widths which are a multiple of
+               4 pixels
+
+
+  See Also: XBMTOOLS module for linear <-> planar bitmap conversion
+     functions.
+
+--------------------------------------------------------------------------
+MODULE XPBMCLIP
+--------------------------------------------------------------------------
+
+  This module implements a similar set of functions to operate on planar
+  bitmaps as "XPBITMAP" but incorporates clipping to a user defined
+  clipping rectangle (which is set by "x_set_cliprect" in module xmain).
+
+  The planar bitmap format is identical to the above module
+
+  There are three variations of the functions in XPBITMAP in this module
+  identified by the three function name extensions: _clipx, _clipy _clipxy.
+  Because speed is critical in games programming you do not want to be
+  checking for clipping if not necessary thus for sprites that move only
+  horizontally you would use the _clipx version of the put function,
+  for sprites that move vertically you would use the _clipy version and for
+  sprites that move both directions you would use the clipxy version.
+  Keep in mind also that the clipping components of these functions assume
+  that the clipping rectangle is equal to or larger than the size of the
+  bitmap ie. if a bitmap is top clipped, it is assumed that the bitmap's
+  bottom is not also clipped. Similarly with horizontal clipping.
+
+  Note: performance in decreasing order is as follows.
+	_clipy,_clipx,_clipxy with masked puts being slower than unmasked
+	puts
+
+  Horizontal clipping is performed to byte boundaries (4 pixels) rather than
+  pixels. This allows for the fastest implementation of the functions. It is
+  not such a handicap because for one, your screen width a multiple of 4
+  pixels wide and  for most purposes it is the screen edges that form the
+  clipping rectangle.
+
+  Following is an example of setting a clipping rectangle to the logical
+  screen edges:
+
+  x_set_cliprect(0,0,ScrnLogicalByteWidth,ScrnLogicalHeight)
+
+   NOTE: the functions now return a value;
+      1 if clipped image is fully clipped (ie no portion of it
+      appears on the screen) otherwise it returns 0
+
+
+  ASM SOURCES
+
+    xpbmclip.asm xpbmclip.inc xlib.inc model.inc
+
+  C HEADER FILE
+
+    xpbmclip.h
+
+  EXPORT FUNCTIONS
+
+  x_put_pbm_clipx
+  ---------------
+  x_put_pbm_clipy
+  ---------------
+  x_put_pbm_clipxy
+  ----------------
+  x_put_masked_pbm_clipx
+  ----------------------
+  x_put_masked_pbm_clipy
+  ----------------------
+  x_put_masked_pbm_clipxy
+  -----------------------
+
+  For a detailed description of parameters etc. see equivalent functions
+  in module "XPBITMAP".
+
+
+--------------------------------------------------------------------------
+MODULE  XCBITMAP
+--------------------------------------------------------------------------
+
+                                 XCBITMAP:
+               The Care and Feeding of Compiled Masked Blits
+                           by Matthew MacKenzie
+
+The XCBITMAP module of the Xlib library is made up of the files
+XCBITMAP.ASM, XCBITMAP.INC, and XCBITMAP.H.
+
+The XCBITMAP module is small, containing only three procedures:
+  o  x_compile_bitmap compiles your bitmap into native code which writes
+     to the VGA screen in an X mode.
+  o  x_put_cbitmap converts X and Y coordinates into a location on the
+     screen, sets up the necessary VGA registers, and executes the compiled
+     bitmap as a subroutine.
+  o  x_sizeof_cbitmap takes a planar bitmap and returns an integer equal to
+     the size of the compiled bitmap which the planar bitmap would produce.
+	 It is essentially a lobotomized version of x_compile_bitmap, with all
+     the code generation replaced with a size counter.
+
+    x_compile_bitmap scans through a source bitmap and generates 8086
+instructions to plot every nonzero pixel.  It is designed to be used
+before the action begins rather than on-the-fly.  The compiled bitmap
+contains no branches, and no reference to the zero (transparent) pixels.
+Where two pixels are exactly four columns apart they are plotted with a
+single 16-bit store, and the VGA MAP_MASK register will be set at most
+four times.  As a result your bitmap may run several times faster than a
+traditional memory-to-VGA masked blit routine.
+    There is no way to perform clipping on these bitmaps, or to plot a
+pixel of color zero.
+	x_compile_bitmap works with bitmaps in the standard Xlib planar bitmap
+format.  On a time scale of 60 frames per second, it is actually relatively
+slow.  Since a compiled bitmap is relocatable you may just want to have it
+saved to disk, and not include the source bitmap in your program at all.
+    The source bitmap format is an array of bytes, a little like this:
+
+char eye[] ={4, 7,  /* four byte columns across, seven rows tall */
+	   0, 0, 0, 0, 9, 1, 1, 1, 9, 0, 0, 0, 0, 0, 0, 0,
+	   0, 0, 9, 9, 1, 1, 1, 4, 4, 9, 9, 0, 0, 0, 0, 0,
+	   0, 9, 9, 1, 2, 0, 0, 4, 4, 1, 9, 9, 0, 0, 0, 0,
+	   9, 9, 9, 1, 0, 0, 0, 0, 1, 1, 9, 9, 9, 0, 0, 0,
+	   0, 9, 9, 1, 2, 0, 0, 2, 1, 1, 9, 9, 0, 0, 0, 0,
+	   0, 0, 9, 9, 1, 1, 1, 1, 1, 9, 9, 0, 0, 0, 0, 0,
+	   0, 0, 0, 0, 9, 1, 1, 1, 9, 0, 0, 0, 0, 0, 0, 0};
+
+    This is actually a linear bitmap, which is the wrong format for
+compilation, but is easier on human eyes.  Use the module XBMTOOLS to
+convert linear bitmaps into planar bitmaps, and vice-versa.
+    To compile this image for a mode 360 pixels (90 byte columns) across:
+
+char planar_eye[4*7 + 2];
+char far * EyeSize;
+
+(void) x_bm_to_pbm((char far *) eye, (char far *) planar_eye);
+EyeSize = x_sizeof_cbitmap((far char *) planar_eye);
+CompiledEye = farmalloc(EyeSize);
+(void) x_compile_bitmap(90, (far char *) planar_eye, CompiledEye);
+
+    Notice that both buffers must exist beforehand.  Since x_compile_bitmap
+returns the size of the compiled code, in bytes, you can reallocate the
+bitmap immediately to the right size if using x_sizeof_xbitmap seems
+inconvenient (reallocation may even be faster, though using the function is
+cleaner).  The pointers are 32-bit because compiled bitmaps take so much
+space: they are at one end of the speed-versus-memory spectrum.  A good
+rule of thumb is to allocate (3.5 x buffer-height x buffer-width) + 25
+bytes (rounding up ;-), then pare your bitmap down when you find out how
+much space you've actually used.
+	Since the compiled bitmap has to fit within one segment of memory, it
+cannot contain more than about 19,000 pixels.  This will not be a
+limitation for most sane programmers.  If you are not a sane programmer try
+splitting your huge, unwieldy image up into smaller parts -- you can use
+the same gigantic bitmap if you divide it into horizontal slices for
+compilation.  For that matter, dividing the source up that way will let
+you use a source bitmap large than 64K, which is an even sicker idea...
+    Back to business.  A bitmap is compiled for only one width of screen.
+If you are using a logical screen larger than your physical screen, call
+the bitmap compiler with the logical width -- the important thing is the
+number of bytes per line.  Notice that you do not have to be in a graphics
+mode to use this routine.  This allows you to develop and compile bitmaps
+separately, with whatever utility programs you might cook up.
+
+    The final function is x_put_cbitmap.  To plot our eye at (99,4), on
+the page which starts at location 0:
+x_put_cbitmap(99, 4, 0, CompiledEye);
+	This function depends on the global variable ScrnLogicalByteWidth from
+the module XMAIN, which should be the same number as the column parameter
+you used to compile your bitmap.
+    The XCBITMAP module supports memory-to-VGA blits only.  Xlib also
+includes non-masking routines which can quickly save and restore the
+background screen behind your bitmap, using fast string operations.
+
+   This module is part of the Xlib package, and is in the public domain.
+If you write something which uses it, though, please send me a copy as a
+courtesy -- if for no other reason so I can tilt my chair back and reflect
+that it may have been worth the trouble after all.
+
+The included program DEMO2.C demonstrates the performance difference
+between planar bitmap masked blits and compiled bitmap blits.
+
+--------------------------------------------------------------------------
+MODULE XCOMPPBM
+--------------------------------------------------------------------------
+
+Identical to XCBITMAP except that the source bitmaps are the PBM form
+rather than LBM.
+
+FUNCTIONS
+
+x_compile_pbm
+-------------
+x_sizeof_cpbm
+-------------
+
+See XCBITMAP module
+
+--------------------------------------------------------------------------
+MODULE XVBITMAP
+--------------------------------------------------------------------------
+
+The XVBITMAP module implements yet another type of bitmap to complement
+planar and compiled bitmaps, VRAM based bitmaps. If a 4 cylinder car is
+analagous to planar bitmaps, that is thrifty on memory consumption but low
+performance and and a V8 is analagous to Compiled bitmaps, memory guzzlers
+that really fly, then VRAM based bitmaps are the 6 cylinder modest performers
+with acceptable memory consumption.
+
+To summarise their selling points, VBM's are moderately fast with fair memory
+consumption, and unlike compiled bitmaps, can be clipped. The disadvantages
+are that they are limited by the amount of free video ram and have a complex
+structure.
+
+The VRAM bitmap format is rather complex consisting of components stored in
+video ram and components in system ram working together. This complexity
+necessitates the existence of a creation function "x_make_vbm" which takes
+an input linear bitmap and generates the equivalent VBM (VRAM Bit Map).
+
+VBM structure:
+
+      WORD  0   Size          Total size of this VBM structure in bytes
+      WORD  1   ImageWidth    Width in bytes of the image (for all alignments)
+      WORD  2   ImageHeight   Height in scan lines of the image
+
+      WORD  3 Alignment 0  ImagePtr   Offset in VidRAM of this aligned image
+   +--WORD  4              MaskPtr    Offset (within this structure's DS) of
+   |   .			       alignment masks
+   |   .
+   |   .
+   |  WORD  9 Alignment 3  ImagePtr   Offset in VidRAM of this aligned image
+  +|--WORD 10              MaskPtr    Offset (within this structure's DS) of
+  ||   	        		       alignment masks
+  ||
+  |+->BYTE 21 (WORD 11)                -------+-- Image masks for alignment 0
+  |   .                                       |
+  |   .                                       |
+  |   BYTE  21 + ImageWidth*ImageHeight  -----+
+  |
+  |   .
+  |   . (similaly for alignments 1 - 2 )
+  |   .
+  |
+  +-->BYTE  21 + 3*ImageWidth*ImageHeight + 1-+-- Image masks for alignment 3
+      .                                       |
+      .                                       |
+      BYTE  21 + 4*(ImageWidth*ImageHeight) --+
+
+      .
+      .
+      << Similarly for alignments 2 and 3 >>
+      .
+      .
+      BYTE 21 + 4*(ImageWidth*ImageHeight)
+  -------------
+
+  (And dont forget the corresponding data in video ram)
+
+You can see for yourself the complexity of this bitmap format. The image
+is stored in video ram in its 4 different alignments with pointers to these
+alignments in the VBM. Similarly there are 4 alignments of the corresponding
+masks within the VBM itself (towards the end). The mask bytes contain the
+plane settings for the corresponding video bytes so that one memory move can
+move up to 4 pixels at a time (depending on the mask settings) using the
+VGA's latches, theoretically giving you a 4x speed improvement over
+conventional blits like the ones implemented in "XPBITMAP". In actual fact
+its anywhere between 2 and 3 due to incurred overheads.
+
+These bitmaps are more difficult to store in files than PBM'S and CBM's but
+still posible with a bit of work, so do not dismiss these as too difficult
+to use. Consider all the bitmap formats carefully before deciding on which
+to use. There may even be situations that a careful application of all three
+types would be most effective ie. compiled bitmaps for Background tiles and
+the main game character (which never need clipping), VRAM based bitmaps for
+the most frequently occuring (oponent, alien etc) characters which get
+clipped as they come into and leave your current location and planar bitmaps
+for smaller or less frequently encountered characters.
+
+ASM SOURCES
+
+    xvbitmap.asm xvbitmap.inc xlib.inc model.inc
+    xmakevbm.c  - Additional C module implementing creation function
+
+  C HEADER FILE
+
+    xvbitmap.h
+
+  EXPORTED FUNCTIONS
+
+  x_make_vbm
+  ----------
+
+  C Prototype: extern char far * x_make_vbm(char far *lbm, WORD *VramStart);
+
+  Create the VBM from the given linear bitmap and place the image alignments
+  in video ram starting at the offset in the variable pointed to by
+  "VramStart". "VramStart" is then updated to point to the next free VRAM byte
+  (just after the last byte of the image alignments). Usually you will point
+  "VramStart" to "NonVisual_Offs".
+
+   lbm         Pointer to the input linear bitmap
+   VramStart   Pointer to variable containing Offset of first free VRAM byte
+
+   x_put_masked_vbm
+   ----------------
+
+   C Prototype: extern int x_put_masked_vbm(int X, int Y, WORD ScrnOffs,
+	      BYTE far * VBitmap);
+
+   Draw a VRAM based bitmap at (X,Y) relative to the screen with starting
+   offset "ScrnOffs".
+
+   Returns 1 if clipped image is fully clipped (ie no portion of it
+   appears on the screen) otherwise it returns 0
+
+   x_put_masked_vbm_clipx
+   ----------------------
+   x_put_masked_vbm_clipy
+   ----------------------
+   x_put_masked_vbm_clipxy
+   -----------------------
+
+     Clipping versions of "x_put_masked_vbm".
+
+   See XPBMCLIP for more details on the type of clipping used as it is
+   identical to XVBITMAP.
+
+--------------------------------------------------------------------------
+MODULE  XMOUSE
+--------------------------------------------------------------------------
+The XMOUSE module implements very basic mouse handling functions. The way
+in which it operates is by installing an event handler function during
+initialization which subsequently intercepts and processes mouse events and
+automatically updates status variables such as mouse position and button
+pressed status. It does not support the full functionality of:
+
+  SPLIT SCREENS
+  SCROLLED WINDOWS
+  VIRTUAL WINDOWS
+
+This was done to primarily prevent unecessary impedences to performance,
+since the mouse handler function has the potential to degrade performance.
+It also saves me alot of coding which I was too lazy to do.
+
+Programs communicate with the mouse driver as with other devices, through
+an interrupt vector namely 33h. On generating an interrupt, the mouse driver
+expects a function number in AX and possibly other parameters in other
+registers and returns information via the registers. A brief description
+of the mouse functions follows:
+
+	      --------------------------------------
+
+	      MS Mouse Driver Functions
+
+	      Mouse Initialization                 0
+	      Show Cursor                          1
+	      Hide Cursor                          2
+	      Get Mouse Position & Button Status   3
+	      Set Mouse Cursor Position            4
+	      Get Button Press Information         5
+	      Get Button Release Information       6
+	      Set Min/Max Horizontal Position      7
+	      Set Min/Max Vertical Position        8
+	      Define Graphics Cursor Block         9
+	      Define Text Cursor                  10
+	      Read Mouse Motion Counters          11
+	      Define Event Handler                12
+	      Light Pen Emulation Mode ON         13
+	      Light Pen Emulation Mode OFF        14
+	      Set Mouse Mickey/Pixel Ratio        15
+	      Conditional Hide Cursor             16
+	      Set Double-Speed Threshold          19
+	      --------------------------------------
+
+In practice only afew of these functions are used and even fewer when the
+mouse status is monitored by an event handler function such as is used in
+this module.
+
+The most important thing to note when using the mouse module is that the
+mouse event handler must be removed before exiting the program. It is a good
+idea to have an exit function (see the C "atexit" function) and include the
+line "x_mouse_remove();" along with any other pre-exit cleanup code.
+
+
+  ASM SOURCES
+
+    xmouse.asm xlib.inc model.inc
+
+  C HEADER FILE
+
+    xmouse.h
+
+  EXPORTED VARIABLES
+
+   MouseInstalled    - WORD - Indicates whether mouse handler installed
+   MouseHidden       - WORD - Indicates whether mouse cursor is hidden
+   MouseButtonStatus - WORD - Holds the mouse button status
+   MouseX            - WORD - Current X position of mouse cursor
+   MouseY            - WORD - Current Y position of mouse cursor
+   MouseFrozen       - WORD - Disallows position updates if TRUE
+   MouseColor        - BYTE - The mouse cursors colour
+
+  EXPORTED FUNCTIONS
+
+  x_mouse_init
+  ------------
+
+    C Prototype:  int x_mouse_init()
+
+  Initialize the mouse driver functions and install the mouse event handler
+  function. This is the first function you must call before using any of the
+  mouse functions. This mouse code uses the fastest possible techniques to
+  save and restore mouse backgrounds and to draw the mouse cursor.
+
+  WARNING: This function uses and updates "NonVisual_Offset" to allocate
+	   video ram for the saved mouse background.
+
+  LIMITATIONS: No clipping is supported horizontally for the mouse cursor
+	       No validity checking is performed for NonVisual_Offs
+
+  **WARNING** You must Hide or at least Freeze the mouse cursor while drawing
+	      using any of the other XLIB modules since the mouse handler may
+	      modify vga register settings at any time. VGA register settings
+	      are not preserved which will result in unpredictable drawing
+	      behavior. If you know the drawing will occur away from the
+	      mouse cursor set MouseFrozen to TRUE (1), do your drawing
+	      then set it to FALSE (0). Alternatively call "x_hide_mouse",
+	      perform your drawing and then call "x_show_mouse". Another
+	      alternative is to disable interrupts while drawing but usually
+	      drawing takes up alot of time and having interrupts disabled
+	      for too long is not a good idea.
+
+  x_define_mouse_cursor
+  ---------------------
+
+  C Prototype:
+    void x_define_mouse_cursor(char far *MouseDef, unsigned char MouseColor)
+
+    MouseDef - a pointer to 14 characters containing a bitmask for all the
+	       cursor's rows.
+    MouseColor - The colour to use when drawing the mouse cursor.
+
+  Define a mouse cursor shape for use in subsequent cursor redraws. XMouse
+  has a hardwired mouse cursor size of 8 pixels across by 14 pixels down.
+
+  WARNING: This function assumes MouseDef points to 14 bytes.
+
+  Note: Bit order is in reverse. ie bit 7 represents pixel 0 ..
+	bit 0 represents pixel 7 in each "MouseDef" byte.
+
+  x_show_mouse
+  ------------
+
+  C Prototype:  void x_show_mouse()
+
+  Makes the cursor visible if it was previously hidden.
+  See Also: "x_hide_mouse".
+
+  x_hide_mouse
+  ------------
+
+  C Prototype:  void x_hide_mouse()
+
+  Makes the cursor hidden if it was previously visible.
+  See Also: "x_show_mouse".
+
+  x_mouse_remove
+  --------------
+
+  C Prototype:  void x_mouse_remove()
+
+  Stop mouse event handling and remove the mouse handler.
+
+  NOTE: This function MUST be called before quitting the program if
+       a mouse handler has been installed
+
+  x_position_mouse
+  ----------------
+
+  C Prototype  void x_position_mouse(int x, int y)
+
+  Positions the mouse cursor at the specified location
+
+  x_mouse_window
+  ------------
+
+  C Prototype:  void x_mouse_window(int x0, int y0, int x1, int y1)
+
+  Defines a mouse window.
+
+  x_update_mouse
+  --------------
+
+  C Prototype:  void x_update_mouse()
+
+  Forces the mouse position to be updated and cursor to be redrawn.
+  Note: this function is useful when you have set "MouseFrozen" to true.
+  Allows the cursor position to be updated manually rather than
+  automatically by the installed handler.
+
+
+--------------------------------------------------------------------------
+MODULE XBMTOOLS
+--------------------------------------------------------------------------
+
+  This module implements a set of functions to convert between planar
+  bitmaps and linear bitmaps.
+
+  PLANAR BITMAPS
+
+  Planar bitmaps as used by these functions have the following structure:
+
+  BYTE 0                 The bitmap width in bytes (4 pixel groups) range 1..255
+  BYTE 1                 The bitmap height in rows range 1..255
+  BYTE 2..n1             The plane 0 pixels width*height bytes
+  BYTE n1..n2            The plane 1 pixels width*height bytes
+  BYTE n2..n3            The plane 2 pixels width*height bytes
+  BYTE n3..n4            The plane 3 pixels width*height bytes
+
+  as used by x_put_pbm, x_get_pbm, x_put_masked_pbm.
+
+  LINEAR BITMAPS
+
+  Linear bitmaps have the following structure:
+
+  BYTE 0                 The bitmap width in pixels  range 1..255
+  BYTE 1                 The bitmap height in rows   range 1..255
+  BYTE 2..n              The width*height bytes of the bitmap
+
+  ASM SOURCES
+
+    xbmtools.asm xpbmtools.inc model.inc
+
+  C HEADER FILE
+
+    xbmtools.h
+
+  MACROS
+
+    BM_WIDTH_ERROR
+
+    LBMHeight(lbitmap)         - Height of linear bitmap "lbitmap"
+    LBMWidth(lbitmap)          - Width of linear bitmap  "lbitmap"
+    PBMHeight(pbitmap)         - Height of planar bitmap "pbitmap"
+    PBMWidth(pbitmap)          - Width of planar bitmap "pbitmap"
+
+    LBMPutPix(x,y,lbitmap,color)  - set pixel (x,y) colour in linear bitmap
+    LBMGetPix(x,y,lbitmap)        - colour of pixel (x,y) in linear bitmap
+
+  EXPORT FUNCTIONS
+
+  x_pbm_to_bm
+  ------------
+  C Prototype:  extern int x_pbm_to_bm(char far * source_pbm,
+				       char far * dest_bm);
+
+  This function converts a bitmap in the planar format to the linear format
+  as used by x_compile_bitmap.
+
+  WARNING: the source and destination bitmaps must be pre - allocated
+
+  NOTE: This function can only convert planar bitmaps that are suitable.
+	If the source planar bitmap's width (per plane) is >= 256/4
+	it cannot be converted. In this situation an error code
+	BM_WIDTH_ERROR. On successful conversion 0 is returned.
+
+  x_bm_to_pbm
+  ------------
+  C Prototype:  extern int x_bm_to_pbm(char far * source_pbm,
+				       char far * dest_bm);
+
+  This function converts a bitmap in the linear format as used by
+  x_compile_bitmap to the planar formap.
+
+  WARNING: the source and destination bitmaps must be pre - allocated
+
+  NOTE: This function can only convert linear bitmaps that are suitable.
+	If the source linear bitmap's width is not a multiple of 4
+	it cannot be converted. In this situation an error code
+	BM_WIDTH_ERROR. On successful conversion 0 is returned.
+
