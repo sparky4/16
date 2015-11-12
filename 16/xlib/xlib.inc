@@ -19,8 +19,8 @@
 
 ;
 
-LOCALS
-.286
+;.LOCALS
+;.8086
 
 ; First lets find out what memory model to use
 

@@ -17,4 +17,3 @@
 
 	 global _x_put_pix              :proc
 	 global _x_get_pix              :proc
-

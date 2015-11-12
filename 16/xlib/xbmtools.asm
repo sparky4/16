@@ -43,7 +43,7 @@ COMMENT $
 $
 
 LOCALS
-.286
+.8086
 
 include model.inc
 include xbmtools.inc

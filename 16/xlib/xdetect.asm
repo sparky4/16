@@ -15,7 +15,7 @@
 ; teg@bart.dsto.gov.au
 ;-----------------------------------------------------------------------
 LOCALS
-.286
+.8086
 
 include model.inc
 include xdetect.inc

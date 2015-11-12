@@ -33,7 +33,7 @@ include xpoint.inc
 ;
 ;
 
-_x_put_pix  proc    
+_x_put_pix  proc
 	ARG X:word,Y:word,PgOfs:word,Color:word
 	push bp                   ;preserve caller's stack frame
 	mov  bp,sp                ;point to local stack frame
@@ -41,7 +41,8 @@ _x_put_pix  proc
 	mov  ax,[_ScrnLogicalByteWidth]
 	mul  [Y]                  ;offset of pixel's scan line in page
 	mov  bx,[X]
-	shr  bx,2                 ;X/4 = offset of pixel in scan line
+	shr  bx,1                 ;X/4 = offset of pixel in scan line
+	shr  bx,1                 ;X/4 = offset of pixel in scan line
 	add  bx,ax                ;offset of pixel in page
 	add  bx,[PgOfs]           ;offset of pixel in display memory
 	mov  ax,SCREEN_SEG
@@ -100,8 +101,3 @@ _x_get_pix   proc
         ret
 _x_get_pix   endp
         end
-
-
-	end
-
-

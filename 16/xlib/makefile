@@ -19,28 +19,23 @@ XLIB_VERSION=06w
 # Set the compiler: either BCC or TCC
 #
 CC=wcl
-
 LIB=wlib
 
 AFLAGS  = -0 -m$(MODEL)
 CFLAGS  = -0 -mh
 CPPFLAGS= -0 -m$(MODEL)
-LDFLAGS = -m$(MODEL)
-
+LDFLAGS = -0 -m$(MODEL)
 
 #%.$(OBJ): %.c
 #	$(CC) -c $(CFLAGS) $<
 
-#%.$(OBJ): *.asm
-#	wasm $(AFLAGS) $* \
+# $*$(OBJ).asm#: $*.asm#
+# 	wasm $(AFLAGS) $* \
 
-$(OBJ)
-
-
+EXEC=demo1.exe demo2.exe demo3.exe demo4.exe demo5.exe demo6.exe demo7.exe demo8.exe# demo9.exe demo10.exe
 XLIBOBJS= xprintf.$(OBJ) xpoint.$(OBJ) xline.$(OBJ) xmain.$(OBJ) xpal.$(OBJ) xpbitmap.$(OBJ) xrect.$(OBJ) xtext.$(OBJ) xcbitmap.$(OBJ) xdetect.$(OBJ) xbmtools.$(OBJ) xfileio.$(OBJ) xrletool.$(OBJ) xbezier.$(OBJ) xpbmclip.$(OBJ) xvbitmap.$(OBJ) xmakevbm.$(OBJ) xmouse.$(OBJ) xcircle.$(OBJ) xclippbm.$(OBJ) xcomppbm.$(OBJ) xpolygon.$(OBJ) xvsync.$(OBJ) xfill.$(OBJ) xcbitm32.$(OBJ)
 
-
-all: demo1.exe demo2.exe demo3.exe demo4.exe demo5.exe demo6.exe demo7.exe demo8.exe# demo9.exe demo10.exe
+all: $(XLIBOBJS) $(EXEC)
 
 demo1.exe : demo1.$(OBJ) $(XLIBOBJS) $(XLIBOBJS)#xlib$(XLIB_VERSION)$(MODEL).lib
 	$(CC) $(CFLAGS) demo1.$(OBJ) $(XLIBOBJS)#xlib$(XLIB_VERSION)$(MODEL).lib
@@ -108,52 +103,52 @@ demo8.$(OBJ) : demo8.c
 xprintf.$(OBJ) : xprintf.c
 	$(CC) -c $(CFLAGS) xprintf.c
 
-xpoint.$(OBJ)  : xpoint.asm	xpoint.inc	xlib.inc  model.inc
-	$(CC) -c $(CFLAGS) xpoint.asm	xpoint.inc	xlib.inc  model.inc
-xline.$(OBJ)	: xline.asm	 xline.inc	 xlib.inc  model.inc
-	$(CC) -c $(CFLAGS)  xline.asm	 xline.inc	 xlib.inc  model.inc
-xmain.$(OBJ): xmain.asm	 xmain.inc	 xlib.inc  model.inc
-	$(CC) -c $(CFLAGS) xmain.asm	 xmain.inc	 xlib.inc  model.inc
-xpal.$(OBJ)	 : xpal.asm	  xpal.inc	  xlib.inc  model.inc
-	$(CC) -c $(CFLAGS) xpal.asm	  xpal.inc	  xlib.inc  model.inc
-xpbitmap.$(OBJ): xpbitmap.asm xpbitmap.inc xlib.inc  model.inc
-	$(CC) -c $(CFLAGS) xpbitmap.asm xpbitmap.inc xlib.inc  model.inc
-xpbmclip.$(OBJ): xpbmclip.asm xpbmclip.inc xlib.inc  model.inc
-	$(CC) -c $(CFLAGS) xpbmclip.asm xpbmclip.inc xlib.inc  model.inc
-xclippbm.$(OBJ): xclippbm.asm xclippbm.inc xlib.inc  model.inc
-	$(CC) -c $(CFLAGS) xclippbm.asm xclippbm.inc xlib.inc  model.inc
-xrect.$(OBJ): xpal.asm	  xpal.inc	  xlib.inc  model.inc
-	$(CC) -c $(CFLAGS) xpal.asm	  xpal.inc	  xlib.inc  model.inc
-xtext.$(OBJ): xtext.asm	 xtext.inc	 xlib.inc  model.inc
-	$(CC) -c $(CFLAGS) xtext.asm	 xtext.inc	 xlib.inc  model.inc
-xcbitmap.$(OBJ): xcbitmap.asm xcbitmap.inc xlib.inc  model.inc
-	$(CC) -c $(CFLAGS) xcbitmap.asm xcbitmap.inc xlib.inc  model.inc
-xcomppbm.$(OBJ): xcomppbm.asm xcomppbm.inc xlib.inc  model.inc
-	$(CC) -c $(CFLAGS) xcomppbm.asm xcomppbm.inc xlib.inc  model.inc
+xpoint.$(OBJ)  : xpoint.asm##			xpoint.inc	xlib.inc		model.inc
+	$(CC) -c $(CFLAGS) xpoint.asm##	xpoint.inc	xlib.inc		model.inc
+xline.$(OBJ) : xline.asm#				xline.inc		xlib.inc		model.inc
+	$(CC) -c $(CFLAGS)  xline.asm#	xline.inc		xlib.inc		model.inc
+xmain.$(OBJ): xmain.asm#			xmain.inc	xlib.inc		model.inc
+	$(CC) -c $(CFLAGS) xmain.asm#	xmain.inc	xlib.inc		model.inc
+xpal.$(OBJ)	 : xpal.asm#				xpal.inc		xlib.inc		model.inc
+	$(CC) -c $(CFLAGS) xpal.asm#	xpal.inc		xlib.inc		model.inc
+xpbitmap.$(OBJ): xpbitmap.asm#		xpbitmap.inc	xlib.inc		model.inc
+	$(CC) -c $(CFLAGS) xpbitmap.asm#	xpbitmap.inc	xlib.inc		model.inc
+xpbmclip.$(OBJ): xpbmclip.asm# 		xpbmclip.inc	xlib.inc		model.inc
+	$(CC) -c $(CFLAGS) xpbmclip.asm# xpbmclip.inc	xlib.inc		model.inc
+xclippbm.$(OBJ): xclippbm.asm#		xclippbm.inc	xlib.inc		model.inc
+	$(CC) -c $(CFLAGS) xclippbm.asm# xclippbm.inc	xlib.inc		model.inc
+xrect.$(OBJ): xpal.asm#	  			xpal.inc	  	xlib.inc		model.inc
+	$(CC) -c $(CFLAGS) xpal.asm#	xpal.inc	  	xlib.inc		model.inc
+xtext.$(OBJ): xtext.asm#	 			xtext.inc	xlib.inc		model.inc
+	$(CC) -c $(CFLAGS) xtext.asm#	xtext.inc	xlib.inc		model.inc
+xcbitmap.$(OBJ): xcbitmap.asm#		xcbitmap.inc	xlib.inc		model.inc
+	$(CC) -c $(CFLAGS) xcbitmap.asm#	xcbitmap.inc	xlib.inc		model.inc
+xcomppbm.$(OBJ): xcomppbm.asm# xcomppbm.inc xlib.inc			model.inc
+	$(CC) -c $(CFLAGS) xcomppbm.asm# xcomppbm.inc xlib.inc	model.inc
 xcbitm32.$(OBJ): xcbitm32.c
 	$(CC) -c $(CFLAGS) xcbitm32.c
-xdetect.$(OBJ) : xdetect.asm  xdetect.inc				model.inc
-	$(CC) -c $(CFLAGS) xdetect.asm  xdetect.inc				model.inc
-xbmtools.$(OBJ): xbmtools.asm xbmtools.inc			  model.inc
-	$(CC) -c $(CFLAGS) xbmtools.asm xbmtools.inc			  model.inc
-xfileio.$(OBJ) : xfileio.asm  xfileio.inc				model.inc
-	$(CC) -c $(CFLAGS) xfileio.asm  xfileio.inc				model.inc
-xrletool.$(OBJ): xrletool.asm xrletool.inc			  model.inc
-	$(CC) -c $(CFLAGS) xrletool.asm xrletool.inc			  model.inc
-xvbitmap.$(OBJ): xvbitmap.asm xvbitmap.inc xlib.inc  model.inc
-	$(CC) -c $(CFLAGS) xvbitmap.asm xvbitmap.inc xlib.inc  model.inc
+xdetect.$(OBJ) : xdetect.asm#			xdetect.inc			model.inc
+	$(CC) -c $(CFLAGS) xdetect.asm#	xdetect.inc			model.inc
+xbmtools.$(OBJ): xbmtools.asm#		xbmtools.inc			model.inc
+	$(CC) -c $(CFLAGS) xbmtools.asm#	 xbmtools.inc			model.inc
+xfileio.$(OBJ) : xfileio.asm#			xfileio.inc			model.inc
+	$(CC) -c $(CFLAGS) xfileio.asm#	xfileio.inc			model.inc
+xrletool.$(OBJ): xrletool.asm#			xrletool.inc			model.inc
+	$(CC) -c $(CFLAGS) xrletool.asm#	xrletool.inc			model.inc
+xvbitmap.$(OBJ): xvbitmap.asm#		xvbitmap.inc xlib.inc	model.inc
+	$(CC) -c $(CFLAGS) xvbitmap.asm#	xvbitmap.inc xlib.inc	model.inc
 xmakevbm.$(OBJ): xmakevbm.c	xvbitmap.h
 	$(CC) -c $(CFLAGS) xmakevbm.c	xvbitmap.h
-xmouse.$(OBJ)  : xmouse.asm					 xlib.inc  model.inc
-	$(CC) -c $(CFLAGS) xmouse.asm					 xlib.inc  model.inc
-xcircle.$(OBJ) : xcircle.asm  xcircle.inc  xlib.inc  model.inc
-	$(CC) -c $(CFLAGS) xcircle.asm  xcircle.inc  xlib.inc  model.inc
-xpolygon.$(OBJ): xpolygon.asm xpolygon.inc xlib.inc  model.inc
-	$(CC) -c $(CFLAGS) xpolygon.asm xpolygon.inc xlib.inc  model.inc
-xvsync.$(OBJ)  : xvsync.asm	xvsync.inc	xlib.inc  model.inc
-	$(CC) -c $(CFLAGS) xvsync.asm	xvsync.inc	xlib.inc  model.inc
-xfill.$(OBJ)	: xfill.asm	 xfill.inc	 xlib.inc  model.inc
-	$(CC) -c $(CFLAGS) xfill.asm	 xfill.inc	 xlib.inc  model.inc
+xmouse.$(OBJ)  : xmouse.asm#			xlib.inc				model.inc
+	$(CC) -c $(CFLAGS) xmouse.asm#	xlib.inc				model.inc
+xcircle.$(OBJ) : xcircle.asm#			xcircle.inc xlib.inc	model.inc
+	$(CC) -c $(CFLAGS) xcircle.asm#	xcircle.inc xlib.inc	model.inc
+xpolygon.$(OBJ): xpolygon.asm#		xpolygon.inc xlib.inc	model.inc
+	$(CC) -c $(CFLAGS) xpolygon.asm# xpolygon.inc xlib.inc	model.inc
+xvsync.$(OBJ)  : xvsync.asm#			xvsync.inc xlib.inc	model.inc
+	$(CC) -c $(CFLAGS) xvsync.asm#	xvsync.inc xlib.inc	model.inc
+xfill.$(OBJ)	: xfill.asm#				xfill.inc	xlib.inc		model.inc
+	$(CC) -c $(CFLAGS) xfill.asm#	xfill.inc	xlib.inc		model.inc
 
 #
 #other~

@@ -1,0 +1,76 @@
+
+=========================================================================
+  þ   þ   þþþþþ   þþþþ    þþþþþ      þ   þ       þ        þþþþþ   þ   þ   
+  þþ þþ   þ   þ   þ   þ   þ           þ þ       þþ        þ   þ   þ   þ
+  þ þ þ   þ   þ   þ   þ   þþþþ         þ         þ        þ þ þ   þþþþþ
+  þ   þ   þ   þ   þ   þ   þ           þ þ        þ        þ   þ       þ
+  þ   þ   þþþþþ   þþþþ    þþþþþ      þ   þ     þþþþþ  þþ  þþþþþ       þ
+=========================================================================
+                               MODE X  1.04
+=========================================================================
+     Library & Editors by Matt Pritchard:  Release 1.04 on 14 Mar 93
+=========================================================================
+
+MODEX104 is a library of high performance assembler routines for setting,
+accessing, and manipulating the Undocumented 256 Color Modes available in
+all VGA adaptors.
+
+MODEX104 includes the following elements:
+
+    MODE X Library - A library of MODE X routines written in assembly.
+
+    FONT EDITOR - An editor for creating and modifying fonts for use by
+                  The MODE X Library.
+
+    PALETTE EDITOR - An editor for creating and modifying palettes for
+                     use in VGA 256 Color modes.
+
+    MODE X Demos  - Programs that show off the various features of the
+                    MODE X Library
+
+    MODE X Demo Source - The Full source code for the MODE X Demos for 
+                         the following Languages:  Microsoft QuickBASIC 4.5,
+                         Microsoft BASIC 7.1 PDS, Borland C/C++ 3.1,
+                         and Borland Turbo Pascal.
+
+THE LEGAL STUFF:
+
+    The Mode X Library has been placed into the Public Domain by the
+    Author (Matt Pritchard).  The Font Editor and Palette Editor are also
+    placed into the Public Domain by the Author (Matt Pritchard).  The
+    Source Code to the above editors is not in the Public Domain.
+
+    The Mode X Demos and the Mode X Demo Sources have been placed into the
+    Public domain by the Author (Matt Pritchard).
+
+    The Mode X Library may be used freely in any non commerical product.
+    It would be nice if the author was credited for the contribution, 
+    but it is not necessary.  No $$$ involved.
+    
+    The Mode X Library may be used freely in a commercial product, *IF*
+    the author (Matt Pritchard) is credited for the contribution.  That's
+    it.  No $$$ involved.
+
+    The Mode X Library should not be re-sold or modified and re-sold.
+    No fee in excess of $5 should be charged for duplication of this
+    Library.
+
+CONTRIBUTORS:    The following people have contributed to this effort.
+
+    Michael Abrash   - He told us all how to do it in the first place.
+    Scott Wyatt      - He ported the Main Demo code to Turbo Pascal.
+
+THE AUTHOR:
+
+    The author of MODEX104 is Matt Pritchard.
+    All Questions and correspondance can be directed to:
+
+    "Matt Pritchard" on Fido Net ECHO Conference: 80xxx
+
+    or mailed to:  Matt Pritchard
+                   P.O. Box 140264
+                   Irving, TX  75014-0264
+
+    Questions, Inquiries, Comments, Donations, etc are quite welcome.
+
+

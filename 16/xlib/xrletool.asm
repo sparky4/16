@@ -83,7 +83,7 @@ structure in any depth should have a section on RLE compression.
 $
 
 LOCALS
-.286
+.8086
 
 include model.inc
 include xrletool.inc

@@ -1,0 +1,196 @@
+
+CSEDIT - A Simple Font Editor by Matt Pritchard
+ 
+ 
+CSEDIT is distributed with MODEXnnn.ZIP, the general purpose MODE X
+Library for VGA Graphics.
+ 
+WHAT YOU NEED TO RUN CSEDIT:
+ 
+    * A Vga Monitor
+    * A Microsoft Compatible Mouse
+ 
+    A Mouse is most definitely required, as the keyboard is used for
+    nothing except entering file names.
+ 
+FILES NEEDED IN THE CURRENT DIRECTORY:
+ 
+    CSEDIT.EXE  - The Font Editor Program
+    CHARSETS.CS - The Font Editor's Internal Fonts
+    PALETTE.CS  - The Font Editor's Palette
+    MOUSEIMG.CS - The Font Editor's Mouse Pointer
+ 
+SAMPLE FONT FILE THAT SHOULD BE INCLUDED:
+ 
+    SYSTEM.FNT   - The Font used by CSEDIT.EXE
+    INVERSE.FNT  - An Inverted version of SYSTEM.FNT
+    SPACEAGE.FNT - A Futuristic, Tech style font
+    ROM_8X8.FNT  - The Lower 128 characters from the VGA BIOS Rom
+ 
+WHAT IT EDITS:
+ 
+    8 by 8 character fonts, 128 characters at a time. 2 fonts at a time.
+ 
+HOW IT WORKS/FEATURES:
+ 
+    CSEDIT allows the user to edit 2 different font groups at a time,
+    which may be loaded and saved separately.
+ 
+    A enlarged character grid allows the user to edit individual pixels
+    on a selected character.
+ 
+    The Following operations can be performed on a single character or
+    simultaneously on a selected block of characters.
+ 
+       * Shift the selected character(s) in any direction
+         with or without clipping at the edges.
+       * Vertically Flip the selected character(s)
+       * Horizontally Flip the selected character(s)
+       * Rotate the selected character(s) 90 Degrees Clockwise
+       * Rotate the selected character(s) 90 Degrees Counterclockwise
+       * Clear the selected character(s)
+       * Invert the selected character(s)
+       * XOR the selected character(s) with other character(s)
+       * AND the selected character(s) with other character(s)
+       * OR the selected character(s) with other character(s)
+       * Copy the selected character(s) to another position or font.
+ 
+    An UNDO feature allows the reversal of the most recent operation.
+ 
+DESCRIPTION OF OBJECTS/FEATURES FROM THE TOP DOWN:
+ 
+    Character Grid:  (RED) Box in Upper Left corner of screen.  This is
+        where you edit an individual character. The Left Button sets the
+        pixel the mouse pointer is on, while the Right Button clears that
+        pixel.
+ 
+    Scroll Buttons:  The Four Scroll Buttons are labeled with directional
+        arrows, and arranged in a diamond pattern.  Left Clicking on a
+        directional button will scroll the currently selected character
+        in that direction, with the pixels on the edge rolling off and
+        appearing on the other size.  Right Clicking will prevent the
+        pixels from rolling to the other side.
+ 
+    Vertical Flip Button:
+    Horizontal Flip Button:  Clicking these buttons will flip the pattern
+        of the currently selected character(s) around the indicated axis.
+        i.e. the top row will be swapped with the bottom row, etc. or the
+        left row column will be swapped with right column, etc.
+        depending upon which button you push.
+ 
+    Invert Button:  Clicking this button causes all pixels in the selected
+        character(s) to flip flop between on and off.
+ 
+    Clear Button: Clicking this button erases the selected characters
+ 
+    Rotate Buttons: Clicking these buttons will rotate the pattern in the
+        selected character(s) 90 degrees in the indicated direction.
+ 
+    XOR Button: Clicking this button will let you XOR the currently
+        selected character(s) with other character(s) in either font.
+        The Button will turn RED, indicating that it is waiting for
+        you to click on the desired character (or upper left corner
+        of the desired block of characters) in either the Red or Green
+        Character Set Displays.  Clicking anywhere else will abort this
+        process without doing anything.  If you click on (any of) the
+        selected character(s) the operation is aborted.  If a block is
+        selected and the character you click on is in a position where
+        it can't represent the upper left corner of a block of the same
+        size, then the operation is not performed.
+ 
+    AND Button & OR Button:  These buttons work just like the XOR Button
+        except that the Binary operation performed is either an AND or OR
+        depending upon which button you have selected.
+ 
+    COPY Button: This button lets you copy a character or selected block
+        of characters to another area in the current font or the other
+        font.  After clicking, the button turns RED and works much like
+        the XOR Button.  Clicking on a valid position in either font
+        window will copy the selected character(s) to that location.
+ 
+    MODE Button: Clicking this button toggles the editor between BLOCK
+        mode and CHARACTER mode.  The current mode is displayed on a plate
+        at the top of the screen, just to the right of the enlarged
+        character grid.  In character mode the plate will read "CHAR" and
+        the currently selected character is displayed just to the right
+        of the plate.  In Block mode the plate will read "BLOCK" and the
+        enlarged character grid is disabled.
+ 
+    UNDO Button: Clicking this Button will UNDO or reverse the effects of
+        the most recent operation.
+ 
+    QUIT Button: Clicking this button will return you to DOS.  Any loaded
+        fonts are not saved, and no confirmation is given.
+ 
+ 
+    GREEN FONT AREA:  This area displays one of the current fonts which
+        can be edited.  The characters are display in order from #0 to #127
+        from the upper left, going right, then down.  The Font Box is 32
+        characters wide and 4 characters Tall.  When the editor is in
+        character mode, just point at and Left Click on the character you
+        wish to edit and a Cyan box will appear around that character.
+
+      * If you Right Click on a character, the last current character,
+        which will still appear in the enlarged character grid, will be
+        copied onto the character you pointed at, replacing it.  This is
+        a shortcut for copying characters: You can hold the right button
+        down an fill in a large area with a single character pattern.
+        When the editor is in Block Mode, you select an area by clicking
+        on any corner of the desired block.  Then drag the mouse to the
+        opposite corner while holding down the left button.  A Cyan Box
+        will stretch to surround the selected block of characters.
+ 
+    GREEN FONT FILE NAME BOX:  This Text Box is used to enter the name
+        of a font file to load or the name to save the current Green font
+        as.  Just click on the Box, and it will change color and a
+        flashing cursor will appear.  Now you type in a filename or edit
+        the existing filename.  Press <RETURN> or click outside the text
+        box to end editing.
+ 
+    GREEN FONT LOAD BUTTON:  Clicking this button will load the font file
+        that is named in the Green File name box.  If no name is given or
+        no such file exists, then nothing will be loaded.
+ 
+    GREEN FONT SAVE BUTTON:  Clicking this button will save the current
+        font in the Green Font Area under the name given in the File Name
+        Box.  If a Valid name is not provided, nothing will be saved.
+ 
+    RED FONT AREA:  This is just the same as the GREEN FONT AREA; providing
+        you with the ability to copy and edit between multiple fonts.
+ 
+    RED FONT FILE NAME BOX:  This works just like the GREEN FONT FILE
+        NAME BOX.
+ 
+    RED FONT LOAD BUTTON:  This works just like the GREEN FONT LOAD BUTTON.
+ 
+    RED FONT SAVE BUTTON:  This works just like the GREEN FONT SAVE BUTTON.
+ 
+    Message Bar:  At the very bottom of the screen, this Bar will display
+        information and messages for various functions.
+ 
+ 
+FONT FILE FORMAT:
+ 
+    BINARY Image, in order of character.  The format is identical to that
+    used by the VGA ROM.  The Files will be exactly 1024 (128 * 8) bytes
+    long.
+ 
+    CHARACTER: 8 Bytes
+ 
+    FONT: Array (0 to 127) of CHARACTER
+ 
+ 
+COMMENTS, QUESTIONS, BUG REPORTS, etc:
+ 
+    Send the to the Author:  Matt Pritchard
+ 
+    Through the 80xxx Fidonet Echo or
+ 
+    Matt Pritchard
+    P.O. Box 140264
+    Irving, TX  75014
+ 
+CREDITS:
+ 
+    This Font Editor was written in QuickBASIC 4.5
+ 
