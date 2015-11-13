@@ -22,19 +22,18 @@
 ;                      and tripple buffering - Tore Jahn Bastiansen
 ;                      (toreba@ifi.uio.no) for the
 ;-----------------------------------------------------------------------
-
-
 include xlib.inc
 include xmain.inc
 
 
-	.data
+	_DATA		SEGMENT	WORD PUBLIC USE16 'DATA'
+;.data
 
 
 ; Mode X CRTC register tweaks for various resolutions
 
 
-LABEL X256Y200 word
+X256Y200 LABEL word
 		db      0e3h    ; dot clock
 		db      8       ; Number of CRTC Registers to update
 	dw      05f00h  ; horz total
@@ -49,7 +48,7 @@ LABEL X256Y200 word
 	dw      200
 
 
-LABEL X256Y240 word
+X256Y240 label word
 	db      0e3h    ; dot clock
 	db      16      ; Number of CRTC Registers to update
 	dw      05f00h  ; horz total
@@ -157,7 +156,7 @@ X376Y282 label word
 	dw      376
 	dw      282
 
-LABEL X256Y400 word
+X256Y400 label word
 	db      0e3h    ; dot clock
 	db      8       ; Number of CRTC Registers to update
 	dw      05f00h  ; horz total
@@ -173,7 +172,7 @@ LABEL X256Y400 word
 	dw      400
 
 
-LABEL X256Y480 word
+X256Y480 label word
 	db      0e3h    ; dot clock
 	db      16      ; Number of CRTC Registers to update
 		dw      05f00h  ; horz total
@@ -439,6 +438,9 @@ PARAM_COUNT equ ($-PARAMS)
 
 DoubleScanFlag db ?     ; Flag to indicate double scanned mode
 
+_DATA		ENDS
+
+
 	.code
 
 ;-------------------------------------------------------------------------
@@ -459,7 +461,9 @@ SetLogicalScrWidth proc
 	mov   ax,bx                        ; no - set logical width = physical
 
 @@ValidLogicalWidth:
-	shr   ax,3
+	shr   ax,1
+	shr   ax,1
+	shr   ax,1
 	out   dx,al
 
 	; The EXACT logical pixel width may not have been possible since
@@ -472,10 +476,12 @@ SetLogicalScrWidth proc
 	mov   [_RightClip],ax             ; Set default Right clip column
 					  ; screen
 	sub   ax,[_ScrnPhysicalByteWidth] ; Calculate and store Max X position
-	shl   ax,2                        ; of physical screen in virtual
+	shl   ax,1                        ; of physical screen in virtual
+	shl   ax,1                        ; of physical screen in virtual
 	mov   [_MaxScrollX],ax            ; screen in pixels
 	mov   ax,bx                       ; set ax to byte width of virt scrn
-	shl   ax,2                        ; convert to pixels
+	shl   ax,1                        ; convert to pixels
+	shl   ax,1                        ; convert to pixels
 	mov   [_ScrnLogicalPixelWidth],ax ; store virt scrn pixel width
 	mov   cx,ax                       ; save ax (return value)
 
@@ -550,7 +556,7 @@ clear_vram endp
 ; parts adapted from M. Abrash code.
 ;------------------------------------------------------------------------
 _x_set_mode proc
-	ARG   mode:word,logicalscrwidth:word
+	;;arg   mode:word,logicalscrwidth:word
 	push  bp      ;preserve caller's stack frame
 	mov   bp,sp
 
@@ -565,7 +571,7 @@ _x_set_mode proc
 	mov   cx,PARAM_COUNT
 	rep   stosb
 
-	mov   cx,[mode]
+	mov   cx,[BP+4]
 	cmp   cx,LAST_X_MODE        ; have we selected a valid mode
 	jle   @@ValidMode           ; Yes !
 
@@ -657,7 +663,8 @@ _x_set_mode proc
 	mov   [_SplitScrnScanLine],ax       ; No splitscrn ==
 					    ; splitscrn=PhysicalscrnHeight
 	mov   bx,ax                         ; Copy width for later use
-	shr   ax,2                          ; Convert to byte width
+	shr   ax,1                          ; Convert to byte width
+	shr   ax,1                          ; Convert to byte width
 	mov   [_ScrnPhysicalByteWidth],ax   ; Store for later use
 	lodsw                               ; Load Screen Phys. Height
 	mov   [_ScrnPhysicalHeight],ax      ; Store for later use
@@ -665,7 +672,7 @@ _x_set_mode proc
 
 	;  Mode X is set, now set the required logical page width.
 
-	mov     cx,[logicalscrwidth]
+	mov     cx,[BP+6]
 
 	call    SetLogicalScrWidth
 
@@ -687,10 +694,10 @@ _x_set_mode endp
 ; Written by Themie Gouthas
 ;----------------------------------------------------------------------
 _x_select_default_plane proc
-ARG Plane:byte
+	;arg Plane:byte
 	push bp
 	mov  bp,sp       ; set up stack frame
-	mov  cl,byte ptr [Plane]
+	mov  cl,byte ptr [bp+4]
 
 	; SELECT WRITE PLANE
 	and  cl,011b              ;CL = plane
@@ -727,7 +734,7 @@ _x_select_default_plane endp
 ;----------------------------------------------------------------------
 
 _x_set_splitscreen proc
-	ARG Line:word
+	;arg Line:word
 	push bp
 	mov  bp,sp       ; set up stack frame
 	push si
@@ -769,7 +776,7 @@ _x_set_splitscreen proc
 	mov  [_PhysicalStartPixelX],ax  ; offset within virtual screen
 	mov  [_PhysicalStartY],ax
 	mov  [_SplitScrnActive],TRUE
-	mov  ax,[Line]
+	mov  ax,[bp+4]
 	jns  @@NotNeg    ; Check that Split Scrn start scan line is +ve
 
 	mov  ax,0        ; Since -ve set to 0
@@ -804,7 +811,10 @@ _x_set_splitscreen proc
 
 	mov  ah,bh
 	and  ah,1
-	shl  ah,4
+	shl  ah,1
+	shl  ah,1
+	shl  ah,1
+	shl  ah,1
 	mov  al,OVERFLOW     ; Bit 4 of overflow register = Bit 8 of split
 	out  dx,al           ; screen scan line,
 	inc  dx              ; So using readability of VGA registers
@@ -816,7 +826,9 @@ _x_set_splitscreen proc
 	dec  dx
 	mov  ah,bh
 	and  ah,2
-	ror  ah,3
+	ror  ah,1
+	ror  ah,1
+	ror  ah,1
 	mov  al,MAX_SCAN_LINE  ; Bit 6 of max scan line register =
 	out  dx,al             ; Bit 9 of split screen scan line
 	inc  dx                ; As we did before, update the apropriate
@@ -846,9 +858,9 @@ _x_set_splitscreen proc
 
 	mov  [_ScrnLogicalHeight],ax     ; Save Screen Logical Height
 	cmp   ax,[_BottomClip]
-	jle   @@BottomClipOK             ; Adjust Clip Rectangle if necessary
+	jle   @@BottomClipOK2             ; Adjust Clip Rectangle if necessary
 	mov   [_BottomClip],ax
-@@BottomClipOK:
+@@BottomClipOK2:
 	sub  ax,[_SplitScrnScanLine]     ; Update the maximum Y position of
 	mov  [_MaxScrollY],ax            ; Physical screen in logical screen
 
@@ -875,14 +887,14 @@ _x_set_splitscreen      endp
 ;------------------------------------------------------------------------
 
 _x_page_flip proc
-	ARG x:word,y:word
+	;arg x:word,y:word
 	push  bp                  ;preserve caller's stack frame
 	mov   bp,sp               ;point to local stack frame
 	push  si
 
-	mov  si,[x]
+	mov  si,[bp+4]
 	mov  ax,[_ScrnLogicalByteWidth]     ; Calculate Offset increment
-	mov  cx,[y]
+	mov  cx,[bp+6]
 	mul  cx                             ; for Y
 	cmp  [_DoubleBufferActive],TRUE     ; Do we have double buffering ?
 	je   @@DoubleBuffer
@@ -931,14 +943,14 @@ _x_page_flip endp
 ; Parts addapted from M. Abrash code published in DDJ Mag.
 ;------------------------------------------------------------------------
 _x_set_start_addr proc
-	ARG x:word,y:word
+	;arg x:word,y:word
 	push bp
 	mov  bp,sp
 	push si
 
-	mov  si,[x]
+	mov  si,[bp+4]
 	mov  ax,[_ScrnLogicalByteWidth]     ; Calculate Offset increment
-	mov  cx,[y]                         ; for Y
+	mov  cx,[bp+6]                         ; for Y
 	mul  cx
 	cmp  [_DoubleBufferActive],TRUE     ; Do we have double buffering ?
 	je   @@PageResolution
@@ -958,7 +970,8 @@ PageFlipEntry2:
 
 @@AddColumn:
 	mov  cx,si
-	shr  cx,2
+	shr  cx,1
+	shr  cx,1
 	mov  [_PhysicalStartByteX],cx
 	add  ax,cx                          ; add the column offset for X
 	mov  bh,al                          ; setup CRTC start addr regs and
@@ -1052,14 +1065,14 @@ _x_hide_splitscreen proc
 	cmp  [_SplitScrnActive],TRUE
 	je   @@SplitScreenEnabled
 
-@@error:
+@@error0:
 	mov  [_ErrorValue],ERROR
 	pop  bp
 	ret
 
 @@SplitScreenEnabled:
 	cmp  [_CurrXMode],4          ; Do nothing for Modes > 2
-	jg   @@error
+	jg   @@error0
 	mov  bx,[_ScrnPhysicalHeight]
 
 	mov  ax,[_ScrnLogicalHeight]
@@ -1069,10 +1082,10 @@ _x_hide_splitscreen proc
 	mov  [_SplitScrnVisibleHeight],ax
 
 	or    [DoubleScanFlag],0
-	jz    @@NotDoubleScanned
+	jz    @@NotDoubleScanned0
 	shl   bx,1
 	dec   bx
-@@NotDoubleScanned:
+@@NotDoubleScanned0:
 	;mov  cl,[DoubleScanFlag]  ; Compensate for double scanned modes
 	;shl  bx,cl
 
@@ -1086,7 +1099,10 @@ _x_hide_splitscreen proc
 
 	mov  ah,bh
 	and  ah,1
-	shl  ah,4
+	shl  ah,1
+	shl  ah,1
+	shl  ah,1
+	shl  ah,1
 	mov  al,OVERFLOW  ; Bit 4 of overflow register = Bit 8 of split
 	out  dx,al        ; screen scan line,
 	inc  dx           ; So using readability of VGA registers
@@ -1098,7 +1114,9 @@ _x_hide_splitscreen proc
 	dec  dx
 	mov  ah,bh
 	and  ah,2
-	ror  ah,3
+	ror  ah,1
+	ror  ah,1
+	ror  ah,1
 	mov  al,MAX_SCAN_LINE  ; Bit 6 of max scan line register =
 	out  dx,al             ; Bit 9 of split screen scan line
 	inc  dx                ; As we did before, update the apropriate
@@ -1108,7 +1126,7 @@ _x_hide_splitscreen proc
 	out  dx,al
 	sti                  ; Registers are set, so interrupts are safe
 
-@@done:
+@@done0:
 
 	mov  [_ErrorValue],OK
 	pop  bp
@@ -1140,16 +1158,16 @@ _x_show_splitscreen proc
 	mov  bp,sp
 
 	cmp  [_SplitScrnActive],TRUE
-	je   @@SplitScreenEnabled
+	je   @@SplitScreenEnabled0
 
-@@error:
+@@error1:
 	mov  [_ErrorValue],ERROR
 	pop  bp
 	ret
 
-@@SplitScreenEnabled:
+@@SplitScreenEnabled0:
 	cmp  [_CurrXMode],4          ; Do nothing for Modes > 2
-	jg   @@error
+	jg   @@error1
 
 	mov  bx,[_SplitScrnScanLine]
 	mov  ax,[_ScrnLogicalHeight] ; Update Max Scroll Y
@@ -1161,10 +1179,10 @@ _x_show_splitscreen proc
 	mov  [_SplitScrnVisibleHeight],ax
 
 	or    [DoubleScanFlag],0
-	jz    @@NotDoubleScanned
+	jz    @@NotDoubleScanned1
 	shl   bx,1
 	dec   bx
-@@NotDoubleScanned:
+@@NotDoubleScanned1:
 	;mov  cl,[DoubleScanFlag]  ; Compensate for double scanned modes
 	;shl  bx,cl
 	WaitVsyncStart               ; wait for vertical retrace
@@ -1177,7 +1195,10 @@ _x_show_splitscreen proc
 
 	mov  ah,bh
 	and  ah,1
-	shl  ah,4
+	shl  ah,1
+	shl  ah,1
+	shl  ah,1
+	shl  ah,1
 	mov  al,OVERFLOW  ; Bit 4 of overflow register = Bit 8 of split
 	out  dx,al        ; screen scan line,
 	inc  dx           ; So using readability of VGA registers
@@ -1189,7 +1210,9 @@ _x_show_splitscreen proc
 	dec  dx
 	mov  ah,bh
 	and  ah,2
-	ror  ah,3
+	ror  ah,1
+	ror  ah,1
+	ror  ah,1
 	mov  al,MAX_SCAN_LINE  ; Bit 6 of max scan line register =
 	out  dx,al             ; Bit 9 of split screen scan line
 	inc  dx                ; As we did before, update the apropriate
@@ -1199,7 +1222,7 @@ _x_show_splitscreen proc
 	out  dx,al
 	sti                  ; Registers are set, so interrupts are safe
 
-@@Done:
+@@Done1:
 	mov  [_ErrorValue],0
 	pop  bp
 	ret
@@ -1229,24 +1252,24 @@ _x_show_splitscreen endp
 
 
 _x_adjust_splitscreen proc
-	ARG   ScanLine
+	;arg   ScanLine
 	push bp
 	mov  bp,sp
 
 	cmp  [_SplitScrnActive],TRUE
-	je   @@SplitScreenEnabled
+	je   @@SplitScreenEnabled1
 
-@@error:
+@@error2:
 	mov  [_ErrorValue],ERROR
 	pop  bp
 	ret
 
-@@SplitScreenEnabled:
+@@SplitScreenEnabled1:
 	cmp  [_CurrXMode],4          ; Do nothing for Modes > 2
-	jg   @@error
-	mov  bx,[ScanLine]            ; Is the required starting scan line
+	jg   @@error2
+	mov  bx,[bp+4]            ; Is the required starting scan line
 	cmp  bx,[_SplitScrnScanLine]  ; valid ?
-	js   @@Done                   ; No - Then do nothing
+	js   @@Done2                   ; No - Then do nothing
 
 @@ValidScanLine:
 
@@ -1259,10 +1282,10 @@ _x_adjust_splitscreen proc
 	mov  [_SplitScrnVisibleHeight],ax
 
 	or    [DoubleScanFlag],0
-	jz    @@NotDoubleScanned
+	jz    @@NotDoubleScanned2
 	shl   bx,1
 	dec   bx
-@@NotDoubleScanned:
+@@NotDoubleScanned2:
 	;mov  cl,[DoubleScanFlag]   ; Compensate for double scanned modes
 	;shl  bx,cl
 
@@ -1277,7 +1300,10 @@ _x_adjust_splitscreen proc
 
 	mov  ah,bh
 	and  ah,1
-	shl  ah,4
+	shl  ah,1
+	shl  ah,1
+	shl  ah,1
+	shl  ah,1
 	mov  al,OVERFLOW  ; Bit 4 of overflow register = Bit 8 of split
 	out  dx,al        ; screen scan line,
 	inc  dx           ; So using readability of VGA registers
@@ -1289,7 +1315,9 @@ _x_adjust_splitscreen proc
 	dec  dx
 	mov  ah,bh
 	and  ah,2
-	ror  ah,3
+	ror  ah,1
+	ror  ah,1
+	ror  ah,1
 	mov  al,MAX_SCAN_LINE  ; Bit 6 of max scan line register =
 	out  dx,al             ; Bit 9 of split screen scan line
 	inc  dx                ; As we did before, update the apropriate
@@ -1298,7 +1326,7 @@ _x_adjust_splitscreen proc
 	or   al,ah
 	out  dx,al
 	sti                    ; Registers are set, so interrupts are safe
-@@Done:
+@@Done2:
 	mov  [_ErrorValue],OK
 	pop   bp
 	ret
@@ -1330,7 +1358,7 @@ _x_adjust_splitscreen endp
 
 
 _x_set_doublebuffer proc
-	   ARG PageHeight:word
+	   ;arg PageHeight:word
 	   push  bp
 	   mov   bp,sp
 
@@ -1346,7 +1374,7 @@ _x_set_doublebuffer proc
 	   mov   ax,[_ScrnLogicalHeight] ; Set Maximum D.B. Page height to
 	   shr   ax,1                    ;   _ScrnLogicalHeight / 2
 
-	   mov   bx,[PageHeight]         ; Is the require D.B. Page Height
+	   mov   bx,[bp+4]         ; Is the require D.B. Page Height
 	   cmp   ax,bx                   ;  > the Maximum  D.B. Page Height ?
 
 	   js    @@InvalidHeight         ; no  - jump
@@ -1357,9 +1385,9 @@ _x_set_doublebuffer proc
 	   mov   [_ScrnLogicalHeight],ax    ; Update logical screen height to
 					;  reflect the height of a D.B. page
 	   cmp   ax,[_BottomClip]
-	   jle   @@BottomClipOK             ; Adjust Clip Rectangle if necessary
+	   jle   @@BottomClipOK0             ; Adjust Clip Rectangle if necessary
 	   mov   [_BottomClip],ax
-@@BottomClipOK:
+@@BottomClipOK0:
 	   push  ax
 	   mul   [_ScrnLogicalByteWidth]    ; Calculate the offset of the second
 	   mov   cx,ax                      ;  D.B. Page in video ram
@@ -1410,40 +1438,40 @@ _x_set_doublebuffer endp
 ;------------------------------------------------------------------------
 
 _x_set_tripplebuffer proc
-	   ARG PageHeight:word
+	   ;arg PageHeight:word
 	   push  bp
 	   mov   bp,sp
 
 	   cmp   [_DoubleBufferActive],0
-	   jne   @@Error
+	   jne   @@Error3
 	   cmp   [_TrippleBufferActive],0
-	   je    @@OkToContinue
-@@Error:
+	   je    @@OkToContinue3
+@@Error3:
 	   mov   [_ErrorValue],ERROR
 	   pop   bp
 	   ret
 
-@@OkToContinue:
+@@OkToContinue3:
 	   mov   [_VisiblePageIdx],0     ; Set visible Page to 0
 	   mov   ax,[_ScrnLogicalHeight] ; Set Maximum T.B. Page height to
 	   mov   bx,3
 	   xor   dx,dx
 	   idiv  bx                      ;   _ScrnLogicalHeight / 3
 
-	   mov   bx,[PageHeight]         ; Is the require T.B. Page Height
+	   mov   bx,[bp+4]         ; Is the require T.B. Page Height
 	   cmp   ax,bx                   ;  > the Maximum  T.B. Page Height ?
 
-	   js    @@InvalidHeight         ; no  - jump
+	   js    @@InvalidHeight0         ; no  - jump
 	   mov   ax,bx                   ; yes - Set the T.B. Page height to
 									 ;       to the maximum allowed.
 
-@@InvalidHeight:
+@@InvalidHeight0:
 	   mov   [_ScrnLogicalHeight],ax    ; Update logical screen height to
 										;  reflect the height of a T.B. page
 	   cmp   ax,[_BottomClip]
-	   jle   @@BottomClipOK             ; Adjust Clip Rectangle if necessary
+	   jle   @@BottomClipOK1             ; Adjust Clip Rectangle if necessary
 	   mov   [_BottomClip],ax
-@@BottomClipOK:
+@@BottomClipOK1:
 	   push  ax
 	   mul   [_ScrnLogicalByteWidth]    ; Calculate the offset of the second
 	   mov   cx,ax                      ;  D.B. Page in video ram
@@ -1489,19 +1517,19 @@ _x_set_tripplebuffer endp
 ;------------------------------------------------------------------------
 
 _x_set_cliprect proc
-ARG left:word,top:word,right:word,bottom:word
+;arg left:word,top:word,right:word,bottom:word
        push  bp
        mov   bp,sp
-       mov   ax,[left]
-       mov   bx,[right]
+       mov   ax,[bp+4]
+       mov   bx,[bp+8]
        cmp   bx,ax
        jns   @@CorrectXOrder
        xchg  bx,ax
 @@CorrectXOrder:
        mov   [_LeftClip],ax
        mov   [_RightClip],bx
-	   mov   ax,[top]
-       mov   bx,[bottom]
+	   mov   ax,[bp+6]
+       mov   bx,[bp+10]
        cmp   bx,ax
 	   jns   @@CorrectYOrder
        xchg  bx,ax
@@ -1536,4 +1564,4 @@ _x_wait_vsync proc
 _x_wait_vsync endp
 
 
-	end
+end

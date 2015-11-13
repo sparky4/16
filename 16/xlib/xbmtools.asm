@@ -42,7 +42,7 @@ COMMENT $
 
 $
 
-LOCALS
+.LOCALS
 .8086
 
 include model.inc

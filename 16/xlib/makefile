@@ -150,6 +150,9 @@ xvsync.$(OBJ)  : xvsync.asm#			xvsync.inc xlib.inc	model.inc
 xfill.$(OBJ)	: xfill.asm#				xfill.inc	xlib.inc		model.inc
 	$(CC) -c $(CFLAGS) xfill.asm#	xfill.inc	xlib.inc		model.inc
 
+xbezier.$(OBJ): xbezier.asm
+	$(CC) -c $(CFLAGS) xbezier.asm
+
 #
 #other~
 #

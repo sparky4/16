@@ -416,3 +416,9 @@ updatelibs: .symbolic
 	cd $(JSMNLIB)
 	git pull
 	cd ../../../
+
+xlib: .symbolic
+	@cd 16/xlib
+	@wmake clean
+	@wmake all
+	cd ../../
