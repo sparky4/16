@@ -58,6 +58,8 @@ ENDM
 	s		EQU	SHORT
 	?x4		EQU <?,?,?,?>
 	?x3		EQU <?,?,?>
+	?x2		EQU <?,?>
+	?x1		EQU <?>
 
 
 	.Data
@@ -82,7 +84,10 @@ CR_LF		DB	13, 10			; the CRLF data
 	PUBLIC	DOS_PRINT
 
 DP_Stack	STRUC
-				DW	?x2	; DI, SI, DS, BP
+				DW	?x1	; DI, SI, DS, BP
+				DW	?x1	; DI, SI, DS, BP
+				DW	?x1	; DI, SI, DS, BP
+				DW	?x1	; DI, SI, DS, BP
 				DD	?	; Caller
 	DP_Text		DD	?	; Far Address of Text to print
 DP_Stack	ENDS
@@ -208,7 +213,10 @@ DOS_PRINTS	 ENDP
 	PUBLIC	SET_VIDEO_MODE
 
 SVM_Stack	STRUC
-				DW	?x2	; DI, SI, DS, BP
+				DW	?x1	; DI, SI, DS, BP
+				DW	?x1	; DI, SI, DS, BP
+				DW	?x1	; DI, SI, DS, BP
+				DW	?x1	; DI, SI, DS, BP
 				DD	?	; Caller
 	SVM_Mode	DB	?,? ; Desired Video Mode
 SVM_Stack	ENDS
