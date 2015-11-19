@@ -4,8 +4,8 @@
 
 	PAGE	255, 132
 
-	.MODEL Medium
-	.286
+	.MODEL Huge
+;	.286
 
 	; ==== MACROS ====
 
@@ -82,14 +82,14 @@ CR_LF		DB	13, 10			; the CRLF data
 	PUBLIC	DOS_PRINT
 
 DP_Stack	STRUC
-				DW	?x4	; DI, SI, DS, BP
+				DW	?x2	; DI, SI, DS, BP
 				DD	?	; Caller
 	DP_Text		DD	?	; Far Address of Text to print
 DP_Stack	ENDS
 
 
 DOS_PRINT	 PROC	 FAR
-			   
+
 	PUSHx	BP, DS, SI, DI		; Preserve Important Registers
 	mov		BP, SP				; Set up Stack Frame
 
@@ -101,7 +101,7 @@ DOS_PRINT	 PROC	 FAR
 	mov		SI, DX				; DS:SI = String data
 
 @@DP_Scan_it:
-	
+
 	cmp		b [SI], 0			; Null Byte found?
 	je		@@DP_Got_Len		; exit loop if so
 
@@ -122,13 +122,13 @@ DOS_PRINT	 PROC	 FAR
 	mov		DS, AX
 
 	mov		DX, o CR_LF			; Get Addr of CR/LF pair
-	mov		CX, 2				; 2 Characters to Write		
+	mov		CX, 2				; 2 Characters to Write
 	mov		BX, 1				; 1= DOS Handle for Display
 
 	mov		AH, 40h				; Write Text Function
 	int		21h					; Call DOS to do it
 
-	cld							; Reset Direction Flag		
+	cld							; Reset Direction Flag
 	POPx	DI, SI, DS, BP		; Restore Saved Registers
 	ret		4					; Exit & Clean Up Stack
 
@@ -138,8 +138,8 @@ DOS_PRINT	 ENDP
 ;===========================================
 ;void far pascal dos_prints (char far *Text)
 ;===========================================
-; 
-; Print Text Directly to DOS console 
+;
+; Print Text Directly to DOS console
 ; without a trailing CR/LF
 ;
 
@@ -158,7 +158,7 @@ DOS_PRINTS	 PROC	 FAR
 	mov		SI, DX				; DS:SI = String data
 
 @@DPS_Scan_it:
-	
+
 	cmp		b [SI], 0			; Null Byte found?
 	je		@@DPS_Got_Len		; exit loop if so
 
@@ -175,7 +175,7 @@ DOS_PRINTS	 PROC	 FAR
 	int		21h					; Call DOS to do it
 
 @DPS_Exit:
-	cld	  						; Reset Direction Flag		
+	cld	  						; Reset Direction Flag
 	POPx	DI, SI, DS, BP		; Restore Saved Registers
 	ret		2					; Exit & Clean Up Stack
 
@@ -192,7 +192,7 @@ DOS_PRINTS	 ENDP
 	PUBLIC	SET_VIDEO_MODE
 
 SVM_Stack	STRUC
-				DW	?x4	; DI, SI, DS, BP
+				DW	?x2	; DI, SI, DS, BP
 				DD	?	; Caller
 	SVM_Mode	DB	?,? ; Desired Video Mode
 SVM_Stack	ENDS
@@ -245,7 +245,7 @@ SCAN_KEYBOARD	PROC	FAR
 	CLR		AX					; Return Nil (no Keypress)
 
 @SK_Exit:
-	cld							; Reset Direction Flag		
+	cld							; Reset Direction Flag
 	POPx	DI, SI, DS, BP		; Restore Saved Registers
 	ret							; Exit & Clean Up Stack
 
@@ -327,10 +327,10 @@ INIT_RANDOM	ENDP
 ;=========================================
 ;
 ; Returns the Integer Square Root of (X)
-; Round allows the return value to be rounded to the 
+; Round allows the return value to be rounded to the
 ; nearest integer value by passing 0x80.  Passing 0
 ; return the Integer Portion only.  The rounding amound is
-; a number from 0 to 1 multiplied by 256, thus 
+; a number from 0 to 1 multiplied by 256, thus
 ; 0.5 * 0x100 = 0x80!
 ;
 
@@ -370,14 +370,14 @@ INT_SQR		PROC	FAR
   	sub 	DX, BX				; {sub edx,ebx}
 	inc 	AX 					; {inc eax}
 
-@ISQ_S: 
+@ISQ_S:
 	loop 	@ISQ_L
 
-  	add 	ax, [BP].ISQ_Round	; {add eax,$00008000}  
+  	add 	ax, [BP].ISQ_Round	; {add eax,$00008000}
 								; {*round* result in hi word: ie. +0.5}
 	shr 	ax, 8				; {shr eax,16}  {to ax (result)}
 
-	POPx	DI, BP				; Restore Registers	
+	POPx	DI, BP				; Restore Registers
 	ret		4					; Exit
 
 INT_SQR		ENDP
