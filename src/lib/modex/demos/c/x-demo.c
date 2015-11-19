@@ -508,7 +508,7 @@ char	*Error1 = "Failure during SET_VGA_MODEX (0, 320, 200, 2) call";
 int		Last_Objects[2], Visible_Objects;
 
 int		Screen_X = 384;
-int		Screen_Y = 272;
+int		Screen_Y = 224;
 
 int		x, y, z;
 int		c, dc;
@@ -525,7 +525,7 @@ int		Demo_Running = True;
 int		redo, code;
 
 int pee;
-pee = set_vga_modex(Mode_320x240, Screen_X, Screen_Y, 2);
+pee = set_vga_modex(Mode_320x200, Screen_X, Screen_Y, 3);
 	if ( pee > 0)
 	{
 		set_video_mode (3);
