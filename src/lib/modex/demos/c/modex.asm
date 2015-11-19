@@ -521,6 +521,11 @@ SET_VGA_MODEX   PROC    FAR
     OR      DX, AX              ; (DX = 1, AX = 0000)
     JZ      @SVM_Continue       ; if so, it's valid...
 
+	jmp      @SVM_Continue;0000
+
+@SVM_BadModeSetup:
+    mov ax,8                  ; Return Value = False
+    JMP     @SVM_Exit           ; Normal Exit
 @SVM_BadModeSetup1:
     mov ax,1                  ; Return Value = False
     JMP     @SVM_Exit           ; Normal Exit
