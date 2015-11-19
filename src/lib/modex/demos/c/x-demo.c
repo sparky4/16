@@ -503,12 +503,12 @@ int	r, d;
 void page_demo ()
 {
 
-char	*Error1 = "Failure during SET_VGA_MODEX (0, 360, 240, 3) call";
+char	*Error1 = "Failure during SET_VGA_MODEX (4, 320, 240, 2) call";
 
 int		Last_Objects[2], Visible_Objects;
 
-int		Screen_X = 384;
-int		Screen_Y = 672;
+int		Screen_X = 352;
+int		Screen_Y = 544;
 
 int		x, y, z;
 int		c, dc;
@@ -524,10 +524,12 @@ int		Set_Color, Prev_Color, S_Dir, P_Dir;
 int		Demo_Running = True;
 int		redo, code;
 
-	if (set_vga_modex(Mode_320x200, Screen_X, Screen_Y, 3) == 0)
+	if (set_vga_modex(Mode_320x240, Screen_X, Screen_Y, 2) == 0)
 	{
-		error_out (Error1);
+		set_modex (Mode_320x240);
+		//error_out (Error1);
 	}
+	//set_vga_modex(Mode_320x240, Screen_X, Screen_Y, 2);
 
 	set_active_page (0);
 	clear_vga_screen (c_BLACK);
