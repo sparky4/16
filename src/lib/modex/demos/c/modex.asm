@@ -444,7 +444,7 @@ MODE_360x400:           ; Data for 360 by 400 Pixels
 ;        MaxYpos = The Desired Virtual Screen Height
 ;        Pages   = The Desired # of Video Pages
 ;
-; EXIT:  AX = Success Flag:   0 = Failure / -1= Success
+; EXIT:  AX = Success Flag:   >0 = Failure / 0 = Success
 ;
 
 SVM_STACK   STRUC
@@ -476,7 +476,7 @@ SET_VGA_MODEX   PROC    FAR
 
     MOV     BX, [BP].SVM_Mode   ; Get Requested Mode #
     CMP     BX, NUM_MODES       ; Is it 0..7?
-    JAE     @SVM_BadModeSetup   ; If Not, Error out
+    JAE     @SVM_BadModeSetup1   ; If Not, Error out
 
     SHL     BX, 1                   ; Scale BX
     MOV     SI, w MODE_TABLE[BX]    ; CS:SI -> Mode Info
@@ -488,8 +488,8 @@ SET_VGA_MODEX   PROC    FAR
     ;CLR	CH                  ; Set Hi Word = 0!
     mov	ch,0                  ; Set Hi Word = 0!
     CMP     CL, CS:[SI].M_Pages ; Check # Pages for mode
-    JA      @SVM_BadModeSetup   ; Report Error if too Many Pages
-    JCXZ    @SVM_BadModeSetup   ; Report Error if 0 Pages
+    JA      @SVM_BadModeSetup2   ; Report Error if too Many Pages
+    JCXZ    @SVM_BadModeSetup3   ; Report Error if 0 Pages
 
     ; Check Validity of X Size
 
@@ -497,17 +497,17 @@ SET_VGA_MODEX   PROC    FAR
 
     MOV     AX, [BP].SVM_XSize  ; Get Logical Screen Width
     CMP     AX, CS:[SI].M_XSize ; Check against Displayed X
-    JB      @SVM_BadModeSetup   ; Report Error if too small
+    JB      @SVM_BadModeSetup4   ; Report Error if too small
     CMP     AX, CS:[SI].M_XMax  ; Check against Max X
-    JA      @SVM_BadModeSetup   ; Report Error if too big
+    JA      @SVM_BadModeSetup5   ; Report Error if too big
 
     ; Check Validity of Y Size
 
     MOV     BX, [BP].SVM_YSize  ; Get Logical Screen Height
     CMP     BX, CS:[SI].M_YSize ; Check against Displayed Y
-    JB      @SVM_BadModeSetup   ; Report Error if too small
+    JB      @SVM_BadModeSetup6   ; Report Error if too small
     CMP     BX, CS:[SI].M_YMax  ; Check against Max Y
-    JA      @SVM_BadModeSetup   ; Report Error if too big
+    JA      @SVM_BadModeSetup7   ; Report Error if too big
 
     ; Enough memory to Fit it all?
 
@@ -521,9 +521,26 @@ SET_VGA_MODEX   PROC    FAR
     OR      DX, AX              ; (DX = 1, AX = 0000)
     JZ      @SVM_Continue       ; if so, it's valid...
 
-@SVM_BadModeSetup:
-
-    mov ax,0                  ; Return Value = False
+@SVM_BadModeSetup1:
+    mov ax,1                  ; Return Value = False
+    JMP     @SVM_Exit           ; Normal Exit
+@SVM_BadModeSetup2:
+    mov ax,2                  ; Return Value = False
+    JMP     @SVM_Exit           ; Normal Exit
+@SVM_BadModeSetup3:
+    mov ax,3                  ; Return Value = False
+    JMP     @SVM_Exit           ; Normal Exit
+@SVM_BadModeSetup4:
+    mov ax,4                  ; Return Value = False
+    JMP     @SVM_Exit           ; Normal Exit
+@SVM_BadModeSetup5:
+    mov ax,5                  ; Return Value = False
+    JMP     @SVM_Exit           ; Normal Exit
+@SVM_BadModeSetup6:
+    mov ax,6                  ; Return Value = False
+    JMP     @SVM_Exit           ; Normal Exit
+@SVM_BadModeSetup7:
+    mov ax,7                  ; Return Value = False
     JMP     @SVM_Exit           ; Normal Exit
 
 @SVM_Continue:
