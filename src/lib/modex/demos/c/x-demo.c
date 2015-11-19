@@ -525,7 +525,7 @@ int		Demo_Running = True;
 int		redo, code;
 
 int pee;
-pee = set_vga_modex(Mode_320x240, Screen_X, Screen_Y, 1);
+pee = set_vga_modex(Mode_320x240, Screen_X, Screen_Y, 2);
 	if ( pee > 0)
 	{
 		set_video_mode (3);
