@@ -11,19 +11,19 @@
 
 	; macros to PUSH and POP multiple registers
 
-PUSHx MACRO R1, R2, R3, R4, R5, R6, R7, R8
-	IFNB <R1>
-		push	R1				; Save R1
-		PUSHx	R2, R3, R4, R5, R6, R7, R8
-	ENDIF
-ENDM
-
-POPx MACRO R1, R2, R3, R4, R5, R6, R7, R8
-	IFNB <R1>
-		pop		R1				; Restore R1
-		POPx	R2, R3, R4, R5, R6, R7, R8
-	ENDIF
-ENDM
+; PUSHx MACRO R1, R2, R3, R4;, R5, R6, R7, R8
+; 	IFNB <R1>
+; 		push	R1				; Save R1
+; 		PUSHx	R2, R3, R4;, R5, R6, R7, R8
+; 	ENDIF
+; ENDM
+;
+; POPx MACRO R1, R2, R3, R4;, R5, R6, R7, R8
+; 	IFNB <R1>
+; 		pop		R1				; Restore R1
+; 		POPx	R2, R3, R4;, R5, R6, R7, R8
+; 	ENDIF
+; ENDM
 
 	; Macro to Clear a Register to 0
 
@@ -90,7 +90,11 @@ DP_Stack	ENDS
 
 DOS_PRINT	 PROC	 FAR
 
-	PUSHx	BP, DS, SI, DI		; Preserve Important Registers
+	;PUSHx	BP, DS, SI, DI		; Preserve Important Registers
+	push bp
+	push ds
+	push si
+	push di
 	mov		BP, SP				; Set up Stack Frame
 
 	lds     DX, [BP].DP_Text	; Get Addr of Text$ descriptor
@@ -129,7 +133,11 @@ DOS_PRINT	 PROC	 FAR
 	int		21h					; Call DOS to do it
 
 	cld							; Reset Direction Flag
-	POPx	DI, SI, DS, BP		; Restore Saved Registers
+	;POPx	DI, SI, DS, BP		; Restore Saved Registers
+	pop di
+	pop si
+	pop ds
+	pop bp
 	ret		4					; Exit & Clean Up Stack
 
 DOS_PRINT	 ENDP
@@ -147,7 +155,11 @@ DOS_PRINT	 ENDP
 
 DOS_PRINTS	 PROC	 FAR
 
-	PUSHx	BP, DS, SI, DI		; Preserve Important Registers
+	;PUSHx	BP, DS, SI, DI		; Preserve Important Registers
+	push bp
+	push ds
+	push si
+	push di
 	mov		BP, SP				; Set up Stack Frame
 
 	lds     DX, [BP].DP_Text	; Get Addr of Text$ descriptor
@@ -176,7 +188,11 @@ DOS_PRINTS	 PROC	 FAR
 
 @DPS_Exit:
 	cld	  						; Reset Direction Flag
-	POPx	DI, SI, DS, BP		; Restore Saved Registers
+	;POPx	DI, SI, DS, BP		; Restore Saved Registers
+	pop di
+	pop si
+	pop ds
+	pop bp
 	ret		2					; Exit & Clean Up Stack
 
 DOS_PRINTS	 ENDP
@@ -200,7 +216,11 @@ SVM_Stack	ENDS
 
 SET_VIDEO_MODE	PROC	FAR
 
-	PUSHx	BP, DS, SI, DI		; Preserve Important Registers
+	;PUSHx	BP, DS, SI, DI		; Preserve Important Registers
+	push bp
+	push ds
+	push si
+	push di
 	mov		BP, SP				; Set up Stack Frame
 
 	CLR		AH					; Function 0
@@ -209,7 +229,11 @@ SET_VIDEO_MODE	PROC	FAR
 	int		10H					; Change Video Modes
 
 @SVM_Exit:
-	POPx	DI, SI, DS, BP		; Restore Saved Registers
+	;POPx	DI, SI, DS, BP		; Restore Saved Registers
+	pop di
+	pop si
+	pop ds
+	pop bp
 	ret		2					; Exit & Clean Up Stack
 
 SET_VIDEO_MODE	ENDP
@@ -226,7 +250,11 @@ SET_VIDEO_MODE	ENDP
 
 SCAN_KEYBOARD	PROC	FAR
 
-	PUSHx	BP, DS, SI, DI		; Preserve Important Registers
+	;PUSHx	BP, DS, SI, DI		; Preserve Important Registers
+	push bp
+	push ds
+	push si
+	push di
 
 	mov		AH, 01H				; Function #1
 	INT		16H					; Call Keyboard Driver
@@ -246,7 +274,11 @@ SCAN_KEYBOARD	PROC	FAR
 
 @SK_Exit:
 	cld							; Reset Direction Flag
-	POPx	DI, SI, DS, BP		; Restore Saved Registers
+	;POPx	DI, SI, DS, BP		; Restore Saved Registers
+	pop di
+	pop si
+	pop ds
+	pop bp
 	ret							; Exit & Clean Up Stack
 
 SCAN_KEYBOARD	ENDP
@@ -345,7 +377,9 @@ ISQ_Stack	ENDS
 
 INT_SQR		PROC	FAR
 
-    PUSHx   BP, DI				; Save BP
+    ;PUSHx   BP, DI				; Save BP
+	push bp
+	push di
     mov     BP, SP				; Set up Stack Frame
 
  	xor 	AX, AX				; {xor eax,eax}
@@ -375,9 +409,18 @@ INT_SQR		PROC	FAR
 
   	add 	ax, [BP].ISQ_Round	; {add eax,$00008000}
 								; {*round* result in hi word: ie. +0.5}
-	shr 	ax, 8				; {shr eax,16}  {to ax (result)}
+	shr 	ax, 1				; {shr eax,16}  {to ax (result)}
+	shr 	ax, 1				; {shr eax,16}  {to ax (result)}
+	shr 	ax, 1				; {shr eax,16}  {to ax (result)}
+	shr 	ax, 1				; {shr eax,16}  {to ax (result)}
+	shr 	ax, 1				; {shr eax,16}  {to ax (result)}
+	shr 	ax, 1				; {shr eax,16}  {to ax (result)}
+	shr 	ax, 1				; {shr eax,16}  {to ax (result)}
+	shr 	ax, 1				; {shr eax,16}  {to ax (result)}
 
-	POPx	DI, BP				; Restore Registers
+	;POPx	DI, BP				; Restore Registers
+	pop di
+	pop bp
 	ret		4					; Exit
 
 INT_SQR		ENDP
