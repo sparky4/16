@@ -411,6 +411,7 @@ clean: .symbolic
 
 comp: .symbolic
 	@upx -9 -qqq $(EXEC)
+	@upx -9 -qqq x-demo.exe
 
 updatelibs: .symbolic
 	cd $(JSMNLIB)
