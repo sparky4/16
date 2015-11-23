@@ -53,6 +53,7 @@ JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
 NYANLIB=$(SRCLIB)nyan$(DIRSEP)
 #EXMMLIB=$(SRCLIB)exmm$(DIRSEP)
 MODEXLIB=$(SRCLIB)modex16$(DIRSEP)
+MODEXLIB_=$(SRCLIB)modex$(DIRSEP)
 VGMSNDLIB=$(SRCLIB)vgmsnd$(DIRSEP)
 DOSLIB=$(SRCLIB)doslib$(DIRSEP)
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
@@ -371,6 +372,11 @@ vgmSnd.$(OBJ): $(VGMSNDLIB)vgmSnd.h $(VGMSNDLIB)vgmSnd.c
 
 #memory.$(OBJ): $(EXMMLIB)memory.h $(EXMMLIB)memory.c
 #	wcl $(FLAGS) $(MFLAGS) -c $(EXMMLIB)memory.c
+
+c_utils.$(OBJ): $(MODEXLIB_)c_utils.asm
+	wcl -c $(FLAGS) $(MODEXLIB_)c_utils.asm
+modex.$(OBJ): $(MODEXLIB_)modex.asm
+	wcl -c $(FLAGS) $(MODEXLIB_)modex.asm
 
 #
 #other~
