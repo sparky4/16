@@ -25,6 +25,7 @@
 
 #include "src/lib/16_head.h"
 #include "src/lib/modex16.h"
+#include "src/lib/modex/modex.h"
 
 #define TILEWH 16
 #define QUADWH			TILEWH/2
@@ -32,7 +33,7 @@
 #define LGQ	     32
 #define HGQ	     55
 
-//#define TILE
+#define TILE
 
 typedef struct {
 	word gq;
