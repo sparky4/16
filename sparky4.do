@@ -6,12 +6,14 @@ code it!
 what?
 
 
+
+test which modex library is faster!
 edit input and switch unecessary words to bytes
 
 
+
+
 planar function from pcx must be made~ ok
-
-
 
 font! ok
 jis! ...
