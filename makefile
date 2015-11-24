@@ -91,8 +91,8 @@ all: $(EXEC) comp
 16.exe: 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib
 	wcl $(FLAGS) $(16FLAGS) 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib -fm=16.map
 
-bakapi.exe: bakapi.$(OBJ) $(16LIBOBJS) gfx.lib c_utils.$(OBJ) modex.$(OBJ)
-	wcl $(FLAGS) $(BAKAPIFLAGS) bakapi.$(OBJ) $(16LIBOBJS) gfx.lib c_utils.$(OBJ) modex.$(OBJ) -fm=bakapi.map
+bakapi.exe: bakapi.$(OBJ) $(16LIBOBJS) gfx.lib modex.lib
+	wcl $(FLAGS) $(BAKAPIFLAGS) bakapi.$(OBJ) $(16LIBOBJS) gfx.lib modex.lib -fm=bakapi.map
 #
 #Test Executables!
 #
@@ -387,7 +387,10 @@ modex.$(OBJ): $(MODEXLIB_)modex.asm
 clean: .symbolic
 	@$(REMOVECOMMAND) $(EXEC)
 	@$(REMOVECOMMAND) *.$(OBJ)
-	@$(REMOVECOMMAND) *.lib
+	@$(REMOVECOMMAND) 16.lib
+	@$(REMOVECOMMAND) gfx.lib
+	@$(REMOVECOMMAND) doslib.lib
+	@$(REMOVECOMMAND) vgmsnd.lib
 	@wlib -n 16.lib
 	@wlib -n  gfx.lib
 	@wlib -n  doslib.lib

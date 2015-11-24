@@ -25,7 +25,8 @@
 
 #include "src/lib/16_head.h"
 #include "src/lib/modex16.h"
-#include "src/lib/modex/modex.h"
+//#include "src/lib/modex/modex.h"
+#include "16/x/modex.h"
 
 #define TILEWH 16
 #define QUADWH			TILEWH/2

@@ -68,6 +68,7 @@ void dingpp(page_t *page, bakapee_t *pee)
 {
 #ifdef TILE
 	//fill_block(pee->xx, pee->yy, pee->xx+TILEWH, pee->yy+TILEWH, pee->coor);
+	//mxFillBox(pee->xx, pee->yy, TILEWH, TILEWH, pee->coor, OP_SET);
 	modexClearRegion(page, pee->xx, pee->yy, TILEWH, TILEWH, pee->coor);
 #else
 	modexputPixel(page, pee->xx, pee->yy, pee->coor);
