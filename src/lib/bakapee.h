@@ -36,6 +36,9 @@
 
 #define TILE
 
+//which lib?
+#define MXLIB
+
 typedef struct {
 	word gq;
 	sword bakax, bakay;

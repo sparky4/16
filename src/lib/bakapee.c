@@ -67,9 +67,12 @@ void ssd(page_t *page, bakapee_t *pee, word svq)
 void dingpp(page_t *page, bakapee_t *pee)
 {
 #ifdef TILE
+#ifndef MXLIB
 	//fill_block(pee->xx, pee->yy, pee->xx+TILEWH, pee->yy+TILEWH, pee->coor);
-	//mxFillBox(pee->xx, pee->yy, TILEWH, TILEWH, pee->coor, OP_SET);
+	mxFillBox(pee->xx, pee->yy, TILEWH, TILEWH, pee->coor, OP_SET);
+#else
 	modexClearRegion(page, pee->xx, pee->yy, TILEWH, TILEWH, pee->coor);
+#endif
 #else
 	modexputPixel(page, pee->xx, pee->yy, pee->coor);
 #endif

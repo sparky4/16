@@ -41,7 +41,11 @@ main(int argc, char *argvar[])
 	xdir=1;
 	ydir=1;
 
+#ifdef MXLIB
 	VGAmodeX(1, &gvar);
+#else
+	mxSetMode(3);
+#endif
 	bakapee.xx = rand()&0%gvar.video.page[0].width;
 	bakapee.yy = rand()&0%gvar.video.page[0].height;
 	bakapee.gq = 0;
@@ -53,8 +57,8 @@ main(int argc, char *argvar[])
 
 	/* setup camera and screen~ */
 	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
-	//gvar.video.page[0].width += (TILEWH*2);
-	//gvar.video.page[0].height += (TILEWH*2);
+	gvar.video.page[0].width += (TILEWH*2);
+	gvar.video.page[0].height += (TILEWH*2);
 	textInit();
 
 	//modexPalUpdate(bmp.palette); //____
@@ -73,9 +77,14 @@ main(int argc, char *argvar[])
 		}
 		else
 		{
+			#ifndef MXLIB
+			mxChangeMode(0);
+#else
 			VGAmodeX(0, &gvar);
+#endif
 			//modexLeave();
 			// user imput switch
+			fprintf(stderr, "xx=%d	yy=%d\n", bakapee.xx, bakapee.yy);
 			printf("Enter 1, 2, 3, 4, or 6 to run a screensaver, or enter 0 to quit.\n", getch());  // prompt the user
 			scanf("%d", &key);
 			//if(key==3){xx=yy=0;} // crazy screen saver wwww
@@ -83,7 +92,11 @@ main(int argc, char *argvar[])
 				gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
 				gvar.video.page[0].width += (TILEWH*2);
 				gvar.video.page[0].height += (TILEWH*2);
+#ifdef MXLIB
 				VGAmodeX(1, &gvar);
+#else
+				mxChangeMode(3);
+#endif
 				modexShowPage(&gvar.video.page[0]);
 			}
 		}
