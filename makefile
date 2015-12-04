@@ -66,7 +66,7 @@ SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k55808#60000#32768
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
 ZFLAGS=-zk0 -zq -zc -zp8# -zm
 CFLAGS=$(AFLAGS) $(IFLAGS)-lr -l=dos -wo##wwww
-OFLAGS=-obmiler -out -oh -ei -zp8 -0 -fpi87  -onac -ol+ -ok####x
+OFLAGS=-obmiler -out -oh -ei -zp8 -fpi87  -onac -ol+ -ok####x
 FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 
 
@@ -433,5 +433,11 @@ updatelibs: .symbolic
 xlib: .symbolic
 	@cd 16/xlib
 	@wmake clean
+	@wmake all
+	cd ../../
+
+mx: .symbolic
+	@cd 16/xw
+#	@wmake clean
 	@wmake all
 	cd ../../

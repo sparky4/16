@@ -4,9 +4,9 @@
 ; Copyright (c) 1993,1994 by Alessandro Scotti
 ;
 ;-----------------------------------------------------------
-WARN    PRO
-NOWARN  RES
-INCLUDE MODEX.DEF
+;WARN    PRO
+;NOWARN  RES
+INCLUDE modex.def
 
 PUBLIC  mxBitBlt
 

@@ -3,8 +3,8 @@
 ; MODEX.DEF - Include file
 ; Copyright (c) 1993-1994 by Alessandro Scotti
 ;
-JUMPS
-LOCALS
+;JUMPS
+;LOCALS
 
 TRUE            EQU     1       ; Boolean constants
 FALSE           EQU     0
@@ -111,53 +111,53 @@ ENDM
 
 ;------------------------------------------------------------
 ;
-.leave  MACRO   argsize
-    IF USE286 EQ TRUE
-        leave
-    ELSE
-        mov     sp, bp
-        pop     bp
-    ENDIF
-    IFNB <argspace>
-        ret     argsize
-    ELSE
-        ret
-    ENDIF
-ENDM
+;.leave  MACRO   argsize
+;    IF USE286 EQ TRUE
+;        leave
+;    ELSE
+;        mov     sp, bp
+;        pop     bp
+;    ENDIF
+;    IFNB <argspace>
+;        ret     argsize
+;    ELSE
+;        ret
+;    ENDIF
+;ENDM
 
 ;------------------------------------------------------------
 ;
-.shr    MACRO   arg, count
-    IF USE286 EQ TRUE
-        shr     arg, count
-    ELSE
-        $temp = count
-        WHILE $temp GT 0
-            shr arg, 1
-            $temp = $temp-1
-        ENDM
-    ENDIF
-ENDM
+;.shr    MACRO   arg, count
+;    IF USE286 EQ TRUE
+;        shr     arg, count
+;    ELSE
+;        $temp = count
+;        WHILE $temp GT 0
+;            shr arg, 1
+;            $temp = $temp-1
+;        ENDM
+;    ENDIF
+;ENDM
 
 ;------------------------------------------------------------
 ;
-.shl    MACRO   arg, count
-    IF USE286 EQ TRUE
-        shl     arg, count
-    ELSE
-        $temp = count
-        WHILE $temp GT 0
-            shl arg, 1
-            $temp = $temp-1
-        ENDM
-    ENDIF
-ENDM
+;.shl    MACRO   arg, count
+;    IF USE286 EQ TRUE
+;        shl     arg, count
+;    ELSE
+;        $temp = count
+;        WHILE $temp GT 0
+;            shl arg, 1
+;            $temp = $temp-1
+;        ENDM
+;    ENDIF
+;ENDM
 
 ;------------------------------------------------------------
 ;
-.chk386 MACRO   name, jump
-    IF USE386 EQ FALSE
-        .OUT    "Warning: ", <name>, " needs a 386 or better to run!"
-        jmp     @@jump
-    ENDIF
-ENDM
+;.chk386 MACRO   name, jump
+;    IF USE386 EQ FALSE
+;        .OUT    "Warning: ", <name>, " needs a 386 or better to run!"
+;        jmp     @@jump
+;    ENDIF
+;ENDM
