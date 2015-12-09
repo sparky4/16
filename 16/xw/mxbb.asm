@@ -47,7 +47,7 @@ mxBitBlt        PROC    FAR
                 WritePlane:BYTE,        \
                 LeftMask:BYTE,          \
                 RightMask:BYTE          = AUTO_SIZE
-        .enter  AUTO_SIZE
+	.enter  AUTO_SIZE
         .push   ds, si, es, di
 
 ; Exit now if null width

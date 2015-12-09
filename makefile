@@ -426,18 +426,25 @@ comp: .symbolic
 	@upx -9 -qqq x-demo.exe
 
 updatelibs: .symbolic
-	cd $(JSMNLIB)
-	git pull
-	cd ../../../
+	@cd $(JSMNLIB)
+	@git pull
+	@cd ../../../
 
 xlib: .symbolic
 	@cd 16/xlib
 	@wmake clean
 	@wmake all
-	cd ../../
+	@cd ../../
 
 mx: .symbolic
 	@cd 16/xw
 #	@wmake clean
 	@wmake all
-	cd ../../
+	@cd ../../
+
+x: .symbolic
+	@cd 16/x
+	@wmake -f makefile.wat pee
+	@cd ../xw_/
+	@wmake all
+	@cd ../../
