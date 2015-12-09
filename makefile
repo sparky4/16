@@ -442,9 +442,7 @@ mx: .symbolic
 	@wmake all
 	@cd ../../
 
-x: .symbolic
-	@cd 16/x
-	@wmake -f makefile.wat pee
-	@cd ../xw_/
-	@wmake all
+mx_: .symbolic
+	@cd 16/xw_
+	@wmake -f makefile.wat all
 	@cd ../../

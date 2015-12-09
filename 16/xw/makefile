@@ -15,7 +15,7 @@ OBJ=obj
 !endif
 LIBINCS = modex.def
 
-LIBOBJS = mxbb.$(OBJ) mxcc.$(OBJ) mxcg.$(OBJ) mxcl.$(OBJ) mxcr.$(OBJ) mxel.$(OBJ) mxfb.$(OBJ) mxfp.$(OBJ) mxgc.$(OBJ) mxgi.$(OBJ) mxgm.$(OBJ) mxgp.$(OBJ) mxgv.$(OBJ) mxhl.$(OBJ) mxit.$(OBJ) mxll.$(OBJ) mxln.$(OBJ) mxot.$(OBJ) mxpb.$(OBJ) mxpf.$(OBJ) mxpg.$(OBJ) mxpi.$(OBJ) mxpn.$(OBJ) mxpp.$(OBJ) mxra.$(OBJ) mxrp.$(OBJ) mxsa.$(OBJ) mxsc.$(OBJ) mxsi.$(OBJ) mxsl.$(OBJ) mxsm.$(OBJ) mxsp.$(OBJ) mxss.$(OBJ) mxtl.$(OBJ) mxvs.$(OBJ) mxwd.$(OBJ) mxwm.$(OBJ) mxwp.$(OBJ) mxwr.$(OBJ)
+LIBOBJS = mxbb.$(OBJ) mxcc.$(OBJ) mxcg.$(OBJ) mxcl.$(OBJ) mxcr.$(OBJ) mxfb.$(OBJ) mxfp.$(OBJ) mxgc.$(OBJ) mxgi.$(OBJ) mxgm.$(OBJ) mxgp.$(OBJ) mxgv.$(OBJ) mxhl.$(OBJ) mxit.$(OBJ) mxll.$(OBJ) mxln.$(OBJ) mxot.$(OBJ) mxpb.$(OBJ) mxpf.$(OBJ) mxpg.$(OBJ) mxpi.$(OBJ) mxpn.$(OBJ) mxpp.$(OBJ) mxra.$(OBJ) mxrp.$(OBJ) mxsa.$(OBJ) mxsc.$(OBJ) mxsi.$(OBJ) mxsl.$(OBJ) mxsm.$(OBJ) mxsp.$(OBJ) mxss.$(OBJ) mxtl.$(OBJ) mxvs.$(OBJ) mxwd.$(OBJ) mxwm.$(OBJ) mxwp.$(OBJ) mxwr.$(OBJ)
 
 #
 # ASM compiler
@@ -47,8 +47,6 @@ mxcl.$(OBJ): mxcl.asm
 	$(ASMC) $(ASMO) mxcl.asm
 mxcr.$(OBJ): mxcr.asm
 	$(ASMC) $(ASMO) mxcr.asm
-mxel.$(OBJ): mxel.asm
-	$(ASMC) $(ASMO) mxel.asm
 mxfb.$(OBJ): mxfb.asm
 	$(ASMC) $(ASMO) mxfb.asm
 mxfp.$(OBJ): mxfp.asm
