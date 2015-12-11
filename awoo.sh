@@ -1,8 +1,8 @@
 #!/bin/bash
 if [ -z "$*" ]; then
-		$pee="wwww"
+		"$pee"="wwww"
 	else
-		$pee="$*"
+		"$pee"="$*"
 fi
 git add .
 . ./boop.sh "$*"
