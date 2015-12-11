@@ -1,4 +1,9 @@
 #!/bin/bash
+if [ -z "$*" ]; then
+		$pee="wwww"
+	else
+		$pee="$*"
+fi
 git add .
 . ./boop.sh "$*"
 cp -fp *.exe /var/www/
