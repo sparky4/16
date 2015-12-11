@@ -444,5 +444,6 @@ mx: .symbolic
 
 mx_: .symbolic
 	@cd 16/xw_
-	@wmake -f makefile.wat all
+	@wmake -f makefile all
 	@cd ../../
+

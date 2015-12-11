@@ -4,7 +4,7 @@ if [ -z "$*" ]; then
 	else
 		pee="$*"
 fi
-#echo "$pee"
+##echo "$pee"
 git add .
 . ./boop.sh "$pee"
 cp -fp *.exe /var/www/
