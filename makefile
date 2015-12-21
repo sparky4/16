@@ -22,6 +22,10 @@
 # -0    8088/8086 class code generation
 # -s    disable stack overflow checking
 
+# -zk0u	translate kanji to unicode... wwww
+# -zk0	kanji support~
+# -zkl		current codepage
+
 #%.C
 #192x144
 #wwww will add these
@@ -42,9 +46,6 @@ OBJ=obj
 #!endif
 
 TARGET_OS = dos
-#-zk0u = translate kanji to unicode... wwww
-#-zk0 = kanji support~
-#-zkl = current codepage
 
 #EXMMTESTDIR=16$(DIRSEP)exmmtest$(DIRSEP)
 SRC=src$(DIRSEP)
@@ -53,18 +54,21 @@ JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
 NYANLIB=$(SRCLIB)nyan$(DIRSEP)
 #EXMMLIB=$(SRCLIB)exmm$(DIRSEP)
 MODEXLIB=$(SRCLIB)modex16$(DIRSEP)
+MODEXLIB_=$(SRCLIB)modex$(DIRSEP)
 VGMSNDLIB=$(SRCLIB)vgmsnd$(DIRSEP)
 DOSLIB=$(SRCLIB)doslib$(DIRSEP)
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
+AFLAGS=-mh -0 -d1
 16FLAGS=-fh=16.hed
 BAKAPIFLAGS=-fh=bakapi.hed
 SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k55808#60000#32768
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
 ZFLAGS=-zk0 -zq -zc -zp8# -zm
-CFLAGS=$(IFLAGS) -mh -lr -l=dos -wo# -d2##wwww
-OFLAGS=-obmiler -out -oh -ei -zp8 -0 -fpi87  -onac -ol+ -ok####x
+CFLAGS=$(AFLAGS) $(IFLAGS)-lr -l=dos -wo##wwww
+OFLAGS=-obmiler -out -oh -ei -zp8 -fpi87  -onac -ol+ -ok####x
 FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
+
 
 DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
@@ -87,8 +91,8 @@ all: $(EXEC) comp
 16.exe: 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib
 	wcl $(FLAGS) $(16FLAGS) 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib -fm=16.map
 
-bakapi.exe: bakapi.$(OBJ) $(16LIBOBJS) gfx.lib
-	wcl $(FLAGS) $(BAKAPIFLAGS) bakapi.$(OBJ) $(16LIBOBJS) gfx.lib -fm=bakapi.map
+bakapi.exe: bakapi.$(OBJ) $(16LIBOBJS) gfx.lib modex.lib
+	wcl $(FLAGS) $(BAKAPIFLAGS) bakapi.$(OBJ) $(16LIBOBJS) gfx.lib modex.lib -fm=bakapi.map
 #
 #Test Executables!
 #
@@ -372,13 +376,21 @@ vgmSnd.$(OBJ): $(VGMSNDLIB)vgmSnd.h $(VGMSNDLIB)vgmSnd.c
 #memory.$(OBJ): $(EXMMLIB)memory.h $(EXMMLIB)memory.c
 #	wcl $(FLAGS) $(MFLAGS) -c $(EXMMLIB)memory.c
 
+c_utils.$(OBJ): $(MODEXLIB_)c_utils.asm
+	wcl -c $(AFLAGS) $(MODEXLIB_)c_utils.asm
+modex.$(OBJ): $(MODEXLIB_)modex.asm
+	wcl -c $(AFLAGS) $(MODEXLIB_)modex.asm
+
 #
 #other~
 #
 clean: .symbolic
 	@$(REMOVECOMMAND) $(EXEC)
 	@$(REMOVECOMMAND) *.$(OBJ)
-	@$(REMOVECOMMAND) *.lib
+	@$(REMOVECOMMAND) 16.lib
+	@$(REMOVECOMMAND) gfx.lib
+	@$(REMOVECOMMAND) doslib.lib
+	@$(REMOVECOMMAND) vgmsnd.lib
 	@wlib -n 16.lib
 	@wlib -n  gfx.lib
 	@wlib -n  doslib.lib
@@ -411,8 +423,27 @@ clean: .symbolic
 
 comp: .symbolic
 	@upx -9 -qqq $(EXEC)
+	@upx -9 -qqq x-demo.exe
 
 updatelibs: .symbolic
-	cd $(JSMNLIB)
-	git pull
-	cd ../../../
+	@cd $(JSMNLIB)
+	@git pull
+	@cd ../../../
+
+xlib: .symbolic
+	@cd 16/xlib
+	@wmake clean
+	@wmake all
+	@cd ../../
+
+mx: .symbolic
+	@cd 16/xw
+#	@wmake clean
+	@wmake all
+	@cd ../../
+
+mx_: .symbolic
+	@cd 16/xw_
+	@wmake -f makefile all
+	@cd ../../
+

@@ -65,18 +65,18 @@ include xpal.inc
 ; Written by Themie Gouthas
 ;----------------------------------------------------------------------
 _x_get_pal_struc  proc
-ARG  PalBuff:dword,NumColors:word,StartColor:word
+;ARG  PalBuff:dword,NumColors:word,StartColor:word
      push  bp		; Set up stack frame
      mov   bp,sp
      push  di
      push  si
      cld
 
-     les   di,dword ptr [PalBuff]  ; Point es:di to palette buffer
-     mov   si,[StartColor]         ; Store the Start Colour
+     les   di,dword ptr [bp+4]  ; Point es:di to palette buffer
+     mov   si,[bp+10]         ; Store the Start Colour
      mov   ax,si
      stosb
-     mov   dx,[NumColors]          ; Store the Number of Colours
+     mov   dx,[bp+8]          ; Store the Number of Colours
      mov   al,dl
      stosb
 
@@ -100,16 +100,16 @@ _x_get_pal_struc endp
 ; Written by Themie Gouthas
 ;----------------------------------------------------------------------
 _x_get_pal_raw	proc
-ARG  PalBuff:dword,NumColors:word,StartColor:word
+;ARG  PalBuff:dword,NumColors:word,StartColor:word
      push  bp		; Set up stack frame
      mov   bp,sp
      push  di
      push  si
 
-     les   di,dword ptr [PalBuff]  ; Point es:di to palette buffer
+     les   di,dword ptr [bp+4]  ; Point es:di to palette buffer
 
-     mov  si,[StartColor]
-     mov  cx,[NumColors]
+     mov  si,[bp+10]
+     mov  cx,[bp+8]
 
 ReadPalEntry:
      cld

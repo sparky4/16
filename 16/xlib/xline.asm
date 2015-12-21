@@ -26,9 +26,10 @@ ModeXAddr       macro
 	mov	dx,[_ScrnLogicalByteWidth]
 	mul	dx
 	pop	dx
-	shr	bx,2
+	shr	bx,1
+	shr	bx,1
 	add	bx,ax
-	add     bx,[PgOffs]
+	add     bx,[bp+14]
 	and	cl,3
 	endm
 
@@ -44,7 +45,7 @@ ModeXAddr       macro
 ;
 
 _x_line 	proc
-ARG     x1:word,y1:word,x2:word,y2:word,Color:word,PgOffs:word
+;ARG     x1:word,y1:word,x2:word,y2:word,Color:word,PgOffs:word
 LOCAL   vertincr:word,incr1:word,incr2:word,routine:word=LocalStk
 	push	bp		; Set up stack frame
 	mov	bp,sp
@@ -60,8 +61,8 @@ LOCAL   vertincr:word,incr1:word,incr2:word,routine:word=LocalStk
 ; check for vertical line
 
 	mov	si,[_ScrnLogicalByteWidth]
-	mov	cx,[x2]
-	sub	cx,[x1]
+	mov	cx,[bp+8]
+	sub	cx,[bp+4]
 	jz	VertLine
 
 ; force x1 < x2
@@ -70,19 +71,19 @@ LOCAL   vertincr:word,incr1:word,incr2:word,routine:word=LocalStk
 
 	neg	cx
 
-	mov	bx,[x2]
-	xchg	bx,[x1]
-	mov	[x2],bx
+	mov	bx,[bp+8]
+	xchg	bx,[bp+4]
+	mov	[bp+8],bx
 
-	mov	bx,[y2]
-	xchg	bx,[y1]
-	mov	[y2],bx
+	mov	bx,[bp+10]
+	xchg	bx,[bp+6]
+	mov	[bp+10],bx
 
 ; calc dy = abs(y2 - y1)
 
 L01:
-	mov	bx,[y2]
-	sub	bx,[y1]
+	mov	bx,[bp+10]
+	sub	bx,[bp+6]
 	jnz	short skip
 	jmp     HorizLine
 skip:		jns	L03
@@ -113,14 +114,17 @@ L04:
 ; calc first pixel address
 
 	push	cx
-	mov	ax,[y1]
-	mov	bx,[x1]
+	mov	ax,[bp+6]
+	mov	bx,[bp+4]
 	ModeXAddr
 	mov	di,bx
 	mov	al,1
 	shl	al,cl
 	mov	ah,al		; duplicate nybble
-	shl	al,4
+	shl	al,1
+	shl	al,1
+	shl	al,1
+	shl	al,1
 	add	ah,al
 	mov	bl,ah
 	pop	cx
@@ -130,8 +134,8 @@ L04:
 ; routine for verticle lines
 
 VertLine:
-	mov	ax,[y1]
-	mov	bx,[y2]
+	mov	ax,[bp+6]
+	mov	bx,[bp+10]
 	mov	cx,bx
 	sub	cx,ax
 	jge	L31
@@ -140,7 +144,7 @@ VertLine:
 
 L31:
 	inc	cx
-	mov	bx,[x1]
+	mov	bx,[bp+4]
 	push	cx
 	ModeXAddr
 
@@ -149,7 +153,7 @@ L31:
 	mov	al,MAP_MASK
 	out	dx,ax
 	pop	cx
-	mov	ax, word ptr [Color]
+	mov	ax, word ptr [bp+12]
 
 ; draw the line
 
@@ -164,15 +168,15 @@ L32:
 HorizLine:
 	push	ds
 
-	mov	ax,[y1]
-	mov	bx,[x1]
+	mov	ax,[bp+6]
+	mov	bx,[bp+4]
 	ModeXAddr
 
 	mov	di,bx     ; set dl = first byte mask
 	mov	dl,00fh
 	shl	dl,cl
 
-	mov	cx,[x2] ; set dh = last byte mask
+	mov	cx,[bp+8] ; set dh = last byte mask
 	and	cl,3
 	mov	dh,00eh
 	shl	dh,cl
@@ -180,17 +184,19 @@ HorizLine:
 
 ; determine byte offset of first and last pixel in line
 
-	mov	ax,[x2]
-	mov	bx,[x1]
+	mov	ax,[bp+8]
+	mov	bx,[bp+4]
 
-	shr	ax,2     ; set ax = last byte column
-	shr	bx,2    ; set bx = first byte column
+	shr	ax,1     ; set ax = last byte column
+	shr	bx,1    ; set bx = first byte column
+	shr	ax,1     ; set ax = last byte column
+	shr	bx,1    ; set bx = first byte column
 	mov	cx,ax    ; cx = ax - bx
 	sub	cx,bx
 
 	mov	ax,dx    ; mov end byte masks to ax
 	mov	dx,SC_INDEX ; setup dx for VGA outs
-	mov     bx, [Color]
+	mov     bx, [bp+12]
 
 ; set pixels in leftmost byte of line
 
@@ -231,7 +237,7 @@ L44:
 
 LoSlopeLine:
 	mov	al,MAP_MASK
-	mov	bh,byte ptr [Color]
+	mov	bh,byte ptr [bp+12]
 L10:
 	mov	ah,bl
 
@@ -283,7 +289,7 @@ HiSlopeLine:
 	mov	al,MAP_MASK
 L21:            out	dx,ax
 	push	ax
-	mov	ax,[Color]
+	mov	ax,[bp+12]
 	mov	es:[di],al
 	pop	ax
 	add	di,bx
@@ -314,4 +320,3 @@ Lexit:
 _x_line	endp
 
 end
-

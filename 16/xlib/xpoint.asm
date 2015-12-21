@@ -34,21 +34,21 @@ include xpoint.inc
 ;
 
 _x_put_pix  proc
-	ARG X:word,Y:word,PgOfs:word,Color:word
+	;ARG X:word,Y:word,PgOfs:word,Color:word
 	push bp                   ;preserve caller's stack frame
 	mov  bp,sp                ;point to local stack frame
 
 	mov  ax,[_ScrnLogicalByteWidth]
-	mul  [Y]                  ;offset of pixel's scan line in page
-	mov  bx,[X]
+	mul  [BP+6]                  ;offset of pixel's scan line in page
+	mov  bx,[BP+4]
 	shr  bx,1                 ;X/4 = offset of pixel in scan line
 	shr  bx,1                 ;X/4 = offset of pixel in scan line
 	add  bx,ax                ;offset of pixel in page
-	add  bx,[PgOfs]           ;offset of pixel in display memory
+	add  bx,[BP+8]           ;offset of pixel in display memory
 	mov  ax,SCREEN_SEG
 	mov  es,ax                ;point ES:BX to the pixel's address
 
-	mov  cl,byte ptr [X]
+	mov  cl,byte ptr [BP+4]
 	and  cl,011b              ;CL = pixel's plane
 	mov  ax,0100h + MAP_MASK  ;AL = index in SC of Map Mask reg
 	shl  ah,cl                ;set only the bit for the pixel's
@@ -56,7 +56,7 @@ _x_put_pix  proc
 	mov  dx,SC_INDEX          ;set the Map Mask to enable only the
 	out  dx,ax		  ; pixel's plane
 
-	mov  al,byte ptr [Color]
+	mov  al,byte ptr [BP+10]
 	mov  es:[bx],al           ;draw the pixel in the desired color
 
 	pop   bp                  ;restore caller's stack frame
@@ -74,21 +74,21 @@ _x_put_pix   endp
 
 
 _x_get_pix   proc
-	ARG x:word,y:word,PageBase:word
+	;ARG x:word,y:word,PageBase:word
 	push bp                   ;preserve caller's stack frame
 	mov  bp,sp                ;point to local stack frame
 
 	mov  ax,[_ScrnLogicalByteWidth]
-	mul  [Y]                  ;offset of pixel's scan line in page
-	mov  bx,[X]
+	mul  [bp+6]                  ;offset of pixel's scan line in page
+	mov  bx,[bp+4]
 	shr  bx,1
 	shr  bx,1                 ;X/4 = offset of pixel in scan line
 	add  bx,ax                ;offset of pixel in page
-	add  bx,[PageBase]        ;offset of pixel in display memory
+	add  bx,[bp+8]        ;offset of pixel in display memory
 	mov  ax,SCREEN_SEG
 	mov  es,ax                ;point ES:BX to the pixel's address
 
-	mov  ah,byte ptr [X]
+	mov  ah,byte ptr [bp+4]
 	and  ah,011b              ;AH = pixel's plane
 	mov  al,READ_MAP          ;AL = index in GC of the Read Map reg
 	mov  dx,GC_INDEX          ;set the Read Map to read the pixel's

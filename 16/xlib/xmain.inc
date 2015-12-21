@@ -26,6 +26,6 @@
 	 global _x_show_splitscreen      :proc
 	 global _x_adjust_splitscreen    :proc
 	 global _x_set_doublebuffer      :proc
-         global _x_set_tripplebuffer     :proc
+	 global _x_set_tripplebuffer     :proc
 	 global _x_set_cliprect          :proc
 	 global _x_wait_vsync            :proc

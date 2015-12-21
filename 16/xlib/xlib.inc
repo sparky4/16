@@ -19,12 +19,12 @@
 
 ;
 
-;.LOCALS
+;.global
 ;.8086
 
 ; First lets find out what memory model to use
-
-include model.inc
+;.model huge
+;include model.inc
 
 
 AC_INDEX        equ  03c0h   ;Attribute controller index register
@@ -162,5 +162,3 @@ WaitNotVsync2:
 	global _VsyncPaletteStart       :word
 	global _VsyncPaletteCount       :word
 	global _VsyncPaletteBuffer      :byte
-
-

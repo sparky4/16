@@ -1,0 +1,166 @@
+ 
+PALEDIT - A Simple VGA 256 Color Palette Editor
+ 
+ 
+PALEDIT is distributed with MODEXnnn.ZIP, the general purpose MODE X
+Library for VGA Graphics.
+ 
+WHAT YOU NEED TO RUN PALEDIT:
+ 
+    * A Vga Monitor
+    * A Microsoft Compatible Mouse
+ 
+    A Mouse is most definitely required, as the keyboard is used for
+    nothing except entering file names.
+ 
+FILES NEEDED IN THE CURRENT DIRECTORY:
+ 
+    PALEDIT.EXE  - The Palette Editor Program
+    CHARSETS.CS  - The Palette Editor's Internal Fonts
+    MOUSEIMG.CS  - The Palette Editor's Mouse Pointer
+ 
+SAMPLE PALETTE FILE THAT SHOULD BE INCLUDED:
+ 
+     RGB.PAL   - A Simple Palette with Reds, Greens, and Blues
+     PRIME.PAL    - A Simple Palette
+     GAMECOLR.PAL - A Bright Palette from a Game of mine.
+ 
+WHAT IT EDITS:
+ 
+     The VGA DAC Registers, all 256 of them.
+ 
+HOW IT WORKS/FEATURES:
+ 
+    PALEDIT allows the user to see the entire VGA Palette of 256 colors
+    and select and modify the RED, GREEN, and BLUE values of any individual
+    color (DAC) register.  The entire group of 256 colors can be saved to
+    a disk file for later retrieval.
+ 
+    Individual "SLIDERS" show the current RED, GREEN, and BLUE color
+    components of the current color and allow them to be changed.
+ 
+    The Following operations can be performed.
+ 
+    * Raise, Lower, and set the RED, GREEN, or BLUE components.
+    * Copy the current RGB values to another Color (DAC) Register
+    * Brighten the selected color
+    * Darken and selected color
+    * Reset the selected color to its original state
+    * Blend an entire range of colors, creating a smooth
+      Transition from one color to another
+    * Optionally Lock out the first 16 colors to prevent
+      Accidental Modification
+ 
+DESCRIPTION OF OBJECTS/FEATURES FROM THE TOP DOWN:
+ 
+    COLOR SLIDERS:  In the upper left of the screen there are
+        Three Rectangular Boxes: One for each primary color:
+        RED, GREEN, and BLUE.  Each Box has an arrow at each
+        end, and a scale bar in the middle, connecting the two
+        arrows.  The scale bar is much like a thermometer,
+        indicating how much of that color is in the selected
+        color.  To the right of each Box, the name of the color
+        is indicated, along with the content color in the form
+        of a number from 0 to 63; where 0 means none of that
+        color goes into making the selected color, and 63 means
+        that the selected color is saturated with that color.
+ 
+        Clicking the mouse on the slider's left arrow box will
+        decrease the amount of that primary color in the selected
+        color.  Holding the mouse button down will reduce the
+        color value all the way to 0.
+ 
+        Clicking the mouse on the slider's right arrow box will
+        increase the amount of that primary color in the selected
+        color.  Holding the mouse button down will increase the
+        color value all the way to 63.
+ 
+        Clicking the mouse on the scale bar will set the amount
+        of that primary color to the value the represents that
+        position on the slider.
+ 
+    LOCK Button:  Clicking the button toggles the lockout of the
+        first 16 colors.  When they are locked out, they can not
+        be modified, and when selected the word "LOCKED" will
+        appear below the color # on the Color Information Display.
+ 
+    LOAD Button:  Clicking this button will load the Palette file
+        that is named in the Palette File name box.  If no name is
+        given or no such file exists, then nothing will be loaded.
+ 
+    SAVE Button: Clicking this button will save the current Palette
+        in a file using the name given in the Palette File Name Box.
+        If a Valid name is not provided, nothing will be saved.
+ 
+    QUIT Button: Clicking this button will return you to DOS.
+        Nothing is saved, and no confirmation is given.
+ 
+ 
+    Color Information Display:  This Box is on the left side of the
+        Screen, below the Color Sliders.  It shows the number of the
+        currently selected color (from 0 to 255) and indicates if
+        that color is locked.  To the right of this box is a big
+        square showing the current color.
+ 
+    LIGHTER Button:  Clicking this button will make the selected
+        color brighter.
+ 
+    DARKER Button:  Clicking this button will make the selected
+        color darker.
+ 
+    RESET Button:  Clicking this button will restore the selected
+        color to the value it had when it was first selected.
+ 
+    BLEND Button:  Clicking this button will let you Blend a range
+        of colors together.  One end of the range of colors is the
+        currently selected color.  After Clicking the BLEND button.
+        You must click on the color at the other end of the range
+        in the Palette Display Box.  All of the colors in between
+        those two colors will be changed to represent a gradual
+        transition from the color at one end to the color at the
+        other end.
+ 
+    PALETTE FILE NAME BOX:  This Text Box is used to enter the name
+        of a Palette file to load or the name to save the current
+        Palette as.  Just click on the Box, and it will change color
+        and a flashing cursor will appear.  Now you type in a filename
+        or edit the existing filename.  Press <RETURN> or click
+        outside the text box to end editing.
+ 
+    PALETTE DISPLAY BOX:  This Box shows all 256 colors in an array
+        of 32 by 8 color blocks.  The Currently Selected Color will
+        have a Box around it.  Clicking on a color with the Left
+        Mouse button will make that color the new currently selected
+        color.  Clicking on a color with the Right Mouse Button will
+        copy the color value from the old selected color to it, before
+        it is made the new selected color.
+ 
+    Message Bar:  At the very bottom of the screen, this Bar will display
+        information and messages for various functions.
+ 
+PALETTE FILE FORMAT:
+ 
+     BINARY image, in order of VGA DAC (Color) Number.  3 Bytes Per
+     Color, 256 Colors.  768 Bytes total.  The Files will be exactly
+     768 bytes in size.
+ 
+    COLOR:
+        RED:    1 BYTE
+        GREEN: 1 BYTE
+        BLUE:   1 BYTE
+ 
+    PALETTE:  Array (0 to 255) of COLOR
+ 
+COMMENTS, QUESTIONS, BUG REPORTS, etc:
+ 
+    Send the to the Author:  Matt Pritchard
+ 
+    Through the 80xxx Fidonet Echo or
+ 
+    Matt Pritchard
+    P.O. Box 140264
+    Irving, TX  75014
+ 
+CREDITS:
+ 
+    This Palette Editor was written in QuickBASIC 4.5
