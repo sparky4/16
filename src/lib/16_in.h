@@ -220,8 +220,8 @@ typedef	struct
 	int triggery; //player's trigger box tile position on the viewable map
 	int sheetsetx; //NOT USED YET! player sprite sheet set on the image x
 	int sheetsety; //NOT USED YET! player sprite sheet set on the image y
-	word d;	//direction!! wwww
-	word q; //loop variable
+	byte d;	//direction!! wwww
+	byte q; //loop variable
 	word speed;		//player speed!
 //0000	planar_buf_t huge *data; //supposively the sprite sheet data
 //	planar_buf_t data; //supposively the sprite sheet data
