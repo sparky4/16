@@ -23,9 +23,8 @@ update mapreading! to the new system!
 	replace png with pcx ^^;
 		so the game can read it~
 
-
 dro from dosbox
 dro to vgm get
 
-
-fix 16.lib
+16_in
+16_mm
