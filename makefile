@@ -32,13 +32,11 @@
 !ifdef __LINUX__
 REMOVECOMMAND=rm -f
 COPYCOMMAND=cp -f
-MOVECOMMAND=mv
 DIRSEP=/
 OBJ=o
 !else
 REMOVECOMMAND=del
 COPYCOMMAND=copy /y
-MOVECOMMAND=move /y
 DIRSEP=\
 OBJ=obj
 !endif
@@ -50,7 +48,6 @@ OBJ=obj
 TARGET_OS = dos
 
 #EXMMTESTDIR=16$(DIRSEP)exmmtest$(DIRSEP)
-BIN=bin$(DIRSEP)
 SRC=src$(DIRSEP)
 SRCLIB=$(SRC)lib$(DIRSEP)
 JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
@@ -388,7 +385,7 @@ modex.$(OBJ): $(MODEXLIB_)modex.asm
 #other~
 #
 clean: .symbolic
-	@$(REMOVECOMMAND) $(BIN)$(EXEC)
+	@$(REMOVECOMMAND) $(EXEC)
 	@$(REMOVECOMMAND) *.$(OBJ)
 	@$(REMOVECOMMAND) 16.lib
 	@$(REMOVECOMMAND) gfx.lib
@@ -450,5 +447,3 @@ mx_: .symbolic
 	@wmake -f makefile all
 	@cd ../../
 
-binmove: .symbolic
-	@$(MOVECOMMAND) $(EXEC) $(BIN)$(EXEC)
