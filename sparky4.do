@@ -29,8 +29,9 @@ dro to vgm get
 16_in
 16_mm
 
+READ DESIGN.TXT
 
-near calls!!
+
 
 
 
