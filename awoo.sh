@@ -1,5 +1,6 @@
 #!/bin/bash
 wmake
+wmake comp
 if [ -f "*.exe" ]
         then
 cp -fp *.exe /var/www/
