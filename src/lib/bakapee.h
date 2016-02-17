@@ -46,6 +46,7 @@ typedef struct {
 	byte coor;
 } bakapee_t;
 
+void clrstdin();
 void colortest(page_t *page, bakapee_t *pee);
 void colorz(page_t *page, bakapee_t *pee);
 void ssd(page_t *page, bakapee_t *pee, word svq);

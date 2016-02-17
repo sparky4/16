@@ -22,6 +22,13 @@
 
 #include "src/lib/bakapee.h"
 
+/* clrstdin() clear any leftover chars tha may be in stdin stream */
+void clrstdin()
+{
+   int ch = 0;
+   while( ( ch = getchar() ) != '\n' && ch != EOF );
+}
+
 //color ‚Ä‚·‚Æ
 void colortest(page_t *page, bakapee_t *pee)
 {

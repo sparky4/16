@@ -86,6 +86,7 @@ main(int argc, char *argvar[])
 			// user imput switch
 			fprintf(stderr, "xx=%d	yy=%d\n", bakapee.xx, bakapee.yy);
 			printf("Enter 1, 2, 3, 4, or 6 to run a screensaver, or enter 0 to quit.\n", getch());  // prompt the user
+			clrstdin();
 			scanf("%d", &key);
 			//if(key==3){xx=yy=0;} // crazy screen saver wwww
 			if(key==0){ d=0; }else{
