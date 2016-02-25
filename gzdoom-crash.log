@@ -1,0 +1,514 @@
+*** Fatal Error ***
+Address not mapped to object (signal 11)
+Address: 0x30
+
+System: Linux compy4 3.13-1-686-pae #1 SMP Debian 3.13.10-1 (2014-04-15) i686 GNU/Linux
+
+GZDoom version g2.1.0 (9e907086ebdcf8f8e0f16748c72daee6f71acb18)
+Compiler version: 4.6.3
+
+Command line: /opt/gzdoom/gzdoom -file /home/sparky4/.doomseeker/iconboss.wad /home/sparky4/p/doom/RO_pb_2.4.pk3 /home/sparky4/.doomseeker/ketchuptest4_editedv3.pk3 /home/sparky4/.doomseeker/doommetalvol4.wad
+
+Wad 0: gzdoom.pk3
+Wad 1: DOOM.WAD
+Wad 2: iconboss.wad
+Wad 3: RO_pb_2.4.pk3
+Wad 4: RO_pb_2.4.pk3:ro_titlemap.wad
+Wad 5: ketchuptest4_editedv3.pk3
+Wad 6: doommetalvol4.wad
+
+Not in a level.
+
+Executing: gdb --quiet --batch --command=gdb-respfile-ec4ozY
+[New LWP 13952]
+[New LWP 13951]
+[New LWP 13950]
+[New LWP 13949]
+[New LWP 13947]
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/i386-linux-gnu/i686/cmov/libthread_db.so.1".
+0xb76ff424 in __kernel_vsyscall ()
+From        To          Syms Read   Shared Object Library
+                        No          linux-gate.so.1
+0xb7671320  0xb76a1234  Yes (*)     /usr/lib/i386-linux-gnu/libopenal.so.1
+0xb71c68f0  0xb7434184  Yes (*)     /usr/lib/i386-linux-gnu/libgtk-x11-2.0.so.0
+0xb711e620  0xb714f8a4  Yes (*)     /usr/lib/i386-linux-gnu/libgobject-2.0.so.0
+0xb70035f0  0xb707ed34  Yes (*)     /lib/i386-linux-gnu/libglib-2.0.so.0
+0xb6fd6870  0xb6fe2f87  Yes         /lib/i386-linux-gnu/i686/cmov/libpthread.so.0
+0xb6f2ac10  0xb6f885dc  Yes (*)     /usr/lib/i386-linux-gnu/libGL.so.1
+0xb6d52240  0xb6e54578  Yes (*)     /opt/gzdoom/libfmodex-4.44.61.so
+0xb6d379b0  0xb6d3aeaa  Yes         /lib/i386-linux-gnu/i686/cmov/librt.so.1
+0xb6d1a8f0  0xb6d2b122  Yes (*)     /lib/i386-linux-gnu/libz.so.1
+0xb6cdff00  0xb6d0b042  Yes (*)     /usr/lib/i386-linux-gnu/libjpeg.so.8
+0xb6c67450  0xb6cb2e34  Yes (*)     /usr/lib/i386-linux-gnu/libsndfile.so.1
+0xb6c01740  0xb6c3fdf4  Yes (*)     /usr/lib/i386-linux-gnu/libmpg123.so.0
+0xb6bf8ad0  0xb6bf996c  Yes         /lib/i386-linux-gnu/i686/cmov/libdl.so.2
+0xb6b4c9f0  0xb6bbacdd  Yes (*)     /usr/lib/i386-linux-gnu/libstdc++.so.6
+0xb6ac4600  0xb6af1ed5  Yes         /lib/i386-linux-gnu/i686/cmov/libm.so.6
+0xb6aa50a0  0xb6abaf45  Yes (*)     /lib/i386-linux-gnu/libgcc_s.so.1
+0xb690d420  0xb6a3d99e  Yes         /lib/i386-linux-gnu/i686/cmov/libc.so.6
+0xb6848c40  0xb68a25f4  Yes (*)     /usr/lib/i386-linux-gnu/libgdk-x11-2.0.so.0
+0xb682fcf0  0xb6830d94  Yes (*)     /usr/lib/i386-linux-gnu/libgmodule-2.0.so.0
+0xb68246a0  0xb6829974  Yes (*)     /usr/lib/i386-linux-gnu/libpangocairo-1.0.so.0
+0xb66e3480  0xb676f9b4  Yes (*)     /usr/lib/i386-linux-gnu/libX11.so.6
+0xb66cb9f0  0xb66cc3d8  Yes (*)     /usr/lib/i386-linux-gnu/libXcomposite.so.1
+0xb66c68b0  0xb66c7264  Yes (*)     /usr/lib/i386-linux-gnu/libXdamage.so.1
+0xb66c0000  0xb66c2314  Yes (*)     /usr/lib/i386-linux-gnu/libXfixes.so.3
+0xb669e8f0  0xb66ac314  Yes (*)     /usr/lib/i386-linux-gnu/libatk-1.0.so.0
+0xb655a4a0  0xb6632c14  Yes (*)     /usr/lib/i386-linux-gnu/libcairo.so.2
+0xb652aac0  0xb653f5c4  Yes (*)     /usr/lib/i386-linux-gnu/libgdk_pixbuf-2.0.so.0
+0xb6396840  0xb646bba4  Yes (*)     /usr/lib/i386-linux-gnu/libgio-2.0.so.0
+0xb635c720  0xb6365854  Yes (*)     /usr/lib/i386-linux-gnu/libpangoft2-1.0.so.0
+0xb630ec10  0xb6331234  Yes (*)     /usr/lib/i386-linux-gnu/libpango-1.0.so.0
+0xb62c7950  0xb62e6c34  Yes (*)     /usr/lib/i386-linux-gnu/libfontconfig.so.1
+0xb6218e70  0xb6289a24  Yes (*)     /usr/lib/i386-linux-gnu/libfreetype.so.6
+0xb6208ff0  0xb620d074  Yes (*)     /usr/lib/i386-linux-gnu/libffi.so.6
+0xb6197000  0xb61e1b24  Yes (*)     /lib/i386-linux-gnu/libpcre.so.3
+0xb7700860  0xb77180fc  Yes         /lib/ld-linux.so.2
+0xb6192b20  0xb6194293  Yes (*)     /usr/lib/i386-linux-gnu/tls/libnvidia-tls.so.304.131
+0xb48edc40  0xb5b01cf0  Yes (*)     /usr/lib/i386-linux-gnu/libnvidia-glcore.so.304.131
+0xb4479890  0xb4484054  Yes (*)     /usr/lib/i386-linux-gnu/libXext.so.6
+0xb4445c00  0xb4467974  Yes (*)     /usr/lib/i386-linux-gnu/libFLAC.so.8
+0xb43b6c70  0xb43b9274  Yes (*)     /usr/lib/i386-linux-gnu/libvorbisenc.so.2
+0xb43a5450  0xb43ab4c4  Yes (*)     /usr/lib/i386-linux-gnu/libXrender.so.1
+0xb43a0870  0xb43a12a4  Yes (*)     /usr/lib/i386-linux-gnu/libXinerama.so.1
+0xb438e9a0  0xb4399454  Yes (*)     /usr/lib/i386-linux-gnu/libXi.so.6
+0xb4381510  0xb43872a4  Yes (*)     /usr/lib/i386-linux-gnu/libXrandr.so.2
+0xb4375f60  0xb437b184  Yes (*)     /usr/lib/i386-linux-gnu/libXcursor.so.1
+0xb43714d0  0xb43716ad  Yes (*)     /usr/lib/i386-linux-gnu/libgthread-2.0.so.0
+0xb4353190  0xb4364714  Yes (*)     /usr/lib/i386-linux-gnu/libxcb.so.1
+0xb42960a0  0xb432bb04  Yes (*)     /usr/lib/i386-linux-gnu/libpixman-1.so.0
+0xb4267800  0xb4282984  Yes (*)     /lib/i386-linux-gnu/libpng12.so.0
+0xb42609e0  0xb4261774  Yes (*)     /usr/lib/i386-linux-gnu/libxcb-shm.so.0
+0xb4257a70  0xb425b8b4  Yes (*)     /usr/lib/i386-linux-gnu/libxcb-render.so.0
+0xb4231b50  0xb4245374  Yes (*)     /lib/i386-linux-gnu/libselinux.so.1
+0xb4218720  0xb4224dc4  Yes         /lib/i386-linux-gnu/i686/cmov/libresolv.so.2
+0xb41bd370  0xb41f3dc4  Yes (*)     /usr/lib/i386-linux-gnu/libharfbuzz.so.0
+0xb41af640  0xb41b32b4  Yes (*)     /usr/lib/i386-linux-gnu/libthai.so.0
+0xb4187060  0xb419ed04  Yes (*)     /lib/i386-linux-gnu/libexpat.so.1
+0xb417d400  0xb4180bb4  Yes (*)     /usr/lib/i386-linux-gnu/libogg.so.0
+0xb4151540  0xb4166b24  Yes (*)     /usr/lib/i386-linux-gnu/libvorbis.so.0
+0xb414abb0  0xb414b9d4  Yes (*)     /usr/lib/i386-linux-gnu/libXau.so.6
+0xb4144e30  0xb41468fd  Yes (*)     /usr/lib/i386-linux-gnu/libXdmcp.so.6
+0xb4129790  0xb413c2ad  Yes (*)     /usr/lib/i386-linux-gnu/libgraphite2.so.3
+0xb411fed0  0xb41238b4  Yes (*)     /usr/lib/i386-linux-gnu/libdatrie.so.1
+0xb76eae70  0xb76ef8a5  Yes         /lib/i386-linux-gnu/i686/cmov/libnss_compat.so.2
+0xb76d41d0  0xb76e0723  Yes         /lib/i386-linux-gnu/i686/cmov/libnsl.so.1
+0xb3edd9e0  0xb3ee3e0a  Yes         /lib/i386-linux-gnu/i686/cmov/libnss_nis.so.2
+0xb3ed0ad0  0xb3ed78ab  Yes         /lib/i386-linux-gnu/i686/cmov/libnss_files.so.2
+0xb3f04c20  0xb3f0f394  Yes (*)     /usr/lib/i386-linux-gnu/gtk-2.0/2.10.0/engines/libredmond95.so
+0xb3b11820  0xb3b2dbc4  Yes (*)     /usr/lib/i386-linux-gnu/gio/modules/libgvfsdbus.so
+0xb3adace0  0xb3af2854  Yes (*)     /usr/lib/i386-linux-gnu/gvfs/libgvfscommon.so
+0xb3a8c8b0  0xb3a946b9  Yes (*)     /lib/i386-linux-gnu/libudev.so.1
+0xb3a86a90  0xb3a87417  Yes         /lib/i386-linux-gnu/i686/cmov/libutil.so.1
+0xb3a3ea70  0xb3a6b6c4  Yes (*)     /usr/lib/i386-linux-gnu/libbluray.so.1
+0xb38d8080  0xb39c02f4  Yes (*)     /usr/lib/i386-linux-gnu/libxml2.so.2
+0xb3893ce0  0xb38ab554  Yes (*)     /lib/i386-linux-gnu/liblzma.so.5
+0xb3a9f4f0  0xb3aa0f84  Yes (*)     /usr/lib/i386-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-png.so
+0xb3003600  0xb3003b98  Yes (*)     /opt/gzdoom/liboutput_sdl.so
+0xb2481120  0xb250e7b4  Yes (*)     /usr/lib/i386-linux-gnu/libasound.so
+0xb1ab03b0  0xb1add634  Yes (*)     /usr/lib/i386-linux-gnu/libpulse.so.0
+0xb2426310  0xb242b3d4  Yes (*)     /lib/i386-linux-gnu/libjson-c.so.2
+0xb1a34d10  0xb1a746a4  Yes (*)     /usr/lib/i386-linux-gnu/pulseaudio/libpulsecommon-5.0.so
+0xaffc39a0  0xafff1724  Yes (*)     /lib/i386-linux-gnu/libdbus-1.so.3
+0xb256cf10  0xb256ea24  Yes (*)     /lib/i386-linux-gnu/libcap.so.2
+0xb2421420  0xb2421582  Yes (*)     /usr/lib/i386-linux-gnu/libX11-xcb.so.1
+0xb2407670  0xb2414d64  Yes (*)     /usr/lib/i386-linux-gnu/libICE.so.6
+0xb1a1c4a0  0xb1a20684  Yes (*)     /usr/lib/i386-linux-gnu/libSM.so.6
+0xb1a13f40  0xb1a16a04  Yes (*)     /usr/lib/i386-linux-gnu/libXtst.so.6
+0xaff98580  0xaffb06a5  Yes (*)     /lib/i386-linux-gnu/libsystemd.so.0
+0xb1a0afc0  0xb1a0ecf4  Yes (*)     /lib/i386-linux-gnu/libwrap.so.0
+0xb1a02e60  0xb1a05824  Yes (*)     /usr/lib/i386-linux-gnu/libasyncns.so.0
+0xaff8fe70  0xaff92114  Yes (*)     /lib/i386-linux-gnu/libattr.so.1
+0xaff89fd0  0xaff8bb84  Yes (*)     /lib/i386-linux-gnu/libuuid.so.1
+0xafedce20  0xaff44dc4  Yes (*)     /lib/i386-linux-gnu/libgcrypt.so.20
+0xafec5d60  0xafeceef4  Yes (*)     /lib/i386-linux-gnu/libgpg-error.so.0
+0xb24019d0  0xb2402788  Yes (*)     /usr/lib/i386-linux-gnu/libXss.so.1
+0xafe49bf0  0xafe4c694  Yes (*)     /usr/lib/i386-linux-gnu/libXxf86vm.so.1
+(*): Shared library is missing debugging information.
+  Id   Target Id         Frame 
+  6    Thread 0xb3891b40 (LWP 13947) "gdbus" 0xb76ff424 in __kernel_vsyscall ()
+  5    Thread 0xb259bb40 (LWP 13949) "gzdoom" 0xb76ff424 in __kernel_vsyscall ()
+  4    Thread 0xb2589b40 (LWP 13950) "gzdoom" 0xb76ff424 in __kernel_vsyscall ()
+  3    Thread 0xb22ffb40 (LWP 13951) "SDLTimer" 0xb76ff424 in __kernel_vsyscall ()
+  2    Thread 0xb25788c0 (LWP 13952) "gzdoom" 0xb6d3aad3 in timer_helper_thread (arg=0x0) at ../nptl/sysdeps/unix/sysv/linux/timer_routines.c:92
+* 1    Thread 0xb411b8c0 (LWP 13946) "gzdoom" 0xb76ff424 in __kernel_vsyscall ()
+  R7: Empty   0x00000000000000000000
+  R6: Empty   0x00000000000000000000
+  R5: Empty   0x00000000000000000000
+  R4: Empty   0x00000000000000000000
+  R3: Empty   0x00000000000000000000
+  R2: Empty   0x00000000000000000000
+  R1: Empty   0x00000000000000000000
+=>R0: Empty   0x00000000000000000000
+
+Status Word:         0x0000                                            
+                       TOP: 0
+Control Word:        0x037f   IM DM ZM OM UM PM
+                       PC: Extended Precision (64-bits)
+                       RC: Round to nearest
+Tag Word:            0xffff
+Instruction Pointer: 0x00:0x00000000
+Operand Pointer:     0x00:0x00000000
+Opcode:              0x0000
+eax            0xfffffe00	-512
+ecx            0x880261c	142616092
+edx            0x0	0
+ebx            0x3b61	15201
+esp            0x88025c4	0x88025c4
+ebp            0x108c	0x108c
+esi            0x3b61	15201
+edi            0x880261c	142616092
+eip            0xb76ff424	0xb76ff424 <__kernel_vsyscall+16>
+eflags         0x293	[ CF AF SF IF ]
+cs             0x73	115
+ss             0x7b	123
+ds             0x7b	123
+es             0x7b	123
+fs             0x0	0
+gs             0x33	51
+
+Thread 6 (Thread 0xb3891b40 (LWP 13947)):
+#0  0xb76ff424 in __kernel_vsyscall ()
+No symbol table info available.
+#1  0xb69d742b in poll () at ../sysdeps/unix/syscall-template.S:81
+No locals.
+#2  0xb70440b0 in g_poll () from /lib/i386-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#3  0xb7035054 in ?? () from /lib/i386-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#4  0xb7035479 in g_main_loop_run () from /lib/i386-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#5  0xb6446945 in ?? () from /usr/lib/i386-linux-gnu/libgio-2.0.so.0
+No symbol table info available.
+#6  0xb705c3da in ?? () from /lib/i386-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#7  0xb6f822c1 in ?? () from /usr/lib/i386-linux-gnu/libGL.so.1
+No symbol table info available.
+#8  0x5c8b0824 in ?? ()
+No symbol table info available.
+#9  0xbab80424 in ?? ()
+No symbol table info available.
+#10 0x65000000 in ?? ()
+No symbol table info available.
+#11 0x001015ff in ?? ()
+No symbol table info available.
+#12 0xd3890000 in ?? ()
+No symbol table info available.
+#13 0xfff0013d in ?? ()
+No symbol table info available.
+#14 0xc30173ff in ?? ()
+No symbol table info available.
+#15 0x0f6b5ae8 in ?? ()
+No symbol table info available.
+#16 0xabc18100 in ?? ()
+No symbol table info available.
+#17 0x8b0017a3 in ?? ()
+No symbol table info available.
+#18 0xffff2489 in ?? ()
+No symbol table info available.
+#19 0x65d8f7ff in ?? ()
+No symbol table info available.
+#20 0xc8830189 in ?? ()
+No symbol table info available.
+#21 0x9066c3ff in ?? ()
+No symbol table info available.
+#22 0x90669066 in ?? ()
+No symbol table info available.
+#23 0x81535657 in ?? ()
+No symbol table info available.
+#24 0x0000a0ec in ?? ()
+No symbol table info available.
+#25 0x6b2de800 in ?? ()
+No symbol table info available.
+#26 0xc381000f in ?? ()
+No symbol table info available.
+#27 0x0017a382 in ?? ()
+No symbol table info available.
+#28 0xb024b48b in ?? ()
+No symbol table info available.
+Backtrace stopped: previous frame inner to this frame (corrupt stack?)
+
+Thread 5 (Thread 0xb259bb40 (LWP 13949)):
+#0  0xb76ff424 in __kernel_vsyscall ()
+No symbol table info available.
+#1  0xb69d9859 in ioctl () at ../sysdeps/unix/syscall-template.S:81
+No locals.
+#2  0xb24b5d26 in ?? () from /usr/lib/i386-linux-gnu/libasound.so
+No symbol table info available.
+#3  0xb24a60d0 in snd_pcm_writei () from /usr/lib/i386-linux-gnu/libasound.so
+No symbol table info available.
+#4  0xb6e1112c in ?? () from /opt/gzdoom/libfmodex-4.44.61.so
+No symbol table info available.
+#5  0xb6e0a515 in ?? () from /opt/gzdoom/libfmodex-4.44.61.so
+No symbol table info available.
+#6  0xb6f822c1 in ?? () from /usr/lib/i386-linux-gnu/libGL.so.1
+No symbol table info available.
+#7  0x5c8b0824 in ?? ()
+No symbol table info available.
+#8  0xbab80424 in ?? ()
+No symbol table info available.
+#9  0x65000000 in ?? ()
+No symbol table info available.
+#10 0x001015ff in ?? ()
+No symbol table info available.
+#11 0xd3890000 in ?? ()
+No symbol table info available.
+#12 0xfff0013d in ?? ()
+No symbol table info available.
+#13 0xc30173ff in ?? ()
+No symbol table info available.
+#14 0x0f6b5ae8 in ?? ()
+No symbol table info available.
+#15 0xabc18100 in ?? ()
+No symbol table info available.
+#16 0x8b0017a3 in ?? ()
+No symbol table info available.
+#17 0xffff2489 in ?? ()
+No symbol table info available.
+#18 0x65d8f7ff in ?? ()
+No symbol table info available.
+#19 0xc8830189 in ?? ()
+No symbol table info available.
+#20 0x9066c3ff in ?? ()
+No symbol table info available.
+#21 0x90669066 in ?? ()
+No symbol table info available.
+#22 0x81535657 in ?? ()
+No symbol table info available.
+#23 0x0000a0ec in ?? ()
+No symbol table info available.
+#24 0x6b2de800 in ?? ()
+No symbol table info available.
+#25 0xc381000f in ?? ()
+No symbol table info available.
+#26 0x0017a382 in ?? ()
+No symbol table info available.
+#27 0xb024b48b in ?? ()
+No symbol table info available.
+Backtrace stopped: previous frame inner to this frame (corrupt stack?)
+
+Thread 4 (Thread 0xb2589b40 (LWP 13950)):
+#0  0xb76ff424 in __kernel_vsyscall ()
+No symbol table info available.
+#1  0xb69acd16 in nanosleep () at ../sysdeps/unix/syscall-template.S:81
+No locals.
+#2  0xb69dabdd in usleep (useconds=10000) at ../sysdeps/unix/sysv/linux/usleep.c:32
+        ts = {tv_sec = 0, tv_nsec = 10000000}
+#3  0xb6e0fe4f in ?? () from /opt/gzdoom/libfmodex-4.44.61.so
+No symbol table info available.
+#4  0xb6e0a527 in ?? () from /opt/gzdoom/libfmodex-4.44.61.so
+No symbol table info available.
+#5  0xb6f822c1 in ?? () from /usr/lib/i386-linux-gnu/libGL.so.1
+No symbol table info available.
+#6  0x5c8b0824 in ?? ()
+No symbol table info available.
+#7  0xbab80424 in ?? ()
+No symbol table info available.
+#8  0x65000000 in ?? ()
+No symbol table info available.
+#9  0x001015ff in ?? ()
+No symbol table info available.
+#10 0xd3890000 in ?? ()
+No symbol table info available.
+#11 0xfff0013d in ?? ()
+No symbol table info available.
+#12 0xc30173ff in ?? ()
+No symbol table info available.
+#13 0x0f6b5ae8 in ?? ()
+No symbol table info available.
+#14 0xabc18100 in ?? ()
+No symbol table info available.
+#15 0x8b0017a3 in ?? ()
+No symbol table info available.
+#16 0xffff2489 in ?? ()
+No symbol table info available.
+#17 0x65d8f7ff in ?? ()
+No symbol table info available.
+#18 0xc8830189 in ?? ()
+No symbol table info available.
+#19 0x9066c3ff in ?? ()
+No symbol table info available.
+#20 0x90669066 in ?? ()
+No symbol table info available.
+#21 0x81535657 in ?? ()
+No symbol table info available.
+#22 0x0000a0ec in ?? ()
+No symbol table info available.
+#23 0x6b2de800 in ?? ()
+No symbol table info available.
+#24 0xc381000f in ?? ()
+No symbol table info available.
+#25 0x0017a382 in ?? ()
+No symbol table info available.
+#26 0xb024b48b in ?? ()
+No symbol table info available.
+Backtrace stopped: previous frame inner to this frame (corrupt stack?)
+
+Thread 3 (Thread 0xb22ffb40 (LWP 13951)):
+#0  0xb76ff424 in __kernel_vsyscall ()
+No symbol table info available.
+#1  0xb6fdedf5 in sem_wait@@GLIBC_2.1 () at ../nptl/sysdeps/unix/sysv/linux/i386/i686/../i486/sem_wait.S:79
+No locals.
+#2  0x085e6e48 in ?? ()
+No symbol table info available.
+#3  0x085a4a84 in ?? ()
+No symbol table info available.
+#4  0x085a45c8 in ?? ()
+No symbol table info available.
+#5  0x085e649f in ?? ()
+No symbol table info available.
+#6  0xb6f822c1 in ?? () from /usr/lib/i386-linux-gnu/libGL.so.1
+No symbol table info available.
+#7  0x5c8b0824 in ?? ()
+No symbol table info available.
+#8  0xbab80424 in ?? ()
+No symbol table info available.
+#9  0x65000000 in ?? ()
+No symbol table info available.
+#10 0x001015ff in ?? ()
+No symbol table info available.
+#11 0xd3890000 in ?? ()
+No symbol table info available.
+#12 0xfff0013d in ?? ()
+No symbol table info available.
+#13 0xc30173ff in ?? ()
+No symbol table info available.
+#14 0x0f6b5ae8 in ?? ()
+No symbol table info available.
+#15 0xabc18100 in ?? ()
+No symbol table info available.
+#16 0x8b0017a3 in ?? ()
+No symbol table info available.
+#17 0xffff2489 in ?? ()
+No symbol table info available.
+#18 0x65d8f7ff in ?? ()
+No symbol table info available.
+#19 0xc8830189 in ?? ()
+No symbol table info available.
+#20 0x9066c3ff in ?? ()
+No symbol table info available.
+#21 0x90669066 in ?? ()
+No symbol table info available.
+#22 0x81535657 in ?? ()
+No symbol table info available.
+#23 0x0000a0ec in ?? ()
+No symbol table info available.
+#24 0x6b2de800 in ?? ()
+No symbol table info available.
+#25 0xc381000f in ?? ()
+No symbol table info available.
+#26 0x0017a382 in ?? ()
+No symbol table info available.
+#27 0xb024b48b in ?? ()
+No symbol table info available.
+Backtrace stopped: previous frame inner to this frame (corrupt stack?)
+
+Thread 2 (Thread 0xb25788c0 (LWP 13952)):
+#0  0xb6d3aad3 in timer_helper_thread (arg=0x0) at ../nptl/sysdeps/unix/sysv/linux/timer_routines.c:92
+        resultvar = <optimized out>
+        resultvar = <optimized out>
+        si = {si_signo = 32, si_errno = 0, si_code = -2, _sifields = {_pad = {1, 0, 167235432, 5, 0, 1, -1227624448, 168, 167217712, 2, 58, 0, 91, 0, 0, -1078749164, -1078749304, -1078749312, -1227657953, -1227624448, 0, 40, -1231647131, 218539540, 167428008, -1232094232, -1302888820, 136, -1225266778}, _kill = {si_pid = 1, si_uid = 0}, _timer = {si_tid = 1, si_overrun = 0, si_sigval = {sival_int = 167235432, sival_ptr = 0x9f7cf68}}, _rt = {si_pid = 1, si_uid = 0, si_sigval = {sival_int = 167235432, sival_ptr = 0x9f7cf68}}, _sigchld = {si_pid = 1, si_uid = 0, si_status = 167235432, si_utime = 5, si_stime = 0}, _sigfault = {si_addr = 0x1, si_addr_lsb = 0}, _sigpoll = {si_band = 1, si_fd = 0}, _sigsys = {_call_addr = 0x1, _syscall = 0, _arch = 167235432}}}
+        oldtype = -4
+        result = <optimized out>
+        ss = {__val = {2147483648, 0 <repeats 31 times>}}
+#1  0xb6f822c1 in ?? () from /usr/lib/i386-linux-gnu/libGL.so.1
+No symbol table info available.
+#2  0x5c8b0824 in ?? ()
+No symbol table info available.
+#3  0xbab80424 in ?? ()
+No symbol table info available.
+#4  0x65000000 in ?? ()
+No symbol table info available.
+#5  0x001015ff in ?? ()
+No symbol table info available.
+#6  0xd3890000 in ?? ()
+No symbol table info available.
+#7  0xfff0013d in ?? ()
+No symbol table info available.
+#8  0xc30173ff in ?? ()
+No symbol table info available.
+#9  0x0f6b5ae8 in ?? ()
+No symbol table info available.
+#10 0xabc18100 in ?? ()
+No symbol table info available.
+#11 0x8b0017a3 in ?? ()
+No symbol table info available.
+#12 0xffff2489 in ?? ()
+No symbol table info available.
+#13 0x65d8f7ff in ?? ()
+No symbol table info available.
+#14 0xc8830189 in ?? ()
+No symbol table info available.
+#15 0x9066c3ff in ?? ()
+No symbol table info available.
+#16 0x90669066 in ?? ()
+No symbol table info available.
+#17 0x81535657 in ?? ()
+No symbol table info available.
+#18 0x0000a0ec in ?? ()
+No symbol table info available.
+#19 0x6b2de800 in ?? ()
+No symbol table info available.
+#20 0xc381000f in ?? ()
+No symbol table info available.
+#21 0x0017a382 in ?? ()
+No symbol table info available.
+#22 0xb024b48b in ?? ()
+No symbol table info available.
+Backtrace stopped: previous frame inner to this frame (corrupt stack?)
+
+Thread 1 (Thread 0xb411b8c0 (LWP 13946)):
+#0  0xb76ff424 in __kernel_vsyscall ()
+No symbol table info available.
+#1  0xb6fe080b in waitpid () at ../sysdeps/unix/syscall-template.S:81
+No locals.
+#2  0x0815b94c in ?? ()
+No symbol table info available.
+#3  <signal handler called>
+No symbol table info available.
+#4  0x08444548 in FSamplerManager::~FSamplerManager() ()
+No symbol table info available.
+#5  0x08409a9e in FGLRenderer::~FGLRenderer() ()
+No symbol table info available.
+#6  0x08476397 in OpenGLFrameBuffer::~OpenGLFrameBuffer() ()
+No symbol table info available.
+#7  0x081e9dea in ?? ()
+No symbol table info available.
+#8  0x081eadb4 in GC::FullGC() ()
+No symbol table info available.
+#9  0x082be6ff in P_FreeLevelData() ()
+No symbol table info available.
+#10 0x082bf123 in ?? ()
+No symbol table info available.
+#11 0x0815f5ff in call_terms() ()
+No symbol table info available.
+#12 0xb6927161 in __run_exit_handlers (status=status@entry=-1, listp=0xb6a9f3c4 <__exit_funcs>, run_list_atexit=run_list_atexit@entry=true) at exit.c:82
+        atfct = <optimized out>
+        onfct = <optimized out>
+        cxafct = <optimized out>
+        f = <optimized out>
+#13 0xb69271bd in __GI_exit (status=-1) at exit.c:104
+No locals.
+#14 0x0815fcb0 in I_FatalError(char const*, ...) ()
+No symbol table info available.
+#15 0x084755fc in gl_LoadExtensions() ()
+No symbol table info available.
+#16 0x084763fa in OpenGLFrameBuffer::InitializeState() ()
+No symbol table info available.
+#17 0x08476677 in OpenGLFrameBuffer::OpenGLFrameBuffer(void*, int, int, int, int, bool) ()
+No symbol table info available.
+#18 0x08162db4 in SDLGLVideo::CreateFrameBuffer(int, int, bool, DFrameBuffer*) ()
+No symbol table info available.
+#19 0x0815c737 in I_SetMode(int&, int&, DFrameBuffer*) ()
+No symbol table info available.
+#20 0x08355294 in V_DoModeSetup(int, int, int) ()
+No symbol table info available.
+#21 0x08163083 in SDLGLVideo::SetResolution(int, int, int) ()
+No symbol table info available.
+#22 0x08355bf9 in V_Init2() ()
+No symbol table info available.
+#23 0x081cca8b in D_DoomMain() ()
+No symbol table info available.
+#24 0x0813cd57 in main ()
+No symbol table info available.
