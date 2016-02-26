@@ -1,10 +1,9 @@
 [core]
-	ignorecase = true
 	repositoryformatversion = 0
 	filemode = true
 	bare = false
 	logallrefupdates = true
-	ignorecase = false
+	ignorecase = true
 [remote "x4"]
 	url = ssh://sparky4@4ch.mooo.com:26/var/www/16/16.git
 	fetch = +refs/heads/*:refs/remotes/origin/*
