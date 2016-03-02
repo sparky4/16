@@ -28,7 +28,7 @@ boop.sh
 !modex.lib
 img
 !.git/config
-
+!.gitmodules
 # except foo.html which is maintained by hand.
 #!foo.html
 # Ignore objects and archives.
