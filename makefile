@@ -420,8 +420,9 @@ clean: .symbolic
 #	@$(COPYCOMMAND) $(NYANLIB)* $(EXMMTESTDIR)$(NYANLIB)
 #	@echo $(watcom)
 #	@echo $(INCLUDE)
+#
 	@cd $(DOSLIB)
-	@./clean.sh
+	@./cleanup.sh
 	@cd ../../../
 
 comp: .symbolic
