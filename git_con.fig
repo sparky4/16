@@ -1,9 +1,10 @@
 [core]
+	ignorecase = true
 	repositoryformatversion = 0
 	filemode = true
 	bare = false
 	logallrefupdates = true
-	ignorecase = true
+	ignorecase = false
 [remote "x4"]
 	url = ssh://sparky4@4ch.mooo.com:26/var/www/16/16.git
 	fetch = +refs/heads/*:refs/remotes/origin/*
@@ -19,7 +20,3 @@
 [remote "jp"]
 	url = ssh://sparky4@git.pf.osdn.jp:/gitroot/s/sp/sparky4/project16.git
 	fetch = +refs/heads/*:refs/remotes/jp/*
-[submodule "src/lib/jsmn"]
-	url = https://github.com/zserge/jsmn.git
-[submodule "src/lib/doslib"]
-	url = https://github.com/joncampbell123/doslib.git
