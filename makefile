@@ -422,7 +422,7 @@ clean: .symbolic
 #	@echo $(INCLUDE)
 
 comp: .symbolic
-	@upx -9 -qqq $(EXEC)
+	@upx -9 $(EXEC)
 ##	@upx -9 -qqq x-demo.exe
 
 #git submodule add <repo>
