@@ -19,3 +19,5 @@
 [remote "jp"]
 	url = ssh://sparky4@git.pf.osdn.jp:/gitroot/s/sp/sparky4/project16.git
 	fetch = +refs/heads/*:refs/remotes/jp/*
+[submodule "src/lib/jsmn"]
+	url = https://github.com/zserge/jsmn.git

@@ -425,10 +425,15 @@ comp: .symbolic
 	@upx -9 -qqq $(EXEC)
 ##	@upx -9 -qqq x-demo.exe
 
+#git submodule add <repo>
 updatelibs: .symbolic
 	@cd $(JSMNLIB)
 	@git pull
 	@cd ../../../
+        @cd $(DOSLIB)
+        @git pull
+	@./buildall.sh
+        @cd ../../../
 
 xlib: .symbolic
 	@cd 16/xlib
