@@ -426,6 +426,9 @@ comp: .symbolic
 ##	@upx -9 -qqq x-demo.exe
 
 #git submodule add <repo>
+uplibs: .symbolic
+	@wmake updatelibs
+
 updatelibs: .symbolic
 	@cd $(JSMNLIB)
 	@git pull
