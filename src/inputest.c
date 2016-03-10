@@ -38,7 +38,7 @@ main(int argc, char *argv[])
 	{
 		IN_ReadControl(0,&player);
 		//printf("%u\n", IN_KeyDown(sc_Escape));
-		printf("%u\n", IN_qb(sc_9));
+		if(testkeyin>0) printf("%u\n", IN_qb(sc_9));
 	}
 	IN_Shutdown();
 	//printf("%u\n", in.Keyboard[sc_Escape]);
