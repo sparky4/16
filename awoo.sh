@@ -16,3 +16,4 @@ fi
 git add .
 . ./boop.sh "$pee"
 wmake inputest.exe
+wmake comp
