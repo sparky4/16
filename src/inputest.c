@@ -38,10 +38,12 @@ main(int argc, char *argv[])
 	{
 		IN_ReadControl(0,&player);
 		//printf("%u\n", IN_KeyDown(sc_Escape));
-		if(IN_qb(sc_9)>0) printf("IN_qb(sc_9)=%u\n", IN_qb(sc_9));
+		//if(
+		IN_qb(sc_9)//>0) printf("IN_qb(sc_9)=%u\n", IN_qb(sc_9));
 	}
 	IN_Shutdown();
 	//printf("%u\n", in.Keyboard[sc_Escape]);
+	printf("inputest.exe ");
 	printf("version %s\n", VERSION);
-	printf("%u\n", testkeyin);
+	printf("testkeyin=%u\n", testkeyin);
 }
