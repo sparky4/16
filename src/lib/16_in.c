@@ -38,7 +38,7 @@
 
 #include "src/lib/16_in.h"
 
-static word testkeyin=1,testcontrolnoisy=0;
+word testkeyin=1,testcontrolnoisy=0;
 
 /*
 =============================================================================

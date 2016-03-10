@@ -42,6 +42,8 @@
 //#define TESTCONTROLNOISY
 #endif
 
+extern word testkeyin,testcontrolnoisy;
+
 #define	KeyInt	9	// The keyboard ISR number
 
 // Stuff for the joystick
