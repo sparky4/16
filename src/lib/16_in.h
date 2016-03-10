@@ -42,8 +42,7 @@
 //#define TESTCONTROLNOISY
 #endif
 
-static word testkeyin,testcontrolnoisy;
-testkeyin=1;
+const static word testkeyin=1,testcontrolnoisy=1;
 
 #define	KeyInt	9	// The keyboard ISR number
 
