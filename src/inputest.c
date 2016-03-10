@@ -42,5 +42,6 @@ main(int argc, char *argv[])
 	}
 	IN_Shutdown();
 	//printf("%u\n", in.Keyboard[sc_Escape]);
+	printf("version %s\n", VERSION);
 	printf("%u\n", testkeyin);
 }
