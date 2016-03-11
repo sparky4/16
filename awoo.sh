@@ -5,10 +5,10 @@ if [ -f "*.exe" ]
         then
 cp *.exe /var/www/
 rm /var/www/inputest.exe
-cp inputest.exe /var/www/
+cp inputest.exe /var/www/inputest.exe
 scp -r -P 26 *.exe 4ch.mooo.com:/var/www/16/
 fi
-wmake clean
+#wmake clean
 if [ -z "$*" ]; then
 		pee="wwww"
 	else
