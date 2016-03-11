@@ -15,5 +15,3 @@ fi
 ##echo "$pee"
 git add .
 . ./boop.sh "$pee"
-wmake inputest.exe
-wmake comp
