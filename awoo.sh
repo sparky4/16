@@ -3,7 +3,8 @@ wmake
 wmake comp
 if [ -f "*.exe" ]
         then
-cp -f *.exe /var/www/
+cp *.exe /var/www/
+rm /var/www/inputest.exe
 cp inputest.exe /var/www/
 scp -r -P 26 *.exe 4ch.mooo.com:/var/www/16/
 fi
