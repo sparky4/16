@@ -439,6 +439,12 @@ updatelibs: .symbolic
 	@./buildall.sh
         @cd ../../../
 
+initlibs: .symbolic
+	@cd src/lib
+	@git clone https://github.com/joncampbell123/doslib.git
+	@git clone https://github.com/zserge/jsmn.git
+	@cd ../../
+
 xlib: .symbolic
 	@cd 16/xlib
 	@wmake clean
