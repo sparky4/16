@@ -1,4 +1,5 @@
 #!/bin/bash
+. ./w.sh
 wmake
 wmake comp
 if [ -f "*.exe" ]
@@ -17,3 +18,4 @@ fi
 ##echo "$pee"
 git add .
 . ./boop.sh "$pee"
+. ./w.sh
