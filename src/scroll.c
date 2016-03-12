@@ -64,7 +64,7 @@ void main(int argc, char *argv[])
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
 
-	testcontrolnoisy=0;
+	testcontrolnoisy=1;
 	gfxtest=1;
 
 	player[0].persist_aniframe=0;
