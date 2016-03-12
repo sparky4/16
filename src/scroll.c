@@ -71,7 +71,7 @@ void main(int argc, char *argv[])
 	player[0].speed=4;
 	//player[0].data = &pp;
 
-	printf("starting timer\n");
+	printf("starting timer	");
 	start_timer(&gvar);
 	printf("ok\n");
 	//extern struct inconfig inpu;
@@ -79,10 +79,10 @@ void main(int argc, char *argv[])
 //	atexit(qclean());
 
 	/* create the map */
-	fprintf(stderr, "testing map load~\n");
+	fprintf(stderr, "testing map load~	");
 	loadmap("data/test.map", &map);
 	chkmap(&map, 0);
-	printf("chkmap ok\n");
+	printf("chkmap ok	");
 	fprintf(stderr, "yay map loaded~~\n");
 	mv[0].map = &map;
 	mv[1].map = &map;
@@ -99,7 +99,7 @@ void main(int argc, char *argv[])
 
 	/* create the planar buffer */
 ////++++	(player[0].data) = *planar_buf_from_bitmap(&p);
-	printf("load pee!!\n");
+	printf("load pee!!	");
 	pp = planar_buf_from_bitmap(&p);
 	printf("done!\n");
 
