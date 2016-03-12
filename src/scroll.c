@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2015 sparky4 & pngwen & andrius4669
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669
  *
  * This file is part of Project 16.
  *
@@ -63,6 +63,9 @@ void main(int argc, char *argv[])
 
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
+
+	testcontrolnoisy=0;
+	gfxtest=1;
 
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
@@ -422,6 +425,7 @@ void main(int argc, char *argv[])
 	printf("player[0].tx: %d", player[0].tx); printf("		player[0].ty: %d\n", player[0].ty);
 	printf("player[0].triggx: %d", player[0].triggerx); printf("	player[0].triggy: %d\n", player[0].triggery);
 	printf("player[0].hp: %d", (player[0].hp));	printf("	player[0].q: %d", player[0].q);	printf("	player[0].info.dir: %d", player[0].info.dir);	printf("	player[0].d: %d\n", player[0].d);
+		printf("pdir=%d\n", player[0].pdir);
 	printf("tile data value at player trigger position: %d\n", bg->map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))]);
 //	printf("palette offset:	%d\n", paloffset/3);
 //++++	printf("Total used: %zu\n", oldfreemem-GetFreeSize());

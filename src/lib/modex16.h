@@ -36,6 +36,7 @@
 #include "src/lib/modex16/256x192.h"
 #include "src/lib/modex16/192x144_.h"
 #include "src/lib/modex16/160x120.h"
+extern byte gfxtest;
 
 static struct pcxHeader {
 	byte id;

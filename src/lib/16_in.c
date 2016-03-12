@@ -38,7 +38,7 @@
 
 #include "src/lib/16_in.h"
 
-word testkeyin=1,testcontrolnoisy=0;
+byte testkeyin=0,testcontrolnoisy=0,gfxtest=0;
 
 /*
 =============================================================================
@@ -669,6 +669,7 @@ IN_Startup()
 void
 IN_Default(boolean gotit,player_t *player,ControlType nt)
 {
+	int i;
 	if
 	(
 		(!gotit)
@@ -690,6 +691,8 @@ IN_Default(boolean gotit,player_t *player,ControlType nt)
 	inpu.KbdDefs[0].down = 0x50;
 	//in.KbdDefs[0].downright = 0x51;
 	IN_SetControlType(0,player,nt);
+	for(i=0; i>MaxPlayers;i++)
+		player[i].d=2;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -800,7 +803,7 @@ IN_ReadCursor(CursorInfo *info)
 //
 ///////////////////////////////////////////////////////////////////////////
 void near
-IN_ReadControl(int playnum,player_t *player)
+IN_ReadControl(int pn,player_t *player)
 {
 			boolean		realdelta;
 			byte		dbyte;
@@ -837,7 +840,7 @@ register	KeyboardDef	*def;
 	else
 	{
 #endif
-		switch (type = player[playnum].Controls)
+		switch (type = player[pn].Controls)
 		{
 		case ctrl_Keyboard1:
 		case ctrl_Keyboard2:
@@ -851,16 +854,21 @@ register	KeyboardDef	*def;
 				mx = motion_Left,my = motion_Down;
 			else if (Keyboard[def->downright])
 				mx = motion_Right,my = motion_Down;*/
-			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
-			if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down] && player[playnum].d == 2))// || player[playnum].info.dir == 0)
-				my = motion_Up;
-			if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up] && player[playnum].d == 2))// || player[playnum].info.dir == 4)
-				my = motion_Down;
-			}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
-			if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right] && player[playnum].d == 2))// || player[playnum].info.dir == 1)
-				mx = motion_Left;
-			if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left] && player[playnum].d == 2))// || player[playnum].info.dir == 3)
-				mx = motion_Right;
+			if(DIRECTIONIFELSEGFXTEST)
+			{
+				if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){// &&		(inpu.Keyboard[def->up] || inpu.Keyboard[def->down])){
+// 					if(testcontrolnoisy > 0){ printf("ud "); printf("%u ", inpu.Keyboard[def->up]); printf("%u ", inpu.Keyboard[def->down]);}
+				if(inpu.Keyboard[def->up] && !inpu.Keyboard[def->down])// || player[pn].info.pdir == 0)
+					my = motion_Up;
+				if(inpu.Keyboard[def->down] && !inpu.Keyboard[def->up])// || player[pn].info.pdir == 4)
+					my = motion_Down;
+				}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){// &&	(inpu.Keyboard[def->left] || inpu.Keyboard[def->right])){
+// 					if(testcontrolnoisy > 0){ printf("lr "); printf("%u ", inpu.Keyboard[def->left]); printf("%u ", inpu.Keyboard[def->right]); }
+				if(inpu.Keyboard[def->left] && !inpu.Keyboard[def->right])// || player[pn].info.pdir == 1)
+					mx = motion_Left;
+				if(inpu.Keyboard[def->right] && !inpu.Keyboard[def->left])// || player[pn].info.pdir == 3)
+					mx = motion_Right;
+				}
 			}
 			//input from player
 			if (inpu.Keyboard[def->button0])
@@ -900,22 +908,27 @@ register	KeyboardDef	*def;
 		dy = my;// * 127;
 	}
 
-	player[playnum].info.x = dx;
-	player[playnum].info.xaxis = mx;
-	player[playnum].info.y = dy;
-	player[playnum].info.yaxis = my;
-	player[playnum].info.button0 = buttons & (1 << 0);
-	player[playnum].info.button1 = buttons & (1 << 1);
-	player[playnum].info.button2 = buttons & (1 << 2);
-	player[playnum].info.button3 = buttons & (1 << 3);
-//	player[playnum].info.dir = DirTable[((my + 1) * 3) + (mx + 1)];
-	conpee=(((my + 1) * 2) + (mx + 1));
-	if(conpee) conpee--;
-	player[playnum].info.dir = DirTable[conpee];
-	if(player[playnum].q==1 && (mx!=motion_None || my!=motion_None))
+	player[pn].info.x = dx;
+	player[pn].info.xaxis = mx;
+	player[pn].info.y = dy;
+	player[pn].info.yaxis = my;
+	player[pn].info.button0 = buttons & (1 << 0);
+	player[pn].info.button1 = buttons & (1 << 1);
+	player[pn].info.button2 = buttons & (1 << 2);
+	player[pn].info.button3 = buttons & (1 << 3);
+//	player[pn].info.dir = DirTable[((my + 1) * 3) + (mx + 1)];
+	conpee=(((my + 1) * 2) + (mx + 1))-1; //if(conpee) conpee--;
+	player[pn].info.dir = DirTable[conpee];
+	if(DIRECTIONIFELSEGFXTEST && player[pn].d != player[pn].info.dir) player[pn].pdir=DirTable[conpee];
+	if(player[pn].q==1 && (mx!=motion_None || my!=motion_None))
 	{
-		player[playnum].d = player[playnum].info.dir;
+		player[pn].d = player[pn].info.dir;
+		//printf("q =%d ", player[pn].q);
+		//if(testcontrolnoisy > 0)
+			//if(testcontrolnoisy > 0)
+		//printf("cpee=%d ", conpee);
 	}
+	if(testcontrolnoisy > 0)
 
 #if DEMO0
 	if (DemoMode == demo_Record)
@@ -944,11 +957,13 @@ register	KeyboardDef	*def;
 #endif
 //#ifdef TESTCONTROLNOISY
 if(testcontrolnoisy > 0)
-if((inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right])&& player[playnum].info.dir!=2)
+if((inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right]) && NDIRECTIONIFELSEGFXTEST)
 {
+	printf("q=%d ", player[pn].q);
+	printf("cpee=%d ", conpee);
 	printf("(mx)=%d	", mx);
 	printf("(my)=%d	", my);
-	printf("dir=%d\n", player[playnum].info.dir);
+	printf("pdir=%d d=%d dir=%d\n", player[pn].pdir, player[pn].d, player[pn].info.dir);
 }
 //#endif
 }
@@ -960,10 +975,10 @@ if((inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->lef
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-IN_SetControlType(word playnum,player_t *player,ControlType type)
+IN_SetControlType(word pn,player_t *player,ControlType type)
 {
 	// DEBUG - check that requested type is present?
-	player[playnum].Controls = type;
+	player[pn].Controls = type;
 }
 
 #if DEMO0

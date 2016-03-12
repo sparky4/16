@@ -42,7 +42,11 @@
 //#define TESTCONTROLNOISY
 #endif
 
-extern word testkeyin,testcontrolnoisy;
+extern byte testkeyin,testcontrolnoisy,gfxtest;
+
+//if else for gfxtesting and direction
+#define DIRECTIONIFELSEGFXTEST (player[pn].d == 2 && gfxtest) || (player[pn].info.dir == 2 && !gfxtest)
+#define NDIRECTIONIFELSEGFXTEST (player[pn].d != 2 && gfxtest) || (player[pn].info.dir != 2 && !gfxtest)
 
 #define	KeyInt	9	// The keyboard ISR number
 
@@ -220,8 +224,9 @@ typedef	struct
 	int triggery; //player's trigger box tile position on the viewable map
 	int sheetsetx; //NOT USED YET! player sprite sheet set on the image x
 	int sheetsety; //NOT USED YET! player sprite sheet set on the image y
-	byte d;	//direction!! wwww
-	byte q; //loop variable
+	byte d;		//direction to render sprite!! wwww
+	byte q;		//loop variable for anumation and locking the playing to compleate the animation cycle to prevent issues with misalignment www
+	byte near pdir;	//previous direction~
 	word speed;		//player speed!
 //0000	planar_buf_t huge *data; //supposively the sprite sheet data
 //	planar_buf_t data; //supposively the sprite sheet data
@@ -285,8 +290,8 @@ extern void IN_SetKeyHook(void (*hook)());
 extern void IN_ClearKeysDown();
 //static void INL_AdjustCursor(CursorInfo *info,word buttons,int dx,int dy);
 extern void IN_ReadCursor(CursorInfo *info);
-extern void near IN_ReadControl(int playnum,player_t *player);
-extern void IN_SetControlType(word playnum,player_t *player,ControlType type);
+extern void near IN_ReadControl(int pn,player_t *player);
+extern void IN_SetControlType(word pn,player_t *player,ControlType type);
 #if DEMO0
 extern boolean IN_StartDemoRecord(word bufsize);
 extern void IN_StartDemoPlayback(byte /*__segment*/ *buffer,word bufsize);
