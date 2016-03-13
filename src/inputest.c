@@ -38,8 +38,7 @@ main(int argc, char *argv[])
 	player[0].d=2;
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
-	player[0].kd[0]=2;
-	player[0].kd[1]=2;
+	//player[0].kd[0]=2;	player[0].kd[1]=2;
 	while(!IN_KeyDown(sc_Escape))
 	{
 		#define INC_PER_FRAME if(player[0].q&1) player[0].persist_aniframe++; if(player[0].persist_aniframe>4) player[0].persist_aniframe = 1;
