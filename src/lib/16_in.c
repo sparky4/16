@@ -38,7 +38,7 @@
 
 #include "src/lib/16_in.h"
 
-byte testkeyin=0,testcontrolnoisy=0,gfxtest=0;
+byte testkeyin=0,testcontrolnoisy=0;
 
 /*
 =============================================================================
@@ -854,6 +854,7 @@ register	KeyboardDef	*def;
 				mx = motion_Left,my = motion_Down;
 			else if (Keyboard[def->downright])
 				mx = motion_Right,my = motion_Down;*/
+			if(DIRECTIONIFELSEGFXTEST)
 			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
 //				if(testcontrolnoisy > 0){ printf("ud "); printf("%u ", inpu.Keyboard[def->up]); printf("%u ", inpu.Keyboard[def->down]);}
 			if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]) || player[pn].pdir == 0)
@@ -918,7 +919,7 @@ register	KeyboardDef	*def;
 	player[pn].info.dir = DirTable[conpee];
 
 	//TODO: overwriting direction must be added
-	if(DIRECTIONIFELSEGFXTEST && player[pn].d != player[pn].info.dir) player[pn].pdir=DirTable[conpee];
+	if(player[pn].d==2) player[pn].pdir=DirTable[conpee];
 	if(player[pn].q==1 && (mx!=motion_None || my!=motion_None))
 	{
 		player[pn].d = player[pn].info.dir;
@@ -951,7 +952,7 @@ register	KeyboardDef	*def;
 #endif
 //#ifdef TESTCONTROLNOISY
 if(testcontrolnoisy > 0)
-if((inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right]) && NDIRECTIONIFELSEGFXTEST)
+//if((inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right]) && NDIRECTIONIFELSEGFXTEST)
 {
 	printf("q=%d ", player[pn].q);
 	printf("cpee=%d ", conpee);

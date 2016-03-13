@@ -31,7 +31,6 @@ main(int argc, char *argv[])
 	//extern struct inconfig inpu;
 	testkeyin=0;
 	testcontrolnoisy=1;
-	gfxtest=0;
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
 	//while(!IN_KeyDown(sc_Escape))
