@@ -919,7 +919,7 @@ register	KeyboardDef	*def;
 	player[pn].info.dir = DirTable[conpee];
 
 	//TODO: overwriting direction must be added
-	if(DIRECTIONIFELSEGFXTEST) player[pn].pdir=DirTable[conpee];
+	if(player[pn].d==2) player[pn].pdir=DirTable[conpee];
 	if(player[pn].q==1 && (mx!=motion_None || my!=motion_None))
 	{
 		player[pn].d = player[pn].info.dir;
@@ -952,13 +952,14 @@ register	KeyboardDef	*def;
 #endif
 //#ifdef TESTCONTROLNOISY
 if(testcontrolnoisy > 0)
-//if((inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right]) && NDIRECTIONIFELSEGFXTEST)
+if((inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right]) || player[pn].q>1)
 {
 	printf("q=%d ", player[pn].q);
-	printf("cpee=%d ", conpee);
-	printf("(mx)=%d	", mx);
-	printf("(my)=%d	", my);
-	printf("pdir=%d d=%d dir=%d\n", player[pn].pdir, player[pn].d, player[pn].info.dir);
+	printf("cpee=%c ", dirchar(conpee));
+	//printf("(mx)=%d	", mx);
+	//printf("(my)=%d	", my);
+	printf("pdir=%c d=%c dir=%c", dirchar(player[pn].pdir), dirchar(player[pn].d), dirchar(player[pn].info.dir));
+	printf("%c%d %c%d %c%d %c%d\n", dirchar(0), inpu.Keyboard[def->up], dirchar(4), inpu.Keyboard[def->down], dirchar(1), inpu.Keyboard[def->left], dirchar(3), inpu.Keyboard[def->right]);
 }
 //#endif
 }

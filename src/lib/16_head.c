@@ -157,3 +157,27 @@ US_CheckParm(char *parm,char **strings)
 
 	exit(exit_code);
 }*/
+
+byte dirchar(byte in)
+{
+	byte out;
+	switch(in)
+	{
+		case 0: //up
+			out = 0x1E;
+		break;
+		case 4: //down
+			out = 0x1F;
+		break;
+		case 1: //left
+			out = 0x11;
+		break;
+		case 3: //right
+			out = 0x10;
+		break;
+		default: //null
+			out = 0xB3;
+		break;
+	}
+	return out;
+}

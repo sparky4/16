@@ -178,5 +178,6 @@ void wait(clock_t wait);
 long int filesize(FILE *fp);
 void printmeminfoline(byte *strc, const byte *pee, size_t h_total, size_t h_used, size_t h_free);
 int US_CheckParm(char *parm,char **strings);
+byte dirchar(byte in);
 
 #endif/*_LIBHEAD_H_*/
