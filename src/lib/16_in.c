@@ -859,22 +859,14 @@ register	KeyboardDef	*def;
 			{
 			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
 				if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]))
-				{
 					my = motion_Up;
-				}
 				if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up]))
-				{
 					my = motion_Down;
-				}
 			}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
 				if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]))
-				{
 					mx = motion_Left;
-				}
 				if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left]))// || player[pn].pdir != 1)
-				{
 					mx = motion_Right;
-				}
 			}else{	//2 keys pressed
 					switch (player[pn].pdir)
 					{
@@ -882,18 +874,16 @@ register	KeyboardDef	*def;
 						case 4:
 							if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right])) dir = DirTable[1];
 							else if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left])) dir = DirTable[3];
-							if(testcontrolnoisy > 0) printf("dir=%c ", dirchar(dir));
 						break;
 						case 1:
 						case 3:
 							if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down])) dir = DirTable[0];
 							else if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up])) dir = DirTable[4];
-							if(testcontrolnoisy > 0) printf("dir=%c ", dirchar(dir));
 						break;
 						default:
 						break;
 					}
-					if(testcontrolnoisy > 0) printf("pdir=%c	", dirchar(player[pn].pdir));
+					if(testcontrolnoisy > 0){ printf("dir=%c ", dirchar(dir)); printf("pdir=%c	", dirchar(player[pn].pdir)); }
 				}
 			}
 			//input from player
