@@ -468,10 +468,9 @@ mx_: .symbolic
 	@cd ../../
 
 www: .symbolic
-	@rm -f /var/www/$(EXEC)
-	@cp -f $(EXEC) /var/www/
-	@bash ./z.sh $(EXEC) $(EXEC)
-	@cp -f *.exe.zip.* /var/www/
+#	@rm /var/www/$(EXEC)
+	@cp ./$(EXEC) /var/www/
+	@./z.sh $(EXEC) $(EXEC)
 	@scp -r -P 26 *.exe 4ch.mooo.com:/var/www/16/
-	@scp -r -P 26 *.exe.zip.* 4ch.mooo.com:/var/www/16/
-	
+	@scp -r -P 26 /var/www/*.exe.zip.* 4ch.mooo.com:/var/www/16/
+
