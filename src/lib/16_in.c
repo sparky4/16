@@ -855,18 +855,19 @@ register	KeyboardDef	*def;
 			else if (Keyboard[def->downright])
 				mx = motion_Right,my = motion_Down;*/
 			if(DIRECTIONIFELSEGFXTEST)
-			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
+			{
+//			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
 //				if(testcontrolnoisy > 0){ printf("ud "); printf("%u ", inpu.Keyboard[def->up]); printf("%u ", inpu.Keyboard[def->down]);}
-			if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]) || player[pn].pdir == 0)
-				my = motion_Up;
-			if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up]) || player[pn].pdir == 4)
-				my = motion_Down;
-			}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
+				if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]))// || player[pn].pdir != 4)
+					my = motion_Up;
+				if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up]))// || player[pn].pdir != 0)
+					my = motion_Down;
+//			}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
 //				if(testcontrolnoisy > 0){ printf("lr "); printf("%u ", inpu.Keyboard[def->left]); printf("%u ", inpu.Keyboard[def->right]); }
-			if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]) || player[pn].pdir == 1)
-				mx = motion_Left;
-			if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left]) || player[pn].pdir == 3)
-				mx = motion_Right;
+				if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]))// || player[pn].pdir != 3)
+					mx = motion_Left;
+				if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left]))// || player[pn].pdir != 1)
+					mx = motion_Right;
 			}
 			//input from player
 			if (inpu.Keyboard[def->button0])
@@ -919,7 +920,7 @@ register	KeyboardDef	*def;
 	player[pn].info.dir = DirTable[conpee];
 
 	//TODO: overwriting direction must be added
-	if(player[pn].d==2) player[pn].pdir=DirTable[conpee];
+	if(DirTable[conpee]!=2)	player[pn].pdir=DirTable[conpee];
 	if(player[pn].q==1 && (mx!=motion_None || my!=motion_None))
 	{
 		player[pn].d = player[pn].info.dir;
@@ -958,7 +959,7 @@ if((inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->lef
 	printf("cpee=%c ", dirchar(conpee));
 	//printf("(mx)=%d	", mx);
 	//printf("(my)=%d	", my);
-	printf("pdir=%c d=%c dir=%c", dirchar(player[pn].pdir), dirchar(player[pn].d), dirchar(player[pn].info.dir));
+	printf("pdir=%c d=%c dir=%c ", dirchar(player[pn].pdir), dirchar(player[pn].d), dirchar(player[pn].info.dir));
 	printf("%c%d %c%d %c%d %c%d\n", dirchar(0), inpu.Keyboard[def->up], dirchar(4), inpu.Keyboard[def->down], dirchar(1), inpu.Keyboard[def->left], dirchar(3), inpu.Keyboard[def->right]);
 }
 //#endif
