@@ -854,21 +854,18 @@ register	KeyboardDef	*def;
 				mx = motion_Left,my = motion_Down;
 			else if (Keyboard[def->downright])
 				mx = motion_Right,my = motion_Down;*/
-			if(DIRECTIONIFELSEGFXTEST)
-			{
-				if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){// &&		(inpu.Keyboard[def->up] || inpu.Keyboard[def->down])){
-// 					if(testcontrolnoisy > 0){ printf("ud "); printf("%u ", inpu.Keyboard[def->up]); printf("%u ", inpu.Keyboard[def->down]);}
-				if(inpu.Keyboard[def->up] && !inpu.Keyboard[def->down])// || player[pn].info.pdir == 0)
-					my = motion_Up;
-				if(inpu.Keyboard[def->down] && !inpu.Keyboard[def->up])// || player[pn].info.pdir == 4)
-					my = motion_Down;
-				}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){// &&	(inpu.Keyboard[def->left] || inpu.Keyboard[def->right])){
-// 					if(testcontrolnoisy > 0){ printf("lr "); printf("%u ", inpu.Keyboard[def->left]); printf("%u ", inpu.Keyboard[def->right]); }
-				if(inpu.Keyboard[def->left] && !inpu.Keyboard[def->right])// || player[pn].info.pdir == 1)
-					mx = motion_Left;
-				if(inpu.Keyboard[def->right] && !inpu.Keyboard[def->left])// || player[pn].info.pdir == 3)
-					mx = motion_Right;
-				}
+			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
+//				if(testcontrolnoisy > 0){ printf("ud "); printf("%u ", inpu.Keyboard[def->up]); printf("%u ", inpu.Keyboard[def->down]);}
+			if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]) || player[pn].pdir == 0)
+				my = motion_Up;
+			if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up]) || player[pn].pdir == 4)
+				my = motion_Down;
+			}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
+//				if(testcontrolnoisy > 0){ printf("lr "); printf("%u ", inpu.Keyboard[def->left]); printf("%u ", inpu.Keyboard[def->right]); }
+			if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]) || player[pn].pdir == 1)
+				mx = motion_Left;
+			if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left]) || player[pn].pdir == 3)
+				mx = motion_Right;
 			}
 			//input from player
 			if (inpu.Keyboard[def->button0])
