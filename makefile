@@ -272,16 +272,16 @@ vgmtest.$(OBJ): $(SRC)vgmtest.c
 #non executable objects libraries
 #
 16.lib: $(16LIBOBJS)# doslib.lib vgmsnd.lib
-	wlib -b $(WLIB) 16.lib $(16LIBOBJS)# doslib.lib vgmsnd.lib
+	wlib -b $(WLIBQ) 16.lib $(16LIBOBJS)# doslib.lib vgmsnd.lib
 
 gfx.lib: $(GFXLIBOBJS)
-	wlib -b $(WLIB) gfx.lib $(GFXLIBOBJS)
+	wlib -b $(WLIBQ) gfx.lib $(GFXLIBOBJS)
 
 doslib.lib: $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
-	wlib -b $(WLIB) doslib.lib $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
+	wlib -b $(WLIBQ) doslib.lib $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
 
 vgmsnd.lib: $(VGMSNDOBJ)
-	wlib -b $(WLIB) vgmsnd.lib $(VGMSNDOBJ)
+	wlib -b $(WLIBQ) vgmsnd.lib $(VGMSNDOBJ)
 
 modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c
 	wcl $(FLAGS) -c $(SRCLIB)modex16.c
@@ -398,10 +398,10 @@ clean: .symbolic
 	@$(REMOVECOMMAND) gfx.lib
 	@$(REMOVECOMMAND) doslib.lib
 	@$(REMOVECOMMAND) vgmsnd.lib
-	@wlib -n 16.lib
-	@wlib -n gfx.lib
-	@wlib -n doslib.lib
-	@wlib -n vgmsnd.lib
+	@wlib -n $(WLIBQ) 16.lib
+	@wlib -n $(WLIBQ) gfx.lib
+	@wlib -n $(WLIBQ) doslib.lib
+	@wlib -n $(WLIBQ) vgmsnd.lib
 	@$(REMOVECOMMAND) *.16
 	@$(REMOVECOMMAND) *.16W
 	@$(REMOVECOMMAND) *.16B
