@@ -85,8 +85,7 @@ GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(
 TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe
 # tsthimem.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe sega.exe sountest.exe
-EXEC = 16.exe bakapi.exe $(TESTEXEC)
-#tesuto.exe
+EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
 
 all: $(EXEC)
 
