@@ -919,16 +919,13 @@ register	KeyboardDef	*def;
 //	player[pn].info.dir = DirTable[((my + 1) * 3) + (mx + 1)];
 	conpee=(((my + 1) * 2) + (mx + 1))-1; //if(conpee) conpee--;
 	player[pn].info.dir = DirTable[conpee];
+
+	//TODO: overwriting direction must be added
 	if(DIRECTIONIFELSEGFXTEST && player[pn].d != player[pn].info.dir) player[pn].pdir=DirTable[conpee];
 	if(player[pn].q==1 && (mx!=motion_None || my!=motion_None))
 	{
 		player[pn].d = player[pn].info.dir;
-		//printf("q =%d ", player[pn].q);
-		//if(testcontrolnoisy > 0)
-			//if(testcontrolnoisy > 0)
-		//printf("cpee=%d ", conpee);
 	}
-	if(testcontrolnoisy > 0)
 
 #if DEMO0
 	if (DemoMode == demo_Record)

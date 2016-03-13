@@ -45,8 +45,8 @@
 extern byte testkeyin,testcontrolnoisy,gfxtest;
 
 //if else for gfxtesting and direction
-#define DIRECTIONIFELSEGFXTEST (player[pn].d == 2 && gfxtest) || (player[pn].info.dir == 2 && !gfxtest)
-#define NDIRECTIONIFELSEGFXTEST (player[pn].d != 2 && gfxtest) || (player[pn].info.dir != 2 && !gfxtest)
+#define DIRECTIONIFELSEGFXTEST	(player[pn].d == 2 || player[pn].info.dir == 2)
+#define NDIRECTIONIFELSEGFXTEST	(player[pn].d != 2 || player[pn].info.dir != 2)
 
 #define	KeyInt	9	// The keyboard ISR number
 
