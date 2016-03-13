@@ -435,10 +435,10 @@ updatelibs: .symbolic
 	@cd $(JSMNLIB)
 	@git pull
 	@cd ../../../
-        @cd $(DOSLIB)
-        @git pull
+	@cd $(DOSLIB)
+	@git pull
 	@./buildall.sh
-        @cd ../../../
+	@cd ../../../
 
 initlibs: .symbolic
 	@cd src/lib
@@ -463,3 +463,7 @@ mx_: .symbolic
 	@wmake -f makefile all
 	@cd ../../
 
+www: .symbolic
+	@rm -f /var/www/$(EXEC)
+	@cp -f $(EXEC) /var/www/
+	@scp -r -P 26 *.exe 4ch.mooo.com:/var/www/16/
