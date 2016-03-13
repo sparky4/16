@@ -812,6 +812,7 @@ IN_ReadControl(int pn,player_t *player)
 			Motion		mx,my;
 			ControlType	type;
 			sword conpee;
+			byte dir=DirTable[2];
 register	KeyboardDef	*def;
 
 	dx = dy = 0;
@@ -874,7 +875,26 @@ register	KeyboardDef	*def;
 				{
 					mx = motion_Right;
 				}
-			}
+			}else{	//2 keys pressed
+					switch (player[pn].pdir)
+					{
+						case 0:
+						case 4:
+							if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right])) dir = DirTable[1];
+							else if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left])) dir = DirTable[3];
+							if(testcontrolnoisy > 0) printf("dir=%c ", dirchar(dir));
+						break;
+						case 1:
+						case 3:
+							if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down])) dir = DirTable[0];
+							else if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up])) dir = DirTable[4];
+							if(testcontrolnoisy > 0) printf("dir=%c ", dirchar(dir));
+						break;
+						default:
+						break;
+					}
+					if(testcontrolnoisy > 0) printf("pdir=%c	", dirchar(player[pn].pdir));
+				}
 			}
 			//input from player
 			if (inpu.Keyboard[def->button0])
@@ -923,14 +943,15 @@ register	KeyboardDef	*def;
 	player[pn].info.button2 = buttons & (1 << 2);
 	player[pn].info.button3 = buttons & (1 << 3);
 //	player[pn].info.dir = DirTable[((my + 1) * 3) + (mx + 1)];
-	conpee=(((my + 1) * 2) + (mx + 1))-1; //if(conpee) conpee--;
+	conpee=(((my + 1) * 2) + (mx + 1))-1;
 	player[pn].info.dir = DirTable[conpee];
 
 	//TODO: overwriting direction must be added
 	if(DirTable[conpee]!=2)	player[pn].pdir=DirTable[conpee];
-	if(player[pn].q==1 && (mx!=motion_None || my!=motion_None))
+	if(player[pn].q==1 &&( dir!=2 || (mx!=motion_None || my!=motion_None)))
 	{
-		player[pn].d = player[pn].info.dir;
+		if(dir==2) player[pn].d = player[pn].info.dir;
+		else player[pn].d = DirTable[dir];
 	}
 
 #if DEMO0
