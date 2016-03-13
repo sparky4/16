@@ -229,6 +229,7 @@ typedef	struct
 	byte d;		//direction to render sprite!! wwww
 	byte q;		//loop variable for anumation and locking the playing to compleate the animation cycle to prevent issues with misalignment www
 	byte near pdir;	//previous direction~
+	//byte near kd[2];	//array of arrow key pressed
 	word speed;		//player speed!
 //0000	planar_buf_t huge *data; //supposively the sprite sheet data
 //	planar_buf_t data; //supposively the sprite sheet data

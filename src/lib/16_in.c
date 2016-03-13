@@ -857,17 +857,23 @@ register	KeyboardDef	*def;
 			if(DIRECTIONIFELSEGFXTEST)
 			{
 //			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
-//				if(testcontrolnoisy > 0){ printf("ud "); printf("%u ", inpu.Keyboard[def->up]); printf("%u ", inpu.Keyboard[def->down]);}
-				if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]))// || player[pn].pdir != 4)
+				if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]))
+				{
 					my = motion_Up;
-				if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up]))// || player[pn].pdir != 0)
+				}
+				if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up]))
+				{
 					my = motion_Down;
+				}
 //			}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
-//				if(testcontrolnoisy > 0){ printf("lr "); printf("%u ", inpu.Keyboard[def->left]); printf("%u ", inpu.Keyboard[def->right]); }
-				if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]))// || player[pn].pdir != 3)
+				if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]))
+				{
 					mx = motion_Left;
+				}
 				if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left]))// || player[pn].pdir != 1)
+				{
 					mx = motion_Right;
+				}
 			}
 			//input from player
 			if (inpu.Keyboard[def->button0])
