@@ -856,7 +856,7 @@ register	KeyboardDef	*def;
 				mx = motion_Right,my = motion_Down;*/
 			if(DIRECTIONIFELSEGFXTEST)
 			{
-//			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
+			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
 				if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]))
 				{
 					my = motion_Up;
@@ -865,7 +865,7 @@ register	KeyboardDef	*def;
 				{
 					my = motion_Down;
 				}
-//			}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
+			}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
 				if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]))
 				{
 					mx = motion_Left;
@@ -874,6 +874,7 @@ register	KeyboardDef	*def;
 				{
 					mx = motion_Right;
 				}
+			}
 			}
 			//input from player
 			if (inpu.Keyboard[def->button0])
