@@ -59,12 +59,16 @@ VGMSNDLIB=$(SRCLIB)vgmsnd$(DIRSEP)
 DOSLIB=$(SRCLIB)doslib$(DIRSEP)
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
+WLIBQ=-q
+WCLQ=-zq $(WLIBQ)
+UPXQ=
+
 AFLAGS=-mh -0 -d1
 16FLAGS=-fh=16.hed
 BAKAPIFLAGS=-fh=bakapi.hed
 SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k55808#60000#32768
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
-ZFLAGS=-zk0 -zc -zp8# -zq ## -zm
+ZFLAGS=-zk0 -zc -zp8 $(WCLQ) ## -zm
 CFLAGS=$(AFLAGS) $(IFLAGS)-lr -l=dos -wo##wwww
 OFLAGS=-obmiler -out -oh -ei -zp8 -fpi87  -onac -ol+ -ok####x
 FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
@@ -86,6 +90,8 @@ EXEC = 16.exe bakapi.exe $(TESTEXEC)
 
 all: $(EXEC)
 
+#$(16LIBOBJS) => 16.lib
+
 #
 #game and bakapi executables
 #
@@ -93,7 +99,6 @@ all: $(EXEC)
 	wcl $(FLAGS) $(16FLAGS) 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib -fm=16.map
 
 bakapi.exe: bakapi.$(OBJ) gfx.lib modex.lib
-#$(16LIBOBJS)
 	wcl $(FLAGS) $(BAKAPIFLAGS) bakapi.$(OBJ) gfx.lib modex.lib -fm=bakapi.map
 #
 #Test Executables!
@@ -104,9 +109,9 @@ scroll.$(OBJ): $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
 
 tesuto.exe: tesuto.$(OBJ)
-	wcl -zq -mh -d2 tesuto.$(OBJ)
+	wcl $(WCLQ) -mh -d2 tesuto.$(OBJ)
 tesuto.$(OBJ): $(SRC)tesuto.c
-	wcl -zq -mh -d2 -c $(SRC)tesuto.c
+	wcl $(WCLQ) -mh -d2 -c $(SRC)tesuto.c
 
 #sega.exe: sega.$(OBJ)
 #	wcl $(FLAGS) sega.$(OBJ)
@@ -267,16 +272,16 @@ vgmtest.$(OBJ): $(SRC)vgmtest.c
 #non executable objects libraries
 #
 16.lib: $(16LIBOBJS)# doslib.lib vgmsnd.lib
-	wlib -b -q $(16LIBOBJS) $(16LIBOBJS)# doslib.lib vgmsnd.lib
+	wlib -b $(WLIB) 16.lib $(16LIBOBJS)# doslib.lib vgmsnd.lib
 
 gfx.lib: $(GFXLIBOBJS)
-	wlib -b -q gfx.lib $(GFXLIBOBJS)
+	wlib -b $(WLIB) gfx.lib $(GFXLIBOBJS)
 
 doslib.lib: $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
-	wlib -b -q doslib.lib $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
+	wlib -b $(WLIB) doslib.lib $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
 
 vgmsnd.lib: $(VGMSNDOBJ)
-	wlib -b -q vgmsnd.lib $(VGMSNDOBJ)
+	wlib -b $(WLIB) vgmsnd.lib $(VGMSNDOBJ)
 
 modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c
 	wcl $(FLAGS) -c $(SRCLIB)modex16.c
@@ -394,9 +399,9 @@ clean: .symbolic
 	@$(REMOVECOMMAND) doslib.lib
 	@$(REMOVECOMMAND) vgmsnd.lib
 	@wlib -n 16.lib
-	@wlib -n  gfx.lib
-	@wlib -n  doslib.lib
-	@wlib -n  vgmsnd.lib
+	@wlib -n gfx.lib
+	@wlib -n doslib.lib
+	@wlib -n vgmsnd.lib
 	@$(REMOVECOMMAND) *.16
 	@$(REMOVECOMMAND) *.16W
 	@$(REMOVECOMMAND) *.16B
@@ -424,12 +429,12 @@ clean: .symbolic
 #	@echo $(INCLUDE)
 
 comp: .symbolic
-	@upx -9 $(EXEC)
-##	@upx -9 -qqq x-demo.exe
+	@upx -9 $(UPXQ) $(EXEC)
+##	@upx -9 $(UPXQ) x-demo.exe
 
 #git submodule add <repo>
 uplibs: .symbolic
-	@wmake updatelibs
+	@wmake -h updatelibs
 
 updatelibs: .symbolic
 	@cd $(JSMNLIB)
@@ -448,19 +453,19 @@ initlibs: .symbolic
 
 xlib: .symbolic
 	@cd 16/xlib
-	@wmake clean
-	@wmake all
+	@wmake -h clean
+	@wmake -h all
 	@cd ../../
 
 mx: .symbolic
 	@cd 16/xw
 #	@wmake clean
-	@wmake all
+	@wmake -h all
 	@cd ../../
 
 mx_: .symbolic
 	@cd 16/xw_
-	@wmake -f makefile all
+	@wmake -h -f makefile all
 	@cd ../../
 
 www: .symbolic

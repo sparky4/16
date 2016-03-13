@@ -1,12 +1,10 @@
 #!/bin/bash
 . ./w.sh
-wmake
-wmake comp
 if [ -f "*.exe" ]
 	then
-wmake www
+wmake -h www
 fi
-wmake clean
+wmake -h clean
 if [ -z "$*" ]; then
 		pee="wwww"
 	else
