@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2015 sparky4 & pngwen & andrius4669
+ * Copyright (C) 2012-2015 sparky4 & 0gwen & andrius4669
  *
  * This file is part of Project 16.
  *
@@ -35,9 +35,52 @@ main(int argc, char *argv[])
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
 	//while(!IN_KeyDown(sc_Escape))
+	player[0].q=1;
+	player[0].d=2;
+	player[0].persist_aniframe=0;
+	player[0].speed=4;
 	while(!IN_KeyDown(sc_Escape))
 	{
+		#define INC_PER_FRAME if(player[0].q&1) player[0].persist_aniframe++; if(player[0].persist_aniframe>4) player[0].persist_aniframe = 1;
 		IN_ReadControl(0,&player);
+		switch(player[0].d)
+		{
+		//right movement
+		case 3:
+			if(player[0].q<=(TILEWH/(player[0].speed)))
+			{
+				INC_PER_FRAME;
+				player[0].q++;
+			} else { player[0].q = 1; player[0].d = 2; }
+		break;
+
+		//left movement
+		case 1:
+			if(player[0].q<=(TILEWH/(player[0].speed)))
+			{
+				INC_PER_FRAME;
+				player[0].q++;
+			} else { player[0].q = 1; player[0].d = 2; }
+		break;
+
+		//down movement
+		case 4:
+			if(player[0].q<=(TILEWH/(player[0].speed)))
+			{
+				INC_PER_FRAME;
+				player[0].q++;
+			} else { player[0].q = 1; player[0].d = 2; }
+		break;
+
+		//up movement
+		case 0:
+			if(player[0].q<=(TILEWH/(player[0].speed)))
+			{
+				INC_PER_FRAME;
+				player[0].q++;
+			} else { player[0].q = 1; player[0].d = 2; }
+		break;
+	}
 		//printf("%u\n", IN_KeyDown(sc_Escape));
 		//if(
 		IN_qb(sc_9);//>0) printf("IN_qb(sc_9)=%u\n", IN_qb(sc_9));
