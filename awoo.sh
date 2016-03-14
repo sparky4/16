@@ -1,5 +1,5 @@
 #!/bin/bash
-. ./build.sh
+. ./wbuild.sh
 if [ -f "*.exe" ]
 	then
 wmake -h www

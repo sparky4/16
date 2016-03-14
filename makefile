@@ -79,8 +79,7 @@ DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) timer.$(OBJ)
-#
-#3812intf.$(OBJ)
+
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16planar.$(OBJ)
 
 TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe
@@ -90,7 +89,7 @@ EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
 
 all: $(EXEC)
 
-#$(16LIBOBJS) => 16.lib
+#$(16LIBOBJS) => 16.lib bug....
 
 #
 #game and bakapi executables
@@ -154,11 +153,11 @@ tsthimem.exe: tsthimem.$(OBJ) $(16LIBOBJS) $(DOSLIBEXMMOBJ)
 pcxtest.exe: pcxtest.$(OBJ) gfx.lib
 	wcl $(FLAGS) pcxtest.$(OBJ) gfx.lib -fm=pcxtest.map
 
-palettec.exe: palettec.$(OBJ) $(16LIBOBJS) gfx.lib
-	wcl $(FLAGS) palettec.$(OBJ) $(16LIBOBJS) gfx.lib -fm=palettec.map
+palettec.exe: palettec.$(OBJ) gfx.lib #$(16LIBOBJS)
+	wcl $(FLAGS) palettec.$(OBJ) gfx.lib -fm=palettec.map #$(16LIBOBJS)
 
-palettel.exe: palettel.$(OBJ) $(16LIBOBJS) gfx.lib
-	wcl $(FLAGS) palettel.$(OBJ) $(16LIBOBJS) gfx.lib -fm=palettel.map
+palettel.exe: palettel.$(OBJ) gfx.lib #$(16LIBOBJS)
+	wcl $(FLAGS) palettel.$(OBJ) gfx.lib -fm=palettel.map #$(16LIBOBJS)
 
 pcxtest2.exe: pcxtest2.$(OBJ) gfx.lib
 	wcl $(FLAGS) pcxtest2.$(OBJ) gfx.lib -fm=pcxtest2.map
