@@ -48,6 +48,7 @@ OBJ=obj
 TARGET_OS = dos
 
 #EXMMTESTDIR=16$(DIRSEP)exmmtest$(DIRSEP)
+PDIR=..$(DIRSEP)
 SRC=src$(DIRSEP)
 SRCLIB=$(SRC)lib$(DIRSEP)
 JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
@@ -431,6 +432,13 @@ comp: .symbolic
 	@upx -9 $(UPXQ) $(EXEC)
 ##	@upx -9 $(UPXQ) x-demo.exe
 
+www: .symbolic
+#       @rm /var/www/$(EXEC)
+        @cp ./$(EXEC) /var/www/
+        @./z.sh $(EXEC) $(EXEC)
+        @scp -r -P 26 *.exe 4ch.mooo.com:/var/www/16/
+        @scp -r -P 26 /var/www/*.exe.zip.* 4ch.mooo.com:/var/www/16/
+
 #git submodule add <repo>
 uplibs: .symbolic
 	@wmake -h updatelibs
@@ -438,39 +446,41 @@ uplibs: .symbolic
 updatelibs: .symbolic
 	@cd $(JSMNLIB)
 	@git pull
-	@cd ../../../
+	@cd $(PDIR)$(PDIR)$(PDIR)
 	@cd $(DOSLIB)
 	@git pull
 	@./buildall.sh
-	@cd ../../../
+	@cd $(PDIR)$(PDIR)$(PDIR)
+
+reinitlibs: .symbolic
+	@rm -rf $(SRCLIB)doslib
+	@rm -rf $(SRCLIB)jsmn
+	@mkdir $(SRCLIB)doslib
+	@mkdir $(SRCLIB)jsmn
+	@wmake -h initlibs
 
 initlibs: .symbolic
-	@cd src/lib
+	@cd $(SRCLIB)
 	@git clone https://github.com/joncampbell123/doslib.git
 	@git clone https://github.com/zserge/jsmn.git
-	@cd ../../
+	@cd $(PDIR)$(PDIR)
 
+##
+##	experimental libs
+##
 xlib: .symbolic
 	@cd 16/xlib
 	@wmake -h clean
 	@wmake -h all
-	@cd ../../
+	@cd $(PDIR)$(PDIR)
 
 mx: .symbolic
 	@cd 16/xw
 #	@wmake clean
 	@wmake -h all
-	@cd ../../
+	@cd $(PDIR)$(PDIR)
 
 mx_: .symbolic
 	@cd 16/xw_
 	@wmake -h -f makefile all
-	@cd ../../
-
-www: .symbolic
-#	@rm /var/www/$(EXEC)
-	@cp ./$(EXEC) /var/www/
-	@./z.sh $(EXEC) $(EXEC)
-	@scp -r -P 26 *.exe 4ch.mooo.com:/var/www/16/
-	@scp -r -P 26 /var/www/*.exe.zip.* 4ch.mooo.com:/var/www/16/
-
+	@cd $(PDIR)$(PDIR)
