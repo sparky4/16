@@ -1,5 +1,5 @@
 #!/bin/bash
-. ./w.sh
+. ./build.sh
 if [ -f "*.exe" ]
 	then
 wmake -h www
@@ -13,4 +13,4 @@ fi
 ##echo "$pee"
 git add .
 . ./boop.sh "$pee"
-. ./w.sh
+. ./builq.sh

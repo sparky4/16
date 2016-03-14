@@ -62,7 +62,7 @@ WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
 WLIBQ=-q
 WCLQ=-zq $(WLIBQ)
-UPXQ=
+UPXQ=-qqq
 
 AFLAGS=-mh -0 -d1
 16FLAGS=-fh=16.hed
@@ -429,8 +429,10 @@ clean: .symbolic
 #	@echo $(INCLUDE)
 
 comp: .symbolic
-	@upx -9 $(UPXQ) $(EXEC)
-##	@upx -9 $(UPXQ) x-demo.exe
+	@upx -9 $(EXEC)
+
+comq: .symbolic
+        @upx -9 $(UPXQ) $(EXEC)
 
 www: .symbolic
 #       @rm /var/www/$(EXEC)
