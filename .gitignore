@@ -2,7 +2,6 @@
 # Ignore (generated) html files,
 *.html
 *.htm
-*.sh
 !proj16.bfproject
 *.obj
 *.OBJ
@@ -20,12 +19,6 @@ TODO~
 LICENCE~
 *.map
 #*.MAP
-boop.sh
-!awoo.sh
-!w.sh
-!z.sh
-!lowcase.sh
-!wmakegnu.sh
 !modex.lib
 img
 !.git/config
