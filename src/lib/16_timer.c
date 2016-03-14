@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2015 sparky4 & pngwen & andrius4669
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669
  *
  * This file is part of Project 16.
  *
@@ -20,7 +20,7 @@
  *
  */
 
-#include "src/lib/timer.h"
+#include "src/lib/16_timer.h"
 
 clock_t start_timer(global_game_variables_t *gv)
 {
@@ -65,3 +65,40 @@ double time_in_seconds(global_game_variables_t *gv)
 {
 	return (in_t) / CLOCKS_PER_SEC;
 }*/
+
+/*	sync	*/
+void shinkutxt(global_game_variables_t *gv)
+{
+	//float t;
+	if(elapsed_timer(gv) >= (1.0 / gv->kurokku.frames_per_second))
+	{
+		//t=(((*(gv->clock))-gv->clock_start) /18.2);
+		sprintf(gv->pee, "%f fps", (double)gv->kurokku.tiku/ticktock(gv));
+		fprintf(stderr, "%s\n", gv->pee);
+		//(gv->clock_start)=*(gv->clock);
+		gv->kurokku.tiku=0;
+	}
+	gv->kurokku.tiku++;
+	switch(gv->kurokku.fpscap)
+	{
+		case 0:
+			gv->kurokku.frames_per_second=1;
+		break;
+		case 1:
+			//turn this off if XT
+			WaitPee();
+			gv->kurokku.frames_per_second=60;
+		break;
+	}
+}
+
+void WaitPee()
+{
+    while(inp(INPUT_STATUS_1)  & 8)  {
+	/* spin */
+    }
+
+    while(!(inp(INPUT_STATUS_1)  & 8))  {
+	/* spin */
+    }
+}

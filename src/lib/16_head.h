@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2015 sparky4 & pngwen & andrius4669
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669
  *
  * This file is part of Project 16.
  *
@@ -171,6 +171,8 @@ typedef void __based(__self) * memptr;
 #ifdef __BORLANDC__
 typedef void _seg * memptr;
 #endif
+
+#define INPUT_STATUS_1		0x03da
 
 /* local function */
 void wait(clock_t wait);

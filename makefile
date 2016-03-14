@@ -78,7 +78,7 @@ FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
-16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) timer.$(OBJ)
+16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_timer.$(OBJ)
 
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16planar.$(OBJ)
 
@@ -312,8 +312,8 @@ wcpu.$(OBJ): $(WCPULIB)wcpu.h $(WCPULIB)wcpu.c
 mapread.$(OBJ): $(SRCLIB)mapread.h $(SRCLIB)mapread.c
 	wcl $(FLAGS) -c $(SRCLIB)mapread.c
 
-timer.$(OBJ): $(SRCLIB)timer.h $(SRCLIB)timer.c
-	wcl $(FLAGS) -c $(SRCLIB)timer.c
+16_timer.$(OBJ): $(SRCLIB)16_timer.h $(SRCLIB)16_timer.c
+	wcl $(FLAGS) -c $(SRCLIB)16_timer.c
 
 16_in.$(OBJ): $(SRCLIB)16_in.h $(SRCLIB)16_in.c
 	wcl $(FLAGS) -c $(SRCLIB)16_in.c

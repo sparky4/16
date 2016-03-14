@@ -855,7 +855,7 @@ register	KeyboardDef	*def;
 				mx = motion_Left,my = motion_Down;
 			else if (Keyboard[def->downright])
 				mx = motion_Right,my = motion_Down;*/
-			if(DIRECTIONIFELSEGFXTEST)
+			if(DIRECTIONIFELSE)
 			{
 			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
 				if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]))

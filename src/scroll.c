@@ -21,7 +21,7 @@
  */
 
 #include "src/lib/scroll16.h"
-#include "src/lib/timer.h"
+#include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
 
 //#define FADE

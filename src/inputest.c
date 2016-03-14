@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2015 sparky4 & 0gwen & andrius4669
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669
  *
  * This file is part of Project 16.
  *
@@ -27,6 +27,7 @@
 void
 main(int argc, char *argv[])
 {
+	global_game_variables_t gvar;
 	player_t player[MaxPlayers];
 	//extern struct inconfig inpu;
 	testkeyin=0;
@@ -38,11 +39,12 @@ main(int argc, char *argv[])
 	player[0].d=2;
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
-	//player[0].kd[0]=2;	player[0].kd[1]=2;
+	start_timer(&gvar);
 	while(!IN_KeyDown(sc_Escape))
 	{
-		#define INC_PER_FRAME if(player[0].q&1) player[0].persist_aniframe++; if(player[0].persist_aniframe>4) player[0].persist_aniframe = 1;
+		shinkutxt(&gvar);
 		IN_ReadControl(0,&player);
+		#define INC_PER_FRAME if(player[0].q&1) player[0].persist_aniframe++; if(player[0].persist_aniframe>4) player[0].persist_aniframe = 1;
 		switch(player[0].d)
 		{
 		//right movement
@@ -84,6 +86,19 @@ main(int argc, char *argv[])
 		//printf("%u\n", IN_KeyDown(sc_Escape));
 		//if(
 		IN_qb(sc_9);//>0) printf("IN_qb(sc_9)=%u\n", IN_qb(sc_9));
+		if(IN_KeyDown(88))	//speed
+		{
+			switch(gvar.kurokku.fpscap)
+			{
+				case 0:
+					gvar.kurokku.fpscap=1;
+				break;
+				case 1:
+					gvar.kurokku.fpscap=0;
+				break;
+			}
+			//IN_Ack();
+		}
 	}
 	IN_Shutdown();
 	//printf("%u\n", in.Keyboard[sc_Escape]);

@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2015 sparky4 & pngwen & andrius4669
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669
  *
  * This file is part of Project 16.
  *
@@ -145,7 +145,7 @@ extern byte far*  VGA;  /* The VGA Memory */
 #define HIGH_ADDRESS 		0x0C
 #define LOW_ADDRESS		0x0D
 #define VRETRACE		0x08
-#define INPUT_STATUS_1		0x03da
+//#define INPUT_STATUS_1		0x03da	defined in 16_head
 #define DISPLAY_ENABLE		0x01
 #define MAP_MASK		0x02
 #define PAL_READ_REG			0x03C7   /* Color register, read address */

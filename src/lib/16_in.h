@@ -29,7 +29,7 @@
 
 #include <string.h>
 #include "src/lib/16_head.h"
-#include "src/lib/timer.h"
+#include "src/lib/16_timer.h"
 #include "src/lib/bitmap.h"
 #include "src/lib/planar.h"
 
@@ -47,8 +47,8 @@ extern byte testkeyin,testcontrolnoisy;
 //if else for gfxtesting and direction
 //player[pn].d == 2 ||
 //player[pn].d != 2 ||
-#define DIRECTIONIFELSEGFXTEST	(player[pn].info.dir == 2)
-#define NDIRECTIONIFELSEGFXTEST	(player[pn].info.dir != 2)
+#define DIRECTIONIFELSE	(player[pn].info.dir == 2)
+//#define NDIRECTIONIFELSE	(player[pn].info.dir != 2)
 
 #define	KeyInt	9	// The keyboard ISR number
 

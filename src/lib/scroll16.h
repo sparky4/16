@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2015 sparky4 & pngwen & andrius4669
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669
  *
  * This file is part of Project 16.
  *
@@ -30,7 +30,7 @@
 #include "src/lib/bitmap.h"
 #include "src/lib/planar.h"
 #include "src/lib/mapread.h"
-#include "src/lib/timer.h"
+#include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
 
 //#define SPRITE

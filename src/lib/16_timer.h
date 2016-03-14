@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2015 sparky4 & pngwen & andrius4669
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669
  *
  * This file is part of Project 16.
  *
@@ -30,5 +30,7 @@ double elapsed_timer(global_game_variables_t *gv);
 double ticktock(global_game_variables_t *gv);
 double time_in_seconds(global_game_variables_t *gv);
 //double time_in_seconds(time_t in_t);
+void shinkutxt(global_game_variables_t *gv);
+void WaitPee(void);
 
 #endif
