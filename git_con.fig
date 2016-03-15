@@ -1,11 +1,12 @@
 [core]
+	ignorecase = true
 	repositoryformatversion = 0
 	filemode = true
 	bare = false
 	logallrefupdates = true
 [remote "x4"]
 	url = ssh://sparky4@4ch.mooo.com:26/var/www/16/16.git
-	fetch = +refs/heads/*:refs/remotes/x4/*
+	fetch = +refs/heads/*:refs/remotes/origin/*
 [branch "master"]
 	remote = origin
 	merge = refs/heads/master
@@ -18,6 +19,3 @@
 [remote "jp"]
 	url = ssh://sparky4@git.pf.osdn.jp:/gitroot/s/sp/sparky4/project16.git
 	fetch = +refs/heads/*:refs/remotes/jp/*
-[remote "bb"]
-	url = git@bitbucket.org:sparky4/16.git
-	fetch = +refs/heads/*:refs/remotes/bb/*
