@@ -12,14 +12,14 @@ rem for %# in (1,1,%*) do (
 	set y=%w.z%o
 	echo y=%y
 rem  	pause
-	htget http://4ch.mooo.com/16/%w.zip.00%o >> %y
+	htget http://4ch.mooo.com/16/%w.zip.00%o >> %w.zip
 	iff "%@FILESIZE[%y,b]" == "65536" then
 rem  		echo o=%o
 		goto oooo
 	endiff
 	iff NOT "%#" == "0" then
 		shift /1
-		echo %1
+		unzip %w.zip
 		goto loop
 	endiff
 	endiff
