@@ -1,9 +1,9 @@
 #!/bin/bash
 . ./wbuild.sh
-if [ -f "*.exe" ]
-	then
+#if [ -f "*.exe" ]
+#	then
+#fi
 wmake -h www
-fi
 wmake -h clean
 if [ -z "$*" ]; then
 		pee="wwww"

@@ -431,14 +431,17 @@ comp: .symbolic
 	@upx -9 $(EXEC)
 
 comq: .symbolic
-        @upx -9 $(UPXQ) $(EXEC)
+	@upx -9 $(UPXQ) $(EXEC)
 
 www: .symbolic
 #       @rm /var/www/$(EXEC)
-        @cp ./$(EXEC) /var/www/
-        @./z.sh $(EXEC) $(EXEC)
-        @scp -r -P 26 *.exe 4ch.mooo.com:/var/www/16/
-        @scp -r -P 26 /var/www/*.exe.zip.* 4ch.mooo.com:/var/www/16/
+	@cp ./$(EXEC) /var/www/
+	@./z.sh $(EXEC) $(EXEC)
+	@scp -r -P 26 *.exe 4ch.mooo.com:/var/www/16/
+	@scp -r -P 26 /var/www/*.exe.zip.* 4ch.mooo.com:/var/www/16/
+
+getwww: .symbolic
+	@x4get.bat $(EXEC)
 
 #git submodule add <repo>
 uplibs: .symbolic
