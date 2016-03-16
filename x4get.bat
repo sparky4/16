@@ -12,7 +12,7 @@ rem for %# in (1,1,%*) do (
 	set y=%w.z%o
 rem	 echo y=%y
 	htget http://4ch.mooo.com/16/%1.zip.00%o > %y
-	pause
+rem  	pause
 	type %y >> %w.zip
 	iff "%@FILESIZE[%y,b]" == "65536" then
 rem  		echo o=%o
