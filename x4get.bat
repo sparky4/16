@@ -1,4 +1,4 @@
-@echo off
+rem @echo off
 setlocal
 rem for %@eval[%#+1] in (%*) do (
 rem for %# in (1,1,%*) do (
@@ -12,7 +12,8 @@ rem for %# in (1,1,%*) do (
 	set y=%w.z%o
 	echo y=%y
 rem  	pause
-	htget http://4ch.mooo.com/16/%w.zip.00%o >> %w.zip
+	htget http://4ch.mooo.com/16/%w.zip.00%o >> %y
+	type %y >> %w.zip
 	iff "%@FILESIZE[%y,b]" == "65536" then
 rem  		echo o=%o
 		goto oooo
@@ -20,6 +21,7 @@ rem  		echo o=%o
 	iff NOT "%#" == "0" then
 		shift /1
 		unzip %w.zip
+		del %w.z*
 		goto loop
 	endiff
 	endiff
