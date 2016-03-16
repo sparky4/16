@@ -1,4 +1,5 @@
 @echo off
+del %#
 setlocal
 rem for %@eval[%#+1] in (%*) do (
 rem for %# in (1,1,%*) do (
