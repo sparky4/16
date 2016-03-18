@@ -83,6 +83,8 @@ DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16planar.$(OBJ)
 
+DOSLIBLIBS=dl_vga.lib dl_cpu.lib dl_dos.lib
+
 TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe
 # tsthimem.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe sega.exe sountest.exe
@@ -112,12 +114,12 @@ scroll.$(OBJ): $(SRC)scroll.c
 
 
 # NOTE: dos86h = 16-bit huge memory model. memory model must match!
-tesuto.exe: tesuto.$(OBJ) dl_vga.lib 16_head.$(OBJ)
+tesuto.exe: tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ)
 #	%write tmp.cmd option quiet option map=tesuto.map $(DOSLIB_LDFLAGS_DOS16H) file tesuto.obj name tesuto.exe
 #	%write tmp.cmd library $(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib
 #	%write tmp.cmd library $(DOSLIBDIR)/hw/dos/dos86h/dos.lib
 #	@wlink @tmp.cmd
-	wcl $(FLAGS) $(WCLQ) tesuto.$(OBJ) dl_vga.lib 16_head.$(OBJ)
+	wcl $(FLAGS) $(WCLQ) tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ)
 tesuto.$(OBJ): $(SRC)tesuto.c
 	wcl $(FLAGS) $(WCLQ) -c $(SRC)tesuto.c
 #tesuto.exe: tesuto.$(OBJ)
@@ -300,6 +302,12 @@ vgmsnd.lib: $(VGMSNDOBJ)
 dl_vga.lib:
 	cd $(DOSLIBDIR)/hw/vga/dos86h && ./make.sh
 
+dl_cpu.lib:
+	cd $(DOSLIBDIR)/hw/cpu/dos86h && ./make.sh
+
+dl_dos.lib:
+	cd $(DOSLIBDIR)/hw/dos/dos86h && ./make.sh
+
 modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c
 	wcl $(FLAGS) -c $(SRCLIB)modex16.c
 
@@ -413,13 +421,13 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.$(OBJ)
 	@$(REMOVECOMMAND) 16.lib
 	@$(REMOVECOMMAND) gfx.lib
-	@$(REMOVECOMMAND) doslib.lib
 	@$(REMOVECOMMAND) vgmsnd.lib
-	@$(REMOVECOMMAND) dl_vga.lib
+	@$(REMOVECOMMAND) $(DOSLIBLIBS)
 	@wlib -n $(WLIBQ) 16.lib
 	@wlib -n $(WLIBQ) gfx.lib
-	@wlib -n $(WLIBQ) doslib.lib
 	@wlib -n $(WLIBQ) vgmsnd.lib
+	@wlib -n $(WLIBQ) dl_cpu.lib
+	@wlib -n $(WLIBQ) dl_dos.lib
 	@wlib -n $(WLIBQ) dl_vga.lib
 	@$(REMOVECOMMAND) *.16
 	@$(REMOVECOMMAND) *.16W
