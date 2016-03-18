@@ -58,6 +58,7 @@ MODEXLIB=$(SRCLIB)modex16$(DIRSEP)
 MODEXLIB_=$(SRCLIB)modex$(DIRSEP)
 VGMSNDLIB=$(SRCLIB)vgmsnd$(DIRSEP)
 DOSLIB=$(SRCLIB)doslib$(DIRSEP)
+DOSLIBDIR=$(SRCLIB)doslib
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
 WLIBQ=-q
@@ -87,6 +88,8 @@ TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe sega.exe sountest.exe
 EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
 
+!include $(DOSLIBDIR)/extdep.mak
+
 all: $(EXEC)
 
 #$(16LIBOBJS) => 16.lib bug....
@@ -107,10 +110,20 @@ scroll.exe: scroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib
 scroll.$(OBJ): $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
 
-tesuto.exe: tesuto.$(OBJ)
-	wcl $(WCLQ) -mh -d2 tesuto.$(OBJ)
+
+# NOTE: dos86h = 16-bit huge memory model. memory model must match!
+tesuto.exe: tesuto.$(OBJ) dl_vga.lib
+#	%write tmp.cmd option quiet option map=tesuto.map $(DOSLIB_LDFLAGS_DOS16H) file tesuto.obj name tesuto.exe
+#	%write tmp.cmd library $(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib
+#	%write tmp.cmd library $(DOSLIBDIR)/hw/dos/dos86h/dos.lib
+#	@wlink @tmp.cmd
+	wcl $(WCLQ) tesuto.$(OBJ) dl_vga.lib
 tesuto.$(OBJ): $(SRC)tesuto.c
-	wcl $(WCLQ) -mh -d2 -c $(SRC)tesuto.c
+	wcl $(WCLQ) -c $(SRC)tesuto.c
+#tesuto.exe: tesuto.$(OBJ)
+#	wcl $(WCLQ) -mh -d2 tesuto.$(OBJ)
+#tesuto.$(OBJ): $(SRC)tesuto.c
+#	wcl $(WCLQ) -mh -d2 -c $(SRC)tesuto.c
 
 #sega.exe: sega.$(OBJ)
 #	wcl $(FLAGS) sega.$(OBJ)
@@ -282,6 +295,11 @@ doslib.lib: $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
 vgmsnd.lib: $(VGMSNDOBJ)
 	wlib -b $(WLIBQ) vgmsnd.lib $(VGMSNDOBJ)
 
+
+# library deps 16-bit huge
+dl_vga.lib:
+	cd $(DOSLIBDIR)/hw/vga/dos86h && ./make.sh
+
 modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c
 	wcl $(FLAGS) -c $(SRCLIB)modex16.c
 
@@ -397,10 +415,12 @@ clean: .symbolic
 	@$(REMOVECOMMAND) gfx.lib
 	@$(REMOVECOMMAND) doslib.lib
 	@$(REMOVECOMMAND) vgmsnd.lib
+	@$(REMOVECOMMAND) dl_vga.lib
 	@wlib -n $(WLIBQ) 16.lib
 	@wlib -n $(WLIBQ) gfx.lib
 	@wlib -n $(WLIBQ) doslib.lib
 	@wlib -n $(WLIBQ) vgmsnd.lib
+	@wlib -n $(WLIBQ) dl_vga.lib
 	@$(REMOVECOMMAND) *.16
 	@$(REMOVECOMMAND) *.16W
 	@$(REMOVECOMMAND) *.16B
