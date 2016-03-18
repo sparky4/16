@@ -58,6 +58,7 @@ MODEXLIB=$(SRCLIB)modex16$(DIRSEP)
 MODEXLIB_=$(SRCLIB)modex$(DIRSEP)
 VGMSNDLIB=$(SRCLIB)vgmsnd$(DIRSEP)
 DOSLIB=$(SRCLIB)doslib$(DIRSEP)
+DOSLIBDIR=$(SRCLIB)doslib
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
 WLIBQ=-q
@@ -82,10 +83,14 @@ DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16planar.$(OBJ)
 
+DOSLIBLIBS=dl_vga.lib dl_cpu.lib dl_dos.lib
+
 TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe
 # tsthimem.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe sega.exe sountest.exe
 EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
+
+!include $(DOSLIBDIR)/extdep.mak
 
 all: $(EXEC)
 
@@ -107,10 +112,20 @@ scroll.exe: scroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib
 scroll.$(OBJ): $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
 
-tesuto.exe: tesuto.$(OBJ)
-	wcl $(WCLQ) -mh -d2 tesuto.$(OBJ)
+
+# NOTE: dos86h = 16-bit huge memory model. memory model must match!
+tesuto.exe: tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ)
+#	%write tmp.cmd option quiet option map=tesuto.map $(DOSLIB_LDFLAGS_DOS16H) file tesuto.obj name tesuto.exe
+#	%write tmp.cmd library $(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib
+#	%write tmp.cmd library $(DOSLIBDIR)/hw/dos/dos86h/dos.lib
+#	@wlink @tmp.cmd
+	wcl $(FLAGS) $(WCLQ) tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ)
 tesuto.$(OBJ): $(SRC)tesuto.c
-	wcl $(WCLQ) -mh -d2 -c $(SRC)tesuto.c
+	wcl $(FLAGS) $(WCLQ) -c $(SRC)tesuto.c
+#tesuto.exe: tesuto.$(OBJ)
+#	wcl $(WCLQ) -mh -d2 tesuto.$(OBJ)
+#tesuto.$(OBJ): $(SRC)tesuto.c
+#	wcl $(WCLQ) -mh -d2 -c $(SRC)tesuto.c
 
 #sega.exe: sega.$(OBJ)
 #	wcl $(FLAGS) sega.$(OBJ)
@@ -282,6 +297,17 @@ doslib.lib: $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
 vgmsnd.lib: $(VGMSNDOBJ)
 	wlib -b $(WLIBQ) vgmsnd.lib $(VGMSNDOBJ)
 
+
+# library deps 16-bit huge
+dl_vga.lib:
+	cd $(DOSLIBDIR)/hw/vga/dos86h && ./make.sh
+
+dl_cpu.lib:
+	cd $(DOSLIBDIR)/hw/cpu/dos86h && ./make.sh
+
+dl_dos.lib:
+	cd $(DOSLIBDIR)/hw/dos/dos86h && ./make.sh
+
 modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c
 	wcl $(FLAGS) -c $(SRCLIB)modex16.c
 
@@ -395,12 +421,14 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.$(OBJ)
 	@$(REMOVECOMMAND) 16.lib
 	@$(REMOVECOMMAND) gfx.lib
-	@$(REMOVECOMMAND) doslib.lib
 	@$(REMOVECOMMAND) vgmsnd.lib
+	@$(REMOVECOMMAND) $(DOSLIBLIBS)
 	@wlib -n $(WLIBQ) 16.lib
 	@wlib -n $(WLIBQ) gfx.lib
-	@wlib -n $(WLIBQ) doslib.lib
 	@wlib -n $(WLIBQ) vgmsnd.lib
+	@wlib -n $(WLIBQ) dl_cpu.lib
+	@wlib -n $(WLIBQ) dl_dos.lib
+	@wlib -n $(WLIBQ) dl_vga.lib
 	@$(REMOVECOMMAND) *.16
 	@$(REMOVECOMMAND) *.16W
 	@$(REMOVECOMMAND) *.16B
