@@ -440,9 +440,9 @@ clean: .symbolic
 	@wlib -n $(WLIBQ) 16.lib
 	@wlib -n $(WLIBQ) gfx.lib
 	@wlib -n $(WLIBQ) vgmsnd.lib
-	@wlib -n $(WLIBQ) dl_cpu.lib
-	@wlib -n $(WLIBQ) dl_dos.lib
-	@wlib -n $(WLIBQ) dl_vga.lib
+	@$(REMOVECOMMAND) dl_cpu.lib
+	@$(REMOVECOMMAND) dl_dos.lib
+	@$(REMOVECOMMAND) dl_vga.lib
 	@$(REMOVECOMMAND) *.16
 	@$(REMOVECOMMAND) *.16W
 	@$(REMOVECOMMAND) *.16B
