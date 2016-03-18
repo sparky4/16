@@ -112,14 +112,14 @@ scroll.$(OBJ): $(SRC)scroll.c
 
 
 # NOTE: dos86h = 16-bit huge memory model. memory model must match!
-tesuto.exe: tesuto.$(OBJ) dl_vga.lib
+tesuto.exe: tesuto.$(OBJ) dl_vga.lib 16_head.$(OBJ)
 #	%write tmp.cmd option quiet option map=tesuto.map $(DOSLIB_LDFLAGS_DOS16H) file tesuto.obj name tesuto.exe
 #	%write tmp.cmd library $(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib
 #	%write tmp.cmd library $(DOSLIBDIR)/hw/dos/dos86h/dos.lib
 #	@wlink @tmp.cmd
-	wcl $(WCLQ) tesuto.$(OBJ) dl_vga.lib
+	wcl $(FLAGS) $(WCLQ) tesuto.$(OBJ) dl_vga.lib 16_head.$(OBJ)
 tesuto.$(OBJ): $(SRC)tesuto.c
-	wcl $(WCLQ) -c $(SRC)tesuto.c
+	wcl $(FLAGS) $(WCLQ) -c $(SRC)tesuto.c
 #tesuto.exe: tesuto.$(OBJ)
 #	wcl $(WCLQ) -mh -d2 tesuto.$(OBJ)
 #tesuto.$(OBJ): $(SRC)tesuto.c
