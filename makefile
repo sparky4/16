@@ -90,8 +90,6 @@ TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe sega.exe sountest.exe
 EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
 
-!include $(DOSLIBDIR)/extdep.mak
-
 all: $(EXEC)
 
 #$(16LIBOBJS) => 16.lib bug....
@@ -481,17 +479,19 @@ updatelibs: .symbolic
 	@cd $(PDIR)$(PDIR)$(PDIR)
 	@cd $(DOSLIB)
 	@git pull
+	!include $(DOSLIBDIR)/extdep.mak
 	@./buildall.sh
 	@cd $(PDIR)$(PDIR)$(PDIR)
 
 reinitlibs: .symbolic
 	@rm -rf $(SRCLIB)doslib
 	@rm -rf $(SRCLIB)jsmn
-	@mkdir $(SRCLIB)doslib
-	@mkdir $(SRCLIB)jsmn
+	#@mkdir $(SRCLIB)doslib
+	#@mkdir $(SRCLIB)jsmn
 	@wmake -h initlibs
 
 initlibs: .symbolic
+	@cp git_modu.les .gitmodules
 	@cd $(SRCLIB)
 	@git clone https://github.com/joncampbell123/doslib.git
 	@git clone https://github.com/zserge/jsmn.git
