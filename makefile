@@ -61,6 +61,8 @@ DOSLIB=$(SRCLIB)doslib$(DIRSEP)
 DOSLIBDIR=$(SRCLIB)doslib
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
+!include $(DOSLIBDIR)/extdep.mak
+
 WLIBQ=-q
 WCLQ=-zq $(WLIBQ)
 UPXQ=-qqq
@@ -71,7 +73,7 @@ BAKAPIFLAGS=-fh=bakapi.hed
 SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k55808#60000#32768
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
 ZFLAGS=-zk0 -zc -zp8 $(WCLQ) ## -zm
-CFLAGS=$(AFLAGS) $(IFLAGS)-lr -l=dos -wo##wwww
+CFLAGS=$(AFLAGS) $(IFLAGS)-lr -l=dos -wo -i$(DOSLIB) ##wwww
 OFLAGS=-obmiler -out -oh -ei -zp8 -fpi87  -onac -ol+ -ok####x
 FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 
@@ -83,7 +85,8 @@ DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16planar.$(OBJ)
 
-DOSLIBLIBS=dl_vga.lib dl_cpu.lib dl_dos.lib
+DOSLIBLIBS=$(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib $(DOSLIBDIR)/hw/dos/dos86h/dos.lib $(DOSLIBDIR)/hw/vga/dos86h/vga.lib
+#dl_vga.lib dl_cpu.lib dl_dos.lib
 
 TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe
 # tsthimem.exe
@@ -117,10 +120,8 @@ tesuto.exe: tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ)
 #	%write tmp.cmd library $(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib
 #	%write tmp.cmd library $(DOSLIBDIR)/hw/dos/dos86h/dos.lib
 #	@wlink @tmp.cmd
-	!include $(DOSLIBDIR)/extdep.mak
 	wcl $(FLAGS) $(WCLQ) tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ)
 tesuto.$(OBJ): $(SRC)tesuto.c
-	!include $(DOSLIBDIR)/extdep.mak
 	wcl $(FLAGS) $(WCLQ) -c $(SRC)tesuto.c
 #tesuto.exe: tesuto.$(OBJ)
 #	wcl $(WCLQ) -mh -d2 tesuto.$(OBJ)
@@ -291,22 +292,17 @@ vgmtest.$(OBJ): $(SRC)vgmtest.c
 gfx.lib: $(GFXLIBOBJS)
 	wlib -b $(WLIBQ) gfx.lib $(GFXLIBOBJS)
 
-doslib.lib: $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
-	wlib -b $(WLIBQ) doslib.lib $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
+#doslib.lib: $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
+#	wlib -b $(WLIBQ) doslib.lib $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
 
 vgmsnd.lib: $(VGMSNDOBJ)
 	wlib -b $(WLIBQ) vgmsnd.lib $(VGMSNDOBJ)
 
-
 # library deps 16-bit huge
-dl_vga.lib:
-	cd $(DOSLIBDIR)/hw/vga/dos86h && ./make.sh
-
-dl_cpu.lib:
-	cd $(DOSLIBDIR)/hw/cpu/dos86h && ./make.sh
-
-dl_dos.lib:
-	cd $(DOSLIBDIR)/hw/dos/dos86h && ./make.sh
+$(DOSLIBLIBS): .symbolic
+	@cd $(DOSLIB)
+	@./buildall.sh
+	@cd $(PDIR)$(PDIR)$(PDIR)
 
 modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c
 	wcl $(FLAGS) -c $(SRCLIB)modex16.c
@@ -481,7 +477,6 @@ updatelibs: .symbolic
 	@cd $(PDIR)$(PDIR)$(PDIR)
 	@cd $(DOSLIB)
 	@git pull
-	!include $(DOSLIBDIR)/extdep.mak
 	@./buildall.sh
 	@cd $(PDIR)$(PDIR)$(PDIR)
 
