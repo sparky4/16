@@ -418,13 +418,9 @@ clean: .symbolic
 	@$(REMOVECOMMAND) 16.lib
 	@$(REMOVECOMMAND) gfx.lib
 	@$(REMOVECOMMAND) vgmsnd.lib
-	@$(REMOVECOMMAND) $(DOSLIBLIBS)
 	@wlib -n $(WLIBQ) 16.lib
 	@wlib -n $(WLIBQ) gfx.lib
 	@wlib -n $(WLIBQ) vgmsnd.lib
-	@wlib -n $(WLIBQ) dl_cpu.lib
-	@wlib -n $(WLIBQ) dl_dos.lib
-	@wlib -n $(WLIBQ) dl_vga.lib
 	@$(REMOVECOMMAND) *.16
 	@$(REMOVECOMMAND) *.16W
 	@$(REMOVECOMMAND) *.16B
@@ -441,6 +437,7 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.map
 	@$(REMOVECOMMAND) *.err
 	@$(COPYCOMMAND) .git/config git_con.fig
+	@$(COPYCOMMAND) .gitmodules git_modu.les
 #	@$(COPYCOMMAND) $(SRC)exmmtest.c $(EXMMTESTDIR)$(SRC)
 #	@$(COPYCOMMAND) $(SRCLIB)16_mm.* $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(SRCLIB)16_head.* $(EXMMTESTDIR)$(SRCLIB)
