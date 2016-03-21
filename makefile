@@ -117,8 +117,10 @@ tesuto.exe: tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ)
 #	%write tmp.cmd library $(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib
 #	%write tmp.cmd library $(DOSLIBDIR)/hw/dos/dos86h/dos.lib
 #	@wlink @tmp.cmd
+	!include $(DOSLIBDIR)/extdep.mak
 	wcl $(FLAGS) $(WCLQ) tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ)
 tesuto.$(OBJ): $(SRC)tesuto.c
+	!include $(DOSLIBDIR)/extdep.mak
 	wcl $(FLAGS) $(WCLQ) -c $(SRC)tesuto.c
 #tesuto.exe: tesuto.$(OBJ)
 #	wcl $(WCLQ) -mh -d2 tesuto.$(OBJ)
