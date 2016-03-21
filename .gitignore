@@ -27,4 +27,8 @@ img
 #!foo.html
 # Ignore objects and archives.
 *.[oa]
-
+cute.vrl
+cute.pal
+dl_vga.lib
+dl_cpu.lib
+dl_dos.lib

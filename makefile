@@ -75,6 +75,7 @@ CFLAGS=$(AFLAGS) $(IFLAGS)-lr -l=dos -wo##wwww
 OFLAGS=-obmiler -out -oh -ei -zp8 -fpi87  -onac -ol+ -ok####x
 FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 
+PCX2VRL=$(DOSLIBDIR)/hw/vga/pcx2vrl
 
 DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
@@ -92,7 +93,17 @@ EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
 
 !include $(DOSLIBDIR)/extdep.mak
 
-all: $(EXEC)
+all: $(EXEC) datatest
+
+cute.vrl: data/cute.pcx $(PCX2VRL)
+	$(PCX2VRL) -i data/cute.pcx -o cute.vrl -p cute.pal -tc 254
+	# you can then test this against TESUTO.EXE by typing: TESUTO CUTE.VRL CUTE.PAL
+
+datatest: cute.vrl .symbolic
+
+# doslib PCX to VRL converter native host binary
+$(PCX2VRL): $(DOSLIBDIR)/hw/vga/pcx2vrl.c
+	cd $(DOSLIBDIR)/hw/vga && make pcx2vrl
 
 #$(16LIBOBJS) => 16.lib bug....
 
@@ -121,7 +132,7 @@ tesuto.exe: tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ)
 #	@wlink @tmp.cmd
 	wcl $(FLAGS) $(WCLQ) tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ)
 tesuto.$(OBJ): $(SRC)tesuto.c
-	wcl $(FLAGS) $(WCLQ) -c $(SRC)tesuto.c
+	wcl $(FLAGS) $(DOSLIB_CINCLUDE) $(WCLQ) -c $(SRC)tesuto.c
 #tesuto.exe: tesuto.$(OBJ)
 #	wcl $(WCLQ) -mh -d2 tesuto.$(OBJ)
 #tesuto.$(OBJ): $(SRC)tesuto.c
@@ -300,13 +311,16 @@ vgmsnd.lib: $(VGMSNDOBJ)
 
 # library deps 16-bit huge
 dl_vga.lib:
-	cd $(DOSLIBDIR)/hw/vga/dos86h && ./make.sh
+	cd $(DOSLIBDIR)/hw/vga && ./make.sh
+	cp $(DOSLIBDIR)/hw/vga/dos86h/vga.lib dl_vga.lib
 
 dl_cpu.lib:
-	cd $(DOSLIBDIR)/hw/cpu/dos86h && ./make.sh
+	cd $(DOSLIBDIR)/hw/cpu && ./make.sh
+	cp $(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib dl_cpu.lib
 
 dl_dos.lib:
-	cd $(DOSLIBDIR)/hw/dos/dos86h && ./make.sh
+	cd $(DOSLIBDIR)/hw/dos && ./make.sh
+	cp $(DOSLIBDIR)/hw/dos/dos86h/dos.lib dl_dos.lib
 
 modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c
 	wcl $(FLAGS) -c $(SRCLIB)modex16.c
@@ -426,9 +440,9 @@ clean: .symbolic
 	@wlib -n $(WLIBQ) 16.lib
 	@wlib -n $(WLIBQ) gfx.lib
 	@wlib -n $(WLIBQ) vgmsnd.lib
-	@wlib -n $(WLIBQ) dl_cpu.lib
-	@wlib -n $(WLIBQ) dl_dos.lib
-	@wlib -n $(WLIBQ) dl_vga.lib
+	@$(REMOVECOMMAND) dl_cpu.lib
+	@$(REMOVECOMMAND) dl_dos.lib
+	@$(REMOVECOMMAND) dl_vga.lib
 	@$(REMOVECOMMAND) *.16
 	@$(REMOVECOMMAND) *.16W
 	@$(REMOVECOMMAND) *.16B
