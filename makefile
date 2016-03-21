@@ -61,7 +61,7 @@ DOSLIB=$(SRCLIB)doslib$(DIRSEP)
 DOSLIBDIR=$(SRCLIB)doslib
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
-!include $(DOSLIBDIR)/extdep.mak
+include $(DOSLIBDIR)/extdep.mak
 
 WLIBQ=-q
 WCLQ=-zq $(WLIBQ)
