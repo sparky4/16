@@ -299,10 +299,16 @@ vgmsnd.lib: $(VGMSNDOBJ)
 	wlib -b $(WLIBQ) vgmsnd.lib $(VGMSNDOBJ)
 
 # library deps 16-bit huge
-$(DOSLIBLIBS): .symbolic
-	@cd $(DOSLIB)
-	@./buildall.sh
-	@cd $(PDIR)$(PDIR)$(PDIR)
+$(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib:
+	cd $(DOSLIBDIR)/hw/cpu && ./make.sh
+$(DOSLIBDIR)/hw/dos/dos86h/dos.lib:
+	cd $(DOSLIBDIR)/hw/dos && ./make.sh
+$(DOSLIBDIR)/hw/vga/dos86h/vga.lib:
+	cd $(DOSLIBDIR)/hw/vga && ./make.sh
+#$(DOSLIBLIBS): .symbolic
+#	@cd $(DOSLIB)
+#	@./buildall.sh
+#	@cd $(PDIR)$(PDIR)$(PDIR)
 
 modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c
 	wcl $(FLAGS) -c $(SRCLIB)modex16.c
