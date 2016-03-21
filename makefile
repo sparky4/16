@@ -92,8 +92,6 @@ EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
 
 all: $(EXEC)
 
-!include $(DOSLIBDIR)/extdep.mak
-
 #$(16LIBOBJS) => 16.lib bug....
 #
 #game and bakapi executables
@@ -295,6 +293,9 @@ gfx.lib: $(GFXLIBOBJS)
 
 vgmsnd.lib: $(VGMSNDOBJ)
 	wlib -b $(WLIBQ) vgmsnd.lib $(VGMSNDOBJ)
+
+# extdep:
+# !include $(DOSLIBDIR)/extdep.mak
 
 # library deps 16-bit huge
 $(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib:
