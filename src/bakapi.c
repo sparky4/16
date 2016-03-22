@@ -54,6 +54,7 @@ main(int argc, char *argvar[])
 	bakapee.bakax=0;
 	bakapee.bakay=0;
 	bakapee.coor=0;
+	bakapee.tile=0;
 
 	/* setup camera and screen~ */
 	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);

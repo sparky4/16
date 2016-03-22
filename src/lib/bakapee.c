@@ -73,31 +73,35 @@ void ssd(page_t *page, bakapee_t *pee, word svq)
 //plot pixel or plot tile
 void dingpp(page_t *page, bakapee_t *pee)
 {
-#ifdef TILE
+	if(pee->tile)
+	{
 #ifndef MXLIB
 	//fill_block(pee->xx, pee->yy, pee->xx+TILEWH, pee->yy+TILEWH, pee->coor);
-	mxFillBox(pee->xx, pee->yy, TILEWH, TILEWH, pee->coor, OP_SET);
+		mxFillBox(pee->xx, pee->yy, TILEWH, TILEWH, pee->coor, OP_SET);
 #else
-	modexClearRegion(page, pee->xx, pee->yy, TILEWH, TILEWH, pee->coor);
+		modexClearRegion(page, pee->xx, pee->yy, TILEWH, TILEWH, pee->coor);
 #endif
-#else
-	modexputPixel(page, pee->xx, pee->yy, pee->coor);
-#endif
+	}
+	else
+		modexputPixel(page, pee->xx, pee->yy, pee->coor);
 }
 
 void dingo(page_t *page, bakapee_t *pee)
 {
-	#ifdef TILE
-	if(pee->xx<0) pee->xx=(page->sw-TILEWH);
-	if(pee->yy<0) pee->yy=(page->sh-TILEWH);
-	if(pee->xx>(page->sw-TILEWH)) pee->xx=0;
-	if(pee->yy>(page->sh-TILEWH)/*+(TILEWH*BUFFMX)*/) pee->yy=0;
-	#else
-	if(pee->xx<0) pee->xx=page->sw;
-	if(pee->yy<0) pee->yy=page->sh;
-	if(pee->xx>page->sw) pee->xx=0;
-	if(pee->yy>page->sh) pee->yy=0;
-	#endif
+	if(pee->tile)
+	{
+		if(pee->xx<0) pee->xx=(page->sw-TILEWH);
+		if(pee->yy<0) pee->yy=(page->sh-TILEWH);
+		if(pee->xx>(page->sw-TILEWH)) pee->xx=0;
+		if(pee->yy>(page->sh-TILEWH)/*+(TILEWH*BUFFMX)*/) pee->yy=0;
+	}
+		else
+	{
+		if(pee->xx<0) pee->xx=page->sw;
+		if(pee->yy<0) pee->yy=page->sh;
+		if(pee->xx>page->sw) pee->xx=0;
+		if(pee->yy>page->sh) pee->yy=0;
+	}
 }
 
 //assigning values from randomizer
@@ -106,35 +110,27 @@ void dingas(bakapee_t *pee)
 	if(pee->gq == BONK) dingu(pee);
 	if(!pee->bakax)
 	{
-		#ifdef TILE
+		if(pee->tile)
 		pee->xx-=TILEWH;
-		#else
-		pee->xx--;
-		#endif
+		else pee->xx--;
 	}
 	else if(pee->bakax>1)
 	{
-		#ifdef TILE
+		if(pee->tile)
 		pee->xx+=TILEWH;
-		#else
-		pee->xx++;
-		#endif
+		else pee->xx++;
 	}
 	if(!pee->bakay)
 	{
-		#ifdef TILE
+		if(pee->tile)
 		pee->yy-=TILEWH;
-		#else
-		pee->yy--;
-		#endif
+		else pee->yy--;
 	}
 	else if(pee->bakay>1)
 	{
-		#ifdef TILE
+		if(pee->tile)
 		pee->yy+=TILEWH;
-		#else
-		pee->yy++;
-		#endif
+		else pee->yy++;
 	}
 }
 
@@ -184,11 +180,10 @@ void ding(page_t *page, bakapee_t *pee, word q)
 			dingas(pee);
 			dingo(page, pee);
 			dingpp(page, pee);	//plot the pixel/tile
-#ifdef TILE
+			if(pee->tile)
 			modexClearRegion(page, (rand()*TILEWH)%page->width, (rand()*TILEWH)%(page->height), TILEWH, TILEWH, 0);
-#else
+			else
 			modexputPixel(page, rand()%page->width, rand()%page->height, 0);
-#endif
 		break;
 		case 3:
 			dingq(pee);
@@ -270,11 +265,10 @@ void ding(page_t *page, bakapee_t *pee, word q)
 			tx+=pee->xx+TILEWH+4;
 			ty+=pee->yy+TILEWH+4;
 			modexClearRegion(page, tx, ty, 4, 4, pee->coor);
-#ifdef TILE
+			if(pee->tile)
 			modexClearRegion(page, (rand()*TILEWH)%page->width, (rand()*TILEWH)%(page->height), TILEWH, TILEWH, 0);
-#else
+			else
 			modexputPixel(page, rand()%page->width, rand()%(page->height), 0);
-#endif
 			//printf("%d %d %d %d %d %d\n", pee->xx, pee->yy, tx, ty, TILEWH);
 		break;
 		default:

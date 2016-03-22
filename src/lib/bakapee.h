@@ -44,6 +44,7 @@ typedef struct {
 	sword bakax, bakay;
 	sword xx, yy, sx, sy;
 	byte coor;
+	boolean tile;
 } bakapee_t;
 
 void clrstdin();
