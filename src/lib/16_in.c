@@ -887,7 +887,7 @@ register	KeyboardDef	*def;
 						break;
 					}
 					if(testcontrolnoisy > 0){ printf("dir=%c ", dirchar(dir)); printf("pdir=%c	", dirchar(player[pn].pdir)); }
-				//}
+				}
 			}
 			//input from player
 			if (inpu.Keyboard[def->button0])
