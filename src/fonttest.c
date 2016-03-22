@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2015 sparky4 & pngwen & andrius4669
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123
  *
  * This file is part of Project 16.
  *
@@ -81,7 +81,7 @@ void main(int argc, char near *argv[])
 	{
 		printf("type 3\n");
 		t=3;
-		w=16;	
+		w=16;
 	}
 
 

@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2015 sparky4 & pngwen & andrius4669
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123
  *
  * This file is part of Project 16.
  *
@@ -11,7 +11,6 @@
  * Project 16 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
