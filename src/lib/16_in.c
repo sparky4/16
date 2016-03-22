@@ -867,9 +867,8 @@ register	KeyboardDef	*def;
 					mx = motion_Left;
 				if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left]))// || player[pn].pdir != 1)
 					mx = motion_Right;
-
 			//}else
-				if(mx+my>1<mx+my)
+				if(mx+my>1<mx+my && mx+my>-1<mx+my)
 				{	//2 keys pressed
 					switch (player[pn].pdir)
 					{
