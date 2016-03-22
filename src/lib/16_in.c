@@ -857,17 +857,20 @@ register	KeyboardDef	*def;
 				mx = motion_Right,my = motion_Down;*/
 			if(DIRECTIONIFELSE)
 			{
-			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
+			//if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
 				if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]))
 					my = motion_Up;
 				if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up]))
 					my = motion_Down;
-			}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
+			//}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
 				if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]))
 					mx = motion_Left;
 				if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left]))// || player[pn].pdir != 1)
 					mx = motion_Right;
-			}else{	//2 keys pressed
+
+			//}else
+				if(mx+my>1<mx+my)
+				{	//2 keys pressed
 					switch (player[pn].pdir)
 					{
 						case 0:
@@ -884,7 +887,7 @@ register	KeyboardDef	*def;
 						break;
 					}
 					if(testcontrolnoisy > 0){ printf("dir=%c ", dirchar(dir)); printf("pdir=%c	", dirchar(player[pn].pdir)); }
-				}
+				//}
 			}
 			//input from player
 			if (inpu.Keyboard[def->button0])
