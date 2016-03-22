@@ -11,6 +11,8 @@
 #include <dos.h>
 */
 
+global_game_variables_t gvar;
+
 #pragma pack(push,1)
 struct vrl_header {
 	uint8_t			vrl_sig[4];		// +0x00  "VRL1"
@@ -109,7 +111,8 @@ int main(int argc,char **argv) {
 	}
 	int10_setmode(19);
 	update_state_from_vga();
-	vga_enable_256color_modex(); // VGA mode X
+	//vga_enable_256color_modex(); // VGA mode X
+	VGAmodeX(1, &gvar);
 
 	/* load color palette */
 	fd = open(argv[2],O_RDONLY|O_BINARY);
@@ -143,6 +146,7 @@ int main(int argc,char **argv) {
 	while (getch() != 13);
 
 	int10_setmode(3);
+	//VGAmodeX(0, &gvar);
 	buffer = NULL;
 	free(buffer);
 	bufsz = 0;

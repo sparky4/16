@@ -2,6 +2,7 @@
 #define __TESUTO_H__
 
 #include "src/lib/16_head.h"
+#include "src/lib/modex16.h"
 #include <hw/cpu/cpu.h>
 #include <hw/vga/vga.h>
 #include <hw/dos/dos.h>
