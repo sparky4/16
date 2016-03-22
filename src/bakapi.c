@@ -83,13 +83,15 @@ main(int argc, char *argvar[])
 #else
 			VGAmodeX(0, &gvar);
 #endif
-			//modexLeave();
 			// user imput switch
 			fprintf(stderr, "xx=%d	yy=%d\n", bakapee.xx, bakapee.yy);
 			printf("Enter 1, 2, 3, 4, or 6 to run a screensaver, or enter 0 to quit.\n", getch());  // prompt the user
-//			printf("Enter 1, 2, 3, 4, or 6 to run a screensaver, or enter 0 to quit.\n");  // prompt the user
-//			clrstdin();
-			scanf("%d", &key);
+			//scanf("%d", &key);
+			if(scanf("%d", &key) != 1)
+			{
+				printf("%d\n", key);
+			}
+			getch();
 			//if(key==3){xx=yy=0;} // crazy screen saver wwww
 			if(key==0){ d=0; }else{
 				gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
