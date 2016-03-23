@@ -473,16 +473,17 @@ getwww: .symbolic
 ##	External library management~ ^^
 ##
 #git submodule add <repo>
-uplibs: .symbolic
-	@wmake -h updatelibs
+mkdl: .symbolic
+	@cd $(DOSLIB)
+	@./buildall.sh
+	@cd $(PDIR)$(PDIR)$(PDIR)
 
-updatelibs: .symbolic
+uplibs: .symbolic
 	@cd $(JSMNLIB)
 	@git pull
 	@cd $(PDIR)$(PDIR)$(PDIR)
 	@cd $(DOSLIB)
 	@git pull
-# 	@./buildall.sh
 	@cd $(PDIR)$(PDIR)$(PDIR)
 
 reinitlibs: .symbolic
