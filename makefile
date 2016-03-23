@@ -469,6 +469,9 @@ www: .symbolic
 getwww: .symbolic
 	@x4get.bat $(EXEC)
 
+##
+##	External library management~ ^^
+##
 #git submodule add <repo>
 uplibs: .symbolic
 	@wmake -h updatelibs
