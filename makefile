@@ -479,7 +479,7 @@ updatelibs: .symbolic
 	@cd $(PDIR)$(PDIR)$(PDIR)
 	@cd $(DOSLIB)
 	@git pull
-	@./buildall.sh
+# 	@./buildall.sh
 	@cd $(PDIR)$(PDIR)$(PDIR)
 
 reinitlibs: .symbolic
