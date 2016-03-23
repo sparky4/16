@@ -4,9 +4,9 @@
 #include "src/lib/16_head.h"
 #include "src/lib/modex16.h"
 #include <hw/cpu/cpu.h>
-#include <hw/vga/vga.h>
 #include <hw/dos/dos.h>
-
+#include <hw/vga/vga.h>
+#include <hw/vga/vrl.h>
 
 typedef unsigned char far *VGA_RAM_PTR;
 //VGA_RAM_PTR vga_graphics_ram = (VGA_RAM_PTR)MK_FP(0xA000,0x0000);
