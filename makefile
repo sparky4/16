@@ -461,7 +461,7 @@ comq: .symbolic
 
 www: .symbolic
 	#@rm /var/www/$(EXEC)
-	@cp ./$(EXEC) /var/www/
+	#@cp ./$(EXEC) /var/www/
 	@./z.sh $(EXEC) $(EXEC)
 	@scp -r -P 26 *.exe 4ch.mooo.com:/var/www/16/
 	@scp -r -P 26 /var/www/*.exe.zip.* 4ch.mooo.com:/var/www/16/
