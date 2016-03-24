@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2015 sparky4 & pngwen & andrius4669
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123
  *
  * This file is part of Project 16.
  *
@@ -44,6 +44,7 @@ typedef struct {
 	sword bakax, bakay;
 	sword xx, yy, sx, sy;
 	byte coor;
+	boolean tile;
 } bakapee_t;
 
 void clrstdin();

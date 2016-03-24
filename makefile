@@ -71,7 +71,7 @@ BAKAPIFLAGS=-fh=bakapi.hed
 SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k55808#60000#32768
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
 ZFLAGS=-zk0 -zc -zp8 $(WCLQ) ## -zm
-CFLAGS=$(AFLAGS) $(IFLAGS)-lr -l=dos -wo##wwww
+CFLAGS=$(AFLAGS) $(IFLAGS)-lr -l=dos -wo -i$(DOSLIB)##wwww
 OFLAGS=-obmiler -out -oh -ei -zp8 -fpi87  -onac -ol+ -ok####x
 FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 
@@ -84,29 +84,16 @@ DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16planar.$(OBJ)
 
-DOSLIBLIBS=dl_vga.lib dl_cpu.lib dl_dos.lib
+DOSLIBLIBS=$(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib $(DOSLIBDIR)/hw/dos/dos86h/dos.lib $(DOSLIBDIR)/hw/vga/dos86h/vga.lib
 
 TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe
 # tsthimem.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe sega.exe sountest.exe
 EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
 
-!include $(DOSLIBDIR)/extdep.mak
-
-all: $(EXEC) datatest
-
-cute.vrl: data/cute.pcx $(PCX2VRL)
-	$(PCX2VRL) -i data/cute.pcx -o cute.vrl -p cute.pal -tc 254
-	# you can then test this against TESUTO.EXE by typing: TESUTO CUTE.VRL CUTE.PAL
-
-datatest: cute.vrl .symbolic
-
-# doslib PCX to VRL converter native host binary
-$(PCX2VRL): $(DOSLIBDIR)/hw/vga/pcx2vrl.c
-	cd $(DOSLIBDIR)/hw/vga && make pcx2vrl
+all: $(EXEC)
 
 #$(16LIBOBJS) => 16.lib bug....
-
 #
 #game and bakapi executables
 #
@@ -125,12 +112,12 @@ scroll.$(OBJ): $(SRC)scroll.c
 
 
 # NOTE: dos86h = 16-bit huge memory model. memory model must match!
-tesuto.exe: tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ)
+tesuto.exe: tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
 #	%write tmp.cmd option quiet option map=tesuto.map $(DOSLIB_LDFLAGS_DOS16H) file tesuto.obj name tesuto.exe
 #	%write tmp.cmd library $(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib
 #	%write tmp.cmd library $(DOSLIBDIR)/hw/dos/dos86h/dos.lib
 #	@wlink @tmp.cmd
-	wcl $(FLAGS) $(WCLQ) tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ)
+	wcl $(FLAGS) $(WCLQ) tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
 tesuto.$(OBJ): $(SRC)tesuto.c
 	wcl $(FLAGS) $(DOSLIB_CINCLUDE) $(WCLQ) -c $(SRC)tesuto.c
 #tesuto.exe: tesuto.$(OBJ)
@@ -302,25 +289,26 @@ vgmtest.$(OBJ): $(SRC)vgmtest.c
 gfx.lib: $(GFXLIBOBJS)
 	wlib -b $(WLIBQ) gfx.lib $(GFXLIBOBJS)
 
-doslib.lib: $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
-	wlib -b $(WLIBQ) doslib.lib $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
+#doslib.lib: $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
+#	wlib -b $(WLIBQ) doslib.lib $(DOSLIBOBJ) # $(SRCLIB)cpu.lib
 
 vgmsnd.lib: $(VGMSNDOBJ)
 	wlib -b $(WLIBQ) vgmsnd.lib $(VGMSNDOBJ)
 
+# extdep:
+# !include $(DOSLIBDIR)/extdep.mak
 
 # library deps 16-bit huge
-dl_vga.lib:
-	cd $(DOSLIBDIR)/hw/vga && ./make.sh
-	cp $(DOSLIBDIR)/hw/vga/dos86h/vga.lib dl_vga.lib
-
-dl_cpu.lib:
+$(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib:
 	cd $(DOSLIBDIR)/hw/cpu && ./make.sh
-	cp $(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib dl_cpu.lib
-
-dl_dos.lib:
+$(DOSLIBDIR)/hw/dos/dos86h/dos.lib:
 	cd $(DOSLIBDIR)/hw/dos && ./make.sh
-	cp $(DOSLIBDIR)/hw/dos/dos86h/dos.lib dl_dos.lib
+$(DOSLIBDIR)/hw/vga/dos86h/vga.lib:
+	cd $(DOSLIBDIR)/hw/vga && ./make.sh
+#$(DOSLIBLIBS): .symbolic
+#	@cd $(DOSLIB)
+#	@./buildall.sh
+#	@cd $(PDIR)$(PDIR)$(PDIR)
 
 modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c
 	wcl $(FLAGS) -c $(SRCLIB)modex16.c
@@ -436,13 +424,9 @@ clean: .symbolic
 	@$(REMOVECOMMAND) 16.lib
 	@$(REMOVECOMMAND) gfx.lib
 	@$(REMOVECOMMAND) vgmsnd.lib
-	@$(REMOVECOMMAND) $(DOSLIBLIBS)
 	@wlib -n $(WLIBQ) 16.lib
 	@wlib -n $(WLIBQ) gfx.lib
 	@wlib -n $(WLIBQ) vgmsnd.lib
-	@$(REMOVECOMMAND) dl_cpu.lib
-	@$(REMOVECOMMAND) dl_dos.lib
-	@$(REMOVECOMMAND) dl_vga.lib
 	@$(REMOVECOMMAND) *.16
 	@$(REMOVECOMMAND) *.16W
 	@$(REMOVECOMMAND) *.16B
@@ -459,6 +443,7 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.map
 	@$(REMOVECOMMAND) *.err
 	@$(COPYCOMMAND) .git/config git_con.fig
+	@$(COPYCOMMAND) .gitmodules git_modu.les
 #	@$(COPYCOMMAND) $(SRC)exmmtest.c $(EXMMTESTDIR)$(SRC)
 #	@$(COPYCOMMAND) $(SRCLIB)16_mm.* $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(SRCLIB)16_head.* $(EXMMTESTDIR)$(SRCLIB)
@@ -476,8 +461,8 @@ comq: .symbolic
 	@upx -9 $(UPXQ) $(EXEC)
 
 www: .symbolic
-#       @rm /var/www/$(EXEC)
-	@cp ./$(EXEC) /var/www/
+	#@rm /var/www/$(EXEC)
+	#@cp ./$(EXEC) /var/www/
 	@./z.sh $(EXEC) $(EXEC)
 	@scp -r -P 26 *.exe 4ch.mooo.com:/var/www/16/
 	@scp -r -P 26 /var/www/*.exe.zip.* 4ch.mooo.com:/var/www/16/
@@ -485,27 +470,32 @@ www: .symbolic
 getwww: .symbolic
 	@x4get.bat $(EXEC)
 
+##
+##	External library management~ ^^
+##
 #git submodule add <repo>
-uplibs: .symbolic
-	@wmake -h updatelibs
+mkdl: .symbolic
+	@cd $(DOSLIB)
+	@./buildall.sh
+	@cd $(PDIR)$(PDIR)$(PDIR)
 
-updatelibs: .symbolic
+uplibs: .symbolic
 	@cd $(JSMNLIB)
 	@git pull
 	@cd $(PDIR)$(PDIR)$(PDIR)
 	@cd $(DOSLIB)
 	@git pull
-	@./buildall.sh
 	@cd $(PDIR)$(PDIR)$(PDIR)
 
 reinitlibs: .symbolic
 	@rm -rf $(SRCLIB)doslib
 	@rm -rf $(SRCLIB)jsmn
-	@mkdir $(SRCLIB)doslib
-	@mkdir $(SRCLIB)jsmn
+	#@mkdir $(SRCLIB)doslib
+	#@mkdir $(SRCLIB)jsmn
 	@wmake -h initlibs
 
 initlibs: .symbolic
+	@cp git_modu.les .gitmodules
 	@cd $(SRCLIB)
 	@git clone https://github.com/joncampbell123/doslib.git
 	@git clone https://github.com/zserge/jsmn.git

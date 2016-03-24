@@ -1,6 +1,7 @@
 #include "src/tesuto.h"
 
 static unsigned char palette[768];
+global_game_variables_t gvar;
 
 int main(int argc,char **argv) {
 	struct vrl1_vgax_header *vrl_header;
@@ -44,7 +45,9 @@ int main(int argc,char **argv) {
 	}
 	int10_setmode(19);
 	update_state_from_vga();
-	vga_enable_256color_modex(); // VGA mode X
+	VGAmodeX(1, &gvar);
+	//vga_enable_256color_modex(); // VGA mode X
+
 
 	/* load color palette */
 	fd = open(argv[2],O_RDONLY|O_BINARY);
@@ -97,6 +100,7 @@ int main(int argc,char **argv) {
 	while (getch() != 13);
 
 	int10_setmode(3);
+	//VGAmodeX(0, &gvar);
 	free(vrl_lineoffs);
 	buffer = NULL;
 	free(buffer);
