@@ -460,7 +460,7 @@ comq: .symbolic
 	@upx -9 $(UPXQ) $(EXEC)
 
 www: .symbolic
-	@ssh sparky4@4ch.mooo.com 'rm -f /var/www/*exe.zip*'
+	@ssh -p 26 sparky4@4ch.mooo.com 'rm -f /var/www/*exe.zip*'
 	@rm "/var/www/$(EXEC).zip*"
 	#@cp ./$(EXEC) /var/www/
 	@./z.sh $(EXEC) $(EXEC)
