@@ -77,7 +77,7 @@ int main(int argc,char **argv) {
 		for (i=0;i < 320;i++) {
 			o = i >> 2;
 			vga_write_sequencer(0x02/*map mask*/,1 << (i&3));
-			for (j=0;j < 240;j++,o += vga_state.vga_stride)
+			for (j=0;j < 200;j++,o += vga_state.vga_stride)
 				vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
 		}
 	}
@@ -149,7 +149,7 @@ int main(int argc,char **argv) {
 			y += ydir;
 			if (x >= (319 - vrl_header->width) || x >= 319 || x == 0)
 				xdir = -xdir;
-			if (y >= (239 - vrl_header->height) || y >= 239 || y == 0)
+			if (y >= (199 - vrl_header->height) || y >= 199 || y == 0)
 				ydir = -ydir;
 		}
 	}
@@ -170,7 +170,7 @@ int main(int argc,char **argv) {
 		for (i=0;i < 320;i++) {
 			o = (i >> 2) + pattern_ofs;
 			vga_write_sequencer(0x02/*map mask*/,1 << (i&3));
-			for (j=0;j < 240;j++,o += vga_state.vga_stride)
+			for (j=0;j < 200;j++,o += vga_state.vga_stride)
 				vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
 		}
 
@@ -230,7 +230,7 @@ int main(int argc,char **argv) {
 			y += ydir;
 			if (x >= (319 - vrl_header->width) || x >= 319 || x == 0)
 				xdir = -xdir;
-			if (y >= (239 - vrl_header->height) || y >= 239 || y == 0)
+			if (y >= (199 - vrl_header->height) || y >= 199 || y == 0)
 				ydir = -ydir;
 		}
 	}
