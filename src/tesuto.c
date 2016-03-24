@@ -1,7 +1,8 @@
 #include "src/tesuto.h"
 
-static unsigned char palette[768];
 global_game_variables_t gvar;
+
+static unsigned char palette[768];
 
 int main(int argc,char **argv) {
 	struct vrl1_vgax_header *vrl_header;
@@ -45,9 +46,8 @@ int main(int argc,char **argv) {
 	}
 	int10_setmode(19);
 	update_state_from_vga();
-	VGAmodeX(1, &gvar);
 	//vga_enable_256color_modex(); // VGA mode X
-
+	VGAmodeX(1, &gvar);
 
 	/* load color palette */
 	fd = open(argv[2],O_RDONLY|O_BINARY);
@@ -65,39 +65,170 @@ int main(int argc,char **argv) {
 	vrl_lineoffs = vrl1_vgax_genlineoffsets(vrl_header,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
 	if (vrl_lineoffs == NULL) return 1;
 
-	draw_vrl1_vgax_modex(0,0,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
-	while (getch() != 13);
-
 	{
-		unsigned int i;
+		unsigned int i,j,o;
 
-		for (i=1;i < 320;i++)
-			draw_vrl1_vgax_modex(i,0,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
+		/* fill screen with a distinctive pattern */
+		for (i=0;i < 320;i++) {
+			o = i >> 2;
+			vga_write_sequencer(0x02/*map mask*/,1 << (i&3));
+			for (j=0;j < 240;j++,o += vga_state.vga_stride)
+				vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
+		}
 	}
 	while (getch() != 13);
 
+	/* make distinctive pattern offscreen, render sprite, copy onscreen */
 	{
-		unsigned int i;
+		const unsigned int offscreen_ofs = 0x8000; /* middle of VGA RAM */
+		unsigned int i,j,o,o2,x,y,rx,ry,w,h;
+		unsigned int overdraw = 1;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.
+						// if the sprite's edge pixels are clear anyway, you can set this to 0.
+		VGA_RAM_PTR omemptr;
+		int xdir=1,ydir=1;
 
-		for (i=1;i < 200;i++)
-			draw_vrl1_vgax_modex(i,i,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
+		/* starting coords. note: this technique is limited to x coordinates of multiple of 4 */
+		x = 0;
+		y = 0;
+
+		/* do it */
+		omemptr = vga_state.vga_graphics_ram; // save original mem ptr
+		while (1) {
+			/* stop animating if the user hits ENTER */
+			if (kbhit()) {
+				if (getch() == 13) break;
+			}
+
+			/* render box bounds. y does not need modification, but x and width must be multiple of 4 */
+			if (x >= overdraw) rx = (x - overdraw) & (~3);
+			else rx = 0;
+			if (y >= overdraw) ry = (y - overdraw);
+			else ry = 0;
+			h = vrl_header->height + overdraw + y - ry;
+			w = (x + vrl_header->width + (overdraw*2) + 3 - rx) & (~3);
+			if ((rx+w) > 320) w = 320-rx;
+
+			/* replace VGA stride with our own and mem ptr. then sprite rendering at this stage is just (0,0) */
+			vga_state.vga_draw_stride = w >> 2;
+			vga_state.vga_graphics_ram = omemptr + offscreen_ofs;
+
+			/* first draw pattern corresponding to that part of the screen. this COULD be optimized, obviously, but it's designed for study.
+			 * also note we don't have to use the same stride as the display! */
+			for (i=rx;i < (rx+w);i++) {
+				o = (i-rx) >> 2;
+				vga_write_sequencer(0x02/*map mask*/,1 << (i&3));
+				for (j=ry;j < (ry+h);j++,o += vga_state.vga_draw_stride)
+					vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
+			}
+
+			/* then the sprite. note modding ram ptr means we just draw to (x&3,0) */
+			draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
+
+			/* restore ptr */
+			vga_state.vga_graphics_ram = omemptr;
+
+			/* block copy to visible RAM from offscreen */
+			// TODO: Maybe it would be better for VGA state to have "display stride" vs "draw stride" to avoid saving/restoring like this?
+			vga_setup_wm1_block_copy();
+			o = offscreen_ofs; // source offscreen
+			o2 = (ry * vga_state.vga_stride) + (rx >> 2); // dest visible (original stride)
+			for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += vga_state.vga_stride) vga_wm1_mem_block_copy(o2,o,w >> 2);
+			/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
+			vga_restore_rm0wm0();
+
+			/* restore stride */
+			vga_state.vga_draw_stride = vga_state.vga_stride;
+
+			/* step */
+			x += xdir;
+			y += ydir;
+			if (x >= (319 - vrl_header->width) || x >= 319 || x == 0)
+				xdir = -xdir;
+			if (y >= (239 - vrl_header->height) || y >= 239 || y == 0)
+				ydir = -ydir;
+		}
 	}
-	while (getch() != 13);
 
+	/* make distinctive pattern offscreen, render sprite, copy onscreen.
+	 * this time, we render the distinctive pattern to another offscreen location and just copy.
+	 * note this version is much faster too! */
 	{
-		unsigned int i;
+		const unsigned int offscreen_ofs = 0x8000; /* middle of VGA RAM */
+		const unsigned int pattern_ofs = 0xC000;
+		unsigned int i,j,o,o2,x,y,rx,ry,w,h;
+		unsigned int overdraw = 1;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.
+						// if the sprite's edge pixels are clear anyway, you can set this to 0.
+		VGA_RAM_PTR omemptr;
+		int xdir=1,ydir=1;
 
-		for (i=(2 << 6)/*200%*/;i >= (1 << 4)/*25%*/;i--)
-			draw_vrl1_vgax_modexstretch(0,0,i,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
-	}
-	while (getch() != 13);
-	{
-		unsigned int i;
+		/* fill pattern offset with a distinctive pattern */
+		for (i=0;i < 320;i++) {
+			o = (i >> 2) + pattern_ofs;
+			vga_write_sequencer(0x02/*map mask*/,1 << (i&3));
+			for (j=0;j < 240;j++,o += vga_state.vga_stride)
+				vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
+		}
 
-		for (i=(2 << 6)/*200%*/;i >= (1 << 4)/*25%*/;i--)
-			draw_vrl1_vgax_modexystretch(0,0,i,i,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
+		/* starting coords. note: this technique is limited to x coordinates of multiple of 4 */
+		x = 0;
+		y = 0;
+
+		/* do it */
+		omemptr = vga_state.vga_graphics_ram; // save original mem ptr
+		while (1) {
+			/* stop animating if the user hits ENTER */
+			if (kbhit()) {
+				if (getch() == 13) break;
+			}
+
+			/* render box bounds. y does not need modification, but x and width must be multiple of 4 */
+			if (x >= overdraw) rx = (x - overdraw) & (~3);
+			else rx = 0;
+			if (y >= overdraw) ry = (y - overdraw);
+			else ry = 0;
+			h = vrl_header->height + overdraw + y - ry;
+			w = (x + vrl_header->width + (overdraw*2) + 3 - rx) & (~3);
+			if ((rx+w) > 320) w = 320-rx;
+
+			/* block copy pattern to where we will draw the sprite */
+			vga_setup_wm1_block_copy();
+			o2 = offscreen_ofs;
+			o = pattern_ofs + (ry * vga_state.vga_stride) + (rx >> 2); // source offscreen
+			for (i=0;i < vrl_header->height;i++,o += vga_state.vga_stride,o2 += (w >> 2)) vga_wm1_mem_block_copy(o2,o,w >> 2);
+			/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
+			vga_restore_rm0wm0();
+
+			/* replace VGA stride with our own and mem ptr. then sprite rendering at this stage is just (0,0) */
+			vga_state.vga_draw_stride = w >> 2;
+			vga_state.vga_graphics_ram = omemptr + offscreen_ofs;
+
+			/* then the sprite. note modding ram ptr means we just draw to (x&3,0) */
+			draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
+
+			/* restore ptr */
+			vga_state.vga_graphics_ram = omemptr;
+
+			/* block copy to visible RAM from offscreen */
+			// TODO: Maybe it would be better for VGA state to have "display stride" vs "draw stride" to avoid saving/restoring like this?
+			vga_setup_wm1_block_copy();
+			o = offscreen_ofs; // source offscreen
+			o2 = (ry * vga_state.vga_stride) + (rx >> 2); // dest visible (original stride)
+			for (i=0;i < vrl_header->height;i++,o += vga_state.vga_draw_stride,o2 += vga_state.vga_stride) vga_wm1_mem_block_copy(o2,o,w >> 2);
+			/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
+			vga_restore_rm0wm0();
+
+			/* restore stride */
+			vga_state.vga_draw_stride = vga_state.vga_stride;
+
+			/* step */
+			x += xdir;
+			y += ydir;
+			if (x >= (319 - vrl_header->width) || x >= 319 || x == 0)
+				xdir = -xdir;
+			if (y >= (239 - vrl_header->height) || y >= 239 || y == 0)
+				ydir = -ydir;
+		}
 	}
-	while (getch() != 13);
 
 	int10_setmode(3);
 	//VGAmodeX(0, &gvar);
@@ -107,4 +238,3 @@ int main(int argc,char **argv) {
 	bufsz = 0;
 	return 0;
 }
-
