@@ -1,7 +1,7 @@
 #include <hw/cpu/cpu.h>
 #include <hw/dos/dos.h>
 #include <hw/vga/vga.h>
-//#include <hw/vga/vrl.h>
+#include <hw/vga/vrl.h>
 
 #include "src/tesuto.h"
 
