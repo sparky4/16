@@ -95,8 +95,9 @@ all: $(EXEC)
 16.exe: 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib
 	wcl $(FLAGS) $(16FLAGS) 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib -fm=16.map
 
-bakapi.exe: bakapi.$(OBJ) gfx.lib modex.lib
-	wcl $(FLAGS) $(BAKAPIFLAGS) bakapi.$(OBJ) gfx.lib modex.lib -fm=bakapi.map
+bakapi.exe: bakapi.$(OBJ) gfx.lib# modex.lib
+	wcl $(FLAGS) $(BAKAPIFLAGS) bakapi.$(OBJ) gfx.lib -fm=bakapi.map
+#modex.lib
 #
 #Test Executables!
 #
