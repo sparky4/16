@@ -40,10 +40,6 @@ COPYCOMMAND=copy /y
 DIRSEP=\
 OBJ=obj
 !endif
-#!ifndef INCLUDE
-#IN=..$(DIRSEP)..$(DIRSEP)fdos$(DIRSEP)watcom2$(DIRSEP)h
-#IFLAGS=-i=$(IN)
-#!endif
 
 TARGET_OS = dos
 
@@ -83,7 +79,7 @@ DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16planar.$(OBJ)
 
-DOSLIBLIBS=$(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib $(DOSLIBDIR)/hw/dos/dos86h/dos.lib $(DOSLIBDIR)/hw/vga/dos86h/vga.lib
+DOSLIBLIBS=$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu$(DIRSEP)dos86h$(DIRSEP)cpu.lib $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos$(DIRSEP)dos86h$(DIRSEP)dos.lib $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vga.lib
 
 TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe
 # tsthimem.exe
@@ -113,17 +109,17 @@ scroll.$(OBJ): $(SRC)scroll.c
 # NOTE: dos86h = 16-bit huge memory model. memory model must match!
 tesuto.exe: tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
 #	%write tmp.cmd option quiet option map=tesuto.map $(DOSLIB_LDFLAGS_DOS16H) file tesuto.obj name tesuto.exe
-#	%write tmp.cmd library $(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib
-#	%write tmp.cmd library $(DOSLIBDIR)/hw/dos/dos86h/dos.lib
+#	%write tmp.cmd library $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu$(DIRSEP)dos86h$(DIRSEP)cpu.lib
+#	%write tmp.cmd library $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos$(DIRSEP)dos86h$(DIRSEP)dos.lib
 #	@wlink @tmp.cmd
 	wcl $(FLAGS) $(WCLQ) tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
 tesuto.$(OBJ): $(SRC)tesuto.c
 	wcl $(FLAGS) $(WCLQ) -c $(SRC)tesuto.c
 
 drawvrl5.exe: .symbolic
-	#@cd $(DOSLIB)hw/vga/make.
-	@wmake $(DOSLIBDIR)/hw/vga/dos86h/vga.lib
-	@$(COPYCOMMAND) $(DOSLIBDIR)/hw/vga/dos86h/drawvrl5.exe ./
+	#@cd $(DOSLIB)hw$(DIRSEP)vga$(DIRSEP)make.
+	@wmake $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vga.lib
+	@$(COPYCOMMAND) $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)drawvrl5.exe .$(DIRSEP)
 #tesuto.exe: tesuto.$(OBJ)
 #	wcl $(WCLQ) -mh -d2 tesuto.$(OBJ)
 #tesuto.$(OBJ): $(SRC)tesuto.c
@@ -300,18 +296,18 @@ vgmsnd.lib: $(VGMSNDOBJ)
 	wlib -b $(WLIBQ) vgmsnd.lib $(VGMSNDOBJ)
 
 # extdep:
-# !include $(DOSLIBDIR)/extdep.mak
+# !include $(DOSLIBDIR)$(DIRSEP)extdep.mak
 
 # library deps 16-bit huge
-$(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib:
-	cd $(DOSLIBDIR)/hw/cpu && ./make.sh
-$(DOSLIBDIR)/hw/dos/dos86h/dos.lib:
-	cd $(DOSLIBDIR)/hw/dos && ./make.sh
-$(DOSLIBDIR)/hw/vga/dos86h/vga.lib:
-	cd $(DOSLIBDIR)/hw/vga && ./make.sh
+$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu$(DIRSEP)dos86h$(DIRSEP)cpu.lib:
+	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu && .$(DIRSEP)make.sh
+$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos$(DIRSEP)dos86h$(DIRSEP)dos.lib:
+	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos && .$(DIRSEP)make.sh
+$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vga.lib:
+	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga && .$(DIRSEP)make.sh
 #$(DOSLIBLIBS): .symbolic
 #	@cd $(DOSLIB)
-#	@./buildall.sh
+#	@.$(DIRSEP)buildall.sh
 #	@cd $(PDIR)$(PDIR)$(PDIR)
 
 modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c
@@ -446,7 +442,7 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.MAP
 	@$(REMOVECOMMAND) *.map
 	@$(REMOVECOMMAND) *.err
-	@$(COPYCOMMAND) .git/config git_con.fig
+	@$(COPYCOMMAND) .git$(DIRSEP)config git_con.fig
 	@$(COPYCOMMAND) .gitmodules git_modu.les
 #	@$(COPYCOMMAND) $(SRC)exmmtest.c $(EXMMTESTDIR)$(SRC)
 #	@$(COPYCOMMAND) $(SRCLIB)16_mm.* $(EXMMTESTDIR)$(SRCLIB)
@@ -467,7 +463,7 @@ comq: .symbolic
 www: .symbolic
 	@ssh -p 26 sparky4@4ch.mooo.com 'rm -f /var/www/16/*exe.zip*'
 	@rm "/var/www/$(EXEC).zip*"
-	#@cp ./$(EXEC) /var/www/
+	#@cp ./$(EXEC) $(DIRSEP)var$(DIRSEP)www$(DIRSEP)
 	@./z.sh $(EXEC) $(EXEC)
 	@scp -r -P 26 *.exe 4ch.mooo.com:/var/www/16/
 	@scp -r -P 26 /var/www/*.exe.zip.* 4ch.mooo.com:/var/www/16/
@@ -510,18 +506,18 @@ initlibs: .symbolic
 ##	experimental libs
 ##
 xlib: .symbolic
-	@cd 16/xlib
+	@cd 16$(DIRSEP)xlib
 	@wmake -h clean
 	@wmake -h all
 	@cd $(PDIR)$(PDIR)
 
 mx: .symbolic
-	@cd 16/xw
+	@cd 16$(DIRSEP)xw
 #	@wmake clean
 	@wmake -h all
 	@cd $(PDIR)$(PDIR)
 
 mx_: .symbolic
-	@cd 16/xw_
+	@cd 16$(DIRSEP)xw_
 	@wmake -h -f makefile all
 	@cd $(PDIR)$(PDIR)
