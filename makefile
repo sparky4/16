@@ -84,7 +84,7 @@ DOSLIBLIBS=$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu$(DIRSEP)dos86h$(DIRSEP)cpu.lib $(
 TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe
 # tsthimem.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe sega.exe sountest.exe
-EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe drawvrl5.exe
+EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
 
 all: $(EXEC)
 
@@ -116,10 +116,6 @@ tesuto.exe: tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
 tesuto.$(OBJ): $(SRC)tesuto.c
 	wcl $(FLAGS) $(WCLQ) -c $(SRC)tesuto.c
 
-drawvrl5.exe: .symbolic
-	#@cd $(DOSLIB)hw$(DIRSEP)vga$(DIRSEP)make.
-	@wmake $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vga.lib
-	@$(COPYCOMMAND) $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)drawvrl5.exe .$(DIRSEP)
 #tesuto.exe: tesuto.$(OBJ)
 #	wcl $(WCLQ) -mh -d2 tesuto.$(OBJ)
 #tesuto.$(OBJ): $(SRC)tesuto.c
