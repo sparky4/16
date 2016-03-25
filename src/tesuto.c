@@ -3,7 +3,7 @@
 #include <hw/vga/vga.h>
 #include <hw/vga/vrl.h>
 
-//#include "src/tesuto.h"
+#include "src/tesuto.h"
 
 static unsigned char palette[768];
 
