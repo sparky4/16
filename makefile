@@ -72,7 +72,7 @@ OFLAGS=-obmiler -out -oh -ei -zp8 -fpi87  -onac -ol+ -ok####x
 FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 
 
-DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
+#DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_timer.$(OBJ)
@@ -115,16 +115,6 @@ tesuto.exe: tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
 	wcl $(FLAGS) $(WCLQ) tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
 tesuto.$(OBJ): $(SRC)tesuto.c
 	wcl $(FLAGS) $(WCLQ) -c $(SRC)tesuto.c
-
-#tesuto.exe: tesuto.$(OBJ)
-#	wcl $(WCLQ) -mh -d2 tesuto.$(OBJ)
-#tesuto.$(OBJ): $(SRC)tesuto.c
-#	wcl $(WCLQ) -mh -d2 -c $(SRC)tesuto.c
-
-#sega.exe: sega.$(OBJ)
-#	wcl $(FLAGS) sega.$(OBJ)
-#sega.$(OBJ): $(SRC)sega.c
-#	wcl $(FLAGS) -c $(SRC)sega.c
 
 test.exe: test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ)
 	wcl $(FLAGS) test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ) -fm=test.map
