@@ -241,5 +241,7 @@ int main(int argc,char **argv) {
 	buffer = NULL;
 	free(buffer);
 	bufsz = 0;
+	printf("tesuto.exe ");
+	printf("version %s\n", VERSION);
 	return 0;
 }
