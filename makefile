@@ -120,10 +120,10 @@ tesuto.exe: tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
 tesuto.$(OBJ): $(SRC)tesuto.c
 	wcl $(FLAGS) $(WCLQ) -c $(SRC)tesuto.c
 
-drawvrl5.exe: drawvrl5.$(OBJ) $(DOSLIBLIBS)
-	wcl $(FLAGS) $(WCLQ) drawvrl5.$(OBJ) $(DOSLIBLIBS)
-drawvrl5.$(OBJ): $(SRC)drawvrl5.c
-	wcl $(FLAGS) $(WCLQ) -c $(SRC)drawvrl5.c
+drawvrl5.exe: .symbolic
+	#@cd $(DOSLIB)hw/vga/make.
+	@wmake $(DOSLIBDIR)/hw/vga/dos86h/vga.lib
+	@$(COPYCOMMAND) $(DOSLIBDIR)/hw/vga/dos86h/drawvrl5.exe ./
 #tesuto.exe: tesuto.$(OBJ)
 #	wcl $(WCLQ) -mh -d2 tesuto.$(OBJ)
 #tesuto.$(OBJ): $(SRC)tesuto.c
