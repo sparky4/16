@@ -88,7 +88,7 @@ DOSLIBLIBS=$(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib $(DOSLIBDIR)/hw/dos/dos86h/dos.lib
 TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe
 # tsthimem.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe sega.exe sountest.exe
-EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
+EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe drawvrl5.exe
 
 all: $(EXEC)
 
@@ -119,6 +119,11 @@ tesuto.exe: tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
 	wcl $(FLAGS) $(WCLQ) tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
 tesuto.$(OBJ): $(SRC)tesuto.c
 	wcl $(FLAGS) $(WCLQ) -c $(SRC)tesuto.c
+
+drawvrl5.exe: drawvrl5.$(OBJ) $(DOSLIBLIBS)
+	wcl $(FLAGS) $(WCLQ) drawvrl5.$(OBJ) $(DOSLIBLIBS)
+drawvrl5.$(OBJ): $(SRC)drawvrl5.c
+	wcl $(FLAGS) $(WCLQ) -c $(SRC)drawvrl5.c
 #tesuto.exe: tesuto.$(OBJ)
 #	wcl $(WCLQ) -mh -d2 tesuto.$(OBJ)
 #tesuto.$(OBJ): $(SRC)tesuto.c
