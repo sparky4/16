@@ -1,11 +1,9 @@
 #include <hw/cpu/cpu.h>
 #include <hw/dos/dos.h>
 #include <hw/vga/vga.h>
-//#include <hw/vga/vrl.h>
+#include <hw/vga/vrl.h>
 
 #include "src/tesuto.h"
-
-global_game_variables_t gvar;
 
 static unsigned char palette[768];
 
@@ -52,7 +50,27 @@ int main(int argc,char **argv) {
 	int10_setmode(19);
 	update_state_from_vga();
 	vga_enable_256color_modex(); // VGA mode X
-	//VGAmodeX(1, &gvar);
+	vga_state.vga_width = 320; // VGA lib currently does not update this
+	vga_state.vga_height = 240; // VGA lib currently does not update this
+
+//#if 1 // 320x240 test mode: this is how Project 16 is using our code, enable for test case
+	{
+		struct vga_mode_params cm;
+
+		vga_read_crtc_mode(&cm);
+
+		// 320x240 mode 60Hz
+		cm.vertical_total = 525;
+		cm.vertical_start_retrace = 0x1EA;
+		cm.vertical_end_retrace = 0x1EC;
+		cm.vertical_display_end = 480;
+		cm.vertical_blank_start = 489;
+		cm.vertical_blank_end = 517;
+
+		vga_write_crtc_mode(&cm,0);
+	}
+	vga_state.vga_height = 240; // VGA lib currently does not update this
+//#endif
 
 	/* load color palette */
 	fd = open(argv[2],O_RDONLY|O_BINARY);
@@ -74,10 +92,10 @@ int main(int argc,char **argv) {
 		unsigned int i,j,o;
 
 		/* fill screen with a distinctive pattern */
-		for (i=0;i < 320;i++) {
+		for (i=0;i < vga_state.vga_width;i++) {
 			o = i >> 2;
 			vga_write_sequencer(0x02/*map mask*/,1 << (i&3));
-			for (j=0;j < 200;j++,o += vga_state.vga_stride)
+			for (j=0;j < vga_state.vga_height;j++,o += vga_state.vga_stride)
 				vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
 		}
 	}
@@ -85,7 +103,7 @@ int main(int argc,char **argv) {
 
 	/* make distinctive pattern offscreen, render sprite, copy onscreen */
 	{
-		const unsigned int offscreen_ofs = 0x8000; /* middle of VGA RAM */
+		const unsigned int offscreen_ofs = (vga_state.vga_stride * vga_state.vga_height);
 		unsigned int i,j,o,o2,x,y,rx,ry,w,h;
 		unsigned int overdraw = 1;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.
 						// if the sprite's edge pixels are clear anyway, you can set this to 0.
@@ -110,10 +128,12 @@ int main(int argc,char **argv) {
 			if (y >= overdraw) ry = (y - overdraw);
 			else ry = 0;
 			h = vrl_header->height + overdraw + y - ry;
-			w = (x + vrl_header->width + (overdraw*2) + 3 - rx) & (~3);
-			if ((rx+w) > 320) w = 320-rx;
+			w = (x + vrl_header->width + (overdraw*2) + 3/*round up*/ - rx) & (~3);
+			if ((rx+w) > vga_state.vga_width) w = vga_state.vga_width-rx;
+			if ((ry+h) > vga_state.vga_height) h = vga_state.vga_height-ry;
 
 			/* replace VGA stride with our own and mem ptr. then sprite rendering at this stage is just (0,0) */
+			vga_state.vga_draw_stride_limit = (vga_state.vga_width + 3/*round up*/ - x) >> 2;
 			vga_state.vga_draw_stride = w >> 2;
 			vga_state.vga_graphics_ram = omemptr + offscreen_ofs;
 
@@ -133,7 +153,6 @@ int main(int argc,char **argv) {
 			vga_state.vga_graphics_ram = omemptr;
 
 			/* block copy to visible RAM from offscreen */
-			// TODO: Maybe it would be better for VGA state to have "display stride" vs "draw stride" to avoid saving/restoring like this?
 			vga_setup_wm1_block_copy();
 			o = offscreen_ofs; // source offscreen
 			o2 = (ry * vga_state.vga_stride) + (rx >> 2); // dest visible (original stride)
@@ -142,14 +161,14 @@ int main(int argc,char **argv) {
 			vga_restore_rm0wm0();
 
 			/* restore stride */
-			vga_state.vga_draw_stride = vga_state.vga_stride;
+			vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = vga_state.vga_stride;
 
 			/* step */
 			x += xdir;
 			y += ydir;
-			if (x >= (319 - vrl_header->width) || x >= 319 || x == 0)
+			if (x >= (vga_state.vga_width - 1) || x == 0)
 				xdir = -xdir;
-			if (y >= (199 - vrl_header->height) || y >= 199 || y == 0)
+			if (y >= (vga_state.vga_height - 1) || y == 0)
 				ydir = -ydir;
 		}
 	}
@@ -158,8 +177,8 @@ int main(int argc,char **argv) {
 	 * this time, we render the distinctive pattern to another offscreen location and just copy.
 	 * note this version is much faster too! */
 	{
-		const unsigned int offscreen_ofs = 0x8000; /* middle of VGA RAM */
-		const unsigned int pattern_ofs = 0xC000;
+		const unsigned int offscreen_ofs = (vga_state.vga_stride * vga_state.vga_height);
+		const unsigned int pattern_ofs = 0x10000UL - (vga_state.vga_stride * vga_state.vga_height);
 		unsigned int i,j,o,o2,x,y,rx,ry,w,h;
 		unsigned int overdraw = 1;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.
 						// if the sprite's edge pixels are clear anyway, you can set this to 0.
@@ -167,10 +186,10 @@ int main(int argc,char **argv) {
 		int xdir=1,ydir=1;
 
 		/* fill pattern offset with a distinctive pattern */
-		for (i=0;i < 320;i++) {
+		for (i=0;i < vga_state.vga_width;i++) {
 			o = (i >> 2) + pattern_ofs;
 			vga_write_sequencer(0x02/*map mask*/,1 << (i&3));
-			for (j=0;j < 200;j++,o += vga_state.vga_stride)
+			for (j=0;j < vga_state.vga_height;j++,o += vga_state.vga_stride)
 				vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
 		}
 
@@ -192,18 +211,20 @@ int main(int argc,char **argv) {
 			if (y >= overdraw) ry = (y - overdraw);
 			else ry = 0;
 			h = vrl_header->height + overdraw + y - ry;
-			w = (x + vrl_header->width + (overdraw*2) + 3 - rx) & (~3);
-			if ((rx+w) > 320) w = 320-rx;
+			w = (x + vrl_header->width + (overdraw*2) + 3/*round up*/ - rx) & (~3);
+			if ((rx+w) > vga_state.vga_width) w = vga_state.vga_width-rx;
+			if ((ry+h) > vga_state.vga_height) h = vga_state.vga_height-ry;
 
 			/* block copy pattern to where we will draw the sprite */
 			vga_setup_wm1_block_copy();
 			o2 = offscreen_ofs;
 			o = pattern_ofs + (ry * vga_state.vga_stride) + (rx >> 2); // source offscreen
-			for (i=0;i < vrl_header->height;i++,o += vga_state.vga_stride,o2 += (w >> 2)) vga_wm1_mem_block_copy(o2,o,w >> 2);
+			for (i=0;i < h;i++,o += vga_state.vga_stride,o2 += (w >> 2)) vga_wm1_mem_block_copy(o2,o,w >> 2);
 			/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
 			vga_restore_rm0wm0();
 
 			/* replace VGA stride with our own and mem ptr. then sprite rendering at this stage is just (0,0) */
+			vga_state.vga_draw_stride_limit = (vga_state.vga_width + 3/*round up*/ - x) >> 2;
 			vga_state.vga_draw_stride = w >> 2;
 			vga_state.vga_graphics_ram = omemptr + offscreen_ofs;
 
@@ -214,34 +235,111 @@ int main(int argc,char **argv) {
 			vga_state.vga_graphics_ram = omemptr;
 
 			/* block copy to visible RAM from offscreen */
-			// TODO: Maybe it would be better for VGA state to have "display stride" vs "draw stride" to avoid saving/restoring like this?
 			vga_setup_wm1_block_copy();
 			o = offscreen_ofs; // source offscreen
 			o2 = (ry * vga_state.vga_stride) + (rx >> 2); // dest visible (original stride)
-			for (i=0;i < vrl_header->height;i++,o += vga_state.vga_draw_stride,o2 += vga_state.vga_stride) vga_wm1_mem_block_copy(o2,o,w >> 2);
+			for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += vga_state.vga_stride) vga_wm1_mem_block_copy(o2,o,w >> 2);
 			/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
 			vga_restore_rm0wm0();
 
 			/* restore stride */
-			vga_state.vga_draw_stride = vga_state.vga_stride;
+			vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = vga_state.vga_stride;
 
 			/* step */
 			x += xdir;
 			y += ydir;
-			if (x >= (319 - vrl_header->width) || x >= 319 || x == 0)
+			if (x >= (vga_state.vga_width - 1) || x == 0)
 				xdir = -xdir;
-			if (y >= (199 - vrl_header->height) || y >= 199 || y == 0)
+			if (y >= (vga_state.vga_height - 1) || y == 0)
 				ydir = -ydir;
 		}
 	}
 
+	/* another handy "demo" effect using VGA write mode 1.
+	 * we can take what's on screen and vertically squash it like an old analog TV set turning off. */
+	{
+		unsigned int blank_line_ofs = (vga_state.vga_stride * vga_state.vga_height * 2);
+		unsigned int copy_ofs = (vga_state.vga_stride * vga_state.vga_height);
+		unsigned int display_ofs = 0x0000;
+		unsigned int i,y,soh,doh,dstart;
+		unsigned int dh_blankfill = 8;
+		unsigned int dh_step = 8;
+		uint32_t sh,dh,yf,ystep;
+
+		/* copy active display (0) to offscreen buffer (0x4000) */
+		vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = vga_state.vga_stride;
+		vga_setup_wm1_block_copy();
+		vga_wm1_mem_block_copy(copy_ofs,display_ofs,vga_state.vga_stride * vga_state.vga_height);
+		vga_restore_rm0wm0();
+
+		/* need a blank line as well */
+		for (i=0;i < vga_state.vga_stride;i++) vga_state.vga_graphics_ram[i+blank_line_ofs] = 0;
+
+		sh = dh = vga_state.vga_height;
+		while (dh >= dh_step) {
+			/* stop animating if the user hits ENTER */
+			if (kbhit()) {
+				if (getch() == 13) break;
+			}
+
+			/* wait for vsync end */
+			vga_wait_for_vsync_end();
+
+			/* what scalefactor to use for stretching? */
+			ystep = (0x10000UL * sh) / dh;
+			dstart = (vga_state.vga_height - dh) / 2; // center the squash effect on screen, otherwise it would squash to top of screen
+			doh = display_ofs;
+			soh = copy_ofs;
+			yf = 0;
+			y = 0;
+
+			/* for performance, keep VGA in write mode 1 the entire render */
+			vga_setup_wm1_block_copy();
+
+			/* blank lines */
+			if (dstart >= dh_blankfill) y = dstart - dh_blankfill;
+			else y = 0;
+			doh = vga_state.vga_stride * y;
+
+			while (y < dstart) {
+				vga_wm1_mem_block_copy(doh,blank_line_ofs,vga_state.vga_stride);
+				doh += vga_state.vga_stride;
+				y++;
+			}
+
+			/* draw */
+			while (y < (dh+dstart)) {
+				soh = copy_ofs + ((yf >> 16UL) * vga_state.vga_stride);
+				vga_wm1_mem_block_copy(doh,soh,vga_state.vga_stride);
+				doh += vga_state.vga_stride;
+				yf += ystep;
+				y++;
+			}
+
+			/* blank lines */
+			while (y < vga_state.vga_height && y < (dh+dstart+dh_blankfill)) {
+				vga_wm1_mem_block_copy(doh,blank_line_ofs,vga_state.vga_stride);
+				doh += vga_state.vga_stride;
+				y++;
+			}
+
+			/* done */
+			vga_restore_rm0wm0();
+
+			/* wait for vsync */
+			vga_wait_for_vsync();
+
+			/* make it shrink */
+			dh -= dh_step;
+			if (dh < 40) dh_step = 1;
+		}
+	}
+
 	int10_setmode(3);
-	//VGAmodeX(0, &gvar);
 	free(vrl_lineoffs);
 	buffer = NULL;
 	free(buffer);
 	bufsz = 0;
-	printf("tesuto.exe ");
-	printf("version %s\n", VERSION);
 	return 0;
 }
+
