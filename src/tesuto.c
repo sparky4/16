@@ -51,8 +51,8 @@ int main(int argc,char **argv) {
 	}
 	int10_setmode(19);
 	update_state_from_vga();
-	//vga_enable_256color_modex(); // VGA mode X
-	VGAmodeX(1, &gvar);
+	vga_enable_256color_modex(); // VGA mode X
+	//VGAmodeX(1, &gvar);
 
 	/* load color palette */
 	fd = open(argv[2],O_RDONLY|O_BINARY);
