@@ -431,6 +431,9 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.err
 	@$(COPYCOMMAND) .git$(DIRSEP)config git_con.fig
 	@$(COPYCOMMAND) .gitmodules git_modu.les
+	@. ./dld.sh
+	@./buildall.sh clean
+	@cd $(PDIR)$(PDIR)$(PDIR)
 #	@$(COPYCOMMAND) $(SRC)exmmtest.c $(EXMMTESTDIR)$(SRC)
 #	@$(COPYCOMMAND) $(SRCLIB)16_mm.* $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(SRCLIB)16_head.* $(EXMMTESTDIR)$(SRCLIB)
