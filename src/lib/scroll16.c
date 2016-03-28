@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123
  *
  * This file is part of Project 16.
  *
@@ -597,8 +597,9 @@ void shinku(map_view_t *pip, global_game_variables_t *gv)
 		word bgcol = 0;
 		word type = 1;
 		//t=(((*(gv->clock))-gv->clock_start) /18.2);
-		sprintf(gv->pee, "%f fps", (double)gv->kurokku.tiku/ticktock(gv));
-		modexprint(pip[1].page, 16, 16, 1, 15, 0, gv->pee, 1);
+		//sprintf(gv->pee, "%f fps", (double)gv->kurokku.tiku/ticktock(gv));
+		printf("%f fps", (double)gv->kurokku.tiku/ticktock(gv));
+		//modexprint(pip[1].page, 16, 16, 1, 15, 0, gv->pee, 1);
 		//(gv->clock_start)=*(gv->clock);
 		gv->kurokku.tiku=0;
 	}

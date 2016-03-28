@@ -40,10 +40,6 @@ COPYCOMMAND=copy /y
 DIRSEP=\
 OBJ=obj
 !endif
-#!ifndef INCLUDE
-#IN=..$(DIRSEP)..$(DIRSEP)fdos$(DIRSEP)watcom2$(DIRSEP)h
-#IFLAGS=-i=$(IN)
-#!endif
 
 TARGET_OS = dos
 
@@ -77,19 +73,19 @@ FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 
 PCX2VRL=$(DOSLIBDIR)/hw/vga/pcx2vrl
 
-DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
+#DOSLIBEXMMOBJ = himemsys.$(OBJ) emm.$(OBJ)
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_timer.$(OBJ)
 
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16planar.$(OBJ)
 
-DOSLIBLIBS=$(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib $(DOSLIBDIR)/hw/dos/dos86h/dos.lib $(DOSLIBDIR)/hw/vga/dos86h/vga.lib
+DOSLIBLIBS=$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu$(DIRSEP)dos86h$(DIRSEP)cpu.lib $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos$(DIRSEP)dos86h$(DIRSEP)dos.lib $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vga.lib
 
 TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe
 # tsthimem.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe sega.exe sountest.exe
-EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe drawvrl5.exe
+EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
 
 all: $(EXEC)
 
@@ -100,8 +96,9 @@ all: $(EXEC)
 16.exe: 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib
 	wcl $(FLAGS) $(16FLAGS) 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib -fm=16.map
 
-bakapi.exe: bakapi.$(OBJ) gfx.lib modex.lib
-	wcl $(FLAGS) $(BAKAPIFLAGS) bakapi.$(OBJ) gfx.lib modex.lib -fm=bakapi.map
+bakapi.exe: bakapi.$(OBJ) gfx.lib# modex.lib
+	wcl $(FLAGS) $(BAKAPIFLAGS) bakapi.$(OBJ) gfx.lib -fm=bakapi.map
+#modex.lib
 #
 #Test Executables!
 #
@@ -114,26 +111,12 @@ scroll.$(OBJ): $(SRC)scroll.c
 # NOTE: dos86h = 16-bit huge memory model. memory model must match!
 tesuto.exe: tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
 #	%write tmp.cmd option quiet option map=tesuto.map $(DOSLIB_LDFLAGS_DOS16H) file tesuto.obj name tesuto.exe
-#	%write tmp.cmd library $(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib
-#	%write tmp.cmd library $(DOSLIBDIR)/hw/dos/dos86h/dos.lib
+#	%write tmp.cmd library $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu$(DIRSEP)dos86h$(DIRSEP)cpu.lib
+#	%write tmp.cmd library $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos$(DIRSEP)dos86h$(DIRSEP)dos.lib
 #	@wlink @tmp.cmd
 	wcl $(FLAGS) $(WCLQ) tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
 tesuto.$(OBJ): $(SRC)tesuto.c
 	wcl $(FLAGS) $(WCLQ) -c $(SRC)tesuto.c
-
-drawvrl5.exe: .symbolic
-	#@cd $(DOSLIB)hw/vga/make.
-	@wmake $(DOSLIBDIR)/hw/vga/dos86h/vga.lib
-	@$(COPYCOMMAND) $(DOSLIBDIR)/hw/vga/dos86h/drawvrl5.exe ./
-#tesuto.exe: tesuto.$(OBJ)
-#	wcl $(WCLQ) -mh -d2 tesuto.$(OBJ)
-#tesuto.$(OBJ): $(SRC)tesuto.c
-#	wcl $(WCLQ) -mh -d2 -c $(SRC)tesuto.c
-
-#sega.exe: sega.$(OBJ)
-#	wcl $(FLAGS) sega.$(OBJ)
-#sega.$(OBJ): $(SRC)sega.c
-#	wcl $(FLAGS) -c $(SRC)sega.c
 
 test.exe: test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ)
 	wcl $(FLAGS) test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ) -fm=test.map
@@ -301,18 +284,18 @@ vgmsnd.lib: $(VGMSNDOBJ)
 	wlib -b $(WLIBQ) vgmsnd.lib $(VGMSNDOBJ)
 
 # extdep:
-# !include $(DOSLIBDIR)/extdep.mak
+# !include $(DOSLIBDIR)$(DIRSEP)extdep.mak
 
 # library deps 16-bit huge
-$(DOSLIBDIR)/hw/cpu/dos86h/cpu.lib:
-	cd $(DOSLIBDIR)/hw/cpu && ./make.sh
-$(DOSLIBDIR)/hw/dos/dos86h/dos.lib:
-	cd $(DOSLIBDIR)/hw/dos && ./make.sh
-$(DOSLIBDIR)/hw/vga/dos86h/vga.lib:
-	cd $(DOSLIBDIR)/hw/vga && ./make.sh
+$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu$(DIRSEP)dos86h$(DIRSEP)cpu.lib:
+	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu && .$(DIRSEP)make.sh
+$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos$(DIRSEP)dos86h$(DIRSEP)dos.lib:
+	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos && .$(DIRSEP)make.sh
+$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vga.lib:
+	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga && .$(DIRSEP)make.sh
 #$(DOSLIBLIBS): .symbolic
 #	@cd $(DOSLIB)
-#	@./buildall.sh
+#	@.$(DIRSEP)buildall.sh
 #	@cd $(PDIR)$(PDIR)$(PDIR)
 
 modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c
@@ -447,8 +430,11 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.MAP
 	@$(REMOVECOMMAND) *.map
 	@$(REMOVECOMMAND) *.err
-	@$(COPYCOMMAND) .git/config git_con.fig
+	@$(COPYCOMMAND) .git$(DIRSEP)config git_con.fig
 	@$(COPYCOMMAND) .gitmodules git_modu.les
+	@cd $(DOSLIB)
+	#@./buildall.sh clean
+	@cd $(PDIR)$(PDIR)$(PDIR)
 #	@$(COPYCOMMAND) $(SRC)exmmtest.c $(EXMMTESTDIR)$(SRC)
 #	@$(COPYCOMMAND) $(SRCLIB)16_mm.* $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(SRCLIB)16_head.* $(EXMMTESTDIR)$(SRCLIB)
@@ -468,7 +454,7 @@ comq: .symbolic
 www: .symbolic
 	@ssh -p 26 sparky4@4ch.mooo.com 'rm -f /var/www/16/*exe.zip*'
 	@rm "/var/www/$(EXEC).zip*"
-	#@cp ./$(EXEC) /var/www/
+	#@cp ./$(EXEC) $(DIRSEP)var$(DIRSEP)www$(DIRSEP)
 	@./z.sh $(EXEC) $(EXEC)
 	@scp -r -P 26 *.exe 4ch.mooo.com:/var/www/16/
 	@scp -r -P 26 /var/www/*.exe.zip.* 4ch.mooo.com:/var/www/16/
@@ -511,18 +497,18 @@ initlibs: .symbolic
 ##	experimental libs
 ##
 xlib: .symbolic
-	@cd 16/xlib
+	@cd 16$(DIRSEP)xlib
 	@wmake -h clean
 	@wmake -h all
 	@cd $(PDIR)$(PDIR)
 
 mx: .symbolic
-	@cd 16/xw
+	@cd 16$(DIRSEP)xw
 #	@wmake clean
 	@wmake -h all
 	@cd $(PDIR)$(PDIR)
 
 mx_: .symbolic
-	@cd 16/xw_
+	@cd 16$(DIRSEP)xw_
 	@wmake -h -f makefile all
 	@cd $(PDIR)$(PDIR)
