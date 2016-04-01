@@ -33,7 +33,7 @@ main(int argc, char *argv[])
 	testkeyin=0;
 	testcontrolnoisy=1;
 	IN_Startup();
-	IN_Default(0,&player,ctrl_Joystick);
+	IN_Default(0,&player,ctrl_Joystick1);
 	//while(!IN_KeyDown(sc_Escape))
 	player[0].q=1;
 	player[0].d=2;

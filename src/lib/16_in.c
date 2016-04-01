@@ -659,6 +659,7 @@ IN_Startup()
 		inpu.JoysPresent[i] = checkjoys? INL_StartJoy(i) : false;
 
 	inst.IN_Started = true;
+
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -895,6 +896,8 @@ register	KeyboardDef	*def;
 				buttons += 1 << 1;
 			realdelta = false;
 			break;
+		case ctrl_Joypad1:
+		case ctrl_Joypad2:
 		case ctrl_Joystick1:
 		case ctrl_Joystick2:
 			INL_GetJoyDelta(type - ctrl_Joystick,&dx,&dy,false);
@@ -905,10 +908,6 @@ register	KeyboardDef	*def;
 			INL_GetMouseDelta(&dx,&dy);
 			buttons = INL_GetMouseButtons();
 			realdelta = true;
-			break;
-		case ctrl_Joypad1:
-		case ctrl_Joypad2:
-			printf("wwww");
 			break;
 		}
 #ifdef DEMO0
