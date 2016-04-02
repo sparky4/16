@@ -32,6 +32,7 @@ main(int argc, char *argv[])
 	//extern struct inconfig inpu;
 	testkeyin=0;
 	testcontrolnoisy=1;
+	testctrltype=1;
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick1);
 	//while(!IN_KeyDown(sc_Escape))

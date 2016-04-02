@@ -38,7 +38,7 @@
 
 #include "src/lib/16_in.h"
 
-byte testkeyin=0,testcontrolnoisy=0;
+byte testkeyin=0,testcontrolnoisy=0,testctrltype=0;
 
 /*
 =============================================================================
@@ -51,7 +51,7 @@ struct inconfig
 {
 	boolean			MousePresent;
 	boolean			JoysPresent[MaxJoys];
-	boolean			JoyPadPresent[MaxPads];
+// 	boolean			JoyPadPresent[MaxPads];
 	boolean		Keyboard[NumCodes];
 	boolean		Paused;
 	char		LastASCII;
@@ -59,7 +59,7 @@ struct inconfig
 
 	KeyboardDef	KbdDefs[MaxKbds];
 	JoystickDef	JoyDefs[MaxJoys];
-	JoypadDef	JoypadDefs[MaxPads];
+// 	JoypadDef	JoypadDefs[MaxPads];
 } inpu;
 
 //extern inconfig inpu;
@@ -671,16 +671,16 @@ void
 IN_Default(boolean gotit,player_t *player,ControlType nt)
 {
 	int i;
-	if
+	/*if
 	(
 		(!gotit)
 	|| 	((nt == ctrl_Joystick1) && !inpu.JoysPresent[0])
 	|| 	((nt == ctrl_Joystick2) && !inpu.JoysPresent[1])
 	|| 	((nt == ctrl_Mouse) && !inpu.MousePresent)
-	|| 	((nt == ctrl_Joypad1) && !inpu.JoyPadPresent[0])
-	|| 	((nt == ctrl_Joypad2) && !inpu.JoyPadPresent[1])
+// 	|| 	((nt == ctrl_Joypad1) && !inpu.JoyPadPresent[0])
+// 	|| 	((nt == ctrl_Joypad2) && !inpu.JoyPadPresent[1])
 	)
-		nt = ctrl_Keyboard1;
+		nt = ctrl_Keyboard1;*/
 	inpu.KbdDefs[0].button0 = 0x1c;
 	inpu.KbdDefs[0].button1 = 0x38;
 	//in.KbdDefs[0].upleft = 0x47;
@@ -842,6 +842,7 @@ register	KeyboardDef	*def;
 	else
 	{
 #endif
+		//if(testctrltype>0) printf("player[pn].Controls=%c\n", player[pn].Controls);
 		switch (type = player[pn].Controls)
 		{
 		case ctrl_Keyboard1:
@@ -896,8 +897,8 @@ register	KeyboardDef	*def;
 				buttons += 1 << 1;
 			realdelta = false;
 			break;
-		case ctrl_Joypad1:
-		case ctrl_Joypad2:
+// 		case ctrl_Joypad1:
+// 		case ctrl_Joypad2:
 		case ctrl_Joystick1:
 		case ctrl_Joystick2:
 			INL_GetJoyDelta(type - ctrl_Joystick,&dx,&dy,false);
