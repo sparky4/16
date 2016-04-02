@@ -42,7 +42,7 @@
 //#define TESTCONTROLNOISY
 #endif
 
-extern byte testkeyin,testcontrolnoisy;
+extern byte testkeyin,testcontrolnoisy,testctrltype;
 
 //if else for gfxtesting and direction
 //player[pn].d == 2 ||
@@ -169,8 +169,8 @@ typedef	enum		{
 						ctrl_Joystick,
 							ctrl_Joystick1 = ctrl_Joystick,ctrl_Joystick2,
 						ctrl_Mouse,
-						ctrl_Joypad,
-							ctrl_Joypad1 = ctrl_Joypad,ctrl_Joypad2
+// 						ctrl_Joypad,
+// 							ctrl_Joypad1 = ctrl_Joypad,ctrl_Joypad2
 					} ControlType;
 typedef	enum		{
 						motion_Left = -1,motion_Up = -1,
@@ -211,10 +211,10 @@ typedef	struct		{
 									joyMultXL,joyMultYL,
 									joyMultXH,joyMultYH;
 					} JoystickDef;
-typedef	struct
-{
-	boolean w;
-} JoypadDef;
+// typedef	struct
+// {
+// 	boolean w;
+// } JoypadDef;
 
 typedef	struct
 {
