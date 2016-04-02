@@ -671,7 +671,8 @@ void
 IN_Default(boolean gotit,player_t *player,ControlType nt)
 {
 	int i;
-	/*if
+	if(testctrltype==0)
+	if
 	(
 		(!gotit)
 	|| 	((nt == ctrl_Joystick1) && !inpu.JoysPresent[0])
@@ -680,7 +681,7 @@ IN_Default(boolean gotit,player_t *player,ControlType nt)
 // 	|| 	((nt == ctrl_Joypad1) && !inpu.JoyPadPresent[0])
 // 	|| 	((nt == ctrl_Joypad2) && !inpu.JoyPadPresent[1])
 	)
-		nt = ctrl_Keyboard1;*/
+		nt = ctrl_Keyboard1;
 	inpu.KbdDefs[0].button0 = 0x1c;
 	inpu.KbdDefs[0].button1 = 0x38;
 	//in.KbdDefs[0].upleft = 0x47;
