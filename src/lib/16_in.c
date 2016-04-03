@@ -38,7 +38,7 @@
 
 #include "src/lib/16_in.h"
 
-byte testkeyin=0,testcontrolnoisy=0,testctrltype=0;
+boolean testkeyin=0,testcontrolnoisy=0,testctrltype=0;
 
 /*
 =============================================================================

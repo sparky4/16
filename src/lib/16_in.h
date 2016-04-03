@@ -42,7 +42,7 @@
 //#define TESTCONTROLNOISY
 #endif
 
-extern byte testkeyin,testcontrolnoisy,testctrltype;
+extern boolean testkeyin,testcontrolnoisy,testctrltype;
 
 //if else for gfxtesting and direction
 //player[pn].d == 2 ||
