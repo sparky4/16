@@ -51,7 +51,6 @@ struct inconfig
 {
 	boolean			MousePresent;
 	boolean			JoysPresent[MaxJoys];
-// 	boolean			JoyPadPresent[MaxPads];
 	boolean		Keyboard[NumCodes];
 	boolean		Paused;
 	char		LastASCII;
@@ -59,7 +58,6 @@ struct inconfig
 
 	KeyboardDef	KbdDefs[MaxKbds];
 	JoystickDef	JoyDefs[MaxJoys];
-// 	JoypadDef	JoypadDefs[MaxPads];
 } inpu;
 
 //extern inconfig inpu;
@@ -380,6 +378,41 @@ static	word	lasttime;
 	IN_GetJoyAbs(joy,&x,&y);
 	def = inpu.JoyDefs + joy;
 
+	//TODO: inject p16 input controls!
+	//which is this
+	/*			if(DIRECTIONIFELSE)
+			{
+			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
+				if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]))
+					my = motion_Up;
+				if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up]))
+					my = motion_Down;
+			}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
+				if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]))
+					mx = motion_Left;
+				if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left]))// || player[pn].pdir != 1)
+					mx = motion_Right;
+			}else
+				//if(mx+my!=1 && mx+my!=-1 && mx!=my!=0)
+				{	//2 keys pressed
+					switch (player[pn].pdir)
+					{
+						case 0:
+						case 4:
+							if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right])) dir = DirTable[1];
+							else if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left])) dir = DirTable[3];
+						break;
+						case 1:
+						case 3:
+							if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down])) dir = DirTable[0];
+							else if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up])) dir = DirTable[4];
+						break;
+						default:
+						break;
+					}
+					if(testcontrolnoisy > 0){ printf("dir=%c ", dirchar(dir)); printf("pdir=%c	", dirchar(player[pn].pdir)); }
+				}//else printf("				");
+			}*/
 	if (x < def->threshMinX)
 	{
 		if (x < def->joyMinX)
@@ -678,8 +711,6 @@ IN_Default(boolean gotit,player_t *player,ControlType nt)
 	|| 	((nt == ctrl_Joystick1) && !inpu.JoysPresent[0])
 	|| 	((nt == ctrl_Joystick2) && !inpu.JoysPresent[1])
 	|| 	((nt == ctrl_Mouse) && !inpu.MousePresent)
-// 	|| 	((nt == ctrl_Joypad1) && !inpu.JoyPadPresent[0])
-// 	|| 	((nt == ctrl_Joypad2) && !inpu.JoyPadPresent[1])
 	)
 		nt = ctrl_Keyboard1;
 	inpu.KbdDefs[0].button0 = 0x1c;
@@ -898,8 +929,6 @@ register	KeyboardDef	*def;
 				buttons += 1 << 1;
 			realdelta = false;
 			break;
-// 		case ctrl_Joypad1:
-// 		case ctrl_Joypad2:
 		case ctrl_Joystick1:
 		case ctrl_Joystick2:
 			INL_GetJoyDelta(type - ctrl_Joystick,&dx,&dy,false);

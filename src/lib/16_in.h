@@ -169,8 +169,6 @@ typedef	enum		{
 						ctrl_Joystick,
 							ctrl_Joystick1 = ctrl_Joystick,ctrl_Joystick2,
 						ctrl_Mouse,
-// 						ctrl_Joypad,
-// 							ctrl_Joypad1 = ctrl_Joypad,ctrl_Joypad2
 					} ControlType;
 typedef	enum		{
 						motion_Left = -1,motion_Up = -1,
@@ -211,10 +209,6 @@ typedef	struct		{
 									joyMultXL,joyMultYL,
 									joyMultXH,joyMultYH;
 					} JoystickDef;
-// typedef	struct
-// {
-// 	boolean w;
-// } JoypadDef;
 
 typedef	struct
 {
@@ -252,7 +246,6 @@ typedef	struct
 {
 	boolean			MousePresent;
 	boolean			JoysPresent[MaxJoys];
-	boolean			JoyPadPresent[MaxPads];
 	boolean		Keyboard[NumCodes];
 	boolean		Paused;
 	char		LastASCII;
@@ -260,7 +253,6 @@ typedef	struct
 
 	KeyboardDef	KbdDefs[MaxKbds];
 	JoystickDef	JoyDefs[MaxJoys];
-	JoypadDef	JoypadDefs[MaxPads];
 } inpu;*/
 
 #ifdef DEMO0
