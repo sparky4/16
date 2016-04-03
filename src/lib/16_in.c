@@ -843,7 +843,7 @@ register	KeyboardDef	*def;
 	else
 	{
 #endif
-		//if(testctrltype>0) printf("player[pn].Controls=%c\n", player[pn].Controls);
+		if(testctrltype>0) printf("player[pn].Controls=%c\n", player[pn].Controls);
 		switch (type = player[pn].Controls)
 		{
 		case ctrl_Keyboard1:

@@ -107,4 +107,5 @@ main(int argc, char *argv[])
 	printf("version %s\n", VERSION);
 	printf("testkeyin=%u\n", testkeyin);
 	printf("testcontrolnoisy=%u\n", testcontrolnoisy);
+	printf("testctrltype=%u\n", testctrltype);
 }
