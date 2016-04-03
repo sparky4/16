@@ -939,7 +939,6 @@ register	KeyboardDef	*def;
 	conpee=(((my + 1) * 2) + (mx + 1))-1;
 	player[pn].info.dir = DirTable[conpee];
 
-	//TODO: overwriting direction must be added
 	if(DirTable[conpee]!=2)	player[pn].pdir=DirTable[conpee];
 	if(player[pn].q==1 &&( dir!=2 || (mx!=motion_None || my!=motion_None)))
 	{
