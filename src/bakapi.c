@@ -28,11 +28,42 @@
 global_game_variables_t gvar;
 static bakapee_t bakapee;
 word key,d,xpos,ypos,xdir,ydir;
+sword vgamodex_mode = 1; // 320x240 default
 int ch=0x0;
 
 void
 main(int argc, char *argvar[])
 {
+	char *a;
+	int i;
+
+	// allow changing default mode from command line
+	for (i=1;i < argc;) {
+		a = argvar[i++];
+
+		if (*a == '-') {
+			do { a++; } while (*a == '-');
+
+			if (!strcmp(a,"mx")) {
+				// (based on src/lib/modex16.c)
+				// 1 = 320x240
+				// 2 = 160x120
+				// 3 = 320x200
+				// 4 = 192x144
+				// 5 = 256x192
+				vgamodex_mode = (sword)strtoul(argvar[i++],NULL,0);
+			}
+			else {
+				fprintf(stderr,"Unknown switch %s\n",a);
+				return;
+			}
+		}
+		else {
+			fprintf(stderr,"Unknown command arg %s\n",a);
+			return;
+		}
+	}
+
 	// DOSLIB: check our environment
 	probe_dos();
 
@@ -63,7 +94,7 @@ main(int argc, char *argvar[])
 	ydir=1;
 
 #ifdef MXLIB
-	VGAmodeX(1, &gvar); // TODO: Suggestion: Instead of magic numbers for the first param, might I suggest defining an enum or some #define constants that are easier to remember? --J.C.
+	VGAmodeX(vgamodex_mode, &gvar); // TODO: Suggestion: Instead of magic numbers for the first param, might I suggest defining an enum or some #define constants that are easier to remember? --J.C.
 #else
 # error REMOVED // this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
 		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
@@ -146,7 +177,7 @@ main(int argc, char *argvar[])
 					gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
 					gvar.video.page[0].width += (TILEWH*2);
 					gvar.video.page[0].height += (TILEWH*2);
-					VGAmodeX(1, &gvar);
+					VGAmodeX(vgamodex_mode, &gvar);
 # else
 #  error REMOVED // this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
 		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
