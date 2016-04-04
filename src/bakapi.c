@@ -94,12 +94,19 @@ main(int argc, char *argvar[])
 #ifdef BOINK
 	while(d>0)	// on!
 	{
-		if(!kbhit())
-		{ // conditions of screen saver
+		/* run screensaver routine until keyboard input */
+		while (key > 0) {
+			if (kbhit()) {
+				getch(); // eat keyboard input
+				break;
+			}
+
 			ding(&gvar.video.page[0], &bakapee, key);
 		}
-		else
+
 		{
+			int c;
+
 # ifndef MXLIB
 #  error REMOVED // this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
 		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
@@ -108,20 +115,15 @@ main(int argc, char *argvar[])
 # endif
 			// user imput switch
 			fprintf(stderr, "xx=%d	yy=%d	tile=%d\n", bakapee.xx, bakapee.yy, bakapee.tile);
-			printf("Enter 1, 2, 3, 4, or 6 to run a screensaver, or enter 0 to quit.\n", getch());  // prompt the user
-			//scanf("%d", &key);
-			if(scanf("%d", &key) != 1)
-			{
-				printf("%d\n", key);
-			}
-			getch();
-			//if(key==3){xx=yy=0;} // crazy screen saver wwww
-			switch (key)
-			{
-				case 0:
+			printf("Enter 1, 2, 3, 4, or 6 to run a screensaver, or enter 0 to quit.\n");
+
+			c = getch();
+			switch (c) {
+				case 27: /* Escape key */
+				case '0':
 					d=0;
-				break;
-				case 65536:
+					break;
+				case 'b': // test tile change
 					switch (bakapee.tile)
 					{
 						case 0:
@@ -131,8 +133,15 @@ main(int argc, char *argvar[])
 							bakapee.tile=0;
 						break;
 					}
-					d=2;
-				default:
+					key=0;
+					break;
+				case '1':
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+					key = c - '0';
 # ifdef MXLIB
 					gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
 					gvar.video.page[0].width += (TILEWH*2);
@@ -143,7 +152,10 @@ main(int argc, char *argvar[])
 		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
 # endif
 					modexShowPage(&gvar.video.page[0]);
-				break;
+					break;
+				default:
+					key=0;
+					break;
 			}
 		}
 	}
