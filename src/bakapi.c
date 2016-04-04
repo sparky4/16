@@ -166,6 +166,8 @@ main(int argc, char *argvar[])
 					}
 					key=0;
 					break;
+				case '8':
+					c+=8;
 				case '1':
 				case '2':
 				case '3':
