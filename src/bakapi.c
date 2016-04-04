@@ -33,6 +33,27 @@ int ch=0x0;
 void
 main(int argc, char *argvar[])
 {
+	// DOSLIB: check our environment
+	probe_dos();
+
+	// DOSLIB: what CPU are we using?
+	// NTS: I can see from the makefile Sparky4 intends this to run on 8088 by the -0 switch in CFLAGS.
+	//      So this code by itself shouldn't care too much what CPU it's running on. Except that other
+	//      parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
+	//      the CPU to carry out tasks. --J.C.
+	cpu_probe();
+
+	// DOSLIB: check for VGA
+	if (!probe_vga()) {
+		printf("VGA probe failed\n");
+		return;
+	}
+	// hardware must be VGA or higher!
+	if (!(vga_state.vga_flags & VGA_IS_VGA)) {
+		printf("This program requires VGA or higher graphics hardware\n");
+		return;
+	}
+
 	// main variables values
 	d=4; // switch variable
 	key=2; // default screensaver number
@@ -44,11 +65,6 @@ main(int argc, char *argvar[])
 #ifdef MXLIB
 	VGAmodeX(1, &gvar);
 #else
-		probe_dos();
-	if (!probe_vga()) {
-		printf("VGA probe failed\n");
-		return 1;
-	}
 	int10_setmode(19);
 	update_state_from_vga();
 	vga_enable_256color_modex(); // VGA mode X
