@@ -82,8 +82,8 @@ typedef union
 
 /* -============================ Functions =============================- */
 /* mode switching, page, and plane functions */
-void VGAmodeX(sword vq, byte cm, global_game_variables_t *gv)
-void modexEnter(sword vq, byte cm, global_game_variables_t *gv);
+void VGAmodeX(sword vq, boolean cm, global_game_variables_t *gv);
+void modexEnter(sword vq, boolean cm, global_game_variables_t *gv);
 long vgaGetMode();
 void modexLeave();
 void modexsetBaseXMode(page_t *page);

@@ -35,7 +35,7 @@ static byte tmppal[PAL_SIZE];
 // setvideo() - This function Manages the video modes												//
 //																														//
 /////////////////////////////////////////////////////////////////////////////
-void VGAmodeX(sword vq, byte cm, global_game_variables_t *gv)
+void VGAmodeX(sword vq, boolean cm, global_game_variables_t *gv)
 {
 	union REGS in, out;
 
@@ -86,8 +86,7 @@ vgaGetMode()
 }
 
 /* -========================= Entry  Points ==========================- */
-void
-modexEnter(sword vq, boolean cm, global_game_variables_t *gv)
+void modexEnter(sword vq, boolean cm, global_game_variables_t *gv)
 {
 	word i;
 	dword far*ptr=(dword far*)VGA;      /* used for faster screen clearing */
