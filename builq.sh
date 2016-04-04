@@ -1,4 +1,5 @@
 #! /bin/bash
-wmake -h clean
-wmake -h
-wmake -h comq
+. ./dld.sh
+./cleanup.sh
+./buildall.sh
+#cd ../../../

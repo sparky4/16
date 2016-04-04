@@ -63,7 +63,7 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 //	static byte *rosa;
 	static word chx, chy, colpee;
 	textInit();
-	VGAmodeX(1, &gvar);
+	VGAmodeX(1, 1, &gvar);
 	/* setup camera and screen~ */
 	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
 	//gvar.video.page[0].width += (16*2);
@@ -96,7 +96,7 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 //	modexprintbig(&gvar.video.page[0], 0, 0, 1, colpee, 0, "IBM");
 //	modexprint(0, 0, 1, 0, colpee, ROSE);
 	getch();
-	VGAmodeX(0, &gvar);
+	VGAmodeX(0, 1, &gvar);
 //	rosa=malloc(sizeof(ROSE));
 //	(*rosa)=(byte)ROSE;
 	printf("\n%s\n", rose);

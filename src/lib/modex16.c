@@ -35,7 +35,7 @@ static byte tmppal[PAL_SIZE];
 // setvideo() - This function Manages the video modes												//
 //																														//
 /////////////////////////////////////////////////////////////////////////////
-void VGAmodeX(sword vq, global_game_variables_t *gv)
+void VGAmodeX(sword vq, byte cm, global_game_variables_t *gv)
 {
 	union REGS in, out;
 
@@ -54,7 +54,7 @@ void VGAmodeX(sword vq, global_game_variables_t *gv)
 			//int86(0x10, &in, &out);
 			gv->video.old_mode = vgaGetMode();//out.h.al;
 			// enter mode
-			modexEnter(vq, gv);
+			modexEnter(vq, cm, gv);
 		break;
 	}
 }
@@ -87,7 +87,7 @@ vgaGetMode()
 
 /* -========================= Entry  Points ==========================- */
 void
-modexEnter(sword vq, global_game_variables_t *gv)
+modexEnter(sword vq, boolean cm, global_game_variables_t *gv)
 {
 	word i;
 	dword far*ptr=(dword far*)VGA;      /* used for faster screen clearing */
@@ -107,12 +107,6 @@ modexEnter(sword vq, global_game_variables_t *gv)
 			for(i=0; i<CRTParmCount; i++) {
 				outpw(CRTC_INDEX, ModeX_320x240regs[i]);
 			}
-
-			/* clear video memory */
-			outpw(SC_INDEX, 0x0f02);
-			for(i=0; i<0x8000; i++) {
-				ptr[i] = 0x0000;
-			}
 		break;
 		case 2:
 			CRTParmCount = sizeof(ModeX_160x120regs) / sizeof(ModeX_160x120regs[0]);
@@ -123,12 +117,6 @@ modexEnter(sword vq, global_game_variables_t *gv)
 			/* send the CRTParms */
 			for(i=0; i<CRTParmCount; i++) {
 				outpw(CRTC_INDEX, ModeX_160x120regs[i]);
-			}
-
-			/* clear video memory */
-			outpw(SC_INDEX, 0x0f02);
-			for(i=0; i<0x8000; i++) {
-				ptr[i] = 0x0000;
 			}
 		break;
 		case 3:
@@ -141,12 +129,6 @@ modexEnter(sword vq, global_game_variables_t *gv)
 			for(i=0; i<CRTParmCount; i++) {
 				outpw(CRTC_INDEX, ModeX_320x200regs[i]);
 			}
-
-			/* clear video memory */
-			outpw(SC_INDEX, 0x0f02);
-			for(i=0; i<0x8000; i++) {
-				ptr[i] = 0x0000;
-			}
 		break;
 		case 4:
 			CRTParmCount = sizeof(ModeX_192x144regs) / sizeof(ModeX_192x144regs[0]);
@@ -157,12 +139,6 @@ modexEnter(sword vq, global_game_variables_t *gv)
 			/* send the CRTParms */
 			for(i=0; i<CRTParmCount; i++) {
 				outpw(CRTC_INDEX, ModeX_192x144regs[i]);
-			}
-
-			/* clear video memory */
-			outpw(SC_INDEX, 0x0f02);
-			for(i=0; i<0x8000; i++) {
-				ptr[i] = 0x0000;
 			}
 		break;
 		case 5:
@@ -175,12 +151,18 @@ modexEnter(sword vq, global_game_variables_t *gv)
 			for(i=0; i<CRTParmCount; i++) {
 				outpw(CRTC_INDEX, ModeX_256x192regs[i]);
 			}
+		break;
+	}
 
-			/* clear video memory */
-			outpw(SC_INDEX, 0x0f02);
-			for(i=0; i<0x8000; i++) {
-				ptr[i] = 0x0000;
-			}
+	/* clear video memory */
+	switch (cm)
+	{
+		case 1:
+		/* clear video memory */
+		outpw(SC_INDEX, 0x0f02);
+		for(i=0; i<0x8000; i++) {
+			ptr[i] = 0x0000;
+		}
 		break;
 	}
 	gv->video.page[0].tilesw = gv->video.page[0].sw/TILEWH;

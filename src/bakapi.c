@@ -93,12 +93,10 @@ main(int argc, char *argvar[])
 	xdir=1;
 	ydir=1;
 
-#ifdef MXLIB
-	VGAmodeX(vgamodex_mode, &gvar); // TODO: Suggestion: Instead of magic numbers for the first param, might I suggest defining an enum or some #define constants that are easier to remember? --J.C.
-#else
-# error REMOVED // this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
+	VGAmodeX(vgamodex_mode, 1, &gvar); // TODO: Suggestion: Instead of magic numbers for the first param, might I suggest defining an enum or some #define constants that are easier to remember? --J.C.
+		// this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
 		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
-#endif
+
 	bakapee.xx = rand()&0%gvar.video.page[0].width;
 	bakapee.yy = rand()&0%gvar.video.page[0].height;
 	bakapee.gq = 0;
@@ -138,15 +136,22 @@ main(int argc, char *argvar[])
 		{
 			int c;
 
-# ifndef MXLIB
-#  error REMOVED // this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
+		// this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
 		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
-# else
-			VGAmodeX(0, &gvar);
-# endif
+			VGAmodeX(0, 0, &gvar);
 			// user imput switch
-			fprintf(stderr, "xx=%d	yy=%d	tile=%d\n", bakapee.xx, bakapee.yy, bakapee.tile);
-			printf("Enter 1, 2, 3, 4, or 6 to run a screensaver, or enter 0 to quit.\n");
+			//fprintf(stderr, "xx=%d	yy=%d	tile=%d\n", bakapee.xx, bakapee.yy, bakapee.tile);
+			printf("Tiled mode is ");
+			switch (bakapee.tile)
+			{
+				case 0:
+					printf("off.\n");
+				break;
+				case 1:
+					printf("on.\n");
+				break;
+			}
+			printf("Enter 1, 2, 3, 4, 5, 6, 8, or 9 to run a screensaver, or enter 0 to quit.\n");
 
 			c = getch();
 			switch (c) {
@@ -174,16 +179,14 @@ main(int argc, char *argvar[])
 				case '4':
 				case '5':
 				case '6':
+				case '9':
 					key = c - '0';
-# ifdef MXLIB
 					gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
 					gvar.video.page[0].width += (TILEWH*2);
 					gvar.video.page[0].height += (TILEWH*2);
-					VGAmodeX(vgamodex_mode, &gvar);
-# else
-#  error REMOVED // this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
+					VGAmodeX(vgamodex_mode, 0, &gvar);
+		// this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
 		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
-# endif
 					modexShowPage(&gvar.video.page[0]);
 					break;
 				default:
@@ -194,6 +197,7 @@ main(int argc, char *argvar[])
 	}
 #else // !defined(BOINK)
 // FIXME: Does not compile. Do you want to remove this?
+// TODO: This is a testing sextion for textrendering and panning for project 16 --sparky4
 	while(1)
 	{ // conditions of screen saver
 		while(!kbhit())
@@ -268,6 +272,7 @@ main(int argc, char *argvar[])
 	}
 //	VGAmodeX(0, &gvar);
 #endif // defined(BOINK)
-	printf("bakapi ver. 1.04.13.04\nis made by sparky4（≧ω≦） feel free to use it ^^\nLicence: GPL v3\n");
+	printf("bakapi ver. 1.04.16.04\nis made by sparky4（≧ω≦） feel free to use it ^^\nLicence: GPL v3\n");
+	printf("compiled on %s\n", VERSION);
 }
 //pee!
