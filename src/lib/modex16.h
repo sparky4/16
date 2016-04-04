@@ -37,6 +37,9 @@
 #include "src/lib/modex16/192x144_.h"
 #include "src/lib/modex16/160x120.h"
 
+//TODO dos lib vga implementation ^^
+//#define DOSLIBVGA
+
 static struct pcxHeader {
 	byte id;
 	byte version;
