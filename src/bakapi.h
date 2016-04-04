@@ -25,6 +25,6 @@
 
 #include "src/lib/bakapee.h"
 
-#define BOINK
+#define BOINK // what does this mean? --J.C.
 
 #endif /*__BAKAPI_H_*/

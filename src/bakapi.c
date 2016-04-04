@@ -63,32 +63,10 @@ main(int argc, char *argvar[])
 	ydir=1;
 
 #ifdef MXLIB
-	VGAmodeX(1, &gvar);
+	VGAmodeX(1, &gvar); // TODO: Suggestion: Instead of magic numbers for the first param, might I suggest defining an enum or some #define constants that are easier to remember? --J.C.
 #else
-	int10_setmode(19);
-	update_state_from_vga();
-	vga_enable_256color_modex(); // VGA mode X
-	vga_state.vga_width = 320; // VGA lib currently does not update this
-	vga_state.vga_height = 240; // VGA lib currently does not update this
-
-//#if 1 // 320x240 test mode: this is how Project 16 is using our code, enable for test case
-	{
-		struct vga_mode_params cm;
-
-		vga_read_crtc_mode(&cm);
-
-		// 320x240 mode 60Hz
-		cm.vertical_total = 525;
-		cm.vertical_start_retrace = 0x1EA;
-		cm.vertical_end_retrace = 0x1EC;
-		cm.vertical_display_end = 480;
-		cm.vertical_blank_start = 489;
-		cm.vertical_blank_end = 517;
-
-		vga_write_crtc_mode(&cm,0);
-	}
-	vga_state.vga_height = 240; // VGA lib currently does not update this
-//#endif
+# error REMOVED // this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
+		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
 #endif
 	bakapee.xx = rand()&0%gvar.video.page[0].width;
 	bakapee.yy = rand()&0%gvar.video.page[0].height;
@@ -122,11 +100,12 @@ main(int argc, char *argvar[])
 		}
 		else
 		{
-#ifndef MXLIB
-			int10_setmode(3);
-#else
+# ifndef MXLIB
+#  error REMOVED // this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
+		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
+# else
 			VGAmodeX(0, &gvar);
-#endif
+# endif
 			// user imput switch
 			fprintf(stderr, "xx=%d	yy=%d	tile=%d\n", bakapee.xx, bakapee.yy, bakapee.tile);
 			printf("Enter 1, 2, 3, 4, or 6 to run a screensaver, or enter 0 to quit.\n", getch());  // prompt the user
@@ -154,48 +133,22 @@ main(int argc, char *argvar[])
 					}
 					d=2;
 				default:
-#ifdef MXLIB
+# ifdef MXLIB
 					gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
 					gvar.video.page[0].width += (TILEWH*2);
 					gvar.video.page[0].height += (TILEWH*2);
 					VGAmodeX(1, &gvar);
-#else
-						probe_dos();
-	if (!probe_vga()) {
-		printf("VGA probe failed\n");
-		return 1;
-	}
-	int10_setmode(19);
-	update_state_from_vga();
-	vga_enable_256color_modex(); // VGA mode X
-	vga_state.vga_width = 320; // VGA lib currently does not update this
-	vga_state.vga_height = 240; // VGA lib currently does not update this
-
-//#if 1 // 320x240 test mode: this is how Project 16 is using our code, enable for test case
-	{
-		struct vga_mode_params cm;
-
-		vga_read_crtc_mode(&cm);
-
-		// 320x240 mode 60Hz
-		cm.vertical_total = 525;
-		cm.vertical_start_retrace = 0x1EA;
-		cm.vertical_end_retrace = 0x1EC;
-		cm.vertical_display_end = 480;
-		cm.vertical_blank_start = 489;
-		cm.vertical_blank_end = 517;
-
-		vga_write_crtc_mode(&cm,0);
-	}
-	vga_state.vga_height = 240; // VGA lib currently does not update this
-//#endif
-#endif
+# else
+#  error REMOVED // this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
+		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
+# endif
 					modexShowPage(&gvar.video.page[0]);
 				break;
 			}
 		}
 	}
-#else
+#else // !defined(BOINK)
+// FIXME: Does not compile. Do you want to remove this?
 	while(1)
 	{ // conditions of screen saver
 		while(!kbhit())
@@ -269,7 +222,7 @@ main(int argc, char *argvar[])
 	if(ch==0x1b)break; // 'ESC'
 	}
 //	VGAmodeX(0, &gvar);
-#endif
+#endif // defined(BOINK)
 	printf("bakapi ver. 1.04.13.04\nis made by sparky4ÅiÅÜÉ÷ÅÖÅj feel free to use it ^^\nLicence: GPL v3\n");
 }
 //pee!
