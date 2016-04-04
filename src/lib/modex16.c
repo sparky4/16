@@ -93,18 +93,34 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 	int CRTParmCount;
 	/* common mode X initiation stuff~ */
 	modexsetBaseXMode(gv->video.page);
+	vga_enable_256color_modex(); // VGA mode X
+	update_state_from_vga();
 
 	switch(vq)
 	{
 		case 1:
-			CRTParmCount = sizeof(ModeX_320x240regs) / sizeof(ModeX_320x240regs[0]);
+			//CRTParmCount = sizeof(ModeX_320x240regs) / sizeof(ModeX_320x240regs[0]);
 			/* width and height */
-			gv->video.page[0].sw=320;
-			gv->video.page[0].sh=240;
+			gv->video.page[0].sw=vga_state.vga_width = 320; // VGA lib currently does not update this
+			gv->video.page[0].sh=vga_state.vga_height = 240; // VGA lib currently does not update this
 
 			/* send the CRTParms */
-			for(i=0; i<CRTParmCount; i++) {
+			/*for(i=0; i<CRTParmCount; i++) {
 				outpw(CRTC_INDEX, ModeX_320x240regs[i]);
+			}*/
+			{
+			struct vga_mode_params cm;
+			vga_read_crtc_mode(&cm);
+
+			// 320x240 mode 60Hz
+			cm.vertical_total = 525;
+			cm.vertical_start_retrace = 0x1EA;
+			cm.vertical_end_retrace = 0x1EC;
+			cm.vertical_display_end = 480;
+			cm.vertical_blank_start = 489;
+			cm.vertical_blank_end = 517;
+
+			vga_write_crtc_mode(&cm,0);
 			}
 		break;
 		case 2:

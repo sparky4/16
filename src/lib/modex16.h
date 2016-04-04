@@ -37,6 +37,11 @@
 #include "src/lib/modex16/192x144_.h"
 #include "src/lib/modex16/160x120.h"
 
+#include <hw/cpu/cpu.h>
+#include <hw/dos/dos.h>
+#include <hw/vga/vga.h>
+#include <hw/vga/vrl.h>
+
 //TODO dos lib vga implementation ^^
 //#define DOSLIBVGA
 
