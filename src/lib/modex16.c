@@ -35,7 +35,7 @@ static byte tmppal[PAL_SIZE];
 // setvideo() - This function Manages the video modes												//
 //																														//
 /////////////////////////////////////////////////////////////////////////////
-void VGAmodeX(sword vq, boolean cm, global_game_variables_t *gv)
+void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
 {
 	union REGS in, out;
 
@@ -54,7 +54,7 @@ void VGAmodeX(sword vq, boolean cm, global_game_variables_t *gv)
 			//int86(0x10, &in, &out);
 			gv->video.old_mode = vgaGetMode();//out.h.al;
 			// enter mode
-			modexEnter(vq, cm, gv);
+			modexEnter(vq, cmem, gv);
 		break;
 	}
 }
@@ -86,7 +86,7 @@ vgaGetMode()
 }
 
 /* -========================= Entry  Points ==========================- */
-void modexEnter(sword vq, boolean cm, global_game_variables_t *gv)
+void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 {
 	word i;
 	dword far*ptr=(dword far*)VGA;      /* used for faster screen clearing */
@@ -154,7 +154,7 @@ void modexEnter(sword vq, boolean cm, global_game_variables_t *gv)
 	}
 
 	/* clear video memory */
-	switch (cm)
+	switch (cmem)
 	{
 		case 1:
 		/* clear video memory */

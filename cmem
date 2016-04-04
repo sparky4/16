@@ -1,0 +1,672 @@
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -c src/16.c
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -c src/lib/mapread.c
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -c src/lib/jsmn/jsmn.c
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -c src/lib/16_in.c
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -c src/lib/16_mm.c
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -c src/lib/wcpu/wcpu.c
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -c src/lib/16_head.c
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -c src/lib/16_ca.c
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -c src/lib/nyan/kitten.c
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -c src/lib/16_hc.c
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -c src/lib/16_timer.c
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -c src/lib/modex16.c
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -c src/lib/bitmap.c
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -c src/lib/planar.c
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -c src/lib/16text.c
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -c src/lib/bakapee.c
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -c src/lib/scroll16.c
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -c src/lib/modex16/16render.c
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -c src/lib/modex16/16planar.c
+wlib -b -q gfx.lib modex16.o bitmap.o planar.o 16text.o bakapee.o scroll16.o 16render.o 16planar.o
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -fh=16.hed 16.o mapread.o jsmn.o 16_in.o 16_mm.o wcpu.o 16_head.o 16_ca.o kitten.o 16_hc.o 16_timer.o gfx.lib -fm=16.map
+wcl -mh -0 -d1 -lr -l=dos -wo -isrc/lib/doslib/ -obmiler -out -oh -ei -zp8 -fpi87 -onac -ol+ -ok -DTARGET_MSDOS=16 -DMSDOS=1 -sg -st -of+ -zu -zdf -zff -zgf -k55808 -zk0 -zc -zp8 -zq -q -c src/bakapi.c
+cd src/lib/doslib/hw/vga && ./make.sh
+Using: /dos/fdos/watcom2
+Open Watcom Make Version 2.0 beta Jan 20 2016 10:21:12 (32-bit)
+Copyright (c) 2002-2016 The Open Watcom Contributors. All Rights Reserved.
+Portions Copyright (c) 1988-2002 Sybase, Inc. All Rights Reserved.
+Source code is available under the Sybase Open Watcom Public License.
+See http://www.openwatcom.org/ for details.
+	%write tmp.cmd -fr=nul -fo=dos86c/.obj -i=.. -i../.. -e=2 -zu -zq -mc -d0  -bt=dos -oilrtfm -wx -0 -dTARGET_MSDOS=16 -dMSDOS=1 -dTARGET86=86 -DMMODE=c -q vga.c
+	wcc @tmp.cmd
+                       Ultimate Packer for eXecutables
+                          Copyright (C) 1996 - 2013
+UPX 3.91        Markus Oberhumer, Laszlo Molnar & John Reiser   Sep 30th 2013
+
+        File size         Ratio      Format      Name
+   --------------------   ------   -----------   -----------
+    134711 ->     85368   63.37%     dos/exe     16.exe
+
+Packed 1 file.
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+Creating archive /var/www/16.exe.zip
+
+Compressing  16.exe
+
+Everything is Ok
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+bakapi.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/bakapi.exe.zip
+
+
+
+WARNINGS for files:
+
+bakapi.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+exmmtest.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/exmmtest.exe.zip
+
+
+
+WARNINGS for files:
+
+exmmtest.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+test.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/test.exe.zip
+
+
+
+WARNINGS for files:
+
+test.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+pcxtest.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/pcxtest.exe.zip
+
+
+
+WARNINGS for files:
+
+pcxtest.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+pcxtest2.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/pcxtest2.exe.zip
+
+
+
+WARNINGS for files:
+
+pcxtest2.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+test2.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/test2.exe.zip
+
+
+
+WARNINGS for files:
+
+test2.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+palettec.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/palettec.exe.zip
+
+
+
+WARNINGS for files:
+
+palettec.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+maptest.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/maptest.exe.zip
+
+
+
+WARNINGS for files:
+
+maptest.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+fmemtest.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/fmemtest.exe.zip
+
+
+
+WARNINGS for files:
+
+fmemtest.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+fonttest.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/fonttest.exe.zip
+
+
+
+WARNINGS for files:
+
+fonttest.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+fontgfx.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/fontgfx.exe.zip
+
+
+
+WARNINGS for files:
+
+fontgfx.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+scroll.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/scroll.exe.zip
+
+
+
+WARNINGS for files:
+
+scroll.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+vgmtest.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/vgmtest.exe.zip
+
+
+
+WARNINGS for files:
+
+vgmtest.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+inputest.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/inputest.exe.zip
+
+
+
+WARNINGS for files:
+
+inputest.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+palettel.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/palettel.exe.zip
+
+
+
+WARNINGS for files:
+
+palettel.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+planrpcx.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/planrpcx.exe.zip
+
+
+
+WARNINGS for files:
+
+planrpcx.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+tesuto.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/tesuto.exe.zip
+
+
+
+WARNINGS for files:
+
+tesuto.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+Creating archive /var/www/16.exe.zip
+
+Compressing  16.exe
+
+Everything is Ok
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+bakapi.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/bakapi.exe.zip
+
+
+
+WARNINGS for files:
+
+bakapi.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+exmmtest.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/exmmtest.exe.zip
+
+
+
+WARNINGS for files:
+
+exmmtest.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+test.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/test.exe.zip
+
+
+
+WARNINGS for files:
+
+test.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+pcxtest.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/pcxtest.exe.zip
+
+
+
+WARNINGS for files:
+
+pcxtest.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+pcxtest2.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/pcxtest2.exe.zip
+
+
+
+WARNINGS for files:
+
+pcxtest2.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+test2.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/test2.exe.zip
+
+
+
+WARNINGS for files:
+
+test2.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+palettec.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/palettec.exe.zip
+
+
+
+WARNINGS for files:
+
+palettec.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+maptest.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/maptest.exe.zip
+
+
+
+WARNINGS for files:
+
+maptest.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+fmemtest.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/fmemtest.exe.zip
+
+
+
+WARNINGS for files:
+
+fmemtest.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+fonttest.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/fonttest.exe.zip
+
+
+
+WARNINGS for files:
+
+fonttest.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+fontgfx.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/fontgfx.exe.zip
+
+
+
+WARNINGS for files:
+
+fontgfx.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+scroll.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/scroll.exe.zip
+
+
+
+WARNINGS for files:
+
+scroll.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+vgmtest.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/vgmtest.exe.zip
+
+
+
+WARNINGS for files:
+
+vgmtest.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+inputest.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/inputest.exe.zip
+
+
+
+WARNINGS for files:
+
+inputest.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+palettel.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/palettel.exe.zip
+
+
+
+WARNINGS for files:
+
+palettel.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+planrpcx.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/planrpcx.exe.zip
+
+
+
+WARNINGS for files:
+
+planrpcx.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
+
+7-Zip 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+p7zip Version 9.20 (locale=en_US.utf8,Utf16=on,HugeFiles=on,2 CPUs)
+Scanning
+
+
+tesuto.exe:  WARNING: No more files                
+
+
+Creating archive /var/www/tesuto.exe.zip
+
+
+
+WARNINGS for files:
+
+tesuto.exe : No more files                
+----------------
+WARNING: Cannot find 1 file
