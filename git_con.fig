@@ -4,14 +4,11 @@
 	bare = false
 	logallrefupdates = true
 [remote "origin"]
-	url = https://github.com/joncampbell123/16.git
+	url = https://github.com/sparky4/16
 	fetch = +refs/heads/*:refs/remotes/origin/*
 [branch "master"]
 	remote = origin
 	merge = refs/heads/master
-[remote "upstream"]
-	url = https://github.com/sparky4/16.git
-	fetch = +refs/heads/*:refs/remotes/upstream/*
 [submodule "src/lib/doslib"]
 	url = https://github.com/joncampbell123/doslib.git
 [submodule "src/lib/jsmn"]

@@ -28,11 +28,63 @@
 global_game_variables_t gvar;
 static bakapee_t bakapee;
 word key,d,xpos,ypos,xdir,ydir;
+sword vgamodex_mode = 1; // 320x240 default
 int ch=0x0;
 
 void
 main(int argc, char *argvar[])
 {
+	char *a;
+	int i;
+
+	// allow changing default mode from command line
+	for (i=1;i < argc;) {
+		a = argvar[i++];
+
+		if (*a == '-') {
+			do { a++; } while (*a == '-');
+
+			if (!strcmp(a,"mx")) {
+				// (based on src/lib/modex16.c)
+				// 1 = 320x240
+				// 2 = 160x120
+				// 3 = 320x200
+				// 4 = 192x144
+				// 5 = 256x192
+				vgamodex_mode = (sword)strtoul(argvar[i++],NULL,0);
+			}
+			else {
+				fprintf(stderr,"Unknown switch %s\n",a);
+				return;
+			}
+		}
+		else {
+			fprintf(stderr,"Unknown command arg %s\n",a);
+			return;
+		}
+	}
+
+	// DOSLIB: check our environment
+	probe_dos();
+
+	// DOSLIB: what CPU are we using?
+	// NTS: I can see from the makefile Sparky4 intends this to run on 8088 by the -0 switch in CFLAGS.
+	//      So this code by itself shouldn't care too much what CPU it's running on. Except that other
+	//      parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
+	//      the CPU to carry out tasks. --J.C.
+	cpu_probe();
+
+	// DOSLIB: check for VGA
+	if (!probe_vga()) {
+		printf("VGA probe failed\n");
+		return;
+	}
+	// hardware must be VGA or higher!
+	if (!(vga_state.vga_flags & VGA_IS_VGA)) {
+		printf("This program requires VGA or higher graphics hardware\n");
+		return;
+	}
+
 	// main variables values
 	d=4; // switch variable
 	key=2; // default screensaver number
@@ -42,9 +94,10 @@ main(int argc, char *argvar[])
 	ydir=1;
 
 #ifdef MXLIB
-	VGAmodeX(1, &gvar);
+	VGAmodeX(vgamodex_mode, &gvar); // TODO: Suggestion: Instead of magic numbers for the first param, might I suggest defining an enum or some #define constants that are easier to remember? --J.C.
 #else
-	mxSetMode(3);
+# error REMOVED // this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
+		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
 #endif
 	bakapee.xx = rand()&0%gvar.video.page[0].width;
 	bakapee.yy = rand()&0%gvar.video.page[0].height;
@@ -72,41 +125,73 @@ main(int argc, char *argvar[])
 #ifdef BOINK
 	while(d>0)	// on!
 	{
-		if(!kbhit())
-		{ // conditions of screen saver
+		/* run screensaver routine until keyboard input */
+		while (key > 0) {
+			if (kbhit()) {
+				getch(); // eat keyboard input
+				break;
+			}
+
 			ding(&gvar.video.page[0], &bakapee, key);
 		}
-		else
+
 		{
-			#ifndef MXLIB
-			mxChangeMode(0);
-#else
+			int c;
+
+# ifndef MXLIB
+#  error REMOVED // this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
+		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
+# else
 			VGAmodeX(0, &gvar);
-#endif
+# endif
 			// user imput switch
-			fprintf(stderr, "xx=%d	yy=%d\n", bakapee.xx, bakapee.yy);
-			printf("Enter 1, 2, 3, 4, or 6 to run a screensaver, or enter 0 to quit.\n", getch());  // prompt the user
-			//scanf("%d", &key);
-			if(scanf("%d", &key) != 1)
-			{
-				printf("%d\n", key);
-			}
-			getch();
-			//if(key==3){xx=yy=0;} // crazy screen saver wwww
-			if(key==0){ d=0; }else{
-				gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
-				gvar.video.page[0].width += (TILEWH*2);
-				gvar.video.page[0].height += (TILEWH*2);
-#ifdef MXLIB
-				VGAmodeX(1, &gvar);
-#else
-				mxChangeMode(3);
-#endif
-				modexShowPage(&gvar.video.page[0]);
+			fprintf(stderr, "xx=%d	yy=%d	tile=%d\n", bakapee.xx, bakapee.yy, bakapee.tile);
+			printf("Enter 1, 2, 3, 4, or 6 to run a screensaver, or enter 0 to quit.\n");
+
+			c = getch();
+			switch (c) {
+				case 27: /* Escape key */
+				case '0':
+					d=0;
+					break;
+				case 'b': // test tile change
+					switch (bakapee.tile)
+					{
+						case 0:
+							bakapee.tile=1;
+						break;
+						case 1:
+							bakapee.tile=0;
+						break;
+					}
+					key=0;
+					break;
+				case '1':
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+					key = c - '0';
+# ifdef MXLIB
+					gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
+					gvar.video.page[0].width += (TILEWH*2);
+					gvar.video.page[0].height += (TILEWH*2);
+					VGAmodeX(vgamodex_mode, &gvar);
+# else
+#  error REMOVED // this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
+		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
+# endif
+					modexShowPage(&gvar.video.page[0]);
+					break;
+				default:
+					key=0;
+					break;
 			}
 		}
 	}
-#else
+#else // !defined(BOINK)
+// FIXME: Does not compile. Do you want to remove this?
 	while(1)
 	{ // conditions of screen saver
 		while(!kbhit())
@@ -180,7 +265,7 @@ main(int argc, char *argvar[])
 	if(ch==0x1b)break; // 'ESC'
 	}
 //	VGAmodeX(0, &gvar);
-#endif
+#endif // defined(BOINK)
 	printf("bakapi ver. 1.04.13.04\nis made by sparky4ÅiÅÜÉ÷ÅÖÅj feel free to use it ^^\nLicence: GPL v3\n");
 }
 //pee!
