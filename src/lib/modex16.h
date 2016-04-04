@@ -36,7 +36,6 @@
 #include "src/lib/modex16/256x192.h"
 #include "src/lib/modex16/192x144_.h"
 #include "src/lib/modex16/160x120.h"
-extern byte gfxtest;
 
 static struct pcxHeader {
 	byte id;
@@ -128,7 +127,6 @@ void modexWaitBorder();
 
 /* -======================= Constants & Vars ==========================- */
 extern byte far*  VGA;  /* The VGA Memory */
-//extern int old_mode;
 #define SCREEN_SEG		0xa000
 #define VIDEO_INT		0x10
 #define SET_MODE		0x00
