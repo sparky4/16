@@ -409,6 +409,7 @@ modex.$(OBJ): $(MODEXLIB_)modex.asm
 #
 clean: .symbolic
 	@$(REMOVECOMMAND) $(EXEC)
+	@$(REMOVECOMMAND) /var/www/$(EXEC)*
 	@$(REMOVECOMMAND) *.$(OBJ)
 	@$(REMOVECOMMAND) 16.lib
 	@$(REMOVECOMMAND) gfx.lib
