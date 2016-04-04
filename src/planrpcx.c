@@ -64,7 +64,7 @@ baka = 1;
 //getch();
 
 	textInit();
-	VGAmodeX(baka, &gvar);
+	VGAmodeX(baka, 1, &gvar);
 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 
 	//fix up the palette and everything
@@ -110,7 +110,7 @@ getch();
 	while(!kbhit())
 	{
 	}
-	VGAmodeX(0, &gvar);
+	VGAmodeX(0, 1, &gvar);
 
 	//print out the contents of each plane
 	for(plane=0; plane < 4; plane++) {

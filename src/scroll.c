@@ -118,7 +118,7 @@ void main(int argc, char *argv[])
 #endif
 
 	textInit();
-	VGAmodeX(bakapee, &gvar);
+	VGAmodeX(bakapee, 1, &gvar);
 //	printf("%dx%d\n", gvar.video.page[0].sw, gvar.video.page[0].sh);
 #ifdef FADE
 	modexPalBlack();	//reset the palette~
@@ -368,7 +368,7 @@ void main(int argc, char *argv[])
 	//TSR
 	if(IN_KeyDown(87))	//f11
 	{
-		VGAmodeX(0, &gvar);
+		VGAmodeX(0, 0, &gvar);
 		IN_Shutdown();
 		__asm
 		{
@@ -411,7 +411,7 @@ void main(int argc, char *argv[])
 	modexSavePalFile("data/g.pal", gpal);
 	modexFadeOff(4, gpal);
 #endif
-	VGAmodeX(0, &gvar);
+	VGAmodeX(0, 1, &gvar);
 #endif
 	IN_Shutdown();
 	printf("Project 16 scroll.exe. This is just a test file!\n");

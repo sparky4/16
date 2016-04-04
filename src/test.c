@@ -48,7 +48,7 @@ void main(int argc, char *argv[])
 	modexFadeOff(1, pal);
 	modexPalBlack();
 
-	VGAmodeX(bakapee, &gvar);
+	VGAmodeX(bakapee, 1, &gvar);
 	modexPalBlack();
 
 	IN_Startup();
@@ -112,7 +112,7 @@ void main(int argc, char *argv[])
 	/* fade back to text mode */
 	modexFadeOff(1, pal2);
 	modexPalBlack();
-	VGAmodeX(0, &gvar);
+	VGAmodeX(0, 1, &gvar);
 	IN_Shutdown();
 	printf("Project 16 test.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
