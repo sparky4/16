@@ -91,7 +91,7 @@ void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv);
 void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv);
 long vgaGetMode();
 void modexLeave();
-void modexsetBaseXMode(page_t *page);
+void modexsetBaseXMode();
 page_t modexDefaultPage(page_t *p);
 page_t modexNextPage(page_t *p);
 page_t modexNextPageFlexibleSize(page_t *p, word x, word y);
