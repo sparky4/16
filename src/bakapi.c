@@ -273,6 +273,6 @@ main(int argc, char *argvar[])
 //	VGAmodeX(0, &gvar);
 #endif // defined(BOINK)
 	printf("bakapi ver. 1.04.16.04\nis made by sparky4i†ƒÖ…j feel free to use it ^^\nLicence: GPL v3\n");
-	printf("compiled on %s\n", VERSION);
+	printf("compiled on 2016/04/04\n");
 }
 //pee!
