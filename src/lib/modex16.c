@@ -129,20 +129,20 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 // 	0xe317		  /* turn on byte mode */
 
 			// 320x240 mode 60Hz
-			cm.horizontal_total=0x5f; /* CRTC[0]             -5 */
-			cm.horizontal_display_end=0x4f; /* CRTC[1]       -1 */
-			cm.horizontal_blank_start=0x50; /* CRTC[2] */
-			cm.horizontal_blank_end=0x82;   /* CRTC[3] bit 0-4 & CRTC[5] bit 7 */
+			cm.horizontal_total=0x5f + 5; /* CRTC[0]             -5 */
+			cm.horizontal_display_end=0x4f + 1; /* CRTC[1]       -1 */
+			cm.horizontal_blank_start=0x50 + 1; /* CRTC[2] */
+			cm.horizontal_blank_end=0x82 + 1;   /* CRTC[3] bit 0-4 & CRTC[5] bit 7 */
 			cm.horizontal_start_retrace=0x54;/* CRTC[4] */
 			cm.horizontal_end_retrace=0x80;	/* CRTC[5] bit 0-4 */
 			//cm.horizontal_start_delay_after_total=0x3e; /* CRTC[3] bit 5-6 */
 			//cm.horizontal_start_delay_after_retrace=0x41; /* CRTC[5] bit 5-6 */
-			cm.vertical_total = 525;
+			cm.vertical_total = 0x20D + 2;
 			cm.vertical_start_retrace = 0x1EA;
 			cm.vertical_end_retrace = 0x1EC;
 			cm.vertical_display_end = 480;
-			cm.vertical_blank_start = 489;
-			cm.vertical_blank_end = 517;
+			cm.vertical_blank_start = 0x1E7 + 1;
+			cm.vertical_blank_end = 0x206 + 1;
 
 			vga_write_crtc_mode(&cm,0);
 			}
