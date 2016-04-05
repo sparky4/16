@@ -73,7 +73,6 @@ void main(int argc, char *argv[])
 	printf("starting timer	");
 	start_timer(&gvar);
 	printf("ok\n");
-	//extern struct inconfig inpu;
 
 //	atexit(qclean());
 
