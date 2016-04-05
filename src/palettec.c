@@ -34,13 +34,13 @@ main(int argc, char *argv[])
 	if(argv[1]) bakapee = argv[1];
 	else bakapee = "data/default.pal";
 
-	VGAmodeX(1, &gvar);
+	VGAmodeX(1, 1, &gvar);
 
 	pal = modexNewPal();
 	modexPalSave(pal);
 
 	modexSavePalFile(bakapee, pal);
 
-	VGAmodeX(0, &gvar);
+	VGAmodeX(0, 1, &gvar);
 
 }

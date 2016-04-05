@@ -35,7 +35,7 @@ static byte tmppal[PAL_SIZE];
 // setvideo() - This function Manages the video modes												//
 //																														//
 /////////////////////////////////////////////////////////////////////////////
-void VGAmodeX(sword vq, global_game_variables_t *gv)
+void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
 {
 	union REGS in, out;
 
@@ -54,7 +54,7 @@ void VGAmodeX(sword vq, global_game_variables_t *gv)
 			//int86(0x10, &in, &out);
 			gv->video.old_mode = vgaGetMode();//out.h.al;
 			// enter mode
-			modexEnter(vq, gv);
+			modexEnter(vq, cmem, gv);
 		break;
 	}
 }
@@ -86,32 +86,65 @@ vgaGetMode()
 }
 
 /* -========================= Entry  Points ==========================- */
-void
-modexEnter(sword vq, global_game_variables_t *gv)
+void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 {
 	word i;
 	dword far*ptr=(dword far*)VGA;      /* used for faster screen clearing */
 	int CRTParmCount;
 	/* common mode X initiation stuff~ */
-	modexsetBaseXMode(gv->video.page);
+	modexsetBaseXMode();
 
 	switch(vq)
 	{
 		case 1:
-			CRTParmCount = sizeof(ModeX_320x240regs) / sizeof(ModeX_320x240regs[0]);
+			//CRTParmCount = sizeof(ModeX_320x240regs) / sizeof(ModeX_320x240regs[0]);
 			/* width and height */
-			gv->video.page[0].sw=320;
-			gv->video.page[0].sh=240;
+			gv->video.page[0].sw=vga_state.vga_width = 320; // VGA lib currently does not update this
+			gv->video.page[0].sh=vga_state.vga_height = 240; // VGA lib currently does not update this
 
 			/* send the CRTParms */
-			for(i=0; i<CRTParmCount; i++) {
+			/*for(i=0; i<CRTParmCount; i++) {
 				outpw(CRTC_INDEX, ModeX_320x240regs[i]);
-			}
+			}*/
+			{
+			struct vga_mode_params cm;
+			vga_read_crtc_mode(&cm);
 
-			/* clear video memory */
-			outpw(SC_INDEX, 0x0f02);
-			for(i=0; i<0x8000; i++) {
-				ptr[i] = 0x0000;
+// 	0x5f00,		/* Horizontal total */
+// 	0x4f01,		/* horizontal display enable end */
+// 	0x5002,		/* Start horizontal blanking */
+// 	0x8203,		/* End horizontal blanking */
+// 	0x5404,		/* Start horizontal retrace */
+// 	0x8005,		/* End horizontal retrace */
+// 	0x0d06,		 /* vertical total */
+// 	0x3e07,		 /* overflow (bit 8 of vertical counts) */
+// 	0x4109,		 /* cell height (2 to double-scan */
+// 	0xea10,		 /* v sync start */
+// 	0xac11,		 /* v sync end and protect cr0-cr7 */
+// 	0xdf12,		 /* vertical displayed */
+// 	0x2813,		/* offset/logical width */
+// 	0x0014,		 /* turn off dword mode */
+// 	0xe715,		 /* v blank start */
+// 	0x0616,		 /* v blank end */
+// 	0xe317		  /* turn on byte mode */
+
+			// 320x240 mode 60Hz
+			cm.horizontal_total=0x5f; /* CRTC[0]             -5 */
+			cm.horizontal_display_end=0x4f; /* CRTC[1]       -1 */
+			cm.horizontal_blank_start=0x50; /* CRTC[2] */
+			cm.horizontal_blank_end=0x82;   /* CRTC[3] bit 0-4 & CRTC[5] bit 7 */
+			cm.horizontal_start_retrace=0x54;/* CRTC[4] */
+			cm.horizontal_end_retrace=0x80;	/* CRTC[5] bit 0-4 */
+			//cm.horizontal_start_delay_after_total=0x3e; /* CRTC[3] bit 5-6 */
+			//cm.horizontal_start_delay_after_retrace=0x41; /* CRTC[5] bit 5-6 */
+			cm.vertical_total = 525;
+			cm.vertical_start_retrace = 0x1EA;
+			cm.vertical_end_retrace = 0x1EC;
+			cm.vertical_display_end = 480;
+			cm.vertical_blank_start = 489;
+			cm.vertical_blank_end = 517;
+
+			vga_write_crtc_mode(&cm,0);
 			}
 		break;
 		case 2:
@@ -124,12 +157,6 @@ modexEnter(sword vq, global_game_variables_t *gv)
 			for(i=0; i<CRTParmCount; i++) {
 				outpw(CRTC_INDEX, ModeX_160x120regs[i]);
 			}
-
-			/* clear video memory */
-			outpw(SC_INDEX, 0x0f02);
-			for(i=0; i<0x8000; i++) {
-				ptr[i] = 0x0000;
-			}
 		break;
 		case 3:
 			CRTParmCount = sizeof(ModeX_320x200regs) / sizeof(ModeX_320x200regs[0]);
@@ -140,12 +167,6 @@ modexEnter(sword vq, global_game_variables_t *gv)
 			/* send the CRTParms */
 			for(i=0; i<CRTParmCount; i++) {
 				outpw(CRTC_INDEX, ModeX_320x200regs[i]);
-			}
-
-			/* clear video memory */
-			outpw(SC_INDEX, 0x0f02);
-			for(i=0; i<0x8000; i++) {
-				ptr[i] = 0x0000;
 			}
 		break;
 		case 4:
@@ -158,12 +179,6 @@ modexEnter(sword vq, global_game_variables_t *gv)
 			for(i=0; i<CRTParmCount; i++) {
 				outpw(CRTC_INDEX, ModeX_192x144regs[i]);
 			}
-
-			/* clear video memory */
-			outpw(SC_INDEX, 0x0f02);
-			for(i=0; i<0x8000; i++) {
-				ptr[i] = 0x0000;
-			}
 		break;
 		case 5:
 			CRTParmCount = sizeof(ModeX_256x192regs) / sizeof(ModeX_256x192regs[0]);
@@ -175,12 +190,18 @@ modexEnter(sword vq, global_game_variables_t *gv)
 			for(i=0; i<CRTParmCount; i++) {
 				outpw(CRTC_INDEX, ModeX_256x192regs[i]);
 			}
+		break;
+	}
 
-			/* clear video memory */
-			outpw(SC_INDEX, 0x0f02);
-			for(i=0; i<0x8000; i++) {
-				ptr[i] = 0x0000;
-			}
+	/* clear video memory */
+	switch (cmem)
+	{
+		case 1:
+		/* clear video memory */
+		outpw(SC_INDEX, 0x0f02);
+		for(i=0; i<0x8000; i++) {
+			ptr[i] = 0x0000;
+		}
 		break;
 	}
 	gv->video.page[0].tilesw = gv->video.page[0].sw/TILEWH;
@@ -193,8 +214,8 @@ modexEnter(sword vq, global_game_variables_t *gv)
 
 void
 modexLeave() {
-    /* TODO restore original mode and palette */
-    vgaSetMode(TEXT_MODE);
+	/* TODO restore original mode and palette */
+	vgaSetMode(TEXT_MODE);
 }
 
 //    setBaseXMode() does the initialization to make the VGA ready to
@@ -202,23 +223,24 @@ modexLeave() {
 //    involves enabling writes to index 0 to 7 of the CRT controller (port
 //    0x3D4), by clearing the most significant bit (bit 7) of index 0x11.
 void
-modexsetBaseXMode(page_t *page)
+modexsetBaseXMode()
 {
-	word temp;
 	/* TODO save current video mode and palette */
 	vgaSetMode(VGA_256_COLOR_MODE);
 
+	vga_enable_256color_modex();
+
 	/* disable chain4 mode */
-	outpw(SC_INDEX, 0x0604);
+	//outpw(SC_INDEX, 0x0604);
 
 	/* synchronous reset while setting Misc Output */
-	outpw(SC_INDEX, 0x0100);
+	//outpw(SC_INDEX, 0x0100);
 
 	/* select 25 MHz dot clock & 60 Hz scanning rate */
 	outp(MISC_OUTPUT, 0xe3);
 
 	/* undo reset (restart sequencer) */
-	outpw(SC_INDEX, 0x0300);
+	//outpw(SC_INDEX, 0x0300);
 
 	/* reprogram the CRT controller */
 	outp(CRTC_INDEX, 0x11); /* VSync End reg contains register write prot */
@@ -226,6 +248,7 @@ modexsetBaseXMode(page_t *page)
 //	outp(CRTC_INDEX, 0x11);
 	outp(CRTC_DATA, 0x7f);  /* get current write protect on varios regs */
 //	outp(CRTC_DATA, temp);  /* get current write protect on varios regs */
+	update_state_from_vga();
 }
 
 page_t

@@ -38,7 +38,7 @@ main(int argc, char *argv[])
 	if(argv[1]) bakapee = argv[1];
 	else bakapee = "data/default.pal";
 //	modexPalSave(pal);
-	VGAmodeX(1, &gvar);
+	VGAmodeX(1, 1, &gvar);
 	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
 	modexPalBlack();
 
@@ -47,7 +47,7 @@ main(int argc, char *argv[])
 	modexFadeOn(1, pal);
 	pdump(&gvar.video.page[0]);
 	getch();
-	modexLeave();//VGAmodeX(0, &gvar);
+	VGAmodeX(0, 0, &gvar);
 	modexPalUpdate1(pal);
 	/*for(i=0;i<768;i++)
 	{

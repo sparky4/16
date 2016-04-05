@@ -45,7 +45,7 @@ main(int argc, char *argv[])
 	/*modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);*/
 	printf("wwww loop wwww\n");
-	VGAmodeX(1, &gvar);
+	VGAmodeX(1, 1, &gvar);
 	modexPalBlack();	//so player will not see loadings~
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
@@ -62,7 +62,7 @@ main(int argc, char *argv[])
 		case 2: cpus = "386 or newer"; break;
 		default: cpus = "internal error"; break;
 	}
-	VGAmodeX(0, &gvar);
+	VGAmodeX(0, 1, &gvar);
 	printf("Project 16 16.exe. This is supposed to be the actual finished game executable!\n");
 	printf("version %s\n", VERSION);
 	printf("detected CPU type: %s\n", cpus);

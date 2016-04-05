@@ -42,7 +42,7 @@ void main() {
 	bmp = bitmapLoadPcx("data/koishi^^.pcx");
 //	bmp = bitmapLoadPcx("16/PCX_LIB/chikyuu.pcx");
 	p = planar_buf_from_bitmap(&bmp);
-	VGAmodeX(1, &gvar);
+	VGAmodeX(1, 1, &gvar);
 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 
 	/* fix up the palette and everything */
@@ -89,7 +89,7 @@ void main() {
 	{
 		//DrawPBuf(&gvar.video.page[0], 0, 0, p, 0);
 	}
-	VGAmodeX(0, &gvar);
+	VGAmodeX(0, 1, &gvar);
 	/*printf("\nmain=%Fp\n\n", &i);
 	printf("bmp.data=%Fp\n", bmp.data);
 	printf("*bmp.data=%Fp\n", *(bmp.data));
