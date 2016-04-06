@@ -432,8 +432,6 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.MAP
 	@$(REMOVECOMMAND) *.map
 	@$(REMOVECOMMAND) *.err
-	@$(COPYCOMMAND) .git$(DIRSEP)config git_con.fig
-	@$(COPYCOMMAND) .gitmodules git_modu.les
 	@cd $(DOSLIB)
 	#@./buildall.sh clean
 	@cd $(PDIR)$(PDIR)$(PDIR)
@@ -446,6 +444,10 @@ clean: .symbolic
 #	@$(COPYCOMMAND) $(NYANLIB)* $(EXMMTESTDIR)$(NYANLIB)
 #	@echo $(watcom)
 #	@echo $(INCLUDE)
+
+backupconfig: .symbolic
+	@$(COPYCOMMAND) .git$(DIRSEP)config git_con.fig
+	@$(COPYCOMMAND) .gitmodules git_modu.les
 
 comp: .symbolic
 	@upx -9 $(EXEC)
