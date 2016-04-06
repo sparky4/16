@@ -62,11 +62,7 @@ void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
 static void
 vgaSetMode(byte mode)
 {
-  union REGS regs;
-
-  regs.h.ah = SET_MODE;
-  regs.h.al = mode;
-  int86(VIDEO_INT, &regs, &regs);
+  int10_setmode(mode);
 }
 
 //---------------------------------------------------
@@ -74,15 +70,10 @@ vgaSetMode(byte mode)
 // Use the bios to get the current video mode
 //
 
-long
+long/*FIXME: why long? "long" is 32-bit datatype, VGA modes are 8-bit numbers. */
 vgaGetMode()
 {
-    union REGS rg;
-
-    rg.h.ah = 0x0f;
-    int86(VIDEO_INT, &rg, &rg);
-
-    return rg.h.al;
+    return int10_getmode();
 }
 
 /* -========================= Entry  Points ==========================- */
