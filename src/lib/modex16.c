@@ -201,10 +201,8 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 	{
 		case 1:
 		/* clear video memory */
-		outpw(SC_INDEX, 0x0f02);
-		for(i=0; i<0x8000; i++) {
-			ptr[i] = 0x0000;
-		}
+		vga_write_sequencer(2/*map mask register*/,0xf/*all 4 planes*/);
+		for(i=0; i<0x8000; i++) ptr[i] = 0x0000;
 		break;
 	}
 	gv->video.page[0].tilesw = gv->video.page[0].sw/TILEWH;
