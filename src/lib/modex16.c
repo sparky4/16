@@ -143,6 +143,9 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 			cm.vertical_display_end = 480;
 			cm.vertical_blank_start = 0x1E7 + 1;
 			cm.vertical_blank_end = 0x206 + 1;
+			cm.clock_select = 0; /* misc register = 0xE3  25MHz */
+			cm.vsync_neg = 1;
+			cm.hsync_neg = 1;
 
 			vga_write_crtc_mode(&cm,0);
 			}
@@ -227,27 +230,7 @@ modexsetBaseXMode()
 {
 	/* TODO save current video mode and palette */
 	vgaSetMode(VGA_256_COLOR_MODE);
-
 	vga_enable_256color_modex();
-
-	/* disable chain4 mode */
-	//outpw(SC_INDEX, 0x0604);
-
-	/* synchronous reset while setting Misc Output */
-	//outpw(SC_INDEX, 0x0100);
-
-	/* select 25 MHz dot clock & 60 Hz scanning rate */
-	outp(MISC_OUTPUT, 0xe3);
-
-	/* undo reset (restart sequencer) */
-	//outpw(SC_INDEX, 0x0300);
-
-	/* reprogram the CRT controller */
-	outp(CRTC_INDEX, 0x11); /* VSync End reg contains register write prot */
-//	temp = inp(CRTC_DATA) & 0x7F;
-//	outp(CRTC_INDEX, 0x11);
-	outp(CRTC_DATA, 0x7f);  /* get current write protect on varios regs */
-//	outp(CRTC_DATA, temp);  /* get current write protect on varios regs */
 	update_state_from_vga();
 }
 
