@@ -196,81 +196,145 @@ main(int argc, char *argvar[])
 		}
 	}
 #else // !defined(BOINK)
+word panq=1, pand=0;
+boolean panswitch=0;
 // FIXME: Does not compile. Do you want to remove this?
 // TODO: This is a testing sextion for textrendering and panning for project 16 --sparky4
 	while(1)
 	{ // conditions of screen saver
-		while(!kbhit())
-		{
-			ding(&gvar.video.page[0], &bakapee, key);
-		}
+// 		while(!kbhit())
+// 		{
+// 			ding(&gvar.video.page[0], &bakapee, key);
+// 		}
 		//end of screen savers
-		/*for(int x = 0; x < gvar.video.page[0].width; ++x)
-		{
-			modexputPixel(&page, x, 0, 15);
-			mxPutPixel(x, gvar.video.page[0].height-1, 15);
-			}
-		for (int y = 0; y < VH; ++y)
+		//pdump(&gvar.video.page[0]);
+
+// 		mxOutText(xpos+1, ypos+gvar.video.page[0].height-48, "========================================");
+// 		mxOutText(xpos+1, ypos+gvar.video.page[0].height-40, "|    |Chikyuu:$line1");
+// 		mxOutText(xpos+1, ypos+gvar.video.page[0].height-32, "|    |$line2");
+// 		mxOutText(xpos+1, ypos+gvar.video.page[0].height-24, "|    |$line3");
+// 		mxOutText(xpos+1, ypos+gvar.video.page[0].height-16, "|    |$line4");
+// 		mxOutText(xpos+1, ypos+gvar.video.page[0].height-8,  "========================================");
+
+	ding(&gvar.video.page[0], &bakapee, key);
+	modexPanPage(&gvar.video.page[0], xpos, ypos);
+		//right movement
+	if((IN_KeyDown(77) && !IN_KeyDown(75) && pand == 0) || pand == 2)
+	{
+		if(pand == 0){ pand = 2; }
+			if(panq<=(TILEWH/(4)))
 			{
-				mxPutPixel(0, y, 15);
-				mxPutPixel(gvar.video.page[0].width-1, y, 15);
-			}
-		for (int x = 0; x < VW; ++x)
+				switch(panpagenum)
+				{
+					case 0:
+						//bg
+						bg->page->dx++;
+						modexShowPage(bg->page);
+					break;
+					case 1:
+						//spri
+						spri->page->dx++;
+						modexShowPage(spri->page);
+					break;
+					case 2:
+						//fg
+						mask->page->dx++;
+						modexShowPage(mask->page);
+					break;
+				}
+				panq++;
+			} else { panq = 1; pand = 0; }
+	}
+	//left movement
+	if((IN_KeyDown(75) && !IN_KeyDown(77) && pand == 0) || pand == 4)
+	{
+		if(pand == 0){ pand = 4; }
+			if(panq<=(TILEWH/(4)))
 			{
-				mxPutPixel(x, 0, 15);
-				mxPutPixel(x, VH-1, 15);
-			}
-		for (int y = 240; y < VH; ++y)
+				switch(panpagenum)
+				{
+					case 0:
+						//bg
+						bg->page->dx--;
+						modexShowPage(bg->page);
+					break;
+					case 1:
+						//spri
+						spri->page->dx--;
+						modexShowPage(spri->page);
+					break;
+					case 2:
+						//fg
+						mask->page->dx--;
+						modexShowPage(mask->page);
+					break;
+				}
+				panq++;
+			} else { panq = 1; pand = 0; }
+	}
+	//down movement
+	if((IN_KeyDown(72) && !IN_KeyDown(80) && pand == 0) || pand == 3)
+	{
+		if(pand == 0){ pand = 3; }
+			if(panq<=(TILEWH/(4)))
 			{
-				mxPutPixel(0, y, 15);
-				mxPutPixel(VW-1, y, 15);
-			}*/
-		pdump(&gvar.video.page[0]);
-		getch();
-		//text box
-		/*++++mxBitBlt(xpos, ypos+(TILEWH*12), gvar.video.page[0].width, TILEWH*BUFFMX, 0, BS); //copy background
-		mxFillBox(xpos, ypos+(TILEWH*12), gvar.video.page[0].width, TILEWH*BUFFMX, 0, OP_SET); // background for text box
-		//+(QUADWH*6)
-		mxOutText(xpos+1, ypos+gvar.video.page[0].height-48, "========================================");
-		mxOutText(xpos+1, ypos+gvar.video.page[0].height-40, "|    |Chikyuu:$line1");
-		mxOutText(xpos+1, ypos+gvar.video.page[0].height-32, "|    |$line2");
-		mxOutText(xpos+1, ypos+gvar.video.page[0].height-24, "|    |$line3");
-		mxOutText(xpos+1, ypos+gvar.video.page[0].height-16, "|    |$line4");
-		mxOutText(xpos+1, ypos+gvar.video.page[0].height-8,  "========================================");
-		mxFillBox(xpos+QUADWH, ypos+QUADWH+(TILEWH*12), TILEWH*2, TILEWH*2, 9, OP_SET); //portriat~
-		getch();
-		mxBitBlt(0, BS, gvar.video.page[0].width, TILEWH*BUFFMX, xpos, ypos+(TILEWH*12)); //copy background
-		getch();++++*/
-		while(!kbhit())
-		{
-			//for(int i=0;i<TILEWH;i++){
-				ding(&gvar.video.page[0], &bakapee, key);
-				modexPanPage(&gvar.video.page[0], xpos, ypos);
-//++++mxFillBox(384, 304, 384, 304, 10, OP_SET);
-//mxBitBlt(xpos, ypos, gvar.video.page[0].width, gvar.video.page[0].height, 32, (gvar.video.page[0].height+64+32));
-//++++mxBitBlt(TILEWH*2, TILEWH*2, gvar.video.page[0].width, gvar.video.page[0].height, 32, (gvar.video.page[0].height+64+32));
-				//for(word o = 0; o<TILEWH; o++){
-					xpos+=xdir;
-					ypos+=ydir;
-					//if(ypos==1 || (ypos==(BH-gvar.video.page[0].height-1)))delay(500);
-					//if((xpos>(VW-gvar.video.page[0].width-1)) || (xpos<1))delay(500);
-					//mxWaitRetrace();
-//mxBitBlt(32, (gvar.video.page[0].height+32), gvar.video.page[0].width, gvar.video.page[0].height, xpos, ypos);
-//++++mxBitBlt(TILEWH*2, (gvar.video.page[0].height+64+32), gvar.video.page[0].width, gvar.video.page[0].height, TILEWH*2, TILEWH*2);
-//xpos=ypos=TILEWH*2;
-					//????modexPanPage(&gvar.video.page[0], 32, 32);
-				//}
-				if( (xpos>(VW-gvar.video.page[0].width-1))  || (xpos<1)){xdir=-xdir;}
-				if( (ypos>(BH-gvar.video.page[0].height-1)) || (ypos<1)){ydir=-ydir;} // { Hit a boundry, change
-			//}//    direction!
-//mxBitBlt(32, (gvar.video.page[0].height+64+32), gvar.video.page[0].width, gvar.video.page[0].height, xpos, ypos);
-//mxBitBlt(TILEWH*2, (gvar.video.page[0].height+64+32), gvar.video.page[0].width, gvar.video.page[0].height, TILEWH*2, TILEWH*2);
-		}
+				switch(panpagenum)
+				{
+					case 0:
+						//bg
+						bg->page->dy--;
+						modexShowPage(bg->page);
+					break;
+					case 1:
+						//spri
+						spri->page->dy--;
+						modexShowPage(spri->page);
+					break;
+					case 2:
+						//fg
+						mask->page->dy--;
+						modexShowPage(mask->page);
+					break;
+				}
+				panq++;
+			} else { panq = 1; pand = 0; }
+	}
+	//up movement
+	if((IN_KeyDown(80) && !IN_KeyDown(72) && pand == 0) || pand == 1)
+	{
+		if(pand == 0){ pand = 1; }
+			if(panq<=(TILEWH/(4)))
+			{
+				switch(panpagenum)
+				{
+					case 0:
+						//bg
+						bg->page->dy++;
+						modexShowPage(bg->page);
+					break;
+					case 1:
+						//spri
+						spri->page->dy++;
+						modexShowPage(spri->page);
+					break;
+					case 2:
+						//fg
+						mask->page->dy++;
+						modexShowPage(mask->page);
+					break;
+				}
+				panq++;
+			} else { panq = 1; pand = 0; }
+	}
+// 	xpos+=xdir;
+// 	ypos+=ydir;
+// 	if( (xpos>(VW-gvar.video.page[0].width-1))  || (xpos<1)){xdir=-xdir;}
+// 	if( (ypos>(BH-gvar.video.page[0].height-1)) || (ypos<1)){ydir=-ydir;}
 	ch=getch();
 	if(ch==0x71)break; // 'q'
 	if(ch==0x1b)break; // 'ESC'
 	}
-//	VGAmodeX(0, &gvar);
+	VGAmodeX(0, 1, &gvar);
 #endif // defined(BOINK)
 	printf("bakapi ver. 1.04.16.04\nis made by sparky4i†ƒÖ…j feel free to use it ^^\nLicence: GPL v3\n");
 	printf("compiled on 2016/04/04\n");
