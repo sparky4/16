@@ -42,9 +42,6 @@
 #include <hw/vga/vga.h>
 #include <hw/vga/vrl.h>
 
-//TODO dos lib vga implementation ^^
-//#define DOSLIBVGA
-
 static struct pcxHeader {
 	byte id;
 	byte version;
