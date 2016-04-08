@@ -64,7 +64,7 @@ UPXQ=-qqq
 AFLAGS=-mh -0 -d1
 16FLAGS=-fh=16.hed
 BAKAPIFLAGS=-fh=bakapi.hed
-SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k55808#60000#32768
+SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k40000#55808#60000#32768
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
 ZFLAGS=-zk0 -zc -zp8 $(WCLQ) ## -zm
 CFLAGS=$(AFLAGS) $(IFLAGS)-lr -l=dos -wo -i$(DOSLIB)##wwww
@@ -433,8 +433,6 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.MAP
 	@$(REMOVECOMMAND) *.map
 	@$(REMOVECOMMAND) *.err
-	@$(COPYCOMMAND) .git$(DIRSEP)config git_con.fig
-	@$(COPYCOMMAND) .gitmodules git_modu.les
 	@cd $(DOSLIB)
 	#@./buildall.sh clean
 	@cd $(PDIR)$(PDIR)$(PDIR)
@@ -447,6 +445,10 @@ clean: .symbolic
 #	@$(COPYCOMMAND) $(NYANLIB)* $(EXMMTESTDIR)$(NYANLIB)
 #	@echo $(watcom)
 #	@echo $(INCLUDE)
+
+backupconfig: .symbolic
+	@$(COPYCOMMAND) .git$(DIRSEP)config git_con.fig
+	@$(COPYCOMMAND) .gitmodules git_modu.les
 
 comp: .symbolic
 	@upx -9 $(EXEC)

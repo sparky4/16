@@ -36,6 +36,8 @@ main(int argc, char *argvar[])
 {
 	char *a;
 	int i;
+	word panq=1, pand=0;
+	boolean panswitch=0;
 
 	// allow changing default mode from command line
 	for (i=1;i < argc;) {
@@ -123,18 +125,75 @@ main(int argc, char *argvar[])
 #ifdef BOINK
 	while(d>0)	// on!
 	{
+		int c;
 		/* run screensaver routine until keyboard input */
 		while (key > 0) {
 			if (kbhit()) {
-				getch(); // eat keyboard input
-				break;
+				if(!panswitch)
+				{
+					getch(); // eat keyboard input
+					break;
+				}else c=getch();
 			}
 
-			ding(&gvar.video.page[0], &bakapee, key);
+			if(!panswitch)	ding(&gvar.video.page[0], &bakapee, key);
+			else			ding(&gvar.video.page[0], &bakapee, 2);
+			if(panswitch!=0)
+			{
+				//right movement
+				if((c==0x4d && pand == 0) || pand == 2)
+				{
+					if(pand == 0){ pand = 2; }
+					if(panq<=(TILEWH/(4)))
+					{
+						gvar.video.page[0].dx++;
+						modexShowPage(&gvar.video.page[0]);
+						panq++;
+					} else { panq = 1; pand = 0; }
+				}
+				//left movement
+				if((c==0x4b && pand == 0) || pand == 4)
+				{
+					if(pand == 0){ pand = 4; }
+					if(panq<=(TILEWH/(4)))
+					{
+						gvar.video.page[0].dx--;
+						modexShowPage(&gvar.video.page[0]);
+						panq++;
+					} else { panq = 1; pand = 0; }
+				}
+				//down movement
+				if((c==0x50 && pand == 0) || pand == 3)
+				{
+					if(pand == 0){ pand = 3; }
+					if(panq<=(TILEWH/(4)))
+					{
+						gvar.video.page[0].dy++;
+						modexShowPage(&gvar.video.page[0]);
+						panq++;
+					} else { panq = 1; pand = 0; }
+				}
+				//up movement
+				if((c==0x48 && pand == 0) || pand == 1)
+				{
+					if(pand == 0){ pand = 1; }
+					if(panq<=(TILEWH/(4)))
+					{
+						gvar.video.page[0].dy--;
+						modexShowPage(&gvar.video.page[0]);
+						panq++;
+					} else { panq = 1; pand = 0; }
+				}
+				if(c==0x71 || c==0xb1 || c=='p')
+				{
+					//getch(); // eat keyboard input
+					panswitch=0;
+					break; // 'q' or 'ESC' or 'p'
+				}
+			}
 		}
 
 		{
-			int c;
 
 		// this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
 		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
@@ -145,6 +204,17 @@ main(int argc, char *argvar[])
 			switch (bakapee.tile)
 			{
 				case 0:
+					printf("off.	");
+				break;
+				case 1:
+					printf("on.	");
+				break;
+			}
+			//printf("\n");
+			printf("Pan mode is ");
+			switch (panswitch)
+			{
+				case 0:
 					printf("off.\n");
 				break;
 				case 1:
@@ -152,13 +222,25 @@ main(int argc, char *argvar[])
 				break;
 			}
 			printf("Enter 1, 2, 3, 4, 5, 6, 8, or 9 to run a screensaver, or enter 0 to quit.\n");
-
+pee:
 			c = getch();
 			switch (c) {
 				case 27: /* Escape key */
 				case '0':
 					d=0;
 					break;
+				case 'p': // test pan
+				switch (panswitch)
+				{
+					case 0:
+						panswitch=1;
+					break;
+					case 1:
+						panswitch=0;
+					break;
+				}
+				goto pee;
+				break;
 				case 'b': // test tile change
 					switch (bakapee.tile)
 					{
@@ -200,77 +282,33 @@ main(int argc, char *argvar[])
 // TODO: This is a testing sextion for textrendering and panning for project 16 --sparky4
 	while(1)
 	{ // conditions of screen saver
-		while(!kbhit())
-		{
-			ding(&gvar.video.page[0], &bakapee, key);
-		}
+// 		while(!kbhit())
+// 		{
+// 			ding(&gvar.video.page[0], &bakapee, key);
+// 		}
 		//end of screen savers
-		/*for(int x = 0; x < gvar.video.page[0].width; ++x)
-		{
-			modexputPixel(&page, x, 0, 15);
-			mxPutPixel(x, gvar.video.page[0].height-1, 15);
-			}
-		for (int y = 0; y < VH; ++y)
-			{
-				mxPutPixel(0, y, 15);
-				mxPutPixel(gvar.video.page[0].width-1, y, 15);
-			}
-		for (int x = 0; x < VW; ++x)
-			{
-				mxPutPixel(x, 0, 15);
-				mxPutPixel(x, VH-1, 15);
-			}
-		for (int y = 240; y < VH; ++y)
-			{
-				mxPutPixel(0, y, 15);
-				mxPutPixel(VW-1, y, 15);
-			}*/
-		pdump(&gvar.video.page[0]);
-		getch();
-		//text box
-		/*++++mxBitBlt(xpos, ypos+(TILEWH*12), gvar.video.page[0].width, TILEWH*BUFFMX, 0, BS); //copy background
-		mxFillBox(xpos, ypos+(TILEWH*12), gvar.video.page[0].width, TILEWH*BUFFMX, 0, OP_SET); // background for text box
-		//+(QUADWH*6)
-		mxOutText(xpos+1, ypos+gvar.video.page[0].height-48, "========================================");
-		mxOutText(xpos+1, ypos+gvar.video.page[0].height-40, "|    |Chikyuu:$line1");
-		mxOutText(xpos+1, ypos+gvar.video.page[0].height-32, "|    |$line2");
-		mxOutText(xpos+1, ypos+gvar.video.page[0].height-24, "|    |$line3");
-		mxOutText(xpos+1, ypos+gvar.video.page[0].height-16, "|    |$line4");
-		mxOutText(xpos+1, ypos+gvar.video.page[0].height-8,  "========================================");
-		mxFillBox(xpos+QUADWH, ypos+QUADWH+(TILEWH*12), TILEWH*2, TILEWH*2, 9, OP_SET); //portriat~
-		getch();
-		mxBitBlt(0, BS, gvar.video.page[0].width, TILEWH*BUFFMX, xpos, ypos+(TILEWH*12)); //copy background
-		getch();++++*/
-		while(!kbhit())
-		{
-			//for(int i=0;i<TILEWH;i++){
-				ding(&gvar.video.page[0], &bakapee, key);
-				modexPanPage(&gvar.video.page[0], xpos, ypos);
-//++++mxFillBox(384, 304, 384, 304, 10, OP_SET);
-//mxBitBlt(xpos, ypos, gvar.video.page[0].width, gvar.video.page[0].height, 32, (gvar.video.page[0].height+64+32));
-//++++mxBitBlt(TILEWH*2, TILEWH*2, gvar.video.page[0].width, gvar.video.page[0].height, 32, (gvar.video.page[0].height+64+32));
-				//for(word o = 0; o<TILEWH; o++){
-					xpos+=xdir;
-					ypos+=ydir;
-					//if(ypos==1 || (ypos==(BH-gvar.video.page[0].height-1)))delay(500);
-					//if((xpos>(VW-gvar.video.page[0].width-1)) || (xpos<1))delay(500);
-					//mxWaitRetrace();
-//mxBitBlt(32, (gvar.video.page[0].height+32), gvar.video.page[0].width, gvar.video.page[0].height, xpos, ypos);
-//++++mxBitBlt(TILEWH*2, (gvar.video.page[0].height+64+32), gvar.video.page[0].width, gvar.video.page[0].height, TILEWH*2, TILEWH*2);
-//xpos=ypos=TILEWH*2;
-					//????modexPanPage(&gvar.video.page[0], 32, 32);
-				//}
-				if( (xpos>(VW-gvar.video.page[0].width-1))  || (xpos<1)){xdir=-xdir;}
-				if( (ypos>(BH-gvar.video.page[0].height-1)) || (ypos<1)){ydir=-ydir;} // { Hit a boundry, change
-			//}//    direction!
-//mxBitBlt(32, (gvar.video.page[0].height+64+32), gvar.video.page[0].width, gvar.video.page[0].height, xpos, ypos);
-//mxBitBlt(TILEWH*2, (gvar.video.page[0].height+64+32), gvar.video.page[0].width, gvar.video.page[0].height, TILEWH*2, TILEWH*2);
-		}
-	ch=getch();
+		//pdump(&gvar.video.page[0]);
+
+// 		mxOutText(xpos+1, ypos+gvar.video.page[0].height-48, "========================================");
+// 		mxOutText(xpos+1, ypos+gvar.video.page[0].height-40, "|    |Chikyuu:$line1");
+// 		mxOutText(xpos+1, ypos+gvar.video.page[0].height-32, "|    |$line2");
+// 		mxOutText(xpos+1, ypos+gvar.video.page[0].height-24, "|    |$line3");
+// 		mxOutText(xpos+1, ypos+gvar.video.page[0].height-16, "|    |$line4");
+// 		mxOutText(xpos+1, ypos+gvar.video.page[0].height-8,  "========================================");
+
+	ding(&gvar.video.page[0], &bakapee, key);
+	modexPanPage(&gvar.video.page[0], xpos, ypos);
+	c = getch();
+
+// 	xpos+=xdir;
+// 	ypos+=ydir;
+// 	if( (xpos>(VW-gvar.video.page[0].width-1))  || (xpos<1)){xdir=-xdir;}
+// 	if( (ypos>(BH-gvar.video.page[0].height-1)) || (ypos<1)){ydir=-ydir;}
+//	ch=getch();
 	if(ch==0x71)break; // 'q'
 	if(ch==0x1b)break; // 'ESC'
 	}
-//	VGAmodeX(0, &gvar);
+	VGAmodeX(0, 1, &gvar);
 #endif // defined(BOINK)
 	printf("bakapi ver. 1.04.16.04\nis made by sparky4i†ƒÖ…j feel free to use it ^^\nLicence: GPL v3\n");
 	printf("compiled on 2016/04/04\n");

@@ -64,6 +64,27 @@ void main(int argc, char *argv[])
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
 
+	// DOSLIB: check our environment
+	probe_dos();
+
+	// DOSLIB: what CPU are we using?
+	// NTS: I can see from the makefile Sparky4 intends this to run on 8088 by the -0 switch in CFLAGS.
+	//      So this code by itself shouldn't care too much what CPU it's running on. Except that other
+	//      parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
+	//      the CPU to carry out tasks. --J.C.
+	cpu_probe();
+
+	// DOSLIB: check for VGA
+	if (!probe_vga()) {
+		printf("VGA probe failed\n");
+		return;
+	}
+	// hardware must be VGA or higher!
+	if (!(vga_state.vga_flags & VGA_IS_VGA)) {
+		printf("This program requires VGA or higher graphics hardware\n");
+		return;
+	}
+
 	testcontrolnoisy=0;
 
 	player[0].persist_aniframe=0;
@@ -73,7 +94,6 @@ void main(int argc, char *argv[])
 	printf("starting timer	");
 	start_timer(&gvar);
 	printf("ok\n");
-	//extern struct inconfig inpu;
 
 //	atexit(qclean());
 
@@ -93,14 +113,14 @@ void main(int argc, char *argv[])
 	//mappalptr = map.tiles->btdata->palette;
 
 	/* data */
-	p = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
+	//++++p = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 
 	/* create the planar buffer */
 ////++++	(player[0].data) = *planar_buf_from_bitmap(&p);
-	printf("load pee!!	");
+	/*++++printf("load pee!!	");
 	pp = planar_buf_from_bitmap(&p);
-	printf("done!\n");
+	printf("done!\n");*/
 
 #endif
 	/*	input!	*/

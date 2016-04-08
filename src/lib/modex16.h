@@ -31,19 +31,16 @@
 #include "src/lib/modex16/16planar.h"
 #include "src/lib/16text.h"
 #include "src/lib/modex16/16render.h"
-#include "src/lib/modex16/320x240.h"
-#include "src/lib/modex16/320x200.h"
-#include "src/lib/modex16/256x192.h"
-#include "src/lib/modex16/192x144_.h"
-#include "src/lib/modex16/160x120.h"
+// #include "src/lib/modex16/320x240.h"
+// #include "src/lib/modex16/320x200.h"
+// #include "src/lib/modex16/256x192.h"
+// #include "src/lib/modex16/192x144_.h"
+// #include "src/lib/modex16/160x120.h"
 
 #include <hw/cpu/cpu.h>
 #include <hw/dos/dos.h>
 #include <hw/vga/vga.h>
 #include <hw/vga/vrl.h>
-
-//TODO dos lib vga implementation ^^
-//#define DOSLIBVGA
 
 static struct pcxHeader {
 	byte id;
