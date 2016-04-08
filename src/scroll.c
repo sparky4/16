@@ -113,14 +113,14 @@ void main(int argc, char *argv[])
 	//mappalptr = map.tiles->btdata->palette;
 
 	/* data */
-	p = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
+	//++++p = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 
 	/* create the planar buffer */
 ////++++	(player[0].data) = *planar_buf_from_bitmap(&p);
-	printf("load pee!!	");
+	/*++++printf("load pee!!	");
 	pp = planar_buf_from_bitmap(&p);
-	printf("done!\n");
+	printf("done!\n");*/
 
 #endif
 	/*	input!	*/
