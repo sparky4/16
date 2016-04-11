@@ -70,7 +70,7 @@ vgaSetMode(byte mode)
 // Use the bios to get the current video mode
 //
 
-long/*FIXME: why long? "long" is 32-bit datatype, VGA modes are 8-bit numbers. */
+byte/*FIXME: why long? "long" is 32-bit datatype, VGA modes are 8-bit numbers. */
 vgaGetMode()
 {
     return int10_getmode();

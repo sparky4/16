@@ -86,7 +86,7 @@ typedef union
 /* mode switching, page, and plane functions */
 void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv);
 void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv);
-long vgaGetMode();
+byte vgaGetMode();
 void modexLeave();
 void modexsetBaseXMode();
 page_t modexDefaultPage(page_t *p);
