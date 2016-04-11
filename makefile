@@ -520,5 +520,4 @@ mx_: .symbolic
 	@cd $(PDIR)$(PDIR)
 
 ed: .symbolic
-@$(DOSLIB)hw$(DIRSEP)vga$(DIRSEP)dos86l$(DIRSEP)pcxsscut -s $(SPRI)ptmp.sht -hc $(SPRI)ptmp.h -hp $(SPRI)demoanim_ptmp_ -i $(DATADIR)ptmp.pcx -p $(SPRI)ptmp.pal -tc 0x84 -y # run from subdirectory where output will not be committed accidentally
-@$(DOSLIB)hw$(DIRSEP)vga$(DIRSEP)dos86l$(DIRSEP)vrl2vrs -s $(SPRI)ptmp.sht -hc $(SPRI)ptmps.h -hp $(SPRI)demoanim_ptmp_ -o $(SPRI)ptmp.vrs # run from same subdirectory
+@call spri.bat
