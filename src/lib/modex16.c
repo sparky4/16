@@ -80,7 +80,7 @@ vgaGetMode()
 void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 {
 	word i;
-	dword far*ptr=(dword far*)VGA;      /* used for faster screen clearing */
+	dword far*ptr=(dword far*)vga_state.vga_graphics_ram;//VGA;      /* used for faster screen clearing */
 	struct vga_mode_params cm;
 	int CRTParmCount;
 
