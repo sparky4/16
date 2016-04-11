@@ -13,4 +13,5 @@ fi
 ##echo "$pee"
 git add .
 . ./boop.sh "$pee"
-. ./builq.sh
+. ./wbuild.sh
+##. ./builq.sh slow compile ww
