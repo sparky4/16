@@ -46,6 +46,8 @@ TARGET_OS = dos
 #EXMMTESTDIR=16$(DIRSEP)exmmtest$(DIRSEP)
 PDIR=..$(DIRSEP)
 SRC=src$(DIRSEP)
+DATADIR=data$(DIRSEP)
+SPRI=$(DATADIR)$(DIRSEP)spri$(DIRSEP)
 SRCLIB=$(SRC)lib$(DIRSEP)
 JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
 NYANLIB=$(SRCLIB)nyan$(DIRSEP)
@@ -64,7 +66,7 @@ UPXQ=-qqq
 AFLAGS=-mh -0 -d1
 16FLAGS=-fh=16.hed
 BAKAPIFLAGS=-fh=bakapi.hed
-SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k40000#55808#60000#32768
+SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#55808#60000
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
 ZFLAGS=-zk0 -zc -zp8 $(WCLQ) ## -zm
 CFLAGS=$(AFLAGS) $(IFLAGS)-lr -l=dos -wo -i$(DOSLIB)##wwww
@@ -432,9 +434,9 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.MAP
 	@$(REMOVECOMMAND) *.map
 	@$(REMOVECOMMAND) *.err
-	@cd $(DOSLIB)
+	#@cd $(DOSLIB)
 	#@./buildall.sh clean
-	@cd $(PDIR)$(PDIR)$(PDIR)
+	#@cd $(PDIR)$(PDIR)$(PDIR)
 #	@$(COPYCOMMAND) $(SRC)exmmtest.c $(EXMMTESTDIR)$(SRC)
 #	@$(COPYCOMMAND) $(SRCLIB)16_mm.* $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(SRCLIB)16_head.* $(EXMMTESTDIR)$(SRCLIB)
@@ -516,3 +518,7 @@ mx_: .symbolic
 	@cd 16$(DIRSEP)xw_
 	@wmake -h -f makefile all
 	@cd $(PDIR)$(PDIR)
+
+ed: .symbolic
+@$(DOSLIB)hw$(DIRSEP)vga$(DIRSEP)dos86l$(DIRSEP)pcxsscut -s $(SPRI)ptmp.sht -hc $(SPRI)ptmp.h -hp $(SPRI)demoanim_ptmp_ -i $(DATADIR)ptmp.pcx -p $(SPRI)ptmp.pal -tc 0x84 -y # run from subdirectory where output will not be committed accidentally
+@$(DOSLIB)hw$(DIRSEP)vga$(DIRSEP)dos86l$(DIRSEP)vrl2vrs -s $(SPRI)ptmp.sht -hc $(SPRI)ptmps.h -hp $(SPRI)demoanim_ptmp_ -o $(SPRI)ptmp.vrs # run from same subdirectory
