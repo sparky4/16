@@ -520,4 +520,5 @@ mx_: .symbolic
 	@cd $(PDIR)$(PDIR)
 
 ed: .symbolic
+@cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga && .$(DIRSEP)make.sh
 @call spri.bat
