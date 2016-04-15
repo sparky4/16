@@ -88,8 +88,7 @@ TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe sega.exe sountest.exe
 EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
 
-all: $(EXEC) vrl2vrs.exe pcxsscut.exe
-#joytest.exe
+all: $(EXEC) joytest.exe vrs
 
 #$(16LIBOBJS) => 16.lib bug....
 #
