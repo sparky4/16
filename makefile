@@ -297,10 +297,6 @@ $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vga.lib:
 	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga && .$(DIRSEP)make.sh
 joytest.exe:
 	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)joystick && .$(DIRSEP)make.sh && $(COPYCOMMAND) dos86h$(DIRSEP)test.exe $(PDIR)$(PDIR)$(PDIR)$(PDIR)$(PDIR)joytest.exe
-pcxsscut.exe:
-	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga && .$(DIRSEP)make.sh && $(COPYCOMMAND) dos86l$(DIRSEP)pcxsscut.exe $(PDIR)$(PDIR)$(PDIR)$(PDIR)$(PDIR)
-vrl2vrs.exe:
-	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga && .$(DIRSEP)make.sh && $(COPYCOMMAND) dos86l$(DIRSEP)vrl2vrs.exe $(PDIR)$(PDIR)$(PDIR)$(PDIR)$(PDIR)
 #$(DOSLIBLIBS): .symbolic
 #	@cd $(DOSLIB)
 #	@.$(DIRSEP)buildall.sh
@@ -524,6 +520,12 @@ mx_: .symbolic
 	@wmake -h -f makefile all
 	@cd $(PDIR)$(PDIR)
 
-ed: .symbolic
-@cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga && .$(DIRSEP)make.sh
-@call spri.bat
+vrs: .symbolic
+	@cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga
+	#@make clean
+	@make all
+	@mv pcx2vrl ../../../../../
+	@mv pcxsscut ../../../../../
+	@mv vrl2vrs ../../../../../
+	@mv vrsdump ../../../../../
+	@cd ../../../../../
