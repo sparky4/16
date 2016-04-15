@@ -1,8 +1,8 @@
 // header file for sprite sheet. AUTO GENERATED, do not edit
 // 
-// source PCX: data/ptmp.pcx
-// sheet script: data/spri/ptmp.sht
-// palette file: data/spri/ptmp.pal
+// source PCX: ../ptmp.pcx
+// sheet script: ptmp.sht
+// palette file: ptmp.pal
 
 #define _ptmp_PRSBFCW0 10U
 #define _ptmp_PRSBFCW1 11U
