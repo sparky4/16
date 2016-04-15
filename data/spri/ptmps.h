@@ -1,6 +1,6 @@
 // header file for sprite sheet. AUTO GENERATED, do not edit
 // 
-// sheet script: data/spri/ptmp.sht
+// sheet script: ptmp.sht
 
 // sprite sheet (sprite IDs)
 #define _ptmp_PRSBFCW0_sprite 10U
