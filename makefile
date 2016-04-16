@@ -46,6 +46,8 @@ TARGET_OS = dos
 #EXMMTESTDIR=16$(DIRSEP)exmmtest$(DIRSEP)
 PDIR=..$(DIRSEP)
 SRC=src$(DIRSEP)
+DATADIR=data$(DIRSEP)
+SPRI=$(DATADIR)$(DIRSEP)spri$(DIRSEP)
 SRCLIB=$(SRC)lib$(DIRSEP)
 JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
 NYANLIB=$(SRCLIB)nyan$(DIRSEP)
@@ -64,7 +66,7 @@ UPXQ=-qqq
 AFLAGS=-mh -0 -d1
 16FLAGS=-fh=16.hed
 BAKAPIFLAGS=-fh=bakapi.hed
-SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k40000#55808#60000#32768
+SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#55808#60000
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
 ZFLAGS=-zk0 -zc -zp8 $(WCLQ) ## -zm
 CFLAGS=$(AFLAGS) $(IFLAGS)-lr -l=dos -wo -i$(DOSLIB)##wwww
@@ -87,7 +89,7 @@ TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe sega.exe sountest.exe
 EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
 
-all: $(EXEC)  joytest.exe
+all: $(EXEC) joytest.exe vrs
 
 #$(16LIBOBJS) => 16.lib bug....
 #
@@ -433,9 +435,9 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.MAP
 	@$(REMOVECOMMAND) *.map
 	@$(REMOVECOMMAND) *.err
-	@cd $(DOSLIB)
+	#@cd $(DOSLIB)
 	#@./buildall.sh clean
-	@cd $(PDIR)$(PDIR)$(PDIR)
+	#@cd $(PDIR)$(PDIR)$(PDIR)
 #	@$(COPYCOMMAND) $(SRC)exmmtest.c $(EXMMTESTDIR)$(SRC)
 #	@$(COPYCOMMAND) $(SRCLIB)16_mm.* $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(SRCLIB)16_head.* $(EXMMTESTDIR)$(SRCLIB)
@@ -517,3 +519,13 @@ mx_: .symbolic
 	@cd 16$(DIRSEP)xw_
 	@wmake -h -f makefile all
 	@cd $(PDIR)$(PDIR)
+
+vrs: .symbolic
+	@cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga
+	#@make clean
+	@make all
+	@mv pcx2vrl ../../../../../
+	@mv pcxsscut ../../../../../
+	@mv vrl2vrs ../../../../../
+	@mv vrsdump ../../../../../
+	@cd ../../../../../

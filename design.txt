@@ -57,3 +57,18 @@ be used to turn off stack checking, so no stack checking routines get called.
 00:20:21   joncampbell123 | yes.                                                                           │
 00:20:29   sparky4_derpy4 | scroll16 needs a bunch of work                                                 │
 00:20:29   joncampbell123 | the less you declare on the stack, the less stack the function needs.
+
+
+
+
+
+
+[15:03]	joncampbell123m	Think of it this way
+[15:03]	joncampbell123m	If something moves or changes frame
+[15:04]	joncampbell123m	then a rectangular region around the sprite needs to be redrawn
+[15:05]	joncampbell123m	So you collect update regions together
+[15:06]	joncampbell123m	based on performance vs overlap
+[15:06]	joncampbell123m	combine the rectangles together and redraw the screen they cover
+[15:07]	joncampbell123m	the simplest way is to compute a rectangle that covers them all
+[15:07]	joncampbell123m	then redraw that.
+[15:08]	joncampbell123m	Then optimize the code from there how you handle it

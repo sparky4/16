@@ -235,7 +235,7 @@ static	boolean	special;
 	if (INL_KeyHook && !special)
 		INL_KeyHook();
 //#ifdef TESTKEYIN
-	if(testkeyin > 0) printf("%c	[0x%x %u]	%u\n", c, k, k, inpu.Keyboard[k]);
+	if(testkeyin > 0) printf("%c	%u	[0x%x %u]	%u\n", c, c, k, k, inpu.Keyboard[k]);
 //endif
 	outp(0x20,0x20);
 }

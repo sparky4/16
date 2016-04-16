@@ -30,9 +30,9 @@ main(int argc, char *argv[])
 	global_game_variables_t gvar;
 	player_t player[MaxPlayers];
 	//extern struct inconfig inpu;
-	testkeyin=0;
+	testkeyin=1;
 	testcontrolnoisy=0;
-	testctrltype=1;
+	testctrltype=0;
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick1);
 	//while(!IN_KeyDown(sc_Escape))
