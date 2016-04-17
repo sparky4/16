@@ -600,6 +600,8 @@ void shinku(map_view_t *pip, global_game_variables_t *gv)
 		word type = 1;
 		//t=(((*(gv->clock))-gv->clock_start) /18.2);
 		//sprintf(gv->pee, "%f fps", (double)gv->kurokku.tiku/ticktock(gv));
+		vga_moveto(x,y);
+		vga_sync_bios_cursor();
 		printf("%f fps", (double)gv->kurokku.tiku/ticktock(gv));
 		//modexprint(pip[1].page, 16, 16, 1, 15, 0, gv->pee, 1);
 		//(gv->clock_start)=*(gv->clock);

@@ -134,7 +134,7 @@ void main(int argc, char *argv[])
 	modexFadeOff(4, dpal);
 #endif
 
-	textInit();
+	//textInit();
 	VGAmodeX(bakapee, 1, &gvar);
 //	printf("%dx%d\n", gvar.video.page[0].sw, gvar.video.page[0].sh);
 #ifdef FADE
