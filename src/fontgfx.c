@@ -38,7 +38,7 @@ void main(int argc, char near *argv[])
 	//JMOJI
 	static byte e;
 	//word ri;
-	byte pee[2];
+	byte pee[6]; // must be large enough for sprintf("%zc",...) and sprintf("%u",(byte value))
 	static byte ibmlogo[]="IIIIIII  BBBBBBBBB    MMMMM       MMMMM\n\
 IIIIIII  BBBBBBBBBBB  MMMMMM     MMMMMM\n\
   III     BBB    BBB   MMMMMM   MMMMMM\n\
@@ -67,7 +67,7 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 ,'___...---~~~\n\
 ";
 //	static byte *rosa;
-//	static word chx;//, chy, colpee;
+	static word chx, chy, colpee;
 	static word z;
 	textInit();
 
@@ -107,42 +107,43 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 	gvar.video.page[0].width += (16*2);
 	gvar.video.page[0].height += (16*2);
 	modexShowPage(&gvar.video.page[0]);
+	vga_read_crtc_mode(&cm);
+	// NTS: We're in Mode-X now. printf() is useless. Do not use printf(). Or INT 10h text printing. Or DOS console output.
 	//modexprint(16, 16, 1, 15, "wwww");
 	//getch();
-//	chx=0;
-//	chy=0;
+	chx=0;
+	chy=0;
 //	colpee=32;
-	bios_cls();
+//	bios_cls();
 	/* position the cursor to home */
-	vga_moveto(0,0);
-	vga_sync_bios_cursor();
+//	vga_moveto(0,0);
+//	vga_sync_bios_cursor();
 	for(e=0x00, z=0; e<=0xFE; e++, z++)
 	{
 		//if(chx+8>(gvar.video.page[0].width/2))
 		if((z)+1>16)
 		{
-//			chx=0;
-//			chy+=8;
-//			sprintf(pee,"%u", colpee);
-//			modexprint(&gvar.video.page[0], 200, 200, 1, 47, 0, &pee, 1);
+			chx=0;
+			chy+=8;
+			sprintf(pee,"%u", colpee);
+			modexprint(&gvar.video.page[0], 200, 200, 1, 47, 0, &pee, 1);
 			z=0;
-			printf("\n");
+//			printf("\n");
 			//getch();
 		}
-		printf("%zc", e);
-//		modexprint(&gvar.video.page[0], chx, chy, 1, 0, colpee, &e, 1);
-//		chx+=9;
-//		colpee++;
+		sprintf(pee, "%zc", e);
+		modexprint(&gvar.video.page[0], chx, chy, 1, 0, colpee, &e, 1);
+		chx+=9;
+		colpee++;
 //		if(colpee>=32+24) colpee=32;
 	}
-	//modexprint(100, 100, 1, 47, 0, "wwww");
 	getch();
+	//modexprint(100, 100, 1, 47, 0, "wwww");
 //	modexprint(0, 0, 1, 0, colpee, &rose);
 //++++	modexprint(&gvar.video.page[0], 0, 0, 0, 0, colpee, &ibmlogo);
 //	modexprintbig(&gvar.video.page[0], 0, 0, 1, colpee, 0, "IBM");
 //	modexprint(0, 0, 1, 0, colpee, ROSE);
 //++++	getch();
-	vga_read_crtc_mode(&cm);
 	VGAmodeX(0, 1, &gvar);
 //	rosa=malloc(sizeof(ROSE));
 //	(*rosa)=(byte)ROSE;
