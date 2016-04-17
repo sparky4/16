@@ -636,7 +636,7 @@ printf("\nqqqqqqqq\n\n");
 		pp = q;
 		//printf("1(*i)=%02d\n", (*i)/3);
 		//printf("1z=%02d\n", z/3);
-		chkcolor(bmp, &q, &a, &aa, &z, i);
+		modexchkcolor(bmp, &q, &a, &aa, &z, i);
 		//printf("2(*i)=%02d\n", (*i)/3);
 		//printf("2z=%02d\n", z/3);
 		aq=0;
@@ -753,7 +753,7 @@ modexPalOverscan(byte *p, word col)
 
 //color checker~
 //i want to make another vesion that checks the palette when the palette is being appened~
-void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, word *offset*/)
+void modexchkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, word *offset*/)
 {
 		byte *pal;
 		word zz=0;
@@ -1006,7 +1006,7 @@ void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, c
 }
 
 /* palette dump on display! */
-void pdump(page_t *pee)
+void modexpdump(page_t *pee)
 {
 	int mult=(QUADWH);
 	int palq=(mult)*TILEWH;
@@ -1026,7 +1026,7 @@ void pdump(page_t *pee)
 //		 the Virtual screen.											 //
 //																		 //
 /////////////////////////////////////////////////////////////////////////////
-void cls(page_t *page, byte color, byte *Where)
+void modexcls(page_t *page, byte color, byte *Where)
 {
 	//modexClearRegion(page, 0, 0, page->width, page->height, color);
 	/* set map mask to all 4 planes */

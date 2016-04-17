@@ -34,7 +34,7 @@ void colortest(page_t *page, bakapee_t *pee)
 {
 	//if(pee->coor < 256)
 	//{
-		cls(page, pee->coor, VGA);
+		modexcls(page, pee->coor, VGA);
 		pee->coor++;
 	//}else pee->coor = 0;
 }
@@ -44,7 +44,7 @@ void colorz(page_t *page, bakapee_t *pee)
 {
 	if(pee->coor <= HGQ)
 	{
-		cls(page, pee->coor, VGA);
+		modexcls(page, pee->coor, VGA);
 		pee->coor++;
 	}else pee->coor = LGQ;
 }
@@ -228,7 +228,7 @@ void ding(page_t *page, bakapee_t *pee, word q)
 		break;
 		case 6:
 			pee->coor = rand()%256;
-			cls(page, pee->coor, VGA);
+			modexcls(page, pee->coor, VGA);
 		break;
 		case 7:
 			if(pee->coor <= HGQ)

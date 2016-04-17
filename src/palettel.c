@@ -45,7 +45,7 @@ main(int argc, char *argv[])
 	modexLoadPalFile(bakapee, &pal);
 	modexPalUpdate1(pal);
 	modexFadeOn(1, pal);
-	pdump(&gvar.video.page[0]);
+	modexpdump(&gvar.video.page[0]);
 	getch();
 	VGAmodeX(0, 0, &gvar);
 	modexPalUpdate1(pal);

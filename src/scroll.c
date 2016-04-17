@@ -369,16 +369,16 @@ void main(int argc, char *argv[])
 	if(IN_KeyDown(2)){ modexShowPage(bg->page); panpagenum=0; }
 	if(IN_KeyDown(3)){ modexShowPage(spri->page); panpagenum=1; }
 	if(IN_KeyDown(4)){ modexShowPage(mask->page); panpagenum=2; }
-	if(IN_KeyDown(25)){ pdump(bg->page); pdump(spri->page); }	//p
+	if(IN_KeyDown(25)){ modexpdump(bg->page); modexpdump(spri->page); }	//p
 #ifdef MODEX
 #ifdef FADE
-	if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; pdump(bg->page); pdump(spri->page); }
+	if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(bg->page); modexpdump(spri->page); }
 	if(IN_KeyDown(22)){
 	paloffset=0; modexPalBlack(); modexPalUpdate(&player[0].data, &paloffset, 0, 0);
 	printf("1paloffset	=	%d\n", paloffset/3);
 	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	printf("2paloffset	=	%d\n", paloffset/3);
-	 pdump(bg->page); pdump(spri->page); }
+	 modexpdump(bg->page); modexpdump(spri->page); }
 #endif
 #endif
 	//pan switch
