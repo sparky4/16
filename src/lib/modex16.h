@@ -71,7 +71,7 @@ static struct pcxHeader {
 
 /* -========================== Types & Macros ==========================- */
 #define PAGE_OFFSET(x,y) (((y)<<6)+((y)<<4)+((x)>>2))
-#define PLANE(x) (1<< (x&3))
+#define PLANE(x) (1 << ((x) & 3))
 #define SELECT_ALL_PLANES() outpw(0x03c4, 0xff02)
 #define     PALSIZE            768
 
@@ -149,6 +149,8 @@ void modexPalOverscan(byte *p, word col);
 void modexchkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, word *offset*/);
 void modexputPixel(page_t *page, int x, int y, byte color);
 byte modexgetPixel(page_t *page, int x, int y);
+
+#if 0 // not needed anymore. maybe good for reference purposes though.
 static inline void modexwritepixel(page_t *page, int x, int y, word addr, byte color)
 {
 	/* Each address accesses four neighboring pixels, so set
@@ -172,6 +174,8 @@ static inline byte modexreadPixel(page_t *page, int x, int y, word addr)
 	outpw(GC_INDEX+1, x & 3);
 	return vga_state.vga_graphics_ram[addr];
 }
+#endif
+
 void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
 void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
 void modexpdump(page_t *pee);
