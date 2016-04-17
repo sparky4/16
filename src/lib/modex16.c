@@ -80,7 +80,6 @@ vgaGetMode()
 void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 {
 	word i;
-	dword far*ptr=(dword far*)vga_state.vga_graphics_ram;//VGA;      /* used for faster screen clearing */
 	struct vga_mode_params cm;
 	int CRTParmCount;
 
@@ -94,9 +93,12 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 		case 1:
 			//CRTParmCount = sizeof(ModeX_320x240regs) / sizeof(ModeX_320x240regs[0]);
 			/* width and height */
-			gv->video.page[0].sw=vga_state.vga_width = 320; // VGA lib currently does not update this
-			gv->video.page[0].sh=vga_state.vga_height = 240; // VGA lib currently does not update this
+			gv->video.page[0].sw = vga_state.vga_width = 320; // VGA lib currently does not update this
+			gv->video.page[0].sh = vga_state.vga_height = 240; // VGA lib currently does not update this
 
+			// mode X BYTE mode
+			cm.word_mode = 0;
+			cm.dword_mode = 0;
 			// 320x240 mode 60Hz
 			cm.horizontal_total=0x5f + 5; /* CRTC[0]             -5 */
 			cm.horizontal_display_end=0x4f + 1; /* CRTC[1]       -1 */
@@ -115,6 +117,7 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 			cm.clock_select = 0; /* misc register = 0xE3  25MHz */
 			cm.vsync_neg = 1;
 			cm.hsync_neg = 1;
+			cm.offset = (vga_state.vga_width / (4 * 2)); // 320 wide (40 x 4 pixel groups x 2)
 			break;
 		case 2: // TODO: 160x120 according to ModeX_160x120regs
 			return;
@@ -128,15 +131,18 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 			return;
 	}
 
+	vga_state.vga_stride = cm.offset * 2;
 	vga_write_crtc_mode(&cm,0);
 
 	/* clear video memory */
 	switch (cmem)
 	{
-		case 1:
-		/* clear video memory */
-		vga_write_sequencer(2/*map mask register*/,0xf/*all 4 planes*/);
-		for(i=0; i<0x8000; i++) ptr[i] = 0x0000;
+		case 1: {
+			/* clear video memory */
+			dword far*ptr=(dword far*)vga_state.vga_graphics_ram;//VGA;      /* used for faster screen clearing */
+			vga_write_sequencer(2/*map mask register*/,0xf/*all 4 planes*/);
+			for(i = 0;i < 0x4000; i++) ptr[i] = 0x0000; // 0x4000 x dword = 64KB
+		}
 		break;
 	}
 	gv->video.page[0].tilesw = gv->video.page[0].sw/TILEWH;
@@ -545,7 +551,8 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 	static word a[PAL_SIZE];	//palette array of change values!
 	word z=0, aq=0, aa=0, pp=0;
 
-	modexWaitBorder();
+	//modexWaitBorder();
+	vga_wait_for_vsync();
 	if((*i)==0)
 	{
 		memset(a, -1, sizeof(a));
@@ -595,7 +602,8 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 		//if(qp>0) printf("qp=%d\n", qp);
 		//if(qp>0) printf("					     (*i)=%d\n", (*i)/3);
 	}
-	modexWaitBorder();	  /* waits one retrace -- less flicker */
+	//modexWaitBorder();	  /* waits one retrace -- less flicker */
+	vga_wait_for_vsync();
 	if((*i)>=PAL_SIZE/2 && w==0)
 	{
 		for(; (*i)<PAL_SIZE; (*i)++)
@@ -634,7 +642,7 @@ printf("\nqqqqqqqq\n\n");
 		pp = q;
 		//printf("1(*i)=%02d\n", (*i)/3);
 		//printf("1z=%02d\n", z/3);
-		chkcolor(bmp, &q, &a, &aa, &z, i);
+		modexchkcolor(bmp, &q, &a, &aa, &z, i);
 		//printf("2(*i)=%02d\n", (*i)/3);
 		//printf("2z=%02d\n", z/3);
 		aq=0;
@@ -706,13 +714,15 @@ void
 modexPalUpdate1(byte *p)
 {
 	int i;
-	modexWaitBorder();
+	//modexWaitBorder();
+	vga_wait_for_vsync();
 	outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
 	for(i=0; i<PAL_SIZE/2; i++)
 	{
 		outp(PAL_DATA_REG, p[i]);
 	}
-	modexWaitBorder();	  /* waits one retrace -- less flicker */
+	//modexWaitBorder();	  /* waits one retrace -- less flicker */
+	vga_wait_for_vsync();
 	for(; i<PAL_SIZE; i++)
 	{
 		outp(PAL_DATA_REG, p[(i)]);
@@ -723,13 +733,15 @@ void
 modexPalUpdate0(byte *p)
 {
 	int i;
-	modexWaitBorder();
+	//modexWaitBorder();
+	vga_wait_for_vsync();
 	outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
 	for(i=0; i<PAL_SIZE/2; i++)
 	{
 		outp(PAL_DATA_REG, rand());
 	}
-	modexWaitBorder();	  /* waits one retrace -- less flicker */
+	//modexWaitBorder();	  /* waits one retrace -- less flicker */
+	vga_wait_for_vsync();
 	for(; i<PAL_SIZE; i++)
 	{
 		outp(PAL_DATA_REG, rand());
@@ -739,14 +751,15 @@ modexPalUpdate0(byte *p)
 void
 modexPalOverscan(byte *p, word col)
 {
-	modexWaitBorder();
+	//modexWaitBorder();
+	vga_wait_for_vsync();
 	outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
 	outp(PAL_DATA_REG, col);
 }
 
 //color checker~
 //i want to make another vesion that checks the palette when the palette is being appened~
-void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, word *offset*/)
+void modexchkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, word *offset*/)
 {
 		byte *pal;
 		word zz=0;
@@ -864,23 +877,11 @@ byte modexgetPixel(page_t *page, int x, int y)
 
 }
 
-void modexhlin(page_t *page, word xl, word xh, word y, word color)
-{
-	word x;
-	word yy=0;
-
-	for(x=0;x<xh*4;x+=4)
-	{
-		if(x+4>=page[0].sw-1){ x=0; yy+=4; }
-		modexClearRegion(page, x+xl, y+yy, 4, 4, color);
-	}
-	//modexputPixel(page, x+xl, y, color);
-}
-
-void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str, boolean q)
+void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str)
 {
 	word s, o, w;
 	word addr = (word) romFontsData.l;
+	word addrq = (page->width/4) * y + (x / 4) + ((word)page->data);
 	byte c;
 
 	s=romFonts[t].seg;
@@ -917,7 +918,8 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 		JNZ L1
 	}
 //TODO: OPTIMIZE THIS!!!!
-		modexDrawCharPBuf(page, x, y, t, col, bgcol, q);
+		modexDrawCharPBuf(page, x/*for mode X planar use*/, y/*redunant, remove*/, t, col, bgcol, addrq);
+		addrq += 2; /* move 8 pixels over (2 x 4 planar pixels per byte) */
 
 		//if(!q) getch();
 	}
@@ -999,7 +1001,7 @@ void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, c
 }
 
 /* palette dump on display! */
-void pdump(page_t *pee)
+void modexpdump(page_t *pee)
 {
 	int mult=(QUADWH);
 	int palq=(mult)*TILEWH;
@@ -1019,7 +1021,7 @@ void pdump(page_t *pee)
 //		 the Virtual screen.											 //
 //																		 //
 /////////////////////////////////////////////////////////////////////////////
-void cls(page_t *page, byte color, byte *Where)
+void modexcls(page_t *page, byte color, byte *Where)
 {
 	//modexClearRegion(page, 0, 0, page->width, page->height, color);
 	/* set map mask to all 4 planes */
@@ -1028,13 +1030,40 @@ void cls(page_t *page, byte color, byte *Where)
 	_fmemset(Where, color, page->width*(page->height)/4);
 }
 
-void
+/*void
 modexWaitBorder() {
     while(inp(INPUT_STATUS_1)  & 8)  {
-	/* spin */
+	// spin
     }
 
     while(!(inp(INPUT_STATUS_1)  & 8))  {
-	/* spin */
+	// spin
     }
+}*/
+
+void bios_cls() {
+	VGA_ALPHA_PTR ap;
+	VGA_RAM_PTR rp;
+	unsigned char m;
+
+	m = int10_getmode();
+	if ((rp=vga_state.vga_graphics_ram) != NULL && !(m <= 3 || m == 7)) {
+		unsigned int i,im;
+
+		im = (FP_SEG(vga_state.vga_graphics_ram_fence) - FP_SEG(vga_state.vga_graphics_ram));
+		if (im > 0xFFE) im = 0xFFE;
+		im <<= 4;
+		for (i=0;i < im;i++) vga_state.vga_graphics_ram[i] = 0;
+	}
+	else if ((ap=vga_state.vga_alpha_ram) != NULL) {
+		unsigned int i,im;
+
+		im = (FP_SEG(vga_state.vga_alpha_ram_fence) - FP_SEG(vga_state.vga_alpha_ram));
+		if (im > 0x7FE) im = 0x7FE;
+		im <<= 4 - 1; /* because ptr is type uint16_t */
+		for (i=0;i < im;i++) vga_state.vga_alpha_ram[i] = 0x0720;
+	}
+	else {
+		printf("WARNING: bios cls no ptr\n");
+	}
 }

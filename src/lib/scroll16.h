@@ -33,8 +33,14 @@
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
 
+#include <hw/cpu/cpu.h>
+#include <hw/dos/dos.h>
+#include <hw/vga/vga.h>
+#include <hw/vga/vrl.h>
+#include <hw/vga/vgatty.h>
+
 //#define SPRITE
-#define TILERENDER
+//#define TILERENDER
 
 #define PBUFSFUN		modexDrawSpritePBufRegion
 #define PBUFBFUN		modexDrawBmpPBufRegion

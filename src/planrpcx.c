@@ -41,8 +41,6 @@ void main(int argc, char *argv[])
 {
 
 	byte l[1024];
-	static byte e;
-	static word chx, chy, colpee;
 	byte pee[2];
 
 //w=0;
@@ -122,25 +120,6 @@ getch();
 			}
 			printf("\n");
 		}
-	}
-
-	chx=0;
-	chy=0;
-	colpee=32;
-	for(e=0x00; e<=0xFE; e++)
-	{
-		if(chx+8>(gvar.video.page[0].width/2))
-		{
-			chx=0;
-			chy+=8;
-			sprintf(pee,"%u", colpee);
-			modexprint(&gvar.video.page[0], 200, 200, 1, 47, 0, &pee, 0);
-			//getch();
-		}
-		modexprint(&gvar.video.page[0], chx, chy, 1, 0, colpee, &e, 0);
-		chx+=9;
-		colpee++;
-		if(colpee>=32+24) colpee=32;
 	}
 
 	fprintf(stderr,"Project 16 planrpcx.exe. This is just a test file!\n");

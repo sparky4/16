@@ -435,34 +435,38 @@ modexDrawSpritePBufRegion(page_t *page, int x, int y,
     }
 }
 
-void modexDrawCharPBuf(page_t *page, int x, int y, word t, word col, word bgcol, boolean q)
+void modexDrawCharPBuf(page_t *page, int x/*for planar selection only*/, int y/*redundant, remove*/, word t, word col, word bgcol, word addr)
 {
-	word i, j, k;
-	for(i=0; i<romFonts[t].charSize; i++)
-	{
-		j=1<<8;
-		k=0;
-		//every "pixel" row
-		while(j)
-		{
-			if(q)
-			//_fmemcpy(page->data + (((page->width/4) * (y+i)) + ((x+romFontsData.chw+k) / 4)), romFontsData.l[i] & j ? col:bgcol, 2);
-			modexputPixel(page, x+k+romFontsData.chw, y+i, romFontsData.l[i] & j ? col:bgcol);
-			else
-				//printf("l[i]=%c j=%02u l[i] & j=%02u %c\n", l[i] , j, l[i] & j, l[i] & j ? '*':' ');
-				//printf("%c", l[i] & j ? '*':' ');
-				romFontsData.z[k]=romFontsData.l[i] & j ? '*':' ';
-			j>>=1;
-			k++;
+	/* vertical drawing routine by joncampbell123.
+	 *
+	 * optimize for VGA mode X planar memory to minimize the number of times we do I/O write to map mask register.
+	 * so, we enumerate over columns (not rows!) to draw every 4th pixel. bit masks are used because of the font bitmap.
+	 * 
+	 * NTS: addr defines what VGA memory address we use, "x" is redundant except to specify which of the 4 pixels we select in the map mask register. */
+	word drawaddr;
+	word colm, row;
+	byte fontbyte;
+	byte plane;
+	byte m1,m2;
+
+	plane = x & 3;
+	m1 = 0x80; // left half
+	m2 = 0x08; // right half
+	for (colm=0;colm < 4;colm++) {
+		drawaddr = addr;
+		modexSelectPlane(PLANE(plane));
+		for (row=0;row < 8;row++) {
+			fontbyte = romFontsData.l[row];
+			vga_state.vga_graphics_ram[drawaddr  ] = (fontbyte & m1) ? col : bgcol;
+			vga_state.vga_graphics_ram[drawaddr+1] = (fontbyte & m2) ? col : bgcol;
+			drawaddr += page->width >> 2;
 		}
-		if(!q)
-		{
-			for(k=0;k<9;k++)
-			{
-				printf("%c", romFontsData.z[k]);
-			}
-			printf("\n");
+
+		m1 >>= 1;
+		m2 >>= 1;
+		if ((++plane) == 4) {
+			addr++;
+			plane = 0;
 		}
 	}
-	romFontsData.chw += k;
 }

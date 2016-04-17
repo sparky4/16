@@ -50,6 +50,7 @@
 #include "src/lib/nyan/kitten.h"
 #include "src/lib/types.h"
 #include "src/lib/typdefst.h"
+#include "src/lib/16_in.h"
 
 #define VERSION __DATE__ " " __TIME__
 

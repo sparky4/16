@@ -1282,3 +1282,19 @@ boolean IN_qb(byte kee)
 	if(inpu.Keyboard[kee]==true) return 1;
 	else return 0;
 }
+
+//init player!
+void IN_initplayer(player_t *player, word pn)
+{
+	player[pn].x = player[pn].tx*TILEWH;
+	player[pn].y = player[pn].ty*TILEWH;
+	player[pn].triggerx = player[pn].tx;
+	player[pn].triggery = player[pn].ty+1;
+/*	player[0].info.x = player[0].tx;
+	player[0].info.xaxis = player[0].tx*TILEWH;
+	player[0].info.y = player[0].ty;
+	player[0].info.yaxis = player[0].ty*TILEWH;*/
+	player[pn].q=1;
+	player[pn].d=2;
+	player[pn].hp=4;
+}
