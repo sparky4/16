@@ -80,7 +80,6 @@ vgaGetMode()
 void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 {
 	word i;
-	dword far*ptr=(dword far*)vga_state.vga_graphics_ram;//VGA;      /* used for faster screen clearing */
 	struct vga_mode_params cm;
 	int CRTParmCount;
 
@@ -138,10 +137,12 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 	/* clear video memory */
 	switch (cmem)
 	{
-		case 1:
-		/* clear video memory */
-		vga_write_sequencer(2/*map mask register*/,0xf/*all 4 planes*/);
-		for(i=0; i<0x8000; i++) ptr[i] = 0x0000;
+		case 1: {
+			/* clear video memory */
+			dword far*ptr=(dword far*)vga_state.vga_graphics_ram;//VGA;      /* used for faster screen clearing */
+			vga_write_sequencer(2/*map mask register*/,0xf/*all 4 planes*/);
+			for(i = 0;i < 0x4000; i++) ptr[i] = 0x0000; // 0x4000 x dword = 64KB
+		}
 		break;
 	}
 	gv->video.page[0].tilesw = gv->video.page[0].sw/TILEWH;
