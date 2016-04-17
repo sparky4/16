@@ -189,18 +189,7 @@ void main(int argc, char *argv[])
 	//default player position on the viewable map
 	player[0].tx = bg->tx + bg->page->tilemidposscreenx;
 	player[0].ty = bg->ty + bg->page->tilemidposscreeny;
-	player[0].x = player[0].tx*TILEWH;
-	player[0].y = player[0].ty*TILEWH;
-	player[0].triggerx = player[0].tx;
-	player[0].triggery = player[0].ty+1;
-/*	player[0].info.x = player[0].tx;
-	player[0].info.xaxis = player[0].tx*TILEWH;
-	player[0].info.y = player[0].ty;
-	player[0].info.yaxis = player[0].ty*TILEWH;*/
-	player[0].q=1;
-	player[0].d=2;
-	player[0].hp=4;
-//	player[0].persist_aniframe=0;
+	IN_initplayer(&player, 0);
 	//npc
 	/*npc0.tx = bg->tx + 1;
 	npc0.ty = bg->ty + 1;
