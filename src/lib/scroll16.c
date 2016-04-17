@@ -489,7 +489,8 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 				//cannot print number value du to it being slow as bakapee
 #else
 				PBUFBFUN		(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
-				//draw_vrl1_vgax_modex(x,y,struct vrl1_vgax_header *hdr,vrl1_vgax_offset_t *lineoffs,unsigned char *data,unsigned int datasz);
+				/* then the sprite. note modding ram ptr means we just draw to (x&3,0) */
+				//draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
 				//modexDrawBmpRegion	(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
 #endif
 			break;
