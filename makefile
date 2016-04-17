@@ -459,7 +459,7 @@ comq: .symbolic
 
 www: .symbolic
 	@ssh -p 26 sparky4@4ch.mooo.com 'rm -f /var/www/16/*exe.zip*'
-	@rm "/var/www/$(EXEC).zip*"
+	@rm -f /var/www/*.exe.zip*
 	#@cp ./$(EXEC) $(DIRSEP)var$(DIRSEP)www$(DIRSEP)
 	@./z.sh $(EXEC) $(EXEC)
 	@scp -r -P 26 *.exe 4ch.mooo.com:/var/www/16/

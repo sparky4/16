@@ -488,8 +488,8 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, ((t->debug_data[i])+1));
 				//cannot print number value du to it being slow as bakapee
 #else
-				//PBUFBFUN		(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
-
+				PBUFBFUN		(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
+				//draw_vrl1_vgax_modex(x,y,struct vrl1_vgax_header *hdr,vrl1_vgax_offset_t *lineoffs,unsigned char *data,unsigned int datasz);
 				//modexDrawBmpRegion	(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
 #endif
 			break;
