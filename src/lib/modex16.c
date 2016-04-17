@@ -94,9 +94,12 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 		case 1:
 			//CRTParmCount = sizeof(ModeX_320x240regs) / sizeof(ModeX_320x240regs[0]);
 			/* width and height */
-			gv->video.page[0].sw=vga_state.vga_width = 320; // VGA lib currently does not update this
-			gv->video.page[0].sh=vga_state.vga_height = 240; // VGA lib currently does not update this
+			gv->video.page[0].sw = vga_state.vga_width = 320; // VGA lib currently does not update this
+			gv->video.page[0].sh = vga_state.vga_height = 240; // VGA lib currently does not update this
 
+			// mode X BYTE mode
+			cm.word_mode = 0;
+			cm.dword_mode = 0;
 			// 320x240 mode 60Hz
 			cm.horizontal_total=0x5f + 5; /* CRTC[0]             -5 */
 			cm.horizontal_display_end=0x4f + 1; /* CRTC[1]       -1 */
@@ -115,8 +118,7 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 			cm.clock_select = 0; /* misc register = 0xE3  25MHz */
 			cm.vsync_neg = 1;
 			cm.hsync_neg = 1;
-			vga_state.vga_stride=0x58;
-			cm.offset=0x2c;
+			cm.offset = (vga_state.vga_width / (4 * 2)); // 320 wide (40 x 4 pixel groups x 2)
 			break;
 		case 2: // TODO: 160x120 according to ModeX_160x120regs
 			return;
@@ -130,6 +132,7 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 			return;
 	}
 
+	vga_state.vga_stride = cm.offset * 2;
 	vga_write_crtc_mode(&cm,0);
 
 	/* clear video memory */
