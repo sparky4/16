@@ -85,8 +85,6 @@ void main(int argc, char *argv[])
 		return;
 	}
 
-	testcontrolnoisy=0;
-
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
 	//player[0].data = &pp;

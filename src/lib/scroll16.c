@@ -662,6 +662,10 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 	}
 
 #ifdef SPRITE
+// #define FRAME1 PBUFSFUN(pip[1].page, x, y, 48, dire, 24, 32,	PLAYERBMPDATA);
+// #define FRAME2 PBUFSFUN(pip[1].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATA);
+// #define FRAME3 PBUFSFUN(pip[1].page, x, y, 0, dire, 24, 32,	PLAYERBMPDATA);
+// #define FRAME4 PBUFSFUN(pip[1].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATA);
 #define FRAME1 PBUFSFUN(pip[1].page, x, y, 48, dire, 24, 32,	PLAYERBMPDATA);
 #define FRAME2 PBUFSFUN(pip[1].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATA);
 #define FRAME3 PBUFSFUN(pip[1].page, x, y, 0, dire, 24, 32,	PLAYERBMPDATA);
