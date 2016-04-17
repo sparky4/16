@@ -61,8 +61,8 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 ,'___...---~~~\n\
 ";
 //	static byte *rosa;
-	static word chx, chy, colpee;
-	textInit();
+	static word chx;//, chy, colpee;
+//	textInit();
 	VGAmodeX(1, 1, &gvar);
 	/* setup camera and screen~ */
 	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
@@ -72,22 +72,27 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 	//modexprint(16, 16, 1, 15, "wwww");
 	//getch();
 	chx=0;
-	chy=0;
-	colpee=32;
+//	chy=0;
+//	colpee=32;
+	/* position the cursor to home */
+	vga_moveto(0,0);
+	vga_sync_bios_cursor();
 	for(e=0x00; e<=0xFE; e++)
 	{
 		if(chx+8>(gvar.video.page[0].width/2))
 		{
 			chx=0;
-			chy+=8;
-			sprintf(pee,"%u", colpee);
-			modexprint(&gvar.video.page[0], 200, 200, 1, 47, 0, &pee, 1);
+			printf("\n");
+//			chy+=8;
+//			sprintf(pee,"%u", colpee);
+//			modexprint(&gvar.video.page[0], 200, 200, 1, 47, 0, &pee, 1);
 			//getch();
 		}
-		modexprint(&gvar.video.page[0], chx, chy, 1, 0, colpee, &e, 1);
+		printf("%c", e);
+//		modexprint(&gvar.video.page[0], chx, chy, 1, 0, colpee, &e, 1);
 		chx+=9;
-		colpee++;
-		if(colpee>=32+24) colpee=32;
+//		colpee++;
+//		if(colpee>=32+24) colpee=32;
 	}
 	//modexprint(100, 100, 1, 47, 0, "wwww");
 	getch();
