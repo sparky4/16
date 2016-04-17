@@ -129,6 +129,7 @@ void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, c
 void modexpdump(page_t *pee);
 void modexcls(page_t *page, byte color, byte *Where);
 //void modexWaitBorder();
+void bios_cls();
 
 /* -======================= Constants & Vars ==========================- */
 extern byte far*  VGA;  /* The VGA Memory */

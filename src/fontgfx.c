@@ -25,6 +25,11 @@
 //#include "lib/16text.h"
 #include "lib/modex16.h"
 
+#include <hw/cpu/cpu.h>
+#include <hw/dos/dos.h>
+#include <hw/vga/vga.h>
+#include <hw/vga/vgatty.h>
+
 global_game_variables_t gvar;
 
 void main(int argc, char near *argv[])
@@ -61,9 +66,36 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 ,'___...---~~~\n\
 ";
 //	static byte *rosa;
-	static word chx;//, chy, colpee;
+//	static word chx;//, chy, colpee;
+	static word z;
 //	textInit();
+
+	// DOSLIB: check our environment
+	probe_dos();
+
+	// DOSLIB: what CPU are we using?
+	// NTS: I can see from the makefile Sparky4 intends this to run on 8088 by the -0 switch in CFLAGS.
+	//      So this code by itself shouldn't care too much what CPU it's running on. Except that other
+	//      parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
+	//      the CPU to carry out tasks. --J.C.
+	cpu_probe();
+
+	// DOSLIB: check for VGA
+	if (!probe_vga()) {
+		printf("VGA probe failed\n");
+		return;
+	}
+	// hardware must be VGA or higher!
+	if (!(vga_state.vga_flags & VGA_IS_VGA)) {
+		printf("This program requires VGA or higher graphics hardware\n");
+		return;
+	}
 	VGAmodeX(1, 1, &gvar);
+// 	__asm{
+// 		mov	ax,1112h                ; load 8x8 character set into RAM
+// 		mov	bl,0
+// 		int	10h
+// 	}
 	/* setup camera and screen~ */
 	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
 	//gvar.video.page[0].width += (16*2);
@@ -71,26 +103,29 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 //++++	modexShowPage(&gvar.video.page[0]);
 	//modexprint(16, 16, 1, 15, "wwww");
 	//getch();
-	chx=0;
+//	chx=0;
 //	chy=0;
 //	colpee=32;
+	bios_cls();
 	/* position the cursor to home */
 	vga_moveto(0,0);
 	vga_sync_bios_cursor();
-	for(e=0x00; e<=0xFE; e++)
+	for(e=0x00, z=0; e<=0xFE; e++, z++)
 	{
-		if(chx+8>(gvar.video.page[0].width/2))
+		//if(chx+8>(gvar.video.page[0].width/2))
+		if((z)+1>16)
 		{
-			chx=0;
-			printf("\n");
+//			chx=0;
 //			chy+=8;
 //			sprintf(pee,"%u", colpee);
 //			modexprint(&gvar.video.page[0], 200, 200, 1, 47, 0, &pee, 1);
+			z=0;
+			printf("\n");
 			//getch();
 		}
-		printf("%c", e);
+		//printf("%zc", e);
 //		modexprint(&gvar.video.page[0], chx, chy, 1, 0, colpee, &e, 1);
-		chx+=9;
+//		chx+=9;
 //		colpee++;
 //		if(colpee>=32+24) colpee=32;
 	}
