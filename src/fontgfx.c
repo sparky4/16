@@ -68,7 +68,7 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 //	static byte *rosa;
 //	static word chx;//, chy, colpee;
 	static word z;
-//	textInit();
+	textInit();
 
 	// DOSLIB: check our environment
 	probe_dos();
@@ -91,13 +91,19 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 		return;
 	}
 	VGAmodeX(1, 1, &gvar);
-// 	__asm{
-// 		mov	ax,1112h                ; load 8x8 character set into RAM
-// 		mov	bl,0
-// 		int	10h
-// 	}
+	//int10_setmode(19);
+	__asm{
+		mov	AH,12H
+		mov	BL,30h
+		mov	AL,04h
+		int 10
+		mov	ax,1123h
+		int	10h
+		;mov	ax,1112h                ; load 8x8 character set into RAM
+		;int	10h
+	}
 	/* setup camera and screen~ */
-	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
+//..	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
 	//gvar.video.page[0].width += (16*2);
 	//gvar.video.page[0].height += (16*2);
 //++++	modexShowPage(&gvar.video.page[0]);
@@ -123,7 +129,7 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 			printf("\n");
 			//getch();
 		}
-		//printf("%zc", e);
+		printf("%zc", e);
 //		modexprint(&gvar.video.page[0], chx, chy, 1, 0, colpee, &e, 1);
 //		chx+=9;
 //		colpee++;
@@ -135,7 +141,7 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 //++++	modexprint(&gvar.video.page[0], 0, 0, 0, 0, colpee, &ibmlogo);
 //	modexprintbig(&gvar.video.page[0], 0, 0, 1, colpee, 0, "IBM");
 //	modexprint(0, 0, 1, 0, colpee, ROSE);
-	getch();
+//++++	getch();
 	VGAmodeX(0, 1, &gvar);
 //	rosa=malloc(sizeof(ROSE));
 //	(*rosa)=(byte)ROSE;
