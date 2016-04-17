@@ -489,6 +489,8 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 				//cannot print number value du to it being slow as bakapee
 #else
 				PBUFBFUN		(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
+				/* then the sprite. note modding ram ptr means we just draw to (x&3,0) */
+				//draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
 				//modexDrawBmpRegion	(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
 #endif
 			break;
@@ -613,7 +615,8 @@ void shinku(map_view_t *pip, global_game_variables_t *gv)
 		break;
 		case 1:
 			//turn this off if XT
-			modexWaitBorder();
+			//modexWaitBorder();
+			vga_wait_for_vsync();
 			gv->kurokku.frames_per_second=60;
 		break;
 	}
@@ -662,6 +665,10 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 	}
 
 #ifdef SPRITE
+// #define FRAME1 PBUFSFUN(pip[1].page, x, y, 48, dire, 24, 32,	PLAYERBMPDATA);
+// #define FRAME2 PBUFSFUN(pip[1].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATA);
+// #define FRAME3 PBUFSFUN(pip[1].page, x, y, 0, dire, 24, 32,	PLAYERBMPDATA);
+// #define FRAME4 PBUFSFUN(pip[1].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATA);
 #define FRAME1 PBUFSFUN(pip[1].page, x, y, 48, dire, 24, 32,	PLAYERBMPDATA);
 #define FRAME2 PBUFSFUN(pip[1].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATA);
 #define FRAME3 PBUFSFUN(pip[1].page, x, y, 0, dire, 24, 32,	PLAYERBMPDATA);

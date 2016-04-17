@@ -545,7 +545,8 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 	static word a[PAL_SIZE];	//palette array of change values!
 	word z=0, aq=0, aa=0, pp=0;
 
-	modexWaitBorder();
+	//modexWaitBorder();
+	vga_wait_for_vsync();
 	if((*i)==0)
 	{
 		memset(a, -1, sizeof(a));
@@ -595,7 +596,8 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 		//if(qp>0) printf("qp=%d\n", qp);
 		//if(qp>0) printf("					     (*i)=%d\n", (*i)/3);
 	}
-	modexWaitBorder();	  /* waits one retrace -- less flicker */
+	//modexWaitBorder();	  /* waits one retrace -- less flicker */
+	vga_wait_for_vsync();
 	if((*i)>=PAL_SIZE/2 && w==0)
 	{
 		for(; (*i)<PAL_SIZE; (*i)++)
@@ -634,7 +636,7 @@ printf("\nqqqqqqqq\n\n");
 		pp = q;
 		//printf("1(*i)=%02d\n", (*i)/3);
 		//printf("1z=%02d\n", z/3);
-		chkcolor(bmp, &q, &a, &aa, &z, i);
+		modexchkcolor(bmp, &q, &a, &aa, &z, i);
 		//printf("2(*i)=%02d\n", (*i)/3);
 		//printf("2z=%02d\n", z/3);
 		aq=0;
@@ -706,13 +708,15 @@ void
 modexPalUpdate1(byte *p)
 {
 	int i;
-	modexWaitBorder();
+	//modexWaitBorder();
+	vga_wait_for_vsync();
 	outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
 	for(i=0; i<PAL_SIZE/2; i++)
 	{
 		outp(PAL_DATA_REG, p[i]);
 	}
-	modexWaitBorder();	  /* waits one retrace -- less flicker */
+	//modexWaitBorder();	  /* waits one retrace -- less flicker */
+	vga_wait_for_vsync();
 	for(; i<PAL_SIZE; i++)
 	{
 		outp(PAL_DATA_REG, p[(i)]);
@@ -723,13 +727,15 @@ void
 modexPalUpdate0(byte *p)
 {
 	int i;
-	modexWaitBorder();
+	//modexWaitBorder();
+	vga_wait_for_vsync();
 	outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
 	for(i=0; i<PAL_SIZE/2; i++)
 	{
 		outp(PAL_DATA_REG, rand());
 	}
-	modexWaitBorder();	  /* waits one retrace -- less flicker */
+	//modexWaitBorder();	  /* waits one retrace -- less flicker */
+	vga_wait_for_vsync();
 	for(; i<PAL_SIZE; i++)
 	{
 		outp(PAL_DATA_REG, rand());
@@ -739,14 +745,15 @@ modexPalUpdate0(byte *p)
 void
 modexPalOverscan(byte *p, word col)
 {
-	modexWaitBorder();
+	//modexWaitBorder();
+	vga_wait_for_vsync();
 	outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
 	outp(PAL_DATA_REG, col);
 }
 
 //color checker~
 //i want to make another vesion that checks the palette when the palette is being appened~
-void chkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, word *offset*/)
+void modexchkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, word *offset*/)
 {
 		byte *pal;
 		word zz=0;
@@ -999,7 +1006,7 @@ void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, c
 }
 
 /* palette dump on display! */
-void pdump(page_t *pee)
+void modexpdump(page_t *pee)
 {
 	int mult=(QUADWH);
 	int palq=(mult)*TILEWH;
@@ -1019,7 +1026,7 @@ void pdump(page_t *pee)
 //		 the Virtual screen.											 //
 //																		 //
 /////////////////////////////////////////////////////////////////////////////
-void cls(page_t *page, byte color, byte *Where)
+void modexcls(page_t *page, byte color, byte *Where)
 {
 	//modexClearRegion(page, 0, 0, page->width, page->height, color);
 	/* set map mask to all 4 planes */
@@ -1028,13 +1035,13 @@ void cls(page_t *page, byte color, byte *Where)
 	_fmemset(Where, color, page->width*(page->height)/4);
 }
 
-void
+/*void
 modexWaitBorder() {
     while(inp(INPUT_STATUS_1)  & 8)  {
-	/* spin */
+	// spin
     }
 
     while(!(inp(INPUT_STATUS_1)  & 8))  {
-	/* spin */
+	// spin
     }
-}
+}*/

@@ -200,6 +200,7 @@ main(int argc, char *argvar[])
 			VGAmodeX(0, 0, &gvar);
 			// user imput switch
 			//fprintf(stderr, "xx=%d	yy=%d	tile=%d\n", bakapee.xx, bakapee.yy, bakapee.tile);
+			fprintf(stderr, "dx=%d	dy=%d	", gvar.video.page[0].dx, gvar.video.page[0].dy);
 			printf("Tiled mode is ");
 			switch (bakapee.tile)
 			{
@@ -302,8 +303,8 @@ pee:
 
 // 	xpos+=xdir;
 // 	ypos+=ydir;
-// 	if( (xpos>(VW-gvar.video.page[0].width-1))  || (xpos<1)){xdir=-xdir;}
-// 	if( (ypos>(BH-gvar.video.page[0].height-1)) || (ypos<1)){ydir=-ydir;}
+// 	if( (xpos>(gvar.video.page[0].sw-gvar.video.page[0].width-1))  || (xpos<1)){xdir=-xdir;}
+// 	if( (ypos>(gvar.video.page[0].sh-gvar.video.page[0].height-1)) || (ypos<1)){ydir=-ydir;}
 //	ch=getch();
 	if(ch==0x71)break; // 'q'
 	if(ch==0x1b)break; // 'ESC'

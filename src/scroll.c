@@ -34,7 +34,6 @@ static map_t map;
 player_t player[MaxPlayers];
 //page_t screen, gvar.video.page[1], gvar.video.page[2];
 map_view_t mv[3];
-map_view_t *bg, *spri, *mask;//, *tmp;
 bitmap_t p;
 word pn=0;
 static planar_buf_t huge *pp;
@@ -84,8 +83,6 @@ void main(int argc, char *argv[])
 		printf("This program requires VGA or higher graphics hardware\n");
 		return;
 	}
-
-	testcontrolnoisy=0;
 
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
@@ -148,7 +145,7 @@ void main(int argc, char *argv[])
 //++++	player[0].data.offset=(paloffset/3);
 //++++	modexPalUpdate1(&player[0].data, &paloffset, 0, 0);
 		//modexPalUpdate1(p.palette);
-		modexPalUpdate1(map.tiles->btdata->palette);
+//++++0000		modexPalUpdate1(map.tiles->btdata->palette);
 	//printf("	%d\n", sizeof(ptmp->data));
 	//printf("1:	%d\n", paloffset);
 //++++	map.tiles->data->offset=(paloffset/3);
@@ -168,7 +165,7 @@ void main(int argc, char *argv[])
 	/* setup camera and screen~ */
 	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
 	gvar.video.page[0].width += (TILEWH*2);
-	gvar.video.page[0].height += (TILEWH*2);//+QUADWH;
+	gvar.video.page[0].height += (TILEWH*2);
 	mv[0].page = &gvar.video.page[0];
 	gvar.video.page[1] = modexNextPage(mv[0].page);
 	mv[1].page = &gvar.video.page[1];
@@ -178,51 +175,25 @@ void main(int argc, char *argv[])
 	mv[2].page = &gvar.video.page[2];
 
 	/* set up paging */
-	bg = &mv[0];
-	spri = &mv[1];
-	mask = &mv[2];
-//IN_Ack();
 //TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
-	mapGoTo(bg, 0, 0);
-	mapGoTo(spri, 0, 0);
+	mapGoTo(&mv[0], 0, 0);
+	mapGoTo(&mv[1], 0, 0);
 	//mapGoTo(mask, 0, 0);
-//IN_Ack();
 	//TODO: put player in starting position of spot
 	//default player position on the viewable map
-	player[0].tx = bg->tx + bg->page->tilemidposscreenx;
-	player[0].ty = bg->ty + bg->page->tilemidposscreeny;
-	player[0].x = player[0].tx*TILEWH;
-	player[0].y = player[0].ty*TILEWH;
-	player[0].triggerx = player[0].tx;
-	player[0].triggery = player[0].ty+1;
-/*	player[0].info.x = player[0].tx;
-	player[0].info.xaxis = player[0].tx*TILEWH;
-	player[0].info.y = player[0].ty;
-	player[0].info.yaxis = player[0].ty*TILEWH;*/
-	player[0].q=1;
-	player[0].d=2;
-	player[0].hp=4;
-//	player[0].persist_aniframe=0;
-	//npc
-	/*npc0.tx = bg->tx + 1;
-	npc0.ty = bg->ty + 1;
-	npc0.x = npc0.tx*TILEWH;
-	npc0.y = npc0.ty*TILEWH;
-	npc0.triggerx = npc0.tx;
-	npc0.triggery = npc0.ty+1;
-	npc0.q=1;
-	npc0.d=0;
-	modexDrawSpriteRegion(spri->page, npc0.x-4, npc0.y-TILEWH, 24, 64, 24, 32, &npctmp);*/
+	player[0].tx = mv[0].tx + mv[0].page->tilemidposscreenx;
+	player[0].ty = mv[0].ty + mv[0].page->tilemidposscreeny;
+	IN_initplayer(&player, 0);
 
 	modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
 #ifndef	SPRITE
 	modexClearRegion(mv[1].page, player[0].x-4, player[0].y-TILEWH, 24, 32, 15);
 #else
-	//PBUFSFUN(spri->page, player[0].x-4, player[0].y-TILEWH, 24, 64, 24, 32,	PLAYERBMPDATA);
-	PBUFSFUN(spri->page, player[0].x-4, player[0].y-TILEWH, 24, 64, 24, 32,	&pp);
+	//PBUFSFUN(mv[1].page, player[0].x-4, player[0].y-TILEWH, 24, 64, 24, 32,	PLAYERBMPDATA);
+	PBUFSFUN(mv[1].page, player[0].x-4, player[0].y-TILEWH, 24, 64, 24, 32,	&pp);
 #endif
 
-	modexShowPage(spri->page);
+	modexShowPage(mv[1].page);
 	//modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 1);
 #ifdef MODEX
 #ifdef FADE
@@ -252,18 +223,18 @@ void main(int argc, char *argv[])
 				{
 					case 0:
 						//bg
-						bg->page->dx++;
-						modexShowPage(bg->page);
+						mv[0].page->dx++;
+						modexShowPage(mv[0].page);
 					break;
 					case 1:
 						//spri
-						spri->page->dx++;
-						modexShowPage(spri->page);
+						mv[1].page->dx++;
+						modexShowPage(mv[1].page);
 					break;
 					case 2:
 						//fg
-						mask->page->dx++;
-						modexShowPage(mask->page);
+						mv[2].page->dx++;
+						modexShowPage(mv[2].page);
 					break;
 				}
 				panq++;
@@ -279,18 +250,18 @@ void main(int argc, char *argv[])
 				{
 					case 0:
 						//bg
-						bg->page->dx--;
-						modexShowPage(bg->page);
+						mv[0].page->dx--;
+						modexShowPage(mv[0].page);
 					break;
 					case 1:
 						//spri
-						spri->page->dx--;
-						modexShowPage(spri->page);
+						mv[1].page->dx--;
+						modexShowPage(mv[1].page);
 					break;
 					case 2:
 						//fg
-						mask->page->dx--;
-						modexShowPage(mask->page);
+						mv[2].page->dx--;
+						modexShowPage(mv[2].page);
 					break;
 				}
 				panq++;
@@ -306,18 +277,18 @@ void main(int argc, char *argv[])
 				{
 					case 0:
 						//bg
-						bg->page->dy--;
-						modexShowPage(bg->page);
+						mv[0].page->dy--;
+						modexShowPage(mv[0].page);
 					break;
 					case 1:
 						//spri
-						spri->page->dy--;
-						modexShowPage(spri->page);
+						mv[1].page->dy--;
+						modexShowPage(mv[1].page);
 					break;
 					case 2:
 						//fg
-						mask->page->dy--;
-						modexShowPage(mask->page);
+						mv[2].page->dy--;
+						modexShowPage(mv[2].page);
 					break;
 				}
 				panq++;
@@ -333,18 +304,18 @@ void main(int argc, char *argv[])
 				{
 					case 0:
 						//bg
-						bg->page->dy++;
-						modexShowPage(bg->page);
+						mv[0].page->dy++;
+						modexShowPage(mv[0].page);
 					break;
 					case 1:
 						//spri
-						spri->page->dy++;
-						modexShowPage(spri->page);
+						mv[1].page->dy++;
+						modexShowPage(mv[1].page);
 					break;
 					case 2:
 						//fg
-						mask->page->dy++;
-						modexShowPage(mask->page);
+						mv[2].page->dy++;
+						modexShowPage(mv[2].page);
 					break;
 				}
 				panq++;
@@ -356,7 +327,7 @@ void main(int argc, char *argv[])
 	//the scripting stuf....
 
 	//if(((player[0].triggerx == TRIGGX && player[0].triggery == TRIGGY) && IN_KeyDown(0x1C))||(player[0].tx == 5 && player[0].ty == 5))
-	if(((bg->map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))] == 0) && IN_KeyDown(0x1C))||(player[0].tx == 5 && player[0].ty == 5))
+	if(((mv[0].map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))] == 0) && IN_KeyDown(0x1C))||(player[0].tx == 5 && player[0].ty == 5))
 	{
 		short i;
 		for(i=800; i>=400; i--)
@@ -368,19 +339,19 @@ void main(int argc, char *argv[])
 	if(player[0].q == (TILEWH/(player[0].speed))+1 && player[0].info.dir != 2 && (player[0].triggerx == 5 && player[0].triggery == 5)){ player[0].hp--; }
 	//debugging binds!
 	//if(IN_KeyDown(0x0E)) while(1){ if(xmsmalloc(24)) break; }
-	if(IN_KeyDown(2)){ modexShowPage(bg->page); panpagenum=0; }
-	if(IN_KeyDown(3)){ modexShowPage(spri->page); panpagenum=1; }
-	if(IN_KeyDown(4)){ modexShowPage(mask->page); panpagenum=2; }
-	if(IN_KeyDown(25)){ pdump(bg->page); pdump(spri->page); }	//p
+	if(IN_KeyDown(2)){ modexShowPage(mv[0].page); panpagenum=0; }
+	if(IN_KeyDown(3)){ modexShowPage(mv[1].page); panpagenum=1; }
+	if(IN_KeyDown(4)){ modexShowPage(mv[2].page); panpagenum=2; }
+	if(IN_KeyDown(25)){ modexpdump(mv[0].page); modexpdump(mv[1].page); }	//p
 #ifdef MODEX
 #ifdef FADE
-	if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; pdump(bg->page); pdump(spri->page); }
+	if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv[0].page); modexpdump(mv[1].page); }
 	if(IN_KeyDown(22)){
 	paloffset=0; modexPalBlack(); modexPalUpdate(&player[0].data, &paloffset, 0, 0);
 	printf("1paloffset	=	%d\n", paloffset/3);
 	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	printf("2paloffset	=	%d\n", paloffset/3);
-	 pdump(bg->page); pdump(spri->page); }
+	 modexpdump(mv[0].page); modexpdump(mv[1].page); }
 #endif
 #endif
 	//pan switch
@@ -436,8 +407,8 @@ void main(int argc, char *argv[])
 	IN_Shutdown();
 	printf("Project 16 scroll.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
-	printf("tx: %d\n", bg->tx);
-	printf("ty: %d\n", bg->ty);
+	printf("tx: %d\n", mv[0].tx);
+	printf("ty: %d\n", mv[0].ty);
 	printf("player[0].x: %d", player[0].x); printf("		player[0].y: %d\n", player[0].y);
 	//if(player[0].hp==0) printf("%d wwww\n", player[0].y+8);
 	//else printf("\nplayer[0].y: %d\n", player[0].y);
@@ -445,7 +416,7 @@ void main(int argc, char *argv[])
 	printf("player[0].triggx: %d", player[0].triggerx); printf("	player[0].triggy: %d\n", player[0].triggery);
 	printf("player[0].hp: %d", (player[0].hp));	printf("	player[0].q: %d", player[0].q);	printf("	player[0].info.dir: %d", player[0].info.dir);	printf("	player[0].d: %d\n", player[0].d);
 		printf("pdir=%d\n", player[0].pdir);
-	printf("tile data value at player trigger position: %d\n", bg->map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))]);
+	printf("tile data value at player trigger position: %d\n", mv[0].map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))]);
 //	printf("palette offset:	%d\n", paloffset/3);
 //++++	printf("Total used: %zu\n", oldfreemem-GetFreeSize());
 //++++	printf("Total free: %zu\n", GetFreeSize());
@@ -460,7 +431,7 @@ void main(int argc, char *argv[])
 //	printf("\n");
 //	printf("player[0].info.x: %d", player[0].info.xaxis); printf("		player[0].info.y: %d\n", player[0].info.yaxis);
 //	printf("player[0].info.tx: %d", player[0].info.x); printf("		player[0].info.ty: %d\n", player[0].info.y);
-	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", bg->map->width, bg->map->height, bg->map->data[0]);
+	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[0].map->width, mv[0].map->height, mv[0].map->data[0]);
 
 	switch(detectcpu())
 	{
