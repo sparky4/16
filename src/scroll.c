@@ -145,7 +145,7 @@ void main(int argc, char *argv[])
 //++++	player[0].data.offset=(paloffset/3);
 //++++	modexPalUpdate1(&player[0].data, &paloffset, 0, 0);
 		//modexPalUpdate1(p.palette);
-		modexPalUpdate1(map.tiles->btdata->palette);
+//++++0000		modexPalUpdate1(map.tiles->btdata->palette);
 	//printf("	%d\n", sizeof(ptmp->data));
 	//printf("1:	%d\n", paloffset);
 //++++	map.tiles->data->offset=(paloffset/3);
@@ -165,7 +165,7 @@ void main(int argc, char *argv[])
 	/* setup camera and screen~ */
 	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
 	gvar.video.page[0].width += (TILEWH*2);
-	gvar.video.page[0].height += (TILEWH*2);//+QUADWH;
+	gvar.video.page[0].height += (TILEWH*2);
 	mv[0].page = &gvar.video.page[0];
 	gvar.video.page[1] = modexNextPage(mv[0].page);
 	mv[1].page = &gvar.video.page[1];
@@ -179,22 +179,11 @@ void main(int argc, char *argv[])
 	mapGoTo(&mv[0], 0, 0);
 	mapGoTo(&mv[1], 0, 0);
 	//mapGoTo(mask, 0, 0);
-//IN_Ack();
 	//TODO: put player in starting position of spot
 	//default player position on the viewable map
 	player[0].tx = mv[0].tx + mv[0].page->tilemidposscreenx;
 	player[0].ty = mv[0].ty + mv[0].page->tilemidposscreeny;
 	IN_initplayer(&player, 0);
-	//npc
-	/*npc0.tx = mv[0].tx + 1;
-	npc0.ty = mv[0].ty + 1;
-	npc0.x = npc0.tx*TILEWH;
-	npc0.y = npc0.ty*TILEWH;
-	npc0.triggerx = npc0.tx;
-	npc0.triggery = npc0.ty+1;
-	npc0.q=1;
-	npc0.d=0;
-	modexDrawSpriteRegion(mv[1].page, npc0.x-4, npc0.y-TILEWH, 24, 64, 24, 32, &npctmp);*/
 
 	modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
 #ifndef	SPRITE
