@@ -103,9 +103,10 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 // 	}
 	/* setup camera and screen~ */
 	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
-	//gvar.video.page[0].width += (16*2);
-	//gvar.video.page[0].height += (16*2);
-//++++	modexShowPage(&gvar.video.page[0]);
+	gvar.video.page[0].width += (16*2);
+	gvar.video.page[0].height += (16*2);
+	modexShowPage(&gvar.video.page[0]);
+	vga_state.vga_stride=gvar.video.page[0].width/4;
 	//modexprint(16, 16, 1, 15, "wwww");
 	//getch();
 //	chx=0;
@@ -147,4 +148,5 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 	printf("\n%s\n", rose);
 	//printf("\nh=%d\n", '8');
 //	printf("\n%c\n", e);
+	printf("vga_state.vga_stride=%d\n", vga_state.vga_stride);
 }
