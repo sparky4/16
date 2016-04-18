@@ -116,8 +116,9 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 			cm.vsync_neg = 1;
 			cm.hsync_neg = 1;
 
-			cm.scan_double=1;		/* CRTC[0x09] bit 7 */
-			cm.max_scanline=0;		/* CRTC[0x09] bit 4-0 */
+			cm.scanline_div2=1;	/* CRTC[0x17] bit 2 */
+			cm.scan_double=0;		/* CRTC[0x09] bit 7 */
+			cm.max_scanline=4;		/* CRTC[0x09] bit 4-0 */
 			break;
 		case 2: // TODO: 160x120 according to ModeX_160x120regs
 			return;
