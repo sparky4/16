@@ -435,13 +435,13 @@ modexDrawSpritePBufRegion(page_t *page, int x, int y,
     }
 }
 
-void modexDrawCharPBuf(page_t *page, int x/*for planar selection only*/, int y/*redundant, remove*/, word t, word col, word bgcol, word addr)
+void modexDrawChar(page_t *page, int x/*for planar selection only*/, word t, word col, word bgcol, word addr)
 {
 	/* vertical drawing routine by joncampbell123.
 	 *
 	 * optimize for VGA mode X planar memory to minimize the number of times we do I/O write to map mask register.
 	 * so, we enumerate over columns (not rows!) to draw every 4th pixel. bit masks are used because of the font bitmap.
-	 * 
+	 *
 	 * NTS: addr defines what VGA memory address we use, "x" is redundant except to specify which of the 4 pixels we select in the map mask register. */
 	word drawaddr;
 	word colm, row;

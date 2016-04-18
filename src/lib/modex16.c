@@ -918,7 +918,7 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 		JNZ L1
 	}
 //TODO: OPTIMIZE THIS!!!!
-		modexDrawCharPBuf(page, x/*for mode X planar use*/, y/*redunant, remove*/, t, col, bgcol, addrq);
+		modexDrawChar(page, x/*for mode X planar use*/, t, col, bgcol, addrq);
 		addrq += 2; /* move 8 pixels over (2 x 4 planar pixels per byte) */
 
 		//if(!q) getch();
