@@ -91,19 +91,18 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 		return;
 	}
 	VGAmodeX(1, 1, &gvar);
-	//int10_setmode(19);
-	__asm{
-		mov	AH,12H
-		mov	BL,30h
-		mov	AL,04h
-		int 10
-		mov	ax,1123h
-		int	10h
-		;mov	ax,1112h                ; load 8x8 character set into RAM
-		;int	10h
-	}
+// 	__asm{
+// 		mov	AH,12H
+// 		mov	BL,30h
+// 		mov	AL,04h
+// 		int 10
+// 		mov	ax,1123h
+// 		int	10h
+// 		;mov	ax,1112h                ; load 8x8 character set into RAM
+// 		;int	10h
+// 	}
 	/* setup camera and screen~ */
-//..	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
+	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
 	//gvar.video.page[0].width += (16*2);
 	//gvar.video.page[0].height += (16*2);
 //++++	modexShowPage(&gvar.video.page[0]);
