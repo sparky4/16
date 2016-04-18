@@ -496,6 +496,7 @@ reinitlibs: .symbolic
 	@wmake -h initlibs
 
 initlibs: .symbolic
+	@cp git_con.fig .git/config
 	@cp git_modu.les .gitmodules
 	@cd $(SRCLIB)
 	@git clone https://github.com/joncampbell123/doslib.git
