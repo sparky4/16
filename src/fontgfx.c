@@ -34,7 +34,6 @@ global_game_variables_t gvar;
 
 void main(int argc, char near *argv[])
 {
-	struct vga_mode_params cm;
 	//JMOJI
 	static byte e;
 	//word ri;
@@ -96,7 +95,6 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 	gvar.video.page[0].width += (16*2);
 	gvar.video.page[0].height += (16*2);
 	modexShowPage(&gvar.video.page[0]);
-	vga_read_crtc_mode(&cm);
 	// NTS: We're in Mode-X now. printf() is useless. Do not use printf(). Or INT 10h text printing. Or DOS console output.
 	//modexprint(16, 16, 1, 15, "wwww");
 	//getch();
@@ -119,10 +117,12 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 		}
 		sprintf(pee, "%zc", e);
 		modexprint(&gvar.video.page[0], chx, chy, 1, 0, colpee, &e);
-		chx+=9;
+		chx+=8;
 		colpee++;
 		if(colpee>=32+24) colpee=32;
 	}
+	getch();
+	modexprint(&gvar.video.page[0], 0, 0, 1, 0, colpee, &rose);
 	getch();
 	//modexprint(100, 100, 1, 47, 0, "wwww");
 //	modexprint(0, 0, 1, 0, colpee, &rose);
@@ -136,6 +136,4 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 	printf("\n%s\n", rose);
 	//printf("\nh=%d\n", '8');
 //	printf("\n%c\n", e);
-	printf("cm.offset=%d\n", cm.offset);
-	printf("vga_state.vga_stride=%d\n", vga_state.vga_stride);
 }
