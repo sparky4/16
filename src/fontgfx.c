@@ -142,13 +142,13 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 //	modexprintbig(&gvar.video.page[0], 0, 0, 1, colpee, 0, "IBM");
 //	modexprint(0, 0, 1, 0, colpee, ROSE);
 //++++	getch();
+	vga_read_crtc_mode(&cm);
 	VGAmodeX(0, 1, &gvar);
 //	rosa=malloc(sizeof(ROSE));
 //	(*rosa)=(byte)ROSE;
 	printf("\n%s\n", rose);
 	//printf("\nh=%d\n", '8');
 //	printf("\n%c\n", e);
-	vga_read_crtc_mode(&cm);
 	printf("cm.offset=%d\n", cm.offset);
 	printf("vga_state.vga_stride=%d\n", vga_state.vga_stride);
 }
