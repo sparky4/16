@@ -594,15 +594,14 @@ void shinku(map_view_t *pip, global_game_variables_t *gv)
 	if(elapsed_timer(gv) >= (1.0 / gv->kurokku.frames_per_second))
 	{
 		word x = (16);
-		word y = (8+16);
-		word col = 15;
+		word y = (16);
+		word col = 1;
 		word bgcol = 0;
 		word type = 1;
 		//t=(((*(gv->clock))-gv->clock_start) /18.2);
 		sprintf(gv->pee, "%f fps", (double)gv->kurokku.tiku/ticktock(gv));
-		printf("%s", gv->pee);
 		//FIXME PLEASE!!
-		modexprint(pip[1].page, 16, 16, 1, 15, 0, gv->pee);
+		//modexprint(pip[0].page, x*4, y*4, type, col, bgcol, gv->pee);
 		//(gv->clock_start)=*(gv->clock);
 		gv->kurokku.tiku=0;
 	}
