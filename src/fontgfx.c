@@ -106,7 +106,7 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
 	gvar.video.page[0].width += (16*2);
 	gvar.video.page[0].height += (16*2);
-	//modexShowPage(&gvar.video.page[0]);
+	modexShowPage(&gvar.video.page[0]);
 	//modexprint(16, 16, 1, 15, "wwww");
 	//getch();
 //	chx=0;
