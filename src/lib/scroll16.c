@@ -602,7 +602,7 @@ void shinku(map_view_t *pip, global_game_variables_t *gv)
 		sprintf(gv->pee, "%f fps", (double)gv->kurokku.tiku/ticktock(gv));
 		printf("%s", gv->pee);
 		//FIXME PLEASE!!
-		//:modexprint(pip[1].page, 16, 16, 1, 15, 0, gv->pee);
+		modexprint(pip[1].page, 16, 16, 1, 15, 0, gv->pee);
 		//(gv->clock_start)=*(gv->clock);
 		gv->kurokku.tiku=0;
 	}
