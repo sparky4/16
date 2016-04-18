@@ -34,6 +34,7 @@ global_game_variables_t gvar;
 
 void main(int argc, char near *argv[])
 {
+	struct vga_mode_params cm;
 	//JMOJI
 	static byte e;
 	//word ri;
@@ -106,7 +107,6 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 	gvar.video.page[0].width += (16*2);
 	gvar.video.page[0].height += (16*2);
 	modexShowPage(&gvar.video.page[0]);
-	vga_state.vga_stride=gvar.video.page[0].width/4;
 	//modexprint(16, 16, 1, 15, "wwww");
 	//getch();
 //	chx=0;
@@ -148,5 +148,7 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 	printf("\n%s\n", rose);
 	//printf("\nh=%d\n", '8');
 //	printf("\n%c\n", e);
+	vga_read_crtc_mode(&cm);
+	printf("cm.offset=%d\n", cm.offset);
 	printf("vga_state.vga_stride=%d\n", vga_state.vga_stride);
 }

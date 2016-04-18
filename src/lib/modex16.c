@@ -115,6 +115,8 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 			cm.clock_select = 0; /* misc register = 0xE3  25MHz */
 			cm.vsync_neg = 1;
 			cm.hsync_neg = 1;
+			vga_state.vga_stride=88;
+			cm.offset=88;
 			break;
 		case 2: // TODO: 160x120 according to ModeX_160x120regs
 			return;
