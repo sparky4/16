@@ -67,8 +67,7 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 ,'___...---~~~\n\
 ";
 //	static byte *rosa;
-	static word chx, chy, colpee;
-	static word z;
+	static word chx, chy, colpee, addr;
 	textInit();
 
 	// DOSLIB: check our environment
@@ -92,50 +91,38 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 		return;
 	}
 	VGAmodeX(1, 1, &gvar);
-// 	__asm{
-// 		mov	AH,12H
-// 		mov	BL,30h
-// 		mov	AL,04h
-// 		int 10
-// 		mov	ax,1123h
-// 		int	10h
-// 		;mov	ax,1112h                ; load 8x8 character set into RAM
-// 		;int	10h
-// 	}
 	/* setup camera and screen~ */
 	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
 	gvar.video.page[0].width += (16*2);
 	gvar.video.page[0].height += (16*2);
 	modexShowPage(&gvar.video.page[0]);
+	addr = (gvar.video.page[0].width/4) * chy + (chx / 4) + ((word)gvar.video.page[0].data); /* at start of function */
 	vga_read_crtc_mode(&cm);
 	// NTS: We're in Mode-X now. printf() is useless. Do not use printf(). Or INT 10h text printing. Or DOS console output.
 	//modexprint(16, 16, 1, 15, "wwww");
 	//getch();
 	chx=0;
 	chy=0;
-//	colpee=32;
+	colpee=32;
 //	bios_cls();
 	/* position the cursor to home */
 //	vga_moveto(0,0);
 //	vga_sync_bios_cursor();
-	for(e=0x00, z=0; e<=0xFE; e++, z++)
+	for(e=0x00; e<=0xFE; e++)
 	{
-		//if(chx+8>(gvar.video.page[0].width/2))
-		if((z)+1>16)
+		if(chx+8>(gvar.video.page[0].width/2))
 		{
 			chx=0;
 			chy+=8;
 			sprintf(pee,"%u", colpee);
-			modexprint(&gvar.video.page[0], 200, 200, 1, 47, 0, &pee, 1);
-			z=0;
-//			printf("\n");
+			modexprint(&gvar.video.page[0], 200, 200, 1, 47, 0, &pee, addr, 1);
 			//getch();
 		}
 		sprintf(pee, "%zc", e);
-		modexprint(&gvar.video.page[0], chx, chy, 1, 0, colpee, &e, 1);
+		modexprint(&gvar.video.page[0], chx, chy, 1, 0, colpee, &e, addr, 1);
 		chx+=9;
 		colpee++;
-//		if(colpee>=32+24) colpee=32;
+		if(colpee>=32+24) colpee=32;
 	}
 	getch();
 	//modexprint(100, 100, 1, 47, 0, "wwww");

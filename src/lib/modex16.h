@@ -82,6 +82,32 @@ typedef union
 	byte blue;
 } rgb_t;
 
+/* -======================= Constants & Vars ==========================- */
+extern byte far*  VGA;  /* The VGA Memory */
+#define SCREEN_SEG		0xa000
+#define VIDEO_INT		0x10
+#define SET_MODE		0x00
+#define VGA_256_COLOR_MODE 	0x13
+#define TEXT_MODE		0x03
+
+#define AC_INDEX		0x03c0
+#define SC_INDEX		0x03c4
+#define SC_DATA			0x03c5
+#define CRTC_INDEX		0x03d4
+#define CRTC_DATA		0x03d5
+#define GC_INDEX		0x03ce
+#define MISC_OUTPUT		0x03c2
+#define HIGH_ADDRESS 		0x0C
+#define LOW_ADDRESS		0x0D
+#define VRETRACE		0x08
+//#define INPUT_STATUS_1		0x03da	defined in 16_head
+#define DISPLAY_ENABLE		0x01
+#define MAP_MASK		0x02
+#define PAL_READ_REG			0x03C7   /* Color register, read address */
+#define PAL_WRITE_REG		   0x03C8   /* Color register, write address */
+#define PAL_DATA_REG			0x03C9   /* Color register, data port */
+#define PAL_SIZE				(256 * 3)
+
 /* -============================ Functions =============================- */
 /* mode switching, page, and plane functions */
 void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv);
@@ -123,37 +149,34 @@ void modexPalOverscan(byte *p, word col);
 void modexchkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, word *offset*/);
 void modexputPixel(page_t *page, int x, int y, byte color);
 byte modexgetPixel(page_t *page, int x, int y);
-void modexhlin(page_t *page, word xl, word xh, word y, word color);
-void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str, boolean q);
+static inline void modexwritepixel(page_t *page, int x, int y, word addr, byte color)
+{
+	/* Each address accesses four neighboring pixels, so set
+	   Write Plane Enable according to which pixel we want
+	   to modify.  The plane is determined by the two least
+	   significant bits of the x-coordinate: */
+	modexSelectPlane(PLANE(x));
+	//outp(SC_INDEX, 0x02);
+	//outp(SC_DATA, 0x01 << (x & 3));
+
+	/* The offset of the pixel into the video segment is
+	   offset = (width * y + x) / 4, and write the given
+	   color to the plane we selected above.  Heed the active
+	   page start selection. */
+	vga_state.vga_graphics_ram[addr] = color;
+}
+static inline byte modexreadPixel(page_t *page, int x, int y, word addr)
+{
+	/* Select the plane from which we must read the pixel color: */
+	outpw(GC_INDEX, 0x04);
+	outpw(GC_INDEX+1, x & 3);
+	return vga_state.vga_graphics_ram[addr];
+}
+void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str, word addrq, boolean q);
 void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
 void modexpdump(page_t *pee);
 void modexcls(page_t *page, byte color, byte *Where);
 //void modexWaitBorder();
 void bios_cls();
 
-/* -======================= Constants & Vars ==========================- */
-extern byte far*  VGA;  /* The VGA Memory */
-#define SCREEN_SEG		0xa000
-#define VIDEO_INT		0x10
-#define SET_MODE		0x00
-#define VGA_256_COLOR_MODE 	0x13
-#define TEXT_MODE		0x03
-
-#define AC_INDEX		0x03c0
-#define SC_INDEX		0x03c4
-#define SC_DATA			0x03c5
-#define CRTC_INDEX		0x03d4
-#define CRTC_DATA		0x03d5
-#define GC_INDEX		0x03ce
-#define MISC_OUTPUT		0x03c2
-#define HIGH_ADDRESS 		0x0C
-#define LOW_ADDRESS		0x0D
-#define VRETRACE		0x08
-//#define INPUT_STATUS_1		0x03da	defined in 16_head
-#define DISPLAY_ENABLE		0x01
-#define MAP_MASK		0x02
-#define PAL_READ_REG			0x03C7   /* Color register, read address */
-#define PAL_WRITE_REG		   0x03C8   /* Color register, write address */
-#define PAL_DATA_REG			0x03C9   /* Color register, data port */
-#define PAL_SIZE				(256 * 3)
 #endif

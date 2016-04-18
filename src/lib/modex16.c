@@ -873,20 +873,7 @@ byte modexgetPixel(page_t *page, int x, int y)
 
 }
 
-void modexhlin(page_t *page, word xl, word xh, word y, word color)
-{
-	word x;
-	word yy=0;
-
-	for(x=0;x<xh*4;x+=4)
-	{
-		if(x+4>=page[0].sw-1){ x=0; yy+=4; }
-		modexClearRegion(page, x+xl, y+yy, 4, 4, color);
-	}
-	//modexputPixel(page, x+xl, y, color);
-}
-
-void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str, boolean q)
+void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str, word addrq, boolean q)
 {
 	word s, o, w;
 	word addr = (word) romFontsData.l;
@@ -926,7 +913,7 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 		JNZ L1
 	}
 //TODO: OPTIMIZE THIS!!!!
-		modexDrawCharPBuf(page, x, y, t, col, bgcol, q);
+		modexDrawCharPBuf(page, x, y, t, col, bgcol, addrq, q);
 
 		//if(!q) getch();
 	}
