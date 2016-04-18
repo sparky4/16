@@ -17,7 +17,7 @@ makefile~
 README~
 TODO~
 LICENCE~
-*.map
+#*.map
 #*.MAP
 !modex.lib
 img
