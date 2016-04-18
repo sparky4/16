@@ -172,7 +172,7 @@ static inline byte modexreadPixel(page_t *page, int x, int y, word addr)
 	outpw(GC_INDEX+1, x & 3);
 	return vga_state.vga_graphics_ram[addr];
 }
-void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str, word addrq, boolean q);
+void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
 void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
 void modexpdump(page_t *pee);
 void modexcls(page_t *page, byte color, byte *Where);

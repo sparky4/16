@@ -96,7 +96,6 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 	gvar.video.page[0].width += (16*2);
 	gvar.video.page[0].height += (16*2);
 	modexShowPage(&gvar.video.page[0]);
-	addr = (gvar.video.page[0].width/4) * chy + (chx / 4) + ((word)gvar.video.page[0].data); /* at start of function */
 	vga_read_crtc_mode(&cm);
 	// NTS: We're in Mode-X now. printf() is useless. Do not use printf(). Or INT 10h text printing. Or DOS console output.
 	//modexprint(16, 16, 1, 15, "wwww");
@@ -115,11 +114,11 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 			chx=0;
 			chy+=8;
 			sprintf(pee,"%u", colpee);
-			modexprint(&gvar.video.page[0], 200, 200, 1, 47, 0, &pee, addr, 1);
+			modexprint(&gvar.video.page[0], 200, 200, 1, 47, 0, &pee);
 			//getch();
 		}
 		sprintf(pee, "%zc", e);
-		modexprint(&gvar.video.page[0], chx, chy, 1, 0, colpee, &e, addr, 1);
+		modexprint(&gvar.video.page[0], chx, chy, 1, 0, colpee, &e);
 		chx+=9;
 		colpee++;
 		if(colpee>=32+24) colpee=32;

@@ -239,7 +239,7 @@ void ding(page_t *page, bakapee_t *pee, word q)
 		break;
 		case 8:
 			colorz(page, pee);
-			modexprint(page, page->sw/2, page->sh/2, 1, 47, 0, "bakapi", (page[0].width/4) * pee->yy + (pee->xx / 4) + ((word)page[0].data), 1);
+			modexprint(page, page->sw/2, page->sh/2, 1, 47, 0, "bakapi");
 		break;
 		case 9:
 			if(pee->coor <= HGQ)
