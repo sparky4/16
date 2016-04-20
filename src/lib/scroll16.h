@@ -37,7 +37,6 @@
 #include <hw/dos/dos.h>
 #include <hw/vga/vga.h>
 #include <hw/vga/vrl.h>
-#include <hw/vga/vgatty.h>
 
 //#define SPRITE
 //#define TILERENDER
@@ -79,7 +78,7 @@ void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *p, word p
 void mapDrawWRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 //void qclean();
-void shinku(map_view_t *pip, global_game_variables_t *gv);
+void shinku(global_game_variables_t *gv);
 void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch);
 
 #endif /*__SCROLL16_H_*/

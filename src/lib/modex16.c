@@ -920,7 +920,6 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 		DEC CX
 		JNZ L1
 	}
-//TODO: OPTIMIZE THIS!!!!
 		modexDrawChar(page, x_draw/*for mode X planar use*/, t, col, bgcol, addrr);
 		x_draw += 8; /* track X for edge of screen */
 		addrr += 2; /* move 8 pixels over (2 x 4 planar pixels per byte) */
@@ -1032,7 +1031,7 @@ void modexcls(page_t *page, byte color, byte *Where)
 	_fmemset(Where, color, page->width*(page->height)/4);
 }
 
-/*void
+void
 modexWaitBorder() {
     while(inp(INPUT_STATUS_1)  & 8)  {
 	// spin
@@ -1041,7 +1040,7 @@ modexWaitBorder() {
     while(!(inp(INPUT_STATUS_1)  & 8))  {
 	// spin
     }
-}*/
+}
 
 void bios_cls() {
 	VGA_ALPHA_PTR ap;

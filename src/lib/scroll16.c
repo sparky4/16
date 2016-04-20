@@ -587,9 +587,8 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 }*/
 
 /*	sync	*/
-void shinku(map_view_t *pip, global_game_variables_t *gv)
+void shinku(global_game_variables_t *gv)
 {
-	//float t;
 	//modexCopyPageRegion(pip[1].page, pip[2].page, 16, 16, 16, 16, (14*8)+4, 8+4);
 	if(elapsed_timer(gv) >= (1.0 / gv->kurokku.frames_per_second))
 	{
@@ -600,8 +599,10 @@ void shinku(map_view_t *pip, global_game_variables_t *gv)
 		word type = 1;
 		//t=(((*(gv->clock))-gv->clock_start) /18.2);
 		sprintf(gv->pee, "%f fps", (double)gv->kurokku.tiku/ticktock(gv));
+		printf("%s\n", gv->pee);
 		//FIXME PLEASE!!
-		//modexprint(pip[0].page, x*4, y*4, type, col, bgcol, gv->pee);
+		modexprint(&(gv->video.page[0]), 200, 200, type, col, bgcol, gv->pee);
+//++++	modexprint(&(gv->video.page[0]), x, y, type, col, bgcol, gv->pee);
 		//(gv->clock_start)=*(gv->clock);
 		gv->kurokku.tiku=0;
 	}
@@ -615,8 +616,8 @@ void shinku(map_view_t *pip, global_game_variables_t *gv)
 		break;
 		case 1:
 			//turn this off if XT
-			//modexWaitBorder();
-			vga_wait_for_vsync();
+			modexWaitBorder();
+			//vga_wait_for_vsync();
 			gv->kurokku.frames_per_second=60;
 		break;
 	}

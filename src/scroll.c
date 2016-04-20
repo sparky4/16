@@ -202,7 +202,7 @@ void main(int argc, char *argv[])
 #endif
 	while(!IN_KeyDown(sc_Escape) && player[0].hp>0)
 	{
-		shinku(mv, &gvar);
+		shinku(&gvar);
 		IN_ReadControl(0,&player);
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
