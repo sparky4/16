@@ -122,7 +122,7 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 		if(colpee>=32+24) colpee=32;
 	}
 	getch();
-	modexprint(&gvar.video.page[0], 0, 0, 1, 0, colpee, &rose);
+	modexprint(&gvar.video.page[0], gvar.video.page[0].width - (8*16)/*HACK: The rose ASCII is too wide for 320x240 so offset it to make sure the petals are visible*/, 8, 1, 32, 0, &rose);
 	getch();
 	//modexprint(100, 100, 1, 47, 0, "wwww");
 //	modexprint(0, 0, 1, 0, colpee, &rose);

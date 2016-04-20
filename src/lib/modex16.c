@@ -880,8 +880,10 @@ byte modexgetPixel(page_t *page, int x, int y)
 void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str)
 {
 	word s, o, w;
+	word x_draw = x;
 	word addr = (word) romFontsData.l;
 	word addrq = (page->width/4) * y + (x / 4) + ((word)page->data);
+	word addrr = addrq;
 	byte c;
 
 	s=romFonts[t].seg;
@@ -892,12 +894,13 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 	for(; *str != '\0'; str++)
 	{
 	c = (*str);
-	if((c=='\n'/* || c=="\
-"*/) || romFontsData.chw
->=page->width)
+	if(c=='\n')
 	{
-		romFontsData.chw=0;
-		y+=romFonts[t].charSize;
+		x = x_draw;
+		romFontsData.chw = 0;
+		addrq += (page->width / 4) * 8;
+		addrr = addrq;
+		y += 8;
 		continue;
 	}
 	//load the letter 'A'
@@ -918,10 +921,9 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 		JNZ L1
 	}
 //TODO: OPTIMIZE THIS!!!!
-		modexDrawChar(page, x/*for mode X planar use*/, t, col, bgcol, addrq);
-		addrq += 2; /* move 8 pixels over (2 x 4 planar pixels per byte) */
-
-		//if(!q) getch();
+		modexDrawChar(page, x_draw/*for mode X planar use*/, t, col, bgcol, addrr);
+		x_draw += 8; /* track X for edge of screen */
+		addrr += 2; /* move 8 pixels over (2 x 4 planar pixels per byte) */
 	}
 }
 
