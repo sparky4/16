@@ -586,14 +586,16 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 	//setkb(0);
 }*/
 
+unsigned char shinku_fps_indicator_page = 0;
+
 /*	sync	*/
 void shinku(global_game_variables_t *gv)
 {
 	//modexCopyPageRegion(pip[1].page, pip[2].page, 16, 16, 16, 16, (14*8)+4, 8+4);
 	if(elapsed_timer(gv) >= (1.0 / gv->kurokku.frames_per_second))
 	{
-		word x = (16);
-		word y = (16);
+		word x = (16) + gv->video.page[shinku_fps_indicator_page].dx; // follow the screen
+		word y = (16) + gv->video.page[shinku_fps_indicator_page].dy; // follow the screen
 		word col = 7;
 		word bgcol = 0;
 		word type = 0;
@@ -602,7 +604,7 @@ void shinku(global_game_variables_t *gv)
 		sprintf(gv->pee, "%f fps", (double)gv->kurokku.tiku/ticktock(gv));
 //		printf("%s\n", gv->pee);
 		//FIXME PLEASE!!
-		modexprint(&(gv->video.page[0]), x, y, type, col, bgcol, gv->pee);
+		modexprint(&(gv->video.page[shinku_fps_indicator_page]), x, y, type, col, bgcol, gv->pee);
 //++++	modexprint(&(gv->video.page[0]), x, y, type, col, bgcol, gv->pee);
 		//(gv->clock_start)=*(gv->clock);
 		gv->kurokku.tiku=0;

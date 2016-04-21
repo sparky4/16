@@ -81,4 +81,6 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 void shinku(global_game_variables_t *gv);
 void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch);
 
+extern unsigned char shinku_fps_indicator_page;
+
 #endif /*__SCROLL16_H_*/
