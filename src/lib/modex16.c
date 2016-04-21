@@ -95,6 +95,9 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 			/* width and height */
 			gv->video.page[0].sw = vga_state.vga_width = 320; // VGA lib currently does not update this
 			gv->video.page[0].sh = vga_state.vga_height = 240; // VGA lib currently does not update this
+			/* virtual width and height. match screen, at first */
+			gv->video.page[0].height = gv->video.page[0].sh;
+			gv->video.page[0].width = gv->video.page[0].sw;
 
 			// mode X BYTE mode
 			cm.word_mode = 0;
@@ -907,7 +910,7 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 	// load the character into romFontsData.l
 	// no need for inline assembly!
 	// NTS: It might even be faster to just let the modexDrawChar point directly at ROM font than to copy per char! --J.C.
-		_fmemcpy(romFontsData.l,MK_FP(s,o)/*ROM font location*/,w/*char size*/);
+		_fmemcpy(romFontsData.l,MK_FP(s,o+(w*c))/*ROM font location*/,w/*char size*/);
 		modexDrawChar(page, x_draw/*for mode X planar use*/, t, col, bgcol, addrr);
 		x_draw += 8; /* track X for edge of screen */
 		addrr += 2; /* move 8 pixels over (2 x 4 planar pixels per byte) */

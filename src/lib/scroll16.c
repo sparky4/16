@@ -594,14 +594,15 @@ void shinku(global_game_variables_t *gv)
 	{
 		word x = (16);
 		word y = (16);
-		word col = 1;
+		word col = 7;
 		word bgcol = 0;
-		word type = 1;
+		word type = 0;
+
 		//t=(((*(gv->clock))-gv->clock_start) /18.2);
 		sprintf(gv->pee, "%f fps", (double)gv->kurokku.tiku/ticktock(gv));
-		printf("%s\n", gv->pee);
+//		printf("%s\n", gv->pee);
 		//FIXME PLEASE!!
-		modexprint(&(gv->video.page[0]), 200, 200, type, col, bgcol, gv->pee);
+		modexprint(&(gv->video.page[0]), x, y, type, col, bgcol, gv->pee);
 //++++	modexprint(&(gv->video.page[0]), x, y, type, col, bgcol, gv->pee);
 		//(gv->clock_start)=*(gv->clock);
 		gv->kurokku.tiku=0;
