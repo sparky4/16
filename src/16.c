@@ -55,7 +55,7 @@ main(int argc, char *argv[])
 
 	//screen = modexDefaultPage();
 	engi_stat = ENGI_RUN;
-	//textInit();
+	textInit();
 
 	/* save the palette */
 	dpal = modexNewPal();
