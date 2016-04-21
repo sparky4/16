@@ -95,6 +95,9 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 			/* width and height */
 			gv->video.page[0].sw = vga_state.vga_width = 320; // VGA lib currently does not update this
 			gv->video.page[0].sh = vga_state.vga_height = 240; // VGA lib currently does not update this
+			/* virtual width and height. match screen, at first */
+			gv->video.page[0].height = gv->video.page[0].sh;
+			gv->video.page[0].width = gv->video.page[0].sw;
 
 			// mode X BYTE mode
 			cm.word_mode = 0;
@@ -880,8 +883,10 @@ byte modexgetPixel(page_t *page, int x, int y)
 void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str)
 {
 	word s, o, w;
+	word x_draw = x;
 	word addr = (word) romFontsData.l;
 	word addrq = (page->width/4) * y + (x / 4) + ((word)page->data);
+	word addrr = addrq;
 	byte c;
 
 	s=romFonts[t].seg;
@@ -892,36 +897,23 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 	for(; *str != '\0'; str++)
 	{
 	c = (*str);
-	if((c=='\n'/* || c=="\
-"*/) || romFontsData.chw
->=page->width)
+	if(c=='\n')
 	{
-		romFontsData.chw=0;
-		y+=romFonts[t].charSize;
+		x = x_draw;
+		romFontsData.chw = 0;
+		addrq += (page->width / 4) * 8;
+		addrr = addrq;
+		y += 8;
 		continue;
 	}
-	//load the letter 'A'
-	__asm {
-		MOV DI, addr
-		MOV SI, o
-		MOV ES, s
-		SUB AH, AH
-		MOV AL, c	; the letter
-		MOV CX, w
-		MUL CX
-		ADD SI, AX	;the address of charcter
-	L1:	MOV AX, ES:SI
-		MOV DS:DI, AX
-		INC SI
-		INC DI
-		DEC CX
-		JNZ L1
-	}
-//TODO: OPTIMIZE THIS!!!!
-		modexDrawCharPBuf(page, x/*for mode X planar use*/, y/*redunant, remove*/, t, col, bgcol, addrq);
-		addrq += 2; /* move 8 pixels over (2 x 4 planar pixels per byte) */
 
-		//if(!q) getch();
+	// load the character into romFontsData.l
+	// no need for inline assembly!
+	// NTS: It might even be faster to just let the modexDrawChar point directly at ROM font than to copy per char! --J.C.
+		_fmemcpy(romFontsData.l,MK_FP(s,o+(w*c))/*ROM font location*/,w/*char size*/);
+		modexDrawChar(page, x_draw/*for mode X planar use*/, t, col, bgcol, addrr);
+		x_draw += 8; /* track X for edge of screen */
+		addrr += 2; /* move 8 pixels over (2 x 4 planar pixels per byte) */
 	}
 }
 
@@ -1030,7 +1022,7 @@ void modexcls(page_t *page, byte color, byte *Where)
 	_fmemset(Where, color, page->width*(page->height)/4);
 }
 
-/*void
+void
 modexWaitBorder() {
     while(inp(INPUT_STATUS_1)  & 8)  {
 	// spin
@@ -1039,7 +1031,7 @@ modexWaitBorder() {
     while(!(inp(INPUT_STATUS_1)  & 8))  {
 	// spin
     }
-}*/
+}
 
 void bios_cls() {
 	VGA_ALPHA_PTR ap;

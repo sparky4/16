@@ -180,7 +180,7 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
 void modexpdump(page_t *pee);
 void modexcls(page_t *page, byte color, byte *Where);
-//void modexWaitBorder();
+void modexWaitBorder();
 void bios_cls();
 
 #endif

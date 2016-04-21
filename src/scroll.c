@@ -134,7 +134,7 @@ void main(int argc, char *argv[])
 	modexFadeOff(4, dpal);
 #endif
 
-	//textInit();
+	textInit();
 	VGAmodeX(bakapee, 1, &gvar);
 //	printf("%dx%d\n", gvar.video.page[0].sw, gvar.video.page[0].sh);
 #ifdef FADE
@@ -194,6 +194,7 @@ void main(int argc, char *argv[])
 #endif
 
 	modexShowPage(mv[1].page);
+	shinku_fps_indicator_page = 1; // we're on page 1 now, shinku(). follow along please or it will not be visible.
 	//modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 1);
 #ifdef MODEX
 #ifdef FADE
@@ -202,7 +203,7 @@ void main(int argc, char *argv[])
 #endif
 	while(!IN_KeyDown(sc_Escape) && player[0].hp>0)
 	{
-		shinku(mv, &gvar);
+		shinku(&gvar);
 		IN_ReadControl(0,&player);
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction

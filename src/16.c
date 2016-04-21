@@ -55,26 +55,28 @@ main(int argc, char *argv[])
 
 	//screen = modexDefaultPage();
 	engi_stat = ENGI_RUN;
-	//textInit();
+	textInit();
 
 	/* save the palette */
 	dpal = modexNewPal();
 	modexPalSave(dpal);
-	modexFadeOff(4, dpal);
+//	modexFadeOff(4, dpal);
 	//printf("pal load\n");
 	//gpal = modexNewPal();
 	/*modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);*/
-	printf("wwww loop wwww\n");
+//0000	printf("wwww loop wwww\n");
 	VGAmodeX(1, 1, &gvar);
-	modexPalBlack();	//so player will not see loadings~
+//	modexPalBlack();	//so player will not see loadings~
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
 	//modexprint(&screen, 32, 32, 1, 2, 0, "a", 1);
+	start_timer(&gvar);
 	while(ENGI_EXIT != engi_stat)
 	{
 		IN_ReadControl(0,&player);
 		if(IN_KeyDown(sc_Escape)) engi_stat = ENGI_EXIT;
+		shinku(&gvar);
 	}
 	switch(detectcpu())
 	{
@@ -88,5 +90,5 @@ main(int argc, char *argv[])
 	printf("version %s\n", VERSION);
 	printf("detected CPU type: %s\n", cpus);
 	IN_Shutdown();
-	modexFadeOn(4, dpal);
+//	modexFadeOn(4, dpal);
 }
