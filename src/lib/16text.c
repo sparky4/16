@@ -31,6 +31,8 @@ static void getRomFontAddr(char fontNum, int index) {
     word fontOff;
 
     __asm {
+	        PUSH AX
+	        PUSH BX
 		PUSH BP
 		MOV AX, 0x1130		;I can haz font info plz?
 		MOV BH, fontNum         ;  where ur fontNum
@@ -40,6 +42,8 @@ static void getRomFontAddr(char fontNum, int index) {
 		POP BP			;u can haz ur frame back!
 		MOV fontSeg, AX		;Storage
 		MOV fontOff, BX		;Storage
+		POP BX
+		POP AX
     }
     romFonts[index].seg = fontSeg;
     romFonts[index].off = fontOff;
