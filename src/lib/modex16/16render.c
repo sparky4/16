@@ -443,6 +443,7 @@ void modexDrawChar(page_t *page, int x/*for planar selection only*/, word t, wor
 	 * so, we enumerate over columns (not rows!) to draw every 4th pixel. bit masks are used because of the font bitmap.
 	 *
 	 * NTS: addr defines what VGA memory address we use, "x" is redundant except to specify which of the 4 pixels we select in the map mask register. */
+	word rows = romFonts[t].charSize;
 	word drawaddr;
 	word colm, row;
 	byte fontbyte;
@@ -455,7 +456,7 @@ void modexDrawChar(page_t *page, int x/*for planar selection only*/, word t, wor
 	for (colm=0;colm < 4;colm++) {
 		drawaddr = addr;
 		modexSelectPlane(PLANE(plane));
-		for (row=0;row < 8;row++) {
+		for (row=0;row < rows;row++) {
 			fontbyte = romFontsData.l[row];
 			vga_state.vga_graphics_ram[drawaddr  ] = (fontbyte & m1) ? col : bgcol;
 			vga_state.vga_graphics_ram[drawaddr+1] = (fontbyte & m2) ? col : bgcol;
