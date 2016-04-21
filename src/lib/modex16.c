@@ -903,23 +903,11 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 		y += 8;
 		continue;
 	}
-	//load the letter 'A'
-	__asm {
-		MOV DI, addr
-		MOV SI, o
-		MOV ES, s
-		SUB AH, AH
-		MOV AL, c	; the letter
-		MOV CX, w
-		MUL CX
-		ADD SI, AX	;the address of charcter
-	L1:	MOV AX, ES:SI
-		MOV DS:DI, AX
-		INC SI
-		INC DI
-		DEC CX
-		JNZ L1
-	}
+
+	// load the character into romFontsData.l
+	// no need for inline assembly!
+	// NTS: It might even be faster to just let the modexDrawChar point directly at ROM font than to copy per char! --J.C.
+		_fmemcpy(romFontsData.l,MK_FP(s,o)/*ROM font location*/,w/*char size*/);
 		modexDrawChar(page, x_draw/*for mode X planar use*/, t, col, bgcol, addrr);
 		x_draw += 8; /* track X for edge of screen */
 		addrr += 2; /* move 8 pixels over (2 x 4 planar pixels per byte) */
