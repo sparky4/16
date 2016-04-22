@@ -240,9 +240,10 @@ void modexHiganbanaPageSetup(video_t *video)
 	(video->page[0]) = modexDefaultPage(&(video->page[0]));	video->num_of_pages++;
 	video->page[0].width += (TILEWH*2); video->page[0].height += (TILEWH*2);
 	(video->page[1]) = modexNextPage(&(video->page[0]));	video->num_of_pages++;
+	(video->page[2]) = modexNextPage(&(video->page[1]));	video->num_of_pages++;
+	//(352*176)+1024 is the remaining amount of memory left wwww
 	modexCalcVmemRemain(video);
-	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), video->page[0].sw, video->page[0].sh);	//(352*176)+1024 is the remaining amount of memory left wwww
-	video->num_of_pages++;
+	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), video->page[0].sw, 92);	video->num_of_pages++;
 	modexCalcVmemRemain(video);
 	//gvar.video.page[2] = modexNextPage0(mv2.page, 320, 192);	//(352*176)+1024 is the remaining amount of memory left wwww
 }

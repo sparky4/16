@@ -337,6 +337,7 @@ void main(int argc, char *argv[])
 	if(IN_KeyDown(2)){ modexShowPage(mv[0].page); panpagenum=0; }
 	if(IN_KeyDown(3)){ modexShowPage(mv[1].page); panpagenum=1; }
 	if(IN_KeyDown(4)){ modexShowPage(mv[2].page); panpagenum=2; }
+	if(IN_KeyDown(5)){ modexShowPage(&(gvar.video.page[3])); panpagenum=3; }
 	if(IN_KeyDown(25)){ modexpdump(mv[0].page); modexpdump(mv[1].page); }	//p
 #ifdef MODEX
 #ifdef FADE
@@ -421,6 +422,7 @@ void main(int argc, char *argv[])
 	printf("Screen: %dx", gvar.video.page[0].sw);	printf("%d\n", gvar.video.page[0].sh);
 	printf("tile resolution: %dx", gvar.video.page[0].tilesh);	printf("%d\n", gvar.video.page[0].tilesh);
 	printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);
+	printf("video memory remaining: %d\n", gvar.video.vmem_remain);
 //	printf("Screen2: %dx", gvar.video.page[1].width);	printf("%d\n", gvar.video.page[1].height);
 //	printf("map: %dx%d\n", map.width, map.height);
 //	printf("\n");
@@ -428,6 +430,7 @@ void main(int argc, char *argv[])
 //	printf("player[0].info.tx: %d", player[0].info.x); printf("		player[0].info.ty: %d\n", player[0].info.y);
 	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[0].map->width, mv[0].map->height, mv[0].map->data[0]);
 
+	printf("\n");
 	switch(detectcpu())
 	{
 		case 0: cpus = "8086/8088 or 186/88"; break;
