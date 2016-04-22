@@ -592,6 +592,9 @@ unsigned char shinku_fps_indicator_page = 0;
 void shinku(global_game_variables_t *gv)
 {
 	//modexCopyPageRegion(pip[1].page, pip[2].page, 16, 16, 16, 16, (14*8)+4, 8+4);
+// 	vga_setup_wm1_block_copy();
+// 	vga_wm1_mem_block_copy(gv->video.page[3],gv->video.page[shinku_fps_indicator_page], 2);
+// 	vga_restore_rm0wm0();
 	if(elapsed_timer(gv) >= (1.0 / gv->kurokku.frames_per_second))
 	{
 		word x = (0) + gv->video.page[shinku_fps_indicator_page].dx; // follow the screen
