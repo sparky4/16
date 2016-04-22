@@ -604,14 +604,13 @@ void shinku(global_game_variables_t *gv)
 	for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += vga_state.vga_stride) vga_wm1_mem_block_copy(o2,o,w >> 2);
 	/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
 	vga_restore_rm0wm0();
-// 	vga_wm1_mem_block_copy(gv->video.page[3],gv->video.page[shinku_fps_indicator_page], 2);
 	if(elapsed_timer(gv) >= (1.0 / gv->kurokku.frames_per_second))
 	{
 		word col = 7;
 		word bgcol = 0;
 		word type = 1;
 		sprintf(gv->pee, "%f	fps", (double)gv->kurokku.tiku/ticktock(gv));
-		modexClearRegion(&(gv->video.page[shinku_fps_indicator_page]), x, y, w, h, 45);
+		//modexClearRegion(&(gv->video.page[shinku_fps_indicator_page]), x, y, w, h, 45);
 		modexprint(&(gv->video.page[shinku_fps_indicator_page]), x, y, type, col, bgcol, gv->pee);
 		gv->kurokku.tiku=0;
 	}
