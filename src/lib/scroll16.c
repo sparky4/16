@@ -593,8 +593,11 @@ void shinku(global_game_variables_t *gv)
 {
 	word x = (0) + gv->video.page[shinku_fps_indicator_page].dx; // follow the screen
 	word y = (0) + gv->video.page[shinku_fps_indicator_page].dy; // follow the screen
-	word w = 88;
+	word w = 64;
 	word h = 8;
+	word col = 7;
+	word bgcol = 0;
+	word type = 1;
 	byte o,o2,i;
 	//modexCopyPageRegion(pip[1].page, pip[2].page, 16, 16, 16, 16, (14*8)+4, 8+4);
 	/* block copy to visible RAM from offscreen */
@@ -606,14 +609,11 @@ void shinku(global_game_variables_t *gv)
 	vga_restore_rm0wm0();
 	if(elapsed_timer(gv) >= (1.0 / gv->kurokku.frames_per_second))
 	{
-		word col = 7;
-		word bgcol = 0;
-		word type = 1;
-		sprintf(gv->pee, "%f	fps", (double)gv->kurokku.tiku/ticktock(gv));
+		sprintf(gv->pee, "%.0f fps", (double)gv->kurokku.tiku/ticktock(gv));
 		//modexClearRegion(&(gv->video.page[shinku_fps_indicator_page]), x, y, w, h, 45);
 		modexprint(&(gv->video.page[shinku_fps_indicator_page]), x, y, type, col, bgcol, gv->pee);
 		gv->kurokku.tiku=0;
-	}
+	}else //copy dat sheet
 	gv->kurokku.tiku++;
 	switch(gv->kurokku.fpscap)
 	{
