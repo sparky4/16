@@ -379,7 +379,7 @@ void main(int argc, char *argv[])
 				gvar.kurokku.fpscap=0;
 			break;
 		}
-		IN_Ack();
+		//IN_Ack();
 	}
 	//TODO fmemtest into page
 	if(IN_KeyDown(4+1))	//4
