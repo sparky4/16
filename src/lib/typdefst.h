@@ -80,6 +80,7 @@ typedef struct {
 	sword tilemidposscreeny;	/* middle tile position */
 	sword tileplayerposscreenx;	/* player position on screen */
 	sword tileplayerposscreeny;	/* player position on screen */
+	iword pagesize;			/* page size */
 } page_t;
 
 typedef struct
@@ -101,8 +102,10 @@ typedef struct
 
 typedef struct
 {
-	long old_mode;	//old video mode before game!
-	page_t page[4];	//pointer to root page[0]
+	char old_mode;		//old video mode before game!
+	page_t page[4];		//pointer to root page[0]
+	dword	vmem_remain;	//remaining video memory
+	byte num_of_pages;	//number of actual pages
 } video_t;
 
 typedef struct

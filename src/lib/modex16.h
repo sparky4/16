@@ -118,6 +118,8 @@ void modexsetBaseXMode();
 page_t modexDefaultPage(page_t *p);
 page_t modexNextPage(page_t *p);
 page_t modexNextPageFlexibleSize(page_t *p, word x, word y);
+void modexCalcVmemRemain(video_t *video);
+void modexHiganbanaPageSetup(video_t *video);
 void modexShowPage(page_t *page);
 void modexPanPage(page_t *page, int dx, int dy);
 void modexSelectPlane(byte plane);

@@ -163,15 +163,9 @@ void main(int argc, char *argv[])
 #endif
 
 	/* setup camera and screen~ */
-	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
-	gvar.video.page[0].width += (TILEWH*2);
-	gvar.video.page[0].height += (TILEWH*2);
+	modexHiganbanaPageSetup(&gvar.video);
 	mv[0].page = &gvar.video.page[0];
-	gvar.video.page[1] = modexNextPage(mv[0].page);
 	mv[1].page = &gvar.video.page[1];
-
-	gvar.video.page[2] = modexNextPageFlexibleSize(mv[1].page, gvar.video.page[0].sw, gvar.video.page[0].sh);	//(352*176)+1024 is the remaining amount of memory left wwww
-	//gvar.video.page[2] = modexNextPage0(mv2.page, 320, 192);	//(352*176)+1024 is the remaining amount of memory left wwww
 	mv[2].page = &gvar.video.page[2];
 
 	/* set up paging */

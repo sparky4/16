@@ -153,12 +153,11 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 	//TODO MAKE FLEXIBLE~
 	gv->video.page[0].tilemidposscreenx = gv->video.page[0].tilesw;
 	gv->video.page[0].tilemidposscreeny = (gv->video.page[0].tilesh/2)+1;
-	#define PAGE_SIZE		(word)(gv->video.page[0].sw/4 * gv->video.page[0].sh)
 }
 
 void
 modexLeave() {
-	/* TODO restore original mode and palette */
+	/* VGAmodeX restores original mode and palette */
 	vgaSetMode(TEXT_MODE);
 }
 
@@ -181,7 +180,7 @@ modexDefaultPage(page_t *p)
 	page.tilemidposscreeny = (page.th/2)+1;
 	page.tilesw=p->tilesw;
 	page.tilesh=p->tilesh;
-	//pageSize = p->sw*p->sh;
+	page.pagesize = page.width*page.height;
 	page.id = 0;
 
     return page;
@@ -202,9 +201,9 @@ modexNextPage(page_t *p) {
 	result.tw = p->width/TILEWH;
 	result.th = p->height/TILEWH;
 	result.id = p->id+1;
+	result.pagesize = p->pagesize;
 
 	return result;
-// 	return modexNextPageFlexibleSize(&p, p->width, p->height);
 }
 
 //next page with defined dimentions~
@@ -221,11 +220,32 @@ modexNextPageFlexibleSize(page_t *p, word x, word y)
 	result.tw = p->width/TILEWH;
 	result.th = p->height/TILEWH;
 	result.id = p->id+1;
+	result.pagesize = result.width*result.height;
 
 	return result;
 }
 
+void modexCalcVmemRemain(video_t *video)
+{
+	byte i;
+	video->vmem_remain=262144;
+	for(i=0; i<=video->num_of_pages; i++)
+	{
+		video->vmem_remain-=video->page[i].pagesize;
+	}
+}
 
+void modexHiganbanaPageSetup(video_t *video)
+{
+	(video->page[0]) = modexDefaultPage(&(video->page[0]));	video->num_of_pages++;
+	video->page[0].width += (TILEWH*2); video->page[0].height += (TILEWH*2);
+	(video->page[1]) = modexNextPage(&(video->page[0]));	video->num_of_pages++;
+	modexCalcVmemRemain(video);
+	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), video->page[0].sw, video->page[0].sh);	//(352*176)+1024 is the remaining amount of memory left wwww
+	video->num_of_pages++;
+	modexCalcVmemRemain(video);
+	//gvar.video.page[2] = modexNextPage0(mv2.page, 320, 192);	//(352*176)+1024 is the remaining amount of memory left wwww
+}
 void
 modexShowPage(page_t *page) {
     word high_address;
