@@ -619,7 +619,7 @@ void shinku(global_game_variables_t *gv)
 	switch(gv->kurokku.fpscap)
 	{
 		case 0:
-			//modexprint(page, 16, 32, 1, 15, 0, "sanic!");
+			modexprint(&(gv->video.page[shinku_fps_indicator_page]), x, y+8, type, col, bgcol, "sanic!");
 			gv->kurokku.frames_per_second=1;
 		break;
 		case 1:
