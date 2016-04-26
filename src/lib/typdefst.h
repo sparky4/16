@@ -106,6 +106,7 @@ typedef struct
 	page_t page[4];		//pointer to root page[0]
 	dword	vmem_remain;	//remaining video memory
 	byte num_of_pages;	//number of actual pages
+	boolean p;			//render page number
 } video_t;
 
 typedef struct

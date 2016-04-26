@@ -587,6 +587,7 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 }*/
 
 unsigned char shinku_fps_indicator_page = 0;
+//gv->video.p
 
 /*	sync	*/
 void shinku(global_game_variables_t *gv)
