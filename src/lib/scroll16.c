@@ -604,7 +604,7 @@ void shinku(global_game_variables_t *gv)
 	/* block copy to visible RAM from offscreen */
 	vga_setup_wm1_block_copy();
 	o =	*(gv->video.page[2].data); // source offscreen
-	o2 =	*(gv->video.page[2].data)+(y * vga_state.vga_stride) + (x >> 2); // dest visible (original stride)
+	o2 =	*(gv->video.page[shinku_fps_indicator_page].data)+(y * vga_state.vga_stride) + (x >> 2); // dest visible (original stride)
 	for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += vga_state.vga_stride) vga_wm1_mem_block_copy(o2,o,w >> 2);
 	/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
 	vga_restore_rm0wm0();
@@ -614,8 +614,16 @@ void shinku(global_game_variables_t *gv)
 		//modexClearRegion(&(gv->video.page[shinku_fps_indicator_page]), x, y, w, h, 45);
 		modexprint(&(gv->video.page[shinku_fps_indicator_page]), x, y, type, col, bgcol, gv->pee);
 		gv->kurokku.tiku=0;
+		/* block copy to visible RAM from offscreen */
+		vga_setup_wm1_block_copy();
+		o =	*(gv->video.page[shinku_fps_indicator_page].data); // source offscreen
+		o2 =	*(gv->video.page[2].data)+(y * vga_state.vga_stride) + (x >> 2); // dest visible (original stride)
+		for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += vga_state.vga_stride) vga_wm1_mem_block_copy(o2,o,w >> 2);
+		/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
+		vga_restore_rm0wm0();
 	}else //copy dat sheet
 	gv->kurokku.tiku++;
+
 	switch(gv->kurokku.fpscap)
 	{
 		case 0:
@@ -629,6 +637,7 @@ void shinku(global_game_variables_t *gv)
 			gv->kurokku.frames_per_second=60;
 		break;
 	}
+	gv->video.p=!gv->video.p;
 }
 
 void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch)
