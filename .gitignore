@@ -17,8 +17,9 @@ makefile~
 README~
 TODO~
 LICENCE~
-*.max
-*.MAX
+*.mah
+*.MAH
+!makefile
 !modex.lib
 img
 !.git/config
