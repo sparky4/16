@@ -1,0 +1,719 @@
+Open Watcom Linker Version 2.0 beta Jan 20 2016 10:21:07 (32-bit)
+Copyright (c) 2002-2016 The Open Watcom Contributors. All Rights Reserved.
+Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
+Created on:       16/04/17 17:29:16
+Executable Image: fontgfx.exe
+creating a DOS executable
+
+
+                        +------------+
+                        |   Groups   |
+                        +------------+
+
+Group                           Address              Size
+=====                           =======              ====
+
+DGROUP                          1630:0000            0000a450
+
+
+
+                        +--------------+
+                        |   Segments   |
+                        +--------------+
+
+Segment                Class          Group          Address         Size
+=======                =====          =====          =======         ====
+
+fontgfx_TEXT           CODE           AUTO           0000:0000       00000128
+16_in_TEXT             CODE           AUTO           0000:0130       000024e0
+16_mm_TEXT             CODE           AUTO           0000:2610       000032fe
+wcpu_TEXT              CODE           AUTO           0000:5910       00000058
+16_head_TEXT           CODE           AUTO           0000:5970       0000044c
+16_ca_TEXT             CODE           AUTO           0000:5dc0       000003fd
+kitten_TEXT            CODE           AUTO           0000:61c0       0000080a
+16_hc_TEXT             CODE           AUTO           0000:69d0       0000158b
+16_timer_TEXT          CODE           AUTO           0000:7f60       00000402
+_TEXT                  CODE           AUTO           0837:0000       00009820
+modex16_TEXT           CODE           AUTO           0837:9820       00001d25
+vga_TEXT               CODE           AUTO           0837:b550       00000afc
+vgabicur_TEXT          CODE           AUTO           0837:c050       0000003f
+vgamodex_TEXT          CODE           AUTO           0837:c090       00000076
+vgacrtcr_TEXT          CODE           AUTO           0837:c110       00000817
+vgacrtcs_TEXT          CODE           AUTO           0837:c930       000006ec
+16text_TEXT            CODE           AUTO           0837:d020       0000010d
+16render_TEXT          CODE           AUTO           0837:d130       00000ca3
+16_in13_DATA           FAR_DATA       AUTO           1615:0000       000001a4
+FAR_DATA               FAR_DATA       AUTO           162f:0004       00000000
+_NULL                  BEGDATA        DGROUP         1630:0000       00000020
+_AFTERNULL             BEGDATA        DGROUP         1632:0000       00000002
+CONST                  DATA           DGROUP         1632:0002       00000076
+CONST2                 DATA           DGROUP         1639:0008       00000132
+_DATA                  DATA           DGROUP         164d:0000       00000abd
+XIB                    DATA           DGROUP         16f8:000e       00000000
+XI                     DATA           DGROUP         16f8:000e       0000003c
+XIE                    DATA           DGROUP         16fc:000a       00000000
+YIB                    DATA           DGROUP         16fc:000a       00000000
+YI                     DATA           DGROUP         16fc:000a       00000018
+YIE                    DATA           DGROUP         16fe:0002       00000000
+STRINGS                DATA           DGROUP         16fe:0002       00000000
+DATA                   DATA           DGROUP         16fe:0002       00000000
+_emu_init_start        EMU            DGROUP         16fe:0002       00000000
+_emu_init_end          EMU            DGROUP         16fe:0002       00000000
+_BSS                   BSS            DGROUP         16ff:0000       00001758
+STACK                  STACK          DGROUP         1875:0000       00008000
+
+
+                        +----------------+
+                        |   Memory Map   |
+                        +----------------+
+
+* = unreferenced symbol
++ = symbol only referenced locally
+
+Address        Symbol
+=======        ======
+
+Module: fontgfx.o(/dos/z/16/src/fontgfx.c)
+1630:0cf0+     _gvar
+0000:000a      main_
+Module: 16_in.o(/dos/z/16/src/lib/16_in.c)
+1630:0634+     _testkeyin
+1630:0636+     _testcontrolnoisy
+1630:0638+     _testctrltype
+0000:02ba+     INL_KeyService_
+0000:0556+     Mouse_
+0000:05ae+     IN_GetJoyAbs_
+0000:0958+     IN_GetJoyButtonsDB_
+0000:0bde+     IN_SetupJoy_
+0000:0da0*     IN_Startup_
+0000:0ea6*     IN_Default_
+0000:0fc2*     IN_Shutdown_
+0000:1042*     IN_SetKeyHook_
+0000:1064+     IN_ClearKeysDown_
+0000:1144*     IN_ReadCursor_
+0000:125c*     IN_ReadControl_
+0000:2034*     IN_SetControlType_
+0000:2082*     IN_GetScanName_
+0000:210a*     IN_WaitForKey_
+0000:2140*     IN_WaitForASCII_
+0000:2176+     IN_AckBack_
+0000:225e*     IN_Ack_
+0000:2300+     IN_IsUserInput_
+0000:23a6*     IN_UserInput_
+0000:23ea*     IN_KeyDown_
+0000:2432+     IN_ClearKey_
+0000:24aa*     IN_qb_
+0000:2504*     IN_initplayer_
+1630:0ebe+     _inpu
+Module: 16_mm.o(/dos/z/16/src/lib/16_mm.c)
+0000:2ff4+     MML_CheckForEMS_
+0000:3050+     MML_SetupEMS_
+0000:3208+     MML_ShutdownEMS_
+0000:3274+     MM_MapEMS_
+0000:3370*     MM_MapXEMS_
+0000:3490+     MML_CheckForXMS_
+0000:34ec*     MML_SetupXMS_
+0000:35d4+     MML_ShutdownXMS_
+0000:3662+     MML_UseSpace_
+0000:3840+     MML_ClearBlock_
+0000:38c4*     MM_Startup_
+0000:3cf6+     MM_Shutdown_
+0000:3d8c      MM_GetPtr_
+0000:417c+     MM_FreePtr_
+0000:4274*     MM_SetPurge_
+0000:434e*     MM_SetLock_
+0000:4426+     MM_SortMem_
+0000:4614*     MM_ShowMemory_
+0000:4cb4*     MM_DumpData_
+0000:4e0e+     MM_UnusedMemory_
+0000:4e92+     MM_TotalFree_
+0000:4f28*     MM_Report_
+0000:58e0*     MM_BombOnError_
+1630:1090+     _beforesort
+1630:1094+     _aftersort
+1630:1098+     _XMSaddr
+Module: wcpu.o(/dos/z/16/src/lib/wcpu/wcpu.c)
+0000:5910      detectcpu_
+Module: 16_head.o(/dos/z/16/src/lib/16_head.c)
+0000:597e*     wait_
+0000:59ca*     filesize_
+0000:5a30      printmeminfoline_
+0000:5c1c      US_CheckParm_
+0000:5d80      dirchar_
+Module: 16_ca.o(/dos/z/16/src/lib/16_ca.c)
+0000:5dee      CA_OpenDebug_
+0000:5e3e      CA_CloseDebug_
+0000:5e6c+     CA_FarRead_
+0000:5eec*     CA_FarWrite_
+0000:5f6c*     CA_ReadFile_
+0000:5fe8*     CA_LoadFile_
+0000:6090*     CAL_OptimizeNodes_
+0000:6140*     CA_Startup_
+0000:6190*     CA_Shutdown_
+1630:11a0*     _finishcachebox
+1630:11a4*     _drawcachebox
+1630:11a8*     _updatecachebox
+Module: kitten.o(/dos/z/16/src/lib/nyan/kitten.c)
+0000:61fc      KITTENGETS
+0000:625c*     kittenopen_
+0000:64aa+     catread_
+0000:655e*     kittenclose_
+0000:657a+     mystrtoul_
+0000:662e+     processEscChars_
+0000:67b4+     get_line_
+0000:6826+     db_fetch_
+0000:68bc+     db_insert_
+1630:0924+     __kitten_catalog
+Module: 16_hc.o(/dos/z/16/src/lib/16_hc.c)
+0000:6b7c+     LargestFreeBlock_
+0000:6c0a+     _coreleft_
+0000:6c86+     LargestFarFreeBlock_
+0000:6d3c+     _farcoreleft_
+0000:6dea+     LargestHugeFreeBlock_
+0000:6eda*     _hugecoreleft_
+0000:6faa+     GetFreeSize_
+0000:7004+     GetFarFreeSize_
+0000:704e+     GetNearFreeSize_
+0000:709c*     heapdump_
+0000:7d3e+     heapstat_
+0000:7e7c+     heapstat0_
+0000:7ede+     HC_OpenDebug_
+0000:7f2e*     HC_CloseDebug_
+Module: 16_timer.o(/dos/z/16/src/lib/16_timer.c)
+0000:7f6c*     start_timer_
+0000:8098*     elapsed_timer_
+0000:80ea+     ticktock_
+0000:8156*     time_in_seconds_
+0000:81a2*     shinkutxt_
+0000:833a+     WaitPee_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(stk086.asm)
+0837:0005      __STK
+0837:0025      __STKOVERFLOW_
+Module: gfx.lib(/dos/z/16/src/lib/modex16.c)
+0837:9990      VGAmodeX_
+0837:99fe*     vgaGetMode_
+0837:9a22+     modexEnter_
+0837:9c26*     modexLeave_
+0837:9c40      modexDefaultPage_
+0837:9d30*     modexNextPage_
+0837:9dfc*     modexNextPageFlexibleSize_
+0837:9eca*     modexShowPage_
+0837:9fc6*     modexPanPage_
+0837:a016      modexSelectPlane_
+0837:a03a+     modexClearRegion_
+0837:a152*     modexCopyPageRegion_
+0837:a2bc*     modexFadeOn_
+0837:a2ec*     modexFadeOff_
+0837:a31a*     modexFlashOn_
+0837:a348*     modexFlashOff_
+0837:a418+     modexPalSave_
+0837:a46e+     modexNewPal_
+0837:a4b2*     modexLoadPalFile_
+0837:a592*     modexSavePalFile_
+0837:a608*     modexPalBlack_
+0837:a632*     modexPalWhite_
+0837:a65c+     modexPalUpdate_
+0837:abca+     modexPalUpdate1_
+0837:ac42*     modexPalUpdate0_
+0837:ac8e*     modexPalOverscan_
+0837:acb0+     modexchkcolor_
+0837:afc8      modexputPixel_
+0837:b056*     modexgetPixel_
+0837:b0dc*     modexhlin_
+0837:b158*     modexprint_
+0837:b2f4*     modexprintbig_
+0837:b470*     modexpdump_
+0837:b4d0*     modexcls_
+1630:0954+     _VGA
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(pia.asm)
+0837:0049      __PIA
+0837:0042*     __PIS
+Module: gfx.lib(/dos/z/16/src/lib/doslib/hw/vga/vga.c)
+0837:b550+     vga_sync_hw_cursor_
+0837:b60e+     update_state_vga_memory_map_select_
+0837:b85c      update_state_from_vga_
+0837:bc40*     probe_vga_
+1630:1c34      _vga_state
+Module: gfx.lib(/dos/z/16/src/lib/doslib/hw/vga/vgabicur.c)
+0837:c050      vga_sync_bios_cursor_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(printf.c)
+0837:0060      printf_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(getch.c)
+0837:008f      getch_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(cstart)
+1630:0000*     __nullarea
+1630:0992*     __ovlflag
+1630:0993*     __intno
+1630:0994*     __ovlvec
+0837:00aa      _cstart_
+0837:017d*     _Not_Enough_Memory_
+0837:02af      __exit_
+0837:02cc      __do_exit_with_msg__
+0837:0325      __GETDS
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(cmodel.asm)
+0837:0330      _big_code_
+0837:0330*     CodeModelMismatch
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(argcv.c)
+1630:1c5c      __argv
+1630:1c60      ___argv
+1630:1c64      __argc
+1630:1c66      ___argc
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(intx086.c)
+0837:0330+     int86x_
+0837:04b3      int86_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(i4m.asm)
+0837:04e0      __I4M
+0837:04e0      __U4M
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(d_getvec.c)
+0837:04f8      _dos_getvect_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(d_setvec.c)
+0837:0503      _dos_setvect_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(i4d.asm)
+0837:0510      __I4D
+0837:055f      __U4D
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(heapgrow.c)
+0837:05e3*     _heapgrow_
+0837:05e3      _fheapgrow_
+0837:05e4      _nheapgrow_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(memavl.c)
+0837:065c      _memavl_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(nmalloc.c)
+0837:06a1      _nmalloc_
+1630:0998      ___nheapbeg
+1630:099a      ___MiniHeapRover
+1630:099c      ___LargestSizeB4MiniHeapRover
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fmalloc.c)
+0837:077b      _fmalloc_
+0837:077b      malloc_
+1630:099e      ___fheap
+1630:09a0      ___fheapRover
+1630:09a2      ___LargestSizeB4Rover
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ffree.c)
+0837:08f0      _ffree_
+0837:08f0      free_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(nfree.c)
+0837:095d      _nfree_
+1630:1c68+     ___MiniHeapFreeRover
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(exit.c)
+0837:0a58+     __null_int23_exit_
+0837:0a59      exit_
+0837:0a71*     _exit_
+1630:09a4+     ___int23_exit
+1630:09a8      ___FPE_handler_exit
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ptc.asm)
+0837:0a8c      __PTC
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ltoa.c)
+0837:0abf      ultoa_
+0837:0b7d*     ltoa_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(write.c)
+0837:0d03      write_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fopen.c)
+0837:0f2f+     __open_flags_
+0837:11f0+     _fsopen_
+0837:1256      fopen_
+0837:1379*     freopen_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fprintf.c)
+0837:1401      fprintf_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fclose.c)
+0837:1430      __doclose_
+0837:157a      __shutdown_stream_
+0837:1594      fclose_
+1630:1c6a+     ___RmTmpFileFn
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(clockdos.c)
+0837:1675      clock_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(kbhit.c)
+0837:169c      kbhit_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ftell.c)
+0837:16b3      ftell_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fseek.c)
+0837:1899      fseek_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(istable.c)
+1630:0098      __IsTable
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(tolower.c)
+0837:1a91      tolower_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(unlnk.c)
+0837:1a9f      unlink_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(open.c)
+0837:1ccf      open_
+0837:1d06      sopen_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(close.c)
+0837:1d33      close_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(filelen.c)
+0837:1d38      filelength_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(sprintf.c)
+0837:1d96      sprintf_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(getenv.c)
+0837:1dc5      getenv_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(pts.asm)
+0837:1eb0      __PTS
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(read.c)
+0837:1ee1      read_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(strdup.c)
+0837:201a*     __clib_strdup_
+0837:201a      strdup_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(haloc.c)
+0837:2081      halloc_
+0837:2166      hfree_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fheapwal.c)
+0837:216d      _heapwalk_
+0837:216d      _fheapwalk_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(nheapwal.c)
+0837:2182+     __NHeapWalk_
+0837:227b      _nheapwalk_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(stack086.c)
+0837:228b      stackavail_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(iob.c)
+1630:09b4      ___iob
+1630:1c72      ___OpenStreams
+1630:1c76      ___ClosedStreams
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fltused.c)
+1630:0b1c      _fltused_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(_8087086.asm)
+1630:0b1e      __8087
+1630:0b1f      __real87
+1630:0b20      __dos87emucall
+1630:0b22      __dos87real
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(xmsg.c)
+0837:229a*     __exit_with_msg_
+0837:229f      __fatal_runtime_error_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(crwdata)
+1630:0b24      __curbrk
+1630:0b2c      __STACKLOW
+1630:0b2e      __STACKTOP
+1630:0b30      __cbyte
+1630:0b32      __child
+1630:0b34      __no87
+1630:0b41      ___FPE_handler
+1630:0b26      __psp
+1630:0b35      __get_ovl_stack
+1630:0b39      __restore_ovl_stack
+1630:0b3d      __close_ovl_file
+1630:0b45      __LpCmdLine
+1630:0b49      __LpPgmName
+1630:0b28      __osmajor
+1630:0b29      __osminor
+1630:0b2a      __osmode
+1630:0b2b      __HShift
+Module: gfx.lib(/dos/z/16/src/lib/doslib/hw/vga/vgamodex.c)
+0837:c090      vga_enable_256color_modex_
+Module: gfx.lib(/dos/z/16/src/lib/doslib/hw/vga/vgacrtcr.c)
+0837:c110      vga_read_crtc_mode_
+Module: gfx.lib(/dos/z/16/src/lib/doslib/hw/vga/vgacrtcs.c)
+0837:c930      vga_write_crtc_mode_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fgetc.c)
+0837:22ba+     __fill_buffer_
+0837:2509      fgetc_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fwrite.c)
+0837:2650      fwrite_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(rand.c)
+0837:29d7      rand_
+0837:2a19*     srand_
+Module: gfx.lib(/dos/z/16/src/lib/16text.c)
+0837:d096*     textInit_
+1630:1c7a      _romFonts
+1630:1c92      _romFontsData
+Module: gfx.lib(/dos/z/16/src/lib/modex16/16render.c)
+0837:d136+     modexDrawPBufRegion_
+0837:d320*     modexDrawPBuf_
+0837:d388*     oldDrawBmp_
+0837:d4e2*     modexDrawBmp_
+0837:d548+     modexDrawBmpRegion_
+0837:d6b2*     modexDrawSprite_
+0837:d718+     modexDrawSpriteRegion_
+0837:d890*     modexDrawBmpPBuf_
+0837:d8f6+     modexDrawBmpPBufRegion_
+0837:da60*     modexDrawSpritePBuf_
+0837:dac6+     modexDrawSpritePBufRegion_
+0837:dc3e      modexDrawCharPBuf_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fprtf.c)
+0837:2a58      __fprtf_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(cmain086.c)
+0837:2bab      __CMain
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(initrtns.c)
+0837:2c0c      __InitRtns
+0837:2c0c*     __FInitRtns
+0837:2c67      __FiniRtns
+0837:2c67*     __FFiniRtns
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(uselfn.c)
+1630:0b64      ___uselfn
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(dosseg)
+0837:2ccc      __DOSseg__
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(initargv.c)
+0837:2ffb      __Init_Argv_
+0837:305d      __Fini_Argv_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(intr.c)
+0837:3087      intr_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(segread.c)
+0837:309b      segread_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(grownear.c)
+0837:3186      __LastFree_
+0837:3200      __ExpandDGROUP_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(nmemneed.c)
+0837:3311      __nmemneed_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mem.c)
+0837:3320      __MemAllocator
+0837:33ea      __MemFree
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(growseg.c)
+0837:3547      __GrowSeg_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(allocseg.c)
+0837:36bd      __AllocSeg_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fmemneed.c)
+0837:37ac      __fmemneed_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(alphabet.c)
+1630:0022      ___Alphabet
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(__lseek.c)
+0837:37af      __lseek_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(dosret.c)
+0837:37e9*     __dosretax
+0837:37ee*     __dosret0
+0837:37f5      __set_errno_dos_
+0837:385d*     __set_errno_dos_reterr_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(errno.c)
+0837:3868*     __get_errno_ptr_
+1630:2124      _errno
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(iomode.c)
+0837:386f      __GetIOMode_
+0837:38a4      __SetIOMode_nogrow_
+1630:0b7a      ___NFiles
+1630:0b7c      ___init_mode
+1630:0ba4      ___io_mode
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(comtflag.c)
+0837:38d9*     __set_commode_
+1630:0ba8      __commode
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(textmode.c)
+1630:0baa      __fmode
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(chktty.c)
+0837:38e5      __chktty_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(freefp.c)
+0837:3944      __freefp_
+0837:39e5      __purgefp_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(allocfp.c)
+0837:3a26      __allocfp_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(_clse.c)
+0837:3bd6      __close_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(flush.c)
+0837:3c0c      __flush_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fflush.c)
+0837:3e55      fflush_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(tell.c)
+0837:3e6a      tell_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(lseek.c)
+0837:3e7b      lseek_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(error086.asm)
+0837:3eac      __doserror_
+0837:3eba      __doserror1_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(opendos.c)
+0837:3ec6      _dos_open_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(isatt.c)
+0837:3eec      isatty_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(doserrno.c)
+0837:3f08*     __get_doserrno_ptr_
+1630:2126      __doserrno
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(umaskval.c)
+1630:0bac      ___umaskval
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(creatdos.c)
+0837:3f0f      _dos_creat_
+0837:3f33*     _dos_creatnew_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(stiomode.c)
+0837:3f54+     __grow_iomode_
+0837:403b+     __shrink_iomode_
+0837:407c      __SetIOMode_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(vsprintf.c)
+0837:413c      vsprintf_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(environ.c)
+1630:212a      ___env_mask
+1630:212e      _environ
+1630:2132*     __wenviron
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbterm.c)
+0837:417e      _mbterm_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbsnextc.c)
+0837:41d1      _mbsnextc_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbcupper.c)
+0837:422c      _mbctoupper_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbsinc.c)
+0837:424f      _mbsinc_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(iomodtty.c)
+0837:42a1      __ChkTTYIOMode_
+0837:430f*     __IOMode_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(heapwalk.c)
+0837:43e1      __HeapWalk_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(initfile.c)
+0837:4607      __InitFiles_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ioexit.c)
+0837:4838*     fcloseall_
+0837:483f      __full_io_exit_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(setefg.c)
+0837:4849      __setEFGfmt_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(chk8087.c)
+0837:4881*     _fpreset_
+0837:48ac      __init_8087_
+0837:492b      __chk8087_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(enterdb.c)
+0837:499b      __EnterWVIDEO_
+1630:0bcc+     ___WD_Present
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(flushall.c)
+0837:49bf      __flushall_
+0837:4a53      flushall_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(gtche.c)
+0837:4a59      getche_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ioalloc.c)
+0837:4a73      __ioalloc_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(qread.c)
+0837:4c01      __qread_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(qwrit.c)
+0837:4c21      __qwrite_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fputc.c)
+0837:4c81      fputc_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(prtf.c)
+0837:4e56      __prtf_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(___argc.c)
+1630:2136      ____Argv
+1630:213a      ____Argc
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(amblksiz.c)
+1630:0bce      __amblksiz
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(sgdef086)
+1630:0c8e      __Start_XI
+1630:0cca      __End_XI
+1630:0cca      __Start_YI
+1630:0ce2      __End_YI
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(histsplt.c)
+1630:213c      ___historical_splitparms
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(dointr)
+0837:5fb8      _DoINTR_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(heapen.c)
+0837:6331*     _heapenable_
+1630:0bd0      ___heap_enabled
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(sbrk086.c)
+0837:6342*     sbrk_
+0837:6352      __brk_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fsync.c)
+0837:63ba      fsync_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(frealloc.c)
+0837:63bf*     _frealloc_
+0837:63bf      realloc_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(setenvp.c)
+0837:64b9      __setenvp_
+0837:6645      __freeenvp_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbisdbcs.c)
+1630:0bd2      ___IsDBCS
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbislead.c)
+0837:66a3*     _ismbblead_
+1630:2142      ___MBCSIsTable
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbinit.c)
+0837:66fd      __mbinit_
+1630:0bd4      ___MBCodePage
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbdtoupp.c)
+0837:67d8      _mbdtoupper_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(toupper.c)
+0837:67e6      toupper_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(noefgfmt.c)
+1630:0bd6      ___EFG_printf
+1630:0bda      ___EFG_scanf
+Module: /dos/fdos/watcom2/lib286/math87h.lib(efgfmt.c)
+0837:6804      _EFG_Format_
+Module: /dos/fdos/watcom2/lib286/math87h.lib(cnvs2d.c)
+0837:69d6      __cnvs2d_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(8087cw.c)
+1630:0bde      __8087cw
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(save8087.c)
+1630:0be0      ___Save8087
+1630:0be4      ___Rest8087
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(grabfp87.c)
+0837:69f6      __GrabFP87_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ini87086.asm)
+0837:6a28*     __init_8087_emu
+0837:6a2e      __x87id
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(wctomb.c)
+0837:6a8b      wctomb_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(itoa.c)
+0837:6ad6+     utoa_
+0837:6b77      itoa_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(strupr.c)
+0837:6bc1      strupr_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(lltoa.c)
+0837:6bfd      ulltoa_
+0837:6d3a*     lltoa_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(filedos.c)
+0837:6dab*     _dos_close_
+0837:6db9      _dos_commit_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fmsize.c)
+0837:6dc8*     _msize_
+0837:6de3      _fmsize_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(nexpand.c)
+0837:6df4      __HeapManager_expand_
+0837:72fd      _nexpand_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fexpand.c)
+0837:7350      _fexpand_
+0837:7350*     _expand_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(clearenv.c)
+0837:7385      clearenv_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(rtcntrl.c)
+0837:74b6*     _SetLD64bit_
+0837:74c1*     _SetLD80bit_
+0837:74cc      _LDisDouble_
+Module: /dos/fdos/watcom2/lib286/math87h.lib(ldcvt.c)
+0837:7631      _LDScale10x_
+0837:7f09+     __cvtld_
+0837:86e5      __LDcvt_
+Module: /dos/fdos/watcom2/lib286/noemu87.lib(emustub.asm)
+0000:0000*     FJSRQQ
+0000:0000*     FISRQQ
+0000:0000*     FIERQQ
+0000:0000      FIDRQQ
+0000:0000      FIWRQQ
+0000:0000*     FJCRQQ
+0000:0000*     FJARQQ
+0000:0000*     FICRQQ
+0000:0000*     FIARQQ
+0837:86f6*     __init_87_emulator
+Module: /dos/fdos/watcom2/lib286/math87h.lib(strtod.c)
+0837:8f27+     __Strtold_
+0837:9166      strtod_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fpe87.asm)
+0837:930c      __Init_FPE_handler_
+0837:9345      __Fini_FPE_handler_
+0837:937c*     __FPEHandler
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(bfree.c)
+0837:960e      _bfree_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(bexpand.c)
+0837:9633      _bexpand_
+Module: /dos/fdos/watcom2/lib286/math87h.lib(ldclass.c)
+0837:968c      __LDClass_
+0837:9712*     _FLClass_
+Module: /dos/fdos/watcom2/lib286/math87h.lib(bufld086.asm)
+0837:9726      __ZBuf2LD
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(seterrno.c)
+0837:97ee*     __set_EDOM_
+0837:97fa      __set_ERANGE_
+0837:9806*     __set_EINVAL_
+Module: /dos/fdos/watcom2/lib286/math87h.lib(inf_nan.c)
+1630:019a*     ___f_infinity
+1630:019e*     ___f_posqnan
+1630:01a2      ___d_infinity
+1630:01aa      ___d_posqnan
+1630:01b2*     ___ld_infinity
+1630:01ba*     ___ld_posqnan
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(hugeval.c)
+1630:01c2      __HugeValue
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fpeint.c)
+1630:0c8c      ___FPE_int
+
+
+                        +--------------------+
+                        |   Libraries Used   |
+                        +--------------------+
+
+gfx.lib
+/dos/fdos/watcom2/lib286/noemu87.lib
+/dos/fdos/watcom2/lib286/math87h.lib
+/dos/fdos/watcom2/lib286/dos/clibh.lib
+
+
+                        +-----------------------+
+                        |   Linker Statistics   |
+                        +-----------------------+
+
+Stack size:  8000 (32768.)
+Memory size:  00020750 (132944.)
+Entry point address: 0837:00aa
+Link time: 00:00.10
