@@ -161,7 +161,7 @@ void main(int argc, char *argv[])
 
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
-	for(i=0;i<gvar.video.num_of_pages;i++)
+	for(i=0;i<gvar.video.num_of_pages-2;i++)
 	{
 		mv[i].page = &gvar.video.page[i];
 		mv[i].map = &map;
@@ -172,7 +172,6 @@ void main(int argc, char *argv[])
 //TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(&mv[0], 0, 0);
 	mapGoTo(&mv[1], 0, 0);
-	//mapGoTo(mask, 0, 0);
 	//TODO: put player in starting position of spot
 	//default player position on the viewable map
 	player[0].tx = mv[0].tx + mv[0].page->tilemidposscreenx;
@@ -337,8 +336,9 @@ void main(int argc, char *argv[])
 	if(IN_KeyDown(2)){ modexShowPage(mv[0].page); panpagenum=0; }
 	if(IN_KeyDown(3)){ modexShowPage(mv[1].page); panpagenum=1; }
 	if(IN_KeyDown(4)){ modexShowPage(mv[2].page); panpagenum=2; }
-	if(IN_KeyDown(5)){ modexShowPage(&(gvar.video.page[3])); panpagenum=3; }
-	if(IN_KeyDown(25)){ modexpdump(mv[0].page); modexpdump(mv[1].page); }	//p
+	if(IN_KeyDown(25)){ modexpdump(mv[0].page); modexpdump(mv[1].page);
+		//IN_Ack();
+	}	//p
 #ifdef MODEX
 #ifdef FADE
 	if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv[0].page); modexpdump(mv[1].page); }
@@ -356,6 +356,7 @@ void main(int argc, char *argv[])
 	if(IN_KeyDown(87))	//f11
 	{
 		pageflipflop=!pageflipflop;
+		//IN_Ack();
 // 		VGAmodeX(0, 0, &gvar);
 // 		IN_Shutdown();
 // 		__asm
@@ -415,11 +416,14 @@ void main(int argc, char *argv[])
 	printf("Screen: %dx", gvar.video.page[0].sw);	printf("%d\n", gvar.video.page[0].sh);
 	printf("tile resolution: %dx", gvar.video.page[0].tilesh);	printf("%d ", gvar.video.page[0].tilesh);
 	printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);
-	printf("video memory remaining: %d\n", gvar.video.vmem_remain);
+	printf("video memory remaining: %ld\n", gvar.video.vmem_remain);
 	printf("\npage ");
 	for(i=0; i<gvar.video.num_of_pages;i++)
 	{
-		printf("[%u]=(%Fp) ", i, &(gvar.video.page[i].data));
+		printf("[%u]=", i);
+		printf("(%Fp)\n", (gvar.video.page[i].data));
+		//printf("(%Fp)=", *(gvar.video.page[i].data));
+		//printf("(%Fp)\n", &(gvar.video.page[i].data));
 	}
 	printf("\n");
 //	printf("Screen2: %dx", gvar.video.page[1].width);	printf("%d\n", gvar.video.page[1].height);

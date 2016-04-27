@@ -25,7 +25,7 @@
 
 #include "src/lib/bakapee.h"
 
-//project 16 testing define switch for veiwing the contents of the video memory
+//project 16 testing define switch for veiwing the contents of the video memory --sparky4
 #define BOINK // what does this mean? --J.C.
 
 #endif /*__BAKAPI_H_*/
