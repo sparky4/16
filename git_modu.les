@@ -5,3 +5,11 @@
 [submodule "src/lib/jsmn"]
 	path = src/lib/jsmn
 	url = https://github.com/zserge/jsmn.git
+
+[submodule "CatacombApocalypse"]
+	path = 16/CatacombApocalypse
+	url = https://github.com/FlatRockSoft/CatacombApocalypse.git
+
+[submodule "wolf3d"]
+        path = 16/wolf3d
+        url = https://github.com/id-Software/wolf3d.git

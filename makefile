@@ -492,8 +492,8 @@ uplibs: .symbolic
 reinitlibs: .symbolic
 	@rm -rf $(SRCLIB)doslib
 	@rm -rf $(SRCLIB)jsmn
-	#@mkdir $(SRCLIB)doslib
-	#@mkdir $(SRCLIB)jsmn
+	@rm -rf 16/CatacombApocalypse
+	@rm -rf 16/wolf3d
 	@wmake -h initlibs
 
 initlibs: .symbolic
@@ -503,6 +503,10 @@ initlibs: .symbolic
 	@git clone https://github.com/joncampbell123/doslib.git
 	@git clone https://github.com/zserge/jsmn.git
 	@cd $(PDIR)$(PDIR)
+	@cd 16
+	@git clone https://github.com/FlatRockSoft/CatacombApocalypse.git
+	@git clone https://github.com/id-Software/wolf3d.git
+	@cd $(PDIR)
 
 ##
 ##	experimental libs
