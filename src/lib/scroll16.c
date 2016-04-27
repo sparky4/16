@@ -459,6 +459,9 @@ void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 		mv[0].video->page[id].data += 4;
 		mv[0].video->page[id].dy = mv[0].map->tiles->tileWidth;
 	}
+// 	modexClearRegion(&(mv[0].video->page[id]), 0, 0,
+// 			 mv[0].video->page[id].width-1,
+// 		  mv[0].video->page[id].height-1, [id]*2);
 }
 
 sword chkmap(map_t *map, word q)
