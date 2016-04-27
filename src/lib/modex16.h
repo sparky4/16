@@ -66,7 +66,8 @@ static struct pcxHeader {
 //192x144 = 12x9
 
 //temp defines
-#define TILEWH 16
+#define TILEWH	16
+#define TILEWHD	TILEWH*2
 #define QUADWH			TILEWH/2
 
 /* -========================== Types & Macros ==========================- */

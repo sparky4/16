@@ -238,14 +238,16 @@ void modexCalcVmemRemain(video_t *video)
 void modexHiganbanaPageSetup(video_t *video)
 {
 	(video->page[0]) = modexDefaultPage(&(video->page[0]));	video->num_of_pages++;
-	video->page[0].width += (TILEWH*2); video->page[0].height += (TILEWH*2);
+	video->page[0].width += (TILEWHD); video->page[0].height += (TILEWHD);
 	(video->page[1]) = modexNextPage(&(video->page[0]));	video->num_of_pages++;
-	(video->page[2]) = modexNextPage(&(video->page[1]));	video->num_of_pages++;
+//	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), video->page[0].width, 16);	video->num_of_pages++;
+//	(video->page[2]) = modexNextPage(&(video->page[1]));	video->num_of_pages++;
 	//(352*176)+1024 is the remaining amount of memory left wwww
-	modexCalcVmemRemain(video);
-	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), video->page[0].sw, 92);	video->num_of_pages++;
+//	modexCalcVmemRemain(video);
+//	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), video->page[0].sw, 92);	video->num_of_pages++;
 	modexCalcVmemRemain(video);
 }
+
 void
 modexShowPage(page_t *page) {
     word high_address;
@@ -362,7 +364,7 @@ modexCopyPageRegion(page_t *dest, page_t *src,
 {
     word doffset = (word)dest->data + dy*(dest->width/4) + dx/4;
     word soffset = (word)src->data + sy*(src->width/4) + sx/4;
-    word scans   = width/4;
+    word scans   = vga_state.vga_stride;
     word nextSrcRow = src->width/4 - scans - 1;
     word nextDestRow = dest->width/4 - scans - 1;
     byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08};  /* clips for rectangles not on 4s */

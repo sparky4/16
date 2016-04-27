@@ -100,9 +100,6 @@ void main(int argc, char *argv[])
 	chkmap(&map, 0);
 	printf("chkmap ok	");
 	fprintf(stderr, "yay map loaded~~\n");
-	mv[0].map = &map;
-	mv[1].map = &map;
-	mv[2].map = &map;
 
 	/* draw the tiles */
 #ifdef MODEX
@@ -164,9 +161,12 @@ void main(int argc, char *argv[])
 
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
-	mv[0].page = &gvar.video.page[0];
-	mv[1].page = &gvar.video.page[1];
-	mv[2].page = &gvar.video.page[2];
+	for(i=0;i<gvar.video.num_of_pages;i++)
+	{
+		mv[i].page = &gvar.video.page[i];
+		mv[i].map = &map;
+		mv[i].video = &gvar.video;
+	}
 
 	/* set up paging */
 //TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
@@ -355,25 +355,18 @@ void main(int argc, char *argv[])
 	//TSR
 	if(IN_KeyDown(87))	//f11
 	{
-		VGAmodeX(0, 0, &gvar);
-		IN_Shutdown();
-		__asm
-		{
-			mov ah,31h
-			int 21h
-		}
+		pageflipflop=!pageflipflop;
+// 		VGAmodeX(0, 0, &gvar);
+// 		IN_Shutdown();
+// 		__asm
+// 		{
+// 			mov ah,31h
+// 			int 21h
+// 		}
 	}
 	if(IN_KeyDown(88))	//s
 	{
-		switch(gvar.kurokku.fpscap)
-		{
-			case 0:
-				gvar.kurokku.fpscap=1;
-			break;
-			case 1:
-				gvar.kurokku.fpscap=0;
-			break;
-		}
+		gvar.kurokku.fpscap=!gvar.kurokku.fpscap;
 		//IN_Ack();
 	}
 	//TODO fmemtest into page
@@ -420,9 +413,15 @@ void main(int argc, char *argv[])
 //not used now	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
 	printf("Virtual Screen: %dx", gvar.video.page[0].width);	printf("%d\n", gvar.video.page[0].height);
 	printf("Screen: %dx", gvar.video.page[0].sw);	printf("%d\n", gvar.video.page[0].sh);
-	printf("tile resolution: %dx", gvar.video.page[0].tilesh);	printf("%d\n", gvar.video.page[0].tilesh);
+	printf("tile resolution: %dx", gvar.video.page[0].tilesh);	printf("%d ", gvar.video.page[0].tilesh);
 	printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);
 	printf("video memory remaining: %d\n", gvar.video.vmem_remain);
+	printf("\npage ");
+	for(i=0; i<gvar.video.num_of_pages;i++)
+	{
+		printf("[%u]=(%Fp) ", i, &(gvar.video.page[i].data));
+	}
+	printf("\n");
 //	printf("Screen2: %dx", gvar.video.page[1].width);	printf("%d\n", gvar.video.page[1].height);
 //	printf("map: %dx%d\n", map.width, map.height);
 //	printf("\n");

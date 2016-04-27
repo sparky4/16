@@ -100,13 +100,16 @@ typedef struct
 	boolean fpscap;	//cap the fps var
 } kurokku_t;
 
+#define MAXPAGE 4
+
 typedef struct
 {
 	char old_mode;		//old video mode before game!
-	page_t page[4];		//pointer to root page[0]
-	dword	vmem_remain;	//remaining video memory
+	page_t page[MAXPAGE];		//pointer to root page[0]
+	sdword vmem_remain;	//remaining video memory
 	byte num_of_pages;	//number of actual pages
 	boolean p;			//render page number
+	word pr[MAXPAGE][4];	//render sections of pages
 } video_t;
 
 typedef struct

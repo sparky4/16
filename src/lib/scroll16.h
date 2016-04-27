@@ -52,6 +52,7 @@ typedef struct {
 	int ty; //appears to be the top left tile position on the viewable screen map
 	word dxThresh; //????
 	word dyThresh; //????
+	video_t *video;
 } map_view_t;
 
 typedef struct
@@ -62,6 +63,8 @@ typedef struct
 //for null map!
 #define MAPW	40
 #define MAPH	30
+
+extern boolean pageflipflop;
 
 //map_t allocMap(int w, int h);
 //void initMap(map_t *map);

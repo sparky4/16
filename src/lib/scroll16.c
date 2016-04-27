@@ -41,7 +41,8 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 1);
 					mapScrollRight(pip, player, 0, pn);
 					mapScrollRight(pip, player, 1, pn);
-					modexShowPage(pip[1].page);
+//					mapScrollRight(pip, player, 2, pn);
+					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
 				} else { player[pn].q = 1; player[pn].d = 2; player[pn].tx++; }
 			}
@@ -52,7 +53,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					INC_PER_FRAME;
 					player[pn].x+=(player[pn].speed);
 					animatePlayer(pip, player, pn, 0);
-					modexShowPage(pip[1].page);
+					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
 				} else { player[pn].q = 1; player[pn].d = 2; player[pn].tx++; }
 			}
@@ -64,7 +65,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 #else
 				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 14);
 #endif
-				modexShowPage(pip[1].page);
+				if(!pageflipflop) modexShowPage(pip[1].page);
 				player[pn].d = 2;
 			}
 			player[pn].triggerx = player[pn].tx+1;
@@ -82,7 +83,8 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 1);
 					mapScrollLeft(pip, player, 0, pn);
 					mapScrollLeft(pip, player, 1, pn);
-					modexShowPage(pip[1].page);
+//					mapScrollLeft(pip, player, 2, pn);
+					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
 				} else { player[pn].q = 1; player[pn].d = 2; player[pn].tx--; }
 			}
@@ -93,7 +95,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					INC_PER_FRAME;
 					player[pn].x-=(player[pn].speed);
 					animatePlayer(pip, player, pn, 0);
-					modexShowPage(pip[1].page);
+					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
 				} else { player[pn].q = 1; player[pn].d = 2; player[pn].tx--; }
 			}
@@ -105,7 +107,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 #else
 				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 10);
 #endif
-				modexShowPage(pip[1].page);
+				if(!pageflipflop) modexShowPage(pip[1].page);
 				player[pn].d = 2;
 			}
 			player[pn].triggerx = player[pn].tx-1;
@@ -123,7 +125,8 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 1);
 					mapScrollDown(pip, player, 0, pn);
 					mapScrollDown(pip, player, 1, pn);
-					modexShowPage(pip[1].page);
+//					mapScrollDown(pip, player, 2, pn);
+					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
 				} else { player[pn].q = 1; player[pn].d = 2; player[pn].ty++; }
 			}
@@ -134,7 +137,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					INC_PER_FRAME;
 					player[pn].y+=(player[pn].speed);
 					animatePlayer(pip, player, pn, 0);
-					modexShowPage(pip[1].page);
+					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
 				} else { player[pn].q = 1; player[pn].d = 2; player[pn].ty++; }
 			}
@@ -146,7 +149,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 #else
 				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 9);
 #endif
-				modexShowPage(pip[1].page);
+				if(!pageflipflop) modexShowPage(pip[1].page);
 				player[pn].d = 2;
 			}
 			player[pn].triggerx = player[pn].tx;
@@ -164,7 +167,8 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 1);
 					mapScrollUp(pip, player, 0, pn);
 					mapScrollUp(pip, player, 1, pn);
-					modexShowPage(pip[1].page);
+//					mapScrollUp(pip, player, 2, pn);
+					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
 				} else { player[pn].q = 1; player[pn].d = 2; player[pn].ty--; }
 			}
@@ -175,7 +179,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					INC_PER_FRAME;
 					player[pn].y-=(player[pn].speed);
 					animatePlayer(pip, player, 0, pn);
-					modexShowPage(pip[1].page);
+					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
 				} else { player[pn].q = 1; player[pn].d = 2; player[pn].ty--; }
 			}
@@ -187,7 +191,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 #else
 				modexClearRegion(pip[1].page, player[pn].x-4, player[pn].y-TILEWH, 24, 32, 12);
 #endif
-				modexShowPage(pip[1].page);
+				if(!pageflipflop) modexShowPage(pip[1].page);
 				player[pn].d = 2;
 			}
 			player[pn].triggerx = player[pn].tx;
@@ -587,6 +591,7 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 }*/
 
 unsigned char shinku_fps_indicator_page = 0;
+boolean pageflipflop;
 //gv->video.p
 
 /*	sync	*/
@@ -603,9 +608,10 @@ void shinku(global_game_variables_t *gv)
 	//modexCopyPageRegion(pip[1].page, pip[2].page, 16, 16, 16, 16, (14*8)+4, 8+4);
 	/* block copy to visible RAM from offscreen */
 	vga_setup_wm1_block_copy();
-	o =	*(gv->video.page[2].data); // source offscreen
-	o2 =	*(gv->video.page[shinku_fps_indicator_page].data)+(y * vga_state.vga_stride) + (x >> 2); // dest visible (original stride)
-	for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += vga_state.vga_stride) vga_wm1_mem_block_copy(o2,o,w >> 2);
+	modexCopyPageRegion(&(gv->video.page[shinku_fps_indicator_page]), &(gv->video.page[!shinku_fps_indicator_page]), x, y, x+w, 0, w, h);
+// 	o =	*(gv->video.page[2].data); // source offscreen
+// 	o2 =	*(gv->video.page[shinku_fps_indicator_page].data)+(y * vga_state.vga_stride) + (x >> 2); // dest visible (original stride)
+// 	for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += vga_state.vga_stride) vga_wm1_mem_block_copy(o2,o,w >> 2);
 	/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
 	vga_restore_rm0wm0();
 	if(elapsed_timer(gv) >= (1.0 / gv->kurokku.frames_per_second))
@@ -616,9 +622,10 @@ void shinku(global_game_variables_t *gv)
 		gv->kurokku.tiku=0;
 		/* block copy to visible RAM from offscreen */
 		vga_setup_wm1_block_copy();
-		o =	*(gv->video.page[shinku_fps_indicator_page].data); // source offscreen
-		o2 =	*(gv->video.page[2].data)+(y * vga_state.vga_stride) + (x >> 2); // dest visible (original stride)
-		for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += vga_state.vga_stride) vga_wm1_mem_block_copy(o2,o,w >> 2);
+// 		o =	*(gv->video.page[shinku_fps_indicator_page].data); // source offscreen
+// 		o2 =	*(gv->video.page[2].data)+(y * vga_state.vga_stride) + (x >> 2); // dest visible (original stride)
+// 		for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += vga_state.vga_stride) vga_wm1_mem_block_copy(o2,o,w >> 2);
+		modexCopyPageRegion(&(gv->video.page[shinku_fps_indicator_page]), &(gv->video.page[!shinku_fps_indicator_page]), x, y, x, 0, w, h);
 		/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
 		vga_restore_rm0wm0();
 	}else //copy dat sheet
@@ -637,6 +644,7 @@ void shinku(global_game_variables_t *gv)
 			gv->kurokku.frames_per_second=60;
 		break;
 	}
+	if(pageflipflop) modexShowPage(&(gv->video.page[gv->video.p]));
 	gv->video.p=!gv->video.p;
 }
 
