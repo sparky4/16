@@ -459,9 +459,9 @@ void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 		mv[0].video->page[id].data += 4;
 		mv[0].video->page[id].dy = mv[0].map->tiles->tileWidth;
 	}
-	modexClearRegion(&(mv[0].video->page[id]), 0, 0,
-			 mv[0].video->page[id].width-1,
-		  mv[0].video->page[id].height-1, id*2);
+// 	modexClearRegion(&(mv[0].video->page[id]), 0, 0,
+// 			 mv[0].video->page[id].width-1,
+// 		  mv[0].video->page[id].height-1, id*2);
 }
 
 sword chkmap(map_t *map, word q)
@@ -673,13 +673,13 @@ void shinku(global_game_variables_t *gv)
 	byte o,o2,i;
 	//modexCopyPageRegion(pip[1].page, pip[2].page, 16, 16, 16, 16, (14*8)+4, 8+4);
 	/* block copy to visible RAM from offscreen */
-	vga_setup_wm1_block_copy();
-	modexCopyPageRegion(&(gv->video.page[shinku_fps_indicator_page]), &(gv->video.page[!shinku_fps_indicator_page]), x, y, x+w, 0, w, h);
+//	vga_setup_wm1_block_copy();
+//	modexCopyPageRegion(&(gv->video.page[shinku_fps_indicator_page]), &(gv->video.page[!shinku_fps_indicator_page]), x, y, x+w, 0, w, h);
 // 	o =	*(gv->video.page[2].data); // source offscreen
 // 	o2 =	*(gv->video.page[shinku_fps_indicator_page].data)+(y * vga_state.vga_stride) + (x >> 2); // dest visible (original stride)
 // 	for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += vga_state.vga_stride) vga_wm1_mem_block_copy(o2,o,w >> 2);
 	/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
-	vga_restore_rm0wm0();
+//	vga_restore_rm0wm0();
 	if(elapsed_timer(gv) >= (1.0 / gv->kurokku.frames_per_second))
 	{
 		sprintf(gv->pee, "%.0f fps", (double)gv->kurokku.tiku/ticktock(gv));
@@ -687,13 +687,13 @@ void shinku(global_game_variables_t *gv)
 		modexprint(&(gv->video.page[shinku_fps_indicator_page]), x, y, type, col, bgcol, gv->pee);
 		gv->kurokku.tiku=0;
 		/* block copy to visible RAM from offscreen */
-		vga_setup_wm1_block_copy();
+//		vga_setup_wm1_block_copy();
 // 		o =	*(gv->video.page[shinku_fps_indicator_page].data); // source offscreen
 // 		o2 =	*(gv->video.page[2].data)+(y * vga_state.vga_stride) + (x >> 2); // dest visible (original stride)
 // 		for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += vga_state.vga_stride) vga_wm1_mem_block_copy(o2,o,w >> 2);
-		modexCopyPageRegion(&(gv->video.page[shinku_fps_indicator_page]), &(gv->video.page[!shinku_fps_indicator_page]), x, y, x, 0, w, h);
+//		modexCopyPageRegion(&(gv->video.page[shinku_fps_indicator_page]), &(gv->video.page[!shinku_fps_indicator_page]), x, y, x, 0, w, h);
 		/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
-		vga_restore_rm0wm0();
+//		vga_restore_rm0wm0();
 	}else //copy dat sheet
 	gv->kurokku.tiku++;
 
@@ -710,7 +710,11 @@ void shinku(global_game_variables_t *gv)
 			gv->kurokku.frames_per_second=60;
 		break;
 	}
-	if(pageflipflop) modexShowPage(&(gv->video.page[gv->video.p]));
+	if(pageflipflop){
+		modexCopyPageRegion(&(gv->video.page[gv->video.p]), &(gv->video.page[!gv->video.p]), 0, 0, 0, 0, gv->video.page[gv->video.p].width, gv->video.page[!gv->video.p].height);
+		modexShowPage(&(gv->video.page[gv->video.p]));
+
+	}
 	gv->video.p=!gv->video.p;
 }
 
