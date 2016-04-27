@@ -79,12 +79,12 @@ VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_timer.$(OBJ)
 
-GFXLIBOBJS = modex16.$(OBJ) bitmax.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16planar.$(OBJ) $(DOSLIBLIBS)
+GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16planar.$(OBJ) $(DOSLIBLIBS)
 
 DOSLIBLIBS=$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu$(DIRSEP)dos86h$(DIRSEP)cpu.lib $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos$(DIRSEP)dos86h$(DIRSEP)dos.lib $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vga.lib
 #$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vgatty.lib
 
-TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maxtest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe
+TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe
 # tsthimem.exe
 #testemm.exe testemm0.exe fonttes0.exe miditest.exe sega.exe sountest.exe
 EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
@@ -95,8 +95,8 @@ all: $(EXEC) joytest.exe vrs
 #
 #game and bakapi executables
 #
-16.exe: 16.$(OBJ) maxread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib
-	wcl $(FLAGS) $(16FLAGS) 16.$(OBJ) maxread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib -fm=16.mah
+16.exe: 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib
+	wcl $(FLAGS) $(16FLAGS) 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib -fm=16.mah
 
 bakapi.exe: bakapi.$(OBJ) gfx.lib $(DOSLIBLIBS)
 	wcl $(FLAGS) $(BAKAPIFLAGS) bakapi.$(OBJ) gfx.lib $(DOSLIBLIBS) -fm=bakapi.mah
@@ -104,8 +104,8 @@ bakapi.exe: bakapi.$(OBJ) gfx.lib $(DOSLIBLIBS)
 #
 #Test Executables!
 #
-scroll.exe: scroll.$(OBJ) maxread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib
-	wcl $(FLAGS) scroll.$(OBJ) maxread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib -fm=scroll.mah
+scroll.exe: scroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib
+	wcl $(FLAGS) scroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib -fm=scroll.mah
 scroll.$(OBJ): $(SRC)scroll.c
 	wcl $(FLAGS) -c $(SRC)scroll.c
 
@@ -168,11 +168,11 @@ pcxtest2.exe: pcxtest2.$(OBJ) gfx.lib
 planrpcx.exe: planrpcx.$(OBJ) gfx.lib
 	wcl $(FLAGS) planrpcx.$(OBJ) gfx.lib -fm=planrpcx.mah
 
-maxtest.exe: maxtest.$(OBJ) maxread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib
-	wcl $(FLAGS) maxtest.$(OBJ) maxread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib -fm=maxtest.mah
+maptest.exe: maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib
+	wcl $(FLAGS) maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIBOBJS) gfx.lib -fm=maptest.mah
 
-#maxtest0.exe: maxtest0.$(OBJ) fmaxread.$(OBJ) farjsmn.$(OBJ)
-#	wcl $(FLAGS) $(MFLAGS) maxtest0.$(OBJ) fmaxread.$(OBJ) farjsmn.$(OBJ)
+#maptest0.exe: maptest0.$(OBJ) fmapread.$(OBJ) farjsmn.$(OBJ)
+#	wcl $(FLAGS) $(MFLAGS) maptest0.$(OBJ) fmapread.$(OBJ) farjsmn.$(OBJ)
 
 #emmtest.exe: emmtest.$(OBJ) memory.$(OBJ)
 #	wcl $(FLAGS) $(MFLAGS) emmtest.$(OBJ) memory.$(OBJ)
@@ -221,11 +221,11 @@ palettec.$(OBJ): $(SRC)palettec.c
 palettel.$(OBJ): $(SRC)palettel.c
 	wcl $(FLAGS) -c $(SRC)palettel.c
 
-maxtest.$(OBJ): $(SRC)maxtest.c $(SRCLIB)modex16.h
-	wcl $(FLAGS) -c $(SRC)maxtest.c
+maptest.$(OBJ): $(SRC)maptest.c $(SRCLIB)modex16.h
+	wcl $(FLAGS) -c $(SRC)maptest.c
 
-#maxtest0.$(OBJ): $(SRC)maxtest0.c# $(SRCLIB)modex16.h
-#	wcl $(FLAGS) $(MFLAGS) -c $(SRC)maxtest0.c
+#maptest0.$(OBJ): $(SRC)maptest0.c# $(SRCLIB)modex16.h
+#	wcl $(FLAGS) $(MFLAGS) -c $(SRC)maptest0.c
 
 #emmtest.$(OBJ): $(SRC)emmtest.c
 #	wcl $(FLAGS) $(MFLAGS) -c $(SRC)emmtest.c
@@ -317,8 +317,8 @@ bakapee.$(OBJ): $(SRCLIB)bakapee.h $(SRCLIB)bakapee.c
 16planar.$(OBJ): $(MODEXLIB)16planar.h $(MODEXLIB)16planar.c
 	wcl $(FLAGS) -c $(MODEXLIB)16planar.c
 
-bitmax.$(OBJ): $(SRCLIB)bitmax.h $(SRCLIB)bitmax.c
-	wcl $(FLAGS) -c $(SRCLIB)bitmax.c
+bitmap.$(OBJ): $(SRCLIB)bitmap.h $(SRCLIB)bitmap.c
+	wcl $(FLAGS) -c $(SRCLIB)bitmap.c
 
 planar.$(OBJ): $(SRCLIB)planar.h $(SRCLIB)planar.c
 	wcl $(FLAGS) -c $(SRCLIB)planar.c
@@ -332,8 +332,8 @@ wcpu.$(OBJ): $(WCPULIB)wcpu.h $(WCPULIB)wcpu.c
 16text.$(OBJ): $(SRCLIB)16text.c
 	wcl $(FLAGS) -c $(SRCLIB)16text.c
 
-maxread.$(OBJ): $(SRCLIB)maxread.h $(SRCLIB)maxread.c
-	wcl $(FLAGS) -c $(SRCLIB)maxread.c
+mapread.$(OBJ): $(SRCLIB)mapread.h $(SRCLIB)mapread.c
+	wcl $(FLAGS) -c $(SRCLIB)mapread.c
 
 16_timer.$(OBJ): $(SRCLIB)16_timer.h $(SRCLIB)16_timer.c
 	wcl $(FLAGS) -c $(SRCLIB)16_timer.c
