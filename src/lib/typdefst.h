@@ -36,6 +36,8 @@
 #define AAMAGENTA	"\x1b[45;35m"
 #define AARESET	"\x1b[0m"
 
+#define MAXPAGE 4
+
 /*
  * typedefs of the game variables!
  */
@@ -100,7 +102,10 @@ typedef struct
 	boolean fpscap;	//cap the fps var
 } kurokku_t;
 
-#define MAXPAGE 4
+typedef struct
+{
+	word	pagenum;
+} pan_t;
 
 typedef struct
 {

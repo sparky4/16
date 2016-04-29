@@ -1297,4 +1297,6 @@ void IN_initplayer(player_t *player, word pn)
 	player[pn].q=1;
 	player[pn].d=2;
 	player[pn].hp=4;
+	player[pn].speed=4;
+	player[pn].persist_aniframe=0;
 }

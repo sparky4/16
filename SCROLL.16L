@@ -1,0 +1,35 @@
+starting timer	ok
+index=4096
+chkmap ok	
+
+	1st vmem_remain=262144
+		[0], video->page[i].pagesize=95744
+		[0], vmem_remain=166400
+		[1], video->page[i].pagesize=95744
+		[1], vmem_remain=70656
+		[2], video->page[i].pagesize=70400
+		[2], vmem_remain=256
+		[3], video->page[i].pagesize=256
+		[3], vmem_remain=0
+Project 16 scroll.exe. This is just a test file!
+version Apr 29 2016 15:57:39
+tx: -1
+ty: 14
+player[0].x: 160		player[0].y: 128
+player[0].tx: 10		player[0].ty: 8
+player[0].triggx: 10	player[0].triggy: 9
+player[0].hp: 4	player[0].q: 1	player[0].info.dir: 0	player[0].d: 2 pdir=0
+tile data value at player trigger position: 0
+Virtual Screen: 352x272
+Screen: 320x240
+tile resolution: 15x15 middle tile position: 10x8
+video memory remaining: 0
+page 	[0]=(a000:0000)
+	[1]=(a000:5d80)
+	[2]=(a000:bb00)
+	[3]=(a000:ffc0)
+mv[0].tx: -1	mv[0].ty: 14
+player[1].q: 1	player[1].d: 2
+
+
+detected CPU type: 386 or newer

@@ -204,6 +204,73 @@ void walk(map_view_t *pip, player_t *player, word pn)
 	}
 }
 
+void panpagemanual(map_view_t *pip, player_t *player, word pn)
+{
+	#define INC_PER_FRAME if(player[pn].q&1) player[pn].persist_aniframe++; if(player[pn].persist_aniframe>4) player[pn].persist_aniframe = 1;
+	switch(player[pn].d)
+	{
+		//right movement
+		case 3:
+			if(pip[pip[0].pan->pagenum].tx >= -1 && pip[pip[0].pan->pagenum].tx+pip[pip[0].pan->pagenum].page->tilesw < pip[pip[0].pan->pagenum].map->width+1)
+			//!(pip[0].map->data[(pip[0].pan->tx)+(pip[0].map->width*(pip[0].pan->ty-1))] == 0))
+			{
+				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				{
+					INC_PER_FRAME;
+					pip[pip[0].pan->pagenum].page->dx++;
+					modexShowPage(pip[pip[0].pan->pagenum].page);
+					player[pn].q++;
+				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pagenum].tx++; }
+			}
+		break;
+
+		//left movement
+		case 1:
+			if(pip[pip[0].pan->pagenum].tx > -1 && pip[pip[0].pan->pagenum].tx+pip[pip[0].pan->pagenum].page->tilesw <= pip[pip[0].pan->pagenum].map->width+1)
+			//!(pip[0].map->data[(pip[0].pan->tx-2)+(pip[0].map->width*(pip[0].pan->ty-1))] == 0))
+			{
+				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				{
+					INC_PER_FRAME;
+					pip[pip[0].pan->pagenum].page->dx--;
+					modexShowPage(pip[pip[0].pan->pagenum].page);
+					player[pn].q++;
+				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pagenum].tx--; }
+			}
+		break;
+
+		//down movement
+		case 4:
+			if(pip[pip[0].pan->pagenum].ty >= -1 && pip[pip[0].pan->pagenum].ty+pip[pip[0].pan->pagenum].page->tilesh < pip[pip[0].pan->pagenum].map->height+1)
+			//!(pip[0].map->data[(pip[0].pan->tx-1)+(pip[0].map->width*(pip[0].pan->ty))] == 0))
+			{
+				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				{
+					INC_PER_FRAME;
+					pip[pip[0].pan->pagenum].page->dy++;
+					modexShowPage(pip[pip[0].pan->pagenum].page);
+					player[pn].q++;
+				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pagenum].ty++; }
+			}
+		break;
+
+		//up movement
+		case 0:
+			if(pip[pip[0].pan->pagenum].ty > -1 && pip[pip[0].pan->pagenum].ty+pip[pip[0].pan->pagenum].page->tilesh <= pip[pip[0].pan->pagenum].map->height+1)
+			//!(pip[0].map->data[(pip[0].pan->tx-1)+(pip[0].map->width*(pip[0].pan->ty-2))] == 0))
+			{
+				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				{
+					INC_PER_FRAME;
+					pip[pip[0].pan->pagenum].page->dy--;
+					modexShowPage(pip[pip[0].pan->pagenum].page);
+					player[pn].q++;
+				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pagenum].ty--; }
+			}
+			break;
+	}
+}
+
 /*map_t
 allocMap(int w, int h) {
 	map_t result;

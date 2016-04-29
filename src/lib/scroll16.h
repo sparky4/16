@@ -52,7 +52,8 @@ typedef struct {
 	int ty; //appears to be the top left tile position on the viewable screen map
 	word dxThresh; //????
 	word dyThresh; //????
-	video_t *video;
+	video_t *video;	//pointer to game variables of the video
+	pan_t *pan;		//pointer the the page panning debug system
 } map_view_t;
 
 typedef struct
@@ -69,6 +70,7 @@ extern boolean pageflipflop;
 //map_t allocMap(int w, int h);
 //void initMap(map_t *map);
 void walk(map_view_t *pip, player_t *player, word pn);
+void panpagemanual(map_view_t *pip,  player_t *player, word pn);
 void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid);

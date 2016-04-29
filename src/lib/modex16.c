@@ -193,7 +193,7 @@ page_t
 modexNextPage(page_t *p) {
     page_t result;
 
-    result.data = p->data + (p->width/4)*p->height;
+    result.data = p->data + (byte)(p->width/4)*p->height;
     result.dx = 0;
     result.dy = 0;
     result.width = p->width;
@@ -212,7 +212,7 @@ modexNextPageFlexibleSize(page_t *p, word x, word y)
 {
 	page_t result;
 
-	result.data = p->data + (p->width/4)*p->height;  /* compute the offset */
+	result.data = p->data + (byte)(p->width/4)*p->height;  /* compute the offset */
 	result.dx = 0;
 	result.dy = 0;
 	result.width = x;
