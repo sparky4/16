@@ -104,7 +104,7 @@ typedef struct
 
 typedef struct
 {
-	word	pagenum;
+	word	pn;
 } pan_t;
 
 typedef struct
@@ -113,7 +113,7 @@ typedef struct
 	page_t page[MAXPAGE];		//pointer to root page[0]
 	sdiword vmem_remain;	//remaining video memory
 	byte num_of_pages;	//number of actual pages
-	boolean p;			//render page number
+	boolean __near p;			//render page number
 	word pr[MAXPAGE][4];	//render sections of pages
 } video_t;
 

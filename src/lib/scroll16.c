@@ -35,7 +35,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			if(pip[0].tx >= 0 && pip[0].tx+pip[0].page->tilesw < pip[0].map->width && player[pn].tx == pip[0].tx+pip[0].page->tilemidposscreenx &&
 			!(pip[0].map->data[(player[pn].tx)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx+1 == TRIGGX && player[pn].ty == TRIGGY))	//collision detection!
 			{
-				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				if(player[pn].q<=player[pn].spt)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
@@ -49,7 +49,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			}
 			else if(player[pn].tx < pip[0].map->width && !(pip[0].map->data[(player[pn].tx)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx+1 == TRIGGX && player[pn].ty == TRIGGY))
 			{
-				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				if(player[pn].q<=player[pn].spt)
 				{
 					INC_PER_FRAME;
 					player[pn].x+=(player[pn].speed);
@@ -78,7 +78,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			if(pip[0].tx > 0 && pip[0].tx+pip[0].page->tilesw <= pip[0].map->width && player[pn].tx == pip[0].tx+pip[0].page->tilemidposscreenx &&
 			!(pip[0].map->data[(player[pn].tx-2)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx-1 == TRIGGX && player[pn].ty == TRIGGY))	//collision detection!
 			{
-				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				if(player[pn].q<=player[pn].spt)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
@@ -92,7 +92,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			}
 			else if(player[pn].tx > 1 && !(pip[0].map->data[(player[pn].tx-2)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx-1 == TRIGGX && player[pn].ty == TRIGGY))
 			{
-				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				if(player[pn].q<=player[pn].spt)
 				{
 					INC_PER_FRAME;
 					player[pn].x-=(player[pn].speed);
@@ -121,7 +121,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			if(pip[0].ty >= 0 && pip[0].ty+pip[0].page->tilesh < pip[0].map->height && player[pn].ty == pip[0].ty+pip[0].page->tilemidposscreeny &&
 			!(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty))] == 0))//!(player[pn].tx == TRIGGX && player[pn].ty+1 == TRIGGY))	//collision detection!
 			{
-				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				if(player[pn].q<=player[pn].spt)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
@@ -135,7 +135,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			}
 			else if(player[pn].ty < pip[0].map->height && !(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty))] == 0))//!(player[pn].tx == TRIGGX && player[pn].ty+1 == TRIGGY))
 			{
-				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				if(player[pn].q<=player[pn].spt)
 				{
 					INC_PER_FRAME;
 					player[pn].y+=(player[pn].speed);
@@ -164,7 +164,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			if(pip[0].ty > 0 && pip[0].ty+pip[0].page->tilesh <= pip[0].map->height && player[pn].ty == pip[0].ty+pip[0].page->tilemidposscreeny &&
 			!(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty-2))] == 0))//!(player[pn].tx == TRIGGX && player[pn].ty-1 == TRIGGY))	//collision detection!
 			{
-				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				if(player[pn].q<=player[pn].spt)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
@@ -178,7 +178,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			}
 			else if(player[pn].ty > 1 && !(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty-2))] == 0))//!(player[pn].tx == TRIGGX &&  player[pn].ty-1 == TRIGGY))
 			{
-				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				if(player[pn].q<=player[pn].spt)
 				{
 					INC_PER_FRAME;
 					player[pn].y-=(player[pn].speed);
@@ -206,66 +206,58 @@ void walk(map_view_t *pip, player_t *player, word pn)
 
 void panpagemanual(map_view_t *pip, player_t *player, word pn)
 {
-	#define INC_PER_FRAME if(player[pn].q&1) player[pn].persist_aniframe++; if(player[pn].persist_aniframe>4) player[pn].persist_aniframe = 1;
 	switch(player[pn].d)
 	{
 		//right movement
 		case 3:
-			if(pip[pip[0].pan->pagenum].tx >= -1 && pip[pip[0].pan->pagenum].tx+pip[pip[0].pan->pagenum].page->tilesw < pip[pip[0].pan->pagenum].map->width+1)
-			//!(pip[0].map->data[(pip[0].pan->tx)+(pip[0].map->width*(pip[0].pan->ty-1))] == 0))
+			if(pip[pip[0].pan->pn].tx >= -TILEWH && pip[pip[0].pan->pn].tx+pip[pip[0].pan->pn].page->tilesw < pip[pip[0].pan->pn].map->width+TILEWH)
 			{
-				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				if(player[pn].q<=player[pn].spt)
 				{
-					INC_PER_FRAME;
-					pip[pip[0].pan->pagenum].page->dx++;
-					modexShowPage(pip[pip[0].pan->pagenum].page);
+					pip[pip[0].pan->pn].page->dx++;
+					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pagenum].tx++; }
+				} else { player[pn].q = 1; player[pn].d = 2; }//pip[pip[0].pan->pn].tx++; }
 			}
+			printf("player[pn].d=%u player[pn].q=%u\n", player[pn].d, player[pn].q);
 		break;
 
 		//left movement
 		case 1:
-			if(pip[pip[0].pan->pagenum].tx > -1 && pip[pip[0].pan->pagenum].tx+pip[pip[0].pan->pagenum].page->tilesw <= pip[pip[0].pan->pagenum].map->width+1)
-			//!(pip[0].map->data[(pip[0].pan->tx-2)+(pip[0].map->width*(pip[0].pan->ty-1))] == 0))
+			if(pip[pip[0].pan->pn].tx > -TILEWH && pip[pip[0].pan->pn].tx+pip[pip[0].pan->pn].page->tilesw <= pip[pip[0].pan->pn].map->width+TILEWH)
 			{
-				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				if(player[pn].q<=player[pn].spt)
 				{
-					INC_PER_FRAME;
-					pip[pip[0].pan->pagenum].page->dx--;
-					modexShowPage(pip[pip[0].pan->pagenum].page);
+					pip[pip[0].pan->pn].page->dx--;
+					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pagenum].tx--; }
+				} else { player[pn].q = 1; player[pn].d = 2; }//pip[pip[0].pan->pn].tx--; }
 			}
 		break;
 
 		//down movement
 		case 4:
-			if(pip[pip[0].pan->pagenum].ty >= -1 && pip[pip[0].pan->pagenum].ty+pip[pip[0].pan->pagenum].page->tilesh < pip[pip[0].pan->pagenum].map->height+1)
-			//!(pip[0].map->data[(pip[0].pan->tx-1)+(pip[0].map->width*(pip[0].pan->ty))] == 0))
+			if(pip[pip[0].pan->pn].ty >= -TILEWH && pip[pip[0].pan->pn].ty+pip[pip[0].pan->pn].page->tilesh < pip[pip[0].pan->pn].map->height+TILEWH)
 			{
-				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				if(player[pn].q<=player[pn].spt)
 				{
-					INC_PER_FRAME;
-					pip[pip[0].pan->pagenum].page->dy++;
-					modexShowPage(pip[pip[0].pan->pagenum].page);
+					pip[pip[0].pan->pn].page->dy++;
+					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pagenum].ty++; }
+				} else { player[pn].q = 1; player[pn].d = 2; }//pip[pip[0].pan->pn].ty++; }
 			}
 		break;
 
 		//up movement
 		case 0:
-			if(pip[pip[0].pan->pagenum].ty > -1 && pip[pip[0].pan->pagenum].ty+pip[pip[0].pan->pagenum].page->tilesh <= pip[pip[0].pan->pagenum].map->height+1)
-			//!(pip[0].map->data[(pip[0].pan->tx-1)+(pip[0].map->width*(pip[0].pan->ty-2))] == 0))
+			if(pip[pip[0].pan->pn].ty > -TILEWH && pip[pip[0].pan->pn].ty+pip[pip[0].pan->pn].page->tilesh <= pip[pip[0].pan->pn].map->height+TILEWH)
 			{
-				if(player[pn].q<=(TILEWH/(player[pn].speed)))
+				if(player[pn].q<=player[pn].spt)
 				{
-					INC_PER_FRAME;
-					pip[pip[0].pan->pagenum].page->dy--;
-					modexShowPage(pip[pip[0].pan->pagenum].page);
+					pip[pip[0].pan->pn].page->dy--;
+					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pagenum].ty--; }
+				} else { player[pn].q = 1; player[pn].d = 2; }//pip[pip[0].pan->pn].ty--; }
 			}
 			break;
 	}

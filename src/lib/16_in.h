@@ -225,6 +225,7 @@ typedef	struct
 	byte near pdir;	//previous direction~
 	//byte near kd[2];	//array of arrow key pressed
 	word speed;		//player speed!
+	word spt;		//speed per tile
 //0000	planar_buf_t huge *data; //supposively the sprite sheet data
 //	planar_buf_t data; //supposively the sprite sheet data
 ////0000----
