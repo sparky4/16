@@ -583,7 +583,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 	mv->dyThresh = mv->map->tiles->tileHeight * 2;
 
 	/* draw the tiles */
-	modexClearRegion(mv->page, 0, 0, mv->page->width, mv->page->height, 0);
+	modexClearRegion(mv->page, 0, 0, mv->page->width+mv->map->tiles->tileWidth, mv->page->height+mv->map->tiles->tileHeight, 0);
 	py=0;
 	i=mv->ty * mv->map->width + mv->tx;
 	for(ty=mv->ty-1; py < mv->page->sh+mv->dyThresh && ty < mv->map->height; ty++, py+=mv->map->tiles->tileHeight) {

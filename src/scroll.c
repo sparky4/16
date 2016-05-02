@@ -168,9 +168,11 @@ void main(int argc, char *argv[])
 		mv[i].pan	= &pan;
 		/* set up paging */
 //TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
-		mapGoTo(&mv[i], -1, -1);
+		mapGoTo(&mv[i], 0, 0);
 //TODO: put player in starting position of spot
 	}
+
+	//modexClearRegion(mv[0].page, 0, 0, mv[0].page->width+TILEWH, mv[0].page->height+TILEWH, 15);
 
 	//default player position on the viewable map
 	player[panswitch].tx = mv[0].tx + mv[0].page->tilemidposscreenx;
