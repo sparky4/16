@@ -40,7 +40,7 @@ static planar_buf_t huge *pp;
 float t;
 sword bakapee;
 pan_t pan;
-boolean panswitch=1;
+boolean panswitch=0;
 	unsigned int i;
 	const char *cpus;
 	//static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
@@ -175,38 +175,38 @@ void main(int argc, char *argv[])
 
 	//TODO: put player in starting position of spot
 	//default player position on the viewable map
-	player[panswitch].tx = mv[0].tx + mv[0].page->tilemidposscreenx;
-	player[panswitch].ty = mv[0].ty + mv[0].page->tilemidposscreeny;
+	player[0].tx = mv[0].tx + mv[0].page->tilemidposscreenx;
+	player[0].ty = mv[0].ty + mv[0].page->tilemidposscreeny;
 	IN_initplayer(&player, 0);
 	IN_initplayer(&player, 1);
 
-//	modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
+	modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
 #ifndef	SPRITE
-//	modexClearRegion(mv[1].page, player[panswitch].x-4, player[panswitch].y-TILEWH, 24, 32, 15);
+	modexClearRegion(mv[1].page, player[panswitch].x-4, player[panswitch].y-TILEWH, 24, 32, 15);
 #else
 	//PBUFSFUN(mv[1].page, player[panswitch].x-4, player[panswitch].y-TILEWH, 24, 64, 24, 32,	PLAYERBMPDATA);
-//	PBUFSFUN(mv[1].page, player[panswitch].x-4, player[panswitch].y-TILEWH, 24, 64, 24, 32,	&pp);
+	PBUFSFUN(mv[1].page, player[panswitch].x-4, player[panswitch].y-TILEWH, 24, 64, 24, 32,	&pp);
 #endif
 
-	modexShowPage(mv[pan.pn].page);
-	shinku_fps_indicator_page = 0; // we're on page 1 now, shinku(). follow along please or it will not be visible.
+	modexShowPage(mv[1].page);
+	shinku_fps_indicator_page = 1; // we're on page 1 now, shinku(). follow along please or it will not be visible.
 	//modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 1);
 #ifdef MODEX
 #ifdef FADE
 	modexFadeOn(4, gpal);
 #endif
 #endif
-	while(!IN_KeyDown(sc_Escape) && player[panswitch].hp>0)
+	while(!IN_KeyDown(sc_Escape) && player[0].hp>0)
 	{
 		shinku(&gvar);
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
-	//when player[panswitch].tx or player[panswitch].ty == 0 or player[panswitch].tx == 20 or player[panswitch].ty == 15 then stop because that is edge of map and you do not want to walk of the map
+	//when player[0].tx or player[0].ty == 0 or player[0].tx == 20 or player[0].ty == 15 then stop because that is edge of map and you do not want to walk of the map
 
 	//player movement
 		IN_ReadControl(panswitch,&player);
 	if(!panswitch){
-		walk(mv, player, panswitch);
+		walk(mv, player, 0);
 	}else{
 		panpagemanual(mv, player, pan.pn);
 		//printf("	player[panswitch].q: %d", player[panswitch].q);	printf("	player[panswitch].d: %d\n", player[panswitch].d);
@@ -215,7 +215,7 @@ void main(int argc, char *argv[])
 
 	//the scripting stuff....
 	//if(((player[panswitch].triggerx == TRIGGX && player[panswitch].triggery == TRIGGY) && IN_KeyDown(0x1C))||(player[panswitch].tx == 5 && player[panswitch].ty == 5))
-	if(((mv[panswitch].map->data[(player[panswitch].triggerx-1)+(map.width*(player[panswitch].triggery-1))] == 0) && IN_KeyDown(0x1C))||(player[panswitch].tx == 5 && player[panswitch].ty == 5))
+	if(((mv[0].map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))] == 0) && IN_KeyDown(0x1C))||(player[0].tx == 5 && player[0].ty == 5))
 	{
 		short i;
 		for(i=800; i>=400; i--)
@@ -224,7 +224,7 @@ void main(int argc, char *argv[])
 		}
 		nosound();
 	}
-	if(player[panswitch].q == (TILEWH/(player[panswitch].speed))+1 && player[panswitch].info.dir != 2 && (player[panswitch].triggerx == 5 && player[panswitch].triggery == 5)){ player[panswitch].hp--; }
+	if(player[0].q == (TILEWH/(player[0].speed))+1 && player[0].info.dir != 2 && (player[0].triggerx == 5 && player[0].triggery == 5)){ player[0].hp--; }
 	//debugging binds!
 	//if(IN_KeyDown(0x0E)) while(1){ if(xmsmalloc(24)) break; }
 	if(IN_KeyDown(2)){ modexShowPage(mv[0].page); pan.pn=0; }
@@ -238,7 +238,7 @@ void main(int argc, char *argv[])
 #ifdef FADE
 	if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv[0].page); modexpdump(mv[1].page); }
 	if(IN_KeyDown(22)){
-	paloffset=0; modexPalBlack(); modexPalUpdate(&player[panswitch].data, &paloffset, 0, 0);
+	paloffset=0; modexPalBlack(); modexPalUpdate(&player[0].data, &paloffset, 0, 0);
 	printf("1paloffset	=	%d\n", paloffset/3);
 	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	printf("2paloffset	=	%d\n", paloffset/3);
@@ -276,7 +276,7 @@ void main(int argc, char *argv[])
 	//9
 	if(IN_KeyDown(10)){ modexPalOverscan(default_pal, rand()%56); modexPalUpdate1(default_pal); }
 	//if(IN_KeyDown(11)){ modexPalOverscan(default_pal, 15); }
-	if((player[panswitch].q==1) && !(player[panswitch].x%TILEWH==0 && player[panswitch].y%TILEWH==0)) break;	//incase things go out of sync!
+	if((player[0].q==1) && !(player[0].x%TILEWH==0 && player[0].y%TILEWH==0)) break;	//incase things go out of sync!
 	}
 
 	/* fade back to text mode */

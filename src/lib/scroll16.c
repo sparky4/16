@@ -32,7 +32,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 		//right movement
 		case 3:
 			//printf("pip[0].page->tilesw=%d\n", pip[0].page->tilesw);
-			if(pip[0].tx >= 0 && pip[0].tx+pip[0].page->tilesw < pip[0].map->width && player[pn].tx == pip[0].tx+pip[0].page->tilemidposscreenx &&
+			if(pip[0].tx >= 0 && pip[0].tx+pip[0].page->tw < pip[0].map->width && player[pn].tx == pip[0].tx+pip[0].page->tilemidposscreenx &&
 			!(pip[0].map->data[(player[pn].tx)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx+1 == TRIGGX && player[pn].ty == TRIGGY))	//collision detection!
 			{
 				if(player[pn].q<=player[pn].spt)
@@ -75,7 +75,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 
 		//left movement
 		case 1:
-			if(pip[0].tx > 0 && pip[0].tx+pip[0].page->tilesw <= pip[0].map->width && player[pn].tx == pip[0].tx+pip[0].page->tilemidposscreenx &&
+			if(pip[0].tx > 0 && pip[0].tx+pip[0].page->tw <= pip[0].map->width && player[pn].tx == pip[0].tx+pip[0].page->tilemidposscreenx &&
 			!(pip[0].map->data[(player[pn].tx-2)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx-1 == TRIGGX && player[pn].ty == TRIGGY))	//collision detection!
 			{
 				if(player[pn].q<=player[pn].spt)
@@ -118,7 +118,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 
 		//down movement
 		case 4:
-			if(pip[0].ty >= 0 && pip[0].ty+pip[0].page->tilesh < pip[0].map->height && player[pn].ty == pip[0].ty+pip[0].page->tilemidposscreeny &&
+			if(pip[0].ty >= 0 && pip[0].ty+pip[0].page->th < pip[0].map->height && player[pn].ty == pip[0].ty+pip[0].page->tilemidposscreeny &&
 			!(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty))] == 0))//!(player[pn].tx == TRIGGX && player[pn].ty+1 == TRIGGY))	//collision detection!
 			{
 				if(player[pn].q<=player[pn].spt)
@@ -161,7 +161,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 
 		//up movement
 		case 0:
-			if(pip[0].ty > 0 && pip[0].ty+pip[0].page->tilesh <= pip[0].map->height && player[pn].ty == pip[0].ty+pip[0].page->tilemidposscreeny &&
+			if(pip[0].ty > 0 && pip[0].ty+pip[0].page->th <= pip[0].map->height && player[pn].ty == pip[0].ty+pip[0].page->tilemidposscreeny &&
 			!(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty-2))] == 0))//!(player[pn].tx == TRIGGX && player[pn].ty-1 == TRIGGY))	//collision detection!
 			{
 				if(player[pn].q<=player[pn].spt)
@@ -211,7 +211,7 @@ void panpagemanual(map_view_t *pip, player_t *player, word pn)
 	{
 		//right movement
 		case 3:
-			if(pip[pip[0].pan->pn].tx >= -1 && pip[pip[0].pan->pn].tx+pip[pip[0].pan->pn].page->tilesw < pip[pip[0].pan->pn].page->tilesw+1)
+			if(pip[pip[0].pan->pn].tx >= -1 && pip[pip[0].pan->pn].tx+pip[pip[0].pan->pn].page->tw < pip[pip[0].pan->pn].page->tilesw+1)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
@@ -372,9 +372,9 @@ void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 	x= mv[0].page->sw + mv[id].map->tiles->tileWidth;
 	if(player[plid].q%4)
 		if(id==0)
-			mapDrawCol(&mv[0], mv[0].tx + mv[0].page->tilesw, mv[0].ty-1, x, player, mv->page->dx);
+			mapDrawCol(&mv[0], mv[0].tx + mv[0].page->tw, mv[0].ty-1, x, player, mv->page->dx);
 		else
-			modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*(mv[0].page->tilesh+2));
+			modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*(mv[0].page->th+2));
 	//}
 }
 
@@ -403,7 +403,7 @@ void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 		if(id==0)
 			mapDrawCol(&mv[0], mv[0].tx - 1, mv[0].ty-1, x, player, mv->page->dx);
 		else
-			modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*(mv[0].page->tilesh+2));
+			modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*(mv[0].page->th+2));
 	//}
 }
 
@@ -431,7 +431,7 @@ void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 		if(id==0)
 			mapDrawRow(&mv[0], mv[0].tx - 1, mv[0].ty-1, y, player, mv->page->dy);
 		else
-			modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*(mv[0].page->tilesw+2), mv[id].map->tiles->tileHeight);
+			modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*(mv[0].page->tw+2), mv[id].map->tiles->tileHeight);
 	//}
 }
 
@@ -456,9 +456,9 @@ void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 	y= mv[0].page->sh + mv[id].map->tiles->tileHeight;
 	if(player[plid].q%3)
 		if(id==0)
-			mapDrawRow(&mv[0], mv[0].tx - 1, mv[0].ty+mv[0].page->tilesh, y, player, mv->page->dy);
+			mapDrawRow(&mv[0], mv[0].tx - 1, mv[0].ty+mv[0].page->th, y, player, mv->page->dy);
 		else
-			modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*(mv[0].page->tilesw+2), mv[id].map->tiles->tileHeight);
+			modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*(mv[0].page->tw+2), mv[id].map->tiles->tileHeight);
 	//}
 }
 
@@ -583,7 +583,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 	mv->dyThresh = mv->map->tiles->tileHeight * 2;
 
 	/* draw the tiles */
-	modexClearRegion(mv->page, 0, 0, mv->page->width+mv->map->tiles->tileWidth, mv->page->height+mv->map->tiles->tileHeight, 0);
+	modexClearRegion(mv->page, 0, 0, mv->page->width, mv->page->height, 0);
 	py=0;
 	i=mv->ty * mv->map->width + mv->tx;
 	for(ty=mv->ty-1; py < mv->page->sh+mv->dyThresh && ty < mv->map->height; ty++, py+=mv->map->tiles->tileHeight) {
