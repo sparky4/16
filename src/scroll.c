@@ -83,7 +83,7 @@ void main(int argc, char *argv[])
 		return;
 	}
 
-	pan.pn=0;
+	pan.pn=1;
 	//player[0].data = &pp;
 
 	printf("starting timer	");
@@ -160,7 +160,7 @@ void main(int argc, char *argv[])
 
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
-	for(i=0;i<gvar.video.num_of_pages-3;i++)
+	for(i=0;i<gvar.video.num_of_pages-2;i++)
 	{
 		mv[i].page = &gvar.video.page[i];
 		mv[i].map = &map;
@@ -169,11 +169,11 @@ void main(int argc, char *argv[])
 		/* set up paging */
 //TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 		mapGoTo(&mv[i], 0, 0);
-//TODO: put player in starting position of spot
 	}
 
 	//modexClearRegion(mv[0].page, 0, 0, mv[0].page->width+TILEWH, mv[0].page->height+TILEWH, 15);
 
+	//TODO: put player in starting position of spot
 	//default player position on the viewable map
 	player[panswitch].tx = mv[0].tx + mv[0].page->tilemidposscreenx;
 	player[panswitch].ty = mv[0].ty + mv[0].page->tilemidposscreeny;
@@ -208,7 +208,7 @@ void main(int argc, char *argv[])
 	if(!panswitch){
 		walk(mv, player, panswitch);
 	}else{
-		panpagemanual(mv, player, panswitch);
+		panpagemanual(mv, player, pan.pn);
 		//printf("	player[panswitch].q: %d", player[panswitch].q);	printf("	player[panswitch].d: %d\n", player[panswitch].d);
 	}
 
