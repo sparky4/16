@@ -160,35 +160,34 @@ void main(int argc, char *argv[])
 
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
-	for(i=0;i<gvar.video.num_of_pages-2;i++)
+	for(i=0;i<gvar.video.num_of_pages-3;i++)
 	{
 		mv[i].page = &gvar.video.page[i];
 		mv[i].map = &map;
 		mv[i].video = &gvar.video;
 		mv[i].pan	= &pan;
+		/* set up paging */
+//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
+		mapGoTo(&mv[i], -1, -1);
+//TODO: put player in starting position of spot
 	}
 
-	/* set up paging */
-//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
-	mapGoTo(&mv[0], -1, -1);
-	mapGoTo(&mv[1], -1, -1);
-	//TODO: put player in starting position of spot
 	//default player position on the viewable map
 	player[panswitch].tx = mv[0].tx + mv[0].page->tilemidposscreenx;
 	player[panswitch].ty = mv[0].ty + mv[0].page->tilemidposscreeny;
 	IN_initplayer(&player, 0);
 	IN_initplayer(&player, 1);
 
-	modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
+//	modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
 #ifndef	SPRITE
-	modexClearRegion(mv[1].page, player[panswitch].x-4, player[panswitch].y-TILEWH, 24, 32, 15);
+//	modexClearRegion(mv[1].page, player[panswitch].x-4, player[panswitch].y-TILEWH, 24, 32, 15);
 #else
 	//PBUFSFUN(mv[1].page, player[panswitch].x-4, player[panswitch].y-TILEWH, 24, 64, 24, 32,	PLAYERBMPDATA);
-	PBUFSFUN(mv[1].page, player[panswitch].x-4, player[panswitch].y-TILEWH, 24, 64, 24, 32,	&pp);
+//	PBUFSFUN(mv[1].page, player[panswitch].x-4, player[panswitch].y-TILEWH, 24, 64, 24, 32,	&pp);
 #endif
 
-	modexShowPage(mv[1].page);
-	shinku_fps_indicator_page = 1; // we're on page 1 now, shinku(). follow along please or it will not be visible.
+	modexShowPage(mv[pan.pn].page);
+	shinku_fps_indicator_page = 0; // we're on page 1 now, shinku(). follow along please or it will not be visible.
 	//modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 1);
 #ifdef MODEX
 #ifdef FADE
