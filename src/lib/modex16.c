@@ -148,11 +148,13 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 		}
 		break;
 	}
-	gv->video.page[0].tilesw = gv->video.page[0].sw/TILEWH;
-	gv->video.page[0].tilesh = gv->video.page[0].sh/TILEWH;
+
+//	gv->video.page[0].tw = gv->video.page[0].sw/TILEWH;
+//	gv->video.page[0].th = gv->video.page[0].sh/TILEWH;
+
 	//TODO MAKE FLEXIBLE~
-	gv->video.page[0].tilemidposscreenx = gv->video.page[0].tilesw;
-	gv->video.page[0].tilemidposscreeny = (gv->video.page[0].tilesh/2)+1;
+//	gv->video.page[0].tilemidposscreenx = gv->video.page[0].tilesw;
+//	gv->video.page[0].tilemidposscreeny = (gv->video.page[0].tilesh/2)+1;
 }
 
 void
@@ -176,10 +178,10 @@ modexDefaultPage(page_t *p)
 	page.height = p->sh+TILEWHD;
 	page.tw = page.sw/TILEWH;
 	page.th = page.sh/TILEWH;
+	page.tilesw=page.width/TILEWH;
+	page.tilesh=page.height/TILEWH;
 	page.tilemidposscreenx = page.tw/2;
 	page.tilemidposscreeny = (page.th/2)+1;
-	page.tilesw=p->tilesw;
-	page.tilesh=p->tilesh;
 	page.pagesize = (sdiword)page.width*page.height;
 	page.id = 0;
 
@@ -198,8 +200,10 @@ modexNextPage(page_t *p) {
     result.dy = 0;
     result.width = p->width;
     result.height = p->height;
-	result.tw = p->width/TILEWH;
-	result.th = p->height/TILEWH;
+	result.tw = p->tw;
+	result.th = p->th;
+	result.tilesw = p->tilesw;
+	result.tilesh = p->tilesh;
 	result.id = p->id+1;
 	result.pagesize = p->pagesize;
 
@@ -217,8 +221,10 @@ modexNextPageFlexibleSize(page_t *p, word x, word y)
 	result.dy = 0;
 	result.width = x;
 	result.height = y;
-	result.tw = p->width/TILEWH;
-	result.th = p->height/TILEWH;
+	result.tw = result.sw/TILEWH;
+	result.th = result.sh/TILEWH;
+	result.tilesw=result.width/TILEWH;
+	result.tilesh=result.height/TILEWH;
 	result.id = p->id+1;
 	result.pagesize = (sdiword)result.width*result.height;
 

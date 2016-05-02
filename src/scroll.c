@@ -170,21 +170,21 @@ void main(int argc, char *argv[])
 
 	/* set up paging */
 //TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
-	mapGoTo(&mv[0], 0, 0);
-	mapGoTo(&mv[1], 0, 0);
+	mapGoTo(&mv[0], -1, -1);
+	mapGoTo(&mv[1], -1, -1);
 	//TODO: put player in starting position of spot
 	//default player position on the viewable map
-	player[0].tx = mv[0].tx + mv[0].page->tilemidposscreenx;
-	player[0].ty = mv[0].ty + mv[0].page->tilemidposscreeny;
+	player[panswitch].tx = mv[0].tx + mv[0].page->tilemidposscreenx;
+	player[panswitch].ty = mv[0].ty + mv[0].page->tilemidposscreeny;
 	IN_initplayer(&player, 0);
 	IN_initplayer(&player, 1);
 
 	modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
 #ifndef	SPRITE
-	modexClearRegion(mv[1].page, player[0].x-4, player[0].y-TILEWH, 24, 32, 15);
+	modexClearRegion(mv[1].page, player[panswitch].x-4, player[panswitch].y-TILEWH, 24, 32, 15);
 #else
-	//PBUFSFUN(mv[1].page, player[0].x-4, player[0].y-TILEWH, 24, 64, 24, 32,	PLAYERBMPDATA);
-	PBUFSFUN(mv[1].page, player[0].x-4, player[0].y-TILEWH, 24, 64, 24, 32,	&pp);
+	//PBUFSFUN(mv[1].page, player[panswitch].x-4, player[panswitch].y-TILEWH, 24, 64, 24, 32,	PLAYERBMPDATA);
+	PBUFSFUN(mv[1].page, player[panswitch].x-4, player[panswitch].y-TILEWH, 24, 64, 24, 32,	&pp);
 #endif
 
 	modexShowPage(mv[1].page);
@@ -195,27 +195,26 @@ void main(int argc, char *argv[])
 	modexFadeOn(4, gpal);
 #endif
 #endif
-	while(!IN_KeyDown(sc_Escape) && player[0].hp>0)
+	while(!IN_KeyDown(sc_Escape) && player[panswitch].hp>0)
 	{
 		shinku(&gvar);
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
-	//when player[0].tx or player[0].ty == 0 or player[0].tx == 20 or player[0].ty == 15 then stop because that is edge of map and you do not want to walk of the map
+	//when player[panswitch].tx or player[panswitch].ty == 0 or player[panswitch].tx == 20 or player[panswitch].ty == 15 then stop because that is edge of map and you do not want to walk of the map
 
 	//player movement
+		IN_ReadControl(panswitch,&player);
 	if(!panswitch){
-		IN_ReadControl(0,&player);
-		walk(mv, player, 0);
+		walk(mv, player, panswitch);
 	}else{
-		IN_ReadControl(1,&player);
-		panpagemanual(mv, player, 1);
-		//printf("	player[1].q: %d", player[1].q);	printf("	player[1].d: %d\n", player[1].d);
+		panpagemanual(mv, player, panswitch);
+		//printf("	player[panswitch].q: %d", player[panswitch].q);	printf("	player[panswitch].d: %d\n", player[panswitch].d);
 	}
 
 
 	//the scripting stuff....
-	//if(((player[0].triggerx == TRIGGX && player[0].triggery == TRIGGY) && IN_KeyDown(0x1C))||(player[0].tx == 5 && player[0].ty == 5))
-	if(((mv[0].map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))] == 0) && IN_KeyDown(0x1C))||(player[0].tx == 5 && player[0].ty == 5))
+	//if(((player[panswitch].triggerx == TRIGGX && player[panswitch].triggery == TRIGGY) && IN_KeyDown(0x1C))||(player[panswitch].tx == 5 && player[panswitch].ty == 5))
+	if(((mv[panswitch].map->data[(player[panswitch].triggerx-1)+(map.width*(player[panswitch].triggery-1))] == 0) && IN_KeyDown(0x1C))||(player[panswitch].tx == 5 && player[panswitch].ty == 5))
 	{
 		short i;
 		for(i=800; i>=400; i--)
@@ -224,7 +223,7 @@ void main(int argc, char *argv[])
 		}
 		nosound();
 	}
-	if(player[0].q == (TILEWH/(player[0].speed))+1 && player[0].info.dir != 2 && (player[0].triggerx == 5 && player[0].triggery == 5)){ player[0].hp--; }
+	if(player[panswitch].q == (TILEWH/(player[panswitch].speed))+1 && player[panswitch].info.dir != 2 && (player[panswitch].triggerx == 5 && player[panswitch].triggery == 5)){ player[panswitch].hp--; }
 	//debugging binds!
 	//if(IN_KeyDown(0x0E)) while(1){ if(xmsmalloc(24)) break; }
 	if(IN_KeyDown(2)){ modexShowPage(mv[0].page); pan.pn=0; }
@@ -238,7 +237,7 @@ void main(int argc, char *argv[])
 #ifdef FADE
 	if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv[0].page); modexpdump(mv[1].page); }
 	if(IN_KeyDown(22)){
-	paloffset=0; modexPalBlack(); modexPalUpdate(&player[0].data, &paloffset, 0, 0);
+	paloffset=0; modexPalBlack(); modexPalUpdate(&player[panswitch].data, &paloffset, 0, 0);
 	printf("1paloffset	=	%d\n", paloffset/3);
 	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	printf("2paloffset	=	%d\n", paloffset/3);
@@ -276,7 +275,7 @@ void main(int argc, char *argv[])
 	//9
 	if(IN_KeyDown(10)){ modexPalOverscan(default_pal, rand()%56); modexPalUpdate1(default_pal); }
 	//if(IN_KeyDown(11)){ modexPalOverscan(default_pal, 15); }
-	if((player[0].q==1) && !(player[0].x%TILEWH==0 && player[0].y%TILEWH==0)) break;	//incase things go out of sync!
+	if((player[panswitch].q==1) && !(player[panswitch].x%TILEWH==0 && player[panswitch].y%TILEWH==0)) break;	//incase things go out of sync!
 	}
 
 	/* fade back to text mode */
@@ -294,14 +293,14 @@ void main(int argc, char *argv[])
 	printf("version %s\n", VERSION);
 	printf("tx: %d\n", mv[0].tx);
 	printf("ty: %d\n", mv[0].ty);
-	printf("player[0].x: %d", player[0].x); printf("		player[0].y: %d\n", player[0].y);
+	printf("player.x: %d", player[panswitch].x); printf("		player.y: %d\n", player[panswitch].y);
 	//if(player[0].hp==0) printf("%d wwww\n", player[0].y+8);
 	//else printf("\nplayer[0].y: %d\n", player[0].y);
-	printf("player[0].tx: %d", player[0].tx); printf("		player[0].ty: %d\n", player[0].ty);
-	printf("player[0].triggx: %d", player[0].triggerx); printf("	player[0].triggy: %d\n", player[0].triggery);
-	printf("player[0].hp: %d", (player[0].hp));	printf("	player[0].q: %d", player[0].q);	printf("	player[0].info.dir: %d", player[0].info.dir);	printf("	player[0].d: %d ", player[0].d);
-		printf("pdir=%d\n", player[0].pdir);
-	printf("tile data value at player trigger position: %d\n", mv[0].map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))]);
+	printf("player.tx: %d", player[panswitch].tx); printf("		player.ty: %d\n", player[panswitch].ty);
+	printf("player.triggx: %d", player[panswitch].triggerx); printf("	player.triggy: %d\n", player[panswitch].triggery);
+	printf("player.hp: %d", (player[panswitch].hp));	printf("	player.q: %d", player[panswitch].q);	printf("	player.info.dir: %d", player[panswitch].info.dir);	printf("	player.d: %d ", player[panswitch].d);
+		printf("pdir=%d\n", player[panswitch].pdir);
+	printf("tile data value at player trigger position: %d\n", mv[0].map->data[(player[panswitch].triggerx-1)+(map.width*(player[panswitch].triggery-1))]);
 //	printf("palette offset:	%d\n", paloffset/3);
 //++++	printf("Total used: %zu\n", oldfreemem-GetFreeSize());
 //++++	printf("Total free: %zu\n", GetFreeSize());
@@ -309,7 +308,8 @@ void main(int argc, char *argv[])
 //not used now	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
 	printf("Virtual Screen: %dx", gvar.video.page[0].width);	printf("%d\n", gvar.video.page[0].height);
 	printf("Screen: %dx", gvar.video.page[0].sw);	printf("%d\n", gvar.video.page[0].sh);
-	printf("tile resolution: %dx", gvar.video.page[0].tilesh);	printf("%d ", gvar.video.page[0].tilesh);
+	printf("virtual tile resolution: %dx", gvar.video.page[0].tilesw);	printf("%d\n", gvar.video.page[0].tilesh);
+	printf("tile resolution: %dx", gvar.video.page[0].tw);	printf("%d \n", gvar.video.page[0].th);
 	printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);
 	printf("video memory remaining: %ld\n", gvar.video.vmem_remain);
 	printf("page ");
@@ -319,7 +319,7 @@ void main(int argc, char *argv[])
 		printf("(%Fp)\n", (gvar.video.page[i].data));
 	}
 	printf("mv[%u].tx: %d", pan.pn, mv[pan.pn].tx); printf("	mv[%u].ty: %d\n", pan.pn, mv[pan.pn].ty);
-	printf("player[1].q: %d", player[1].q);	printf("	player[1].d: %d\n", player[1].d);
+	//printf("player[1].q: %d", player[1].q);	printf("	player[1].d: %d\n", player[1].d);
 	printf("\n");
 //	printf("Screen2: %dx", gvar.video.page[1].width);	printf("%d\n", gvar.video.page[1].height);
 //	printf("map: %dx%d\n", map.width, map.height);

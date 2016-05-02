@@ -204,63 +204,64 @@ void walk(map_view_t *pip, player_t *player, word pn)
 	}
 }
 
+//panning page
 void panpagemanual(map_view_t *pip, player_t *player, word pn)
 {
 	switch(player[pn].d)
 	{
 		//right movement
 		case 3:
-			if(pip[pip[0].pan->pn].tx >= -TILEWH && pip[pip[0].pan->pn].tx+pip[pip[0].pan->pn].page->tilesw < pip[pip[0].pan->pn].map->width+TILEWH)
+			if(pip[pip[0].pan->pn].tx >= -1 && pip[pip[0].pan->pn].tx+pip[pip[0].pan->pn].page->tilesw < pip[pip[0].pan->pn].page->tilesw+1)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
-					pip[pip[0].pan->pn].page->dx++;
+					pip[pip[0].pan->pn].page->dx+=4;
 					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; }//pip[pip[0].pan->pn].tx++; }
+				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].tx++; }
 			}
-			printf("player[pn].d=%u player[pn].q=%u\n", player[pn].d, player[pn].q);
 		break;
 
 		//left movement
 		case 1:
-			if(pip[pip[0].pan->pn].tx > -TILEWH && pip[pip[0].pan->pn].tx+pip[pip[0].pan->pn].page->tilesw <= pip[pip[0].pan->pn].map->width+TILEWH)
+			if(pip[pip[0].pan->pn].tx > -1 && pip[pip[0].pan->pn].tx+pip[pip[0].pan->pn].page->tilesw <= pip[pip[0].pan->pn].page->tilesw+1)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
-					pip[pip[0].pan->pn].page->dx--;
+					pip[pip[0].pan->pn].page->dx-=4;
 					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; }//pip[pip[0].pan->pn].tx--; }
+				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].tx--; }
 			}
 		break;
 
 		//down movement
 		case 4:
-			if(pip[pip[0].pan->pn].ty >= -TILEWH && pip[pip[0].pan->pn].ty+pip[pip[0].pan->pn].page->tilesh < pip[pip[0].pan->pn].map->height+TILEWH)
+			if(pip[pip[0].pan->pn].ty >= -1 && pip[pip[0].pan->pn].ty+pip[pip[0].pan->pn].page->tilesh < pip[pip[0].pan->pn].page->tilesh+1)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
-					pip[pip[0].pan->pn].page->dy++;
+					pip[pip[0].pan->pn].page->dy+=4;
 					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; }//pip[pip[0].pan->pn].ty++; }
+				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].ty++; }
 			}
 		break;
 
 		//up movement
 		case 0:
-			if(pip[pip[0].pan->pn].ty > -TILEWH && pip[pip[0].pan->pn].ty+pip[pip[0].pan->pn].page->tilesh <= pip[pip[0].pan->pn].map->height+TILEWH)
+			if(pip[pip[0].pan->pn].ty > -1 && pip[pip[0].pan->pn].ty+pip[pip[0].pan->pn].page->tilesh <= pip[pip[0].pan->pn].page->tilesh+1)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
-					pip[pip[0].pan->pn].page->dy--;
+					pip[pip[0].pan->pn].page->dy-=4;
 					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; }//pip[pip[0].pan->pn].ty--; }
+				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].ty--; }
 			}
 			break;
 	}
+	//if (player[pn].d!=2) printf("player[%u].d=%u player[%u].q=%u\n", pn, player[pn].d, pn, player[pn].q);
 }
 
 /*map_t
