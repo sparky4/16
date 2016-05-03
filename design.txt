@@ -72,3 +72,14 @@ be used to turn off stack checking, so no stack checking routines get called.
 [15:07]	joncampbell123m	the simplest way is to compute a rectangle that covers them all
 [15:07]	joncampbell123m	then redraw that.
 [15:08]	joncampbell123m	Then optimize the code from there how you handle it
+
+
+
+
+screen set up 2 rendering screens lock together
+1 scrolls the other one follow
+
+pointers from 2nd screen follows the 1st
+size and dimentions and stuff are the same but addresses are different
+data is different 
+
