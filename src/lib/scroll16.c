@@ -27,11 +27,12 @@
 void walk(map_view_t *pip, player_t *player, word pn)
 {
 	#define INC_PER_FRAME if(player[pn].q&1) player[pn].persist_aniframe++; if(player[pn].persist_aniframe>4) player[pn].persist_aniframe = 1;
+	//printf("player[%d].d=%d\n", pn, player[pn].d);
 	switch(player[pn].d)
 	{
 		//right movement
 		case 3:
-			//printf("pip[0].page->tilesw=%d\n", pip[0].page->tilesw);
+			//printf("pip[0].page->tilesw=%d	", pip[0].page->tilesw); printf("pip[0].page->tw=%d\n", pip[0].page->tw);
 			if(pip[0].tx >= 0 && pip[0].tx+pip[0].page->tw < pip[0].map->width && player[pn].tx == pip[0].tx+pip[0].page->tilemidposscreenx &&
 			!(pip[0].map->data[(player[pn].tx)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx+1 == TRIGGX && player[pn].ty == TRIGGY))	//collision detection!
 			{
@@ -717,7 +718,7 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 }*/
 
 unsigned char shinku_fps_indicator_page = 0;
-boolean pageflipflop;
+boolean pageflipflop=0;
 //gv->video.p
 
 /*	sync	*/
