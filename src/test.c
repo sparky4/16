@@ -39,6 +39,28 @@ void main(int argc, char *argv[])
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
 
+
+	// DOSLIB: check our environment
+	probe_dos();
+
+	// DOSLIB: what CPU are we using?
+	// NTS: I can see from the makefile Sparky4 intends this to run on 8088 by the -0 switch in CFLAGS.
+	//      So this code by itself shouldn't care too much what CPU it's running on. Except that other
+	//      parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
+	//      the CPU to carry out tasks. --J.C.
+	cpu_probe();
+
+	// DOSLIB: check for VGA
+	if (!probe_vga()) {
+		printf("VGA probe failed\n");
+		return;
+	}
+	// hardware must be VGA or higher!
+	if (!(vga_state.vga_flags & VGA_IS_VGA)) {
+		printf("This program requires VGA or higher graphics hardware\n");
+		return;
+	}
+
 	/* load our palette */
 	modexLoadPalFile("data/default.pal", &pal2);
 
@@ -48,25 +70,29 @@ void main(int argc, char *argv[])
 	modexFadeOff(1, pal);
 	modexPalBlack();
 
-	VGAmodeX(bakapee, 1, &gvar);
-	modexPalBlack();
-
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
 
+	textInit();
+	VGAmodeX(bakapee, 1, &gvar);
+	modexPalBlack();
+
 	/* set up the page, but with 16 pixels on all borders in offscreen mem */
-	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
-	gvar.video.page[1] = modexNextPage(&gvar.video.page[0]);
-	gvar.video.page[0].width += 32;
-	gvar.video.page[0].height += 32;
+	modexHiganbanaPageSetup(&gvar.video);
+// 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
+// 	gvar.video.page[1] = modexNextPage(&gvar.video.page[0]);
+// 	gvar.video.page[0].width += 32;
+// 	gvar.video.page[0].height += 32;
 
 
 	/* fill the page with one color, but with a black border */
 	modexShowPage(&gvar.video.page[1]);
+	//modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].width, gvar.video.page[0].height, 0);
 	modexClearRegion(&gvar.video.page[0], 16, 16, gvar.video.page[0].sw, gvar.video.page[0].sh, 128);
 	modexClearRegion(&gvar.video.page[0], 32, 32, gvar.video.page[0].sw-32, gvar.video.page[0].sh-32, 42);
 	modexClearRegion(&gvar.video.page[0], 48, 48, gvar.video.page[0].sw-64, gvar.video.page[0].sh-64, 128);
 	modexShowPage(&gvar.video.page[0]);
+	modexCopyPageRegion(&gvar.video.page[1], &gvar.video.page[0], 0, 0, 0, 0, gvar.video.page[0].width, gvar.video.page[0].height);
 
 	/* fade in */
 	modexFadeOn(1, pal2);
@@ -113,9 +139,16 @@ void main(int argc, char *argv[])
 	modexFadeOff(1, pal2);
 	modexPalBlack();
 	VGAmodeX(0, 1, &gvar);
-	IN_Shutdown();
 	printf("Project 16 test.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
+	printf("video memory remaining: %ld\n", gvar.video.vmem_remain);
+	printf("page ");
+	for(i=0; i<gvar.video.num_of_pages;i++)
+	{
+		printf("	[%u]=", i);
+		printf("(%Fp)\n", (gvar.video.page[i].data));
+	}
+	IN_Shutdown();
 	modexPalBlack();
 	modexFadeOn(1, pal);
 }

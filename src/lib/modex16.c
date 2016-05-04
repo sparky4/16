@@ -155,6 +155,7 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 	//TODO MAKE FLEXIBLE~
 //	gv->video.page[0].tilemidposscreenx = gv->video.page[0].tilesw;
 //	gv->video.page[0].tilemidposscreeny = (gv->video.page[0].tilesh/2)+1;
+	gv->video.num_of_pages=0;
 }
 
 void
@@ -234,12 +235,12 @@ modexNextPageFlexibleSize(page_t *p, word x, word y)
 void modexCalcVmemRemain(video_t *video)
 {
 	byte i;
-	printf("\n\n	1st vmem_remain=%ld\n", video->vmem_remain);
+	//printf("\n\n	1st vmem_remain=%ld\n", video->vmem_remain);
 	for(i=0; i<=video->num_of_pages-1; i++)
 	{
 		video->vmem_remain-=video->page[i].pagesize;
-		printf("		[%u], video->page[i].pagesize=%ld\n", i, video->page[i].pagesize);
-		printf("		[%u], vmem_remain=%ld\n", i, video->vmem_remain);
+		//printf("		[%u], video->page[i].pagesize=%ld\n", i, video->page[i].pagesize);
+		//printf("		[%u], vmem_remain=%ld\n", i, video->vmem_remain);
 	}
 }
 

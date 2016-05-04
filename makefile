@@ -66,7 +66,7 @@ UPXQ=-qqq
 AFLAGS=-mh -0 -d1
 16FLAGS=-fh=16.hed
 BAKAPIFLAGS=-fh=bakapi.hed
-SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#55808#60000
+SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#54096#60000
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
 ZFLAGS=-zk0 -zc -zp8 $(WCLQ) ## -zm
 CFLAGS=$(AFLAGS) $(IFLAGS)-lr -l=dos -wo -i$(DOSLIB)##wwww
@@ -117,11 +117,11 @@ tesuto.exe: tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
 tesuto.$(OBJ): $(SRC)tesuto.c
 	wcl $(FLAGS) $(WCLQ) -c $(SRC)tesuto.c
 
-test.exe: test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ)
-	wcl $(FLAGS) test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ) -fm=test.mah
+test.exe: test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ) $(DOSLIBLIBS)
+	wcl $(FLAGS) test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ) $(DOSLIBLIBS) -fm=test.mah
 
-test2.exe: test2.$(OBJ) gfx.lib
-	wcl $(FLAGS) test2.$(OBJ) gfx.lib -fm=test2.mah
+test2.exe: test2.$(OBJ) $(DOSLIBLIBS) gfx.lib
+	wcl $(FLAGS) test2.$(OBJ) $(DOSLIBLIBS) gfx.lib -fm=test2.mah
 
 fonttest.exe: fonttest.$(OBJ) $(16LIB) gfx.lib
 	wcl $(FLAGS) fonttest.$(OBJ) $(16LIB) gfx.lib -fm=fonttest.mah
