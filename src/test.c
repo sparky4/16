@@ -30,7 +30,7 @@ player_t player[MaxPlayers];
 void main(int argc, char *argv[])
 {
 	int i, j;
-	word start, end;
+	word startclk, endclk;
 	word p, k;
 	byte *pal, *pal2;
 	sword bakapee;
@@ -97,11 +97,12 @@ void main(int argc, char *argv[])
 	/* fade in */
 	modexFadeOn(1, pal2);
 
-	i=0,k=0,j=0,p=0;
-	start = *clockw;
-	while(!IN_KeyDown(sc_Escape) && i<5)
+	i=0,k=0,j=0,p=1;
+	startclk = *clockw;
+	while(!IN_KeyDown(sc_Escape))
 	{
 		IN_ReadControl(0,&player);
+		if(i<5){
 		switch (k)
 		{
 			case 0:
@@ -127,13 +128,17 @@ void main(int argc, char *argv[])
 			default:
 
 			break;
+		}}else{
+			modexClearRegion(&gvar.video.page[1], 0, gvar.video.page[0].height/2, gvar.video.page[0].width-32, 16, 45);
+			if(IN_KeyDown(6)) modexClearRegion(&gvar.video.page[1], 0, gvar.video.page[0].height/2, gvar.video.page[0].width, 16, 45);
 		}
 		if(IN_KeyDown(2)) p=0;
 		if(IN_KeyDown(3)) p=1;
+		//if(IN_KeyDown(6)) modexClearRegion(&gvar.video.page[1], 0, 0, gvar.video.page[0].sw-64, gvar.video.page[0].sh-16, 45);
 		modexShowPage(&gvar.video.page[p]);
 	}
 
-	end = *clockw;
+	endclk = *clockw;
 
 	/* fade back to text mode */
 	modexFadeOff(1, pal2);
