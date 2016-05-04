@@ -11,226 +11,26 @@ chkmap ok
 		[2], vmem_remain=256
 		[3], video->page[i].pagesize=256
 		[3], vmem_remain=0
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=2
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=2
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=2
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=2
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=2
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=3
-pip[0].page->tilesw=22	pip[0].page->tw=20
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=4
-player[0].d=4
-player[0].d=4
-player[0].d=4
-player[0].d=4
-player[0].d=2
-player[0].d=4
-player[0].d=4
-player[0].d=4
-player[0].d=4
-player[0].d=4
-player[0].d=2
-player[0].d=4
-player[0].d=4
-player[0].d=4
-player[0].d=4
-player[0].d=4
-player[0].d=2
-player[0].d=4
-player[0].d=4
-player[0].d=4
-player[0].d=4
-player[0].d=4
-player[0].d=2
-player[0].d=4
-player[0].d=4
-player[0].d=4
-player[0].d=4
-player[0].d=4
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=2
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=2
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=2
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=2
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=2
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=2
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=2
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=2
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=0
-player[0].d=2
-player[0].d=1
-player[0].d=1
-player[0].d=1
-player[0].d=1
-player[0].d=1
-player[0].d=2
-player[0].d=1
-player[0].d=1
-player[0].d=1
-player[0].d=1
-player[0].d=1
-player[0].d=2
-player[0].d=1
-player[0].d=1
-player[0].d=1
-player[0].d=1
-player[0].d=1
-player[0].d=2
-player[0].d=1
-player[0].d=1
-player[0].d=1
-player[0].d=1
-player[0].d=1
-player[0].d=2
-player[0].d=2
 Project 16 scroll.exe. This is just a test file!
-version May  3 2016 13:10:29
-tx: 2
-ty: 0
-player.x: 160		player.y: 80
-player.tx: 12		player.ty: 5
-player.triggx: 11	player.triggy: 5
+version May  4 2016 10:25:12
+tx: 15
+ty: 4
+player.x: 160		player.y: 128
+player.tx: 25		player.ty: 12
+player.triggx: 24	player.triggy: 12
 player.hp: 4	player.q: 1	player.info.dir: 2	player.d: 2 pdir=1
-tile data value at player trigger position: 1
+tile data value at player trigger position: 3
 Virtual Screen: 352x272
 Screen: 320x240
 virtual tile resolution: 22x17
 tile resolution: 20x15 
 middle tile position: 10x8
 video memory remaining: 0
-page 	[0]=(a000:0008)
-	[1]=(a000:5d88)
-	[2]=(a000:bb8c)
-	[3]=(a000:000c)
-mv[1].tx: 2	mv[1].ty: 0	panswitch=0
+page 	[0]=(a000:163c)
+	[1]=(a000:73bc)
+	[2]=(a000:bd14)
+	[3]=(a000:010c)
+mv[1].tx: 15	mv[1].ty: 4	panswitch=0
 
 
 detected CPU type: 386 or newer

@@ -40,7 +40,9 @@ static planar_buf_t huge *pp;
 float t;
 sword bakapee;
 pan_t pan;
+//debugswitches
 boolean panswitch=0;
+boolean pageflipflop=1;
 	unsigned int i;
 	const char *cpus;
 	//static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
@@ -169,8 +171,7 @@ void main(int argc, char *argv[])
 	}
 	/* set up paging */
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
-	mapGoTo(&mv[0], 0, 0);
-	mapGoTo(&mv[1], 0, 0);
+	mapGoTo(mv, 0, 0);
 	//modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[1].page->width, mv[1].page->height);
 
 	//TODO: put player in starting position of spot
@@ -187,8 +188,9 @@ void main(int argc, char *argv[])
 	PBUFSFUN(mv[1].page, player[0].x-4, player[0].y-TILEWH, 24, 64, 24, 32,	&pp);
 #endif
 
-	modexShowPage(mv[1].page);
-	shinku_fps_indicator_page = 1; // we're on page 1 now, shinku(). follow along please or it will not be visible.
+	if(!pageflipflop)	modexShowPage(mv[1].page);
+	else			modexShowPage(mv[(gvar.video.p)].page);
+		shinku_fps_indicator_page = 1; // we're on page 1 now, shinku(). follow along please or it will not be visible.
 	//modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 1);
 #ifdef MODEX
 #ifdef FADE
@@ -207,7 +209,7 @@ void main(int argc, char *argv[])
 	if(!panswitch){
 		walk(mv, player, 0);
 	}else{
-		panpagemanual(mv, player, pan.pn);
+		panpagemanual(mv, player, 0);
 		//printf("	player[0].q: %d", player[0].q);	printf("	player[0].d: %d\n", player[0].d);
 	}
 
