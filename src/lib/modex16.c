@@ -185,7 +185,7 @@ modexDefaultPage(page_t *p)
 	page.tilesh=page.height/TILEWH;
 	page.tilemidposscreenx = page.tw/2;
 	page.tilemidposscreeny = (page.th/2)+1;
-	page.pagesize = (sdiword)page.width*page.height;
+	page.pagesize = (sdiword)(page.width/4)*page.height;
 	page.id = 0;
 
     return page;
@@ -198,7 +198,7 @@ page_t
 modexNextPage(page_t *p) {
     page_t result;
 
-    result.data = p->data + (byte)(p->width/4)*p->height;
+    result.data = p->data + (p->pagesize);
     result.dx = 0;
     result.dy = 0;
     result.width = p->width;
@@ -219,7 +219,7 @@ modexNextPageFlexibleSize(page_t *p, word x, word y)
 {
 	page_t result;
 
-	result.data = p->data + (byte)(p->width/4)*p->height;  /* compute the offset */
+	result.data = p->data + (p->pagesize);  /* compute the offset */
 	result.dx = 0;
 	result.dy = 0;
 	result.width = x;
@@ -229,7 +229,7 @@ modexNextPageFlexibleSize(page_t *p, word x, word y)
 	result.tilesw=result.width/TILEWH;
 	result.tilesh=result.height/TILEWH;
 	result.id = p->id+1;
-	result.pagesize = (sdiword)result.width*result.height;
+	result.pagesize = (sdiword)(result.width/4)*result.height;
 
 	return result;
 }
@@ -252,8 +252,8 @@ void modexHiganbanaPageSetup(video_t *video)
 	(video->page[0]) = modexDefaultPage(&(video->page[0]));	video->num_of_pages++;
 	//video->page[0].width += (TILEWHD); video->page[0].height += (TILEWHD);
 	(video->page[1]) = modexNextPage(&(video->page[0]));	video->num_of_pages++;
-	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), video->page[0].width, video->page[0].sh-40);	video->num_of_pages++;
-	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), TILEWH, TILEWH);	video->num_of_pages++;
+	//(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), video->page[0].width, video->page[0].sh-40);	video->num_of_pages++;
+	//(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), TILEWH, TILEWH);	video->num_of_pages++;
 	modexCalcVmemRemain(video);
 	video->p=0;
 }
