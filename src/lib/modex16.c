@@ -170,7 +170,9 @@ modexDefaultPage(page_t *p)
     page_t page;
 
     /* default page values */
-    page.data = vga_state.vga_graphics_ram;//VGA;
+	//page.data = VGA;
+	//page.data = (byte far *)(vga_state.vga_graphics_ram);
+	page.data = (vga_state.vga_graphics_ram);
     page.dx = 0;
     page.dy = 0;
 	page.sw = p->sw;
