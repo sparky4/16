@@ -35,7 +35,7 @@ player_t player[MaxPlayers];
 //page_t screen, gvar.video.page[1], gvar.video.page[2];
 map_view_t mv[3];
 bitmap_t p;
-word pn=0;
+//word pn=0; //i forgot ww
 static planar_buf_t huge *pp;
 float t;
 sword bakapee;

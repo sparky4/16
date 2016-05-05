@@ -23,15 +23,18 @@
 #include <stdio.h>
 #include "src/lib/modex16.h"
 #include "src/lib/16_in.h"
+#include "src/lib/scroll16.h"
 
 global_game_variables_t gvar;
 player_t player[MaxPlayers];
+map_view_t mv[2];
+pan_t pan;
 
 void main(int argc, char *argv[])
 {
 	int i, j;
 	word startclk, endclk;
-	word p, k;
+	word k;
 	byte *pal, *pal2;
 	sword bakapee;
 
@@ -79,6 +82,12 @@ void main(int argc, char *argv[])
 
 	/* set up the page, but with 16 pixels on all borders in offscreen mem */
 	modexHiganbanaPageSetup(&gvar.video);
+	for(i=0;i<gvar.video.num_of_pages-2;i++)
+	{
+		mv[i].page = &gvar.video.page[i];
+		mv[i].video = &gvar.video;
+		mv[i].pan	= &pan;
+	}
 // 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 // 	gvar.video.page[1] = modexNextPage(&gvar.video.page[0]);
 // 	gvar.video.page[0].width += 32;
@@ -97,7 +106,7 @@ void main(int argc, char *argv[])
 	/* fade in */
 	modexFadeOn(1, pal2);
 
-	i=0,k=0,j=0,p=1;
+	i=0,k=0,j=0,pan.pn=1;
 	startclk = *clockw;
 	while(!IN_KeyDown(sc_Escape))
 	{
@@ -108,23 +117,23 @@ void main(int argc, char *argv[])
 			case 0:
 				pee:
 				/* go right */
-				gvar.video.page[p].dx++;
+				gvar.video.page[pan.pn].dx++;
 				if(i==5){ if(j>=31){ i++; j=0; goto baka; }else j++; }else
 				if(j>=32){ k++; j=0; }else j++;
 			break;
 			case 1:
 				/* go left */
-				gvar.video.page[p].dx--;
+				gvar.video.page[pan.pn].dx--;
 				if(j>=32){ k++; j=0; }else j++;
 			break;
 			case 2:
 				/* go up */
-				gvar.video.page[p].dy++;
+				gvar.video.page[pan.pn].dy++;
 				if(j>=32){ k++; j=0; }else j++;
 			break;
 			case 3:
 				/* go down */
-				gvar.video.page[p].dy--;
+				gvar.video.page[pan.pn].dy--;
 				if(j>=32){ k=0; j=0; i++; }else j++;
 			break;
 			default:
@@ -141,11 +150,12 @@ void main(int argc, char *argv[])
 				modexClearRegion(&gvar.video.page[1], 32, 32, gvar.video.page[1].sw-32, gvar.video.page[1].sh-32, 42);
 				modexClearRegion(&gvar.video.page[1], 48, 48, gvar.video.page[1].sw-64, gvar.video.page[1].sh-64, 128);
 			}
+			panpagemanual(mv, player, 0);
 		}
-		if(IN_KeyDown(2)) p=0;
-		if(IN_KeyDown(3)) p=1;
+		if(IN_KeyDown(2)) pan.pn=0;
+		if(IN_KeyDown(3)) pan.pn=1;
 		//if(IN_KeyDown(6)) modexClearRegion(&gvar.video.page[1], 0, 0, gvar.video.page[0].sw-64, gvar.video.page[0].sh-16, 45);
-		modexShowPage(&gvar.video.page[p]);
+		modexShowPage(&gvar.video.page[pan.pn]);
 	}
 
 	endclk = *clockw;

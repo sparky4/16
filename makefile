@@ -117,8 +117,8 @@ tesuto.exe: tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
 tesuto.$(OBJ): $(SRC)tesuto.c
 	wcl $(FLAGS) $(WCLQ) -c $(SRC)tesuto.c
 
-test.exe: test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ) $(DOSLIBLIBS)
-	wcl $(FLAGS) test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ) $(DOSLIBLIBS) -fm=test.mah
+test.exe: test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ) $(DOSLIBLIBS) $(16LIB)
+	wcl $(FLAGS) test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ) $(DOSLIBLIBS) $(16LIB) -fm=test.mah
 
 test2.exe: test2.$(OBJ) $(DOSLIBLIBS) gfx.lib
 	wcl $(FLAGS) test2.$(OBJ) $(DOSLIBLIBS) gfx.lib -fm=test2.mah
