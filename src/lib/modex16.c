@@ -291,7 +291,6 @@ modexShowPage(page_t *page) {
     outp(AC_INDEX, (page->dx & 0x03) << 1);
 }
 
-
 void
 modexPanPage(page_t *page, int dx, int dy) {
     page->dx = dx;
