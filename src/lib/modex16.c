@@ -324,6 +324,14 @@ modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
     }
 
     __asm {
+	    PUSHF
+	    PUSH ES
+	    PUSH AX
+	    PUSH BX
+	    PUSH CX
+	    PUSH DX
+	    PUSH SI
+	    PUSH DI
 		MOV AX, SCREEN_SEG      ; go to the VGA memory
 		MOV ES, AX
 		MOV DI, poffset	 ; go to the first pixel
@@ -357,6 +365,14 @@ modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
 		ADD DI, nextRow	 ; go to the next row
 		DEC h
 		JNZ SCAN_START
+	    POP DI
+	    POP SI
+	    POP DX
+	    POP CX
+	    POP BX
+	    POP AX
+	    POP ES
+	    POPF
     }
 }
 
