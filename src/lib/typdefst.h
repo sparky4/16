@@ -72,12 +72,12 @@ typedef struct {
 	word dy;		/* row we are viewing on the virtual screen */
 	word sw;		/* screen width */
 	word sh;		/* screen heigth */
-	word tilesw;		/* screen width in tiles */
-	word tilesh;		/* screen height in tiles */
+	word tw;		/* screen width in tiles */
+	word th;		/* screen height in tiles */
 	word width;		/* virtual width of the page */
 	word height;	/* virtual height of the page */
-	word tw;
-	word th;
+	word tilesw;		/* virtual screen width in tiles */
+	word tilesh;		/* virtual screen height in tiles */
 	sword tilemidposscreenx;	/* middle tile position */
 	sword tilemidposscreeny;	/* middle tile position */
 	sword tileplayerposscreenx;	/* player position on screen */

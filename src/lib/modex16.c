@@ -155,7 +155,6 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 	//TODO MAKE FLEXIBLE~
 //	gv->video.page[0].tilemidposscreenx = gv->video.page[0].tilesw;
 //	gv->video.page[0].tilemidposscreeny = (gv->video.page[0].tilesh/2)+1;
-	gv->video.num_of_pages=0;
 }
 
 void
@@ -249,6 +248,7 @@ void modexCalcVmemRemain(video_t *video)
 void modexHiganbanaPageSetup(video_t *video)
 {
 	video->vmem_remain=262144L;
+	video->num_of_pages=0;
 	(video->page[0]) = modexDefaultPage(&(video->page[0]));	video->num_of_pages++;
 	//video->page[0].width += (TILEWHD); video->page[0].height += (TILEWHD);
 	(video->page[1]) = modexNextPage(&(video->page[0]));	video->num_of_pages++;
