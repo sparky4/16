@@ -298,13 +298,11 @@ modexPanPage(page_t *page, int dx, int dy) {
     page->dy = dy;
 }
 
-
 void
 modexSelectPlane(byte plane) {
     outp(SC_INDEX, MAP_MASK);	  /* select plane */
     outp(SC_DATA,  plane);
 }
-
 
 void
 modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
