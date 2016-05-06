@@ -74,7 +74,8 @@ void main(int argc, char *argv[])
 	modexPalBlack();
 
 	IN_Startup();
-	IN_Default(0,&player,ctrl_Joystick);
+	IN_Default(0,&player,ctrl_Keyboard1);
+	IN_initplayer(&player, 0);
 
 	textInit();
 	VGAmodeX(bakapee, 1, &gvar);
@@ -82,11 +83,13 @@ void main(int argc, char *argv[])
 
 	/* set up the page, but with 16 pixels on all borders in offscreen mem */
 	modexHiganbanaPageSetup(&gvar.video);
-	for(i=0;i<gvar.video.num_of_pages-2;i++)
+	for(i=0;i<gvar.video.num_of_pages;i++)
 	{
 		mv[i].page = &gvar.video.page[i];
 		mv[i].video = &gvar.video;
 		mv[i].pan	= &pan;
+		mv[i].tx	= 0;
+		mv[i].ty	= 0;
 	}
 // 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 // 	gvar.video.page[1] = modexNextPage(&gvar.video.page[0]);
@@ -106,33 +109,35 @@ void main(int argc, char *argv[])
 	/* fade in */
 	modexFadeOn(1, pal2);
 
-	i=0,k=0,j=0,pan.pn=1;
+	i=0,k=0,j=0,pan.pn=0;
 	startclk = *clockw;
 	while(!IN_KeyDown(sc_Escape))
 	{
 		IN_ReadControl(0,&player);
-		if(i<5){
+		panpagemanual(mv, player, 0);
+
+		/*if(i<5){
 		switch (k)
 		{
 			case 0:
 				pee:
-				/* go right */
+				// go right
 				gvar.video.page[pan.pn].dx++;
 				if(i==5){ if(j>=31){ i++; j=0; goto baka; }else j++; }else
 				if(j>=32){ k++; j=0; }else j++;
 			break;
 			case 1:
-				/* go left */
+				// go left
 				gvar.video.page[pan.pn].dx--;
 				if(j>=32){ k++; j=0; }else j++;
 			break;
 			case 2:
-				/* go up */
+				// go up
 				gvar.video.page[pan.pn].dy++;
 				if(j>=32){ k++; j=0; }else j++;
 			break;
 			case 3:
-				/* go down */
+				// go down
 				gvar.video.page[pan.pn].dy--;
 				if(j>=32){ k=0; j=0; i++; }else j++;
 			break;
@@ -143,15 +148,14 @@ void main(int argc, char *argv[])
 			if(i==5) goto pee;
 			baka:
 			i++;
-			modexClearRegion(&gvar.video.page[1], 0, gvar.video.page[0].height/2, gvar.video.page[0].width-32, 16, 45);
+			modexClearRegion(&gvar.video.page[1], 0, gvar.video.page[0].height/2, gvar.video.page[0].width-32, 16, 45);*/
 			if(IN_KeyDown(6)) modexClearRegion(&gvar.video.page[1], 0, gvar.video.page[0].height/2, gvar.video.page[0].width, 16, 45);
 			if(IN_KeyDown(4+1)){
 				modexClearRegion(&gvar.video.page[1], 16, 16, gvar.video.page[1].sw, gvar.video.page[1].sh, 128);
 				modexClearRegion(&gvar.video.page[1], 32, 32, gvar.video.page[1].sw-32, gvar.video.page[1].sh-32, 42);
 				modexClearRegion(&gvar.video.page[1], 48, 48, gvar.video.page[1].sw-64, gvar.video.page[1].sh-64, 128);
 			}
-			panpagemanual(mv, player, 0);
-		}
+		//}
 		if(IN_KeyDown(2)) pan.pn=0;
 		if(IN_KeyDown(3)) pan.pn=1;
 		//if(IN_KeyDown(6)) modexClearRegion(&gvar.video.page[1], 0, 0, gvar.video.page[0].sw-64, gvar.video.page[0].sh-16, 45);
@@ -175,6 +179,7 @@ void main(int argc, char *argv[])
 		printf(" size=%ld", gvar.video.page[i].pagesize);
 		printf("\n");
 	}
+	printf("tx=%d	", mv[pan.pn].tx); printf("ty=%d	", mv[pan.pn].ty); printf("player.d=%d\n", player[0].d);
 	IN_Shutdown();
 	modexPalBlack();
 	modexFadeOn(1, pal);

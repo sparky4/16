@@ -216,7 +216,7 @@ void panpagemanual(map_view_t *pip, player_t *player, word pn)
 	{
 		//right movement
 		case 3:
-			if(pip[pip[0].pan->pn].tx >= -1 && pip[pip[0].pan->pn].tx+pip[pip[0].pan->pn].page->tw < pip[pip[0].pan->pn].page->tilesw+1)
+			if(pip[pip[0].pan->pn].tx >= 0 && pip[pip[0].pan->pn].tx+pip[pip[0].pan->pn].page->tw < pip[pip[0].pan->pn].page->tilesw)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
@@ -229,7 +229,7 @@ void panpagemanual(map_view_t *pip, player_t *player, word pn)
 
 		//left movement
 		case 1:
-			if(pip[pip[0].pan->pn].tx > -1 && pip[pip[0].pan->pn].tx+pip[pip[0].pan->pn].page->tilesw <= pip[pip[0].pan->pn].page->tilesw+1)
+			if(pip[pip[0].pan->pn].tx > 0 && pip[pip[0].pan->pn].tx+pip[pip[0].pan->pn].page->tw <= pip[pip[0].pan->pn].page->tilesw)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
@@ -242,7 +242,7 @@ void panpagemanual(map_view_t *pip, player_t *player, word pn)
 
 		//down movement
 		case 4:
-			if(pip[pip[0].pan->pn].ty >= -1 && pip[pip[0].pan->pn].ty+pip[pip[0].pan->pn].page->tilesh < pip[pip[0].pan->pn].page->tilesh+1)
+			if(pip[pip[0].pan->pn].ty >= 0 && pip[pip[0].pan->pn].ty+pip[pip[0].pan->pn].page->th < pip[pip[0].pan->pn].page->tilesh)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
@@ -255,7 +255,7 @@ void panpagemanual(map_view_t *pip, player_t *player, word pn)
 
 		//up movement
 		case 0:
-			if(pip[pip[0].pan->pn].ty > -1 && pip[pip[0].pan->pn].ty+pip[pip[0].pan->pn].page->tilesh <= pip[pip[0].pan->pn].page->tilesh+1)
+			if(pip[pip[0].pan->pn].ty > 0 && pip[pip[0].pan->pn].ty+pip[pip[0].pan->pn].page->th <= pip[pip[0].pan->pn].page->tilesh)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
