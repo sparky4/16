@@ -92,6 +92,9 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 	{
 		case 1:
 			//CRTParmCount = sizeof(ModeX_320x240regs) / sizeof(ModeX_320x240regs[0]);
+			/*for(i=0; i<CRTParmCount; i++) {
+				outpw(CRTC_INDEX, ModeX_320x240regs[i]);
+			}*/
 			/* width and height */
 			gv->video.page[0].sw = vga_state.vga_width = 320; // VGA lib currently does not update this
 			gv->video.page[0].sh = vga_state.vga_height = 240; // VGA lib currently does not update this

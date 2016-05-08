@@ -99,7 +99,7 @@ void main(int argc, char *argv[])
 
 	/* fill the page with one color, but with a black border */
 	modexShowPage(&gvar.video.page[1]);
-	//modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].width, gvar.video.page[0].height, 0);
+	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].width, gvar.video.page[0].height, 15);
 	modexClearRegion(&gvar.video.page[0], 16, 16, gvar.video.page[0].sw, gvar.video.page[0].sh, 128);
 	modexClearRegion(&gvar.video.page[0], 32, 32, gvar.video.page[0].sw-32, gvar.video.page[0].sh-32, 42);
 	modexClearRegion(&gvar.video.page[0], 48, 48, gvar.video.page[0].sw-64, gvar.video.page[0].sh-64, 128);
@@ -109,7 +109,7 @@ void main(int argc, char *argv[])
 	/* fade in */
 	modexFadeOn(1, pal2);
 
-	i=0,k=0,j=0,pan.pn=0;
+	i=0,k=0,j=0,pan.pn=1;
 	startclk = *clockw;
 	while(!IN_KeyDown(sc_Escape))
 	{
@@ -149,7 +149,10 @@ void main(int argc, char *argv[])
 			baka:
 			i++;
 			modexClearRegion(&gvar.video.page[1], 0, gvar.video.page[0].height/2, gvar.video.page[0].width-32, 16, 45);*/
-			if(IN_KeyDown(6)) modexClearRegion(&gvar.video.page[1], 0, gvar.video.page[0].height/2, gvar.video.page[0].width, 16, 45);
+			if(IN_KeyDown(6))
+			{
+				modexClearRegion(&gvar.video.page[1],  gvar.video.page[1].sw, 16, 8, 4, 45);
+			}
 			if(IN_KeyDown(4+1)){
 				modexClearRegion(&gvar.video.page[1], 16, 16, gvar.video.page[1].sw, gvar.video.page[1].sh, 128);
 				modexClearRegion(&gvar.video.page[1], 32, 32, gvar.video.page[1].sw-32, gvar.video.page[1].sh-32, 42);
@@ -158,7 +161,9 @@ void main(int argc, char *argv[])
 		//}
 		if(IN_KeyDown(2)) pan.pn=0;
 		if(IN_KeyDown(3)) pan.pn=1;
-		//if(IN_KeyDown(6)) modexClearRegion(&gvar.video.page[1], 0, 0, gvar.video.page[0].sw-64, gvar.video.page[0].sh-16, 45);
+		if(IN_KeyDown(25)){
+			modexpdump(&gvar.video.page[pan.pn]);
+		}//p
 		modexShowPage(&gvar.video.page[pan.pn]);
 	}
 

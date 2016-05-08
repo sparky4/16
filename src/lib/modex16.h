@@ -31,7 +31,7 @@
 #include "src/lib/modex16/16planar.h"
 #include "src/lib/16text.h"
 #include "src/lib/modex16/16render.h"
-// #include "src/lib/modex16/320x240.h"
+#include "src/lib/modex16/320x240.h"
 // #include "src/lib/modex16/320x200.h"
 // #include "src/lib/modex16/256x192.h"
 // #include "src/lib/modex16/192x144_.h"
