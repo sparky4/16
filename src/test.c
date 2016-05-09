@@ -182,6 +182,7 @@ void main(int argc, char *argv[])
 		printf("	[%u]=", i);
 		printf("(%Fp)", (gvar.video.page[i].data));
 		printf(" size=%ld", gvar.video.page[i].pagesize);
+		printf(" sw=%u  sh=%u\n", gvar.video.page[i].sw, gvar.video.page[i].sh);
 		printf("\n");
 	}
 	printf("tx=%d	", mv[pan.pn].tx); printf("ty=%d	", mv[pan.pn].ty); printf("player.d=%d\n", player[0].d);
