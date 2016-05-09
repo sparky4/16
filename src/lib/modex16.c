@@ -259,9 +259,9 @@ void modexHiganbanaPageSetup(video_t *video)
 {
 	video->vmem_remain=262144L;
 	video->num_of_pages=0;
-	(video->page[0]) = modexDefaultPage(&(video->page[0]));	video->num_of_pages++;
-	//video->page[0].width += (TILEWHD); video->page[0].height += (TILEWHD);
+	(video->page[0]) = modexDefaultPage(&(video->page[0]));	video->num_of_pages++;	//video->page[0].width += (TILEWHD); video->page[0].height += (TILEWHD);
 	(video->page[1]) = modexNextPage(&(video->page[0]));	video->num_of_pages++;
+	(video->page[2]) = modexNextPage(&(video->page[1]));	video->num_of_pages++;
 	//(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), video->page[0].width, video->page[0].sh-40);	video->num_of_pages++;
 	//(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), TILEWH, TILEWH);	video->num_of_pages++;
 	modexCalcVmemRemain(video);
@@ -1119,9 +1119,9 @@ modexWaitBorder() {
 	// spin
     }
 
-    while(!(inp(INPUT_STATUS_1)  & 8))  {
-	// spin
-    }
+//     while(!(inp(INPUT_STATUS_1)  & 8))  {
+// 	// spin
+//     }
 }
 
 void bios_cls() {

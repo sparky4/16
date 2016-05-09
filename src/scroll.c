@@ -162,7 +162,7 @@ void main(int argc, char *argv[])
 
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
-	for(i=0;i<gvar.video.num_of_pages-2;i++)
+	for(i=0;i<gvar.video.num_of_pages;i++)
 	{
 		mv[i].page = &gvar.video.page[i];
 		mv[i].map = &map;
@@ -172,7 +172,7 @@ void main(int argc, char *argv[])
 	/* set up paging */
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(mv, 0, 0);
-	//modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[1].page->width, mv[1].page->height);
+	modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[1].page->width, mv[1].page->height);
 
 	//TODO: put player in starting position of spot
 	//default player position on the viewable map
@@ -318,16 +318,15 @@ void main(int argc, char *argv[])
 	for(i=0; i<gvar.video.num_of_pages;i++)
 	{
 		printf("	[%u]=", i);
-		printf("(%Fp)\n", (gvar.video.page[i].data));
+		printf("(%Fp)", (gvar.video.page[i].data));
+		printf(" size=%ld", gvar.video.page[i].pagesize);
+		printf(" sw=%lu  sh=%lu ", (unsigned long)gvar.video.page[i].sw, (unsigned long)gvar.video.page[i].sh);
+		printf(" width=%lu  height=%lu", (unsigned long)gvar.video.page[i].width, (unsigned long)gvar.video.page[i].height);
+		printf("\n");
 	}
 	printf("mv[%u].tx: %d", pan.pn, mv[pan.pn].tx); printf("	mv[%u].ty: %d	", pan.pn, mv[pan.pn].ty); printf("panswitch=%u\n", panswitch);
 	//printf("player[1].q: %d", player[1].q);	printf("	player[1].d: %d\n", player[1].d);
 	printf("\n");
-//	printf("Screen2: %dx", gvar.video.page[1].width);	printf("%d\n", gvar.video.page[1].height);
-//	printf("map: %dx%d\n", map.width, map.height);
-//	printf("\n");
-//	printf("player[0].info.x: %d", player[0].info.xaxis); printf("		player[0].info.y: %d\n", player[0].info.yaxis);
-//	printf("player[0].info.tx: %d", player[0].info.x); printf("		player[0].info.ty: %d\n", player[0].info.y);
 	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[0].map->width, mv[0].map->height, mv[0].map->data[0]);
 
 	printf("\n");

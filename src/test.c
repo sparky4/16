@@ -91,10 +91,8 @@ void main(int argc, char *argv[])
 		mv[i].tx	= 0;
 		mv[i].ty	= 0;
 	}
- 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
- 	gvar.video.page[1] = modexNextPage(&gvar.video.page[0]);
-// 	gvar.video.page[0].width += 32;
-// 	gvar.video.page[0].height += 32;
+//  	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
+//  	gvar.video.page[1] = modexNextPage(&gvar.video.page[0]);
 
 
 	/* fill the page with one color, but with a black border */
