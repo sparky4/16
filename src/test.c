@@ -91,8 +91,8 @@ void main(int argc, char *argv[])
 		mv[i].tx	= 0;
 		mv[i].ty	= 0;
 	}
-// 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
-// 	gvar.video.page[1] = modexNextPage(&gvar.video.page[0]);
+ 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
+ 	gvar.video.page[1] = modexNextPage(&gvar.video.page[0]);
 // 	gvar.video.page[0].width += 32;
 // 	gvar.video.page[0].height += 32;
 
@@ -182,7 +182,8 @@ void main(int argc, char *argv[])
 		printf("	[%u]=", i);
 		printf("(%Fp)", (gvar.video.page[i].data));
 		printf(" size=%ld", gvar.video.page[i].pagesize);
-		printf(" sw=%lu  sh=%lu\n", (unsigned long)gvar.video.page[i].sw, (unsigned long)gvar.video.page[i].sh);
+		printf(" sw=%lu  sh=%lu ", (unsigned long)gvar.video.page[i].sw, (unsigned long)gvar.video.page[i].sh);
+		printf(" width=%lu  height=%lu", (unsigned long)gvar.video.page[i].width, (unsigned long)gvar.video.page[i].height);
 		printf("\n");
 	}
 	printf("tx=%d	", mv[pan.pn].tx); printf("ty=%d	", mv[pan.pn].ty); printf("player.d=%d\n", player[0].d);
