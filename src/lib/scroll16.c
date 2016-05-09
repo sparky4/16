@@ -726,7 +726,7 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 	//setkb(0);
 }*/
 
-unsigned char shinku_fps_indicator_page = 0;
+unsigned char shinku_fps_indicator_page = 2;
 boolean pageflipflop=0;
 //gv->video.p
 
