@@ -399,6 +399,15 @@ modexCopyPageRegion(page_t *dest, page_t *src,
     byte right = rclip[(sx+width)&0x03];
 
     __asm {
+	    PUSHF
+	    PUSH ES
+	    PUSH AX
+	    PUSH BX
+	    PUSH CX
+	    PUSH DX
+	    PUSH SI
+	    PUSH DI
+
 		MOV AX, SCREEN_SEG      ; work in the vga space
 		MOV ES, AX	      ;
 		MOV DI, doffset	 ;
@@ -447,6 +456,15 @@ modexCopyPageRegion(page_t *dest, page_t *src,
 		MOV DX, GC_INDEX+1      ; go back to CPU data
 		MOV AL, 0ffh	    ; none from latches
 		OUT DX, AL	      ;
+
+	    POP DI
+	    POP SI
+	    POP DX
+	    POP CX
+	    POP BX
+	    POP AX
+	    POP ES
+	    POPF
     }
 }
 
@@ -1008,6 +1026,15 @@ void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, c
 	}
 	//load the letter 'A'
 	__asm {
+	    PUSHF
+	    PUSH ES
+	    PUSH AX
+	    PUSH BX
+	    PUSH CX
+	    PUSH DX
+	    PUSH SI
+	    PUSH DI
+
 		MOV DI, addr
 		MOV SI, o
 		MOV ES, s
@@ -1022,6 +1049,15 @@ void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, c
 		INC DI
 		DEC CX
 		JNZ L1
+
+	    POP DI
+	    POP SI
+	    POP DX
+	    POP CX
+	    POP BX
+	    POP AX
+	    POP ES
+	    POPF
 	}
 
 		for(i=0; i<w; i++)
