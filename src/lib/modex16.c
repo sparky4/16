@@ -187,6 +187,7 @@ modexDefaultPage(page_t *p)
 	page.tilesh=page.height/TILEWH;
 	page.tilemidposscreenx = page.tw/2;
 	page.tilemidposscreeny = (page.th/2)+1;
+	page.stridew=page.width/4;
 	page.pagesize = (sdiword)(page.width/4)*page.height;
 	page.id = 0;
 
@@ -212,6 +213,7 @@ modexNextPage(page_t *p) {
 	result.tilesw = p->tilesw;
 	result.tilesh = p->tilesh;
 	result.id = p->id+1;
+	result.stridew=p->stridew;
 	result.pagesize = p->pagesize;
 
 	return result;
@@ -235,6 +237,7 @@ modexNextPageFlexibleSize(page_t *p, word x, word y)
 	result.tilesw=result.width/TILEWH;
 	result.tilesh=result.height/TILEWH;
 	result.id = p->id+1;
+	result.stridew=result.width/4;
 	result.pagesize = (sdiword)(result.width/4)*result.height;
 
 	return result;
@@ -315,8 +318,8 @@ modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
     word pageOff = (word) page->data;
     word xoff=x/4;       /* xoffset that begins each row */
     word scanCount=w/4;  /* number of iterations per row (excluding right clip)*/
-    word poffset = pageOff + y*(page->width/4) + xoff; /* starting offset */
-    word nextRow = page->width/4-scanCount-1;  /* loc of next row */
+    word poffset = pageOff + y*(page->stridew) + xoff; /* starting offset */
+    word nextRow = page->stridew-scanCount-1;  /* loc of next row */
     byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08};  /* clips for rectangles not on 4s */
     byte rclip[] = {0x00, 0x01, 0x03, 0x07};
     byte left = lclip[x&0x03];
@@ -392,11 +395,11 @@ modexCopyPageRegion(page_t *dest, page_t *src,
 		    word dx, word dy,
 		    word width, word height)
 {
-    word doffset = (word)dest->data + dy*(dest->width/4) + dx/4;
-    word soffset = (word)src->data + sy*(src->width/4) + sx/4;
+    word doffset = (word)dest->data + dy*(dest->stridew) + dx/4;
+    word soffset = (word)src->data + sy*(src->stridew) + sx/4;
     word scans   = vga_state.vga_stride;
-    word nextSrcRow = src->width/4 - scans - 1;
-    word nextDestRow = dest->width/4 - scans - 1;
+    word nextSrcRow = src->stridew - scans - 1;
+    word nextDestRow = dest->stridew - scans - 1;
     byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08};  /* clips for rectangles not on 4s */
     byte rclip[] = {0x0f, 0x01, 0x03, 0x07};
     byte left = lclip[sx&0x03];

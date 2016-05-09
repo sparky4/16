@@ -82,6 +82,7 @@ typedef struct {
 	sword tilemidposscreeny;	/* middle tile position */
 	sword tileplayerposscreenx;	/* player position on screen */
 	sword tileplayerposscreeny;	/* player position on screen */
+	word stridew;			/*width/4*/
 	sdiword pagesize;			/* page size */
 } page_t;
 
