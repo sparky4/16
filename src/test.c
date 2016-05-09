@@ -27,7 +27,7 @@
 
 global_game_variables_t gvar;
 player_t player[MaxPlayers];
-map_view_t mv[2];
+map_view_t mv[4];
 pan_t pan;
 
 void main(int argc, char *argv[])
@@ -96,6 +96,10 @@ void main(int argc, char *argv[])
 
 
 	/* fill the page with one color, but with a black border */
+	modexClearRegion(&gvar.video.page[1], 0, 0, gvar.video.page[1].width, gvar.video.page[1].height, 15);
+	modexClearRegion(&gvar.video.page[1], 16, 16, gvar.video.page[1].sw, gvar.video.page[1].sh, 128);
+	modexClearRegion(&gvar.video.page[1], 32, 32, gvar.video.page[1].sw-32, gvar.video.page[1].sh-32, 42);
+	modexClearRegion(&gvar.video.page[1], 48, 48, gvar.video.page[1].sw-64, gvar.video.page[1].sh-64, 128);
 	modexShowPage(&gvar.video.page[1]);
 	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].width, gvar.video.page[0].height, 15);
 	modexClearRegion(&gvar.video.page[0], 16, 16, gvar.video.page[0].sw, gvar.video.page[0].sh, 128);
