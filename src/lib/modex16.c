@@ -188,7 +188,7 @@ modexDefaultPage(page_t *p)
 	page.tilemidposscreenx = page.tw/2;
 	page.tilemidposscreeny = (page.th/2)+1;
 	page.stridew=page.width/4;
-	page.pagesize = (sdiword)(page.width/4)*page.height;
+	page.pagesize = (word)(page.width/4)*page.height;
 	page.id = 0;
 
     return page;
@@ -238,7 +238,7 @@ modexNextPageFlexibleSize(page_t *p, word x, word y)
 	result.tilesh=result.height/TILEWH;
 	result.id = p->id+1;
 	result.stridew=result.width/4;
-	result.pagesize = (sdiword)(result.width/4)*result.height;
+	result.pagesize = (word)(result.width/4)*result.height;
 
 	return result;
 }
@@ -246,23 +246,24 @@ modexNextPageFlexibleSize(page_t *p, word x, word y)
 void modexCalcVmemRemain(video_t *video)
 {
 	byte i;
-	//printf("\n\n	1st vmem_remain=%ld\n", video->vmem_remain);
-	for(i=0; i<=video->num_of_pages-1; i++)
+	//printf("\n\n	1st vmem_remain=%u\n", video->vmem_remain);
+	for(i=0; i<video->num_of_pages; i++)
 	{
 		video->vmem_remain-=video->page[i].pagesize;
-		//printf("		[%u], video->page[i].pagesize=%ld\n", i, video->page[i].pagesize);
-		//printf("		[%u], vmem_remain=%ld\n", i, video->vmem_remain);
+		//printf("		[%u], video->page[%u].pagesize=%u\n", i, i, video->page[i].pagesize);
+		//printf("		[%u], vmem_remain=%u\n", i, video->vmem_remain);
 	}
 }
 
 void modexHiganbanaPageSetup(video_t *video)
 {
-	video->vmem_remain=262144L;
+	video->vmem_remain=65535U;
 	video->num_of_pages=0;
 	(video->page[0]) = modexDefaultPage(&(video->page[0]));	video->num_of_pages++;	//video->page[0].width += (TILEWHD); video->page[0].height += (TILEWHD);
 	(video->page[1]) = modexNextPage(&(video->page[0]));	video->num_of_pages++;
 	(video->page[2]) = modexNextPage(&(video->page[1]));	video->num_of_pages++;
-	//(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), video->page[0].width, video->page[0].sh-40);	video->num_of_pages++;
+	(video->page[3]) = modexNextPage(&(video->page[2]));	video->num_of_pages++;
+//	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), video->page[0].width/8, video->page[0].height/8);	video->num_of_pages++;
 	//(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), TILEWH, TILEWH);	video->num_of_pages++;
 	modexCalcVmemRemain(video);
 	video->p=0;
@@ -1148,5 +1149,21 @@ void bios_cls() {
 	}
 	else {
 		printf("WARNING: bios cls no ptr\n");
+	}
+}
+
+void modexprintmeminfo(video_t *v)
+{
+	byte i;
+	printf("video memory remaining: %u\n", v->vmem_remain);
+	printf("page ");
+	for(i=0; i<v->num_of_pages;i++)
+	{
+		printf("	[%u]=", i);
+		printf("(%Fp)", (v->page[i].data));
+		printf(" size=%u", v->page[i].pagesize);
+		printf(" sw=%lu  sh=%lu ", (unsigned long)v->page[i].sw, (unsigned long)v->page[i].sh);
+		printf(" width=%lu  height=%lu", (unsigned long)v->page[i].width, (unsigned long)v->page[i].height);
+		printf("\n");
 	}
 }

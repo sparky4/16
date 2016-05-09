@@ -33,7 +33,7 @@ global_game_variables_t gvar;
 static map_t map;
 player_t player[MaxPlayers];
 //page_t screen, gvar.video.page[1], gvar.video.page[2];
-map_view_t mv[3];
+map_view_t mv[4];
 bitmap_t p;
 //word pn=0; //i forgot ww
 static planar_buf_t huge *pp;
@@ -313,17 +313,7 @@ void main(int argc, char *argv[])
 	printf("virtual tile resolution: %dx", gvar.video.page[0].tilesw);	printf("%d\n", gvar.video.page[0].tilesh);
 	printf("tile resolution: %dx", gvar.video.page[0].tw);	printf("%d \n", gvar.video.page[0].th);
 	printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);
-	printf("video memory remaining: %ld\n", gvar.video.vmem_remain);
-	printf("page ");
-	for(i=0; i<gvar.video.num_of_pages;i++)
-	{
-		printf("	[%u]=", i);
-		printf("(%Fp)", (gvar.video.page[i].data));
-		printf(" size=%ld", gvar.video.page[i].pagesize);
-		printf(" sw=%lu  sh=%lu ", (unsigned long)gvar.video.page[i].sw, (unsigned long)gvar.video.page[i].sh);
-		printf(" width=%lu  height=%lu", (unsigned long)gvar.video.page[i].width, (unsigned long)gvar.video.page[i].height);
-		printf("\n");
-	}
+	modexprintmeminfo(&gvar.video);
 	printf("mv[%u].tx: %d", pan.pn, mv[pan.pn].tx); printf("	mv[%u].ty: %d	", pan.pn, mv[pan.pn].ty); printf("panswitch=%u\n", panswitch);
 	//printf("player[1].q: %d", player[1].q);	printf("	player[1].d: %d\n", player[1].d);
 	printf("\n");

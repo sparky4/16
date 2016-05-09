@@ -185,5 +185,6 @@ void modexpdump(page_t *pee);
 void modexcls(page_t *page, byte color, byte *Where);
 void modexWaitBorder();
 void bios_cls();
+void modexprintmeminfo(video_t *v);
 
 #endif

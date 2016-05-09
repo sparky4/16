@@ -173,17 +173,7 @@ void main(int argc, char *argv[])
 	VGAmodeX(0, 1, &gvar);
 	printf("Project 16 test.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
-	printf("video memory remaining: %ld\n", gvar.video.vmem_remain);
-	printf("page ");
-	for(i=0; i<gvar.video.num_of_pages;i++)
-	{
-		printf("	[%u]=", i);
-		printf("(%Fp)", (gvar.video.page[i].data));
-		printf(" size=%ld", gvar.video.page[i].pagesize);
-		printf(" sw=%lu  sh=%lu ", (unsigned long)gvar.video.page[i].sw, (unsigned long)gvar.video.page[i].sh);
-		printf(" width=%lu  height=%lu", (unsigned long)gvar.video.page[i].width, (unsigned long)gvar.video.page[i].height);
-		printf("\n");
-	}
+	modexprintmeminfo(&gvar.video);
 	printf("tx=%d	", mv[pan.pn].tx); printf("ty=%d	", mv[pan.pn].ty); printf("player.d=%d\n", player[0].d);
 	IN_Shutdown();
 	modexPalBlack();
