@@ -203,6 +203,8 @@ modexNextPage(page_t *p) {
     result.data = p->data + (p->pagesize);
     result.dx = 0;
     result.dy = 0;
+	result.sw = p->sw;
+	result.sh = p->sh;
     result.width = p->width;
     result.height = p->height;
 	result.tw = p->tw;
@@ -224,6 +226,8 @@ modexNextPageFlexibleSize(page_t *p, word x, word y)
 	result.data = p->data + (p->pagesize);  /* compute the offset */
 	result.dx = 0;
 	result.dy = 0;
+	result.sw = x;
+	result.sh = y;
 	result.width = x;
 	result.height = y;
 	result.tw = result.sw/TILEWH;
