@@ -834,20 +834,20 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 // #define FRAME2 PBUFSFUN(pip[1].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATA);
 // #define FRAME3 PBUFSFUN(pip[1].page, x, y, 0, dire, 24, 32,	PLAYERBMPDATA);
 // #define FRAME4 PBUFSFUN(pip[1].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATA);
-#define FRAME1 PBUFSFUN(pip[1].page, x, y, 48, dire, 24, 32,	PLAYERBMPDATA);
-#define FRAME2 PBUFSFUN(pip[1].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATA);
-#define FRAME3 PBUFSFUN(pip[1].page, x, y, 0, dire, 24, 32,	PLAYERBMPDATA);
-#define FRAME4 PBUFSFUN(pip[1].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATA);
+#define FRAME1 PBUFSFUN(pip[!(pip->video->p)].page, x, y, 48, dire, 24, 32,	PLAYERBMPDATA);
+#define FRAME2 PBUFSFUN(pip[!(pip->video->p)].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATA);
+#define FRAME3 PBUFSFUN(pip[!(pip->video->p)].page, x, y, 0, dire, 24, 32,	PLAYERBMPDATA);
+#define FRAME4 PBUFSFUN(pip[!(pip->video->p)].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATA);
 #else
-#define FRAME1 modexClearRegion(pip[1].page, x, y, 24, 32, 2+dire);
-#define FRAME2 modexClearRegion(pip[1].page, x, y, 24, 32, 1+dire);
-#define FRAME3 modexClearRegion(pip[1].page, x, y, 24, 32, dire);
-#define FRAME4 modexClearRegion(pip[1].page, x, y, 24, 32, 1+dire);
+#define FRAME1 modexClearRegion(pip[!(pip->video->p)].page, x, y, 24, 32, 2+dire);
+#define FRAME2 modexClearRegion(pip[!(pip->video->p)].page, x, y, 24, 32, 1+dire);
+#define FRAME3 modexClearRegion(pip[!(pip->video->p)].page, x, y, 24, 32, dire);
+#define FRAME4 modexClearRegion(pip[!(pip->video->p)].page, x, y, 24, 32, 1+dire);
 	#endif
-	if(pageflipflop)
+//	if(pageflipflop)
 	modexCopyPageRegion(pip[pip->video->p].page,
  pip[!(pip->video->p)].page, x-4, y-4, x-4, y-4, 28, 40);
-	else modexCopyPageRegion(pip[1].page, pip[0].page, x-4, y-4, x-4, y-4, 28, 40);
+//	else modexCopyPageRegion(pip[1].page, pip[0].page, x-4, y-4, x-4, y-4, 28, 40);
 	//modexCopyPageRegion(pip[2].page, pip[1].page, 16, 16, 16, 16, (14*8)+4, 8+4);
 	if(2>ls && ls>=1) { FRAME1 }else
 	if(3>ls && ls>=2) { FRAME2 }else

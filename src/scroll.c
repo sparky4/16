@@ -227,11 +227,10 @@ void main(int argc, char *argv[])
 	}
 	if(player[0].q == (TILEWH/(player[0].speed))+1 && player[0].info.dir != 2 && (player[0].triggerx == 5 && player[0].triggery == 5)){ player[0].hp--; }
 	//debugging binds!
-	//if(IN_KeyDown(0x0E)) while(1){ if(xmsmalloc(24)) break; }
 	if(IN_KeyDown(2)){ modexShowPage(mv[0].page); pan.pn=0; }
 	if(IN_KeyDown(3)){ modexShowPage(mv[1].page); pan.pn=1; }
-	//if(IN_KeyDown(4)){ modexShowPage(mv[2].page); pan.pn=2; }
-	//if(IN_KeyDown(4+1)){ modexShowPage(mv[3].page); pan.pn=3; }
+	if(IN_KeyDown(4)){ modexShowPage(mv[2].page); pan.pn=2; }
+	if(IN_KeyDown(4+1)){ modexShowPage(mv[3].page); pan.pn=3; }
 	if(IN_KeyDown(25)){ modexpdump(mv[0].page); modexpdump(mv[1].page);
 		//IN_Ack();
 	}	//p
