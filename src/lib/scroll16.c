@@ -845,6 +845,7 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 #define FRAME4 modexClearRegion(pip[!(pip->video->p)].page, x, y, 24, 32, 1+dire);
 	#endif
 //	if(pageflipflop)
+//modexCopyPageRegion(page_t *dest, page_t *src, word sx, word sy, word dx, word dy, word width, word height);
 	modexCopyPageRegion(pip[pip->video->p].page,
  pip[!(pip->video->p)].page, x-4, y-4, x-4, y-4, 28, 40);
 //	else modexCopyPageRegion(pip[1].page, pip[0].page, x-4, y-4, x-4, y-4, 28, 40);
