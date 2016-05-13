@@ -32,6 +32,6 @@ void main()
 	baka(z);
 	pee(z);
 	printf("&w=%Fp\n", &w);
-	printf("z=%Fp\n", z);
+	printf("&z=%Fp\n", &z);
 	printf("*z=%Fp\n", *z);
 }
