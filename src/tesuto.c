@@ -53,7 +53,7 @@ int main(int argc,char **argv) {
 	vga_state.vga_width = 320; // VGA lib currently does not update this
 	vga_state.vga_height = 240; // VGA lib currently does not update this
 
-//#if 1 // 320x240 test mode: this is how Project 16 is using our code, enable for test case
+#if 1 // 320x240 test mode: this is how Project 16 is using our code, enable for test case
 	{
 		struct vga_mode_params cm;
 
@@ -70,7 +70,7 @@ int main(int argc,char **argv) {
 		vga_write_crtc_mode(&cm,0);
 	}
 	vga_state.vga_height = 240; // VGA lib currently does not update this
-//#endif
+#endif
 
 	/* load color palette */
 	fd = open(argv[2],O_RDONLY|O_BINARY);
@@ -99,7 +99,7 @@ int main(int argc,char **argv) {
 				vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
 		}
 	}
-	while (getch() != 13);
+	//while (getch() != 13);
 
 	/* make distinctive pattern offscreen, render sprite, copy onscreen */
 	{
@@ -342,4 +342,3 @@ int main(int argc,char **argv) {
 	bufsz = 0;
 	return 0;
 }
-
