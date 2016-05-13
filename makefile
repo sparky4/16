@@ -82,7 +82,7 @@ GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(
 
 DOSLIBLIBS=$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu$(DIRSEP)dos86h$(DIRSEP)cpu.lib $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos$(DIRSEP)dos86h$(DIRSEP)dos.lib $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vga.lib
 
-TESTEXEC = exmmtest.exe test.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe
+TESTEXEC = exmmtest.exe test.exe test0.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe
 
 EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
 
@@ -122,6 +122,9 @@ test.exe: test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ) $(DOSLIBLIBS) $(16LIB)
 
 test2.exe: test2.$(OBJ) $(DOSLIBLIBS) gfx.lib
 	wcl $(FLAGS) test2.$(OBJ) $(DOSLIBLIBS) gfx.lib -fm=test2.mah
+
+test0.exe: test0.$(OBJ)
+	wcl $(FLAGS) test0.$(OBJ) -fm=test0.mah
 
 fonttest.exe: fonttest.$(OBJ) $(16LIB) gfx.lib
 	wcl $(FLAGS) fonttest.$(OBJ) $(16LIB) gfx.lib -fm=fonttest.mah
@@ -181,6 +184,9 @@ test.$(OBJ): $(SRC)test.c $(SRCLIB)modex16.h
 
 test2.$(OBJ): $(SRC)test2.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)test2.c
+
+test0.$(OBJ): $(SRC)test0.c
+	wcl $(FLAGS) -c $(SRC)test0.c
 
 pcxtest.$(OBJ): $(SRC)pcxtest.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)pcxtest.c
