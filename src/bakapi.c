@@ -111,8 +111,8 @@ main(int argc, char *argvar[])
 
 	/* setup camera and screen~ */
 	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
-	gvar.video.page[0].width += (TILEWH*2);
-	gvar.video.page[0].height += (TILEWH*2);
+	//gvar.video.page[0].width += (TILEWH*2);
+	//gvar.video.page[0].height += (TILEWH*2);
 	textInit();
 
 	//modexPalUpdate(bmp.palette); //____
