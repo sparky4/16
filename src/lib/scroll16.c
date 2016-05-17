@@ -782,8 +782,9 @@ void shinku(global_game_variables_t *gv)
 	}
 	if(pageflipflop){
 		modexCopyPageRegion(&(gv->video.page[(gv->video.p)]), &(gv->video.page[(!gv->video.p)]), 0, 0, 0, 0, gv->video.page[gv->video.p].width, gv->video.page[!gv->video.p].height);
-		modexShowPage(&(gv->video.page[gv->video.p])); //this is slow as fack too!!
-		gv->video.p=!gv->video.p;
+		//modexShowPage(&(gv->video.page[gv->video.p])); //this is slow as fack too!!
+		modexShowPage(&(gv->video.page[1])); //this is slow as fack too!!
+		//gv->video.p=!gv->video.p;
 	}
 }
 

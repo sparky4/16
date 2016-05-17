@@ -29,7 +29,7 @@
 #include "src/lib/16_in.h"
 #include "src/lib/bitmap.h"
 #include "src/lib/planar.h"
-#include "src/lib/mapread.h"
+#include "src/lib/mapread.h" //map is loaded here www
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
 
