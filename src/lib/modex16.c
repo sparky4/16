@@ -270,7 +270,7 @@ void modexHiganbanaPageSetup(video_t *video)
 // 	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), 72, 128);		video->num_of_pages++;
 	modexCalcVmemRemain(video);
 	video->p=0;
-	video->r=0;
+	video->r=1;
 }
 
 void
