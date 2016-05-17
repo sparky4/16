@@ -115,6 +115,7 @@ typedef struct
 	word vmem_remain;	//remaining video memory
 	byte num_of_pages;	//number of actual pages
 	boolean __near p;			//render page number
+	boolean __near r;			//page flip if true
 	word pr[MAXPAGE][4];	//render sections of pages
 } video_t;
 

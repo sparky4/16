@@ -781,9 +781,12 @@ void shinku(global_game_variables_t *gv)
 		break;
 	}
 	if(pageflipflop){
+	if(gv->video.r){
 		modexCopyPageRegion(&(gv->video.page[(gv->video.p)]), &(gv->video.page[(!gv->video.p)]), 0, 0, 0, 0, gv->video.page[gv->video.p].width, gv->video.page[!gv->video.p].height);
 		modexShowPage(&(gv->video.page[gv->video.p])); //this is slow as fack too!!
 		gv->video.p=!gv->video.p;
+		gv->video.r=!gv->video.r;
+	}
 	}
 }
 
@@ -854,6 +857,7 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 	if(3>ls && ls>=2) { FRAME2 }else
 	if(4>ls && ls>=3) { FRAME3 }else
 	if(5>ls && ls>=4) { FRAME4 }
+	pip->video->r=1;
 	//TODO: mask copy //modexCopyPageRegion(dest->page, src->page, x-4, y-4, x-4, y-4, 28, 40);
 	//modexClearRegion(top->page, 66, 66, 2, 40, 0);
 	//modexCopyPageRegion(dest->page, top->page, 66, 66, 66, 66, 2, 40);

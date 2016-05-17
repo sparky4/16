@@ -267,6 +267,7 @@ void modexHiganbanaPageSetup(video_t *video)
 // 	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), 72, 128);		video->num_of_pages++;
 	modexCalcVmemRemain(video);
 	video->p=0;
+	video->r=0;
 }
 
 void
@@ -1116,13 +1117,13 @@ void modexcls(page_t *page, byte color, byte *Where)
 
 void
 modexWaitBorder() {
-    while(inp(INPUT_STATUS_1)  & 8)  {
+	while(inp(INPUT_STATUS_1)  & 8)  {
 	// spin
-    }
+	}
 
-//     while(!(inp(INPUT_STATUS_1)  & 8))  {
-// 	// spin
-//     }
+	while(!(inp(INPUT_STATUS_1)  & 8))  {
+	//spin
+	}
 }
 
 void bios_cls() {
