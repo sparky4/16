@@ -313,7 +313,7 @@ void main(int argc, char *argv[])
 	printf("tile resolution: %dx", gvar.video.page[0].tw);	printf("%d \n", gvar.video.page[0].th);
 	printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);
 	modexprintmeminfo(&gvar.video);
-	printf("mv[%u].tx: %d", pan.pn, mv[pan.pn].tx); printf("	mv[%u].ty: %d	", pan.pn, mv[pan.pn].ty); printf("panswitch=%u\n", panswitch);
+	printf("mv[%u].tx: %d", pan.pn, mv[pan.pn].tx); printf("	mv[%u].ty: %d	", pan.pn, mv[pan.pn].ty); printf("gvar.video.p=%u\n", gvar.video.p);
 	//printf("player[1].q: %d", player[1].q);	printf("	player[1].d: %d\n", player[1].d);
 	printf("\n");
 	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[0].map->width, mv[0].map->height, mv[0].map->data[0]);
