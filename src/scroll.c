@@ -85,6 +85,13 @@ void main(int argc, char *argv[])
 		return;
 	}
 
+	if (_DEBUG_INIT() == 0) {
+#ifdef DEBUGSERIAL
+		printf("WARNING: Failed to initialize DEBUG output\n");
+#endif
+	}
+	_DEBUG("Serial debug output started\n"); // NTS: All serial output must end messages with newline, or DOSBox-X will not emit text to log
+
 	pan.pn=1;
 	//player[0].data = &pp;
 

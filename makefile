@@ -26,6 +26,12 @@
 # -zk0	kanji support~
 # -zkl		current codepage
 
+# this enables debug output to the serial port.
+# comment this out on game release.
+# serial output goes to COM1 at 9600 baud 1 stop bit odd parity.
+# serial output is plain text ASCII.
+DEBUGSERIAL=1
+
 #%.C
 #192x144
 #wwww will add these
@@ -76,11 +82,17 @@ FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
-16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_timer.$(OBJ)
+16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_timer.$(OBJ)
 
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16planar.$(OBJ) $(DOSLIBLIBS)
 
 DOSLIBLIBS=$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu$(DIRSEP)dos86h$(DIRSEP)cpu.lib $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos$(DIRSEP)dos86h$(DIRSEP)dos.lib $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vga.lib
+
+!ifeq DEBUGSERIAL 1
+FLAGS += -DDEBUGSERIAL
+DOSLIBOBJ += 8250.$(OBJ)
+DOSLIBLIBS += $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)8250$(DIRSEP)dos86h$(DIRSEP)8250.lib
+!endif
 
 TESTEXEC = exmmtest.exe test.exe test0.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe
 
@@ -89,6 +101,9 @@ EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
 all: $(EXEC) joytest.exe vrs
 #16.lib => $(16LIBOBJS) bug....
 16LIB=$(16LIBOBJS)
+!ifeq DEBUGSERIAL 1
+16LIB += $(DOSLIBLIBS)
+!endif
 #
 #game and bakapi executables
 #
@@ -276,6 +291,8 @@ $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vgatty.lib:
 	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga && .$(DIRSEP)make.sh
 $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vga.lib:
 	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga && .$(DIRSEP)make.sh
+$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)8250$(DIRSEP)dos86h$(DIRSEP)8250.lib:
+	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)8250 && .$(DIRSEP)make.sh
 
 joytest.exe:
 	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)joystick && .$(DIRSEP)make.sh && $(COPYCOMMAND) dos86h$(DIRSEP)test.exe $(PDIR)$(PDIR)$(PDIR)$(PDIR)$(PDIR)joytest.exe
@@ -325,6 +342,9 @@ mapread.$(OBJ): $(SRCLIB)mapread.h $(SRCLIB)mapread.c
 
 16_ca.$(OBJ): $(SRCLIB)16_ca.h $(SRCLIB)16_ca.c
 	wcl $(FLAGS) -c $(SRCLIB)16_ca.c
+
+16_dbg.$(OBJ): $(SRCLIB)16_dbg.h $(SRCLIB)16_dbg.c
+	wcl $(FLAGS) -c $(SRCLIB)16_dbg.c
 
 midi.$(OBJ): $(SRCLIB)midi.h $(SRCLIB)midi.c
 	wcl $(FLAGS) -c $(SRCLIB)midi.c
