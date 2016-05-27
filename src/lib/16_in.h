@@ -32,6 +32,7 @@
 #include "src/lib/16_timer.h"
 #include "src/lib/bitmap.h"
 #include "src/lib/planar.h"
+#include "src/lib/16_dbg.h"
 
 #ifdef	__DEBUG__
 //#define	__DEBUG_InputMgr__
