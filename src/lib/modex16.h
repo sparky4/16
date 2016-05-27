@@ -31,7 +31,7 @@
 #include "src/lib/modex16/16planar.h"
 #include "src/lib/16text.h"
 #include "src/lib/modex16/16render.h"
-// #include "src/lib/modex16/320x240.h"
+#include "src/lib/modex16/320x240.h"
 // #include "src/lib/modex16/320x200.h"
 // #include "src/lib/modex16/256x192.h"
 // #include "src/lib/modex16/192x144_.h"
@@ -66,7 +66,8 @@ static struct pcxHeader {
 //192x144 = 12x9
 
 //temp defines
-#define TILEWH 16
+#define TILEWH	16
+#define TILEWHD	TILEWH*2
 #define QUADWH			TILEWH/2
 
 /* -========================== Types & Macros ==========================- */
@@ -118,6 +119,8 @@ void modexsetBaseXMode();
 page_t modexDefaultPage(page_t *p);
 page_t modexNextPage(page_t *p);
 page_t modexNextPageFlexibleSize(page_t *p, word x, word y);
+void modexCalcVmemRemain(video_t *video);
+void modexHiganbanaPageSetup(video_t *video);
 void modexShowPage(page_t *page);
 void modexPanPage(page_t *page, int dx, int dy);
 void modexSelectPlane(byte plane);
@@ -182,5 +185,6 @@ void modexpdump(page_t *pee);
 void modexcls(page_t *page, byte color, byte *Where);
 void modexWaitBorder();
 void bios_cls();
+void modexprintmeminfo(video_t *v);
 
 #endif

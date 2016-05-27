@@ -32,6 +32,7 @@
 #include "src/lib/16_timer.h"
 #include "src/lib/bitmap.h"
 #include "src/lib/planar.h"
+#include "src/lib/16_dbg.h"
 
 #ifdef	__DEBUG__
 //#define	__DEBUG_InputMgr__
@@ -225,6 +226,7 @@ typedef	struct
 	byte near pdir;	//previous direction~
 	//byte near kd[2];	//array of arrow key pressed
 	word speed;		//player speed!
+	word spt;		//speed per tile
 //0000	planar_buf_t huge *data; //supposively the sprite sheet data
 //	planar_buf_t data; //supposively the sprite sheet data
 ////0000----

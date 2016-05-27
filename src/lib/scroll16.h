@@ -29,7 +29,7 @@
 #include "src/lib/16_in.h"
 #include "src/lib/bitmap.h"
 #include "src/lib/planar.h"
-#include "src/lib/mapread.h"
+#include "src/lib/mapread.h" //map is loaded here www
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
 
@@ -52,6 +52,8 @@ typedef struct {
 	int ty; //appears to be the top left tile position on the viewable screen map
 	word dxThresh; //????
 	word dyThresh; //????
+	video_t *video;	//pointer to game variables of the video
+	pan_t *pan;		//pointer the the page panning debug system
 } map_view_t;
 
 typedef struct
@@ -63,13 +65,20 @@ typedef struct
 #define MAPW	40
 #define MAPH	30
 
+extern boolean pageflipflop;
+
 //map_t allocMap(int w, int h);
 //void initMap(map_t *map);
 void walk(map_view_t *pip, player_t *player, word pn);
+void panpagemanual(map_view_t *pip,  player_t *player, word pn);
 void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid);
+void near ScrollRight(map_view_t *mv, player_t *player, word id, word plid);
+void near ScrollLeft(map_view_t *mv, player_t *player, word id, word plid);
+void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid);
+void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid);
 sword chkmap(map_t *map, word q);
 void mapGoTo(map_view_t *mv, int tx, int ty);
 void near mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);

@@ -90,8 +90,8 @@ main(int argc, char *argvar[])
 	// main variables values
 	d=4; // switch variable
 	key=2; // default screensaver number
-	xpos=TILEWH*2;
-	ypos=TILEWH*2;
+	xpos=TILEWHD;
+	ypos=TILEWHD;
 	xdir=1;
 	ydir=1;
 
@@ -111,8 +111,6 @@ main(int argc, char *argvar[])
 
 	/* setup camera and screen~ */
 	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
-	gvar.video.page[0].width += (TILEWH*2);
-	gvar.video.page[0].height += (TILEWH*2);
 	textInit();
 
 	//modexPalUpdate(bmp.palette); //____
@@ -200,7 +198,7 @@ main(int argc, char *argvar[])
 			VGAmodeX(0, 0, &gvar);
 			// user imput switch
 			//fprintf(stderr, "xx=%d	yy=%d	tile=%d\n", bakapee.xx, bakapee.yy, bakapee.tile);
-			fprintf(stderr, "dx=%d	dy=%d	", gvar.video.page[0].dx, gvar.video.page[0].dy);
+			//fprintf(stderr, "dx=%d	dy=%d	", gvar.video.page[0].dx, gvar.video.page[0].dy);
 			printf("Tiled mode is ");
 			switch (bakapee.tile)
 			{
@@ -264,10 +262,8 @@ pee:
 				case '6':
 				case '9':
 					key = c - '0';
-					gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
-					gvar.video.page[0].width += (TILEWH*2);
-					gvar.video.page[0].height += (TILEWH*2);
 					VGAmodeX(vgamodex_mode, 0, &gvar);
+					gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
 		// this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
 		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
 					modexShowPage(&gvar.video.page[0]);
@@ -311,6 +307,7 @@ pee:
 	}
 	VGAmodeX(0, 1, &gvar);
 #endif // defined(BOINK)
+//	printf("page.width=%u	", gvar.video.page[0].width); printf("page.height=%u\n", gvar.video.page[0].height);
 	printf("bakapi ver. 1.04.16.04\nis made by sparky4ÅiÅÜÉ÷ÅÖÅj feel free to use it ^^\nLicence: GPL v3\n");
 	printf("compiled on 2016/04/04\n");
 }

@@ -36,6 +36,8 @@
 #define AAMAGENTA	"\x1b[45;35m"
 #define AARESET	"\x1b[0m"
 
+#define MAXPAGE 4
+
 /*
  * typedefs of the game variables!
  */
@@ -70,16 +72,18 @@ typedef struct {
 	word dy;		/* row we are viewing on the virtual screen */
 	word sw;		/* screen width */
 	word sh;		/* screen heigth */
-	word tilesw;		/* screen width in tiles */
-	word tilesh;		/* screen height in tiles */
+	word tw;		/* screen width in tiles */
+	word th;		/* screen height in tiles */
 	word width;		/* virtual width of the page */
 	word height;	/* virtual height of the page */
-	word tw;
-	word th;
+	word tilesw;		/* virtual screen width in tiles */
+	word tilesh;		/* virtual screen height in tiles */
 	sword tilemidposscreenx;	/* middle tile position */
 	sword tilemidposscreeny;	/* middle tile position */
 	sword tileplayerposscreenx;	/* player position on screen */
 	sword tileplayerposscreeny;	/* player position on screen */
+	word stridew;			/*width/4*/
+	word pagesize;			/* page size */
 } page_t;
 
 typedef struct
@@ -101,8 +105,18 @@ typedef struct
 
 typedef struct
 {
-	long old_mode;	//old video mode before game!
-	page_t page[4];	//pointer to root page[0]
+	word	pn;
+} pan_t;
+
+typedef struct
+{
+	char old_mode;		//old video mode before game!
+	page_t page[MAXPAGE];		//pointer to root page[0]
+	word vmem_remain;	//remaining video memory
+	byte num_of_pages;	//number of actual pages
+	boolean __near p;			//render page number
+	boolean __near r;			//page flip if true
+	word pr[MAXPAGE][4];	//render sections of pages
 } video_t;
 
 typedef struct

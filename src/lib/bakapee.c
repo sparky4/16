@@ -266,7 +266,7 @@ void ding(page_t *page, bakapee_t *pee, word q)
 			ty+=pee->yy+TILEWH+4;
 			modexClearRegion(page, tx, ty, 4, 4, pee->coor);
 			if(pee->tile)
-			modexClearRegion(page, (rand()*TILEWH)%page->width, (rand()*TILEWH)%(page->height), TILEWH, TILEWH, 0);
+			modexClearRegion(page, (rand()*4)%page->width, (rand()*4)%(page->height), 4, 4, 0);
 			else
 			modexputPixel(page, rand()%page->width, rand()%(page->height), 0);
 			//printf("%d %d %d %d %d %d\n", pee->xx, pee->yy, tx, ty, TILEWH);

@@ -85,6 +85,9 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 
 	vgaSetMode(VGA_256_COLOR_MODE);
 	vga_enable_256color_modex();
+	/* reprogram the CRT controller */
+// 	outp(CRTC_INDEX, 0x11); /* VSync End reg contains register write prot */
+// 	outp(CRTC_DATA, 0x7f);  /* get current write protect on varios regs */
 	update_state_from_vga();
 	vga_read_crtc_mode(&cm);
 
@@ -92,6 +95,9 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 	{
 		case 1:
 			//CRTParmCount = sizeof(ModeX_320x240regs) / sizeof(ModeX_320x240regs[0]);
+			/*for(i=0; i<CRTParmCount; i++) {
+				outpw(CRTC_INDEX, ModeX_320x240regs[i]);
+			}*/
 			/* width and height */
 			gv->video.page[0].sw = vga_state.vga_width = 320; // VGA lib currently does not update this
 			gv->video.page[0].sh = vga_state.vga_height = 240; // VGA lib currently does not update this
@@ -148,17 +154,18 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 		}
 		break;
 	}
-	gv->video.page[0].tilesw = gv->video.page[0].sw/TILEWH;
-	gv->video.page[0].tilesh = gv->video.page[0].sh/TILEWH;
+
+//	gv->video.page[0].tw = gv->video.page[0].sw/TILEWH;
+//	gv->video.page[0].th = gv->video.page[0].sh/TILEWH;
+
 	//TODO MAKE FLEXIBLE~
-	gv->video.page[0].tilemidposscreenx = gv->video.page[0].tilesw;
-	gv->video.page[0].tilemidposscreeny = (gv->video.page[0].tilesh/2)+1;
-	#define PAGE_SIZE		(word)(gv->video.page[0].sw/4 * gv->video.page[0].sh)
+//	gv->video.page[0].tilemidposscreenx = gv->video.page[0].tilesw;
+//	gv->video.page[0].tilemidposscreeny = (gv->video.page[0].tilesh/2)+1;
 }
 
 void
 modexLeave() {
-	/* TODO restore original mode and palette */
+	/* VGAmodeX restores original mode and palette */
 	vgaSetMode(TEXT_MODE);
 }
 
@@ -168,20 +175,23 @@ modexDefaultPage(page_t *p)
     page_t page;
 
     /* default page values */
-    page.data = vga_state.vga_graphics_ram;//VGA;
+	//page.data = VGA;
+	//page.data = (byte far *)(vga_state.vga_graphics_ram);
+	page.data = (vga_state.vga_graphics_ram);
     page.dx = 0;
     page.dy = 0;
 	page.sw = p->sw;
 	page.sh = p->sh;
-	page.width = p->sw;
-	page.height = p->sh;
+	page.width = p->sw+TILEWHD;
+	page.height = p->sh+TILEWHD;
 	page.tw = page.sw/TILEWH;
 	page.th = page.sh/TILEWH;
+	page.tilesw=page.width/TILEWH;
+	page.tilesh=page.height/TILEWH;
 	page.tilemidposscreenx = page.tw/2;
 	page.tilemidposscreeny = (page.th/2)+1;
-	page.tilesw=p->tilesw;
-	page.tilesh=p->tilesh;
-	//pageSize = p->sw*p->sh;
+	page.stridew=page.width/4;
+	page.pagesize = (word)(page.width/4)*page.height;
 	page.id = 0;
 
     return page;
@@ -194,17 +204,22 @@ page_t
 modexNextPage(page_t *p) {
     page_t result;
 
-    result.data = p->data + (p->width/4)*p->height;
+    result.data = p->data + (p->pagesize);
     result.dx = 0;
     result.dy = 0;
+	result.sw = p->sw;
+	result.sh = p->sh;
     result.width = p->width;
     result.height = p->height;
-	result.tw = p->width/TILEWH;
-	result.th = p->height/TILEWH;
+	result.tw = p->tw;
+	result.th = p->th;
+	result.tilesw = p->tilesw;
+	result.tilesh = p->tilesh;
 	result.id = p->id+1;
+	result.stridew=p->stridew;
+	result.pagesize = p->pagesize;
 
 	return result;
-// 	return modexNextPageFlexibleSize(&p, p->width, p->height);
 }
 
 //next page with defined dimentions~
@@ -213,18 +228,50 @@ modexNextPageFlexibleSize(page_t *p, word x, word y)
 {
 	page_t result;
 
-	result.data = p->data + (p->width/4)*p->height;  /* compute the offset */
+	result.data = p->data + (p->pagesize);  /* compute the offset */
 	result.dx = 0;
 	result.dy = 0;
+	result.sw = x;
+	result.sh = y;
 	result.width = x;
 	result.height = y;
-	result.tw = p->width/TILEWH;
-	result.th = p->height/TILEWH;
+	result.tw = result.sw/TILEWH;
+	result.th = result.sh/TILEWH;
+	result.tilesw=result.width/TILEWH;
+	result.tilesh=result.height/TILEWH;
 	result.id = p->id+1;
+	result.stridew=result.width/4;
+	result.pagesize = (word)(result.width/4)*result.height;
 
 	return result;
 }
 
+void modexCalcVmemRemain(video_t *video)
+{
+	byte i;
+	//printf("\n\n	1st vmem_remain=%u\n", video->vmem_remain);
+	for(i=0; i<video->num_of_pages; i++)
+	{
+		video->vmem_remain-=video->page[i].pagesize;
+		//printf("		[%u], video->page[%u].pagesize=%u\n", i, i, video->page[i].pagesize);
+		//printf("		[%u], vmem_remain=%u\n", i, video->vmem_remain);
+	}
+}
+
+void modexHiganbanaPageSetup(video_t *video)
+{
+	video->vmem_remain=65535U;
+	video->num_of_pages=0;
+	(video->page[0]) = modexDefaultPage(&(video->page[0]));	video->num_of_pages++;	//video->page[0].width += (TILEWHD); video->page[0].height += (TILEWHD);
+	(video->page[1]) = modexNextPage(&(video->page[0]));	video->num_of_pages++;
+	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), TILEWH*4, TILEWH*4);		video->num_of_pages++;
+	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), video->page[0].sw, 208);	video->num_of_pages++;
+// 	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), video->page[0].width, 172);	video->num_of_pages++;
+// 	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), 72, 128);		video->num_of_pages++;
+	modexCalcVmemRemain(video);
+	video->p=0;
+	video->r=1;
+}
 
 void
 modexShowPage(page_t *page) {
@@ -259,13 +306,11 @@ modexShowPage(page_t *page) {
     outp(AC_INDEX, (page->dx & 0x03) << 1);
 }
 
-
 void
 modexPanPage(page_t *page, int dx, int dy) {
     page->dx = dx;
     page->dy = dy;
 }
-
 
 void
 modexSelectPlane(byte plane) {
@@ -273,14 +318,13 @@ modexSelectPlane(byte plane) {
     outp(SC_DATA,  plane);
 }
 
-
 void
 modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
     word pageOff = (word) page->data;
     word xoff=x/4;       /* xoffset that begins each row */
     word scanCount=w/4;  /* number of iterations per row (excluding right clip)*/
-    word poffset = pageOff + y*(page->width/4) + xoff; /* starting offset */
-    word nextRow = page->width/4-scanCount-1;  /* loc of next row */
+    word poffset = pageOff + y*(page->stridew) + xoff; /* starting offset */
+    word nextRow = page->stridew-scanCount-1;  /* loc of next row */
     byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08};  /* clips for rectangles not on 4s */
     byte rclip[] = {0x00, 0x01, 0x03, 0x07};
     byte left = lclip[x&0x03];
@@ -292,6 +336,14 @@ modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
     }
 
     __asm {
+	    PUSHF
+	    PUSH ES
+	    PUSH AX
+	    PUSH BX
+	    PUSH CX
+	    PUSH DX
+	    PUSH SI
+	    PUSH DI
 		MOV AX, SCREEN_SEG      ; go to the VGA memory
 		MOV ES, AX
 		MOV DI, poffset	 ; go to the first pixel
@@ -325,6 +377,14 @@ modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
 		ADD DI, nextRow	 ; go to the next row
 		DEC h
 		JNZ SCAN_START
+	    POP DI
+	    POP SI
+	    POP DX
+	    POP CX
+	    POP BX
+	    POP AX
+	    POP ES
+	    POPF
     }
 }
 
@@ -340,17 +400,26 @@ modexCopyPageRegion(page_t *dest, page_t *src,
 		    word dx, word dy,
 		    word width, word height)
 {
-    word doffset = (word)dest->data + dy*(dest->width/4) + dx/4;
-    word soffset = (word)src->data + sy*(src->width/4) + sx/4;
-    word scans   = width/4;
-    word nextSrcRow = src->width/4 - scans - 1;
-    word nextDestRow = dest->width/4 - scans - 1;
+    word doffset = (word)dest->data + dy*(dest->stridew) + dx/4;
+    word soffset = (word)src->data + sy*(src->stridew) + sx/4;
+    word scans   = vga_state.vga_stride;
+    word nextSrcRow = src->stridew - scans - 1;
+    word nextDestRow = dest->stridew - scans - 1;
     byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08};  /* clips for rectangles not on 4s */
     byte rclip[] = {0x0f, 0x01, 0x03, 0x07};
     byte left = lclip[sx&0x03];
     byte right = rclip[(sx+width)&0x03];
 
     __asm {
+	    PUSHF
+	    PUSH ES
+	    PUSH AX
+	    PUSH BX
+	    PUSH CX
+	    PUSH DX
+	    PUSH SI
+	    PUSH DI
+
 		MOV AX, SCREEN_SEG      ; work in the vga space
 		MOV ES, AX	      ;
 		MOV DI, doffset	 ;
@@ -399,6 +468,15 @@ modexCopyPageRegion(page_t *dest, page_t *src,
 		MOV DX, GC_INDEX+1      ; go back to CPU data
 		MOV AL, 0ffh	    ; none from latches
 		OUT DX, AL	      ;
+
+	    POP DI
+	    POP SI
+	    POP DX
+	    POP CX
+	    POP BX
+	    POP AX
+	    POP ES
+	    POPF
     }
 }
 
@@ -960,6 +1038,15 @@ void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, c
 	}
 	//load the letter 'A'
 	__asm {
+	    PUSHF
+	    PUSH ES
+	    PUSH AX
+	    PUSH BX
+	    PUSH CX
+	    PUSH DX
+	    PUSH SI
+	    PUSH DI
+
 		MOV DI, addr
 		MOV SI, o
 		MOV ES, s
@@ -974,6 +1061,15 @@ void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, c
 		INC DI
 		DEC CX
 		JNZ L1
+
+	    POP DI
+	    POP SI
+	    POP DX
+	    POP CX
+	    POP BX
+	    POP AX
+	    POP ES
+	    POPF
 	}
 
 		for(i=0; i<w; i++)
@@ -1024,13 +1120,13 @@ void modexcls(page_t *page, byte color, byte *Where)
 
 void
 modexWaitBorder() {
-    while(inp(INPUT_STATUS_1)  & 8)  {
+	while(inp(INPUT_STATUS_1)  & 8)  {
 	// spin
-    }
+	}
 
-    while(!(inp(INPUT_STATUS_1)  & 8))  {
-	// spin
-    }
+	while(!(inp(INPUT_STATUS_1)  & 8))  {
+	//spin
+	}
 }
 
 void bios_cls() {
@@ -1057,5 +1153,21 @@ void bios_cls() {
 	}
 	else {
 		printf("WARNING: bios cls no ptr\n");
+	}
+}
+
+void modexprintmeminfo(video_t *v)
+{
+	byte i;
+	printf("video memory remaining: %u\n", v->vmem_remain);
+	printf("page ");
+	for(i=0; i<v->num_of_pages;i++)
+	{
+		printf("	[%u]=", i);
+		printf("(%Fp)", (v->page[i].data));
+		printf(" size=%u", v->page[i].pagesize);
+		printf(" sw=%lu  sh=%lu ", (unsigned long)v->page[i].sw, (unsigned long)v->page[i].sh);
+		printf(" width=%lu  height=%lu", (unsigned long)v->page[i].width, (unsigned long)v->page[i].height);
+		printf("\n");
 	}
 }
