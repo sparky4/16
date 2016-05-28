@@ -5,9 +5,13 @@
 # ifdef DEBUGSERIAL
 #  include <hw/8250/8250.h>
 
+void _DEBUGF(const char *fmt,...);
 void _DEBUG(const char *msg);
 int _DEBUG_INIT();
 # else
+static inline void _DEBUGF(const char *fmt,...) {
+	// NOTHING
+}
 static inline void _DEBUG(const char *msg) {
 	// NOTHING
 }

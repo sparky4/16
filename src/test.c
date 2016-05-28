@@ -70,6 +70,7 @@ void main(int argc, char *argv[])
 #endif
 	}
 	_DEBUG("Serial debug output started\n"); // NTS: All serial output must end messages with newline, or DOSBox-X will not emit text to log
+	_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);
 
 	/* load our palette */
 	modexLoadPalFile("data/default.pal", &pal2);
