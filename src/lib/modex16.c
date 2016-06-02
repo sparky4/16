@@ -62,7 +62,12 @@ void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
 static void
 vgaSetMode(byte mode)
 {
-  int10_setmode(mode);
+	union REGS regs;
+
+	regs.h.ah = SET_MODE;
+	regs.h.al = mode;
+	int86(VIDEO_INT, &regs, &regs);
+  //int10_setmode(mode);
 }
 
 //---------------------------------------------------
@@ -85,11 +90,13 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 
 	vgaSetMode(VGA_256_COLOR_MODE);
 	vga_enable_256color_modex();
-	/* reprogram the CRT controller */
-// 	outp(CRTC_INDEX, 0x11); /* VSync End reg contains register write prot */
-// 	outp(CRTC_DATA, 0x7f);  /* get current write protect on varios regs */
+
 	update_state_from_vga();
 	vga_read_crtc_mode(&cm);
+
+	/* reprogram the CRT controller */
+	outp(CRTC_INDEX, 0x11); /* VSync End reg contains register write prot */
+	outp(CRTC_DATA, 0x7f);  /* get current write protect on varios regs */
 
 	switch(vq)
 	{
