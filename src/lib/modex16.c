@@ -123,7 +123,7 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 			cm.vertical_display_end = 480;
 			cm.vertical_blank_start = 0x1E7 + 1;
 			cm.vertical_blank_end = 0x206 + 1;
-			cm.clock_select = 1; /* misc register = 0xE3  25MHz */
+			cm.clock_select = 0; /* misc register = 0xE3  25MHz */
 			cm.vsync_neg = 1;
 			cm.hsync_neg = 1;
 			cm.offset = (vga_state.vga_width / (4 * 2)); // 320 wide (40 x 4 pixel groups x 2)
