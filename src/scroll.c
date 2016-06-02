@@ -221,7 +221,6 @@ void main(int argc, char *argv[])
 		//printf("	player[0].q: %d", player[0].q);	printf("	player[0].d: %d\n", player[0].d);
 	}
 
-
 	//the scripting stuff....
 	//if(((player[0].triggerx == TRIGGX && player[0].triggery == TRIGGY) && IN_KeyDown(0x1C))||(player[0].tx == 5 && player[0].ty == 5))
 	if(((mv[0].map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))] == 0) && IN_KeyDown(0x1C))||(player[0].tx == 5 && player[0].ty == 5))
@@ -235,31 +234,33 @@ void main(int argc, char *argv[])
 	}
 	if(player[0].q == (TILEWH/(player[0].speed))+1 && player[0].info.dir != 2 && (player[0].triggerx == 5 && player[0].triggery == 5)){ player[0].hp--; }
 	//debugging binds!
-	if(IN_KeyDown(2)){ modexShowPage(mv[0].page); pan.pn=0; }
-	if(IN_KeyDown(3)){ modexShowPage(mv[1].page); pan.pn=1; }
-	if(IN_KeyDown(4)){ modexShowPage(mv[2].page); pan.pn=2; }
-	if(IN_KeyDown(4+1)){ modexShowPage(mv[3].page); pan.pn=3; }
+	if(IN_KeyDown(2)){ modexShowPage(mv[0].page); pan.pn=0; IN_UserInput(1,1); }
+	if(IN_KeyDown(3)){ modexShowPage(mv[1].page); pan.pn=1; IN_UserInput(1,1); }
+	if(IN_KeyDown(4)){ modexShowPage(mv[2].page); pan.pn=2; IN_UserInput(1,1); }
+	if(IN_KeyDown(4+1)){ modexShowPage(mv[3].page); pan.pn=3; IN_UserInput(1,1); }
 	if(IN_KeyDown(25)){ modexpdump(mv[0].page); modexpdump(mv[1].page);
-		//IN_Ack();
+		 IN_UserInput(1,1);
 	}	//p
 #ifdef MODEX
 #ifdef FADE
-	if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv[0].page); modexpdump(mv[1].page); }
+	if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv[0].page); modexpdump(mv[1].page);  IN_UserInput(1,1); }
 	if(IN_KeyDown(22)){
 	paloffset=0; modexPalBlack(); modexPalUpdate(&player[0].data, &paloffset, 0, 0);
 	printf("1paloffset	=	%d\n", paloffset/3);
 	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	printf("2paloffset	=	%d\n", paloffset/3);
-	 modexpdump(mv[0].page); modexpdump(mv[1].page); }
+	 modexpdump(mv[0].page); modexpdump(mv[1].page);
+		 IN_UserInput(1,1);
+	}
 #endif
 #endif
 	//pan switch
-	if(IN_KeyDown(88)){panswitch=!panswitch;}	//f12
+	if(IN_KeyDown(88)){panswitch=!panswitch; IN_UserInput(1,1);}	//f12
 	//TSR
 	if(IN_KeyDown(87))	//f11
 	{
 		pageflipflop=!pageflipflop;
-		//IN_Ack();
+		IN_UserInput(1,1);
 // 		VGAmodeX(0, 0, &gvar);
 // 		IN_Shutdown();
 // 		__asm
@@ -271,7 +272,7 @@ void main(int argc, char *argv[])
 	if(IN_KeyDown(68))	//s
 	{
 		gvar.kurokku.fpscap=!gvar.kurokku.fpscap;
-		//IN_Ack();
+		 IN_UserInput(1,1);
 	}
 	//TODO fmemtest into page
 	/*if(IN_KeyDown(4+1))	//4
@@ -282,7 +283,7 @@ void main(int argc, char *argv[])
 	}*/
 
 	//9
-	if(IN_KeyDown(10)){ modexPalOverscan(default_pal, rand()%56); modexPalUpdate1(default_pal); }
+	if(IN_KeyDown(10)){ modexPalOverscan(default_pal, rand()%56); modexPalUpdate1(default_pal); IN_UserInput(1,1); }
 	//if(IN_KeyDown(11)){ modexPalOverscan(default_pal, 15); }
 	if((player[0].q==1) && !(player[0].x%TILEWH==0 && player[0].y%TILEWH==0)) break;	//incase things go out of sync!
 	}

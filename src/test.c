@@ -171,12 +171,13 @@ void main(int argc, char *argv[])
 // 				modexClearRegion(&gvar.video.page[1], 48, 48, gvar.video.page[1].sw-64, gvar.video.page[1].sh-64, 128);
 // 			}
 		//}
-		if(IN_KeyDown(1+1)) pan.pn=0;
-		if(IN_KeyDown(2+1)) pan.pn=1;
-		if(IN_KeyDown(3+1)) pan.pn=2;
-		if(IN_KeyDown(4+1)) pan.pn=3;
+		if(IN_KeyDown(1+1)){ pan.pn=0; }
+		if(IN_KeyDown(2+1)){ pan.pn=1; }
+		if(IN_KeyDown(3+1)){ pan.pn=2; }
+		if(IN_KeyDown(4+1)){ pan.pn=3; }
 		if(IN_KeyDown(25)){
 			modexpdump(&gvar.video.page[pan.pn]);
+			IN_UserInput(1,1);
 		}//p
 		modexShowPage(&gvar.video.page[pan.pn]);
 	}

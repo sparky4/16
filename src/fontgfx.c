@@ -100,7 +100,6 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 	chx=0;
 	chy=0;
 	colpee=32;
-//	bios_cls();
 	/* position the cursor to home */
 //	vga_moveto(0,0);
 //	vga_sync_bios_cursor();
