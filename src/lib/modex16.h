@@ -186,5 +186,6 @@ void modexcls(page_t *page, byte color, byte *Where);
 void modexWaitBorder();
 void bios_cls();
 void modexprintmeminfo(video_t *v);
+void update_state_from_vga_();
 
 #endif

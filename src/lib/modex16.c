@@ -1178,3 +1178,130 @@ void modexprintmeminfo(video_t *v)
 		printf("\n");
 	}
 }
+
+void update_state_from_vga_() {
+	unsigned char c;
+
+	vga_state.vga_pos_x = 0;
+	vga_state.vga_pos_y = 0;
+	vga_state.vga_stride = 80;
+	vga_state.vga_height = 25;
+	vga_state.vga_width = 80;
+	vga_state.vga_9wide = 0;
+
+	if (vga_state.vga_flags & VGA_IS_VGA) { /* VGA only. EGA cards DO have the misc. output reg but it's write-only */
+		/* update state from H/W which I/O port */
+		c = inp(0x3CC);
+		if (c & 1) {
+			vga_state.vga_base_3x0 = 0x3D0;
+		}
+		else {
+			vga_state.vga_base_3x0 = 0x3B0;
+		}
+
+		/* now ask the graphics controller where/how VGA memory is mapped */
+		c = vga_read_GC(6);
+		/* bit 0 = alpha disable (if set, graphics) */
+		vga_state.vga_alpha_mode = ((c & 1) == 0);
+		/* bits 2-3 memory map select */
+		update_state_vga_memory_map_select((c>>2)&3);
+
+		/* read the sequencer: are we in 8 or 9 dot mode? */
+		c = vga_read_sequencer(0x1);
+		vga_state.vga_9wide = (c & 1) == 0;
+
+		/* read from the CRTC controller the stride, width, and height */
+		vga_state.vga_stride = vga_read_CRTC(0x13) * 2;	/* "offset" register */
+		if (vga_state.vga_alpha_mode) {
+			vga_state.vga_width = vga_state.vga_stride;
+			vga_sync_hw_cursor();
+			/* TODO: read vertical blank values and calculate active area, then divide by scan line height, to get alpha height */
+			/* TODO: read horizontal blank values to calculate active area, then visible width */
+		}
+		else {
+			/* TODO: similar semantics for graphics mode */
+		}
+	}
+	else if (vga_state.vga_flags & VGA_IS_EGA) {
+		/* Well the EGA has similar registers BUT they aren't readable. So we have to
+		 * guess based on other information handed to us */
+
+		/* reading the misc. output register doesn't work, use BIOS data area */
+		c = *((unsigned char far*)MK_FP(0x40,0x63));
+		if ((c&0xF0) == 0xD0)
+			vga_state.vga_base_3x0 = 0x3D0;
+		else if ((c&0xF0) == 0xB0)
+			vga_state.vga_base_3x0 = 0x3B0;
+		else {
+			vga_state.vga_base_3x0 = 0x3D0;
+		}
+
+		/* reading from the graphics controller (0x3CE) doesn't work, deduce from BIOS mode */
+		c = int10_getmode();
+		switch (c) {
+			case 0: case 1: case 2: case 3: case 7:
+				vga_state.vga_alpha_mode = 1;
+
+ /* the best we can do is assume B0000 if CRTC is at 3Bx or B8000 if at 3Dx even though it's possible to map at B8000 and 3Bx */
+				if (vga_state.vga_base_3x0 == 0x3B0)
+					update_state_vga_memory_map_select(2);
+				else
+					update_state_vga_memory_map_select(3);
+				break;
+			case 4: case 5: case 6:
+				vga_state.vga_alpha_mode = 0;
+				update_state_vga_memory_map_select(3);
+				break;
+			case 13: case 14: case 15: case 16: case 17: case 18: default:
+				vga_state.vga_alpha_mode = 0;
+				update_state_vga_memory_map_select(1);
+				break;
+		}
+
+		/* read from the CRTC controller the stride, width, and height */
+		vga_state.vga_stride = vga_read_CRTC(0x13) * 2;	/* "offset" register */
+		if (vga_state.vga_alpha_mode) {
+			vga_state.vga_width = vga_state.vga_stride;
+			vga_sync_hw_cursor();
+			/* TODO: read vertical blank values and calculate active area, then divide by scan line height, to get alpha height */
+			/* TODO: read horizontal blank values to calculate active area, then visible width */
+		}
+		else {
+			/* TODO: similar semantics for graphics mode */
+		}
+	}
+	else if (vga_state.vga_flags & VGA_IS_CGA) {
+		vga_state.vga_base_3x0 = 0x3D0; /* always at 0x3Dx */
+
+		/* TODO: If Tandy, detect state */
+
+		/* read the status register to determine the state of the CGA... oh wait... we can't.
+		 * fine. deduce it from the BIOS video mode. */
+		c = int10_getmode();
+		switch (c) {
+			case 0: case 1: case 2: case 3: case 7:
+				vga_state.vga_alpha_mode = 1;
+				break;
+			default:
+				vga_state.vga_alpha_mode = 0;
+				break;
+		}
+
+		if (c <= 1) {
+			vga_state.vga_stride = 40;
+			vga_state.vga_width = 40;
+		}
+
+		update_state_vga_memory_map_select(3); /* 0xB8000 */
+	}
+	else if (vga_state.vga_flags & VGA_IS_MDA) {
+		vga_state.vga_base_3x0 = 0x3B0; /* always at 0x3Bx */
+		vga_state.vga_alpha_mode = 1; /* stock MDA doesn't have graphics */
+
+		/* Hercules MDA: It would be nice to be able to read bit 2 of the display control,
+		 *               except that the port is write-only. Thanks >:( */
+		update_state_vga_memory_map_select(2); /* 0xB0000 */
+	}
+
+	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = vga_state.vga_stride;
+}
