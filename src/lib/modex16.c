@@ -91,7 +91,7 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 	vgaSetMode(VGA_256_COLOR_MODE);
 	vga_enable_256color_modex();
 
-	update_state_from_vga();
+	update_state_from_vga_();
 	vga_read_crtc_mode(&cm);
 
 	/* reprogram the CRT controller */
