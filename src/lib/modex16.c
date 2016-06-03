@@ -119,7 +119,7 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 			cm.horizontal_total=0x5f + 5; /* CRTC[0]             -5 */
 			cm.horizontal_display_end=0x4f + 1; /* CRTC[1]       -1 */
 			cm.horizontal_blank_start=0x50 + 1; /* CRTC[2] */
-			cm.horizontal_blank_end=0x82 + 1;   /* CRTC[3] bit 0-4 & CRTC[5] bit 7 *///skewing ^^;
+//			cm.horizontal_blank_end=0x82 + 1;   /* CRTC[3] bit 0-4 & CRTC[5] bit 7 *///skewing ^^;
 			cm.horizontal_start_retrace=0x54;/* CRTC[4] */
 			cm.horizontal_end_retrace=0x80;	/* CRTC[5] bit 0-4 */
 			//cm.horizontal_start_delay_after_total=0x3e; /* CRTC[3] bit 5-6 */
