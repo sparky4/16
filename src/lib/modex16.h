@@ -186,7 +186,5 @@ void modexcls(page_t *page, byte color, byte *Where);
 void modexWaitBorder();
 void bios_cls();
 void modexprintmeminfo(video_t *v);
-void vga_write_crtc_mode_(struct vga_mode_params *p,unsigned int flags);
-void vga_read_crtc_mode_(struct vga_mode_params *p);
 
 #endif
