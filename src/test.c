@@ -24,6 +24,7 @@
 #include "src/lib/modex16.h"
 #include "src/lib/16_in.h"
 #include "src/lib/scroll16.h"
+#include "src/lib/bakapee.h"
 
 global_game_variables_t gvar;
 player_t player[MaxPlayers];
@@ -38,10 +39,11 @@ void main(int argc, char *argv[])
 	byte *pal, *pal2;
 	sword bakapee;
 
+	word colo=LGQ;
+
 	//argument
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
-
 
 	// DOSLIB: check our environment
 	probe_dos();
@@ -72,9 +74,6 @@ void main(int argc, char *argv[])
 	_DEBUG("Serial debug output started\n"); // NTS: All serial output must end messages with newline, or DOSBox-X will not emit text to log
 	_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);
 
-	/* load our palette */
-	modexLoadPalFile("data/default.pal", &pal2);
-
 	/* save the palette */
 	pal  = modexNewPal();
 	modexPalSave(pal);
@@ -88,6 +87,12 @@ void main(int argc, char *argv[])
 	textInit();
 	VGAmodeX(bakapee, 1, &gvar);
 	modexPalBlack();
+
+	/* load our palette */
+	modexLoadPalFile("data/default.pal", &pal2);
+
+	/* overscan show */
+	//modexPalOverscan(44+1);
 
 	/* set up the page, but with 16 pixels on all borders in offscreen mem */
 	modexHiganbanaPageSetup(&gvar.video);
@@ -179,6 +184,16 @@ void main(int argc, char *argv[])
 		if(IN_KeyDown(2+1)){ pan.pn=1; }
 		if(IN_KeyDown(3+1)){ pan.pn=2; }
 		if(IN_KeyDown(4+1)){ pan.pn=3; }
+		if(IN_KeyDown(7)){
+			for(i=0;i<3;i++)
+			{
+				pal2[i] = rand()%64;
+				modexPalUpdate1(pal2);
+				colo++;
+				if(colo>HGQ) colo=LGQ;
+			}
+//			if(i>PAL_SIZE) i=0;
+		}//9
 		if(IN_KeyDown(25)){
 			modexpdump(&gvar.video.page[pan.pn]);
 			IN_UserInput(1,1);

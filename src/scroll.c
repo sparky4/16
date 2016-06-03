@@ -283,8 +283,8 @@ void main(int argc, char *argv[])
 	}*/
 
 	//9
-	if(IN_KeyDown(10)){ modexPalOverscan(default_pal, rand()%56); modexPalUpdate1(default_pal); IN_UserInput(1,1); }
-	//if(IN_KeyDown(11)){ modexPalOverscan(default_pal, 15); }
+	if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate1(default_pal); IN_UserInput(1,1); }
+	//if(IN_KeyDown(11)){ modexPalOverscan(15); }
 	if((player[0].q==1) && !(player[0].x%TILEWH==0 && player[0].y%TILEWH==0)) break;	//incase things go out of sync!
 	}
 

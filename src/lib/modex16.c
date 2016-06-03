@@ -92,11 +92,11 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 	vga_enable_256color_modex();
 
 	update_state_from_vga();
-	vga_read_crtc_mode(&cm);
+	vga_read_crtc_mode_(&cm);
 
 	/* reprogram the CRT controller */
-	outp(CRTC_INDEX, 0x11); /* VSync End reg contains register write prot */
-	outp(CRTC_DATA, 0x7f);  /* get current write protect on varios regs */
+	//outp(CRTC_INDEX, 0x11); /* VSync End reg contains register write prot */
+	//outp(CRTC_DATA, 0x7f);  /* get current write protect on varios regs */
 
 	switch(vq)
 	{
@@ -119,7 +119,7 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 			cm.horizontal_total=0x5f + 5; /* CRTC[0]             -5 */
 			cm.horizontal_display_end=0x4f + 1; /* CRTC[1]       -1 */
 			cm.horizontal_blank_start=0x50 + 1; /* CRTC[2] */
-			//cm.horizontal_blank_end=0x82 + 1;   /* CRTC[3] bit 0-4 & CRTC[5] bit 7 */
+			//cm.horizontal_blank_end=0x82 + 1;   /* CRTC[3] bit 0-4 & CRTC[5] bit 7 *///skewing ^^;
 			cm.horizontal_start_retrace=0x54;/* CRTC[4] */
 			cm.horizontal_end_retrace=0x80;	/* CRTC[5] bit 0-4 */
 			//cm.horizontal_start_delay_after_total=0x3e; /* CRTC[3] bit 5-6 */
@@ -837,7 +837,7 @@ modexPalUpdate0(byte *p)
 }
 
 void
-modexPalOverscan(byte *p, word col)
+modexPalOverscan(word col)
 {
 	//modexWaitBorder();
 	vga_wait_for_vsync();
@@ -1177,4 +1177,153 @@ void modexprintmeminfo(video_t *v)
 		printf(" width=%lu  height=%lu", (unsigned long)v->page[i].width, (unsigned long)v->page[i].height);
 		printf("\n");
 	}
+}
+
+void vga_write_crtc_mode_(struct vga_mode_params *p,unsigned int flags) {
+	unsigned char c,c2,syncreset=0;
+
+	if (!(vga_state.vga_flags & VGA_IS_VGA))
+		return;
+
+	/* sync disable unless told not to */
+	if (!(flags & VGA_WRITE_CRTC_MODE_NO_CLEAR_SYNC)) {
+		c = vga_read_CRTC(0x17);
+		vga_write_CRTC(0x17,c&0x7F);
+	}
+
+	c = inp(0x3CC); /* misc out reg */
+	/* if changing the clock select bits then we need to do a reset of the sequencer */
+	if (p->clock_select != ((c >> 2) & 3)) syncreset=1;
+	/* proceed to change bits */
+	c &= ~((3 << 2) | (1 << 6) | (1 << 7));
+	c |= (p->clock_select&3) << 2;
+	c |= p->hsync_neg << 6;
+	c |= p->vsync_neg << 7;
+	if (syncreset) vga_write_sequencer(0,0x01/*SR=0 AR=1 start synchronous reset*/);
+	outp(0x3C2,c); /* misc out */
+	if (syncreset) vga_write_sequencer(0,0x03/*SR=1 AR=1 restart sequencer*/);
+
+	vga_write_sequencer(1,
+		(p->shift_load_rate << 2) |
+		(p->shift4_enable << 4) |
+		((p->clock9 ^ 1) << 0) |
+		(p->clock_div2 << 3));
+
+	c = 0; /* use 'c' as overflow register */
+	c2 = vga_read_CRTC(0x09); /* read max scan line */
+	c2 &= ~(1 << 5); /* mask out start vertical blank bit 9 */
+	vga_write_CRTC(0x11, /* NTS: we leave bit 7 (protect) == 0 so we can program regs 0-7 in this routine */
+		(((p->refresh_cycles_per_scanline == 5) ? 1 : 0) << 6) |
+		(p->vertical_end_retrace & 0xF));
+	vga_write_CRTC(0x06,(p->vertical_total - 2));
+		c |= (((p->vertical_total - 2) >> 8) & 1) << 0;
+		c |= (((p->vertical_total - 2) >> 9) & 1) << 5;
+	vga_write_CRTC(0x10,p->vertical_start_retrace);
+		c |= ((p->vertical_start_retrace >> 8) & 1) << 2;
+		c |= ((p->vertical_start_retrace >> 9) & 1) << 7;
+	vga_write_CRTC(0x12,p->vertical_display_end - 1);
+		c |= (((p->vertical_display_end - 1) >> 8) & 1) << 1;
+		c |= (((p->vertical_display_end - 1) >> 9) & 1) << 6;
+	vga_write_CRTC(0x15,p->vertical_blank_start - 1);
+		c |= (((p->vertical_blank_start - 1) >> 8) & 1) << 3;
+		c2|= (((p->vertical_blank_start - 1) >> 9) & 1) << 5;
+
+	/* NTS: this field is 7 bits wide but "Some SVGA chipsets use all 8" as VGADOC says. */
+	/*      writing it in this way resolves the partial/full screen blanking problems with Intel 855/915/945 chipsets */
+	vga_write_CRTC(0x16,p->vertical_blank_end - 1);
+
+	vga_write_CRTC(0x14, /* NTS we write "underline location == 0" */
+		(p->dword_mode << 6) |
+		(p->inc_mem_addr_only_every_4th << 5));
+	vga_write_CRTC(0x07,c); /* overflow reg */
+
+	c2 &= ~(0x9F);	/* mask out SD + Max scanline */
+	c2 |= (p->scan_double << 7);
+	c2 |= (p->max_scanline - 1) & 0x1F;
+	vga_write_CRTC(0x09,c2);
+	vga_write_CRTC(0x13,p->offset);
+	vga_write_CRTC(0,(p->horizontal_total - 5));
+	vga_write_CRTC(1,(p->horizontal_display_end - 1));
+	vga_write_CRTC(2,p->horizontal_blank_start - 1);
+	vga_write_CRTC(3,((p->horizontal_blank_end - 1) & 0x1F) | (p->horizontal_start_delay_after_total << 5) | 0x80);
+	vga_write_CRTC(4,p->horizontal_start_retrace);
+	vga_write_CRTC(5,((((p->horizontal_blank_end - 1) >> 5) & 1) << 7) | (p->horizontal_start_delay_after_retrace << 5) |
+		(p->horizontal_end_retrace & 0x1F));
+
+	/* finish by writing reg 0x17 which also enables sync */
+	vga_write_CRTC(0x17,
+		(p->sync_enable << 7) |
+		(vga_read_CRTC(0x17) & 0x10) | /* NTS: one undocumented bit, perhaps best not to change it */
+		((p->word_mode^1) << 6) |
+		(p->address_wrap_select << 5) |
+		(p->memaddr_div2 << 3) |
+		(p->scanline_div2 << 2) |
+		((p->map14 ^ 1) << 1) |
+		((p->map13 ^ 1) << 0));
+
+	/* reinforce write protect */
+	c = vga_read_CRTC(0x11);
+	vga_write_CRTC(0x11,c|0x80);
+}
+
+void vga_read_crtc_mode_(struct vga_mode_params *p) {
+	unsigned char c,c2;
+
+	if (!(vga_state.vga_flags & VGA_IS_VGA))
+		return;
+
+	c = inp(0x3CC);	/* misc out reg */
+	p->clock_select = (c >> 2) & 3;
+	p->hsync_neg = (c >> 6) & 1;
+	p->vsync_neg = (c >> 7) & 1;
+
+	c = vga_read_sequencer(1);
+	p->clock9 = (c & 1) ^ 1;
+	p->clock_div2 = (c >> 3) & 1;
+	p->shift4_enable = (c >> 4) & 1;
+	p->shift_load_rate = (c >> 2) & 1;
+
+	p->sync_enable = (vga_read_CRTC(0x17) >> 7) & 1;
+	p->word_mode = ((vga_read_CRTC(0x17) >> 6) & 1) ^ 1;
+	p->address_wrap_select = (vga_read_CRTC(0x17) >> 5) & 1;
+	p->memaddr_div2 = (vga_read_CRTC(0x17) >> 3) & 1;
+	p->scanline_div2 = (vga_read_CRTC(0x17) >> 2) & 1;
+	p->map14 = ((vga_read_CRTC(0x17) >> 1) & 1) ^ 1;
+	p->map13 = ((vga_read_CRTC(0x17) >> 0) & 1) ^ 1;
+
+	p->dword_mode = (vga_read_CRTC(0x14) >> 6) & 1;
+	p->horizontal_total = vga_read_CRTC(0) + 5;
+	p->horizontal_display_end = vga_read_CRTC(1);// + 1;
+	p->horizontal_blank_start = vga_read_CRTC(2) + 1;
+	p->horizontal_blank_end = ((vga_read_CRTC(3) & 0x1F) | ((vga_read_CRTC(5) >> 7) << 5) |
+		((p->horizontal_blank_start - 1) & (~0x3F))) + 1;
+	if (p->horizontal_blank_start >= p->horizontal_blank_end)
+		p->horizontal_blank_end += 0x40;
+	p->horizontal_start_retrace = vga_read_CRTC(4);
+	p->horizontal_end_retrace = (vga_read_CRTC(5) & 0x1F) |
+		(p->horizontal_start_retrace & (~0x1F));
+	if ((p->horizontal_start_retrace&0x1F) >= (p->horizontal_end_retrace&0x1F))
+		p->horizontal_end_retrace += 0x20;
+	p->horizontal_start_delay_after_total = (vga_read_CRTC(3) >> 5) & 3;
+	p->horizontal_start_delay_after_retrace = (vga_read_CRTC(5) >> 5) & 3;
+
+	c = vga_read_CRTC(7); /* c = overflow reg */
+	c2 = vga_read_CRTC(9);
+
+	p->scan_double = (c2 >> 7) & 1;
+	p->max_scanline = (c2 & 0x1F) + 1;
+	p->offset = vga_read_CRTC(0x13);
+	p->vertical_total = (vga_read_CRTC(6) | ((c & 1) << 8) | (((c >> 5) & 1) << 9)) + 2;
+	p->vertical_start_retrace = (vga_read_CRTC(0x10) | (((c >> 2) & 1) << 8) | (((c >> 7) & 1) << 9));
+	p->vertical_end_retrace = (vga_read_CRTC(0x11) & 0xF) |
+		(p->vertical_start_retrace & (~0xF));
+	if ((p->vertical_start_retrace&0xF) >= (p->vertical_end_retrace&0xF))
+		p->vertical_end_retrace += 0x10;
+	p->refresh_cycles_per_scanline = ((vga_read_CRTC(0x11) >> 6) & 1) ? 5 : 3;
+	p->inc_mem_addr_only_every_4th = (vga_read_CRTC(0x14) >> 5) & 1;
+	p->vertical_display_end = ((vga_read_CRTC(0x12) | (((c >> 1) & 1) << 8) | (((c >> 6) & 1) << 9))) + 1;
+	p->vertical_blank_start = ((vga_read_CRTC(0x15) | (((c >> 3) & 1) << 8) | (((c2 >> 5) & 1) << 9))) + 1;
+	p->vertical_blank_end = ((vga_read_CRTC(0x16) & 0x7F) | ((p->vertical_blank_start - 1) & (~0x7F))) + 1;
+	if (p->vertical_blank_start >= p->vertical_blank_end)
+		p->vertical_blank_end += 0x80;
 }
