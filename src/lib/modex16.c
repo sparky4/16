@@ -1187,7 +1187,7 @@ void update_state_from_vga_() {
 	vga_state.vga_stride = 80;
 	vga_state.vga_height = 25;
 	vga_state.vga_width = 80;
-	vga_state.vga_9wide = 0;
+	vga_state.vga_9wide = 1;
 
 	if (vga_state.vga_flags & VGA_IS_VGA) { /* VGA only. EGA cards DO have the misc. output reg but it's write-only */
 		/* update state from H/W which I/O port */
