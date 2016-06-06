@@ -1,0 +1,30 @@
+WARNING: Failed to initialize DEBUG output
+starting timer	ok
+index=4096
+chkmap ok	0 fps
+48 fps
+37 fps
+50 fps
+Project 16 scroll.exe. This is just a test file!
+version Jun  6 2016 09:16:37
+tx: 0
+ty: 0
+player.x: 304		player.y: 128
+player.tx: 20		player.ty: 8
+player.triggx: 21	player.triggy: 8
+player.hp: 4	player.q: 1	player.info.dir: 2	player.d: 2 pdir=3
+tile data value at player trigger position: 1
+Virtual Screen: 352x272
+Screen: 320x240
+virtual tile resolution: 22x17
+tile resolution: 20x15 
+middle tile position: 10x8
+video memory remaining: 65535
+page 	[0]=(a000:0000) size=23936	sw=320  sh=240  width=352  height=272
+	[1]=(a000:5d80) size=23936	sw=320  sh=240  width=352  height=272
+	[2]=(a000:bb00) size=1024	sw=64  sh=64  width=64  height=64
+	[3]=(a000:bf00) size=16640	sw=320  sh=208  width=320  height=208
+mv[1].tx: 0	mv[1].ty: 0	gvar.video.p=1
+
+
+detected CPU type: 386 or newer

@@ -1,0 +1,10 @@
+WARNING: Failed to initialize DEBUG output
+modexCopyPageRegion(src->stridew=88, dest->stridew=88, sx=0, sy=0, dx=0, dy=0, width=352, height=272, left=15, right=0)
+Project 16 test.exe. This is just a test file!
+version Jun  6 2016 08:47:42
+video memory remaining: 65535
+page 	[0]=(a000:0000) size=23936	sw=320  sh=240  width=352  height=272
+	[1]=(a000:5d80) size=23936	sw=320  sh=240  width=352  height=272
+	[2]=(a000:bb00) size=1024	sw=64  sh=64  width=64  height=64
+	[3]=(a000:bf00) size=16640	sw=320  sh=208  width=320  height=208
+tx=1	ty=1	player.d=2
