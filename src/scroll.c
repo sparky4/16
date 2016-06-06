@@ -322,7 +322,8 @@ void main(int argc, char *argv[])
 	printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);
 	modexprintmeminfo(&gvar.video);
 	printf("mv[%u].tx: %d", pan.pn, mv[pan.pn].tx); printf("	mv[%u].ty: %d	", pan.pn, mv[pan.pn].ty); printf("gvar.video.p=%u\n", gvar.video.p);
-	//printf("player[1].q: %d", player[1].q);	printf("	player[1].d: %d\n", player[1].d);
+	printf("\ngvar.video.startclk=%u	", gvar.video.startclk);
+	printf("gvar.video.clk=%f\n", (float)((*clockw)-gvar.video.startclk)/18.2);
 	printf("\n");
 	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[0].map->width, mv[0].map->height, mv[0].map->data[0]);
 

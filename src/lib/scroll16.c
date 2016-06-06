@@ -40,6 +40,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
+					pip[0].video->startclk = (*clockw);
 					if(!pageflipflop) mapScrollRight(pip, player, !(pip[0].video->p), pn); else{
 					mapScrollRight(pip, player, 0, pn);
 					mapScrollRight(pip, player, 1, pn);
@@ -47,7 +48,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					ScrollRight(pip, player, 3, pn); }
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; player[pn].tx++; }
+				} else { player[pn].q = 1; player[pn].d = 2; player[pn].tx++; pip[0].video->clk = (float)((*clockw)-pip[0].video->startclk)/18.2; }
 			}
 			else if(player[pn].tx < pip[0].map->width && !(pip[0].map->data[(player[pn].tx)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx+1 == TRIGGX && player[pn].ty == TRIGGY))
 			{
@@ -84,6 +85,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
+					pip[0].video->startclk = (*clockw);
 					if(!pageflipflop) mapScrollLeft(pip, player, !(pip[0].video->p), pn); else{
 					mapScrollLeft(pip, player, 0, pn);
 					mapScrollLeft(pip, player, 1, pn);
@@ -91,7 +93,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					ScrollLeft(pip, player, 3, pn); }
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; player[pn].tx--; }
+				} else { player[pn].q = 1; player[pn].d = 2; player[pn].tx--; pip[0].video->clk = (float)((*clockw)-pip[0].video->startclk)/18.2; }
 			}
 			else if(player[pn].tx > 1 && !(pip[0].map->data[(player[pn].tx-2)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx-1 == TRIGGX && player[pn].ty == TRIGGY))
 			{
@@ -128,6 +130,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
+					pip[0].video->startclk = (*clockw);
 					if(!pageflipflop) mapScrollDown(pip, player, !(pip[0].video->p), pn); else{
 					mapScrollDown(pip, player, 0, pn);
 					mapScrollDown(pip, player, 1, pn);
@@ -135,7 +138,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					ScrollDown(pip, player, 3, pn); }
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; player[pn].ty++; }
+				} else { player[pn].q = 1; player[pn].d = 2; player[pn].ty++; pip[0].video->clk = (float)((*clockw)-pip[0].video->startclk)/18.2; }
 			}
 			else if(player[pn].ty < pip[0].map->height && !(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty))] == 0))//!(player[pn].tx == TRIGGX && player[pn].ty+1 == TRIGGY))
 			{
@@ -172,6 +175,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
+					pip[0].video->startclk = (*clockw);
 					if(!pageflipflop) mapScrollUp(pip, player, !(pip[0].video->p), pn); else{
 					mapScrollUp(pip, player, 0, pn);
 					mapScrollUp(pip, player, 1, pn);
@@ -179,7 +183,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					ScrollUp(pip, player, 3, pn); }
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; player[pn].ty--; }
+				} else { player[pn].q = 1; player[pn].d = 2; player[pn].ty--; pip[0].video->clk = (float)((*clockw)-pip[0].video->startclk)/18.2; }
 			}
 			else if(player[pn].ty > 1 && !(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty-2))] == 0))//!(player[pn].tx == TRIGGX &&  player[pn].ty-1 == TRIGGY))
 			{
@@ -775,8 +779,8 @@ void shinku(global_game_variables_t *gv)
 		break;
 		case 1:
 			//turn this off if XT
-			modexWaitBorder();
-			//vga_wait_for_vsync();
+			//modexWaitBorder();
+			vga_wait_for_vsync();
 			gv->kurokku.frames_per_second=60;
 		break;
 	}
