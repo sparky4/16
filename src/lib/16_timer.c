@@ -73,7 +73,7 @@ void shinkutxt(global_game_variables_t *gv)
 	if(elapsed_timer(gv) >= (1.0 / gv->kurokku.frames_per_second))
 	{
 		//t=(((*(gv->clock))-gv->clock_start) /18.2);
-		sprintf(gv->pee, "%f fps", (double)gv->kurokku.tiku/ticktock(gv));
+		sprintf(gv->pee, "%.0f fps", (double)gv->kurokku.tiku/ticktock(gv));
 		fprintf(stderr, "%s\n", gv->pee);
 		//(gv->clock_start)=*(gv->clock);
 		gv->kurokku.tiku=0;

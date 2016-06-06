@@ -250,13 +250,12 @@ void main(int argc, char *argv[])
 	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	printf("2paloffset	=	%d\n", paloffset/3);
 	 modexpdump(mv[0].page); modexpdump(mv[1].page);
-		 IN_UserInput(1,1);
+		IN_UserInput(1,1);
 	}
 #endif
 #endif
 	//pan switch
 	if(IN_KeyDown(88)){panswitch=!panswitch; IN_UserInput(1,1);}	//f12
-	//TSR
 	if(IN_KeyDown(87))	//f11
 	{
 		pageflipflop=!pageflipflop;
@@ -269,10 +268,10 @@ void main(int argc, char *argv[])
 // 			int 21h
 // 		}
 	}
-	if(IN_KeyDown(68))	//s
+	if(IN_KeyDown(68))	//f10
 	{
 		gvar.kurokku.fpscap=!gvar.kurokku.fpscap;
-		 IN_UserInput(1,1);
+		IN_UserInput(1,1);
 	}
 	//TODO fmemtest into page
 	/*if(IN_KeyDown(4+1))	//4
