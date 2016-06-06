@@ -42,7 +42,7 @@ sword bakapee;
 pan_t pan;
 //debugswitches
 boolean panswitch=0;
-boolean pageflipflop=1;
+pageflipflop=1;
 	unsigned int i;
 	const char *cpus;
 	//static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
@@ -322,8 +322,8 @@ void main(int argc, char *argv[])
 	printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);
 	modexprintmeminfo(&gvar.video);
 	printf("mv[%u].tx: %d", pan.pn, mv[pan.pn].tx); printf("	mv[%u].ty: %d	", pan.pn, mv[pan.pn].ty); printf("gvar.video.p=%u\n", gvar.video.p);
-	printf("\ngvar.video.startclk=%u	", gvar.video.startclk);
-	printf("gvar.video.clk=%f\n", (float)((*clockw)-gvar.video.startclk)/18.2);
+	printf("\ngvar.video.tickclk=%f\n", gvar.video.tickclk);
+	printf("gvar.video.clk=%f", gvar.video.clk);
 	printf("\n");
 	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[0].map->width, mv[0].map->height, mv[0].map->data[0]);
 
