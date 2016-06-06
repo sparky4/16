@@ -46,7 +46,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 1);
 					if(!pageflipflop) mapScrollRight(pip, player, !(pip[0].video->p), pn); else{
 					mapScrollRight(pip, player, 0, pn);
-					//mapScrollRight(pip, player, 1, pn);
+					mapScrollRight(pip, player, 1, pn);
 					ScrollRight(pip, player, 2, pn);
 					ScrollRight(pip, player, 3, pn); }
 					if(!pageflipflop) modexShowPage(pip[1].page);
