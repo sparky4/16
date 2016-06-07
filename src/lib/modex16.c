@@ -1140,36 +1140,9 @@ modexWaitBorder() {
 	// spin
 	}
 
-	while(!(inp(INPUT_STATUS_1)  & 8))  {
-	//spin
-	}
-}
-
-void bios_cls() {
-	VGA_ALPHA_PTR ap;
-	VGA_RAM_PTR rp;
-	unsigned char m;
-
-	m = int10_getmode();
-	if ((rp=vga_state.vga_graphics_ram) != NULL && !(m <= 3 || m == 7)) {
-		unsigned int i,im;
-
-		im = (FP_SEG(vga_state.vga_graphics_ram_fence) - FP_SEG(vga_state.vga_graphics_ram));
-		if (im > 0xFFE) im = 0xFFE;
-		im <<= 4;
-		for (i=0;i < im;i++) vga_state.vga_graphics_ram[i] = 0;
-	}
-	else if ((ap=vga_state.vga_alpha_ram) != NULL) {
-		unsigned int i,im;
-
-		im = (FP_SEG(vga_state.vga_alpha_ram_fence) - FP_SEG(vga_state.vga_alpha_ram));
-		if (im > 0x7FE) im = 0x7FE;
-		im <<= 4 - 1; /* because ptr is type uint16_t */
-		for (i=0;i < im;i++) vga_state.vga_alpha_ram[i] = 0x0720;
-	}
-	else {
-		printf("WARNING: bios cls no ptr\n");
-	}
+//	while(!(inp(INPUT_STATUS_1)  & 8))  {
+//	//spin
+//	}
 }
 
 void modexprintmeminfo(video_t *v)

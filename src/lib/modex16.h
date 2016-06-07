@@ -184,7 +184,6 @@ void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, c
 void modexpdump(page_t *pee);
 void modexcls(page_t *page, byte color, byte *Where);
 void modexWaitBorder();
-void bios_cls();
 void modexprintmeminfo(video_t *v);
 
 #endif
