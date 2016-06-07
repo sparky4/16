@@ -69,7 +69,7 @@ WLIBQ=-q
 WCLQ=-zq $(WLIBQ)
 UPXQ=-qqq
 
-AFLAGS=-mh -0 -d2
+AFLAGS=-mh -0 -d1
 16FLAGS=-fh=16.hed
 BAKAPIFLAGS=-fh=bakapi.hed
 SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#54096#60000

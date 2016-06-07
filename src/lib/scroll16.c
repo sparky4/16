@@ -387,8 +387,8 @@ void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 		if(pageflipflop){
 		if(id==0)
 			mapDrawCol(&mv[0], mv[0].tx + mv[0].page->tw, mv[0].ty-1, x, player, mv->page->dx);
-		else
-			modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*(mv[0].page->th+2));
+//		else
+//			modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*(mv[0].page->th+2));
 		}else mapDrawCol(&mv[(!mv[0].video->p)], mv[0].tx + mv[0].page->tw, mv[0].ty-1, x, player, mv->page->dx);
 }
 
@@ -417,8 +417,8 @@ void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 		if(pageflipflop){
 		if(id==0)
 			mapDrawCol(&mv[0], mv[0].tx - 1, mv[0].ty-1, x, player, mv->page->dx);
-		else
-			modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*(mv[0].page->th+2));
+//		else
+//			modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*(mv[0].page->th+2));
 	}else mapDrawCol(&mv[(!mv[0].video->p)], mv[0].tx - 1, mv[0].ty-1, x, player, mv->page->dx);
 }
 
@@ -446,8 +446,8 @@ void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 		if(pageflipflop){
 		if(id==0)
 			mapDrawRow(&mv[0], mv[0].tx - 1, mv[0].ty-1, y, player, mv->page->dy);
-		else
-			modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*(mv[0].page->tw+2), mv[id].map->tiles->tileHeight);
+//		else
+//			modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*(mv[0].page->tw+2), mv[id].map->tiles->tileHeight);
 	}else mapDrawRow(&mv[(!mv[0].video->p)], mv[0].tx - 1, mv[0].ty-1, y, player, mv->page->dy);
 }
 
@@ -474,8 +474,8 @@ void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 		if(pageflipflop){
 		if(id==0)
 			mapDrawRow(&mv[0], mv[0].tx - 1, mv[0].ty+mv[0].page->th, y, player, mv->page->dy);
-		else
-			modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*(mv[0].page->tw+2), mv[id].map->tiles->tileHeight);
+//		else
+//			modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*(mv[0].page->tw+2), mv[id].map->tiles->tileHeight);
 	}else mapDrawRow(&mv[(!mv[0].video->p)], mv[0].tx - 1, mv[0].ty+mv[0].page->th, y, player, mv->page->dy);
 }
 
@@ -608,6 +608,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 	i+=mv->map->width - tx;
 	}
 	modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
+	modexCopyPageRegion(mv[3].page, mv[!(mv->video->p)].page, 0/**/, 0/**/, 0, 128, 28, 36);
 }
 
 
@@ -634,7 +635,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 			case 0:
 #ifndef TILERENDER
 				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, ((t->debug_data[i])+1));
-				modexprint(page, x, y, 1, 15, 0, (char const *)(t->debug_data[i]));
+				//modexprint(page, x, y, 1, 15, 0, (char const *)(t->debug_data[i]));
 #else
 				PBUFBFUN		(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
 				/* then the sprite. note modding ram ptr means we just draw to (x&3,0) */
@@ -841,6 +842,7 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 		break;
 	}
 
+	//modexCopyPageRegion(pip[!(pip->video->p)].page, pip[3].page, 0, 128, x-4, y-4, 28, 36);
 #ifdef SPRITE
 // #define FRAME1 PBUFSFUN(pip[1].page, x, y, 48, dire, 24, 32,	PLAYERBMPDATA);
 // #define FRAME2 PBUFSFUN(pip[1].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATA);
@@ -858,10 +860,10 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 	#endif
 //	if(pageflipflop)
 //modexCopyPageRegion(page_t *dest, page_t *src, word sx, word sy, word dx, word dy, word width, word height);
-	modexCopyPageRegion(pip[pip->video->p].page,
- pip[!(pip->video->p)].page, x-4, y-4, x-4, y-4, 28, 36);
+	//modexCopyPageRegion(pip[3].page, pip[!(pip->video->p)].page, x-4, y-4, 0, 128, 28, 36);
+	/*modexCopyPageRegion(pip[pip->video->p].page,
+ pip[!(pip->video->p)].page, x-4, y-4, x-4, y-4, 28, 36);*/
 //	else modexCopyPageRegion(pip[1].page, pip[0].page, x-4, y-4, x-4, y-4, 28, 40);
-	//modexCopyPageRegion(pip[2].page, pip[1].page, 16, 16, 16, 16, (14*8)+4, 8+4);
 	if(2>ls && ls>=1) { FRAME1 }else
 	if(3>ls && ls>=2) { FRAME2 }else
 	if(4>ls && ls>=3) { FRAME3 }else
