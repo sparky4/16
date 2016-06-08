@@ -272,6 +272,7 @@ void modexHiganbanaPageSetup(video_t *video)
 	(video->page[0]) = modexDefaultPage(&(video->page[0]));	video->num_of_pages++;	//video->page[0].width += (TILEWHD); video->page[0].height += (TILEWHD);
 	(video->page[1]) = modexNextPage(&(video->page[0]));	video->num_of_pages++;
 	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), TILEWH*4, TILEWH*4);		video->num_of_pages++;
+//	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), video->page[0].width, 176);	video->num_of_pages++;
 	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), video->page[0].sw, 208);	video->num_of_pages++;
 // 	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), video->page[0].width, 172);	video->num_of_pages++;
 // 	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), 72, 128);		video->num_of_pages++;
