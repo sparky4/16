@@ -607,8 +607,8 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 		mapDrawWRow(&mv[0], tx-1, ty, py);
 	i+=mv->map->width - tx;
 	}
-	modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
-	//_fmemcpy(mv[1].page->data, mv[0].page->data, mv[0].page->pagesize);
+	//modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
+	_fmemmove(mv[1].page->data, mv[0].page->data, mv[0].page->pagesize);
 	modexCopyPageRegion(mv[3].page, mv[!(mv->video->p)].page, 0/**/, 0/**/, 0, 128, 28, 36);
 }
 
@@ -792,8 +792,8 @@ void shinku(global_game_variables_t *gv)
 	}
 	if(pageflipflop){
 	if(gv->video.r){
-		modexCopyPageRegion(&(gv->video.page[(gv->video.p)]), &(gv->video.page[(!gv->video.p)]), 0, 0, 0, 0, gv->video.page[gv->video.p].width, gv->video.page[!gv->video.p].height);
-		//_fmemcpy((gv->video.page[(gv->video.p)]).data, (gv->video.page[(!gv->video.p)]).data, gv->video.page[(!gv->video.p)].pagesize);
+		//modexCopyPageRegion(&(gv->video.page[(gv->video.p)]), &(gv->video.page[(!gv->video.p)]), 0, 0, 0, 0, gv->video.page[gv->video.p].width, gv->video.page[!gv->video.p].height);
+		_fmemmove((gv->video.page[(gv->video.p)]).data, (gv->video.page[(!gv->video.p)]).data, gv->video.page[(!gv->video.p)].pagesize);
 		modexShowPage(&(gv->video.page[gv->video.p]));
 		gv->video.p=!gv->video.p;
 		gv->video.r=!gv->video.r;
