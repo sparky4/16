@@ -321,7 +321,8 @@ void main(int argc, char *argv[])
 	printf("tile resolution: %dx", gvar.video.page[0].tw);	printf("%d \n", gvar.video.page[0].th);
 	printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);
 	modexprintmeminfo(&gvar.video);
-	printf("mv[%u].tx: %d", pan.pn, mv[pan.pn].tx); printf("	mv[%u].ty: %d	", pan.pn, mv[pan.pn].ty); printf("gvar.video.p=%u\n", gvar.video.p);
+	//printf("mv[%u].tx: %d", pan.pn, mv[pan.pn].tx); printf("	mv[%u].ty: %d	", pan.pn, mv[pan.pn].ty); printf("gvar.video.p=%u\n", gvar.video.p);
+	printf("pageflipflop=%u\n", pageflipflop);
 	printf("\ngvar.video.tickclk=%f\n", gvar.video.tickclk);
 	printf("gvar.video.clk=%f", gvar.video.clk);
 	printf("\n");

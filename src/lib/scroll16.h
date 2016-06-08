@@ -66,6 +66,7 @@ typedef struct
 #define MAPH	30
 
 extern boolean pageflipflop;
+extern unsigned char shinku_fps_indicator_page;
 
 //map_t allocMap(int w, int h);
 //void initMap(map_t *map);
@@ -89,7 +90,5 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 //void qclean();
 void shinku(global_game_variables_t *gv);
 void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch);
-
-extern unsigned char shinku_fps_indicator_page;
 
 #endif /*__SCROLL16_H_*/
