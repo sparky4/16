@@ -604,7 +604,11 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 	i+=mv->map->width - tx;
 	}
 	//modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
-	_fmemmove(mv[1].page->data, mv[0].page->data, mv[0].page->pagesize);
+	/* block copy pattern to where we will draw the sprite */
+	vga_setup_wm1_block_copy();
+	_fmemcpy(mv[1].page->data, mv[0].page->data, mv[0].page->pagesize);
+	/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
+	vga_restore_rm0wm0();
 	modexCopyPageRegion(mv[3].page, mv[!(mv->video->p)].page, 0/**/, 0/**/, 0, 128, 28, 36);
 }
 
@@ -789,7 +793,11 @@ void shinku(global_game_variables_t *gv)
 	if(pageflipflop){
 	if(gv->video.r){
 		//modexCopyPageRegion(&(gv->video.page[(gv->video.p)]), &(gv->video.page[(!gv->video.p)]), 0, 0, 0, 0, gv->video.page[gv->video.p].width, gv->video.page[!gv->video.p].height);
+		/* block copy pattern to where we will draw the sprite */
+		vga_setup_wm1_block_copy();
 		_fmemmove((gv->video.page[(gv->video.p)]).data, (gv->video.page[(!gv->video.p)]).data, gv->video.page[(!gv->video.p)].pagesize);
+		/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
+		vga_restore_rm0wm0();
 		modexShowPage(&(gv->video.page[gv->video.p]));
 		gv->video.p=!gv->video.p;
 		gv->video.r=!gv->video.r;

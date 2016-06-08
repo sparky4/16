@@ -190,7 +190,7 @@ void main(int argc, char *argv[])
 	//IN_initplayer(&player, 1);
 
 #ifndef	SPRITE
-	modexClearRegion(mv[1].page, player[0].x-4, player[0].y-TILEWH, 24, 32, 15);
+	modexClearRegion(mv[1].page, player[0].x, player[0].y-TILEWH, 24, 32, 15);
 #else
 	//PBUFSFUN(mv[1].page, player[0].x-4, player[0].y-TILEWH, 24, 64, 24, 32,	PLAYERBMPDATA);
 	PBUFSFUN(mv[1].page, player[0].x-4, player[0].y-TILEWH, 24, 64, 24, 32,	&pp);
@@ -321,7 +321,8 @@ void main(int argc, char *argv[])
 	printf("tile resolution: %dx", gvar.video.page[0].tw);	printf("%d \n", gvar.video.page[0].th);
 	printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);
 	modexprintmeminfo(&gvar.video);
-	//printf("mv[%u].tx: %d", pan.pn, mv[pan.pn].tx); printf("	mv[%u].ty: %d	", pan.pn, mv[pan.pn].ty); printf("gvar.video.p=%u\n", gvar.video.p);
+	//printf("mv[%u].tx: %d", pan.pn, mv[pan.pn].tx); printf("	mv[%u].ty: %d	", pan.pn, mv[pan.pn].ty);
+	printf("gvar.video.p=%u ", gvar.video.p); printf("gvar.video.r=%u ", gvar.video.r);
 	printf("pageflipflop=%u\n", pageflipflop);
 	printf("\ngvar.video.tickclk=%f\n", gvar.video.tickclk);
 	printf("gvar.video.clk=%f", gvar.video.clk);
