@@ -190,7 +190,8 @@ void main(int argc, char *argv[])
 	//IN_initplayer(&player, 1);
 
 #ifndef	SPRITE
-	modexClearRegion(mv[1].page, player[0].x, player[0].y-TILEWH, 24, 32, 15);
+	modexClearRegion(mv[0].page, player[0].x-4, player[0].y-TILEWH, 24, 32, 15);
+	modexClearRegion(mv[1].page, player[0].x-4, player[0].y-TILEWH, 24, 32, 15);
 #else
 	//PBUFSFUN(mv[1].page, player[0].x-4, player[0].y-TILEWH, 24, 64, 24, 32,	PLAYERBMPDATA);
 	PBUFSFUN(mv[1].page, player[0].x-4, player[0].y-TILEWH, 24, 64, 24, 32,	&pp);

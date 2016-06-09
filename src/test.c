@@ -184,6 +184,8 @@ void main(int argc, char *argv[])
 		if(IN_KeyDown(2+1)){ pan.pn=1; }
 		if(IN_KeyDown(3+1)){ pan.pn=2; }
 		if(IN_KeyDown(4+1)){ pan.pn=3; }
+		if(IN_KeyDown(12)) modexClearRegion(&gvar.video.page[0], (gvar.video.page[0].width/2)-4, (gvar.video.page[0].height/2)-16, 24, 32, 15);
+		if(IN_KeyDown(13)) modexClearRegion(&gvar.video.page[1], (gvar.video.page[1].width/2)-4, (gvar.video.page[1].height/2)-16, 24, 32, 15);
 		if(IN_KeyDown(7)){
 			for(i=0;i<3;i++)
 			{
