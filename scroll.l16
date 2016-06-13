@@ -1,28 +1,118 @@
 WARNING: Failed to initialize DEBUG output
 starting timer	ok
 index=4096
-chkmap ok	Project 16 scroll.exe. This is just a test file!
-version Jun  9 2016 11:32:02
+chkmap ok	12
+12
+8
+8
+4
+4
+12
+12
+8
+8
+4
+4
+12
+12
+8
+8
+4
+4
+12
+12
+8
+8
+4
+4
+12
+12
+8
+8
+4
+4
+12
+12
+8
+8
+4
+4
+12
+12
+8
+8
+4
+4
+12
+12
+8
+8
+4
+4
+12
+12
+8
+8
+4
+4
+12
+12
+8
+8
+4
+4
+12
+12
+8
+8
+4
+4
+12
+12
+8
+8
+4
+4
+12
+12
+8
+8
+4
+4
+12
+12
+8
+8
+4
+4
+12
+12
+8
+8
+4
+4
+Project 16 scroll.exe. This is just a test file!
+version Jun 13 2016 11:37:38
 tx: 0
-ty: 0
-player.x: 160		player.y: 128
-player.tx: 10		player.ty: 8
-player.triggx: 10	player.triggy: 9
-player.hp: 4	player.q: 1	player.info.dir: 2	player.d: 2 pdir=0
-tile data value at player trigger position: 0
+ty: 2
+player.x: 112		player.y: 128
+player.tx: 7		player.ty: 10
+player.triggx: 6	player.triggy: 10
+player.hp: 4	player.q: 1	player.info.dir: 2	player.d: 2 pdir=1
+tile data value at player trigger position: 1
 Virtual Screen: 352x272
 Screen: 320x240
 virtual tile resolution: 22x17
 tile resolution: 20x15 
 middle tile position: 10x8
 video memory remaining: 65535
-page 	[0]=(a000:0000) size=23936	sw=320  sh=240  width=352  height=272
-	[1]=(a000:5d80) size=23936	sw=320  sh=240  width=352  height=272
-	[2]=(a000:bb00) size=1024	sw=64  sh=64  width=64  height=64
-	[3]=(a000:bf00) size=16640	sw=320  sh=208  width=320  height=208
+page 	[0]=(a000:0b00) size=23936	sw=320  sh=240  width=352  height=272
+	[1]=(a000:6880) size=23936	sw=320  sh=240  width=352  height=272
+	[2]=(a000:bb08) size=1024	sw=64  sh=64  width=64  height=64
+	[3]=(a000:bf08) size=16640	sw=320  sh=208  width=320  height=208
 gvar.video.p=1 gvar.video.r=0 pageflipflop=1
 
-gvar.video.tickclk=1926.703247
-gvar.video.clk=0.000000
+gvar.video.tickclk=0.164835
+gvar.video.clk=0.109890
 
 detected CPU type: 386 or newer
