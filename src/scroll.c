@@ -188,6 +188,7 @@ void main(int argc, char *argv[])
 	player[0].ty = mv[0].ty + mv[0].page->tilemidposscreeny;
 	IN_initplayer(&player, 0);
 	//IN_initplayer(&player, 1);
+	modexCopyPageRegion(mv[3].page, mv[0].page, player[0].x-4, player[0].y-TILEWH, 0, 128, 24, 32);
 
 #ifndef	SPRITE
 	modexClearRegion(mv[0].page, player[0].x-4, player[0].y-TILEWH, 24, 32, 15);
