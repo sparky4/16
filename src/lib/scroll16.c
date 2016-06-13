@@ -748,6 +748,8 @@ void shinku(global_game_variables_t *gv)
 	word bgcol = 0;
 	word type = 1;
 	byte o,o2,i;
+	//modexClearRegion(&gv->video.page[2], 0, 0, gv->video.page[2].sw, gv->video.page[2].sh, 47);
+	//modexClearRegion(&gv->video.page[3], 0, 0, gv->video.page[3].sw, gv->video.page[3].sh, 45);
 	//modexCopyPageRegion(pip[1].page, pip[2].page, 16, 16, 16, 16, (14*8)+4, 8+4);
 	/* block copy to visible RAM from offscreen */
 //	vga_setup_wm1_block_copy();
