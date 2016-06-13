@@ -515,7 +515,7 @@ void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 	if(mv[0].video->page[id].dy == 0)
 	{
 		/* Snap the origin backward */
-		mv[0].video->page[id].data -= 4;
+		mv[0].video->page[id].data -= 1408;//4;
 		mv[0].video->page[id].dy = mv[0].map->tiles->tileWidth;
 	}
 }
@@ -529,7 +529,7 @@ void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 	if(mv[0].video->page[id].dy >= mv[0].dxThresh )
 	{
 		/* Snap the origin forward */
-		mv[0].video->page[id].data += 4;
+		mv[0].video->page[id].data += 1408;//4;
 		mv[0].video->page[id].dy = mv[0].map->tiles->tileWidth;
 	}
 }
