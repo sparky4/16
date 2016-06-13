@@ -84,6 +84,7 @@ typedef struct {
 	sword tileplayerposscreeny;	/* player position on screen */
 	word stridew;			/*width/4*/
 	word pagesize;			/* page size */
+	word pi;				/* incremention page by this much to preserve location */
 } page_t;
 
 typedef struct
