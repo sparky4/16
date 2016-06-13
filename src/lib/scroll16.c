@@ -44,10 +44,10 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
-					ScrollRight(pip, player, 3, pn);
-					ScrollRight(pip, player, 2, pn);
 					mapScrollRight(pip, player, !(pip[0].video->p), pn);
 					mapScrollRight(pip, player, (pip[0].video->p), pn);
+					ScrollRight(pip, player, 2, pn);
+					ScrollRight(pip, player, 3, pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
 					pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
@@ -88,10 +88,10 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
-					ScrollLeft(pip, player, 3, pn);
-					ScrollLeft(pip, player, 2, pn);
 					mapScrollLeft(pip, player, !(pip[0].video->p), pn);
 					mapScrollLeft(pip, player, (pip[0].video->p), pn);
+					ScrollLeft(pip, player, 2, pn);
+					ScrollLeft(pip, player, 3, pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
 					pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
@@ -132,10 +132,10 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
-					ScrollDown(pip, player, 3, pn);
-					ScrollDown(pip, player, 2, pn);
 					mapScrollDown(pip, player, !(pip[0].video->p), pn);
 					mapScrollDown(pip, player, (pip[0].video->p), pn);
+					ScrollDown(pip, player, 2, pn);
+					ScrollDown(pip, player, 3, pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
 					pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
@@ -176,10 +176,10 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
-					ScrollUp(pip, player, 3, pn);
-					ScrollUp(pip, player, 2, pn);
 					mapScrollUp(pip, player, !(pip[0].video->p), pn);
 					mapScrollUp(pip, player, (pip[0].video->p), pn);
+					ScrollUp(pip, player, 2, pn);
+					ScrollUp(pip, player, 3, pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
 					pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
