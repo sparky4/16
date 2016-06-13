@@ -44,10 +44,10 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
+					ScrollRight(pip, player, 3, pn);
+					ScrollRight(pip, player, 2, pn);
 					mapScrollRight(pip, player, !(pip[0].video->p), pn);
 					mapScrollRight(pip, player, (pip[0].video->p), pn);
-					ScrollRight(pip, player, 2, pn);
-					ScrollRight(pip, player, 3, pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
 					pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
@@ -88,10 +88,10 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
+					ScrollLeft(pip, player, 3, pn);
+					ScrollLeft(pip, player, 2, pn);
 					mapScrollLeft(pip, player, !(pip[0].video->p), pn);
 					mapScrollLeft(pip, player, (pip[0].video->p), pn);
-					ScrollLeft(pip, player, 2, pn);
-					ScrollLeft(pip, player, 3, pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
 					pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
@@ -132,10 +132,10 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
+					ScrollDown(pip, player, 3, pn);
+					ScrollDown(pip, player, 2, pn);
 					mapScrollDown(pip, player, !(pip[0].video->p), pn);
 					mapScrollDown(pip, player, (pip[0].video->p), pn);
-					ScrollDown(pip, player, 2, pn);
-					ScrollDown(pip, player, 3, pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
 					pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
@@ -176,10 +176,10 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
+					ScrollUp(pip, player, 3, pn);
+					ScrollUp(pip, player, 2, pn);
 					mapScrollUp(pip, player, !(pip[0].video->p), pn);
 					mapScrollUp(pip, player, (pip[0].video->p), pn);
-					ScrollUp(pip, player, 2, pn);
-					ScrollUp(pip, player, 3, pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
 					pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
@@ -483,10 +483,10 @@ void near ScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 	mv[0].video->page[id].dx += player[plid].speed;
 
 	/* check to see if this changes the tile */
-	if(mv[0].video->page[id].dx >= mv[id].dxThresh )
+	if(mv[0].video->page[id].dx >= mv[0].dxThresh )
 	{
 		/* Snap the origin forward */
-		mv[0].video->page[id].data += 4;
+		mv[0].video->page[id].data += mv[0].video->page[id].pi;
 		mv[0].video->page[id].dx = mv[0].map->tiles->tileWidth;
 	}
 }
@@ -501,7 +501,7 @@ void near ScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 	if(mv[0].video->page[id].dx == 0)
 	{
 		/* Snap the origin backward */
-		mv[0].video->page[id].data -= 4;
+		mv[0].video->page[id].data -= mv[0].video->page[id].pi;
 		mv[0].video->page[id].dx = mv[0].map->tiles->tileWidth;
 	}
 }
@@ -515,7 +515,7 @@ void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 	if(mv[0].video->page[id].dy == 0)
 	{
 		/* Snap the origin backward */
-		mv[0].video->page[id].data -= 4;
+		mv[0].video->page[id].data -= mv[0].video->page[id].pi;//4;
 		mv[0].video->page[id].dy = mv[0].map->tiles->tileWidth;
 	}
 }
@@ -526,15 +526,12 @@ void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 	mv[0].video->page[id].dy += player[plid].speed;
 
 	/* check to see if this changes the tile */
-	if(mv[0].video->page[id].dy >= mv[id].dxThresh )
+	if(mv[0].video->page[id].dy >= mv[0].dxThresh )
 	{
 		/* Snap the origin forward */
-		mv[0].video->page[id].data += 4;
+		mv[0].video->page[id].data += mv[0].video->page[id].pi;//4;
 		mv[0].video->page[id].dy = mv[0].map->tiles->tileWidth;
 	}
-// 	modexClearRegion(&(mv[0].video->page[id]), 0, 0,
-// 			 mv[0].video->page[id].width-1,
-// 		  mv[0].video->page[id].height-1, id*2);
 }
 
 sword chkmap(map_t *map, word q)
@@ -588,12 +585,12 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 	/* set up the coordinates */
 	mv[0].tx = mv[1].tx = tx;
 	mv[0].ty = mv[1].ty = ty;
-	mv[0].page->dx = mv[1].page->dx = mv->map->tiles->tileWidth;
-	mv[0].page->dy = mv[1].page->dy = mv->map->tiles->tileHeight;
+	mv[0].page->dx = mv[1].page->dx = mv[2].page->dx = mv[3].page->dx = mv->map->tiles->tileWidth;
+	mv[0].page->dy = mv[1].page->dy = mv[2].page->dy = mv[3].page->dy = mv->map->tiles->tileHeight;
 
 	/* set up the thresholds */
-	mv[0].dxThresh = mv[1].dxThresh = mv->map->tiles->tileWidth * 2;
-	mv[0].dyThresh = mv[1].dyThresh = mv->map->tiles->tileHeight * 2;
+	mv[0].dxThresh = mv[1].dxThresh = mv[2].dxThresh = mv[3].dxThresh = mv->map->tiles->tileWidth * 2;
+	mv[0].dyThresh = mv[1].dyThresh = mv[2].dxThresh = mv[3].dxThresh = mv->map->tiles->tileHeight * 2;
 
 	/* draw the tiles */
 	modexClearRegion(mv[0].page, 0, 0, mv[0].page->width, mv[0].page->height, 0);
@@ -751,6 +748,8 @@ void shinku(global_game_variables_t *gv)
 	word bgcol = 0;
 	word type = 1;
 	byte o,o2,i;
+	//modexClearRegion(&gv->video.page[2], 0, 0, gv->video.page[2].sw, gv->video.page[2].sh, 47);
+	//modexClearRegion(&gv->video.page[3], 0, 0, gv->video.page[3].sw, gv->video.page[3].sh, 45);
 	//modexCopyPageRegion(pip[1].page, pip[2].page, 16, 16, 16, 16, (14*8)+4, 8+4);
 	/* block copy to visible RAM from offscreen */
 //	vga_setup_wm1_block_copy();
