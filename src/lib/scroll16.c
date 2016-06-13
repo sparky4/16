@@ -483,12 +483,12 @@ void near ScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 	mv[0].video->page[id].dx += player[plid].speed;
 
 	/* check to see if this changes the tile */
-	if(mv[0].video->page[id].dx >= mv[id].dxThresh )
-	{
+	//if(mv[0].video->page[id].dx >= mv[0].dxThresh )
+	//{
 		/* Snap the origin forward */
 		mv[0].video->page[id].data += 4;
 		mv[0].video->page[id].dx = mv[0].map->tiles->tileWidth;
-	}
+	//}
 }
 
 
@@ -498,12 +498,12 @@ void near ScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 	mv[0].video->page[id].dx -= player[plid].speed;
 
 	/* check to see if this changes the tile */
-	if(mv[0].video->page[id].dx == 0)
-	{
+	//if(mv[0].video->page[id].dx == 0)
+	//{
 		/* Snap the origin backward */
 		mv[0].video->page[id].data -= 4;
 		mv[0].video->page[id].dx = mv[0].map->tiles->tileWidth;
-	}
+	//}
 }
 
 void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid)
@@ -512,12 +512,12 @@ void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 	mv[0].video->page[id].dy -= player[plid].speed;
 
 	/* check to see if this changes the tile */
-	if(mv[0].video->page[id].dy == 0)
-	{
+	//if(mv[0].video->page[id].dy == 0)
+	//{
 		/* Snap the origin backward */
 		mv[0].video->page[id].data -= 4;
 		mv[0].video->page[id].dy = mv[0].map->tiles->tileWidth;
-	}
+	//}
 }
 
 void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid)
@@ -526,15 +526,12 @@ void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 	mv[0].video->page[id].dy += player[plid].speed;
 
 	/* check to see if this changes the tile */
-	if(mv[0].video->page[id].dy >= mv[id].dxThresh )
-	{
+	//if(mv[0].video->page[id].dy >= mv[id].dxThresh )
+	//{
 		/* Snap the origin forward */
 		mv[0].video->page[id].data += 4;
 		mv[0].video->page[id].dy = mv[0].map->tiles->tileWidth;
-	}
-// 	modexClearRegion(&(mv[0].video->page[id]), 0, 0,
-// 			 mv[0].video->page[id].width-1,
-// 		  mv[0].video->page[id].height-1, id*2);
+	//}
 }
 
 sword chkmap(map_t *map, word q)

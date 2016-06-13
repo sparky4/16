@@ -275,6 +275,11 @@ void main(int argc, char *argv[])
 		gvar.kurokku.fpscap=!gvar.kurokku.fpscap;
 		IN_UserInput(1,1);
 	}
+	if(IN_KeyDown(67))	//f9
+	{
+		modexClearRegion(mv[3].page, 0, 128, 28, 36, 15);
+		IN_UserInput(1,1);
+	}
 	//TODO fmemtest into page
 	/*if(IN_KeyDown(4+1))	//4
 	{
