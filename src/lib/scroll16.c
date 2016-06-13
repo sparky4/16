@@ -526,7 +526,7 @@ void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 	mv[0].video->page[id].dy += player[plid].speed;
 
 	/* check to see if this changes the tile */
-	if(mv[0].video->page[id].dy >= mv[id].dxThresh )
+	if(mv[0].video->page[id].dy >= mv[0].dxThresh )
 	{
 		/* Snap the origin forward */
 		mv[0].video->page[id].data += 4;
