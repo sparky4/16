@@ -503,7 +503,7 @@ void near ScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 		/* Snap the origin backward */
 		mv[0].video->page[id].data -= 4;
 		mv[0].video->page[id].dx = mv[0].map->tiles->tileWidth;
-	}
+	}else printf("%u\n", mv[0].video->page[id].dx);
 }
 
 void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid)
@@ -517,7 +517,7 @@ void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 		/* Snap the origin backward */
 		mv[0].video->page[id].data -= 4;
 		mv[0].video->page[id].dy = mv[0].map->tiles->tileWidth;
-	}
+	}else printf("%u\n", mv[0].video->page[id].dy);
 }
 
 void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid)
