@@ -1164,7 +1164,7 @@ void modexprintmeminfo(video_t *v)
 		printf(" size=%u	", v->page[i].pagesize);
 		printf("sw=%lu  sh=%lu ", (unsigned long)v->page[i].sw, (unsigned long)v->page[i].sh);
 		printf(" width=%lu  height=%lu", (unsigned long)v->page[i].width, (unsigned long)v->page[i].height);
-		printf(" pi=%u" v->page[i].pi);
+		printf(" pi=%u", v->page[i].pi);
 		printf("\n");
 	}
 }
