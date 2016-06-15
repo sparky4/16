@@ -177,6 +177,7 @@ void main(int argc, char *argv[])
 		mv[i].video = &gvar.video;
 		mv[i].pan	= &pan;
 	}
+
 	/* set up paging */
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(mv, 0, 0);
@@ -200,7 +201,12 @@ void main(int argc, char *argv[])
 	if(!pageflipflop)	modexShowPage(mv[1].page);
 	else			modexShowPage(mv[(gvar.video.p)].page);
 		shinku_fps_indicator_page = 1; // we're on page 1 now, shinku(). follow along please or it will not be visible.
-	//modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 1);
+
+	/* buffer pages */
+	modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 47);
+	modexClearRegion(mv[3].page, 0, 0, mv[3].page->width, mv[3].page->height, 45);
+	modexClearRegion(mv[3].page, 0, 128, 28, 36, 15);
+
 #ifdef MODEX
 #ifdef FADE
 	modexFadeOn(4, gpal);
@@ -276,7 +282,9 @@ void main(int argc, char *argv[])
 	}
 	if(IN_KeyDown(67))	//f9
 	{
-		modexClearRegion(mv[3].page, 0, 0/*128*/, 28, 36, 15);
+		modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 47);
+		modexClearRegion(mv[3].page, 0, 0, mv[3].page->width, mv[3].page->height, 45);
+		modexClearRegion(mv[3].page, 0, 128, 28, 36, 15);
 		//IN_UserInput(1,1);
 	}
 	//TODO fmemtest into page
