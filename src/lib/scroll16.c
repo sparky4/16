@@ -487,7 +487,7 @@ void near ScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 	{
 		/* block copy pattern to where we will draw the sprite */
 		vga_setup_wm1_block_copy();
-		_fmemmove(mv[0].video->page[id].data-4, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
+		_fmemmove(mv[0].video->page[id].data+4, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
 		/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
 		vga_restore_rm0wm0();
 		/* Snap the origin forward */
@@ -597,6 +597,7 @@ sword chkmap(map_t *map, word q)
 	return 0;
 }
 
+//TODO: player position here
 void mapGoTo(map_view_t *mv, int tx, int ty)
 {
 	int px, py;
@@ -631,7 +632,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 					vga_state.vga_graphics_ram[o] = (k^j)&15; // VRL samples put all colors in first 15!
 		}
 	}
-//	modexCopyPageRegion(mv[3].page, mv[!(mv->video->p)].page, 0/**/, 0/**/, 0, 128, 28, 36);
+	modexCopyPageRegion(mv[3].page, mv[!(mv->video->p)].page, 0/**/, 0/**/, 0, 128, 28, 36);
 }
 
 
