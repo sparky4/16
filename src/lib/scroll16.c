@@ -44,10 +44,10 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
+					ScrollRight(pip, player, 3, pn);
+					ScrollRight(pip, player, 2, pn);
 					mapScrollRight(pip, player, !(pip[0].video->p), pn);
 					mapScrollRight(pip, player, (pip[0].video->p), pn);
-					ScrollRight(pip, player, 2, pn);
-					ScrollRight(pip, player, 3, pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
 					pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
@@ -88,10 +88,10 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
+					ScrollLeft(pip, player, 3, pn);
+					ScrollLeft(pip, player, 2, pn);
 					mapScrollLeft(pip, player, !(pip[0].video->p), pn);
 					mapScrollLeft(pip, player, (pip[0].video->p), pn);
-					ScrollLeft(pip, player, 2, pn);
-					ScrollLeft(pip, player, 3, pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
 					pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
@@ -132,10 +132,10 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
+					ScrollDown(pip, player, 3, pn);
+					ScrollDown(pip, player, 2, pn);
 					mapScrollDown(pip, player, !(pip[0].video->p), pn);
 					mapScrollDown(pip, player, (pip[0].video->p), pn);
-					ScrollDown(pip, player, 2, pn);
-					ScrollDown(pip, player, 3, pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
 					pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
@@ -176,10 +176,10 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
+					ScrollUp(pip, player, 3, pn);
+					ScrollUp(pip, player, 2, pn);
 					mapScrollUp(pip, player, !(pip[0].video->p), pn);
 					mapScrollUp(pip, player, (pip[0].video->p), pn);
-					ScrollUp(pip, player, 2, pn);
-					ScrollUp(pip, player, 3, pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
 					pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
@@ -485,8 +485,13 @@ void near ScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 	/* check to see if this changes the tile */
 	if(mv[0].video->page[id].dx >= mv[0].dxThresh )
 	{
+		/* block copy pattern to where we will draw the sprite */
+		vga_setup_wm1_block_copy();
+		_fmemmove(mv[0].video->page[id].data-4, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
+		/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
+		vga_restore_rm0wm0();
 		/* Snap the origin forward */
-		mv[0].video->page[id].data += mv[0].video->page[id].pi;
+		mv[0].video->page[id].data += 4;
 		mv[0].video->page[id].dx = mv[0].map->tiles->tileWidth;
 	}
 }
@@ -500,8 +505,13 @@ void near ScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 	/* check to see if this changes the tile */
 	if(mv[0].video->page[id].dx == 0)
 	{
+		/* block copy pattern to where we will draw the sprite */
+		vga_setup_wm1_block_copy();
+		_fmemmove(mv[0].video->page[id].data-4, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
+		/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
+		vga_restore_rm0wm0();
 		/* Snap the origin backward */
-		mv[0].video->page[id].data -= mv[0].video->page[id].pi;
+		mv[0].video->page[id].data -= 4;
 		mv[0].video->page[id].dx = mv[0].map->tiles->tileWidth;
 	}
 }
@@ -514,8 +524,13 @@ void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 	/* check to see if this changes the tile */
 	if(mv[0].video->page[id].dy == 0)
 	{
+		/* block copy pattern to where we will draw the sprite */
+		vga_setup_wm1_block_copy();
+		_fmemmove(mv[0].video->page[id].data-mv[0].video->page[id].pi, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
+		/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
+		vga_restore_rm0wm0();
 		/* Snap the origin backward */
-		mv[0].video->page[id].data -= mv[0].video->page[id].pi;//4;
+		mv[0].video->page[id].data -= mv[0].video->page[id].pi;
 		mv[0].video->page[id].dy = mv[0].map->tiles->tileWidth;
 	}
 }
@@ -528,8 +543,13 @@ void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 	/* check to see if this changes the tile */
 	if(mv[0].video->page[id].dy >= mv[0].dxThresh )
 	{
+		/* block copy pattern to where we will draw the sprite */
+		vga_setup_wm1_block_copy();
+		_fmemmove(mv[0].video->page[id].data+mv[0].video->page[id].pi, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
+		/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
+		vga_restore_rm0wm0();
 		/* Snap the origin forward */
-		mv[0].video->page[id].data += mv[0].video->page[id].pi;//4;
+		mv[0].video->page[id].data += mv[0].video->page[id].pi;
 		mv[0].video->page[id].dy = mv[0].map->tiles->tileWidth;
 	}
 }
@@ -600,13 +620,18 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 		mapDrawWRow(&mv[0], tx-1, ty, py);
 	i+=mv->map->width - tx;
 	}
-	/* block copy pattern to where we will draw the sprite */
-	vga_setup_wm1_block_copy();
-	//_fmemcpy(mv[1].page->data, mv[0].page->data, mv[0].page->pagesize);
 	modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
-	/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
-	vga_restore_rm0wm0();
-	modexCopyPageRegion(mv[3].page, mv[!(mv->video->p)].page, 0/**/, 0/**/, 0, 128, 28, 36);
+	{
+		unsigned int k,j,o;
+		/* fill screen with a distinctive pattern */
+		for (k=0;k < vga_state.vga_width;k++) {
+			o = k >> 2;
+			vga_write_sequencer(0x02/*map mask*/,1 << (k&3));
+				for (j=0;j < (mv[0].page->height)+(mv[1].page->height)+(mv[2].page->height)+(mv[3].page->height);j++,o += vga_state.vga_stride)
+					vga_state.vga_graphics_ram[o] = (k^j)&15; // VRL samples put all colors in first 15!
+		}
+	}
+//	modexCopyPageRegion(mv[3].page, mv[!(mv->video->p)].page, 0/**/, 0/**/, 0, 128, 28, 36);
 }
 
 

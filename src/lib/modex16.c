@@ -251,7 +251,8 @@ modexNextPageFlexibleSize(page_t *p, word x, word y)
 	result.id = p->id+1;
 	result.stridew=result.width/4;
 	result.pagesize = (word)(result.width/4)*result.height;
-	if(result.id==2)		result.pi=p->width*p->pi;
+	if(result.id==2)
+		result.pi=p->width*p->pi;
 	else if(result.id==3)	result.pi=p->pi;
 
 	return result;
