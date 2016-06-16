@@ -648,7 +648,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 		mapDrawWRow(&mv[0], tx-1, ty, py);
 	i+=mv->map->width - tx;
 	}
-	//modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
+	modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
 	{
 		unsigned int k,j,o;
 		/* fill screen with a distinctive pattern */
