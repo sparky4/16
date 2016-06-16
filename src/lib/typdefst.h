@@ -118,7 +118,7 @@ typedef struct
 	boolean __near p;			//render page number
 	boolean __near r;			//page flip if true
 	word pr[MAXPAGE][4];	//render sections of pages
-	word startclk; float clk, tickclk;	//timer
+	//0000word startclk; float clk, tickclk;	//timer
 } video_t;
 
 typedef struct
