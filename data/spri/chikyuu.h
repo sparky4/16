@@ -4,17 +4,17 @@
 // sheet script: chikyuu.sht
 // palette file: chikyuu.pal
 
-#define _chikyuu_PRSBFCW0 10U
-#define _chikyuu_PRSBFCW1 11U
-#define _chikyuu_PRSBFCW2 12U
-#define _chikyuu_PRSBLCW0 20U
-#define _chikyuu_PRSBLCW1 21U
-#define _chikyuu_PRSBLCW2 22U
-#define _chikyuu_PRSBRCW0 30U
-#define _chikyuu_PRSBRCW1 31U
-#define _chikyuu_PRSBRCW2 32U
-#define _chikyuu_PRSBACW0 40U
-#define _chikyuu_PRSBACW1 41U
-#define _chikyuu_PRSBACW2 42U
+#define _chikyuu_CHIBFCW0 10U
+#define _chikyuu_CHIBFCW1 11U
+#define _chikyuu_CHIBFCW2 12U
+#define _chikyuu_CHIBLCW0 20U
+#define _chikyuu_CHIBLCW1 21U
+#define _chikyuu_CHIBLCW2 22U
+#define _chikyuu_CHIBRCW0 30U
+#define _chikyuu_CHIBRCW1 31U
+#define _chikyuu_CHIBRCW2 32U
+#define _chikyuu_CHIBACW0 40U
+#define _chikyuu_CHIBACW1 41U
+#define _chikyuu_CHIBACW2 42U
 
 // end list
