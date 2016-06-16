@@ -896,10 +896,25 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 	/*modexCopyPageRegion(pip[pip->video->p].page,
  pip[!(pip->video->p)].page, x-4, y-4, x-4, y-4, 28, 36);*/
 //	else modexCopyPageRegion(pip[1].page, pip[0].page, x-4, y-4, x-4, y-4, 28, 40);
-	if(2>ls && ls>=1) { FRAME1 }else
-	if(3>ls && ls>=2) { FRAME2 }else
-	if(4>ls && ls>=3) { FRAME3 }else
-	if(5>ls && ls>=4) { FRAME4 }
+	switch(ls)
+	{
+		case 1:
+			FRAME1
+		break;
+		case 2:
+			FRAME2
+		break;
+		case 3:
+			FRAME3
+		break;
+		case 4:
+			FRAME4
+		break;
+	}
+//	if(2>ls && ls>=1) { FRAME1 }else
+//	if(3>ls && ls>=2) { FRAME2 }else
+//	if(4>ls && ls>=3) { FRAME3 }else
+//	if(5>ls && ls>=4) { FRAME4 }
 	pip->video->r=1;
 	//TODO: mask copy //modexCopyPageRegion(dest->page, src->page, x-4, y-4, x-4, y-4, 28, 40);
 	//modexClearRegion(top->page, 66, 66, 2, 40, 0);
