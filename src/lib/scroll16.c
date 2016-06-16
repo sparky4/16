@@ -818,11 +818,11 @@ void shinku(global_game_variables_t *gv)
 	if(pageflipflop){
 	if(gv->video.r){
 		/* block copy pattern to where we will draw the sprite */
-		//vga_setup_wm1_block_copy();
-		//_fmemmove((gv->video.page[(gv->video.p)]).data, (gv->video.page[(!gv->video.p)]).data, gv->video.page[(!gv->video.p)].pagesize);
-		modexCopyPageRegion(&(gv->video.page[(gv->video.p)]), &(gv->video.page[(!gv->video.p)]), 0, 0, 0, 0, gv->video.page[gv->video.p].width, gv->video.page[!gv->video.p].height);
+		vga_setup_wm1_block_copy();
+		_fmemmove((gv->video.page[(gv->video.p)]).data, (gv->video.page[(!gv->video.p)]).data, gv->video.page[(!gv->video.p)].pagesize);
+		//modexCopyPageRegion(&(gv->video.page[(gv->video.p)]), &(gv->video.page[(!gv->video.p)]), 0, 0, 0, 0, gv->video.page[gv->video.p].width, gv->video.page[!gv->video.p].height);
 		/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
-		//vga_restore_rm0wm0();
+		vga_restore_rm0wm0();
 		modexShowPage(&(gv->video.page[gv->video.p]));
 		gv->video.p=!gv->video.p;
 		gv->video.r=!gv->video.r;
