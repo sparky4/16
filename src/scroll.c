@@ -288,15 +288,6 @@ void main(int argc, char *argv[])
 	if(IN_KeyDown(68))	//f10
 	{
 		gvar.kurokku.fpscap=!gvar.kurokku.fpscap;
-		switch(gvar.kurokku.fpscap)
-		{
-			case 0:
-				gvar.kurokku.frames_per_second=1;
-			break;
-			case 1:
-				gvar.kurokku.frames_per_second=60;
-			break;
-		}
 		IN_UserInput(1,1);
 	}
 	if(IN_KeyDown(67))	//f9
