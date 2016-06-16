@@ -288,6 +288,19 @@ void main(int argc, char *argv[])
 	if(IN_KeyDown(68))	//f10
 	{
 		gvar.kurokku.fpscap=!gvar.kurokku.fpscap;
+		switch(gvar.kurokku.fpscap)
+		{
+			case 0:
+				//modexprint(&(gv->video.page[shinku_fps_indicator_page]), x, y+8, type, col, bgcol, "sanic!");
+				gvar.kurokku.frames_per_second=1;
+			break;
+			case 1:
+				//turn this off if XT
+				//modexWaitBorder();
+				vga_wait_for_vsync();
+				gvar.kurokku.frames_per_second=60;
+			break;
+		}
 		IN_UserInput(1,1);
 	}
 	if(IN_KeyDown(67))	//f9
