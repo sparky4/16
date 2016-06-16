@@ -181,6 +181,7 @@ void main(int argc, char *argv[])
 	/* set up paging */
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(mv, 0, 0);
+	//_fmemcpy(mv[1].page->data, mv[0].page->data, mv[0].page->pagesize);
 	modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[1].page->width, mv[1].page->height);
 
 	//TODO: put player in starting position of spot
@@ -205,17 +206,17 @@ void main(int argc, char *argv[])
 	/* buffer pages */
 // 	modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 47);
 // 	modexClearRegion(mv[3].page, 0, 0, mv[3].page->width, mv[3].page->height, 45);
-	{
-		unsigned int k,j,o;
-		/* fill screen with a distinctive pattern */
-		for (k=0;k < vga_state.vga_width;k++) {
-			o = k >> 2;
-			vga_write_sequencer(0x02/*map mask*/,1 << (k&3));
-				for (j=0;j < vga_state.vga_height;j++,o += vga_state.vga_stride)
-					vga_state.vga_graphics_ram[o] = (k^j)&15; // VRL samples put all colors in first 15!
-		}
-	}
-	modexClearRegion(mv[3].page, 0, 128, 28, 36, 15);
+// 	{
+// 		unsigned int k,j,o;
+// 		/* fill screen with a distinctive pattern */
+// 		for (k=0;k < vga_state.vga_width;k++) {
+// 			o = k >> 2;
+// 			vga_write_sequencer(0x02/*map mask*/,1 << (k&3));
+// 				for (j=0;j < vga_state.vga_height;j++,o += vga_state.vga_stride)
+// 					vga_state.vga_graphics_ram[o] = (k^j)&15; // VRL samples put all colors in first 15!
+// 		}
+// 	}
+	modexClearRegion(mv[3].page, 0, 128, 24, 36, 15);
 
 #ifdef MODEX
 #ifdef FADE
