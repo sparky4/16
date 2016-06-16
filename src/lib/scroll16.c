@@ -487,6 +487,13 @@ void near ScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 	{
 		/* block copy pattern to where we will draw the sprite */
 		vga_setup_wm1_block_copy();
+// 		{
+// 			word i;
+// 			byte o,o2;
+// 			o2 = *mv[0].video->page[id].data+4;
+// 			o = *mv[0].video->page[id].data;
+// 			for (i=0;i < mv[0].video->page[id].height;i++,o += mv[0].video->page[id].width+vga_state.vga_stride,o2 += (*mv[0].video->page[id].data >> 2)) vga_wm1_mem_block_copy(o2,o,*mv[0].video->page[id].data >> 2);
+// 		}
 		_fmemmove(mv[0].video->page[id].data+4, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
 		/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
 		vga_restore_rm0wm0();
@@ -495,7 +502,6 @@ void near ScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 		mv[0].video->page[id].dx = mv[0].map->tiles->tileWidth;
 	}
 }
-
 
 void near ScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 {
@@ -507,6 +513,13 @@ void near ScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 	{
 		/* block copy pattern to where we will draw the sprite */
 		vga_setup_wm1_block_copy();
+// 		{
+// 			word i;
+// 			byte o,o2;
+// 			o2 = *mv[0].video->page[id].data-4;
+// 			o = *mv[0].video->page[id].data;
+// 			for (i=0;i < mv[0].video->page[id].height;i++,o += mv[0].video->page[id].width+vga_state.vga_stride,o2 += (*mv[0].video->page[id].data >> 2)) vga_wm1_mem_block_copy(o2,o,*mv[0].video->page[id].data >> 2);
+// 		}
 		_fmemmove(mv[0].video->page[id].data-4, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
 		/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
 		vga_restore_rm0wm0();
@@ -526,6 +539,13 @@ void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 	{
 		/* block copy pattern to where we will draw the sprite */
 		vga_setup_wm1_block_copy();
+// 		{
+// 			word i;
+// 			byte o,o2;
+// 			o2 = *mv[0].video->page[id].data-mv[0].video->page[id].pi;
+// 			o = *mv[0].video->page[id].data;
+// 			for (i=0;i < mv[0].video->page[id].height;i++,o += mv[0].video->page[id].width+vga_state.vga_stride,o2 += (*mv[0].video->page[id].data >> 2)) vga_wm1_mem_block_copy(o2,o,*mv[0].video->page[id].data >> 2);
+// 		}
 		_fmemmove(mv[0].video->page[id].data-mv[0].video->page[id].pi, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
 		/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
 		vga_restore_rm0wm0();
@@ -545,6 +565,13 @@ void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 	{
 		/* block copy pattern to where we will draw the sprite */
 		vga_setup_wm1_block_copy();
+// 		{
+// 			word i;
+// 			byte o,o2;
+// 			o2 = *mv[0].video->page[id].data+mv[0].video->page[id].pi;
+// 			o = *mv[0].video->page[id].data;
+// 			for (i=0;i < mv[0].video->page[id].height;i++,o += mv[0].video->page[id].width+vga_state.vga_stride,o2 += (*mv[0].video->page[id].data >> 2)) vga_wm1_mem_block_copy(o2,o,*mv[0].video->page[id].data >> 2);
+// 		}
 		_fmemmove(mv[0].video->page[id].data+mv[0].video->page[id].pi, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
 		/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
 		vga_restore_rm0wm0();
