@@ -1,0 +1,73 @@
+# player.PCX demo sprite sheet compiler script
+# (C) 2016 Jonathan Campbell
+
+# *spritesheet declares the section used by the sprite sheet cutting tool
+#
+# Sprites are declared by name (which becomes the .VRL file) at the + in the form:
+# +NAME@ID
+#
+# Sprite names are meant for temporary use when compiling the sprite sheet into VRLs.
+# At some point a longer name might be provided for use in your code.
+# This will fill the CURRENT WORKING DIRECTORY with .VRL files as directed when you
+# run PCXSSCUT, make sure your makefile does this in a temporary directory when
+# you integrate into your build and that your cleanup commands delete these files,
+# and that your .gitignore does not attempt to commit these files.
+
+# this format is a bit crap, but we'll improve it as needed. be patient.
+
+# begin spritesheet section
+*spritesheet
+
+# ---------------- player, walking, blue shirt with white cross. Frame 2/3 could be used for standing still
+
+# player, forward, frame 1/3
++PRSBFCW0@10
+xy=0,0
+wh=16,32
+# player, forward, frame 2/3
++PRSBFCW1@11
+xy=16,0
+wh=16,32
+# player, forward, frame 3/3
++PRSBFCW2@12
+xy=32,0
+wh=16,32
+
+# player, left, frame 1/3
++PRSBLCW0@20
+xy=0,32
+wh=16,32
+# player, left, frame 2/3
++PRSBLCW1@21
+xy=16,32
+wh=16,32
+# player, left, frame 3/3
++PRSBLCW2@22
+xy=32,32
+wh=16,32
+
+# player, right, frame 1/3
++PRSBRCW0@30
+xy=0,64
+wh=16,32
+# player, right, frame 2/3
++PRSBRCW1@31
+xy=16,64
+wh=16,32
+# player, right, frame 3/3
++PRSBRCW2@32
+xy=32,64
+wh=16,32
+
+# player, away, frame 1/3
++PRSBACW0@40
+xy=0,96
+wh=16,32
+# player, away, frame 2/3
++PRSBACW1@41
+xy=16,96
+wh=16,32
+# player, away, frame 3/3
++PRSBACW2@42
+xy=32,96
+wh=16,32
