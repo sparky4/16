@@ -331,10 +331,11 @@ void main(int argc, char *argv[])
 	VGAmodeX(0, 1, &gvar);
 #endif
 	IN_Shutdown();
-	printf("\n\n\n\nProject 16 scroll.exe. This is just a test file!\n");
+	printf("\nProject 16 scroll.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	printf("tx: %d	", mv[0].tx);
 	printf("ty: %d\n", mv[0].ty);
+	printf("\n");
 	printf("player vars:\n");
 	printf("	x: %d", player[0].x); printf("	y: %d\n", player[0].y);
 	//if(player[0].hp==0) printf("%d wwww\n", player[0].y+8);
@@ -343,7 +344,7 @@ void main(int argc, char *argv[])
 	printf("	triggx: %d", player[0].triggerx); printf("	triggy: %d\n", player[0].triggery);
 	printf("	hp: %d", (player[0].hp));	printf("	q: %d", player[0].q);	printf("	player.info.dir: %d", player[0].info.dir);	printf("	player.d: %d ", player[0].d);
 		printf("	pdir=%d\n", player[0].pdir);
-	printf("tile data value at player trigger position: %d\n\n", mv[0].map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))]);
+	printf("	tile data value at player trigger position: %d\n\n", mv[0].map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))]);
 //	printf("palette offset:	%d\n", paloffset/3);
 //++++	printf("Total used: %zu\n", oldfreemem-GetFreeSize());
 //++++	printf("Total free: %zu\n", GetFreeSize());
