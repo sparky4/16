@@ -802,6 +802,19 @@ void shinku(global_game_variables_t *gv)
 	}else //copy dat sheet
 	gv->kurokku.tiku++;
 
+	switch(gv->kurokku.fpscap)
+	{
+		case 0:
+			modexprint(&(gv->video.page[shinku_fps_indicator_page]), x, y+8, type, col, bgcol, "sanic!");
+			gv->kurokku.frames_per_second=1;
+		break;
+		case 1:
+			//turn this off if XT
+			//modexWaitBorder();
+			vga_wait_for_vsync();
+			gv->kurokku.frames_per_second=60;
+		break;
+	}
 	if(pageflipflop){
 	if(gv->video.r){
 		/* block copy pattern to where we will draw the sprite */

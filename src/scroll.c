@@ -96,9 +96,9 @@ void main(int argc, char *argv[])
 	pan.pn=1;
 	//player[0].data = &pp;
 
-	printf("starting timer	");
+	//printf("starting timer	");
 	start_timer(&gvar);
-	printf("ok\n");
+	//printf("ok\n");
 
 //	atexit(qclean());
 
@@ -291,13 +291,9 @@ void main(int argc, char *argv[])
 		switch(gvar.kurokku.fpscap)
 		{
 			case 0:
-				//modexprint(&(gv->video.page[shinku_fps_indicator_page]), x, y+8, type, col, bgcol, "sanic!");
 				gvar.kurokku.frames_per_second=1;
 			break;
 			case 1:
-				//turn this off if XT
-				//modexWaitBorder();
-				vga_wait_for_vsync();
 				gvar.kurokku.frames_per_second=60;
 			break;
 		}

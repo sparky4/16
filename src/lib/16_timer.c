@@ -28,16 +28,18 @@ clock_t start_timer(global_game_variables_t *gv)
 	gv->kurokku.tiku = 0;
 	gv->kurokku.clock_start = *clockw;
 	gv->kurokku.clock = clockw;
-	gv->kurokku.frames_per_second = 60;
+	//gv->kurokku.frames_per_second = 60;
 	gv->pee = _nmalloc(sizeof(byte)*16);
 	//turn this off if XT
 	switch(detectcpu())
 	{
 		case 0:
 			gv->kurokku.fpscap=0;
+			gv->kurokku.frames_per_second=1;
 		break;
 		default:
 			gv->kurokku.fpscap=1;
+			gv->kurokku.frames_per_second=60;
 		break;
 	}
 	return gv->kurokku.t;
@@ -79,17 +81,17 @@ void shinkutxt(global_game_variables_t *gv)
 		gv->kurokku.tiku=0;
 	}
 	gv->kurokku.tiku++;
-	switch(gv->kurokku.fpscap)
-	{
-		case 0:
-			gv->kurokku.frames_per_second=1;
-		break;
-		case 1:
-			//turn this off if XT
-			WaitPee();
-			gv->kurokku.frames_per_second=60;
-		break;
-	}
+// 	switch(gv->kurokku.fpscap)
+// 	{
+// 		case 0:
+// 			gv->kurokku.frames_per_second=1;
+// 		break;
+// 		case 1:
+// 			//turn this off if XT
+// 			WaitPee();
+// 			gv->kurokku.frames_per_second=60;
+// 		break;
+// 	}
 }
 
 void WaitPee()
