@@ -1148,9 +1148,9 @@ modexWaitBorder() {
 	// spin
 	}
 
-//	while(!(inp(INPUT_STATUS_1)  & 8))  {
-//	//spin
-//	}
+	while(!(inp(INPUT_STATUS_1)  & 8))  {
+	//spin
+	}
 }
 
 void modexprintmeminfo(video_t *v)
