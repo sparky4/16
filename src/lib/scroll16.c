@@ -649,16 +649,16 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 	i+=mv->map->width - tx;
 	}
 	modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
-	{
-		unsigned int k,j,o;
-		/* fill screen with a distinctive pattern */
-		for (k=0;k < vga_state.vga_width;k++) {
-			o = k >> 2;
-			vga_write_sequencer(0x02/*map mask*/,1 << (k&3));
-				for (j=0;j < (mv[0].page->height)+(mv[1].page->height)+(mv[2].page->height)+(mv[3].page->height);j++,o += vga_state.vga_stride)
-					vga_state.vga_graphics_ram[o] = (k^j)&15; // VRL samples put all colors in first 15!
-		}
-	}
+// 	{
+// 		unsigned int k,j,o;
+// 		/* fill screen with a distinctive pattern */
+// 		for (k=0;k < vga_state.vga_width;k++) {
+// 			o = k >> 2;
+// 			vga_write_sequencer(0x02/*map mask*/,1 << (k&3));
+// 				for (j=0;j < (mv[0].page->height)+(mv[1].page->height)+(mv[2].page->height)+(mv[3].page->height);j++,o += vga_state.vga_stride)
+// 					vga_state.vga_graphics_ram[o] = (k^j)&15; // VRL samples put all colors in first 15!
+// 		}
+// 	}
 	modexCopyPageRegion(mv[3].page, mv[!(mv->video->p)].page, 0/**/, 0/**/, 0, 128, 20, 36);
 }
 
