@@ -46,7 +46,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 1);
 					ScrollRight(pip, player, 3, pn);
 					ScrollRight(pip, player, 2, pn);
-					mapScrollRight(pip, player, !(pip[0].video->p), pn);
+					if(!pageploop) mapScrollRight(pip, player, !(pip[0].video->p), pn);
 					mapScrollRight(pip, player, (pip[0].video->p), pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
@@ -90,7 +90,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 1);
 					ScrollLeft(pip, player, 3, pn);
 					ScrollLeft(pip, player, 2, pn);
-					mapScrollLeft(pip, player, !(pip[0].video->p), pn);
+					if(!pageploop) mapScrollLeft(pip, player, !(pip[0].video->p), pn);
 					mapScrollLeft(pip, player, (pip[0].video->p), pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
@@ -134,7 +134,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 1);
 					ScrollDown(pip, player, 3, pn);
 					ScrollDown(pip, player, 2, pn);
-					mapScrollDown(pip, player, !(pip[0].video->p), pn);
+					if(!pageploop) mapScrollDown(pip, player, !(pip[0].video->p), pn);
 					mapScrollDown(pip, player, (pip[0].video->p), pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
@@ -178,7 +178,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 1);
 					ScrollUp(pip, player, 3, pn);
 					ScrollUp(pip, player, 2, pn);
-					mapScrollUp(pip, player, !(pip[0].video->p), pn);
+					if(!pageploop) mapScrollUp(pip, player, !(pip[0].video->p), pn);
 					mapScrollUp(pip, player, (pip[0].video->p), pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
@@ -385,7 +385,7 @@ void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 		else
 			if(!pageflipflop)
 				modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*(mv[0].page->th+2));
-			else	mv[0].video->r=1;
+	mv[0].video->r=1;
 }
 
 
@@ -414,7 +414,7 @@ void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 		else
 			if(!pageflipflop)
 				modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*(mv[0].page->th+2));
-			else	mv[0].video->r=1;
+	mv[0].video->r=1;
 }
 
 
@@ -443,7 +443,7 @@ void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 		else
 			if(!pageflipflop)
 				modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*(mv[0].page->tw+2), mv[id].map->tiles->tileHeight);
-			else	mv[0].video->r=1;
+	mv[0].video->r=1;
 }
 
 void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
@@ -471,7 +471,7 @@ void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 		else
 			if(!pageflipflop)
 				modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*(mv[0].page->tw+2), mv[id].map->tiles->tileHeight);
-			else	mv[0].video->r=1;
+	mv[0].video->r=1;
 }
 
 
@@ -647,7 +647,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 		mapDrawWRow(&mv[0], tx-1, ty, py);
 	i+=mv->map->width - tx;
 	}
-	modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
+	if(!pageploop) modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
 // 	{
 // 		unsigned int k,j,o;
 // 		/* fill screen with a distinctive pattern */
@@ -787,13 +787,13 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 
 unsigned char shinku_fps_indicator_page = 2;
 boolean pageflipflop;
-//gv->video.p
+boolean pageploop = 1;
 
 /*	sync	*/
 void shinku(global_game_variables_t *gv)
 {
-	word x = (0) + gv->video.page[!(gv->video.p)].dx; // follow the screen
-	word y = (0) + gv->video.page[!(gv->video.p)].dy; // follow the screen
+	word x = (0) + gv->video.page[/*!*/(gv->video.p)].dx; // follow the screen
+	word y = (0) + gv->video.page[/*!*/(gv->video.p)].dy; // follow the screen
 	word w = 64;
 	word h = 8;
 	word col = 7;
@@ -815,7 +815,7 @@ void shinku(global_game_variables_t *gv)
 	{
 		sprintf(gv->pee, "%.0f fps", (double)gv->kurokku.tiku/ticktock(gv));
 		//modexClearRegion(&(gv->video.page[shinku_fps_indicator_page]), x, y, w, h, 45);
-		modexprint(&(gv->video.page[!(gv->video.p)]), x, y, type, col, bgcol, gv->pee);
+		modexprint(&(gv->video.page[/*!*/(gv->video.p)]), x, y, type, col, bgcol, gv->pee);
 		gv->kurokku.tiku=0;
 		/* block copy to visible RAM from offscreen */
 //		vga_setup_wm1_block_copy();
@@ -846,9 +846,9 @@ void shinku(global_game_variables_t *gv)
 		//vga_setup_wm1_block_copy();
 		//_fmemcpy((gv->video.page[(gv->video.p)]).data, (gv->video.page[(!gv->video.p)]).data, gv->video.page[(!gv->video.p)].pagesize);
 		//vga_restore_rm0wm0();
-		modexCopyPageRegion(&(gv->video.page[(gv->video.p)]), &(gv->video.page[(!gv->video.p)]), 0, 0, 0, 0, gv->video.page[gv->video.p].width, gv->video.page[!gv->video.p].height);
+		if(!pageploop) modexCopyPageRegion(&(gv->video.page[(gv->video.p)]), &(gv->video.page[(!gv->video.p)]), 0, 0, 0, 0, gv->video.page[gv->video.p].width, gv->video.page[!gv->video.p].height);
 		modexShowPage(&(gv->video.page[gv->video.p]));
-		gv->video.p=!gv->video.p;
+		if(!pageploop) gv->video.p=!gv->video.p;
 		gv->video.r=!gv->video.r;
 		//0000gv->video.tickclk = ((*clockw)-gv->video.startclk)/18.2;
 	}
@@ -905,15 +905,15 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 // #define FRAME2 PBUFSFUN(pip[1].page, x, y, 16, dire, 16, 32,	PLAYERBMPDATA);
 // #define FRAME3 PBUFSFUN(pip[1].page, x, y, 0, dire, 16, 32,	PLAYERBMPDATA);
 // #define FRAME4 PBUFSFUN(pip[1].page, x, y, 16, dire, 16, 32,	PLAYERBMPDATA);
-#define FRAME1 PBUFSFUN(pip[!(pip->video->p)].page, x, y, 32, dire, 16, 32,	PLAYERBMPDATA);
-#define FRAME2 PBUFSFUN(pip[!(pip->video->p)].page, x, y, 16, dire, 16, 32,	PLAYERBMPDATA);
-#define FRAME3 PBUFSFUN(pip[!(pip->video->p)].page, x, y, 0, dire, 16, 32,	PLAYERBMPDATA);
-#define FRAME4 PBUFSFUN(pip[!(pip->video->p)].page, x, y, 16, dire, 16, 32,	PLAYERBMPDATA);
+#define FRAME1 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 32, dire, 16, 32,	PLAYERBMPDATA);
+#define FRAME2 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 16, dire, 16, 32,	PLAYERBMPDATA);
+#define FRAME3 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 0, dire, 16, 32,	PLAYERBMPDATA);
+#define FRAME4 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 16, dire, 16, 32,	PLAYERBMPDATA);
 #else
-#define FRAME1 modexClearRegion(pip[!(pip->video->p)].page, x, y, 16, 32, 2+dire);
-#define FRAME2 modexClearRegion(pip[!(pip->video->p)].page, x, y, 16, 32, 1+dire);
-#define FRAME3 modexClearRegion(pip[!(pip->video->p)].page, x, y, 16, 32, dire);
-#define FRAME4 modexClearRegion(pip[!(pip->video->p)].page, x, y, 16, 32, 1+dire);
+#define FRAME1 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 2+dire);
+#define FRAME2 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 1+dire);
+#define FRAME3 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, dire);
+#define FRAME4 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 1+dire);
 	#endif
 	if(!pageflipflop)
 		modexCopyPageRegion(pip[1].page, pip[0].page, x-4, y-4, x-4, y-4, 28, 36);

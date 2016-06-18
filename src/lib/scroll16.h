@@ -65,7 +65,7 @@ typedef struct
 #define MAPW	40
 #define MAPH	30
 
-extern boolean pageflipflop;
+extern boolean pageflipflop, pageploop;
 extern unsigned char shinku_fps_indicator_page;
 
 //map_t allocMap(int w, int h);

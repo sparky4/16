@@ -182,7 +182,6 @@ void main(int argc, char *argv[])
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(mv, 0, 0);
 	//_fmemcpy(mv[1].page->data, mv[0].page->data, mv[0].page->pagesize);
-	//====modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[1].page->width, mv[1].page->height);
 
 	//TODO: put player in starting position of spot
 	//default player position on the viewable map
@@ -193,7 +192,7 @@ void main(int argc, char *argv[])
 
 #ifndef	SPRITE
 	modexClearRegion(mv[0].page, player[0].x, player[0].y-TILEWH, 16, 32, 15);
-	//====modexClearRegion(mv[1].page, player[0].x, player[0].y-TILEWH, 16, 32, 15);
+	//modexClearRegion(mv[1].page, player[0].x, player[0].y-TILEWH, 16, 32, 15);
 #else
 	//PBUFSFUN(mv[1].page, player[0].x, player[0].y-TILEWH, 16, 64, 24, 32,	PLAYERBMPDATA);
 	PBUFSFUN(mv[0].page, player[0].x, player[0].y-TILEWH, 16, 64, 16, 32,	&pp);
@@ -201,7 +200,7 @@ void main(int argc, char *argv[])
 
 	if(!pageflipflop)	modexShowPage(mv[1].page);
 	else			modexShowPage(mv[0].page);//!(gvar.video.p)
-		shinku_fps_indicator_page = 1; // we're on page 1 now, shinku(). follow along please or it will not be visible.
+		shinku_fps_indicator_page = 0; // we're on page 1 now, shinku(). follow along please or it will not be visible.
 
 	/* buffer pages */
 // 	modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 47);
