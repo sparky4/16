@@ -843,10 +843,10 @@ void shinku(global_game_variables_t *gv)
 	}
 	if(pageflipflop){
 	if(gv->video.r){
-		vga_setup_wm1_block_copy();
-		_fmemcpy((gv->video.page[(gv->video.p)]).data, (gv->video.page[(!gv->video.p)]).data, gv->video.page[(!gv->video.p)].pagesize);
-		vga_restore_rm0wm0();
-		//modexCopyPageRegion(&(gv->video.page[(gv->video.p)]), &(gv->video.page[(!gv->video.p)]), 0, 0, 0, 0, gv->video.page[gv->video.p].width, gv->video.page[!gv->video.p].height);
+		//vga_setup_wm1_block_copy();
+		//_fmemcpy((gv->video.page[(gv->video.p)]).data, (gv->video.page[(!gv->video.p)]).data, gv->video.page[(!gv->video.p)].pagesize);
+		//vga_restore_rm0wm0();
+		modexCopyPageRegion(&(gv->video.page[(gv->video.p)]), &(gv->video.page[(!gv->video.p)]), 0, 0, 0, 0, gv->video.page[gv->video.p].width, gv->video.page[!gv->video.p].height);
 		modexShowPage(&(gv->video.page[gv->video.p]));
 		gv->video.p=!gv->video.p;
 		gv->video.r=!gv->video.r;
@@ -863,8 +863,15 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 	sword qq; //scroll offset
 	word ls = player[pn].persist_aniframe;
 
-	if(scrollswitch==0) qq = 0;
-	else qq = ((player[pn].q)*(player[pn].speed));
+	switch(scrollswitch)
+	{
+		case 0:
+			qq = 0;
+		break;
+		default:
+			qq = ((player[pn].q)*(player[pn].speed));
+		break;
+	}
 	//x-=4;
 	y-=TILEWH;
 	switch (player[pn].d)
