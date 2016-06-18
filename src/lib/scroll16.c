@@ -843,10 +843,10 @@ void shinku(global_game_variables_t *gv)
 	}
 	if(pageflipflop){
 	if(gv->video.r){
-		//vga_setup_wm1_block_copy();
-		//_fmemcpy((gv->video.page[(gv->video.p)]).data, (gv->video.page[(!gv->video.p)]).data, gv->video.page[(!gv->video.p)].pagesize);
-		//vga_restore_rm0wm0();
-		modexCopyPageRegion(&(gv->video.page[(gv->video.p)]), &(gv->video.page[(!gv->video.p)]), 0, 0, 0, 0, gv->video.page[gv->video.p].width, gv->video.page[!gv->video.p].height);
+		vga_setup_wm1_block_copy();
+		_fmemcpy((gv->video.page[(gv->video.p)]).data, (gv->video.page[(!gv->video.p)]).data, gv->video.page[(!gv->video.p)].pagesize);
+		vga_restore_rm0wm0();
+		//modexCopyPageRegion(&(gv->video.page[(gv->video.p)]), &(gv->video.page[(!gv->video.p)]), 0, 0, 0, 0, gv->video.page[gv->video.p].width, gv->video.page[!gv->video.p].height);
 		modexShowPage(&(gv->video.page[gv->video.p]));
 		gv->video.p=!gv->video.p;
 		gv->video.r=!gv->video.r;
