@@ -193,8 +193,6 @@ void main(int argc, char *argv[])
 	IN_initplayer(&player, 0);
 	//IN_initplayer(&player, 1);
 
-	modexDrawSprite(mv[0].page, 16, 16, p);
-	modexDrawSprite(mv[0].page, 32+48, 16, (player[0].data));
 #ifndef	SPRITE
 	modexClearRegion(mv[0].page, player[0].x, player[0].y-TILEWH, 16, 32, 15);
 	//modexClearRegion(mv[1].page, player[0].x, player[0].y-TILEWH, 16, 32, 15);

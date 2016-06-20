@@ -1,118 +1,329 @@
 WARNING: Failed to initialize DEBUG output
-starting timer	ok
-index=4096
-chkmap ok	12
-12
-8
-8
-4
-4
-12
-12
-8
-8
-4
-4
-12
-12
-8
-8
-4
-4
-12
-12
-8
-8
-4
-4
-12
-12
-8
-8
-4
-4
-12
-12
-8
-8
-4
-4
-12
-12
-8
-8
-4
-4
-12
-12
-8
-8
-4
-4
-12
-12
-8
-8
-4
-4
-12
-12
-8
-8
-4
-4
-12
-12
-8
-8
-4
-4
-12
-12
-8
-8
-4
-4
-12
-12
-8
-8
-4
-4
-12
-12
-8
-8
-4
-4
-12
-12
-8
-8
-4
-4
+chkmap ok	x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=168		by=128
+x=168	y=112	bx=172		by=128
+x=172	y=112	bx=176		by=128
+x=176	y=112	bx=180		by=128
+x=172	y=112	bx=168		by=128
+x=168	y=112	bx=164		by=128
+x=164	y=112	bx=160		by=128
+x=160	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=164		by=128
+x=168	y=112	bx=164		by=128
+x=172	y=112	bx=164		by=128
+x=176	y=112	bx=164		by=128
+x=164	y=112	bx=168		by=128
+x=168	y=112	bx=172		by=128
+x=172	y=112	bx=176		by=128
+x=176	y=112	bx=180		by=128
+x=180	y=112	bx=184		by=128
+x=184	y=112	bx=188		by=128
+x=188	y=112	bx=192		by=128
+x=192	y=112	bx=196		by=128
+x=196	y=112	bx=200		by=128
+x=200	y=112	bx=204		by=128
+x=204	y=112	bx=208		by=128
+x=208	y=112	bx=212		by=128
+x=204	y=112	bx=200		by=128
+x=200	y=112	bx=196		by=128
+x=196	y=112	bx=192		by=128
+x=192	y=112	bx=188		by=128
+x=188	y=112	bx=184		by=128
+x=184	y=112	bx=180		by=128
+x=180	y=112	bx=176		by=128
+x=176	y=112	bx=172		by=128
+x=172	y=112	bx=168		by=128
+x=168	y=112	bx=164		by=128
+x=164	y=112	bx=160		by=128
+x=160	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=156		by=128
+x=152	y=112	bx=156		by=128
+x=148	y=112	bx=156		by=128
+x=144	y=112	bx=156		by=128
+x=156	y=112	bx=152		by=128
+x=152	y=112	bx=148		by=128
+x=148	y=112	bx=144		by=128
+x=144	y=112	bx=140		by=128
+x=144	y=116	bx=144		by=132
+x=144	y=120	bx=144		by=132
+x=144	y=124	bx=144		by=132
+x=144	y=128	bx=144		by=132
+x=144	y=116	bx=144		by=132
+x=144	y=120	bx=144		by=132
+x=144	y=124	bx=144		by=132
+x=144	y=128	bx=144		by=132
+x=140	y=112	bx=136		by=128
+x=136	y=112	bx=132		by=128
+x=132	y=112	bx=128		by=128
+x=128	y=112	bx=124		by=128
+x=124	y=112	bx=120		by=128
+x=120	y=112	bx=116		by=128
+x=116	y=112	bx=112		by=128
+x=112	y=112	bx=108		by=128
+x=108	y=112	bx=104		by=128
+x=104	y=112	bx=100		by=128
+x=100	y=112	bx=96		by=128
+x=96	y=112	bx=92		by=128
+x=92	y=112	bx=88		by=128
+x=88	y=112	bx=84		by=128
+x=84	y=112	bx=80		by=128
+x=80	y=112	bx=76		by=128
+x=76	y=112	bx=72		by=128
+x=72	y=112	bx=68		by=128
+x=68	y=112	bx=64		by=128
+x=64	y=112	bx=60		by=128
+x=60	y=112	bx=56		by=128
+x=56	y=112	bx=52		by=128
+x=52	y=112	bx=48		by=128
+x=48	y=112	bx=44		by=128
+x=48	y=116	bx=48		by=132
+x=48	y=120	bx=48		by=132
+x=48	y=124	bx=48		by=132
+x=48	y=128	bx=48		by=132
+x=48	y=116	bx=48		by=132
+x=48	y=120	bx=48		by=132
+x=48	y=124	bx=48		by=132
+x=48	y=128	bx=48		by=132
+x=48	y=116	bx=48		by=132
+x=48	y=120	bx=48		by=132
+x=48	y=124	bx=48		by=132
+x=48	y=128	bx=48		by=132
+x=48	y=116	bx=48		by=132
+x=48	y=120	bx=48		by=132
+x=48	y=124	bx=48		by=132
+x=48	y=128	bx=48		by=132
+x=48	y=116	bx=48		by=132
+x=48	y=120	bx=48		by=132
+x=48	y=124	bx=48		by=132
+x=48	y=128	bx=48		by=132
+x=48	y=116	bx=48		by=132
+x=48	y=120	bx=48		by=132
+x=48	y=124	bx=48		by=132
+x=48	y=128	bx=48		by=132
+x=48	y=116	bx=48		by=132
+x=48	y=120	bx=48		by=132
+x=48	y=124	bx=48		by=132
+x=48	y=128	bx=48		by=132
+x=48	y=116	bx=48		by=132
+x=48	y=120	bx=48		by=132
+x=48	y=124	bx=48		by=132
+x=48	y=128	bx=48		by=132
+x=48	y=116	bx=48		by=132
+x=48	y=120	bx=48		by=132
+x=48	y=124	bx=48		by=132
+x=48	y=128	bx=48		by=132
+x=48	y=116	bx=48		by=132
+x=48	y=120	bx=48		by=132
+x=48	y=124	bx=48		by=132
+x=48	y=128	bx=48		by=132
+x=48	y=116	bx=48		by=132
+x=48	y=120	bx=48		by=132
+x=48	y=124	bx=48		by=132
+x=48	y=128	bx=48		by=132
+
 Project 16 scroll.exe. This is just a test file!
-version Jun 13 2016 11:37:38
-tx: 0
-ty: 2
-player.x: 112		player.y: 128
-player.tx: 7		player.ty: 10
-player.triggx: 6	player.triggy: 10
-player.hp: 4	player.q: 1	player.info.dir: 2	player.d: 2 pdir=1
-tile data value at player trigger position: 1
-Virtual Screen: 352x272
-Screen: 320x240
-virtual tile resolution: 22x17
-tile resolution: 20x15 
+version Jun 20 2016 11:28:21
+tx: 0	ty: 13
+
+player vars:
+	x: 48	y: 128
+	tx: 3	ty: 21
+	triggx: 3	triggy: 22
+	hp: 4	q: 1	player.info.dir: 2	player.d: 2 	pdir=4
+	tile data value at player trigger position: 1
+
+Virtual Screen: 352x272	Screen: 320x240
+virtual tile resolution: 22x17	tile resolution: 20x15
 middle tile position: 10x8
 video memory remaining: 65535
-page 	[0]=(a000:0b00) size=23936	sw=320  sh=240  width=352  height=272
-	[1]=(a000:6880) size=23936	sw=320  sh=240  width=352  height=272
-	[2]=(a000:bb08) size=1024	sw=64  sh=64  width=64  height=64
-	[3]=(a000:bf08) size=16640	sw=320  sh=208  width=320  height=208
-gvar.video.p=1 gvar.video.r=0 pageflipflop=1
+page 	[0]=(a000:4780) size=23936	w=352  h=272 sw=320  sh=240 pi=4
+	[1]=(a000:5d80) size=23936	w=352  h=272 sw=320  sh=240 pi=4
+	[2]=(a000:bb00) size=1024	w=64  h=64 sw=64  sh=64 pi=1408
+	[3]=(a000:bf00) size=16640	w=320  h=208 sw=320  sh=208 pi=1408
+gvar.video.p=0 gvar.video.r=0 pageflipflop=1
 
-gvar.video.tickclk=0.164835
-gvar.video.clk=0.109890
 
 detected CPU type: 386 or newer
