@@ -38,12 +38,14 @@
 #include <hw/vga/vga.h>
 #include <hw/vga/vrl.h>
 
-//#define SPRITE
+#define SPRITE
 //#define TILERENDER
 
-#define PBUFSFUN		modexDrawSpritePBufRegion
-#define PBUFBFUN		modexDrawBmpPBufRegion
-#define PLAYERBMPDATA	&player[pn].data
+//modexDrawSpritePBufRegion
+//modexDrawBmpPBufRegion
+#define PBUFSFUN		modexDrawSpriteRegion
+#define PBUFBFUN		modexDrawBmpRegion
+#define PLAYERBMPDATA	player[pn].data
 
 typedef struct {
 	map_t *map;

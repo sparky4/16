@@ -37,9 +37,30 @@ void main() {
 	int plane;
 	float t1, t2;
 
+	// DOSLIB: check our environment
+	probe_dos();
+
+	// DOSLIB: what CPU are we using?
+	// NTS: I can see from the makefile Sparky4 intends this to run on 8088 by the -0 switch in CFLAGS.
+	//      So this code by itself shouldn't care too much what CPU it's running on. Except that other
+	//      parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
+	//      the CPU to carry out tasks. --J.C.
+	cpu_probe();
+
+	// DOSLIB: check for VGA
+	if (!probe_vga()) {
+		printf("VGA probe failed\n");
+		return;
+	}
+	// hardware must be VGA or higher!
+	if (!(vga_state.vga_flags & VGA_IS_VGA)) {
+		printf("This program requires VGA or higher graphics hardware\n");
+		return;
+	}
+
 //0000	bmp = bitmapLoadPcx("data/koishi~~.pcx");
-//	bmp = bitmapLoadPcx("data/chikyuu.pcx");
-	bmp = bitmapLoadPcx("data/koishi^^.pcx");
+	bmp = bitmapLoadPcx("data/chikyuu.pcx");
+//	bmp = bitmapLoadPcx("data/koishi^^.pcx");
 //	bmp = bitmapLoadPcx("16/PCX_LIB/chikyuu.pcx");
 	p = planar_buf_from_bitmap(&bmp);
 	VGAmodeX(1, 1, &gvar);

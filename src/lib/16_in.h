@@ -230,7 +230,7 @@ typedef	struct
 //0000	planar_buf_t huge *data; //supposively the sprite sheet data
 //	planar_buf_t data; //supposively the sprite sheet data
 ////0000----
-	bitmap_t huge *data; //supposively the sprite sheet data
+	bitmap_t *data; //supposively the sprite sheet data
 	sword hp; //hitpoints of the player
 	int persist_aniframe;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	CursorInfo	info;

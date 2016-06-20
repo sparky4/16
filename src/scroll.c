@@ -28,15 +28,14 @@
 #define MODEX	//this is for mode x initiating
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
-
+bitmap_t *p;
 global_game_variables_t gvar;
 static map_t map;
 player_t player[MaxPlayers];
 //page_t screen, gvar.video.page[1], gvar.video.page[2];
 map_view_t mv[4];
-bitmap_t p;
 //word pn=0; //i forgot ww
-static planar_buf_t huge *pp;
+//static planar_buf_t huge *pp;
 float t;
 sword bakapee;
 pan_t pan;
@@ -115,7 +114,11 @@ void main(int argc, char *argv[])
 	//mappalptr = map.tiles->btdata->palette;
 
 	/* data */
-	//++++p = bitmapLoadPcx("data/ptmp.pcx"); // load sprite
+	//++++
+	p = malloc(48*128);
+	player[0].data = p;
+	*p = bitmapLoadPcx("data/chikyuu.pcx"); // load sprite
+	*player[0].data = bitmapLoadPcx("data/chikyuu.pcx"); // load sprite
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 
 	/* create the planar buffer */
@@ -150,7 +153,7 @@ void main(int argc, char *argv[])
 //	printf("Total used @ before palette initiation:		%zu\n", oldfreemem-GetFreeSize());
 //++++	player[0].data.offset=(paloffset/3);
 //++++	modexPalUpdate1(&player[0].data, &paloffset, 0, 0);
-		//modexPalUpdate1(p.palette);
+		modexPalUpdate1(p->palette);
 //++++0000		modexPalUpdate1(map.tiles->btdata->palette);
 	//printf("	%d\n", sizeof(ptmp->data));
 	//printf("1:	%d\n", paloffset);
@@ -190,12 +193,14 @@ void main(int argc, char *argv[])
 	IN_initplayer(&player, 0);
 	//IN_initplayer(&player, 1);
 
+	modexDrawSprite(mv[0].page, 16, 16, p);
+	modexDrawSprite(mv[0].page, 32+48, 16, (player[0].data));
 #ifndef	SPRITE
 	modexClearRegion(mv[0].page, player[0].x, player[0].y-TILEWH, 16, 32, 15);
 	//modexClearRegion(mv[1].page, player[0].x, player[0].y-TILEWH, 16, 32, 15);
 #else
 	//PBUFSFUN(mv[1].page, player[0].x, player[0].y-TILEWH, 16, 64, 24, 32,	PLAYERBMPDATA);
-	PBUFSFUN(mv[0].page, player[0].x, player[0].y-TILEWH, 16, 64, 16, 32,	&pp);
+	PBUFSFUN(mv[0].page, player[0].x, player[0].y-TILEWH, 16, 64, 16, 32,	p);
 #endif
 
 	if(!pageflipflop)	modexShowPage(mv[1].page);
@@ -262,7 +267,7 @@ void main(int argc, char *argv[])
 #ifdef FADE
 	if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv[0].page); modexpdump(mv[1].page);  IN_UserInput(1,1); }
 	if(IN_KeyDown(22)){
-	paloffset=0; modexPalBlack(); modexPalUpdate(&player[0].data, &paloffset, 0, 0);
+	paloffset=0; modexPalBlack(); modexPalUpdate(player[0].data, &paloffset, 0, 0);
 	printf("1paloffset	=	%d\n", paloffset/3);
 	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	printf("2paloffset	=	%d\n", paloffset/3);
@@ -296,6 +301,11 @@ void main(int argc, char *argv[])
 // 		modexClearRegion(mv[3].page, 0, 0, mv[3].page->width, mv[3].page->height, 45);
 		modexClearRegion(mv[3].page, 0, 128, 28, 36, 15);
 		//IN_UserInput(1,1);
+	}
+	if(IN_KeyDown(66))	//f8
+	{
+		modexDrawSprite(mv[0].page, 16, 16, p);
+		modexDrawSprite(mv[0].page, 32+48, 16, (player[0].data));
 	}
 	//TODO fmemtest into page
 	/*if(IN_KeyDown(4+1))	//4

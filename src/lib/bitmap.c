@@ -126,7 +126,7 @@ bitmapLoadPcx(char *filename) {
 		result.data[index] = val;
 	}
 	} while(index < bufSize);
-	printf("index=%d\n", index);
+	//printf("index=%d\n", index);
 
 	loadPcxPalette(file, &result);
 

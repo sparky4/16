@@ -42,7 +42,7 @@
  * typedefs of the game variables!
  */
 typedef struct {
-	byte huge *data;
+	byte *data;
 	word width;
 	word height;
 	byte *palette;
