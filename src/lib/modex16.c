@@ -307,14 +307,14 @@ modexShowPage(page_t *page) {
     low_address  = LOW_ADDRESS  | (offset << 8);
 
     /* wait for appropriate timing and then program CRTC */
-    while ((inp(INPUT_STATUS_1) & DISPLAY_ENABLE));
+    //while ((inp(INPUT_STATUS_1) & DISPLAY_ENABLE));
     outpw(CRTC_INDEX, high_address);
     outpw(CRTC_INDEX, low_address);
     outp(CRTC_INDEX, 0x13);
     outp(CRTC_DATA, crtcOffset);
 
     /*  wait for one retrace */
-    while (!(inp(INPUT_STATUS_1) & VRETRACE));
+    //while (!(inp(INPUT_STATUS_1) & VRETRACE));
 
     /* do PEL panning here */
     outp(AC_INDEX, 0x33);
