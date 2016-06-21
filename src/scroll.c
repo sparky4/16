@@ -32,7 +32,6 @@ bitmap_t *p;
 global_game_variables_t gvar;
 static map_t map;
 player_t player[MaxPlayers];
-//page_t screen, gvar.video.page[1], gvar.video.page[2];
 map_view_t mv[4];
 //word pn=0; //i forgot ww
 //static planar_buf_t huge *pp;
@@ -114,8 +113,7 @@ void main(int argc, char *argv[])
 	//mappalptr = map.tiles->btdata->palette;
 
 	/* data */
-	//++++
-	p = malloc(48*128);
+	p = malloc(48*128); //TODO use exmm
 	player[0].data = p;
 	*p = bitmapLoadPcx("data/chikyuu.pcx"); // load sprite
 	*player[0].data = bitmapLoadPcx("data/chikyuu.pcx"); // load sprite
