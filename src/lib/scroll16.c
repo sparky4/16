@@ -907,17 +907,16 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 	}
 
 ///*!*/(pip->video->p)
-#define PAGENUMB 0
 
 #ifdef SPRITE
 /*#define FRAME1 PBUFSFUN(pip[PAGENUMB].page, 0, 0, 32, dire, 16, 32,	PLAYERBMPDATA);
 #define FRAME2 PBUFSFUN(pip[PAGENUMB].page, 0, 0, 16, dire, 16, 32,	PLAYERBMPDATA);
 #define FRAME3 PBUFSFUN(pip[PAGENUMB].page, 0, 0, 0, dire, 16, 32,	PLAYERBMPDATA);
 #define FRAME4 PBUFSFUN(pip[PAGENUMB].page, 0, 0, 16, dire, 16, 32,	PLAYERBMPDATA);*/
-#define FRAME1 PBUFSFUN(pip[PAGENUMB].page, x, y, 32, dire, 16, 32,	PLAYERBMPDATA);
-#define FRAME2 PBUFSFUN(pip[PAGENUMB].page, x, y, 16, dire, 16, 32,	PLAYERBMPDATA);
-#define FRAME3 PBUFSFUN(pip[PAGENUMB].page, x, y, 0, dire, 16, 32,	PLAYERBMPDATA);
-#define FRAME4 PBUFSFUN(pip[PAGENUMB].page, x, y, 16, dire, 16, 32,	PLAYERBMPDATA);
+#define FRAME1 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 32, dire, 16, 32,	PLAYERBMPDATA);
+#define FRAME2 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 16, dire, 16, 32,	PLAYERBMPDATA);
+#define FRAME3 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 0, dire, 16, 32,	PLAYERBMPDATA);
+#define FRAME4 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 16, dire, 16, 32,	PLAYERBMPDATA);
 #else
 #define FRAME1 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 2+dire);
 #define FRAME2 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 1+dire);
