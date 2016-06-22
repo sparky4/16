@@ -622,7 +622,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 // 					vga_state.vga_graphics_ram[o] = (k^j)&15; // VRL samples put all colors in first 15!
 // 		}
 // 	}
-	modexCopyPageRegion(mv[3].page, mv[0].page, 0/**/, 0/**/, 0, 0, 16, 40);
+	modexCopyPageRegion(mv[3].page, mv[0].page, 0/**/, 0/**/, 0, 0, 16, 32);
 }
 
 void near
