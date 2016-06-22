@@ -291,9 +291,10 @@ void main(int argc, char *argv[])
 	}
 	if(IN_KeyDown(67))	//f9
 	{
-// 		modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 47);
-// 		modexClearRegion(mv[3].page, 0, 0, mv[3].page->width, mv[3].page->height, 45);
-		modexClearRegion(mv[3].page, 0, 128, 28, 36, 15);
+		modexClearRegion(mv[1].page, 0, 0, mv[1].page->width, mv[1].page->height, 32);
+		modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 47);
+		modexClearRegion(mv[3].page, 0, 0, mv[3].page->width, mv[3].page->height, 45);
+		modexClearRegion(mv[3].page, 0, 0, 20, 36, 15);
 		//IN_UserInput(1,1);
 	}
 	if(IN_KeyDown(66))	//f8
