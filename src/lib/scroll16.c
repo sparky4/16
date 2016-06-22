@@ -878,9 +878,9 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 		modexCopyPageRegion(pip[1].page, pip[0].page, x-4, y-4, x-4, y-4, 28, 36);
 	else{
 		//copy old bg to page0
-		modexCopyPageRegion(pip[3].page, pip[0].page, bx, by,	0, 0,	20, 36);
+		//modexCopyPageRegion(pip[3].page, pip[0].page, bx, by,	0, 0,	20, 36);
 		//update buffer
-		modexCopyPageRegion(pip[0].page, pip[3].page, 0, 0,	x, y,	20, 36);
+		//modexCopyPageRegion(pip[0].page, pip[3].page, 0, 0,	x, y,	20, 36);
 	}
 //modexCopyPageRegion(page_t *dest, page_t *src, word sx, word sy, word dx, word dy, word width, word height);
 	//modexCopyPageRegion(pip[3].page, pip[!(pip->video->p)].page, x-4, y-4, 0, 128, 28, 36);
