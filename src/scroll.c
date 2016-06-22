@@ -28,7 +28,7 @@
 #define MODEX	//this is for mode x initiating
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
-bitmap_t *p;
+//bitmap_t *p;
 global_game_variables_t gvar;
 static map_t map;
 player_t player[MaxPlayers];
@@ -113,9 +113,7 @@ void main(int argc, char *argv[])
 	//mappalptr = map.tiles->btdata->palette;
 
 	/* data */
-	p = malloc(48*128); //TODO use exmm
-	player[0].data = p;
-	*p = bitmapLoadPcx("data/chikyuu.pcx"); // load sprite
+	player[0].data = malloc(48*128); //TODO use exmm
 	*player[0].data = bitmapLoadPcx("data/chikyuu.pcx"); // load sprite
 	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 
@@ -151,7 +149,7 @@ void main(int argc, char *argv[])
 //	printf("Total used @ before palette initiation:		%zu\n", oldfreemem-GetFreeSize());
 //++++	player[0].data.offset=(paloffset/3);
 //++++	modexPalUpdate1(&player[0].data, &paloffset, 0, 0);
-		modexPalUpdate1(p->palette);
+		modexPalUpdate1(player[0].data->palette);
 //++++0000		modexPalUpdate1(map.tiles->btdata->palette);
 	//printf("	%d\n", sizeof(ptmp->data));
 	//printf("1:	%d\n", paloffset);
@@ -196,7 +194,7 @@ void main(int argc, char *argv[])
 	//modexClearRegion(mv[1].page, player[0].x, player[0].y-TILEWH, 16, 32, 15);
 #else
 	//PBUFSFUN(mv[1].page, player[0].x, player[0].y-TILEWH, 16, 64, 24, 32,	PLAYERBMPDATA);
-	PBUFSFUN(mv[0].page, player[0].x, player[0].y-TILEWH, 16, 64, 16, 32,	p);
+	PBUFSFUN(mv[0].page, player[0].x, player[0].y-TILEWH, 16, 64, 16, 32,	player[0].data);
 #endif
 
 	if(!pageflipflop)	modexShowPage(mv[1].page);
@@ -300,7 +298,7 @@ void main(int argc, char *argv[])
 	}
 	if(IN_KeyDown(66))	//f8
 	{
-		modexDrawSprite(mv[0].page, 16, 16, p);
+//		modexDrawSprite(mv[0].page, 16, 16, p);
 		modexDrawSprite(mv[0].page, 32+48, 16, (player[0].data));
 	}
 	//TODO fmemtest into page

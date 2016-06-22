@@ -661,7 +661,6 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 	modexCopyPageRegion(mv[3].page, mv[0].page, 0/**/, 0/**/, 32, 16, 16, 32);
 }
 
-
 void near
 mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 {
@@ -794,14 +793,8 @@ void shinku(global_game_variables_t *gv)
 {
 	word x = (0) + gv->video.page[/*!*/(gv->video.p)].dx; // follow the screen
 	word y = (0) + gv->video.page[/*!*/(gv->video.p)].dy; // follow the screen
-	word w = 64;
-	word h = 8;
-	word col = 7;
-	word bgcol = 0;
-	word type = 1;
+	word w = 64, h = 8, col = 7, bgcol = 0, type = 1;
 	byte o,o2,i;
-	//modexClearRegion(&gv->video.page[2], 0, 0, gv->video.page[2].sw, gv->video.page[2].sh, 47);
-	//modexClearRegion(&gv->video.page[3], 0, 0, gv->video.page[3].sw, gv->video.page[3].sh, 45);
 	//modexCopyPageRegion(pip[1].page, pip[2].page, 16, 16, 16, 16, (14*8)+4, 8+4);
 	/* block copy to visible RAM from offscreen */
 //	vga_setup_wm1_block_copy();
@@ -906,8 +899,6 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 		break;
 	}
 
-///*!*/(pip->video->p)
-
 #ifdef SPRITE
 /*#define FRAME1 PBUFSFUN(pip[PAGENUMB].page, 0, 0, 32, dire, 16, 32,	PLAYERBMPDATA);
 #define FRAME2 PBUFSFUN(pip[PAGENUMB].page, 0, 0, 16, dire, 16, 32,	PLAYERBMPDATA);
@@ -925,7 +916,7 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 	#endif
 	if(!pageflipflop)
 		modexCopyPageRegion(pip[1].page, pip[0].page, x-4, y-4, x-4, y-4, 28, 36);
-	else	modexCopyPageRegion(pip[3].page, pip[0].page, bx, by, 16, 0, 16, 36);
+	else	modexCopyPageRegion(pip[3].page, pip[0].page, bx, by, 0, 0, 16, 32);
 //modexCopyPageRegion(page_t *dest, page_t *src, word sx, word sy, word dx, word dy, word width, word height);
 	//modexCopyPageRegion(pip[3].page, pip[!(pip->video->p)].page, x-4, y-4, 0, 128, 28, 36);
 	/*modexCopyPageRegion(pip[pip->video->p].page,
@@ -956,7 +947,4 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 // delay(500);
 	//printf("x=%d	y=%d	bx=%d		by=%d\n", x, y, bx, by);
 	pip->video->r=1;
-	//TODO: mask copy //modexCopyPageRegion(dest->page, src->page, x-4, y-4, x-4, y-4, 28, 40);
-	//modexClearRegion(top->page, 66, 66, 2, 40, 0);
-	//modexCopyPageRegion(dest->page, top->page, 66, 66, 66, 66, 2, 40);
 }
