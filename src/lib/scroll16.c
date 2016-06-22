@@ -46,7 +46,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 1);
 					ScrollRight(pip, player, 3, pn);
 					ScrollRight(pip, player, 2, pn);
-					if(!pageploop){ mapScrollRight(pip, player, !(pip[0].video->p), pn); } else ScrollRight(pip, player, !(pip[0].video->p), pn);
+					mapScrollRight(pip, player, !(pip[0].video->p), pn);
 					mapScrollRight(pip, player, (pip[0].video->p), pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
@@ -90,7 +90,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 1);
 					ScrollLeft(pip, player, 3, pn);
 					ScrollLeft(pip, player, 2, pn);
-					if(!pageploop){ mapScrollLeft(pip, player, !(pip[0].video->p), pn); } else ScrollLeft(pip, player, !(pip[0].video->p), pn);
+					mapScrollLeft(pip, player, !(pip[0].video->p), pn);
 					mapScrollLeft(pip, player, (pip[0].video->p), pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
@@ -134,7 +134,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 1);
 					ScrollDown(pip, player, 3, pn);
 					ScrollDown(pip, player, 2, pn);
-					if(!pageploop){ mapScrollDown(pip, player, !(pip[0].video->p), pn); } else ScrollDown(pip, player, !(pip[0].video->p), pn);
+					mapScrollDown(pip, player, !(pip[0].video->p), pn);
 					mapScrollDown(pip, player, (pip[0].video->p), pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
@@ -178,7 +178,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 1);
 					ScrollUp(pip, player, 3, pn);
 					ScrollUp(pip, player, 2, pn);
-					if(!pageploop){ mapScrollUp(pip, player, !(pip[0].video->p), pn); } else ScrollUp(pip, player, !(pip[0].video->p), pn);
+					mapScrollUp(pip, player, !(pip[0].video->p), pn);
 					mapScrollUp(pip, player, (pip[0].video->p), pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
@@ -383,7 +383,7 @@ void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 		if(id==0)
 			mapDrawCol(&mv[0], mv[0].tx + mv[0].page->tw, mv[0].ty-1, x, player, mv->page->dx);
 		else
-			if(!pageflipflop)
+			if(!pageflipflop && !pageploop)
 				modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*(mv[0].page->th+2));
 	mv[0].video->r=1;
 }
@@ -412,7 +412,7 @@ void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 		if(id==0)
 			mapDrawCol(&mv[0], mv[0].tx - 1, mv[0].ty-1, x, player, mv->page->dx);
 		else
-			if(!pageflipflop)
+			if(!pageflipflop && !pageploop)
 				modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*(mv[0].page->th+2));
 	mv[0].video->r=1;
 }
@@ -441,7 +441,7 @@ void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 		if(id==0)
 			mapDrawRow(&mv[0], mv[0].tx - 1, mv[0].ty-1, y, player, mv->page->dy);
 		else
-			if(!pageflipflop)
+			if(!pageflipflop && !pageploop)
 				modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*(mv[0].page->tw+2), mv[id].map->tiles->tileHeight);
 	mv[0].video->r=1;
 }
@@ -469,7 +469,7 @@ void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 		if(id==0)
 			mapDrawRow(&mv[0], mv[0].tx - 1, mv[0].ty+mv[0].page->th, y, player, mv->page->dy);
 		else
-			if(!pageflipflop)
+			if(!pageflipflop && !pageploop)
 				modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*(mv[0].page->tw+2), mv[id].map->tiles->tileHeight);
 	mv[0].video->r=1;
 }
