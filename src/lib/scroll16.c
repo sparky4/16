@@ -44,9 +44,9 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
-					if(!pageploop){ ScrollRight(pip, player, 3, pn);
+					ScrollRight(pip, player, 3, pn);
 					ScrollRight(pip, player, 2, pn);
-					mapScrollRight(pip, player, !(pip[0].video->p), pn); }
+					if(!pageploop){ mapScrollRight(pip, player, !(pip[0].video->p), pn); } else ScrollRight(pip, player, !(pip[0].video->p), pn);
 					mapScrollRight(pip, player, (pip[0].video->p), pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
@@ -88,9 +88,9 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
-					if(!pageploop){ ScrollLeft(pip, player, 3, pn);
+					ScrollLeft(pip, player, 3, pn);
 					ScrollLeft(pip, player, 2, pn);
-					mapScrollLeft(pip, player, !(pip[0].video->p), pn); }
+					if(!pageploop){ mapScrollLeft(pip, player, !(pip[0].video->p), pn); } else ScrollLeft(pip, player, !(pip[0].video->p), pn);
 					mapScrollLeft(pip, player, (pip[0].video->p), pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
@@ -132,9 +132,9 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
-					if(!pageploop){ ScrollDown(pip, player, 3, pn);
+					ScrollDown(pip, player, 3, pn);
 					ScrollDown(pip, player, 2, pn);
-					mapScrollDown(pip, player, !(pip[0].video->p), pn); }
+					if(!pageploop){ mapScrollDown(pip, player, !(pip[0].video->p), pn); } else ScrollDown(pip, player, !(pip[0].video->p), pn);
 					mapScrollDown(pip, player, (pip[0].video->p), pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
@@ -176,9 +176,9 @@ void walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					animatePlayer(pip, player, pn, 1);
-					if(!pageploop){ ScrollUp(pip, player, 3, pn);
+					ScrollUp(pip, player, 3, pn);
 					ScrollUp(pip, player, 2, pn);
-					mapScrollUp(pip, player, !(pip[0].video->p), pn); }
+					if(!pageploop){ mapScrollUp(pip, player, !(pip[0].video->p), pn); } else ScrollUp(pip, player, !(pip[0].video->p), pn);
 					mapScrollUp(pip, player, (pip[0].video->p), pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
@@ -431,7 +431,7 @@ void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 	/* go down one tile */
 	mv[id].ty--;
 	/* Snap the origin downward */
-	mv[id].page->data -= mv[id].page->width*4;
+	mv[id].page->data -= mv[id].page->pi;
 	mv[id].page->dy = mv[id].map->tiles->tileHeight;
 	}
 
@@ -459,7 +459,7 @@ void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 	/* go down one tile */
 	mv[id].ty++;
 	/* Snap the origin downward */
-	mv[id].page->data += mv[id].page->width*4;
+	mv[id].page->data += mv[id].page->pi;
 	mv[id].page->dy = mv[id].map->tiles->tileHeight;
 	}
 
@@ -484,18 +484,9 @@ void near ScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 	/* check to see if this changes the tile */
 	if(mv[0].video->page[id].dx >= mv[0].dxThresh )
 	{
-		/* block copy pattern to where we will draw the sprite */
-		vga_setup_wm1_block_copy();
-// 		{
-// 			word i;
-// 			byte o,o2;
-// 			o2 = *mv[0].video->page[id].data+4;
-// 			o = *mv[0].video->page[id].data;
-// 			for (i=0;i < mv[0].video->page[id].height;i++,o += mv[0].video->page[id].width+vga_state.vga_stride,o2 += (*mv[0].video->page[id].data >> 2)) vga_wm1_mem_block_copy(o2,o,*mv[0].video->page[id].data >> 2);
-// 		}
-		_fmemmove(mv[0].video->page[id].data+4, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
-		/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
-		vga_restore_rm0wm0();
+// 		vga_setup_wm1_block_copy();
+// 		_fmemmove(mv[0].video->page[id].data+4, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
+// 		vga_restore_rm0wm0();
 		/* Snap the origin forward */
 		mv[0].video->page[id].data += 4;
 		mv[0].video->page[id].dx = mv[0].map->tiles->tileWidth;
@@ -510,18 +501,9 @@ void near ScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 	/* check to see if this changes the tile */
 	if(mv[0].video->page[id].dx == 0)
 	{
-		/* block copy pattern to where we will draw the sprite */
-		vga_setup_wm1_block_copy();
-// 		{
-// 			word i;
-// 			byte o,o2;
-// 			o2 = *mv[0].video->page[id].data-4;
-// 			o = *mv[0].video->page[id].data;
-// 			for (i=0;i < mv[0].video->page[id].height;i++,o += mv[0].video->page[id].width+vga_state.vga_stride,o2 += (*mv[0].video->page[id].data >> 2)) vga_wm1_mem_block_copy(o2,o,*mv[0].video->page[id].data >> 2);
-// 		}
-		_fmemmove(mv[0].video->page[id].data-4, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
-		/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
-		vga_restore_rm0wm0();
+// 		vga_setup_wm1_block_copy();
+// 		_fmemmove(mv[0].video->page[id].data-4, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
+// 		vga_restore_rm0wm0();
 		/* Snap the origin backward */
 		mv[0].video->page[id].data -= 4;
 		mv[0].video->page[id].dx = mv[0].map->tiles->tileWidth;
@@ -536,18 +518,9 @@ void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 	/* check to see if this changes the tile */
 	if(mv[0].video->page[id].dy == 0)
 	{
-		/* block copy pattern to where we will draw the sprite */
-		vga_setup_wm1_block_copy();
-// 		{
-// 			word i;
-// 			byte o,o2;
-// 			o2 = *mv[0].video->page[id].data-mv[0].video->page[id].pi;
-// 			o = *mv[0].video->page[id].data;
-// 			for (i=0;i < mv[0].video->page[id].height;i++,o += mv[0].video->page[id].width+vga_state.vga_stride,o2 += (*mv[0].video->page[id].data >> 2)) vga_wm1_mem_block_copy(o2,o,*mv[0].video->page[id].data >> 2);
-// 		}
-		_fmemmove(mv[0].video->page[id].data-mv[0].video->page[id].pi, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
-		/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
-		vga_restore_rm0wm0();
+// 		vga_setup_wm1_block_copy();
+// 		_fmemmove(mv[0].video->page[id].data-mv[0].video->page[id].pi, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
+// 		vga_restore_rm0wm0();
 		/* Snap the origin backward */
 		mv[0].video->page[id].data -= mv[0].video->page[id].pi;
 		mv[0].video->page[id].dy = mv[0].map->tiles->tileWidth;
@@ -562,18 +535,9 @@ void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 	/* check to see if this changes the tile */
 	if(mv[0].video->page[id].dy >= mv[0].dxThresh )
 	{
-		/* block copy pattern to where we will draw the sprite */
-		vga_setup_wm1_block_copy();
-// 		{
-// 			word i;
-// 			byte o,o2;
-// 			o2 = *mv[0].video->page[id].data+mv[0].video->page[id].pi;
-// 			o = *mv[0].video->page[id].data;
-// 			for (i=0;i < mv[0].video->page[id].height;i++,o += mv[0].video->page[id].width+vga_state.vga_stride,o2 += (*mv[0].video->page[id].data >> 2)) vga_wm1_mem_block_copy(o2,o,*mv[0].video->page[id].data >> 2);
-// 		}
-		_fmemmove(mv[0].video->page[id].data+mv[0].video->page[id].pi, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
-		/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
-		vga_restore_rm0wm0();
+// 		vga_setup_wm1_block_copy();
+// 		_fmemmove(mv[0].video->page[id].data+mv[0].video->page[id].pi, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
+// 		vga_restore_rm0wm0();
 		/* Snap the origin forward */
 		mv[0].video->page[id].data += mv[0].video->page[id].pi;
 		mv[0].video->page[id].dy = mv[0].map->tiles->tileWidth;
@@ -658,7 +622,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 // 					vga_state.vga_graphics_ram[o] = (k^j)&15; // VRL samples put all colors in first 15!
 // 		}
 // 	}
-	modexCopyPageRegion(mv[3].page, mv[0].page, 0/**/, 0/**/, 32, 16, 16, 32);
+	modexCopyPageRegion(mv[3].page, mv[0].page, 0/**/, 0/**/, 0, 0, 16, 40);
 }
 
 void near
@@ -683,7 +647,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 		{
 			case 0:
 #ifndef TILERENDER
-				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, ((t->debug_data[i])+1));
+				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, ((t->debug_data[i])));
 				//modexprint(page, x, y, 1, 15, 0, (char const *)(t->debug_data[i]));
 #else
 				PBUFBFUN		(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
@@ -693,7 +657,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 #endif
 			break;
 			case 1:
-				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, (t->debug_data[i]+1));
+				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, (t->debug_data[i]));
 				//modexprintbig(page, x, y, 1, 15, 0, (t->debug_data));
 				/*for(texty=0; texty<2; texty++)
 				{
@@ -868,7 +832,7 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 		break;
 	}
 	//x-=4;
-	y-=TILEWH;
+	y-=pip[0].map->tiles->tileHeight;
 	switch (player[pn].d)
 	{
 		case 0:
@@ -900,10 +864,6 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 	}
 
 #ifdef SPRITE
-/*#define FRAME1 PBUFSFUN(pip[PAGENUMB].page, 0, 0, 32, dire, 16, 32,	PLAYERBMPDATA);
-#define FRAME2 PBUFSFUN(pip[PAGENUMB].page, 0, 0, 16, dire, 16, 32,	PLAYERBMPDATA);
-#define FRAME3 PBUFSFUN(pip[PAGENUMB].page, 0, 0, 0, dire, 16, 32,	PLAYERBMPDATA);
-#define FRAME4 PBUFSFUN(pip[PAGENUMB].page, 0, 0, 16, dire, 16, 32,	PLAYERBMPDATA);*/
 #define FRAME1 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 32, dire, 16, 32,	PLAYERBMPDATA);
 #define FRAME2 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 16, dire, 16, 32,	PLAYERBMPDATA);
 #define FRAME3 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 0, dire, 16, 32,	PLAYERBMPDATA);
@@ -913,16 +873,20 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 #define FRAME2 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 1+dire);
 #define FRAME3 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, dire);
 #define FRAME4 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 1+dire);
-	#endif
+#endif
 	if(!pageflipflop)
 		modexCopyPageRegion(pip[1].page, pip[0].page, x-4, y-4, x-4, y-4, 28, 36);
-	else	modexCopyPageRegion(pip[3].page, pip[0].page, bx, by, 0, 0, 16, 32);
+	else{
+		//copy old bg to page0
+		modexCopyPageRegion(pip[3].page, pip[0].page, bx, by,	0, 0,	20, 36);
+		//update buffer
+		modexCopyPageRegion(pip[0].page, pip[3].page, 0, 0,	x, y,	20, 36);
+	}
 //modexCopyPageRegion(page_t *dest, page_t *src, word sx, word sy, word dx, word dy, word width, word height);
 	//modexCopyPageRegion(pip[3].page, pip[!(pip->video->p)].page, x-4, y-4, 0, 128, 28, 36);
 	/*modexCopyPageRegion(pip[pip->video->p].page,
  pip[!(pip->video->p)].page, x-4, y-4, x-4, y-4, 28, 36);*/
 //	else modexCopyPageRegion(pip[1].page, pip[0].page, x-4, y-4, x-4, y-4, 28, 40);
-//delay(10);
 	switch(ls)
 	{
 		case 1:
@@ -942,9 +906,7 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 //	if(3>ls && ls>=2) { FRAME2 }else
 //	if(4>ls && ls>=3) { FRAME3 }else
 //	if(5>ls && ls>=4) { FRAME4 }
-// delay(500);
 	//modexCopyPageRegion(pip[0].page, pip[3].page, 0, 0, x, y, 16, 32);
-// delay(500);
 	//printf("x=%d	y=%d	bx=%d		by=%d\n", x, y, bx, by);
 	pip->video->r=1;
 }

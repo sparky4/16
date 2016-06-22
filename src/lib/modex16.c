@@ -199,7 +199,7 @@ modexDefaultPage(page_t *p)
 	page.tilemidposscreeny = (page.th/2)+1;
 	page.stridew=page.width/4;
 	page.pagesize = (word)(page.width/4)*page.height;
-	page.pi=4;
+	page.pi=page.width*4;
 	page.id = 0;
 
     return page;
@@ -225,7 +225,7 @@ modexNextPage(page_t *p) {
 	result.tilesh = p->tilesh;
 	result.stridew=p->stridew;
 	result.pagesize = p->pagesize;
-	result.pi=4;
+	result.pi=result.width*4;
 	result.id = p->id+1;
 
 	return result;
@@ -249,11 +249,17 @@ modexNextPageFlexibleSize(page_t *p, word x, word y)
 	result.tilesw=result.width/TILEWH;
 	result.tilesh=result.height/TILEWH;
 	result.id = p->id+1;
-	result.stridew=result.width/4;
+	result.stridew=p->stridew;//result.width/4;
 	result.pagesize = (word)(result.width/4)*result.height;
-	if(result.id==2)
-		result.pi=p->width*p->pi;
-	else if(result.id==3)	result.pi=p->pi;
+	switch(result.id)
+	{
+		case 2:
+			result.pi=p->width*4;
+		break;
+		case 3:
+			result.pi=p->pi;
+		break;
+	}
 
 	return result;
 }
@@ -419,7 +425,7 @@ modexCopyPageRegion(page_t *dest, page_t *src,
 {
     word doffset = (word)dest->data + dy*(dest->stridew) + dx/4;
     word soffset = (word)src->data + sy*(src->stridew) + sx/4;
-    word scans   = vga_state.vga_stride+8;				//++++0000 the quick and dirty fix of the major issue with p16 video display wwww
+    word scans   = vga_state.vga_stride;				//++++0000 the quick and dirty fix of the major issue with p16 video display wwww
     word nextSrcRow = src->stridew - scans - 1;
     word nextDestRow = dest->stridew - scans - 1;
     byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08};  /* clips for rectangles not on 4s */
