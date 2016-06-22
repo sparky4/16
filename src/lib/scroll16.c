@@ -479,68 +479,68 @@ void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 void near ScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 {
 	/* increment the pixel position and update the page */
-	mv[0].video->page[id].dx += player[plid].speed;
+	mv[id].page->dx += player[plid].speed;
 
 	/* check to see if this changes the tile */
-	if(mv[0].video->page[id].dx >= mv[0].dxThresh )
+	if(mv[id].page->dx >= mv[0].dxThresh )
 	{
 // 		vga_setup_wm1_block_copy();
-// 		_fmemmove(mv[0].video->page[id].data+4, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
+// 		_fmemmove(mv[id].page->data+4, mv[id].page->data, mv[id].page->pagesize);
 // 		vga_restore_rm0wm0();
 		/* Snap the origin forward */
-		mv[0].video->page[id].data += 4;
-		mv[0].video->page[id].dx = mv[0].map->tiles->tileWidth;
+		mv[id].page->data += 4;
+		mv[id].page->dx = mv[0].map->tiles->tileWidth;
 	}
 }
 
 void near ScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 {
 	/* decrement the pixel position and update the page */
-	mv[0].video->page[id].dx -= player[plid].speed;
+	mv[id].page->dx -= player[plid].speed;
 
 	/* check to see if this changes the tile */
-	if(mv[0].video->page[id].dx == 0)
+	if(mv[id].page->dx == 0)
 	{
 // 		vga_setup_wm1_block_copy();
-// 		_fmemmove(mv[0].video->page[id].data-4, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
+// 		_fmemmove(mv[id].page->data-4, mv[id].page->data, mv[id].page->pagesize);
 // 		vga_restore_rm0wm0();
 		/* Snap the origin backward */
-		mv[0].video->page[id].data -= 4;
-		mv[0].video->page[id].dx = mv[0].map->tiles->tileWidth;
+		mv[id].page->data -= 4;
+		mv[id].page->dx = mv[0].map->tiles->tileWidth;
 	}
 }
 
 void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 {
 	/* decrement the pixel position and update the page */
-	mv[0].video->page[id].dy -= player[plid].speed;
+	mv[id].page->dy -= player[plid].speed;
 
 	/* check to see if this changes the tile */
-	if(mv[0].video->page[id].dy == 0)
+	if(mv[id].page->dy == 0)
 	{
 // 		vga_setup_wm1_block_copy();
-// 		_fmemmove(mv[0].video->page[id].data-mv[0].video->page[id].pi, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
+// 		_fmemmove(mv[id].page->data-mv[id].page->pi, mv[id].page->data, mv[id].page->pagesize);
 // 		vga_restore_rm0wm0();
 		/* Snap the origin backward */
-		mv[0].video->page[id].data -= mv[0].video->page[id].pi;
-		mv[0].video->page[id].dy = mv[0].map->tiles->tileWidth;
+		mv[id].page->data -= mv[id].page->pi;
+		mv[id].page->dy = mv[0].map->tiles->tileWidth;
 	}
 }
 
 void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 {
 	/* increment the pixel position and update the page */
-	mv[0].video->page[id].dy += player[plid].speed;
+	mv[id].page->dy += player[plid].speed;
 
 	/* check to see if this changes the tile */
-	if(mv[0].video->page[id].dy >= mv[0].dxThresh )
+	if(mv[id].page->dy >= mv[0].dxThresh )
 	{
 // 		vga_setup_wm1_block_copy();
-// 		_fmemmove(mv[0].video->page[id].data+mv[0].video->page[id].pi, mv[0].video->page[id].data, mv[0].video->page[id].pagesize);
+// 		_fmemmove(mv[id].page->data+mv[id].page->pi, mv[id].page->data, mv[id].page->pagesize);
 // 		vga_restore_rm0wm0();
 		/* Snap the origin forward */
-		mv[0].video->page[id].data += mv[0].video->page[id].pi;
-		mv[0].video->page[id].dy = mv[0].map->tiles->tileWidth;
+		mv[id].page->data += mv[id].page->pi;
+		mv[id].page->dy = mv[0].map->tiles->tileWidth;
 	}
 }
 
