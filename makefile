@@ -96,7 +96,7 @@ DOSLIBLIBS += $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)8250$(DIRSEP)dos86h$(DIRSEP)8250.l
 
 TESTEXEC = exmmtest.exe test.exe test0.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe
 
-EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
+EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe tesuto0.exe
 
 all: $(EXEC) joytest.exe vrs
 #16.lib => $(16LIBOBJS) bug....
@@ -131,6 +131,11 @@ tesuto.exe: tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
 	wcl $(FLAGS) $(WCLQ) tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
 tesuto.$(OBJ): $(SRC)tesuto.c
 	wcl $(FLAGS) $(WCLQ) -c $(SRC)tesuto.c
+
+tesuto0.exe: tesuto0.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
+	wcl $(FLAGS) $(WCLQ) tesuto0.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
+tesuto0.$(OBJ): $(SRC)tesuto0.c
+	wcl $(FLAGS) $(WCLQ) -c $(SRC)tesuto0.c
 
 test.exe: test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ) $(DOSLIBLIBS) $(16LIB)
 	wcl $(FLAGS) test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ) $(DOSLIBLIBS) $(16LIB) -fm=test.mah
