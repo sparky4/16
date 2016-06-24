@@ -82,7 +82,7 @@ int main(int argc,char **argv) {
 	modexHiganbanaPageSetup(&gvar.video);
 	gvar.video.page[1].dx=gvar.video.page[0].dx=16;
 	gvar.video.page[1].dy=gvar.video.page[0].dy=16;
-	modexShowPage(&(gvar.video.page[0]));
+	modexShowPage(&(gvar.video.page[1]));
 
 	#define VMEMHEIGHT gvar.video.page[0].height
 	//+gvar.video.page[1].height
