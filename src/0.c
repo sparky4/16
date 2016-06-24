@@ -106,7 +106,7 @@ int main(int argc,char **argv) {
 	modexHiganbanaPageSetup(&gvar.video);
 	gvar.video.page[1].dx=gvar.video.page[0].dx=16;
 	gvar.video.page[1].dy=gvar.video.page[0].dy=16;
-	modexShowPage(&(gvar.video.page[0]));
+	modexShowPage(&(gvar.video.page[1]));
 
 	//4	this dose the screen
 	{
@@ -127,8 +127,8 @@ int main(int argc,char **argv) {
 	 * this time, we render the distinctive pattern to another offscreen location and just copy.
 	 * note this version is much faster too! */
 	{
-		const unsigned int offscreen_ofs = (gvar.video.page[0].stridew * gvar.video.page[0].height);
-		const unsigned int pattern_ofs = 0x10000UL - (gvar.video.page[0].stridew * gvar.video.page[0].height);
+		//const unsigned int gvar.video.page[0].pagesize = (gvar.video.page[0].stridew * gvar.video.page[0].height);
+		const unsigned int pattern_ofs = 0x10000UL - gvar.video.page[0].pagesize;//(gvar.video.page[0].stridew * gvar.video.page[0].height);
 		unsigned int i,j,o,o2;
 		int x,y,rx,ry,w,h;
 		unsigned int overdraw = 1;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.
@@ -169,7 +169,7 @@ int main(int argc,char **argv) {
 
 			/* block copy pattern to where we will draw the sprite */
 			vga_setup_wm1_block_copy();
-			o2 = offscreen_ofs;
+			o2 = gvar.video.page[0].pagesize;
 			o = pattern_ofs + (ry * gvar.video.page[0].stridew) + (rx >> 2); // source offscreen
 			for (i=0;i < h;i++,o += gvar.video.page[0].stridew,o2 += (w >> 2)) vga_wm1_mem_block_copy(o2,o,w >> 2);
 			/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
@@ -178,7 +178,7 @@ int main(int argc,char **argv) {
 			/* replace VGA stride with our own and mem ptr. then sprite rendering at this stage is just (0,0) */
 			vga_state.vga_draw_stride_limit = (gvar.video.page[0].width + 3/*round up*/ - x) >> 2;
 			vga_state.vga_draw_stride = w >> 2;
-			vga_state.vga_graphics_ram = omemptr + offscreen_ofs;
+			vga_state.vga_graphics_ram = omemptr + gvar.video.page[0].pagesize;
 
 			/* then the sprite. note modding ram ptr means we just draw to (x&3,0) */
 			draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
@@ -188,7 +188,7 @@ int main(int argc,char **argv) {
 
 			/* block copy to visible RAM from offscreen */
 			vga_setup_wm1_block_copy();
-			o = offscreen_ofs; // source offscreen
+			o = gvar.video.page[0].pagesize; // source offscreen
 			o2 = (ry * gvar.video.page[0].stridew) + (rx >> 2); // dest visible (original stride)
 			for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += gvar.video.page[0].stridew) vga_wm1_mem_block_copy(o2,o,w >> 2);
 			/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
@@ -207,7 +207,21 @@ int main(int argc,char **argv) {
 		}
 	}
 
-	modexShowPage(&(gvar.video.page[1]));
+	while (1) {
+			/* stop animating if the user hits ENTER */
+			if (kbhit()) {
+				if (getch() == 13) break;
+			}
+		modexShowPage(&(gvar.video.page[1]));
+	}
+
+	while (1) {
+			/* stop animating if the user hits ENTER */
+			if (kbhit()) {
+				if (getch() == 13) break;
+			}
+		modexShowPage(&(gvar.video.page[0]));
+	}
 
 	/* another handy "demo" effect using VGA write mode 1.
 	 * we can take what's on screen and vertically squash it like an old analog TV set turning off. */

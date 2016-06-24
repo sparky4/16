@@ -198,7 +198,7 @@ modexDefaultPage(page_t *p)
 	page.tilemidposscreenx = page.tw/2;
 	page.tilemidposscreeny = (page.th/2)+1;
 	page.stridew=page.width/4;
-	page.pagesize = (word)(page.width/4)*page.height;
+	page.pagesize = (word)(page.stridew)*page.height;
 	page.pi=page.width*4;
 	page.id = 0;
 
@@ -250,7 +250,7 @@ modexNextPageFlexibleSize(page_t *p, word x, word y)
 	result.tilesh=result.height/TILEWH;
 	result.id = p->id+1;
 	result.stridew=p->sw/4;//result.width/4;
-	result.pagesize = (word)(result.width/4)*result.height;
+	result.pagesize = (word)(result.stridew)*result.height;
 	switch(result.id)
 	{
 		case 2:
