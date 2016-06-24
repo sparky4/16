@@ -100,6 +100,7 @@ int main(int argc,char **argv) {
 	vrl_lineoffs = vrl1_vgax_genlineoffsets(vrl_header,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
 	if (vrl_lineoffs == NULL) return 1;
 
+	//4	this dose the screen
 	{
 		unsigned int i,j,o;
 
@@ -126,6 +127,7 @@ int main(int argc,char **argv) {
 		VGA_RAM_PTR omemptr;
 		int xdir=1,ydir=1;
 
+		//4	this dose the sprite? wwww
 		/* fill pattern offset with a distinctive pattern */
 		for (i=0;i < vga_state.vga_width;i++) {
 			o = (i >> 2) + pattern_ofs;
