@@ -98,7 +98,7 @@ TESTEXEC = exmmtest.exe test.exe test0.exe pcxtest.exe pcxtest2.exe test2.exe pa
 
 EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe tesuto0.exe
 
-all: $(EXEC) joytest.exe vrs
+all: $(EXEC) joytest.exe
 #16.lib => $(16LIBOBJS) bug....
 16LIB=$(16LIBOBJS)
 !ifeq DEBUGSERIAL 1

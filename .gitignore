@@ -28,7 +28,3 @@ img
 #!foo.html
 # Ignore objects and archives.
 *.[oa]
-pcx2vrl
-pcxsscut
-vrl2vrs
-vrsdump
