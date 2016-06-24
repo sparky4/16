@@ -84,7 +84,8 @@ int main(int argc,char **argv) {
 	gvar.video.page[1].dy=gvar.video.page[0].dy=16;
 	modexShowPage(&(gvar.video.page[0]));
 
-	#define VMEMHEIGHT gvar.video.page[0].height+gvar.video.page[1].height
+	#define VMEMHEIGHT gvar.video.page[0].height
+	//+gvar.video.page[1].height
 
 	//4	this dose the screen
 	{
@@ -177,9 +178,9 @@ int main(int argc,char **argv) {
 			/* step */
 			x += xdir;
 			y += ydir;
-			if (x >= (gvar.video.page[0].width - 1) || x == 0)
+			if (x >= (gvar.video.page[0].width - 1) || x == -(gvar.video.page[0].dx))
 				xdir = -xdir;
-			if (y >= (VMEMHEIGHT - 1) || y == 0)
+			if (y >= (VMEMHEIGHT - 1) || y == -(gvar.video.page[0].dy))
 				ydir = -ydir;
 		}
 	}
