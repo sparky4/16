@@ -426,6 +426,7 @@ clean: .symbolic
 backupconfig: .symbolic
 	@$(COPYCOMMAND) .git$(DIRSEP)config git_con.fig
 	@$(COPYCOMMAND) .gitmodules git_modu.les
+	@$(COPYCOMMAND) .gitignore git_igno.re
 
 comp: .symbolic
 	@upx -9 $(EXEC)
@@ -472,6 +473,7 @@ reinitlibs: .symbolic
 initlibs: .symbolic
 	@cp git_con.fig .git/config
 	@cp git_modu.les .gitmodules
+	@cp git_igno.re .gitignore
 	@cd $(SRCLIB)
 	@git clone https://github.com/joncampbell123/doslib.git
 	@git clone https://github.com/zserge/jsmn.git
