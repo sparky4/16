@@ -100,7 +100,7 @@ int main(int argc,char **argv) {
 		}
 	}
 
-	while (getch() != 13);
+	//while (getch() != 13);
 
 	/* make distinctive pattern offscreen, render sprite, copy onscreen.
 	 * this time, we render the distinctive pattern to another offscreen location and just copy.
