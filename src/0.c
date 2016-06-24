@@ -9,6 +9,7 @@
 #define FILENAME_2 "data/aconita.pal"
 
 static unsigned char palette[768];
+global_game_variables_t gvar;
 
 int main(int argc,char **argv) {
 	struct vrl1_vgax_header *vrl_header;
@@ -59,30 +60,31 @@ int main(int argc,char **argv) {
 		printf("VGA probe failed\n");
 		return 1;
 	}
-	int10_setmode(19);
-	update_state_from_vga();
-	vga_enable_256color_modex(); // VGA mode X
-	vga_state.vga_width = 320; // VGA lib currently does not update this
-	vga_state.vga_height = 240; // VGA lib currently does not update this
-
-//#if 1 // 320x240 test mode: this is how Project 16 is using our code, enable for test case
-	{
-		struct vga_mode_params cm;
-
-		vga_read_crtc_mode(&cm);
-
-		// 320x240 mode 60Hz
-		cm.vertical_total = 525;
-		cm.vertical_start_retrace = 0x1EA;
-		cm.vertical_end_retrace = 0x1EC;
-		cm.vertical_display_end = 480;
-		cm.vertical_blank_start = 489;
-		cm.vertical_blank_end = 517;
-
-		vga_write_crtc_mode(&cm,0);
-	}
-	vga_state.vga_height = 240; // VGA lib currently does not update this
+// 	int10_setmode(19);
+// 	update_state_from_vga();
+// 	vga_enable_256color_modex(); // VGA mode X
+// 	gvar.video.page[0].width = 320; // VGA lib currently does not update this
+// 	gvar.video.page[0].height = 240; // VGA lib currently does not update this
+//
+// //#if 1 // 320x240 test mode: this is how Project 16 is using our code, enable for test case
+// 	{
+// 		struct vga_mode_params cm;
+//
+// 		vga_read_crtc_mode(&cm);
+//
+// 		// 320x240 mode 60Hz
+// 		cm.vertical_total = 525;
+// 		cm.vertical_start_retrace = 0x1EA;
+// 		cm.vertical_end_retrace = 0x1EC;
+// 		cm.vertical_display_end = 480;
+// 		cm.vertical_blank_start = 489;
+// 		cm.vertical_blank_end = 517;
+//
+// 		vga_write_crtc_mode(&cm,0);
+// 	}
+// 	gvar.video.page[0].height = 240; // VGA lib currently does not update this
 //#endif
+	VGAmodeX(1, 1, &gvar);
 
 	/* load color palette */
 	fd = open(bakapee2,O_RDONLY|O_BINARY);
@@ -100,15 +102,21 @@ int main(int argc,char **argv) {
 	vrl_lineoffs = vrl1_vgax_genlineoffsets(vrl_header,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
 	if (vrl_lineoffs == NULL) return 1;
 
+	/* setup camera and screen~ */
+	modexHiganbanaPageSetup(&gvar.video);
+	gvar.video.page[1].dx=gvar.video.page[0].dx=16;
+	gvar.video.page[1].dy=gvar.video.page[0].dy=16;
+	modexShowPage(&(gvar.video.page[0]));
+
 	//4	this dose the screen
 	{
 		unsigned int i,j,o;
 
 		/* fill screen with a distinctive pattern */
-		for (i=0;i < vga_state.vga_width;i++) {
+		for (i=0;i < gvar.video.page[0].width;i++) {
 			o = i >> 2;
 			vga_write_sequencer(0x02/*map mask*/,1 << (i&3));
-			for (j=0;j < vga_state.vga_height;j++,o += vga_state.vga_stride)
+			for (j=0;j < gvar.video.page[0].height;j++,o += gvar.video.page[0].stridew)
 				vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
 		}
 	}
@@ -119,9 +127,10 @@ int main(int argc,char **argv) {
 	 * this time, we render the distinctive pattern to another offscreen location and just copy.
 	 * note this version is much faster too! */
 	{
-		const unsigned int offscreen_ofs = (vga_state.vga_stride * vga_state.vga_height);
-		const unsigned int pattern_ofs = 0x10000UL - (vga_state.vga_stride * vga_state.vga_height);
-		unsigned int i,j,o,o2,x,y,rx,ry,w,h;
+		const unsigned int offscreen_ofs = (gvar.video.page[0].stridew * gvar.video.page[0].height);
+		const unsigned int pattern_ofs = 0x10000UL - (gvar.video.page[0].stridew * gvar.video.page[0].height);
+		unsigned int i,j,o,o2;
+		int x,y,rx,ry,w,h;
 		unsigned int overdraw = 1;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.
 						// if the sprite's edge pixels are clear anyway, you can set this to 0.
 		VGA_RAM_PTR omemptr;
@@ -129,10 +138,10 @@ int main(int argc,char **argv) {
 
 		//4	this dose the sprite? wwww
 		/* fill pattern offset with a distinctive pattern */
-		for (i=0;i < vga_state.vga_width;i++) {
+		for (i=0;i < gvar.video.page[0].width;i++) {
 			o = (i >> 2) + pattern_ofs;
 			vga_write_sequencer(0x02/*map mask*/,1 << (i&3));
-			for (j=0;j < vga_state.vga_height;j++,o += vga_state.vga_stride)
+			for (j=0;j < gvar.video.page[0].height;j++,o += gvar.video.page[0].stridew)
 				vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
 		}
 
@@ -150,24 +159,24 @@ int main(int argc,char **argv) {
 
 			/* render box bounds. y does not need modification, but x and width must be multiple of 4 */
 			if (x >= overdraw) rx = (x - overdraw) & (~3);
-			else rx = 0;
+			else rx = -(gvar.video.page[0].dx);
 			if (y >= overdraw) ry = (y - overdraw);
-			else ry = 0;
+			else ry = -(gvar.video.page[0].dy);
 			h = vrl_header->height + overdraw + y - ry;
 			w = (x + vrl_header->width + (overdraw*2) + 3/*round up*/ - rx) & (~3);
-			if ((rx+w) > vga_state.vga_width) w = vga_state.vga_width-rx;
-			if ((ry+h) > vga_state.vga_height) h = vga_state.vga_height-ry;
+			if ((rx+w) > gvar.video.page[0].width) w = gvar.video.page[0].width-rx;
+			if ((ry+h) > gvar.video.page[0].height) h = gvar.video.page[0].height-ry;
 
 			/* block copy pattern to where we will draw the sprite */
 			vga_setup_wm1_block_copy();
 			o2 = offscreen_ofs;
-			o = pattern_ofs + (ry * vga_state.vga_stride) + (rx >> 2); // source offscreen
-			for (i=0;i < h;i++,o += vga_state.vga_stride,o2 += (w >> 2)) vga_wm1_mem_block_copy(o2,o,w >> 2);
+			o = pattern_ofs + (ry * gvar.video.page[0].stridew) + (rx >> 2); // source offscreen
+			for (i=0;i < h;i++,o += gvar.video.page[0].stridew,o2 += (w >> 2)) vga_wm1_mem_block_copy(o2,o,w >> 2);
 			/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
 			vga_restore_rm0wm0();
 
 			/* replace VGA stride with our own and mem ptr. then sprite rendering at this stage is just (0,0) */
-			vga_state.vga_draw_stride_limit = (vga_state.vga_width + 3/*round up*/ - x) >> 2;
+			vga_state.vga_draw_stride_limit = (gvar.video.page[0].width + 3/*round up*/ - x) >> 2;
 			vga_state.vga_draw_stride = w >> 2;
 			vga_state.vga_graphics_ram = omemptr + offscreen_ofs;
 
@@ -180,29 +189,31 @@ int main(int argc,char **argv) {
 			/* block copy to visible RAM from offscreen */
 			vga_setup_wm1_block_copy();
 			o = offscreen_ofs; // source offscreen
-			o2 = (ry * vga_state.vga_stride) + (rx >> 2); // dest visible (original stride)
-			for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += vga_state.vga_stride) vga_wm1_mem_block_copy(o2,o,w >> 2);
+			o2 = (ry * gvar.video.page[0].stridew) + (rx >> 2); // dest visible (original stride)
+			for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += gvar.video.page[0].stridew) vga_wm1_mem_block_copy(o2,o,w >> 2);
 			/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
 			vga_restore_rm0wm0();
 
 			/* restore stride */
-			vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = vga_state.vga_stride;
+			vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = gvar.video.page[0].stridew;
 
 			/* step */
 			x += xdir;
 			y += ydir;
-			if (x >= (vga_state.vga_width - 1) || x == 0)
+			if (x >= (gvar.video.page[0].width - 1) || x == 0)
 				xdir = -xdir;
-			if (y >= (vga_state.vga_height - 1) || y == 0)
+			if (y >= (gvar.video.page[0].height - 1) || y == 0)
 				ydir = -ydir;
 		}
 	}
 
+	modexShowPage(&(gvar.video.page[1]));
+
 	/* another handy "demo" effect using VGA write mode 1.
 	 * we can take what's on screen and vertically squash it like an old analog TV set turning off. */
 	{
-		unsigned int blank_line_ofs = (vga_state.vga_stride * vga_state.vga_height * 2);
-		unsigned int copy_ofs = (vga_state.vga_stride * vga_state.vga_height);
+		unsigned int blank_line_ofs = (gvar.video.page[0].stridew * gvar.video.page[0].height * 2);
+		unsigned int copy_ofs = (gvar.video.page[0].stridew * gvar.video.page[0].height);
 		unsigned int display_ofs = 0x0000;
 		unsigned int i,y,soh,doh,dstart;
 		unsigned int dh_blankfill = 8;
@@ -210,15 +221,15 @@ int main(int argc,char **argv) {
 		uint32_t sh,dh,yf,ystep;
 
 		/* copy active display (0) to offscreen buffer (0x4000) */
-		vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = vga_state.vga_stride;
+		vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = gvar.video.page[0].stridew;
 		vga_setup_wm1_block_copy();
-		vga_wm1_mem_block_copy(copy_ofs,display_ofs,vga_state.vga_stride * vga_state.vga_height);
+		vga_wm1_mem_block_copy(copy_ofs,display_ofs,gvar.video.page[0].stridew * gvar.video.page[0].height);
 		vga_restore_rm0wm0();
 
 		/* need a blank line as well */
-		for (i=0;i < vga_state.vga_stride;i++) vga_state.vga_graphics_ram[i+blank_line_ofs] = 0;
+		for (i=0;i < gvar.video.page[0].stridew;i++) vga_state.vga_graphics_ram[i+blank_line_ofs] = 0;
 
-		sh = dh = vga_state.vga_height;
+		sh = dh = gvar.video.page[0].height;
 		while (dh >= dh_step) {
 			/* stop animating if the user hits ENTER */
 			if (kbhit()) {
@@ -230,7 +241,7 @@ int main(int argc,char **argv) {
 
 			/* what scalefactor to use for stretching? */
 			ystep = (0x10000UL * sh) / dh;
-			dstart = (vga_state.vga_height - dh) / 2; // center the squash effect on screen, otherwise it would squash to top of screen
+			dstart = (gvar.video.page[0].height - dh) / 2; // center the squash effect on screen, otherwise it would squash to top of screen
 			doh = display_ofs;
 			soh = copy_ofs;
 			yf = 0;
@@ -242,27 +253,27 @@ int main(int argc,char **argv) {
 			/* blank lines */
 			if (dstart >= dh_blankfill) y = dstart - dh_blankfill;
 			else y = 0;
-			doh = vga_state.vga_stride * y;
+			doh = gvar.video.page[0].stridew * y;
 
 			while (y < dstart) {
-				vga_wm1_mem_block_copy(doh,blank_line_ofs,vga_state.vga_stride);
-				doh += vga_state.vga_stride;
+				vga_wm1_mem_block_copy(doh,blank_line_ofs,gvar.video.page[0].stridew);
+				doh += gvar.video.page[0].stridew;
 				y++;
 			}
 
 			/* draw */
 			while (y < (dh+dstart)) {
-				soh = copy_ofs + ((yf >> 16UL) * vga_state.vga_stride);
-				vga_wm1_mem_block_copy(doh,soh,vga_state.vga_stride);
-				doh += vga_state.vga_stride;
+				soh = copy_ofs + ((yf >> 16UL) * gvar.video.page[0].stridew);
+				vga_wm1_mem_block_copy(doh,soh,gvar.video.page[0].stridew);
+				doh += gvar.video.page[0].stridew;
 				yf += ystep;
 				y++;
 			}
 
 			/* blank lines */
-			while (y < vga_state.vga_height && y < (dh+dstart+dh_blankfill)) {
-				vga_wm1_mem_block_copy(doh,blank_line_ofs,vga_state.vga_stride);
-				doh += vga_state.vga_stride;
+			while (y < gvar.video.page[0].height && y < (dh+dstart+dh_blankfill)) {
+				vga_wm1_mem_block_copy(doh,blank_line_ofs,gvar.video.page[0].stridew);
+				doh += gvar.video.page[0].stridew;
 				y++;
 			}
 
@@ -278,7 +289,7 @@ int main(int argc,char **argv) {
 		}
 	}
 
-	int10_setmode(3);
+	VGAmodeX(0, 1, &gvar);
 	free(vrl_lineoffs);
 	buffer = NULL;
 	free(buffer);
