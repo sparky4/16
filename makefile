@@ -466,6 +466,7 @@ reinitlibs: .symbolic
 	@rm -rf $(SRCLIB)jsmn
 	@rm -rf 16/CatacombApocalypse
 	@rm -rf 16/wolf3d
+	@rm -rf 16/keen
 	@wmake -h initlibs
 
 initlibs: .symbolic
@@ -478,6 +479,7 @@ initlibs: .symbolic
 	@cd 16
 	@git clone https://github.com/FlatRockSoft/CatacombApocalypse.git
 	@git clone https://github.com/id-Software/wolf3d.git
+	@git clone https://github.com/keendreams/keen.git
 	@cd $(PDIR)
 
 ##
