@@ -60,30 +60,6 @@ int main(int argc,char **argv) {
 		printf("VGA probe failed\n");
 		return 1;
 	}
-// 	int10_setmode(19);
-// 	update_state_from_vga();
-// 	vga_enable_256color_modex(); // VGA mode X
-// 	gvar.video.page[0].width = 320; // VGA lib currently does not update this
-// 	gvar.video.page[0].height = 240; // VGA lib currently does not update this
-//
-// //#if 1 // 320x240 test mode: this is how Project 16 is using our code, enable for test case
-// 	{
-// 		struct vga_mode_params cm;
-//
-// 		vga_read_crtc_mode(&cm);
-//
-// 		// 320x240 mode 60Hz
-// 		cm.vertical_total = 525;
-// 		cm.vertical_start_retrace = 0x1EA;
-// 		cm.vertical_end_retrace = 0x1EC;
-// 		cm.vertical_display_end = 480;
-// 		cm.vertical_blank_start = 489;
-// 		cm.vertical_blank_end = 517;
-//
-// 		vga_write_crtc_mode(&cm,0);
-// 	}
-// 	gvar.video.page[0].height = 240; // VGA lib currently does not update this
-//#endif
 	VGAmodeX(1, 1, &gvar);
 
 	/* load color palette */
@@ -108,6 +84,8 @@ int main(int argc,char **argv) {
 	gvar.video.page[1].dy=gvar.video.page[0].dy=16;
 	modexShowPage(&(gvar.video.page[1]));
 
+	#define VMEMHEIGHT gvar.video.page[0].height+gvar.video.page[1].height
+
 	//4	this dose the screen
 	{
 		unsigned int i,j,o;
@@ -116,18 +94,17 @@ int main(int argc,char **argv) {
 		for (i=0;i < gvar.video.page[0].width;i++) {
 			o = i >> 2;
 			vga_write_sequencer(0x02/*map mask*/,1 << (i&3));
-			for (j=0;j < gvar.video.page[0].height;j++,o += gvar.video.page[0].stridew)
+			for (j=0;j < VMEMHEIGHT;j++,o += gvar.video.page[0].stridew)
 				vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
 		}
 	}
 
-	//draw_vrl1_vgax_modex(0/*x-rx*/,0/*y-ry*/,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
+	while (getch() != 13);
 
 	/* make distinctive pattern offscreen, render sprite, copy onscreen.
 	 * this time, we render the distinctive pattern to another offscreen location and just copy.
 	 * note this version is much faster too! */
 	{
-		//const unsigned int gvar.video.page[0].pagesize = (gvar.video.page[0].stridew * gvar.video.page[0].height);
 		const unsigned int pattern_ofs = 0x10000UL - gvar.video.page[0].pagesize;//(gvar.video.page[0].stridew * gvar.video.page[0].height);
 		unsigned int i,j,o,o2;
 		int x,y,rx,ry,w,h;
@@ -141,7 +118,7 @@ int main(int argc,char **argv) {
 		for (i=0;i < gvar.video.page[0].width;i++) {
 			o = (i >> 2) + pattern_ofs;
 			vga_write_sequencer(0x02/*map mask*/,1 << (i&3));
-			for (j=0;j < gvar.video.page[0].height;j++,o += gvar.video.page[0].stridew)
+			for (j=0;j < VMEMHEIGHT;j++,o += gvar.video.page[0].stridew)
 				vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
 		}
 
@@ -165,7 +142,7 @@ int main(int argc,char **argv) {
 			h = vrl_header->height + overdraw + y - ry;
 			w = (x + vrl_header->width + (overdraw*2) + 3/*round up*/ - rx) & (~3);
 			if ((rx+w) > gvar.video.page[0].width) w = gvar.video.page[0].width-rx;
-			if ((ry+h) > gvar.video.page[0].height) h = gvar.video.page[0].height-ry;
+			if ((ry+h) > VMEMHEIGHT) h = (VMEMHEIGHT)-ry;
 
 			/* block copy pattern to where we will draw the sprite */
 			vga_setup_wm1_block_copy();
@@ -202,7 +179,7 @@ int main(int argc,char **argv) {
 			y += ydir;
 			if (x >= (gvar.video.page[0].width - 1) || x == 0)
 				xdir = -xdir;
-			if (y >= (gvar.video.page[0].height - 1) || y == 0)
+			if (y >= (VMEMHEIGHT - 1) || y == 0)
 				ydir = -ydir;
 		}
 	}
