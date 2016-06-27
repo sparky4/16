@@ -82,15 +82,13 @@ int main(int argc,char **argv) {
 	modexHiganbanaPageSetup(&gvar.video);
 	gvar.video.page[1].dx=gvar.video.page[0].dx=16;
 	gvar.video.page[1].dy=gvar.video.page[0].dy=16;
-	modexShowPage(&(gvar.video.page[1]));
+	modexShowPage(&(gvar.video.page[0]));
 
-	#define VMEMHEIGHT gvar.video.page[0].height
-	//+gvar.video.page[1].height
+	#define VMEMHEIGHT gvar.video.page[0].height+gvar.video.page[1].height
 
 	//4	this dose the screen
 	{
 		unsigned int i,j,o;
-
 		/* fill screen with a distinctive pattern */
 		for (i=0;i < gvar.video.page[0].width;i++) {
 			o = i >> 2;
@@ -143,7 +141,7 @@ int main(int argc,char **argv) {
 			h = vrl_header->height + overdraw + y - ry;
 			w = (x + vrl_header->width + (overdraw*2) + 3/*round up*/ - rx) & (~3);
 			if ((rx+w) > gvar.video.page[0].width) w = gvar.video.page[0].width-rx;
-			if ((ry+h) > VMEMHEIGHT) h = (VMEMHEIGHT)-ry;
+			if ((ry+h) > gvar.video.page[0].height) h = (gvar.video.page[0].height)-ry;
 
 			/* block copy pattern to where we will draw the sprite */
 			vga_setup_wm1_block_copy();
@@ -180,7 +178,7 @@ int main(int argc,char **argv) {
 			y += ydir;
 			if (x >= (gvar.video.page[0].width - 1) || x == -(gvar.video.page[0].dx))
 				xdir = -xdir;
-			if (y >= (VMEMHEIGHT - 1) || y == -(gvar.video.page[0].dy))
+			if (y >= (gvar.video.page[0].height - 1) || y == -(gvar.video.page[0].dy))
 				ydir = -ydir;
 		}
 	}
