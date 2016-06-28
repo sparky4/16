@@ -82,7 +82,6 @@ typedef struct {
 	sword tilemidposscreeny;	/* middle tile position */
 	sword tileplayerposscreenx;	/* player position on screen */
 	sword tileplayerposscreeny;	/* player position on screen */
-	uint16_t pattern_ofs;		/* doslib vga patter offset www */
 	word stridew;			/*width/4*/
 	word pagesize;			/* page size */
 	word pi;				/* incremention page by this much to preserve location */

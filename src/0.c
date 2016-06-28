@@ -115,7 +115,7 @@ int main(int argc,char **argv) {
 		//4	this dose the sprite? wwww
 		/* fill pattern offset with a distinctive pattern */
 		for (i=0;i < gvar.video.page[0].width;i++) {
-			o = (i >> 2) + gvar.video.page[1].pattern_ofs;
+			o = (i >> 2) + (0x10000UL - (uint16_t)gvar.video.page[1].data);
 			vga_write_sequencer(0x02/*map mask*/,1 << (i&3));
 			for (j=0;j < VMEMHEIGHT;j++,o += gvar.video.page[0].stridew)
 				vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
@@ -146,7 +146,7 @@ int main(int argc,char **argv) {
 			/* block copy pattern to where we will draw the sprite */
 			vga_setup_wm1_block_copy();
 			o2 = gvar.video.page[0].pagesize;
-			o = gvar.video.page[1].pattern_ofs + (ry * gvar.video.page[0].stridew) + (rx >> 2); // source offscreen
+			o = (0x10000UL - (uint16_t)gvar.video.page[1].data) + (ry * gvar.video.page[0].stridew) + (rx >> 2); // source offscreen
 			for (i=0;i < h;i++,o += gvar.video.page[0].stridew,o2 += (w >> 2)) vga_wm1_mem_block_copy(o2,o,w >> 2);
 			/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
 			vga_restore_rm0wm0();
@@ -279,7 +279,7 @@ int main(int argc,char **argv) {
 		}
 	}
 //uint16_t
-	printf("%u	%u\n", (gvar.video.page[1].data), 0x10000UL - gvar.video.page[0].pagesize);
+	printf("%u\n", (0x10000UL - (uint16_t)(gvar.video.page[1].data)));
 	VGAmodeX(0, 1, &gvar);
 	free(vrl_lineoffs);
 	buffer = NULL;
