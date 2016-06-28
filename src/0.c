@@ -175,11 +175,11 @@ int main(int argc,char **argv) {
 			/* step */
 			x += xdir;
 			y += ydir;
-			if (x >= (gvar.video.page[0].width - 1) || x == -(gvar.video.page[0].dx))
+			if ((x + vrl_header->width) >= ((gvar.video.page[0].width + gvar.video.page[0].dx) - 1) || x == -(gvar.video.page[0].dx))
 				xdir = -xdir;
-			if (y >= (gvar.video.page[0].height - 1) || y == -(gvar.video.page[0].dy))
+			if ((y + vrl_header->height) >= ((gvar.video.page[0].height + gvar.video.page[0].dy) - 1) || y == -(gvar.video.page[0].dy))
 				ydir = -ydir;
-			printf("[x%u y%u]	[rx%u ry%u]	[w%u h%u]\n", x, y, rx, ry, w, h);
+			//printf("[x%u y%u]	[rx%u ry%u]		[w%u h%u]\n", x, y, rx, ry, w, h);
 		}
 	}
 
