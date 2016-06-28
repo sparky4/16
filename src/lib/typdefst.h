@@ -90,7 +90,7 @@ typedef struct {
 typedef struct
 {
 	//vrs with sprite ....
-} vrs_t
+} vrs_t;
 
 typedef struct
 {
