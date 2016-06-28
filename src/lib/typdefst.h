@@ -89,8 +89,14 @@ typedef struct {
 
 typedef struct
 {
-	//vrs with sprite ....
+	//sprite ....
 	boolean wwww;
+} spri_t;
+
+typedef struct
+{
+	//vrs with sprite ....
+	spri_t *spri;
 } vrs_t;
 
 typedef struct
