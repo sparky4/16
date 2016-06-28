@@ -89,6 +89,11 @@ typedef struct {
 
 typedef struct
 {
+	//vrs with sprite ....
+} vrs_t
+
+typedef struct
+{
 // 	int showmemhandle;
 	int			profilehandle,debughandle;
 	int heaphandle;
