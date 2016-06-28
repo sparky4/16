@@ -104,7 +104,7 @@ int main(int argc,char **argv) {
 	 * this time, we render the distinctive pattern to another offscreen location and just copy.
 	 * note this version is much faster too! */
 	{
-		const unsigned int pattern_ofs = 0x10000UL - gvar.video.page[0].pagesize;//(gvar.video.page[0].stridew * gvar.video.page[0].height);
+		//const unsigned int pattern_ofs = 0x10000UL - gvar.video.page[0].pagesize;//(gvar.video.page[0].stridew * gvar.video.page[0].height);
 		unsigned int i,j,o,o2;
 		int x,y,rx,ry,w,h;
 		unsigned int overdraw = 1;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.
@@ -115,7 +115,7 @@ int main(int argc,char **argv) {
 		//4	this dose the sprite? wwww
 		/* fill pattern offset with a distinctive pattern */
 		for (i=0;i < gvar.video.page[0].width;i++) {
-			o = (i >> 2) + pattern_ofs;
+			o = (i >> 2) + gvar.video.page[1].pattern_ofs;
 			vga_write_sequencer(0x02/*map mask*/,1 << (i&3));
 			for (j=0;j < VMEMHEIGHT;j++,o += gvar.video.page[0].stridew)
 				vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
@@ -146,7 +146,7 @@ int main(int argc,char **argv) {
 			/* block copy pattern to where we will draw the sprite */
 			vga_setup_wm1_block_copy();
 			o2 = gvar.video.page[0].pagesize;
-			o = pattern_ofs + (ry * gvar.video.page[0].stridew) + (rx >> 2); // source offscreen
+			o = gvar.video.page[1].pattern_ofs + (ry * gvar.video.page[0].stridew) + (rx >> 2); // source offscreen
 			for (i=0;i < h;i++,o += gvar.video.page[0].stridew,o2 += (w >> 2)) vga_wm1_mem_block_copy(o2,o,w >> 2);
 			/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
 			vga_restore_rm0wm0();
@@ -278,7 +278,8 @@ int main(int argc,char **argv) {
 			if (dh < 40) dh_step = 1;
 		}
 	}
-
+//uint16_t
+	printf("%u	%u\n", (gvar.video.page[1].data), 0x10000UL - gvar.video.page[0].pagesize);
 	VGAmodeX(0, 1, &gvar);
 	free(vrl_lineoffs);
 	buffer = NULL;

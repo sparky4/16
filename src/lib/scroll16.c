@@ -374,6 +374,7 @@ void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 	mv[id].tx++;
 	/* Snap the origin forward */
 	mv[id].page->data += 4;
+	mv[id].page->pattern_ofs += 4;
 	mv[id].page->dx = mv[id].map->tiles->tileWidth;
 	}
 
@@ -403,6 +404,7 @@ void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 	mv[id].tx--;
 	/* Snap the origin backward */
 	mv[id].page->data -= 4;
+	mv[id].page->pattern_ofs -= 4;
 	mv[id].page->dx = mv[id].map->tiles->tileWidth;
 	}
 
@@ -432,6 +434,7 @@ void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 	mv[id].ty--;
 	/* Snap the origin downward */
 	mv[id].page->data -= mv[id].page->pi;
+	mv[id].page->pattern_ofs -= mv[id].page->pi;
 	mv[id].page->dy = mv[id].map->tiles->tileHeight;
 	}
 
@@ -460,6 +463,7 @@ void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 	mv[id].ty++;
 	/* Snap the origin downward */
 	mv[id].page->data += mv[id].page->pi;
+	mv[id].page->pattern_ofs += mv[id].page->pi;
 	mv[id].page->dy = mv[id].map->tiles->tileHeight;
 	}
 
@@ -489,6 +493,7 @@ void near ScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 // 		vga_restore_rm0wm0();
 		/* Snap the origin forward */
 		mv[id].page->data += 4;
+		mv[id].page->pattern_ofs += 4;
 		mv[id].page->dx = mv[0].map->tiles->tileWidth;
 	}
 }
@@ -506,6 +511,7 @@ void near ScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 // 		vga_restore_rm0wm0();
 		/* Snap the origin backward */
 		mv[id].page->data -= 4;
+		mv[id].page->pattern_ofs -=4;
 		mv[id].page->dx = mv[0].map->tiles->tileWidth;
 	}
 }
@@ -523,6 +529,7 @@ void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 // 		vga_restore_rm0wm0();
 		/* Snap the origin backward */
 		mv[id].page->data -= mv[id].page->pi;
+		mv[id].page->pattern_ofs -= mv[id].page->pi;
 		mv[id].page->dy = mv[0].map->tiles->tileWidth;
 	}
 }
@@ -540,6 +547,7 @@ void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 // 		vga_restore_rm0wm0();
 		/* Snap the origin forward */
 		mv[id].page->data += mv[id].page->pi;
+		mv[id].page->pattern_ofs += mv[id].page->pi;
 		mv[id].page->dy = mv[0].map->tiles->tileWidth;
 	}
 }
