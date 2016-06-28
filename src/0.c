@@ -104,7 +104,6 @@ int main(int argc,char **argv) {
 	 * this time, we render the distinctive pattern to another offscreen location and just copy.
 	 * note this version is much faster too! */
 	{
-		//const unsigned int pattern_ofs = 0x10000UL - gvar.video.page[0].pagesize;//(gvar.video.page[0].stridew * gvar.video.page[0].height);
 		unsigned int i,j,o,o2;
 		int x,y,rx,ry,w,h;
 		unsigned int overdraw = 1;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.
@@ -180,6 +179,7 @@ int main(int argc,char **argv) {
 				xdir = -xdir;
 			if (y >= (gvar.video.page[0].height - 1) || y == -(gvar.video.page[0].dy))
 				ydir = -ydir;
+			printf("[x%u y%u]	[rx%u ry%u]	[w%u h%u]\n", x, y, rx, ry, w, h);
 		}
 	}
 
@@ -278,8 +278,7 @@ int main(int argc,char **argv) {
 			if (dh < 40) dh_step = 1;
 		}
 	}
-//uint16_t
-	printf("%u\n", (0x10000UL - (uint16_t)(gvar.video.page[1].data)));
+
 	VGAmodeX(0, 1, &gvar);
 	free(vrl_lineoffs);
 	buffer = NULL;
