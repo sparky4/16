@@ -90,6 +90,7 @@ typedef struct {
 typedef struct
 {
 	//vrs with sprite ....
+	boolean wwww;
 } vrs_t;
 
 typedef struct
