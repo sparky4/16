@@ -1,4 +1,4 @@
-# player.PCX demo sprite sheet compiler script
+# CHUKYUU.PCX demo sprite sheet compiler script
 # (C) 2016 Jonathan Campbell
 
 # *spritesheet declares the section used by the sprite sheet cutting tool
@@ -21,53 +21,133 @@
 # ---------------- player, walking, blue shirt with white cross. Frame 2/3 could be used for standing still
 
 # player, forward, frame 1/3
-+CHIBFCW0@10
++CHUBFCW0@10
 xy=0,0
 wh=16,32
 # player, forward, frame 2/3
-+CHIBFCW1@11
++CHUBFCW1@11
 xy=16,0
 wh=16,32
 # player, forward, frame 3/3
-+CHIBFCW2@12
++CHUBFCW2@12
 xy=32,0
 wh=16,32
 
 # player, left, frame 1/3
-+CHIBLCW0@20
++CHUBLCW0@20
 xy=0,32
 wh=16,32
 # player, left, frame 2/3
-+CHIBLCW1@21
++CHUBLCW1@21
 xy=16,32
 wh=16,32
 # player, left, frame 3/3
-+CHIBLCW2@22
++CHUBLCW2@22
 xy=32,32
 wh=16,32
 
 # player, right, frame 1/3
-+CHIBRCW0@30
++CHUBRCW0@30
 xy=0,64
 wh=16,32
 # player, right, frame 2/3
-+CHIBRCW1@31
++CHUBRCW1@31
 xy=16,64
 wh=16,32
 # player, right, frame 3/3
-+CHIBRCW2@32
++CHUBRCW2@32
 xy=32,64
 wh=16,32
 
 # player, away, frame 1/3
-+CHIBACW0@40
++CHUBACW0@40
 xy=0,96
 wh=16,32
 # player, away, frame 2/3
-+CHIBACW1@41
++CHUBACW1@41
 xy=16,96
 wh=16,32
 # player, away, frame 3/3
-+CHIBACW2@42
++CHUBACW2@42
 xy=32,96
 wh=16,32
+
+# begin animation list section. must come after sprite sheet
+*animation
+
+# Chikyuu, forward, standing and walking animation cycles
++CHUBFCW_STANDING@10
+sprite=CHUBFCW1
+
++CHUBFCW_WALKING@11
+sprite=CHUBFCW0
+delay=20
+-newframe
+sprite=CHUBFCW1
+delay=20
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+-newframe
+sprite=CHUBFCW2
+delay=20
+-newframe
+sprite=CHUBFCW1
+delay=20
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+
+# Chikyuu, left, standing and walking animation cycles
++CHUBLCW_STANDING@20
+sprite=CHUBLCW1
+
++CHUBLCW_WALKING@21
+sprite=CHUBLCW0
+delay=20
+-newframe
+sprite=CHUBLCW1
+delay=20
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+-newframe
+sprite=CHUBLCW2
+delay=20
+-newframe
+sprite=CHUBLCW1
+delay=20
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+
+# Chikyuu, right, standing and walking animation cycles
++CHUBRCW_STANDING@30
+sprite=CHUBRCW1
+
++CHUBRCW_WALKING@31
+sprite=CHUBRCW0
+delay=20
+-newframe
+sprite=CHUBRCW1
+delay=20
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+-newframe
+sprite=CHUBRCW2
+delay=20
+-newframe
+sprite=CHUBRCW1
+delay=20
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+
+# Chikyuu, away, standing and walking animation cycles
++CHUBACW_STANDING@40
+sprite=CHUBACW1
+
++CHUBACW_WALKING@41
+sprite=CHUBACW0
+delay=20
+-newframe
+sprite=CHUBACW1
+delay=20
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+-newframe
+sprite=CHUBACW2
+delay=20
+-newframe
+sprite=CHUBACW1
+delay=20
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+
