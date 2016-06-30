@@ -66,7 +66,7 @@ DOSLIBDIR=$(SRCLIB)doslib
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
 WLIBQ=-q
-WCLQ=-zq $(WLIBQ)
+WCLQ=-fd####++++-zq $(WLIBQ)
 UPXQ=-qqq
 
 AFLAGS=-mh -0 -d1
