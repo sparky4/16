@@ -65,21 +65,28 @@ DOSLIB=$(SRCLIB)doslib$(DIRSEP)
 DOSLIBDIR=$(SRCLIB)doslib
 WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
 
+#
+# quiet flags
+#
 WLIBQ=-q
-WCLQ=-fd####++++-zq $(WLIBQ)
+WCLQ=####++++-zq $(WLIBQ)
 UPXQ=-qqq
 
+#
+# compile flags
+#
 AFLAGS=-mh -0 -d1
-16FLAGS=-fh=16.hed
-BAKAPIFLAGS=-fh=bakapi.hed
 SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#54096#60000
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
 ZFLAGS=-zk0 -zc -zp8 $(WCLQ) ## -zm
-CFLAGS=$(AFLAGS) $(IFLAGS)-lr -l=dos -wo -i$(DOSLIB)##wwww
-OFLAGS=-obmiler -out -oh -ei -zp8 -fpi87  -onac -ol+ -ok####x
+LFLAG=-lr -l=dos -fd
+CFLAGS=$(AFLAGS) $(IFLAGS) -wo -i$(DOSLIB) $(LFLAG)
+OFLAGS=-obmilr -oe=24 -out -oh -ei -zp8 -fpi87  -onac -ol+ -ok####x
 FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 
-
+#
+# objects
+#
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_timer.$(OBJ)
@@ -94,9 +101,9 @@ DOSLIBOBJ += 8250.$(OBJ)
 DOSLIBLIBS += $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)8250$(DIRSEP)dos86h$(DIRSEP)8250.lib
 !endif
 
-TESTEXEC = exmmtest.exe test.exe test0.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe
+TESTEXEC = test.exe test0.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe exmmtest.exe
 
-EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe 0.exe
+EXEC = 16.exe bakapi.exe tesuto.exe 0.exe $(TESTEXEC)
 
 all: $(EXEC) joytest.exe
 #16.lib => $(16LIBOBJS) bug....
@@ -183,7 +190,8 @@ fmemtest.exe: fmemtest.$(OBJ) $(16LIB)
 	wcl $(FLAGS) fmemtest.$(OBJ) $(16LIB) -fm=fmemtest.mah
 
 exmmtest.exe: exmmtest.$(OBJ) $(16LIB)
-	wcl $(FLAGS) exmmtest.$(OBJ) -fm=exmmtest.mah $(16LIB)
+####++++	wcl $(FLAGS) exmmtest.$(OBJ) -fm=exmmtest.mah $(16LIB)
+	./wlink32 @__wcl__.lnk
 
 vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib $(16LIB)
 	wcl $(FLAGS) vgmtest.$(OBJ) vgmsnd.lib -fm=vgmtest.mah $(16LIB)
@@ -265,8 +273,8 @@ inputest.$(OBJ): $(SRC)inputest.c
 tsthimem.$(OBJ): $(SRC)tsthimem.c
 	wcl $(FLAGS) -c $(SRC)tsthimem.c
 
-exmmtest.$(OBJ): $(SRC)exmmtest.c
-	wcl $(FLAGS) -c $(SRC)exmmtest.c
+exmmtest.$(OBJ): $(SRC)exmmtest.c $(16LIB)
+	wcl $(FLAGS) -c $(SRC)exmmtest.c $(16LIB)
 
 vgmtest.$(OBJ): $(SRC)vgmtest.c
 	wcl $(FLAGS) -c $(SRC)vgmtest.c
