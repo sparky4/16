@@ -189,7 +189,7 @@ maptest.exe: maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib
 fmemtest.exe: fmemtest.$(OBJ) $(16LIB)
 	wcl $(FLAGS) fmemtest.$(OBJ) $(16LIB) -fm=fmemtest.mah
 
-exmmtest.exe: exmmtest.$(OBJ) $(16LIB)
+exmmtest.exe: exmmtest.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ)
 ####++++	wcl $(FLAGS) exmmtest.$(OBJ) -fm=exmmtest.mah $(16LIB)
 	./wlink32 @__wcl__.lnk
 
@@ -273,8 +273,8 @@ inputest.$(OBJ): $(SRC)inputest.c
 tsthimem.$(OBJ): $(SRC)tsthimem.c
 	wcl $(FLAGS) -c $(SRC)tsthimem.c
 
-exmmtest.$(OBJ): $(SRC)exmmtest.c $(16LIB)
-	wcl $(FLAGS) -c $(SRC)exmmtest.c $(16LIB)
+exmmtest.$(OBJ): $(SRC)exmmtest.c
+	wcl $(FLAGS) -c $(SRC)exmmtest.c 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ)
 
 vgmtest.$(OBJ): $(SRC)vgmtest.c
 	wcl $(FLAGS) -c $(SRC)vgmtest.c

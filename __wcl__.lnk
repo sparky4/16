@@ -7,12 +7,6 @@ file 16_mm.o
 file wcpu.o
 file 16_head.o
 file 16_ca.o
-file 16_dbg.o
-file kitten.o
 file 16_hc.o
-file 16_timer.o
+file kitten.o
 name exmmtest
-library src/lib/doslib/hw/cpu/dos86h/cpu.lib
-library src/lib/doslib/hw/dos/dos86h/dos.lib
-library src/lib/doslib/hw/vga/dos86h/vga.lib
-library src/lib/doslib/hw/8250/dos86h/8250.lib
