@@ -1,4 +1,4 @@
 #! /bin/bash
 wmake -h clean
 wmake -h
-wmake -h comp
+####wmake -h comp
