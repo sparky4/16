@@ -190,8 +190,8 @@ fmemtest.exe: fmemtest.$(OBJ) $(16LIB)
 	wcl $(FLAGS) fmemtest.$(OBJ) $(16LIB) -fm=fmemtest.mah
 
 exmmtest.exe: exmmtest.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ)
-####++++	wcl $(FLAGS) exmmtest.$(OBJ) -fm=exmmtest.mah $(16LIB)
-	./wlink32 @__wcl__.lnk
+	wcl $(FLAGS) exmmtest.$(OBJ) -fm=exmmtest.mah $(16LIB)
+####0000	./wlink32 @__wcl__.lnk
 
 vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib $(16LIB)
 	wcl $(FLAGS) vgmtest.$(OBJ) vgmsnd.lib -fm=vgmtest.mah $(16LIB)
