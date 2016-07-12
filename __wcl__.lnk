@@ -1,3 +1,4 @@
+option quiet
 debug dwarf lines
 option stack=32768
 system dos
