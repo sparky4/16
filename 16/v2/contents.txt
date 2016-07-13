@@ -1,5 +1,0 @@
-v2t5_9.zip -- verge2 engine, maped, vcc
-v2u5_9.zip -- misc. useful utilities
-template   -- a (mostly) blank game for you to jumpstart with
-
-questions, comments @ aen@verge-rpg.com zeromus@verge-rpg.com
