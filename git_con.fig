@@ -16,7 +16,7 @@
 	url = ssh://sparky4q@git.code.sf.net/p/project16/code
 	fetch = +refs/heads/*:refs/remotes/sf/*
 [remote "jp"]
-	url = ssh://sparky4@git.osdn.jp:/gitroot/proj16/16.git 
+	url = ssh://sparky4@git.pf.osdn.jp:/gitroot/s/sp/sparky4/project16.git
 	fetch = +refs/heads/*:refs/remotes/jp/*
 [remote "bb"]
 	url = git@bitbucket.org:sparky4/16.git
