@@ -1,0 +1,1097 @@
+PART 2 of 2
+-----------------------------------------------------------------------------
+
+  *********      XLIB - Mode X graphics library           ****************
+  *********                                               ****************
+  ********* Written By Themie Gouthas                     ****************
+  *********                                               ****************
+  ********* egg@dstos3.dsto.gov.au                        ****************
+  ********* teg@bart.dsto.gov.au                          ****************
+
+      Some of the code in this library has been contributed by :
+
+	       Matthew MacKenzie - matm@eng.umd.edu
+
+                and others. See individual modules.
+
+         I informally reserve all rights to the code in XLIB
+     Rights to contributed code is also assumed to be reserved by
+                   the original authors.
+-----------------------------------------------------------------------------
+MODULE  XCLIPPBM   note: VERY SIMILAR to XPBMCLIP
+This module implements blits of clipped planar bitmaps.  Blits are
+clipped to pixels, both horizontally.  This makes the unmasked blit
+function here slightly slower than the equivalent functions in the
+XPBMCLIP module.
+--------------------------------------------------------------------------
+								 XCLIPPBM:
+							 Blits and Pieces
+						   by Matthew MacKenzie
+
+The XCLIPPBM module contains clipping versions of two of the three routines
+in the XPBITMAP module:
+  o  x_clip_pbm transfers a planar bitmap to the screen, clipping off any
+	 part outside a bounding box.
+  o  x_clip_masked_pbm does the same thing, but transfers only nonzero
+	 pixels.
+
+	The planar bitmap format is described elsewhere.  Here we will look at
+the clipping itself, since it is the only distinguishing feature of this
+module.
+	The bounding box is made up of four integers, TopBound, BottomBound,
+LeftBound, and RightBound.  Unlike most global variables in Xlib, these are
+meant to be written to.  In fact, they start out uninitialized.  Be sure to
+set them before you try plotting any clipped bitmaps.
+	Note that these are not the same variables which are used in the other
+clipping modules in Xlib.  This is because the two systems are incompatible:
+the other modules clip horizontally to columns while this one clips to
+pixels.  As you might have guessed, those functions and these were developed
+in different hemispheres of the planet...
+	If it's any consolation, this does give you two independent
+bounding boxes to futz with, should the mood visit you.
+	Bitmaps cannot go outside the perimeter of the bounding box, but they
+can overlap it.  If TopBound equals BottomBound, for example, a horizontal
+slice of a bitmap may still be plotted.  It is safe to turn the box "inside
+out" to make sure nothing will be plotted -- this is the first thing each
+routine checks for.
+	To plot a bitmap, minus its zero pixels, minus anything outside the
+bounding box:
+
+x_clip_masked_pbm (int X, int Y, int ScreenOffs, char far * Bitmap);
+
+	The arguments are in the same order as those for x_put_masked_pbm in
+the module XPBITMAP.  The bounding box is relative to the given
+ScreenOffs(et).  This lets you perform page flipping without worrying about
+what screen you are clipping to -- it's always the current screen.  The
+bitmap itself, of course, is not affected; clipping is performed on-the-
+fly.  Both functions return an integer which indicates whether any part
+of the bitmap was inside the bounding box.  If the entire bitmap was
+outside, a 1 is returned; otherwise, a 0.
+	The third function in XPBITMAP, for which this module has no
+equivalent, copies from video RAM to system RAM.  The absence of such a
+routine may seem at first like a disadvantage -- but this, like so many
+things in this life, is an illusion.  You can use the unclipped routine,
+and clip the bitmap when you want to plot it back onto the screen.
+
+  ASM SOURCES
+
+	 xclippbm.asm xclippbm.inc xlib.inc model.inc
+
+  C HEADER FILE
+
+	 xclippbm.h
+
+  EXPORTED VARIABLES
+
+  TopBound - int
+  BottomBound - int
+  LeftBound - int
+  RightBound - int
+
+  EXPORTED FUNCTIONS
+
+  x_clip_pbm
+  ----------
+  C Prototype: extern int x_clip_pbm (int X, int Y, int ScreenOffs, char
+									   far * Bitmap);
+
+  Copies a planar bitmap from SRAM to VRAM, with clipping.  If the entire
+  bitmap turns out to be outside the bounding box, this function returns
+  a 1; otherwise it returns a 0.
+
+  x_clip_masked_pbm
+  -----------------
+  C Prototype: extern int x_clip_masked_pbm (int X, int Y,
+								   int ScreenOffs, char far * Bitmap);
+
+  Copies a planar bitmap from SRAM to VRAM, with clipping -- 0 bytes
+  in the bitmap are not copied.  If the entire bitmap turns out to be
+  outside the bounding box, this function returns a 1; otherwise,
+  it returns a 0.
+
+
+--------------------------------------------------------------------------
+MODULE  XMOUSE
+--------------------------------------------------------------------------
+The XMOUSE module implements very basic mouse handling functions. The way
+in which it operates is by installing an event handler function during
+initialization which subsequently intercepts and processes mouse events and
+automatically updates status variables such as mouse position and button
+pressed status. It does not support the full functionality of:
+
+  SPLIT SCREENS
+  SCROLLED WINDOWS
+  VIRTUAL WINDOWS
+
+This was done to primarily prevent unecessary impedences to performance,
+since the mouse handler function has the potential to degrade performance.
+It also saves me alot of coding which I was too lazy to do.
+
+Programs communicate with the mouse driver as with other devices, through
+an interrupt vector namely 33h. On generating an interrupt, the mouse driver
+expects a function number in AX and possibly other parameters in other
+registers and returns information via the registers. A brief description
+of the mouse functions follows:
+
+	      --------------------------------------
+
+	      MS Mouse Driver Functions
+
+	      Mouse Initialization                 0
+	      Show Cursor                          1
+	      Hide Cursor                          2
+	      Get Mouse Position & Button Status   3
+	      Set Mouse Cursor Position            4
+	      Get Button Press Information         5
+	      Get Button Release Information       6
+	      Set Min/Max Horizontal Position      7
+	      Set Min/Max Vertical Position        8
+	      Define Graphics Cursor Block         9
+	      Define Text Cursor                  10
+	      Read Mouse Motion Counters          11
+	      Define Event Handler                12
+	      Light Pen Emulation Mode ON         13
+	      Light Pen Emulation Mode OFF        14
+	      Set Mouse Mickey/Pixel Ratio        15
+	      Conditional Hide Cursor             16
+	      Set Double-Speed Threshold          19
+	      --------------------------------------
+
+In practice only afew of these functions are used and even fewer when the
+mouse status is monitored by an event handler function such as is used in
+this module.
+
+The most important thing to note when using the mouse module is that the
+mouse event handler must be removed before exiting the program. It is a good
+idea to have an exit function (see the C "atexit" function) and include the
+line "x_mouse_remove();" along with any other pre-exit cleanup code.
+
+See also: XDETECT for mouse detection.
+
+  ASM SOURCES
+
+    xmouse.asm xlib.inc model.inc
+
+  C HEADER FILE
+
+    xmouse.h
+
+  EXPORTED VARIABLES
+
+   MouseInstalled    - WORD - Indicates whether mouse handler installed
+   MouseHidden       - WORD - Indicates whether mouse cursor is hidden
+   MouseButtonStatus - WORD - Holds the mouse button status
+   MouseX            - WORD - Current X position of mouse cursor
+   MouseY            - WORD - Current Y position of mouse cursor
+   MouseFrozen       - WORD - Disallows position updates if TRUE
+   MouseColor        - BYTE - The mouse cursors colour
+
+  EXPORTED FUNCTIONS
+
+  x_mouse_init
+  ------------
+
+    C Prototype:  int x_mouse_init()
+
+  Initialize the mouse driver functions and install the mouse event handler
+  function. This is the first function you must call before using any of the
+  mouse functions. This mouse code uses the fastest possible techniques to
+  save and restore mouse backgrounds and to draw the mouse cursor.
+
+  WARNING: This function uses and updates "NonVisual_Offset" to allocate
+	   video ram for the saved mouse background.
+
+  LIMITATIONS: No clipping is supported horizontally for the mouse cursor
+	       No validity checking is performed for NonVisual_Offs
+
+  **WARNING** You must Hide or at least Freeze the mouse cursor while drawing
+	      using any of the other XLIB modules since the mouse handler may
+	      modify vga register settings at any time. VGA register settings
+	      are not preserved which will result in unpredictable drawing
+	      behavior. If you know the drawing will occur away from the
+	      mouse cursor set MouseFrozen to TRUE (1), do your drawing
+	      then set it to FALSE (0). Alternatively call "x_hide_mouse",
+	      perform your drawing and then call "x_show_mouse". Another
+	      alternative is to disable interrupts while drawing but usually
+	      drawing takes up alot of time and having interrupts disabled
+	      for too long is not a good idea.
+
+  x_define_mouse_cursor
+  ---------------------
+
+  C Prototype:
+    void x_define_mouse_cursor(char far *MouseDef, unsigned char MouseColor)
+
+    MouseDef - a pointer to 14 characters containing a bitmask for all the
+	       cursor's rows.
+    MouseColor - The colour to use when drawing the mouse cursor.
+
+  Define a mouse cursor shape for use in subsequent cursor redraws. XMouse
+  has a hardwired mouse cursor size of 8 pixels across by 14 pixels down.
+
+  WARNING: This function assumes MouseDef points to 14 bytes.
+
+  Note: Bit order is in reverse. ie bit 7 represents pixel 0 ..
+	bit 0 represents pixel 7 in each "MouseDef" byte.
+
+  x_show_mouse
+  ------------
+
+  C Prototype:  void x_show_mouse()
+
+  Makes the cursor visible if it was previously hidden.
+  See Also: "x_hide_mouse".
+
+  x_hide_mouse
+  ------------
+
+  C Prototype:  void x_hide_mouse()
+
+  Makes the cursor hidden if it was previously visible.
+  See Also: "x_show_mouse".
+
+  x_remove_mouse
+  --------------
+
+  C Prototype:  void x_remove_mouse()
+
+  Stop mouse event handling and remove the mouse handler.
+
+  NOTE: This function MUST be called before quitting the program if
+       a mouse handler has been installed
+
+  x_position_mouse
+  ----------------
+
+  C Prototype  void x_position_mouse(int x, int y)
+
+  Positions the mouse cursor at the specified location
+
+  x_update_mouse
+  --------------
+
+  C Prototype:  void x_update_mouse()
+
+  Forces the mouse position to be updated and cursor to be redrawn.
+  Note: this function is useful when you have set "MouseFrozen" to true.
+  Allows the cursor position to be updated manually rather than
+  automatically by the installed handler.
+
+--------------------------------------------------------------------------
+MODULE  XCIRCLE
+--------------------------------------------------------------------------
+				XCIRCLE:
+		      Wheel Have to See About That
+			 by Matthew MacKenzie
+
+The XCIRCLE module contains two functions, neither of which should be
+a big mystery:
+  o  x_circle, oddly enough, draws a circle.
+  o  x_filled_circle does too, only the circle is filled (in some
+     libraries this is called a disc).
+
+	The word `circle' here refers to a round thing which is as many
+pixels tall as across.  It only looks like a circle in 320x240 mode --
+the original mode X -- and in 376x282 mode.
+    In both functions, the circle is specified by the coordinates of the
+upper-left-hand corner of the smallest box which holds it, and the
+diameter.  Some circle functions have you specify a center point;
+this system is kind of odd because a circle with an even diameter does
+not have a particular pixel for a center.  Every circle, on the other
+hand, has a box with an upper-left corner.
+    No bounds are checked.  A diameter of zero will draw nothing, and
+a negative diameter will blow your VGA board into hundreds of thousands
+of tiny little smoldering fragments.  Neither function supports clipping.
+    The calculation of the circle is based on an algorithm described
+by Michael P. Lindner in a letter to the editor on page 8 of Dr. Dobb's
+Journal #169 (October 1990).  The algorithm has been rearranged to
+allow drawing and moving the plots in the eight octants to be performed
+in one step, so that each pixel does not have to be loaded into the CPU
+twice.  x_filled_circle does not take advantage of this optimization
+because it handles different parts of each plot at different times.
+
+  ASM SOURCES
+
+  xcircle.asm xcircle.inc xlib.inc model.inc
+
+  C HEADER FILE
+
+  xcircle.h
+
+  EXPORTED FUNCTIONS
+
+  x_circle
+  --------
+  C Prototype: extern void x_circle (WORD Left, WORD Top, WORD Diameter,
+				     WORD Color, WORD ScreenOffs);
+
+  Draws a circle with the given upper-left-hand corner and diameter,
+  which are given in pixels.
+
+
+  x_filled_circle
+  ---------------
+  C Prototype: extern void x_filled_circle (WORD Left, WORD Top,
+				WORD Diameter, WORD Color, WORD ScreenOffs);
+
+  Draws a filled circle with the given upper-left-hand corner and
+  diameter.
+
+
+--------------------------------------------------------------------------
+MODULE XDETECT
+--------------------------------------------------------------------------
+
+  This module implements a set of functions to detect the PC's hardware
+  configuration.
+
+  ASM SOURCES
+
+    xdetect.asm xdetect.inc model.inc
+
+  C HEADER FILE
+
+    xdetect.h
+
+  EXPORTED MACROS
+
+    I8086   0
+    I80186  1
+    I80286  2
+    I80386  3
+
+    NoGraphics 0
+    MDA        1
+    CGA        2
+    EGAMono    3
+    EGAColor   4
+    VGAMono    5
+    VGAColor   6
+    MCGAMono   7
+    MCGAColor  8
+
+    BUS_MOUSE     1
+    SERIAL_MOUSE  2
+    INPORT_MOUSE  3
+    PS2_MOUSE     4
+    HP_MOUSE      5
+
+
+  EXPORT VARIABLES
+
+  MouseButtonCount  - WORD - The number of buttons on the detected mouse
+  MouseVersion      - WORD - Mouse driver version (High byte = Major version
+			     Low byte = minor version)
+  MouseType         - BYTE - The mouse type
+  MouseIRQ          - BYTE - The IRQ number used by the mouse driver
+
+  EXPORT FUNCTIONS
+
+
+  x_graphics_card
+  ---------------
+  C Prototype: extern int x_graphics_card();
+
+  This function returns the type of graphics card installed. See defines
+  above.
+
+  x_processor
+  -----------
+  C Prototype: extern int x_processor();
+
+  This function returns the type of processor installed. A 486 registers
+  as a 386. See defines above.
+
+  x_coprocessor
+  -------------
+  C Prototype: extern int x_coprocessor();
+
+  This function returns 1 of a numeric co-processor is present, 0 if not.
+  The type is not detected but it's mnot really necessary as the processor
+  type usually determines the numeric coprocessor type
+
+  x_mousedriver
+  -------------
+  C Prototype: extern int x_mousedriver();
+
+  This function returns 1 of a mouse driver is installed, 0 otherwise.
+  If a mouse driver is detected the mouse related variable (above) are
+  set accordingly.
+
+--------------------------------------------------------------------------
+MODULE XFILEIO
+--------------------------------------------------------------------------
+
+  Handle based file I/O functions.
+
+  See any good DOS programming reference for more information on int 21h
+  DOS services.
+
+  ASM SOURCES
+
+    xfileio.asm xfileio.inc model.inc
+
+  C HEADER FILE
+
+    xfileio.h
+
+  EXPORTED MACROS
+
+  file access modes
+
+    F_RDONLY
+    F_WRONLY
+    F_RDWR
+
+  seek codes
+
+    SEEK_START
+    SEEK_CURR
+    SEEK_END
+
+  file error value
+
+    FILE_ERR
+
+  EXPORT FUNCTIONS
+
+  f_open
+  ------
+  C Prototype: extern int f_open(char * filename, char access);
+
+  Opens a file according to the access char:
+
+    F_RDONLY = read only   - If doesnt exist return error
+    F_WRONLY = write only  - If doesnt exist create it otherwise clear it
+    F_RDWR   = read/write  - If doesnt exist create it
+
+  Returns the file handle on success, FILE_ERR on failure
+
+
+  f_close
+  -------
+
+  C Prototype:  extern int f_close(int handle);
+
+  Closes the file associated with the specified handle
+
+  Returns 0 on success, FILE_ERR on failure
+
+
+  f_read
+  ------
+
+  C Prototype:
+
+    extern int f_read(int handle,char near * buffer, int count);
+
+  Reads a block of count bytes from the file specified by the handle
+  into the near buffer
+
+  Returns count on success, FILE_ERR on failure
+
+  f_readfar
+  ---------
+
+  C Prototype:
+
+    extern int f_readfar(int handle,char far * buffer, int count);
+
+  Reads a block of count bytes from the file specified by the handle
+  into the far buffer
+
+  Returns count on success, FILE_ERR on failure
+
+
+  f_write
+  -------
+
+  C Prototype: extern int f_write(int handle, char near * buffer, int count);
+
+  Writes a block of count bytes to the file specified by the handle
+  from the near buffer
+
+  Returns count on success, FILE_ERR on failure
+
+  f_writefar
+  ----------
+
+  C Prototype: extern int f_write(int handle, char far * buffer, int count);
+
+  Writes a block of count bytes to the file specified by the handle
+  from the far buffer
+
+  Returns count on success, FILE_ERR on failure
+
+
+  f_seek
+  ------
+
+  C Prototype: extern long int f_seek(int handle, long int position,
+				      char method_code)
+
+  Moves the file pointer according to the position and method code
+
+  Returns file pointer position on success, FILE_ERR on failure
+
+
+  f_filelength
+  ------------
+
+  C Prototype:
+
+    extern long int f_filelength(int handle)
+
+  Returns the length of the file associated with the specified handle
+
+  Returns file length on success, FILE_ERR on failure
+
+
+  f_tell
+  ------
+
+  C Prototype:
+
+    extern long int f_tell(int handle)
+
+
+  Returns file pointer position on success, FILE_ERR on failure
+
+--------------------------------------------------------------------------
+MODULE XRLETOOL
+--------------------------------------------------------------------------
+
+This module implements a number of functions comprising an RLE encoding
+decoding system.
+
+RLE stands for RUN LENGTH ENCODING. It is a quick simple data compression
+scheme which is commonly used for image data compression or compression
+of any data. Although not the most efficient system, it is fast, which is
+why it is used in image storage systems like PCX. This implementation is
+more efficient than the one used in PCX files because it uses 1 bit to
+identify a Run Length byte as opposed to two in PCX files, but more on this
+later.
+
+This set of functions can be used to implement your own compressed image
+file format or for example compress game mapse for various levels etc.
+The uses are limited by your imagination.
+
+I opted for trading off PCX RLE compatibility for the improved compression
+efficiency.
+
+Here is how the data is un-compressed to give an idea of its structure.
+
+
+STEP 1 read a byte from the RLE compressed source buffer.
+
+STEP 2 if has its high bit is set then the lower 7 bits represent the number
+       of times the next byte is to be repeated in the destination buffer.
+       if the count (lower 7 bits) is zero then
+	  we have finished decoding goto STEP 5
+       else goto STEP 4
+
+STEP 3 Read a data from the source buffer and copy it directly to the
+       destination buffer.
+       goto STEP 1
+
+STEP 4 Read a data byte from the source buffer and copy it to the destination
+       buffer the number of times specified by step 2.
+       goto STEP 1
+
+STEP 5 Stop, decoding done.
+
+If the byte does not have the high bit set then the byte itself is transfered
+ to the destination buffer.
+
+Data bytes that have the high bit already set and are unique in the input
+ stream are represented as a Run Length of 1 (ie 81 which includes high bit)
+ followed by the data byte.
+
+If your original uncompressed data contains few consecutive bytes and most
+have high bit set (ie have values > 127) then your so called
+compressed data would require up to 2x the space of the uncompressed data,
+so be aware that the compression ratio is extremely variable depending on the
+type of data being compressed.
+
+Apologies for this poor attempt at a description, but you can look up
+RLE in any good text. Alternatively, any text that describes the PCX file
+structure in any depth should have a section on RLE compression.
+
+
+
+  ASM SOURCES
+
+    xrletool.asm xrletool.inc model.inc
+
+  C HEADER FILE
+
+    xrletool.h
+
+  EXPORTED MACROS
+
+
+  EXPORT FUNCTIONS
+
+  x_buff_RLDecode
+  ---------------
+
+   Expands an RLE compresses source buffer to a destination buffer.
+   returns the size of the resultant uncompressed data.
+
+   C PROTOTYPE:
+
+   extern unsigned int x_buff_RLDecode(char far * source_buff,
+				      char far * dest_buff);
+
+   source_buff   - The buffer to compress
+   dest_buff     - The destination buffer
+
+   WARNING: buffers must be pre allocated.
+
+
+   x_buff_RLEncode
+   ---------------
+
+   RLE Compresses a source buffer to a destination buffer and returns
+   the size of the resultant compressed data.
+
+   C PROTOTYPE:
+
+    extern unsigned int x_buff_RLEncode(char far * source_buff,
+		 char far * dest_buff,unsigned int count);
+
+   source_buff   - The buffer to compress
+   dest_buff     - The destination buffer
+   count         - The size of the source data in bytes
+
+   WARNING: buffers must be pre allocated.
+
+   x_buff_RLE_size
+   ---------------
+
+   Returns the size the input data would compress to.
+
+   C PROTOTYPE:
+
+    extern unsigned int x_buff_RLE_size(char far * source_buff,
+		 unsigned int count);
+
+   source_buff   - The uncompressed data buffer
+   count         - The size of the source data in bytes
+
+
+   x_file_RLEncode
+   ---------------
+
+   RLE Compresses a source buffer to an output file returning
+   the size of the resultant compressed data or 0 if it fails.
+
+   C PROTOTYPE:
+
+   extern unsigned int x_file_RLEncode(int handle,
+	 char far * source_buff,unsigned int count);
+
+   source_buff   - The buffer to compress
+   handle        - The file handler
+   count         - The size of the source data in bytes
+
+   x_file_RLDecode
+   ---------------
+
+   Expands an RLE compresses file to a destination RAM buffer.
+   returns the size of the resultant uncompressed data.
+
+   C PROTOTYPE:
+
+    extern unsigned int x_buff_RLDecode(int handle,
+		 char far * dest_buff);
+
+   handle        - Input file handle
+   dest_buff     - The destination buffer
+
+
+
+
+--------------------------------------------------------------------------
+MODULE XPOLYGON
+--------------------------------------------------------------------------
+
+  This module implements eneral filled convex polygon and triangle
+  functions
+
+  C HEADER FILE
+
+    xpolygon.h
+
+  TYPE DEFS
+
+  typedef struct {
+    int X;
+    int Y;
+  } far VERTEX;
+
+
+
+  EXPORT FUNCTIONS
+
+
+  x_triangle
+  ------------
+  C Prototype:
+
+  void x_triangle(int x0, int y0, int x1, int y1, int x2, int y2,
+         WORD color, WORD PageBase);
+
+  This function draws a filled triangle which is clipped to the current
+  clipping window defined by TopClip,BottomClip,LeftClip,RightClip.
+  Remember: the X clipping variable are in BYTES not PIXELS so you
+    can only clip to 4 pixel byte boundaries.
+
+
+  x_polygon
+  ---------
+
+  C Prototype:
+
+  void x_polygon(VERTEX *vertices, int  num_vertices,
+         WORD color, WORD PageBase);
+
+  This function is similar to the triangle function but draws
+  convex polygons. The vertices are supplied in the form of a FAR
+  pointer.
+
+  NOTE: a convex polygon is one such that if you draw a line from
+  any two vertices, every point on that line will be within the
+  polygon.
+
+  This function works by splitting up a polygon into its component
+  triangles and calling the triangle routine above to draw each one.
+  Performance is respectable but a custom polygon routine might be
+  faster.
+
+
+--------------------------------------------------------------------------
+MODULE XFILL
+--------------------------------------------------------------------------
+
+  This module implements a couple of general purpose flood fill functions
+  functions
+
+  C HEADER FILE
+
+    xfill.h
+
+
+  EXPORT FUNCTIONS
+
+
+  x_flood_fill
+  ------------
+  C Prototype:
+
+  int x_flood_fill(int x, int y, unsigned ofs, int color);
+
+  This function performs the familiar flood filling used by many
+  paint programs and of course the Borland BGI's flood fill function.
+  The pixel at x,y and all adjacent pixels of the same color are filled
+  to the new color. Filling stops when there are no more adjacent pixels
+  of the original pixel's color. The function returns the number of
+  pixels that have been filled.
+
+  x_boundary_fill
+  ------------
+  C Prototype:
+
+
+  int x_boundary_fill(int x,int y,unsigned ofs,int boundary,int color);
+
+  This function is a variant of the flood fill described above. This
+  function, unlike the above function, can fill across color boundaries.
+  Filling stops when the area being filled is fully enclosed by pixels
+  of the color "boundary". Again, this function returns the number of
+  pixels filled.
+
+-------------------------------------------------------------------------------
+MODULE VSYNC
+-------------------------------------------------------------------------------
+
+                               VSYNC
+
+            Simulated Vertical Retrace Interrupt Module
+
+            by Tore Jahn Bastiansen <toreba@ifi.uio.no>
+
+     Inspired by REND386 v3.01 by Dave Stampe and Bernie Roehl
+
+The xvsync module uses timer 0 to simulate a vertical retrace interrupt.
+It's designed to significantly reduce the idle waiting time in Xlib.
+Why simulate the VRT interrupt ? Simply because a true VRT interrupt is
+not implemented on many VGA cards. Using a VRT interrupt as opposed to
+polling, can result in huge performance improvements for your code and
+help make animation much smoother than it would be using polling.
+
+Normally xlib waits for vsync when x_page_flip, x_set_start_address or
+x_put_pal_??? is called. This waiting period could be better utilized to do
+housekeeping calculations or whatever. The x_put_pal_??? functions also
+doesn't work very smoothly in conjunction with other functions that wait for
+the vertical retrace since each function introduces its own VRT delay.
+
+When using the vsync handler, the VRT delay is reduced to the absolute
+minumum which can result in a huge performance boost for your programs.
+
+When using double buffering, you may still have to wait before drawing,
+but you could do as much other work as possible, like this:
+
+        x_page_flip(...)
+        ...
+        <animate the palette>
+        <do some collision detection and 3D calculations>
+        <read the joystick>
+        ...
+        x_wait_start_address(); (Not needed with triple buffering)
+        ...
+        <draw next frame>
+        ...
+
+ASM SOURCES
+
+  xvsync.asm xmain.asm xvsync.inc xmain.inc
+
+C HEADER FILE
+
+  xvsync.h
+
+EXPORTED VARIABLES
+
+VsyncPeriod - WORD -time in 1.193 us between two vsyncs
+
+TicksPerSecond - WORD - number of vsyncs per second
+
+VsyncTimerInt - long - number of vsyncs since x_install_vsync_handler was
+     called. Nice for game timing.
+
+EXPORTED FUNCTIONS
+
+x_install_vsync_handler
+-----------------------
+
+C Prototype:   void x_install_vsync_handler(int VrtsToSkip);
+
+This function installs the vsync handler using timer 0. It's called
+about 100 microseconds before every vertical retrace.
+
+The VrtsToSkip value (>=1) defines the delay in VRT's between consecutive
+physical screen start address changes, thus allowing you to limit the
+maximum frame rate for page flips in animation systems. The frame rate
+is calculated as Vertical refresh rate / VrtsToSkip, eg for
+320x240 mode which refreshes at 60Hz a VrtsToSkip value of 3 will result
+in a maximum page flipping rate of 20Hz (frames per second)
+
+WARNING:  Be sure to remove it before exiting.
+          When used with a debugger, the system clock may speed up.
+
+x_remove_vsync_handler
+----------------------
+
+C Prototype:   void x_remove_vsync_handler
+
+This routine _MUST_ be called before exiting (or aborting) the program,
+or your system will crash.
+
+x_set_user_vsync_handler
+------------------------
+
+C Prototype:   void x_set_user_vsync_handler(void far (*f)());
+
+Installs a user routine to be called once each vertical retrace. The user
+handler have its own stack of 256 bytes , so be careful with the stack
+checking option in BC.
+WARNING: This installs an interrupt driven handler, beware of the following:
+         Only 8086 registers are preserved. If you're using 386 code, save
+         all the 386 regs.
+         Don't do any drawing.
+         Don't call any DOS functions.
+
+So why use it?
+Well, you can update global variables if you're careful. And it's nice for
+palette animation. You can even do fades while loading from disk. You
+should use this instead of installing your own int08h routine and chain
+to the original.
+
+x_wait_start_addr
+-----------------
+
+C Prototype:   void x_wait_start_addr(void)
+
+You must call this function before drawing after a call to x_set_start_addr
+or x_page_flip when you are using the vsync handler and not using
+triple buffering.
+
+MODULE XMAIN additions
+
+EXPORTED VARIABLES
+
+Page2_Offs - WORD - Offset in video ram of third virtual screen. Set by
+     x_triple_buffer.
+
+WaitingPageOffs - WORD - Offset of page waiting to be invisible. Initially
+     set by x_set_triple_buffer but is updated by x_page_flip. This
+     variable is only used while triple buffering is on.
+
+VsyncHandlerActive - WORD - Indicates whether the vsync handler is installed.
+
+TripleBufferActive - WORD - Indicates whether triple-buffering is on.
+     Set by x_triple_buffer.
+
+StartAddressFlag - WORD - This flag is set if there is a new start
+     address waiting to be set by the vsync handler.
+
+WaitingStartLow - WORD -  Needed by vsync handler. Keep off.
+WaitingStartHigh - WORD - Needed by vsync handler. Keep off.
+WaitingPelPan - WORD -    Needed by vsync handler. Keep off.
+
+VsyncPaletteStart - WORD - Start index of video DAC register to be
+     updated next vsync. Set by palette functions.
+
+VsyncPaletteCount - WORD - Number of palette entries to be outed next
+     vsync. Set by palette functions.
+
+VsyncPaletteBuffer - BYTE[768] - Buffer containing values for the next
+     update of the DAC.
+
+EXPORTED FUNCTIONS
+
+x_triple_buffer
+----------------
+
+C Prototype:   void x_triple_buffer(WORD PageHeight);
+
+This function behaves like x_double_buffer, but when used with
+x_install_vsync_handler you can draw immediately after a page flip.
+When x_page_flip is called, VisiblePageOffs is set to the page that
+will be display next vsync. Until then, WaitingPageOffs will be displayed.
+You can draw to HiddenPageOffs .
+
+
+
+
+--------------------------------------------------------------------
+REFERENCE SECTION
+--------------------------------------------------------------------
+
+
+REFERENCES
+----------
+
+In my opinion Doctor Dobbs Journal is the best reference text for
+VGA Mode X graphics:
+
+Issue 178 Jul 1991 : First reference to Mode X
+Article Abstract   : VGA's undocumented Mode X supports page flipping,
+		     makes off screen memory available, has square pixels,
+		     and increases performance by as muck as 4 times.
+
+Issue 179 Aug 1991 : Continuation
+Article Abstract   : Michael discusses latches and VGA's undoccumented
+		     Mode X.
+
+Issue 181 Sep 1991 : Continuation
+Article Abstract   : Michael puts the moves on animation using VGA's 256
+		     colors.
+
+Issue 184 Oct 1991 : First of a continuing series covering 3-D animation
+		     using VGA's Mode X. This series is still ongoing
+		     (October 1992)
+Article Abstract   : Michael moves into 3-D animation, starting with basic
+		     polygon fills and page flips.
+
+
+WHAT IS MODE X ?
+----------------
+
+Mode X is a derrivative of the VGA's standard mode 13h (320x200 256 color).
+It is a (family) of undocumented video modes that are created by tweaking
+the VGA's registers. The beauty of mode X is that it offers several
+benefits to the programmer:
+ - Multiple graphice pages where mode 13h doesn't allowing for page flipping
+   (also known as double buffering) and storage of images and data in
+   offscreen video memory
+ - A planar video ram organization which although more difficult to program,
+   allows the VGA's plane-oriented hardware to be used to process pixels in
+   parallel, improving performance by up to 4 times over mode 13h
+
+   See issue 178-179 of D.D.J. for a full description of VGA's Mode X.
+
+WHAT IS A SPLIT SCREEN ?
+------------------------
+
+A split screen is a neat hardware feature offered by the EGA and VGA video
+cards. A split screen is a mode of graphics operationin which the Hardware
+splits the visual graphics screen horizontally and treats both halves as
+individual screens each starting at different locations in video RAM.
+
+The bottom half (which is usually referred to as the split screen) always
+starts at address A000:0000 but the top half's starting address is user
+definable.
+
+The most common application of split screens in games is the status display
+in scrolling games. Split screens make this sort of game simpler to program
+because when the top half window is scrolled the programmer does not have to
+worry about redrawing the bottom half.
+
+WHAT IS DOUBLE BUFFERING ?
+--------------------------
+
+Double buffering (also known as page flipping) is the technique most often
+used to do animation. it requires hardware that is capable of displaying
+multiple graphics pages (or at least 2). Animation is achieved by drawing
+an image in the non visible screen and then displaying the non visible
+screen. Once the page has been flipped the process starts again. The next
+frame of the animation is drawn on the non visible screen, the page is
+flipped again etc.
+
+
+WHAT IS TRIPPLE BUFFERING ?
+--------------------------
+
+Triple buffering is similar to double buffering in many ways, but it
+relies on 3 pages being defined for animation. The main selling point
+of triple buffering is that it eliminates the need to wait for the
+vertical retrace to flip pages before drawing on the new page thus
+alowing the programmer to start building the next animation frame
+immediately after completing the current one. Heres how it works:
+
+With double buffering, once you complete drawing the hidden page and
+youre ready to flip pages, you have to wait for the VGA hardware to
+actually flip the page (during the vertical retrace) before you start
+drawing the next page otherwise you will be drawing on the visible page.
+
+With triple buffering you cycle between three pages, thus the page you
+draw on is guaranteed not to be visible. I know this is a poor
+description but it really is quite simple
+
+Triple buffering can acheive the fastest possible animation under the
+right conditions but the draw back is that more video RAM is required. If
+you wish to store bitmaps in video ram such as background tiles, double
+buffering would be the better alternative.
+
+
+WHAT IS MODE X ?
+----------------
+
+Mode X is a derrivative of the VGA's standard mode 13h (320x200 256 color).
+It is a (family) of undocumented video modes that are created by tweaking
+the VGA's registers. The beauty of mode X is that it offers several
+benefits to the programmer:
+ - Multiple graphice pages where mode 13h doesn't allowing for page flipping
+   (also known as double buffering) and storage of images and data in
+   offscreen video memory
+ - A planar video ram organization which although more difficult to program,
+   allows the VGA's plane-oriented hardware to be used to process pixels in
+   parallel, improving performance by up to 4 times over mode 13h
+
+   Again see D.D.J. for an in depth discussion of animation using Mode X.
+
+   -----------------------------------------------------------------------
+
+

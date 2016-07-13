@@ -1,0 +1,188 @@
+                     ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+                     ³    V2 Console Command Summary    ³
+                     ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+Current as of 5.9.99
+
+Using the Command Console
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ ÄÄÄÄÄÄ ÄÄÄÄ ÄÄ Ä
+The command console is summoned by the ~ (tilde) key. Pressing the same key
+a second time hide the console as well. If ~ does not bring the console down,
+the game designer has disabled it via the AllowConsole(0); call.
+
+You basically use it by just typing commands into it. The actual commands will
+be detailed below. However, in addition to typing commands, it also supports
+the following features:
+
+  The UP/DOWN keys are a 10-entry Last Command Memory.
+  The PGUP/PGDN keys allow you to use the scrollback features.
+  TAB is command-name completion.
+
+Console Command Reference
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ ÄÄÄÄÄÄ ÄÄÄÄ ÄÄ Ä
+ÚÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ ACTIVEENTS ³ Parameters: None                                         ³
+ÃÄÄÄÄÄÄÄÄÄÄÄÄÙ Usage: ACTIVEENTS                                        ³
+³ Description: Lists the index numbers of all active (onscreen)         ³
+³  entities.                                                            ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ BROWSETILES ³ Parameters: None                                        ³
+ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÙ Usage: BROWSETILES                                      ³
+³ Description: Displays the tileset currently loaded. Inside the browse ³
+³  interface, the up/down keys scroll through the tiles if there are    ³
+³  more than fit on the screen. The A key toggles tile animation, Q     ³
+³  exits the browse interface.                                          ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ CAMERATRACKING ³ Parameters: [on/off]                                 ³
+ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ Usage: CAMERATRACKING [0/1]                          ³
+³ Description: If CAMERATRACKING is executed with no parameters, the    ³
+³  status (0 or 1) will be returned. If 0 or 1 is specified as the 1st  ³
+³  parameter, that will set a new value for cameratracking. This        ³
+³  variable controls whether or not the camera follows the player       ³
+³  around at all times.                                                 ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ CD_OPEN  ³ Parameters: None                                           ³
+³ CD_CLOSE ³ Usage: CD_OPEN                                             ³
+ÃÄÄÄÄÄÄÄÄÄÄÙ Usage: CD_CLOSE                                            ³
+³ Description: Opens or closes the CD tray door, respectively.          ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ CD_PLAY ³ Usage: CD_PLAY <tracknum>                                   ³
+³ CD_STOP ³ Usage: CD_STOP                                              ³
+ÃÄÄÄÄÄÄÄÄÄÙ Description: CD_PLAY begins CD audio playback at the        ³
+³ specified track number. CD_STOP stops all CD audio playback.          ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ CONSOLEBG ³ Parameters: None                                          ³
+ÃÄÄÄÄÄÄÄÄÄÄÄÙ Usage: CONSOLEBG <imagename>                              ³
+³ Description: Sets the specified image as the console background. The  ³
+³  image can be in PCX, GIF or BMP format, but must be 320x240.         ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ CPU_USAGE ³ Parameters: [on/off]                                      ³
+ÃÄÄÄÄÄÄÄÄÄÄÄÙ Usage: CPU_USAGE [0/1]                                    ³
+³ Description: Turns on or off the CPU usage monitor. When it's on, it  ³
+³  displays an FPS report and shows CPU usage in the categories of      ³
+³  rendering, pageflipping, and game ai (etc).                          ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ CURPOS ³ Parameters: None                                             ³
+ÃÄÄÄÄÄÄÄÄÙ Usage: CURPOS                                                ³
+³ Description: Returns the current coordinates of the player.           ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ ENITITY ³ Parameters: [index]                                         ³
+ÃÄÄÄÄÄÄÄÄÄÙ Usage: ENTITY [ent num]                                     ³
+³ Description: Returns the current coordinates of the given entity.     ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ ENITITYSTAT ³ Parameters: None                                        ³
+ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÙ Usage: ENTITYSTAT                                       ³
+³ Description: Gives a report on the current entity stats.              ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ EXIT ³ Parameters: None                                               ³
+ÃÄÄÄÄÄÄÙ Usage: EXIT                                                    ³
+³ Description: Exits to DOS.                                            ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ LISTCMDS ³ Parameters: None                                           ³
+ÃÄÄÄÄÄÄÄÄÄÄÙ Usage: LISTCMDS                                            ³
+³ Description: Lists all registered console commands.                   ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ LISTMOUNTS ³ Parameters: None                                         ³
+ÃÄÄÄÄÄÄÄÄÄÄÄÄÙ Usage: LISTMOUNTS                                        ³
+³ Description: Lists all currently mounted packfiles.                   ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ MAP ³ Parameters: [MAP name]                                          ³
+ÃÄÄÄÄÄÙ Usage: MAP [MAP name]                                           ³
+³ Description: MAP with no parameters gives a statistics report about   ³
+³  the currently loaded MAP. Otherwise, it will attempt to map switch   ³
+³  to the map file specified.                                           ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ MOUNT ³ Parameters: [Packfile]                                        ³
+ÃÄÄÄÄÄÄÄÙ Usage: MOUNT [packfile name]                                  ³
+³ Description: MOUNT will mount the specified packfile and add it to    ³
+³  VERGE's packfile search list.                                        ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ PACKINFO ³ Parameters: [Packindex]                                    ³
+ÃÄÄÄÄÄÄÄÄÄÄÙ Usage: PACKINFO [packindex]                                ³
+³ Description: Packinfo returns a list of files and in a given packfile.³
+³  To view the first packfile mounted, you would type "packinfo 0".     ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ PHANTOM ³ Parameters: [On/Off]                                        ³
+ÃÄÄÄÄÄÄÄÄÄÙ Usage: PHANTOM [0/1]                                        ³
+³ Description: Turns on or off Phantom mode (no clipping)               ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ PLAYER ³ Parameters: [Entity index]                                   ³
+ÃÄÄÄÄÄÄÄÄÙ Usage: PLAYER [idx]                                          ³
+³ Description: Sets the player to the given entity number.              ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ PLAYERSPEED ³ Parameters: [speed]                                     ³
+ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÙ Usage: PLAYERSPEED [1-7]                                ³
+³ Description: Sets the player speed                                    ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ SHOWOBS ³ Parameters: [on/off]                                        ³
+ÃÄÄÄÄÄÄÄÄÄÙ Usage: SHOWOBS [0/1]                                        ³
+³ Description: If this is turned on, grid will be drawn on top of the   ³
+³ render process denoting where the obstruction are on the map.         ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ SHOWZONES ³ Parameters: [on/off]                                      ³
+ÃÄÄÄÄÄÄÄÄÄÄÄÙ Usage: SHOWZONES [0/1]                                    ³
+³ Description: If this is turned on, grid will be drawn on top of the   ³
+³  render process denoting where the zones are on the map, color coded. ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ SPEEDDEMON ³ Parameters: None                                         ³
+ÃÄÄÄÄÄÄÄÄÄÄÄÄÙ Usage: SPEEDDEMON                                        ³
+³ Description: This command will enable the "2x speed" cheat to allow   ³
+³  the player to move twice his normal velocity when the CTRL key is    ³
+³  held down.                                                           ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ VER ³ Parameters: None                                                ³
+ÃÄÄÄÄÄÙ Usage: VER                                                      ³
+³ Description: Displays a V2 version report and build info.             ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ÚÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ WARP ³ Parameters: [tile-x, tile-y]                                   ³
+ÃÄÄÄÄÄÄÙ Usage: WARP [x] [y]                                            ³
+³ Description: Warps the player to the specified location.              ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+
+Special Commands: RV/SV
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ ÄÄÄÄÄÄ ÄÄÄÄ ÄÄ Ä
+These two additional console commands are extremely useful in the development
+and debugging of your Verge game, especially with advanced VC. These commands
+stand for ReadVariable and SetVariable, respectively; they allow you to access
+the value of any user declared (system.vc global) variable (ints only, not
+strings). You can access both single ints and array components.
+
+For example, to read the value of a variable named "gold" you'd simply do:
+RV GOLD
+and the value of the variable would be printed out. To set the value of "gold"
+to a really big value, you'd type:
+SV GOLD 1500000
+
+To use array variables, you simply add another parameter which is the array
+offset, ie:
+RV FLAGS 105
+Would return the value of flags[105]. Likewise, to set the value of flags[20]
+to 0, you'd type:
+SV FLAGS 20 0
+
+Have an idea for a console command you'd like to see implemented? Mail me
+at aen@verge-rpg.com and We'll consider your request.
+
+- Verge2 staff

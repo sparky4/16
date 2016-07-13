@@ -1,0 +1,277 @@
+Xlib version 2 modifications
+
+Files modified:
+  XLIB.INC
+  XMAIN.ASM
+  DEMO.C
+
+
+26-09-92 - PRIMARILY JUST ADDED SUPPORT FOR PEL PANNING
+
+	   Pel panning code added to allow for panning to any pixel
+	   coordinates.
+	   Functions affected:
+	      x_set_splitscreen
+		Split screen pel panning suppression code added.
+		Functionally unchanged.
+	      x_set_start_addr,x_page_flip
+		Pel panning code added. The x parameter now expects
+		a pixel coordinate where previously a byte coordinate
+		was expected.
+
+	   Original files modified
+	   -----------------------
+	   XLIB.INC
+	   XMAIN.ASM
+	   DEMO.C
+	   Aknowledgements
+	   ---------------
+	   Thanks to Robert Schmidt for contributed PEL panning sample
+	   code and everyone else who responded to my rec.games.programmer
+	   post.
+
+Xlib version 3 modifications
+
+10-10-92 - BUG ERADICATION AND ADDITION OF NEW MODULES AND MINOR CODE
+	   EXTENSIONS
+
+	   MaxScrollX and MaxScrollY were not always set correctly, now
+	   that's fixed (I Think)
+	   Added variable "SplitScrnVisibleHeight" needed for above fix.
+	   Some miscellaneous code changes
+	   Included XCBITMAP module generously donated by Matthew MacKenzie
+	   Added support for the LARGE memory model
+	   Added a make file to simplify compilation
+	   Library modules now compiled into .LIB files
+	   Added a documentation file
+	   Added XBMTOOLS module containing bitmap type conversion
+	   Added XDETECT module containing hardware detection functions
+	   Added C header files for all modules
+	   ADDED XFILEIO module
+	   ADDED XRLETOOL module
+
+	   Original files modified
+	   -----------------------
+	   XLIB.INC
+	   XMAIN.ASM
+	   DEMO.C
+	   XTEXT.INC
+	   XTEXT.ASM
+
+	   Aknowledgements
+	   ---------------
+	   Special thanks to Matthew Mackenzie for an excellent module
+	   and Darren Lyon for putting together a C header file for XLIB.
+	   Again thanks also to everyone else who supported this software.
+
+Xlib version 4 modifications
+
+
+30-10-92   EXTENSIONS TO XLIB 3 AND BUG FIXES
+
+	   Files Modified
+	   --------------
+	   Assume all have been modified
+
+	   Modifications/Additions
+	   ------------------------
+	   **** Fixed ATI VGA incompatibility problem ****       4
+	   **** Fixed Large Model problems ***************
+	   Manual : The ref. manual has been split ito two files for
+		    those editors that cannot cope with file > 64k
+	   XDETECT: added numeric co-pro detection
+		    added mouse driver detection
+	   XMAIN  : added new resolution tweaks
+		    added clipping rectangle setting proc and vars
+		    further bug fixes (I can't remember exactly what)
+	   XCBITMAP:Improved performance of compilation and compiled bitmaps
+		    and added a function to calculate mem required for
+		    a bitmap compilation
+	   XPBITMAP:Improved performance of planar bitmaps
+	   XRECT   :Added "x_shift_rect" function
+	   XPBMTOOL:Added several utility macros
+
+	   New Modules
+	   -----------
+	   XPBMCLIP:Implements clipping versions of functions in XPBITMAP
+	   XVBITMAP:Video based masked bitmap functions. Contains standard
+		    and clipping versions of all functions.
+	   XMAKEVBM:Support module for XVBITMAP
+	   XMOUSE  :Basic mouse support module
+	   XBEZIER :Fast Bezier curves (For scalable fonts etc..)
+
+
+Xlib version 4b modifications
+
+10-12-92   BUG FIX RELEASE
+
+	   Files Modified
+	   --------------
+
+	   XMAIN.*
+	   XPBMCLIP.*
+	   XVBMCLIP.*
+	   XCLIPPBM.*
+
+	   Modifications/Additions
+	   ------------------------
+	   Some minor fixes and modifications in xmain.asm
+	    fixed the split screen starting scan line problem
+
+	    This fix is a cludge - Sam Thompson has suggested a more
+	    elegant fix but I just dont have much time these days
+
+	    changed mode setting code to allow 320x200 mode to have same
+	     aspect ratio as mode 13h
+
+	   The clipped functions were modified to return 1 if the image being
+	    clipped was completely off the logical screen.
+	   Minor clipping bugs which gave inconsistent results when clipping
+	    to the left and right screen borders were fixed in the XPBMCLIP &
+	    VBMCLIP modules.
+	   A bug in demo 2 which caused crashing on 486 machines was also
+	   fixed. (The speed of the 486 resulted in 0 time delay which inturn
+	    caused a division by zero error)
+
+28-12-92   Modified PEL panning code to be smoother on snail paced PC's
+	   Added quick & dirty planar bitmap compiler
+
+
+15-2-93    Converted text module to allow variable width user fonts
+
+	   Added a function x_get_char_width in module xtext
+	   Added fonts var6x8.fnt varswisl.fnt varswisb.fnt
+	   Clened up virt screen start address setting code in xmain.asm
+
+	   Added demo 8 to preview user defined fonts
+
+	   Added x_wait_vsync in module xmain
+
+	   Fixed a bug with mode sets on some VGA bios'es that dont
+	   preserve CX on an int 10h
+
+18-8-93    XLIB05 Final Release
+	   -----------------------------------------------
+
+	   GENERAL:
+	     Added C++ compatability in header files
+	     Added new fonts 
+	   XDETECT: now can differentiate between 386sx 386dx and 486
+	     (486sx can be verified by absence of FPU)
+	   XMOUSE:
+	     Fixed x_mouse_position bug and general xmouse improvements
+	     Added x_mouse_window function
+	   XFILEIO:
+	     Modified f_read and f_write functions xfileio module
+	     f_read    - now reads into near buffer reguardless of model
+	     f_readfar    "    "    "   far    "         "      "    "
+	     f_write      "  writes "   near   "         "      "    "
+	     f_writefar   "    "    "   far    "         "      "    "
+	     Added f_tell function to get file position. I beleive I
+	     improved the error handling a little but I cant remember
+	     for sure.
+	   XMAIN:
+	     Added 2 new resolutions 256x200 & 256x240.
+	     I dont know why you'd want them but theyre there if you do.
+	     These came from Draeden of VLA (Did you write them Ben ?)
+	     I think they may have originally been posted on R.G.P ???
+	   XRECT:
+	     Added x_rect_fill_clipped & x_rect_pattern_clipped, probably
+	     useless but what the heck!
+	   XPOLYGON:
+	     New function x_triangle - a fast clipped and filled trinagle
+	      function ideal for 3D work.
+	     x_polygon - a clipped and filled polygon function (convex
+	       polygons only). This one's not the fastest - it splits
+	       polygons into component triangles and uses the above
+	       triangle routine to draw them, but still it should
+	       perform fast enough for most 3D applications.
+	   MISCELLANEOUS:
+	      xdiscuss.zip: Included Robert Schmidt's excellent mode X article
+		for those interested in the hows and why's of Mode X progamming
+	      xlibtl02.zip: Some bitmap conversion code and a TSR bitmap
+		capture program.
+
+
+	   Aknowledgements
+	   ---------------
+	   Gerald Dalley         - For getting me off my butt and doing
+				   this release.
+
+	   Steve Dollins         - Never returned my mail asking for
+				   permission to use his code so I
+				   assumed it'd be OK ;)
+
+	   Christian Harms       - For suggesting xdetect improvements and
+				   promising to make XLIB for T.P. freeware
+				   when its complete. good on ya mate!
+
+	   Jason Truong          - For spotting the bug in xmouse and
+				   general suggestions for improvements
+
+	   Chris Kirby           - For suggestion to make .h files C++
+				   compliant
+
+	   Robert Scmidt         - For his mode X article.
+
+	   jeremi@ee.ualberta.ca - Thanks for the xtext suggestions
+	   (name unknown)          even if they didnt make this release
+
+	   And others whom I may have forgotten.
+
+	   Also Greetings to my internet pals,
+	     Mat Mackenzie, Jari Karjala, Draeden, Victor Putz,
+	     Josh Jensen, Chicken and the rest of you dudes...
+	     Thanks for helping my productivity live up to
+	     "Public Servant" standards ;-))
+
+5-10-93
+	   -----------------------------------------------
+	   XCBITM32:
+	     32 bit compiled bitmaps, originally developed by Matthew
+	     Mackenzie for our game. NOTE: The compiler is written in C -
+	     conversion to assembler is left as an excersise for the user :-)
+	   
+	   XMOUSE: Finished x_mouse_window this time. I had overlooked
+	      its semi-completed x_mouse_window function in the last release.
+
+	   XPBITMAP:
+	      Added x_flip_pbm and x_flip_masked_pbm
+	      Identical to x_put_pbm and x_put_masked_pbm but have an
+	      extra parameter which indicates whether the bitmap is flipped
+	      from left to right as drawn or not - Ideal for saving bitmap
+	      memory.
+
+	    XFILL:
+	      Added a new module containing 2 flood fill variants. Both return
+	      the number of pixels filled.
+
+	    XVSYNC:
+	      New module to synchronise timer 0 to the vertical retrace. This
+	      allows for smoother animation due to the elimination of
+	      unnecessary vsync waiting.
+
+	    XMAIN:
+	      Modifications to allow standard vsync polling or optional
+	      timer0/vsync synchronization and new support for tripple
+	      buffering for super-smooth animation. This stuff's way cool!
+
+	    BUGS:
+	      fixed the odd bug here and there - nothing too serious.
+
+
+	    Aknowledgements:
+
+	    Tiaan A Geldenhuys - for pointing out that I forgot to finish
+	     some code in xmouse.asm, for the new cursor shape and stuff.
+
+	    Thanks to Tore Jahn Bastiansen (toreba@ifi.uio.no) for the
+	    tripple buffering extensions to XMAIN and the excellent
+	    Timer vsync sunchronization which is the highlight of this
+	    release. This module is a "MUST HAVE" if youre going to do
+	    any animation.
+
+	    Also thanks to any others, whom I may have lost track of,
+	    for bug fixes'n stuff.
+
+	    Apologies to the person who sent me the pbm flipping code.

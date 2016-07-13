@@ -1,0 +1,297 @@
+            ________________________________________________
+           |+----------------------------------------------+|
+           ||          I N T R O D U C I N G :             ||
+           |+----------------------------------------------+|
+           ||               Steve's 4-Way                  ||
+           ||    ___    ___   ____     ___    _      _     ||
+           ||   / __|  / __| |  _ \   / _ \  | |    | |    ||
+           ||  | <_   | |    | |_> | | | | | | |    | |    ||
+           ||   \_ \  | |    |    /  | | | | | |    | |    ||
+           ||   __> | | |__  | |\ \  | |_| | | |__  | |__  ||
+           ||  |___/   \___| |_| \_|  \___/  |____| |____| ||
+           |+______________________________________________+|
+           +------------------------------------------------+
+
+  There, now that I have the hype outta the way, let me explain what
+this program is.  I'm releasing the source code to my 4-way scrolling
+code so that others can learn from it.  There aren't enough really
+good resources out there for someone learning to program games, so I'm
+trying to do my part to help.
+
+WHAT IT IS:
+
+  The code is 100% assembly, for which I use MASM 6.0, so there may
+be a few problems converting to Turbo Assembler.  I also use the ".386"
+directive, meaning that you can't run this code with a 286 or earlier.
+But most of the code should be easily convertible.  I haven't been
+programming for 386's much so I really don't make the use of the 386
+registers like I could have.  Mostly I just did it for some extra 386
+instructions.
+
+  You'll need a VGA which can support mode 13h, the MCGA mode.  This
+code runs in "tweaked" MCGA mode, or what is called "Mode X".  For more
+information on Mode X, check out the 1991 - 1992 issues of Doctor Dobbs
+Journal, wherein you will find Michael Abrash's excellent Graphics
+Programming column.  This is where I (and many others) found out about
+Mode X, which is an excellent graphics mode for fast 256-color graphics.
+Also, you can take a look at XLIB, YakIcons, FastGraph, etc which are all
+graphics libraries (public domain or otherwise) which support Mode X
+graphics and probably have some good documentation on programming the mode.
+Additionally, check out _The Programmer's Guide to the EGA and VGA Cards_,
+by Richard Ferraro, and _Power Graphics Programming_ (out of print, but
+available directly from Que Books) by Michael Abrash.  Finally, you can
+ask about graphics programming on many newsgroups such as
+"rec.games.programmer"...
+
+WHAT IT DOES:
+
+  The code will allow you to create "tiled" background patterns and then
+to omnidirectionally scroll over them.  You could implement sprite routines
+and then animate them over the background, but I haven't gotten this far
+yet.  The scrolling is always relational -- ie no "jump-to"'s, just "scroll
+left", "scroll up", etc.  Jump to would be very easy to implement, I just
+haven't done it yet.
+
+  It runs at about 60-70 fps on a 386/20, which means that it is operating
+in under the time of one vertical refresh (_just_ under, according to some
+timing I've done).  This could probably be reduced, but the best way to
+reduce it is to limit the speed at which it scrolls -- if you stick to
+scrolling at most 8 pixels at a time in two axes or 16 pixels at a time
+in one axis, it is very fast.  More than that, and it occasionally takes
+more than one refresh period even on my 486.  Still, that should be
+fast enough for just about any game.
+
+  I also included some routines to generate maps, tiles, and palettes
+so you can see the file formats.  These are in C, and the executables
+are around in case you don't care to recompile.  None of the utilities
+are exactly production quality.  You'll have to look at the code to
+figure out the arguments!  Luckily you can just run them with no args
+and they perform default behavior.
+
+  Lastly, the program SCROLL.EXE is a demo of what it can do.  In this
+demo you can use one of two sets of keyboard controls to scroll around.
+One, the default set of commands, lets you press up/down/left/right and
+scroll in that direction.  The other has "intertia" -- pressing up/down
+left/right will accelerate you in that direction.  You'll see what I
+mean, just experiment.  You can switch keyhandlers by pressing K.
+You can also switch between the diagonal pattern map and a logo map
+by pressing M.  (By the way, it will eventually run out of memory loading
+the maps and the diagonal map will screw up... don't worry about it,
+it'd be fixed if I had more time).  Try it out.
+
+CREDIT WHERE CREDIT IS DUE:
+
+  People who (unknowingly) helped me out:
+
+        Keyboard by Steven Dollins, Brown Computer Group.  From his
+                KEYINT routines, which is an INT 9 handler to let you
+                keep track of many keys being pressed at the same time.
+        Graphics, basically, by Michael Abrash, whose Mode X columns
+                influenced me greatly.
+        Palette fades and file I/O by the Future Crew.  Thanks for
+                letting out the Mental Surgery code!
+        CPU detection by Ray Duncan, taken from one of his books.
+
+  Obviously I haven't just pirated the code, it's all from publicly
+released source code and I modified it a bit.  But I wouldn't have come
+up with this whole thing without those helping hands.  Thanks.
+
+HOW IT WORKS:
+
+  Here's how the scrolling works.  I'll explain it from a single-page
+point of view, although it actually uses several pages of video memory.
+The video memory is laid out like this:
+ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍ» ÄÄÄ
+º                                ³ /  /  /  / º  ³
+º                                ³/  /  /  /  º  ³
+º                                ³  /  /  /  /º  ³
+º           Visible page         ³ / Not /  / º  ³
+º                                ³/ visible/  º  ³
+º                                ³  /  /  /  /º 64K
+º                                ³ /  /  /  / º  ³
+ÇÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ/  /  /  /  º  ³
+º  /  /  /  /  /  /  /  /  /  /  /  /  /  /  /º  ³
+º /  /  /  /  /  /  /  /  /  /  /  /  /  /  / º  ³
+º/  /  /  /  /  /  /  /  /  /  /  /  /  /  /  º  ³
+ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼ ÄÄÄ
+In other words, it has a virtual width greater than the actual screen
+width, and a virtual height higher than the actual screen height.  The
+VGA hardware allows hardware panning around within the virtual area, so
+that makes panning much easier:  you only have to draw the information
+that is coming on to the screen with each pan.
+
+What is Happening:      What the user sees:
+ÉÍÍÍÍÍÍÍÍÑÍÍÍÍ»          ÚÄÄÄÄÄÄÄÄ¿
+º     hel³////º          ³     hel³           The picture that is
+ÇÄÄÄÄÄÄÄÄÙ////º          ÀÄÄÄÄÄÄÄÄÙ           coming on to the screen
+º/////////////º                               ("hello") appears to
+ÈÍÍÍÍÍÍÍÍÍÍÍÍÍ¼                               the user to be scrolling
+ÉÍÑÍÍÍÍÍÍÍÑÍÍÍ»          ÚÄÄÄÄÄÄÄÄ¿           left, although it is
+º/³   hell³///º          ³    hell³           actually at a stationary
+º/ÀÄÄÄÄÄÄÄÙ///º          ÀÄÄÄÄÄÄÄÄÙ           location in memory...
+º/////////////º                               Each time the frame moves,
+ÈÍÍÍÍÍÍÍÍÍÍÍÍÍ¼                               it is not necessary to
+ÉÍÍÑÍÍÍÍÍÍÍÑÍÍ»          ÚÄÄÄÄÄÄÄÄ¿           redraw the parts that stay
+º//³  hello³//º          ³   hello³           on the screen, just the
+º//ÀÄÄÄÄÄÄÄÙ//º          ÀÄÄÄÄÄÄÄÄÙ           parts that become visible.
+º/////////////º
+ÈÍÍÍÍÍÍÍÍÍÍÍÍÍ¼
+
+  The same works up&down too, or even left/right and up/down at the same
+time.  The problem occurs when you scroll enough to hit the edge of the
+virtual space.  Luckily, video memory increases and wraps at the right
+edge to one line down on the left edge.  So you end up with a situation
+like this after scrolling too far right:
+ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍ» ÄÄÄ
+ÇÄÄÄÄÄÄÄ¿//////³    º  ³        User sees:
+º       ³//////³  Thº  ³       ÚÄÄÄÄÄÄÄÄÄÄÄ¿
+ºe quick³//////³    º 64K      ³           ³
+º       ³//////ÀÄÄÄÄ¶  ³       ³  The quick³
+ÇÄÄÄÄÄÄÄÙ///////////º  ³       ³           ³
+º///////////////////º  ³       ÀÄÄÄÄÄÄÄÄÄÄÄÙ
+ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼ ÄÄÄ
+The wrapping is transparent to the user.  So, it appears that you can
+scroll left & right infinitely, by simply always updating the amount of
+memory that has scrolled into view.
+
+  But what happens when you scroll too far down?  Now Intel segments come
+to the rescue!  Because the video memory is 64K, and that is also the
+largest amount of memory you can access in a segment, the segment arithmetic
+performs the top-to-bottom wrapping for me.  It results in a similar
+situation as is pictured above, but with the screen split horizontally
+instead of vertically.  Again, it's completely transparent to the user.
+
+  One performance optimization that I've done is to organize the background
+picture that is being scrolled into quantitized "tiles" -- 16x16 pixels in
+area.  This means that you can store a large amount of picture data if that
+data is repetitive -- as the backgrounds of many video games are.  This also
+helps when figuring out how much new stuff to draw on the screen.  I can wait
+until the panning crosses a 16-pixel border, then draw another 16-pixel
+strip, and then wait for another tile crossing, etc.  You can see this in
+the MAP.INC and SCROLL.INC code.  16x16 pixels also leads to 256-pixel-square
+tiles, which is always a convenient number in assembly... it helps out in
+several places in the code.
+
+  So, the display page is "wandering" around the video memory, only drawing
+what is necessary at any time.  Meanwhile you can animate sprites over the
+background, etc.  The only problem is that with one page, information is
+constantly being drawn to that page and you can never guarantee that it is in
+a correct state at the time of a vertical refresh period.  Instead, I actually
+use several pages, so that one can be shown while the other is worked on.
+This guarantees a perfect picture at any time.  So for now, let's ignore the
+scrolling for a second, and talk about the paging, because it's easier to
+understand the paging if scrolling isn't happening.
+
+  Here's a basic explanation of how the paging works.  I use three separate
+pages, a Draw page, a Show page, and a Blank page.  The Show page refers to
+the page that is currently showing, the Draw page to the page that is
+under construction (to be shown next frame), and the Blank page should always
+be maintained as an up-to-date blank background page.  (The Blank page is
+useful for sprite programming which I am going to be doing next.)  Each
+of the pages is 352x240, although the screen resolution is only 320x200.
+
+  Each frame, the pages rotate DrawPage->ShowPage->BlankPage->DrawPage.
+This means that at the beginning of the frame, the Draw Page is already
+blank, so all that is necessary is to draw on a bunch of sprites.  The
+BlankPage, though, is no longer blank (it's still got stuff from what
+was the ShowPage) so we have to erase it, by blanking out the sprites
+(luckily the new DrawPage _is_ empty, so we can use a Mode X 32-bit video-
+to-video copy to blank it).  Hope you're still with me.
+
+  So, this loop continues with each frame, and the loop invariants are
+maintained:  Show Page is always a "good" frame -- don't touch it.  Blank
+Page is always blank.  Draw Page can look like anything.  Now to include
+the scrolling again:
+
+  The way I do scrolling with several pages is that the pages ALL wander
+around video memory, only they're smaller (1/3 of the size that they could
+have been, to be exact!).  Here's a picture of the situation at its worst:
+ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍ» ÄÄÄ
+º  ³//ÀÄÄÄÄÄÄÄÄº  ³
+ºÄÄÙ///////////º  ³
+º/////ÚÄÄÄÄÄÄÄÄº  ³
+ºÄÄ¿//³PAGE 0  º  ³
+º  ³//³ (Draw) º  ³
+º  ³//ÀÄÄÄÄÄÄÄÄº  ³
+ºÄÄÙ///////////º 64K
+º/////ÚÄÄÄÄÄÄÄÄº (21K each page)
+ºÄÄ¿//³PAGE 1  º  ³
+º  ³//³ (Show) º  ³
+º  ³//ÀÄÄÄÄÄÄÄÄº  ³
+ºÄÄÙ///////////º  ³
+º/////ÚÄÄÄÄÄÄÄÄº  ³
+ºÄÄ¿//³PAGE 2  º  ³
+º  ³//³ (Blank)º  ³
+ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼ ÄÄÄ
+The pages always maintain an equal distance apart as they wander.  Since
+all pages move in parallel, the way it used to work is that as soon as the
+pages scrolled, I would draw the newly-visible picture information on
+all three of the pages.  This worked great, except that it resulted in
+a slight pause every time the screen scrolled because it was doing hardware
+pan most of the time (which is very fast) and the drawing routines were
+slow.  Now, I've spread the copying over successive frames to allow a
+smoother scrolling rate.  This is possible because it's not really necessary
+to draw the new information to a page before that page becomes the show
+page...
+
+  I hope that this has made some sense.  It's pretty complicated stuff.
+Take a look at the code and maybe that will help.  Or, write me mail
+(my email address is below).  Or, design your own way and ignore this
+whole thing.
+
+COMING SOON:
+
+  Next up are Sprite routines.  I threw in what I started as SPRITE.INC,
+although it's not included in the project right now.
+  Sound support
+
+  Who knows what else?  Depends on what people send me!
+
+-------------------------------------------------------------------------
+                           R E A D   T H I S
+-------------------------------------------------------------------------
+                           R E A D   T H I S
+-------------------------------------------------------------------------
+
+  This code is being released as "SwapWare".  That means that if you wanted
+to go ahead and use my code directly, I really wouldn't care.  But I ask
+that you send me some of your code that you think is neat.  Especially if
+it's modifications that you make to this code, such as quick sprite drawing
+or optimizations.
+
+  I'm not going to brag and say that I "threw this together in a few hours".
+I didn't, it took me many days of work to get it working properly.  But
+I'm also not looking for money as recompensation for my labor.  I make
+great money at my real day job and you probably have a better use for your
+donations, such as legitimizing your unregistered shareware and pirated
+games.  I'm in this for the knowledge ... so my best payback would be to
+get lots of code from people out there, stuff to really help make a great
+game.  In particular, these would be great:
+        * 32-bit code
+        * Tricky optimizations
+        * Fast BitBlt/masked BitBlt code
+        * Useful File I/O functions
+        * 3D polygon and texture mapping code
+        * Maintenance routines -- like numeric conversions, etc.
+        * Hardware access code like timing routines and interrupt
+          handlers
+Any of those would be very helpful when writing a fast scrolling game.
+
+You can contact me (for the rest of this term only) at
+        seisner@athena.mit.edu
+Feel free to ask any questions you want!  I check my mail about once or
+twice a week so don't expect instant turnaround...  If you're desperate
+to talk to me, say if you work at Origin and want to give me the source
+code to Strike Commander or whatnot, you can also reach me at:
+        Steve Eisner
+        (617) 247-8691
+and leave a message.  But I'd rather you wrote e-mail.
+
+                                        Thanks,
+                                           Steve Eisner
+
+*  Read rec.games.programmer!   And for those who already do:
+   I dream of a world where no one argues over why Wolfenstein
+   3-D sucks or why it doesn't.  Would people just give it a
+   break?
+

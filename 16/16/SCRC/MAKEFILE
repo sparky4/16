@@ -1,0 +1,10 @@
+all: test.exe
+
+test.exe: test.obj palette.obj
+	wcl test.obj palette.obj
+
+test.obj: test.c
+	wcl -c test.c
+
+palette.obj: palette.h palette.c constant.h
+	wcl -c palette.c

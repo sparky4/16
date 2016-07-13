@@ -1,0 +1,50 @@
+# This is a Borland-specific Makefile.  It may or may not work with
+# other makes.  Please mail me your changes to make it more portable.
+
+.autodepend
+
+CC = bcc -ml -v -y -O -O2
+
+all: tweak utilities examples oldtweak
+tweak: tweak.exe
+oldtweak: tweak095.exe
+examples: example1.exe example2.exe
+utilities: tweak2c.exe 09to10.exe
+
+tweak.exe: tweak.obj register.obj namedreg.obj regtable.obj screen.obj \
+        testpat.obj vgalib.obj regedit.obj detect.obj
+        $(CC) tweak.obj register.obj namedreg.obj regtable.obj screen.obj \
+                testpat.obj vgalib.obj regedit.obj detect.obj
+
+09to10.exe: 09to10.obj register.obj
+        $(CC) 09to10.obj register.obj
+
+example1.exe: example1.obj twkuser.obj
+        $(CC) example1.obj twkuser.obj
+
+example2.exe: example2.obj twkuser.obj tweak2c.exe 320x240.c
+        $(CC) example2.obj twkuser.obj
+
+tweak2c.exe: tweak2c.obj twkuser.obj
+        $(CC) tweak2c.obj twkuser.obj
+
+320x240.c: tweak2c.exe 320x240.256
+        tweak2c 320x240.256 320x240.c Mode320x240
+
+.256.c:
+        tweak2c $< $*.c Mode$*
+
+.16.c:
+        tweak2c $< $*.c Mode$*
+
+.twk.c:
+        tweak2c $< $*.c Mode$*
+
+.c.obj:
+        $(CC) -c {$< }
+
+.cpp.obj:
+        $(CC) -c {$< }
+
+.obj.exe:
+        $(CC) $<

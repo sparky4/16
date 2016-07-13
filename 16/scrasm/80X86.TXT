@@ -1,0 +1,494 @@
+Journal:   Dr. Dobb's Journal  March 1991 v16 n3 p16(8)
+-----------------------------------------------------------------------------
+Title:     80x86 optimization: aim down the middle and pray. (80x86 family of
+           microprocessors) (tutorial)
+Author:    Abrash, Michael.
+AttFile:    Program:  80X86.ASC  Source code listing.
+
+Summary:   Optimizing code for 8088, 80286, 80386 and 80486 microprocessors
+           is difficult because the chips use significantly different memory
+           architectures and instruction execution times.  Code cannot be
+           optimized for the 80x86 family; rather, code must be designed to
+           produce good performance on a range of systems or optimized for
+           particular combinations of processors and memory.  Programmers
+           must avoid the unusual instructions supported by the 8088, which
+           have lost their performance edge in subsequent chips.  String
+           instructions should be used but not relied upon.  Registers should
+           be used rather than memory operations.  Branching is also slow for
+           all four processors.  Memory accesses should be aligned to improve
+           performance.  Generally, optimizing an 80486 requires exactly the
+           opposite steps as optimizing an 8088.
+-----------------------------------------------------------------------------
+Descriptors..
+Company:   Intel Corp. (Products).
+Ticker:    INTC.
+Product:   Intel 80286 (Microprocessor) (Programming)
+           Intel 80386 (Microprocessor) (Programming)
+           Intel 80486 (Microprocessor) (Programming)
+           Intel 8088 (Microprocessor) (Programming).
+Topic:     Microprocessors
+           Optimization
+           Programming
+           Tutorial
+           Assembly Language
+           Guidelines
+           Type-In Programs
+           Microcode
+           Processor Architecture.
+Feature:   illustration
+           graph.
+Caption:   Official and actual cycles per binary-to-hex ASCII conversion.
+           (graph)
+           Actual performance in microseconds of two solutions to a problem.
+           (graph)
+           Actual performance of three clearing approaches across the 80x86
+           family. (graph)
+
+-----------------------------------------------------------------------------
+Full Text:
+
+Optimization
+
+Picture this: You're an archer aiming at a target 100 feet away.  A strong
+wind comes up and pushes each arrow to the left as it flies.  Naturally, you
+compensate by aiming farther to the right.  That's what it's like optimizing
+for the 8088; once you learn to compensate for the strong but steady effects
+of the prefetch queue and the 8-bit bus, you can continue merrily on your
+programming way.
+
+Now the wind starts gusting unpredictably.  There's no way to compensate, so
+you just aim for the bull's-eye and hope for the best.  That's what it's like
+writing code for good performance across the entire 80x86 family, or even for
+the 286/386SX/386 heart of today's market.  You just aim down the middle and
+pray.
+
+The New World of the 80x86
+
+In the beginning, the 8088 was king, and that was good.  The optimization
+rules weren't obvious, but once you learned them, you could count on them
+serving you well on every computer out there.
+
+Not so these days.  There are four major processor types--8088, 80286, 80386,
+and 80486--with a bewildering array of memory architectures: cached (in
+several forms), page mode, static-column RAM, interleaved, and, of course,
+the 386SX, with its half-pint memory interface.  The processors offer wildly
+differing instruction execution times, and memory architectures warp those
+times further by affecting the speed of instruction fetching and access to
+memory operands.  Because actual performance is a complex interaction of
+instruction characteristics, instruction execution times, and memory access
+speed, the myriad processor-memory combinations out there make "exact
+performance" a meaningless term.  A specific instruction sequence may run at
+a certain speed on a certain processor in a certain system, but that often
+says little about the performance of the same instructions on a different
+processor, or even on the same processor with a different memory system.  The
+result: Precise optimization for the general PC market is a thing of the
+past.  (We're talking about optimizing for speed here; optimizing for size is
+the same for all processors so long as you stick to 8088-compatible code.)
+
+So there is no way to optimize performance ideally across the 80x86 family.
+An optimization that suits one processor beautifully is often a dog on
+another.  Any 8088 programmer would instinctively replace:
+
+DEC  CX JNZ  LOOPTOP
+
+with:
+
+LOOP  LOOPTOP
+
+because LOOP is significantly faster on the 8088.  LOOP is also faster on the
+286.  On the 386, however, LOOP is actually two cycles slower than DEC/JNZ.
+The pendulum swings still further on the 486, where LOOP is about twice as
+slow as DEC/JNZ--and, mind you, we're talking about what was originally
+perhaps the most obvious optimization in the entire 80x86 instruction set.
+
+In short, there is no such thing as code that's truly optimized for the
+80x86.  Instead, code is either optimized for specific processor-memory
+combinations, or aimed down the middle, designed to produce good performance
+across a range of systems.  Optimizing for the 80x86 family by aiming down
+the middle is quite different from optimizing for the 8088, but many PC
+programmers are inappropriately still applying the optimization lore they've
+learned over the years on the PC (or AT).  The world has changed, and many of
+those old assumptions and tricks don't hold true anymore.
+
+You will not love the new world of 80x86 optimization, which is less precise
+and offers fewer clever tricks than optimizing for the 8088 alone.  Still,
+isn't it better to understand the forces affecting your code's performance
+out in the real world than to optimize for a single processor and hope for
+the best?
+
+Better, yes.  As much fun, no.  Optimizing for the 8088 was just about as
+good as it gets.  So it goes.
+
+Optimization Rules for a New World
+
+So, how do you go about writing fast code nowadays?  One way is to write
+different versions of critical code for various processors and memory access
+speeds, selecting the best version at runtime.  That's a great solution, but
+it requires an awful lot of knowledge and work.
+
+An alternative is to optimize for one particular processor and settle for
+whatever performance you get on the others.  This might make sense when the
+8088 is the target processor because it certainly needs the optimization more
+than any other processor.  However, 8088 optimization works poorly at the
+upper end of the 80x86 family.
+
+Nowadays, though, most of us want to optimize for the 286 and 386 systems
+that dominate the market, or across all 80x86 processors, and that's a tough
+nut to crack.  The 286 and 386 come in many configurations, and you can be
+sure, for example, that a 386SX, an interleaved 386, and a cached 386 have
+markedly different performance characteristics.  There are, alas, no hard and
+fast optimization rules that apply across all these environments.
+
+My own approach to 80x86 optimization has been to develop a set of general
+rules that serve reasonably well throughout the 80x86 line, especially the
+286 and 386, and to select a specific processor (in my case a cached 386, for
+which cycle times tend to be accurate) to serve as the tiebreaker when
+optimization details vary from one processor to another.  (Naturally, it's
+only worth bothering with these optimizations in critical code.)  The rules
+I've developed are:
+
+* Avoid accessing memory operands; use the registers to the max.
+
+* Don't branch.
+
+* Use string instructions, but don't go much out of your way to do so.
+
+* Keep memory accesses to a minimum by avoiding memory operands and keeping
+instructions short.
+
+* Align memory accesses.
+
+* Forget about many of those clever 8088 optimizations, using oddball
+instructions such as DAA and XLAT, that you spent years learning.
+
+Next I'll discuss each of these rules in turn in the context of
+8088-compatible real mode, which is still the focus of the 80x86 world.
+Later, I'll touch on protected mode.
+
+Let's start by looking at the last--and most surprising--rule.
+
+Kiss Those Tricks Goodbye
+
+To skilled assembly language programmers, the 8088 is perhaps the most
+wonderful processor ever created, largely because the instruction set is
+packed with odd instructions that are worthless to compilers but can work
+miracles in the hands of clever assembly programmers.  Unfortunately, each
+new generation of the 80x86 has rendered those odd instructions and marvelous
+tricks less desirable.  As the execution time for the commonly used
+instruction ADD BX, 4 has gone down from four cycles (8088) to three cycles
+(286) to two cycles (386) to one cycle (486), the time for the less
+frequently used instruction CBW has gone from two cycles (8088 and 286) up to
+three cycles (386 and 486)!
+
+Consider this ancient optimization for converting a binary digit to hex
+ASCII:
+
+ADD  AL,90H DAA ADC  AL,40H DAA
+
+Now consider the standard alternative:
+
+ADD  AL,'0' CMP  AL,'9' JBE  HaveAscii ADD  AL,'A'-('9'+1) HaveAscii:
+
+As Figure 1 indicates, the standard code should be slower on an 8088 or 286,
+but faster on a 386 or a 486--and real-world tests confirm those results, as
+shown in Figure 2.  (All "actual performance" timings in this article were
+performed with the Zen timer from Zen of Assembly Language, see "References"
+for details.  The systems used for the tests were: 8088, standard 4.77 MHz PC
+XT; 80286, standard one-wait-state, 8 MHz PC AT; 386SX, 16 MHz noncached;
+80386, 20 MHz externally cached with all instructions and data in external
+cache for all tests except Listings One and Two; 80486, 25 MHz internally
+cached, with all instructions and data in internal cache for all tests except
+Listings One and Two.)
+
+In other words, this nifty, time-tested optimization is an anti-optimization
+on the 386 and 486.
+
+Why is this?  On the 386, DAA--a rarely used instruction--takes four cycles,
+and on the 486 it takes two cycles, in both cases twice as long as the more
+common instructions CMP and ADD; in contrast, on the 8088 all three
+instructions are equally fast at four cycles.  Also, the instruction-fetching
+advantage that the 1-byte DAA provides on the 8088 means nothing on a cached
+386.
+
+Nor is this an isolated example.  Most oddball instructions, from AAA to
+XCHG, have failed to keep pace with the core instructions--ADC, ADD, AND,
+CALL, CMP, DEC, INC, Jcc, JMP, LEA, MOV, OR, POP, PUSH, RET, SBB, SUB, TEST,
+and XOR--during the evolution from 8088 to 486.  As we saw earlier, even LOOP
+lags behind on the 386 and 486.  Check your favorite tricks for yourself;
+they might or might not hold up on the 386, but will most likely be
+liabilities on the 486.  Sorry, but I just report the news, and the news is:
+Kiss most of those tricks goodbye as the 386 and 486 come to dominate the
+market.  (This means that hand-optimization in assembly language yields less
+of a performance boost nowadays than it did when the 8088 was king; the
+improvement is certainly significant, but rarely in the 200-500 percent range
+anymore.  Sic transit gloria mundi.)  Most startling of all, string
+instructions lose much of their allure as we move away from the 8088, hitting
+bottom on the 486.
+
+The 486: All the Rules Change
+
+The 486 represents a fundamental break with 8088-style optimization.
+Virtually all the old rules fail on the 486, where, incredibly, a move to or
+from memory often takes just one cycle, but exchanging two registers takes
+three cycles.  The nonbranching core instructions mentioned earlier take only
+one cycle on the 486 when operating on registers; MOV can, under most
+conditions, access memory in one cycle; and CALL and JMP take only three
+cycles, given a cache hit.  However, noncore instructions take considerably
+longer.  XLAT takes four cycles; even STC and CLC take two cycles each.  The
+486's highly asymmetric execution times heavily favor core instructions and
+defeat most pre-486 optimizations.
+
+Core instructions do have a weakness on the 486.  While 486 MOVs involving
+memory are remarkably fast, accessing memory for an operand to OR, ADD, or
+the like costs cycles.  Even with the 8K internal cache, memory is not as
+fast as registers, except when MOV is used (and sometimes not even then), so
+registers are still preferred operands.  (AND [BX],1 is fast, at only three
+cycles, but AND BX,1 takes only one cycle--three times as fast.)
+
+OUT should be avoided whenever possible on the 486, and likewise for IN.  OUT
+takes anywhere from 10 to 31 cycles, depending on processor mode and
+privileges, more than an order of magnitude slower than MOV.  The lousy
+performance of OUT -- true on the 386 as well -- has important implications
+for graphics applications.
+
+String instructions are so slow on the 486 that you should check cycle times
+before using any string instruction other than the always superior REP MOV's.
+For example, LODSB takes five cycles on the 486, but MOV AL,[SI]/INC SI takes
+only two cycles; likewise for STOSB and MOV [DI],AL/INC DI.  Listing One
+(page 73) uses LODSB/STOSB to copy a string, converting lowercase to
+uppercase while copying; Listing Two (page 73) uses MOV/INC instead.  Figure
+3 summarizes the performance of the two routines on a variety of processors;
+note the diminishing effectiveness of string instructions on the newer
+processors.  Think long and hard before using string instructions other than
+REP MOVS on the 486.
+
+Optimization for the 486 is really a whole new ball game.  When optimizing
+across the 80x86 family, the 486 will generally be the least of your worries
+because it is so much faster than the rest of the family; anything that runs
+adequately on any other processor will look terrific on the 486.  Still, the
+future surely holds millions of 486s, so it wouldn't hurt to keep one eye on
+the 486 as you optimize.
+
+String Instructions: Fading Stars
+
+On the 8088, string instructions are so far superior to other instructions
+that it's worth going to great lengths to use them, but they lose much of
+that status on newer processors.  One of the best things about string
+instructions on the 8088 is that they require little instruction fetching,
+because they're 1-byte instructions and because of the REP prefix; however,
+instruction fetching is less of a bottleneck on newer processors.  String
+instructions also have superior cycle times on the 8088, but that advantage
+fades on the 286 and 386 as well.
+
+On the 286, string instructions (when they do exactly what you need) are
+still clearly better than the alternatives.  On the 386, however, some string
+instructions are, even under ideal circumstances, the best choice only by a
+whisker, if at all.  For example, since Day One, clearing a buffer has been
+done with REP STOS.  That's certainly faster than the looping MOV/ADD
+approach shown in Listing Three (page 73), but on the 386 and 486 it's no
+faster than the unrolled loop MOV/ADD approach of Listing Four (page 73), as
+shown in Figure 4.  (Actually, in my tests REP STOS was a fraction of a cycle
+slower on the 386, and fractionally faster on the 486.)  REP STOS is much
+easier to code and more compact, so it's still the approach of choice for
+buffer clearing--but it's not necessarily fastest on a 486 or fast-memory
+386.  This again demonstrates just how unreliable the old optimization rules
+are on the newer processors.
+
+The point is not that you shouldn't use string instructions on the 386.  REP
+MOVs is the best way to move data, and the other string instructions are
+compact and usually faster, especially on uncached systems.  However, on the
+386 it's no longer worth going to the trouble of juggling registers and
+reorganizing data structures to use string instructions.  Furthermore, when
+you truly need maximum performance on the 386, check out nonstring
+instructions in unrolled loops.  It goes against every lesson learned in a
+decade of 8088 programming, but avoiding string instructions sometimes pays
+on the 386.
+
+The Siren Song of Memory Accesses
+
+Finally, here's a rule that's constant from the 8088 to the 486: Use the
+registers.  Avoid memory.
+
+Don't be fooled by the much faster memory access times of the 286 and 386.
+The effective address calculation time of the 8088 is mostly gone, so MOV
+AX,[BX] takes only five cycles on the 286, and ADD [SI],DX takes only seven
+on the 386.  That's so much faster than the 17 and 29 cycles, respectively,
+that they take on the 8088 that you might start thinking that memory is
+pretty much interchangeable with registers.
+
+Think again.  MOV AX,BX is still more than twice as fast as MOV AX,[BX] on
+the 286, and ADD SI,DX is more than three times as fast as ADD [SI],DX on the
+386.  Memory operands can also reduce performance by slowing instruction
+fetching.  Memory is fast on the 286 and 386.  Registers are faster.  Use
+them as heavily as possible.
+
+Don't Branch
+
+Here's another rule that stays the same across the 80x86 family: Don't
+branch.  Branching suffers on the 8088 from lengthy cycle counts and emptying
+the prefetch queue.  Emptying the prefetch queue is a lesser but nonetheless
+real problem in the post-8088 world, and the cycle counts of branches are
+still killers.  As Figure 4 indicates, it pays to eliminate branches by
+unrolling loops or using repeated string instructions.
+
+Modern-Day Instruction Fetching
+
+Instruction fetching is the bugbear of 8088 performance; the 8088 simply
+can't fetch instruction bytes as quickly as it can execute them, thanks to
+its undersized bus.  Minimizing all memory accesses, including instruction
+fetches, is paramount on the 8088.
+
+Instruction fetching is less of a problem nowadays.  Figure 5 shows the
+maximum rates at which various processors can fetch instruction bytes;
+clearly, matters have improved considerably since the 8088, although
+instructions also execute in fewer cycles on the newer processors.  Fetching
+problems can occur on any 80x86 processor, even the 486, but the only
+processors other than the 8088 that face major instruction fetching problems
+are the one-wait-state 286 and the 386SX, although uncached 386s may also
+outrun memory.  However, the problems here are different from and less
+serious than with the 8088.
+
+Consider: An 8088 executes a register ADD in three cycles, but requires eight
+cycles to fetch that instruction, a fetch/execute ratio of 2.67.  A
+one-wait-state 286 requires three cycles to fetch a register ADD and executes
+it in two cycles, a ratio of 1.5.  A 386SX can fetch a register ADD in two
+cycles, matching the execution time nicely, and a cached 386 can fetch two
+register ADDs in the two cycles it takes to execute just one.  For
+register-only code--the sort of code critical loops should contain--the 386
+generally runs flat out, and the 286 and 386SX usually (not always, but
+usually) outrun memory by only a little at worst.  Greater fetching problems
+can arise when working with large instructions or instruction sequences that
+access memory nonstop, but those are uncommon in critical code.  This is a
+welcome change from the 8088, where small, register-only instructions tend to
+suffer most from inadequate instruction fetching.
+
+Also, uncached 386 systems often use memory architectures that provide
+zero-wait-state performance when memory is accessed sequentially.  In
+register-only code, instruction fetches are the only memory accesses, so
+fetching proceeds at full speed when the registers are used heavily.
+
+So, is instruction fetching a problem in the post-8088 world?  Should
+instructions be kept short?
+
+Yes.  Smaller instructions can help considerably on the one-wait-state 286
+and on the 386SX.  Not as much as on the 8088, but it's still worth the
+trouble.  Even a cached 386 can suffer from fetching problems, although
+that's fairly uncommon.  For example, when several MOV WORD PTR [MemVar],0
+instructions are executed in a row, as might happen when initializing memory
+variables, performance tends to fall far below rated speed, as shown in
+Figure 6.  The particular problem with MOV WORD PTR [MemVar],0 is that it
+executes in just two (386) or three (286) cycles, yet has both an addressing
+displacement field and a constant field.  This eats up memory bandwidth by
+requiring more instruction fetching.  It also accesses memory, eating up
+still more bandwidth.  We'll see this again, and worse, when we discuss
+protected mode.
+
+Generally, though, post-8088 processors with fast memory systems and
+full-width buses run most instructions at pretty near their official cycle
+times; for these systems, optimization consists mostly of counting cycles.
+Slower memory or constricted buses (as in the 386SX) require that memory
+accesses (both instruction fetches and operand accesses) be minimized as
+well.  Fortunately, the same sort of code--register only--meets both
+requirements.
+
+Use the registers.  Avoid constants.  Avoid displacements.  Don't branch.
+That's the big picture.  Don't sweat the details.
+
+Alignment: The Easy Optimization
+
+The 286, 386SX, and 386 take twice as long to access memory words at odd
+addresses as at even addresses.  The 386 takes twice as long to access memory
+dwords at addresses that aren't multiples of four as those that are.  You
+should use ALIGN 2 to word align all word-sized data, and ALIGN 4 to dword
+align all data that's accessed as a dword operand, as in:
+
+ALIGN  4 MemVar  dd  ? : MOV EAX,[MemVar]
+
+Alignment also applies to code; you may want to word or dword align the
+starts of procedures, labels that can only be reached by branching, and the
+tops of loops.  (Code alignment matters only at branch targets, because only
+the first instruction fetch after a branch can suffer from nonalignment.)
+Dword alignment of code is optimal, and will help on the 386 even in real
+mode, but word alignment will produce nearly as much improvement as dword
+alignment without wasting nearly as many bytes.
+
+Alignment improves performance on many 80x86 systems without hindering it on
+any.  Recommended.
+
+Protected Mode
+
+There are two sorts of protected mode, 16-bit and 32-bit.  The primary
+optimization characteristic of 16-bit protected mode (OS/2 1.X, Rational DOS
+Extender) is that it takes an ungodly long time to load a segment register
+(for example, MOV ES,AX takes 17 cycles on a 286) so load segment registers
+as infrequently as possible in 16-bit protected mode.
+
+Optimizing for 32-bit protected mode (OS/2 2.0, SCO Unix, Phar Lap DOS
+Extender) is another matter entirely.  Typically, no segment loads are needed
+because of the flat address space.  However, 32-bit protected mode code can
+be bulky, and that can slow instruction fetching.  Constants and addressing
+displacements can be as large as 4 bytes each, and an extra byte, the SIB
+byte, is required whenever two 32-bit registers are used to address an
+operand or scaled addressing is used.  So, for example, MOV DWORD PTR
+[MemVar],0 is a 10-byte instruction in 32-bit protected mode.  The
+instruction is supposed to execute in two cycles, but even a 386 needs four
+to six cycles to fetch it, plus another two cycles to access memory; a few
+such instructions in a row can empty the prefetch queue and slow performance
+considerably.  The slowdown occurs more quickly and is more acute on a 386SX,
+which needs 14 cycles to perform the memory accesses for this nominally
+2-cycle instruction.
+
+Code can get even larger when 32-bit instructions are executed in 16-bit
+segments, adding prefix bytes.  (Avoid prefix bytes if you can; they increase
+instruction size and can cost cycles.)  Figure 7 shows actual versus nominal
+cycle times of multiple MOV DWORD PTR [EBX*4+MemVar],0 instructions running
+in a 16-bit segment.  Although cache type (write-back, write-through) and
+main-memory write time also affect the performance of stores to memory, there
+is clearly a significant penalty for using several large (in this case,
+13-byte) instructions in a row.
+
+Fortunately, this is a worst case, easily avoided by keeping constants and
+displacements out of critical loops.  For example, you should replace:
+
+ADDLOOP: MOV  DWORD PTR BaseTable[EDX+EBX],0 ADD  EBX,4 DEC  ECX JNZ  ADDLOOP
+
+with:
+
+LEA  EBX,BaseTable[EDX+EBX] SUB  EAX,EAX ADDLOOP: MOV  [EBX],EAX ADD  EBX,4
+DEC  ECX JNZ  ADDLOOP
+
+Better yet, use REP STOSD or unroll the loop!
+
+Happily, register-only instructions are no larger in 32-bit protected mode
+than otherwise and run at or near their rated speed in 32-bit protected mode
+on all processors.  All in all, in protected mode it's more important than
+ever to avoid large constants and displacements and to use the registers as
+much as possible.
+
+Conclusion
+
+Optimization across the 80x86 family isn't as precise as 8088 optimization,
+and it's a lot less fun, with fewer nifty tricks and less spectacular
+speed-ups.  Still, familiarity with the basix 80x86 optimization rules can
+give you a decided advantage over programmers still laboring under the
+delusion that the 286, 386, and 486 are merely faster 8088s.
+
+References
+
+Abrash, Michael.  Zen of Assembly Language.  Glenview, Ill.: Scott, Foresman,
+1990.
+
+Barrenechea, Mark.  "Peak Performance: On to the 486."  Programmer's Journal,
+(November-December 1990).
+
+Paterson, Tim.  "Assembly Language Tricks of the Trade."  Dr. Dobb's Journal
+(March 1990).
+
+Turbo Assembler Quick Reference Guide.  Borland International, 1990.
+
+i486 Microprocessor Programmer's Reference Manual.  Intel Corporation, 1989.
+
+80386 Programmer's Reference Manual.  Intel Corporation, 1986.
+
+Microsystems Components Handbook: Microprocessors Volume I.  Intel
+Corporation, 1985.

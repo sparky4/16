@@ -1,0 +1,20 @@
+option quiet
+debug dwarf lines
+option stack=32768
+system dos
+file exmmtest.o
+file 16_in.o
+file 16_mm.o
+file wcpu.o
+file 16_head.o
+file 16_ca.o
+file 16_dbg.o
+file kitten.o
+file 16_hc.o
+file 16_timer.o
+name exmmtest
+option map=exmmtest.mah
+library src/lib/doslib/hw/cpu/dos86h/cpu.lib
+library src/lib/doslib/hw/dos/dos86h/dos.lib
+library src/lib/doslib/hw/vga/dos86h/vga.lib
+library src/lib/doslib/hw/8250/dos86h/8250.lib

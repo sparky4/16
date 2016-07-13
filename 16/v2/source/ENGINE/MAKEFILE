@@ -1,0 +1,7 @@
+CC = gcc
+CFLAGS = -s -Wall -Werror
+
+OBJ = a_memory.o conlib.o console.o  controls.o engine.o entity.o font.o image.o  keyboard.o message.o  modeinit.o render.o  startup.o  timer.o verge.o vc.o  vdriver.o vfile.o fli.o sound.o mikmod.a
+
+verge: $(OBJ)
+

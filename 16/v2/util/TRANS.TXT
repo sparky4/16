@@ -1,0 +1,32 @@
+trans.exe
+documentation
+by zeromus 5.8.99
+zeromus@verge-rpg.com
+(be sure word wrap is on)
+---
+USE: creates translucency table for use in v2
+---
+If you want to use translucency effects in v2, you'll need to have the appropriate trans.tbl file.  This program will make it.
+
+Game palettes, unless you're elite like snes programmers, should be made up of a number of gradients.  Trans.exe takes advantage of this by accepting a makefile (for amusement called Palette Definition File, conveniently extensioned .pdf.  Our extension makes more sense than Adobe's, though.) consisting of a list of gradients found in the palette.  This unique method of generating a translucency table does not need the actual palette--it only needs to know which indexes in the palette start and finish each gradient.
+
+The .pdf format looks like this (the x spots are where you'll fill in numbers):
+
+GRADIENTS x_num_times
+STARTS x ENDS x ENDSPAN
+STARTS x ENDS x ENDSPAN <--x_num_time entries
+STARTS x ENDS x ENDSPAN
+... etc
+
+With sample data:
+
+gradients 3
+starts 0 ends 128 endspan
+starts 129 ends 240 inverse endspan
+starts 141 ends 254 endspan
+
+Whats that inverse, stuck in there, you say?  That just indicates that instead of gradient going from dark to light it goes from light to dark (that *is* what inverse means).
+
+Inspect the sample files for more info.
+
+That is all.

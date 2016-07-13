@@ -1,0 +1,44 @@
+The following is a FAQ (Frequently Asked Question) summary of 
+information and assembly routines for Mode "X" Graphics.
+
+An overview of Mode "X" for the VGA Adaptor:
+
+1) Mode "X" is a 256 color graphics mode that is available on *ANY* VGA
+card with the minimum of 256K video RAM.  It is capable of providing
+higher resoultions than the only "Official" 256 color mode, mode 13h.
+(In quickbasic that is mode 13)
+
+2) Mode "X" comes in 8 different flavors: 320 or 360 pixels
+horizontally, and 200, 240, 400, and 480 pixels vertically.
+
+3) Since mode X is not supported by the VGA BIOS, there is no built in
+support for it.  A program must provide its own routines for *ALL*
+operations in Mode "X", including setting up the video mode.
+
+4) Unlike Mode 13h, which has one display page, Mode "X" allows from 1
+to 4 video pages, depending upon the resoultion selected.  The reason
+that Mode 13h has but one page is that it activates a VGA hardware
+feature known as CHAIN4, which prevents access to all but 64K of VGA's
+video RAM.  CHAIN4 is what provides mode 13h's linear addres space.
+
+5) Unlike Mode 13h, where each 256 color (1-byte) pixel has a unique
+address in the E000: segement, in Mode X there are Four (4) Pixels
+at each address in E000: segment.  The VGA's control registers allow you
+to control which of the 4 pixels is currently available at an address.
+
+6) It is possible to use the VGA's control registers to operate on 2 or
+more of the Pixels at the same address at the same time.  The CPU can
+write one color value, and set up to 4 pixels with that value at the
+same time.
+
+7) Video RAM that is not being used for the current screen display can
+be used to store images and patterns.  These images and patterns can be
+copied to other parts of the Video RAM 4 bytes (32 bits) at a time,
+which is much faster than the 8 bits (1 byte) at time that is possible
+over the ISA BUS.  (16 Bit BUS operations can produce erroneous results)
+
+If anything is unclear, inadequate, or you just plain want to know more 
+or have other specific questions, please send me a message.
+
+
+-Matt Pritchard

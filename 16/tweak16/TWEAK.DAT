@@ -1,0 +1,30 @@
+29
+3c2 00 Misc. output
+3d4 00 Horiz. total
+3d4 01 Horiz. disp. enable end
+3d4 02 Horiz. blank start
+3d4 03 Horiz. blank end
+3d4 04 Horiz. retrace start
+3d4 05 Horiz. retrace end
+3d4 06 Vertical total
+3d4 07 Overflow register
+3d4 08 Preset row scan
+3d4 09 Max scan line/char ht.
+3d4 10 Vertical retrace start
+3d4 11 Vertical retrace end
+3d4 12 Vert. disp. enable end
+3d4 13 Offset/Logical width
+3d4 14 Underline location
+3d4 15 Vertical blank start
+3d4 16 Vertical blank end
+3d4 17 Mode control
+3c4 01 Clock mode register
+3c4 03 Character gen. select
+3c4 04 Memory mode register
+3ce 05 Mode register
+3ce 06 Miscellaneous register
+3c0 10 Mode control
+3c0 11 Screen border colour
+3c0 12 Color plane enable
+3c0 13 Horizontal panning
+3c0 14 Color select

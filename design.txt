@@ -1,0 +1,85 @@
+Near functions should be for frequently used functions that update the game engine are are time critial
+
+far functions are for like menus, file loaders, and such
+
+	Make a palette manager that updates the display palette with the pallet of images and sprites. in a stack and reuse same colors in the pallette on the image by changing the image's values to the matching color.
+		Use a little database to keep track of the images loaded and have manipulated the display pallette.
+
+
+"
+It is also possible to use the small code option, and to override certain functions and pointers to functions as
+being
+ far.
+  However, this method may lead to problems.  The Open Watcom C
+16
+ compiler generates special
+function calls that the programmer doesn’t see, such as checking for stack overflow when a function is
+invoked.  These calls are either
+ near
+ or
+ far
+ depending entirely on the memory model chosen when the
+module is compiled.  If the small code model is being used, all calls will be near calls.  If, however, several
+code groups are created with far calls between them, they will all need to access the stack overflow
+checking routines.  The linker can only place these special routines in one of the code groups, leaving the
+other functions without access to them, causing an error.
+To resolve this problem, mixing code models requires that all modules be compiled with the big code
+model, overriding certain functions as being near.  In this manner, the stack checking routines can be placed
+in any code group, which the other code groups can still access.  Alternatively, a command-line switch may
+be used to turn off stack checking, so no stack checking routines get called.
+"
+
+
+00:00:19   joncampbell123 | okay you're makefile is already using -zu, -zff and other options that I'm     │
+                          | sure would tell Watcom C to separate stack from data segment, but the MAP file │
+                          | says it's still associating STACK with DGROUP :(                               │
+00:08:56   joncampbell123 | argh                                                                           │
+00:10:04   joncampbell123 | sparky, it's probably better to refactor your code not to require so much      │
+                          | stack                                                                          │
+00:10:20   joncampbell123 | in most of doslib I test and dev the code against far smaller stack sizes,     │
+                          | usually 8KB                                                                    │
+00:11:03   joncampbell123 | besides you don't want a stack that occupies 1/10th of all conventional memory │
+                          | in DOS, right? ^^                                                              │
+00:11:50   joncampbell123 | 64KB is a more appropriate stack size if you're targeting 32-bit DOS or Win32, │
+                          | not 16-bit DOS                                                                 │
+00:12:34   joncampbell123 | if you need so much storage please try using global variables or memory        │
+                          | allocation, but don't eat up your stack like that                              │
+00:13:59   joncampbell123 | don't forget you can move a char[] declaration within your function off the    │
+                          | stack by declaring it static                                                   │
+00:14:17   joncampbell123 | then it's a local variable that lives in the data segment, not stack 
+
+
+00:19:40   joncampbell123 | meaning you go through your functions, locate ones that declare a lot of local │
+                          | stack storage,                                                                 │
+00:19:53   joncampbell123 | and refactor them to put the storage elsewhere, other than the stack           │
+00:20:03   sparky4_derpy4 | joncampbell123: ah ok ^^ i will!!!                                             │
+00:20:16   sparky4_derpy4 | joncampbell123: look for large variables too? ww                               │
+00:20:21   joncampbell123 | yes.                                                                           │
+00:20:29   sparky4_derpy4 | scroll16 needs a bunch of work                                                 │
+00:20:29   joncampbell123 | the less you declare on the stack, the less stack the function needs.
+
+
+
+
+
+
+[15:03]	joncampbell123m	Think of it this way
+[15:03]	joncampbell123m	If something moves or changes frame
+[15:04]	joncampbell123m	then a rectangular region around the sprite needs to be redrawn
+[15:05]	joncampbell123m	So you collect update regions together
+[15:06]	joncampbell123m	based on performance vs overlap
+[15:06]	joncampbell123m	combine the rectangles together and redraw the screen they cover
+[15:07]	joncampbell123m	the simplest way is to compute a rectangle that covers them all
+[15:07]	joncampbell123m	then redraw that.
+[15:08]	joncampbell123m	Then optimize the code from there how you handle it
+
+
+
+
+screen set up 2 rendering screens lock together
+1 scrolls the other one follow
+
+pointers from 2nd screen follows the 1st
+size and dimentions and stuff are the same but addresses are different
+data is different 
+

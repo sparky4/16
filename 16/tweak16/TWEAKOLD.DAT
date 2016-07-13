@@ -1,0 +1,44 @@
+5
+
+0x3c2 Miscellaneous Output
+0
+
+0x3d4 The CRT Controller
+18
+0x00 Horiz. total
+0x01 Horiz. disp. enable end
+0x02 Horiz. blank start
+0x03 Horiz. blank end
+0x04 Horiz. retrace start
+0x05 Horiz. retrace end
+0x06 Vertical total
+0x07 Overflow register
+0x08 Preset row scan
+0x09 Max scan line/char ht.
+0x10 Vertical retrace start
+0x11 Vertical retrace end
+0x12 Vert. disp. enable end
+0x13 Offset/Logical width
+0x14 Underline location
+0x15 Vertical blank start
+0x16 Vertical blank end
+0x17 Mode control
+
+0x3c4 The Sequencer
+3
+0x01 Clock mode register
+0x03 Character gen. select
+0x04 Memory mode register
+
+0x3ce The Graphics Controller
+2
+0x05 Mode register
+0x06 Miscellaneous register
+
+0x3c0 The Attribute Controller
+5
+0x10 Mode control
+0x11 Screen border colour
+0x12 Color plane enable
+0x13 Horizontal panning
+0x14 Color select

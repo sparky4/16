@@ -1,0 +1,82 @@
+#
+# MODEX library makefile (for Borland MAKE)
+# Copyright (c) 1993,1994 by Alessandro Scotti
+#
+LIBINCS = MODEX.DEF
+
+LIBOBJS = MXBB.OBJ \
+          MXCC.OBJ \
+          MXCG.OBJ \
+          MXCL.OBJ \
+          MXCR.OBJ \
+          MXFB.OBJ \
+          MXFP.OBJ \
+          MXGC.OBJ \
+          MXGI.OBJ \
+          MXGM.OBJ \
+          MXGP.OBJ \
+          MXGV.OBJ \
+          MXHL.OBJ \
+          MXIT.OBJ \
+          MXLL.OBJ \
+          MXLN.OBJ \
+          MXOT.OBJ \
+          MXPB.OBJ \
+          MXPF.OBJ \
+          MXPG.OBJ \
+          MXPI.OBJ \
+          MXPN.OBJ \
+          MXPP.OBJ \
+          MXRA.OBJ \
+          MXRP.OBJ \
+          MXSA.OBJ \
+          MXSC.OBJ \
+          MXSI.OBJ \
+          MXSL.OBJ \
+          MXSM.OBJ \
+          MXSP.OBJ \
+          MXSS.OBJ \
+          MXTL.OBJ \
+          MXVS.OBJ \
+          MXWD.OBJ \
+          MXWM.OBJ \
+          MXWP.OBJ \
+          MXWR.OBJ
+
+#
+# ASM compiler
+#
+ASMC = tasm
+ASMO = /m5 /zi
+#/p
+
+#
+# PAS compiler
+#
+PASC = tpc
+PASO = /m -$D- -$L- -$S-
+
+#
+# LIB maker, uses response file
+#
+LIBC = tlib
+
+.asm.obj:
+        $(ASMC) $(ASMO) $<
+
+target: modex.lib
+# modex.tpu modex.tpp
+
+#modex.tpu: $(LIBOBJS) modex.pas
+#        $(PASC) $(PASO) modex
+#        copy modex.tpu ..
+#        copy modex.pas ..
+
+#modex.tpp: $(LIBOBJS) modex.pas
+#        $(PASC) /cp $(PASO) modex
+#        copy modex.tpp ..
+
+modex.lib: modex.lbr $(LIBOBJS)
+        $(LIBC) modex.lib @modex.lbr
+
+$(LIBOBJS):   modex.def

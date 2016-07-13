@@ -1,0 +1,99 @@
+The modes provided with TWEAK range from the obscure to the useful.
+This file has some hints and some vital information.
+
+First of all, a small warning:
+
+All mode files with an 's' at the and of the name (for example 
+800x600s.16) use special dot clocks available on my Chips & 
+Technologies 80c451 SVGA card.  Feel free to try them on your card, but 
+don't expect them to work on a vanilla VGA.
+
+Modes with a 'c' at the end of the name are chained modes, to 
+distinguish them from unchained modes of the same resolution.
+
+Then, some info about modes of particular interest:
+
+256x256c.256 - The chained Mode Q:
+  o  256x256 in 256 colors
+  o  exactly 1 page, uses every single byte of the video segment
+  o  1-to-1 linear pixel-to-address mapping, like mode 13h
+  o  keep (x,y) coordinates in a single word, and use that word as
+     an offset.  (Both x and y fit in a byte!)  No more MULs!
+  o  I named it 'Mode Q' for 256-cubed (256x256x256 = 256^3).
+
+256x256.256 - The unchained Mode Q:
+  o  256x256 in 256 colors
+  o  exactly 4 pages
+  o  4-to-1 planar mapping, like Mode X
+
+The 256-column modes have been provided in several other vertical
+resolutions: 224 and 240 lines
+
+400x600.256 - new, more stable version
+  o  400x600 in 256 colors (unchained)
+  o  1 page + 22144 bytes (55.36 lines)
+  o  4-to-1 planar mapping
+  o  good multisync monitor is still required
+
+400x300.256 - New square aspect ratio mode
+  o  400x300 in 256 colors (unchained)
+  o  That means a square aspect ratio if stretched to fill the screen!
+  o  2 pages + 22144 bytes (55.36 lines)
+  o  4-to-1 planar mapping
+  o  NOT based on the above 400x600 mode!  Uses the lowest vertical
+     frequency, and should thus prove much more stable than the
+     600-line mode.
+
+360x360.256
+  o  Interesting mode, which should work on most VGAs.
+
+360x270.256
+  o  New square aspect ratio mode
+
+
+Known problems:
+---------------
+  o  The 400x-modes won't work on LCDs and similar equipment
+
+  o  They also fail (won't synchronize) on cheap, basic VGA monitors
+     like the Samsung I used to have.  I think your monitor must
+     support SVGA resolutions of 800x600x16 and up for the 400x-modes
+     to work.  Your card can probably be plain, vanilla VGA though!
+
+  o  Don't expect the modes to line up perfectly with your monitor
+     screen's edges!  You might have to adjust the size and position of
+     the image with your monitor's control knobs.
+
+I have yet to see a VGA setup which doesn't support Mode Q.  Let me
+know if you have trouble.
+
+
+Disclaimer:
+-----------
+I can't guarantee that any of the above modes will be compatible with
+your VGA card.  I will accept no responsibility for damages arising
+from the use or abuse of the files included in this archive.
+
+If any of the above modes don't work on your configuration, send me
+an email stating the name/chipset of your (S)VGA card, and monitor
+type.  I'm especially interested in any changes you could make to get
+them to work!  Also mail me comments and suggestions to the TWEAK
+archive.  I will probably release a new version by the end of the
+summer.  Current ideas include:
+
+  o  A tutorial on tweaking in general, with focus on unchained, 256
+     color modes.  I ought to explain the significance of all timing
+     registers, and their relevance for the resulting resolution.
+  o  A program which takes as input a description of a screen mode
+     (i.e. resolution, colors) and outputs a list of suggested
+     registers settings.
+  o  A method of linking TWEAKed 256-color modes to Themie Gouthas' XLIB.
+  o  Context sensitive help on most registers and their individual bits
+     within the TWEAK utility.
+  o  Support for assembler and Pascal output.
+
+
+Regards from
+Robert Schmidt of Ztiff Zox Softwear, Norway
+
+e-mail: robert@stud.unit.no

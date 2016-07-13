@@ -1,0 +1,15 @@
+chrconv.exe
+documentation
+by zeromus 5.8.99
+zeromus@verge-rpg.com
+(be sure word wrap is on)
+---
+USE: converts v1 chr -> v2 chr
+---
+Chrconv is a remarkably simple utility, and that is a shame, because eventually you won't use it much at all.  But initially it will be of great value to everyone, because it converts from old v1 chrs to new v2 chrs.
+
+The v2 chr it creates will emulate the animation behavior of a v1 exactly, so it should look and operate like you're used to.  This is useful, because writing animation strings and handling odd-shaped chrs may not be something that appeals to you just yet.  For example, the default animation string used by chrconv for walking north is:F16W10F17W10F16W10F15W10F18W10F19W10F18W10F15W10.
+
+To use chrconv, simply execute it.  It will ask for the filename of the source v1 chr, and will convert it to v2 format. NOTE: it will overwrite the old chr, so you may want to back it up first.
+
+enjoy!

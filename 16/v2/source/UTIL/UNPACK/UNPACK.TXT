@@ -1,0 +1,13 @@
+unpack.exe
+documentation
+by zeromus 5.8.99
+zeromus@verge-rpg.com
+(be sure word wrap is on)
+---
+USE: extracts files from v2 pakfile
+---
+It doesnt get any better than this. type unpack followed by the name of the packfile you want to unpack.  if you can't get that right, unpack.exe will give you even more explicit instructions.  unpack.exe will then dump all the files contained in the pakfile with their extractable flags set into the directory you ran unpack.exe from.
+
+Use this only if the author of a demo/game gives you permission to use his stuff, or else we'll hunt you down and break your legs.
+
+That is all.

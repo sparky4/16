@@ -1,0 +1,1625 @@
+                      +----------------------------------+
+                      Ý    VergeC 2.0  Reference File    Ý
+                      Ý      Language Specification      Ý
+                      Ý      VC Built-ins reference      Ý
+                      +----------------------------------+
+
+Current as of 5.9.99
+
+=============================================================================
+
+I. Language Specification
+
+A. Comments
+-----------
+Just as in VC1, both C and C++ style comment conventions are supported.
+
+    1. Comments: Comments are not required in your VergeC code, but smart
+       event coders will use them to help organize and make their event
+       scripts readable for future reference. They are ignored by the
+       compiler. There are two ways to use comments:
+
+      a. If you type a double slash (//) in your code, everything on that
+         line after the slashes will be ignored.
+
+         Event  // #75: When Dexter joins
+         {
+          Addcharacter(3);
+         }
+
+      b. The second method is to use /* and */. When the compiler encounters
+         a /*, everything will be ignored until it sees a */. Example:
+
+         Event
+         {
+         /* This is the part where Dexter joins after
+            being seen on the path of Jujube mountains.
+            The event below is number 75. */
+          addcharacter(3);
+         }
+
+         The // is preferred for simple phrases that you wish commented, while
+         the /* */ method is best for large areas of text to be left commented.
+
+         NOTE: Try using commenting if you have a problematic area of your
+               event script that refuses to compile. Use // before the lines
+               that create errors and try recompiling until you can isolate
+               the problem.
+
+B. Code control structures
+---------------------------
+VergeC 2.0 supports most of the code control structures that genuine ANSI C
+does, with some differences that are explained below:
+
+    1. IFs: if statements are the most basic form of code execution control.
+       They have been much improved since VC1, primarily from the addition
+       of OR conditionals as well as the ELSE branching statement.
+       The basic format of an IF is:
+
+       if (condition <list>)
+       {
+         (code to be executed if condition is true)
+       }
+       else
+       {
+         (code to be executed if condition is false)
+       }
+
+    2. SWITCHs: switch/case statements basically replace a series of IF
+       statements. Cases are yet another method of simplifying and
+       empowering your VC code's flexibility. They are most useful in
+       situations where you wish to provide multiple results based on the
+       condition of some variable. Here's how they're used:
+
+       Switch(<variable to be tested>)
+       {
+         Case <result 1>: <command>;
+         Case <result 2>: <command>;
+         Case <result 3>: <command>;
+       }
+
+       When the interpreter encounters this construct, it will test the value
+       of what is given in the Switch parentheses, then run the Case statement
+       that matches it, if any. Note that unlike C, no break; statements are
+       in the below example; break statement in VC are not only unnecessary but
+       will cause an error if they are present. Example:
+
+       switch (PartyIndex(1))
+       {
+         case 1: Text(1,"My name's Darin and I'm leading this party!","","");
+         case 2: Text(2,"I'm Sara and I'm here to pump you up!","","");
+         case 3: Text(3,"Dexter is leading this party.","","");
+       }
+
+    3. WHILE loops:
+       It works much the same as a FOR loop, but can use nearly any condition
+       to control how long it executes. The syntax is such:
+
+       while (<condition>)
+       {
+         commands;
+       }
+
+       The condition inside the parentheses after WHILE can be anything you can
+       stuff in an IF statement. When the engine encounters a WHILE loop, it will
+       repeatedly execute the commands inside the curly braces until the condition
+       inside the parentheses is NOT true. Therefore, your WHILE loop should
+       contain some commands that affect that condition, or else your loop will
+       run endlessly.
+
+    4. FOR loops:
+       FOR loops are perhaps more commonly used than WHILE, altho I personally
+       dig WHILE loops greatly. Anyhow, FOR loops in VergeC 2.0 are much closer
+       to their true C counterparts than they were in VC1. The syntax now is:
+
+       for (init; condition; post)
+       {
+          commands;
+       }
+
+       To clarify, an example would be:
+
+       for (i=0; i<5; i++)
+       {
+         printstring(i,"This is font "+str(i)+".");
+       }
+
+C. system.vc, map-based VC, and the relationship thereof
+--------------------------------------------------------
+There are two distinct types of VC in V2, and that is the system.vc, and
+everything else, which are MAP-based VC files. MAP based VC is very similar
+to how VC was in V1. You cannot declare your own functions or variables in
+a MAP vc. They use the familiar event { } style scripts. When they are
+compiled their pcode is attached directly into the MAPfile itself.
+
+The other type is system.vc, which is compiled into the files system.vcs and
+system.idx, respectively. system.vc allows you to declare your own functions
+and variables - the trick comes in that any of your map VC can access any
+and all of the functions and variables set up in system.vc.
+
+The only real problem arises that, because of the new relationship between
+system.vc and map-based VC, it's conceivable (quite likely, actually) that
+if you modify system.vc you'll break MAPs that you've already compiled. As
+such, VCC now has a 'vcc all' option, that will compile system.vc, and then
+recompile all maps it can find in the given directory. ME2 has a shortcut
+to do this right from inside MapEd - Just hit F6 and it'll rebuild all of
+your VC files. (of course, this means you can't have an ALL.MAP. Oh well,
+live with it. ^_-)
+
+There is nothing like startup.vc or startup.scr in V2. When you execute
+verge.exe, it always starts execution at a MAP file. Which mapfile it starts
+at is determined in user.cfg, by the 'startmap' command. Additionally, you can
+start verge.exe at a specific map by specifying the mapfile on the command
+line, which MapEd makes use of to directly test out the mapfile you're
+currently working on.
+
+D. Syntax for user-declared variables and functions
+---------------------------------------------------
+
+    1. Funtions
+       There are two types of user declared functions, ones that return a
+       value and those that don't. The simplist declaration for a function
+       would be:
+
+       void MyFunc()
+       { }
+
+       You can add passed parameters like so:
+
+       void MyFunc(int a, string b)
+       { }
+
+       These parameters would be accessed inside this function as any other
+       variable would be, but it only exists inside the function. You would
+       call this function from map or other system.vc code with something
+       like this: MyFunc(5, "Hello.");
+
+       To make your function return a value, you'd declare it like so:
+
+       int MyAdd(int a, int b)
+       {
+          return a+b;
+       }
+
+       You cannot currently have a function return a string type. This may
+       change in a future version of V2/VC.
+
+    2. Variables
+       There are only two variable types in VC, int (integer) and string.
+       Both are declared the same basic way:
+
+       int num;
+       string name;
+
+       You can define multiple variables of the same type onto a single line:
+
+       int x1, y1, x2, y2;
+
+       You can also declare arrays of variables:
+
+       int flags[8000];
+
+       You can declare arrays of both ints and strings. You can only declare
+       them in SYSTEM.VC (and any #included sub-files). Variables declared
+       outside of any function are global and can be accessed by any system.vc
+       OR map-based VC event at all. Variables declared inside a given
+       system.vc function are local variables, which only exist during the
+       duration of that function's execution, and can't be accessed outside
+       of that function.
+
+       Limits of passed parameters and local variables: For any given system.vc
+       function, the total number of passed parameters and local variables
+       cannot exceed 20, and the total number of passed and locally declared
+       strings cannot exceed 10. However, if you have 10 strings, you can only
+       have 10 ints, otherwise the total limit of 20 variables
+       (int and otherwise) would be exceeded.
+
+       If there is a global variable and local variable of the same name,
+       inside the function the local variable will be used instead. But in
+       a function where that local var isn't declared, or a map-vc event,
+       the global variable will be used instead.
+
+       We may add the ability to declare local variables in map-vc events in
+       a later release.
+
+E. Special string operators
+---------------------------
+
+We strived to make VC2 closer to "real" C in most aspects, but strings is not
+one of them. In real C, string manipulation is fairly clunky, and not very
+easy for beginners to pick up. So, we have created a string system that's
+somewhat like a mix of Pascal and BASIC.
+
+Any string can be combined any number of times, altho the total length of
+any one string cannot exceed 255 characters. For instance, if you had a string
+variable named OurHero, and it contained the main character's name, you
+could do something like:
+
+  Text(0,"Greetings, "+OurHero+". We",
+         "have been expecting you.", "");
+
+Additionally, there are 4 other commands which can be used during string
+combination: str(), left(), right(), and mid():
+
+  str(int) - converts a numerical value into string form.
+  left(string, n) - returns the leftmost n characters of string.
+  right(string, n) - returns the rightmost n characters of string.
+  mid(string, start, run) - returns a section of string, starting at the
+                            start character, run characters long.
+
+And lastly, the val(string) attempts to convert a string back to an
+interger value. If the string has too many non-numerical characters in it,
+however, it may not be able to.
+
+F. Preprocessor directives
+--------------------------
+
+As in the original VC, VC2 emulates two primary C preprocessor directives,
+#include and #define. #include has been expanded, while #define has been
+scaled back.
+
+#include is more stable than before, and you can have nested #includes without
+any problems. The primary purpose of #includes in VC2 is to allow you to break
+up your system.vc into sub-files such as menu.vc, battle.vc, or similar
+divisions, and just #include those units into your main system.vc.
+
+Since VC2 now has proper functions, the macro-like behavior of #define in the
+VC1 preprocessor is no longer necessary, and since it was rather highly
+unstable, it was taken out. The primary purpose of #defines in VC2 is to
+allow an unlimited number of simple symbolic constants. An example would be:
+
+#define k_ESC 1
+if (key[k_ESC]) Text(0,"ESC has been pressed.","","");
+
+We may also later add conditional compilaton if there is a request for it.
+
+G. Pointers and direct memory access
+------------------------------------
+
+If you are not a native C programmer, you are more than welcome to skip over
+this section. I would not dare attempt to teach the principals of pointers
+to those who aren't programmers in their own right, and you don't really need
+to understand VC2's implementation using pointers for direct memory access for
+the vast majority of things you could ever want to do in VergeC.
+
+Since VC deals with all numeric variables as integers (signed, 32-bit values),
+it would not really make sense for us to implement the standard * and &
+operators, since you'd only be able to operate on data of type int.
+
+So, we have 6 builtins which aren't quite functions, and they aren't quite
+variables, but whatever they are, they're there. They are:
+
+(unsigned) byte[ptr]
+(unsigned) word[ptr]
+(unsigned) quad[ptr]
+  (signed) sbyte[ptr]
+  (signed) sword[ptr]
+  (signed) squad[ptr]
+
+Note: signed allows for negative numbers.
+
+Using the convention:
+ byte = 8 bits
+ word = 16 bits
+ quad = 32 bits
+
+The main reason these don't quite qualify as C functions is that you can also
+assign them values. Ie:
+
+  byte[myptr]=5;
+  if (byte[myptr] != 5)
+    Exit("Your computer is smoking crack, my friend.");
+
+H. Misc
+-------
+1. Alternate ways of expressing numbers
+   VC has three ways that it recognizes an immediate numerical value.
+
+   a. Standard/Decimal
+      The first is a standard, base-10 number. Just 65 or something. ex:
+
+      myval=65;
+      if (myval != 65)
+        Exit("Woe to thee, for thine computer smoketh crack, verily.");
+
+   b. Hexademical
+      VC uses Pascal's convention for handling hexademinal numbers, which
+      is to preceed a hexadecimal numerical delcaration with a $ sign. ex:
+
+      myval=255;
+      if (myval != $FF)
+        Exit("For thus sayeth the Lord, that thine processor was created by"+
+             "those darwinists who would believe that a CPU can be created"+
+             "by putting silicon in a frying pan and shaking it around a lot."+
+             "Well, either that, or you're running a Microsoft OS.");
+
+   c. ASCII character conversions
+      You can use C style single tick marks to denote an ASCII char conversion.
+      However, it does not support C's \ codes. Whats in between the tick
+      marks is taken directly. ex:
+
+      myval=65;
+      if (myval != 'A')
+        Exit("A stroke from the brush does not guarantee art from the bristles.");
+    
+2. Order of Operations
+   Does not exist.  Use parentheses gratuitously.  
+   Oftentimes you will want to do something like this: putpixel(x+y*320
+   This will not work!  V2 will add x and y, then multiply the result by 320.
+   As always, any order of operations expression can be rewritten with
+   parentheses.  In the example: putpixel(x+(y*320)
+
+=============================================================================
+
+II. Builtin Functions
+
+---------------------------
+void AllowConsole(int flag)
+---------------------------
+Controls whether or not the ` key will summon the console or not. 0 will
+disallow the console, 1 will activate it. Disabling the console is a good
+way to prevent cheating, however having it enabled will make developing
+and testing the game easier.
+
+Example:
+  AllowConsole(1);
+
+-------------------------------
+int CacheSound(string filename)
+-------------------------------
+Loads a specified sound effect (8-bit, mono, un-compressed WAV file), and
+returns the slot number that you'll access this sound with for PlaySound.
+
+See also: FreeAllSounds(), PlaySound()
+
+Example:
+  snd_shriek = CacheSound("SHRIEK.WAV");
+
+-----------------------
+void CD_Play(int track)
+-----------------------
+Begins playing CD audio at the specified track number.
+
+Example:
+  CD_Play(6);
+
+--------------
+void CD_Stop()
+--------------
+Stops all CD audio playing.
+
+Example:
+  CD_Stop();
+
+------------------------------------------------
+void Circle(int x, int y, int radius, int color)
+------------------------------------------------
+Draws a circle (outline only) of the given radius, centered at the given
+coordinates, in the given color.
+
+See also: CircleFill()
+
+Example:
+  Circle(screenx/2, screeny/2, 50, 128);
+
+----------------------------------------------------
+void CircleFill(int x, int y, int radius, int color)
+----------------------------------------------------
+Draws a filled circle of the given radius, centered at the given
+coordinates, in the given color.
+
+See also: Circle()
+
+Example:
+  CircleFill(screenx/2, screeny/2, 50, 128);
+
+---------------------------------------------------------------
+void CopySprite(int x, int y, int width, int height, int image)
+---------------------------------------------------------------
+Blits the image pointed to by image with the given dimensions at the
+given location on screen. No transparency, clipping is performed.
+
+See also: TCopySprite
+
+Example:
+  im = LoadImage("VECNA.PCX");
+  CopySprite(0, 0, image_width, image_height, im);
+  free(im);
+
+-------------------
+int cos(int degree)
+-------------------
+Returns the cosine of the given degree of measure (0-360) in 16.16 fixed
+point.
+
+See also: sin(), tan()
+
+Example:
+  result = cos(45);
+
+----------------------------------------------
+void EntityMove(int entity, string movescript)
+----------------------------------------------
+Sets the given entity to the specified movement script. As in V1,
+you cannot use 'B', the loop command, in an EntityMove given script.. But
+I should be able to work around that so that it will work eventually.
+
+Example:
+  ent = EntitySpawn(0, 1, "VECNA.CHR");
+  EntityMove(ent, "D2R2");
+
+---------------------------------------------
+int EntitySpawn(int x, int y, string chrname)
+---------------------------------------------
+Allocates a new entity at the given coordinates, using the specified CHR file.
+The entity index of the new entity is returned.
+
+See also: SetPlayer()
+
+Example:
+  ent = EntitySpawn(0, 1, "VECNA.CHR");
+
+-------------------------
+void Exit(string message)
+-------------------------
+Completely exits out of the engine leaving the user with the specified
+message.
+
+Example:
+  Exit("Thank you for playing!");
+
+---------------------------
+void fclose(int filehandle)
+---------------------------
+Closes the file given by the specified file handle.
+
+See also: fopen()
+
+Example:
+  file = fopen("EXAMPLE.DAT");
+  // ** use file here **
+  fclose(file);
+
+----------------------------
+int fgetbyte(int filehandle)
+----------------------------
+Gets a single byte from the specified file and returns it's value.
+
+Example:
+  file = fopen("TEST.DAT");
+  Message("First byte in TEST.DAT is: "+str(fgetbyte(file)), 200);
+  fclose(file);
+
+----------------------------
+int fgetword(int filehandle)
+----------------------------
+Gets a single word (2 bytes) from the specified file and returns it's value.
+
+Example:
+  file = fopen("TEST.DAT");
+  Message("First word in TEST.DAT is: "+str(fgetword(file)), 200);
+  fclose(file);
+
+----------------------------
+int fgetquad(int filehandle)
+----------------------------
+Gets a single quad (4 bytes) from the specified file and returns it's value.
+
+Example:
+  file = fopen("TEST.DAT");
+  Message("First quad in TEST.DAT is: "+str(fgetquad(file)), 200);
+  fclose(file);
+
+----------------------------------------------
+void fgetline(string variable, int filehandle)
+----------------------------------------------
+Grabs the next line from the specified text file handle and returns it in the
+string variable passed.
+
+Example:
+  file = fopen("EXAMPLE.TXT");
+  fgetline(my_string, file);
+  Message("First line in EXAMPLE.TXT is: "+my_string, 200);
+  fclose(file);
+
+Note: String support is a bit sketchy in V2 at the moment, and this command,
+      along with fgettoken(), only accept global strings as valid parameters.
+      It also will not read correctly into string arrays.
+
+-----------------------------------------------
+void fgettoken(string variable, int filehandle)
+-----------------------------------------------
+Grabs the next token (space delimited) from the specified text file handle
+and returns it in the string variable passed.
+
+Example:
+  file = fopen("EXAMPLE.TXT");
+  fgettoken(my_string, file);
+  Message("First token in EXAMPLE.TXT is: "+my_string, 200);
+  fclose(file);
+
+---------------------------
+int FontHeight(int fontidx)
+---------------------------
+Returns the height of the font at the given font index.
+
+See also: FontWidth()
+
+Example:
+  height = FontHeight(0);
+
+--------------------------
+int FontWidth(int fontidx)
+--------------------------
+Returns the width of the font at the given font index.
+
+See also: FontHeight()
+
+Example:
+  width = FontWidth(0);
+
+--------------------------
+int fopen(string filename)
+--------------------------
+Opens the given file and returns a unique file handle integer.
+
+See also: fclose()
+
+Example:
+  file = fopen("EXAMPLE.TXT");
+  fclose(file);
+
+--------------------------------------------------
+void fread(int buffer, int length, int filehandle)
+--------------------------------------------------
+Reads in a given amount of data from the specified file into the given buffer.
+Thus buffer must be pre-allocated by the user.
+
+Example:
+  file = fopen("TEST.DAT");
+  buffer = malloc(100);
+  fread(buffer, 100, file);
+  fclose(file);
+
+----------------------
+void free(int pointer)
+----------------------
+Frees the memory space pointed to by the given pointer. (ie, you would pass
+the same value returned by malloc for a memory segment)
+
+Example:
+  buffer = malloc(100);
+  // ** use buffer here **
+  free(buffer);
+
+--------------------
+void FreeAllSounds()
+--------------------
+Frees all sound effect slots.
+
+See also: CacheSound(), PlaySound()
+
+Example:
+  FreeAllSounds();
+
+-----------------------------
+void fdelete(string filename)
+-----------------------------
+Deletes the specified file. (uhm.. obviously, be careful with this command.
+This doesn't send it to the recycle bin or anything, the file is GONE after
+this command is executed. Like all the other file I/O vc commands, this
+will ONLY work on files in the main directory VERGE is being run from)
+
+Example:
+  fdelete("EXAMPLE.TXT");
+
+---------------------------------------------
+void frename(string filename, string newname)
+---------------------------------------------
+Renames the specified file to the new name.
+
+Example:
+  frename("EXAMPLE.TXT", "TEST.TXT");
+
+----------------------------------------
+void fseekline(int line, int filehandle)
+----------------------------------------
+Moves the file pointer to the given line number in a pre-opened text file.
+
+Example:
+  file = fopen("EXAMPLE.TXT");
+  fseekline(3, file);
+  fgetline(my_string, file);
+  Message("Line #3 in EXAMPLE.TXT is: "+my_string, 200);
+  fclose(file);
+
+--------------------------------------
+void fseekpos(int pos, int filehandle)
+--------------------------------------
+Moves the file pointer to the given byte position in a pre-opened binary file.
+
+Example:
+  file = fopen("TEST.DAT");
+  fseekpos(20, file);
+  Message("Byte #20 in TEST.DAT is: "+str(fgetbyte(file)), 200);
+  fclose(file);
+
+----------------------------
+void fwclose(int filehandle)
+----------------------------
+Closes the given file that was open for writing. Be *sure* not to mix
+file handles that were opened for reading and those that were opened
+for writing.
+
+See also: fwopen()
+
+Example:
+  file = fwopen("EXAMPLE.TXT");
+  // ** use file here **
+  fwclose(file);
+
+------------------------
+int fwopen(string fname)
+------------------------
+Opens the specified filename for writing.
+
+See also: fwclose(), fwrite(), fwritestring()
+
+Example:
+  file = fwopen("EXAMPLE.TXT");
+  // ** use file here **
+  fwclose(file);
+
+------------------------------------------------
+void fwrite(int ptr, int length, int filehandle)
+------------------------------------------------
+Writes the data at the given data pointer to the specified file.
+
+Example:
+  file = fwopen("EXAMPLE.TXT");
+  buffer = malloc(screenx * screeny);
+  GrabRegion(0,0, screenx-1,screeny-1, buffer);
+  fwrite(buffer, screenx * screeny, file);
+  fwclose(file);
+  free(buffer);
+
+----------------------------------------------
+void fwritestring(string text, int filehandle)
+----------------------------------------------
+Writes the passed string to the specified file. The string is written in
+text mode format, with a CR/LF pair at the end.
+
+Example:
+  file = fwopen("EXAMPLE.TXT");
+  my_string = "VERGE 2";
+  fwritestring(my_string, file);
+  fwclose(file);
+
+--------------------------
+int GetPixel(int x, int y)
+--------------------------
+Returns the color of the specified pixel coordinate.
+
+See also: SetPixel();
+
+Example:
+  color = GetPixel(screenx/2, screeny/2);
+
+------------------------------------
+int GetTile(int x, int y, int layer)
+-----------------------------------
+Returns the value of the given map layer at the given coordinates. For
+layer, 0 through 5 are the first 6 possible map layers, a value of 6
+will always denote the obstruction field, and 7 denotes zone information.
+
+See also: SetTile()
+
+Example:
+  tile = GetTile(0, 0, 0);
+
+-------------------------
+void GotoXY(int x, int y)
+-------------------------
+Sets the current text output "cursor" to the given location. This is where
+calls to PrintString will be displayed at.
+
+See also: PrintString()
+
+Example:
+  GotoXY(screenx/2, screeny/2);
+  PrintString(0, "Hyuck.");
+
+-----------------------------------------------------------
+void GrabRegion(int x1, int y1, int x2, int y2, int buffer)
+-----------------------------------------------------------
+This routine captures a region of the screen and copies it into
+a bitmap buffer. The main trick with using this routine is that you are
+responsible for creating and destroying this buffer with the malloc/free
+commands, and to be sure that you allocate enough memory in your malloc call
+to contain the image. For instance, if you capture the region from (0,0) to
+(49,49), this is a 50x50 square, and you will need to allocate 2500 bytes.
+
+Example:
+  save_screen = malloc(screenx * screeny);
+  GrabRegion(0, 0, screenx-1, screeny-1, save_screen);
+  // ** use save_screen here **
+  free(save_screen);
+
+-------------------------------------------
+void HLine(int x, int y, int x2, int color)
+-------------------------------------------
+Draws a horizontal line using the specified coordinates in the given color.
+
+See also: VLine(), Line()
+
+Example:
+  HLine(0, screeny/2, screenx-1, 128);
+
+-----------------------------------------
+void HookKey(int scancode, system script)
+-----------------------------------------
+Binds an event to a specified keypress. This allows you to create menus and
+other types of key-based events easily.
+
+ex: HookKey(1, Menu);
+When Escape is pressed (key scancode 1), the function Menu() in system.vc
+will be executed.
+
+See also: HookTimer(), HookRetrace()
+
+Example:
+  HookKey(1, menu_script);
+
+-------------------------------
+void HookRetrace(system script)
+-------------------------------
+Given a non-zero event number, it will execute the given VergeC event (from the
+Map VC) each time a frame is rendered. Note that it will be called at the 'R'
+position in the Renderstring, so if there *is* no 'R' position, then it will
+never be executed. As in verge 1, HookRetrace is quite stable, and should be
+used instead of HookTimer whenever possible. You can pass zero to this event
+to turn off the HookRetrace.
+
+See also: HookTimer(), HookKey()
+
+Example:
+  HookRetrace(my_script); // hook script
+  HookRetrace(1);         // hook event
+
+-----------------------------
+void HookTimer(system script)
+-----------------------------
+Given a non-zero event number, it will execute the given VergeC event (from the
+Map VC) each timer tick (ie, 100 times per second). Note that, like verge 1,
+this is the more volatile of the Hook* family of functions, and HookRetrace
+should be used in place of HookTimer whenever possible. When using HookTimer,
+you should never call any rendering functions, and in general you should do as
+little as possible inside the hooked event as you can. As with HookRetrace,
+passing 0 to this function will turn off the HookTimer.
+
+See also: HookRetrace(), HookKey()
+
+Example:
+  HookTimer(my_script); // hook script
+  HookTimer(1);         // hook event
+
+---------------------
+int InitMosaicTable()
+---------------------
+If you wish to use the Mosaic() routine, you must call this function to
+generate a mosaic palette-matching table (store the value returned by this
+function and pass it to Mosaic each time you call it). We would precompute
+this table, however, it depends on the palette. The table calculations can
+take a while, it takes about 12 seconds on my P200. It is possible, of course,
+to precompute the table in VC and load it at runtime for people that want
+to use this feature and wish to avoid the long table computation time.
+
+See also: Mosaic()
+
+Example:
+  table = InitMosaicTable();
+
+--------------------------------------------------
+void Line(int x, int y, int x2, int y2, int color)
+--------------------------------------------------
+Draws an arbitary-angled line from any two sets of coordinates in the
+given color.
+
+See also: HLine(), VLine()
+
+Example:
+  Line(0,0, screenx-1,screeny-1, 128);
+
+-----------------------------
+int LoadFont(string filename)
+-----------------------------
+Loads the specified font file and returns the font slot which is used by
+PrintString.
+
+See also: GotoXY(), PrintString()
+
+Example:
+  my_font = LoadFont("MYFONT.FNT");
+
+----------------------------
+int LoadRaw(string filename)
+----------------------------
+Loads the specied file as raw data into an allocated buffer and returns
+a pointer to that buffer.
+
+Example:
+  raw = LoadRaw("SPEECH.SPC");
+  // ** use raw here **
+  free(raw);
+
+------------------------------
+int LoadImage(string filename)
+------------------------------
+Loads the specified image, allocating enough memory for it, and returns
+a pointer to the image. If you no longer need the image, you should
+free() it. The image can be any of the supported V2 image types, which
+are currently PCX, BMP, and GIF.
+
+Example:
+  im = LoadImage("CHEESE.GIF");
+  // ** use im here **
+  free(im);
+
+---------------------
+void Log(string text)
+---------------------
+Outputs a message to VERGE.LOG, assuming verge.log is enabled by the user.
+This can be useful for debugging.
+
+Example:
+  Log("VERGE 2");
+
+----------------------
+int malloc(int amount)
+----------------------
+Allocates the given amount of memory and returns a pointer to the memory
+space allocated.
+
+Example:
+  buffer = malloc(100);
+  free(buffer);
+
+------------------------
+void Map(string mapname)
+------------------------
+Loads the specified MAP file as the current map. Upon encountering this
+command, VC execution is immediately terminated completely and resumed at
+the new map's Autoexec event.
+
+Example:
+  Map("TEST.MAP");
+
+------------------------------------------
+void Message(string message, int duration)
+------------------------------------------
+Issues the specified system message, lasting the given duration in hundreths
+of a second. This message is displayed in the upper left corner of the screen
+for the given duration, and noted in the verge.log file.
+
+Example:
+  Message("VERGE 2", 200);
+
+-------------------------------------------------------------------------
+void Mosaic(int xfocus, int yfocus, int tablepointer, int x1, y1, x2, y2)
+-------------------------------------------------------------------------
+"Mosaics" the screen so far; The best way to describe it is as the mode7
+effect used in FF2 and such to make the screen "blur out" during screen
+transitions. xfocus and yfocus control the "granularity" of this blurring,
+tablepointer must be the value returned by InitMosaicTable or a pointer
+to a precomputed table loaded in memory. The x1,y1,x2,y2 values specify
+the section of the screen to apply the mosaic effect to.
+
+So, to apply the mosaic effect with a 3-to-1 pixel ratio to the whole screen,
+you'd use Mosaic(3, 3, MyMosaicTable, 0, 0, ScreenX, ScreenY);
+
+See also: InitMosaicTable()
+
+Example:
+  table = InitMosaicTable();
+  Mosaic(4,4, table, 0,0, screenx-1, screeny-1);
+
+-------------------------------------------------------------
+void PaletteMorph(int r, int g, int b, int mix, int lighting)
+-------------------------------------------------------------
+This command alters the entire game palette, which will effect the entire
+screen. It changes the 'tint' of the screen; the RGB values are the color
+you want to tint the screen with, and range from 0 to 63. So, 63,0,0 would
+be red, 0,63,0 is green, and 0,0,63 is blue. 0,0,0 is black and 63,63,63
+is white. The mix value controls how 'thickly' the screen is tinted
+with this color. 0 would mean no mix whatsoever, while 100 would change
+the screen to be the color you specified solidly. The lighting value simply
+controls how light or dark the screen will be as a whole; 63 is normal
+brightness, 0 is black.
+
+Example:
+  PaletteMorph(0,0,0,0, 63);
+
+---------------------------------
+void PartyMove(string movescript)
+---------------------------------
+This command will have the party follow the specified movement script; player
+control will resume after the script is completed.
+
+Example:
+  PartyMove("U1R1D1L1");
+
+-----------------------------
+void PlayFLI(string filename)
+-----------------------------
+Plays the specified FLI or FLC file. Does not loop. The timing in the V2
+playback may be slightly off, but it should be so slight as to be completely
+unnoticable in the vast majority of cases. Also, it would be a good idea to
+set the video mode beforehand to something appropriate to fit the resolution of
+the FLI.
+
+SeeAlso: SetResolution()
+
+Example:
+  PlayFLI("INTRO.FLC");
+
+-------------------------------
+void PlayMusic(string filename)
+-------------------------------
+Plays the specified music file. In this version of V2, only MODs, MTMs, S3Ms,
+and XMs are supported.
+
+See also: StopMusic();
+
+Example:
+  PlayMusic("AURORA.MOD");
+
+--------------------------------------------------
+void PlaySound(int soundslot, int volume, int pan)
+--------------------------------------------------
+Plays the specified sound effect at the given slot index; volume is a value
+from 0 to 64 indicating the volume the sound file will be played at, and pan
+is a value from 0 to 255; 0 is all the way left, and 255 is all the way right,
+128 is in the center.
+
+See also: CacheSound(), FreeAllSounds()
+
+Example:
+  shriek = CacheSound("SHRIEK.WAV");
+  PlaySound(shriek, 64, 128);
+
+--------------------------
+int pow(int base, int exp)
+--------------------------
+Raises base to the exp power and returns that value.
+
+Example:
+  result = pow(16, 3); // 4096
+
+----------------------
+void ProcessEntities()
+----------------------
+Processes one tick worth of entity movement. If you call this 100 times a
+second it will keep the game moving as normal. For example, the following code
+could be used to draw something on top of the normal map view:
+
+Example:
+  while (!done)
+  {
+    while (timer)
+    {
+      timer--;
+      ProcessEntities();
+    }
+    Render();
+    // Put additional things to be drawn per frame here
+    ShowPage();
+  }
+
+---------------------------------------
+void PrintString(int font, string text)
+---------------------------------------
+Displays the given string in the specified font index, at the location
+last given by GotoXY.
+
+See also: LoadFont(), GotoXY()
+
+Example:
+  PrintString(0, "VERGE 2");
+
+---------------------
+int Random(int range)
+---------------------
+Returns a random number between 0 and the range given.
+
+Example:
+  if (Random(100) < 50)
+    PrintString(0, "Heads!");
+  else PrintString(0, "Tails!");
+
+----------------
+void ReadMouse()
+----------------
+Updates the mouse status variables mx, my, and mb.
+
+See also: SetMousePos()
+
+Example:
+  ReadMouse();
+
+------------------------------
+void ReadVars(int filepointer)
+------------------------------
+Reads all the global variables that have been written to a file by WriteVars().
+You're responsible for opening and closing the file for reading, mainly used
+for savegames.
+
+See also: WriteVars(), fopen(), fclose()
+
+Example:
+  file = fopen("SAVE.DAT");
+  ReadVars(file);
+  fclose(file);
+
+----------------------------------------------
+void Rect(int x, int y, int x2, int y2, int c)
+----------------------------------------------
+Draws an outlined rectangle of the given coordinate set in the specified
+color.
+
+See also: RectFill()
+
+Example:
+  Rect(0, 0, screenx-1, screeny-1, 128);
+
+--------------------------------------------------
+void RectFill(int x, int y, int x2, int y2, int c)
+--------------------------------------------------
+Draws a filled rectangle of the given coordinate set in the specified
+color.
+
+See also: Rect()
+
+Example:
+  RectFill(0, 0, screenx-1, screeny-1, 128);
+
+-------------
+void Render()
+-------------
+Performs a render, per the render string, but does not copy the screen
+buffer to the visible screen, allowing you to draw additional items on top
+of the game screen.
+
+See also: ShowPage()
+
+Example:
+  Render();
+
+----------------------------
+void RestoreRenderSettings()
+----------------------------
+Restores the default clipping window for the given video mode, and restores
+the render destination to the video buffer.
+
+See also: SetClipRect(), SetRenderDest()
+
+Example:
+  RestoreRenderSettings();
+
+----------------------------------------------------------------------------
+void ScaleSprite(int x, int y, int iw, int ih, int dw, int dh, int imageptr)
+----------------------------------------------------------------------------
+Draws a scaled image. A bit more complex than the other blitters to use.
+The x,y values give the upper-left corner of where the blit will start.
+iw,ih are the width and height of the *source* image. dw, dh are the width
+and height that the image should appear on screen. (ie, the end result
+bounding box of the image would be, x, y, x+dw, y+dh) Imageptr is, as with
+the other blit routines, a pointer to the image graphic.
+
+See also: TScaleSprite()
+
+Example:
+  im = LoadImage("VECNA.PCX");
+  ScaleSprite(0,0, image_width,image_height, image_width*2,image_height*2, im);
+  free(im);
+
+----------------------
+void SetClip(int clip)
+----------------------
+Determines whether clipping versions of general VC graphics routines are
+used. Defaults to 1; You will never need to turn this off, turn it offers
+no functional difference, except faster blitting routines, however, great care
+must be used when turning it off that no part of any blit or graphics call
+draws off screen boundaries.
+
+Example:
+  SetClip(1);
+
+------------------------------------------------
+void SetClipRect(int x1, int y1, int x2, int y2)
+------------------------------------------------
+Sets the rectangle that image drawing will be clipped to.
+
+See also: RestoreRenderSettings()
+
+Example:
+  im = LoadImage("PATTERN.PCX");
+  SetClipRect(screenx/4, screeny/4, screenx-(screenx/4), screeny-(screeny/4));
+  WrapBlit(0, 0, image_width, image_height, im);
+  RestoreRenderSettings();
+  free(im):
+
+-----------------------------------------------------
+void SetRenderDest(int width, int height, int buffer)
+-----------------------------------------------------
+This sets the video buffer that all VC video functions will draw into.
+
+See also: RestoreRenderSettings()
+
+Example:
+  buffer = malloc(32 * 32);
+  SetRenderDest(32, 32, buffer);
+  Line(0,0, 15,15, 128);
+  Line(0,15, 15,0, 128);
+  Rect(0,0, 15,15, 128);
+  RestoreRenderSettings();
+  CopySprite(0, 0, 32, 32, buffer);
+  free(buffer);
+
+--------------------------
+void SetLucent(int lucent)
+--------------------------
+Determines whether translucent versions of general VC graphics routines are
+used. Defaults to 0.
+
+Example:
+  SetLucent(1);
+
+------------------------------
+void SetMousePos(int x, int y)
+------------------------------
+Sets the current mouse position to the given x and y coordinates. Does no
+checking to make sure the coordinates are valid, so check that yourself, they
+should between 0 and screenx and 0 and screeny, respectively.
+
+See also: ReadMouse()
+
+Example:
+  SetMousePos(screenx/2, screeny/2);
+
+----------------------------------
+void SetPixel(int x, int y, int c)
+----------------------------------
+Sets the specified pixel coordinate to the given color.
+
+See also: GetPixel();
+
+Example:
+  SetPixel(screenx/2, screeny/2, 128);
+
+-------------------------------
+void SetPlayer(int entityindex)
+-------------------------------
+Sets the specified entity index as the active player.
+
+See also: EntitySpawn()
+
+Example:
+  ent = EntitySpawn(0, 1, "VECNA.CHR");
+  SetPlayer(ent);
+
+-------------------------------------
+int SetResolution(int xres, int yres)
+-------------------------------------
+Sets the video mode to the specified resolution. Returns 1 if successful, 0
+if the mode set failed.
+
+Common video modes:
+-------------------
+                     DOS                         Windows
+                     ---                         -------
+                   320x200                       320x200
+                   320x240                       320x240
+                   360x240                       512x384
+                   256x256                       640x480
+                   640x480                       800x600
+                                                 1024x768
+
+Example:
+  SetResolution(320, 240);
+
+-------------------------------
+void SetRString(string rstring)
+-------------------------------
+Updates the RenderString to the specified string.
+
+Example:
+  SetRString("1E2");
+
+------------------------------------------------
+void SetTile(int x, int y, int layer, int value)
+------------------------------------------------
+Sets a new value to the given map layer at the given coordinates. For
+layer, 0 through 5 are the first 6 possible map layers, a value of 6
+will always denote the obstruction field, and 7 denotes zone information.
+
+See also: GetTile()
+
+Example:
+  SetTile(0, 0, 0, 2);
+
+---------------
+void ShowPage()
+---------------
+Copys the screen buffer to the visible screen.
+
+See also: Render(), CopySprite(), TCopySprite()
+
+Example:
+  ShowPage();
+
+--------------------------------------------------------------------------
+void Silhouette(int x, int y, int width, int height, int color, int image)
+--------------------------------------------------------------------------
+Renders a silhouette of the specified image.  The silhouette is generated
+by looking for all non-zero pixels in the image and replacing them with
+the specified color.
+
+Example:
+  im = LoadImage("GOAT.PCX");
+  Silhouette(0, 0, image_width, image_height, 128, im);
+  free(im);
+
+-------------------
+int sin(int degree)
+-------------------
+Returns the sine of the given degree of measure (0-360) in 16.16 fixed
+point.
+
+See also: cos(), tan()
+
+Example:
+  result = sin(180);
+
+----------------
+void StopMusic()
+----------------
+Stops currently playing music.
+
+See also: PlayMusic()
+
+Example:
+  StopMusic();
+
+------------------------------------
+int strcmp(string str1, string str2)
+------------------------------------
+Compares the two passed strings. Returns 0 if they're identical, or
+a nonzero number porportional to the difference between the strings.
+
+Example:
+  string_a = "alpha";
+  string_b = "zeta";
+  result = strcmp(string_a, string_b);
+  if (!result)
+    PrintString(0, "Strings are equal");
+  else if (result < 0)
+    PrintString(0, string_a+" comes before "+string_b);
+  else
+    PrintString(0, string_b+" comes before "+string_a);
+
+----------------------
+int strlen(string str)
+----------------------
+Returns the length of the passed string.
+
+Example:
+  my_string = "VERGE 2";
+  length = strlen(my_string);
+
+-------------------
+int tan(int degree)
+-------------------
+Returns the tangent of the given degree of measure (0-360) in 16.16 fixed
+point.
+
+See also: sin(), cos()
+
+Example:
+  result = tan(270);
+
+----------------------------------------------------------------
+void TCopySprite(int x, int y, int width, int height, int image)
+----------------------------------------------------------------
+Blits the image pointed to by image with the given dimensions at the
+given location on screen. Transparency and clipping are performed.
+
+See also: CopySprite
+
+Example:
+  im = LoadImage("SLIME.PCX");
+  TCopySprite(0, 0, image_width, image_height, im);
+  free(im);
+
+-----------------------------------------------------------------------------
+void TScaleSprite(int x, int y, int iw, int ih, int dw, int dh, int imageptr)
+-----------------------------------------------------------------------------
+Draws a scaled image. A bit more complex than the other blitters to use.
+The x,y values give the upper-left corner of where the blit will start.
+iw,ih are the width and height of the *source* image. dw, dh are the width
+and height that the image should appear on screen. (ie, the end result
+bounding box of the image would be, x, y, x+dw, y+dh) Imageptr is, as with
+the other blit routines, a pointer to the image graphic. This routines draws
+the image with transparency, unlike ScaleSprite().
+
+See also: ScaleSprite()
+
+Example:
+  im = LoadImage("SLIME.PCX");
+  TScaleSprite(0,0, image_width,image_height, image_width*2,image_height*2, im);
+  free(im);
+
+--------------------------------------------------------------------
+void TWrapBlit(int xofs, int yofs, int width, int height, int image)
+--------------------------------------------------------------------
+Blits an image of any size repeatedly so that it fills the entire screen;
+This version is color-0 transparent unlike the normal WrapBlit version.
+
+See also: WrapBlit();
+
+Example:
+  im = LoadImage("PATTERN.PCX");
+  TWrapBlit(0, 0, image_width, image_height, im);
+  free(im);
+
+-------------------------
+void UnPress(int control)
+-------------------------
+This will read a control currently being pressed as not pressed until it
+is released and then pressed again. The values of control are:
+  0: All buttons, not directionals
+  1: b1                              5: up
+  2: b2                              6: down
+  3: b3                              7: left
+  4: b4                              8: right
+
+Example:
+  UnPress(0);
+
+---------------------
+void UpdateControls()
+---------------------
+Updates the control variables up, down, left, right, b1, b2, b3, and b4.
+
+Example:
+  UpdateControls();
+
+-------------------------------------------
+void VLine(int x, int y, int y2, int color)
+-------------------------------------------
+Draws a vertical line from the specified coordinates in the given color.
+
+See also: HLine(), Line()
+
+Example:
+  VLine(screenx/2, 0, screeny-1, 128);
+
+-------------------------------------------------------------------
+void WrapBlit(int xofs, int yofs, int width, int height, int image)
+-------------------------------------------------------------------
+Blits an image of any size repeatedly so that it fills the entire screen;
+
+See also: TWrapBlit();
+
+Example:
+  im = LoadImage("PATTERN.PCX");
+  WrapBlit(0, 0, image_width, image_height, im);
+  free(im);
+
+-------------------------------
+void WriteVars(int filepointer)
+-------------------------------
+Writes all global variables (ints and strings) to the specified file. You
+must take care of opening and closing the file for writing. Mostly used
+for savegames.
+
+See also: ReadVars(), fwopen(), fwclose()
+
+Example:
+  file = fwopen("SAVE.DAT");
+  WriteVars(file);
+  fwclose(file);
+
+=============================================================================
+
+III. Builtin Variables
+
+b1, b2, b3, b4
+--------------
+These represent four primary control buttons. They are updated by the
+UpdateControls() function. [read-only]
+
+Example:
+  UpdateControls();
+  if (b1) Message("Button 1!", 100);
+  if (b2) Message("Button 2!", 100);
+  if (b3) Message("Button 3!", 100);
+  if (b4) Message("Button 4!", 100);
+
+cameratracking, tracker
+-----------------------
+If cameratracking is 0, the camera is free to be altered by the xwin/ywin
+variables. If cameratracking is 1, the camera will always follow the player.
+If cameratracking is 2, the camera will always follow the entity specified in
+tracker. [read/write]
+
+Example:
+  ent = EntitySpawn(0, 1, "VECNA.CHR");
+  cameratracking = 2;
+  tracker = ent;
+  EntityMove("R2D2L2U2");
+
+entity.x, entity.y
+------------------
+x/y coordinates of the specified entity in world-coordinates (pixel-accurate).
+[read/write]
+
+Example:
+  Log("Player X="+str(entity.x[player])+", Y="+str(entity.y[player]));
+
+entity.tx, entity.ty
+--------------------
+x/y coordinates of the specified entity in tile coordinate. [read/write]
+
+Example:
+  Log("Player TX="+str(entity.tx[player])+", TY="+str(entity.ty[player]));
+
+entity.facing, entity.moving, entity.specframe, entity.speed, entity.movecode
+-----------------------------------------------------------------------------
+Various variables effecting the specified stats of the given entity.
+[read/write]
+
+Example:
+  Log("Player info");
+  Log("   Facing: "+str(entity.facing[player]));
+  Log("   Moving: "+str(entity.moving[player]));
+  Log("SpecFrame: "+str(entity.specframe[player]));
+  Log("    Speed: "+str(entity.speed[player]));
+  Log(" MoveCode: "+str(entity.movecode[player]));
+
+entsonscreen
+------------
+Array of entity indexes which are currently onscreen.
+
+Example:
+  // log all tile coordinates of entities onscreen
+  for (i=0; i<numentsonscreen; i++)
+    Log("X="+str(entity.tx[entsonscreen[i]])+", Y="+str(entity.ty[entsonscreen[i]]));
+
+key
+---
+Returns or set the on/off flag of the specified key scancode.
+
+Example:
+  if (key[1])
+    Message("ESC is pressed", 200);
+  else Message("ESC is not pressed", 200);
+
+lastent
+-------
+The last entity that called a VC event, either via movement script or
+activation.
+
+Example:
+  Message("Last entity: "+str(lastent), 200);
+  
+Note: Untested currently.
+
+mx, my, mb
+----------
+mx and my are the x and y coordinates of the mouse pointer. mb returns the
+mouse button status.
+
+Example:
+  Message("Mouse info: X="+str(mx)+", Y="+str(my)+", B="+str(mb), 200);
+
+numentsonscreen
+---------------
+Number of entities currently on screen, number of values in entsonscreen array
+that are valid.
+
+Example:
+  Message("Number of entities onscreen: "+str(numentsonscreen), 200);
+
+pal
+---
+Active palette array (256 RGB entries; 768 bytes). Changes made will only
+be enforced when PaletteMorph() is next called.
+
+Example:
+  // greyscale the active palette
+  for (i=0; i<256; i++)
+  {
+    r=pal[i*3+0];
+    g=pal[i*3+1];
+    b=pal[i*3+2];
+    average=(r+g+b)/3;
+    pal[i*3+0]=average;
+    pal[i*3+1]=average;
+    pal[i*3+2]=average;
+  }
+  PaletteMorph(0,0,0,0, 63);
+
+player
+------
+Returns which entity index number is currently the active player. [read-only]
+
+Example:
+  ent = EntitySpawn(0, 1, "VECNA.CHR");
+  SetPlayer(ent);
+  Message("Active entity index is #"+str(player));
+
+screen
+------
+Single-dimensional array access to the video virtual buffer. [read/write]
+
+Example:
+  SetResolution(320, 240);
+  screen[(120*320)+160]=128;
+
+screenx, screeny
+----------------
+Return the x and y dimensions of the current video mode. [read-only]
+
+Example:
+  Message("Current resolution is "+str(screenx)+"x"+str(screeny));
+
+timer
+-----
+This variable is incremented 100 times per second. It can be used to for
+timing purposes. [read/write]
+
+Example:
+  while (timer)
+  {
+    timer--;
+    ProcessEntities();
+  }
+
+up, down, left, right
+---------------------
+These represent the four directional controls. Also updated by
+UpdateControls(). [read-only]
+
+Example:
+  UpdateControls();
+  if (up)    Message("UP!", 100);
+  if (down)  Message("DOWN!", 100);
+  if (left)  Message("LEFT!", 100);
+  if (right) Message("RIGHT!", 100);
+
+vctrace
+-------
+This is a 0/1, off/on variable that defaults to 0; when it is turned on,
+VERGE.LOG will contain dumps tracing the code flow of system.vc function
+calls. However, this log can get very big very quickly, so it's recommended
+that you turn it on to track and debug a particular section of code and then
+turn it off afterwards.
+
+Example:
+  vctrace = 1;
+
+vsp
+---
+Array of tile image data. Sequential ordering of 256 byte (16*16) blocks.
+
+Example:
+  TCopySprite(screenx/2,screeny/2, 16,16, vsp+(slot*256));
+
+xwin, ywin
+----------
+These control the camera, if cameratracking is 0. Otherwise, the camera will
+follow the player. [read/write]
+
+Example:
+  xwin = 100;
+  ywin = 200;

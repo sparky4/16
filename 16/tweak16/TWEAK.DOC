@@ -1,0 +1,1054 @@
+
+
+
+
+
+
+                TWEAK 1.6á - Mold your own VGA modes
+
+         by Robert Schmidt of Ztiff Zox Softwear, 1992-93
+
+
+          This program and the accompanying source files
+              are hereby donated to the public domain.
+                  (for whatever that's worth...)
+
+
+
+
+
+
+
+(Sorry for not page-formatting this doc.  The headers can be found by
+doing a text search with your favourite editor.)
+
+
+Contents:
+
+WHAT IS TWEAK, ANYWAY?
+SUGGESTION BOX
+DISCLAIMER
+A QUICK PRIMER
+WHAT HAS TWEAK GOT TO DO WITH THIS?
+A COUPLE OF RULES
+A TUTORIAL
+EDITOR REFERENCE
+FREQUENTLY ASKED QUESTIONS
+THE TWEAK FILES
+USING TWEAK MODES ON YOUR OWN
+THE INCLUDED FILES
+THE 'MISC' DIRECTORY
+CREDITS
+BIBLIOGRAPHY
+HOW TO REACH ME
+
+
+
+
+                        WHAT IS TWEAK, ANYWAY?
+
+
+TWEAK is an utility to ease the work of twiddling with the registers on
+a standard VGA compatible video card to produce and explore new, previously
+undocumented screen modes with weird resolutions.  You will want to
+purchase a technical VGA reference to get the full potential out of
+TWEAK, but I included some files to get you started (see the section
+on the 'MISC' directory).
+
+TWEAK.EXE is the main executable.  This version is not compatible with 
+any versions prior to 1.0, so if you want to use files created by 
+version 0.9x, convert them with 09TO10.EXE.  
+
+Stop press!  In the subdirectory XINTRO is an article which serves as
+an introduction to programming in Mode X (320x240 with 256 colors).
+Make sure you read this if you're new to tweaking and Mode X!
+
+MODES.DOC describes some of the more exciting 256x256, 400x300 
+and 400x600 256-color modes!
+
+
+
+
+                        SUGGESTION BOX
+
+
+All suggestions to enhance or modify TWEAK are welcome, especially bug
+reports/fixes.  So are donations, for that matter.  See e-mail and
+snail-mail addresses at the end of this file.
+
+Please send me any changes you make to enhance TWEAK or to make it
+compatible with other compilers or video cards, and I will start
+including conditional sections for each supported compiler.
+Do *not* re-release the changed source without my permission.
+Well, how can I stop ya...?
+
+Any suggestions and contributions will be credited in subsequent
+versions, although I can't guarantee that your ideas will actually be
+used.
+
+
+
+
+
+                          DISCLAIMER
+
+
+I don't think this is neccessary in PD stuff, but everybody else does
+it:
+
+The author author of this archive has used his best efforts in 
+preparing it.  However, the author makes no warranty of any kind, 
+expressed or implied, with regard to the programs, data or 
+documentation included with the archive.  The author shall not be 
+liable in any event for incidental or consequential damages in 
+connection with, or arising out of, the furnishing, performance, 
+quality, or use of the programs, data or documentation included in this 
+archive.
+
+Phew.
+
+Some time ago, putting illegal or unsupported values or combinations
+of such into the video card registers might prove hazardous to both
+your monitor and your health.  I have *never* claimed that bad things
+can't happen if you use TWEAK, although I'm pretty sure it never will.
+I've never heard of any damage arising from trying out TWEAK, or from
+general VGA tweaking in any case.  I did receive a mail from a person
+whose monitor failed producing the correct colors, after using mode
+X.
+
+
+
+
+
+
+                           A QUICK PRIMER
+
+
+You never heard about neither documented nor undocumented modes, you 
+say?  Well, to begin with:  Your VGA card has a number of registers 
+that control the way the card works.  That is, how it is going to 
+translate the data that programs put into the video memory, to the 
+signals that produce text and/or graphics on your monitor.
+
+The standard interface to a video card on all IBM compatible PCs is the 
+BIOS, which consists of several device independant routines for setting 
+screen modes, moving the cursor, writing text, scrolling blocks of text 
+etc.  The BIOS also takes care of setting the appropriate registers at 
+appropriate times, for example when changing screen modes.  That way, 
+programmers have a consistent interface to the VGA, and usually won't 
+need to tamper with the registers directly.
+
+A screen mode specifies the resolution of the image you see on the 
+screen, i.e. the number of pixels (dots) horizontally and vertically, 
+the number of colors, and wether the screen should be capable of 
+showing just text, or if graphics are allowed.  These things are 
+controlled by the VGA registers, and the BIOS contains a number of 
+predefined tables of register values for the standard VGA modes we've 
+all come to love and honour.  Mode number 3, for example, is the 80 
+characters times 25 lines (80x25) text screen that most people use 
+daily.  Mode number 19 (or 13h in hexadecimal) is the 256-color 320x200 
+mode used in most popular games supporting the VGA.
+
+
+
+
+
+
+                WHAT HAS TWEAK GOT TO DO WITH THIS?
+
+
+Well, some people, me included, are of the 'power-hungry' breed.  We want
+to exploit the full potential of everything we get between our hands.
+We think that the one 320x200 256-color mode supported by all standard VGA
+BIOS'es is for wimps.  Some guy came up with the idea of modifying the
+register configuration, to achieve greater resolution and a different
+video memory layout.
+
+TWEAK grants you direct access to all the most significant registers
+that control such things as resolution and colors.  You may have thought
+that your VGA was limited to 320x200 when it was displaying 256 colors?
+Well, all VGAs are able to support no less than 400x600 in 256 colors.
+(The problem is with the monitors, which might not be sophisticated
+enough to support the relatively much higher clock frequency needed to
+output that many pixels.  My monitor flickers and rolls occasionaly.)
+
+Most newer VGA cards' BIOSes add several enhanced modes not supported
+by the standard VGA defined by IBM, for example text modes with 132
+characters on each line, or graphics resolutions of 800x600, 1280x1024
+and more.  Such cards are usually referred to as Super VGAs.  To make it
+possible to produce such resolutions, video card developers has had to
+add new registers to the set of registers defined by the VGA.  TWEAK is
+generally not able to support such extended registers, meaning that you
+will not be able to tweak a Super VGA any more than is possible on a
+standard VGA.  Extensions that are provided by utilizing undefined bits
+in the standard VGA registers are supported however.  The included
+Chips & Technologies specific 132x*.twk files are examples of such.
+
+The main reason for not including Super VGA (SVGA) support is that
+there are so many different SVGA standards.  Nearly every developer has
+their own standard.  Also, I can see no real reason for wanting to tweak
+any SVGAs, as the resolution dimensions they offer usually are far
+superior to the VGA's resolutions.  With tweaked VGA modes there's
+a much higher propability that they will work on most VGAs and SVGA,
+than tweaked SVGA modes.
+
+If this is the first you have read about VGA registers and the BIOS,
+TWEAK.EXE and this documentation alone is not enough to get you going.
+You will need, and probably want, a somewhat technical reference to the
+VGA, which explains all standard VGA registers and the meaning of every
+contained bit.  Although TWEAK doesn't support it, you'll probably want
+a reference which also contains some discussion on Super VGAs, just for
+your convenience when you want to program serious applications etc.  If
+you're of the adventurous breed, check out the VGA.TXT and VGABIOS.TXT
+files included in the .\MISC directory.
+
+You see, tweaking the VGA is not as simple as putting the horizontal
+resolution in one register, the vertical in another and the number of
+colours in yet another.  Several registers has to be set to cooperating
+values that work together to acheive what you want.  Single bits has to
+be toggled into the correct states, even before you can see anything on
+screen.  TWEAK simplifies this process by letting you do this
+interactively, and by letting you test your register set at the touch
+of one key (ENTER, actually).  The pre-TWEAK process was to make a small
+program that set up the registers in the way the programmer thought
+would work.  If it didn't he had to edit the program source file,
+recompile, and re-run.  Not seldom, the PC crashed because of some
+*really bad* register values, and a full reset was required.
+
+TWEAK let you save and load register sets to and from files, and let
+you select any video mode supported by your BIOS to work out from.
+It supports text modes and graphics, 16-color and 256-color.  Monochrome
+modes and CGA modes (4- and 2-color), however, are not supported,
+because they use another set of I/O ports, and because few people are
+really interested in them.
+
+As of version 1.6, TWEAK further simplifies the VGA tweaking process by 
+providing instant feedback on the register values, in the form of a 
+live mode heuristic, i.e. a detection scheme tried to figure out what 
+type of mode your making, the number of colors, its physical and 
+virtual resolution, the number of pages (both horizontally and 
+vertically).
+
+
+
+
+
+
+                        A COUPLE OF RULES
+
+
+I'll be the first to admit:  TWEAK isn't much of an editor.  The screen
+is boring, there is just one simple help window, no undo command, no
+file pick lists etc.  In short, TWEAK is not meant for people not
+knowing what they are doing.  I strongly beleive that nothing can be
+damaged from the use of TWEAK, but for starters, I'll recommend the
+following precautions:
+
+  *  When loading/saving, take care to check that you selected the
+     function (load or save) that you want, before typing a filename
+     and pressing Enter.  Also verify that the filename you type when
+     saving is the filename that you want, because TWEAK overwrites
+     any existing files with the same name without asking for permission.
+
+  *  If, when you press the Enter screen to test the screen mode,
+     nothing appears after 5-10 seconds, press Enter again.  If you're
+     not immediately returned to the editing screen, reboot your
+     computer by pressing the reset button.  Keep in mind that some of
+     the test patterns, especially the 256-color 4-planar one, can be
+     slow to put into the video memory buffer, so be a *little*
+     patient & tolerant.
+
+That last rule is present to prevent that the monitor is exposed to crazy
+sync timings for too long a time.  And I repeat, there usually never is
+any reason to panic, even if your monitor makes strange sounds
+('tweeeeee' for example, or 'flick-flick-flick').  Press ENTER, wait for
+a couple of seconds more, then reset your computer if the edit screen
+doesn't reappear, and try a different approach.
+
+
+
+
+
+
+                           A TUTORIAL
+
+
+To start TWEAK, change to the directory where you have put the files,
+and type TWEAK at the DOS prompt.  Well, now you're in the editor, and
+you can see the following things (you might want to print this tutorial
+so you have it on paper):
+
+  *  One (possibly two) column(s) of VGA registers on the form:
+     ppp (ii)         Register Name : vv
+     where
+       -  ppp is the port number
+       -  ii is the index into that port, if applicable
+       -  vv is the selected value for this register
+     All numbers are hexadecimal.  The current register is marked by one
+     arrowhead on each side of the line.  When you first start TWEAK,
+     the current register is the top left.
+
+  *  A bit pattern display showing the bit pattern of the 8-bit value
+     contained in the currently selected register.
+
+  *  The bottom line tells you which test pattern is currently active.
+
+  *  You will also see the mode heuristic which usually makes a good
+     guess at what mode you have at the moment.
+
+When executed, TWEAK starts up by reading the registers of your current 
+BIOS mode, so that you have something to work with.  This is usually a 
+text mode, 80x25 for example, so you'll probably want to set a graphics 
+mode for more interesting results.
+
+Now try the following simple tutorial:
+
+  1. Press H, and a red window should appear, describing all keys
+     available for use in TWEAK.  These will also be described below.
+
+  2. Press M, then type the number 03.  Notice that you don't have to
+     press ENTER.  You have now selected BIOS mode 3 as the basis for
+     you explorations.  Notice also the information provided by the 
+     mode heuristic on the right.
+
+  3. Press TAB until 'Text screen, 16 point' appears at the bottom line,
+     if it doesn't already.  TAB selects which test pattern to use, and
+     you have now readied the 16-point font version of the text screen
+     test.
+
+  4. Press ENTER.  You should see a screen with numbers along the top
+     row, and various characters and colors down the rest of the screen.
+     This is the text test pattern, as it looks when viewed in mode 3.
+     Press ENTER to return to editing mode.
+
+  5. Now press F10, and type '40x12' and press ENTER.  This loads the
+     file '40x12' and uses its contents as the current register set.  
+     Notice how the mode heuristic immediately changes.
+
+  6. Press ENTER again.  A screen similar to the previous test pattern
+     should appear, but the characters should be twice as wide and twice
+     as high.  This is a tweaked VGA mode, which is not supported by the
+     BIOS.  It looks a little odd, as the bottom line is cut in half,
+     making this a 40x12.5 text mode, in fact.  Press ENTER to return.
+
+  7. Press F10, type '360x480.256' and ENTER.  Take a look at the 
+     mode heuristic again.  Press TAB until the text 'Graphics 
+     autodetect' appear in the bottom line.
+
+  8. Press ENTER.  This is a well known tweaked VGA mode that has even
+     been used in commercial games for the PC, but it remains
+     unsupported by the BIOS (and it probably always will).  If the
+     screen rolls, try adjusting your monitor knobs.  If you can't get a
+     steady picture, it probably means your monitor isn't capable of
+     handling the horizontal resolution of 360 pixels.
+
+  9. Try using the arrows to scroll the virtual screen.
+
+  9. Press ENTER to return to editing, then press ESC and 'Y' to quit 
+     TWEAK.
+
+
+The last graphics display might not have been especially pleasing to the
+eye.  First, if the picture was rolling uncontrollably, you might think
+that TWEAK is of no use for you, as your monitor isn't good enough.
+However there are still interesting things to try out.  There are
+tweaked modes 'available' with a little lower resolution that are almost
+guaranteed to work on your monitor, and which are of great interest to
+games programmers for example.  The file 320x240.256 contains the
+register set for the infamous Mode X, which was 'discovered' and
+documented by Michael Abrash in his monthly columns in Doctor Dobbs
+Journal.
+
+Following points 7 onward above, see if you can load Mode X into the 
+editor and get the test screen going!
+
+Mode X has the following interesting properties:
+
+  *  The pixels are 'perfectly' square.  That is, if you try to draw a
+     circle with aspect ratio 1:1, it will look like a circle (unless
+     your monitor is adjusted to some extreme).  The BIOS mode 13h
+     (320x200x256) has pixels that are a little higher than they are
+     wide, making 1:1 circles look stretched vertically.
+
+  *  The video memory is divided into 4 planes, each of which contains
+     64 Kb.  By setting the Write Plane Enable register to the actual
+     plane, you can address the full 256 Kb of video memory through the
+     'tiny' address space of 64 Kb from 0xA000:0 to 0xA000:0xFFFF.
+     Thus, you can have more than three full screens in video memory at
+     any one time, making you able to perform animation tricks as
+     page flipping, and to do fast 32-bit video to video transfers.
+
+This was just to get you going, and others have written tons of text on
+drawing stuff (lines, circles, images) in Mode X.  The rest of this
+part will deal with the commands available in TWEAK.  To get more
+information about VGA programming in general and registers and Mode X 
+in particular, check out the reference list somewhere at the end.
+
+Stop press!  Read the article in the XINTRO subdirectory for an
+introduction to Mode X.
+
+
+
+
+
+                         EDITOR REFERENCE
+
+
+This reference applies only to version 1.0 of TWEAK or later, although
+*most* keys are supported by the included version 0.95 too.
+
+Select the register value you want to modify using the following keys:
+
+     Up         selects previous register
+     Down       selects next register
+     Home       selects first register
+     End        selects last register
+
+Use these keys to modify a register value:
+
+     a 2-digit, hexadecimal number : sets the register to the given value
+     '-'        decreases the value of the register
+     '+'        increases the value of the register
+     F1 ... F8  toggle bits 7, 6, ..., 0 of the selected register,
+                respectively.
+
+Use these keys for testing the set of register values:
+
+     TAB [->|]  cycle among the available test patterns, to find the
+                one you think will suit your custom register set.
+                Shift+TAB cycles in the opposite direction.
+
+     ENTER      sends your custom register set to the VGA registers, then
+                writes the selected test pattern to the video memory buffer.
+
+Some other important or useful actions:
+
+     Backspace  toggles the active state of the current register.  If a
+                register is inactive, it color is grey instead of yellow.
+                When you test the mode (by pressing ENTER), inactive
+                registers will *not* be sent to the VGA card.  Also, they
+                will *not* be saved to the file when a Save command is
+                executed.  This feature is included to enable you to ignore
+                registers that doesn't affect your screen mode.  For
+                example, for most practical uses, the Color Compare register
+                can be deactivated.
+
+     'M'        prompts the user for a 2-digit, hexadecimal number
+                specifying a standard VGA BIOS screen mode number.  Note
+                that TWEAK does *not* support true monochrome modes.
+                The VGA is set to this mode using INT 10h with AX=mode
+                number.  Then all relevant registers are read from the
+                VGA into the editing set, and you're returned to the
+                editing screen.
+
+     F9 or 'S'  prompts the user for a file name, then saves the register
+                set to this file, overwriting any pre-existing
+                file by the same name.  Inactive registers are not saved,
+                thus there are no longer a fixed size to TWEAK's mode
+                files.
+
+     F10 or 'L' prompts the user for a file name, then loads the register
+                set from this file, if it exists.  Registers that are
+                supported by TWEAK, but that are not included in the file,
+                will be deactivated (greyed).
+
+     ESC        quits TWEAK, if you answer 'y' or 'Y' to the 'Really
+     		quit?' question.  Make sure you have saved your work.
+
+Pressing just ENTER at one of the two file name requests will cancel 
+the file operation.
+
+
+There are currently 6 available test screens with TWEAK.  Numbers in
+parentheses are all the standard VGA BIOS modes that display the test
+patterns correctly:
+
+  o  An autodetected graphics screen test.  This will detect *most*
+     EGA and VGA graphics modes (of course no monochrome modes), and
+     display a pretty screen containing:
+
+     -  axes along the left and top borders visualizing the resolution.
+     -  text telling you both the physical and the virtual resolutions,
+        and the number of colors.
+     -  the entire palette available in this mode.  Note that the
+        palette is *not* set, so the colours are not guaranteed to be
+        the normal VGA palette, except in 16-color mode.
+
+     The following keys are available in the autodetect test screen:
+
+     -  arrows scroll the screen across the virtual area
+     -  ESC returns to the editor
+
+     If the mode being edited is not a graphics mode, a text screen
+     appears with some helping hints.
+
+  o  2 text test screens at 0B800h
+     -  one using the normal 8x16-point VGA font (0, 1, 2, 3)
+     -  one using the 8x8-point CGA font (normally used in 43/50-line
+        modes, but none of those are defined by the VGA BIOS.  Check
+        VGABIOS.DOC for the function to load a specific font in your 
+	own programs.)
+
+  o  A screen for 4-planar, 16-color modes at 0A000h (0Dh, 0Eh, 10h,
+     12h)
+
+  o  A screen for 4-chained, 256-color modes at 0A000h (13h)
+
+  o  A screen for 4-planar, 256-color modes at 0A000h (None supported
+     by BIOS)
+
+See the source (TESTPAT.CPP) for descriptions on how the test patterns are
+supposed to look.  Generally, if it looks good, it should be correct.
+
+
+
+
+
+                    FREQUENTLY ASKED QUESTIONS
+
+
+Q:      I'd like to study the register configuration for a screen mode
+        supported by my (Super-)VGA.  How do I get to it?
+
+A:      The 'M' key lets you select a BIOS mode to study.  Note that you
+        will need to know the mode number.  Note that TWEAK does not 
+	support any SVGA-specific registers.
+
+
+Q:      None of the tests seem to produce sane results.  The screen
+        a) goes black,
+        b) rolls or
+        c) the program crashes.
+
+A:      a)  - Make sure you tried ALL 5 tests.
+            - Set the Color Plane Write Enable register to 0Fh.
+            - Note that Super VGA modes are generally not supported
+              (though they *might* work).
+        b)  - The timing/sync registers are not set correctly/in sync.
+              See your VGA reference for more information.
+            - Try adjusting the knobs on your monitor.
+	c)  - I know some (S)VGAs completely hang the system if
+	      unsupported bit combinations are fed into the Misc.
+	      Output Register (0x3c2).  This is one of the most useful
+	      registers, however, so experiment with care, and take note
+	      of what values causes the crash.
+            - You may have hit a major incompatibility/bug.  Send me a
+              mail, telling me what kind of hardware you're using.  I
+              will probably not be able to fix it, but an incompatibility
+              list will be emitted with the next release, if any.
+
+
+Q:      How about a TSR to save the current register configuration from
+        any program?
+
+A:      I've considered this, but haven't had the time.  A hint, though:
+        Get CBOOTxxx.ZIP from simtel or any mirror, in .../msdos/sysutl.
+        This program lets you break out from most applications,
+        *without* resetting the screen mode.  A typical session:
+            - Install CBOOT.
+            - Run FRACTINT (a fractal explorer package, supporting lots
+              of tweaked modes), and select the mode you want to 'grab'.
+            - Press ALT+SHIFT+B, and the CBOOT menu pops up.
+            - Press '7' to reset interrupt vectors.
+            - Press '6' to 'properly' exit from FRACTINT.
+            - You might not see it, but you should be at the DOS prompt.
+            - Run TWEAK directly, which will start up with the current
+              register configuration.  Now you're off!
+	From programs (games) which assume total keyboard domination, I
+	currently cannot help you grab modes.
+
+
+Q:      I'd like to use tweaked modes in my own programs.
+
+A:      Provided you have produced TWEAK files corresponding to your
+        modes, take a look at the example files for different approaches
+        to using the mode files.  The examples are in C, but are simple
+        enough, so translation to Pascal should be a breeze.
+
+
+Q:      - What is the register which makes x do y/sets a to b/etc.?
+        - Is there a BIOS call to do x?
+
+A:      First check the VGA.TXT and VGABIOS.TXT files in the MISC
+        directory.  If they don't help you, please consider buying a
+        technical reference to the VGA.  That would please you and me.
+
+
+Q:      How do I make a mode with resolution x times y with z colors?
+
+A:      - See the sample *.TWK, *.256 and *.16 files provided with
+          TWEAK.  Not a great lot, but you might be able to work out
+          something from one of those.
+        - Get FRACTINT or SVGABGI, and use the method mentioned above to
+          'grab' modes from these programs.
+	- Learn what each of the VGA timing registers means.
+        - Experiment!  That's what I had to do.
+
+
+Q:      I can't find this MISC or XINTRO directory!
+
+A:      Make sure you unzip the TWEAK archive with the -d option, which
+        is needed to extract subdirectories.  I.e:
+          PKUNZIP -D A:TWEAK10
+	If you didn't use -D, the files in the MISC directory are mixed
+	in with the rest of the TWEAK package files, all in the same
+	directory.
+
+
+Q:      I have lots of files with modes that I saved with version 0.9 of
+        TWEAK...
+
+A:      Use the 09TO10 utility to convert them.  Run 09TO10.EXE with no
+        parameters for a simple help screen.
+
+
+Q:      What do I need to rebuild TWEAK and/or the utilities?
+
+A:      You will need Borland C++.  I used version 3.1, but it might
+        work as far back as Turbo C++ 1.0.  I included a Makefile to
+        make rebuilding as painless as possible, provided you have
+        BCC.EXE in your path, and it knows where to find headers and
+        libraries (usually it does).  I know some of the sources
+	produce warnings, but feel free to ignore them.  I did.
+
+
+Q:      What do I need to use the mode files produced by TWEAK in my own
+        programs?
+
+A:      If you want to use the TwkUser module, you'll need a C compiler.
+        I don't think I used anything Borland specific here.
+        Otherwise the file format is pretty simple, so you should have
+        no problem making similar functions/procedures using any
+        language (assembler, Basic, Pascal, Prolog...).
+
+
+Q:      Where can I find more information on tweaking the VGA?
+
+A:      See the Bibliography section below.  Michael Abrash's articles
+        in Doctor Dobb's Journal from a year or so are probably the best
+        sources.  Join the rec.games.programmer newsgroup.  There has
+        been some discussion on tweaking there, especially mode X
+	(320x240x256) and how to optimize code for this mode.
+
+
+Q:      How can I ever repay you for making such a great utility?
+
+A:      Easy!  The cheapest way is to send me a cool postcard with some
+        (readable) words on it.  I will of course accept donations too,
+        even though TWEAK is public domain.  See the end of this file.
+
+
+Q:      PKUNZIP refused to unzip the TWEAK archive!
+
+A:      I guess you decoded this DOC file by hand, then...  well, make
+        sure you transfer in BINARY mode from the ftp site, and in 
+	BINARY from your user account to your PC.
+
+
+Q:      I can't find my question in the Frequently Asked Questions list!
+        Does this mean I'm stupid?
+
+A:      It might.  :-)  However, I just thought up all these questions
+        myself, so if you have a suggestion for more FAQs, don't
+        hesitate to let me know!  I promise I won't laugh...
+
+
+Q:	The mode heuristic tells me I have the mode I want, but none of 
+	the test screens works, not even the autodetecting one!
+
+A:	The heuristic is far from perfect.  It does NOT verify that the 
+	timing values you are using are sane - it merely checks the 
+	registers determining the logical resolutions.  The best advice 
+	I can give is to get a VGA reference and try to learn what the 
+	horizontal and vertical timing registers do.  TWEAK is less 
+	intelligent than you (hopefully)!
+
+
+
+
+                        THE TWEAK FILES
+
+
+The file format used for saved files is pretty simple.  The files will
+usually be bigger than the files saved with TWEAK 0.9, and version 0.9
+files are *not* readable by version 1.0.  This is undetectable by TWEAK,
+because of the simple nature of the files.  (No headers are present!) 
+If you try, there's a fat chance that your computer will hang.
+
+Here is the format:
+
+offset 0: WORD - port number of first register
+offset 2: BYTE - index of first register
+offset 3: BYTE - value of first register
+
+offset 4: WORD - port number of second register
+.
+.etc.
+.
+
+Pretty simple, as you can see, but also flexible from TWEAK's point of
+view.  This makes it easy to add new ports if neccessary.  The file size
+is not constant, as registers that are disabled at save time are not
+written to the file.  Divide the file size by 4 to determine the number
+of registers in a file, or just read to EOF (as TWEAK does... :).
+
+Also note that the VGA registers use varying methods for access.  For
+some registers you just send the value directly to the port (ignoring the
+index).  For some you send the index to the port, then the value to the
+port+1.  For still some you have to ...  Rather, refer to the source
+code for all the how-to's...  it's not difficult, just inconvenient, and
+it hinders really general storage of register addresses and their values.
+
+Use the 09TO10.EXE program to convert from version 0.9 files to version
+1.0 files.  Run 09TO10.EXE with no parameters for information on how to
+use the utility.
+
+I have selected the following standard of file extensions for
+TWEAK-files, but these are just suggestions for my own convenience:
+
+  o  *.TWK are text modes
+  o  *.16 are 16-color graphic modes
+  o  *.256 are 256-color graphic modes
+
+Note that you'll always have to type an extension in TWEAK if you want
+any, as TWEAK neither assumes anything nor provides default extensions.
+
+I have also started addint a 'c' to the name (like in 256x256c.256) if 
+the mode is chained, i.e. uses linear addressing like mode 13h.  I add 
+an 's' if the mode is specific to my Chips & Technologies SVGA.
+
+Make sure you read MODES.DOC!
+
+
+
+
+
+                  USING TWEAK MODES ON YOUR OWN
+
+
+The Register and RegisterTable classes used in TWEAK.CPP might be a
+little huge and clumsy to use in your own programs, where you probably
+just want to set the registers according to a linked-in array.
+Therefore I have provided a simple C module for the following functions:
+
+  o  Reading a file saved from TWEAK into a dynamically allocated
+     array of registers.
+  o  Setting VGA registers according to the contents of an array of
+     registers.
+  o  Setting a single register.
+
+The types and functions are declared in TWKUSER.H, which should be
+included in every source file using these functions.  The definitions
+are contained in TWKUSER.C, which should be compiled under the wanted
+memory model and linked together with your program modules.  You are
+free, in fact you're encouraged to modify the TWKUSER files to suit
+your own needs.  In their present form, they just provide enough
+functionality to get you started.
+
+A couple of simple examples are provided - the second one is easiest to
+follow, and I think you will prefer that one:
+
+  o  EXAMPLE1.C - demonstrates how to use a TWEAK-generated file
+     in your own program by loading the file at run-time, and setting 
+     the VGA registers according to the file contents.  The mode file 
+     has to be available at run-time.
+
+  o  EXAMPLE2.C - does the same, but now the TWEAK-file is converted to
+     a C-includable file by using the TWEAK2C utility.  Thus, the contents
+     of the TWEAK file is linked with the program as global data, and no
+     external file is needed in addition to the executable.
+
+Both programs set the VGA to the famous Mode X, 320x240 in 256 colors,
+then fill the screen with some colors.
+
+Note that since the files produced by TWEAK does not keep any 
+information on what BIOS mode they are based on, you are responsible 
+for setting the palette used.  Keep in mind that you need to set both 
+the EGA and VGA palette for 256-color modes!  The easiest way to 
+accomplish this is to set mode 13h before outputting your register 
+settings.
+
+I would very much like to provide similar Borland Pascal examples, but
+as I don't have Turbo/Borland Pascal available at the moment, I'm just
+going to skip it at this time.  If *you* feel like porting the TwkUser.C
+and .H files to a Pascal unit, please do.  It should be a peice of cake.
+If you mail the result to me, I'll probably include it in the next release
+of TWEAK, and in any case you'll be credited for your contribution.
+
+
+
+
+
+                      THE INCLUDED FILES
+
+
+This is a dump of the 4DOS compatible DESCRIPT.ION file included in this
+archive:
+
+320x200.256 Planar 320x200x256
+320x240.256 Planar 320x240x256 (Mode X)
+360x480.256 Planar 360x480x256
+400x300s.256 Tweaked C&T SVGA planar
+400x600.256 Tweaked VGA, req. good monitor
+400x600s.256 Tweaked C&T SVGA planar
+432x600s.256 Tweaked C&T SVGA planar
+800x600s.16 Standard C&T SVGA BIOS mode
+40x12.twk Standard VGA BIOS mode 1, double scanned
+80x43.twk Standard VGA mode, needs 8x8 font
+80x50.twk Standard VGA mode, needs 8x8 font
+09to10.cpp Version 0.9x to 1.0 conv. util. source
+800x600.16 Tweaked VGA, req. good monitor
+example1.c C source for EXAMPLE1.EXE
+example2.c C source for EXAMPLE2.EXE
+makefile Type MAKE ALL to update TWEAK project
+namedreg.cpp C++ source defining NamedReg. members
+register.hpp C++ header declaring Register & NamedReg
+regtable.cpp C++ source defining RegisterTable
+regtable.hpp C++ header declaring RegisterTable
+screen.cpp C++ source defining screen functions
+screen.hpp C++ header declaring screen functions
+tweak.cpp C++ source defining TWEAK's main program
+tweak.doc Documentation for the TWEAK archive
+tweak2c.cpp C++ source for the TWEAK2C utility
+twkuser.c C source defining som usable functions
+twkuser.h C header with TwkUser.C prototypes
+register.cpp C++ source defining Register members
+320x240.c C file created by TWEAK2C
+c&t.dat Text file: list of supported registers
+256x256.256 Planar 256x256x256 (Mode Q)
+256x256c.256 Chained 256x256x256 (Mode Q, chained)
+testpat.cpp C++ source defining TestPatterns members
+testpat.hpp C++ header declaring TestPatterns
+256x240.256 Planar 256x240x256
+360x270.256 Experimental mode
+400x300.256 Planar 400x300x256 - great!
+detect.cpp C++ source for mode detected module
+detect.hpp C++ header for detect.cpp
+misc.hpp Various common routines and macros
+tweak095.cpp C++ source for TWEAK version 0.95
+vgalib.cpp The mode-independant VGA library source
+vgalib.hpp Header for VGALIB.HPP
+regedit.cpp C++ source for the RegisterEditor class
+regedit.hpp C++ header for REGEDIT.CPP
+descript.ion Descriptions of all files
+tweak.prj TWEAK archive BC++ 3.1 project file
+320x400.256 Planar 320x400x256
+360x360.256 Planar 360x360x256
+360x400.256 Planar 360x400x256
+376x564.256 Planar 376x564x256
+tweakold.dat Data file: list of supported registers
+132x25s.twk Standard C&T SVGA BIOS mode
+132x43s.twk Standard C&T SVGA BIOS mode
+132x50s.twk Standard C&T SVGA BIOS mode
+132x60s.twk Ultravision C&T SVGA mode
+modes.doc Document on Mode Q, 400x300 and 400x600
+
+The only files required to run TWEAK are:
+
+  o  TWEAK.EXE
+  o  TWEAK.DAT
+
+The register definitions have been moved out from the executable into
+the external .DAT file, to increase flexibility.  You might edit the
+TWEAK.DAT file as you like to include support for any registers you
+might think of.  Remember to update the number in the first line to
+reflect the number of defined registers.  Note that if your new registers
+are not on one of the ports supported by TWEAK.EXE, you might need to
+modify and recompile the TWEAK sources to accomodate the new port(s).
+See REGISTER.CPP.
+
+
+
+Some words on my convention of naming files made by TWEAK:
+----------------------------------------------------------
+
+  o  The general name format is XXXxYYY.CCC, where
+        XXX is the horizontal resolution
+        YYY is the vertical resolution
+        CCC is the number of colors supported, except for text modes,
+            which are named *.TWK.
+  o  An 's' after YYY specifies a Super VGA specific mode which I grabbed
+     from the BIOS of my Chips & Technologies Super VGA.  These modes will
+     probably *not* work with your card unless it's C&T compatible!  I've
+     had reports that most of these modes even crash some sensitive
+     machines/VGA cards.
+  o  A 'c' signals a chained 256-color mode, much like mode 13h, as 
+     opposed to unchained modes like mode X.
+
+
+The Makefile & sources
+----------------------
+
+See the Makefile for all dependencies between the source files.  It's not
+very complicated.
+
+The following makes are defined in the Makefile:
+
+make tweak: makes the TWEAK executable.
+make oldtweak: makes the TWEAK095 executable.
+make examples: makes EXAMPLE*.EXE.
+make utilities: makes 09TO10.EXE and TWEAK2C.EXE.
+make all: combines all the above makes.
+
+The Makefile is Borland C++/MAKE specific, and uses bcc.exe for all the
+work, with one reference to TWEAK2C.EXE.
+
+When studying the sources, note that TWEAK was started as an experiment
+in object oriented programming with C++.  Thus the entire project may look
+a bit pompous in its use of classes, overloaded operators and such.
+Bear with me.  At last I provided the TwkUser files to help you get
+started with something down to earth.
+
+In their current state, some of the source files produce a couple of
+warnings.  These can be ignored.  I do.
+
+Also note that TwkUser.* and the examples are C (but C++ compatible),
+while TWEAK and its utilities are strictly C++.
+
+
+The utilities TWEAK2C and 09TO10
+--------------------------------
+
+The following are dumps of the help screens from there programs:
+
+"TWEAK2C version 1.0
+ by Robert Schmidt of Ztiff Zox Softwear 1993
+ Converts a TWEAK version 1.x file to an #include-able C file.
+
+ Syntax:  TWEAK2C <TWEAK-file> <C file to create> <array name>
+ All parameters are required."
+
+"09TO10 version 1.0
+ by Robert Schmidt of Ztiff Zox Softwear 1993
+
+ Converts TWEAK version 0.9 files to TWEAK version 1.0 files.
+
+ Syntax:  09TO10 <oldfile> <newfile>"
+
+For both programs, the following goes:  If the file to be created already
+exists, the data contained in the file on disk will be overwritten with the
+new data.
+
+
+
+
+
+                      THE 'MISC' DIRECTORY
+
+
+In this directory I have included files from other sources than myself.
+
+READ.ME
+VGA.TXT
+VGABIOS.TXT
+        I found these files in an archive assembled by Finn Thoegersen
+        of Denmark.  I beleive VGABIOS.DOC was taken from Ralph Brown's
+        interrupt list.  VGA.TXT lists VGA registers and their purpose,
+        but as I never used either VGA.TXT or VGABIOS.TXT, I can't
+        guarantee their correctness.  The complete archive containing
+        similar info on most popular Super VGAs can be found on
+        garbo.uwasa.fi in /pc/doc-hard/vgadoc2.zip.
+
+CGA160.TXT
+        A post grabbed from some newsgroup, discussing tweaking on the
+        ancient CGA adapter.  I think 16-color 'graphics' on a CGA
+        sounds pretty interesting, so I included it for your enjoyment.
+
+SETMODEX.ASM
+        Michael Abrash's code to set the VGA in the infamous Mode X.
+        Provided as an example of how programmers were used to tweaking,
+        before TWEAK came along... :)
+
+
+
+
+
+                           CREDITS
+
+Alphabetically:
+
+  o  Michael Abrash for doing so much work on Mode X and PC graphics in
+     general.
+  o  Ralph Brown for the great work on the Interrupt List.
+  o  Peter McDermott for an improved 16-color test screen, and valuable
+     sugestions, he also inspired me to make the autodetecting test
+     screen.
+  o  Kai Rohrbacher for helpful bug reports and info on working modes.
+  o  Finn Thoegersen for the MISC\VGA*.TXT files.  See MISC\READ.ME
+  o  Yaniv Shaya for inspiring me to make finish version 1.0.  Good luck
+     with your project!
+
+
+
+
+
+                         BIBLIOGRAPHY
+
+  o  George Sutty & Steve Blair : "Advanced Pogrammer's Guide to the
+     EGA/VGA" from Brady.  A bit old perhaps, but covers all *standard*
+     EGA/VGA registers, and discusses most BIOS functions and other
+     operations.  Contains disk with C/Pascal source code.
+
+  o  Michael Abrash : "Power Graphics Programming" from QUE/Programmer's
+     Journal.  Collections of (old) articles in Doctor Dobb's Journal on
+     EGA/VGA, read modes and write modes, animation, tweaking (320x240
+     and 360x480).  His newer ravings in DDJ covers fast 256-color
+     bitmaps, compiled bitmaps, 3D graphics, polygons, texture mapping
+     among other stuff.  Check out the XSHARP library available on all
+     simtel mirrors!
+
+  o  Ralph Brown's interrupt list is a must for every serious
+     programmer, containing, among 1 million other things, a VGA BIOS
+     interrupt reference.  Available for anonymous ftp from
+     oak.oakland.edu in directory /pub/msdos/info as inter*.zip (Usually
+     3 files, around 330 Kb each), and on most serious BBSes.
+
+  o  Richard F. Ferraro : "Programmer's Guide to the EGA and VGA video
+     cards including Super VGA".  I don't have this one, but heard it's
+     nice.  The Super VGA reference makes it attractive, though that is
+     no help with TWEAK.
+
+  o  Richard Wilton : "Programmer's Guide to PC & PS/2 Video Systems"
+     Less technical, more application/algorithm oriented.  Supposed to be
+     good.
+
+
+
+
+                        HOW TO REACH ME
+
+
+I welcome any suggestions for further improvement of TWEAK.  I also
+accept donations if you think it's worth it, or if TWEAK has in any way
+helped you out with a tricky problem and you'd like to show your
+appreciation.  I will personally e-mail subsequent versions to people who
+donate $5 or more.  Make checks payable to Robert Schmidt personally.
+
+Postcards from all over the world are fun to get.  Please, if you
+contact me by ordinary mail, use a postcard with some photos from the
+place you live on the front!  I appreciate that a lot.
+
+
+
+Internet e-mail: robert@stud.unit.no
+
+(I guess this should be reachable from Compuserve and other networks
+too.  I don't know how, though.)
+
+If you ever join the IRC service on the Internet, direct a /msg Buuud
+for a chat!  I'm on pretty often.
+
+
+
+Ordinary (snail-)mail:
+
+Ztiff Zox Softwear
+c/o Robert Schmidt
+Stud.post 170
+Norwegian Institute of Technology
+Trondheim
+NORWAY
+
+
+Good luck, and remember the most important bit is to have fun!
+
