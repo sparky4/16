@@ -78,7 +78,7 @@ UPXQ=-qqq
 AFLAGS=-mh -0 -d1
 SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#54096#60000
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
-ZFLAGS=-zk0 -zc -zp8 $(WCLQ) -zm
+ZFLAGS=-zk0 -zc -zp8 -zm $(WCLQ)
 LFLAG=-lr -l=dos -fd
 CFLAGS=$(AFLAGS) $(IFLAGS) -wo -i$(DOSLIB) $(LFLAG)
 OFLAGS=-obmilr -oe=24 -out -oh -ei -zp8 -fpi87  -onac -ol+ -ok####x
