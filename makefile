@@ -446,7 +446,7 @@ www: .symbolic
 	@ssh -p 26 sparky4@4ch.mooo.com 'rm -f /var/www/16/*exe.zip*'
 	@rm -f /var/www/*.exe.zip*
 	#@cp ./$(EXEC) $(DIRSEP)var$(DIRSEP)www$(DIRSEP)
-	@./z.sh $(EXEC) $(EXEC)
+	@./src/util/z.sh $(EXEC) $(EXEC)
 	@scp -r -P 26 *.exe 4ch.mooo.com:/var/www/16/
 	@scp -r -P 26 /var/www/*.exe.zip.* 4ch.mooo.com:/var/www/16/
 
