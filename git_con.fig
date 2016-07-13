@@ -3,6 +3,9 @@
 	filemode = true
 	bare = false
 	logallrefupdates = true
+	sharedRepository = all
+[receive]
+	denyNonFastForwards = True
 [remote "x4"]
 	url = ssh://sparky4@4ch.mooo.com:26/var/www/16/16.git
 	fetch = +refs/heads/*:refs/remotes/x4/*
