@@ -115,7 +115,6 @@ void main(int argc, char *argv[])
 	/* data */
 	player[0].data = malloc(48*128); //TODO use exmm
 	*player[0].data = bitmapLoadPcx("data/chikyuu.pcx"); // load sprite
-	//npctmp = bitmapLoadPcx("ptmp1.pcx"); // load sprite
 
 	/* create the planar buffer */
 ////++++	(player[0].data) = *planar_buf_from_bitmap(&p);

@@ -3,13 +3,14 @@
 #include <hw/vga/vga.h>
 #include <hw/vga/vrl.h>
 
-#include "src/tesuto.h"
+#include "src/0.h"
 
 #define FILENAME_1 "data/aconita.vrl"
 #define FILENAME_2 "data/aconita.pal"
 
 static unsigned char palette[768];
 global_game_variables_t gvar;
+player_t player[1];
 
 int main(int argc,char **argv) {
 	struct vrl1_vgax_header *vrl_header;
@@ -21,6 +22,10 @@ int main(int argc,char **argv) {
 
 	bakapee1=malloc(64);
 	bakapee2=malloc(1024);
+
+	IN_Startup();
+	IN_Default(0,&player,ctrl_Joystick);
+	IN_initplayer(&player, 0);
 
 	if (argc < 3) {
 		fprintf(stderr,"drawvrl <VRL file> <palette file>\n");
@@ -126,10 +131,16 @@ int main(int argc,char **argv) {
 
 		/* do it */
 		omemptr = vga_state.vga_graphics_ram; // save original mem ptr
-		while (1) {
-			/* stop animating if the user hits ENTER */
-			if (kbhit()) {
-				if (getch() == 13) break;
+
+		while(!IN_KeyDown(sc_Escape))
+		{
+			IN_ReadControl(0,&player);
+			if(IN_KeyDown(2)) modexShowPage(&(gvar.video.page[0]));
+			if(IN_KeyDown(3)) modexShowPage(&(gvar.video.page[1]));
+			if(IN_KeyDown(68))	//f10
+			{
+				//gvar.kurokku.fpscap=!gvar.kurokku.fpscap;
+				IN_UserInput(1,1);
 			}
 
 			/* render box bounds. y does not need modification, but x and width must be multiple of 4 */
@@ -173,8 +184,7 @@ int main(int argc,char **argv) {
 			vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = gvar.video.page[0].stridew;
 
 			/* step */
-			x += xdir;
-			y += ydir;
+			x += xdir; y += ydir;
 			if ((x + vrl_header->width) >= ((gvar.video.page[0].width + gvar.video.page[0].dx) - 1) || x == -(gvar.video.page[0].dx))
 				xdir = -xdir;
 			if ((y + vrl_header->height) >= ((gvar.video.page[0].height + gvar.video.page[0].dy) - 1) || y == -(gvar.video.page[0].dy))
@@ -183,22 +193,15 @@ int main(int argc,char **argv) {
 		}
 	}
 
-	while (1) {
-			/* stop animating if the user hits ENTER */
-			if (kbhit()) {
-				if (getch() == 13) break;
-			}
-		modexShowPage(&(gvar.video.page[1]));
+	IN_UserInput(1,1);
+
+	while(!IN_KeyDown(sc_Escape))
+	{
+		if(IN_KeyDown(2)) modexShowPage(&(gvar.video.page[0]));
+		if(IN_KeyDown(3)) modexShowPage(&(gvar.video.page[1]));
 	}
 
-	while (1) {
-			/* stop animating if the user hits ENTER */
-			if (kbhit()) {
-				if (getch() == 13) break;
-			}
-		modexShowPage(&(gvar.video.page[0]));
-	}
-
+	modexShowPage(&(gvar.video.page[0]));
 	/* another handy "demo" effect using VGA write mode 1.
 	 * we can take what's on screen and vertically squash it like an old analog TV set turning off. */
 	{
@@ -279,10 +282,13 @@ int main(int argc,char **argv) {
 		}
 	}
 
+	IN_Shutdown();
 	VGAmodeX(0, 1, &gvar);
 	free(vrl_lineoffs);
 	buffer = NULL;
 	free(buffer);
 	bufsz = 0;
+	free(bakapee1);
+	free(bakapee2);
 	return 0;
 }
