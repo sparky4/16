@@ -17,15 +17,15 @@ rem for %# in (1,1,%*) do (
 rem	 echo y=%y
 	if %o lt 100 (
 		if %o lt 10 (
-			set q=00%o
+			set z=00%o
 		) else (
-			set q=0%o
+			set z=0%o
 		) endif
 	) else if %o gt 99 (
-		set q=%o
+		set z=%o
 	) endif
 
-	htget http://%url/%1.zip.%q > %y
+	htget http://%url/%1.zip.%z > %y
 
 rem  	pause
 	iff exist %y then
@@ -43,6 +43,8 @@ rem  		echo o=%o
 		endiff
 		goto loop
 	endiff
+	else
+		echo "Error wwww invalid file name."
 	endiff
 rem  echo y="%y"
 rem  echo q=%q
