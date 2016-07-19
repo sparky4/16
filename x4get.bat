@@ -1,6 +1,7 @@
 @echo off
 del %*
 setlocal
+set url="4ch.mooo.com/16"
 rem for %@eval[%#+1] in (%*) do (
 rem for %# in (1,1,%*) do (
 :loop
@@ -12,7 +13,7 @@ rem for %# in (1,1,%*) do (
 	set /a o=%o+1
 	set y=%w.z%o
 rem	 echo y=%y
-	htget http://4ch.mooo.com/16/%1.zip.00%o > %y
+	htget http://%url/%1.zip.00%o > %y
 rem  	pause
 	type %y >> %w.zip
 	iff "%@FILESIZE[%y,b]" == "65536" then
