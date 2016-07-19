@@ -26,25 +26,31 @@ rem	 echo y=%y
 	) endif
 
 	htget http://%url/%1.zip.%z > %y
-
 rem  	pause
-	iff exist %y then
+	iff NOT "%@FILESIZE[%y,b]" == "0" then
 		type %y >> %w.zip
-	endiff
-	iff "%@FILESIZE[%y,b]" == "65536" then
-rem  		echo o=%o
-		goto oooo
-	endiff
-	iff NOT "%#" == "0" then
-		shift /1
-		iff exist %w.zip then
-			unzip %w.zip
-			del %w.z*
+		iff "%@FILESIZE[%y,b]" == "65536" then
+rem  				echo o=%o
+			goto oooo
 		endiff
-		goto loop
+		iff NOT "%#" == "0" then
+			shift /1
+			iff exist %w.zip then
+				unzip %w.zip
+				del %w.z*
+			endiff
+			goto loop
+		else
+			del %#
+		endiff
+	else
+		del %y
+		echo Error null zip file wwww
 	endiff
 	else
-		echo "Error wwww invalid file name."
+		rem del %y.z*
+		rem need to add a cleaner wwww
+		echo Error wwww invalid file name.
 	endiff
 rem  echo y="%y"
 rem  echo q=%q
