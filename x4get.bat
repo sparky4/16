@@ -50,7 +50,7 @@ rem  				echo o=%o
 	else
 		rem del %y.z*
 		rem need to add a cleaner wwww
-		echo Error wwww invalid file name.
+		echo done~ wwww
 	endiff
 rem  echo y="%y"
 rem  echo q=%q
