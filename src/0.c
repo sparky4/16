@@ -3,7 +3,7 @@
 #include <hw/vga/vga.h>
 #include <hw/vga/vrl.h>
 
-#include "src/0.h"
+#include "src/tesuto.h"
 
 #define FILENAME_1 "data/aconita.vrl"
 #define FILENAME_2 "data/aconita.pal"
