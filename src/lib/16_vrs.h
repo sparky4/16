@@ -24,6 +24,8 @@
 
 #include "src/lib/16_head.h"
 #include "src/lib/modex16.h"
+#include "src/lib/16_ca.h"
+#include "src/lib/16_mm.h"
 //#include <hw/cpu/cpu.h>
 //#include <hw/dos/dos.h>
 //#include <hw/vga/vga.h>

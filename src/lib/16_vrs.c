@@ -21,6 +21,7 @@
  */
 #include "src/lib/16_vrs.h"
 
+//TODO: USE 16_MM! AND 16_CA!
 // Read .vrs file into memory
 int read_vrs(char *filename, struct vrs_container *vrs_cont){
 	// Initialise a local copy of becessary variables
@@ -45,6 +46,7 @@ int read_vrs(char *filename, struct vrs_container *vrs_cont){
 	return 0;
 }
 
+//TODO: USE 16_MM! AND 16_CA!
 // Seek and return a specified .vrl blob from .vrs blob in memory
 struct vrl_container* get_vrl_by_id(struct vrs_container *vrs_cont, uint16_t id){
 	uint16_t *ids;
