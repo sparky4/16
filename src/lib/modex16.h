@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -42,6 +42,7 @@
 #include <hw/dos/dos.h>
 #include <hw/vga/vga.h>
 #include <hw/vga/vrl.h>
+#include <hw/vga/vrs.h>
 #endif
 
 static struct pcxHeader {

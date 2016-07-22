@@ -1,19 +1,33 @@
-#include <stdio.h>
-#include <fcntl.h>
-#include <ctype.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <unistd.h>
+/* Project 16 Source Code~
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
+ *
+ * This file is part of Project 16.
+ *
+ * Project 16 is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Project 16 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>, or
+ * write to the Free Software Foundation, Inc., 51 Franklin Street,
+ * Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ */
+#include "src/lib/16_vrs.h"
 
-#include "16_vrs.h"
-
-// Read .vrs file into memory 
+// Read .vrs file into memory
 int read_vrs(char *filename, struct vrs_container *vrs_cont){
 	// Initialise a local copy of becessary variables
 	// so vrs_cont won't be dirty on error
 	int fd;
-	unsigned long size;
-	unsigned char *buffer;
+	dword size;
+	byte *buffer;
 	// Open filename, get size of file,
 	// populate the vrs_container if all tests pass
 	fd = open(filename, O_RDONLY|O_BINARY);
@@ -31,9 +45,9 @@ int read_vrs(char *filename, struct vrs_container *vrs_cont){
 	return 0;
 }
 
-// Seek and return a specified .vrl blob from .vrs blob in memory 
+// Seek and return a specified .vrl blob from .vrs blob in memory
 struct vrl_container* get_vrl_by_id(struct vrs_container *vrs_cont, uint16_t id){
-	uint16_t *ids; 
+	uint16_t *ids;
 	uint32_t *vrl_list;
 	struct vrl_container *vrl_cont;
 	int counter = 0;
@@ -43,7 +57,7 @@ struct vrl_container* get_vrl_by_id(struct vrs_container *vrs_cont, uint16_t id)
 		return 0;
 	}
 	// Get id list from .vrs blob (base + offset)
-	ids = (uint16_t*)vrs_cont->buffer + (unsigned long)vrs_cont->vrs_hdr->offset_table[VRS_HEADER_OFFSET_SPRITE_ID_LIST];
+	ids = (uint16_t*)vrs_cont->buffer + (dword)vrs_cont->vrs_hdr->offset_table[VRS_HEADER_OFFSET_SPRITE_ID_LIST];
 	// Loop through the id list until we found the right one or hit the end of the list
 	// Counter is keeping track of the offset(in ids/vrl blobs)
 	while(ids[counter] != id && ids[counter]){

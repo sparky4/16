@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -29,7 +29,7 @@
 
 typedef unsigned char byte;
 typedef unsigned short word;
-typedef unsigned long  dword;
+typedef unsigned long dword;
 typedef signed char sbyte;
 typedef signed short sword;
 typedef signed long sdword;
