@@ -40,11 +40,13 @@ REMOVECOMMAND=rm -f
 COPYCOMMAND=cp -f
 DIRSEP=/
 OBJ=o
+DUMP=cat
 !else
 REMOVECOMMAND=del
 COPYCOMMAND=copy /y
 DIRSEP=\
 OBJ=obj
+DUMP=type
 !endif
 
 TARGET_OS = dos
@@ -79,8 +81,8 @@ AFLAGS=-mh -0 -d1
 SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#54096#60000
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
 ZFLAGS=-zk0 -zc -zp8 -zm $(WCLQ)
-LFLAG=-lr -l=dos -fd
-CFLAGS=$(AFLAGS) $(IFLAGS) -wo -i$(DOSLIB) $(LFLAG)
+LFLAGS=-lr -l=dos
+CFLAGS=$(AFLAGS) $(IFLAGS) -wo -i$(DOSLIB) $(LFLAGS)
 OFLAGS=-obmilr -oe=24 -out -oh -ei -zp8 -fpi87  -onac -ol+ -ok####x
 FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 
@@ -107,9 +109,11 @@ EXEC = 16.exe bakapi.exe tesuto.exe 0.exe $(TESTEXEC)
 
 all: $(EXEC) joytest.exe
 #16.lib => $(16LIBOBJS) bug....
-16LIB=$(16LIBOBJS)
+#16LIB=$(16LIBOBJS)
+16LIB=16.lib
+
 !ifeq DEBUGSERIAL 1
-16LIB += $(DOSLIBLIBS)
+16LIBOBJS += $(DOSLIBLIBS)
 !endif
 #
 #game and bakapi executables
@@ -135,6 +139,16 @@ tesuto.exe: tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
 #	%write tmp.cmd library $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu$(DIRSEP)dos86h$(DIRSEP)cpu.lib
 #	%write tmp.cmd library $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos$(DIRSEP)dos86h$(DIRSEP)dos.lib
 #	@wlink @tmp.cmd
+
+#
+# add this ww to reduce junk www
+#
+# NTS we have to construct the command line into tmp.cmd because for MS-DOS
+# systems all arguments would exceed the pitiful 128 char command line limit
+#.C.OBJ:
+#	%write temp.cmd $(CFLAGS_THIS) $(CFLAGS_CON) $[@
+#	wcl @temp.cmd
+#
 	wcl $(FLAGS) $(WCLQ) tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
 tesuto.$(OBJ): $(SRC)tesuto.c
 	wcl $(FLAGS) $(WCLQ) -c $(SRC)tesuto.c
@@ -455,6 +469,9 @@ www: .symbolic
 
 getwww: .symbolic
 	@x4get.bat $(EXEC)
+
+vomitchan: .symbolic
+	@$(DUMP) *.err
 
 ##
 ##	External library management~ ^^
