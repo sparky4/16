@@ -153,13 +153,13 @@ tesuto.exe: tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
 tesuto.$(OBJ): $(SRC)tesuto.c
 	wcl $(FLAGS) $(WCLQ) -c $(SRC)tesuto.c
 
-0.exe: 0.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
-	wcl $(FLAGS) $(WCLQ) 0.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
+0.exe: 0.$(OBJ) $(DOSLIBLIBS) gfx.lib $(16LIB)
+	wcl $(FLAGS) $(WCLQ) 0.$(OBJ) $(DOSLIBLIBS) gfx.lib $(16LIB)
 0.$(OBJ): $(SRC)0.c
 	wcl $(FLAGS) $(WCLQ) -c $(SRC)0.c
 
-test.exe: test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ) $(DOSLIBLIBS) $(16LIB)
-	wcl $(FLAGS) test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ) $(DOSLIBLIBS) $(16LIB) -fm=test.mah
+test.exe: test.$(OBJ) gfx.lib $(DOSLIBLIBS) $(16LIB)
+	wcl $(FLAGS) test.$(OBJ) gfx.lib $(DOSLIBLIBS) $(16LIB) -fm=test.mah
 
 test2.exe: test2.$(OBJ) $(DOSLIBLIBS) gfx.lib
 	wcl $(FLAGS) test2.$(OBJ) $(DOSLIBLIBS) gfx.lib -fm=test2.mah
@@ -300,8 +300,8 @@ vgmtest.$(OBJ): $(SRC)vgmtest.c
 16.lib: $(16LIBOBJS)# doslib.lib vgmsnd.lib
 	wlib -b $(WLIBQ) 16.lib $(16LIBOBJS)# doslib.lib vgmsnd.lib
 
-gfx.lib: $(GFXLIBOBJS) 16_in.$(OBJ) 16_head.$(OBJ)
-	wlib -b $(WLIBQ) gfx.lib $(GFXLIBOBJS) 16_in.$(OBJ) 16_head.$(OBJ)
+gfx.lib: $(GFXLIBOBJS)
+	wlib -b $(WLIBQ) gfx.lib $(GFXLIBOBJS)
 
 vgmsnd.lib: $(VGMSNDOBJ)
 	wlib -b $(WLIBQ) vgmsnd.lib $(VGMSNDOBJ)
