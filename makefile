@@ -109,8 +109,8 @@ EXEC = 16.exe bakapi.exe tesuto.exe 0.exe $(TESTEXEC)
 
 all: $(EXEC) joytest.exe
 #16.lib => $(16LIBOBJS) bug....
-#16LIB=$(16LIBOBJS)
-16LIB=16.lib
+16LIB=$(16LIBOBJS)
+#16LIB=16.lib
 
 !ifeq DEBUGSERIAL 1
 16LIBOBJS += $(DOSLIBLIBS)
