@@ -36,7 +36,7 @@ main(int argc, char *argv[])
 	fprintf(stderr, fmt, _memavl());
 	fprintf(stderr, fmt0, _memmax());
 	fprintf(stderr, "Size of map var = %u\n", _msize(&map));
-	fprintf(stderr, "program always crashes for some reason....");
+	//fprintf(stderr, "program always crashes for some reason....\n");
 	getch();
 
 	loadmap("data/test.map", &map);

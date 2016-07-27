@@ -753,7 +753,7 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 }*/
 
 unsigned char shinku_fps_indicator_page = 2;
-boolean pageflipflop;
+boolean pageflipflop = 1;
 boolean pageploop = 1;
 
 /*	sync	*/

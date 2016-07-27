@@ -40,7 +40,7 @@ sword bakapee;
 pan_t pan;
 //debugswitches
 boolean panswitch=0;
-extern boolean pageflipflop=1;
+//extern boolean pageflipflop=1;
 	unsigned int i;
 	const char *cpus;
 	//static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
