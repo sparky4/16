@@ -19,7 +19,7 @@
  * Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-
+//TODO: ADD MEMORY MANAGER! WWWW
 #include "src/lib/mapread.h"
 
 #define DUMP
@@ -30,6 +30,15 @@ main(int argc, char *argv[])
 {
 	map_t map;
 	short i;
+	char *fmt = "Memory available = %u\n";
+	char *fmt0 = "Largest Contiguous Block of Memory available = %u\n";
+
+	fprintf(stderr, fmt, _memavl());
+	fprintf(stderr, fmt0, _memmax());
+	fprintf(stderr, "Size of map var = %u\n", _msize(&map));
+	fprintf(stderr, "program always crashes for some reason....");
+	getch();
+
 	loadmap("data/test.map", &map);
 	#ifdef DUMP
 	fprintf(stdout, "map.width=	%d\n", map.width);

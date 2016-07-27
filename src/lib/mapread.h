@@ -22,11 +22,6 @@
 
 #ifndef _LIBMAPREAD_H_
 #define _LIBMAPREAD_H_
-//#include <stdlib.h>
-//#include <stdio.h>
-#include <string.h>
-#include <errno.h>
-#include <malloc.h>
 
 #include "src/lib/jsmn/jsmn.h"
 #include "src/lib/modex16.h"
