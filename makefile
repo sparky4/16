@@ -248,9 +248,6 @@ palettel.$(OBJ): $(SRC)palettel.c
 maptest.$(OBJ): $(SRC)maptest.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)maptest.c
 
-#maptest0.$(OBJ): $(SRC)maptest0.c# $(SRCLIB)modex16.h
-#	wcl $(FLAGS) $(MFLAGS) -c $(SRC)maptest0.c
-
 #emmtest.$(OBJ): $(SRC)emmtest.c
 #	wcl $(FLAGS) $(MFLAGS) -c $(SRC)emmtest.c
 
