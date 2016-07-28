@@ -34,29 +34,20 @@
 // Includes:
 // + size of the .vrs blob in memory
 // + pointer to the blob/vrs header
-// + id of the curent (shown) animation
-// + id of the first sprite of the curret animation (supplementary)
-// + id of the current (shown) sprite
 
 struct vrs_container{
 	dword size;
 	union{
-		byte *buffer;
-		struct vrs_header *vrs_hdr;
+		byte huge *buffer;
+		struct vrs_header huge *vrs_hdr;
 	};
-	uint16_t anchor_sprite_id;
-	uint16_t current_sprite_id;
 };
 
-// Container for .vrl files loaded in memory with useful info
-// Includes:
-// + size of the .vrl blob in memory
-// + pointer to the blob/vrl header
 struct vrl_container{
 	dword size;
 	union{
-		byte *buffer;
-		struct vrl1_vgax_header *vrl_header;
+		byte huge *buffer;
+		struct vrl1_vgax_header huge *vrl_header;
 	};
 };
 

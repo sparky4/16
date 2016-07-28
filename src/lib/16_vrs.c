@@ -20,38 +20,32 @@
  *
  */
 #include "src/lib/16_vrs.h"
+#include "src/lib/typedefst.h"
 
-//TODO: USE 16_MM! AND 16_CA!
-// Read .vrs file into memory
+extern global_game_variables_t gvar;
+
+// Read .vrs file into far memory
 int read_vrs(char *filename, struct vrs_container *vrs_cont){
-	// Initialise a local copy of becessary variables
-	// so vrs_cont won't be dirty on error
 	int fd;
 	dword size;
-	byte *buffer;
+	byte huge *buffer;
 	// Open filename, get size of file,
 	// populate the vrs_container if all tests pass
 	fd = open(filename, O_RDONLY|O_BINARY);
+	size = filelength(fd);
+	close(fd);
 	// Insert sanity cheks later
-	size = lseek(fd, 0, SEEK_END);
-	buffer = malloc(size);
-	lseek(fd, 0, SEEK_SET);
-	read(fd, buffer, size);
+	CA_LoadFile(filename, buffer, gvar->mm, gvar->mmi);
 	vrs_cont->size = size;
 	vrs_cont->buffer = buffer;
-	// 0 is an invalid value for ids under vrs specifications,
-	// so it is safe to flush ids to this value
-	vrs_cont->anchor_sprite_id = 0;
-	vrs_cont->current_sprite_id = 0;
 	return 0;
 }
 
-//TODO: USE 16_MM! AND 16_CA!
-// Seek and return a specified .vrl blob from .vrs blob in memory
-struct vrl_container* get_vrl_by_id(struct vrs_container *vrs_cont, uint16_t id){
-	uint16_t *ids;
-	uint32_t *vrl_list;
-	struct vrl_container *vrl_cont;
+// Seek and return a specified .vrl blob from .vrs blob in far memory
+struct vrl_container get_vrl_by_id(struct vrs_container huge *vrs_cont, uint16_t id){
+	uint16_t huge *ids;
+	uint32_t huge *vrl_list;
+	struct vrl_container huge *vrl_cont;
 	int counter = 0;
 	// If id is invalid, return null
 	if(id == 0){
@@ -59,7 +53,8 @@ struct vrl_container* get_vrl_by_id(struct vrs_container *vrs_cont, uint16_t id)
 		return 0;
 	}
 	// Get id list from .vrs blob (base + offset)
-	ids = (uint16_t*)vrs_cont->buffer + (dword)vrs_cont->vrs_hdr->offset_table[VRS_HEADER_OFFSET_SPRITE_ID_LIST];
+	ids = (uint16_t huge*)vrs_cont->buffer + 
+		(dword)vrs_cont->vrs_hdr->offset_table[VRS_HEADER_OFFSET_SPRITE_ID_LIST];
 	// Loop through the id list until we found the right one or hit the end of the list
 	// Counter is keeping track of the offset(in ids/vrl blobs)
 	while(ids[counter] != id && ids[counter]){
@@ -71,12 +66,13 @@ struct vrl_container* get_vrl_by_id(struct vrs_container *vrs_cont, uint16_t id)
 		return 0;
 	}
 	// Get vrl list from .vrs blob (base + offset)
-	vrl_list = (uint32_t *)(vrs_cont->buffer + vrs_cont->vrs_hdr->offset_table[VRS_HEADER_OFFSET_VRS_LIST]);
+	vrl_list = (uint32_t huge *)(vrs_cont->buffer + 
+					vrs_cont->vrs_hdr->offset_table[VRS_HEADER_OFFSET_VRS_LIST]);
 	// Allocate memory for vrl_cont
-	vrl_cont = (struct vrl_container*)malloc(sizeof(struct vrl_container));
+	vrl_cont = (struct vrl_container)malloc(sizeof(struct vrl_container));
 	// Get vrl_header from .vrs (base + offset from vrl_list)
 	// Counter is number of vrls to skip (ids and vrls are aligned according to the .vrs specification)
-	vrl_cont->vrl_header = (struct vrl1_vgax_header*)(vrs_cont->buffer + vrl_list[counter]);
+	vrl_cont->vrl_header = (struct vrl1_vgax_header huge *)(vrs_cont->buffer + vrl_list[counter]);
 	// Get .vrl size by integer arithmetics (next vrl - current vrl)
 	// Untested. May be an incorrect way to do so
 	vrl_cont->size = vrl_list[counter+1] - vrl_list[counter];
