@@ -31,7 +31,6 @@
 #include "src/lib/16_head.h"
 #include "src/lib/16_timer.h"
 #include "src/lib/bitmap.h"
-#include "src/lib/planar.h"
 #ifdef __WATCOMC__
 #include "src/lib/16_dbg.h"
 #endif

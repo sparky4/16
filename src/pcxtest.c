@@ -25,13 +25,13 @@
 #include <string.h>
 #include "src/lib/modex16.h"
 #include "src/lib/bitmap.h"
-#include "src/lib/planar.h"
+//----#include "src/lib/planar.h"
 
 global_game_variables_t gvar;
 
 void main() {
 	bitmap_t bmp;
-	planar_buf_t *p;
+//----	planar_buf_t *p;
 	int i;
 	word start;
 	int plane;
@@ -62,7 +62,7 @@ void main() {
 	bmp = bitmapLoadPcx("data/chikyuu.pcx");
 //	bmp = bitmapLoadPcx("data/koishi^^.pcx");
 //	bmp = bitmapLoadPcx("16/PCX_LIB/chikyuu.pcx");
-	p = planar_buf_from_bitmap(&bmp);
+//----	p = planar_buf_from_bitmap(&bmp);
 	VGAmodeX(1, 1, &gvar);
 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 

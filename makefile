@@ -92,9 +92,8 @@ FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_timer.$(OBJ)
-
-GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16planar.$(OBJ) 16_vrs.$(OBJ) $(DOSLIBLIBS)
-
+GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16_vrs.$(OBJ) $(DOSLIBLIBS)
+#planar.$(OBJ) 16planar.$(OBJ)
 DOSLIBLIBS=$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu$(DIRSEP)dos86h$(DIRSEP)cpu.lib $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos$(DIRSEP)dos86h$(DIRSEP)dos.lib $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vga.lib
 
 !ifeq DEBUGSERIAL 1
@@ -103,8 +102,8 @@ DOSLIBOBJ += 8250.$(OBJ)
 DOSLIBLIBS += $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)8250$(DIRSEP)dos86h$(DIRSEP)8250.lib
 !endif
 
-TESTEXEC = test.exe test0.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe exmmtest.exe
-
+TESTEXEC = test.exe test0.exe pcxtest.exe pcxtest2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe exmmtest.exe
+#planrpcx.exe test2.exe
 EXEC = 16.exe bakapi.exe tesuto.exe 0.exe $(TESTEXEC)
 
 all: $(EXEC) joytest.exe
@@ -161,8 +160,8 @@ tesuto.$(OBJ): $(SRC)tesuto.c
 test.exe: test.$(OBJ) gfx.lib $(DOSLIBLIBS) $(16LIB)
 	wcl $(FLAGS) test.$(OBJ) gfx.lib $(DOSLIBLIBS) $(16LIB) -fm=test.mah
 
-test2.exe: test2.$(OBJ) $(DOSLIBLIBS) gfx.lib
-	wcl $(FLAGS) test2.$(OBJ) $(DOSLIBLIBS) gfx.lib -fm=test2.mah
+#test2.exe: test2.$(OBJ) $(DOSLIBLIBS) gfx.lib
+#	wcl $(FLAGS) test2.$(OBJ) $(DOSLIBLIBS) gfx.lib -fm=test2.mah
 
 test0.exe: test0.$(OBJ)
 	wcl $(FLAGS) test0.$(OBJ) -fm=test0.mah
@@ -194,8 +193,8 @@ palettel.exe: palettel.$(OBJ) gfx.lib #$(16LIB)
 pcxtest2.exe: pcxtest2.$(OBJ) gfx.lib
 	wcl $(FLAGS) pcxtest2.$(OBJ) gfx.lib -fm=pcxtest2.mah
 
-planrpcx.exe: planrpcx.$(OBJ) gfx.lib
-	wcl $(FLAGS) planrpcx.$(OBJ) gfx.lib -fm=planrpcx.mah
+##planrpcx.exe: planrpcx.$(OBJ) gfx.lib
+##	wcl $(FLAGS) planrpcx.$(OBJ) gfx.lib -fm=planrpcx.mah
 
 maptest.exe: maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib
 	wcl $(FLAGS) maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib -fm=maptest.mah
@@ -224,8 +223,8 @@ bakapi.$(OBJ): $(SRC)bakapi.h $(SRC)bakapi.c
 test.$(OBJ): $(SRC)test.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)test.c
 
-test2.$(OBJ): $(SRC)test2.c $(SRCLIB)modex16.h
-	wcl $(FLAGS) -c $(SRC)test2.c
+#test2.$(OBJ): $(SRC)test2.c $(SRCLIB)modex16.h
+#	wcl $(FLAGS) -c $(SRC)test2.c
 
 test0.$(OBJ): $(SRC)test0.c
 	wcl $(FLAGS) -c $(SRC)test0.c
@@ -233,8 +232,8 @@ test0.$(OBJ): $(SRC)test0.c
 pcxtest.$(OBJ): $(SRC)pcxtest.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)pcxtest.c
 
-planrpcx.$(OBJ): $(SRC)planrpcx.c $(SRCLIB)modex16.h
-	wcl $(FLAGS) -c $(SRC)planrpcx.c
+##planrpcx.$(OBJ): $(SRC)planrpcx.c $(SRCLIB)modex16.h
+##	wcl $(FLAGS) -c $(SRC)planrpcx.c
 
 pcxtest2.$(OBJ): $(SRC)pcxtest2.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)pcxtest2.c
@@ -334,8 +333,8 @@ bakapee.$(OBJ): $(SRCLIB)bakapee.h $(SRCLIB)bakapee.c
 16render.$(OBJ): $(MODEXLIB)16render.h $(MODEXLIB)16render.c
 	wcl $(FLAGS) -c $(MODEXLIB)16render.c
 
-16planar.$(OBJ): $(MODEXLIB)16planar.h $(MODEXLIB)16planar.c
-	wcl $(FLAGS) -c $(MODEXLIB)16planar.c
+##16planar.$(OBJ): $(MODEXLIB)16planar.h $(MODEXLIB)16planar.c
+##	wcl $(FLAGS) -c $(MODEXLIB)16planar.c
 
 16_vrs.$(OBJ): $(SRCLIB)16_vrs.h $(SRCLIB)16_vrs.c
 	wcl $(FLAGS) -c $(SRCLIB)16_vrs.c
@@ -343,8 +342,8 @@ bakapee.$(OBJ): $(SRCLIB)bakapee.h $(SRCLIB)bakapee.c
 bitmap.$(OBJ): $(SRCLIB)bitmap.h $(SRCLIB)bitmap.c
 	wcl $(FLAGS) -c $(SRCLIB)bitmap.c
 
-planar.$(OBJ): $(SRCLIB)planar.h $(SRCLIB)planar.c
-	wcl $(FLAGS) -c $(SRCLIB)planar.c
+##planar.$(OBJ): $(SRCLIB)planar.h $(SRCLIB)planar.c
+##	wcl $(FLAGS) -c $(SRCLIB)planar.c
 
 scroll16.$(OBJ): $(SRCLIB)scroll16.h $(SRCLIB)scroll16.c
 	wcl $(FLAGS) -c $(SRCLIB)scroll16.c

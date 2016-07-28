@@ -29,7 +29,7 @@
 void main() {
 	FILE *file;
     bitmap_t bmp;
-    planar_buf_t *p;
+//----    planar_buf_t *p;
     word size;
     int i;
     int plane;

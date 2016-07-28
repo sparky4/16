@@ -98,7 +98,7 @@ word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, 
 			bp = bitmapLoadPcx("data/ed.pcx");
 //			bp = bitmapLoadPcx("data/koishi^^.pcx");
 			map->tiles->btdata = &bp;
-			map->tiles->data = planar_buf_from_bitmap(&bp);
+//----			map->tiles->data = planar_buf_from_bitmap(&bp);
 			//map->tiles->data->data = malloc((16/**2*/)*16);
 			//map->tiles->data->width = (16/**2*/);
 			//map->tiles->data->height= 16;

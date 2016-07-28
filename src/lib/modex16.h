@@ -27,7 +27,7 @@
 
 #include "src/lib/16_head.h"
 #include "src/lib/bitmap.h"
-#include "src/lib/planar.h"
+//#include "src/lib/planar.h"
 //#include "src/lib/modex16/16planar.h"
 #include "src/lib/16text.h"
 #include "src/lib/modex16/16render.h"
