@@ -44,7 +44,8 @@
 
 #define	BUFFERSIZE		0x1000		// miscelanious, allways available buffer
 
-#define MAXBLOCKS		1024
+//moved to typdefst
+//#define MAXBLOCKS		1024
 
 
 
@@ -88,10 +89,11 @@
 
 //==========================================================================
 
-typedef struct
+//moved to typdefst
+/*typedef struct
 {
 	dword	nearheap,farheap,EMSmem,XMSmem,mainmem;
-} mminfotype;
+} mminfotype;*/
 
 //==========================================================================
 
@@ -114,10 +116,12 @@ extern void		(* XMSaddr) (void);		// far pointer to XMS driver
 #define PURGEMASK	0xfffc
 #define BASEATTRIBUTES	0	// unlocked, non purgable
 
-#define MAXUMBS		12
+//moved to typedefst
+//#define MAXUMBS		12
 #define MAPPAGES		4//mm->EMSpagesmapped
 
-typedef struct mmblockstruct
+//moved to typdefst
+/*typedef struct mmblockstruct
 {
 	word	start,length;
 	//word	start;	dword length;
@@ -148,7 +152,7 @@ typedef struct
 	//dword	numUMBs,UMBbase[MAXUMBS];
 	//huge mmblocktype	huge mmblocks[MAXBLOCKS],huge *mmhead,huge *mmfree,huge *mmrover,huge *mmnew;
 	mmblocktype	far mmblocks[MAXBLOCKS],far *mmhead,far *mmfree,far *mmrover,far *mmnew;
-} mminfo_t;
+} mminfo_t;*/
 
 /*
 =============================================================================

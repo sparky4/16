@@ -20,29 +20,26 @@
  *
  */
 #include "src/lib/16_vrs.h"
-#include "src/lib/typedefst.h"
-
-extern global_game_variables_t gvar;
 
 // Read .vrs file into far memory
-int read_vrs(char *filename, struct vrs_container *vrs_cont){
+int read_vrs(global_game_variables_t *gvar, char *filename, struct vrs_container *vrs_cont){
 	int fd;
 	dword size;
 	byte huge *buffer;
 	// Open filename, get size of file,
 	// populate the vrs_container if all tests pass
-	fd = open(filename, O_RDONLY|O_BINARY);
+	fd = open((filename), O_RDONLY|O_BINARY);
 	size = filelength(fd);
 	close(fd);
 	// Insert sanity cheks later
-	CA_LoadFile(filename, buffer, gvar->mm, gvar->mmi);
+	CA_LoadFile(filename, buffer, &gvar->mm, &gvar->mmi);
 	vrs_cont->size = size;
 	vrs_cont->buffer = buffer;
 	return 0;
 }
 
 // Seek and return a specified .vrl blob from .vrs blob in far memory
-struct vrl_container get_vrl_by_id(struct vrs_container huge *vrs_cont, uint16_t id){
+struct vrl_container get_vrl_by_id(struct vrs_container /*huge*/ *vrs_cont, uint16_t id){
 	uint16_t huge *ids;
 	uint32_t huge *vrl_list;
 	struct vrl_container huge *vrl_cont;
@@ -53,7 +50,7 @@ struct vrl_container get_vrl_by_id(struct vrs_container huge *vrs_cont, uint16_t
 		return 0;
 	}
 	// Get id list from .vrs blob (base + offset)
-	ids = (uint16_t huge*)vrs_cont->buffer + 
+	ids = (uint16_t huge*)vrs_cont->buffer +
 		(dword)vrs_cont->vrs_hdr->offset_table[VRS_HEADER_OFFSET_SPRITE_ID_LIST];
 	// Loop through the id list until we found the right one or hit the end of the list
 	// Counter is keeping track of the offset(in ids/vrl blobs)
@@ -66,7 +63,7 @@ struct vrl_container get_vrl_by_id(struct vrs_container huge *vrs_cont, uint16_t
 		return 0;
 	}
 	// Get vrl list from .vrs blob (base + offset)
-	vrl_list = (uint32_t huge *)(vrs_cont->buffer + 
+	vrl_list = (uint32_t huge *)(vrs_cont->buffer +
 					vrs_cont->vrs_hdr->offset_table[VRS_HEADER_OFFSET_VRS_LIST]);
 	// Allocate memory for vrl_cont
 	vrl_cont = (struct vrl_container)malloc(sizeof(struct vrl_container));

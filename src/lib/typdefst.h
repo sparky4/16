@@ -25,7 +25,6 @@
 
 #include "src/lib/types.h"
 
-
 #define AARED		"\x1b[41;31m"
 #define AABLUE		"\x1b[44;34m"
 #define AAGREEN	"\x1b[42;32m"
@@ -133,6 +132,52 @@ typedef struct
 	//0000word startclk; float clk, tickclk;	//timer
 } video_t;
 
+typedef struct mmblockstruct
+{
+	word	start,length;
+	//word	start;	dword length;
+	word	blob;	//for data larger than 64k
+	unsigned	attributes;
+	memptr		*useptr;	// pointer to the segment start
+	//huge struct mmblockstruct huge *next;
+	struct mmblockstruct far *next;
+} mmblocktype;
+
+//from 16_mm
+//==========================================================================
+
+#define MAXBLOCKS		1024
+#define MAXUMBS		12
+
+typedef struct
+{
+	dword	nearheap,farheap,EMSmem,XMSmem,mainmem;
+} mminfotype;
+
+typedef struct
+{
+	memptr bufferseg;
+	boolean		mmstarted, bombonerror, mmerror;
+	//huge void huge	*farheap;
+	void far	*farheap;
+#ifdef __BORLANDC__
+	void	*nearheap;
+#endif
+#ifdef __WATCOMC__
+	void __near	*nearheap;
+#endif
+	//byte		EMS_status;
+	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
+	unsigned int EMSVer;
+	word numUMBs,UMBbase[MAXUMBS];
+	//dword	numUMBs,UMBbase[MAXUMBS];
+	//huge mmblocktype	huge mmblocks[MAXBLOCKS],huge *mmhead,huge *mmfree,huge *mmrover,huge *mmnew;
+	mmblocktype	far mmblocks[MAXBLOCKS],far *mmhead,far *mmfree,far *mmrover,far *mmnew;
+} mminfo_t;
+
+//==========================================================================
+
+//actual global game varables!
 typedef struct
 {
 	video_t video;	// video settings variable

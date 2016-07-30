@@ -58,7 +58,7 @@ struct vrl_container{
 // to load the file into
 // Out:
 // + int - 0 on succes, 1 on failure
-int read_vrs(char *filename, struct vrs_container *vrs_cont);
+int read_vrs(global_game_variables_t *gvar, char *filename, struct vrs_container *vrs_cont);
 
 // Seek and return a specified .vrl blob from .vrs blob in memory
 // In:

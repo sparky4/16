@@ -81,6 +81,7 @@ main(int argc, char *argv[])
 		IN_ReadControl(0,&player);
 		if(IN_KeyDown(sc_Escape)) engi_stat = ENGI_EXIT;
 		shinku(&gvar);
+		_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);
 	}
 	switch(detectcpu())
 	{

@@ -42,4 +42,11 @@ typedef signed long int sdiword;
 
 typedef	enum	{false,true}	boolean;
 
+#ifdef __WATCOMC__
+typedef void __based(__self) * memptr;
+#endif
+#ifdef __BORLANDC__
+typedef void _seg * memptr;
+#endif
+
 #endif/*_TYPE_H_*/

@@ -167,13 +167,6 @@ extern	int			profilehandle,debughandle;	//make it into game global
 typedef union REGPACK	regs_t;
 #endif
 
-#ifdef __WATCOMC__
-typedef void __based(__self) * memptr;
-#endif
-#ifdef __BORLANDC__
-typedef void _seg * memptr;
-#endif
-
 #define INPUT_STATUS_1		0x03da
 
 /* local function */
