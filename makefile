@@ -409,7 +409,6 @@ modex.$(OBJ): $(MODEXLIB_)modex.asm
 #
 clean: .symbolic
 	@$(REMOVECOMMAND) $(EXEC)
-####	@$(REMOVECOMMAND) /var/www/$(EXEC)*
 	@$(REMOVECOMMAND) *.$(OBJ)
 	@$(REMOVECOMMAND) 16.lib
 	@$(REMOVECOMMAND) gfx.lib
@@ -458,6 +457,7 @@ comq: .symbolic
 
 www: .symbolic
 	@ssh -p 26 sparky4@4ch.mooo.com 'rm -f /var/www/16/*exe.zip*'
+	@rm -f /var/www/$(EXEC)*
 	@rm -f /var/www/*.exe.zip*
 	#@cp ./$(EXEC) $(DIRSEP)var$(DIRSEP)www$(DIRSEP)
 	@./src/util/z.sh $(EXEC) $(EXEC)
