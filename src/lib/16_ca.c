@@ -235,7 +235,7 @@ boolean CA_FarRead(int handle, byte huge *dest, dword length, mminfo_t *mm)
 		//fat=segm*0xfffflu;
 		//length-=fat;
 //		printf("CA_FarRead doesn't support 64K reads yet!\n");
-		return 0;//todo: EXPAND!!!
+		return 0;//TODO: EXPAND!!!
 	}
 
 	//if(!fat&&!segm)

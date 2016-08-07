@@ -380,39 +380,8 @@ static	word	lasttime;
 
 	//TODO: inject p16 input controls!
 	//which is this
-	/*			if(DIRECTIONIFELSE)
-			{
-			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
-				if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]))
-					my = motion_Up;
-				if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up]))
-					my = motion_Down;
-			}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
-				if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]))
-					mx = motion_Left;
-				if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left]))// || player[pn].pdir != 1)
-					mx = motion_Right;
-			}else
-				//if(mx+my!=1 && mx+my!=-1 && mx!=my!=0)
-				{	//2 keys pressed
-					switch (player[pn].pdir)
-					{
-						case 0:
-						case 4:
-							if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right])) dir = DirTable[1];
-							else if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left])) dir = DirTable[3];
-						break;
-						case 1:
-						case 3:
-							if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down])) dir = DirTable[0];
-							else if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up])) dir = DirTable[4];
-						break;
-						default:
-						break;
-					}
-					if(testcontrolnoisy > 0){ printf("dir=%c ", dirchar(dir)); printf("pdir=%c	", dirchar(player[pn].pdir)); }
-				}//else printf("				");
-			}*/
+	//into joystick code!
+	//look at IN_ReadControl
 	if (x < def->threshMinX)
 	{
 		if (x < def->joyMinX)
@@ -889,7 +858,7 @@ register	KeyboardDef	*def;
 				mx = motion_Left,my = motion_Down;
 			else if (Keyboard[def->downright])
 				mx = motion_Right,my = motion_Down;*/
-			if(DIRECTIONIFELSE)
+			if(DIRECTIONIFELSE)//(player[pn].info.dir == 2)
 			{
 			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
 				if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]))
