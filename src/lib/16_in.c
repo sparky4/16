@@ -968,7 +968,7 @@ register	KeyboardDef	*def;
 	}
 #endif
 if(testcontrolnoisy > 0)
-if(player[pn].d &&/*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right]) ||*/ player[pn].q>1)
+if(player[pn].d /*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right])*/ || player[pn].q>1)
 {
 	printf("q=%d ", player[pn].q);
 	printf("cpee=%c ", dirchar(conpee));
