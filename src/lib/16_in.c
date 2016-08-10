@@ -863,25 +863,25 @@ register	KeyboardDef	*def;
 			}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
 				if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]))
 					mx = motion_Left;
-				if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left]))// || player[pn].pdir != 1)
+				if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left]))
 					mx = motion_Right;
 			}else{	//2 keys pressed
 					switch (player[pn].pdir)
 					{
 						case 0:
 						case 4:
-							if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right])){ dir = DirTable[1]; mx = motion_Left; }
-							else if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left])){ dir = DirTable[3]; mx = motion_Right; }
+							if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right])){ dir = DirTable[1]; }//mx = motion_Left; }
+							else if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left])){ dir = DirTable[3]; }//mx = motion_Right; }
 						break;
 						case 1:
 						case 3:
-							if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down])){ dir = DirTable[0]; my = motion_Up; }
-							else if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up])){ dir = DirTable[4]; my = motion_Down; }
+							if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down])){ dir = DirTable[0]; }//my = motion_Up; }
+							else if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up])){ dir = DirTable[4]; }//my = motion_Down; }
 						break;
 						default:
 						break;
 					}
-					if(testcontrolnoisy > 0){ printf("dir=%c ", dirchar(dir)); printf("pdir=%c	", dirchar(player[pn].pdir)); }
+					//if(testcontrolnoisy > 0){ printf("dir=%c ", dirchar(dir)); printf("pdir=%c	", dirchar(player[pn].pdir)); }
 				}
 			}
 			//input from player
@@ -963,7 +963,7 @@ register	KeyboardDef	*def;
 	}
 #endif
 if(testcontrolnoisy > 0)
-if(player[pn].d /*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right])*/ || player[pn].q>1)
+if(player[pn].info.dir!=2/*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right])*/ || player[pn].q>1)
 {
 	//printf("b1=%u b2=%u b3=%u b4=%u	", player[pn].info.button0, player[pn].info.button1, player[pn].info.button2, player[pn].info.button3);
 	//printf("q=%d ", player[pn].q);
