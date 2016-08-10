@@ -968,15 +968,12 @@ register	KeyboardDef	*def;
 	}
 #endif
 if(testcontrolnoisy > 0)
-if(player[pn].d/*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right])*/ || player[pn].q>1)
+if(player[pn].d &&/*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right]) ||*/ player[pn].q>1)
 {
 	printf("q=%d ", player[pn].q);
 	printf("cpee=%c ", dirchar(conpee));
-	//printf("(mx)=%d	", mx);
-	//printf("(my)=%d	", my);
-	//printf("[%d]	", mx+my);
 	printf("pdir=%c d=%c dir=%c ", dirchar(player[pn].pdir), dirchar(player[pn].d), dirchar(player[pn].info.dir));
-	if(realdelta) printf("dx=%u dy=%u mx=%u my=%u", player[pn].info.x, player[pn].info.y, player[pn].info.xaxis, player[pn].info.yaxis);
+	if(realdelta) printf("dx=%d	dy=%d		mx=%d my=%d", player[pn].info.x, player[pn].info.y, player[pn].info.xaxis, player[pn].info.yaxis);
 	else if(!realdelta) printf("%c%d %c%d %c%d %c%d", dirchar(0), inpu.Keyboard[def->up], dirchar(4), inpu.Keyboard[def->down], dirchar(1), inpu.Keyboard[def->left], dirchar(3), inpu.Keyboard[def->right]);
 	printf("\n");
 }
