@@ -30,7 +30,7 @@ main(int argc, char *argv[])
 	global_game_variables_t gvar;
 	player_t player[MaxPlayers];
 	//extern struct inconfig inpu;
-	testkeyin=1;
+	testkeyin=0;
 	testcontrolnoisy=1;
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick1);
