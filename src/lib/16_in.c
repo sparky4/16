@@ -680,7 +680,7 @@ IN_Default(boolean gotit,player_t *player,ControlType nt)
 	|| 	((nt == ctrl_Joystick2) && !inpu.JoysPresent[1])
 	|| 	((nt == ctrl_Mouse) && !inpu.MousePresent)
 	)
-		nt = ctrl_Keyboard1; nt = ctrl_Joystick1;//temp
+		nt = ctrl_Keyboard1;// nt = ctrl_Joystick1;//temp
 	inpu.KbdDefs[0].button0 = 0x1c;
 	inpu.KbdDefs[0].button1 = 0x38;
 	//in.KbdDefs[0].upleft = 0x47;
@@ -973,8 +973,8 @@ if(player[pn].d /*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Ke
 	printf("q=%d ", player[pn].q);
 	printf("cpee=%c ", dirchar(conpee));
 	printf("pdir=%c d=%c dir=%c ", dirchar(player[pn].pdir), dirchar(player[pn].d), dirchar(player[pn].info.dir));
-	if(realdelta) printf("dx=%d	dy=%d		mx=%d my=%d", player[pn].info.x, player[pn].info.y, player[pn].info.xaxis, player[pn].info.yaxis);
-	else if(!realdelta) printf("%c%d %c%d %c%d %c%d", dirchar(0), inpu.Keyboard[def->up], dirchar(4), inpu.Keyboard[def->down], dirchar(1), inpu.Keyboard[def->left], dirchar(3), inpu.Keyboard[def->right]);
+	/*if(realdelta) *///printf("dx=%d	dy=%d		mx=%d my=%d", player[pn].info.x, player[pn].info.y, player[pn].info.xaxis, player[pn].info.yaxis);
+	/*else if(!realdelta) */printf("%c%d %c%d %c%d %c%d", dirchar(0), inpu.Keyboard[def->up], dirchar(4), inpu.Keyboard[def->down], dirchar(1), inpu.Keyboard[def->left], dirchar(3), inpu.Keyboard[def->right]);
 	printf("\n");
 }
 }
