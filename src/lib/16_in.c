@@ -856,6 +856,7 @@ register	KeyboardDef	*def;
 				mx = motion_Left,my = motion_Down;
 			else if (Keyboard[def->downright])
 				mx = motion_Right,my = motion_Down;*/
+//TODO: make this into a function that the joystick AND keyboard can use wwww
 			if(DIRECTIONIFELSE)//(player[pn].info.dir == 2)
 			{
 			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
@@ -973,7 +974,7 @@ if(player[pn].d /*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Ke
 	printf("q=%d ", player[pn].q);
 	printf("cpee=%c ", dirchar(conpee));
 	printf("pdir=%c d=%c dir=%c ", dirchar(player[pn].pdir), dirchar(player[pn].d), dirchar(player[pn].info.dir));
-	/*if(realdelta) */printf("dx=%d	dy=%d		mx=%d my=%d", player[pn].info.x, player[pn].info.y, player[pn].info.xaxis, player[pn].info.yaxis);
+	/*if(realdelta) */printf("dx=%d	dy=%d	mx=%d my=%d", player[pn].info.x, player[pn].info.y, player[pn].info.xaxis, player[pn].info.yaxis);
 	///*else if(!realdelta) */printf("%c%d %c%d %c%d %c%d", dirchar(0), inpu.Keyboard[def->up], dirchar(4), inpu.Keyboard[def->down], dirchar(1), inpu.Keyboard[def->left], dirchar(3), inpu.Keyboard[def->right]);
 	printf("\n");
 }
