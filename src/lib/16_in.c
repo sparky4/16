@@ -38,7 +38,7 @@
 
 #include "src/lib/16_in.h"
 
-boolean testkeyin=0,testcontrolnoisy=0,testctrltype=0;
+boolean testkeyin=0,testcontrolnoisy=0;
 
 /*
 =============================================================================
@@ -673,7 +673,6 @@ void
 IN_Default(boolean gotit,player_t *player,ControlType nt)
 {
 	int i;
-	if(testctrltype==0)
 	if
 	(
 		(!gotit)
@@ -843,7 +842,6 @@ register	KeyboardDef	*def;
 	else
 	{
 #endif
-		if(testctrltype>0) printf("player[pn].Controls=%c\n", player[pn].Controls);
 		switch (type = player[pn].Controls)
 		{
 		case ctrl_Keyboard1:
@@ -969,9 +967,8 @@ register	KeyboardDef	*def;
 		}
 	}
 #endif
-//#ifdef TESTCONTROLNOISY
 if(testcontrolnoisy > 0)
-if((inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right]) || player[pn].q>1)
+if(player[pn].d/*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right])*/ || player[pn].q>1)
 {
 	printf("q=%d ", player[pn].q);
 	printf("cpee=%c ", dirchar(conpee));
@@ -979,9 +976,10 @@ if((inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->lef
 	//printf("(my)=%d	", my);
 	//printf("[%d]	", mx+my);
 	printf("pdir=%c d=%c dir=%c ", dirchar(player[pn].pdir), dirchar(player[pn].d), dirchar(player[pn].info.dir));
-	printf("%c%d %c%d %c%d %c%d\n", dirchar(0), inpu.Keyboard[def->up], dirchar(4), inpu.Keyboard[def->down], dirchar(1), inpu.Keyboard[def->left], dirchar(3), inpu.Keyboard[def->right]);
+	if(realdelta) printf("dx=%u dy=%u mx=%u my=%u", player[pn].info.x, player[pn].info.y, player[pn].info.xaxis, player[pn].info.yaxis);
+	else if(!realdelta) printf("%c%d %c%d %c%d %c%d", dirchar(0), inpu.Keyboard[def->up], dirchar(4), inpu.Keyboard[def->down], dirchar(1), inpu.Keyboard[def->left], dirchar(3), inpu.Keyboard[def->right]);
+	printf("\n");
 }
-//#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////

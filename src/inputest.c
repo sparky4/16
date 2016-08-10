@@ -31,8 +31,7 @@ main(int argc, char *argv[])
 	player_t player[MaxPlayers];
 	//extern struct inconfig inpu;
 	testkeyin=1;
-	testcontrolnoisy=0;
-	testctrltype=0;
+	testcontrolnoisy=1;
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick1);
 	//while(!IN_KeyDown(sc_Escape))
@@ -107,5 +106,4 @@ main(int argc, char *argv[])
 	printf("version %s\n", VERSION);
 	printf("testkeyin=%u\n", testkeyin);
 	printf("testcontrolnoisy=%u\n", testcontrolnoisy);
-	printf("testctrltype=%u\n", testctrltype);
 }
