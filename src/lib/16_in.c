@@ -378,10 +378,6 @@ static	word	lasttime;
 	IN_GetJoyAbs(joy,&x,&y);
 	def = inpu.JoyDefs + joy;
 
-	//TODO: inject p16 input controls!
-	//which is this
-	//into joystick code!
-	//look at IN_ReadControl
 	if (x < def->threshMinX)
 	{
 		if (x < def->joyMinX)
@@ -869,26 +865,24 @@ register	KeyboardDef	*def;
 					mx = motion_Left;
 				if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left]))// || player[pn].pdir != 1)
 					mx = motion_Right;
-			}else
-				//if(mx+my!=1 && mx+my!=-1 && mx!=my!=0)
-				{	//2 keys pressed
+			}else{	//2 keys pressed
 					switch (player[pn].pdir)
 					{
 						case 0:
 						case 4:
-							if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right])) dir = DirTable[1];
-							else if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left])) dir = DirTable[3];
+							if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right])){ dir = DirTable[1]; mx = motion_Left; }
+							else if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left])){ dir = DirTable[3]; mx = motion_Right; }
 						break;
 						case 1:
 						case 3:
-							if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down])) dir = DirTable[0];
-							else if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up])) dir = DirTable[4];
+							if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down])){ dir = DirTable[0]; my = motion_Up; }
+							else if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up])){ dir = DirTable[4]; my = motion_Down; }
 						break;
 						default:
 						break;
 					}
 					if(testcontrolnoisy > 0){ printf("dir=%c ", dirchar(dir)); printf("pdir=%c	", dirchar(player[pn].pdir)); }
-				}//else printf("				");
+				}
 			}
 			//input from player
 			if (inpu.Keyboard[def->button0])
@@ -971,11 +965,11 @@ register	KeyboardDef	*def;
 if(testcontrolnoisy > 0)
 if(player[pn].d /*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right])*/ || player[pn].q>1)
 {
-	printf("b1=%u b2=%u b3=%u b4=%u	", player[pn].info.button0, player[pn].info.button1, player[pn].info.button2, player[pn].info.button3);
-	printf("q=%d ", player[pn].q);
-	printf("cpee=%c ", dirchar(conpee));
+	//printf("b1=%u b2=%u b3=%u b4=%u	", player[pn].info.button0, player[pn].info.button1, player[pn].info.button2, player[pn].info.button3);
+	//printf("q=%d ", player[pn].q);
+	//printf("cpee=%c ", dirchar(conpee));
 	printf("pdir=%c d=%c dir=%c ", dirchar(player[pn].pdir), dirchar(player[pn].d), dirchar(player[pn].info.dir));
-	/*if(realdelta) */printf("dx=%d	dy=%d	mx=%d my=%d", player[pn].info.x, player[pn].info.y, player[pn].info.xaxis, player[pn].info.yaxis);
+	/*if(realdelta) */printf("dx=%d	dy=%d	mx=%d	my=%d", player[pn].info.x, player[pn].info.y, player[pn].info.xaxis, player[pn].info.yaxis);
 	///*else if(!realdelta) */printf("%c%d %c%d %c%d %c%d", dirchar(0), inpu.Keyboard[def->up], dirchar(4), inpu.Keyboard[def->down], dirchar(1), inpu.Keyboard[def->left], dirchar(3), inpu.Keyboard[def->right]);
 	printf("\n");
 }
