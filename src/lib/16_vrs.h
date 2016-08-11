@@ -45,6 +45,7 @@ struct vrl_container{
 		byte huge *buffer;
 		struct vrl1_vgax_header huge *vrl_header;
 	};
+	vrl1_vgax_offset_t *line_offsets;
 };
 
 /* Read .vrs file into memory
