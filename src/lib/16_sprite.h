@@ -29,8 +29,8 @@ struct sprite
 {
 	// VRS container from which we will extract animation and image data
 	vrs_container *spritesheet;
-	// Index of current sprite in vrs
-	int curr_spri;
+	// Current sprite id
+	int curr_spri_id;
 	// Index of a current sprite in an animation sequence
 	int curr_anim_spri;
 	// Current animation sequence

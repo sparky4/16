@@ -13,7 +13,7 @@ void init_anim(struct sprite *spri, int anim_index)
 	uint32_t huge *anim_lists_offsets = (byte)vrs + vrs->offset_table[VRS_HEADER_OFFSET_ANIMATION_LIST];
 	struct vrs_animation_list_entry_t *anim_list = anim_lists_offsets[spri->curr_anim_index];
 	spri->curr_anim_spri = 0;
-	spri->curr_spri = anim_list[0].sprite_id;
+	spri->curr_spri_id = anim_list[0].sprite_id;
 	spri->delay = anim_list[0].delay;
 	spri->curr_anim_list = anim_list;
 }
@@ -39,26 +39,27 @@ int set_anim_by_id(struct sprite *spri, int anim_id);
 
 void animate_spri(struct sprite *spri)
 {
-	//Events go here
+	// Events go here
 	
-	//Draw
+	// Draw sprite
 
 	// Depending on delay, update indices
-	switch(spri->delay)
-	{
+	switch(spri->delay){
 		// Delay = 0 means that sprite should loop. Nothing to change here
 		case 0:
 			break;
+
 		// Delay = 1 means that on next time unit sprite should be changed
 		case 1:
 			spri->curr_anim_spri++;
+
 			// If we hit the end of an animation sequence, restart it
-			if(!(spri->curr_spri = spri->curr_anim_list[spri->curr_anim_spri].sprite_id))
-			{
+			if(!(spri->curr_spri_id = spri->curr_anim_list[spri->curr_anim_spri].sprite_id)){
 				spri->curr_anim_spri = 0;
-				spri->curr_spri = spri->curr_anim_list[spri->curr_anim_spri].sprite_id;
+				spri->curr_spri_id = spri->curr_anim_list[spri->curr_anim_spri].sprite_id;
 			}
 			spri->delay = spri->curr_anim_list[spri->curr_anim_spri].delay;
+
 		// Delay > 1 means that we should not change sprite yet. Decrease delay
 		default:
 			spri->delay--;
