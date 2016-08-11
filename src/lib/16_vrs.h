@@ -35,6 +35,7 @@ struct vrs_container{
 		byte huge *buffer;
 		struct vrs_header huge *vrs_hdr;
 	};
+	vrl1_vgax_offset_t *vrl_line_offsets;
 };
 
 struct vrl_container{
