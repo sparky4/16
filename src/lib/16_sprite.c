@@ -39,9 +39,13 @@ int set_anim_by_id(struct sprite *spri, int anim_id);
 
 void animate_spri(struct sprite *spri)
 {
+	struct vrl_container *vrl_cont;
 	// Events go here
 	
 	// Draw sprite
+	vrl_cont = get_vrl_by_id(spri->spritesheet, spri->curr_spri_id);
+	draw_vrl1_vgax_modex(spri->x, spri->y, vrl_cont->vrl_header, vrl_cont->line_offsets,
+				vrl_cont->buffer + sizeof(vrl1_vgax_header), vrl_cont->size - sizeof(vrl1_vgax_header));
 
 	// Depending on delay, update indices
 	switch(spri->delay){
