@@ -2,8 +2,10 @@
 
 char* get_curr_anim_name(struct sprite *spri)
 {
+	// Retrive animation name list
 	struct vrs_header huge *vrs = spri->spritesheet->vrs_hdr;
 	uint32_t huge *anim_names_offsets = (byte)vrs + vrs->offset_table[VRS_HEADER_OFFSET_ANIMATION_NAME_LIST];
+
 	return (char *)(vrs + anim_names_offsets[spri->curr_anim_index]);
 }
 
@@ -12,9 +14,12 @@ void init_anim(struct sprite *spri, int anim_index)
 	struct vrs_header huge *vrs = spri->spritesheet->vrs_hdr;
 	uint32_t huge *anim_lists_offsets = (byte)vrs + vrs->offset_table[VRS_HEADER_OFFSET_ANIMATION_LIST];
 	struct vrs_animation_list_entry_t *anim_list = anim_lists_offsets[spri->curr_anim_index];
+
+	// Upon new animation, start from the first sprite in it
 	spri->curr_anim_spri = 0;
 	spri->curr_spri_id = anim_list[0].sprite_id;
 	spri->delay = anim_list[0].delay;
+
 	spri->curr_anim_list = anim_list;
 }
 
@@ -24,9 +29,13 @@ int set_anim_by_id(struct sprite *spri, int anim_id);
 	int new_anim_index = 0;
 	int iter_id;
 	struct vrs_header huge *vrs = spri->spritesheet->vrs_hdr;
+	// Retruve animation ids list
         uint16_t huge *anim_ids = (byte)vrs + vrs->offset_table[VRS_HEADER_OFFSET_ANIMATION_ID_LIST];
+
+	// Loop through animation id untill match or end of list
 	while(iter_id = anim_ids[new_anim_index])
 	{
+		// Return on successful match
 		if (iter_id = anim_id)
 		{
 			init_anim(spri, new_anim_index);
