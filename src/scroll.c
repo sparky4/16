@@ -23,6 +23,8 @@
 #include "src/lib/scroll16.h"
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
+#include "src/lib/16_sprite.h"
+#include "src/lib/16_head.h"
 
 //#define FADE
 #define MODEX	//this is for mode x initiating
@@ -33,6 +35,8 @@ global_game_variables_t gvar;
 static map_t map;
 player_t player[MaxPlayers];
 map_view_t mv[4];
+static unsigned char palette[768];
+int fd;
 //word pn=0; //i forgot ww
 //static planar_buf_t huge *pp;
 float t;
@@ -57,11 +61,18 @@ boolean panswitch=0;
 
 void main(int argc, char *argv[])
 {
+	mminfo_t mm; mminfotype mmi;
+	
 	byte *mesg=malloc(sizeof(dword));
+	int i;
 
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
 
+	mm.mmstarted = 0;
+
+	MM_Startup(&mm, &mmi);
+	CA_Startup(&gvar);
 	// DOSLIB: check our environment
 	probe_dos();
 
@@ -92,13 +103,8 @@ void main(int argc, char *argv[])
 	_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);
 
 	pan.pn=1;
-	//player[0].data = &pp;
 
-	//printf("starting timer	");
 	start_timer(&gvar);
-	//printf("ok\n");
-
-//	atexit(qclean());
 
 	/* create the map */
 	fprintf(stderr, "testing map load~	");
@@ -110,23 +116,31 @@ void main(int argc, char *argv[])
 	/* draw the tiles */
 #ifdef MODEX
 	ptr = map.data;
-	//mappalptr = map.tiles->btdata->palette;
 
 	/* data */
-	player[0].data = malloc(48*128); //TODO use exmm
-	*player[0].data = bitmapLoadPcx("data/chikyuu.pcx"); // load sprite
+	read_vrs(&gvar, "data/spri/chikyuu.vrs", player[0].spri->spritesheet); // load sprite
+	i = set_anim_by_id(player[0].spri, 10);
+	if (i == -1)
+	{
+		printf("Anim id not found!");
+		return;
+	}
 
-	/* create the planar buffer */
-////++++	(player[0].data) = *planar_buf_from_bitmap(&p);
-	/*++++printf("load pee!!	");
-	pp = planar_buf_from_bitmap(&p);
-	printf("done!\n");*/
+	fd = open("data/spri/chikyuu.pal",O_RDONLY|O_BINARY);
+	if (fd >= 0) {
+		unsigned int i;
+
+		read(fd,palette,768);
+		close(fd);
+
+		vga_palette_lseek(0);
+		for (i=0;i < 256;i++) vga_palette_write(palette[(i*3)+0]>>2,palette[(i*3)+1]>>2,palette[(i*3)+2]>>2);
+	}
 
 #endif
 	/*	input!	*/
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
-	//IN_Default(1,&player,ctrl_Joystick);
 
 	/* save the palette */
 #ifdef MODEX
@@ -140,23 +154,11 @@ void main(int argc, char *argv[])
 
 	textInit();
 	VGAmodeX(bakapee, 1, &gvar);
-//	printf("%dx%d\n", gvar.video.page[0].sw, gvar.video.page[0].sh);
 #ifdef FADE
 	modexPalBlack();	//reset the palette~
 #endif
 #endif
-//	printf("Total used @ before palette initiation:		%zu\n", oldfreemem-GetFreeSize());
-//++++	player[0].data.offset=(paloffset/3);
-//++++	modexPalUpdate1(&player[0].data, &paloffset, 0, 0);
-		modexPalUpdate1(player[0].data->palette);
-//++++0000		modexPalUpdate1(map.tiles->btdata->palette);
-	//printf("	%d\n", sizeof(ptmp->data));
-	//printf("1:	%d\n", paloffset);
-//++++	map.tiles->data->offset=(paloffset/3);
-	//XTmodexPalUpdate(map.tiles->data, &paloffset, 0, 0);
-//	printf("\n====\n");
-//	printf("0	paloffset=	%d\n", paloffset/3);
-//	printf("====\n\n");
+	modexPalUpdate1(palette);
 #ifdef MODEX
 #ifdef FADE
 	gpal = modexNewPal();
@@ -193,7 +195,8 @@ void main(int argc, char *argv[])
 	//modexClearRegion(mv[1].page, player[0].x, player[0].y-TILEWH, 16, 32, 15);
 #else
 	//PBUFSFUN(mv[1].page, player[0].x, player[0].y-TILEWH, 16, 64, 24, 32,	PLAYERBMPDATA);
-	PBUFSFUN(mv[0].page, player[0].x, player[0].y-TILEWH, 16, 64, 16, 32,	player[0].data);
+	//PBUFSFUN(mv[0].page, player[0].x, player[0].y-TILEWH, 16, 64, 16, 32,	player[0].data);
+	animate_spri(player[0].spri);
 #endif
 
 	if(!pageflipflop)	modexShowPage(mv[1].page);
@@ -299,7 +302,7 @@ void main(int argc, char *argv[])
 	if(IN_KeyDown(66))	//f8
 	{
 //		modexDrawSprite(mv[0].page, 16, 16, p);
-		modexDrawSprite(mv[0].page, 32+48, 16, (player[0].data));
+//		modexDrawSprite(mv[0].page, 32+48, 16, (player[0].data));
 	}
 	//TODO fmemtest into page
 	/*if(IN_KeyDown(4+1))	//4

@@ -91,9 +91,8 @@ FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 #
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
-16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_timer.$(OBJ)
-GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) $(DOSLIBLIBS)
-#16_vrs.$(OBJ)
+16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_timer.$(OBJ) 
+GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) $(DOSLIBLIBS) 16_vrs.$(OBJ) 16_sprite.$(OBJ)
 #planar.$(OBJ) 16planar.$(OBJ)
 DOSLIBLIBS=$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu$(DIRSEP)dos86h$(DIRSEP)cpu.lib $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos$(DIRSEP)dos86h$(DIRSEP)dos.lib $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vga.lib
 
@@ -337,8 +336,11 @@ bakapee.$(OBJ): $(SRCLIB)bakapee.h $(SRCLIB)bakapee.c
 ##16planar.$(OBJ): $(MODEXLIB)16planar.h $(MODEXLIB)16planar.c
 ##	wcl $(FLAGS) -c $(MODEXLIB)16planar.c
 
-16_vrs.$(OBJ): $(SRCLIB)16_vrs.h $(SRCLIB)16_vrs.c
-	wcl $(FLAGS) -c $(SRCLIB)16_vrs.c
+16_vrs.$(OBJ): $(SRCLIB)16_vrs.h $(SRCLIB)16_vrs.c $(DOSLIBLIBS)
+	wcl $(FLAGS) -c $(SRCLIB)16_vrs.c $(DOSLIBLIBS)
+16_sprite.$(OBJ): $(SRCLIB)16_sprite.h $(SRCLIB)16_sprite.c
+	wcl $(FLAGS) -c $(SRCLIB)16_sprite.c
+
 
 bitmap.$(OBJ): $(SRCLIB)bitmap.h $(SRCLIB)bitmap.c
 	wcl $(FLAGS) -c $(SRCLIB)bitmap.c

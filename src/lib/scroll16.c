@@ -23,6 +23,7 @@
 	scroll16 library~
 */
 #include "src/lib/scroll16.h"
+#include "src/lib/16_sprite.h"
 
 void walk(map_view_t *pip, player_t *player, word pn)
 {
@@ -68,7 +69,8 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			{
 				if(!pageflipflop) modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x, player[pn].y-TILEWH, player[pn].x, player[pn].y-TILEWH, 16, 32);
 #ifdef SPRITE
-				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 16, 32, 16, 32, PLAYERBMPDATA);
+				//PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 16, 32, 16, 32, PLAYERBMPDATA);
+				animate_spri(player[pn].spri);
 #else
 				modexClearRegion(pip[1].page, player[pn].x, player[pn].y-TILEWH, 16, 32, 14);
 #endif
@@ -112,7 +114,8 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			{
 				if(!pageflipflop) modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x, player[pn].y-TILEWH, player[pn].x, player[pn].y-TILEWH, 16, 32);
 #ifdef SPRITE
-				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 16, 96, 16, 32, PLAYERBMPDATA);
+				//PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 16, 96, 16, 32, PLAYERBMPDATA);
+				animate_spri(player[pn].spri);
 #else
 				modexClearRegion(pip[1].page, player[pn].x, player[pn].y-TILEWH, 16, 32, 10);
 #endif
@@ -156,7 +159,8 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			{
 				if(!pageflipflop) modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x, player[pn].y-TILEWH, player[pn].x, player[pn].y-TILEWH, 16, 32);
 #ifdef SPRITE
-				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 16, 64, 16, 32, PLAYERBMPDATA);
+				//PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 16, 64, 16, 32, PLAYERBMPDATA);
+				animate_spri(player[pn].spri);
 #else
 				modexClearRegion(pip[1].page, player[pn].x, player[pn].y-TILEWH, 16, 32, 9);
 #endif
@@ -200,7 +204,8 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			{
 				if(!pageflipflop) modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x, player[pn].y-TILEWH, player[pn].x, player[pn].y-TILEWH, 16, 32);
 #ifdef SPRITE
-				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 16, 0, 16, 32, PLAYERBMPDATA);
+				//PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 16, 0, 16, 32, PLAYERBMPDATA);
+				animate_spri(player[pn].spri);
 #else
 				modexClearRegion(pip[1].page, player[pn].x, player[pn].y-TILEWH, 16, 32, 12);
 #endif
@@ -868,10 +873,14 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 	}
 
 #ifdef SPRITE
-#define FRAME1 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 32, dire, 16, 32,	PLAYERBMPDATA);
-#define FRAME2 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 16, dire, 16, 32,	PLAYERBMPDATA);
-#define FRAME3 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 0, dire, 16, 32,	PLAYERBMPDATA);
-#define FRAME4 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 16, dire, 16, 32,	PLAYERBMPDATA);
+//#define FRAME1 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 32, dire, 16, 32,	PLAYERBMPDATA);
+//#define FRAME2 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 16, dire, 16, 32,	PLAYERBMPDATA);
+//#define FRAME3 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 0, dire, 16, 32,	PLAYERBMPDATA);
+//#define FRAME4 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 16, dire, 16, 32,	PLAYERBMPDATA);
+#define FRAME1 animate_spri(player[pn].spri);
+#define FRAME2 animate_spri(player[pn].spri);
+#define FRAME3 animate_spri(player[pn].spri);
+#define FRAME4 animate_spri(player[pn].spri);
 #else
 #define FRAME1 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 2+dire);
 #define FRAME2 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 1+dire);
