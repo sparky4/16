@@ -28,16 +28,18 @@
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 
-
 global_game_variables_t gvar;
 
 void main() {
+	mminfo_t mm; mminfotype mmi;
 	__segment sega;
 	void __based(sega)* bigbuffer;
 	int i;
 	word start;
 	int plane;
 	float t1, t2;
+	boolean baka;
+	byte *pal;
 
 	// DOSLIB: check our environment
 	probe_dos();
@@ -48,11 +50,6 @@ void main() {
 	//      parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
 	//      the CPU to carry out tasks. --J.C.
 	cpu_probe();
-
-	gvar.mm.mmstarted=0;
-
-	MM_Startup(&gvar.mm, &gvar.mmi);
-	CA_Startup(&gvar);
 
 	// DOSLIB: check for VGA
 	if (!probe_vga()) {
@@ -66,12 +63,18 @@ void main() {
 	}
 
 	//bmp = bitmapLoadPcx("data/chikyuu.pcx");
-
 	VGAmodeX(1, 1, &gvar);
 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 
+	mm.mmstarted=0;
+	MM_Startup(&mm, &mmi);
+	CA_Startup(&gvar);
+	if(CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &mm, &mmi)) baka=1; else baka=0;
+
 	/* fix up the palette and everything */
 	//modexPalUpdate1(bmp.palette);
+	//modexLoadPalFile("data/spri/chikyuu.pal", &pal);
+	//modexPalUpdate1(pal);
 
 	/* clear and draw one sprite and one bitmap */
 	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].sw, gvar.video.page[0].sh, 1);
@@ -114,10 +117,10 @@ void main() {
 	{
 		//DrawPBuf(&gvar.video.page[0], 0, 0, p, 0);
 	}
-	MM_FreePtr(&bigbuffer, &gvar.mm);
-	CA_Shutdown(&gvar);
-	MM_Shutdown(&gvar.mm);
 	VGAmodeX(0, 1, &gvar);
+	MM_FreePtr(&bigbuffer, &mm);
+	MM_Shutdown(&mm);
+	CA_Shutdown(&gvar);
 	/*printf("\nmain=%Fp\n\n", &i);
 	printf("bmp.data=%Fp\n", bmp.data);
 	printf("*bmp.data=%Fp\n", *(bmp.data));
@@ -135,5 +138,6 @@ void main() {
 	printf("VGA to VGA: %f\n", t2);
 	printf("gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
 	printf("gvar.video.page[0].height: %u\n", gvar.video.page[0].height);
-	return;
+	if(baka) printf("\nyay!\n");
+	else printf("\npoo!\n");
 }
