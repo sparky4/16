@@ -676,7 +676,7 @@ IN_Default(boolean gotit,player_t *player,ControlType nt)
 	|| 	((nt == ctrl_Joystick2) && !inpu.JoysPresent[1])
 	|| 	((nt == ctrl_Mouse) && !inpu.MousePresent)
 	)
-		nt = ctrl_Keyboard1;// nt = ctrl_Joystick1;//temp
+		nt = ctrl_Keyboard1;
 	inpu.KbdDefs[0].button0 = 0x1c;
 	inpu.KbdDefs[0].button1 = 0x38;
 	//in.KbdDefs[0].upleft = 0x47;
