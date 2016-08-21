@@ -33,22 +33,29 @@ int read_vrs(global_game_variables_t *gvar, char *filename, struct vrs_container
 #ifdef __BORLANDC__
 	memptr bigbuffer;
 #endif
-	byte huge *buffer = (byte huge *) bigbuffer;
+	byte huge *buffer;
 	vrl1_vgax_offset_t **vrl_line_offsets;
 	uint32_t huge *vrl_headers_offsets;
 	uint32_t huge *vrl_id_iter;
 	uint32_t vrl_size;
 	int num_of_vrl, i;
 	struct vrl1_vgax_header huge *curr_vrl;
+	int success;
 
 	// Open filename, get size of file,
 	// populate the vrs_container if all tests pass
-	fd = open((filename), O_RDONLY|O_BINARY);
-	size = filelength(fd);
-	close(fd);
-
+	fd = open(filename, O_RDONLY|O_BINARY);
 	// Insert sanity cheks later
-	CA_LoadFile(filename, bigbuffer, &(gvar->mm), &(gvar->mmi));
+	size = lseek(fd, 0, SEEK_END);
+	buffer = malloc(size);
+	lseek(fd, 0, SEEK_SET);
+	read(fd, buffer, size);
+	close(fd);
+	if(!success)
+	{
+		fprintf(stderr, "Unablee to load file");
+		exit(3);
+	}
 	vrs_cont->size = size;
 	vrs_cont->buffer = buffer;
 

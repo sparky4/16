@@ -62,6 +62,7 @@ boolean panswitch=0;
 void main(int argc, char *argv[])
 {
 	mminfo_t mm; mminfotype mmi;
+	struct sprite sp;
 	
 	byte *mesg=malloc(sizeof(dword));
 	int i;
@@ -69,10 +70,10 @@ void main(int argc, char *argv[])
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
 
-	mm.mmstarted = 0;
+/*	mm.mmstarted = 0;
 
 	MM_Startup(&mm, &mmi);
-	CA_Startup(&gvar);
+	CA_Startup(&gvar);*/
 	// DOSLIB: check our environment
 	probe_dos();
 
@@ -118,13 +119,34 @@ void main(int argc, char *argv[])
 	ptr = map.data;
 
 	/* data */
-	read_vrs(&gvar, "data/spri/chikyuu.vrs", player[0].spri->spritesheet); // load sprite
-	i = set_anim_by_id(player[0].spri, 10);
+	i = read_vrs(&gvar, "data/spri/chikyuu.vrs", sp.spritesheet);
+	if (i)
+	{
+		puts("Error! Did not load sprite!");
+		return;
+	}
+	puts("Sprite should be loaded now");
+	putch('q');
+	print_anim_ids(&sp);
+	putch('r');
+	i = set_anim_by_id(&sp, 10);
 	if (i == -1)
 	{
 		printf("Anim id not found!");
 		return;
 	}
+/*	player[0].spri = malloc(...)
+ *	read_vrs(&gvar, "data/spri/chikyuu.vrs", player[0].spri->spritesheet); // load sprite
+	putch('s');
+	print_anim_ids(player[0].spri);
+	putch('t');
+	i = set_anim_by_id(player[0].spri, 10);
+	if (i == -1)
+	{
+		printf("Anim id not found!");
+		return;
+	}*/
+	player[0].spri = &sp;
 
 	fd = open("data/spri/chikyuu.pal",O_RDONLY|O_BINARY);
 	if (fd >= 0) {

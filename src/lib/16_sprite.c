@@ -54,6 +54,29 @@ int set_anim_by_id(struct sprite *spri, int anim_id)
 	return -1;
 }
 
+void print_anim_ids(struct sprite *spri)
+{
+	int new_anim_index = 0;
+	int iter_id;
+	struct vrs_header huge *vrs = spri->spritesheet->vrs_hdr;
+	// Retruve animation ids list
+        uint16_t huge *anim_ids =	(uint16_t huge *)
+					((byte huge *)vrs + 
+					 vrs->offset_table[VRS_HEADER_OFFSET_ANIMATION_ID_LIST]);
+
+	printf("\nPos %lld off %lld\n", (uint32_t)vrs, vrs->offset_table[VRS_HEADER_OFFSET_ANIMATION_ID_LIST]);
+	if(!anim_ids[new_anim_index])
+		exit(3);
+	// Loop through animation id untill match or end of list
+	while(iter_id = anim_ids[new_anim_index])
+	{
+		// Return on successful match
+		new_anim_index++;
+		printf("%d, ", iter_id);
+	}
+}
+
+
 void animate_spri(struct sprite *spri)
 {
 	struct vrl_container *vrl_cont;

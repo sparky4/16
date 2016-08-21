@@ -67,4 +67,6 @@ int set_anim_by_id(struct sprite *spri, int id);
  */
 void animate_spri(struct sprite *spri);
 
+void print_anim_ids(struct sprite *spri);
+
 #endif
