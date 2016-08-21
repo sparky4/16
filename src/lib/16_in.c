@@ -38,7 +38,7 @@
 
 #include "src/lib/16_in.h"
 
-boolean testkeyin=0,testcontrolnoisy=0,testctrltype=0;
+boolean testkeyin=0,testcontrolnoisy=0;
 
 /*
 =============================================================================
@@ -378,10 +378,6 @@ static	word	lasttime;
 	IN_GetJoyAbs(joy,&x,&y);
 	def = inpu.JoyDefs + joy;
 
-	//TODO: inject p16 input controls!
-	//which is this
-	//into joystick code!
-	//look at IN_ReadControl
 	if (x < def->threshMinX)
 	{
 		if (x < def->joyMinX)
@@ -673,7 +669,6 @@ void
 IN_Default(boolean gotit,player_t *player,ControlType nt)
 {
 	int i;
-	if(testctrltype==0)
 	if
 	(
 		(!gotit)
@@ -843,7 +838,6 @@ register	KeyboardDef	*def;
 	else
 	{
 #endif
-		if(testctrltype>0) printf("player[pn].Controls=%c\n", player[pn].Controls);
 		switch (type = player[pn].Controls)
 		{
 		case ctrl_Keyboard1:
@@ -858,6 +852,7 @@ register	KeyboardDef	*def;
 				mx = motion_Left,my = motion_Down;
 			else if (Keyboard[def->downright])
 				mx = motion_Right,my = motion_Down;*/
+//TODO: make this into a function that the joystick AND keyboard can use wwww
 			if(DIRECTIONIFELSE)//(player[pn].info.dir == 2)
 			{
 			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
@@ -868,28 +863,26 @@ register	KeyboardDef	*def;
 			}else if(!inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]){
 				if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]))
 					mx = motion_Left;
-				if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left]))// || player[pn].pdir != 1)
+				if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left]))
 					mx = motion_Right;
-			}else
-				//if(mx+my!=1 && mx+my!=-1 && mx!=my!=0)
-				{	//2 keys pressed
+			}else{	//2 keys pressed
 					switch (player[pn].pdir)
 					{
 						case 0:
 						case 4:
-							if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right])) dir = DirTable[1];
-							else if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left])) dir = DirTable[3];
+							if((inpu.Keyboard[def->left] && !inpu.Keyboard[def->right])){ dir = DirTable[1]; }//mx = motion_Left; }
+							else if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left])){ dir = DirTable[3]; }//mx = motion_Right; }
 						break;
 						case 1:
 						case 3:
-							if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down])) dir = DirTable[0];
-							else if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up])) dir = DirTable[4];
+							if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down])){ dir = DirTable[0]; }//my = motion_Up; }
+							else if((inpu.Keyboard[def->down] && !inpu.Keyboard[def->up])){ dir = DirTable[4]; }//my = motion_Down; }
 						break;
 						default:
 						break;
 					}
-					if(testcontrolnoisy > 0){ printf("dir=%c ", dirchar(dir)); printf("pdir=%c	", dirchar(player[pn].pdir)); }
-				}//else printf("				");
+					//if(testcontrolnoisy > 0){ printf("dir=%c ", dirchar(dir)); printf("pdir=%c	", dirchar(player[pn].pdir)); }
+				}
 			}
 			//input from player
 			if (inpu.Keyboard[def->button0])
@@ -969,19 +962,17 @@ register	KeyboardDef	*def;
 		}
 	}
 #endif
-//#ifdef TESTCONTROLNOISY
 if(testcontrolnoisy > 0)
-if((inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right]) || player[pn].q>1)
+if(player[pn].info.dir!=2/*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right])*/ || player[pn].q>1)
 {
-	printf("q=%d ", player[pn].q);
-	printf("cpee=%c ", dirchar(conpee));
-	//printf("(mx)=%d	", mx);
-	//printf("(my)=%d	", my);
-	//printf("[%d]	", mx+my);
+	//printf("b1=%u b2=%u b3=%u b4=%u	", player[pn].info.button0, player[pn].info.button1, player[pn].info.button2, player[pn].info.button3);
+	//printf("q=%d ", player[pn].q);
+	//printf("cpee=%c ", dirchar(conpee));
 	printf("pdir=%c d=%c dir=%c ", dirchar(player[pn].pdir), dirchar(player[pn].d), dirchar(player[pn].info.dir));
-	printf("%c%d %c%d %c%d %c%d\n", dirchar(0), inpu.Keyboard[def->up], dirchar(4), inpu.Keyboard[def->down], dirchar(1), inpu.Keyboard[def->left], dirchar(3), inpu.Keyboard[def->right]);
+	/*if(realdelta) */printf("dx=%d	dy=%d	mx=%d	my=%d", player[pn].info.x, player[pn].info.y, player[pn].info.xaxis, player[pn].info.yaxis);
+	///*else if(!realdelta) */printf("%c%d %c%d %c%d %c%d", dirchar(0), inpu.Keyboard[def->up], dirchar(4), inpu.Keyboard[def->down], dirchar(1), inpu.Keyboard[def->left], dirchar(3), inpu.Keyboard[def->right]);
+	printf("\n");
 }
-//#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////
