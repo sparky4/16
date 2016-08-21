@@ -91,7 +91,7 @@ FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 #
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
-16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_timer.$(OBJ) 
+16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_timer.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) $(DOSLIBLIBS) 16_vrs.$(OBJ) 16_sprite.$(OBJ)
 #planar.$(OBJ) 16planar.$(OBJ)
 DOSLIBLIBS=$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu$(DIRSEP)dos86h$(DIRSEP)cpu.lib $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos$(DIRSEP)dos86h$(DIRSEP)dos.lib $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vga.lib
@@ -102,7 +102,7 @@ DOSLIBOBJ += 8250.$(OBJ)
 DOSLIBLIBS += $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)8250$(DIRSEP)dos86h$(DIRSEP)8250.lib
 !endif
 
-TESTEXEC = test.exe test0.exe pcxtest.exe pcxtest2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe exmmtest.exe
+TESTEXEC = test.exe test0.exe pcxtest.exe pcxtest2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe exmmtest.exe vrstest.exe
 #planrpcx.exe test2.exe
 EXEC = 16.exe bakapi.exe tesuto.exe 0.exe $(TESTEXEC)
 
@@ -184,6 +184,9 @@ inputest.exe: inputest.$(OBJ) $(16LIB)
 pcxtest.exe: pcxtest.$(OBJ) gfx.lib
 	wcl $(FLAGS) pcxtest.$(OBJ) gfx.lib -fm=pcxtest.mah
 
+vrstest.exe: vrstest.$(OBJ) gfx.lib
+	wcl $(FLAGS) vrstest.$(OBJ) gfx.lib -fm=vrstest.mah
+
 palettec.exe: palettec.$(OBJ) gfx.lib #$(16LIB)
 	wcl $(FLAGS) palettec.$(OBJ) gfx.lib -fm=palettec.mah #$(16LIB)
 
@@ -231,6 +234,9 @@ test0.$(OBJ): $(SRC)test0.c
 
 pcxtest.$(OBJ): $(SRC)pcxtest.c $(SRCLIB)modex16.h
 	wcl $(FLAGS) -c $(SRC)pcxtest.c
+
+vrstest.$(OBJ): $(SRC)vrstest.c $(SRCLIB)modex16.h
+	wcl $(FLAGS) -c $(SRC)vrstest.c
 
 ##planrpcx.$(OBJ): $(SRC)planrpcx.c $(SRCLIB)modex16.h
 ##	wcl $(FLAGS) -c $(SRC)planrpcx.c
