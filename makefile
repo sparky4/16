@@ -184,8 +184,8 @@ inputest.exe: inputest.$(OBJ) $(16LIB)
 pcxtest.exe: pcxtest.$(OBJ) gfx.lib
 	wcl $(FLAGS) pcxtest.$(OBJ) gfx.lib -fm=pcxtest.mah
 
-vrstest.exe: vrstest.$(OBJ) gfx.lib
-	wcl $(FLAGS) vrstest.$(OBJ) gfx.lib -fm=vrstest.mah
+vrstest.exe: vrstest.$(OBJ) gfx.lib $(16LIB)
+	wcl $(FLAGS) vrstest.$(OBJ) gfx.lib $(16LIB) -fm=vrstest.mah
 
 palettec.exe: palettec.$(OBJ) gfx.lib #$(16LIB)
 	wcl $(FLAGS) palettec.$(OBJ) gfx.lib -fm=palettec.mah #$(16LIB)

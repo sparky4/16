@@ -32,6 +32,8 @@
 global_game_variables_t gvar;
 
 void main() {
+	__segment sega;
+	void __based(sega)* bigbuffer;
 	int i;
 	word start;
 	int plane;
@@ -46,6 +48,11 @@ void main() {
 	//      parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
 	//      the CPU to carry out tasks. --J.C.
 	cpu_probe();
+
+	gvar.mm.mmstarted=0;
+
+	MM_Startup(&gvar.mm, &gvar.mmi);
+	CA_Startup(&gvar);
 
 	// DOSLIB: check for VGA
 	if (!probe_vga()) {
@@ -107,6 +114,9 @@ void main() {
 	{
 		//DrawPBuf(&gvar.video.page[0], 0, 0, p, 0);
 	}
+	MM_FreePtr(&bigbuffer, &gvar.mm);
+	CA_Shutdown(&gvar);
+	MM_Shutdown(&gvar.mm);
 	VGAmodeX(0, 1, &gvar);
 	/*printf("\nmain=%Fp\n\n", &i);
 	printf("bmp.data=%Fp\n", bmp.data);
