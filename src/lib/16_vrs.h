@@ -23,10 +23,11 @@
 #define __16_VRS__
 
 #include "src/lib/modex16.h"
-#include "src/lib/typedefst.h"
+#include "src/lib/typdefst.h"
 //#include <hw/cpu/cpu.h>
 //#include <hw/dos/dos.h>
-//#include <hw/vga/vga.h>
+#include <hw/vga/vrl.h>
+#include "src/lib/16_ca.h"
 
 struct vrs_container{
 	// Size of a .vrs lob in memory
@@ -36,7 +37,7 @@ struct vrs_container{
 		struct vrs_header huge *vrs_hdr;
 	};
 	// Array of corresponding vrl line offsets
-	vrl1_vgax_offset_t *vrl_line_offsets;
+	vrl1_vgax_offset_t **vrl_line_offsets;
 };
 
 struct vrl_container{
@@ -69,6 +70,6 @@ int read_vrs(global_game_variables_t *gvar, char *filename, struct vrs_container
 * struct vrl_container* - a pointer to a vrl_container with a pointer
 * to the requested .vrl blob
 */
-struct vrl_container* get_vrl_by_id(struct vrs_container *vrs_cont, uint16_t id);
+struct vrl_container * get_vrl_by_id(struct vrs_container *vrs_cont, uint16_t id);
 
 #endif

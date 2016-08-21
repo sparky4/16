@@ -23,12 +23,12 @@
 #define __16_SPRI__
 
 #include "src/lib/16_vrs.h"
-#include "src/lib/typedefst.h"
+#include "src/lib/typdefst.h"
 
 struct sprite
 {
 	// VRS container from which we will extract animation and image data
-	vrs_container *spritesheet;
+	struct vrs_container *spritesheet;
 	// Current sprite id
 	int curr_spri_id;
 	// Index of a current sprite in an animation sequence
