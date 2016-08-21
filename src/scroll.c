@@ -34,7 +34,6 @@ static map_t map;
 player_t player[MaxPlayers];
 map_view_t mv[4];
 //word pn=0; //i forgot ww
-//static planar_buf_t huge *pp;
 float t;
 sword bakapee;
 pan_t pan;
@@ -49,7 +48,7 @@ boolean panswitch=0;
 	word pg;
 //#ifdef FADE
 	static word paloffset=0;
-	byte *dpal, *default_pal;
+	byte *dpal;
 //#endif
 	byte *gpal;
 	byte *ptr;
@@ -92,13 +91,8 @@ void main(int argc, char *argv[])
 	_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);
 
 	pan.pn=1;
-	//player[0].data = &pp;
 
-	//printf("starting timer	");
 	start_timer(&gvar);
-	//printf("ok\n");
-
-//	atexit(qclean());
 
 	/* create the map */
 	fprintf(stderr, "testing map load~	");
@@ -132,8 +126,6 @@ void main(int argc, char *argv[])
 #ifdef MODEX
 #ifdef FADE
 	dpal = modexNewPal();
-	default_pal = modexNewPal();
-	*default_pal = *dpal;
 	modexPalSave(dpal);
 	modexFadeOff(4, dpal);
 #endif
@@ -310,7 +302,7 @@ void main(int argc, char *argv[])
 	}*/
 
 	//9
-	if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate1(default_pal); IN_UserInput(1,1); }
+	if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate1(dpal); IN_UserInput(1,1); }
 	//if(IN_KeyDown(11)){ modexPalOverscan(15); }
 	if((player[0].q==1) && !(player[0].x%TILEWH==0 && player[0].y%TILEWH==0)) break;	//incase things go out of sync!
 	}

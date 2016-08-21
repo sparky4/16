@@ -24,7 +24,9 @@
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
 #include "src/lib/16_sprite.h"
-#include "src/lib/16_head.h"
+#include "src/lib/16_ca.h"
+#include "src/lib/16_mm.h"
+//#include "src/lib/16_head.h"//included already
 
 //#define FADE
 #define MODEX	//this is for mode x initiating
@@ -35,10 +37,8 @@ global_game_variables_t gvar;
 static map_t map;
 player_t player[MaxPlayers];
 map_view_t mv[4];
-static unsigned char palette[768];
-int fd;
+byte *ppal;
 //word pn=0; //i forgot ww
-//static planar_buf_t huge *pp;
 float t;
 sword bakapee;
 pan_t pan;
@@ -53,7 +53,7 @@ boolean panswitch=0;
 	word pg;
 //#ifdef FADE
 	static word paloffset=0;
-	byte *dpal, *default_pal;
+	byte *dpal;
 //#endif
 	byte *gpal;
 	byte *ptr;
@@ -61,19 +61,21 @@ boolean panswitch=0;
 
 void main(int argc, char *argv[])
 {
-	mminfo_t mm; mminfotype mmi;
 	struct sprite sp;
-	
+	__segment sega;
+	void __based(sega)* bigbuffer;
+
 	byte *mesg=malloc(sizeof(dword));
 	int i;
 
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
 
-/*	mm.mmstarted = 0;
+	gvar.mm.mmstarted=0;
+	gvar.bigbuffer=bigbuffer;
 
-	MM_Startup(&mm, &mmi);
-	CA_Startup(&gvar);*/
+	MM_Startup(&gvar.mm, &gvar.mmi);
+	CA_Startup(&gvar);
 	// DOSLIB: check our environment
 	probe_dos();
 
@@ -148,17 +150,6 @@ void main(int argc, char *argv[])
 	}*/
 	player[0].spri = &sp;
 
-	fd = open("data/spri/chikyuu.pal",O_RDONLY|O_BINARY);
-	if (fd >= 0) {
-		unsigned int i;
-
-		read(fd,palette,768);
-		close(fd);
-
-		vga_palette_lseek(0);
-		for (i=0;i < 256;i++) vga_palette_write(palette[(i*3)+0]>>2,palette[(i*3)+1]>>2,palette[(i*3)+2]>>2);
-	}
-
 #endif
 	/*	input!	*/
 	IN_Startup();
@@ -168,8 +159,6 @@ void main(int argc, char *argv[])
 #ifdef MODEX
 #ifdef FADE
 	dpal = modexNewPal();
-	default_pal = modexNewPal();
-	*default_pal = *dpal;
 	modexPalSave(dpal);
 	modexFadeOff(4, dpal);
 #endif
@@ -180,7 +169,8 @@ void main(int argc, char *argv[])
 	modexPalBlack();	//reset the palette~
 #endif
 #endif
-	modexPalUpdate1(palette);
+	modexLoadPalFile("data/spri/chikyuu.pal", &ppal);
+	modexPalUpdate1(ppal);
 #ifdef MODEX
 #ifdef FADE
 	gpal = modexNewPal();
@@ -285,11 +275,11 @@ void main(int argc, char *argv[])
 #ifdef FADE
 	if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv[0].page); modexpdump(mv[1].page);  IN_UserInput(1,1); }
 	if(IN_KeyDown(22)){
-	paloffset=0; modexPalBlack(); modexPalUpdate(player[0].data, &paloffset, 0, 0);
-	printf("1paloffset	=	%d\n", paloffset/3);
-	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
-	printf("2paloffset	=	%d\n", paloffset/3);
-	 modexpdump(mv[0].page); modexpdump(mv[1].page);
+//	paloffset=0; modexPalBlack(); modexPalUpdate(player[0].data, &paloffset, 0, 0);
+//	printf("1paloffset	=	%d\n", paloffset/3);
+//	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
+//	printf("2paloffset	=	%d\n", paloffset/3);
+//	 modexpdump(mv[0].page); modexpdump(mv[1].page);
 		IN_UserInput(1,1);
 	}
 #endif
@@ -335,7 +325,7 @@ void main(int argc, char *argv[])
 	}*/
 
 	//9
-	if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate1(default_pal); IN_UserInput(1,1); }
+	if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate1(dpal); IN_UserInput(1,1); }
 	//if(IN_KeyDown(11)){ modexPalOverscan(15); }
 	if((player[0].q==1) && !(player[0].x%TILEWH==0 && player[0].y%TILEWH==0)) break;	//incase things go out of sync!
 	}
@@ -351,6 +341,9 @@ void main(int argc, char *argv[])
 	VGAmodeX(0, 1, &gvar);
 #endif
 	IN_Shutdown();
+	MM_FreePtr(&bigbuffer, &gvar.mm);
+	CA_Shutdown(&gvar);
+	MM_Shutdown(&gvar.mm);
 	printf("\nProject 16 scroll.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	printf("tx: %d	", mv[0].tx);

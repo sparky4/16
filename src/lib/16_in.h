@@ -30,7 +30,8 @@
 #include <string.h>
 #include "src/lib/16_head.h"
 #include "src/lib/16_timer.h"
-#include "src/lib/bitmap.h"
+#include "src/lib/16_sprite.h"
+#include "src/lib/bitmap.h"	//old format
 #ifdef __WATCOMC__
 #include "src/lib/16_dbg.h"
 #endif
@@ -230,7 +231,8 @@ typedef	struct
 //0000	planar_buf_t huge *data; //supposively the sprite sheet data
 //	planar_buf_t data; //supposively the sprite sheet data
 ////0000----
-	bitmap_t *data; //supposively the sprite sheet data
+	struct sprite *spri;	//supposively the sprite sheet data
+	bitmap_t *data;		//supposively the sprite sheet data//old format
 	sword hp; //hitpoints of the player
 	int persist_aniframe;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	CursorInfo	info;
