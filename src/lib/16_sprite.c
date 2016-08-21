@@ -4,16 +4,22 @@ char* get_curr_anim_name(struct sprite *spri)
 {
 	// Retrive animation name list
 	struct vrs_header huge *vrs = spri->spritesheet->vrs_hdr;
-	uint32_t huge *anim_names_offsets = (byte)vrs + vrs->offset_table[VRS_HEADER_OFFSET_ANIMATION_NAME_LIST];
+	uint32_t huge *anim_names_offsets = 	(uint32_t huge *)
+						((byte huge *)vrs + 
+						 vrs->offset_table[VRS_HEADER_OFFSET_ANIMATION_NAME_LIST]);
 
-	return (char *)(vrs + anim_names_offsets[spri->curr_anim_index]);
+	return (char *)(vrs + anim_names_offsets[spri->curr_anim_spri]);
 }
 
 void init_anim(struct sprite *spri, int anim_index)
 {
 	struct vrs_header huge *vrs = spri->spritesheet->vrs_hdr;
-	uint32_t huge *anim_lists_offsets = (byte)vrs + vrs->offset_table[VRS_HEADER_OFFSET_ANIMATION_LIST];
-	struct vrs_animation_list_entry_t *anim_list = anim_lists_offsets[spri->curr_anim_index];
+	uint32_t huge *anim_lists_offsets = 	(uint32_t huge *)
+						((byte huge *)vrs + 
+						 vrs->offset_table[VRS_HEADER_OFFSET_ANIMATION_LIST]);
+	struct vrs_animation_list_entry_t *anim_list =	(struct vrs_animation_list_entry_t huge *)
+							((byte huge *)vrs + 
+							 anim_lists_offsets[anim_index]);
 
 	// Upon new animation, start from the first sprite in it
 	spri->curr_anim_spri = 0;
@@ -24,13 +30,15 @@ void init_anim(struct sprite *spri, int anim_index)
 }
 
 
-int set_anim_by_id(struct sprite *spri, int anim_id);
+int set_anim_by_id(struct sprite *spri, int anim_id)
 {
 	int new_anim_index = 0;
 	int iter_id;
 	struct vrs_header huge *vrs = spri->spritesheet->vrs_hdr;
 	// Retruve animation ids list
-        uint16_t huge *anim_ids = (byte)vrs + vrs->offset_table[VRS_HEADER_OFFSET_ANIMATION_ID_LIST];
+        uint16_t huge *anim_ids =	(uint16_t huge *)
+					((byte huge *)vrs + 
+					 vrs->offset_table[VRS_HEADER_OFFSET_ANIMATION_ID_LIST]);
 
 	// Loop through animation id untill match or end of list
 	while(iter_id = anim_ids[new_anim_index])
@@ -53,8 +61,10 @@ void animate_spri(struct sprite *spri)
 	
 	// Draw sprite
 	vrl_cont = get_vrl_by_id(spri->spritesheet, spri->curr_spri_id);
-	draw_vrl1_vgax_modex(spri->x, spri->y, vrl_cont->vrl_header, vrl_cont->line_offsets,
-				vrl_cont->buffer + sizeof(vrl1_vgax_header), vrl_cont->size - sizeof(vrl1_vgax_header));
+	draw_vrl1_vgax_modex(	spri->x, spri->y, 
+				vrl_cont->vrl_header, vrl_cont->line_offsets,	
+				vrl_cont->buffer + sizeof(struct vrl1_vgax_header), 
+				vrl_cont->size - sizeof(struct vrl1_vgax_header));
 
 	// Depending on delay, update indices
 	switch(spri->delay){
