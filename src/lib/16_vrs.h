@@ -31,7 +31,8 @@
 
 struct vrs_container{
 	// Size of a .vrs lob in memory
-	dword size;
+	// minus header
+	dword data_size;
 	union{
 		byte huge *buffer;
 		struct vrs_header huge *vrs_hdr;
@@ -42,7 +43,8 @@ struct vrs_container{
 
 struct vrl_container{
 	// Size of a .vrl blob in memory
-	dword size;
+	// minus header
+	dword data_size;
 	union{
 		byte huge *buffer;
 		struct vrl1_vgax_header huge *vrl_header;
@@ -66,10 +68,11 @@ int read_vrs(global_game_variables_t *gvar, char *filename, struct vrs_container
 * + struct vrs_container *vrs_cont - pointer to the vrs_container
 * with a loaded .vrs file
 * + uint16_t id - id of the vrl to retrive
+* + struct vrl_container * vrl_cont - pointer to vrl_container to load to
 * Out:
-* struct vrl_container* - a pointer to a vrl_container with a pointer
+* int - operation status
 * to the requested .vrl blob
 */
-struct vrl_container * get_vrl_by_id(struct vrs_container *vrs_cont, uint16_t id);
+int get_vrl_by_id(struct vrs_container *vrs_cont, uint16_t id, struct vrl_container * vrl_cont);
 
 #endif
