@@ -184,8 +184,7 @@ typedef struct
 	byte *pee;		// message for fps
 	handle_t handle;	//handles for file logging
 	kurokku_t kurokku;	//clock struct
-	mminfo_t mm;
-	mminfotype mmi;
+	mminfo_t mm; mminfotype mmi;
 } global_game_variables_t;
 
 #endif /* _TYPEDEFSTRUCT_H_ */

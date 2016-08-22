@@ -44,7 +44,6 @@ global_game_variables_t gvar;
 void
 main(int argc, char *argv[])
 {
-	mminfo_t mm; mminfotype mmi;
 #ifdef __WATCOMC__
 	__segment sega;
 	void __based(sega)* bigbuffer;
@@ -71,7 +70,7 @@ main(int argc, char *argv[])
 #ifdef FILERL
 	bakapee = malloc(64);
 #endif
-	mm.mmstarted=0;
+	gvar.mm.mmstarted=0;
 
 #ifdef FILERL
 //	printf("filename!: ");
@@ -89,7 +88,7 @@ main(int argc, char *argv[])
 	//screen.height += (16*2);
 
 //	printf("main()=%Fp	start MM\n", *argv[0]);
-	MM_Startup(&mm, &mmi);
+	MM_Startup(&gvar.mm, &gvar.mmi);
 	//PM_Startup();
 	//PM_UnlockMainMem();
 	CA_Startup(&gvar);
@@ -103,13 +102,13 @@ main(int argc, char *argv[])
 #ifdef FILERL
 //	bakapeehandle = open(bakapee,O_RDONLY | O_BINARY, S_IREAD);
 //	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
-//	if(CA_FarRead(bakapeehandle,(void far *)&bigbuffer,sizeof(bigbuffer),&mm))
+//	if(CA_FarRead(bakapeehandle,(void far *)&bigbuffer,sizeof(bigbuffer),&gvar.mm))
 #ifdef FILEREAD
 	printf("		read\n");
-	if(CA_ReadFile(bakapee, &bigbuffer, &mm))
+	if(CA_ReadFile(bakapee, &bigbuffer, &gvar.mm))
 #else
 	printf("		load\n");
-	if(CA_LoadFile(bakapee, &bigbuffer, &mm, &mmi))
+	if(CA_LoadFile(bakapee, &bigbuffer, &gvar.mm, &gvar.mmi))
 #endif
 		baka=1;
 	else
@@ -130,18 +129,18 @@ main(int argc, char *argv[])
 	getch();
 	//++++modexEnter();
 	//++++modexShowPage(&screen);
-	MM_ShowMemory(&gvar, &mm);
+	MM_ShowMemory(&gvar, &gvar.mm);
 	//getch();
-	MM_DumpData(&mm);
+	MM_DumpData(&gvar.mm);
 	//++++modexLeave();
-	//++++MM_Report(&mm, &mmi);
+	//++++MM_Report(&gvar.mm, &gvar.mmi);
 //	printf("		stop!\n");
 #ifdef FILERL
-	MM_FreePtr(&bigbuffer, &mm);
+	MM_FreePtr(&bigbuffer, &gvar.mm);
 #endif
 	//PM_Shutdown();
 	CA_Shutdown(&gvar);
-	MM_Shutdown(&mm);
+	MM_Shutdown(&gvar.mm);
 //	printf("		done!\n");
 #ifdef FILERL
 	free(bakapee);
@@ -149,11 +148,11 @@ main(int argc, char *argv[])
 	else printf("\npoo!\n");
 #endif
 	printf("========================================\n");
-	printf("near=	%Fp ", mm.nearheap);
-	printf("far=	%Fp", mm.farheap);
+	printf("near=	%Fp ", gvar.mm.nearheap);
+	printf("far=	%Fp", gvar.mm.farheap);
 	printf("\n");
-	printf("&near=	%Fp ", &(mm.nearheap));
-	printf("&far=	%Fp", &(mm.farheap));
+	printf("&near=	%Fp ", &(gvar.mm.nearheap));
+	printf("&far=	%Fp", &(gvar.mm.farheap));
 	printf("\n");
 	printf("bigb=	%Fp ", bigbuffer);
 	//printf("bigbr=	%04x", bigbuffer);
