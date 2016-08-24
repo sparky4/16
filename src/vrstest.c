@@ -52,7 +52,7 @@ void main() {
 	struct vrl1_vgax_header huge *curr_vrl;
 	struct vrl_container *vrl;
 	int success;
-	byte w=1;
+	word w=1;
 
 
 
@@ -177,7 +177,7 @@ void main() {
 	{
 		switch(w)
 		{
-			case 252:
+			case 65532:
 				modexPalUpdate0(pal);
 				w=1;
 			default:
