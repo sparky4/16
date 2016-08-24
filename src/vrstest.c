@@ -177,7 +177,7 @@ void main() {
 	{
 		switch(w)
 		{
-			case 4:
+			case 252:
 				modexPalUpdate0(pal);
 				w=1;
 			default:
