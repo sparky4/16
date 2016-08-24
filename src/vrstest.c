@@ -52,6 +52,7 @@ void main() {
 	struct vrl1_vgax_header huge *curr_vrl;
 	struct vrl_container *vrl;
 	int success;
+	byte w=1;
 
 
 
@@ -174,7 +175,15 @@ void main() {
 
 	while(!kbhit())
 	{
-		modexPalUpdate0(pal);
+		switch(w)
+		{
+			case 4:
+				modexPalUpdate0(pal);
+				w=1;
+			default:
+				w++;
+			break;
+		}
 	}
 	VGAmodeX(0, 1, &gvar);
 	free(spri.sprite_vrl_cont);
