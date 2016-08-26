@@ -7,7 +7,7 @@ then
 	echo dumping *.err
 	wmake vomitchan
 fi
-if [ -f 16_head.o ]
-then
-	rm *.o
-fi
+#if [ -f 16_head.o ]
+#then
+#	rm *.o
+#fi
