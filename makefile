@@ -216,7 +216,7 @@ vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib $(16LIB)
 	#$(WCL) $(FLAGS) -c $(SRC)16.c
 
 bakapi.$(OBJ): $(SRC)bakapi.h $(SRC)bakapi.c
-	#$(WCL) $(FLAGS) -c $(SRC)bakapi.c
+	$(WCL) $(FLAGS) -c $(SRC)bakapi.c
 
 test.$(OBJ): $(SRC)test.c $(SRCLIB)modex16.h
 	$(WCL) $(FLAGS) -c $(SRC)test.c
