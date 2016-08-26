@@ -45,7 +45,7 @@ DUMP=cat
 REMOVECOMMAND=del
 COPYCOMMAND=copy /y
 DIRSEP=\
-OBJ=obj
+OBJ=OBJ
 DUMP=type
 !endif
 
@@ -82,7 +82,7 @@ SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#54096#60000
 DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
 ZFLAGS=-zk0 -zc -zp8 -zm $(WCLQ)
 LFLAGS=-lr -l=dos
-CFLAGS=$(AFLAGS) $(IFLAGS) -wo -i$(DOSLIB) $(LFLAGS)
+CFLAGS=$(AFLAGS) $(IFLAGS) -wo -i$(DOSLIB) $(LFLAGS) -fo=.$(OBJ)
 OFLAGS=-obmilr -oe=24 -out -oh -ei -zp8 -fpi87  -onac -ol+ -ok####x
 FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 
@@ -517,6 +517,7 @@ initlibs: .symbolic
 	@git clone https://github.com/id-Software/wolf3d.git
 	@git clone https://github.com/keendreams/keen.git
 	@cd $(PDIR)
+	@cp $(SRCLIB)doslib/make-lowercase .
 
 ##
 ##	experimental libs

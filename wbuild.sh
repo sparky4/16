@@ -7,3 +7,7 @@ then
 	echo dumping *.err
 	cat *.err
 fi
+if [ -f *.o ]
+then
+	rm *.o
+fi
