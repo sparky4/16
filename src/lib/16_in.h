@@ -30,7 +30,7 @@
 #include <string.h>
 #include "src/lib/16_head.h"
 #include "src/lib/16_timer.h"
-#include "src/lib/16_sprite.h"
+#include "src/lib/16_sprit.h"
 #include "src/lib/bitmap.h"	//old format
 #ifdef __WATCOMC__
 #include "src/lib/16_dbg.h"
