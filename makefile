@@ -209,7 +209,7 @@ vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib $(16LIB)
 #!ifndef __LINUX__
 #{src}.c.$(OBJ) :
 {$(SRC)}.c.$(OBJ):
-	$(WCL) $(FLAGS) -c $[
+	$(WCL) $(FLAGS) -c $[@
 #!endif
 
 16.$(OBJ): $(SRC)16.h $(SRC)16.c
