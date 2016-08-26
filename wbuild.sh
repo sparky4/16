@@ -7,7 +7,7 @@ then
 	echo dumping *.err
 	cat *.err
 fi
-if [ -f *.o ]
+if [ -f 16_head.o ]
 then
 	rm *.o
 fi
