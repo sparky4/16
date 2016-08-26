@@ -206,17 +206,17 @@ vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib $(16LIB)
 #
 #executable's objects
 #
-!ifndef __LINUX__
-#{$(SRC)}.c.$(OBJ) :
+#!ifndef __LINUX__
 {src}.c.$(OBJ) :
-	$(WCL) $(FLAGS) -c $[*
-!endif
+#{$(SRC)}.c.$(OBJ):
+	$(WCL) $(FLAGS) -c $[
+#!endif
 
 16.$(OBJ): $(SRC)16.h $(SRC)16.c
-	$(WCL) $(FLAGS) -c $(SRC)16.c
+	#$(WCL) $(FLAGS) -c $(SRC)16.c
 
 bakapi.$(OBJ): $(SRC)bakapi.h $(SRC)bakapi.c
-	$(WCL) $(FLAGS) -c $(SRC)bakapi.c
+	#$(WCL) $(FLAGS) -c $(SRC)bakapi.c
 
 test.$(OBJ): $(SRC)test.c $(SRCLIB)modex16.h
 	$(WCL) $(FLAGS) -c $(SRC)test.c
@@ -423,7 +423,7 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.16W
 	@$(REMOVECOMMAND) *.16B
 	@$(REMOVECOMMAND) *.OBJ
-	@$(REMOVECOMMAND) *.$(OBJ)
+	@$(REMOVECOMMAND) *.o
 	@$(REMOVECOMMAND) *.BCO
 	#@$(REMOVECOMMAND) makefi~1
 	#@$(REMOVECOMMAND) makefile~

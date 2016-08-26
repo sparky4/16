@@ -3,5 +3,5 @@ wmake -h clean
 wmake -h
 rem wmake -h comp
 if exist *.err (wmake vomitchan)
-if exist *.o (del *.o)
-if exist *.obj (del *.obj)
+rem if exist *.o (del *.o)
+rem if exist *.obj (del *.obj)
