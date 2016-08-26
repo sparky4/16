@@ -206,14 +206,14 @@ vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib $(16LIB)
 #
 #executable's objects
 #
-#!ifndef __LINUX__
+!ifndef __LINUX__
 #{src}.c.$(OBJ) :
 {$(SRC)}.c.$(OBJ):
 	$(WCL) $(FLAGS) -c $[@
-#!endif
+!endif
 
 16.$(OBJ): $(SRC)16.h $(SRC)16.c
-	#$(WCL) $(FLAGS) -c $(SRC)16.c
+	$(WCL) $(FLAGS) -c $(SRC)16.c
 
 bakapi.$(OBJ): $(SRC)bakapi.h $(SRC)bakapi.c
 	$(WCL) $(FLAGS) -c $(SRC)bakapi.c
