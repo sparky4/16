@@ -177,7 +177,7 @@ maptest.exe: maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib
 fmemtest.exe: fmemtest.$(OBJ) $(16LIB)
 exmmtest.exe: exmmtest.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ)
 #	*wcl $(FLAGS) exmmtest.$(OBJ) -fm=exmmtest.mah $(16LIB)
-gmtest.exe: vgmtest.$(OBJ) vgmsnd.lib $(16LIB)
+vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib $(16LIB)
 
 #
 #executable's objects
