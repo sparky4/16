@@ -205,84 +205,33 @@ vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib $(16LIB)
 {$(SRC)}.C.$(OBJ):
 	*wcl $(FLAGS) -c $[@
 
-16.$(OBJ): $(SRC)16.h $(SRC)16.c
-####	*wcl $(FLAGS) -c $(SRC)16.c
-
-bakapi.$(OBJ): $(SRC)bakapi.h $(SRC)bakapi.c
-####	*wcl $(FLAGS) -c $(SRC)bakapi.c
-
-test.$(OBJ): $(SRC)test.c $(SRCLIB)modex16.h
-####	*wcl $(FLAGS) -c $(SRC)test.c
-
-#test2.$(OBJ): $(SRC)test2.c $(SRCLIB)modex16.h
-#####	*wcl $(FLAGS) -c $(SRC)test2.c
-
-test0.$(OBJ): $(SRC)test0.c
-####	*wcl $(FLAGS) -c $(SRC)test0.c
-
-pcxtest.$(OBJ): $(SRC)pcxtest.c $(SRCLIB)modex16.h
-####	*wcl $(FLAGS) -c $(SRC)pcxtest.c
-
-vrstest.$(OBJ): $(SRC)vrstest.c $(SRCLIB)modex16.h
-####	*wcl $(FLAGS) -c $(SRC)vrstest.c
-
-##planrpcx.$(OBJ): $(SRC)planrpcx.c $(SRCLIB)modex16.h
-######	*wcl $(FLAGS) -c $(SRC)planrpcx.c
-
-pcxtest2.$(OBJ): $(SRC)pcxtest2.c $(SRCLIB)modex16.h
-####	*wcl $(FLAGS) -c $(SRC)pcxtest2.c
-
-palettec.$(OBJ): $(SRC)palettec.c
-####	*wcl $(FLAGS) -c $(SRC)palettec.c
-
-palettel.$(OBJ): $(SRC)palettel.c
-####	*wcl $(FLAGS) -c $(SRC)palettel.c
-
-maptest.$(OBJ): $(SRC)maptest.c $(SRCLIB)modex16.h
-####	*wcl $(FLAGS) -c $(SRC)maptest.c
-
-#emmtest.$(OBJ): $(SRC)emmtest.c
-#####	*wcl $(FLAGS) $(MFLAGS) -c $(SRC)emmtest.c
-
-#emsdump.$(OBJ): $(SRC)emsdump.c
-#####	*wcl $(FLAGS) $(MFLAGS) -c $(SRC)emsdump.c
-
-fmemtest.$(OBJ): $(SRC)fmemtest.c
-####	*wcl $(FLAGS) -c $(SRC)fmemtest.c
-
-fonttest.$(OBJ): $(SRC)fonttest.c
-####	*wcl $(FLAGS) -c $(SRC)fonttest.c
-
-#fonttes0.$(OBJ): $(SRC)fonttes0.c
-#####	*wcl $(FLAGS) -c $(SRC)fonttes0.c
-
-fontgfx.$(OBJ): $(SRC)fontgfx.c
-####	*wcl $(FLAGS) -c $(SRC)fontgfx.c
-
-inputest.$(OBJ): $(SRC)inputest.c
-####	*wcl $(FLAGS) -c $(SRC)inputest.c
-
-#sountest.$(OBJ): $(SRC)sountest.c
-#	*wcl $(FLAGS) -c $(SRC)sountest.c
-
-#miditest.$(OBJ): $(SRC)miditest.c
-#	*wcl $(FLAGS) -c $(SRC)miditest.c
-
-#testemm.$(OBJ): $(SRC)testemm.c
-#	*wcl $(FLAGS) -c $(SRC)testemm.c
-
-#testemm0.$(OBJ): $(SRC)testemm0.c
-#	*wcl $(FLAGS) -c $(SRC)testemm0.c
-
-tsthimem.$(OBJ): $(SRC)tsthimem.c
-####	*wcl $(FLAGS) -c $(SRC)tsthimem.c
-
-exmmtest.$(OBJ): $(SRC)exmmtest.c
+16.$(OBJ): $(SRC)16.h $(SRC)16.c .symbolic
+bakapi.$(OBJ): $(SRC)bakapi.h $(SRC)bakapi.c .symbolic
+test.$(OBJ): $(SRC)test.c $(SRCLIB)modex16.h .symbolic
+#test2.$(OBJ): $(SRC)test2.c $(SRCLIB)modex16.h .symbolic
+test0.$(OBJ): $(SRC)test0.c .symbolic
+pcxtest.$(OBJ): $(SRC)pcxtest.c $(SRCLIB)modex16.h .symbolic
+vrstest.$(OBJ): $(SRC)vrstest.c $(SRCLIB)modex16.h .symbolic
+##planrpcx.$(OBJ): $(SRC)planrpcx.c $(SRCLIB)modex16.h .symbolic
+pcxtest2.$(OBJ): $(SRC)pcxtest2.c $(SRCLIB)modex16.h .symbolic
+palettec.$(OBJ): $(SRC)palettec.c .symbolic
+palettel.$(OBJ): $(SRC)palettel.c .symbolic
+maptest.$(OBJ): $(SRC)maptest.c $(SRCLIB)modex16.h .symbolic
+#emmtest.$(OBJ): $(SRC)emmtest.c .symbolic
+#emsdump.$(OBJ): $(SRC)emsdump.c .symbolic
+fmemtest.$(OBJ): $(SRC)fmemtest.c .symbolic
+fonttest.$(OBJ): $(SRC)fonttest.c .symbolic
+#fonttes0.$(OBJ): $(SRC)fonttes0.c .symbolic
+fontgfx.$(OBJ): $(SRC)fontgfx.c .symbolic
+inputest.$(OBJ): $(SRC)inputest.c .symbolic
+#sountest.$(OBJ): $(SRC)sountest.c .symbolic
+#miditest.$(OBJ): $(SRC)miditest.c .symbolic
+#testemm.$(OBJ): $(SRC)testemm.c .symbolic
+#testemm0.$(OBJ): $(SRC)testemm0.c .symbolic
+#tsthimem.$(OBJ): $(SRC)tsthimem.c .symbolic
+exmmtest.$(OBJ): $(SRC)exmmtest.c .symbolic
 ####	*wcl $(FLAGS) -c $(SRC)exmmtest.c 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ)
-
-vgmtest.$(OBJ): $(SRC)vgmtest.c
-####	*wcl $(FLAGS) -c $(SRC)vgmtest.c
-	#====*wcl -mc -c $(SRC)vgmtest.c
+vgmtest.$(OBJ): $(SRC)vgmtest.c .symbolic
 
 #
 #non executable objects libraries
