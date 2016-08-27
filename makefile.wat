@@ -62,8 +62,8 @@ SRCLIB=$(SRC)lib$(DIRSEP)
 JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
 NYANLIB=$(SRCLIB)nyan$(DIRSEP)
 #EXMMLIB=$(SRCLIB)exmm$(DIRSEP)
-MODEXLIB=$(SRCLIB)modex16$(DIRSEP)
-MODEXLIB_=$(SRCLIB)modex$(DIRSEP)
+MODEXLIB16=$(SRCLIB)modex16$(DIRSEP)
+MODEXLIB=$(SRCLIB)modex$(DIRSEP)
 VGMSNDLIB=$(SRCLIB)vgmsnd$(DIRSEP)
 DOSLIB=$(SRCLIB)doslib$(DIRSEP)
 DOSLIBDIR=$(SRCLIB)doslib
@@ -129,11 +129,11 @@ all: $(EXEC) joytest.exe
 	*wcl $(LFLAGS) $(extra_$^&_exe_opts) -fe=$@ $<
 
 .obj.lib :
-	*wcl $(LIBFLAGS) $(extra_$^&_lib_opts) $@ $<
+	*wlib $(LIBFLAGS) $(extra_$^&_lib_opts) $@ $<
 
 .c : $(SRC);$(SRCLIB);$(JSMNLIB);$(NYANLIB);$(VGMSNDLIB);$(WCPULIB)
 
-.asm : $(MODEXLIB_)
+.asm : $(MODEXLIB)
 
 .lib : .;$(DOSLIBDIR)/hw/cpu/dos86h;$(DOSLIBDIR)/hw/dos/dos86h;$(DOSLIBDIR)/hw/vga/dos86h;$(DOSLIBDIR)/hw/8250/dos86h
 
@@ -141,89 +141,42 @@ all: $(EXEC) joytest.exe
 #game and bakapi executables
 #
 16.exe: 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib
-	*wcl $(FLAGS) $(16FLAGS) 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib -fm=16.mah
-
 bakapi.exe: bakapi.$(OBJ) gfx.lib $(DOSLIBLIBS)
-	*wcl $(FLAGS) $(BAKAPIFLAGS) bakapi.$(OBJ) gfx.lib $(DOSLIBLIBS) -fm=bakapi.mah
 
 #
 #Test Executables!
 #
 scroll.exe: scroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib
-	*wcl $(FLAGS) scroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib -fm=scroll.mah
 scroll.$(OBJ): $(SRC)scroll.c
-	*wcl $(FLAGS) -c $(SRC)scroll.c
-
 tesuto.exe: tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
-	*wcl $(FLAGS) $(WCLQ) tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
 tesuto.$(OBJ): $(SRC)tesuto.c
-	*wcl $(FLAGS) $(WCLQ) -c $(SRC)tesuto.c
-
 0.exe: 0.$(OBJ) $(DOSLIBLIBS) gfx.lib $(16LIB)
-	*wcl $(FLAGS) $(WCLQ) 0.$(OBJ) $(DOSLIBLIBS) gfx.lib $(16LIB)
 0.$(OBJ): $(SRC)0.c
-	*wcl $(FLAGS) $(WCLQ) -c $(SRC)0.c
-
 test.exe: test.$(OBJ) gfx.lib $(DOSLIBLIBS) $(16LIB)
-	*wcl $(FLAGS) test.$(OBJ) gfx.lib $(DOSLIBLIBS) $(16LIB) -fm=test.mah
-
 #test2.exe: test2.$(OBJ) $(DOSLIBLIBS) gfx.lib
-#	*wcl $(FLAGS) test2.$(OBJ) $(DOSLIBLIBS) gfx.lib -fm=test2.mah
-
 test0.exe: test0.$(OBJ)
-	*wcl $(FLAGS) test0.$(OBJ) -fm=test0.mah
-
 fonttest.exe: fonttest.$(OBJ) $(16LIB) gfx.lib
-	*wcl $(FLAGS) fonttest.$(OBJ) $(16LIB) gfx.lib -fm=fonttest.mah
-
 #fonttes0.exe: fonttes0.$(OBJ) $(16LIB)
-#	*wcl $(FLAGS) fonttes0.$(OBJ) $(16LIB)
-
 fontgfx.exe: fontgfx.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
-	*wcl $(FLAGS) fontgfx.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS) -fm=fontgfx.mah
-
 inputest.exe: inputest.$(OBJ) $(16LIB)
-	*wcl $(FLAGS) inputest.$(OBJ) $(16LIB) -fm=inputest.mah
-
 #sountest.exe: sountest.$(OBJ) $(16LIB)
-#	*wcl $(FLAGS) sountest.$(OBJ) $(16LIB)
-
 pcxtest.exe: pcxtest.$(OBJ) gfx.lib
-	*wcl $(FLAGS) pcxtest.$(OBJ) gfx.lib -fm=pcxtest.mah
-
 vrstest.exe: vrstest.$(OBJ) gfx.lib $(16LIB)
-	*wcl $(FLAGS) vrstest.$(OBJ) gfx.lib $(16LIB) -fm=vrstest.mah
-
 palettec.exe: palettec.$(OBJ) gfx.lib #$(16LIB)
-	*wcl $(FLAGS) palettec.$(OBJ) gfx.lib -fm=palettec.mah #$(16LIB)
-
 palettel.exe: palettel.$(OBJ) gfx.lib #$(16LIB)
-	*wcl $(FLAGS) palettel.$(OBJ) gfx.lib -fm=palettel.mah #$(16LIB)
-
 pcxtest2.exe: pcxtest2.$(OBJ) gfx.lib
-	*wcl $(FLAGS) pcxtest2.$(OBJ) gfx.lib -fm=pcxtest2.mah
-
 ##planrpcx.exe: planrpcx.$(OBJ) gfx.lib
-##	*wcl $(FLAGS) planrpcx.$(OBJ) gfx.lib -fm=planrpcx.mah
-
 maptest.exe: maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib
-	*wcl $(FLAGS) maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib -fm=maptest.mah
-
 fmemtest.exe: fmemtest.$(OBJ) $(16LIB)
-	*wcl $(FLAGS) fmemtest.$(OBJ) $(16LIB) -fm=fmemtest.mah
-
 exmmtest.exe: exmmtest.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ)
-	*wcl $(FLAGS) exmmtest.$(OBJ) -fm=exmmtest.mah $(16LIB)
-
-vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib $(16LIB)
-	*wcl $(FLAGS) vgmtest.$(OBJ) vgmsnd.lib -fm=vgmtest.mah $(16LIB)
-
+#	*wcl $(FLAGS) exmmtest.$(OBJ) -fm=exmmtest.mah $(16LIB)
+gmtest.exe: vgmtest.$(OBJ) vgmsnd.lib $(16LIB)
 
 #
 #executable's objects
 #
-16.$(OBJ): $(SRC)16.h $(SRC)16.c
-bakapi.$(OBJ): $(SRC)bakapi.h $(SRC)bakapi.c
+16.$(OBJ): $(SRC)16.c $(SRC)16.h
+bakapi.$(OBJ): $(SRC)bakapi.c $(SRC)bakapi.h
 test.$(OBJ): $(SRC)test.c $(SRCLIB)modex16.h
 #test2.$(OBJ): $(SRC)test2.c $(SRCLIB)modex16.h
 test0.$(OBJ): $(SRC)test0.c
@@ -247,7 +200,6 @@ inputest.$(OBJ): $(SRC)inputest.c
 #testemm0.$(OBJ): $(SRC)testemm0.c
 #tsthimem.$(OBJ): $(SRC)tsthimem.c
 exmmtest.$(OBJ): $(SRC)exmmtest.c
-####	*wcl $(FLAGS) -c $(SRC)exmmtest.c 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ)
 vgmtest.$(OBJ): $(SRC)vgmtest.c
 
 #
@@ -287,82 +239,35 @@ joytest.exe:
 #	@.$(DIRSEP)buildall.sh
 #	@cd $(PDIR)$(PDIR)$(PDIR)
 
-modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c
-	#*wcl $(FLAGS) -c $(SRCLIB)modex16.c
-
-bakapee.$(OBJ): $(SRCLIB)bakapee.h $(SRCLIB)bakapee.c
-	#*wcl $(FLAGS) -c $(SRCLIB)bakapee.c
-
-16render.$(OBJ): $(SRCLIB)16render.h $(SRCLIB)16render.c
-	#*wcl $(FLAGS) -c $(MODEXLIB)16render.c
-
-##16planar.$(OBJ): $(MODEXLIB)16planar.h $(MODEXLIB)16planar.c
-##	*wcl $(FLAGS) -c $(MODEXLIB)16planar.c
-
-16_vrs.$(OBJ): $(SRCLIB)16_vrs.h $(SRCLIB)16_vrs.c $(DOSLIBLIBS)
-	#*wcl $(FLAGS) -c $(SRCLIB)16_vrs.c $(DOSLIBLIBS)
-16_sprit.$(OBJ): $(SRCLIB)16_sprit.h $(SRCLIB)16_sprit.c
-	#*wcl $(FLAGS) -c $(SRCLIB)16_sprit.c
-
-
-bitmap.$(OBJ): $(SRCLIB)bitmap.h $(SRCLIB)bitmap.c
-	#*wcl $(FLAGS) -c $(SRCLIB)bitmap.c
-
-##planar.$(OBJ): $(SRCLIB)planar.h $(SRCLIB)planar.c
-##	*wcl $(FLAGS) -c $(SRCLIB)planar.c
-
-scroll16.$(OBJ): $(SRCLIB)scroll16.h $(SRCLIB)scroll16.c
-	#*wcl $(FLAGS) -c $(SRCLIB)scroll16.c
-
+modex16.$(OBJ): $(SRCLIB)modex16.c $(SRCLIB)modex16.h
+bakapee.$(OBJ): $(SRCLIB)bakapee.c $(SRCLIB)bakapee.h
+16render.$(OBJ): $(SRCLIB)16render.c $(SRCLIB)16render.h
+##16planar.$(OBJ): $(MODEXLIB16)16planar.c $(MODEXLIB16)16planar.h
+16_vrs.$(OBJ): $(SRCLIB)16_vrs.c $(SRCLIB)16_vrs.h $(DOSLIBLIBS)
+16_sprit.$(OBJ): $(SRCLIB)16_sprit.c $(SRCLIB)16_sprit.h
+bitmap.$(OBJ): $(SRCLIB)bitmap.c $(SRCLIB)bitmap.h
+##planar.$(OBJ): $(SRCLIB)planar.c $(SRCLIB)planar.h
+scroll16.$(OBJ): $(SRCLIB)scroll16.c $(SRCLIB)scroll16.h
 16text.$(OBJ): $(SRCLIB)16text.c
-	#*wcl $(FLAGS) -c $(SRCLIB)16text.c
-
-mapread.$(OBJ): $(SRCLIB)mapread.h $(SRCLIB)mapread.c
-	#*wcl $(FLAGS) -c $(SRCLIB)mapread.c
-
-16_timer.$(OBJ): $(SRCLIB)16_timer.h $(SRCLIB)16_timer.c
-	#*wcl $(FLAGS) -c $(SRCLIB)16_timer.c
-
-16_in.$(OBJ): $(SRCLIB)16_in.h $(SRCLIB)16_in.c
-	#*wcl $(FLAGS) -c $(SRCLIB)16_in.c
-
-16_mm.$(OBJ): $(SRCLIB)16_mm.h $(SRCLIB)16_mm.c
-	#*wcl $(FLAGS) -c $(SRCLIB)16_mm.c
-
-16_ca.$(OBJ): $(SRCLIB)16_ca.h $(SRCLIB)16_ca.c
-	#*wcl $(FLAGS) -c $(SRCLIB)16_ca.c
-
-16_dbg.$(OBJ): $(SRCLIB)16_dbg.h $(SRCLIB)16_dbg.c
-	#*wcl $(FLAGS) -c $(SRCLIB)16_dbg.c
-
-midi.$(OBJ): $(SRCLIB)midi.h $(SRCLIB)midi.c
-	#*wcl $(FLAGS) -c $(SRCLIB)midi.c
-
-16_head.$(OBJ): $(SRCLIB)16_head.h $(SRCLIB)16_head.c
-	#*wcl $(FLAGS) -c $(SRCLIB)16_head.c
-
-16_hc.$(OBJ): $(SRCLIB)16_hc.h $(SRCLIB)16_hc.c
-	#*wcl $(FLAGS) -c $(SRCLIB)16_hc.c
-
-16_snd.$(OBJ): $(SRCLIB)16_snd.h $(SRCLIB)16_snd.c
-	#*wcl $(FLAGS) -c $(SRCLIB)16_snd.c
-
-jsmn.$(OBJ): $(JSMNLIB)jsmn.h $(JSMNLIB)jsmn.c
-	#*wcl $(FLAGS) -c $(JSMNLIB)jsmn.c
-kitten.$(OBJ): $(NYANLIB)kitten.h $(NYANLIB)kitten.c
-	#*wcl $(FLAGS) -c $(NYANLIB)kitten.c
-vgmSnd.$(OBJ): $(VGMSNDLIB)vgmSnd.h $(VGMSNDLIB)vgmSnd.c
-	#*wcl $(FLAGS) -c $(VGMSNDLIB)vgmSnd.c
-wcpu.$(OBJ): $(WCPULIB)wcpu.h $(WCPULIB)wcpu.c
-	#*wcl $(FLAGS) -c $(WCPULIB)wcpu.c
-
-#memory.$(OBJ): $(EXMMLIB)memory.h $(EXMMLIB)memory.c
+mapread.$(OBJ): $(SRCLIB)mapread.c $(SRCLIB)mapread.h
+16_timer.$(OBJ): $(SRCLIB)16_timer.c $(SRCLIB)16_timer.h
+16_in.$(OBJ): $(SRCLIB)16_in.c $(SRCLIB)16_in.h
+16_mm.$(OBJ): $(SRCLIB)16_mm.c $(SRCLIB)16_mm.h
+16_ca.$(OBJ): $(SRCLIB)16_ca.c $(SRCLIB)16_ca.h
+16_dbg.$(OBJ): $(SRCLIB)16_dbg.c $(SRCLIB)16_dbg.h
+midi.$(OBJ): $(SRCLIB)midi.c $(SRCLIB)midi.h
+16_head.$(OBJ): $(SRCLIB)16_head.c $(SRCLIB)16_head.h
+16_hc.$(OBJ): $(SRCLIB)16_hc.c $(SRCLIB)16_hc.h
+16_snd.$(OBJ): $(SRCLIB)16_snd.c $(SRCLIB)16_snd.h
+jsmn.$(OBJ): $(JSMNLIB)jsmn.c $(JSMNLIB)jsmn.h
+kitten.$(OBJ): $(NYANLIB)kitten.c $(NYANLIB)kitten.h
+vgmSnd.$(OBJ): $(VGMSNDLIB)vgmSnd.c $(VGMSNDLIB)vgmSnd.h
+wcpu.$(OBJ): $(WCPULIB)wcpu.c $(WCPULIB)wcpu.h
+#memory.$(OBJ): $(EXMMLIB)memory.c $(EXMMLIB)memory.h
 #	*wcl $(FLAGS) $(MFLAGS) -c $(EXMMLIB)memory.c
 
-c_utils.$(OBJ): $(MODEXLIB_)c_utils.asm
-	*wcl -c $(AFLAGS) $(MODEXLIB_)c_utils.asm
-modex.$(OBJ): $(MODEXLIB_)modex.asm
-	*wcl -c $(AFLAGS) $(MODEXLIB_)modex.asm
+c_utils.$(OBJ): $(MODEXLIB)c_utils.asm
+modex.$(OBJ): $(MODEXLIB)modex.asm
 
 #
 #other~
