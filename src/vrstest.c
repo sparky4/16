@@ -120,37 +120,17 @@ void main() {
 	//read_vrs(&gvar, "data/spri/chikyuu.vrs", &vrs);
 	spri.spritesheet = &vrs;
 	spri.sprite_vrl_cont = malloc(sizeof(struct vrl_container));
-
-	vrl = malloc(sizeof(struct vrl_container));
-	i = get_vrl_by_id(&vrs, 10, vrl);
-	if(i == -2)
-	{
-		puts("Die");
-		return;
-	}
-	off = vrl1_vgax_genlineoffsets(curr_vrl/*vrl->buffer*/, vrl->buffer + sizeof(struct vrl1_vgax_header), vrl->data_size);
-	fd = open("data/spri/chikyuu.vrl", O_RDONLY|O_BINARY);
-	size = lseek(fd, 0, SEEK_END);
-	lseek(fd, 0, SEEK_SET);
-	close(fd);
-
-	if(CA_LoadFile("data/spri/chikyuu.vrl", &bigbuffer, &mm, &mmi)) baka=1; else baka=0;
-	off1 = vrl1_vgax_genlineoffsets(bigbuffer, (byte *)bigbuffer + sizeof(struct vrl1_vgax_header), size - sizeof(struct vrl1_vgax_header));
-
-
-	//read_vrs(&gvar, "data/spri/chikyuu.vrs", spri.spritesheet);
-	i = set_anim_by_id(&spri, 10);
+	i = set_anim_by_id(&spri, 11);
 	if (i == -1)
 	{
 		return;
 	}
-	spri.x = spri.y = 70;
+	spri.x = 5;
+	spri.y = 100;
 
-
-	/* fix up the palette and everything */
-	//modexPalUpdate1(bmp.palette);
-	//modexLoadPalFile("data/spri/chikyuu.pal", &pal);
-	//modexPalUpdate1(pal);
+//	Uncomment to see broken sprites
+/*	sega = mm.bufferseg;
+	if(CA_LoadFile("data/spri/CHUBACW1.vrl", &bigbuffer, &mm, &mmi)) baka=1; else baka=0;*/
 
 	/* clear and draw one sprite and one bitmap */
 	VGAmodeX(1, 1, &gvar);
@@ -159,19 +139,14 @@ void main() {
 	/* non sprite comparison */
 	start = *clockw;
 	modexCopyPageRegion(&gvar.video.page[0], &gvar.video.page[0], 0, 0, 0, 0, 320, 240);
-	animate_spri(&spri);
 	t1 = (*clockw-start) /18.2;
 
 	start = *clockw;
 
-	draw_vrl1_vgax_modex(5,5,curr_vrl/*vrl->buffer*/,vrl->line_offsets,vrl->buffer + sizeof(struct vrl1_vgax_header),vrl->data_size);
-	draw_vrl1_vgax_modex(40,40,curr_vrl/*vrs.buffer*/ + vrl_headers_offsets[0],vrs.vrl_line_offsets[0],vrs.buffer + vrl_headers_offsets[0] + sizeof(struct vrl1_vgax_header),vrl_headers_offsets[1] - vrl_headers_offsets[0] - sizeof(struct vrl1_vgax_header));
-	draw_vrl1_vgax_modex(100, 5, bigbuffer, off1, (byte *)bigbuffer + sizeof(struct vrl1_vgax_header), size - sizeof(struct vrl1_vgax_header));
-
 	t2 = (*clockw-start)/18.2;
 
-	//for (i = 0; i < 5; i++){
-	//animate_spri(&spri);
+	for (i = 0; i < 5; i++){
+	spri.delay = 1; animate_spri(&spri); spri.x += 20; sleep(2); }
 
 	while(!kbhit())
 	{
