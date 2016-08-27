@@ -36,7 +36,7 @@ struct sprite
 	// Index of a current sprite in an animation sequence
 	int curr_anim_spri;
 	// Current animation sequence
-	struct vrs_animation_list_entry_t *curr_anim_list;
+	struct vrs_animation_list_entry_t huge *curr_anim_list;
 	// Index of current animation in relevant VRS offsets table
 	int curr_anim;
 	// Delay in time units untill we should change sprite
