@@ -888,7 +888,7 @@ asm	mov	ds,ax
 =
 ======================
 */
-
+////++++ enable!
 /*void CAL_SetupGrFile (void)
 {
 	int handle;
