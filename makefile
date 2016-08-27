@@ -53,6 +53,7 @@ DUMP=*type
 
 TARGET_OS = dos
 
+BUILD_ROOT=$+$(%__CWD__)
 #EXMMTESTDIR=16$(DIRSEP)exmmtest$(DIRSEP)
 PDIR=..$(DIRSEP)
 SRC=src$(DIRSEP)
@@ -254,21 +255,27 @@ vgmsnd.lib: $(VGMSNDOBJ)
 # library deps 16-bit huge
 $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu$(DIRSEP)dos86h$(DIRSEP)cpu.lib:
 	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu && .$(DIRSEP)make.sh
+	cd $(BUILD_ROOT)
 $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos$(DIRSEP)dos86h$(DIRSEP)dos.lib:
 	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos && .$(DIRSEP)make.sh
+	cd $(BUILD_ROOT)
 $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vgatty.lib:
 	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga && .$(DIRSEP)make.sh
+	cd $(BUILD_ROOT)
 $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vga.lib:
 	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga && .$(DIRSEP)make.sh
+	cd $(BUILD_ROOT)
 $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)8250$(DIRSEP)dos86h$(DIRSEP)8250.lib:
 	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)8250 && .$(DIRSEP)make.sh
+	cd $(BUILD_ROOT)
 
 joytest.exe:
-	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)joystick && .$(DIRSEP)make.sh && $(COPYCOMMAND) dos86h$(DIRSEP)test.exe $(PDIR)$(PDIR)$(PDIR)$(PDIR)$(PDIR)joytest.exe
+	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)joystick && .$(DIRSEP)make.sh && $(COPYCOMMAND) dos86h$(DIRSEP)test.exe $(BUILD_ROOT)$(DIRSEP)joytest.exe
+	cd $(BUILD_ROOT)
 #$(DOSLIBLIBS): .symbolic
 #	@cd $(DOSLIB)
 #	@.$(DIRSEP)buildall.sh
-#	@cd $(PDIR)$(PDIR)$(PDIR)
+#	@cd $(BUILD_ROOT)
 
 {$(SRCLIB)}.C.$(OBJ):
 	*wcl $(FLAGS) -c $[@
@@ -392,7 +399,7 @@ clean: .symbolic
 	@echo $(OBJ)
 	#@cd $(DOSLIB)
 	#@./buildall.sh clean
-	#@cd $(PDIR)$(PDIR)$(PDIR)
+	#@cd $(BUILD_ROOT)
 #	@$(COPYCOMMAND) $(SRC)exmmtest.c $(EXMMTESTDIR)$(SRC)
 #	@$(COPYCOMMAND) $(SRCLIB)16_mm.* $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(SRCLIB)16_head.* $(EXMMTESTDIR)$(SRCLIB)
@@ -437,15 +444,15 @@ vomitchan: .symbolic
 mkdl: .symbolic
 	@cd $(DOSLIB)
 	@./buildall.sh
-	@cd $(PDIR)$(PDIR)$(PDIR)
+	@cd $(BUILD_ROOT)
 
 uplibs: .symbolic
 	@cd $(JSMNLIB)
 	@git pull
-	@cd $(PDIR)$(PDIR)$(PDIR)
+	@cd $(BUILD_ROOT)
 	@cd $(DOSLIB)
 	@git pull
-	@cd $(PDIR)$(PDIR)$(PDIR)
+	@cd $(BUILD_ROOT)
 
 reinitlibs: .symbolic
 	@rm -rf $(SRCLIB)doslib
@@ -462,12 +469,12 @@ initlibs: .symbolic
 	@cd $(SRCLIB)
 	@git clone https://github.com/joncampbell123/doslib.git
 	@git clone https://github.com/zserge/jsmn.git
-	@cd $(PDIR)$(PDIR)
+	@cd $(BUILD_ROOT)
 	@cd 16
 	@git clone https://github.com/FlatRockSoft/CatacombApocalypse.git
 	@git clone https://github.com/id-Software/wolf3d.git
 	@git clone https://github.com/keendreams/keen.git
-	@cd $(PDIR)
+	@cd $(BUILD_ROOT)
 	@cp $(SRCLIB)doslib/make-lowercase .
 
 ##
@@ -477,25 +484,25 @@ xlib: .symbolic
 	@cd 16$(DIRSEP)xlib
 	@wmake -h clean
 	@wmake -h all
-	@cd $(PDIR)$(PDIR)
+	@cd $(BUILD_ROOT)
 
 mx: .symbolic
 	@cd 16$(DIRSEP)xw
 #	@wmake clean
 	@wmake -h all
-	@cd $(PDIR)$(PDIR)
+	@cd $(BUILD_ROOT)
 
 mx_: .symbolic
 	@cd 16$(DIRSEP)xw_
 	@wmake -h -f makefile all
-	@cd $(PDIR)$(PDIR)
+	@cd $(BUILD_ROOT)
 
 vrs: .symbolic
 	@cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga
 	#@make clean
 	@make all
-	@mv pcx2vrl ../../../../../
-	@mv pcxsscut ../../../../../
-	@mv vrl2vrs ../../../../../
-	@mv vrsdump ../../../../../
-	@cd ../../../../../
+	@mv pcx2vrl $(BUILD_ROOT)$(DIRSEP)
+	@mv pcxsscut $(BUILD_ROOT)$(DIRSEP)
+	@mv vrl2vrs $(BUILD_ROOT)$(DIRSEP)
+	@mv vrsdump $(BUILD_ROOT)$(DIRSEP)
+	@cd $(BUILD_ROOT)
