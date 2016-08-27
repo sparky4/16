@@ -17,9 +17,9 @@ void init_anim(struct sprite *spri, int anim_index)
 	uint32_t huge *anim_lists_offsets = 	(uint32_t huge *)
 						((byte huge *)vrs + 
 						 vrs->offset_table[VRS_HEADER_OFFSET_ANIMATION_LIST]);
-	struct vrs_animation_list_entry_t *anim_list =	(struct vrs_animation_list_entry_t huge *)
-							((byte huge *)vrs + 
-							 anim_lists_offsets[anim_index]);
+	struct vrs_animation_list_entry_t huge *anim_list =	(struct vrs_animation_list_entry_t huge *)
+								((byte huge *)vrs + 
+								 anim_lists_offsets[anim_index]);
 
 	// Upon new animation, start from the first sprite in it
 	spri->curr_anim = anim_index;
@@ -72,17 +72,22 @@ void print_anim_ids(struct sprite *spri)
 	{
 		// Return on successful match
 		new_anim_index++;
-		printf("%d, ", iter_id);
 	}
 }
 
 
 void animate_spri(struct sprite *spri)
 {
+	int i;
 	// Events go here
 	
 	// Draw sprite
-	get_vrl_by_id(spri->spritesheet, spri->curr_spri_id, spri->sprite_vrl_cont);
+	i = get_vrl_by_id(spri->spritesheet, spri->curr_spri_id, spri->sprite_vrl_cont);
+	if(i < 0)
+	{
+		printf("Error retriving required sprite");
+		exit(-1);
+	}
 	draw_vrl1_vgax_modex(	spri->x, spri->y, 
 				spri->sprite_vrl_cont->vrl_header, spri->sprite_vrl_cont->line_offsets,	
 				spri->sprite_vrl_cont->buffer + sizeof(struct vrl1_vgax_header), 
