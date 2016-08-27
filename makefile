@@ -82,7 +82,7 @@ UPXQ=-qqq
 #
 AFLAGS=-mh -0 -d1
 SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#54096#60000
-DFLAGS=-bt=dos -DDOS -DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
+DFLAGS=-bt=dos -DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
 ZFLAGS=-zk0 -zc -zp8 -zm $(WCLQ)
 LFLAGS=-lr -l=dos
 CFLAGS=$(AFLAGS) $(IFLAGS) -wo -i$(DOSLIB) $(LFLAGS) -fo=.$(OBJ)
