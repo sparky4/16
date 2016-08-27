@@ -40,7 +40,7 @@ to_os_path=\=/
 REMOVECOMMAND=rm -f
 COPYCOMMAND=cp -f
 DIRSEP=/
-OBJ=o
+OBJ=obj
 DUMP=cat
 !else		#DOS ^^
 to_os_path=/=\
