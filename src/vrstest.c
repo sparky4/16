@@ -84,10 +84,10 @@ void main() {
 	MM_Startup(&mm, &mmi);
 	CA_Startup(&gvar);
 	if(CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &mm, &mmi)) baka=1; else baka=0;
-	fd = open("data/spri/chikyuu.vrs", O_RDONLY|O_BINARY);
-	size = lseek(fd, 0, SEEK_END);
-	lseek(fd, 0, SEEK_SET);
-	close(fd);
+// 	fd = open("data/spri/chikyuu.vrs", O_RDONLY|O_BINARY);
+// 	size = lseek(fd, 0, SEEK_END);
+// 	lseek(fd, 0, SEEK_SET);
+// 	close(fd);
 	// Insert sanity cheks later
 	vrs.buffer = bigbuffer;
 	vrs.data_size = size - sizeof(struct vrl1_vgax_header);
@@ -129,8 +129,7 @@ void main() {
 	spri.y = 100;
 
 //	Uncomment to see broken sprites
-/*	sega = mm.bufferseg;
-	if(CA_LoadFile("data/spri/CHUBACW1.vrl", &bigbuffer, &mm, &mmi)) baka=1; else baka=0;*/
+	//if(CA_LoadFile("data/spri/CHUBACW1.vrl", &bbuffer, &mm, &mmi)) baka=1; else baka=0;
 
 	/* clear and draw one sprite and one bitmap */
 	VGAmodeX(1, 1, &gvar);
