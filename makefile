@@ -52,6 +52,7 @@ DUMP=*type
 !endif
 
 TARGET_OS = dos
+DOS=1
 
 #EXMMTESTDIR=16$(DIRSEP)exmmtest$(DIRSEP)
 PDIR=..$(DIRSEP)
