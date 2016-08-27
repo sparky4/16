@@ -236,13 +236,16 @@ vgmtest.$(OBJ): $(SRC)vgmtest.c .symbolic
 #
 #non executable objects libraries
 #
-16.lib: $(16LIBOBJS)# doslib.lib vgmsnd.lib
+.C.LIB:
+	*wlib -b $(WLIBQ) $[@
+
+16.lib: $(16LIBOBJS) .symbolic# doslib.lib vgmsnd.lib
 	*wlib -b $(WLIBQ) 16.lib $(16LIBOBJS)# doslib.lib vgmsnd.lib
 
-gfx.lib: $(GFXLIBOBJS)
+gfx.lib: $(GFXLIBOBJS) .symbolic
 	*wlib -b $(WLIBQ) gfx.lib $(GFXLIBOBJS)
 
-vgmsnd.lib: $(VGMSNDOBJ)
+vgmsnd.lib: $(VGMSNDOBJ) .symbolic
 	*wlib -b $(WLIBQ) vgmsnd.lib $(VGMSNDOBJ)
 
 # extdep:
@@ -267,77 +270,80 @@ joytest.exe:
 #	@.$(DIRSEP)buildall.sh
 #	@cd $(PDIR)$(PDIR)$(PDIR)
 
-modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c
-	*wcl $(FLAGS) -c $(SRCLIB)modex16.c
+{$(SRCLIB)}.C.$(OBJ):
+	*wcl $(FLAGS) -c $[@
 
-bakapee.$(OBJ): $(SRCLIB)bakapee.h $(SRCLIB)bakapee.c
+modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c .symbolic
+	#*wcl $(FLAGS) -c $(SRCLIB)modex16.c
+
+bakapee.$(OBJ): $(SRCLIB)bakapee.h $(SRCLIB)bakapee.c .symbolic
 	*wcl $(FLAGS) -c $(SRCLIB)bakapee.c
 
-16render.$(OBJ): $(MODEXLIB)16render.h $(MODEXLIB)16render.c
+16render.$(OBJ): $(MODEXLIB)16render.h $(MODEXLIB)16render.c .symbolic
 	*wcl $(FLAGS) -c $(MODEXLIB)16render.c
 
 ##16planar.$(OBJ): $(MODEXLIB)16planar.h $(MODEXLIB)16planar.c
 ##	*wcl $(FLAGS) -c $(MODEXLIB)16planar.c
 
-16_vrs.$(OBJ): $(SRCLIB)16_vrs.h $(SRCLIB)16_vrs.c $(DOSLIBLIBS)
+16_vrs.$(OBJ): $(SRCLIB)16_vrs.h $(SRCLIB)16_vrs.c $(DOSLIBLIBS) .symbolic
 	*wcl $(FLAGS) -c $(SRCLIB)16_vrs.c $(DOSLIBLIBS)
-16_sprit.$(OBJ): $(SRCLIB)16_sprit.h $(SRCLIB)16_sprit.c
+16_sprit.$(OBJ): $(SRCLIB)16_sprit.h $(SRCLIB)16_sprit.c .symbolic
 	*wcl $(FLAGS) -c $(SRCLIB)16_sprit.c
 
 
-bitmap.$(OBJ): $(SRCLIB)bitmap.h $(SRCLIB)bitmap.c
+bitmap.$(OBJ): $(SRCLIB)bitmap.h $(SRCLIB)bitmap.c .symbolic
 	*wcl $(FLAGS) -c $(SRCLIB)bitmap.c
 
 ##planar.$(OBJ): $(SRCLIB)planar.h $(SRCLIB)planar.c
 ##	*wcl $(FLAGS) -c $(SRCLIB)planar.c
 
-scroll16.$(OBJ): $(SRCLIB)scroll16.h $(SRCLIB)scroll16.c
+scroll16.$(OBJ): $(SRCLIB)scroll16.h $(SRCLIB)scroll16.c .symbolic
 	*wcl $(FLAGS) -c $(SRCLIB)scroll16.c
 
-wcpu.$(OBJ): $(WCPULIB)wcpu.h $(WCPULIB)wcpu.c
+wcpu.$(OBJ): $(WCPULIB)wcpu.h $(WCPULIB)wcpu.c .symbolic
 	*wcl $(FLAGS) -c $(WCPULIB)wcpu.c
 
-16text.$(OBJ): $(SRCLIB)16text.c
+16text.$(OBJ): $(SRCLIB)16text.c .symbolic
 	*wcl $(FLAGS) -c $(SRCLIB)16text.c
 
-mapread.$(OBJ): $(SRCLIB)mapread.h $(SRCLIB)mapread.c
+mapread.$(OBJ): $(SRCLIB)mapread.h $(SRCLIB)mapread.c .symbolic
 	*wcl $(FLAGS) -c $(SRCLIB)mapread.c
 
-16_timer.$(OBJ): $(SRCLIB)16_timer.h $(SRCLIB)16_timer.c
+16_timer.$(OBJ): $(SRCLIB)16_timer.h $(SRCLIB)16_timer.c .symbolic
 	*wcl $(FLAGS) -c $(SRCLIB)16_timer.c
 
-16_in.$(OBJ): $(SRCLIB)16_in.h $(SRCLIB)16_in.c
+16_in.$(OBJ): $(SRCLIB)16_in.h $(SRCLIB)16_in.c .symbolic
 	*wcl $(FLAGS) -c $(SRCLIB)16_in.c
 
-16_mm.$(OBJ): $(SRCLIB)16_mm.h $(SRCLIB)16_mm.c
+16_mm.$(OBJ): $(SRCLIB)16_mm.h $(SRCLIB)16_mm.c .symbolic
 	*wcl $(FLAGS) -c $(SRCLIB)16_mm.c
 
-16_ca.$(OBJ): $(SRCLIB)16_ca.h $(SRCLIB)16_ca.c
+16_ca.$(OBJ): $(SRCLIB)16_ca.h $(SRCLIB)16_ca.c .symbolic
 	*wcl $(FLAGS) -c $(SRCLIB)16_ca.c
 
-16_dbg.$(OBJ): $(SRCLIB)16_dbg.h $(SRCLIB)16_dbg.c
+16_dbg.$(OBJ): $(SRCLIB)16_dbg.h $(SRCLIB)16_dbg.c .symbolic
 	*wcl $(FLAGS) -c $(SRCLIB)16_dbg.c
 
-midi.$(OBJ): $(SRCLIB)midi.h $(SRCLIB)midi.c
+midi.$(OBJ): $(SRCLIB)midi.h $(SRCLIB)midi.c .symbolic
 	*wcl $(FLAGS) -c $(SRCLIB)midi.c
 
-16_head.$(OBJ): $(SRCLIB)16_head.h $(SRCLIB)16_head.c
+16_head.$(OBJ): $(SRCLIB)16_head.h $(SRCLIB)16_head.c .symbolic
 	*wcl $(FLAGS) -c $(SRCLIB)16_head.c
 
-16_hc.$(OBJ): $(SRCLIB)16_hc.h $(SRCLIB)16_hc.c
+16_hc.$(OBJ): $(SRCLIB)16_hc.h $(SRCLIB)16_hc.c .symbolic
 	*wcl $(FLAGS) -c $(SRCLIB)16_hc.c
 
-16_snd.$(OBJ): $(SRCLIB)16_snd.h $(SRCLIB)16_snd.c
+16_snd.$(OBJ): $(SRCLIB)16_snd.h $(SRCLIB)16_snd.c .symbolic
 	*wcl $(FLAGS) -c $(SRCLIB)16_snd.c
 	#====*wcl -mc -c $(SRCLIB)16_snd.c
 
-jsmn.$(OBJ): $(JSMNLIB)jsmn.h $(JSMNLIB)jsmn.c
+jsmn.$(OBJ): $(JSMNLIB)jsmn.h $(JSMNLIB)jsmn.c .symbolic
 	*wcl $(FLAGS) -c $(JSMNLIB)jsmn.c
 
-kitten.$(OBJ): $(NYANLIB)kitten.h $(NYANLIB)kitten.c
+kitten.$(OBJ): $(NYANLIB)kitten.h $(NYANLIB)kitten.c .symbolic
 	*wcl $(FLAGS) -c $(NYANLIB)kitten.c
 
-vgmSnd.$(OBJ): $(VGMSNDLIB)vgmSnd.h $(VGMSNDLIB)vgmSnd.c
+vgmSnd.$(OBJ): $(VGMSNDLIB)vgmSnd.h $(VGMSNDLIB)vgmSnd.c .symbolic
 	*wcl $(FLAGS) -c $(VGMSNDLIB)vgmSnd.c
 	#====*wcl -c -mc $(VGMSNDLIB)vgmSnd.c
 
