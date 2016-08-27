@@ -87,6 +87,7 @@ boolean CA_FarRead (int handle, byte huge *dest, dword length, mminfo_t *mm);
 boolean CA_FarWrite (int handle, byte huge *source, dword length, mminfo_t *mm);
 
 boolean CA_ReadFile (char *filename, memptr *ptr, mminfo_t *mm);
+boolean CA_WriteFile (char *filename, void far *ptr, long length, mminfo_t *mm);
 boolean CA_LoadFile (char *filename, memptr *ptr, mminfo_t *mm, mminfotype *mmi);
 
 //long CA_RLEWCompress (unsigned huge *source, long length, unsigned huge *dest,unsigned rlewtag);
@@ -102,6 +103,7 @@ void CA_Shutdown (global_game_variables_t *gvar);
 /*void CA_UpLevel (void);
 void CA_DownLevel (void);
 
+void CA_SetGrPurge (void);
 void CA_SetAllPurge (void);
 
 void CA_ClearMarks (void);

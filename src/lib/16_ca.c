@@ -378,6 +378,38 @@ boolean CA_ReadFile(char *filename, memptr *ptr, mminfo_t *mm)
 	size = filelength(handle);
 	if(!CA_FarRead(handle,*ptr,size, mm))
 	{
+		close (handle);
+		return false;
+	}
+	close (handle);
+	return true;
+}
+
+
+/*
+==========================
+=
+= CA_WriteFile
+=
+= Writes a file from a memory buffer
+=
+==========================
+*/
+
+boolean CA_WriteFile (char *filename, void far *ptr, long length, mminfo_t *mm)
+{
+	int handle;
+	sdword size;
+	//long size;
+
+	handle = open(filename,O_CREAT | O_BINARY | O_WRONLY,
+				S_IREAD | S_IWRITE | S_IFREG);
+
+	if (handle == -1)
+		return false;
+
+	if (!CA_FarWrite (handle,ptr,length, mm))
+	{
 		close(handle);
 		return false;
 	}
@@ -1945,9 +1977,14 @@ void CA_ClearAllMarks (void)
 ======================
 */
 /*++++
-void CA_FreeGraphics (void)
+void CA_SetGrPurge (void)
 {
-	int	i;
+	int i;
+
+//
+// free graphics
+//
+	CA_ClearMarks ();
 
 	for (i=0;i<NUMCHUNKS;i++)
 		if (grsegs[i])
