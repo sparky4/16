@@ -39,7 +39,7 @@ DEBUGSERIAL=1
 REMOVECOMMAND=rm -f
 COPYCOMMAND=cp -f
 DIRSEP=/
-OBJ=o
+OBJ=obj
 DUMP=cat
 WCL=wcl
 WLIB=wlib
@@ -48,7 +48,7 @@ UPX=upx
 REMOVECOMMAND=*del
 COPYCOMMAND=*copy /y
 DIRSEP=\
-OBJ=OBJ
+OBJ=obj
 DUMP=*type
 WCL=*wcl
 WLIB=*wlib
@@ -212,63 +212,61 @@ vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib $(16LIB)
 #!endif
 
 16.$(OBJ): $(SRC)16.h $(SRC)16.c
-!ifdef __LINUX__
-	$(WCL) $(FLAGS) -c $(SRC)16.c
-!endif
+####	$(WCL) $(FLAGS) -c $(SRC)16.c
 
 bakapi.$(OBJ): $(SRC)bakapi.h $(SRC)bakapi.c
-	$(WCL) $(FLAGS) -c $(SRC)bakapi.c
+####	$(WCL) $(FLAGS) -c $(SRC)bakapi.c
 
 test.$(OBJ): $(SRC)test.c $(SRCLIB)modex16.h
-	$(WCL) $(FLAGS) -c $(SRC)test.c
+####	$(WCL) $(FLAGS) -c $(SRC)test.c
 
 #test2.$(OBJ): $(SRC)test2.c $(SRCLIB)modex16.h
-#	$(WCL) $(FLAGS) -c $(SRC)test2.c
+#####	$(WCL) $(FLAGS) -c $(SRC)test2.c
 
 test0.$(OBJ): $(SRC)test0.c
-	$(WCL) $(FLAGS) -c $(SRC)test0.c
+####	$(WCL) $(FLAGS) -c $(SRC)test0.c
 
 pcxtest.$(OBJ): $(SRC)pcxtest.c $(SRCLIB)modex16.h
-	$(WCL) $(FLAGS) -c $(SRC)pcxtest.c
+####	$(WCL) $(FLAGS) -c $(SRC)pcxtest.c
 
 vrstest.$(OBJ): $(SRC)vrstest.c $(SRCLIB)modex16.h
-	$(WCL) $(FLAGS) -c $(SRC)vrstest.c
+####	$(WCL) $(FLAGS) -c $(SRC)vrstest.c
 
 ##planrpcx.$(OBJ): $(SRC)planrpcx.c $(SRCLIB)modex16.h
-##	$(WCL) $(FLAGS) -c $(SRC)planrpcx.c
+######	$(WCL) $(FLAGS) -c $(SRC)planrpcx.c
 
 pcxtest2.$(OBJ): $(SRC)pcxtest2.c $(SRCLIB)modex16.h
-	$(WCL) $(FLAGS) -c $(SRC)pcxtest2.c
+####	$(WCL) $(FLAGS) -c $(SRC)pcxtest2.c
 
 palettec.$(OBJ): $(SRC)palettec.c
-	$(WCL) $(FLAGS) -c $(SRC)palettec.c
+####	$(WCL) $(FLAGS) -c $(SRC)palettec.c
 
 palettel.$(OBJ): $(SRC)palettel.c
-	$(WCL) $(FLAGS) -c $(SRC)palettel.c
+####	$(WCL) $(FLAGS) -c $(SRC)palettel.c
 
 maptest.$(OBJ): $(SRC)maptest.c $(SRCLIB)modex16.h
-	$(WCL) $(FLAGS) -c $(SRC)maptest.c
+####	$(WCL) $(FLAGS) -c $(SRC)maptest.c
 
 #emmtest.$(OBJ): $(SRC)emmtest.c
-#	$(WCL) $(FLAGS) $(MFLAGS) -c $(SRC)emmtest.c
+#####	$(WCL) $(FLAGS) $(MFLAGS) -c $(SRC)emmtest.c
 
 #emsdump.$(OBJ): $(SRC)emsdump.c
-#	$(WCL) $(FLAGS) $(MFLAGS) -c $(SRC)emsdump.c
+#####	$(WCL) $(FLAGS) $(MFLAGS) -c $(SRC)emsdump.c
 
 fmemtest.$(OBJ): $(SRC)fmemtest.c
-	$(WCL) $(FLAGS) -c $(SRC)fmemtest.c
+####	$(WCL) $(FLAGS) -c $(SRC)fmemtest.c
 
 fonttest.$(OBJ): $(SRC)fonttest.c
-	$(WCL) $(FLAGS) -c $(SRC)fonttest.c
+####	$(WCL) $(FLAGS) -c $(SRC)fonttest.c
 
 #fonttes0.$(OBJ): $(SRC)fonttes0.c
-#	$(WCL) $(FLAGS) -c $(SRC)fonttes0.c
+#####	$(WCL) $(FLAGS) -c $(SRC)fonttes0.c
 
 fontgfx.$(OBJ): $(SRC)fontgfx.c
-	$(WCL) $(FLAGS) -c $(SRC)fontgfx.c
+####	$(WCL) $(FLAGS) -c $(SRC)fontgfx.c
 
 inputest.$(OBJ): $(SRC)inputest.c
-	$(WCL) $(FLAGS) -c $(SRC)inputest.c
+####	$(WCL) $(FLAGS) -c $(SRC)inputest.c
 
 #sountest.$(OBJ): $(SRC)sountest.c
 #	$(WCL) $(FLAGS) -c $(SRC)sountest.c
@@ -283,13 +281,13 @@ inputest.$(OBJ): $(SRC)inputest.c
 #	$(WCL) $(FLAGS) -c $(SRC)testemm0.c
 
 tsthimem.$(OBJ): $(SRC)tsthimem.c
-	$(WCL) $(FLAGS) -c $(SRC)tsthimem.c
+####	$(WCL) $(FLAGS) -c $(SRC)tsthimem.c
 
 exmmtest.$(OBJ): $(SRC)exmmtest.c
-	$(WCL) $(FLAGS) -c $(SRC)exmmtest.c 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ)
+####	$(WCL) $(FLAGS) -c $(SRC)exmmtest.c 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ)
 
 vgmtest.$(OBJ): $(SRC)vgmtest.c
-	$(WCL) $(FLAGS) -c $(SRC)vgmtest.c
+####	$(WCL) $(FLAGS) -c $(SRC)vgmtest.c
 	#====$(WCL) -mc -c $(SRC)vgmtest.c
 
 #
