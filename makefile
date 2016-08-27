@@ -416,7 +416,6 @@ clean: .symbolic
 	@$(REMOVECOMMAND) 16.lib
 	@$(REMOVECOMMAND) gfx.lib
 	@$(REMOVECOMMAND) vgmsnd.lib
-	@$(REMOVECOMMAND) *.LIB	#dos
 	@$(WLIB) -n $(WLIBQ) 16.lib
 	@$(WLIB) -n $(WLIBQ) gfx.lib
 	@$(WLIB) -n $(WLIBQ) vgmsnd.lib
