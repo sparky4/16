@@ -52,6 +52,7 @@ void main() {
 	struct vrl1_vgax_header huge *curr_vrl;
 	struct vrl_container *vrl;
 	int success;
+	word w=0;
 
 
 
@@ -95,7 +96,7 @@ void main() {
 	while(vrl_id_iter[num_of_vrl]){
 		num_of_vrl++;
 	}
-	
+
 	// Allocate memory for vrl line offsets table
 	vrl_line_offsets = malloc(sizeof(vrl1_vgax_offset_t *)*num_of_vrl);
 
@@ -157,48 +158,32 @@ void main() {
 
 	/* non sprite comparison */
 	start = *clockw;
-	//for(i=0; i<100 ;i++) {
-	//	oldDrawBmp(VGA, 20, 20, &bmp, 0);
-	//}
-
-	start = *clockw;
-	//for(i=0; i<100 ;i++) {
-//0000		modexDrawBmp(&gvar.video.page[0], 20, 20, &bmp);
-	//	modexDrawBmp(&gvar.video.page[0], 160, 120, &bmp);
-	//}
+	modexCopyPageRegion(&gvar.video.page[0], &gvar.video.page[0], 0, 0, 0, 0, 320, 240);
+	//animate_spri(&spri);
 	t1 = (*clockw-start) /18.2;
 
 	start = *clockw;
-	//for(i=0; i<100; i++) {
-//0000		modexCopyPageRegion(&gvar.video.page[0], &gvar.video.page[0], 20, 20, 128, 20, 64, 64);
-		modexCopyPageRegion(&gvar.video.page[0], &gvar.video.page[0], 0, 0, 0, 0, 320, 240);
-		animate_spri(&spri);
+
 	draw_vrl1_vgax_modex(5,5,vrl->buffer,vrl->line_offsets,vrl->buffer + sizeof(struct vrl1_vgax_header),vrl->data_size);
 	draw_vrl1_vgax_modex(40,40,vrs.buffer + vrl_headers_offsets[0],vrs.vrl_line_offsets[0],vrs.buffer + vrl_headers_offsets[0] + sizeof(struct vrl1_vgax_header),vrl_headers_offsets[1] - vrl_headers_offsets[0] - sizeof(struct vrl1_vgax_header));
 	draw_vrl1_vgax_modex(100, 5, bigbuffer, off1, (byte *)bigbuffer + sizeof(struct vrl1_vgax_header), size - sizeof(struct vrl1_vgax_header));
 
-	//}
 	t2 = (*clockw-start)/18.2;
 
 	//for (i = 0; i < 5; i++){
 	//animate_spri(&spri);
-	
-	start = *clockw;
-	//for(i=0; i<100 ;i++) {
-	//	oldDrawBmp(VGA, 20, 20, &bmp, 1);
-	//}
 
-
-	start = *clockw;
-	//for(i=0; i<100 ;i++) {
-//0000		modexDrawSprite(&gvar.video.page[0], 20, 20, &bmp);
-	//	modexDrawSprite(&gvar.video.page[0], 160, 120, &bmp);
-	//}
-	//_fmemset(MK_FP(0xA000, 0), (int)p->plane, gvar.video.page[0].sw*(gvar.video.page[0].sh*2));
-	//modexDrawBmp(&gvar.video.page[0], 0, 0, &bmp);
 	while(!kbhit())
 	{
-		//DrawPBuf(&gvar.video.page[0], 0, 0, p, 0);
+		switch(w)
+		{
+			case 1024:
+				modexPalUpdate0(pal);
+				w=0;
+			default:
+				w++;
+			break;
+		}
 	}
 	VGAmodeX(0, 1, &gvar);
 	free(spri.sprite_vrl_cont);
@@ -206,21 +191,10 @@ void main() {
 	//MM_FreePtr(&((void __based(sega)*)spri.spritesheet->buffer), &mm);
 	MM_Shutdown(&mm);
 	CA_Shutdown(&gvar);
-	/*printf("\nmain=%Fp\n\n", &i);
-	printf("bmp.data=%Fp\n", bmp.data);
-	printf("*bmp.data=%Fp\n", *(bmp.data));
-	printf("&bmp.data=%Fp\n", &(bmp.data));
-
-	printf("\n%d\n", sizeof(p->plane));
-	printf("%d\n", sizeof(bmp));*/
-
-	/*for(i=0; i<(320*240); i++)
-	{
-		fprintf(stdout, "%d", bmp.data[i]);
-		if(i%bmp.width==0) fprintf(stdout, "\n");
-	}*/
-	printf("CPU to VGA: %f\n", t1);
-	printf("VGA to VGA: %f\n", t2);
+	//printf("CPU to VGA: %f\n", t1);
+	//printf("VGA to VGA: %f\n", t2);
+	printf("t1: %f\n", t1);
+	printf("t2: %f\n", t2);
 	printf("gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
 	printf("gvar.video.page[0].height: %u\n", gvar.video.page[0].height);
 	printf("Num %d", num_of_vrl);
