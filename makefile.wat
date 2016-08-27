@@ -79,14 +79,20 @@ UPXQ=-qqq
 #
 # compile flags
 #
-AFLAGS=-mh -0 -d1
-SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#54096#60000
-DFLAGS=-bt=dos -DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
-ZFLAGS=-zk0 -zc -zp8 -zm $(WCLQ)
-LFLAGS=-lr -l=dos -v
-CFLAGS=$(AFLAGS) $(IFLAGS) -wo -i$(DOSLIB) $(LFLAGS) -fo=.$(OBJ)
-OFLAGS=-obmilr -oe=24 -out -oh -ei -zp8 -fpi87  -onac -ol+ -ok##x
-FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
+A_FLAGS=-mh -0 -d1
+S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#54096#60000
+D_FLAGS=-bt=dos -DTARGET_MSDOS=16 -DMSDOS=1 $(S_FLAGS)
+Z_FLAGS=-zk0 -zc -zp8 -zm
+L_FLAGS=-lr -l=dos -v
+C_FLAGS=$(A_FLAGS) $(I_FLAGS) -wo -i$(DOSLIB) $(L_FLAGS) -fo=.$(OBJ)
+O_FLAGS=-obmilr -oe=24 -out -oh -ei -zp8 -fpi87  -onac -ol+ -ok##x
+FLAGS=$(C_FLAGS) $(O_FLAGS) $(D_FLAGS) $(Z_FLAGS)
+
+CPPFLAGS=-DTARGET_MSDOS=16
+AFLAGS=$(WCLQ) -bt=dos -mh -0 -d1 -fo=.$(OBJ)
+CFLAGS=$(WCLQ) -bt=dos -mh -0 -d1 -fo=.$(OBJ) -wo -i"$(DOSLIB)" $(O_FLAGS) $(S_FLAGS) $(Z_FLAGS)
+LFLAGS=$(WCLQ) -l=dos
+LIBFLAGS=-b $(WLIBQ)
 
 #
 # objects
