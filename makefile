@@ -433,6 +433,7 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.MAH
 	@$(REMOVECOMMAND) *.mah
 	@$(REMOVECOMMAND) *.err
+	@echo $(OBJ)
 	#@cd $(DOSLIB)
 	#@./buildall.sh clean
 	#@cd $(PDIR)$(PDIR)$(PDIR)
