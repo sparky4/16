@@ -129,6 +129,7 @@ void main() {
 	spri.y = 100;
 
 //	Uncomment to see broken sprites
+	//if(CA_ReadFile("data/spri/CHUBACW1.vrl", &bigbuffer, &mm)) baka=1; else baka=0;
 	//if(CA_LoadFile("data/spri/CHUBACW1.vrl", &bbuffer, &mm, &mmi)) baka=1; else baka=0;
 
 	/* clear and draw one sprite and one bitmap */
