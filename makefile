@@ -213,7 +213,9 @@ vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib $(16LIB)
 !endif
 
 16.$(OBJ): $(SRC)16.h $(SRC)16.c
+!ifdef __LINUX__
 	$(WCL) $(FLAGS) -c $(SRC)16.c
+!endif
 
 bakapi.$(OBJ): $(SRC)bakapi.h $(SRC)bakapi.c
 	$(WCL) $(FLAGS) -c $(SRC)bakapi.c
@@ -413,6 +415,9 @@ modex.$(OBJ): $(MODEXLIB_)modex.asm
 clean: .symbolic
 	@$(REMOVECOMMAND) $(EXEC)
 	@$(REMOVECOMMAND) *.$(OBJ)
+!ifdef __LINUX__
+	@rm *.LIB
+!endif
 	@$(REMOVECOMMAND) 16.lib
 	@$(REMOVECOMMAND) gfx.lib
 	@$(REMOVECOMMAND) vgmsnd.lib
