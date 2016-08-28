@@ -306,6 +306,7 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.$(OBJ)
 !ifdef __LINUX__
 	@rm *.LIB
+	@rm *.EXE
 !endif
 	@$(REMOVECOMMAND) 16.lib
 	@$(REMOVECOMMAND) gfx.lib
