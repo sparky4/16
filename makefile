@@ -205,8 +205,8 @@ pcxtest2.exe:     pcxtest2.$(OBJ) gfx.lib $(DOSLIBLIBS)
 #planrpcx.exe:    planrpcx.$(OBJ) gfx.lib
 maptest.exe:      maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) gfx.lib $(DOSLIBLIBS)
 fmemtest.exe:     fmemtest.$(OBJ)
-exmmtest.exe:     exmmtest.$(OBJ) $(16LIB)
-vgmtest.exe:      vgmtest.$(OBJ) vgmsnd.lib $(16LIB)
+exmmtest.exe:     exmmtest.$(OBJ) $(16LIB) $(DOSLIBLIBS)
+vgmtest.exe:      vgmtest.$(OBJ) vgmsnd.lib $(16LIB) $(DOSLIBLIBS)
 
 #
 # executable's objects
@@ -308,7 +308,7 @@ clean: .symbolic
 !ifdef __LINUX__
 	@rm *.LIB
 	@rm *.EXE
-	@$(REMOVECOMMAND) *.\$\$\$
+	#@$(REMOVECOMMAND) *.\$\$\$
 !else
 	@*$(REMOVECOMMAND) *.$$$
 !endif
