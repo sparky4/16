@@ -95,7 +95,7 @@ CPPFLAGS += -DDEBUGSERIAL
 !endif
 AFLAGS=$(WCLQ) $(T_FLAGS)
 CFLAGS=$(WCLQ) $(T_FLAGS) -wo -i"$(DOSLIB)" $(O_FLAGS) $(S_FLAGS) $(Z_FLAGS)
-LFLAGS=$(WCLQ) -l=dos -fm=$^&.mah -lr
+LFLAGS=$(WCLQ) -l=dos -fm=$^&.mah $(S_FLAGS)
 LIBFLAGS=$(WLIBQ) -b -n
 
 #
@@ -141,7 +141,7 @@ DOSLIBLIBS += $(DOSLIB_8250)/dos86h/8250.lib
 
 #CFLAGS is neccessary here
 .obj.exe :
-	*wcl $(CFLAGS) $(LFLAGS) $(extra_$^&_exe_opts) -fe=$@ $<
+	*wcl $(LFLAGS) $(extra_$^&_exe_opts) -fe=$@ $<
 
 .obj.lib :
 	*wlib $(LIBFLAGS) $(extra_$^&_lib_opts) $@ $<
