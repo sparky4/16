@@ -84,9 +84,11 @@ UPXQ=-qqq
 #
 # compile flags
 #
-S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#54096#60000
-Z_FLAGS=-zk0 -zc -zp8 -zm
-O_FLAGS=-obmilr -oe=24 -out -oh -ei -onac -ol+ -ok##x
+SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#54096#60000
+DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
+ZFLAGS=-zk0 -zc -zp8 -zm $(WCLQ)
+OFLAGS=-obmilr -oe=24 -out -oh -ei -zp8  -onac -ol+ -ok####x
+FLAGS=$(AFLAGS) $(IFLAGS) -wo -i$(DOSLIB) $(LFLAGS) -fo=.$(OBJ) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
 T_FLAGS=-bt=dos -mh -0 -fpi87
 
 CPPFLAGS=-DTARGET_MSDOS=16
@@ -94,7 +96,7 @@ CPPFLAGS=-DTARGET_MSDOS=16
 CPPFLAGS += -DDEBUGSERIAL
 !endif
 AFLAGS=$(WCLQ) $(T_FLAGS) -d1 -fo=.$(OBJ)
-CFLAGS=$(WCLQ) $(T_FLAGS) -d1 -fo=.$(OBJ) -wo -i"$(DOSLIB)" $(O_FLAGS) $(S_FLAGS) $(Z_FLAGS)
+CFLAGS=$(WCLQ) $(T_FLAGS) -d1 -fo=.$(OBJ) -wo -i"$(DOSLIB)" $(FLAGS)# $(O_FLAGS) $(S_FLAGS) $(Z_FLAGS)
 LFLAGS=$(WCLQ) -l=dos -fm=$^&.mah
 LIBFLAGS=$(WLIBQ) -b -n
 
