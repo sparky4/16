@@ -425,20 +425,26 @@ modex.$(OBJ): $(MODEXLIB_)modex.asm
 clean: .symbolic
 	@$(REMOVECOMMAND) $(EXEC)
 	@$(REMOVECOMMAND) *.$(OBJ)
+!ifdef __LINUX__
+	@rm *.LIB
+	@rm *.EXE
+	#@$(REMOVECOMMAND) *.\$\$\$
+!else
+	@*$(REMOVECOMMAND) *.$$$
+!endif
 	@$(REMOVECOMMAND) 16.lib
 	@$(REMOVECOMMAND) gfx.lib
 	@$(REMOVECOMMAND) vgmsnd.lib
-	@wlib -n $(WLIBQ) 16.lib
-	@wlib -n $(WLIBQ) gfx.lib
-	@wlib -n $(WLIBQ) vgmsnd.lib
-	@$(REMOVECOMMAND) *.16
+	@*wlib -n $(WLIBQ) 16.lib
+	@*wlib -n $(WLIBQ) gfx.lib
+	@*wlib -n $(WLIBQ) vgmsnd.lib
 	@$(REMOVECOMMAND) *.16W
 	@$(REMOVECOMMAND) *.16B
 	@$(REMOVECOMMAND) *.OBJ
 	@$(REMOVECOMMAND) *.o
 	@$(REMOVECOMMAND) *.BCO
-	@$(REMOVECOMMAND) makefi~1
-	@$(REMOVECOMMAND) makefile~
+	#@$(REMOVECOMMAND) makefi~1
+	#@$(REMOVECOMMAND) makefile~
 	@$(REMOVECOMMAND) __wcl__.LNK
 #	@$(REMOVECOMMAND) *.smp
 	@$(REMOVECOMMAND) *.SMP
@@ -446,9 +452,9 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.MAH
 	@$(REMOVECOMMAND) *.mah
 	@$(REMOVECOMMAND) *.err
-	#@cd $(DOSLIB)
+	#@cd $(DOSLIB:$(to_os_path))
 	#@./buildall.sh clean
-	#@cd $(PDIR)$(PDIR)$(PDIR)
+	#@cd $(BUILD_ROOT)
 #	@$(COPYCOMMAND) $(SRC)exmmtest.c $(EXMMTESTDIR)$(SRC)
 #	@$(COPYCOMMAND) $(SRCLIB)16_mm.* $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(SRCLIB)16_head.* $(EXMMTESTDIR)$(SRCLIB)
@@ -465,10 +471,10 @@ backupconfig: .symbolic
 	@$(COPYCOMMAND) .gitignore git_igno.re
 
 comp: .symbolic
-	@upx -9 $(EXEC)
+	@*upx -9 $(EXEC)
 
 comq: .symbolic
-	@upx -9 $(UPXQ) $(EXEC)
+	@*upx -9 $(UPXQ) $(EXEC)
 
 www: .symbolic
 	@ssh -p 26 sparky4@4ch.mooo.com 'rm -f /var/www/16/*exe*'
@@ -481,7 +487,7 @@ www: .symbolic
 	@scp -r -P 26 /var/www/*.exe.zip.* 4ch.mooo.com:/var/www/16/
 
 getwww: .symbolic
-	@x4get.bat $(EXEC)
+	*x4get.bat $(EXEC)
 
 vomitchan: .symbolic
 	@$(DUMP) *.err
@@ -491,17 +497,17 @@ vomitchan: .symbolic
 ##
 #git submodule add <repo>
 mkdl: .symbolic
-	@cd $(DOSLIB)
+	@cd $(DOSLIB:$(to_os_path))
 	@./buildall.sh
-	@cd $(PDIR)$(PDIR)$(PDIR)
+	@cd $(BUILD_ROOT)
 
 uplibs: .symbolic
-	@cd $(JSMNLIB)
+	@cd $(JSMNLIB:$(to_os_path))
 	@git pull
-	@cd $(PDIR)$(PDIR)$(PDIR)
-	@cd $(DOSLIB)
+	@cd $(BUILD_ROOT)
+	@cd $(DOSLIB:$(to_os_path))
 	@git pull
-	@cd $(PDIR)$(PDIR)$(PDIR)
+	@cd $(BUILD_ROOT)
 
 reinitlibs: .symbolic
 	@rm -rf $(SRCLIB)doslib
@@ -515,16 +521,16 @@ initlibs: .symbolic
 	@cp git_con.fig .git/config
 	@cp git_modu.les .gitmodules
 	@cp git_igno.re .gitignore
-	@cd $(SRCLIB)
+	@cd $(SRCLIB:$(to_os_path))
 	@git clone https://github.com/joncampbell123/doslib.git
 	@git clone https://github.com/zserge/jsmn.git
-	@cd $(PDIR)$(PDIR)
+	@cd $(BUILD_ROOT)
 	@cd 16
 	@git clone https://github.com/FlatRockSoft/CatacombApocalypse.git
 	@git clone https://github.com/id-Software/wolf3d.git
 	@git clone https://github.com/keendreams/keen.git
-	@cd $(PDIR)
-	@cp $(SRCLIB)doslib/make-lowercase .
+	@cd $(BUILD_ROOT)
+	@cp $(DOSLIB)/make-lowercase .
 
 ##
 ##	experimental libs
@@ -533,25 +539,25 @@ xlib: .symbolic
 	@cd 16$(DIRSEP)xlib
 	@wmake -h clean
 	@wmake -h all
-	@cd $(PDIR)$(PDIR)
+	@cd $(BUILD_ROOT)
 
 mx: .symbolic
 	@cd 16$(DIRSEP)xw
 #	@wmake clean
 	@wmake -h all
-	@cd $(PDIR)$(PDIR)
+	@cd $(BUILD_ROOT)
 
 mx_: .symbolic
 	@cd 16$(DIRSEP)xw_
 	@wmake -h -f makefile all
-	@cd $(PDIR)$(PDIR)
+	@cd $(BUILD_ROOT)
 
 vrs: .symbolic
-	@cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga
+	@cd $(DOSLIB_VGA:$(to_os_path))
 	#@make clean
 	@make all
-	@mv pcx2vrl ../../../../../
-	@mv pcxsscut ../../../../../
-	@mv vrl2vrs ../../../../../
-	@mv vrsdump ../../../../../
-	@cd ../../../../../
+	@mv pcx2vrl $(BUILD_ROOT)$(DIRSEP)
+	@mv pcxsscut $(BUILD_ROOT)$(DIRSEP)
+	@mv vrl2vrs $(BUILD_ROOT)$(DIRSEP)
+	@mv vrsdump $(BUILD_ROOT)$(DIRSEP)
+	@cd $(BUILD_ROOT)
