@@ -87,15 +87,15 @@ UPXQ=-qqq
 S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#54096#60000
 Z_FLAGS=-zk0 -zc -zp8 -zm
 O_FLAGS=-obmilr -oe=24 -out -oh -ei -onac -ol+ -ok##x
-T_FLAGS=-bt=dos -mh -0 -fpi87
+T_FLAGS=-bt=dos -mh -0 -fpi87 -fo=.$(OBJ) -d1
 
 CPPFLAGS=-DTARGET_MSDOS=16
 !ifeq DEBUGSERIAL 1
-CPPFLAGS += -DDEBUGSERIAL
+CPPFLAGS += -DDEBUGSERIAL -DMSDOS=1
 !endif
-AFLAGS=$(WCLQ) $(T_FLAGS) -d1 -fo=.$(OBJ)
-CFLAGS=$(WCLQ) $(T_FLAGS) -d1 -fo=.$(OBJ) -wo -i"$(DOSLIB)" $(O_FLAGS) $(S_FLAGS) $(Z_FLAGS)
-LFLAGS=$(WCLQ) -l=dos -fm=$^&.mah
+AFLAGS=$(WCLQ) $(T_FLAGS)
+CFLAGS=$(WCLQ) $(T_FLAGS) -wo -i"$(DOSLIB)" $(O_FLAGS) $(S_FLAGS) $(Z_FLAGS)
+LFLAGS=$(WCLQ) -l=dos -fm=$^&.mah -lr
 LIBFLAGS=$(WLIBQ) -b -n
 
 #
@@ -204,7 +204,9 @@ pcxtest2.exe:     pcxtest2.$(OBJ) gfx.lib $(DOSLIBLIBS)
 #planrpcx.exe:    planrpcx.$(OBJ) gfx.lib
 maptest.exe:      maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) gfx.lib $(DOSLIBLIBS)
 fmemtest.exe:     fmemtest.$(OBJ)
-exmmtest.exe:     exmmtest.$(OBJ) $(16LIB) $(DOSLIBLIBS)
+#exmmtest.exe:     exmmtest.$(OBJ) $(16LIB) $(DOSLIBLIBS)
+exmmtest.exe: exmmtest.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ)
+	wcl $(LFLAGS) exmmtest.$(OBJ) -fm=exmmtest.mah $(16LIB) $(DOSLIBLIBS)
 vgmtest.exe:      vgmtest.$(OBJ) vgmsnd.lib $(16LIB) $(DOSLIBLIBS)
 
 #

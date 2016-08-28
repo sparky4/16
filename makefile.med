@@ -80,15 +80,15 @@ UPXQ=-qqq
 S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#54096#60000
 Z_FLAGS=-zk0 -zc -zp8 -zm
 O_FLAGS=-obmilr -oe=24 -out -oh -ei -onac -ol+ -ok##x
-T_FLAGS=-bt=dos -mh -0 -fpi87
+T_FLAGS=-bt=dos -mh -0 -fpi87 -fo=.$(OBJ) -d1
 
-CPPFLAGS=-DTARGET_MSDOS=16
+CPPFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1
 !ifeq DEBUGSERIAL 1
 CPPFLAGS += -DDEBUGSERIAL
 !endif
-AFLAGS=$(WCLQ) $(T_FLAGS) -d1 -fo=.$(OBJ)
-CFLAGS=$(WCLQ) $(T_FLAGS) -d1 -fo=.$(OBJ) -wo -i"$(DOSLIB)" $(O_FLAGS) $(S_FLAGS) $(Z_FLAGS)
-LFLAGS=$(WCLQ) -l=dos -fm=$^&.mah
+AFLAGS=$(WCLQ) $(T_FLAGS)
+CFLAGS=$(WCLQ) $(T_FLAGS) -wo -i"$(DOSLIB)" $(O_FLAGS) $(S_FLAGS) $(Z_FLAGS)
+LFLAGS=$(WCLQ) -l=dos -fm=$^&.mah -lr
 LIBFLAGS=$(WLIBQ) -b -n
 
 FLAGS=$(CPPFLAGS) $(CFLAGS)
