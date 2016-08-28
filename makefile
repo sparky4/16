@@ -117,7 +117,8 @@ DOSLIBLIBS = $(DOSLIB_CPU)/dos86h/cpu.lib $(DOSLIB_DOS)/dos86h/dos.lib $(DOSLIB_
 !ifeq DEBUGSERIAL 1
 DOSLIBLIBS += $(DOSLIB_8250)/dos86h/8250.lib
 !endif
-16LIB=16.lib
+#16.lib causes a massive stack overflow
+16LIB=$(16LIBOBJS)#16.lib
 
 #
 #	Files locations
