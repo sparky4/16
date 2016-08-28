@@ -89,9 +89,9 @@ Z_FLAGS=-zk0 -zc -zp8 -zm
 O_FLAGS=-obmilr -oe=24 -out -oh -ei -onac -ol+ -ok##x
 T_FLAGS=-bt=dos -mh -0 -fpi87 -fo=.$(OBJ) -d1
 
-CPPFLAGS=-DTARGET_MSDOS=16
+CPPFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1
 !ifeq DEBUGSERIAL 1
-CPPFLAGS += -DDEBUGSERIAL -DMSDOS=1
+CPPFLAGS += -DDEBUGSERIAL
 !endif
 AFLAGS=$(WCLQ) $(T_FLAGS)
 CFLAGS=$(WCLQ) $(T_FLAGS) -wo -i"$(DOSLIB)" $(O_FLAGS) $(S_FLAGS) $(Z_FLAGS)
@@ -204,9 +204,7 @@ pcxtest2.exe:     pcxtest2.$(OBJ) gfx.lib $(DOSLIBLIBS)
 #planrpcx.exe:    planrpcx.$(OBJ) gfx.lib
 maptest.exe:      maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) gfx.lib $(DOSLIBLIBS)
 fmemtest.exe:     fmemtest.$(OBJ)
-#exmmtest.exe:     exmmtest.$(OBJ) $(16LIB) $(DOSLIBLIBS)
-exmmtest.exe: exmmtest.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ)
-	wcl $(LFLAGS) exmmtest.$(OBJ) -fm=exmmtest.mah $(16LIB) $(DOSLIBLIBS)
+exmmtest.exe:     exmmtest.$(OBJ) $(16LIB) $(DOSLIBLIBS)
 vgmtest.exe:      vgmtest.$(OBJ) vgmsnd.lib $(16LIB) $(DOSLIBLIBS)
 
 #
