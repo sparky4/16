@@ -1,6 +1,6 @@
 #! /bin/bash
 wmake -h clean
-wmake -h -f makefile.med
+wmake -h
 wmake -h comp
 if [ -f *.err ]
 then

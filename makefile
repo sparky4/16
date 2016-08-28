@@ -98,6 +98,8 @@ CFLAGS=$(WCLQ) $(T_FLAGS) -wo -i"$(DOSLIB)" $(O_FLAGS) $(S_FLAGS) $(Z_FLAGS)
 LFLAGS=$(WCLQ) -l=dos -fm=$^&.mah -lr
 LIBFLAGS=$(WLIBQ) -b -n
 
+Q_FLAGS=$(CPPFLAGS) $(CFLAGS)
+
 #
 # objects
 #
@@ -140,7 +142,7 @@ DOSLIBLIBS += $(DOSLIB_8250)/dos86h/8250.lib
 	*wcl $(AFLAGS) $(extra_$^&_obj_opts) -c $[@
 
 .obj.exe :
-	*wcl $(LFLAGS) $(extra_$^&_exe_opts) -fe=$@ $<
+	*wcl $(Q_FLAGS) $(LFLAGS) $(extra_$^&_exe_opts) -fe=$@ $<
 
 .obj.lib :
 	*wlib $(LIBFLAGS) $(extra_$^&_lib_opts) $@ $<
@@ -240,7 +242,6 @@ vgmtest.$(OBJ):   $(SRC)/vgmtest.c
 #
 # non executable objects libraries
 #
-
 16.lib: $(16LIBOBJS)
 vgmsnd.lib: $(VGMSNDOBJ)
 
