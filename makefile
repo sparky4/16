@@ -53,7 +53,7 @@ DUMP=*type
 
 TARGET_OS = dos
 
-BUILD_ROOT=$+$(%__CWD__)
+BUILD_ROOT=$+$(%__CWD__)$-
 #EXMMTESTDIR=16$(DIRSEP)exmmtest$(DIRSEP)
 PDIR=..$(DIRSEP)
 SRC=src$(DIRSEP)
