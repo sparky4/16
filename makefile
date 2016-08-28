@@ -331,7 +331,6 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.MAH
 	@$(REMOVECOMMAND) *.mah
 	@$(REMOVECOMMAND) *.err
-	@echo $(OBJ)
 	#@cd $(DOSLIB:$(to_os_path))
 	#@./buildall.sh clean
 	#@cd $(BUILD_ROOT)
