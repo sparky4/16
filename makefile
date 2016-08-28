@@ -98,8 +98,6 @@ CFLAGS=$(WCLQ) $(T_FLAGS) -wo -i"$(DOSLIB)" $(O_FLAGS) $(S_FLAGS) $(Z_FLAGS)
 LFLAGS=$(WCLQ) -l=dos -fm=$^&.mah -lr
 LIBFLAGS=$(WLIBQ) -b -n
 
-Q_FLAGS=$(CPPFLAGS) $(CFLAGS)
-
 #
 # objects
 #
@@ -141,8 +139,9 @@ DOSLIBLIBS += $(DOSLIB_8250)/dos86h/8250.lib
 .asm.obj:
 	*wcl $(AFLAGS) $(extra_$^&_obj_opts) -c $[@
 
+#CFLAGS is neccessary here
 .obj.exe :
-	*wcl $(Q_FLAGS) $(LFLAGS) $(extra_$^&_exe_opts) -fe=$@ $<
+	*wcl $(CFLAGS) $(LFLAGS) $(extra_$^&_exe_opts) -fe=$@ $<
 
 .obj.lib :
 	*wlib $(LIBFLAGS) $(extra_$^&_lib_opts) $@ $<
