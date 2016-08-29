@@ -265,7 +265,7 @@ $(DOSLIB_8250)/dos86h/8250.lib:
 	cd $(DOSLIB_8250:$(to_os_path)) && .$(DIRSEP)$(DOSLIBMAKE) && cd $(BUILD_ROOT)
 
 joytest.exe:
-	cd $(DOSLIB_JOYSTICK:$(to_os_path)) && .$(DIRSEP)make.sh && cd $(BUILD_ROOT)
+	cd $(DOSLIB_JOYSTICK:$(to_os_path)) && .$(DIRSEP)$(DOSLIBMAKE) && cd $(BUILD_ROOT)
 	$(COPYCOMMAND) $(DOSLIB_JOYSTICK:$(to_os_path))$(DIRSEP)dos86h$(DIRSEP)test.exe joytest.exe
 #$(DOSLIBLIBS): .symbolic
 #	@cd $(DOSLIB:$(to_os_path))
