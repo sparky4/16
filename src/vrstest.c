@@ -55,31 +55,6 @@ void main() {
 	word w=0;
 
 
-
-	// DOSLIB: check our environment
-	probe_dos();
-
-	// DOSLIB: what CPU are we using?
-	// NTS: I can see from the makefile Sparky4 intends this to run on 8088 by the -0 switch in CFLAGS.
-	//      So this code by itself shouldn't care too much what CPU it's running on. Except that other
-	//      parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
-	//      the CPU to carry out tasks. --J.C.
-	cpu_probe();
-
-	// DOSLIB: check for VGA
-	if (!probe_vga()) {
-		printf("VGA probe failed\n");
-		return;
-	}
-	// hardware must be VGA or higher!
-	if (!(vga_state.vga_flags & VGA_IS_VGA)) {
-		printf("This program requires VGA or higher graphics hardware\n");
-		return;
-	}
-
-	//bmp = bitmapLoadPcx("data/chikyuu.pcx");
-	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
-
 	mm.mmstarted=0;
 	MM_Startup(&mm, &mmi);
 	CA_Startup(&gvar);
@@ -131,6 +106,31 @@ void main() {
 //	Uncomment to see broken sprites
 	//if(CA_ReadFile("data/spri/CHUBACW1.vrl", &bigbuffer, &mm)) baka=1; else baka=0;
 	//if(CA_LoadFile("data/spri/CHUBACW1.vrl", &bbuffer, &mm, &mmi)) baka=1; else baka=0;
+
+	// DOSLIB: check our environment
+	probe_dos();
+
+	// DOSLIB: what CPU are we using?
+	// NTS: I can see from the makefile Sparky4 intends this to run on 8088 by the -0 switch in CFLAGS.
+	//      So this code by itself shouldn't care too much what CPU it's running on. Except that other
+	//      parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
+	//      the CPU to carry out tasks. --J.C.
+	cpu_probe();
+
+	// DOSLIB: check for VGA
+	if (!probe_vga()) {
+		printf("VGA probe failed\n");
+		return;
+	}
+	// hardware must be VGA or higher!
+	if (!(vga_state.vga_flags & VGA_IS_VGA)) {
+		printf("This program requires VGA or higher graphics hardware\n");
+		return;
+	}
+
+	//bmp = bitmapLoadPcx("data/chikyuu.pcx");
+	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
+
 
 	/* clear and draw one sprite and one bitmap */
 	VGAmodeX(1, 1, &gvar);
