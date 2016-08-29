@@ -42,13 +42,15 @@ COPYCOMMAND=cp -f
 DIRSEP=/
 OBJ=obj
 DUMP=cat
+DOSLIBMAKE=make.sh
 !else		#DOS ^^
 to_os_path=/=\
-REMOVECOMMAND=del
+REMOVECOMMAND=*del
 COPYCOMMAND=copy /y
 DIRSEP=\
 OBJ=obj
 DUMP=type
+DOSLIBMAKE=make.bat
 !endif
 
 TARGET_OS = dos
@@ -252,15 +254,15 @@ gfx.lib: $(GFXLIBOBJS)
 
 # library deps 16-bit huge
 $(DOSLIB_CPU)/dos86h/cpu.lib:
-	cd $(DOSLIB_CPU:$(to_os_path)) && .$(DIRSEP)make.sh && cd $(BUILD_ROOT)
+	cd $(DOSLIB_CPU:$(to_os_path)) && .$(DIRSEP)$(DOSLIBMAKE) && cd $(BUILD_ROOT)
 $(DOSLIB_DOS)/dos86h/dos.lib:
-	cd $(DOSLIB_DOS:$(to_os_path)) && .$(DIRSEP)make.sh && cd $(BUILD_ROOT)
+	cd $(DOSLIB_DOS:$(to_os_path)) && .$(DIRSEP)$(DOSLIBMAKE) && cd $(BUILD_ROOT)
 $(DOSLIB_VGA)/dos86h/vgatty.lib:
-	cd $(DOSLIB_VGA:$(to_os_path)) && .$(DIRSEP)make.sh && cd $(BUILD_ROOT)
+	cd $(DOSLIB_VGA:$(to_os_path)) && .$(DIRSEP)$(DOSLIBMAKE) && cd $(BUILD_ROOT)
 $(DOSLIB_VGA)/dos86h/vga.lib:
-	cd $(DOSLIB_VGA:$(to_os_path)) && .$(DIRSEP)make.sh && cd $(BUILD_ROOT)
+	cd $(DOSLIB_VGA:$(to_os_path)) && .$(DIRSEP)$(DOSLIBMAKE) && cd $(BUILD_ROOT)
 $(DOSLIB_8250)/dos86h/8250.lib:
-	cd $(DOSLIB_8250:$(to_os_path)) && .$(DIRSEP)make.sh && cd $(BUILD_ROOT)
+	cd $(DOSLIB_8250:$(to_os_path)) && .$(DIRSEP)$(DOSLIBMAKE) && cd $(BUILD_ROOT)
 
 joytest.exe:
 	cd $(DOSLIB_JOYSTICK:$(to_os_path)) && .$(DIRSEP)make.sh && cd $(BUILD_ROOT)
