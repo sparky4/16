@@ -325,8 +325,8 @@ clean: .symbolic
 	@$(REMOVECOMMAND) __wcl__.LNK
 	@$(REMOVECOMMAND) *.SMP
 	@$(REMOVECOMMAND) *.hed
-#	@$(REMOVECOMMAND) *.MAH
-#	@$(REMOVECOMMAND) *.mah
+	@$(REMOVECOMMAND) *.MAH
+	@$(REMOVECOMMAND) *.mah
 	@$(REMOVECOMMAND) *.err
 
 #	@$(COPYCOMMAND) $(SRC)exmmtest.c $(EXMMTESTDIR)$(SRC)
