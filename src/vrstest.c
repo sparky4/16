@@ -40,7 +40,7 @@ void main() {
 	float t1, t2;
 	boolean baka;
 	byte *pal;
-	int fd, size, size1;
+	int size, size1;
 	struct sprite spri;
 	vrl1_vgax_offset_t * off, *off1;
 	struct vrs_container vrs;
@@ -51,7 +51,6 @@ void main() {
 	int num_of_vrl;
 	struct vrl1_vgax_header huge *curr_vrl;
 	struct vrl_container *vrl;
-	int success;
 	word w=0;
 
 
@@ -86,10 +85,7 @@ void main() {
 	// What should be done by read_vrs:
 	//sega = (mm.bufferseg);
 	if(CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &mm, &mmi)) baka=1; else baka=0;
-	fd = open("data/spri/chikyuu.vrs", O_RDONLY|O_BINARY);
-	size = lseek(fd, 0, SEEK_END);
-	lseek(fd, 0, SEEK_SET);
-	close(fd);
+
 	// Insert sanity cheks later
 	vrs.buffer = bigbuffer;
 	vrs.data_size = size - sizeof(struct vrl1_vgax_header);
