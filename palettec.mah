@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Aug 24 2016 09:33:23 (64-bit)
 Copyright (c) 2002-2016 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       16/09/02 11:38:28
+Created on:       16/09/02 12:02:40
 Executable Image: palettec.exe
 creating a DOS executable
 
@@ -542,4 +542,4 @@ src/lib/doslib/hw/vga/dos86h/vga.lib
 Stack size:  8000 (32768.)
 Memory size:  00018060 (98400.)
 Entry point address: 0000:0286
-Link time: 00:00.97
+Link time: 00:00.38

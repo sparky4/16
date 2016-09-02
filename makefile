@@ -306,9 +306,7 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.$(OBJ)
 !ifdef __LINUX__
 	@rm *.LIB
-	@mv BCEXMM.EXE bcexmm.ex0
-	@mv bcexmm.ex0 bcexmm.exe
-	@mv BCEXMM.MAP bcexmm.mah
+	@. src/util/bcexmm.sh
 	@rm *.EXE
 	#@$(REMOVECOMMAND) *.\$\$\$
 	@$(REMOVECOMMAND) *.OBJ
