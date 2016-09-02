@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Aug 24 2016 09:33:23 (64-bit)
 Copyright (c) 2002-2016 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       16/09/02 12:20:51
+Created on:       16/09/02 12:31:27
 Executable Image: pcxtest.exe
 creating a DOS executable
 
@@ -661,4 +661,4 @@ src/lib/doslib/hw/vga/dos86h/vga.lib
 Stack size:  8000 (32768.)
 Memory size:  0001b8a0 (112800.)
 Entry point address: 0000:0406
-Link time: 00:00.56
+Link time: 00:00.38
