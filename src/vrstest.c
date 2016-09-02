@@ -28,10 +28,8 @@
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 
-global_game_variables_t gvar;
-
 void main() {
-	mminfo_t mm; mminfotype mmi;
+	global_game_variables_t gvar;
 	__segment sega;
 	void __based(sega)* bigbuffer;
 	int i;
@@ -52,8 +50,6 @@ void main() {
 	struct vrl1_vgax_header huge *curr_vrl;
 	struct vrl_container *vrl;
 	word w=0;
-
-
 
 	// DOSLIB: check our environment
 	probe_dos();
@@ -76,15 +72,14 @@ void main() {
 		return;
 	}
 
-	//bmp = bitmapLoadPcx("data/chikyuu.pcx");
-	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
+	//gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 
-	mm.mmstarted=0;
-	MM_Startup(&mm, &mmi);
+	gvar.mm.mmstarted=0;
+	MM_Startup(&gvar.mm, &gvar.mmi);
 	CA_Startup(&gvar);
 	// What should be done by read_vrs:
 	//sega = (mm.bufferseg);
-	if(CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &mm, &mmi)) baka=1; else baka=0;
+	if(CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &gvar.mm, &gvar.mmi)) baka=1; else baka=0;
 
 	// Insert sanity cheks later
 	vrs.buffer = bigbuffer;
@@ -133,7 +128,7 @@ void main() {
 
 	/* clear and draw one sprite and one bitmap */
 	VGAmodeX(1, 1, &gvar);
-	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].sw, gvar.video.page[0].sh, 1);
+	modexHiganbanaPageSetup(&gvar.video);
 
 	/* non sprite comparison */
 	start = *clockw;
@@ -145,7 +140,7 @@ void main() {
 	t2 = (*clockw-start)/18.2;
 
 	for (i = 0; i < 5; i++){
-	spri.delay = 1; animate_spri(&spri); spri.x += 20; sleep(2); }
+	spri.delay = 1; animate_spri(&spri); spri.x += 20; sleep(1); }
 
 	while(!kbhit())
 	{
@@ -160,13 +155,18 @@ void main() {
 		}
 	}
 	VGAmodeX(0, 1, &gvar);
+	MM_ShowMemory(&gvar, &gvar.mm);
+	MM_DumpData(&gvar.mm);
 	free(spri.sprite_vrl_cont);
-	MM_FreePtr(&bigbuffer, &mm);
+	MM_FreePtr(&bigbuffer, &gvar.mm);
 	//MM_FreePtr(&((void __based(sega)*)spri.spritesheet->buffer), &mm);
-	MM_Shutdown(&mm);
 	CA_Shutdown(&gvar);
+	MM_Shutdown(&gvar.mm);
 	//printf("CPU to VGA: %f\n", t1);
 	//printf("VGA to VGA: %f\n", t2);
+	heapdump(&gvar);
+	printf("Project 16 vrstest.exe. This is just a test file!\n");
+	printf("version %s\n", VERSION);
 	printf("t1: %f\n", t1);
 	printf("t2: %f\n", t2);
 	printf("gvar.video.page[0].width: %u\n", gvar.video.page[0].width);

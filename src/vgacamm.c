@@ -66,11 +66,8 @@ void main() {
 		return;
 	}
 
-	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
-
 	VGAmodeX(1, 1, &gvar);
-	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].sw, gvar.video.page[0].sh, 1);
-	//modexHiganbanaPageSetup(&gvar.video);
+	modexHiganbanaPageSetup(&gvar.video);
 
 	/* non sprite comparison */
 	start = *clockw;
@@ -96,13 +93,15 @@ void main() {
 	VGAmodeX(0, 1, &gvar);
 	MM_ShowMemory(&gvar, &gvar.mm);
 	MM_DumpData(&gvar.mm);
+	//
 	MM_FreePtr(&bigbuffer, &gvar.mm);
+	//
 	CA_Shutdown(&gvar);
 	MM_Shutdown(&gvar.mm);
 	//printf("CPU to VGA: %f\n", t1);
 	//printf("VGA to VGA: %f\n", t2);
 	heapdump(&gvar);
-	printf("Project 16 emmtest.exe. This is just a test file!\n");
+	printf("Project 16 vgacamm.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	printf("t1: %f\n", t1);
 	printf("t2: %f\n", t2);

@@ -1,31 +1,31 @@
 
 	== default ==
 
-  FREE block at 29fd0016 of size 18
-  USED block at 29fd0028 of size 136
-  USED block at 29fd00b0 of size 20
-  FREE block at 29fd00c4 of size 7992
+  FREE block at 29fc0016 of size 18
+  USED block at 29fc0028 of size 136
+  USED block at 29fc00b0 of size 20
+  FREE block at 29fc00c4 of size 7992
 OK - end of heap
 
 	== near ==
 
-  USED block at 19fca226 of size 12
-  USED block at 19fca232 of size 326
-  USED block at 19fca378 of size 52
-  USED block at 19fca3ac of size 20
-  USED block at 19fca3c0 of size 20
-  USED block at 19fca3d4 of size 20
-  USED block at 19fca3e8 of size 20
-  USED block at 19fca3fc of size 20
-  USED block at 19fca410 of size 23532
+  USED block at 19fba226 of size 12
+  USED block at 19fba232 of size 326
+  USED block at 19fba378 of size 52
+  USED block at 19fba3ac of size 20
+  USED block at 19fba3c0 of size 20
+  USED block at 19fba3d4 of size 20
+  USED block at 19fba3e8 of size 20
+  USED block at 19fba3fc of size 20
+  USED block at 19fba410 of size 23532
 OK - end of heap
 
 	== far ==
 
-  USED block at 29fd0016 of size 18
-  USED block at 29fd0028 of size 136
-  USED block at 29fd00b0 of size 20
-  USED block at 29fd00c4 of size 7992
+  USED block at 29fc0016 of size 18
+  USED block at 29fc0028 of size 136
+  USED block at 29fc00b0 of size 20
+  USED block at 29fc00c4 of size 7992
 OK - end of heap
 
 Memory Type         Total      Used       Free
