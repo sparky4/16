@@ -181,11 +181,21 @@ typedef struct
 
 //==========================================================================
 
-//16_ca.h
+//from 16_ca
+//==========================================================================
+
+typedef struct
+{
+  unsigned bit0,bit1;	// 0-255 is a character, > is a pointer to a node
+} huffnode;
+
 typedef struct
 {
 	byte		ca_levelbit,ca_levelnum;
+	huffnode huffnode;
 } ca_t;
+
+//==========================================================================
 
 //actual global game varables!
 typedef struct

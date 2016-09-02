@@ -46,10 +46,10 @@ loaded into the data segment
 =============================================================================
 */
 
-typedef struct
+/*typedef struct
 {
   unsigned bit0,bit1;	// 0-255 is a character, > is a pointer to a node
-} huffnode;
+} huffnode;*/	//moved to src/lib/typdefst.h
 
 
 /*typedef struct
