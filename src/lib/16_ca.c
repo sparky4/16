@@ -76,8 +76,7 @@ maptype		_seg	*mapheaderseg[NUMMAPS];
 byte		_seg	*audiosegs[NUMSNDCHUNKS];
 void		_seg	*grsegs[NUMCHUNKS];
 
-byte		far	grneeded[NUMCHUNKS];
-byte		ca_levelbit,ca_levelnum;*/
+byte		far	grneeded[NUMCHUNKS];*/
 
 void	(*drawcachebox)		(char *title, unsigned numcache);
 void	(*updatecachebox)	(void);
