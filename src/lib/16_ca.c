@@ -1126,8 +1126,9 @@ void CA_Startup(global_game_variables_t *gvar)
 	gvar->handle.profilehandle = open("profile.16w", O_CREAT | O_WRONLY | O_TEXT);
 #endif
 #endif
-// 	unlink("debug0.16");
-// 	gvar->handle.showmemhandle = open("debug0.16", O_CREAT | O_WRONLY | O_TEXT);
+/*	CAL_SetupMapFile ();
+	CAL_SetupGrFile ();
+	CAL_SetupAudioFile ();*/
 /*++++
 // MDM begin - (GAMERS EDGE)
 //
@@ -1160,13 +1161,13 @@ void CA_Startup(global_game_variables_t *gvar)
 
 #ifndef NOGRAPHICS
 	CAL_SetupGrFile ();
-#endif
+#endif*/
 
-	mapon = -1;
-	ca_levelbit = 1;
-	ca_levelnum = 0;
+	gvar->ca.mapon = -1;
+	gvar->ca.ca_levelbit = 1;
+	gvar->ca.ca_levelnum = 0;
 
-	drawcachebox	= CAL_DialogDraw;
+/*	drawcachebox	= CAL_DialogDraw;
 	updatecachebox  = CAL_DialogUpdate;
 	finishcachebox	= CAL_DialogFinish;*/
 }
@@ -2031,20 +2032,7 @@ void CA_SetAllPurge (void)
 //
 // free graphics
 //
-	CA_FreeGraphics ();
-}
-
-
-void CA_SetGrPurge (void)
-{
-	int i;
-
-//
-// free graphics
-//
-	for (i=0;i<NUMCHUNKS;i++)
-		if (grsegs[i])
-			MM_SetPurge (&(memptr)grsegs[i],3);
+	CA_SetGrPurge ();
 }*/
 
 

@@ -187,6 +187,7 @@ typedef struct
 typedef struct
 {
 	byte		ca_levelbit,ca_levelnum;
+	int		mapon;
 	//huffnode huffnode;
 } ca_t;
 
