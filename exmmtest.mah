@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Aug 24 2016 09:33:23 (64-bit)
 Copyright (c) 2002-2016 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       16/09/02 11:34:32
+Created on:       16/09/02 11:38:28
 Executable Image: exmmtest.exe
 creating a DOS executable
 
@@ -846,4 +846,4 @@ src/lib/doslib/hw/8250/dos86h/8250.lib
 Stack size:  8000 (32768.)
 Memory size:  0001fc90 (130192.)
 Entry point address: 08b3:02c4
-Link time: 00:00.11
+Link time: 00:00.67
