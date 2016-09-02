@@ -46,10 +46,10 @@ loaded into the data segment
 =============================================================================
 */
 
-/*typedef struct
+typedef struct
 {
-  unsigned bit0,bit1;	// 0-255 is a character, > is a pointer to a node
-} huffnode;*/	//moved to src/lib/typdefst.h
+  word bit0,bit1;	// 0-255 is a character, > is a pointer to a node
+} huffnode;
 
 
 /*typedef struct
@@ -498,7 +498,7 @@ void CAL_OptimizeNodes(huffnode *table)
 ======================
 */
 
-/*++++void CAL_HuffExpand (byte huge *source, byte huge *dest,
+void CAL_HuffExpand (byte huge *source, byte huge *dest,
   long length,huffnode *hufftable)
 {
 //  unsigned bit,byte,node,code;
@@ -534,7 +534,7 @@ void CAL_OptimizeNodes(huffnode *table)
 
 	__asm
 	{
-		mov	bx,[headptr]
+;;;;;		mov	bx,[headptr]
 
 		mov	si,[sourceoff]
 		mov	di,[destoff]
@@ -555,28 +555,28 @@ expandshort:
 		jnc	sourceupshort
 
 bit1short:
-asm	mov	dx,[ss:bx+2]		// take bit1 path
-asm	shl	cl,1				// advance to next bit position
-asm	jnc	sourceupshort
+		mov	dx,[ss:bx+2]		// take bit1 path
+		shl	cl,1				// advance to next bit position
+		jnc	sourceupshort
 
 newbyteshort:
-asm	mov	ch,[si]				// load next byte
-asm	inc	si
-asm	mov	cl,1				// back to first bit
+		mov	ch,[si]				// load next byte
+		inc	si
+		mov	cl,1				// back to first bit
 
 sourceupshort:
-asm	or	dh,dh				// if dx<256 its a byte, else move node
-asm	jz	storebyteshort
-asm	mov	bx,dx				// next node = (huffnode *)code
-asm	jmp	expandshort
+		or	dh,dh				// if dx<256 its a byte, else move node
+		jz	storebyteshort
+		mov	bx,dx				// next node = (huffnode *)code
+		jmp	expandshort
 
 storebyteshort:
-asm	mov	[es:di],dl
-asm	inc	di					// write a decopmpressed byte out
-asm	mov	bx,[headptr]		// back to the head node for next bit
+		mov	[es:di],dl
+		inc	di					// write a decopmpressed byte out
+;;;;		mov	bx,[headptr]		// back to the head node for next bit
 
-asm	cmp	di,ax				// done?
-	jne	expandshort
+		cmp	di,ax				// done?
+		jne	expandshort
 	}
 	}
 	else
@@ -590,59 +590,59 @@ asm	cmp	di,ax				// done?
 
 	__asm
 	{
-	mov	bx,[headptr]
-	mov	cl,1
+;;;;		mov	bx,[headptr]
+		mov	cl,1
 
-	mov	si,[sourceoff]
-	mov	di,[destoff]
-	mov	es,[destseg]
-	mov	ds,[sourceseg]
+		mov	si,[sourceoff]
+		mov	di,[destoff]
+		mov	es,[destseg]
+		mov	ds,[sourceseg]
 
-	lodsb			// load first byte
+		lodsb			// load first byte
 
 expand:
-	test	al,cl		// bit set?
-	jnz	bit1
-	mov	dx,[ss:bx]	// take bit0 path from node
-	jmp	gotcode
+		test	al,cl		// bit set?
+		jnz	bit1
+		mov	dx,[ss:bx]	// take bit0 path from node
+		jmp	gotcode
 bit1:
-	mov	dx,[ss:bx+2]	// take bit1 path
+		mov	dx,[ss:bx+2]	// take bit1 path
 
 gotcode:
-	shl	cl,1		// advance to next bit position
-	jnc	sourceup
-	lodsb
-	cmp	si,0x10		// normalize ds:si
-asm  	jb	sinorm
-	mov	cx,ds
-	inc	cx
-	mov	ds,cx
-	xor	si,si
+		shl	cl,1		// advance to next bit position
+		jnc	sourceup
+		lodsb
+		cmp	si,0x10		// normalize ds:si
+		jb	sinorm
+		mov	cx,ds
+		inc	cx
+		mov	ds,cx
+		xor	si,si
 sinorm:
-	mov	cl,1		// back to first bit
+		mov	cl,1		// back to first bit
 
 sourceup:
-	or	dh,dh		// if dx<256 its a byte, else move node
-	jz	storebyte
-	mov	bx,dx		// next node = (huffnode *)code
-	jmp	expand
+		or	dh,dh		// if dx<256 its a byte, else move node
+		jz	storebyte
+		mov	bx,dx		// next node = (huffnode *)code
+		jmp	expand
 
 storebyte:
-	mov	[es:di],dl
-	inc	di		// write a decopmpressed byte out
-	mov	bx,[headptr]	// back to the head node for next bit
+		mov	[es:di],dl
+		inc	di		// write a decopmpressed byte out
+;;;;		mov	bx,[headptr]	// back to the head node for next bit
 
-	cmp	di,0x10		// normalize es:di
-asm  	jb	dinorm
-	mov	dx,es
-	inc	dx
-	mov	es,dx
-	xor	di,di
+		cmp	di,0x10		// normalize es:di
+		jb	dinorm
+		mov	dx,es
+		inc	dx
+		mov	es,dx
+		xor	di,di
 dinorm:
 
-	sub	[WORD PTR ss:length],1
-	jnc	expand
-	dec	[WORD PTR ss:length+2]
+		sub	[WORD PTR ss:length],1
+		jnc	expand
+		dec	[WORD PTR ss:length+2]
 		jns	expand		// when length = ffff ffff, done
 	}
 	}
@@ -653,7 +653,7 @@ dinorm:
 		mov	ds,ax
 	}
 
-}*/
+}
 
 
 /*
