@@ -30,7 +30,7 @@ main(int argc, char *argv[])
 	global_game_variables_t gvar;
 	player_t player[MaxPlayers];
 	//extern struct inconfig inpu;
-	testkeyin=0;
+	testkeyin=1;
 	testcontrolnoisy=1;
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick1);
@@ -43,7 +43,7 @@ main(int argc, char *argv[])
 	start_timer(&gvar);
 	while(!IN_KeyDown(sc_Escape))
 	{
-		shinkutxt(&gvar);
+		//shinkutxt(&gvar);
 		IN_ReadControl(0,&player);
 		#define INC_PER_FRAME if(player[0].q&1) player[0].persist_aniframe++; if(player[0].persist_aniframe>4) player[0].persist_aniframe = 1;
 		switch(player[0].d)
