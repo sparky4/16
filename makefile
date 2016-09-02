@@ -60,7 +60,7 @@ TARGET_OS = dos
 BUILD_ROOT=$+$(%__CWD__)$-
 #EXMMTESTDIR=16$(DIRSEP)exmmtest$(DIRSEP)
 DATADIR=data$(DIRSEP)
-SPRI=$(DATADIR)$(DIRSEP)spri$(DIRSEP)
+SPRI=$(DATADIR)/spri
 SRC=src
 SRCLIB=src/lib
 JSMNLIB=src/lib/jsmn
@@ -393,8 +393,8 @@ uplibs: .symbolic
 	@cd $(BUILD_ROOT)
 
 reinitlibs: .symbolic
-	@rm -rf $(SRCLIB)doslib
-	@rm -rf $(SRCLIB)jsmn
+	@rm -rf $(DOSLIB)
+	@rm -rf $(JSMNLIB)
 	@rm -rf 16/CatacombApocalypse
 	@rm -rf 16/wolf3d
 	@rm -rf 16/keen
