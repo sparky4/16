@@ -25,10 +25,9 @@
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 
-global_game_variables_t gvar;
-
 void main() {
-	mminfo_t mm; mminfotype mmi;
+	global_game_variables_t gvar;
+	//mminfo_t mm; mminfotype mmi;
 	__segment sega;
 	void __based(sega)* bigbuffer;
 	int i;
@@ -37,20 +36,14 @@ void main() {
 	float t1, t2;
 	boolean baka;
 	byte *pal;
-	int size, size1;
-// 	struct sprite spri;
-// 	vrl1_vgax_offset_t * off, *off1;
-// 	struct vrs_container vrs;
-// 	vrl1_vgax_offset_t **vrl_line_offsets;
-// 	uint32_t huge *vrl_headers_offsets;
-// 	uint16_t huge *vrl_id_iter;
-// 	uint32_t vrl_size;
-// 	int num_of_vrl;
-// 	struct vrl1_vgax_header huge *curr_vrl;
-// 	struct vrl_container *vrl;
 	word w=0;
 
+	gvar.mm.mmstarted=0;
 
+	MM_Startup(&gvar.mm, &gvar.mmi);
+	CA_Startup(&gvar);
+	printf("loading\n");
+	if(CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &gvar.mm, &gvar.mmi)) baka=1; else baka=0;
 
 	// DOSLIB: check our environment
 	probe_dos();
@@ -73,63 +66,11 @@ void main() {
 		return;
 	}
 
-	//bmp = bitmapLoadPcx("data/chikyuu.pcx");
 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 
-	mm.mmstarted=0;
-	MM_Startup(&mm, &mmi);
-	CA_Startup(&gvar);
-	// What should be done by read_vrs:
-	//if(CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &mm, &mmi)) baka=1; else baka=0;
-
-// 	// Insert sanity cheks later
-// 	vrs.buffer = bigbuffer;
-// 	vrs.data_size = size - sizeof(struct vrl1_vgax_header);
-// 	num_of_vrl = 0;
-// 	vrl_id_iter = (uint16_t huge *)(vrs.buffer + vrs.vrs_hdr->offset_table[VRS_HEADER_OFFSET_SPRITE_ID_LIST]);
-// 	while(vrl_id_iter[num_of_vrl]){
-// 		num_of_vrl++;
-// 	}
-//
-// 	// Allocate memory for vrl line offsets table
-// 	vrl_line_offsets = malloc(sizeof(vrl1_vgax_offset_t *)*num_of_vrl);
-//
-// 	vrl_headers_offsets = (uint32_t huge *)(vrs.buffer + vrs.vrs_hdr->offset_table[VRS_HEADER_OFFSET_VRS_LIST]);
-// 	// Calculate line offsets for each vrl
-// 	for(i = 0; i < num_of_vrl; i++){
-// 		curr_vrl = (struct vrl1_vgax_header huge *)(vrs.buffer + vrl_headers_offsets[i]);
-//
-// 		// Calc. vrl size as (next_offset - curr_offset)
-// 		if (i != num_of_vrl - 1){
-// 			vrl_size = vrl_headers_offsets[i+1] - vrl_headers_offsets[i] - sizeof(struct vrl1_vgax_header);
-// 		}
-// 		// If it's the last vrl, size is (next_vrs_struct_offset - curr_offset)
-// 		else{
-// 			vrl_size = vrs.vrs_hdr->offset_table[VRS_HEADER_OFFSET_SPRITE_ID_LIST] - vrl_headers_offsets[i] - sizeof(struct vrl1_vgax_header);
-// 		}
-// 		vrl_line_offsets[i] = vrl1_vgax_genlineoffsets(curr_vrl, (byte *)curr_vrl + sizeof(struct vrl1_vgax_header), vrl_size);
-// 	}
-// 	vrs.vrl_line_offsets = vrl_line_offsets;
-
-
-	//read_vrs(&gvar, "data/spri/chikyuu.vrs", &vrs);
-// 	spri.spritesheet = &vrs;
-// 	spri.sprite_vrl_cont = malloc(sizeof(struct vrl_container));
-// 	i = set_anim_by_id(&spri, 11);
-// 	if (i == -1)
-// 	{
-// 		return;
-// 	}
-// 	spri.x = 5;
-// 	spri.y = 100;
-
-//	Uncomment to see broken sprites
-/*	sega = mm.bufferseg;
-	if(CA_LoadFile("data/spri/CHUBACW1.vrl", &bigbuffer, &mm, &mmi)) baka=1; else baka=0;*/
-
-	/* clear and draw one sprite and one bitmap */
 	VGAmodeX(1, 1, &gvar);
 	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].sw, gvar.video.page[0].sh, 1);
+	//modexHiganbanaPageSetup(&gvar.video);
 
 	/* non sprite comparison */
 	start = *clockw;
@@ -139,9 +80,6 @@ void main() {
 	start = *clockw;
 
 	t2 = (*clockw-start)/18.2;
-
-	//for (i = 0; i < 5; i++){
-	//spri.delay = 1; animate_spri(&spri); spri.x += 20; sleep(2); }
 
 	while(!kbhit())
 	{
@@ -156,13 +94,16 @@ void main() {
 		}
 	}
 	VGAmodeX(0, 1, &gvar);
-	//free(spri.sprite_vrl_cont);
-	MM_FreePtr(&bigbuffer, &mm);
-	//MM_FreePtr(&((void __based(sega)*)spri.spritesheet->buffer), &mm);
-	MM_Shutdown(&mm);
+	MM_ShowMemory(&gvar, &gvar.mm);
+	MM_DumpData(&gvar.mm);
+	MM_FreePtr(&bigbuffer, &gvar.mm);
 	CA_Shutdown(&gvar);
+	MM_Shutdown(&gvar.mm);
 	//printf("CPU to VGA: %f\n", t1);
 	//printf("VGA to VGA: %f\n", t2);
+	heapdump(&gvar);
+	printf("Project 16 emmtest.exe. This is just a test file!\n");
+	printf("version %s\n", VERSION);
 	printf("t1: %f\n", t1);
 	printf("t2: %f\n", t2);
 	printf("gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
