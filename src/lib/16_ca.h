@@ -104,12 +104,12 @@ void CA_Shutdown (global_game_variables_t *gvar);
 void CA_DownLevel (void);
 
 void CA_SetGrPurge (void);
-void CA_SetAllPurge (void);
+void CA_SetAllPurge (void);*/
 
-void CA_ClearMarks (void);
-void CA_ClearAllMarks (void);
+void CA_ClearMarks (global_game_variables_t *gvar);
+void CA_ClearAllMarks (global_game_variables_t *gvar);
 
-#define CA_MarkGrChunk(chunk)	grneeded[chunk]|=ca_levelbit
+/*#define CA_MarkGrChunk(chunk)	grneeded[chunk]|=ca_levelbit
 
 void CA_CacheGrChunk (int chunk);
 void CA_CacheMap (int mapnum);

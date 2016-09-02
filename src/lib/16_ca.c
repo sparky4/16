@@ -1713,7 +1713,7 @@ void CA_CacheGrChunk (int chunk)
 	byte	far *source;
 	int		next;
 
-	grneeded[chunk] |= ca_levelbit;		// make sure it doesn't get removed
+	gvar->video.grneeded[chunk] |= ca_levelbit;		// make sure it doesn't get removed
 	if (grsegs[chunk])
 	{
 		MM_SetPurge (&grsegs[chunk],0);
@@ -1937,15 +1937,13 @@ void CA_DownLevel (void)
 =
 ======================
 */
-/*
-void CA_ClearMarks (void)
+void CA_ClearMarks (global_game_variables_t *gvar)
 {
 	int i;
 
 	for (i=0;i<NUMCHUNKS;i++)
-		grneeded[i]&=~ca_levelbit;
+		gvar->video.grneeded[i]&=~gvar->ca.ca_levelbit;
 }
-*/
 
 //===========================================================================
 
@@ -1958,14 +1956,12 @@ void CA_ClearMarks (void)
 =
 ======================
 */
-/*
-void CA_ClearAllMarks (void)
+void CA_ClearAllMarks (global_game_variables_t *gvar)
 {
-	_fmemset (grneeded,0,sizeof(grneeded));
-	ca_levelbit = 1;
-	ca_levelnum = 0;
+	_fmemset (gvar->video.grneeded,0,sizeof(gvar->video.grneeded));
+	gvar->ca.ca_levelbit = 1;
+	gvar->ca.ca_levelnum = 0;
 }
-*/
 
 //===========================================================================
 
@@ -2192,7 +2188,7 @@ void CA_CacheMarks (char *title)
 // go through and make everything not needed purgable
 //
 	for (i=0;i<NUMCHUNKS;i++)
-		if (grneeded[i]&ca_levelbit)
+		if (gvar->video.grneeded[i]&ca_levelbit)
 		{
 			if (grsegs[i])					// its allready in memory, make
 				MM_SetPurge(&grsegs[i],0);	// sure it stays there!
@@ -2231,7 +2227,7 @@ void CA_CacheMarks (char *title)
 	bufferstart = bufferend = 0;		// nothing good in buffer now
 
 	for (i=0;i<NUMCHUNKS;i++)
-		if ( (grneeded[i]&ca_levelbit) && !grsegs[i])
+		if ( (gvar->video.grneeded[i]&ca_levelbit) && !grsegs[i])
 		{
 //
 // update thermometer
@@ -2265,7 +2261,7 @@ void CA_CacheMarks (char *title)
 					while ( next < NUMCHUNKS )
 					{
 						while (next < NUMCHUNKS &&
-						!(grneeded[next]&ca_levelbit && !grsegs[next]))
+						!(gvar->video.grneeded[next]&ca_levelbit && !grsegs[next]))
 							next++;
 						if (next == NUMCHUNKS)
 							continue;

@@ -120,9 +120,13 @@ typedef struct
 	word	pn;
 } pan_t;
 
+//video
+#define NUMCHUNKS	3016	//keen
+
 typedef struct
 {
 	char old_mode;		//old video mode before game!
+	byte grneeded[NUMCHUNKS];
 	page_t page[MAXPAGE];		//pointer to root page[0]
 	word vmem_remain;	//remaining video memory
 	byte num_of_pages;	//number of actual pages
@@ -177,10 +181,17 @@ typedef struct
 
 //==========================================================================
 
+//16_ca.h
+typedef struct
+{
+	byte		ca_levelbit,ca_levelnum;
+} ca_t;
+
 //actual global game varables!
 typedef struct
 {
-	video_t video;	// video settings variable
+	video_t	video;	// video settings variable
+	ca_t		ca;	// ca stuff
 	byte *pee;		// message for fps
 	handle_t handle;	//handles for file logging
 	kurokku_t kurokku;	//clock struct
