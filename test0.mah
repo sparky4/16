@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Aug 24 2016 09:33:23 (64-bit)
 Copyright (c) 2002-2016 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       16/09/02 12:02:40
+Created on:       16/09/02 12:14:13
 Executable Image: test0.exe
 creating a DOS executable
 
@@ -283,4 +283,4 @@ Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(error086.asm)
 Stack size:  8000 (32768.)
 Memory size:  bb20 (47904.)
 Entry point address: 0000:02c8
-Link time: 00:00.41
+Link time: 00:00.70
