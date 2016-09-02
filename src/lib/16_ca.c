@@ -576,7 +576,7 @@ asm	inc	di					// write a decopmpressed byte out
 asm	mov	bx,[headptr]		// back to the head node for next bit
 
 asm	cmp	di,ax				// done?
-asm	jne	expandshort
+	jne	expandshort
 	}
 	}
 	else
@@ -590,60 +590,60 @@ asm	jne	expandshort
 
 	__asm
 	{
-asm mov	bx,[headptr]
-asm	mov	cl,1
+	mov	bx,[headptr]
+	mov	cl,1
 
-asm	mov	si,[sourceoff]
-asm	mov	di,[destoff]
-asm	mov	es,[destseg]
-asm	mov	ds,[sourceseg]
+	mov	si,[sourceoff]
+	mov	di,[destoff]
+	mov	es,[destseg]
+	mov	ds,[sourceseg]
 
-asm	lodsb			// load first byte
+	lodsb			// load first byte
 
 expand:
-asm	test	al,cl		// bit set?
-asm	jnz	bit1
-asm	mov	dx,[ss:bx]	// take bit0 path from node
-asm	jmp	gotcode
+	test	al,cl		// bit set?
+	jnz	bit1
+	mov	dx,[ss:bx]	// take bit0 path from node
+	jmp	gotcode
 bit1:
-asm	mov	dx,[ss:bx+2]	// take bit1 path
+	mov	dx,[ss:bx+2]	// take bit1 path
 
 gotcode:
-asm	shl	cl,1		// advance to next bit position
-asm	jnc	sourceup
-asm	lodsb
-asm	cmp	si,0x10		// normalize ds:si
+	shl	cl,1		// advance to next bit position
+	jnc	sourceup
+	lodsb
+	cmp	si,0x10		// normalize ds:si
 asm  	jb	sinorm
-asm	mov	cx,ds
-asm	inc	cx
-asm	mov	ds,cx
-asm	xor	si,si
+	mov	cx,ds
+	inc	cx
+	mov	ds,cx
+	xor	si,si
 sinorm:
-asm	mov	cl,1		// back to first bit
+	mov	cl,1		// back to first bit
 
 sourceup:
-asm	or	dh,dh		// if dx<256 its a byte, else move node
-asm	jz	storebyte
-asm	mov	bx,dx		// next node = (huffnode *)code
-asm	jmp	expand
+	or	dh,dh		// if dx<256 its a byte, else move node
+	jz	storebyte
+	mov	bx,dx		// next node = (huffnode *)code
+	jmp	expand
 
 storebyte:
-asm	mov	[es:di],dl
-asm	inc	di		// write a decopmpressed byte out
-asm	mov	bx,[headptr]	// back to the head node for next bit
+	mov	[es:di],dl
+	inc	di		// write a decopmpressed byte out
+	mov	bx,[headptr]	// back to the head node for next bit
 
-asm	cmp	di,0x10		// normalize es:di
+	cmp	di,0x10		// normalize es:di
 asm  	jb	dinorm
-asm	mov	dx,es
-asm	inc	dx
-asm	mov	es,dx
-asm	xor	di,di
+	mov	dx,es
+	inc	dx
+	mov	es,dx
+	xor	di,di
 dinorm:
 
-asm	sub	[WORD PTR ss:length],1
-asm	jnc	expand
-asm  	dec	[WORD PTR ss:length+2]
-asm	jns	expand		// when length = ffff ffff, done
+	sub	[WORD PTR ss:length],1
+	jnc	expand
+	dec	[WORD PTR ss:length+2]
+		jns	expand		// when length = ffff ffff, done
 	}
 	}
 
@@ -1936,6 +1936,7 @@ void CA_DownLevel (void)
 =
 ======================
 */
+
 void CA_ClearMarks (global_game_variables_t *gvar)
 {
 	int i;
@@ -1955,6 +1956,7 @@ void CA_ClearMarks (global_game_variables_t *gvar)
 =
 ======================
 */
+
 void CA_ClearAllMarks (global_game_variables_t *gvar)
 {
 	_fmemset (gvar->video.grneeded,0,sizeof(gvar->video.grneeded));
