@@ -969,8 +969,8 @@ if(player[pn].info.dir!=2/*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] |
 	//printf("q=%d ", player[pn].q);
 	//printf("cpee=%c ", dirchar(conpee));
 	printf("pdir=%c d=%c dir=%c ", dirchar(player[pn].pdir), dirchar(player[pn].d), dirchar(player[pn].info.dir));
-	/*if(realdelta) */printf("dx=%d	dy=%d	mx=%d	my=%d", player[pn].info.x, player[pn].info.y, player[pn].info.xaxis, player[pn].info.yaxis);
-	///*else if(!realdelta) */printf("%c%d %c%d %c%d %c%d", dirchar(0), inpu.Keyboard[def->up], dirchar(4), inpu.Keyboard[def->down], dirchar(1), inpu.Keyboard[def->left], dirchar(3), inpu.Keyboard[def->right]);
+	if(realdelta) printf("dx=%d	dy=%d	mx=%d	my=%d", player[pn].info.x, player[pn].info.y, player[pn].info.xaxis, player[pn].info.yaxis);
+	else if(!realdelta) printf("%c%d %c%d %c%d %c%d", dirchar(0), inpu.Keyboard[def->up], dirchar(4), inpu.Keyboard[def->down], dirchar(1), inpu.Keyboard[def->left], dirchar(3), inpu.Keyboard[def->right]);
 	printf("\n");
 }
 }
