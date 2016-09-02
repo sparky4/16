@@ -33,7 +33,6 @@
 #include <dos.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h> //16_vrs.h
 #include <conio.h> // just for wait
 #include <time.h> // just for wait
 #include <malloc.h>
@@ -47,6 +46,7 @@
 #include <i86.h>
 #include <unistd.h>
 #include <alloca.h>
+#include <stdint.h> //16_vrs.h
 #endif
 #include "src/lib/nyan/kitten.h"
 #include "src/lib/types.h"

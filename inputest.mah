@@ -1,0 +1,844 @@
+Open Watcom Linker Version 2.0 beta Aug 24 2016 09:33:23 (64-bit)
+Copyright (c) 2002-2016 The Open Watcom Contributors. All Rights Reserved.
+Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
+Created on:       16/09/02 11:34:32
+Executable Image: inputest.exe
+creating a DOS executable
+
+
+                        +------------+
+                        |   Groups   |
+                        +------------+
+
+Group                           Address              Size
+=====                           =======              ====
+
+DGROUP                          1256:0000            000092f0
+
+
+
+                        +--------------+
+                        |   Segments   |
+                        +--------------+
+
+Segment                Class          Group          Address         Size
+=======                =====          =====          =======         ====
+
+inputest_TEXT          CODE           AUTO           0000:0000       00000052
+main_TEXT              CODE           AUTO           0000:0060       000001c0
+vga_AC_RGB_to_code_TEXT CODE          AUTO           0000:0220       00000000
+vga_wait_for_vsync_end_TEXT CODE      AUTO           0000:0220       00000000
+vga_wait_for_vsync_TEXT CODE          AUTO           0000:0220       00000000
+vga_wait_for_hsync_end_TEXT CODE      AUTO           0000:0220       00000000
+vga_wait_for_hsync_TEXT CODE          AUTO           0000:0220       00000000
+vga_in_vsync_TEXT      CODE           AUTO           0000:0220       00000000
+vga_palette_write_TEXT CODE           AUTO           0000:0220       00000000
+vga_palette_lseek_TEXT CODE           AUTO           0000:0220       00000000
+vga_AC_reenable_screen_TEXT CODE      AUTO           0000:0220       00000000
+vga_set_stride_TEXT    CODE           AUTO           0000:0220       00000000
+vga_read_AC_TEXT       CODE           AUTO           0000:0220       00000000
+vga_set_xpan_TEXT      CODE           AUTO           0000:0220       00000000
+vga_write_AC_TEXT      CODE           AUTO           0000:0220       00000000
+vga_set_cga_mode_TEXT  CODE           AUTO           0000:0220       00000000
+vga_set_cga_palette_and_background_TEXT CODE AUTO    0000:0220       00000000
+vga_write_PAL_TEXT     CODE           AUTO           0000:0220       00000000
+vga_read_PAL_TEXT      CODE           AUTO           0000:0220       00000000
+vga_write_color_TEXT   CODE           AUTO           0000:0220       00000000
+vga_set_ypan_sub_TEXT  CODE           AUTO           0000:0220       00000000
+vga_write_CRTC_TEXT    CODE           AUTO           0000:0220       00000000
+vga_write_GC_TEXT      CODE           AUTO           0000:0220       00000000
+vga_write_sequencer_TEXT CODE         AUTO           0000:0220       00000000
+vga_read_sequencer_TEXT CODE          AUTO           0000:0220       00000000
+vga_tandy_setpalette_TEXT CODE        AUTO           0000:0220       00000000
+vga_moveto_TEXT        CODE           AUTO           0000:0220       00000000
+vga_read_GC_TEXT       CODE           AUTO           0000:0220       00000000
+vga_read_CRTC_TEXT     CODE           AUTO           0000:0220       00000000
+detect_window_enable_ntdvm_TEXT CODE  AUTO           0000:0220       00000000
+read_bios_keystate_TEXT CODE          AUTO           0000:0220       00000000
+normalize_realmode_far_ptr_TEXT CODE  AUTO           0000:0220       00000000
+ptr2phys_low1mb_TEXT   CODE           AUTO           0000:0220       00000000
+ntvdm_rm_code_alloc_TEXT CODE         AUTO           0000:0220       00000000
+uart_8250_write_TEXT   CODE           AUTO           0000:0220       00000000
+uart_8250_can_write_TEXT CODE         AUTO           0000:0220       00000000
+uart_8250_read_TEXT    CODE           AUTO           0000:0220       00000000
+uart_8250_can_read_TEXT CODE          AUTO           0000:0220       00000000
+uart_8250_set_line_control_TEXT CODE  AUTO           0000:0220       00000000
+uart_8250_read_MSR_TEXT CODE          AUTO           0000:0220       00000000
+uart_8250_read_MCR_TEXT CODE          AUTO           0000:0220       00000000
+uart_8250_set_MCR_TEXT CODE           AUTO           0000:0220       00000000
+just_int86_TEXT        CODE           AUTO           0000:0220       00000000
+_sti_if_flags_TEXT     CODE           AUTO           0000:0220       00000000
+ptr2phys_TEXT          CODE           AUTO           0000:0220       00000000
+16_in_TEXT             CODE           AUTO           0000:0220       00000156
+IN_initplayer_TEXT     CODE           AUTO           0000:0380       00000161
+IN_qb_TEXT             CODE           AUTO           0000:04f0       00000059
+IN_ClearKey_TEXT       CODE           AUTO           0000:0550       0000007a
+IN_KeyDown_TEXT        CODE           AUTO           0000:05d0       00000047
+IN_UserInput_TEXT      CODE           AUTO           0000:0620       00000047
+IN_IsUserInput_TEXT    CODE           AUTO           0000:0670       000000b0
+IN_Ack_TEXT            CODE           AUTO           0000:0720       000000af
+IN_AckBack_TEXT        CODE           AUTO           0000:07d0       000000fd
+IN_WaitForASCII_TEXT   CODE           AUTO           0000:08d0       00000037
+IN_WaitForKey_TEXT     CODE           AUTO           0000:0910       00000035
+IN_GetScanName_TEXT    CODE           AUTO           0000:0950       0000008a
+IN_SetControlType_TEXT CODE           AUTO           0000:09e0       0000004d
+IN_ReadControl_TEXT    CODE           AUTO           0000:0a30       00000b18
+IN_ReadCursor_TEXT     CODE           AUTO           0000:1550       00000132
+INL_AdjustCursor_TEXT  CODE           AUTO           0000:1690       00000073
+IN_ClearKeysDown_TEXT  CODE           AUTO           0000:1710       0000006f
+IN_SetKeyHook_TEXT     CODE           AUTO           0000:1780       00000022
+IN_Shutdown_TEXT       CODE           AUTO           0000:17b0       00000084
+IN_Default_TEXT        CODE           AUTO           0000:1840       0000011f
+IN_Startup_TEXT        CODE           AUTO           0000:1960       0000010e
+INL_ShutJoy_TEXT       CODE           AUTO           0000:1a70       00000000
+INL_StartJoy_TEXT      CODE           AUTO           0000:1a70       0000006a
+IN_SetupJoy_TEXT       CODE           AUTO           0000:1ae0       0000015e
+INL_SetJoyScale_TEXT   CODE           AUTO           0000:1c40       00000189
+INL_ShutMouse_TEXT     CODE           AUTO           0000:1dd0       00000000
+INL_StartMouse_TEXT    CODE           AUTO           0000:1dd0       0000004d
+INL_ShutKbd_TEXT       CODE           AUTO           0000:1e20       00000039
+INL_StartKbd_TEXT      CODE           AUTO           0000:1e60       0000004c
+IN_GetJoyButtonsDB_TEXT CODE          AUTO           0000:1eb0       0000004b
+INL_GetJoyButtons_TEXT CODE           AUTO           0000:1f00       00000033
+INL_GetJoyDelta_TEXT   CODE           AUTO           0000:1f40       000002bb
+IN_GetJoyAbs_TEXT      CODE           AUTO           0000:2200       000000bf
+INL_GetMouseButtons_TEXT CODE         AUTO           0000:22c0       00000000
+INL_GetMouseDelta_TEXT CODE           AUTO           0000:22c0       00000000
+Mouse_TEXT             CODE           AUTO           0000:22c0       0000002c
+INL_KeyService_TEXT    CODE           AUTO           0000:22f0       000002a5
+16_mm_TEXT             CODE           AUTO           0000:25a0       000009e4
+MM_BombOnError_TEXT    CODE           AUTO           0000:2f90       0000002e
+MM_EMSerr_TEXT         CODE           AUTO           0000:2fc0       00000805
+MM_Report_TEXT         CODE           AUTO           0000:37d0       00000230
+MM_TotalFree_TEXT      CODE           AUTO           0000:3a00       00000095
+MM_UnusedMemory_TEXT   CODE           AUTO           0000:3aa0       00000086
+MM_DumpData_TEXT       CODE           AUTO           0000:3b30       00000162
+MM_ShowMemory_TEXT     CODE           AUTO           0000:3ca0       0000069c
+MM_SortMem_TEXT        CODE           AUTO           0000:4340       000001ee
+MM_SetLock_TEXT        CODE           AUTO           0000:4530       000000df
+MM_SetPurge_TEXT       CODE           AUTO           0000:4610       000000dc
+MM_FreePtr_TEXT        CODE           AUTO           0000:46f0       000000f9
+MM_GetPtr_TEXT         CODE           AUTO           0000:47f0       00000405
+MM_Shutdown_TEXT       CODE           AUTO           0000:4c00       0000009c
+MM_Startup_TEXT        CODE           AUTO           0000:4ca0       00000439
+MML_ClearBlock_TEXT    CODE           AUTO           0000:50e0       00000088
+MML_UseSpace_TEXT      CODE           AUTO           0000:5170       000001df
+MML_ShutdownXMS_TEXT   CODE           AUTO           0000:5350       00000090
+MML_SetupXMS_TEXT      CODE           AUTO           0000:53e0       000000e9
+MML_CheckForXMS_TEXT   CODE           AUTO           0000:54d0       0000005e
+MM_MapXEMS_TEXT        CODE           AUTO           0000:5530       00000126
+MM_MapEMS_TEXT         CODE           AUTO           0000:5660       00000104
+MML_ShutdownEMS_TEXT   CODE           AUTO           0000:5770       0000006f
+MML_SetupEMS_TEXT      CODE           AUTO           0000:57e0       000001c0
+MML_CheckForEMS_TEXT   CODE           AUTO           0000:59a0       0000005b
+wcpu_TEXT              CODE           AUTO           0000:5a00       00000000
+detectcpu_TEXT         CODE           AUTO           0000:5a00       00000058
+16_head_TEXT           CODE           AUTO           0000:5a60       0000000d
+dirchar_TEXT           CODE           AUTO           0000:5a70       00000046
+US_CheckParm_TEXT      CODE           AUTO           0000:5ac0       0000015b
+printmeminfoline_TEXT  CODE           AUTO           0000:5c20       000001ec
+filesize_TEXT          CODE           AUTO           0000:5e10       00000068
+wait_TEXT              CODE           AUTO           0000:5e80       0000004b
+16_ca_TEXT             CODE           AUTO           0000:5ed0       00000058
+CA_Shutdown_TEXT       CODE           AUTO           0000:5f30       0000002f
+CA_Startup_TEXT        CODE           AUTO           0000:5f60       00000053
+CAL_OptimizeNodes_TEXT CODE           AUTO           0000:5fc0       000000b1
+CA_LoadFile_TEXT       CODE           AUTO           0000:6080       000000a8
+CA_WriteFile_TEXT      CODE           AUTO           0000:6130       0000006f
+CA_ReadFile_TEXT       CODE           AUTO           0000:61a0       0000007d
+CA_FarWrite_TEXT       CODE           AUTO           0000:6220       000000af
+CA_FarRead_TEXT        CODE           AUTO           0000:62d0       000000ad
+CA_CloseDebug_TEXT     CODE           AUTO           0000:6380       0000002f
+CA_OpenDebug_TEXT      CODE           AUTO           0000:63b0       00000053
+16_dbg_TEXT            CODE           AUTO           0000:6410       00000000
+_DEBUGF_TEXT           CODE           AUTO           0000:6410       0000004e
+_DEBUG_TEXT            CODE           AUTO           0000:6460       0000007b
+_DEBUG_INIT_TEXT       CODE           AUTO           0000:64e0       0000012c
+kitten_TEXT            CODE           AUTO           0000:6610       0000003c
+db_insert_TEXT         CODE           AUTO           0000:6650       0000010f
+db_fetch_TEXT          CODE           AUTO           0000:6760       00000098
+get_line_TEXT          CODE           AUTO           0000:6800       00000072
+processEscChars_TEXT   CODE           AUTO           0000:6880       0000018a
+mystrtoul_TEXT         CODE           AUTO           0000:6a10       000000b4
+kittenclose_TEXT       CODE           AUTO           0000:6ad0       0000001d
+catread_TEXT           CODE           AUTO           0000:6af0       000000b6
+kittenopen_TEXT        CODE           AUTO           0000:6bb0       0000025f
+kittengets_TEXT        CODE           AUTO           0000:6e10       00000063
+16_hc_TEXT             CODE           AUTO           0000:6e80       000001ac
+HC_CloseDebug_TEXT     CODE           AUTO           0000:7030       0000002f
+HC_OpenDebug_TEXT      CODE           AUTO           0000:7060       00000053
+heapstat0_TEXT         CODE           AUTO           0000:70c0       00000076
+heapstat_TEXT          CODE           AUTO           0000:7140       00000134
+heapdump_TEXT          CODE           AUTO           0000:7280       00000caf
+GetNearFreeSize_TEXT   CODE           AUTO           0000:7f30       0000005d
+GetFarFreeSize_TEXT    CODE           AUTO           0000:7f90       0000005f
+GetFreeSize_TEXT       CODE           AUTO           0000:7ff0       0000005d
+_hugecoreleft_TEXT     CODE           AUTO           0000:8050       000000d2
+LargestHugeFreeBlock_TEXT CODE        AUTO           0000:8130       000000ef
+_farcoreleft_TEXT      CODE           AUTO           0000:8220       000000b1
+LargestFarFreeBlock_TEXT CODE         AUTO           0000:82e0       000000b5
+_coreleft_TEXT         CODE           AUTO           0000:83a0       0000007f
+LargestFreeBlock_TEXT  CODE           AUTO           0000:8420       0000008d
+16_timer_TEXT          CODE           AUTO           0000:84b0       0000000d
+WaitPee_TEXT           CODE           AUTO           0000:84c0       0000002a
+shinkutxt_TEXT         CODE           AUTO           0000:84f0       0000014f
+time_in_seconds_TEXT   CODE           AUTO           0000:8640       0000004d
+ticktock_TEXT          CODE           AUTO           0000:8690       0000006b
+elapsed_timer_TEXT     CODE           AUTO           0000:8700       00000054
+start_timer_TEXT       CODE           AUTO           0000:8760       0000013a
+_TEXT                  CODE           AUTO           088a:0000       0000918b
+8250_TEXT              CODE           AUTO           088a:9190       0000009a
+8250bios_TEXT          CODE           AUTO           088a:9230       00000086
+8250siop_TEXT          CODE           AUTO           088a:92c0       00000000
+8250prob_TEXT          CODE           AUTO           088a:92c0       000002d5
+8250cint_TEXT          CODE           AUTO           088a:95a0       00000045
+8250fifo_TEXT          CODE           AUTO           088a:95f0       0000008a
+8250bauc_TEXT          CODE           AUTO           088a:9680       00000041
+8250baud_TEXT          CODE           AUTO           088a:96d0       00000040
+doswin_TEXT            CODE           AUTO           088a:9710       00000231
+dos_TEXT               CODE           AUTO           088a:9950       000001bd
+dosntvig_TEXT          CODE           AUTO           088a:9b10       00000000
+16_in13_DATA           FAR_DATA       AUTO           123b:0000       000001a4
+FAR_DATA               FAR_DATA       AUTO           1255:0004       00000000
+_NULL                  BEGDATA        DGROUP         1256:0000       00000020
+_AFTERNULL             BEGDATA        DGROUP         1258:0000       00000002
+CONST                  DATA           DGROUP         1258:0002       00000102
+CONST2                 DATA           DGROUP         1268:0004       0000013a
+_DATA                  DATA           DGROUP         127c:0000       00000630
+XIB                    DATA           DGROUP         12df:0000       00000000
+XI                     DATA           DGROUP         12df:0000       0000003c
+XIE                    DATA           DGROUP         12e2:000c       00000000
+YIB                    DATA           DGROUP         12e2:000c       00000000
+YI                     DATA           DGROUP         12e2:000c       00000018
+YIE                    DATA           DGROUP         12e4:0004       00000000
+STRINGS                DATA           DGROUP         12e4:0004       00000000
+DATA                   DATA           DGROUP         12e4:0004       00000000
+_emu_init_start        EMU            DGROUP         12e4:0004       00000000
+_emu_init_end          EMU            DGROUP         12e4:0004       00000000
+_BSS                   BSS            DGROUP         12e5:0000       000009fc
+STACK                  STACK          DGROUP         1385:0000       00008000
+
+
+                        +----------------+
+                        |   Memory Map   |
+                        +----------------+
+
+* = unreferenced symbol
++ = symbol only referenced locally
+
+Address        Symbol
+=======        ======
+
+Module: inputest.obj(/dos/z/16/src/inputest.c)
+0000:006a      main_
+Module: 16_in.obj(/dos/z/16/src/lib/16_in.c)
+1256:0274      _testkeyin
+1256:0276      _testcontrolnoisy
+0000:22f0+     INL_KeyService_
+0000:22c2*     Mouse_
+0000:2200+     IN_GetJoyAbs_
+0000:1eb2+     IN_GetJoyButtonsDB_
+0000:1ae0+     IN_SetupJoy_
+0000:1962      IN_Startup_
+0000:1840      IN_Default_
+0000:17b2      IN_Shutdown_
+0000:1780*     IN_SetKeyHook_
+0000:1712+     IN_ClearKeysDown_
+0000:1550*     IN_ReadCursor_
+0000:0a3a      IN_ReadControl_
+0000:09e0      IN_SetControlType_
+0000:0952*     IN_GetScanName_
+0000:0910*     IN_WaitForKey_
+0000:08d2*     IN_WaitForASCII_
+0000:07d0+     IN_AckBack_
+0000:0722*     IN_Ack_
+0000:0670+     IN_IsUserInput_
+0000:0622*     IN_UserInput_
+0000:05d0      IN_KeyDown_
+0000:0552+     IN_ClearKey_
+0000:04f0      IN_qb_
+1256:09fe+     _inpu
+0000:0382*     IN_initplayer_
+Module: 16_mm.obj(/dos/z/16/src/lib/16_mm.c)
+0000:59a0+     MML_CheckForEMS_
+0000:57e2+     MML_SetupEMS_
+0000:5770+     MML_ShutdownEMS_
+0000:5662+     MM_MapEMS_
+0000:5530*     MM_MapXEMS_
+0000:54d2+     MML_CheckForXMS_
+0000:53e0*     MML_SetupXMS_
+0000:5352+     MML_ShutdownXMS_
+0000:5170+     MML_UseSpace_
+0000:50e2+     MML_ClearBlock_
+0000:4ca0*     MM_Startup_
+0000:4c02+     MM_Shutdown_
+0000:47f0      MM_GetPtr_
+0000:46f2+     MM_FreePtr_
+0000:4610*     MM_SetPurge_
+0000:4532*     MM_SetLock_
+0000:4340+     MM_SortMem_
+0000:3ca2*     MM_ShowMemory_
+0000:3b30*     MM_DumpData_
+0000:3aa2+     MM_UnusedMemory_
+0000:3a00+     MM_TotalFree_
+0000:37d2*     MM_Report_
+1256:0bd0+     _beforesort
+1256:0bd4+     _aftersort
+1256:0bd8+     _XMSaddr
+0000:2f90*     MM_BombOnError_
+Module: wcpu.obj(/dos/z/16/src/lib/wcpu/wcpu.c)
+0000:5a00      detectcpu_
+Module: 16_head.obj(/dos/z/16/src/lib/16_head.c)
+0000:5e80*     wait_
+0000:5e12*     filesize_
+0000:5c20      printmeminfoline_
+0000:5ac2      US_CheckParm_
+0000:5a7a      dirchar_
+Module: 16_ca.obj(/dos/z/16/src/lib/16_ca.c)
+0000:63b0      CA_OpenDebug_
+0000:6382      CA_CloseDebug_
+0000:62d0+     CA_FarRead_
+0000:6222+     CA_FarWrite_
+0000:61a0*     CA_ReadFile_
+0000:6132*     CA_WriteFile_
+0000:6080*     CA_LoadFile_
+0000:5fc2*     CAL_OptimizeNodes_
+0000:5f60*     CA_Startup_
+1256:0ce0*     _finishcachebox
+1256:0ce4*     _drawcachebox
+1256:0ce8*     _updatecachebox
+0000:5f32*     CA_Shutdown_
+Module: 16_dbg.obj(/dos/z/16/src/lib/16_dbg.c)
+0000:64e0*     _DEBUG_INIT_
+0000:6462+     _DEBUG_
+1256:0564+     __DEBUG_INITed
+1256:0568+     __DEBUG_uart
+0000:6410*     _DEBUGF_
+Module: kitten.obj(/dos/z/16/src/lib/nyan/kitten.c)
+0000:6e10      KITTENGETS
+0000:6bb2*     kittenopen_
+0000:6af0+     catread_
+0000:6ad2*     kittenclose_
+0000:6a10+     mystrtoul_
+0000:6882+     processEscChars_
+0000:6800+     get_line_
+0000:6762+     db_fetch_
+1256:056c+     __kitten_catalog
+0000:6650+     db_insert_
+Module: 16_hc.obj(/dos/z/16/src/lib/16_hc.c)
+0000:8420+     LargestFreeBlock_
+0000:83a2+     _coreleft_
+0000:82e0+     LargestFarFreeBlock_
+0000:8222+     _farcoreleft_
+0000:8130+     LargestHugeFreeBlock_
+0000:8052*     _hugecoreleft_
+0000:7ff0+     GetFreeSize_
+0000:7f92+     GetFarFreeSize_
+0000:7f30+     GetNearFreeSize_
+0000:7282*     heapdump_
+0000:714a+     heapstat_
+0000:70cc+     heapstat0_
+0000:7060+     HC_OpenDebug_
+0000:7032*     HC_CloseDebug_
+Module: 16_timer.obj(/dos/z/16/src/lib/16_timer.c)
+0000:8760      start_timer_
+0000:8702*     elapsed_timer_
+0000:8690+     ticktock_
+0000:8642*     time_in_seconds_
+0000:84f0      shinkutxt_
+0000:84c2*     WaitPee_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(stk086.asm)
+088a:0005      __STK
+088a:0025      __STKOVERFLOW_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(printf.c)
+088a:0042      printf_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(cstart)
+1256:0000*     __nullarea
+1256:0586*     __ovlflag
+1256:0587*     __intno
+1256:0588*     __ovlvec
+088a:0072      _cstart_
+088a:0145*     _Not_Enough_Memory_
+088a:0277      __exit_
+088a:0294      __do_exit_with_msg__
+088a:02ed      __GETDS
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(cmodel.asm)
+088a:02f8      _big_code_
+088a:02f8*     CodeModelMismatch
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(argcv.c)
+1256:0f74      __argv
+1256:0f78      ___argv
+1256:0f7c      __argc
+1256:0f7e      ___argc
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(pia.asm)
+088a:02ff      __PIA
+088a:02f8*     __PIS
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(intx086.c)
+088a:0316+     int86x_
+088a:0499      int86_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(i4m.asm)
+088a:04c6      __I4M
+088a:04c6      __U4M
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(d_getvec.c)
+088a:04de      _dos_getvect_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(d_setvec.c)
+088a:04e9      _dos_setvect_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(i4d.asm)
+088a:04f6      __I4D
+088a:0545      __U4D
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(heapgrow.c)
+088a:05c9*     _heapgrow_
+088a:05c9      _fheapgrow_
+088a:05ca      _nheapgrow_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(memavl.c)
+088a:063f      _memavl_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(nmalloc.c)
+088a:0684      _nmalloc_
+1256:058c      ___nheapbeg
+1256:058e      ___MiniHeapRover
+1256:0590      ___LargestSizeB4MiniHeapRover
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fmalloc.c)
+088a:075b      _fmalloc_
+088a:075b      malloc_
+1256:0592      ___fheap
+1256:0594      ___fheapRover
+1256:0596      ___LargestSizeB4Rover
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ffree.c)
+088a:08d0      _ffree_
+088a:08d0      free_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(nfree.c)
+088a:093d      _nfree_
+1256:0f80+     ___MiniHeapFreeRover
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(exit.c)
+088a:0a38+     __null_int23_exit_
+088a:0a39      exit_
+088a:0a51*     _exit_
+1256:0598+     ___int23_exit
+1256:059c      ___FPE_handler_exit
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ptc.asm)
+088a:0a6c      __PTC
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ltoa.c)
+088a:0a9f      ultoa_
+088a:0b5d*     ltoa_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(write.c)
+088a:0ce3      write_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fopen.c)
+088a:0f0f+     __open_flags_
+088a:11d0+     _fsopen_
+088a:1236      fopen_
+088a:1359*     freopen_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fprintf.c)
+088a:13e1      fprintf_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fclose.c)
+088a:1410      __doclose_
+088a:155a      __shutdown_stream_
+088a:1574      fclose_
+1256:0f82+     ___RmTmpFileFn
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(clockdos.c)
+088a:1655      clock_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(kbhit.c)
+088a:167c      kbhit_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ftell.c)
+088a:1693      ftell_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fseek.c)
+088a:1879      fseek_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(istable.c)
+1256:0124      __IsTable
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(tolower.c)
+088a:1a71      tolower_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(unlnk.c)
+088a:1a7f      unlink_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(open.c)
+088a:1caf      open_
+088a:1ce6      sopen_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(close.c)
+088a:1d13      close_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(filelen.c)
+088a:1d18      filelength_
+Module: src/lib/doslib/hw/8250/dos86h/8250.lib(/dos/z/16/src/lib/doslib/hw/8250/8250.c)
+088a:9190      already_got_8250_port_
+088a:91e4      init_8250_
+1256:05a8+     _inited_8250
+1256:0f8a      _base_8250_port
+1256:0f9a      _info_8250_port
+1256:0fba      _base_8250_ports
+Module: src/lib/doslib/hw/8250/dos86h/8250.lib(/dos/z/16/src/lib/doslib/hw/8250/8250bios.c)
+088a:9230      probe_8250_bios_ports_
+088a:926a      get_8250_bios_port_
+1256:05aa      _bios_8250_ports
+Module: src/lib/doslib/hw/8250/dos86h/8250.lib(/dos/z/16/src/lib/doslib/hw/8250/8250siop.c)
+1256:0226      _standard_8250_ports
+Module: src/lib/doslib/hw/8250/dos86h/8250.lib(/dos/z/16/src/lib/doslib/hw/8250/8250prob.c)
+088a:92c0      probe_8250_
+Module: src/lib/doslib/hw/8250/dos86h/8250.lib(/dos/z/16/src/lib/doslib/hw/8250/8250cint.c)
+088a:95a0      uart_8250_enable_interrupt_
+Module: src/lib/doslib/hw/8250/dos86h/8250.lib(/dos/z/16/src/lib/doslib/hw/8250/8250fifo.c)
+088a:95f0*     uart_8250_disable_FIFO_
+088a:9630      uart_8250_set_FIFO_
+Module: src/lib/doslib/hw/8250/dos86h/8250.lib(/dos/z/16/src/lib/doslib/hw/8250/8250bauc.c)
+088a:9680      uart_8250_baud_to_divisor_
+088a:969c*     uart_8250_divisor_to_baud_
+Module: src/lib/doslib/hw/8250/dos86h/8250.lib(/dos/z/16/src/lib/doslib/hw/8250/8250baud.c)
+088a:96d0      uart_8250_set_baudrate_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(snprintf.c)
+088a:1de4      vsnprintf_
+088a:1e79*     snprintf_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(sprintf.c)
+088a:1ea8      sprintf_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(getenv.c)
+088a:1ed7      getenv_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(pts.asm)
+088a:1fc2      __PTS
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(read.c)
+088a:1ff3      read_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(strdup.c)
+088a:2133*     __clib_strdup_
+088a:2133      strdup_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(haloc.c)
+088a:219a      halloc_
+088a:227f      hfree_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fheapwal.c)
+088a:2286      _heapwalk_
+088a:2286      _fheapwalk_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(nheapwal.c)
+088a:229b+     __NHeapWalk_
+088a:2390      _nheapwalk_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(stack086.c)
+088a:23a0      stackavail_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(iob.c)
+1256:05ac      ___iob
+1256:0fbc      ___ClosedStreams
+1256:0fc0      ___OpenStreams
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fltused.c)
+1256:0714      _fltused_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(_8087086.asm)
+1256:0716      __8087
+1256:0717      __real87
+1256:0718      __dos87emucall
+1256:071a      __dos87real
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(xmsg.c)
+088a:23ae*     __exit_with_msg_
+088a:23b3      __fatal_runtime_error_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(crwdata)
+1256:071c      __curbrk
+1256:0724      __STACKLOW
+1256:0726      __STACKTOP
+1256:0728      __cbyte
+1256:072a      __child
+1256:072c      __no87
+1256:0739      ___FPE_handler
+1256:071e      __psp
+1256:072d      __get_ovl_stack
+1256:0731      __restore_ovl_stack
+1256:0735      __close_ovl_file
+1256:073d      __LpCmdLine
+1256:0741      __LpPgmName
+1256:0720      __osmajor
+1256:0721      __osminor
+1256:0722      __osmode
+1256:0723      __HShift
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fprtf.c)
+088a:23ea      __fprtf_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(cmain086.c)
+088a:253d      __CMain
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(initrtns.c)
+088a:259e      __InitRtns
+088a:259e*     __FInitRtns
+088a:25f9      __FiniRtns
+088a:25f9*     __FFiniRtns
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(uselfn.c)
+1256:0746      ___uselfn
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(dosseg)
+088a:265e      __DOSseg__
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(initargv.c)
+088a:298d      __Init_Argv_
+088a:29ef      __Fini_Argv_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(intr.c)
+088a:2a19      intr_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(segread.c)
+088a:2a2d      segread_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(grownear.c)
+088a:2b18      __LastFree_
+088a:2b92      __ExpandDGROUP_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mem.c)
+088a:2cb0      __MemAllocator
+088a:2d7a      __MemFree
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(nmemneed.c)
+088a:2ee6      __nmemneed_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(growseg.c)
+088a:2ee9      __GrowSeg_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(allocseg.c)
+088a:305f      __AllocSeg_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fmemneed.c)
+088a:314e      __fmemneed_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(alphabet.c)
+1256:0022      ___Alphabet
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(__lseek.c)
+088a:3151      __lseek_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(errno.c)
+088a:318b*     __get_errno_ptr_
+1256:0fc8      _errno
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(dosret.c)
+088a:3192*     __dosretax
+088a:3197*     __dosret0
+088a:319e      __set_errno_dos_
+088a:3206*     __set_errno_dos_reterr_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(iomode.c)
+088a:3211      __GetIOMode_
+088a:3246      __SetIOMode_nogrow_
+1256:075c      ___NFiles
+1256:075e      ___init_mode
+1256:0786      ___io_mode
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(comtflag.c)
+088a:327b*     __set_commode_
+1256:078a      __commode
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(textmode.c)
+1256:078c      __fmode
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(chktty.c)
+088a:3287      __chktty_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(freefp.c)
+088a:32e6      __freefp_
+088a:3387      __purgefp_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(allocfp.c)
+088a:33c8      __allocfp_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(_clse.c)
+088a:3578      __close_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(flush.c)
+088a:35ae      __flush_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fflush.c)
+088a:37f7      fflush_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(tell.c)
+088a:380c      tell_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(lseek.c)
+088a:381d      lseek_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(error086.asm)
+088a:384e      __doserror_
+088a:385c      __doserror1_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(opendos.c)
+088a:3868      _dos_open_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(isatt.c)
+088a:388e      isatty_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(doserrno.c)
+088a:38aa*     __get_doserrno_ptr_
+1256:0fca      __doserrno
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(umaskval.c)
+1256:078e      ___umaskval
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(creatdos.c)
+088a:38b1      _dos_creat_
+088a:38d5*     _dos_creatnew_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(stiomode.c)
+088a:38f6+     __grow_iomode_
+088a:39dd+     __shrink_iomode_
+088a:3a1e      __SetIOMode_
+Module: src/lib/doslib/hw/dos/dos86h/dos.lib(/dos/z/16/src/lib/doslib/hw/dos/doswin.c)
+088a:9710*     detect_windows_
+1256:0790+     _windows_version_method
+1256:0794+     _windows_version
+1256:0796      _windows_mode
+1256:0797+     _windows_init
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(prtf.c)
+088a:3ac5      __prtf_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(vsprintf.c)
+088a:4c32      vsprintf_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(environ.c)
+1256:0fce      ___env_mask
+1256:0fd2      _environ
+1256:0fd6*     __wenviron
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbterm.c)
+088a:4c74      _mbterm_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbsnextc.c)
+088a:4cc7      _mbsnextc_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbcupper.c)
+088a:4d22      _mbctoupper_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbsinc.c)
+088a:4d45      _mbsinc_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(iomodtty.c)
+088a:4d97      __ChkTTYIOMode_
+088a:4e05*     __IOMode_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(heapwalk.c)
+088a:4ed7      __HeapWalk_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(initfile.c)
+088a:50fd      __InitFiles_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ioexit.c)
+088a:532e*     fcloseall_
+088a:5335      __full_io_exit_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(setefg.c)
+088a:533f      __setEFGfmt_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(chk8087.c)
+088a:5377*     _fpreset_
+088a:53a2      __init_8087_
+088a:5421      __chk8087_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(enterdb.c)
+088a:5491      __EnterWVIDEO_
+1256:07b6+     ___WD_Present
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fputc.c)
+088a:54b5      fputc_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ioalloc.c)
+088a:568a      __ioalloc_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(___argc.c)
+1256:0fda      ____Argv
+1256:0fde      ____Argc
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(amblksiz.c)
+1256:07b8      __amblksiz
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(sgdef086)
+1256:0890      __Start_XI
+1256:08cc      __End_XI
+1256:08cc      __Start_YI
+1256:08e4      __End_YI
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(histsplt.c)
+1256:0fe0      ___historical_splitparms
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(dointr)
+088a:5818      _DoINTR_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(heapen.c)
+088a:5b91*     _heapenable_
+1256:07ba      ___heap_enabled
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(sbrk.c)
+088a:5ba2      __brk_
+088a:5c09*     sbrk_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(qwrit.c)
+088a:5c19      __qwrite_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fsync.c)
+088a:5c79      fsync_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(flushall.c)
+088a:5c7e+     __flushall_
+088a:5d12      flushall_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(frealloc.c)
+088a:5d18*     _frealloc_
+088a:5d18      realloc_
+Module: src/lib/doslib/hw/dos/dos86h/dos.lib(/dos/z/16/src/lib/doslib/hw/dos/dos.c)
+088a:9950      probe_dos_
+1256:07c0*     _lib_dos_option
+1256:07c1+     _dos_flavor
+1256:07c2      _dos_version
+1256:07c4+     _freedos_kernel_version
+1256:07c8+     _dos_version_method
+Module: src/lib/doslib/hw/dos/dos86h/dos.lib(/dos/z/16/src/lib/doslib/hw/dos/dosntvig.c)
+1256:07d0      _detect_windows_ntdvm_dosntast_init_CB
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(wctomb.c)
+088a:5df4      wctomb_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(itoa.c)
+088a:5e3f+     utoa_
+088a:5ee0      itoa_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(strupr.c)
+088a:5f2a      strupr_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(noefgfmt.c)
+1256:07d4      ___EFG_printf
+1256:07d8      ___EFG_scanf
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbisdbcs.c)
+1256:07dc      ___IsDBCS
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbislead.c)
+088a:5f76*     _ismbblead_
+1256:0fe2      ___MBCSIsTable
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(lltoa.c)
+088a:5f92      ulltoa_
+088a:60cf*     lltoa_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(setenvp.c)
+088a:615e      __setenvp_
+088a:62ea      __freeenvp_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbinit.c)
+088a:6386      __mbinit_
+1256:07de      ___MBCodePage
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbdtoupp.c)
+088a:6461      _mbdtoupper_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(toupper.c)
+088a:646f      toupper_
+Module: /dos/fdos/watcom2/lib286/math87h.lib(efgfmt.c)
+088a:647d      _EFG_Format_
+Module: /dos/fdos/watcom2/lib286/math87h.lib(cnvs2d.c)
+088a:664f      __cnvs2d_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(8087cw.c)
+1256:07e0      __8087cw
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(save8087.c)
+1256:07e2      ___Save8087
+1256:07e6      ___Rest8087
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(grabfp87.c)
+088a:666f      __GrabFP87_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ini87086.asm)
+088a:66a2*     __init_8087_emu
+088a:66a8      __x87id
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(filedos.c)
+088a:6705*     _dos_close_
+088a:6713      _dos_commit_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fmsize.c)
+088a:6722*     _msize_
+088a:673d      _fmsize_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(nexpand.c)
+088a:674e      _nexpand_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fexpand.c)
+088a:67a2      _fexpand_
+088a:67a2*     _expand_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(clearenv.c)
+088a:67d7      clearenv_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(rtcntrl.c)
+088a:6908*     _SetLD64bit_
+088a:6913*     _SetLD80bit_
+088a:691e      _LDisDouble_
+Module: /dos/fdos/watcom2/lib286/math87h.lib(ldcvt.c)
+088a:6a83      _LDScale10x_
+088a:735b+     __cvtld_
+088a:7b37      __LDcvt_
+Module: /dos/fdos/watcom2/lib286/noemu87.lib(emustub.asm)
+0000:0000*     FJSRQQ
+0000:0000*     FISRQQ
+0000:0000*     FIERQQ
+0000:0000      FIDRQQ
+0000:0000      FIWRQQ
+0000:0000*     FJCRQQ
+0000:0000*     FJARQQ
+0000:0000*     FICRQQ
+0000:0000*     FIARQQ
+088a:7b48*     __init_87_emulator
+Module: /dos/fdos/watcom2/lib286/math87h.lib(strtod.c)
+088a:835c+     __Strtold_
+088a:859b      strtod_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fpe87.asm)
+088a:8742      __Init_FPE_handler_
+088a:877b      __Fini_FPE_handler_
+088a:87b2*     __FPEHandler
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(_expand.c)
+088a:8a44      __HeapManager_expand_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(bexpand.c)
+088a:8f79      _bexpand_
+Module: /dos/fdos/watcom2/lib286/math87h.lib(ldclass.c)
+088a:8fd2      __LDClass_
+088a:9058*     _FLClass_
+Module: /dos/fdos/watcom2/lib286/math87h.lib(bufld086.asm)
+088a:906c      __ZBuf2LD
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(seterrno.c)
+088a:9134*     __set_EDOM_
+088a:9140      __set_ERANGE_
+088a:914c*     __set_EINVAL_
+Module: /dos/fdos/watcom2/lib286/math87h.lib(inf_nan.c)
+1256:022e*     ___f_infinity
+1256:0232*     ___f_posqnan
+1256:0236      ___d_infinity
+1256:023e      ___d_posqnan
+1256:0246*     ___ld_infinity
+1256:024e*     ___ld_posqnan
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(hugeval.c)
+1256:0256      __HugeValue
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fpeint.c)
+1256:088e      ___FPE_int
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(bfree.c)
+088a:9166      _bfree_
+
+
+                        +--------------------+
+                        |   Libraries Used   |
+                        +--------------------+
+
+src/lib/doslib/hw/dos/dos86h/dos.lib
+src/lib/doslib/hw/8250/dos86h/8250.lib
+/dos/fdos/watcom2/lib286/noemu87.lib
+/dos/fdos/watcom2/lib286/math87h.lib
+/dos/fdos/watcom2/lib286/dos/clibh.lib
+
+
+                        +-----------------------+
+                        |   Linker Statistics   |
+                        +-----------------------+
+
+Stack size:  8000 (32768.)
+Memory size:  0001b850 (112720.)
+Entry point address: 088a:0072
+Link time: 00:00.18

@@ -84,7 +84,7 @@ void main() {
 	MM_Startup(&mm, &mmi);
 	CA_Startup(&gvar);
 	// What should be done by read_vrs:
-	sega = (mm.bufferseg);
+	//sega = (mm.bufferseg);
 	if(CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &mm, &mmi)) baka=1; else baka=0;
 	fd = open("data/spri/chikyuu.vrs", O_RDONLY|O_BINARY);
 	size = lseek(fd, 0, SEEK_END);

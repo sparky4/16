@@ -30,10 +30,10 @@
 #include <string.h>
 #include "src/lib/16_head.h"
 #include "src/lib/16_timer.h"
+#ifdef __WATCOMC__	//borland C BCEXMM.EXE
+#include "src/lib/16_dbg.h"
 #include "src/lib/16_sprit.h"
 #include "src/lib/bitmap.h"	//old format
-#ifdef __WATCOMC__
-#include "src/lib/16_dbg.h"
 #endif
 #ifdef	__DEBUG__
 //#define	__DEBUG_InputMgr__

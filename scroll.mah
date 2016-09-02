@@ -1,0 +1,1105 @@
+Open Watcom Linker Version 2.0 beta Aug 24 2016 09:33:23 (64-bit)
+Copyright (c) 2002-2016 The Open Watcom Contributors. All Rights Reserved.
+Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
+Created on:       16/09/02 11:34:32
+Executable Image: scroll.exe
+creating a DOS executable
+
+
+                        +------------+
+                        |   Groups   |
+                        +------------+
+
+Group                           Address              Size
+=====                           =======              ====
+
+DGROUP                          1f62:0000            0000eb50
+
+
+
+                        +--------------+
+                        |   Segments   |
+                        +--------------+
+
+Segment                Class          Group          Address         Size
+=======                =====          =====          =======         ====
+
+scroll_TEXT            CODE           AUTO           0000:0000       00000319
+main_TEXT              CODE           AUTO           0000:0320       00000f2b
+vga_AC_RGB_to_code_TEXT CODE          AUTO           0000:1250       00000000
+vga_wait_for_vsync_end_TEXT CODE      AUTO           0000:1250       00000000
+vga_wait_for_vsync_TEXT CODE          AUTO           0000:1250       00000000
+vga_wait_for_hsync_end_TEXT CODE      AUTO           0000:1250       00000000
+vga_wait_for_hsync_TEXT CODE          AUTO           0000:1250       00000000
+vga_in_vsync_TEXT      CODE           AUTO           0000:1250       00000000
+vga_palette_write_TEXT CODE           AUTO           0000:1250       00000000
+vga_palette_lseek_TEXT CODE           AUTO           0000:1250       00000000
+vga_AC_reenable_screen_TEXT CODE      AUTO           0000:1250       00000000
+vga_set_stride_TEXT    CODE           AUTO           0000:1250       00000000
+vga_read_AC_TEXT       CODE           AUTO           0000:1250       00000000
+vga_set_xpan_TEXT      CODE           AUTO           0000:1250       00000000
+vga_write_AC_TEXT      CODE           AUTO           0000:1250       00000000
+vga_set_cga_mode_TEXT  CODE           AUTO           0000:1250       00000000
+vga_set_cga_palette_and_background_TEXT CODE AUTO    0000:1250       00000000
+vga_write_PAL_TEXT     CODE           AUTO           0000:1250       00000000
+vga_read_PAL_TEXT      CODE           AUTO           0000:1250       00000000
+vga_write_color_TEXT   CODE           AUTO           0000:1250       00000000
+vga_set_ypan_sub_TEXT  CODE           AUTO           0000:1250       00000000
+vga_write_CRTC_TEXT    CODE           AUTO           0000:1250       00000000
+vga_write_GC_TEXT      CODE           AUTO           0000:1250       00000000
+vga_write_sequencer_TEXT CODE         AUTO           0000:1250       00000000
+vga_read_sequencer_TEXT CODE          AUTO           0000:1250       00000000
+vga_tandy_setpalette_TEXT CODE        AUTO           0000:1250       00000000
+vga_moveto_TEXT        CODE           AUTO           0000:1250       00000000
+vga_read_GC_TEXT       CODE           AUTO           0000:1250       00000000
+vga_read_CRTC_TEXT     CODE           AUTO           0000:1250       00000000
+detect_window_enable_ntdvm_TEXT CODE  AUTO           0000:1250       00000000
+read_bios_keystate_TEXT CODE          AUTO           0000:1250       00000000
+normalize_realmode_far_ptr_TEXT CODE  AUTO           0000:1250       00000000
+ptr2phys_low1mb_TEXT   CODE           AUTO           0000:1250       00000000
+ntvdm_rm_code_alloc_TEXT CODE         AUTO           0000:1250       00000000
+uart_8250_write_TEXT   CODE           AUTO           0000:1250       00000000
+uart_8250_can_write_TEXT CODE         AUTO           0000:1250       00000000
+uart_8250_read_TEXT    CODE           AUTO           0000:1250       00000000
+uart_8250_can_read_TEXT CODE          AUTO           0000:1250       00000000
+uart_8250_set_line_control_TEXT CODE  AUTO           0000:1250       00000000
+uart_8250_read_MSR_TEXT CODE          AUTO           0000:1250       00000000
+uart_8250_read_MCR_TEXT CODE          AUTO           0000:1250       00000000
+uart_8250_set_MCR_TEXT CODE           AUTO           0000:1250       00000000
+just_int86_TEXT        CODE           AUTO           0000:1250       00000000
+_sti_if_flags_TEXT     CODE           AUTO           0000:1250       00000000
+ptr2phys_TEXT          CODE           AUTO           0000:1250       00000000
+mapread_TEXT           CODE           AUTO           0000:1250       0000009b
+loadmap_TEXT           CODE           AUTO           0000:12f0       00000252
+dump_TEXT              CODE           AUTO           0000:1550       0000051f
+jsoneq_TEXT            CODE           AUTO           0000:1a70       000000a4
+jsmn_TEXT              CODE           AUTO           0000:1b20       00000000
+jsmn_init_TEXT         CODE           AUTO           0000:1b20       0000004d
+jsmn_parse_TEXT        CODE           AUTO           0000:1b70       00000579
+jsmn_parse_string_TEXT CODE           AUTO           0000:20f0       000001c7
+jsmn_parse_primitive_TEXT CODE        AUTO           0000:22c0       0000010c
+jsmn_fill_token_TEXT   CODE           AUTO           0000:23d0       00000061
+jsmn_alloc_token_TEXT  CODE           AUTO           0000:2440       000000b2
+16_in_TEXT             CODE           AUTO           0000:2500       00000156
+IN_initplayer_TEXT     CODE           AUTO           0000:2660       00000161
+IN_qb_TEXT             CODE           AUTO           0000:27d0       00000059
+IN_ClearKey_TEXT       CODE           AUTO           0000:2830       0000007a
+IN_KeyDown_TEXT        CODE           AUTO           0000:28b0       00000047
+IN_UserInput_TEXT      CODE           AUTO           0000:2900       00000047
+IN_IsUserInput_TEXT    CODE           AUTO           0000:2950       000000b0
+IN_Ack_TEXT            CODE           AUTO           0000:2a00       000000af
+IN_AckBack_TEXT        CODE           AUTO           0000:2ab0       000000fd
+IN_WaitForASCII_TEXT   CODE           AUTO           0000:2bb0       00000037
+IN_WaitForKey_TEXT     CODE           AUTO           0000:2bf0       00000035
+IN_GetScanName_TEXT    CODE           AUTO           0000:2c30       0000008a
+IN_SetControlType_TEXT CODE           AUTO           0000:2cc0       0000004d
+IN_ReadControl_TEXT    CODE           AUTO           0000:2d10       00000b18
+IN_ReadCursor_TEXT     CODE           AUTO           0000:3830       00000132
+INL_AdjustCursor_TEXT  CODE           AUTO           0000:3970       00000073
+IN_ClearKeysDown_TEXT  CODE           AUTO           0000:39f0       0000006f
+IN_SetKeyHook_TEXT     CODE           AUTO           0000:3a60       00000022
+IN_Shutdown_TEXT       CODE           AUTO           0000:3a90       00000084
+IN_Default_TEXT        CODE           AUTO           0000:3b20       0000011f
+IN_Startup_TEXT        CODE           AUTO           0000:3c40       0000010e
+INL_ShutJoy_TEXT       CODE           AUTO           0000:3d50       00000000
+INL_StartJoy_TEXT      CODE           AUTO           0000:3d50       0000006a
+IN_SetupJoy_TEXT       CODE           AUTO           0000:3dc0       0000015e
+INL_SetJoyScale_TEXT   CODE           AUTO           0000:3f20       00000189
+INL_ShutMouse_TEXT     CODE           AUTO           0000:40b0       00000000
+INL_StartMouse_TEXT    CODE           AUTO           0000:40b0       0000004d
+INL_ShutKbd_TEXT       CODE           AUTO           0000:4100       00000039
+INL_StartKbd_TEXT      CODE           AUTO           0000:4140       0000004c
+IN_GetJoyButtonsDB_TEXT CODE          AUTO           0000:4190       0000004b
+INL_GetJoyButtons_TEXT CODE           AUTO           0000:41e0       00000033
+INL_GetJoyDelta_TEXT   CODE           AUTO           0000:4220       000002bb
+IN_GetJoyAbs_TEXT      CODE           AUTO           0000:44e0       000000bf
+INL_GetMouseButtons_TEXT CODE         AUTO           0000:45a0       00000000
+INL_GetMouseDelta_TEXT CODE           AUTO           0000:45a0       00000000
+Mouse_TEXT             CODE           AUTO           0000:45a0       0000002c
+INL_KeyService_TEXT    CODE           AUTO           0000:45d0       000002a5
+16_mm_TEXT             CODE           AUTO           0000:4880       000009e4
+MM_BombOnError_TEXT    CODE           AUTO           0000:5270       0000002e
+MM_EMSerr_TEXT         CODE           AUTO           0000:52a0       00000805
+MM_Report_TEXT         CODE           AUTO           0000:5ab0       00000230
+MM_TotalFree_TEXT      CODE           AUTO           0000:5ce0       00000095
+MM_UnusedMemory_TEXT   CODE           AUTO           0000:5d80       00000086
+MM_DumpData_TEXT       CODE           AUTO           0000:5e10       00000162
+MM_ShowMemory_TEXT     CODE           AUTO           0000:5f80       0000069c
+MM_SortMem_TEXT        CODE           AUTO           0000:6620       000001ee
+MM_SetLock_TEXT        CODE           AUTO           0000:6810       000000df
+MM_SetPurge_TEXT       CODE           AUTO           0000:68f0       000000dc
+MM_FreePtr_TEXT        CODE           AUTO           0000:69d0       000000f9
+MM_GetPtr_TEXT         CODE           AUTO           0000:6ad0       00000405
+MM_Shutdown_TEXT       CODE           AUTO           0000:6ee0       0000009c
+MM_Startup_TEXT        CODE           AUTO           0000:6f80       00000439
+MML_ClearBlock_TEXT    CODE           AUTO           0000:73c0       00000088
+MML_UseSpace_TEXT      CODE           AUTO           0000:7450       000001df
+MML_ShutdownXMS_TEXT   CODE           AUTO           0000:7630       00000090
+MML_SetupXMS_TEXT      CODE           AUTO           0000:76c0       000000e9
+MML_CheckForXMS_TEXT   CODE           AUTO           0000:77b0       0000005e
+MM_MapXEMS_TEXT        CODE           AUTO           0000:7810       00000126
+MM_MapEMS_TEXT         CODE           AUTO           0000:7940       00000104
+MML_ShutdownEMS_TEXT   CODE           AUTO           0000:7a50       0000006f
+MML_SetupEMS_TEXT      CODE           AUTO           0000:7ac0       000001c0
+MML_CheckForEMS_TEXT   CODE           AUTO           0000:7c80       0000005b
+wcpu_TEXT              CODE           AUTO           0000:7ce0       00000000
+detectcpu_TEXT         CODE           AUTO           0000:7ce0       00000058
+16_head_TEXT           CODE           AUTO           0000:7d40       0000000d
+dirchar_TEXT           CODE           AUTO           0000:7d50       00000046
+US_CheckParm_TEXT      CODE           AUTO           0000:7da0       0000015b
+printmeminfoline_TEXT  CODE           AUTO           0000:7f00       000001ec
+filesize_TEXT          CODE           AUTO           0000:80f0       00000068
+wait_TEXT              CODE           AUTO           0000:8160       0000004b
+16_ca_TEXT             CODE           AUTO           0000:81b0       00000058
+CA_Shutdown_TEXT       CODE           AUTO           0000:8210       0000002f
+CA_Startup_TEXT        CODE           AUTO           0000:8240       00000053
+CAL_OptimizeNodes_TEXT CODE           AUTO           0000:82a0       000000b1
+CA_LoadFile_TEXT       CODE           AUTO           0000:8360       000000a8
+CA_WriteFile_TEXT      CODE           AUTO           0000:8410       0000006f
+CA_ReadFile_TEXT       CODE           AUTO           0000:8480       0000007d
+CA_FarWrite_TEXT       CODE           AUTO           0000:8500       000000af
+CA_FarRead_TEXT        CODE           AUTO           0000:85b0       000000ad
+CA_CloseDebug_TEXT     CODE           AUTO           0000:8660       0000002f
+CA_OpenDebug_TEXT      CODE           AUTO           0000:8690       00000053
+16_dbg_TEXT            CODE           AUTO           0000:86f0       00000000
+_DEBUGF_TEXT           CODE           AUTO           0000:86f0       0000004e
+_DEBUG_TEXT            CODE           AUTO           0000:8740       0000007b
+_DEBUG_INIT_TEXT       CODE           AUTO           0000:87c0       0000012c
+kitten_TEXT            CODE           AUTO           0000:88f0       0000003c
+db_insert_TEXT         CODE           AUTO           0000:8930       0000010f
+db_fetch_TEXT          CODE           AUTO           0000:8a40       00000098
+get_line_TEXT          CODE           AUTO           0000:8ae0       00000072
+processEscChars_TEXT   CODE           AUTO           0000:8b60       0000018a
+mystrtoul_TEXT         CODE           AUTO           0000:8cf0       000000b4
+kittenclose_TEXT       CODE           AUTO           0000:8db0       0000001d
+catread_TEXT           CODE           AUTO           0000:8dd0       000000b6
+kittenopen_TEXT        CODE           AUTO           0000:8e90       0000025f
+kittengets_TEXT        CODE           AUTO           0000:90f0       00000063
+16_hc_TEXT             CODE           AUTO           0000:9160       000001ac
+HC_CloseDebug_TEXT     CODE           AUTO           0000:9310       0000002f
+HC_OpenDebug_TEXT      CODE           AUTO           0000:9340       00000053
+heapstat0_TEXT         CODE           AUTO           0000:93a0       00000076
+heapstat_TEXT          CODE           AUTO           0000:9420       00000134
+heapdump_TEXT          CODE           AUTO           0000:9560       00000caf
+GetNearFreeSize_TEXT   CODE           AUTO           0000:a210       0000005d
+GetFarFreeSize_TEXT    CODE           AUTO           0000:a270       0000005f
+GetFreeSize_TEXT       CODE           AUTO           0000:a2d0       0000005d
+_hugecoreleft_TEXT     CODE           AUTO           0000:a330       000000d2
+LargestHugeFreeBlock_TEXT CODE        AUTO           0000:a410       000000ef
+_farcoreleft_TEXT      CODE           AUTO           0000:a500       000000b1
+LargestFarFreeBlock_TEXT CODE         AUTO           0000:a5c0       000000b5
+_coreleft_TEXT         CODE           AUTO           0000:a680       0000007f
+LargestFreeBlock_TEXT  CODE           AUTO           0000:a700       0000008d
+16_timer_TEXT          CODE           AUTO           0000:a790       0000000d
+WaitPee_TEXT           CODE           AUTO           0000:a7a0       0000002a
+shinkutxt_TEXT         CODE           AUTO           0000:a7d0       0000014f
+time_in_seconds_TEXT   CODE           AUTO           0000:a920       0000004d
+ticktock_TEXT          CODE           AUTO           0000:a970       0000006b
+elapsed_timer_TEXT     CODE           AUTO           0000:a9e0       00000054
+start_timer_TEXT       CODE           AUTO           0000:aa40       0000013a
+_TEXT                  CODE           AUTO           0ab8:0000       0000a032
+dos_TEXT               CODE           AUTO           0ab8:a040       000001bd
+cpu_TEXT               CODE           AUTO           0ab8:a200       00000028
+vga_TEXT               CODE           AUTO           0ab8:a230       00000afc
+scroll16_TEXT          CODE           AUTO           0ab8:ad30       00000009
+animatePlayer_TEXT     CODE           AUTO           0ab8:ad40       00000335
+shinku_TEXT            CODE           AUTO           0ab8:b080       000003b7
+mapDrawWCol_TEXT       CODE           AUTO           0ab8:b440       00000166
+mapDrawWRow_TEXT       CODE           AUTO           0ab8:b5b0       0000014f
+mapDrawCol_TEXT        CODE           AUTO           0ab8:b700       00000187
+mapDrawRow_TEXT        CODE           AUTO           0ab8:b890       0000016f
+mapDrawTile_TEXT       CODE           AUTO           0ab8:ba00       000000e7
+mapGoTo_TEXT           CODE           AUTO           0ab8:baf0       000004eb
+chkmap_TEXT            CODE           AUTO           0ab8:bfe0       00000190
+ScrollDown_TEXT        CODE           AUTO           0ab8:c170       0000015f
+ScrollUp_TEXT          CODE           AUTO           0ab8:c2d0       00000135
+ScrollLeft_TEXT        CODE           AUTO           0ab8:c410       00000126
+ScrollRight_TEXT       CODE           AUTO           0ab8:c540       00000142
+mapScrollDown_TEXT     CODE           AUTO           0ab8:c690       00000382
+mapScrollUp_TEXT       CODE           AUTO           0ab8:ca20       0000031e
+mapScrollLeft_TEXT     CODE           AUTO           0ab8:cd40       000002fe
+mapScrollRight_TEXT    CODE           AUTO           0ab8:d040       00000360
+panpagemanual_TEXT     CODE           AUTO           0ab8:d3a0       00000721
+walk_TEXT              CODE           AUTO           0ab8:dad0       00001e7f
+bitmap_TEXT            CODE           AUTO           0ab8:f950       00000079
+bitmapLoadPcxTiles_TEXT CODE          AUTO           0ab8:f9d0       0000015b
+bitmapLoadPcx_TEXT     CODE           AUTO           0ab8:fb30       00000160
+loadPcxPalette_TEXT    CODE           AUTO           0ab8:fc90       00000178
+loadPcxStage1_TEXT     CODE           AUTO           0ab8:fe10       00000112
+16text_TEXT            CODE           AUTO           0ab8:ff30       00000000
+textInit_TEXT          CODE           AUTO           0ab8:ff30       0000009f
+getRomFontAddr_TEXT    CODE           AUTO           1ab5:0000       0000007b
+modex16_TEXT           CODE           AUTO           1ab5:0080       00000199
+modexprintmeminfo_TEXT CODE           AUTO           1ab5:0220       000001d5
+modexWaitBorder_TEXT   CODE           AUTO           1ab5:0400       00000028
+modexcls_TEXT          CODE           AUTO           1ab5:0430       00000077
+modexpdump_TEXT        CODE           AUTO           1ab5:04b0       00000061
+modexprintbig_TEXT     CODE           AUTO           1ab5:0520       00000195
+modexprint_TEXT        CODE           AUTO           1ab5:06c0       000001d0
+modexgetPixel_TEXT     CODE           AUTO           1ab5:0890       00000087
+modexputPixel_TEXT     CODE           AUTO           1ab5:0920       0000008e
+modexchkcolor_TEXT     CODE           AUTO           1ab5:09b0       00000337
+modexPalOverscan_TEXT  CODE           AUTO           1ab5:0cf0       0000004d
+modexPalUpdate0_TEXT   CODE           AUTO           1ab5:0d40       00000086
+modexPalUpdate1_TEXT   CODE           AUTO           1ab5:0dd0       000000b2
+modexPalUpdate_TEXT    CODE           AUTO           1ab5:0e90       000005c3
+modexPalWhite_TEXT     CODE           AUTO           1ab5:1460       0000002c
+modexPalBlack_TEXT     CODE           AUTO           1ab5:1490       0000002e
+modexSavePalFile_TEXT  CODE           AUTO           1ab5:14c0       0000007a
+modexLoadPalFile_TEXT  CODE           AUTO           1ab5:1540       000000e7
+modexNewPal_TEXT       CODE           AUTO           1ab5:1630       00000046
+modexPalSave_TEXT      CODE           AUTO           1ab5:1680       00000058
+fadePalette_TEXT       CODE           AUTO           1ab5:16e0       000000a2
+modexFlashOff_TEXT     CODE           AUTO           1ab5:1790       00000031
+modexFlashOn_TEXT      CODE           AUTO           1ab5:17d0       00000032
+modexFadeOff_TEXT      CODE           AUTO           1ab5:1810       0000002f
+modexFadeOn_TEXT       CODE           AUTO           1ab5:1840       00000034
+modexCopyPageRegion_TEXT CODE         AUTO           1ab5:1880       00000190
+modexClearRegion_TEXT  CODE           AUTO           1ab5:1a10       00000120
+modexSelectPlane_TEXT  CODE           AUTO           1ab5:1b30       00000024
+modexPanPage_TEXT      CODE           AUTO           1ab5:1b60       00000051
+modexShowPage_TEXT     CODE           AUTO           1ab5:1bc0       000000ce
+modexHiganbanaPageSetup_TEXT CODE     AUTO           1ab5:1c90       00000178
+modexCalcVmemRemain_TEXT CODE         AUTO           1ab5:1e10       000000a5
+modexNextPageFlexibleSize_TEXT CODE   AUTO           1ab5:1ec0       0000010e
+modexNextPage_TEXT     CODE           AUTO           1ab5:1fd0       00000165
+modexDefaultPage_TEXT  CODE           AUTO           1ab5:2140       000000f3
+modexLeave_TEXT        CODE           AUTO           1ab5:2240       00000019
+modexEnter_TEXT        CODE           AUTO           1ab5:2260       000001ce
+vgaGetMode_TEXT        CODE           AUTO           1ab5:2430       0000001b
+vgaSetMode_TEXT        CODE           AUTO           1ab5:2450       00000031
+VGAmodeX_TEXT          CODE           AUTO           1ab5:2490       000000e6
+16render_TEXT          CODE           AUTO           1ab5:2580       00000000
+modexDrawChar_TEXT     CODE           AUTO           1ab5:2580       00000166
+modexDrawSpritePBufRegion_TEXT CODE   AUTO           1ab5:26f0       00000177
+modexDrawSpritePBuf_TEXT CODE         AUTO           1ab5:2870       00000069
+modexDrawBmpPBufRegion_TEXT CODE      AUTO           1ab5:28e0       0000016a
+modexDrawBmpPBuf_TEXT  CODE           AUTO           1ab5:2a50       00000069
+modexDrawSpriteRegion_TEXT CODE       AUTO           1ab5:2ac0       00000177
+modexDrawSprite_TEXT   CODE           AUTO           1ab5:2c40       00000069
+modexDrawBmpRegion_TEXT CODE          AUTO           1ab5:2cb0       0000016a
+modexDrawBmp_TEXT      CODE           AUTO           1ab5:2e20       00000069
+oldDrawBmp_TEXT        CODE           AUTO           1ab5:2e90       00000159
+modexDrawPBuf_TEXT     CODE           AUTO           1ab5:2ff0       0000006a
+modexDrawPBufRegion_TEXT CODE         AUTO           1ab5:3060       000001e9
+8250_TEXT              CODE           AUTO           1ab5:3250       0000009a
+8250bios_TEXT          CODE           AUTO           1ab5:32f0       00000086
+8250siop_TEXT          CODE           AUTO           1ab5:3380       00000000
+8250prob_TEXT          CODE           AUTO           1ab5:3380       000002d5
+8250cint_TEXT          CODE           AUTO           1ab5:3660       00000045
+8250fifo_TEXT          CODE           AUTO           1ab5:36b0       0000008a
+8250bauc_TEXT          CODE           AUTO           1ab5:3740       00000041
+8250baud_TEXT          CODE           AUTO           1ab5:3790       00000040
+vgacrtcr_TEXT          CODE           AUTO           1ab5:37d0       00000817
+vgacrtcs_TEXT          CODE           AUTO           1ab5:3ff0       000006ec
+doswin_TEXT            CODE           AUTO           1ab5:46e0       00000231
+dosdpmev_TEXT          CODE           AUTO           1ab5:4920       00000000
+cpup3snc_TEXT          CODE           AUTO           1ab5:4920       00000000
+dosntvig_TEXT          CODE           AUTO           1ab5:4920       00000000
+16_in13_DATA           FAR_DATA       AUTO           1f47:0000       000001a4
+FAR_DATA               FAR_DATA       AUTO           1f61:0004       00000000
+_NULL                  BEGDATA        DGROUP         1f62:0000       00000020
+_AFTERNULL             BEGDATA        DGROUP         1f64:0000       00000002
+CONST                  DATA           DGROUP         1f64:0002       00000102
+CONST2                 DATA           DGROUP         1f74:0004       0000013a
+_DATA                  DATA           DGROUP         1f88:0000       00000bcf
+XIB                    DATA           DGROUP         2045:0000       00000000
+XI                     DATA           DGROUP         2045:0000       0000003c
+XIE                    DATA           DGROUP         2048:000c       00000000
+YIB                    DATA           DGROUP         2048:000c       00000000
+YI                     DATA           DGROUP         2048:000c       00000018
+YIE                    DATA           DGROUP         204a:0004       00000000
+STRINGS                DATA           DGROUP         204a:0004       00000000
+DATA                   DATA           DGROUP         204a:0004       00000000
+_emu_init_start        EMU            DGROUP         204a:0004       00000000
+_emu_init_end          EMU            DGROUP         204a:0004       00000000
+_BSS                   BSS            DGROUP         204b:0000       00005cb2
+STACK                  STACK          DGROUP         2617:0000       00008000
+
+
+                        +----------------+
+                        |   Memory Map   |
+                        +----------------+
+
+* = unreferenced symbol
++ = symbol only referenced locally
+
+Address        Symbol
+=======        ======
+
+Module: scroll.obj(/dos/z/16/src/scroll.c)
+1f62:0e90+     _player
+1f62:0f70+     _mv
+1f62:0fd0+     _gvar
+1f62:51a8+     _ptr
+1f62:51ac*     _mappalptr
+1f62:51b0*     _gpal
+1f62:51b4+     _dpal
+1f62:51b8+     _cpus
+1f62:51bc*     _t
+1f62:0264+     _panswitch
+1f62:51cc+     _bakapee
+1f62:51ce+     _i
+1f62:51d0*     _pg
+1f62:51d2+     _pan
+0000:0320      main_
+Module: mapread.obj(/dos/z/16/src/lib/mapread.c)
+0000:1a70+     jsoneq_
+0000:1552+     dump_
+0000:12f0      loadmap_
+Module: jsmn.obj(/dos/z/16/src/lib/jsmn/jsmn.c)
+0000:1b70      jsmn_parse_
+0000:1b22      jsmn_init_
+Module: 16_in.obj(/dos/z/16/src/lib/16_in.c)
+1f62:0284+     _testkeyin
+1f62:0286+     _testcontrolnoisy
+0000:45d0+     INL_KeyService_
+0000:45a2*     Mouse_
+0000:44e0+     IN_GetJoyAbs_
+0000:4192+     IN_GetJoyButtonsDB_
+0000:3dc0+     IN_SetupJoy_
+0000:3c42      IN_Startup_
+0000:3b20      IN_Default_
+0000:3a92      IN_Shutdown_
+0000:3a60*     IN_SetKeyHook_
+0000:39f2+     IN_ClearKeysDown_
+0000:3830*     IN_ReadCursor_
+0000:2d1a      IN_ReadControl_
+0000:2cc0*     IN_SetControlType_
+0000:2c32*     IN_GetScanName_
+0000:2bf0*     IN_WaitForKey_
+0000:2bb2*     IN_WaitForASCII_
+0000:2ab0+     IN_AckBack_
+0000:2a02*     IN_Ack_
+0000:2950+     IN_IsUserInput_
+0000:2902      IN_UserInput_
+0000:28b0      IN_KeyDown_
+0000:2832+     IN_ClearKey_
+0000:27d0*     IN_qb_
+1f62:52fe+     _inpu
+0000:2662      IN_initplayer_
+Module: 16_mm.obj(/dos/z/16/src/lib/16_mm.c)
+0000:7c80+     MML_CheckForEMS_
+0000:7ac2+     MML_SetupEMS_
+0000:7a50+     MML_ShutdownEMS_
+0000:7942+     MM_MapEMS_
+0000:7810*     MM_MapXEMS_
+0000:77b2+     MML_CheckForXMS_
+0000:76c0*     MML_SetupXMS_
+0000:7632+     MML_ShutdownXMS_
+0000:7450+     MML_UseSpace_
+0000:73c2+     MML_ClearBlock_
+0000:6f80*     MM_Startup_
+0000:6ee2+     MM_Shutdown_
+0000:6ad0      MM_GetPtr_
+0000:69d2+     MM_FreePtr_
+0000:68f0*     MM_SetPurge_
+0000:6812*     MM_SetLock_
+0000:6620+     MM_SortMem_
+0000:5f82*     MM_ShowMemory_
+0000:5e10*     MM_DumpData_
+0000:5d82+     MM_UnusedMemory_
+0000:5ce0+     MM_TotalFree_
+0000:5ab2*     MM_Report_
+1f62:54d0+     _beforesort
+1f62:54d4+     _aftersort
+1f62:54d8+     _XMSaddr
+0000:5270*     MM_BombOnError_
+Module: wcpu.obj(/dos/z/16/src/lib/wcpu/wcpu.c)
+0000:7ce0      detectcpu_
+Module: 16_head.obj(/dos/z/16/src/lib/16_head.c)
+0000:8160*     wait_
+0000:80f2*     filesize_
+0000:7f00      printmeminfoline_
+0000:7da2      US_CheckParm_
+0000:7d5a      dirchar_
+Module: 16_ca.obj(/dos/z/16/src/lib/16_ca.c)
+0000:8690      CA_OpenDebug_
+0000:8662      CA_CloseDebug_
+0000:85b0+     CA_FarRead_
+0000:8502+     CA_FarWrite_
+0000:8480*     CA_ReadFile_
+0000:8412*     CA_WriteFile_
+0000:8360*     CA_LoadFile_
+0000:82a2*     CAL_OptimizeNodes_
+0000:8240*     CA_Startup_
+1f62:55e0*     _finishcachebox
+1f62:55e4*     _drawcachebox
+1f62:55e8*     _updatecachebox
+0000:8212*     CA_Shutdown_
+Module: 16_dbg.obj(/dos/z/16/src/lib/16_dbg.c)
+0000:87c0      _DEBUG_INIT_
+0000:8742      _DEBUG_
+1f62:0574+     __DEBUG_INITed
+1f62:0578+     __DEBUG_uart
+0000:86f0      _DEBUGF_
+Module: kitten.obj(/dos/z/16/src/lib/nyan/kitten.c)
+0000:90f0      KITTENGETS
+0000:8e92*     kittenopen_
+0000:8dd0+     catread_
+0000:8db2*     kittenclose_
+0000:8cf0+     mystrtoul_
+0000:8b62+     processEscChars_
+0000:8ae0+     get_line_
+0000:8a42+     db_fetch_
+1f62:057c+     __kitten_catalog
+0000:8930+     db_insert_
+Module: 16_hc.obj(/dos/z/16/src/lib/16_hc.c)
+0000:a700+     LargestFreeBlock_
+0000:a682+     _coreleft_
+0000:a5c0+     LargestFarFreeBlock_
+0000:a502+     _farcoreleft_
+0000:a410+     LargestHugeFreeBlock_
+0000:a332*     _hugecoreleft_
+0000:a2d0+     GetFreeSize_
+0000:a272+     GetFarFreeSize_
+0000:a210+     GetNearFreeSize_
+0000:9562*     heapdump_
+0000:942a+     heapstat_
+0000:93ac+     heapstat0_
+0000:9340+     HC_OpenDebug_
+0000:9312*     HC_CloseDebug_
+Module: 16_timer.obj(/dos/z/16/src/lib/16_timer.c)
+0000:aa40      start_timer_
+0000:a9e2      elapsed_timer_
+0000:a970      ticktock_
+0000:a922*     time_in_seconds_
+0000:a7d0*     shinkutxt_
+0000:a7a2*     WaitPee_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(stk086.asm)
+0ab8:0005      __STK
+0ab8:0025      __STKOVERFLOW_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fmalloc.c)
+0ab8:0042      _fmalloc_
+0ab8:0042      malloc_
+1f62:0596      ___fheap
+1f62:0598      ___fheapRover
+1f62:059a      ___LargestSizeB4Rover
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(pia.asm)
+0ab8:01bf      __PIA
+0ab8:01b8*     __PIS
+Module: src/lib/doslib/hw/dos/dos86h/dos.lib(/dos/z/16/src/lib/doslib/hw/dos/dos.c)
+0ab8:a040      probe_dos_
+1f62:05a0*     _lib_dos_option
+1f62:05a1+     _dos_flavor
+1f62:05a2      _dos_version
+1f62:05a4+     _freedos_kernel_version
+1f62:05a8+     _dos_version_method
+Module: src/lib/doslib/hw/cpu/dos86h/cpu.lib(/dos/z/16/src/lib/doslib/hw/cpu/cpu.c)
+0ab8:a200      cpu_probe_
+1f62:05b0      _cpu_cpuid_vendor
+1f62:05bd      _cpu_cpuid_features
+1f62:05cd+     _cpu_basic_level
+1f62:05d0      _cpu_cpuid_max
+1f62:05d4      _cpu_flags
+1f62:05d6      _cpu_tmp1
+Module: src/lib/doslib/hw/vga/dos86h/vga.lib(/dos/z/16/src/lib/doslib/hw/vga/vga.c)
+0ab8:a230+     vga_sync_hw_cursor_
+0ab8:a2ee+     update_state_vga_memory_map_select_
+0ab8:a53c      update_state_from_vga_
+0ab8:a920      probe_vga_
+1f62:5874      _vga_state
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(iob.c)
+1f62:0602      ___iob
+1f62:589c      ___ClosedStreams
+1f62:58a0      ___OpenStreams
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fprintf.c)
+0ab8:01d6      fprintf_
+Module: gfx.lib(/dos/z/16/src/lib/scroll16.c)
+0ab8:dada      walk_
+0ab8:d3ac      panpagemanual_
+0ab8:d040+     mapScrollRight_
+0ab8:cd42+     mapScrollLeft_
+0ab8:ca20+     mapScrollUp_
+0ab8:c692+     mapScrollDown_
+0ab8:c540+     ScrollRight_
+0ab8:c412+     ScrollLeft_
+0ab8:c2d0+     ScrollUp_
+0ab8:c172+     ScrollDown_
+0ab8:bfe0      chkmap_
+0ab8:baf2      mapGoTo_
+0ab8:ba00+     mapDrawTile_
+0ab8:b892+     mapDrawRow_
+0ab8:b700+     mapDrawCol_
+0ab8:b5b2+     mapDrawWRow_
+0ab8:b440*     mapDrawWCol_
+0ab8:b082      shinku_
+1f62:0c25      _shinku_fps_indicator_page
+1f62:0c26      _pageflipflop
+1f62:0c28+     _pageploop
+0ab8:ad52+     animatePlayer_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(printf.c)
+0ab8:0205      printf_
+Module: gfx.lib(/dos/z/16/src/lib/bitmap.c)
+0ab8:fb30      bitmapLoadPcx_
+0ab8:f9d2*     bitmapLoadPcxTiles_
+Module: gfx.lib(/dos/z/16/src/lib/16text.c)
+1f62:59a4      _romFonts
+1f62:59bc      _romFontsData
+0ab8:ff30      textInit_
+Module: gfx.lib(/dos/z/16/src/lib/modex16.c)
+1ab5:2490      VGAmodeX_
+1ab5:2432*     vgaGetMode_
+1ab5:226a+     modexEnter_
+1ab5:2240*     modexLeave_
+1ab5:2142+     modexDefaultPage_
+1ab5:1fd0+     modexNextPage_
+1ab5:1ec2+     modexNextPageFlexibleSize_
+1ab5:1e10+     modexCalcVmemRemain_
+1ab5:1c92      modexHiganbanaPageSetup_
+1ab5:1bc0      modexShowPage_
+1ab5:1b62*     modexPanPage_
+1ab5:1b30      modexSelectPlane_
+1ab5:1a12      modexClearRegion_
+1ab5:1880      modexCopyPageRegion_
+1ab5:1842*     modexFadeOn_
+1ab5:1810*     modexFadeOff_
+1ab5:17d2*     modexFlashOn_
+1ab5:1790*     modexFlashOff_
+1ab5:1682+     modexPalSave_
+1ab5:1630      modexNewPal_
+1ab5:1542*     modexLoadPalFile_
+1ab5:14c0*     modexSavePalFile_
+1ab5:1492*     modexPalBlack_
+1ab5:1460*     modexPalWhite_
+1ab5:0e92+     modexPalUpdate_
+1ab5:0dd0      modexPalUpdate1_
+1ab5:0d42*     modexPalUpdate0_
+1ab5:0cf0      modexPalOverscan_
+1ab5:09b2+     modexchkcolor_
+1ab5:0920*     modexputPixel_
+1ab5:0892*     modexgetPixel_
+1ab5:06c0      modexprint_
+1ab5:0528*     modexprintbig_
+1ab5:04b0      modexpdump_
+1ab5:0432*     modexcls_
+1ab5:0400*     modexWaitBorder_
+1f62:0c44+     _VGA
+1ab5:0222      modexprintmeminfo_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(i4m.asm)
+0ab8:0234      __I4M
+0ab8:0234      __U4M
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(atoi.c)
+0ab8:024c      atoi_
+Module: gfx.lib(/dos/z/16/src/lib/16render.c)
+1ab5:3060+     modexDrawPBufRegion_
+1ab5:2ff2*     modexDrawPBuf_
+1ab5:2e90*     oldDrawBmp_
+1ab5:2e22*     modexDrawBmp_
+1ab5:2cb0+     modexDrawBmpRegion_
+1ab5:2c42      modexDrawSprite_
+1ab5:2ac0      modexDrawSpriteRegion_
+1ab5:2a52*     modexDrawBmpPBuf_
+1ab5:28e0+     modexDrawBmpPBufRegion_
+1ab5:2872*     modexDrawSpritePBuf_
+1ab5:26f0+     modexDrawSpritePBufRegion_
+1ab5:2582      modexDrawChar_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(sound.c)
+0ab8:02f1      sound_
+0ab8:032c      nosound_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(rand.c)
+0ab8:0338      rand_
+0ab8:037a*     srand_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(cstart)
+1f62:0000*     __nullarea
+1f62:0c68*     __ovlflag
+1f62:0c69*     __intno
+1f62:0c6a*     __ovlvec
+0ab8:039e      _cstart_
+0ab8:0471*     _Not_Enough_Memory_
+0ab8:05a3      __exit_
+0ab8:05c0      __do_exit_with_msg__
+0ab8:0619      __GETDS
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(cmodel.asm)
+0ab8:0624      _big_code_
+0ab8:0624*     CodeModelMismatch
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(argcv.c)
+1f62:67ca      __argv
+1f62:67ce      ___argv
+1f62:67d2      __argc
+1f62:67d4      ___argc
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(strncmp.c)
+0ab8:0624      strncmp_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(strstr.c)
+0ab8:0661      strstr_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fopen.c)
+0ab8:0763+     __open_flags_
+0ab8:0a24+     _fsopen_
+0ab8:0a8a      fopen_
+0ab8:0bad*     freopen_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fread.c)
+0ab8:0c35      fread_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(errno.c)
+0ab8:0fac      __get_errno_ptr_
+1f62:67d6      _errno
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(frealloc.c)
+0ab8:0fb3*     _frealloc_
+0ab8:0fb3      realloc_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ptc.asm)
+0ab8:1090      __PTC
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(strncpy.c)
+0ab8:10c3      strncpy_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(intx086.c)
+0ab8:10ff+     int86x_
+0ab8:1282      int86_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(d_getvec.c)
+0ab8:12af      _dos_getvect_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(d_setvec.c)
+0ab8:12ba      _dos_setvect_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(i4d.asm)
+0ab8:12c8      __I4D
+0ab8:1317      __U4D
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(heapgrow.c)
+0ab8:139b*     _heapgrow_
+0ab8:139b      _fheapgrow_
+0ab8:139c      _nheapgrow_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(memavl.c)
+0ab8:1411      _memavl_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(nmalloc.c)
+0ab8:1456      _nmalloc_
+1f62:0c6e      ___nheapbeg
+1f62:0c70      ___MiniHeapRover
+1f62:0c72      ___LargestSizeB4MiniHeapRover
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ffree.c)
+0ab8:152d      _ffree_
+0ab8:152d      free_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(nfree.c)
+0ab8:159a      _nfree_
+1f62:67d8+     ___MiniHeapFreeRover
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(exit.c)
+0ab8:1695+     __null_int23_exit_
+0ab8:1696      exit_
+0ab8:16ae*     _exit_
+1f62:0c74+     ___int23_exit
+1f62:0c78      ___FPE_handler_exit
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ltoa.c)
+0ab8:16c9      ultoa_
+0ab8:1787*     ltoa_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(write.c)
+0ab8:190d      write_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fclose.c)
+0ab8:1b39      __doclose_
+0ab8:1c83      __shutdown_stream_
+0ab8:1c9d      fclose_
+1f62:67da+     ___RmTmpFileFn
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(clockdos.c)
+0ab8:1d7e      clock_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(kbhit.c)
+0ab8:1da5      kbhit_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ftell.c)
+0ab8:1dbc      ftell_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fseek.c)
+0ab8:1fa2      fseek_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(istable.c)
+1f62:0124      __IsTable
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(tolower.c)
+0ab8:219a      tolower_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(unlnk.c)
+0ab8:21a8      unlink_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(open.c)
+0ab8:23d8      open_
+0ab8:240f      sopen_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(close.c)
+0ab8:243c      close_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(filelen.c)
+0ab8:2441      filelength_
+Module: src/lib/doslib/hw/8250/dos86h/8250.lib(/dos/z/16/src/lib/doslib/hw/8250/8250.c)
+1ab5:3250      already_got_8250_port_
+1ab5:32a4      init_8250_
+1f62:0c84+     _inited_8250
+1f62:67e2      _base_8250_port
+1f62:67f2      _info_8250_port
+1f62:6812      _base_8250_ports
+Module: src/lib/doslib/hw/8250/dos86h/8250.lib(/dos/z/16/src/lib/doslib/hw/8250/8250bios.c)
+1ab5:32f0      probe_8250_bios_ports_
+1ab5:332a      get_8250_bios_port_
+1f62:0c86      _bios_8250_ports
+Module: src/lib/doslib/hw/8250/dos86h/8250.lib(/dos/z/16/src/lib/doslib/hw/8250/8250siop.c)
+1f62:0226      _standard_8250_ports
+Module: src/lib/doslib/hw/8250/dos86h/8250.lib(/dos/z/16/src/lib/doslib/hw/8250/8250prob.c)
+1ab5:3380      probe_8250_
+Module: src/lib/doslib/hw/8250/dos86h/8250.lib(/dos/z/16/src/lib/doslib/hw/8250/8250cint.c)
+1ab5:3660      uart_8250_enable_interrupt_
+Module: src/lib/doslib/hw/8250/dos86h/8250.lib(/dos/z/16/src/lib/doslib/hw/8250/8250fifo.c)
+1ab5:36b0*     uart_8250_disable_FIFO_
+1ab5:36f0      uart_8250_set_FIFO_
+Module: src/lib/doslib/hw/8250/dos86h/8250.lib(/dos/z/16/src/lib/doslib/hw/8250/8250bauc.c)
+1ab5:3740      uart_8250_baud_to_divisor_
+1ab5:375c*     uart_8250_divisor_to_baud_
+Module: src/lib/doslib/hw/8250/dos86h/8250.lib(/dos/z/16/src/lib/doslib/hw/8250/8250baud.c)
+1ab5:3790      uart_8250_set_baudrate_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(snprintf.c)
+0ab8:250d      vsnprintf_
+0ab8:25a2*     snprintf_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(sprintf.c)
+0ab8:25d1      sprintf_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(getenv.c)
+0ab8:2600      getenv_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(pts.asm)
+0ab8:26ec      __PTS
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(read.c)
+0ab8:271d      read_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(strdup.c)
+0ab8:285d*     __clib_strdup_
+0ab8:285d      strdup_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(haloc.c)
+0ab8:28c4      halloc_
+0ab8:29a9      hfree_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fheapwal.c)
+0ab8:29b0      _heapwalk_
+0ab8:29b0      _fheapwalk_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(nheapwal.c)
+0ab8:29c5+     __NHeapWalk_
+0ab8:2aba      _nheapwalk_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(stack086.c)
+0ab8:2aca      stackavail_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fltused.c)
+1f62:0c88      _fltused_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(_8087086.asm)
+1f62:0c8a      __8087
+1f62:0c8b      __real87
+1f62:0c8c      __dos87emucall
+1f62:0c8e      __dos87real
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(xmsg.c)
+0ab8:2ad8*     __exit_with_msg_
+0ab8:2add      __fatal_runtime_error_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(crwdata)
+1f62:0c90      __curbrk
+1f62:0c98      __STACKLOW
+1f62:0c9a      __STACKTOP
+1f62:0c9c      __cbyte
+1f62:0c9e      __child
+1f62:0ca0      __no87
+1f62:0cad      ___FPE_handler
+1f62:0c92      __psp
+1f62:0ca1      __get_ovl_stack
+1f62:0ca5      __restore_ovl_stack
+1f62:0ca9      __close_ovl_file
+1f62:0cb1      __LpCmdLine
+1f62:0cb5      __LpPgmName
+1f62:0c94      __osmajor
+1f62:0c95      __osminor
+1f62:0c96      __osmode
+1f62:0c97      __HShift
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mem.c)
+0ab8:2b00      __MemAllocator
+0ab8:2bca      __MemFree
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(growseg.c)
+0ab8:2d36      __GrowSeg_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(allocseg.c)
+0ab8:2eac      __AllocSeg_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fmemneed.c)
+0ab8:2f9b      __fmemneed_
+Module: src/lib/doslib/hw/cpu/dos86h/cpu.lib(cpuasm.asm)
+0ab8:2fa0      cpu_basic_probe_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(initfile.c)
+0ab8:30ab      __InitFiles_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ioexit.c)
+0ab8:32dc*     fcloseall_
+0ab8:32e3      __full_io_exit_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fprtf.c)
+0ab8:3309      __fprtf_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fgetc.c)
+0ab8:345c      __fill_buffer_
+0ab8:36ab      fgetc_
+Module: src/lib/doslib/hw/vga/dos86h/vga.lib(/dos/z/16/src/lib/doslib/hw/vga/vgamodex.c)
+1ab5:2500      vga_enable_256color_modex_
+Module: src/lib/doslib/hw/vga/dos86h/vga.lib(/dos/z/16/src/lib/doslib/hw/vga/vgacrtcr.c)
+1ab5:37d0      vga_read_crtc_mode_
+Module: src/lib/doslib/hw/vga/dos86h/vga.lib(/dos/z/16/src/lib/doslib/hw/vga/vgacrtcs.c)
+1ab5:3ff0      vga_write_crtc_mode_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fwrite.c)
+0ab8:37f2      fwrite_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(cmain086.c)
+0ab8:3b79      __CMain
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(initrtns.c)
+0ab8:3bda      __InitRtns
+0ab8:3bda*     __FInitRtns
+0ab8:3c35      __FiniRtns
+0ab8:3c35*     __FFiniRtns
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(uselfn.c)
+1f62:0cbc      ___uselfn
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(dosseg)
+0ab8:3c9a      __DOSseg__
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(initargv.c)
+0ab8:3fc9      __Init_Argv_
+0ab8:402b      __Fini_Argv_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(comtflag.c)
+0ab8:4055*     __set_commode_
+1f62:0cbe      __commode
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(textmode.c)
+1f62:0cc0      __fmode
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(chktty.c)
+0ab8:4061      __chktty_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(freefp.c)
+0ab8:40c0      __freefp_
+0ab8:4161      __purgefp_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(allocfp.c)
+0ab8:41a2      __allocfp_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ioalloc.c)
+0ab8:4352      __ioalloc_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(qread.c)
+0ab8:44e0      __qread_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fmsize.c)
+0ab8:4500*     _msize_
+0ab8:451b      _fmsize_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(nexpand.c)
+0ab8:452c      _nexpand_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fexpand.c)
+0ab8:4580      _fexpand_
+0ab8:4580*     _expand_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(intr.c)
+0ab8:45b5      intr_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(segread.c)
+0ab8:45c9      segread_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(grownear.c)
+0ab8:46b4      __LastFree_
+0ab8:472e      __ExpandDGROUP_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(nmemneed.c)
+0ab8:483f      __nmemneed_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(alphabet.c)
+1f62:0070      ___Alphabet
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(__lseek.c)
+0ab8:4842      __lseek_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(dosret.c)
+0ab8:487c*     __dosretax
+0ab8:4881*     __dosret0
+0ab8:4888      __set_errno_dos_
+0ab8:48f0*     __set_errno_dos_reterr_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(iomode.c)
+0ab8:48fb      __GetIOMode_
+0ab8:4930      __SetIOMode_nogrow_
+1f62:0cd6      ___NFiles
+1f62:0cd8      ___init_mode
+1f62:0d00      ___io_mode
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(_clse.c)
+0ab8:4965      __close_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(flush.c)
+0ab8:499b      __flush_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fflush.c)
+0ab8:4be4      fflush_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(tell.c)
+0ab8:4bf9      tell_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(lseek.c)
+0ab8:4c0a      lseek_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(error086.asm)
+0ab8:4c3c      __doserror_
+0ab8:4c4a      __doserror1_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(opendos.c)
+0ab8:4c56      _dos_open_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(isatt.c)
+0ab8:4c7c      isatty_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(doserrno.c)
+0ab8:4c98*     __get_doserrno_ptr_
+1f62:6818      __doserrno
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(umaskval.c)
+1f62:0d04      ___umaskval
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(creatdos.c)
+0ab8:4c9f      _dos_creat_
+0ab8:4cc3*     _dos_creatnew_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(stiomode.c)
+0ab8:4ce4+     __grow_iomode_
+0ab8:4dcb+     __shrink_iomode_
+0ab8:4e0c      __SetIOMode_
+Module: src/lib/doslib/hw/dos/dos86h/dos.lib(/dos/z/16/src/lib/doslib/hw/dos/doswin.c)
+1ab5:46e0*     detect_windows_
+1f62:0d10+     _windows_version_method
+1f62:0d14+     _windows_version
+1f62:0d16      _windows_mode
+1f62:0d17+     _windows_init
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(prtf.c)
+0ab8:4eb3      __prtf_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(vsprintf.c)
+0ab8:6020      vsprintf_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(environ.c)
+1f62:681c      ___env_mask
+1f62:6820      _environ
+1f62:6824*     __wenviron
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbterm.c)
+0ab8:6062      _mbterm_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbsnextc.c)
+0ab8:60b5      _mbsnextc_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbcupper.c)
+0ab8:6110      _mbctoupper_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbsinc.c)
+0ab8:6133      _mbsinc_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(iomodtty.c)
+0ab8:6185      __ChkTTYIOMode_
+0ab8:61f3*     __IOMode_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(heapwalk.c)
+0ab8:62c5      __HeapWalk_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(setefg.c)
+0ab8:64eb      __setEFGfmt_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(chk8087.c)
+0ab8:6523*     _fpreset_
+0ab8:654e      __init_8087_
+0ab8:65cd      __chk8087_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(enterdb.c)
+0ab8:663d      __EnterWVIDEO_
+1f62:0d36+     ___WD_Present
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(heapen.c)
+0ab8:6661*     _heapenable_
+1f62:0d38      ___heap_enabled
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(amblksiz.c)
+1f62:0d3a      __amblksiz
+Module: src/lib/doslib/hw/dos/dos86h/dos.lib(/dos/z/16/src/lib/doslib/hw/dos/dosdpmev.c)
+1f62:0d40      _dpmi_entered
+1f62:0d48      _dpmi_rm_entry
+1f62:0d50      _dpmi_pm_entry
+1f62:6828      _dpmi_pm_es
+1f62:682a      _dpmi_pm_ds
+1f62:682c      _dpmi_pm_cs
+1f62:682e      _dpmi_pm_ss
+Module: src/lib/doslib/hw/cpu/dos86h/cpu.lib(/dos/z/16/src/lib/doslib/hw/cpu/cpup3snc.c)
+1f62:0d54      _cpu_serial
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fputc.c)
+0ab8:6672      fputc_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(flushall.c)
+0ab8:6847      __flushall_
+0ab8:68db      flushall_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(gtche.c)
+0ab8:68e1      getche_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(qwrit.c)
+0ab8:68fb      __qwrite_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(___argc.c)
+1f62:6830      ____Argv
+1f62:6834      ____Argc
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(sgdef086)
+1f62:0e30      __Start_XI
+1f62:0e6c      __End_XI
+1f62:0e6c      __Start_YI
+1f62:0e84      __End_YI
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(histsplt.c)
+1f62:6836      ___historical_splitparms
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(_expand.c)
+0ab8:695c      __HeapManager_expand_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(bexpand.c)
+0ab8:6e91      _bexpand_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(dointr)
+0ab8:6eea      _DoINTR_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(sbrk.c)
+0ab8:7263      __brk_
+0ab8:72ca*     sbrk_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fsync.c)
+0ab8:72da      fsync_
+Module: src/lib/doslib/hw/dos/dos86h/dos.lib(/dos/z/16/src/lib/doslib/hw/dos/dosntvig.c)
+1f62:0d70      _detect_windows_ntdvm_dosntast_init_CB
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(wctomb.c)
+0ab8:72df      wctomb_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(itoa.c)
+0ab8:732a+     utoa_
+0ab8:73cb      itoa_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(strupr.c)
+0ab8:7415      strupr_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(noefgfmt.c)
+1f62:0d74      ___EFG_printf
+1f62:0d78      ___EFG_scanf
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbisdbcs.c)
+1f62:0d7c      ___IsDBCS
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbislead.c)
+0ab8:7461*     _ismbblead_
+1f62:6838      ___MBCSIsTable
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(lltoa.c)
+0ab8:747d      ulltoa_
+0ab8:75ba*     lltoa_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(setenvp.c)
+0ab8:7649      __setenvp_
+0ab8:77d5      __freeenvp_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbinit.c)
+0ab8:7871      __mbinit_
+1f62:0d7e      ___MBCodePage
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(mbdtoupp.c)
+0ab8:794c      _mbdtoupper_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(toupper.c)
+0ab8:795a      toupper_
+Module: /dos/fdos/watcom2/lib286/math87h.lib(efgfmt.c)
+0ab8:7968      _EFG_Format_
+Module: /dos/fdos/watcom2/lib286/math87h.lib(cnvs2d.c)
+0ab8:7b3a      __cnvs2d_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(8087cw.c)
+1f62:0d80      __8087cw
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(save8087.c)
+1f62:0d82      ___Save8087
+1f62:0d86      ___Rest8087
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(grabfp87.c)
+0ab8:7b5a      __GrabFP87_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(ini87086.asm)
+0ab8:7b8c*     __init_8087_emu
+0ab8:7b92      __x87id
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(bfree.c)
+0ab8:7bef      _bfree_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(filedos.c)
+0ab8:7c14*     _dos_close_
+0ab8:7c22      _dos_commit_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(clearenv.c)
+0ab8:7c31      clearenv_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(rtcntrl.c)
+0ab8:7d62*     _SetLD64bit_
+0ab8:7d6d*     _SetLD80bit_
+0ab8:7d78      _LDisDouble_
+Module: /dos/fdos/watcom2/lib286/math87h.lib(ldcvt.c)
+0ab8:7edd      _LDScale10x_
+0ab8:87b5+     __cvtld_
+0ab8:8f91      __LDcvt_
+Module: /dos/fdos/watcom2/lib286/noemu87.lib(emustub.asm)
+0000:0000*     FJSRQQ
+0000:0000*     FISRQQ
+0000:0000*     FIERQQ
+0000:0000      FIDRQQ
+0000:0000      FIWRQQ
+0000:0000*     FJCRQQ
+0000:0000*     FJARQQ
+0000:0000*     FICRQQ
+0000:0000*     FIARQQ
+0ab8:8fa2*     __init_87_emulator
+Module: /dos/fdos/watcom2/lib286/math87h.lib(strtod.c)
+0ab8:97b6+     __Strtold_
+0ab8:99f5      strtod_
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fpe87.asm)
+0ab8:9b9c      __Init_FPE_handler_
+0ab8:9bd5      __Fini_FPE_handler_
+0ab8:9c0c*     __FPEHandler
+Module: /dos/fdos/watcom2/lib286/math87h.lib(ldclass.c)
+0ab8:9e9e      __LDClass_
+0ab8:9f24*     _FLClass_
+Module: /dos/fdos/watcom2/lib286/math87h.lib(bufld086.asm)
+0ab8:9f38      __ZBuf2LD
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(seterrno.c)
+0ab8:a000*     __set_EDOM_
+0ab8:a00c      __set_ERANGE_
+0ab8:a018*     __set_EINVAL_
+Module: /dos/fdos/watcom2/lib286/math87h.lib(inf_nan.c)
+1f62:022e*     ___f_infinity
+1f62:0232*     ___f_posqnan
+1f62:0236      ___d_infinity
+1f62:023e      ___d_posqnan
+1f62:0246*     ___ld_infinity
+1f62:024e*     ___ld_posqnan
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(hugeval.c)
+1f62:0256      __HugeValue
+Module: /dos/fdos/watcom2/lib286/dos/clibh.lib(fpeint.c)
+1f62:0e2e      ___FPE_int
+
+
+                        +--------------------+
+                        |   Libraries Used   |
+                        +--------------------+
+
+gfx.lib
+src/lib/doslib/hw/cpu/dos86h/cpu.lib
+src/lib/doslib/hw/dos/dos86h/dos.lib
+src/lib/doslib/hw/vga/dos86h/vga.lib
+src/lib/doslib/hw/8250/dos86h/8250.lib
+/dos/fdos/watcom2/lib286/noemu87.lib
+/dos/fdos/watcom2/lib286/math87h.lib
+/dos/fdos/watcom2/lib286/dos/clibh.lib
+
+
+                        +-----------------------+
+                        |   Linker Statistics   |
+                        +-----------------------+
+
+Stack size:  8000 (32768.)
+Memory size:  0002e170 (188784.)
+Entry point address: 0ab8:039e
+Link time: 00:00.26

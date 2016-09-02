@@ -43,6 +43,7 @@ DIRSEP=/
 OBJ=obj
 DUMP=cat
 DOSLIBMAKE=make.sh
+DOSLIBMAKEALL=buildall.sh
 !else		#DOS ^^
 to_os_path=/=\
 REMOVECOMMAND=*del
@@ -51,6 +52,7 @@ DIRSEP=\
 OBJ=obj
 DUMP=type
 DOSLIBMAKE=make.bat
+DOSLIBMAKEALL=build.bat
 !endif
 
 TARGET_OS = dos
@@ -249,9 +251,9 @@ vgmsnd.lib: $(VGMSNDOBJ)
 gfx.lib: $(GFXLIBOBJS)
 	*wlib $(LIBFLAGS) $(extra_$^&_lib_opts) $@ $<
 
-# extdep:
-# !include $(DOSLIBDIR)$(DIRSEP)extdep.mak
-
+#
+#	doslib
+#
 # library deps 16-bit huge
 $(DOSLIB_CPU)/dos86h/cpu.lib:
 	cd $(DOSLIB_CPU:$(to_os_path)) && .$(DIRSEP)$(DOSLIBMAKE) && cd $(BUILD_ROOT)
@@ -267,10 +269,6 @@ $(DOSLIB_8250)/dos86h/8250.lib:
 joytest.exe:
 	cd $(DOSLIB_JOYSTICK:$(to_os_path)) && .$(DIRSEP)$(DOSLIBMAKE) && cd $(BUILD_ROOT)
 	$(COPYCOMMAND) $(DOSLIB_JOYSTICK:$(to_os_path))$(DIRSEP)dos86h$(DIRSEP)test.exe joytest.exe
-#$(DOSLIBLIBS): .symbolic
-#	@cd $(DOSLIB:$(to_os_path))
-#	@.$(DIRSEP)buildall.sh
-#	@cd $(BUILD_ROOT)
 
 modex16.$(OBJ):   $(SRCLIB)/modex16.c $(SRCLIB)/modex16.h
 bakapee.$(OBJ):   $(SRCLIB)/bakapee.c $(SRCLIB)/bakapee.h
@@ -308,8 +306,13 @@ clean: .symbolic
 	@$(REMOVECOMMAND) *.$(OBJ)
 !ifdef __LINUX__
 	@rm *.LIB
+	@mv BCEXMM.EXE bcexmm.ex0
+	@mv bcexmm.ex0 bcexmm.exe
+	@mv BCEXMM.MAP bcexmm.mah
 	@rm *.EXE
 	#@$(REMOVECOMMAND) *.\$\$\$
+	@$(REMOVECOMMAND) *.OBJ
+	@$(REMOVECOMMAND) *.BCO
 !else
 	@*$(REMOVECOMMAND) *.$$$
 !endif
@@ -319,23 +322,15 @@ clean: .symbolic
 	@*wlib -n $(WLIBQ) 16.lib
 	@*wlib -n $(WLIBQ) gfx.lib
 	@*wlib -n $(WLIBQ) vgmsnd.lib
-	@$(REMOVECOMMAND) *.16W
-	@$(REMOVECOMMAND) *.16B
-	@$(REMOVECOMMAND) *.OBJ
-	@$(REMOVECOMMAND) *.o
-	@$(REMOVECOMMAND) *.BCO
-	#@$(REMOVECOMMAND) makefi~1
-	#@$(REMOVECOMMAND) makefile~
+##	@$(REMOVECOMMAND) *.16W
+##	@$(REMOVECOMMAND) *.16B
 	@$(REMOVECOMMAND) __wcl__.LNK
-#	@$(REMOVECOMMAND) *.smp
 	@$(REMOVECOMMAND) *.SMP
 	@$(REMOVECOMMAND) *.hed
-	@$(REMOVECOMMAND) *.MAH
-	@$(REMOVECOMMAND) *.mah
+#	@$(REMOVECOMMAND) *.MAH
+#	@$(REMOVECOMMAND) *.mah
 	@$(REMOVECOMMAND) *.err
-	#@cd $(DOSLIB:$(to_os_path))
-	#@./buildall.sh clean
-	#@cd $(BUILD_ROOT)
+
 #	@$(COPYCOMMAND) $(SRC)exmmtest.c $(EXMMTESTDIR)$(SRC)
 #	@$(COPYCOMMAND) $(SRCLIB)16_mm.* $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(SRCLIB)16_head.* $(EXMMTESTDIR)$(SRCLIB)
@@ -343,8 +338,12 @@ clean: .symbolic
 #	@$(COPYCOMMAND) $(SRCLIB)16_hc.* $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(SRCLIB)types.h $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(NYANLIB)* $(EXMMTESTDIR)$(NYANLIB)
-#	@echo $(watcom)
-#	@echo $(INCLUDE)
+
+nuke: .symbolic
+	@wmake clean
+	@wmake cldl
+	@wmake all
+	@wmake comp
 
 backupconfig: .symbolic
 	@$(COPYCOMMAND) .git$(DIRSEP)config git_con.fig
@@ -379,7 +378,12 @@ vomitchan: .symbolic
 #git submodule add <repo>
 mkdl: .symbolic
 	@cd $(DOSLIB:$(to_os_path))
-	@./buildall.sh
+	@$(DOSLIBMAKEALL)
+	@cd $(BUILD_ROOT)
+
+cldl: .symbolic
+	@cd $(DOSLIB:$(to_os_path))
+	@$(DOSLIBMAKEALL) clean
 	@cd $(BUILD_ROOT)
 
 uplibs: .symbolic

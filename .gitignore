@@ -17,8 +17,8 @@ makefile~
 README~
 TODO~
 LICENCE~
-*.mah
-*.MAH
+!*.mah
+!*.MAH
 !makefile
 !modex.lib
 img
