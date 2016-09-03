@@ -56,7 +56,6 @@ main(int argc, char *argv[])
 	char *bakapee;
 	word baka;
 #endif
-	//static page_t screen;
 
 #ifdef __BORLANDC__
 	argc=argc;
@@ -73,19 +72,14 @@ main(int argc, char *argv[])
 	gvar.mm.mmstarted=0;
 
 #ifdef FILERL
-//	printf("filename!: ");
-//	scanf("%[^\n]", &bakapee);
 	if(argv[1]) bakapee = argv[1];
-	else bakapee = "data/koishi~.pcx";
+	else
+	{
+		printf("filename!: ");
+		scanf("%[^\n]", &bakapee);
+	}
+//	bakapee = "data/koishi~.pcx";
 #endif
-
-//	textInit();
-
-	// setup camera and screen~
-	//bug!!!
-	//screen = modexDefaultPage();
-	//screen.width += (16*2);
-	//screen.height += (16*2);
 
 //	printf("main()=%Fp	start MM\n", *argv[0]);
 	MM_Startup(&gvar.mm, &gvar.mmi);
