@@ -188,6 +188,8 @@ typedef struct
 {
 	byte		ca_levelbit,ca_levelnum;
 	int		mapon;
+	_seg	*grsegs[NUMCHUNKS];
+	byte		far	grneeded[NUMCHUNKS];
 	//huffnode huffnode;
 } ca_t;
 
