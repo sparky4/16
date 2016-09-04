@@ -155,6 +155,7 @@ extern	int			profilehandle,debughandle;	//make it into game global
 #define	nil	((void *)0)
 #ifdef __BORLANDC__
 #define _FCORELEFT 0x90000UL-16UL
+#define sprite
 #endif
 #ifdef __WATCOMC__
 #define _FCORELEFT 0x90000UL+16UL
