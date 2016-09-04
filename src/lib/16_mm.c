@@ -1616,7 +1616,6 @@ void MM_Report(global_game_variables_t *gvar)
 	//printf("mainmem:	%lu\n", gvar->mmi.mainmem);
 	printf("Total convmem:	%lu	", gvar->mmi.mainmem); printf("TotalFree:	%lu	", MM_TotalFree(&(gvar->mm))); printf("TotalUsed:	%lu\n", gvar->mmi.mainmem+gvar->mmi.EMSmem+gvar->mmi.XMSmem+gvar->mmi.XMSmem);
 	printf("			UnusedMemory:	%lu\n", MM_UnusedMemory(&(gvar->mm)));
-	//printf("========================================\n");
 }
 
 //==========================================================================
