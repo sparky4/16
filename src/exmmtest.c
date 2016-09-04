@@ -50,11 +50,14 @@ void segatesuto()
 	printf("Next string is: [");
 	while(*scrptr<16)
 	{
-		printf( "%c \b", *(screen:>scrptr) );
+		printf( "%c", *(screen:>scrptr) );
+		printf("\b");
 		scrptr++;
 
 	}
 	printf("]\n");
+	getch();
+	printf("press a key.\n");
 }
 #endif
 
