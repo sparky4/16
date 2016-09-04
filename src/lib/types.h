@@ -43,7 +43,7 @@ typedef signed long int sdiword;
 typedef	enum	{false,true}	boolean;
 
 #ifdef __WATCOMC__
-typedef void __based(__self) * memptr;
+typedef void __based( void ) * memptr;	////old //----typedef void __based(__self) * memptr;
 typedef unsigned short _seg; // it will contains segment value (as Borland _seg)
 #endif
 #ifdef __BORLANDC__
