@@ -100,8 +100,7 @@ typedef struct
 
 typedef struct
 {
-// 	int showmemhandle;
-	int			profilehandle,debughandle;
+	int			profilehandle,debughandle,showmemhandle;
 	int heaphandle;
 } handle_t;
 
@@ -188,8 +187,8 @@ typedef struct
 {
 	byte		ca_levelbit,ca_levelnum;
 	int		mapon;
-	_seg	*grsegs[NUMCHUNKS];
-	byte		far	grneeded[NUMCHUNKS];
+	//_seg	*grsegs[NUMCHUNKS];
+	//byte		far	grneeded[NUMCHUNKS];
 	//huffnode huffnode;
 } ca_t;
 

@@ -37,7 +37,7 @@
 
 //#define NUMMAPS		39
 //#define MAPPLANES		3
-#define PROFILE
+//++++#define PROFILE//++++
 
 //===========================================================================
 

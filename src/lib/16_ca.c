@@ -1125,6 +1125,15 @@ void CA_Startup(global_game_variables_t *gvar)
 	unlink("profile.16w");
 	gvar->handle.profilehandle = open("profile.16w", O_CREAT | O_WRONLY | O_TEXT);
 #endif
+#endif//profile
+
+#ifdef __BORLANDC__
+	unlink("meminfo.16b");
+	gvar->handle.showmemhandle = open("meminfo.16b", O_CREAT | O_WRONLY | O_TEXT);
+#endif
+#ifdef __WATCOMC__
+	unlink("meminfo.16w");
+	gvar->handle.showmemhandle = open("meminfo.16w", O_CREAT | O_WRONLY | O_TEXT);
 #endif
 /*	CAL_SetupMapFile ();
 	CAL_SetupGrFile ();
@@ -1190,7 +1199,7 @@ void CA_Shutdown(global_game_variables_t *gvar)
 #ifdef PROFILE
 	close(gvar->handle.profilehandle);
 #endif
-// 	close(gvar->handle.showmemhandle);
+ 	close(gvar->handle.showmemhandle);
 /*++++
 	close(maphandle);
 	close(grhandle);

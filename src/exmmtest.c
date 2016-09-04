@@ -22,9 +22,6 @@
 /*
 	exmm test
 */
-//#include <stdio.h>
-//#include <bios.h>
-
 #include "src/lib/16_head.h"
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
@@ -39,11 +36,12 @@
 #define FILERL
 //#define FILEREAD
 
-global_game_variables_t gvar;
+#define PRINTBB { printf("&main()=	%Fp\n", argv[0]);printf("bigbuffer=	%Fp\n", bigbuffer);printf("&bigbuffer=	%Fp\n", &bigbuffer);printf("bigbuffer=	%04x\n", bigbuffer);printf("&bigbuffer=	%04x\n", &bigbuffer); }
 
 void
 main(int argc, char *argv[])
 {
+	global_game_variables_t gvar;
 #ifdef __WATCOMC__
 	__segment sega;
 	void __based(sega)* bigbuffer;
@@ -60,25 +58,17 @@ main(int argc, char *argv[])
 #ifdef __BORLANDC__
 	argc=argc;
 #endif
-	//printf("&main()=	%Fp\n", *argv[0]);
-	//printf("bigbuffer=	%Fp\n", bigbuffer);
-	//printf("&bigbuffer=	%Fp\n", &bigbuffer);
-	//printf("bigbuffer=	%04x\n", bigbuffer);
-	//printf("&bigbuffer=	%04x\n", &bigbuffer);
-
 #ifdef FILERL
 	bakapee = malloc(64);
 #endif
 	gvar.mm.mmstarted=0;
 
+	//PRINTBB
 #ifdef FILERL
 	if(argv[1]) bakapee = argv[1];
 	else
-	{
-		printf("filename!: ");
-		scanf("%[^\n]", &bakapee);
-	}
-//	bakapee = "data/koishi~.pcx";
+	//{ printf("filename!: "); scanf("%[^\n]", &bakapee); }
+	bakapee = "data/koishi~.pcx";
 #endif
 
 //	printf("main()=%Fp	start MM\n", *argv[0]);
@@ -87,11 +77,7 @@ main(int argc, char *argv[])
 	//PM_UnlockMainMem();
 	CA_Startup(&gvar);
 //	printf("		done!\n");
-	//printf("&main()=	%Fp\n", *argv[0]);
-	//printf("bigbuffer=	%Fp\n", bigbuffer);
-	//printf("&bigbuffer=	%Fp\n", &bigbuffer);
-	//printf("bigbuffer=	%04x\n", bigbuffer);
-	//printf("&bigbuffer=	%04x\n", &bigbuffer);
+	//PRINTBB
 //	getch();
 #ifdef FILERL
 //	bakapeehandle = open(bakapee,O_RDONLY | O_BINARY, S_IREAD);
@@ -110,25 +96,23 @@ main(int argc, char *argv[])
 //	close(bakapeehandle);
 	//hmm functions in cache system use the buffered stuff
 #ifdef __WATCOMC__
-	printf("size of big buffer~=%u\n", _bmsize(sega, bigbuffer));
+	printf("\nsize of big buffer~=%u\n", _bmsize(sega, bigbuffer));
 #endif
 #endif
 	printf("press any key to continue!\n");
 	getch();
-	printf("[\n%s\n]\n", bigbuffer);
+	printf("\n\ncontents of the buffer\n[\n%s\n]\n", bigbuffer);
 	//printf("dark purple = purgable\n");
 	//printf("medium blue = non purgable\n");
 	//printf("red = locked\n");
 	printf("press any key to continue!\n");
 	getch();
-	//++++modexEnter();
-	//++++modexShowPage(&screen);
 	MM_ShowMemory(&gvar, &gvar.mm);
 	//getch();
 	MM_DumpData(&gvar.mm);
-	//++++modexLeave();
-	//++++MM_Report(&gvar.mm, &gvar.mmi);
+	MM_Report(&gvar);
 //	printf("		stop!\n");
+	getch();
 #ifdef FILERL
 	MM_FreePtr(&bigbuffer, &gvar.mm);
 #endif
@@ -148,21 +132,23 @@ main(int argc, char *argv[])
 	printf("&near=	%Fp ", &(gvar.mm.nearheap));
 	printf("&far=	%Fp", &(gvar.mm.farheap));
 	printf("\n");
+#ifdef EXMMVERBOSE
 	printf("bigb=	%Fp ", bigbuffer);
 	//printf("bigbr=	%04x", bigbuffer);
 	//printf("\n");
 	printf("&bigb=%Fp ", &bigbuffer);
 	//printf("&bigb=%04x", &bigbuffer);
 	printf("\n");
+#endif
 	printf("========================================\n");
 #ifdef __WATCOMC__
-	printf("Total free:			%lu\n", (dword)(GetFreeSize()));
+//this is far	printf("Total free:			%lu\n", (dword)(GetFreeSize()));
 	printf("Total near free:		%lu\n", (dword)(GetNearFreeSize()));
 	printf("Total far free:			%lu\n", (dword)(GetFarFreeSize()));
 	heapdump(&gvar);
+	#endif
 	printf("Project 16 emmtest.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
-#endif
 	//printf("core left:			%lu\n", (dword)_coreleft());
 	//printf("far core left:			%lu\n", (dword)_farcoreleft());
 	//printf("based core left:			%lu\n", (dword)_basedcoreleft());

@@ -1594,24 +1594,29 @@ dword MM_TotalFree(mminfo_t *mm)
 =====================
 */
 
-void MM_Report(/*page_t *page, */mminfo_t *mm, mminfotype *mmi)
+void MM_Report(global_game_variables_t *gvar)
 {
+	printf("========================================\n");
+	printf("		MM_Report\n");
+	printf("========================================\n");
 	if(MML_CheckForEMS())
 	{
-		printf("EMM v%x.%x available\n", mm->EMSVer>>4,mm->EMSVer&0x0F);
-		printf("totalEMSpages=%u\n", mm->totalEMSpages);
-		printf("freeEMSpages=%u\n", mm->freeEMSpages);
-		printf("EMSpageframe=%x\n", mm->EMSpageframe);
+		printf("	LIMEMS\n");
+		printf("		EMM v%x.%x available\n", gvar->mm.EMSVer>>4,gvar->mm.EMSVer&0x0F);
+		printf("		totalEMSpages:	%u	", gvar->mm.totalEMSpages); printf("freeEMSpages:	%u\n", gvar->mm.freeEMSpages);
+		printf("		EMSpageframe:	%x\n", gvar->mm.EMSpageframe);
 	}
-	if(MML_CheckForXMS(mm)) printf("XMSaddr=%X\n", *XMSaddr);
-	printf("near=%lu\n", mmi->nearheap);
-	printf("far=%lu\n", mmi->farheap);
-	printf("EMSmem=%lu\n", mmi->EMSmem);
-	printf("XMSmem=%lu\n", mmi->XMSmem);
-	printf("mainmem=%lu\n", mmi->mainmem);
-	printf("UnusedMemory=%lu\n", MM_UnusedMemory(mm));
-	printf("TotalFree=%lu\n", MM_TotalFree(mm));
-	printf("TotalUsed=%lu\n", mmi->mainmem+mmi->EMSmem+mmi->XMSmem+mmi->XMSmem);
+	if(MML_CheckForXMS(&(gvar->mm)))
+	{
+		printf("	XMS\n");
+		printf("		XMSaddr:	%X\n", *XMSaddr);
+	}
+	printf("near:	%lu	", gvar->mmi.nearheap); printf("far:	%lu\n", gvar->mmi.farheap); if(MML_CheckForEMS())
+	printf("EMSmem:	%lu	", gvar->mmi.EMSmem); if(MML_CheckForXMS(&(gvar->mm))) printf("XMSmem:	%lu", gvar->mmi.XMSmem); printf("\n");
+	//printf("mainmem:	%lu\n", gvar->mmi.mainmem);
+	printf("Total convmem:	%lu	", gvar->mmi.mainmem); printf("TotalFree:	%lu	", MM_TotalFree(&(gvar->mm))); printf("TotalUsed:	%lu\n", gvar->mmi.mainmem+gvar->mmi.EMSmem+gvar->mmi.XMSmem+gvar->mmi.XMSmem);
+	printf("			UnusedMemory:	%lu\n", MM_UnusedMemory(&(gvar->mm)));
+	//printf("========================================\n");
 }
 
 //==========================================================================
