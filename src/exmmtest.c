@@ -50,8 +50,8 @@ void segatesuto()
 	printf("Next string is: [");
 	while(*scrptr<16)
 	{
-		printf( "%c", *(screen:>scrptr) );
-		printf("\b");
+		printf("%c", *(screen:>scrptr));
+		//printf("\b");
 		scrptr++;
 
 	}
