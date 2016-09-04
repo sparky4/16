@@ -47,10 +47,10 @@ void segatesuto()
 	screen = 0xB800;
 	scrptr = 0;
 	printf( "Top left character is '%c'.\n", *(screen:>scrptr) );
-	printf("Next string is: ]");
+	printf("Next string is: [");
 	while(*scrptr<16)
 	{
-		printf( "%c", *(screen:>scrptr) );
+		printf( "%c \b", *(screen:>scrptr) );
 		scrptr++;
 
 	}
