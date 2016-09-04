@@ -41,7 +41,12 @@ typedef unsigned long int diword;
 typedef signed long int sdiword;
 
 typedef	enum	{false,true}	boolean;
+/*typedef unsigned memseg;
 
+memptr should be replaced by memseg in code.
+
+on usage where you need pointer convert memseg type (segment) to far pointer by
+MK_FP(segment value, 0)*/
 #ifdef __WATCOMC__
 typedef void __based( void ) * memptr;	////old //----typedef void __based(__self) * memptr;
 typedef unsigned short _seg; // it will contains segment value (as Borland _seg)
