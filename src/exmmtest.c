@@ -38,6 +38,26 @@
 
 #define PRINTBB { printf("&main()=	%Fp\n", argv[0]);printf("bigbuffer=	%Fp\n", bigbuffer);printf("&bigbuffer=	%Fp\n", &bigbuffer);printf("bigbuffer=	%04x\n", bigbuffer);printf("&bigbuffer=	%04x\n", &bigbuffer); }
 
+#ifdef __WATCOMC__
+void segatesuto()
+{
+	__segment screen;
+	char __based( void ) * scrptr;
+
+	screen = 0xB800;
+	scrptr = 0;
+	printf( "Top left character is '%c'.\n", *(screen:>scrptr) );
+	printf("Next string is: ]");
+	while(*scrptr<16)
+	{
+		printf( "%c", *(screen:>scrptr) );
+		scrptr++;
+
+	}
+	printf("]\n");
+}
+#endif
+
 void
 main(int argc, char *argv[])
 {
@@ -144,7 +164,8 @@ main(int argc, char *argv[])
 	printf("Total near free:		%lu\n", (dword)(GetNearFreeSize()));
 	printf("Total far free:			%lu\n", (dword)(GetFarFreeSize()));
 	heapdump(&gvar);
-	#endif
+	segatesuto();
+#endif
 	printf("Project 16 emmtest.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	//printf("core left:			%lu\n", (dword)_coreleft());
