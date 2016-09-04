@@ -98,8 +98,9 @@ main(int argc, char *argv[])
 	//PM_UnlockMainMem();
 	CA_Startup(&gvar);
 //	printf("		done!\n");
-	//PRINTBB
-//	getch();
+	PRINTBB;
+	printf("press any key to continue!\n");
+	getch();
 #ifdef FILERL
 //	bakapeehandle = open(bakapee,O_RDONLY | O_BINARY, S_IREAD);
 //	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
