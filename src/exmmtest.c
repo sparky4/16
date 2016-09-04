@@ -56,8 +56,8 @@ void segatesuto()
 
 	}
 	printf("]\n");
+	printf("press any key to continue!\n");
 	getch();
-	printf("press a key.\n");
 }
 #endif
 
@@ -133,6 +133,7 @@ main(int argc, char *argv[])
 	MM_DumpData(&gvar.mm);
 	MM_Report(&gvar);
 //	printf("		stop!\n");
+	printf("press any key to continue!\n");
 	getch();
 #ifdef FILERL
 	MM_FreePtr(&bigbuffer, &gvar.mm);
