@@ -27,9 +27,8 @@
 
 void main() {
 	global_game_variables_t gvar;
-	//mminfo_t mm; mminfotype mmi;
 	__segment sega;
-	void __based(sega)* bigbuffer;
+	memptr bigbuffer;
 	int i;
 	word start;
 	int plane;

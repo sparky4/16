@@ -31,7 +31,7 @@
 void main() {
 	global_game_variables_t gvar;
 	__segment sega;
-	void __based(sega)* bigbuffer;
+	memptr bigbuffer;
 	int i;
 	word start;
 	int plane;
