@@ -37,7 +37,7 @@ loaded into the data segment
 #pragma warn -use
 
 //#define THREEBYTEGRSTARTS
-
+//https://github.com/open-watcom/open-watcom-v2/issues/279#issuecomment-244587566 for _seg
 /*
 =============================================================================
 
