@@ -107,7 +107,7 @@ LIBFLAGS=$(WLIBQ) -b -n
 #
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
 16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_timer.$(OBJ)
-GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16_vrs.$(OBJ) 16_sprit.$(OBJ)
+GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16_vrs.$(OBJ) 16_sprit.$(OBJ) #scroll16.$(OBJ)
 #16planar.$(OBJ) planar.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 !ifeq DEBUGSERIAL 1
@@ -209,7 +209,7 @@ palettec.exe:     palettec.$(OBJ) gfx.lib $(DOSLIBLIBS)
 palettel.exe:     palettel.$(OBJ) gfx.lib $(DOSLIBLIBS)
 pcxtest2.exe:     pcxtest2.$(OBJ) gfx.lib $(DOSLIBLIBS)
 #planrpcx.exe:    planrpcx.$(OBJ) gfx.lib
-maptest.exe:      maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) gfx.lib $(DOSLIBLIBS)
+maptest.exe:      maptest.$(OBJ) 16_map.$(OBJ) 16_head.$(OBJ) jsmn.$(OBJ) gfx.lib $(DOSLIBLIBS)
 fmemtest.exe:     fmemtest.$(OBJ)
 exmmtest.exe:     exmmtest.$(OBJ) $(16LIB) $(DOSLIBLIBS)
 vgmtest.exe:      vgmtest.$(OBJ) vgmsnd.lib $(16LIB) $(DOSLIBLIBS)
@@ -284,6 +284,7 @@ planar.$(OBJ):    $(SRCLIB)/planar.c $(SRCLIB)/planar.h
 scroll16.$(OBJ):  $(SRCLIB)/scroll16.c $(SRCLIB)/scroll16.h
 16text.$(OBJ):    $(SRCLIB)/16text.c
 mapread.$(OBJ):   $(SRCLIB)/mapread.c $(SRCLIB)/mapread.h
+16_map.$(OBJ):   $(SRCLIB)/16_map.c $(SRCLIB)/16_map.h
 16_timer.$(OBJ):  $(SRCLIB)/16_timer.c $(SRCLIB)/16_timer.h
 16_in.$(OBJ):     $(SRCLIB)/16_in.c $(SRCLIB)/16_in.h
 16_mm.$(OBJ):     $(SRCLIB)/16_mm.c $(SRCLIB)/16_mm.h

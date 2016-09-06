@@ -20,10 +20,10 @@
  *
  */
 //TODO: ADD MEMORY MANAGER! WWWW
-#include "src/lib/mapread.h"
+#include "src/lib/16_map.h"
 
 #define DUMP
-//#define DUMP_MAP
+#define DUMP_MAP
 
 void
 main(int argc, char *argv[])
@@ -44,9 +44,10 @@ main(int argc, char *argv[])
 	fprintf(stdout, "map.width=	%d\n", map.width);
 	fprintf(stdout, "map.height=	%d\n", map.height);
 	#ifdef DUMP_MAP
+	if(map.width*map.height != 1200) exit(-3);
 	for(i=0; i<(map.width*map.height); i++)
 	{
-		fprintf(stdout, "%04d[%02d]", i, map.data[i]);
+		fprintf(stdout, "%04d[%02d]", i, map.data[0][i]);
 		if(i && !(i%map.width)) fprintf(stdout, "\n");
 	}
 	fprintf(stdout, "\n");

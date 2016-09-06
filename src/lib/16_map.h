@@ -41,7 +41,7 @@ typedef struct {
 } tiles_t;
 
 typedef struct {
-	byte	**data;
+	byte	* huge *data;
 	tiles_t **tiles;
 	int width;	//this has to be signed!
 	int height;	//this has to be signed!
