@@ -19,6 +19,7 @@ TODO~
 LICENCE~
 *.mah
 *.MAH
+!bcexmm.map
 !makefile
 !modex.lib
 img
