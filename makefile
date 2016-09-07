@@ -416,6 +416,7 @@ initlibs: .symbolic
 	@git clone https://github.com/FlatRockSoft/CatacombApocalypse.git
 	@git clone https://github.com/id-Software/wolf3d.git
 	@git clone https://github.com/keendreams/keen.git
+	@git clone https://github.com/FlatRockSoft/Catacomb3D.git
 	@cd $(BUILD_ROOT)
 	@cp $(DOSLIB)/make-lowercase .
 
