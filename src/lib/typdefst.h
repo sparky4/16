@@ -102,7 +102,7 @@ typedef struct
 {
 	int			profilehandle,debughandle,showmemhandle;
 	int heaphandle;
-} handle_t;
+} loghandle_t;
 
 typedef struct
 {
@@ -185,8 +185,14 @@ typedef struct
 
 typedef struct
 {
+	int			maphandles[4];		// handle to MAPTEMP / GAMEMAPS
+} handle_t;
+
+typedef struct
+{
 	byte		ca_levelbit,ca_levelnum;
 	int		mapon;
+	handle_t	file;		//files to open
 	//_seg	*grsegs[NUMCHUNKS];
 	//byte		far	grneeded[NUMCHUNKS];
 	//huffnode huffnode;
@@ -200,7 +206,7 @@ typedef struct
 	video_t	video;	// video settings variable
 	ca_t		ca;	// ca stuff
 	byte *pee;		// message for fps
-	handle_t handle;	//handles for file logging
+	loghandle_t handle;	//handles for file logging
 	kurokku_t kurokku;	//clock struct
 	mminfo_t mm; mminfotype mmi;
 } global_game_variables_t;

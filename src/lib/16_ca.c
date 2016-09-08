@@ -1077,7 +1077,7 @@ asm	mov	ds,ax
 ======================
 */
 
-/*void CAL_SetupMapFile (void)
+void CAL_SetupMapFile (global_game_variables_t *gvar)
 {
 	int handle;
 	long length;
@@ -1085,33 +1085,39 @@ asm	mov	ds,ax
 //
 // load maphead.ext (offsets and tileinfo for map file)
 //
-#ifndef MAPHEADERLINKED
-	if ((handle = open("MAPHEAD."EXT,
-		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit ("Can't open MAPHEAD."EXT"!");
-	length = filelength(handle);
-	MM_GetPtr (&(memptr)tinf,length);
-	CA_FarRead(handle, tinf, length);
-	close(handle);
-#else
-
-	tinf = (byte _seg *)FP_SEG(&maphead);
-
-#endif
+// #ifndef MAPHEADERLINKED
+// 	if ((handle = open("MAPHEAD."EXT,
+// 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
+// 		Quit ("Can't open MAPHEAD."EXT"!");
+// 	length = filelength(handle);
+// 	MM_GetPtr (&(memptr)tinf,length);
+// 	CA_FarRead(handle, tinf, length);
+// 	close(handle);
+// //#else
+//
+// 	tinf = (byte _seg *)FP_SEG(&maphead);
+//
+// #endif
 
 //
 // open the data file
 //
-#ifdef MAPHEADERLINKED
-	if ((maphandle = open("GAMEMAPS."EXT,
+//todo multiple files
+	if ((gvar->ca.file.maphandles[0] = open("data/test.map",
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit ("Can't open GAMEMAPS."EXT"!");
-#else
-	if ((maphandle = open("MAPTEMP."EXT,
-		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit ("Can't open MAPTEMP."EXT"!");
-#endif
-}*/
+	{
+		printf("Can't open data/test.map!");
+	}
+// #ifdef MAPHEADERLINKED
+// 	if ((maphandle = open("GAMEMAPS."EXT,
+// 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
+// 		Quit ("Can't open GAMEMAPS."EXT"!");
+// //#else
+// 	if ((maphandle = open("MAPTEMP."EXT,
+// 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
+// 		Quit ("Can't open MAPTEMP."EXT"!");
+// #endif
+}
 
 //==========================================================================
 
@@ -1194,42 +1200,11 @@ void CA_Startup(global_game_variables_t *gvar)
 	unlink("meminfo.16w");
 	gvar->handle.showmemhandle = open("meminfo.16w", O_CREAT | O_WRONLY | O_TEXT);
 #endif
-/*	CAL_SetupMapFile ();
+/*
 	CAL_SetupGrFile ();
 	CAL_SetupAudioFile ();*/
-/*++++
-// MDM begin - (GAMERS EDGE)
-//
-	if(!FindFile("AUDIO."EXT,NULL,2))
-		Quit("CA_Startup(): Can't find audio files.");
-//
-// MDM end
 
-#ifndef NOAUDIO
-	CAL_SetupAudioFile();
-#endif
-
-// MDM begin - (GAMERS EDGE)
-//
-	if (!FindFile("GAMEMAPS."EXT,NULL,1))
-		Quit("CA_Startup(): Can't find level files.");
-//
-// MDM end
-
-#ifndef NOMAPS
-	CAL_SetupMapFile ();
-#endif
-
-// MDM begin - (GAMERS EDGE)
-//
-	if (!FindFile("EGAGRAPH."EXT,NULL,2))
-		Quit("CA_Startup(): Can't find graphics files.");
-//
-// MDM end
-
-#ifndef NOGRAPHICS
-	CAL_SetupGrFile ();
-#endif*/
+	CAL_SetupMapFile (gvar);
 
 	gvar->ca.mapon = -1;
 	gvar->ca.ca_levelbit = 1;
