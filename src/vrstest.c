@@ -79,7 +79,7 @@ void main() {
 	CA_Startup(&gvar);
 	// What should be done by read_vrs:
 	//sega = (mm.bufferseg);
-	if(CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &gvar.mm, &gvar.mmi)) baka=1; else baka=0;
+	if(CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &gvar)) baka=1; else baka=0;
 
 	// Insert sanity cheks later
 	vrs.buffer = bigbuffer;

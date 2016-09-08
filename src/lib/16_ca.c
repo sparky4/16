@@ -221,12 +221,12 @@ void CAL_GetGrChunkLength (int chunk)
 ==========================
 */
 
-boolean CA_FarRead(int handle, byte huge *dest, dword length, mminfo_t *mm)
+boolean CA_FarRead(int handle, byte huge *dest, dword length, global_game_variables_t *gvar)
 {
 	boolean flag;
 	//dword fat=0;
 	//word segm=0;
-	if(mm->EMSVer<0x40)
+	if(gvar->mm.EMSVer<0x40)
 	if(length>0xfffflu)
 	{
 		printf("File is a fat bakapee\n");
@@ -293,12 +293,12 @@ End:
 ==========================
 */
 
-boolean CA_FarWrite(int handle, byte huge *source, dword length, mminfo_t *mm)
+boolean CA_FarWrite(int handle, byte huge *source, dword length, global_game_variables_t *gvar)
 {
 	boolean flag;
 	//dword fat=0;
 	//word segm=0;
-	if(mm->EMSVer<0x40)
+	if(gvar->mm.EMSVer<0x40)
 	if(length>0xfffflu)
 	{
 		printf("File is a fat bakapee\n");
@@ -365,7 +365,7 @@ End:
 ==========================
 */
 
-boolean CA_ReadFile(char *filename, memptr *ptr, mminfo_t *mm)
+boolean CA_ReadFile(char *filename, memptr *ptr, global_game_variables_t *gvar)
 {
 	int handle;
 	sdword size;
@@ -375,7 +375,7 @@ boolean CA_ReadFile(char *filename, memptr *ptr, mminfo_t *mm)
 		return false;
 
 	size = filelength(handle);
-	if(!CA_FarRead(handle,*ptr,size, mm))
+	if(!CA_FarRead(handle,*ptr,size, gvar))
 	{
 		close (handle);
 		return false;
@@ -395,7 +395,7 @@ boolean CA_ReadFile(char *filename, memptr *ptr, mminfo_t *mm)
 ==========================
 */
 
-boolean CA_WriteFile (char *filename, void far *ptr, long length, mminfo_t *mm)
+boolean CA_WriteFile (char *filename, void far *ptr, long length, global_game_variables_t *gvar)
 {
 	int handle;
 	sdword size;
@@ -407,7 +407,7 @@ boolean CA_WriteFile (char *filename, void far *ptr, long length, mminfo_t *mm)
 	if (handle == -1)
 		return false;
 
-	if (!CA_FarWrite (handle,ptr,length, mm))
+	if (!CA_FarWrite (handle,ptr,length, gvar))
 	{
 		close(handle);
 		return false;
@@ -428,7 +428,7 @@ boolean CA_WriteFile (char *filename, void far *ptr, long length, mminfo_t *mm)
 ==========================
 */
 
-boolean CA_LoadFile(char *filename, memptr *ptr, mminfo_t *mm, mminfotype *mmi)
+boolean CA_LoadFile(char *filename, memptr *ptr, global_game_variables_t *gvar)
 {
 	int handle;
 	sdword size;
@@ -438,8 +438,8 @@ boolean CA_LoadFile(char *filename, memptr *ptr, mminfo_t *mm, mminfotype *mmi)
 		return false;
 
 	size = filelength (handle);
-	MM_GetPtr(ptr,size, mm, mmi);
-	if(!CA_FarRead(handle,*ptr,size, mm))
+	MM_GetPtr(ptr,size, &(gvar->mm), &(gvar->mmi));	//TODO: gvar parameters
+	if(!CA_FarRead(handle,*ptr,size, gvar))
 	{
 		close(handle);
 		return false;

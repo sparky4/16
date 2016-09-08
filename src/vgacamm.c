@@ -42,7 +42,7 @@ void main() {
 	MM_Startup(&gvar.mm, &gvar.mmi);
 	CA_Startup(&gvar);
 	printf("loading\n");
-	if(CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &gvar.mm, &gvar.mmi)) baka=1; else baka=0;
+	if(CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &gvar)) baka=1; else baka=0;
 
 	// DOSLIB: check our environment
 	probe_dos();
