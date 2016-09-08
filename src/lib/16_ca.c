@@ -1235,7 +1235,7 @@ void CA_Shutdown(global_game_variables_t *gvar)
 #endif
  	close(gvar->handle.showmemhandle);
 
-	close(gvar->ca.file.maphandle);
+	close(*(gvar->ca.file.maphandle));
 /*++++
 	close(grhandle);
 	close(audiohandle);*/
