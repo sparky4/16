@@ -183,6 +183,15 @@ typedef struct
 //from 16_ca
 //==========================================================================
 
+#define NUMMAPS		4//39
+#define MAPPLANES		3
+
+typedef struct
+{
+	__segment	*mapsegs[4];
+	__segment	*mapheaderseg[NUMMAPS];
+} mapinfo_t;
+
 typedef struct
 {
 	int			maphandle[4];		// handle to MAPTEMP / GAMEMAPS
@@ -193,7 +202,7 @@ typedef struct
 	byte		ca_levelbit,ca_levelnum;
 	int		mapon, mapnum;
 	handle_t	file;		//files to open
-	//unsigned	_seg	*mapsegs[4];
+	mapinfo_t	map;
 	//_seg	*grsegs[NUMCHUNKS];
 	//byte		far	grneeded[NUMCHUNKS];
 	//huffnode huffnode;
