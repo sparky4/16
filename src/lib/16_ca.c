@@ -1839,7 +1839,7 @@ void CA_CacheGrChunk (int chunk)
 =
 ======================
 */
-/*++++ fuckin segments!
+/*++++ segments!
 void CA_CacheMap (global_game_variables_t *gvar)
 {
 	long	pos,compressed;
@@ -1857,10 +1857,7 @@ void CA_CacheMap (global_game_variables_t *gvar)
 // free up memory from last map
 //
 	if (gvar->ca.map.mapon>-1 && gvar->ca.map.mapheaderseg[gvar->ca.map.mapon])
-		MM_SetPurge (&((memptr)gvar->ca.map.mapheaderseg
-											[(gvar->ca.map.mapon)]),
-
- 3, &(gvar->mm));
+		MM_SetPurge (&((memptr)gvar->ca.map.mapheaderseg[(gvar->ca.map.mapon)]), 3, &(gvar->mm));
 	for (plane=0;plane<MAPPLANES;plane++)
 		if (gvar->ca.map.mapsegs[plane])
 			MM_FreePtr (&(memptr)gvar->ca.map.mapsegs[plane], &(gvar->mm));
