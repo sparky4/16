@@ -1102,8 +1102,8 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 //
 // open the data file
 //
-//todo multiple files
-	if ((gvar->ca.file.maphandles[0] = open("data/test.map",
+//TODO: multiple files
+	if ((gvar->ca.file.maphandle[0] = open("data/test.map",
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
 	{
 		printf("Can't open data/test.map!");
@@ -1234,8 +1234,9 @@ void CA_Shutdown(global_game_variables_t *gvar)
 	close(gvar->handle.profilehandle);
 #endif
  	close(gvar->handle.showmemhandle);
+
+	close(gvar->ca.file.maphandle);
 /*++++
-	close(maphandle);
 	close(grhandle);
 	close(audiohandle);*/
 }

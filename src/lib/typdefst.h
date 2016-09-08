@@ -185,7 +185,7 @@ typedef struct
 
 typedef struct
 {
-	int			maphandles[4];		// handle to MAPTEMP / GAMEMAPS
+	int			maphandle[4];		// handle to MAPTEMP / GAMEMAPS
 } handle_t;
 
 typedef struct
