@@ -1817,8 +1817,8 @@ void CA_CacheGrChunk (int chunk)
 =
 ======================
 */
-/*++++
-void CA_CacheMap (int mapnum)
+/*++++ fuckin segments!
+void CA_CacheMap (global_game_variables_t *gvar)
 {
 	long	pos,compressed;
 	int		plane;
@@ -1831,19 +1831,11 @@ void CA_CacheMap (int mapnum)
 #endif
 
 
-// MDM begin - (GAMERS EDGE)
-//
-	if (!FindFile("GAMEMAPS."EXT,NULL,1))
-		Quit("CA_CacheMap(): Can't find level files.");
-//
-// MDM end
-
-
 //
 // free up memory from last map
 //
-	if (mapon>-1 && mapheaderseg[mapon])
-		MM_SetPurge (&(memptr)mapheaderseg[mapon],3);
+	if (mapon>-1 && mapheaderseg[gvar->ca.mapon])
+		MM_SetPurge (&(memptr)mapheaderseg[gvar-ca.mapon],3);
 	for (plane=0;plane<MAPPLANES;plane++)
 		if (mapsegs[plane])
 			MM_FreePtr (&(memptr)mapsegs[plane]);

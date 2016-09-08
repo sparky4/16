@@ -191,8 +191,9 @@ typedef struct
 typedef struct
 {
 	byte		ca_levelbit,ca_levelnum;
-	int		mapon;
+	int		mapon, mapnum;
 	handle_t	file;		//files to open
+	//unsigned	_seg	*mapsegs[4];
 	//_seg	*grsegs[NUMCHUNKS];
 	//byte		far	grneeded[NUMCHUNKS];
 	//huffnode huffnode;
