@@ -1229,7 +1229,7 @@ void CA_Startup(global_game_variables_t *gvar)
 
 	CAL_SetupMapFile (gvar);
 
-	gvar->ca.mapon = -1;
+	gvar->ca.map.mapon = -1;
 	gvar->ca.ca_levelbit = 1;
 	gvar->ca.ca_levelnum = 0;
 
@@ -1953,15 +1953,15 @@ void CA_CacheMap (global_game_variables_t *gvar)
 =
 ======================
 */
-/*++++
-void CA_UpLevel (void)
-{
-	if (ca_levelnum==7)
-		Quit ("CA_UpLevel: Up past level 7!");
 
-	ca_levelbit<<=1;
-	ca_levelnum++;
-}*/
+void CA_UpLevel (global_game_variables_t *gvar)
+{
+	if (gvar->ca.ca_levelnum==7)
+		printf("CA_UpLevel: Up past level 7!");
+
+	gvar->ca.ca_levelbit<<=1;
+	gvar->ca.ca_levelnum++;
+}
 
 //===========================================================================
 
@@ -1975,15 +1975,15 @@ void CA_UpLevel (void)
 =
 ======================
 */
-/*++
-void CA_DownLevel (void)
+
+void CA_DownLevel (global_game_variables_t *gvar)
 {
-	if (!ca_levelnum)
-		Quit ("CA_DownLevel: Down past level 0!");
-	ca_levelbit>>=1;
-	ca_levelnum--;
-	CA_CacheMarks(NULL);
-}*/
+	if (!gvar->ca.ca_levelnum)
+		printf("CA_DownLevel: Down past level 0!");
+	gvar->ca.ca_levelbit>>=1;
+	gvar->ca.ca_levelnum--;
+	////++++++++++++++++++++++++++++++++++++++++++CA_CacheMarks(NULL);
+}
 
 //===========================================================================
 

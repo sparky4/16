@@ -188,8 +188,10 @@ typedef struct
 
 typedef struct
 {
+	int		mapon, mapnum;
 	__segment	*mapsegs[4];
 	__segment	*mapheaderseg[NUMMAPS];
+	__segment	*tinf;
 } mapinfo_t;
 
 typedef struct
@@ -200,7 +202,6 @@ typedef struct
 typedef struct
 {
 	byte		ca_levelbit,ca_levelnum;
-	int		mapon, mapnum;
 	handle_t	file;		//files to open
 	mapinfo_t	map;
 	//_seg	*grsegs[NUMCHUNKS];
