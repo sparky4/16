@@ -1857,11 +1857,14 @@ void CA_CacheMap (global_game_variables_t *gvar)
 //
 // free up memory from last map
 //
-// 	if (gvar->ca.map.mapon>-1 && gvar->ca.map.mapheaderseg[gvar->ca.map.mapon])
-// 		MM_SetPurge (&(memptr)gvar->ca.map.mapheaderseg[gvar-ca.map.mapon],3);
+	if (gvar->ca.map.mapon>-1 && gvar->ca.map.mapheaderseg[gvar->ca.map.mapon])
+		MM_SetPurge (&((memptr)gvar->ca.map.mapheaderseg
+											[(gvar->ca.map.mapon)]),
+
+ 3, &(gvar->mm));
 	for (plane=0;plane<MAPPLANES;plane++)
 		if (gvar->ca.map.mapsegs[plane])
-			MM_FreePtr (&(memptr)gvar->ca.map.mapsegs[plane]);
+			MM_FreePtr (&(memptr)gvar->ca.map.mapsegs[plane], &(gvar->mm));
 
 	gvar->ca.map.mapon = gvar->ca.map.mapnum;
 
@@ -1872,7 +1875,7 @@ void CA_CacheMap (global_game_variables_t *gvar)
 //
 	if (!gvar->ca.map.mapheaderseg[gvar->ca.map.mapnum])
 	{
-		pos = ((__segmement *)tinf)->headeroffsets[gvar->ca.mapnum];
+		pos = ((_seg *)gvar->ca.map.tinf)->headeroffsets[gvar->ca.mapnum];
 		if (pos<0)						// $FFFFFFFF start is a sparse map
 		  printf("CA_CacheMap: Tried to load a non existent map!");
 
@@ -1881,7 +1884,7 @@ void CA_CacheMap (global_game_variables_t *gvar)
 		CA_FarRead (maphandle,(memptr)mapheaderseg[mapnum],sizeof(maptype));
 	}
 	else
-		MM_SetPurge (&(memptr)mapheaderseg[mapnum],0);
+		MM_SetPurge (&(memptr)mapheaderseg[mapnum], 0, &(gvar->mm));
 
 //
 // load the planes in
@@ -1939,7 +1942,7 @@ void CA_CacheMap (global_game_variables_t *gvar)
 		if (compressed>BUFFERSIZE)
 			MM_FreePtr(&bigbufferseg);
 	}
-}*/
+}//*/
 
 //===========================================================================
 
@@ -2068,7 +2071,7 @@ void CA_SetAllPurge (void)
 //
 // free cursor sprite and background save
 //
-	VW_FreeCursor ();
+	//VW_FreeCursor ();
 
 //
 // free map headers and map planes
