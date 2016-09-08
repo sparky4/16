@@ -31,22 +31,28 @@
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 
+//TODO: 16_mm and 16_ca must handle this
 typedef struct {
-	bitmap_t huge *btdata;
-	planar_buf_t huge *data;
+	bitmap_t huge *btdata;		//old
+	planar_buf_t huge *data;	//old
 	word tileHeight;
 	word tileWidth;
 	unsigned int rows;
 	unsigned int cols;
+#ifdef __DEBUG__
 	boolean debug_text;	//show the value of the tile! wwww
 	byte *debug_data;
+#endif
 } tiles_t;
 
+//TODO: 16_mm and 16_ca must handle this
 typedef struct {
-	byte	* huge *data;
-	tiles_t **tiles;
-	int width;	//this has to be signed!
-	int height;	//this has to be signed!
+	//long		planestart[3];
+	unsigned	planelength[3];
+	byte	* huge *data;	//TODO: 16_mm and 16_ca must handle this
+	tiles_t **tiles;		//TODO: 16_mm and 16_ca must handle this
+	int width, height;	//this has to be signed!
+	char		name[16];
 } map_t;
 
 int loadmap(char *mn, map_t *map);

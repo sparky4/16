@@ -46,10 +46,10 @@ loaded into the data segment
 =============================================================================
 */
 
-typedef struct
+/*typedef struct
 {
   word bit0,bit1;	// 0-255 is a character, > is a pointer to a node
-} huffnode;
+} huffnode;*/
 
 
 /*typedef struct
@@ -1229,7 +1229,7 @@ void CA_Startup(global_game_variables_t *gvar)
 
 	CAL_SetupMapFile (gvar);
 
-	gvar->ca.map.mapon = -1;
+	gvar->ca.camap.mapon = -1;
 	gvar->ca.ca_levelbit = 1;
 	gvar->ca.ca_levelnum = 0;
 

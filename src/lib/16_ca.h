@@ -41,6 +41,13 @@
 
 //===========================================================================
 
+/*typedef struct
+{
+	unsigned	RLEWtag;
+	long		headeroffsets[100];
+	byte		tileinfo[];
+} mapfiletype;*/
+
 /*typedef	struct
 {
 	long		planestart[3];

@@ -188,22 +188,27 @@ typedef struct
 
 typedef struct
 {
+  word bit0,bit1;	// 0-255 is a character, > is a pointer to a node
+} huffnode;
+
+typedef struct
+{
 	int		mapon, mapnum;
 	__segment	*mapsegs[4];
 	__segment	*mapheaderseg[NUMMAPS];
 	__segment	*tinf;
-} mapinfo_t;
+} ca_mapinfo_t;
 
 typedef struct
 {
 	int			maphandle[4];		// handle to MAPTEMP / GAMEMAPS
-} handle_t;
+} ca_handle_t;
 
 typedef struct
 {
 	byte		ca_levelbit,ca_levelnum;
-	handle_t	file;		//files to open
-	mapinfo_t	map;
+	ca_handle_t	file;		//files to open
+	ca_mapinfo_t	camap;
 	//_seg	*grsegs[NUMCHUNKS];
 	//byte		far	grneeded[NUMCHUNKS];
 	//huffnode huffnode;
