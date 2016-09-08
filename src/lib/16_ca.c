@@ -1875,7 +1875,8 @@ void CA_CacheMap (global_game_variables_t *gvar)
 //
 	if (!gvar->ca.map.mapheaderseg[gvar->ca.map.mapnum])
 	{
-		pos = ((_seg *)gvar->ca.map.tinf)->headeroffsets[gvar->ca.mapnum];
+		//pos = ((mapfiletype	_seg *)tinf)->headeroffsets[mapnum];
+		pos = ((_seg *)gvar->ca.map.tinf)->headeroffsets[gvar->ca.map.mapnum];
 		if (pos<0)						// $FFFFFFFF start is a sparse map
 		  printf("CA_CacheMap: Tried to load a non existent map!");
 
