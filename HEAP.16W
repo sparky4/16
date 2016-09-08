@@ -1,45 +1,45 @@
 
 	== default ==
 
-  USED block at 34bb0016 of size 66
-  FREE block at 34bb0058 of size 18
-  USED block at 34bb006a of size 136
-  USED block at 34bb00f2 of size 20
-  FREE block at 34bb0106 of size 7926
+  USED block at 253a0016 of size 66
+  FREE block at 253a0058 of size 18
+  USED block at 253a006a of size 136
+  USED block at 253a00f2 of size 20
+  FREE block at 253a0106 of size 7926
 OK - end of heap
 
 	== near ==
 
-  USED block at 24ba9306 of size 12
-  USED block at 24ba9312 of size 802
-  USED block at 24ba9634 of size 136
-  USED block at 24ba96bc of size 20
-  USED block at 24ba96d0 of size 20
-  USED block at 24ba96e4 of size 20
-  USED block at 24ba96f8 of size 20
-  USED block at 24ba970c of size 20
-  USED block at 24ba9720 of size 26844
+  USED block at 15399306 of size 12
+  USED block at 15399312 of size 328
+  USED block at 1539945a of size 52
+  USED block at 1539948e of size 20
+  USED block at 153994a2 of size 20
+  USED block at 153994b6 of size 20
+  USED block at 153994ca of size 20
+  USED block at 153994de of size 20
+  USED block at 153994f2 of size 27402
 OK - end of heap
 
 	== far ==
 
-  USED block at 34bb0016 of size 66
-  USED block at 34bb0058 of size 18
-  USED block at 34bb006a of size 136
-  USED block at 34bb00f2 of size 20
-  USED block at 34bb0106 of size 7926
+  USED block at 253a0016 of size 66
+  USED block at 253a0058 of size 18
+  USED block at 253a006a of size 136
+  USED block at 253a00f2 of size 20
+  USED block at 253a0106 of size 7926
 OK - end of heap
 
 Memory Type         Total      Used       Free
 ----------------  --------   --------   --------
 Default		   8166		222	  7944
-Near		   27894	1050	  26844
+Near		   27894	492	  27402
 Far		   8166		222	  7944
 ----------------  --------   --------   --------
-coreleft = 26842
-farcoreleft = 1892
-GetFreeSize = 40604
-GetNearFreeSize = 26844
-GetFarFreeSize = 40604
-memavl = 26842
-stackavail = 11846
+coreleft = 27400
+farcoreleft = 2422
+GetFreeSize = 40578
+GetNearFreeSize = 27402
+GetFarFreeSize = 40578
+memavl = 27400
+stackavail = 11798

@@ -1111,7 +1111,7 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 // #ifndef MAPHEADERLINKED
 // 	if ((handle = open("MAPHEAD."EXT,
 // 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-// 		Quit ("Can't open MAPHEAD."EXT"!");
+// 		printf("Can't open MAPHEAD."EXT"!");
 // 	length = filelength(handle);
 // 	MM_GetPtr (&(memptr)tinf,length);
 // 	CA_FarRead(handle, tinf, length);
