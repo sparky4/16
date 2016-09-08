@@ -1226,7 +1226,6 @@ void CA_Startup(global_game_variables_t *gvar)
 /*
 	CAL_SetupGrFile ();
 	CAL_SetupAudioFile ();*/
-
 	CAL_SetupMapFile (gvar);
 
 	gvar->ca.camap.mapon = -1;

@@ -46,12 +46,13 @@ typedef struct {
 } tiles_t;
 
 //TODO: 16_mm and 16_ca must handle this
+//TODO: add variables from 16_ca
 typedef struct {
 	//long		planestart[3];
-	unsigned	planelength[3];
+	//unsigned	planelength[3];
 	byte	* huge *data;	//TODO: 16_mm and 16_ca must handle this
 	tiles_t **tiles;		//TODO: 16_mm and 16_ca must handle this
-	int width, height;	//this has to be signed!
+	int width, height;		//this has to be signed!
 	char		name[16];
 } map_t;
 
