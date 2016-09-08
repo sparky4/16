@@ -24,10 +24,12 @@
 #define _LIBMAPREAD_H_
 
 #include "jsmn/jsmn.h"
-#include "stdio.h"
-#include "stdlib.h"
+//#include "stdio.h" included in 16_head.h
+//#include "stdlib.h" included in 16_head.h
 #include "src/lib/modex16.h"
 #include "src/lib/16_head.h"
+#include "src/lib/16_ca.h"
+#include "src/lib/16_mm.h"
 
 typedef struct {
 	bitmap_t huge *btdata;
@@ -48,4 +50,5 @@ typedef struct {
 } map_t;
 
 int loadmap(char *mn, map_t *map);
+
 #endif/*_LIBMAPREAD_H_*/
