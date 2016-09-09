@@ -64,7 +64,7 @@ void segatesuto()
 void
 main(int argc, char *argv[])
 {
-	byte w;
+	byte w=1;
 	global_game_variables_t gvar;
 #ifdef __WATCOMC__
 	__segment sega;
@@ -72,21 +72,27 @@ main(int argc, char *argv[])
 	memptr bigbuffer;
 
 	//static byte bakapee[64];
-	char *bakapee;
+	char *bakapee1, *bakapee2;
 	word baka;
 
 #ifdef __BORLANDC__
 	argc=argc;
 #endif
-	bakapee = malloc(64);
+	//file name //
+	bakapee1 = malloc(64);
+	bakapee2 = malloc(64);
+	//file name //
+
 	gvar.mm.mmstarted=0;
 
 	//PRINTBB
-	if(argv[1]) bakapee = argv[1];
-	else
+	if(argv[1]){ bakapee1 = argv[1];
+	if(argv[2]) bakapee2 = argv[2]; }
+	else{
 	//{ printf("filename!: "); scanf("%[^\n]", &bakapee); }
-	bakapee = "data/koishi~.pcx";
-
+		bakapee1 = "data/koishi~.pcx";
+		bakapee2 = "data/test.map";
+	}
 //	printf("main()=%Fp	start MM\n", *argv[0]);
 	MM_Startup(&gvar.mm, &gvar.mmi);
 	//PM_Startup();
@@ -105,11 +111,14 @@ for(w=0;w<2;w++)
 	if(w>0)
 	{
 		printf("		read\n");
-		if(CA_ReadFile(bakapee, &bigbuffer, &gvar)) baka=1; else baka=0;
+		if(CA_ReadFile(bakapee2, &bigbuffer, &gvar)) baka=1; else baka=0;
 	}
 #endif
+	if(w==0)
+	{
 	printf("		load\n");
-	if(CA_LoadFile(bakapee, &bigbuffer, &gvar)) baka=1; else baka=0;
+	if(CA_LoadFile(bakapee1, &bigbuffer, &gvar)) baka=1; else baka=0;
+	}
 //	close(bakapeehandle);
 	//hmm functions in cache system use the buffered stuff
 #ifdef __WATCOMC__
@@ -125,6 +134,8 @@ for(w=0;w<2;w++)
 	MM_ShowMemory(&gvar, &gvar.mm);
 	MM_DumpData(&gvar.mm);
 	MM_Report(&gvar);
+	if(baka) printf("\nyay!\n");
+	else printf("\npoo!\n");
 	printf("press any key to continue!\n");
 	getch();
 #ifdef FILEREAD
@@ -134,9 +145,7 @@ for(w=0;w<2;w++)
 	//PM_Shutdown();
 	CA_Shutdown(&gvar);
 	MM_Shutdown(&gvar.mm);
-	free(bakapee);
-	if(baka) printf("\nyay!\n");
-	else printf("\npoo!\n");
+	free(bakapee1); free(bakapee2);
 	printf("========================================\n");
 	printf("near=	%Fp ", gvar.mm.nearheap);
 	printf("far=	%Fp", gvar.mm.farheap);
