@@ -33,7 +33,7 @@
 #pragma warn -use
 
 //file load or read definition
-//#define FILEREAD
+#define FILEREAD
 //#define EXMMVERBOSE
 
 #define PRINTBB { printf("&main()=	%Fp\n", argv[0]);printf("bigbuffer=	%Fp\n", bigbuffer);printf("&bigbuffer=	%Fp\n", &bigbuffer);printf("bigbuffer=	%04x\n", bigbuffer);printf("&bigbuffer=	%04x\n", &bigbuffer); }
@@ -64,6 +64,7 @@ void segatesuto()
 void
 main(int argc, char *argv[])
 {
+	byte w;
 	global_game_variables_t gvar;
 #ifdef __WATCOMC__
 	__segment sega;
@@ -95,20 +96,20 @@ main(int argc, char *argv[])
 	PRINTBB;
 //	printf("press any key to continue!\n");
 //	getch();
-
+#ifdef FILEREAD
+for(w=0;w<2;w++)
+{
 //	bakapeehandle = open(bakapee,O_RDONLY | O_BINARY, S_IREAD);
 //	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
 //	if(CA_FarRead(bakapeehandle,(void far *)&bigbuffer,sizeof(bigbuffer),&gvar.mm))
-#ifdef FILEREAD
-	printf("		read\n");
-	if(CA_ReadFile(bakapee, &bigbuffer, &gvar))
-#else
-	printf("		load\n");
-	if(CA_LoadFile(bakapee, &bigbuffer, &gvar))
+	if(w>0)
+	{
+		printf("		read\n");
+		if(CA_ReadFile(bakapee, &bigbuffer, &gvar)) baka=1; else baka=0;
+	}
 #endif
-		baka=1;
-	else
-		baka=0;
+	printf("		load\n");
+	if(CA_LoadFile(bakapee, &bigbuffer, &gvar)) baka=1; else baka=0;
 //	close(bakapeehandle);
 	//hmm functions in cache system use the buffered stuff
 #ifdef __WATCOMC__
@@ -126,6 +127,9 @@ main(int argc, char *argv[])
 	MM_Report(&gvar);
 	printf("press any key to continue!\n");
 	getch();
+#ifdef FILEREAD
+}
+#endif
 	MM_FreePtr(&bigbuffer, &gvar.mm);
 	//PM_Shutdown();
 	CA_Shutdown(&gvar);
