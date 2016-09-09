@@ -33,8 +33,8 @@
 #pragma warn -use
 
 //file load or read definition
-#define FILERL
 //#define FILEREAD
+//#define EXMMVERBOSE
 
 #define PRINTBB { printf("&main()=	%Fp\n", argv[0]);printf("bigbuffer=	%Fp\n", bigbuffer);printf("&bigbuffer=	%Fp\n", &bigbuffer);printf("bigbuffer=	%04x\n", bigbuffer);printf("&bigbuffer=	%04x\n", &bigbuffer); }
 
@@ -70,27 +70,21 @@ main(int argc, char *argv[])
 #endif
 	memptr bigbuffer;
 
-#ifdef FILERL
 	//static byte bakapee[64];
 	char *bakapee;
 	word baka;
-#endif
 
 #ifdef __BORLANDC__
 	argc=argc;
 #endif
-#ifdef FILERL
 	bakapee = malloc(64);
-#endif
 	gvar.mm.mmstarted=0;
 
 	//PRINTBB
-#ifdef FILERL
 	if(argv[1]) bakapee = argv[1];
 	else
 	//{ printf("filename!: "); scanf("%[^\n]", &bakapee); }
 	bakapee = "data/koishi~.pcx";
-#endif
 
 //	printf("main()=%Fp	start MM\n", *argv[0]);
 	MM_Startup(&gvar.mm, &gvar.mmi);
@@ -101,7 +95,7 @@ main(int argc, char *argv[])
 	PRINTBB;
 //	printf("press any key to continue!\n");
 //	getch();
-#ifdef FILERL
+
 //	bakapeehandle = open(bakapee,O_RDONLY | O_BINARY, S_IREAD);
 //	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
 //	if(CA_FarRead(bakapeehandle,(void far *)&bigbuffer,sizeof(bigbuffer),&gvar.mm))
@@ -120,7 +114,7 @@ main(int argc, char *argv[])
 #ifdef __WATCOMC__
 	printf("\nsize of big buffer~=%u\n", _bmsize(sega, bigbuffer));
 #endif
-#endif
+
 	printf("contents of the buffer\n[\n%s\n]\n", bigbuffer);
 	//printf("dark purple = purgable\n");
 	//printf("medium blue = non purgable\n");
@@ -132,17 +126,13 @@ main(int argc, char *argv[])
 	MM_Report(&gvar);
 	printf("press any key to continue!\n");
 	getch();
-#ifdef FILERL
 	MM_FreePtr(&bigbuffer, &gvar.mm);
-#endif
 	//PM_Shutdown();
 	CA_Shutdown(&gvar);
 	MM_Shutdown(&gvar.mm);
-#ifdef FILERL
 	free(bakapee);
 	if(baka) printf("\nyay!\n");
 	else printf("\npoo!\n");
-#endif
 	printf("========================================\n");
 	printf("near=	%Fp ", gvar.mm.nearheap);
 	printf("far=	%Fp", gvar.mm.farheap);
