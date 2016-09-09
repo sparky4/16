@@ -962,9 +962,11 @@ void MM_GetPtr (memptr *baseptr, dword size, mminfo_t *mm, mminfotype *mmi)
 	mm->mmnew->length = needed;
 	mm->mmnew->useptr = baseptr;
 	//if(mm->mmnew->useptr==NULL){
-	printf("baseptr=%04x	", baseptr); printf("useptr=%04x\n", mm->mmnew->useptr);
-	printf("*baseptr=%04x	", *baseptr); printf("*useptr=%04x\n", *(mm->mmnew->useptr));
-	//printf("*baseptr=%Fp	", *baseptr); printf("*useptr=%Fp\n", *(mm->mmnew->useptr));
+#ifdef __DEBUG__
+		printf("baseptr=%04x	", baseptr); printf("useptr=%04x\n", mm->mmnew->useptr);
+		printf("*baseptr=%04x	", *baseptr); printf("*useptr=%04x\n", *(mm->mmnew->useptr));
+		printf("*baseptr=%Fp	", *baseptr); printf("*useptr=%Fp\n", *(mm->mmnew->useptr));
+#endif
 	//exit(-5); }
 	mm->mmnew->attributes = BASEATTRIBUTES;
 

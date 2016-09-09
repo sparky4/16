@@ -437,7 +437,7 @@ boolean CA_LoadFile(char *filename, memptr *ptr, global_game_variables_t *gvar)
 	if((handle = open(filename,O_RDONLY | O_BINARY, S_IREAD)) == -1)
 		return false;
 
-	size = filelength (handle);
+	size = filelength(handle);
 	MM_GetPtr(ptr,size, &(gvar->mm), &(gvar->mmi));	//TODO: gvar parameters
 	if(!CA_FarRead(handle,*ptr,size, gvar))
 	{
