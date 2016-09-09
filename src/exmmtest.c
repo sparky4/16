@@ -47,17 +47,17 @@ void segatesuto()
 	screen = 0xB800;
 	scrptr = 0;
 	printf( "Top left character is '%c'.\n", *(screen:>scrptr) );
-	printf("Next string is: [");
-	while(*scrptr<16)
-	{
-		printf("%c", *(screen:>scrptr));
-		//printf("\b");
-		scrptr++;
-
-	}
-	printf("]\n");
-	printf("press any key to continue!\n");
-	getch();
+// 	printf("Next string is: [");
+// 	while(*scrptr<16)
+// 	{
+// 		printf("%c", *(screen:>scrptr));
+// 		//printf("\b");
+// 		scrptr++;
+//
+// 	}
+// 	printf("]\n");
+//	printf("press any key to continue!\n");
+//	getch();
 }
 #endif
 
@@ -99,8 +99,8 @@ main(int argc, char *argv[])
 	CA_Startup(&gvar);
 //	printf("		done!\n");
 	PRINTBB;
-	printf("press any key to continue!\n");
-	getch();
+//	printf("press any key to continue!\n");
+//	getch();
 #ifdef FILERL
 //	bakapeehandle = open(bakapee,O_RDONLY | O_BINARY, S_IREAD);
 //	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
@@ -121,19 +121,15 @@ main(int argc, char *argv[])
 	printf("\nsize of big buffer~=%u\n", _bmsize(sega, bigbuffer));
 #endif
 #endif
-	printf("press any key to continue!\n");
-	getch();
-	printf("\n\ncontents of the buffer\n[\n%s\n]\n", bigbuffer);
+	printf("contents of the buffer\n[\n%s\n]\n", bigbuffer);
 	//printf("dark purple = purgable\n");
 	//printf("medium blue = non purgable\n");
 	//printf("red = locked\n");
 	printf("press any key to continue!\n");
 	getch();
 	MM_ShowMemory(&gvar, &gvar.mm);
-	//getch();
 	MM_DumpData(&gvar.mm);
 	MM_Report(&gvar);
-//	printf("		stop!\n");
 	printf("press any key to continue!\n");
 	getch();
 #ifdef FILERL
@@ -142,7 +138,6 @@ main(int argc, char *argv[])
 	//PM_Shutdown();
 	CA_Shutdown(&gvar);
 	MM_Shutdown(&gvar.mm);
-//	printf("		done!\n");
 #ifdef FILERL
 	free(bakapee);
 	if(baka) printf("\nyay!\n");

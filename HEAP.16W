@@ -1,45 +1,45 @@
 
 	== default ==
 
-  USED block at 253a0016 of size 66
-  FREE block at 253a0058 of size 18
-  USED block at 253a006a of size 136
-  USED block at 253a00f2 of size 20
-  FREE block at 253a0106 of size 7926
+  USED block at 26010016 of size 66
+  FREE block at 26010058 of size 18
+  USED block at 2601006a of size 136
+  USED block at 260100f2 of size 20
+  FREE block at 26010106 of size 7926
 OK - end of heap
 
 	== near ==
 
-  USED block at 15399306 of size 12
-  USED block at 15399312 of size 328
-  USED block at 1539945a of size 52
-  USED block at 1539948e of size 20
-  USED block at 153994a2 of size 20
-  USED block at 153994b6 of size 20
-  USED block at 153994ca of size 20
-  USED block at 153994de of size 20
-  USED block at 153994f2 of size 27402
+  USED block at 16009306 of size 12
+  USED block at 16009312 of size 530
+  USED block at 16009524 of size 72
+  USED block at 1600956c of size 20
+  USED block at 16009580 of size 20
+  USED block at 16009594 of size 20
+  USED block at 160095a8 of size 20
+  USED block at 160095bc of size 20
+  USED block at 160095d0 of size 27180
 OK - end of heap
 
 	== far ==
 
-  USED block at 253a0016 of size 66
-  USED block at 253a0058 of size 18
-  USED block at 253a006a of size 136
-  USED block at 253a00f2 of size 20
-  USED block at 253a0106 of size 7926
+  USED block at 26010016 of size 66
+  USED block at 26010058 of size 18
+  USED block at 2601006a of size 136
+  USED block at 260100f2 of size 20
+  USED block at 26010106 of size 7926
 OK - end of heap
 
 Memory Type         Total      Used       Free
 ----------------  --------   --------   --------
 Default		   8166		222	  7944
-Near		   27894	492	  27402
+Near		   27894	714	  27180
 Far		   8166		222	  7944
 ----------------  --------   --------   --------
-coreleft = 27400
-farcoreleft = 2422
-GetFreeSize = 40578
-GetNearFreeSize = 27402
-GetFarFreeSize = 40578
-memavl = 27400
+coreleft = 27178
+farcoreleft = 59530
+GetFreeSize = 32370
+GetNearFreeSize = 27180
+GetFarFreeSize = 32370
+memavl = 27178
 stackavail = 11798
