@@ -194,9 +194,9 @@ typedef struct
 typedef struct
 {
 	int		mapon, mapnum;
-	__segment	*mapsegs[4];
-	__segment	*mapheaderseg[NUMMAPS];
-	__segment	*tinf;
+	__SEGA	*mapsegs[4];
+	__SEGA	*mapheaderseg[NUMMAPS];
+	__SEGA	*tinf;
 } ca_mapinfo_t;
 
 typedef struct

@@ -50,9 +50,11 @@ MK_FP(segment value, 0)*/
 #ifdef __WATCOMC__
 typedef void __based( void ) * memptr;	////old //----typedef void __based(__self) * memptr;
 typedef unsigned short _seg; // it will contains segment value (as Borland _seg)
+#define __SEGA __segment
 #endif
 #ifdef __BORLANDC__
 typedef void _seg * memptr;
+#define __SEGA _seg
 #endif
 
 #endif/*_TYPE_H_*/

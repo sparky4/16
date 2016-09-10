@@ -1354,7 +1354,7 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 			//printf("+	%u	%lu\n", w, scan->length);
 			strcat(scratch0, "+");
 		}
-		strcat(scratch0, AARESET); strcat(scratch0, AAGREY); strcat(scratch0,"_");
+		//++==++==optional strcat(scratch0, AARESET); strcat(scratch0, AAGREY); strcat(scratch0,"_");
 //++++		VW_Plot(scan->start,0,15);
 //++++				modexClearRegion(page, chx, chy, 4, 4, 15);
 //++++			VW_Hlin(end+1,scan->next->start,0,0);	// black = free
@@ -1364,7 +1364,7 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 		if (scan->next && scan->next->start >= end+1)
 		{
 			strcat(scratch0, AARESET);
-			strcat(scratch0, "\n");
+			//++==++==optional strcat(scratch0, "\n");
 			strcat(scratch0,AAGREEN);
 			for(w=(end+1)/80;w<=((scan->next->start-scan->start)/80);w++)
 			//for(w=(wwww)/80;w<=((end+1)/80);w++)
