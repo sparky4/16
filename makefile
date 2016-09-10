@@ -312,12 +312,10 @@ clean: .symbolic
 	@. src/util/bcexmm.sh
 	@rm *.EXE
 !endif
-	@if exist *.$$$$$$ $(REMOVECOMMAND) *.$$$$$$
 	@if exist *.obj $(REMOVECOMMAND) *.obj
 	@if exist *.OBJ $(REMOVECOMMAND) *.OBJ
 	@if exist *.bco $(REMOVECOMMAND) *.bco
 	@if exist *.BCO $(REMOVECOMMAND) *.BCO
-	@if exist *.lib $(REMOVECOMMAND) *.lib
 	@if exist *.LIB $(REMOVECOMMAND) *.LIB
 	@if exist *.lnk $(REMOVECOMMAND) *.lnk
 	@if exist *.LNK $(REMOVECOMMAND) *.LNK
