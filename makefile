@@ -46,7 +46,7 @@ DOSLIBMAKE=make.sh
 DOSLIBMAKEALL=buildall.sh
 !else		#DOS ^^
 to_os_path=/=\
-REMOVECOMMAND=*del
+REMOVECOMMAND=del
 COPYCOMMAND=copy /y
 DIRSEP=\
 OBJ=obj
@@ -306,32 +306,29 @@ modex.$(OBJ):     $(MODEXLIB)/modex.asm
 #other~
 #
 clean: .symbolic
-	@$(REMOVECOMMAND) $(EXEC)
-	@$(REMOVECOMMAND) *.$(OBJ)
+	@for %f in ($(EXEC)) do @if exist %f $(REMOVECOMMAND) %f
 !ifdef __LINUX__
 	@rm *.LIB
 	@. src/util/bcexmm.sh
 	@rm *.EXE
-	#@$(REMOVECOMMAND) *.\$\$\$
-	@$(REMOVECOMMAND) *.OBJ
-	@$(REMOVECOMMAND) *.BCO
-!else
-	@*$(REMOVECOMMAND) *.$$$
 !endif
-	@$(REMOVECOMMAND) 16.lib
-	@$(REMOVECOMMAND) gfx.lib
-	@$(REMOVECOMMAND) vgmsnd.lib
-	@*wlib -n $(WLIBQ) 16.lib
-	@*wlib -n $(WLIBQ) gfx.lib
-	@*wlib -n $(WLIBQ) vgmsnd.lib
-##	@$(REMOVECOMMAND) *.16W
-##	@$(REMOVECOMMAND) *.16B
-	@$(REMOVECOMMAND) __wcl__.LNK
-	@$(REMOVECOMMAND) *.SMP
-	@$(REMOVECOMMAND) *.hed
-	@$(REMOVECOMMAND) *.MAH
-	@$(REMOVECOMMAND) *.mah
-	@$(REMOVECOMMAND) *.err
+	@if exist *.$$$$$$ $(REMOVECOMMAND) *.$$$$$$
+	@if exist *.obj $(REMOVECOMMAND) *.obj
+	@if exist *.OBJ $(REMOVECOMMAND) *.OBJ
+	@if exist *.bco $(REMOVECOMMAND) *.bco
+	@if exist *.BCO $(REMOVECOMMAND) *.BCO
+	@if exist *.lib $(REMOVECOMMAND) *.lib
+	@if exist *.LIB $(REMOVECOMMAND) *.LIB
+	@if exist *.lnk $(REMOVECOMMAND) *.lnk
+	@if exist *.LNK $(REMOVECOMMAND) *.LNK
+	@if exist *.smp $(REMOVECOMMAND) *.smp
+	@if exist *.SMP $(REMOVECOMMAND) *.SMP
+	@if exist *.hed $(REMOVECOMMAND) *.hed
+	@if exist *.mah $(REMOVECOMMAND) *.mah
+	@if exist *.MAH $(REMOVECOMMAND) *.MAH
+	@if exist *.err $(REMOVECOMMAND) *.err
+#	@if exist *.16W $(REMOVECOMMAND) *.16W
+#	@if exist *.16B $(REMOVECOMMAND) *.16B
 
 #	@$(COPYCOMMAND) $(SRC)exmmtest.c $(EXMMTESTDIR)$(SRC)
 #	@$(COPYCOMMAND) $(SRCLIB)16_mm.* $(EXMMTESTDIR)$(SRCLIB)
