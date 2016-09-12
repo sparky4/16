@@ -30,10 +30,11 @@
 #include <string.h>
 #include "src/lib/16_head.h"
 #include "src/lib/16_timer.h"
-#include "src/lib/bitmap.h"
-#include "src/lib/planar.h"
+#ifdef __WATCOMC__	//borland C BCEXMM.EXE
 #include "src/lib/16_dbg.h"
-
+#include "src/lib/16_sprit.h"
+#include "src/lib/bitmap.h"	//old format
+#endif
 #ifdef	__DEBUG__
 //#define	__DEBUG_InputMgr__
 #endif
@@ -43,7 +44,7 @@
 //#define TESTCONTROLNOISY
 #endif
 
-extern boolean testkeyin,testcontrolnoisy,testctrltype;
+extern boolean testkeyin,testcontrolnoisy;
 
 //if else for gfxtesting and direction
 //player[pn].d == 2 ||
@@ -230,7 +231,8 @@ typedef	struct
 //0000	planar_buf_t huge *data; //supposively the sprite sheet data
 //	planar_buf_t data; //supposively the sprite sheet data
 ////0000----
-	bitmap_t huge *data; //supposively the sprite sheet data
+	struct sprite *spri;	//supposively the sprite sheet data
+	bitmap_t *data;		//supposively the sprite sheet data//old format
 	sword hp; //hitpoints of the player
 	int persist_aniframe;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	CursorInfo	info;

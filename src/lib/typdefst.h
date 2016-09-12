@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 &  joncampbell123
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -25,7 +25,6 @@
 
 #include "src/lib/types.h"
 
-
 #define AARED		"\x1b[41;31m"
 #define AABLUE		"\x1b[44;34m"
 #define AAGREEN	"\x1b[42;32m"
@@ -42,7 +41,7 @@
  * typedefs of the game variables!
  */
 typedef struct {
-	byte huge *data;
+	byte *data;
 	word width;
 	word height;
 	byte *palette;
@@ -84,14 +83,26 @@ typedef struct {
 	sword tileplayerposscreeny;	/* player position on screen */
 	word stridew;			/*width/4*/
 	word pagesize;			/* page size */
+	word pi;				/* incremention page by this much to preserve location */
 } page_t;
 
 typedef struct
 {
-// 	int showmemhandle;
-	int			profilehandle,debughandle;
+	//sprite ....
+	boolean wwww;
+} spri_t;
+
+typedef struct
+{
+	//vrs with sprite ....
+	spri_t *spri;
+} vrs_t;
+
+typedef struct
+{
+	int			profilehandle,debughandle,showmemhandle;
 	int heaphandle;
-} handle_t;
+} loghandle_t;
 
 typedef struct
 {
@@ -108,23 +119,112 @@ typedef struct
 	word	pn;
 } pan_t;
 
+//video
+#define NUMCHUNKS	3016	//keen
+
 typedef struct
 {
 	char old_mode;		//old video mode before game!
+	byte grneeded[NUMCHUNKS];
 	page_t page[MAXPAGE];		//pointer to root page[0]
 	word vmem_remain;	//remaining video memory
 	byte num_of_pages;	//number of actual pages
 	boolean __near p;			//render page number
 	boolean __near r;			//page flip if true
 	word pr[MAXPAGE][4];	//render sections of pages
+	//0000word startclk; float clk, tickclk;	//timer
 } video_t;
+
+typedef struct mmblockstruct
+{
+	word	start,length;
+	//word	start;	dword length;
+	word	blob;	//for data larger than 64k
+	unsigned	attributes;
+	memptr		*useptr;	// pointer to the segment start
+	//huge struct mmblockstruct huge *next;
+	struct mmblockstruct far *next;
+} mmblocktype;
+
+//from 16_mm
+//==========================================================================
+
+#define MAXBLOCKS		1024
+#define MAXUMBS		12
 
 typedef struct
 {
-	video_t video;	// video settings variable
+	dword	nearheap,farheap,EMSmem,XMSmem,mainmem;
+} mminfotype;
+
+typedef struct
+{
+	memptr bufferseg;
+	boolean		mmstarted, bombonerror, mmerror;
+	//huge void huge	*farheap;
+	void far	*farheap;
+#ifdef __BORLANDC__
+	void	*nearheap;
+#endif
+#ifdef __WATCOMC__
+	void __near	*nearheap;
+#endif
+	//byte		EMS_status;
+	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
+	unsigned int EMSVer;
+	word numUMBs,UMBbase[MAXUMBS];
+	//dword	numUMBs,UMBbase[MAXUMBS];
+	//huge mmblocktype	huge mmblocks[MAXBLOCKS],huge *mmhead,huge *mmfree,huge *mmrover,huge *mmnew;
+	mmblocktype	far mmblocks[MAXBLOCKS],far *mmhead,far *mmfree,far *mmrover,far *mmnew;
+} mminfo_t;
+
+//==========================================================================
+
+//from 16_ca
+//==========================================================================
+
+#define NUMMAPS		4//39
+#define MAPPLANES		3
+
+typedef struct
+{
+  word bit0,bit1;	// 0-255 is a character, > is a pointer to a node
+} huffnode;
+
+typedef struct
+{
+	int		mapon, mapnum;
+	__SEGA	*mapsegs[4];
+	__SEGA	*mapheaderseg[NUMMAPS];
+	__SEGA	*tinf;
+} ca_mapinfo_t;
+
+typedef struct
+{
+	int			maphandle[4];		// handle to MAPTEMP / GAMEMAPS
+} ca_handle_t;
+
+typedef struct
+{
+	byte		ca_levelbit,ca_levelnum;
+	ca_handle_t	file;		//files to open
+	ca_mapinfo_t	camap;
+	//_seg	*grsegs[NUMCHUNKS];
+	//byte		far	grneeded[NUMCHUNKS];
+	//huffnode huffnode;
+} ca_t;
+
+//==========================================================================
+
+//actual global game varables!
+typedef struct
+{
+	video_t	video;	// video settings variable
+	ca_t		ca;	// ca stuff
 	byte *pee;		// message for fps
-	handle_t handle;	//handles for file logging
+	loghandle_t handle;	//handles for file logging
 	kurokku_t kurokku;	//clock struct
+	mminfo_t mm; mminfotype mmi;
 } global_game_variables_t;
 
 #endif /* _TYPEDEFSTRUCT_H_ */

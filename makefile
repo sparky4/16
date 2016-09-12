@@ -32,383 +32,302 @@
 # serial output is plain text ASCII.
 DEBUGSERIAL=1
 
-#%.C
 #192x144
 #wwww will add these
 !ifdef __LINUX__
+#!ifdef UNIX
+to_os_path=\=/
 REMOVECOMMAND=rm -f
 COPYCOMMAND=cp -f
 DIRSEP=/
-OBJ=o
-!else
+OBJ=obj
+DUMP=cat
+DOSLIBMAKE=./make.sh
+DOSLIBMAKEALL=./buildall.sh
+!else		#DOS ^^
+to_os_path=/=\
 REMOVECOMMAND=del
 COPYCOMMAND=copy /y
 DIRSEP=\
 OBJ=obj
+DUMP=type
+DOSLIBMAKE=.\make.bat
+DOSLIBMAKEALL=.\build.bat
 !endif
 
 TARGET_OS = dos
 
+BUILD_ROOT=$+$(%__CWD__)$-
 #EXMMTESTDIR=16$(DIRSEP)exmmtest$(DIRSEP)
-PDIR=..$(DIRSEP)
-SRC=src$(DIRSEP)
 DATADIR=data$(DIRSEP)
-SPRI=$(DATADIR)$(DIRSEP)spri$(DIRSEP)
-SRCLIB=$(SRC)lib$(DIRSEP)
-JSMNLIB=$(SRCLIB)jsmn$(DIRSEP)
-NYANLIB=$(SRCLIB)nyan$(DIRSEP)
-#EXMMLIB=$(SRCLIB)exmm$(DIRSEP)
-MODEXLIB=$(SRCLIB)modex16$(DIRSEP)
-MODEXLIB_=$(SRCLIB)modex$(DIRSEP)
-VGMSNDLIB=$(SRCLIB)vgmsnd$(DIRSEP)
-DOSLIB=$(SRCLIB)doslib$(DIRSEP)
-DOSLIBDIR=$(SRCLIB)doslib
-WCPULIB=$(SRCLIB)wcpu$(DIRSEP)
+SPRI=$(DATADIR)/spri
+SRC=src
+SRCLIB=src/lib
+JSMNLIB=src/lib/jsmn
+NYANLIB=src/lib/nyan
+EXMMLIB=src/lib/exmm
+MODEXLIB16=src/lib/modex16
+MODEXLIB=src/lib/modex
+VGMSNDLIB=src/lib/vgmsnd
+DOSLIB=src/lib/doslib
+WCPULIB=src/lib/wcpu
 
+DOSLIB_CPU=src/lib/doslib/hw/cpu
+DOSLIB_DOS=src/lib/doslib/hw/dos
+DOSLIB_VGA=src/lib/doslib/hw/vga
+DOSLIB_8250=src/lib/doslib/hw/8250
+DOSLIB_JOYSTICK=src/lib/doslib/hw/joystick
+
+#
+# quiet flags
+#
 WLIBQ=-q
-WCLQ=-zq $(WLIBQ)
+WCLQ=-q
 UPXQ=-qqq
 
-AFLAGS=-mh -0 -d2
-16FLAGS=-fh=16.hed
-BAKAPIFLAGS=-fh=bakapi.hed
-SFLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#54096#60000
-DFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 $(SFLAGS)
-ZFLAGS=-zk0 -zc -zp8 $(WCLQ) ## -zm
-CFLAGS=$(AFLAGS) $(IFLAGS)-lr -l=dos -wo -i$(DOSLIB)##wwww
-OFLAGS=-obmiler -out -oh -ei -zp8 -fpi87  -onac -ol+ -ok####x
-FLAGS=$(CFLAGS) $(OFLAGS) $(DFLAGS) $(ZFLAGS)
+#
+# compile flags
+#
+S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#54096#60000
+Z_FLAGS=-zk0 -zc -zp8 -zm
+O_FLAGS=-obmilr -oe=24 -out -oh -ei -onac -ol+ -ok##x
+T_FLAGS=-bt=dos -mh -0 -fpi87 -fo=.$(OBJ) -d1
 
-PCX2VRL=$(DOSLIBDIR)/hw/vga/pcx2vrl
+CPPFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1
+!ifeq DEBUGSERIAL 1
+CPPFLAGS += -DDEBUGSERIAL
+!endif
+AFLAGS=$(WCLQ) $(T_FLAGS)
+CFLAGS=$(WCLQ) $(T_FLAGS) -wo -i"$(DOSLIB)" $(O_FLAGS) $(S_FLAGS) $(Z_FLAGS)
+LFLAGS=$(WCLQ) -l=dos -fm=$^&.mah $(S_FLAGS)
+LIBFLAGS=$(WLIBQ) -b -n
 
+#
+# objects
+#
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
-DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_timer.$(OBJ)
-
-GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) planar.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16planar.$(OBJ) $(DOSLIBLIBS)
-
-DOSLIBLIBS=$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu$(DIRSEP)dos86h$(DIRSEP)cpu.lib $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos$(DIRSEP)dos86h$(DIRSEP)dos.lib $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vga.lib
-
+GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16_vrs.$(OBJ) 16_sprit.$(OBJ) #scroll16.$(OBJ)
+#16planar.$(OBJ) planar.$(OBJ)
+DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 !ifeq DEBUGSERIAL 1
-FLAGS += -DDEBUGSERIAL
 DOSLIBOBJ += 8250.$(OBJ)
-DOSLIBLIBS += $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)8250$(DIRSEP)dos86h$(DIRSEP)8250.lib
 !endif
 
-TESTEXEC = exmmtest.exe test.exe test0.exe pcxtest.exe pcxtest2.exe test2.exe palettec.exe maptest.exe fmemtest.exe fonttest.exe fontgfx.exe scroll.exe vgmtest.exe inputest.exe palettel.exe planrpcx.exe
-
-EXEC = 16.exe bakapi.exe $(TESTEXEC) tesuto.exe
-
-all: $(EXEC) joytest.exe vrs
-#16.lib => $(16LIBOBJS) bug....
-16LIB=$(16LIBOBJS)
+#
+# libraries
+#
+DOSLIBLIBS = $(DOSLIB_CPU)/dos86h/cpu.lib $(DOSLIB_DOS)/dos86h/dos.lib $(DOSLIB_VGA)/dos86h/vga.lib
 !ifeq DEBUGSERIAL 1
-16LIB += $(DOSLIBLIBS)
+DOSLIBLIBS += $(DOSLIB_8250)/dos86h/8250.lib
 !endif
-#
-#game and bakapi executables
-#
-16.exe: 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib
-	wcl $(FLAGS) $(16FLAGS) 16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib -fm=16.mah
-
-bakapi.exe: bakapi.$(OBJ) gfx.lib $(DOSLIBLIBS)
-	wcl $(FLAGS) $(BAKAPIFLAGS) bakapi.$(OBJ) gfx.lib $(DOSLIBLIBS) -fm=bakapi.mah
-#modex.lib
-#
-#Test Executables!
-#
-scroll.exe: scroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib
-	wcl $(FLAGS) scroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib -fm=scroll.mah
-scroll.$(OBJ): $(SRC)scroll.c
-	wcl $(FLAGS) -c $(SRC)scroll.c
-
-
-# NOTE: dos86h = 16-bit huge memory model. memory model must match!
-tesuto.exe: tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
-#	%write tmp.cmd option quiet option max=tesuto.mah $(DOSLIB_LDFLAGS_DOS16H) file tesuto.obj name tesuto.exe
-#	%write tmp.cmd library $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu$(DIRSEP)dos86h$(DIRSEP)cpu.lib
-#	%write tmp.cmd library $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos$(DIRSEP)dos86h$(DIRSEP)dos.lib
-#	@wlink @tmp.cmd
-	wcl $(FLAGS) $(WCLQ) tesuto.$(OBJ) $(DOSLIBLIBS) 16_head.$(OBJ) gfx.lib
-tesuto.$(OBJ): $(SRC)tesuto.c
-	wcl $(FLAGS) $(WCLQ) -c $(SRC)tesuto.c
-
-test.exe: test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ) $(DOSLIBLIBS) $(16LIB)
-	wcl $(FLAGS) test.$(OBJ) gfx.lib 16_in.$(OBJ) 16_head.$(OBJ) $(DOSLIBLIBS) $(16LIB) -fm=test.mah
-
-test2.exe: test2.$(OBJ) $(DOSLIBLIBS) gfx.lib
-	wcl $(FLAGS) test2.$(OBJ) $(DOSLIBLIBS) gfx.lib -fm=test2.mah
-
-test0.exe: test0.$(OBJ)
-	wcl $(FLAGS) test0.$(OBJ) -fm=test0.mah
-
-fonttest.exe: fonttest.$(OBJ) $(16LIB) gfx.lib
-	wcl $(FLAGS) fonttest.$(OBJ) $(16LIB) gfx.lib -fm=fonttest.mah
-
-#fonttes0.exe: fonttes0.$(OBJ) $(16LIB)
-#	wcl $(FLAGS) fonttes0.$(OBJ) $(16LIB)
-
-fontgfx.exe: fontgfx.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
-	wcl $(FLAGS) fontgfx.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS) -fm=fontgfx.mah
-
-inputest.exe: inputest.$(OBJ) $(16LIB)
-	wcl $(FLAGS) inputest.$(OBJ) $(16LIB) -fm=inputest.mah
-
-#sountest.exe: sountest.$(OBJ) $(16LIB)
-#	wcl $(FLAGS) sountest.$(OBJ) $(16LIB)
-
-pcxtest.exe: pcxtest.$(OBJ) gfx.lib
-	wcl $(FLAGS) pcxtest.$(OBJ) gfx.lib -fm=pcxtest.mah
-
-palettec.exe: palettec.$(OBJ) gfx.lib #$(16LIB)
-	wcl $(FLAGS) palettec.$(OBJ) gfx.lib -fm=palettec.mah #$(16LIB)
-
-palettel.exe: palettel.$(OBJ) gfx.lib #$(16LIB)
-	wcl $(FLAGS) palettel.$(OBJ) gfx.lib -fm=palettel.mah #$(16LIB)
-
-pcxtest2.exe: pcxtest2.$(OBJ) gfx.lib
-	wcl $(FLAGS) pcxtest2.$(OBJ) gfx.lib -fm=pcxtest2.mah
-
-planrpcx.exe: planrpcx.$(OBJ) gfx.lib
-	wcl $(FLAGS) planrpcx.$(OBJ) gfx.lib -fm=planrpcx.mah
-
-maptest.exe: maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib
-	wcl $(FLAGS) maptest.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib -fm=maptest.mah
-
-fmemtest.exe: fmemtest.$(OBJ) $(16LIB)
-	wcl $(FLAGS) fmemtest.$(OBJ) $(16LIB) -fm=fmemtest.mah
-
-exmmtest.exe: exmmtest.$(OBJ) $(16LIB)
-	wcl $(FLAGS) exmmtest.$(OBJ) -fm=exmmtest.mah $(16LIB)
-
-vgmtest.exe: vgmtest.$(OBJ) vgmsnd.lib $(16LIB)
-	wcl $(FLAGS) vgmtest.$(OBJ) vgmsnd.lib -fm=vgmtest.mah $(16LIB)
-	#====wcl -mc vgmtest.$(OBJ) $(VGMSNDOBJ) -fm=vgmtest.mah
-
+16LIB=$(16LIBOBJS)#16.lib bad program lock up
 
 #
-#executable's objects
+#	Files locations
 #
-16.$(OBJ): $(SRC)16.h $(SRC)16.c
-	wcl $(FLAGS) -c $(SRC)16.c
+.c : $(SRC);$(SRCLIB);$(MODEXLIB16);$(JSMNLIB);$(NYANLIB);$(VGMSNDLIB);$(WCPULIB)
 
-bakapi.$(OBJ): $(SRC)bakapi.h $(SRC)bakapi.c
-	wcl $(FLAGS) -c $(SRC)bakapi.c
+.asm : $(MODEXLIB)
 
-test.$(OBJ): $(SRC)test.c $(SRCLIB)modex16.h
-	wcl $(FLAGS) -c $(SRC)test.c
+.lib : .;$(DOSLIB_CPU)/dos86h;$(DOSLIB_DOS)/dos86h;$(DOSLIB_VGA)/dos86h;$(DOSLIB_8250)/dos86h
 
-test2.$(OBJ): $(SRC)test2.c $(SRCLIB)modex16.h
-	wcl $(FLAGS) -c $(SRC)test2.c
-
-test0.$(OBJ): $(SRC)test0.c
-	wcl $(FLAGS) -c $(SRC)test0.c
-
-pcxtest.$(OBJ): $(SRC)pcxtest.c $(SRCLIB)modex16.h
-	wcl $(FLAGS) -c $(SRC)pcxtest.c
-
-planrpcx.$(OBJ): $(SRC)planrpcx.c $(SRCLIB)modex16.h
-	wcl $(FLAGS) -c $(SRC)planrpcx.c
-
-pcxtest2.$(OBJ): $(SRC)pcxtest2.c $(SRCLIB)modex16.h
-	wcl $(FLAGS) -c $(SRC)pcxtest2.c
-
-palettec.$(OBJ): $(SRC)palettec.c
-	wcl $(FLAGS) -c $(SRC)palettec.c
-
-palettel.$(OBJ): $(SRC)palettel.c
-	wcl $(FLAGS) -c $(SRC)palettel.c
-
-maptest.$(OBJ): $(SRC)maptest.c $(SRCLIB)modex16.h
-	wcl $(FLAGS) -c $(SRC)maptest.c
-
-#maptest0.$(OBJ): $(SRC)maptest0.c# $(SRCLIB)modex16.h
-#	wcl $(FLAGS) $(MFLAGS) -c $(SRC)maptest0.c
-
-#emmtest.$(OBJ): $(SRC)emmtest.c
-#	wcl $(FLAGS) $(MFLAGS) -c $(SRC)emmtest.c
-
-#emsdump.$(OBJ): $(SRC)emsdump.c
-#	wcl $(FLAGS) $(MFLAGS) -c $(SRC)emsdump.c
-
-fmemtest.$(OBJ): $(SRC)fmemtest.c
-	wcl $(FLAGS) -c $(SRC)fmemtest.c
-
-fonttest.$(OBJ): $(SRC)fonttest.c
-	wcl $(FLAGS) -c $(SRC)fonttest.c
-
-#fonttes0.$(OBJ): $(SRC)fonttes0.c
-#	wcl $(FLAGS) -c $(SRC)fonttes0.c
-
-fontgfx.$(OBJ): $(SRC)fontgfx.c
-	wcl $(FLAGS) -c $(SRC)fontgfx.c
-
-inputest.$(OBJ): $(SRC)inputest.c
-	wcl $(FLAGS) -c $(SRC)inputest.c
-
-#sountest.$(OBJ): $(SRC)sountest.c
-#	wcl $(FLAGS) -c $(SRC)sountest.c
-
-#miditest.$(OBJ): $(SRC)miditest.c
-#	wcl $(FLAGS) -c $(SRC)miditest.c
-
-#testemm.$(OBJ): $(SRC)testemm.c
-#	wcl $(FLAGS) -c $(SRC)testemm.c
-
-#testemm0.$(OBJ): $(SRC)testemm0.c
-#	wcl $(FLAGS) -c $(SRC)testemm0.c
-
-tsthimem.$(OBJ): $(SRC)tsthimem.c
-	wcl $(FLAGS) -c $(SRC)tsthimem.c
-
-exmmtest.$(OBJ): $(SRC)exmmtest.c
-	wcl $(FLAGS) -c $(SRC)exmmtest.c
-
-vgmtest.$(OBJ): $(SRC)vgmtest.c
-	wcl $(FLAGS) -c $(SRC)vgmtest.c
-	#====wcl -mc -c $(SRC)vgmtest.c
+.obj : .
 
 #
-#non executable objects libraries
+#	Default make rules
 #
-16.lib: $(16LIBOBJS)# doslib.lib vgmsnd.lib
-	wlib -b $(WLIBQ) 16.lib $(16LIBOBJS)# doslib.lib vgmsnd.lib
+.c.obj:
+	*wcl $(CPPFLAGS) $(CFLAGS) $(extra_$^&_obj_opts) -c $[@
 
-gfx.lib: $(GFXLIBOBJS) 16_in.$(OBJ) 16_head.$(OBJ)
-	wlib -b $(WLIBQ) gfx.lib $(GFXLIBOBJS) 16_in.$(OBJ) 16_head.$(OBJ)
+.asm.obj:
+	*wcl $(AFLAGS) $(extra_$^&_obj_opts) -c $[@
 
+#CFLAGS is neccessary here
+.obj.exe :
+	*wcl $(LFLAGS) $(extra_$^&_exe_opts) -fe=$@ $<
+
+.obj.lib :
+	*wlib $(LIBFLAGS) $(extra_$^&_lib_opts) $@ $<
+
+#
+# List of executables to build
+#
+TESTEXEC = &
+    test.exe &
+    test0.exe &
+    pcxtest.exe &
+    pcxtest2.exe &
+    palettec.exe &
+    maptest.exe &
+    fmemtest.exe &
+    fonttest.exe &
+    fontgfx.exe &
+    scroll.exe &
+    vgmtest.exe &
+    inputest.exe &
+    palettel.exe &
+    exmmtest.exe &
+    vrstest.exe &
+    vgacamm.exe
+EXEC = &
+    16.exe &
+    bakapi.exe &
+    tesuto.exe &
+    0.exe &
+    $(TESTEXEC)
+
+all: $(EXEC) joytest.exe
+
+#
+# game and bakapi executables
+#
+16.exe:           16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
+bakapi.exe:       bakapi.$(OBJ) gfx.lib $(DOSLIBLIBS)
+
+#
+# Test Executables!
+#
+scroll.exe:       scroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
+scroll.$(OBJ):    $(SRC)/scroll.c
+tesuto.exe:       tesuto.$(OBJ) 16_head.$(OBJ) gfx.lib $(DOSLIBLIBS)
+tesuto.$(OBJ):    $(SRC)/tesuto.c
+0.exe:            0.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
+0.$(OBJ):         $(SRC)/0.c
+test.exe:         test.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
+#test2.exe:       test2.$(OBJ) gfx.lib $(DOSLIBLIBS)
+test0.exe:        test0.$(OBJ)
+fonttest.exe:     fonttest.$(OBJ) gfx.lib
+#fonttes0.exe:    fonttes0.$(OBJ) $(16LIB)
+fontgfx.exe:      fontgfx.$(OBJ) gfx.lib $(DOSLIBLIBS)
+inputest.exe:     inputest.$(OBJ) $(16LIB) $(DOSLIBLIBS)
+#sountest.exe:    sountest.$(OBJ) $(16LIB)
+pcxtest.exe:      pcxtest.$(OBJ) gfx.lib $(DOSLIBLIBS)
+vrstest.exe:      vrstest.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
+vgacamm.exe:      vgacamm.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
+palettec.exe:     palettec.$(OBJ) gfx.lib $(DOSLIBLIBS)
+palettel.exe:     palettel.$(OBJ) gfx.lib $(DOSLIBLIBS)
+pcxtest2.exe:     pcxtest2.$(OBJ) gfx.lib $(DOSLIBLIBS)
+#planrpcx.exe:    planrpcx.$(OBJ) gfx.lib
+maptest.exe:      maptest.$(OBJ) 16_map.$(OBJ) 16_head.$(OBJ) jsmn.$(OBJ) gfx.lib $(DOSLIBLIBS)
+fmemtest.exe:     fmemtest.$(OBJ)
+exmmtest.exe:     exmmtest.$(OBJ) $(16LIB) $(DOSLIBLIBS)
+vgmtest.exe:      vgmtest.$(OBJ) vgmsnd.lib $(16LIB) $(DOSLIBLIBS)
+
+#
+# executable's objects
+#
+16.$(OBJ):        $(SRC)/16.c $(SRC)/16.h
+bakapi.$(OBJ):    $(SRC)/bakapi.c $(SRC)/bakapi.h
+test.$(OBJ):      $(SRC)/test.c $(SRCLIB)/modex16.h
+#test2.$(OBJ):    $(SRC)/test2.c $(SRCLIB)/modex16.h
+test0.$(OBJ):     $(SRC)/test0.c
+pcxtest.$(OBJ):   $(SRC)/pcxtest.c $(SRCLIB)/modex16.h
+vrstest.$(OBJ):   $(SRC)/vrstest.c $(SRCLIB)/modex16.h
+vgacamm.$(OBJ):   $(SRC)/vgacamm.c $(SRCLIB)/modex16.h
+#planrpcx.$(OBJ): $(SRC)/planrpcx.c $(SRCLIB)/modex16.h
+pcxtest2.$(OBJ):  $(SRC)/pcxtest2.c $(SRCLIB)/modex16.h
+palettec.$(OBJ):  $(SRC)/palettec.c
+palettel.$(OBJ):  $(SRC)/palettel.c
+maptest.$(OBJ):   $(SRC)/maptest.c $(SRCLIB)/modex16.h
+#emmtest.$(OBJ):  $(SRC)/emmtest.c
+#emsdump.$(OBJ):  $(SRC)/emsdump.c
+fmemtest.$(OBJ):  $(SRC)/fmemtest.c
+fonttest.$(OBJ):  $(SRC)/fonttest.c
+#fonttes0.$(OBJ): $(SRC)/fonttes0.c
+fontgfx.$(OBJ):   $(SRC)/fontgfx.c
+inputest.$(OBJ):  $(SRC)/inputest.c
+#sountest.$(OBJ): $(SRC)/sountest.c
+#miditest.$(OBJ): $(SRC)/miditest.c
+#testemm.$(OBJ):  $(SRC)/testemm.c
+#testemm0.$(OBJ): $(SRC)/testemm0.c
+#tsthimem.$(OBJ): $(SRC)/tsthimem.c
+exmmtest.$(OBJ):  $(SRC)/exmmtest.c
+vgmtest.$(OBJ):   $(SRC)/vgmtest.c
+
+#
+# non executable objects libraries
+#
+16.lib: $(16LIBOBJS)
 vgmsnd.lib: $(VGMSNDOBJ)
-	wlib -b $(WLIBQ) vgmsnd.lib $(VGMSNDOBJ)
 
-# extdep:
-# !include $(DOSLIBDIR)$(DIRSEP)extdep.mak
+gfx.lib: $(GFXLIBOBJS)
+	*wlib $(LIBFLAGS) $(extra_$^&_lib_opts) $@ $<
 
+#
+#	doslib
+#
 # library deps 16-bit huge
-$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu$(DIRSEP)dos86h$(DIRSEP)cpu.lib:
-	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)cpu && .$(DIRSEP)make.sh
-$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos$(DIRSEP)dos86h$(DIRSEP)dos.lib:
-	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)dos && .$(DIRSEP)make.sh
-$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vgatty.lib:
-	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga && .$(DIRSEP)make.sh
-$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga$(DIRSEP)dos86h$(DIRSEP)vga.lib:
-	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga && .$(DIRSEP)make.sh
-$(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)8250$(DIRSEP)dos86h$(DIRSEP)8250.lib:
-	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)8250 && .$(DIRSEP)make.sh
+$(DOSLIB_CPU)/dos86h/cpu.lib:
+	cd $(DOSLIB_CPU:$(to_os_path)) && $(DOSLIBMAKE) && cd $(BUILD_ROOT)
+$(DOSLIB_DOS)/dos86h/dos.lib:
+	cd $(DOSLIB_DOS:$(to_os_path)) && $(DOSLIBMAKE) && cd $(BUILD_ROOT)
+$(DOSLIB_VGA)/dos86h/vgatty.lib:
+	cd $(DOSLIB_VGA:$(to_os_path)) && $(DOSLIBMAKE) && cd $(BUILD_ROOT)
+$(DOSLIB_VGA)/dos86h/vga.lib:
+	cd $(DOSLIB_VGA:$(to_os_path)) && $(DOSLIBMAKE) && cd $(BUILD_ROOT)
+$(DOSLIB_8250)/dos86h/8250.lib:
+	cd $(DOSLIB_8250:$(to_os_path)) && $(DOSLIBMAKE) && cd $(BUILD_ROOT)
 
 joytest.exe:
-	cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)joystick && .$(DIRSEP)make.sh && $(COPYCOMMAND) dos86h$(DIRSEP)test.exe $(PDIR)$(PDIR)$(PDIR)$(PDIR)$(PDIR)joytest.exe
-#$(DOSLIBLIBS): .symbolic
-#	@cd $(DOSLIB)
-#	@.$(DIRSEP)buildall.sh
-#	@cd $(PDIR)$(PDIR)$(PDIR)
+	cd $(DOSLIB_JOYSTICK:$(to_os_path)) && $(DOSLIBMAKE) && cd $(BUILD_ROOT)
+	$(COPYCOMMAND) $(DOSLIB_JOYSTICK:$(to_os_path))$(DIRSEP)dos86h$(DIRSEP)test.exe joytest.exe
 
-modex16.$(OBJ): $(SRCLIB)modex16.h $(SRCLIB)modex16.c
-	wcl $(FLAGS) -c $(SRCLIB)modex16.c
-
-bakapee.$(OBJ): $(SRCLIB)bakapee.h $(SRCLIB)bakapee.c
-	wcl $(FLAGS) -c $(SRCLIB)bakapee.c
-
-16render.$(OBJ): $(MODEXLIB)16render.h $(MODEXLIB)16render.c
-	wcl $(FLAGS) -c $(MODEXLIB)16render.c
-
-16planar.$(OBJ): $(MODEXLIB)16planar.h $(MODEXLIB)16planar.c
-	wcl $(FLAGS) -c $(MODEXLIB)16planar.c
-
-bitmap.$(OBJ): $(SRCLIB)bitmap.h $(SRCLIB)bitmap.c
-	wcl $(FLAGS) -c $(SRCLIB)bitmap.c
-
-planar.$(OBJ): $(SRCLIB)planar.h $(SRCLIB)planar.c
-	wcl $(FLAGS) -c $(SRCLIB)planar.c
-
-scroll16.$(OBJ): $(SRCLIB)scroll16.h $(SRCLIB)scroll16.c
-	wcl $(FLAGS) -c $(SRCLIB)scroll16.c
-
-wcpu.$(OBJ): $(WCPULIB)wcpu.h $(WCPULIB)wcpu.c
-	wcl $(FLAGS) -c $(WCPULIB)wcpu.c
-
-16text.$(OBJ): $(SRCLIB)16text.c
-	wcl $(FLAGS) -c $(SRCLIB)16text.c
-
-mapread.$(OBJ): $(SRCLIB)mapread.h $(SRCLIB)mapread.c
-	wcl $(FLAGS) -c $(SRCLIB)mapread.c
-
-16_timer.$(OBJ): $(SRCLIB)16_timer.h $(SRCLIB)16_timer.c
-	wcl $(FLAGS) -c $(SRCLIB)16_timer.c
-
-16_in.$(OBJ): $(SRCLIB)16_in.h $(SRCLIB)16_in.c
-	wcl $(FLAGS) -c $(SRCLIB)16_in.c
-
-16_mm.$(OBJ): $(SRCLIB)16_mm.h $(SRCLIB)16_mm.c
-	wcl $(FLAGS) -c $(SRCLIB)16_mm.c
-
-16_ca.$(OBJ): $(SRCLIB)16_ca.h $(SRCLIB)16_ca.c
-	wcl $(FLAGS) -c $(SRCLIB)16_ca.c
-
-16_dbg.$(OBJ): $(SRCLIB)16_dbg.h $(SRCLIB)16_dbg.c
-	wcl $(FLAGS) -c $(SRCLIB)16_dbg.c
-
-midi.$(OBJ): $(SRCLIB)midi.h $(SRCLIB)midi.c
-	wcl $(FLAGS) -c $(SRCLIB)midi.c
-
-16_head.$(OBJ): $(SRCLIB)16_head.h $(SRCLIB)16_head.c
-	wcl $(FLAGS) -c $(SRCLIB)16_head.c
-
-16_hc.$(OBJ): $(SRCLIB)16_hc.h $(SRCLIB)16_hc.c
-	wcl $(FLAGS) -c $(SRCLIB)16_hc.c
-
-16_snd.$(OBJ): $(SRCLIB)16_snd.h $(SRCLIB)16_snd.c
-	wcl $(FLAGS) -c $(SRCLIB)16_snd.c
-	#====wcl -mc -c $(SRCLIB)16_snd.c
-
-jsmn.$(OBJ): $(JSMNLIB)jsmn.h $(JSMNLIB)jsmn.c
-	wcl $(FLAGS) -c $(JSMNLIB)jsmn.c
-
-kitten.$(OBJ): $(NYANLIB)kitten.h $(NYANLIB)kitten.c
-	wcl $(FLAGS) -c $(NYANLIB)kitten.c
-
-vgmSnd.$(OBJ): $(VGMSNDLIB)vgmSnd.h $(VGMSNDLIB)vgmSnd.c
-	wcl $(FLAGS) -c $(VGMSNDLIB)vgmSnd.c
-	#====wcl -c -mc $(VGMSNDLIB)vgmSnd.c
-
-#memory.$(OBJ): $(EXMMLIB)memory.h $(EXMMLIB)memory.c
-#	wcl $(FLAGS) $(MFLAGS) -c $(EXMMLIB)memory.c
-
-c_utils.$(OBJ): $(MODEXLIB_)c_utils.asm
-	wcl -c $(AFLAGS) $(MODEXLIB_)c_utils.asm
-modex.$(OBJ): $(MODEXLIB_)modex.asm
-	wcl -c $(AFLAGS) $(MODEXLIB_)modex.asm
+modex16.$(OBJ):   $(SRCLIB)/modex16.c $(SRCLIB)/modex16.h
+bakapee.$(OBJ):   $(SRCLIB)/bakapee.c $(SRCLIB)/bakapee.h
+16render.$(OBJ):  $(SRCLIB)/16render.c $(SRCLIB)/16render.h
+16planar.$(OBJ):  $(MODEXLIB16)/16planar.c $(MODEXLIB16)/16planar.h
+16_vrs.$(OBJ):    $(SRCLIB)/16_vrs.c $(SRCLIB)/16_vrs.h $(DOSLIBLIBS)
+16_sprit.$(OBJ):  $(SRCLIB)/16_sprit.c $(SRCLIB)/16_sprit.h
+bitmap.$(OBJ):    $(SRCLIB)/bitmap.c $(SRCLIB)/bitmap.h
+planar.$(OBJ):    $(SRCLIB)/planar.c $(SRCLIB)/planar.h
+scroll16.$(OBJ):  $(SRCLIB)/scroll16.c $(SRCLIB)/scroll16.h
+16text.$(OBJ):    $(SRCLIB)/16text.c
+mapread.$(OBJ):   $(SRCLIB)/mapread.c $(SRCLIB)/mapread.h
+16_map.$(OBJ):   $(SRCLIB)/16_map.c $(SRCLIB)/16_map.h
+16_timer.$(OBJ):  $(SRCLIB)/16_timer.c $(SRCLIB)/16_timer.h
+16_in.$(OBJ):     $(SRCLIB)/16_in.c $(SRCLIB)/16_in.h
+16_mm.$(OBJ):     $(SRCLIB)/16_mm.c $(SRCLIB)/16_mm.h
+16_ca.$(OBJ):     $(SRCLIB)/16_ca.c $(SRCLIB)/16_ca.h
+16_dbg.$(OBJ):    $(SRCLIB)/16_dbg.c $(SRCLIB)/16_dbg.h
+midi.$(OBJ):      $(SRCLIB)/midi.c $(SRCLIB)/midi.h
+16_head.$(OBJ):   $(SRCLIB)/16_head.c $(SRCLIB)/16_head.h
+16_hc.$(OBJ):     $(SRCLIB)/16_hc.c $(SRCLIB)/16_hc.h
+16_snd.$(OBJ):    $(SRCLIB)/16_snd.c $(SRCLIB)/16_snd.h
+jsmn.$(OBJ):      $(JSMNLIB)/jsmn.c $(JSMNLIB)/jsmn.h
+kitten.$(OBJ):    $(NYANLIB)/kitten.c $(NYANLIB)/kitten.h
+vgmSnd.$(OBJ):    $(VGMSNDLIB)/vgmSnd.c $(VGMSNDLIB)/vgmSnd.h
+wcpu.$(OBJ):      $(WCPULIB)/wcpu.c $(WCPULIB)/wcpu.h
+#memory.$(OBJ):   $(EXMMLIB)/memory.c $(EXMMLIB)/memory.h
+c_utils.$(OBJ):   $(MODEXLIB)/c_utils.asm
+modex.$(OBJ):     $(MODEXLIB)/modex.asm
 
 #
 #other~
 #
 clean: .symbolic
-	@$(REMOVECOMMAND) $(EXEC)
-	@$(REMOVECOMMAND) /var/www/$(EXEC)*
-	@$(REMOVECOMMAND) *.$(OBJ)
-	@$(REMOVECOMMAND) 16.lib
-	@$(REMOVECOMMAND) gfx.lib
-	@$(REMOVECOMMAND) vgmsnd.lib
-	@wlib -n $(WLIBQ) 16.lib
-	@wlib -n $(WLIBQ) gfx.lib
-	@wlib -n $(WLIBQ) vgmsnd.lib
-	@$(REMOVECOMMAND) *.16
-	@$(REMOVECOMMAND) *.16W
-	@$(REMOVECOMMAND) *.16B
-	@$(REMOVECOMMAND) *.OBJ
-	@$(REMOVECOMMAND) *.o
-	@$(REMOVECOMMAND) *.BCO
-	@$(REMOVECOMMAND) makefi~1
-	@$(REMOVECOMMAND) makefile~
-	@$(REMOVECOMMAND) __wcl__.LNK
-#	@$(REMOVECOMMAND) *.smp
-	@$(REMOVECOMMAND) *.SMP
-	@$(REMOVECOMMAND) *.hed
-	@$(REMOVECOMMAND) *.MAH
-	@$(REMOVECOMMAND) *.mah
-	@$(REMOVECOMMAND) *.err
-	#@cd $(DOSLIB)
-	#@./buildall.sh clean
-	#@cd $(PDIR)$(PDIR)$(PDIR)
+	@for %f in ($(EXEC)) do @if exist %f $(REMOVECOMMAND) %f
+!ifdef __LINUX__
+	@rm *.LIB
+	@. src/util/bcexmm.sh
+	@rm *.EXE
+!endif
+	@if exist *.obj $(REMOVECOMMAND) *.obj
+	@if exist *.OBJ $(REMOVECOMMAND) *.OBJ
+	@if exist *.bco $(REMOVECOMMAND) *.bco
+	@if exist *.BCO $(REMOVECOMMAND) *.BCO
+	@if exist *.LIB $(REMOVECOMMAND) *.LIB
+	@if exist *.lnk $(REMOVECOMMAND) *.lnk
+	@if exist *.LNK $(REMOVECOMMAND) *.LNK
+	@if exist *.smp $(REMOVECOMMAND) *.smp
+	@if exist *.SMP $(REMOVECOMMAND) *.SMP
+	@if exist *.hed $(REMOVECOMMAND) *.hed
+	@if exist *.mah $(REMOVECOMMAND) *.mah
+	@if exist *.MAH $(REMOVECOMMAND) *.MAH
+	@if exist *.err $(REMOVECOMMAND) *.err
+#	@if exist *.16W $(REMOVECOMMAND) *.16W
+#	@if exist *.16B $(REMOVECOMMAND) *.16B
+
 #	@$(COPYCOMMAND) $(SRC)exmmtest.c $(EXMMTESTDIR)$(SRC)
 #	@$(COPYCOMMAND) $(SRCLIB)16_mm.* $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(SRCLIB)16_head.* $(EXMMTESTDIR)$(SRCLIB)
@@ -416,65 +335,85 @@ clean: .symbolic
 #	@$(COPYCOMMAND) $(SRCLIB)16_hc.* $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(SRCLIB)types.h $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(NYANLIB)* $(EXMMTESTDIR)$(NYANLIB)
-#	@echo $(watcom)
-#	@echo $(INCLUDE)
+
+nuke: .symbolic
+	@wmake clean
+	@wmake cldl
+	@wmake all
+	@wmake comp
 
 backupconfig: .symbolic
 	@$(COPYCOMMAND) .git$(DIRSEP)config git_con.fig
 	@$(COPYCOMMAND) .gitmodules git_modu.les
+	@$(COPYCOMMAND) .gitignore git_igno.re
 
 comp: .symbolic
-	@upx -9 $(EXEC)
+	@*upx -9 $(EXEC)
 
 comq: .symbolic
-	@upx -9 $(UPXQ) $(EXEC)
+	@*upx -9 $(UPXQ) $(EXEC)
 
 www: .symbolic
-	@ssh -p 26 sparky4@4ch.mooo.com 'rm -f /var/www/16/*exe.zip*'
+	@ssh -p 26 sparky4@4ch.mooo.com 'rm -f /var/www/16/*exe*'
+	#@rm -f /var/www/$(EXEC)*
 	@rm -f /var/www/*.exe.zip*
 	#@cp ./$(EXEC) $(DIRSEP)var$(DIRSEP)www$(DIRSEP)
-	@./z.sh $(EXEC) $(EXEC)
+	@./src/util/z.sh $(EXEC) $(EXEC)
 	@scp -r -P 26 *.exe 4ch.mooo.com:/var/www/16/
+	@scp -r -P 26 x4get.bat 4ch.mooo.com:/var/www/16/
 	@scp -r -P 26 /var/www/*.exe.zip.* 4ch.mooo.com:/var/www/16/
 
 getwww: .symbolic
-	@x4get.bat $(EXEC)
+	*x4get.bat $(EXEC)
+
+vomitchan: .symbolic
+	@$(DUMP) *.err
 
 ##
 ##	External library management~ ^^
 ##
 #git submodule add <repo>
 mkdl: .symbolic
-	@cd $(DOSLIB)
-	@./buildall.sh
-	@cd $(PDIR)$(PDIR)$(PDIR)
+	@cd $(DOSLIB:$(to_os_path))
+	@$(DOSLIBMAKEALL)
+	@cd $(BUILD_ROOT)
+
+cldl: .symbolic
+	@cd $(DOSLIB:$(to_os_path))
+	@$(DOSLIBMAKEALL) clean
+	@cd $(BUILD_ROOT)
 
 uplibs: .symbolic
-	@cd $(JSMNLIB)
+	@cd $(JSMNLIB:$(to_os_path))
 	@git pull
-	@cd $(PDIR)$(PDIR)$(PDIR)
-	@cd $(DOSLIB)
+	@cd $(BUILD_ROOT)
+	@cd $(DOSLIB:$(to_os_path))
 	@git pull
-	@cd $(PDIR)$(PDIR)$(PDIR)
+	@cd $(BUILD_ROOT)
 
 reinitlibs: .symbolic
-	@rm -rf $(SRCLIB)doslib
-	@rm -rf $(SRCLIB)jsmn
+	@rm -rf $(DOSLIB)
+	@rm -rf $(JSMNLIB)
 	@rm -rf 16/CatacombApocalypse
 	@rm -rf 16/wolf3d
+	@rm -rf 16/keen
 	@wmake -h initlibs
 
 initlibs: .symbolic
 	@cp git_con.fig .git/config
 	@cp git_modu.les .gitmodules
-	@cd $(SRCLIB)
+	@cp git_igno.re .gitignore
+	@cd $(SRCLIB:$(to_os_path))
 	@git clone https://github.com/joncampbell123/doslib.git
 	@git clone https://github.com/zserge/jsmn.git
-	@cd $(PDIR)$(PDIR)
+	@cd $(BUILD_ROOT)
 	@cd 16
 	@git clone https://github.com/FlatRockSoft/CatacombApocalypse.git
 	@git clone https://github.com/id-Software/wolf3d.git
-	@cd $(PDIR)
+	@git clone https://github.com/keendreams/keen.git
+	@git clone https://github.com/FlatRockSoft/Catacomb3D.git
+	@cd $(BUILD_ROOT)
+	@cp $(DOSLIB)/make-lowercase .
 
 ##
 ##	experimental libs
@@ -483,25 +422,25 @@ xlib: .symbolic
 	@cd 16$(DIRSEP)xlib
 	@wmake -h clean
 	@wmake -h all
-	@cd $(PDIR)$(PDIR)
+	@cd $(BUILD_ROOT)
 
 mx: .symbolic
 	@cd 16$(DIRSEP)xw
 #	@wmake clean
 	@wmake -h all
-	@cd $(PDIR)$(PDIR)
+	@cd $(BUILD_ROOT)
 
 mx_: .symbolic
 	@cd 16$(DIRSEP)xw_
 	@wmake -h -f makefile all
-	@cd $(PDIR)$(PDIR)
+	@cd $(BUILD_ROOT)
 
 vrs: .symbolic
-	@cd $(DOSLIBDIR)$(DIRSEP)hw$(DIRSEP)vga
+	@cd $(DOSLIB_VGA:$(to_os_path))
 	#@make clean
 	@make all
-	@mv pcx2vrl ../../../../../
-	@mv pcxsscut ../../../../../
-	@mv vrl2vrs ../../../../../
-	@mv vrsdump ../../../../../
-	@cd ../../../../../
+	@mv pcx2vrl $(BUILD_ROOT)$(DIRSEP)
+	@mv pcxsscut $(BUILD_ROOT)$(DIRSEP)
+	@mv vrl2vrs $(BUILD_ROOT)$(DIRSEP)
+	@mv vrsdump $(BUILD_ROOT)$(DIRSEP)
+	@cd $(BUILD_ROOT)

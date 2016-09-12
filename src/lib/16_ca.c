@@ -37,7 +37,7 @@ loaded into the data segment
 #pragma warn -use
 
 //#define THREEBYTEGRSTARTS
-
+//https://github.com/open-watcom/open-watcom-v2/issues/279#issuecomment-244587566 for _seg
 /*
 =============================================================================
 
@@ -46,10 +46,10 @@ loaded into the data segment
 =============================================================================
 */
 
-typedef struct
+/*typedef struct
 {
-  unsigned bit0,bit1;	// 0-255 is a character, > is a pointer to a node
-} huffnode;
+  word bit0,bit1;	// 0-255 is a character, > is a pointer to a node
+} huffnode;*/
 
 
 /*typedef struct
@@ -76,8 +76,7 @@ maptype		_seg	*mapheaderseg[NUMMAPS];
 byte		_seg	*audiosegs[NUMSNDCHUNKS];
 void		_seg	*grsegs[NUMCHUNKS];
 
-byte		far	grneeded[NUMCHUNKS];
-byte		ca_levelbit,ca_levelnum;*/
+byte		far	grneeded[NUMCHUNKS];*/
 
 void	(*drawcachebox)		(char *title, unsigned numcache);
 void	(*updatecachebox)	(void);
@@ -222,20 +221,20 @@ void CAL_GetGrChunkLength (int chunk)
 ==========================
 */
 
-boolean CA_FarRead(int handle, byte huge *dest, dword length, mminfo_t *mm)
+boolean CA_FarRead(int handle, byte huge *dest, dword length, global_game_variables_t *gvar)
 {
 	boolean flag;
 	//dword fat=0;
 	//word segm=0;
-	//if(mm->EMSVer<0x40)
+	if(gvar->mm.EMSVer<0x40)
 	if(length>0xfffflu)
 	{
 		printf("File is a fat bakapee\n");
 		//segm=(length%0xfffflu)-1;
 		//fat=segm*0xfffflu;
 		//length-=fat;
-//		printf("CA_FarRead doesn't support 64K reads yet!\n");
-		return 0;//todo: EXPAND!!!
+		printf("CA_FarRead doesn't support 64K reads yet!\n");
+		return 0;//TODO: EXPAND!!!
 	}
 
 	//if(!fat&&!segm)
@@ -294,19 +293,19 @@ End:
 ==========================
 */
 
-boolean CA_FarWrite(int handle, byte huge *source, dword length, mminfo_t *mm)
+boolean CA_FarWrite(int handle, byte huge *source, dword length, global_game_variables_t *gvar)
 {
 	boolean flag;
 	//dword fat=0;
 	//word segm=0;
-	//if(mm->EMSVer<0x40)
+	if(gvar->mm.EMSVer<0x40)
 	if(length>0xfffflu)
 	{
 		printf("File is a fat bakapee\n");
 		//segm=(length%0xfffflu)-1;
 		//fat=segm*0xfffflu;
 		//length-=fat;
-//		printf("CA_FarRead doesn't support 64K reads yet!\n");
+		printf("CA_FarRead doesn't support 64K reads yet!\n");
 		return 0;
 	}
 
@@ -366,7 +365,7 @@ End:
 ==========================
 */
 
-boolean CA_ReadFile(char *filename, memptr *ptr, mminfo_t *mm)
+boolean CA_ReadFile(char *filename, memptr *ptr, global_game_variables_t *gvar)
 {
 	int handle;
 	sdword size;
@@ -376,7 +375,39 @@ boolean CA_ReadFile(char *filename, memptr *ptr, mminfo_t *mm)
 		return false;
 
 	size = filelength(handle);
-	if(!CA_FarRead(handle,*ptr,size, mm))
+	if(!CA_FarRead(handle,*ptr,size, gvar))
+	{
+		close (handle);
+		return false;
+	}
+	close (handle);
+	return true;
+}
+
+
+/*
+==========================
+=
+= CA_WriteFile
+=
+= Writes a file from a memory buffer
+=
+==========================
+*/
+
+boolean CA_WriteFile (char *filename, void far *ptr, long length, global_game_variables_t *gvar)
+{
+	int handle;
+	sdword size;
+	//long size;
+
+	handle = open(filename,O_CREAT | O_BINARY | O_WRONLY,
+				S_IREAD | S_IWRITE | S_IFREG);
+
+	if (handle == -1)
+		return false;
+
+	if (!CA_FarWrite (handle,ptr,length, gvar))
 	{
 		close(handle);
 		return false;
@@ -397,7 +428,7 @@ boolean CA_ReadFile(char *filename, memptr *ptr, mminfo_t *mm)
 ==========================
 */
 
-boolean CA_LoadFile(char *filename, memptr *ptr, mminfo_t *mm, mminfotype *mmi)
+boolean CA_LoadFile(char *filename, memptr *ptr, global_game_variables_t *gvar)
 {
 	int handle;
 	sdword size;
@@ -406,9 +437,9 @@ boolean CA_LoadFile(char *filename, memptr *ptr, mminfo_t *mm, mminfotype *mmi)
 	if((handle = open(filename,O_RDONLY | O_BINARY, S_IREAD)) == -1)
 		return false;
 
-	size = filelength (handle);
-	MM_GetPtr(ptr,size, mm, mmi);
-	if(!CA_FarRead(handle,*ptr,size, mm))
+	size = filelength(handle);
+	MM_GetPtr(ptr,size, &(gvar->mm), &(gvar->mmi));	//TODO: gvar parameters
+	if(!CA_FarRead(handle,*ptr,size, gvar))
 	{
 		close(handle);
 		return false;
@@ -467,7 +498,7 @@ void CAL_OptimizeNodes(huffnode *table)
 ======================
 */
 
-/*++++void CAL_HuffExpand (byte huge *source, byte huge *dest,
+void CAL_HuffExpand (byte huge *source, byte huge *dest,
   long length,huffnode *hufftable)
 {
 //  unsigned bit,byte,node,code;
@@ -501,9 +532,8 @@ void CAL_OptimizeNodes(huffnode *table)
 // expand less than 64k of data
 //--------------------------
 
-	__asm
-	{
-		mov	bx,[headptr]
+	__asm {
+////		mov	bx,[headptr]
 
 		mov	si,[sourceoff]
 		mov	di,[destoff]
@@ -514,38 +544,63 @@ void CAL_OptimizeNodes(huffnode *table)
 		mov	ch,[si]				// load first byte
 		inc	si
 		mov	cl,1
-
+#ifdef __BORLANDC__
+	}
+#endif
 expandshort:
+#ifdef __BORLANDC__
+	__asm {
+#endif
 		test	ch,cl			// bit set?
 		jnz	bit1short
 		mov	dx,[ss:bx]			// take bit0 path from node
 		shl	cl,1				// advance to next bit position
 		jc	newbyteshort
 		jnc	sourceupshort
-
+#ifdef __BORLANDC__
+	}
+#endif
 bit1short:
-asm	mov	dx,[ss:bx+2]		// take bit1 path
-asm	shl	cl,1				// advance to next bit position
-asm	jnc	sourceupshort
-
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		mov	dx,[ss:bx+2]		// take bit1 path
+		shl	cl,1				// advance to next bit position
+		jnc	sourceupshort
+#ifdef __BORLANDC__
+	}
+#endif
 newbyteshort:
-asm	mov	ch,[si]				// load next byte
-asm	inc	si
-asm	mov	cl,1				// back to first bit
-
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		mov	ch,[si]				// load next byte
+		inc	si
+		mov	cl,1				// back to first bit
+#ifdef __BORLANDC__
+	}
+#endif
 sourceupshort:
-asm	or	dh,dh				// if dx<256 its a byte, else move node
-asm	jz	storebyteshort
-asm	mov	bx,dx				// next node = (huffnode *)code
-asm	jmp	expandshort
-
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		or	dh,dh				// if dx<256 its a byte, else move node
+		jz	storebyteshort
+		mov	bx,dx				// next node = (huffnode *)code
+		jmp	expandshort
+#ifdef __BORLANDC__
+	}
+#endif
 storebyteshort:
-asm	mov	[es:di],dl
-asm	inc	di					// write a decopmpressed byte out
-asm	mov	bx,[headptr]		// back to the head node for next bit
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		mov	[es:di],dl
+		inc	di					// write a decopmpressed byte out
+////		mov	bx,[headptr]		// back to the head node for next bit
 
-asm	cmp	di,ax				// done?
-asm	jne	expandshort
+		cmp	di,ax				// done?
+		jne	expandshort
 	}
 	}
 	else
@@ -557,72 +612,107 @@ asm	jne	expandshort
 
   length--;
 
-	__asm
-	{
-asm mov	bx,[headptr]
-asm	mov	cl,1
+	__asm {
+////		mov	bx,[headptr]
+		mov	cl,1
 
-asm	mov	si,[sourceoff]
-asm	mov	di,[destoff]
-asm	mov	es,[destseg]
-asm	mov	ds,[sourceseg]
+		mov	si,[sourceoff]
+		mov	di,[destoff]
+		mov	es,[destseg]
+		mov	ds,[sourceseg]
 
-asm	lodsb			// load first byte
-
+		lodsb			// load first byte
+#ifdef __BORLANDC__
+	}
+#endif
 expand:
-asm	test	al,cl		// bit set?
-asm	jnz	bit1
-asm	mov	dx,[ss:bx]	// take bit0 path from node
-asm	jmp	gotcode
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		test	al,cl		// bit set?
+		jnz	bit1
+		mov	dx,[ss:bx]	// take bit0 path from node
+		jmp	gotcode
+#ifdef __BORLANDC__
+	}
+#endif
 bit1:
-asm	mov	dx,[ss:bx+2]	// take bit1 path
-
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		mov	dx,[ss:bx+2]	// take bit1 path
+#ifdef __BORLANDC__
+	}
+#endif
 gotcode:
-asm	shl	cl,1		// advance to next bit position
-asm	jnc	sourceup
-asm	lodsb
-asm	cmp	si,0x10		// normalize ds:si
-asm  	jb	sinorm
-asm	mov	cx,ds
-asm	inc	cx
-asm	mov	ds,cx
-asm	xor	si,si
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		shl	cl,1		// advance to next bit position
+		jnc	sourceup
+		lodsb
+		cmp	si,0x10		// normalize ds:si
+		jb	sinorm
+		mov	cx,ds
+		inc	cx
+		mov	ds,cx
+		xor	si,si
+#ifdef __BORLANDC__
+	}
+#endif
 sinorm:
-asm	mov	cl,1		// back to first bit
-
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		mov	cl,1		// back to first bit
+#ifdef __BORLANDC__
+	}
+#endif
 sourceup:
-asm	or	dh,dh		// if dx<256 its a byte, else move node
-asm	jz	storebyte
-asm	mov	bx,dx		// next node = (huffnode *)code
-asm	jmp	expand
-
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		or	dh,dh		// if dx<256 its a byte, else move node
+		jz	storebyte
+		mov	bx,dx		// next node = (huffnode *)code
+		jmp	expand
+#ifdef __BORLANDC__
+	}
+#endif
 storebyte:
-asm	mov	[es:di],dl
-asm	inc	di		// write a decopmpressed byte out
-asm	mov	bx,[headptr]	// back to the head node for next bit
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		mov	[es:di],dl
+		inc	di		// write a decopmpressed byte out
+////		mov	bx,[headptr]	// back to the head node for next bit
 
-asm	cmp	di,0x10		// normalize es:di
-asm  	jb	dinorm
-asm	mov	dx,es
-asm	inc	dx
-asm	mov	es,dx
-asm	xor	di,di
+		cmp	di,0x10		// normalize es:di
+		jb	dinorm
+		mov	dx,es
+		inc	dx
+		mov	es,dx
+		xor	di,di
+#ifdef __BORLANDC__
+	}
+#endif
 dinorm:
-
-asm	sub	[WORD PTR ss:length],1
-asm	jnc	expand
-asm  	dec	[WORD PTR ss:length+2]
-asm	jns	expand		// when length = ffff ffff, done
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		sub	[WORD PTR ss:length],1
+		jnc	expand
+		dec	[WORD PTR ss:length+2]
+		jns	expand		// when length = ffff ffff, done
 	}
 	}
 
-	__asm
-	{
+	__asm {
 		mov	ax,ss
 		mov	ds,ax
 	}
 
-}*/
+}
 
 
 /*
@@ -634,7 +724,7 @@ asm	jns	expand		// when length = ffff ffff, done
 =
 ======================
 */
-/*++++
+
 #define NEARTAG	0xa7
 #define FARTAG	0xa8
 
@@ -657,13 +747,13 @@ void CAL_CarmackExpand (unsigned far *source, unsigned far *dest, unsigned lengt
 			count = ch&0xff;
 			if (!count)
 			{				// have to insert a word containing the tag byte
-				ch |= *((unsigned char far *)inptr)++;
+				ch |= *(/*(unsigned char far *)*/inptr)++;
 				*outptr++ = ch;
 				length--;
 			}
 			else
 			{
-				offset = *((unsigned char far *)inptr)++;
+				offset = *(/*(unsigned char far *)*/inptr)++;
 				copyptr = outptr - offset;
 				length -= count;
 				while (count--)
@@ -675,7 +765,7 @@ void CAL_CarmackExpand (unsigned far *source, unsigned far *dest, unsigned lengt
 			count = ch&0xff;
 			if (!count)
 			{				// have to insert a word containing the tag byte
-				ch |= *((unsigned char far *)inptr)++;
+				ch |= *(/*(unsigned char far *)*/inptr)++;
 				*outptr++ = ch;
 				length --;
 			}
@@ -695,7 +785,6 @@ void CAL_CarmackExpand (unsigned far *source, unsigned far *dest, unsigned lengt
 		}
 	}
 }
-*/
 
 
 /*
@@ -705,7 +794,7 @@ void CAL_CarmackExpand (unsigned far *source, unsigned far *dest, unsigned lengt
 =
 ======================
 */
-/*++++
+
 long CA_RLEWCompress (unsigned huge *source, long length, unsigned huge *dest,
   unsigned rlewtag)
 {
@@ -752,7 +841,7 @@ long CA_RLEWCompress (unsigned huge *source, long length, unsigned huge *dest,
   complength = 2*(dest-start);
   return complength;
 }
-*/
+
 
 /*
 ======================
@@ -762,7 +851,7 @@ long CA_RLEWCompress (unsigned huge *source, long length, unsigned huge *dest,
 =
 ======================
 */
-/*++++
+
 void CA_RLEWexpand (unsigned huge *source, unsigned huge *dest,long length,
   unsigned rlewtag)
 {
@@ -813,64 +902,88 @@ void CA_RLEWexpand (unsigned huge *source, unsigned huge *dest,long length,
 //
 // NOTE: A repeat count that produces 0xfff0 bytes can blow this!
 //
-
-asm	mov	bx,rlewtag
-asm	mov	si,sourceoff
-asm	mov	di,destoff
-asm	mov	es,destseg
-asm	mov	ds,sourceseg
-
+	__asm{
+		mov	bx,rlewtag
+		mov	si,sourceoff
+		mov	di,destoff
+		mov	es,destseg
+		mov	ds,sourceseg
+#ifdef __BORLANDC__
+	}
+#endif
 expand:
-asm	lodsw
-asm	cmp	ax,bx
-asm	je	repeat
-asm	stosw
-asm	jmp	next
-
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		lodsw
+		cmp	ax,bx
+		je	repeat
+		stosw
+		jmp	next
+#ifdef __BORLANDC__
+	}
+#endif
 repeat:
-asm	lodsw
-asm	mov	cx,ax		// repeat count
-asm	lodsw			// repeat value
-asm	rep stosw
-
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		lodsw
+		mov	cx,ax		// repeat count
+		lodsw			// repeat value
+		rep stosw
+#ifdef __BORLANDC__
+	}
+#endif
 next:
-
-asm	cmp	si,0x10		// normalize ds:si
-asm  	jb	sinorm
-asm	mov	ax,si
-asm	shr	ax,1
-asm	shr	ax,1
-asm	shr	ax,1
-asm	shr	ax,1
-asm	mov	dx,ds
-asm	add	dx,ax
-asm	mov	ds,dx
-asm	and	si,0xf
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		cmp	si,0x10		// normalize ds:si
+		jb	sinorm
+		mov	ax,si
+		shr	ax,1
+		shr	ax,1
+		shr	ax,1
+		shr	ax,1
+		mov	dx,ds
+		add	dx,ax
+		mov	ds,dx
+		and	si,0xf
+#ifdef __BORLANDC__
+	}
+#endif
 sinorm:
-asm	cmp	di,0x10		// normalize es:di
-asm  	jb	dinorm
-asm	mov	ax,di
-asm	shr	ax,1
-asm	shr	ax,1
-asm	shr	ax,1
-asm	shr	ax,1
-asm	mov	dx,es
-asm	add	dx,ax
-asm	mov	es,dx
-asm	and	di,0xf
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		cmp	di,0x10		// normalize es:di
+		jb	dinorm
+		mov	ax,di
+		shr	ax,1
+		shr	ax,1
+		shr	ax,1
+		shr	ax,1
+		mov	dx,es
+		add	dx,ax
+		mov	es,dx
+		and	di,0xf
+#ifdef __BORLANDC__
+	}
+#endif
 dinorm:
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		cmp     di,ss:endoff
+		jne	expand
+		mov	ax,es
+		cmp	ax,ss:endseg
+		jb	expand
 
-asm	cmp     di,ss:endoff
-asm	jne	expand
-asm	mov	ax,es
-asm	cmp	ax,ss:endseg
-asm	jb	expand
-
-asm	mov	ax,ss
-asm	mov	ds,ax
-
+		mov	ax,ss
+		mov	ds,ax
+	}
 }
-*/
 
 
 /*
@@ -888,7 +1001,7 @@ asm	mov	ds,ax
 =
 ======================
 */
-
+////++++ enable!
 /*void CAL_SetupGrFile (void)
 {
 	int handle;
@@ -987,7 +1100,7 @@ asm	mov	ds,ax
 ======================
 */
 
-/*void CAL_SetupMapFile (void)
+void CAL_SetupMapFile (global_game_variables_t *gvar)
 {
 	int handle;
 	long length;
@@ -995,33 +1108,39 @@ asm	mov	ds,ax
 //
 // load maphead.ext (offsets and tileinfo for map file)
 //
-#ifndef MAPHEADERLINKED
-	if ((handle = open("MAPHEAD."EXT,
-		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit ("Can't open MAPHEAD."EXT"!");
-	length = filelength(handle);
-	MM_GetPtr (&(memptr)tinf,length);
-	CA_FarRead(handle, tinf, length);
-	close(handle);
-#else
-
-	tinf = (byte _seg *)FP_SEG(&maphead);
-
-#endif
+// #ifndef MAPHEADERLINKED
+// 	if ((handle = open("MAPHEAD."EXT,
+// 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
+// 		printf("Can't open MAPHEAD."EXT"!");
+// 	length = filelength(handle);
+// 	MM_GetPtr (&(memptr)tinf,length);
+// 	CA_FarRead(handle, tinf, length);
+// 	close(handle);
+// //#else
+//
+// 	tinf = (byte _seg *)FP_SEG(&maphead);
+//
+// #endif
 
 //
 // open the data file
 //
-#ifdef MAPHEADERLINKED
-	if ((maphandle = open("GAMEMAPS."EXT,
+//TODO: multiple files
+	if ((gvar->ca.file.maphandle[0] = open("data/test.map",
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit ("Can't open GAMEMAPS."EXT"!");
-#else
-	if ((maphandle = open("MAPTEMP."EXT,
-		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit ("Can't open MAPTEMP."EXT"!");
-#endif
-}*/
+	{
+		printf("Can't open data/test.map!");
+	}
+// #ifdef MAPHEADERLINKED
+// 	if ((maphandle = open("GAMEMAPS."EXT,
+// 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
+// 		Quit ("Can't open GAMEMAPS."EXT"!");
+// //#else
+// 	if ((maphandle = open("MAPTEMP."EXT,
+// 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
+// 		Quit ("Can't open MAPTEMP."EXT"!");
+// #endif
+}
 
 //==========================================================================
 
@@ -1094,48 +1213,26 @@ void CA_Startup(global_game_variables_t *gvar)
 	unlink("profile.16w");
 	gvar->handle.profilehandle = open("profile.16w", O_CREAT | O_WRONLY | O_TEXT);
 #endif
+#endif//profile
+
+#ifdef __BORLANDC__
+	unlink("meminfo.16b");
+	gvar->handle.showmemhandle = open("meminfo.16b", O_CREAT | O_WRONLY | O_TEXT);
 #endif
-// 	unlink("debug0.16");
-// 	gvar->handle.showmemhandle = open("debug0.16", O_CREAT | O_WRONLY | O_TEXT);
-/*++++
-// MDM begin - (GAMERS EDGE)
-//
-	if(!FindFile("AUDIO."EXT,NULL,2))
-		Quit("CA_Startup(): Can't find audio files.");
-//
-// MDM end
-
-#ifndef NOAUDIO
-	CAL_SetupAudioFile();
+#ifdef __WATCOMC__
+	unlink("meminfo.16w");
+	gvar->handle.showmemhandle = open("meminfo.16w", O_CREAT | O_WRONLY | O_TEXT);
 #endif
-
-// MDM begin - (GAMERS EDGE)
-//
-	if (!FindFile("GAMEMAPS."EXT,NULL,1))
-		Quit("CA_Startup(): Can't find level files.");
-//
-// MDM end
-
-#ifndef NOMAPS
-	CAL_SetupMapFile ();
-#endif
-
-// MDM begin - (GAMERS EDGE)
-//
-	if (!FindFile("EGAGRAPH."EXT,NULL,2))
-		Quit("CA_Startup(): Can't find graphics files.");
-//
-// MDM end
-
-#ifndef NOGRAPHICS
+/*
 	CAL_SetupGrFile ();
-#endif
+	CAL_SetupAudioFile ();*/
+	CAL_SetupMapFile (gvar);
 
-	mapon = -1;
-	ca_levelbit = 1;
-	ca_levelnum = 0;
+	gvar->ca.camap.mapon = -1;
+	gvar->ca.ca_levelbit = 1;
+	gvar->ca.ca_levelnum = 0;
 
-	drawcachebox	= CAL_DialogDraw;
+/*	drawcachebox	= CAL_DialogDraw;
 	updatecachebox  = CAL_DialogUpdate;
 	finishcachebox	= CAL_DialogFinish;*/
 }
@@ -1158,9 +1255,10 @@ void CA_Shutdown(global_game_variables_t *gvar)
 #ifdef PROFILE
 	close(gvar->handle.profilehandle);
 #endif
-// 	close(gvar->handle.showmemhandle);
+ 	close(gvar->handle.showmemhandle);
+
+	close(*(gvar->ca.file.maphandle));
 /*++++
-	close(maphandle);
 	close(grhandle);
 	close(audiohandle);*/
 }
@@ -1681,7 +1779,7 @@ void CA_CacheGrChunk (int chunk)
 	byte	far *source;
 	int		next;
 
-	grneeded[chunk] |= ca_levelbit;		// make sure it doesn't get removed
+	gvar->video.grneeded[chunk] |= ca_levelbit;		// make sure it doesn't get removed
 	if (grsegs[chunk])
 	{
 		MM_SetPurge (&grsegs[chunk],0);
@@ -1741,8 +1839,8 @@ void CA_CacheGrChunk (int chunk)
 =
 ======================
 */
-/*++++
-void CA_CacheMap (int mapnum)
+/*++++ segments!
+void CA_CacheMap (global_game_variables_t *gvar)
 {
 	long	pos,compressed;
 	int		plane;
@@ -1755,42 +1853,35 @@ void CA_CacheMap (int mapnum)
 #endif
 
 
-// MDM begin - (GAMERS EDGE)
-//
-	if (!FindFile("GAMEMAPS."EXT,NULL,1))
-		Quit("CA_CacheMap(): Can't find level files.");
-//
-// MDM end
-
-
 //
 // free up memory from last map
 //
-	if (mapon>-1 && mapheaderseg[mapon])
-		MM_SetPurge (&(memptr)mapheaderseg[mapon],3);
+	if (gvar->ca.map.mapon>-1 && gvar->ca.map.mapheaderseg[gvar->ca.map.mapon])
+		MM_SetPurge (&((memptr)gvar->ca.map.mapheaderseg[(gvar->ca.map.mapon)]), 3, &(gvar->mm));
 	for (plane=0;plane<MAPPLANES;plane++)
-		if (mapsegs[plane])
-			MM_FreePtr (&(memptr)mapsegs[plane]);
+		if (gvar->ca.map.mapsegs[plane])
+			MM_FreePtr (&(memptr)gvar->ca.map.mapsegs[plane], &(gvar->mm));
 
-	mapon = mapnum;
+	gvar->ca.map.mapon = gvar->ca.map.mapnum;
 
 
 //
 // load map header
 // The header will be cached if it is still around
 //
-	if (!mapheaderseg[mapnum])
+	if (!gvar->ca.map.mapheaderseg[gvar->ca.map.mapnum])
 	{
-		pos = ((mapfiletype	_seg *)tinf)->headeroffsets[mapnum];
+		//pos = ((mapfiletype	_seg *)tinf)->headeroffsets[mapnum];
+		pos = ((_seg *)gvar->ca.map.tinf)->headeroffsets[gvar->ca.map.mapnum];
 		if (pos<0)						// $FFFFFFFF start is a sparse map
-		  Quit ("CA_CacheMap: Tried to load a non existent map!");
+		  printf("CA_CacheMap: Tried to load a non existent map!");
 
-		MM_GetPtr(&(memptr)mapheaderseg[mapnum],sizeof(maptype));
+		MM_GetPtr(&(memptr)gvar->ca.mapheaderseg[mapnum],sizeof(maptype));
 		lseek(maphandle,pos,SEEK_SET);
 		CA_FarRead (maphandle,(memptr)mapheaderseg[mapnum],sizeof(maptype));
 	}
 	else
-		MM_SetPurge (&(memptr)mapheaderseg[mapnum],0);
+		MM_SetPurge (&(memptr)mapheaderseg[mapnum], 0, &(gvar->mm));
 
 //
 // load the planes in
@@ -1848,7 +1939,7 @@ void CA_CacheMap (int mapnum)
 		if (compressed>BUFFERSIZE)
 			MM_FreePtr(&bigbufferseg);
 	}
-}*/
+}//*/
 
 //===========================================================================
 
@@ -1862,15 +1953,15 @@ void CA_CacheMap (int mapnum)
 =
 ======================
 */
-/*++++
-void CA_UpLevel (void)
-{
-	if (ca_levelnum==7)
-		Quit ("CA_UpLevel: Up past level 7!");
 
-	ca_levelbit<<=1;
-	ca_levelnum++;
-}*/
+void CA_UpLevel (global_game_variables_t *gvar)
+{
+	if (gvar->ca.ca_levelnum==7)
+		printf("CA_UpLevel: Up past level 7!");
+
+	gvar->ca.ca_levelbit<<=1;
+	gvar->ca.ca_levelnum++;
+}
 
 //===========================================================================
 
@@ -1884,15 +1975,15 @@ void CA_UpLevel (void)
 =
 ======================
 */
-/*++
-void CA_DownLevel (void)
+
+void CA_DownLevel (global_game_variables_t *gvar)
 {
-	if (!ca_levelnum)
-		Quit ("CA_DownLevel: Down past level 0!");
-	ca_levelbit>>=1;
-	ca_levelnum--;
-	CA_CacheMarks(NULL);
-}*/
+	if (!gvar->ca.ca_levelnum)
+		printf("CA_DownLevel: Down past level 0!");
+	gvar->ca.ca_levelbit>>=1;
+	gvar->ca.ca_levelnum--;
+	////++++++++++++++++++++++++++++++++++++++++++CA_CacheMarks(NULL);
+}
 
 //===========================================================================
 
@@ -1905,15 +1996,14 @@ void CA_DownLevel (void)
 =
 ======================
 */
-/*
-void CA_ClearMarks (void)
+
+void CA_ClearMarks (global_game_variables_t *gvar)
 {
 	int i;
 
 	for (i=0;i<NUMCHUNKS;i++)
-		grneeded[i]&=~ca_levelbit;
+		gvar->video.grneeded[i]&=~gvar->ca.ca_levelbit;
 }
-*/
 
 //===========================================================================
 
@@ -1926,14 +2016,13 @@ void CA_ClearMarks (void)
 =
 ======================
 */
-/*
-void CA_ClearAllMarks (void)
+
+void CA_ClearAllMarks (global_game_variables_t *gvar)
 {
-	_fmemset (grneeded,0,sizeof(grneeded));
-	ca_levelbit = 1;
-	ca_levelnum = 0;
+	_fmemset (gvar->video.grneeded,0,sizeof(gvar->video.grneeded));
+	gvar->ca.ca_levelbit = 1;
+	gvar->ca.ca_levelnum = 0;
 }
-*/
 
 //===========================================================================
 
@@ -1945,9 +2034,14 @@ void CA_ClearAllMarks (void)
 ======================
 */
 /*++++
-void CA_FreeGraphics (void)
+void CA_SetGrPurge (void)
 {
-	int	i;
+	int i;
+
+//
+// free graphics
+//
+	CA_ClearMarks ();
 
 	for (i=0;i<NUMCHUNKS;i++)
 		if (grsegs[i])
@@ -1974,7 +2068,7 @@ void CA_SetAllPurge (void)
 //
 // free cursor sprite and background save
 //
-	VW_FreeCursor ();
+	//VW_FreeCursor ();
 
 //
 // free map headers and map planes
@@ -1997,20 +2091,7 @@ void CA_SetAllPurge (void)
 //
 // free graphics
 //
-	CA_FreeGraphics ();
-}
-
-
-void CA_SetGrPurge (void)
-{
-	int i;
-
-//
-// free graphics
-//
-	for (i=0;i<NUMCHUNKS;i++)
-		if (grsegs[i])
-			MM_SetPurge (&(memptr)grsegs[i],3);
+	CA_SetGrPurge ();
 }*/
 
 
@@ -2155,7 +2236,7 @@ void CA_CacheMarks (char *title)
 // go through and make everything not needed purgable
 //
 	for (i=0;i<NUMCHUNKS;i++)
-		if (grneeded[i]&ca_levelbit)
+		if (gvar->video.grneeded[i]&ca_levelbit)
 		{
 			if (grsegs[i])					// its allready in memory, make
 				MM_SetPurge(&grsegs[i],0);	// sure it stays there!
@@ -2194,7 +2275,7 @@ void CA_CacheMarks (char *title)
 	bufferstart = bufferend = 0;		// nothing good in buffer now
 
 	for (i=0;i<NUMCHUNKS;i++)
-		if ( (grneeded[i]&ca_levelbit) && !grsegs[i])
+		if ( (gvar->video.grneeded[i]&ca_levelbit) && !grsegs[i])
 		{
 //
 // update thermometer
@@ -2228,7 +2309,7 @@ void CA_CacheMarks (char *title)
 					while ( next < NUMCHUNKS )
 					{
 						while (next < NUMCHUNKS &&
-						!(grneeded[next]&ca_levelbit && !grsegs[next]))
+						!(gvar->video.grneeded[next]&ca_levelbit && !grsegs[next]))
 							next++;
 						if (next == NUMCHUNKS)
 							continue;

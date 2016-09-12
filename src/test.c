@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -24,6 +24,7 @@
 #include "src/lib/modex16.h"
 #include "src/lib/16_in.h"
 #include "src/lib/scroll16.h"
+#include "src/lib/bakapee.h"
 
 global_game_variables_t gvar;
 player_t player[MaxPlayers];
@@ -38,10 +39,11 @@ void main(int argc, char *argv[])
 	byte *pal, *pal2;
 	sword bakapee;
 
+	word colo=LGQ;
+
 	//argument
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
-
 
 	// DOSLIB: check our environment
 	probe_dos();
@@ -70,9 +72,7 @@ void main(int argc, char *argv[])
 #endif
 	}
 	_DEBUG("Serial debug output started\n"); // NTS: All serial output must end messages with newline, or DOSBox-X will not emit text to log
-
-	/* load our palette */
-	modexLoadPalFile("data/default.pal", &pal2);
+	_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);
 
 	/* save the palette */
 	pal  = modexNewPal();
@@ -87,6 +87,12 @@ void main(int argc, char *argv[])
 	textInit();
 	VGAmodeX(bakapee, 1, &gvar);
 	modexPalBlack();
+
+	/* load our palette */
+	modexLoadPalFile("data/default.pal", &pal2);
+
+	/* overscan show */
+	//modexPalOverscan(44+1);
 
 	/* set up the page, but with 16 pixels on all borders in offscreen mem */
 	modexHiganbanaPageSetup(&gvar.video);
@@ -103,7 +109,7 @@ void main(int argc, char *argv[])
 
 
 	/* fill the page with one color, but with a black border */
-	modexClearRegion(&gvar.video.page[1], 0, 0, gvar.video.page[1].width, gvar.video.page[1].height, 15);
+	/*modexClearRegion(&gvar.video.page[1], 0, 0, gvar.video.page[1].width, gvar.video.page[1].height, 15);
 	modexClearRegion(&gvar.video.page[1], 16, 16, gvar.video.page[1].sw, gvar.video.page[1].sh, 128);
 	modexClearRegion(&gvar.video.page[1], 32, 32, gvar.video.page[1].sw-32, gvar.video.page[1].sh-32, 42);
 	modexClearRegion(&gvar.video.page[1], 48, 48, gvar.video.page[1].sw-64, gvar.video.page[1].sh-64, 128);
@@ -112,7 +118,11 @@ void main(int argc, char *argv[])
 	modexClearRegion(&gvar.video.page[0], 16, 16, gvar.video.page[0].sw, gvar.video.page[0].sh, 128);
 	modexClearRegion(&gvar.video.page[0], 32, 32, gvar.video.page[0].sw-32, gvar.video.page[0].sh-32, 42);
 	modexClearRegion(&gvar.video.page[0], 48, 48, gvar.video.page[0].sw-64, gvar.video.page[0].sh-64, 128);
-	modexShowPage(&gvar.video.page[0]);
+	modexShowPage(&gvar.video.page[0]);*/
+	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].width, gvar.video.page[0].height, 15);
+	modexClearRegion(&gvar.video.page[0], 16, 16, gvar.video.page[0].sw, gvar.video.page[0].sh, 128);
+	modexClearRegion(&gvar.video.page[0], 32, 32, gvar.video.page[0].sw-32, gvar.video.page[0].sh-32, 42);
+	modexClearRegion(&gvar.video.page[0], 48, 48, gvar.video.page[0].sw-64, gvar.video.page[0].sh-64, 128);
 	modexCopyPageRegion(&gvar.video.page[1], &gvar.video.page[0], 0, 0, 0, 0, gvar.video.page[0].width, gvar.video.page[0].height);
 	modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 47);
 	modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 45);
@@ -170,12 +180,25 @@ void main(int argc, char *argv[])
 // 				modexClearRegion(&gvar.video.page[1], 48, 48, gvar.video.page[1].sw-64, gvar.video.page[1].sh-64, 128);
 // 			}
 		//}
-		if(IN_KeyDown(1+1)) pan.pn=0;
-		if(IN_KeyDown(2+1)) pan.pn=1;
-		if(IN_KeyDown(3+1)) pan.pn=2;
-		if(IN_KeyDown(4+1)) pan.pn=3;
+		if(IN_KeyDown(1+1)){ pan.pn=0; }
+		if(IN_KeyDown(2+1)){ pan.pn=1; }
+		if(IN_KeyDown(3+1)){ pan.pn=2; }
+		if(IN_KeyDown(4+1)){ pan.pn=3; }
+		if(IN_KeyDown(12)) modexClearRegion(&gvar.video.page[0], (gvar.video.page[0].width/2)-4, (gvar.video.page[0].height/2)-16, 24, 32, 15);
+		if(IN_KeyDown(13)) modexClearRegion(&gvar.video.page[1], (gvar.video.page[1].width/2)-4, (gvar.video.page[1].height/2)-16, 24, 32, 15);
+		if(IN_KeyDown(7)){
+			for(i=0;i<3;i++)
+			{
+				pal2[i] = rand()%64;
+				modexPalUpdate1(pal2);
+				colo++;
+				if(colo>HGQ) colo=LGQ;
+			}
+//			if(i>PAL_SIZE) i=0;
+		}//9
 		if(IN_KeyDown(25)){
 			modexpdump(&gvar.video.page[pan.pn]);
+			IN_UserInput(1,1);
 		}//p
 		modexShowPage(&gvar.video.page[pan.pn]);
 	}

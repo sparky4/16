@@ -7,13 +7,8 @@ what?
 
 
 
-test which modex library is faster!
-edit input and switch unecessary words to bytes
-
-
-
-
-planar function from pcx must be made~ ok
+test which modex library is faster! workings w
+edit input and switch unecessary words to bytes ok
 
 font! ok
 jis! ...

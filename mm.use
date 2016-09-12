@@ -1,0 +1,795 @@
+16/16/16_mm.c:MM_SizePtr to change the size of a given pointer
+16/16/16_mm.c:		strcpy(str,"MM_SetupEMS: EMS error ");
+16/16/16_mm.c:		MM_EMSerr(&str, err);
+16/16/16_mm.c:= MM_MapEMS
+16/16/16_mm.c:byte MM_MapEMS(mminfo_t *mm, mminfotype *mmi)
+16/16/16_mm.c:			strcpy(str,"MM_MapEMS: EMS error ");
+16/16/16_mm.c:			MM_EMSerr(str, err);
+16/16/16_mm.c:byte MM_MapXEMS(mminfo_t *mm, mminfotype *mmi)
+16/16/16_mm.c:			//strcpy(str,"MM_MapXEMS: EMS error 0x");
+16/16/16_mm.c:			strcpy(str,"MM_MapXEMS: EMS error ");
+16/16/16_mm.c:			MM_EMSerr(&str, err);
+16/16/16_mm.c:		MM_FreeBlock(scan, mm);
+16/16/16_mm.c:		MM_GetNewBlock(mm);
+16/16/16_mm.c:			MM_FreePtr(scan->useptr, mm);
+16/16/16_mm.c:	printf("MM_ClearBlock: No purgable blocks!\n");
+16/16/16_mm.c:= MM_Startup
+16/16/16_mm.c:void MM_Startup(mminfo_t *mm, mminfotype *mmi)
+16/16/16_mm.c:		MM_Shutdown(mm);
+16/16/16_mm.c:	MM_GetNewBlock(mm);
+16/16/16_mm.c:			MM_MapEMS(mm, mmi);					// map in used pages
+16/16/16_mm.c:			//MM_MapXEMS(mm, mmi);					// map in used pages
+16/16/16_mm.c:	MM_GetPtr(&(mm->bufferseg),BUFFERSIZE, mm, mmi);
+16/16/16_mm.c:= MM_Shutdown
+16/16/16_mm.c:void MM_Shutdown(mminfo_t *mm)
+16/16/16_mm.c:= MM_GetPtr
+16/16/16_mm.c:void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi)
+16/16/16_mm.c:	MM_GetNewBlock(mm);				// fill in start and next after a spot is found
+16/16/16_mm.c:			MM_SortMem(mm);
+16/16/16_mm.c:					MM_FreeBlock(purge, mm);
+16/16/16_mm.c:		MM_Shutdown(mm);
+16/16/16_mm.c:= MM_FreePtr
+16/16/16_mm.c:void MM_FreePtr(memptr *baseptr, mminfo_t *mm)
+16/16/16_mm.c:		printf("MM_FreePtr: Block not found!\n");
+16/16/16_mm.c:	MM_FreeBlock(scan, mm);
+16/16/16_mm.c:= MM_SetPurge
+16/16/16_mm.c:void MM_SetPurge(memptr *baseptr, int purge, mminfo_t *mm)
+16/16/16_mm.c:			printf("MM_SetPurge: Block not found!");
+16/16/16_mm.c:= MM_SetLock
+16/16/16_mm.c:void MM_SetLock(memptr *baseptr, boolean locked, mminfo_t *mm)
+16/16/16_mm.c:			printf("MM_SetLock: Block not found!");
+16/16/16_mm.c:= MM_SortMem
+16/16/16_mm.c:void MM_SortMem(mminfo_t *mm)
+16/16/16_mm.c:		MM_SetLock(&(memptr)audiosegs[playing],true);
+16/16/16_mm.c:				MM_FreeBlock(scan, mm);
+16/16/16_mm.c:		MM_SetLock(&(memptr)audiosegs[playing],false);*/
+16/16/16_mm.c:= MM_ShowMemory
+16/16/16_mm.c:void MM_ShowMemory(/*page_t *page, */mminfo_t *mm)
+16/16/16_mm.c:			write(debughandle,"\nMM_ShowMemory: Memory block order currupted!\n",strlen("\nMM_ShowMemory: Memory block order currupted!\n"));
+16/16/16_mm.c:			//modexprint(&page, chx, chy, 1, 0, 24, "\nMM_ShowMemory: Memory block order currupted!\n");
+16/16/16_mm.c:= MM_DumpData
+16/16/16_mm.c:void MM_DumpData(mminfo_t *mm)
+16/16/16_mm.c:		printf("MM_DumpData: Couldn't open MMDUMP.16!\n");
+16/16/16_mm.c:= MM_UnusedMemory
+16/16/16_mm.c:dword MM_UnusedMemory(mminfo_t *mm)
+16/16/16_mm.c:= MM_TotalFree
+16/16/16_mm.c:dword MM_TotalFree(mminfo_t *mm)
+16/16/16_mm.c:= MM_Report
+16/16/16_mm.c:void MM_Report(/*page_t *page, */mminfo_t *mm, mminfotype *mmi)
+16/16/16_mm.c:	printf("UnusedMemory=%lu\n", MM_UnusedMemory(mm));
+16/16/16_mm.c:	printf("TotalFree=%lu\n", MM_TotalFree(mm));
+16/16/16_mm.c://	printf("UnusedMemory=%lu kb\n", MM_UnusedMemory()/10248);
+16/16/16_mm.c://	printf("TotalFree=%lu kb\n", MM_TotalFree()/10248);
+16/16/16_mm.c:= MM_EMSerr
+16/16/16_mm.c:void MM_EMSerr(byte *stri, byte err)
+16/16/16_mm.c:= MM_BombOnError
+16/16/16_mm.c:void MM_BombOnError(boolean bomb, mminfo_t *mm)
+16/16/16_mm.c:void MM_GetNewBlock(mminfo_t *mm)
+16/16/16_mm.c:		printf("MM_GETNEWBLOCK: No free blocks!\n");
+16/16/16_mm.c:void MM_FreeBlock(mmblocktype *x, mminfo_t *mm)
+16/16/16_mm.c:void MM_seguin(void)
+16/16/16_mm.c:void MM_segude(void)
+16/16/src/lib/16_in.c:	MM_GetPtr((memptr *)&DemoBuffer,bufsize);
+16/16/src/lib/16_in.c:		MM_FreePtr((memptr *)&DemoBuffer);
+16/CatacombApocalypse/C6_DEBUG.C:					MM_SetPurge(&grsegs[LEVEL1TEXT+mapon],3);
+16/CatacombApocalypse/C6_DEBUG.C:					MM_SetPurge(&grsegs[LEVEL1TEXT+mapon],3);
+16/CatacombApocalypse/C6_DEBUG.C:		MM_SetPurge(&grsegs[LEVEL1TEXT+mapon],3);
+16/CatacombApocalypse/C6_DEBUG.C:		unused=MM_UnusedMemory()/1024;
+16/CatacombApocalypse/C6_DEBUG.C:		total=MM_TotalFree()/1024;
+16/CatacombApocalypse/C6_GAME.C:	MM_SetPurge(&grsegs[STATUSPIC],3);
+16/CatacombApocalypse/C6_GAME.C:			MM_FreePtr (&grsegs[STARTTILE16+i]);
+16/CatacombApocalypse/C6_GAME.C:		MM_FreePtr (&grsegs[i]);
+16/CatacombApocalypse/C6_GAME.C:		MM_FreePtr (&grsegs[i]);
+16/CatacombApocalypse/C6_GAME.C://		MM_GetPtr(&work,(stripsize*2)+0000);
+16/CatacombApocalypse/C6_GAME.C:		MM_GetPtr(&work,65536);
+16/CatacombApocalypse/C6_GAME.C:		MM_FreePtr (&grsegs[i]);
+16/CatacombApocalypse/C6_GAME.C:		MM_FreePtr(&work);
+16/CatacombApocalypse/C6_GAME.C:			MM_SetPurge (&(memptr)shapedirectory[i],3);
+16/CatacombApocalypse/C6_GAME.C:			MM_SetPurge (&(memptr)walldirectory[i],3);
+16/CatacombApocalypse/C6_GAME.C:	MM_SetPurge (&grsegs[HIGHSCORESPIC],3);
+16/CatacombApocalypse/C6_GAME.C:			MM_SetPurge (&(memptr)walldirectory[i],3);
+16/CatacombApocalypse/C6_MAIN.C:	MM_GetPtr (&bigbuffer,expanded);
+16/CatacombApocalypse/C6_MAIN.C:			MM_FreePtr (&bigbuffer);
+16/CatacombApocalypse/C6_MAIN.C:			MM_FreePtr (&bigbuffer);
+16/CatacombApocalypse/C6_MAIN.C:	MM_FreePtr (&bigbuffer);
+16/CatacombApocalypse/C6_MAIN.C:	MM_GetPtr (&bigbuffer,expanded);
+16/CatacombApocalypse/C6_MAIN.C:			MM_FreePtr (&bigbuffer);
+16/CatacombApocalypse/C6_MAIN.C:			MM_FreePtr (&bigbuffer);
+16/CatacombApocalypse/C6_MAIN.C:	MM_FreePtr (&bigbuffer);
+16/CatacombApocalypse/C6_MAIN.C:  MM_Shutdown ();
+16/CatacombApocalypse/C6_MAIN.C:	MM_Startup ();
+16/CatacombApocalypse/C6_MAIN.C:	MM_SetLock (&grsegs[STARTFONT],true);
+16/CatacombApocalypse/C6_MAIN.C:	MM_SetLock (&grsegs[STARTTILE8],true);
+16/CatacombApocalypse/C6_MAIN.C:	MM_SetLock (&grsegs[STARTTILE8M],true);
+16/CatacombApocalypse/C6_MAIN.C:	MM_SetLock (&grsegs[HAND1PICM],true);
+16/CatacombApocalypse/C6_MAIN.C:		MM_SetPurge (&(memptr)shapedirectory[scnum],0);
+16/CatacombApocalypse/C6_MAIN.C:	MM_FreePtr (&grsegs[picnum]);
+16/CatacombApocalypse/C6_MAIN.C:		MM_SetPurge (&walldirectory[scnum],0);
+16/CatacombApocalypse/C6_MAIN.C:	MM_GetPtr(&walldirectory[scnum],64*64);
+16/CatacombApocalypse/C6_MAIN.C:	MM_FreePtr (&grsegs[picnum]);
+16/CatacombApocalypse/C6_PLAY.C:			MM_SetPurge(&((memptr)audiosegs[STARTMUSIC + i]),3);
+16/CatacombApocalypse/C6_PLAY.C:			MM_SetLock(&((memptr)audiosegs[STARTMUSIC + i]),false);
+16/CatacombApocalypse/C6_PLAY.C:	MM_BombOnError (false);
+16/CatacombApocalypse/C6_PLAY.C:	MM_BombOnError (true);
+16/CatacombApocalypse/C6_PLAY.C:		MM_SetLock(&((memptr)audiosegs[STARTMUSIC + chunk]),true);
+16/CatacombApocalypse/C6_SCALE.C:	MM_GetPtr (&(memptr)work,20000);
+16/CatacombApocalypse/C6_SCALE.C:	MM_GetPtr (finalspot,totalsize);
+16/CatacombApocalypse/C6_SCALE.C:	MM_FreePtr (&(memptr)work);
+16/CatacombApocalypse/C6_SCALE.C://	MM_GetPtr (&(memptr)work,20000);
+16/CatacombApocalypse/C6_SCALE.C:	MM_GetPtr ((memptr *)finalspot,totalsize);
+16/CatacombApocalypse/C6_SCALE.C://	MM_FreePtr (&(memptr)work);
+16/CatacombApocalypse/C6_WIZ.C:	MM_FreePtr (&grsegs[SCROLL1PIC]);
+16/CatacombApocalypse/C6_WIZ.C:	MM_FreePtr (&grsegs[SCROLLTOPPIC]);
+16/CatacombApocalypse/C6_WIZ.C:	MM_FreePtr (&grsegs[SCROLLBOTTOMPIC]);
+16/CatacombApocalypse/GELIB.C:	MM_GetPtr(&bio->buffer,BIO_BUFFER_LEN);
+16/CatacombApocalypse/GELIB.C:		MM_FreePtr(&bio->buffer);
+16/CatacombApocalypse/GELIB.C:			MM_GetPtr(&SHP->Data,size);
+16/CatacombApocalypse/GELIB.C:		MM_FreePtr(&IFFfile);
+16/CatacombApocalypse/GELIB.C:		MM_FreePtr(&shape->Data);
+16/CatacombApocalypse/GELIB.C:		MM_SetPurge((memptr *)&ASArray[loop++].data,3);
+16/CatacombApocalypse/GELIB.C:		MM_FreePtr((memptr *)&ASArray[loop++].data);
+16/CatacombApocalypse/GELIB.C:			MM_SetPurge (&(memptr)audiosegs[start],3);		// make purgable
+16/CatacombApocalypse/GELIB.C:				MM_SetPurge (&(memptr)audiosegs[start],3);		// make purgable
+16/CatacombApocalypse/GELIB.C:			MM_SetPurge(&grsegs[i],3);
+16/CatacombApocalypse/GELIB.C:			MM_SetPurge(&grsegs[i],0);
+16/CatacombApocalypse/GELIB.C:		MM_FreePtr(&pi->scriptstart);
+16/CatacombApocalypse/ID_CA.C:	MM_GetPtr (ptr,size);
+16/CatacombApocalypse/ID_CA.C:	MM_GetPtr (&(memptr)grstarts,(NUMCHUNKS+1)*FILEPOSSIZE);
+16/CatacombApocalypse/ID_CA.C:	MM_GetPtr(&(memptr)pictable,NUMPICS*sizeof(pictabletype));
+16/CatacombApocalypse/ID_CA.C:	MM_GetPtr(&compseg,chunkcomplen);
+16/CatacombApocalypse/ID_CA.C:	MM_FreePtr(&compseg);
+16/CatacombApocalypse/ID_CA.C:	MM_GetPtr(&(memptr)picmtable,NUMPICM*sizeof(pictabletype));
+16/CatacombApocalypse/ID_CA.C:	MM_GetPtr(&compseg,chunkcomplen);
+16/CatacombApocalypse/ID_CA.C:	MM_FreePtr(&compseg);
+16/CatacombApocalypse/ID_CA.C:	MM_GetPtr(&(memptr)spritetable,NUMSPRITES*sizeof(spritetabletype));
+16/CatacombApocalypse/ID_CA.C:	MM_GetPtr(&compseg,chunkcomplen);
+16/CatacombApocalypse/ID_CA.C:	MM_FreePtr(&compseg);
+16/CatacombApocalypse/ID_CA.C:	MM_GetPtr (&(memptr)tinf,length);
+16/CatacombApocalypse/ID_CA.C:	MM_GetPtr (&(memptr)audiostarts,length);
+16/CatacombApocalypse/ID_CA.C:		MM_SetPurge (&(memptr)audiosegs[chunk],0);
+16/CatacombApocalypse/ID_CA.C:	MM_GetPtr (&(memptr)audiosegs[chunk],compressed);
+16/CatacombApocalypse/ID_CA.C:		MM_GetPtr(&bigbufferseg,compressed);
+16/CatacombApocalypse/ID_CA.C:		MM_SetLock (&bigbufferseg,true);
+16/CatacombApocalypse/ID_CA.C:	MM_GetPtr (&(memptr)audiosegs[chunk],expanded);
+16/CatacombApocalypse/ID_CA.C:		MM_FreePtr(&bigbufferseg);
+16/CatacombApocalypse/ID_CA.C:			MM_SetPurge (&(memptr)audiosegs[start],3);		// make purgable
+16/CatacombApocalypse/ID_CA.C:	MM_GetPtr (&grsegs[chunk],smallplane*2+MAXSHIFTS*6);
+16/CatacombApocalypse/ID_CA.C:	MM_GetPtr (&grsegs[chunk],expanded);
+16/CatacombApocalypse/ID_CA.C:		MM_GetPtr (&grsegs[chunk],expanded);
+16/CatacombApocalypse/ID_CA.C:		MM_GetPtr(&bigbufferseg,compressed);
+16/CatacombApocalypse/ID_CA.C:		MM_SetLock (&bigbufferseg,true);
+16/CatacombApocalypse/ID_CA.C:		MM_FreePtr(&bigbufferseg);
+16/CatacombApocalypse/ID_CA.C:		MM_SetPurge (&grsegs[chunk],0);
+16/CatacombApocalypse/ID_CA.C:		MM_GetPtr(&bigbufferseg,compressed);
+16/CatacombApocalypse/ID_CA.C:		MM_SetLock (&bigbufferseg,true);
+16/CatacombApocalypse/ID_CA.C:		MM_FreePtr(&bigbufferseg);
+16/CatacombApocalypse/ID_CA.C:		MM_SetPurge (&(memptr)mapheaderseg[mapon],3);
+16/CatacombApocalypse/ID_CA.C:			MM_FreePtr (&(memptr)mapsegs[plane]);
+16/CatacombApocalypse/ID_CA.C:		MM_GetPtr(&(memptr)mapheaderseg[mapnum],sizeof(maptype));
+16/CatacombApocalypse/ID_CA.C:		MM_SetPurge (&(memptr)mapheaderseg[mapnum],0);
+16/CatacombApocalypse/ID_CA.C:		MM_GetPtr(dest,size);
+16/CatacombApocalypse/ID_CA.C:			MM_GetPtr(&bigbufferseg,compressed);
+16/CatacombApocalypse/ID_CA.C:			MM_SetLock (&bigbufferseg,true);
+16/CatacombApocalypse/ID_CA.C:		MM_GetPtr (&buffer2seg,expanded);
+16/CatacombApocalypse/ID_CA.C:		MM_FreePtr (&buffer2seg);
+16/CatacombApocalypse/ID_CA.C:			MM_FreePtr(&bigbufferseg);
+16/CatacombApocalypse/ID_CA.C:			MM_SetPurge (&(memptr)grsegs[i],3);
+16/CatacombApocalypse/ID_CA.C:			MM_SetPurge (&(memptr)mapheaderseg[i],3);
+16/CatacombApocalypse/ID_CA.C:			MM_FreePtr (&(memptr)mapsegs[i]);
+16/CatacombApocalypse/ID_CA.C:			MM_SetPurge (&(memptr)audiosegs[i],3);
+16/CatacombApocalypse/ID_CA.C:			MM_SetPurge (&(memptr)grsegs[i],3);
+16/CatacombApocalypse/ID_CA.C:				MM_SetPurge(&grsegs[i],0);	// sure it stays there!
+16/CatacombApocalypse/ID_CA.C:				MM_SetPurge(&grsegs[i],3);
+16/CatacombApocalypse/ID_CA.C:				MM_GetPtr(&bigbufferseg,compressed);
+16/CatacombApocalypse/ID_CA.C:				MM_SetLock (&bigbufferseg,true);
+16/CatacombApocalypse/ID_CA.C:				MM_FreePtr(&bigbufferseg);
+16/CatacombApocalypse/ID_IN.C:	MM_GetPtr((memptr *)&DemoBuffer,bufsize);
+16/CatacombApocalypse/ID_IN.C:		MM_FreePtr((memptr *)&DemoBuffer);
+16/CatacombApocalypse/ID_MM.C:MM_SizePtr to change the size of a given pointer
+16/CatacombApocalypse/ID_MM.C:#define OUT_OF_MEM_MSG	"MM_GetPtr: Out of memory!\nYou were short :%ld bytes"
+16/CatacombApocalypse/ID_MM.C://#define GETNEWBLOCK {if(!(mmnew=mmfree))Quit("MM_GETNEWBLOCK: No free blocks!")\
+16/CatacombApocalypse/ID_MM.C:void 		MM_MapEMS (void);
+16/CatacombApocalypse/ID_MM.C:= MM_MapEMS
+16/CatacombApocalypse/ID_MM.C:void MM_MapEMS (void)
+16/CatacombApocalypse/ID_MM.C:	strcpy (str,"MM_MapEMS: EMS error 0x");
+16/CatacombApocalypse/ID_MM.C:			MM_FreePtr(scan->useptr);
+16/CatacombApocalypse/ID_MM.C:	Quit ("MM_ClearBlock: No purgable blocks!");
+16/CatacombApocalypse/ID_MM.C:= MM_Startup
+16/CatacombApocalypse/ID_MM.C:void MM_Startup (void)
+16/CatacombApocalypse/ID_MM.C:		MM_Shutdown ();
+16/CatacombApocalypse/ID_MM.C:		MM_MapEMS();					// map in used pages
+16/CatacombApocalypse/ID_MM.C:	MM_GetPtr (&bufferseg,BUFFERSIZE);
+16/CatacombApocalypse/ID_MM.C:= MM_Shutdown
+16/CatacombApocalypse/ID_MM.C:void MM_Shutdown (void)
+16/CatacombApocalypse/ID_MM.C:= MM_GetPtr
+16/CatacombApocalypse/ID_MM.C:void MM_GetPtr (memptr *baseptr,unsigned long size)
+16/CatacombApocalypse/ID_MM.C:			MM_SortMem ();
+16/CatacombApocalypse/ID_MM.C:= MM_FreePtr
+16/CatacombApocalypse/ID_MM.C:void MM_FreePtr (memptr *baseptr)
+16/CatacombApocalypse/ID_MM.C:		Quit ("MM_FreePtr: Block not found!");
+16/CatacombApocalypse/ID_MM.C:= MM_SetPurge
+16/CatacombApocalypse/ID_MM.C:void MM_SetPurge (memptr *baseptr, int purge)
+16/CatacombApocalypse/ID_MM.C:			Quit ("MM_SetPurge: Block not found!");
+16/CatacombApocalypse/ID_MM.C:= MM_SetLock
+16/CatacombApocalypse/ID_MM.C:void MM_SetLock (memptr *baseptr, boolean locked)
+16/CatacombApocalypse/ID_MM.C:			Quit ("MM_SetLock: Block not found!");
+16/CatacombApocalypse/ID_MM.C:= MM_SortMem
+16/CatacombApocalypse/ID_MM.C:void MM_SortMem (void)
+16/CatacombApocalypse/ID_MM.C:		MM_SetLock(&(memptr)audiosegs[playing],true);
+16/CatacombApocalypse/ID_MM.C:		MM_SetLock(&(memptr)audiosegs[playing],false);
+16/CatacombApocalypse/ID_MM.C:= MM_ShowMemory
+16/CatacombApocalypse/ID_MM.C:void MM_ShowMemory (void)
+16/CatacombApocalypse/ID_MM.C:			Quit ("MM_ShowMemory: Memory block order currupted!");
+16/CatacombApocalypse/ID_MM.C:= MM_UnusedMemory
+16/CatacombApocalypse/ID_MM.C:long MM_UnusedMemory (void)
+16/CatacombApocalypse/ID_MM.C:= MM_TotalFree
+16/CatacombApocalypse/ID_MM.C:long MM_TotalFree (void)
+16/CatacombApocalypse/ID_MM.C:= MM_BombOnError
+16/CatacombApocalypse/ID_MM.C:void MM_BombOnError (boolean bomb)
+16/CatacombApocalypse/ID_US.C:	MM_GetPtr(save,(w * h) * CHARWIDTH);
+16/CatacombApocalypse/ID_US.C:	MM_FreePtr(save);
+16/CatacombApocalypse/ID_US.C:	MM_GetPtr(&LineOffsets,MaxHelpLines * sizeof(word));
+16/CatacombApocalypse/ID_US.C:		MM_GetPtr(&dupe,5000);
+16/CatacombApocalypse/ID_US.C:		MM_FreePtr(&dupe);
+16/CatacombApocalypse/ID_US.C:			MM_FreePtr(&LineOffsets);
+16/CatacombApocalypse/ID_US.C:			MM_GetPtr(&buf,len);
+16/CatacombApocalypse/ID_US.C:			MM_FreePtr(&buf);
+16/CatacombApocalypse/ID_US.C:			MM_FreePtr(&LineOffsets);
+16/CatacombApocalypse/ID_US_1.C:	MM_GetPtr(save,(w * h) * CHARWIDTH);
+16/CatacombApocalypse/ID_US_1.C:	MM_FreePtr(save);
+16/CatacombApocalypse/ID_VW.C:	MM_GetPtr (&(memptr)screenseg,0x10000l);	// grab 64k for floating screen
+16/CatacombApocalypse/ID_VW.C:	MM_SetLock (&grsegs[spritenum],true);
+16/CatacombApocalypse/ID_VW.C:	MM_GetPtr (&cursorsave,cursorwidth*cursorheight*5);
+16/CatacombApocalypse/ID_VW.C:	MM_SetLock (&cursorsave,true);
+16/CatacombApocalypse/ID_VW.C:		MM_SetLock (&grsegs[cursornumber],false);
+16/CatacombApocalypse/ID_VW.C:		MM_SetPurge (&grsegs[cursornumber],3);
+16/CatacombApocalypse/ID_VW.C:		MM_SetLock (&cursorsave,false);
+16/CatacombApocalypse/ID_VW.C:		MM_FreePtr (&cursorsave);
+16/CatacombApocalypse/JAMPAK.C:	MM_GetPtr(&bio->buffer,BIO_BUFFER_LEN);
+16/CatacombApocalypse/JAMPAK.C:		MM_FreePtr(&bio->buffer);
+16/CatacombApocalypse/JAMPAK.C:		MM_GetPtr(DstPtr,DstLen);
+16/CatacombApocalypse/JAMPAK.C:		if (MM_TotalFree() < SrcLen)
+16/CatacombApocalypse/JAMPAK.C:			MM_FreePtr(&SrcPtr);
+16/CatacombApocalypse/JAMPAK.C:			MM_GetPtr(&SHP->Data,size);
+16/CatacombApocalypse/JAMPAK.C:		MM_FreePtr(&IFFfile);
+16/CatacombApocalypse/JAMPAK.C:			MM_GetPtr(MemPtr,FileEntry.OrginalLength);
+16/CatacombApocalypse/SOFT.C:		MM_GetPtr(DstPtr,CompHeader.OrginalLen);
+16/CatacombApocalypse/SOFT.C:		MM_GetPtr(DstPtr,CompHeader.OrginalLen);
+16/CatacombApocalypse/SOFT.C:		if ((MM_TotalFree() < SrcLen) && (CompHeader.CompType))
+16/CatacombApocalypse/SOFT.C:			MM_FreePtr(&SrcPtr);
+16/CatacombApocalypse/SOFT.C:			MM_GetPtr(&SHP->Data,size);
+16/CatacombApocalypse/SOFT.C:		MM_FreePtr(&IFFfile);
+16/CatacombApocalypse/SOFT.C:			MM_GetPtr(MemPtr,FileEntry.OrginalLength);
+16/ID_MM.C:MM_SizePtr to change the size of a given pointer
+16/ID_MM.C:#define OUT_OF_MEM_MSG	"MM_GetPtr: Out of memory!\nYou were short :%ld bytes"
+16/ID_MM.C://#define GETNEWBLOCK {if(!(mmnew=mmfree))Quit("MM_GETNEWBLOCK: No free blocks!")\
+16/ID_MM.C:void 		MM_MapEMS (void);
+16/ID_MM.C:= MM_MapEMS
+16/ID_MM.C:void MM_MapEMS (void)
+16/ID_MM.C:	strcpy (str,"MM_MapEMS: EMS error 0x");
+16/ID_MM.C:			MM_FreePtr(scan->useptr);
+16/ID_MM.C:	Quit ("MM_ClearBlock: No purgable blocks!");
+16/ID_MM.C:= MM_Startup
+16/ID_MM.C:void MM_Startup (void)
+16/ID_MM.C:		MM_Shutdown ();
+16/ID_MM.C:		MM_MapEMS();					// map in used pages
+16/ID_MM.C:	MM_GetPtr (&bufferseg,BUFFERSIZE);
+16/ID_MM.C:= MM_Shutdown
+16/ID_MM.C:void MM_Shutdown (void)
+16/ID_MM.C:= MM_GetPtr
+16/ID_MM.C:void MM_GetPtr (memptr *baseptr,unsigned long size)
+16/ID_MM.C:			MM_SortMem ();
+16/ID_MM.C:= MM_FreePtr
+16/ID_MM.C:void MM_FreePtr (memptr *baseptr)
+16/ID_MM.C:		Quit ("MM_FreePtr: Block not found!");
+16/ID_MM.C:= MM_SetPurge
+16/ID_MM.C:void MM_SetPurge (memptr *baseptr, int purge)
+16/ID_MM.C:			Quit ("MM_SetPurge: Block not found!");
+16/ID_MM.C:= MM_SetLock
+16/ID_MM.C:void MM_SetLock (memptr *baseptr, boolean locked)
+16/ID_MM.C:			Quit ("MM_SetLock: Block not found!");
+16/ID_MM.C:= MM_SortMem
+16/ID_MM.C:void MM_SortMem (void)
+16/ID_MM.C:		MM_SetLock(&(memptr)audiosegs[playing],true);
+16/ID_MM.C:		MM_SetLock(&(memptr)audiosegs[playing],false);
+16/ID_MM.C:= MM_ShowMemory
+16/ID_MM.C:void MM_ShowMemory (void)
+16/ID_MM.C:			Quit ("MM_ShowMemory: Memory block order currupted!");
+16/ID_MM.C:= MM_UnusedMemory
+16/ID_MM.C:long MM_UnusedMemory (void)
+16/ID_MM.C:= MM_TotalFree
+16/ID_MM.C:long MM_TotalFree (void)
+16/ID_MM.C:= MM_BombOnError
+16/ID_MM.C:void MM_BombOnError (boolean bomb)
+16/ID_MMw.C:MM_SizePtr to change the size of a given pointer
+16/ID_MMw.C://#define GETNEWBLOCK {if(!(mmnew=mmfree))Quit("MM_GETNEWBLOCK: No free blocks!")\
+16/ID_MMw.C:void 		MM_MapEMS (void);
+16/ID_MMw.C:			MM_FreePtr(scan->useptr);
+16/ID_MMw.C:	Quit ("MM_ClearBlock: No purgable blocks!");
+16/ID_MMw.C:= MM_Startup
+16/ID_MMw.C:void MM_Startup (void)
+16/ID_MMw.C:		MM_Shutdown ();
+16/ID_MMw.C:	MM_GetPtr (&bufferseg,BUFFERSIZE);
+16/ID_MMw.C:= MM_Shutdown
+16/ID_MMw.C:void MM_Shutdown (void)
+16/ID_MMw.C:= MM_GetPtr
+16/ID_MMw.C:void MM_GetPtr (memptr *baseptr,unsigned long size)
+16/ID_MMw.C:			MM_SortMem ();
+16/ID_MMw.C:		Quit ("MM_GetPtr: Out of memory!");
+16/ID_MMw.C:= MM_FreePtr
+16/ID_MMw.C:void MM_FreePtr (memptr *baseptr)
+16/ID_MMw.C:		Quit ("MM_FreePtr: Block not found!");
+16/ID_MMw.C:= MM_SetPurge
+16/ID_MMw.C:void MM_SetPurge (memptr *baseptr, int purge)
+16/ID_MMw.C:			Quit ("MM_SetPurge: Block not found!");
+16/ID_MMw.C:= MM_SetLock
+16/ID_MMw.C:void MM_SetLock (memptr *baseptr, boolean locked)
+16/ID_MMw.C:			Quit ("MM_SetLock: Block not found!");
+16/ID_MMw.C:= MM_SortMem
+16/ID_MMw.C:void MM_SortMem (void)
+16/ID_MMw.C:		MM_SetLock(&(memptr)audiosegs[playing],true);
+16/ID_MMw.C:		MM_SetLock(&(memptr)audiosegs[playing],false);
+16/ID_MMw.C:= MM_ShowMemory
+16/ID_MMw.C:void MM_ShowMemory (void)
+16/ID_MMw.C:			Quit ("MM_ShowMemory: Memory block order currupted!");
+16/ID_MMw.C:= MM_DumpData
+16/ID_MMw.C:void MM_DumpData (void)
+16/ID_MMw.C:		Quit ("MM_DumpData: Couldn't open MMDUMP.TXT!");
+16/ID_MMw.C:= MM_UnusedMemory
+16/ID_MMw.C:long MM_UnusedMemory (void)
+16/ID_MMw.C:= MM_TotalFree
+16/ID_MMw.C:long MM_TotalFree (void)
+16/ID_MMw.C:= MM_BombOnError
+16/ID_MMw.C:void MM_BombOnError (boolean bomb)
+16/ID_SD.C:	MM_GetPtr(&list,PMPageSize);
+16/ID_SD.C:	MM_GetPtr((memptr *)&DigiList,i * sizeof(word) * 2);
+16/ID_SD.C:	MM_FreePtr(&list);
+16/keen/gelib.c:		MM_FreePtr(&shape->Data);
+16/keen/gelib.c:	MM_GetPtr(&bio->buffer,BIO_BUFFER_LEN);
+16/keen/gelib.c:		MM_FreePtr(&bio->buffer);
+16/keen/id_ca.c:	MM_GetPtr (ptr,size);
+16/keen/id_ca.c:	MM_GetPtr (&(memptr)grstarts,(NUMCHUNKS+1)*4);
+16/keen/id_ca.c:	MM_GetPtr(&(memptr)pictable,NUMPICS*sizeof(pictabletype));
+16/keen/id_ca.c:	MM_GetPtr(&compseg,chunkcomplen);
+16/keen/id_ca.c:	MM_FreePtr(&compseg);
+16/keen/id_ca.c:	MM_GetPtr(&(memptr)picmtable,NUMPICM*sizeof(pictabletype));
+16/keen/id_ca.c:	MM_GetPtr(&compseg,chunkcomplen);
+16/keen/id_ca.c:	MM_FreePtr(&compseg);
+16/keen/id_ca.c:	MM_GetPtr(&(memptr)spritetable,NUMSPRITES*sizeof(spritetabletype));
+16/keen/id_ca.c:	MM_GetPtr(&compseg,chunkcomplen);
+16/keen/id_ca.c:	MM_FreePtr(&compseg);
+16/keen/id_ca.c:	MM_GetPtr (&(memptr)tinf,length);
+16/keen/id_ca.c:	MM_GetPtr (&(memptr)audiostarts,length);
+16/keen/id_ca.c:		MM_SetPurge (&(memptr)audiosegs[chunk],0);
+16/keen/id_ca.c:	MM_GetPtr (&(memptr)audiosegs[chunk],compressed);
+16/keen/id_ca.c:		MM_GetPtr(&bigbufferseg,compressed);
+16/keen/id_ca.c:	MM_GetPtr (&(memptr)audiosegs[chunk],expanded);
+16/keen/id_ca.c:		MM_FreePtr(&bigbufferseg);
+16/keen/id_ca.c:			MM_SetPurge (&(memptr)audiosegs[start],3);		// make purgable
+16/keen/id_ca.c:	MM_GetPtr (&grsegs[chunk],smallplane*2+MAXSHIFTS*6);
+16/keen/id_ca.c:	MM_GetPtr (&grsegs[chunk],expanded);
+16/keen/id_ca.c:		MM_GetPtr (&grsegs[chunk],expanded);
+16/keen/id_ca.c:		MM_GetPtr(&bigbufferseg,compressed);
+16/keen/id_ca.c:		MM_FreePtr(&bigbufferseg);
+16/keen/id_ca.c:		MM_GetPtr(&bigbufferseg,compressed);
+16/keen/id_ca.c:		MM_FreePtr(&bigbufferseg);
+16/keen/id_ca.c:		MM_SetPurge (&(memptr)mapheaderseg[mapon],3);
+16/keen/id_ca.c:			MM_FreePtr (&(memptr)mapsegs[plane]);
+16/keen/id_ca.c:		MM_GetPtr(&(memptr)mapheaderseg[mapnum],sizeof(maptype));
+16/keen/id_ca.c:		MM_SetPurge (&(memptr)mapheaderseg[mapnum],0);
+16/keen/id_ca.c:		MM_GetPtr(dest,size);
+16/keen/id_ca.c:			MM_GetPtr(&bigbufferseg,compressed);
+16/keen/id_ca.c:		MM_GetPtr (&buffer2seg,expanded);
+16/keen/id_ca.c:		MM_FreePtr (&buffer2seg);
+16/keen/id_ca.c:			MM_FreePtr(&bigbufferseg);
+16/keen/id_ca.c://				MM_SetPurge(&grsegs[i],3);
+16/keen/id_ca.c:				MM_SetPurge(&grsegs[i],0);	// sure it stays there!
+16/keen/id_ca.c:				MM_SetPurge(&grsegs[i],3);
+16/keen/id_ca.c:				MM_GetPtr(&bigbufferseg,compressed);
+16/keen/id_ca.c:				MM_FreePtr(&bigbufferseg);
+16/keen/id_in.c:	MM_GetPtr((memptr *)&DemoBuffer,bufsize);
+16/keen/id_in.c:		MM_FreePtr((memptr *)&DemoBuffer);
+16/keen/id_mm.c:MM_SizePtr to change the size of a given pointer
+16/keen/id_mm.c:#define GETNEWBLOCK {if(!(mmnew=mmfree))Quit("MM_GETNEWBLOCK: No free blocks!")\
+16/keen/id_mm.c:void 		MM_MapEMS (void);
+16/keen/id_mm.c:= MM_MapEMS
+16/keen/id_mm.c:void MM_MapEMS (void)
+16/keen/id_mm.c:= MM_Startup
+16/keen/id_mm.c:void MM_Startup (void)
+16/keen/id_mm.c:		MM_Shutdown ();
+16/keen/id_mm.c:		MM_MapEMS();					// map in used pages
+16/keen/id_mm.c:	MM_GetPtr (&bufferseg,BUFFERSIZE);
+16/keen/id_mm.c:= MM_Shutdown
+16/keen/id_mm.c:void MM_Shutdown (void)
+16/keen/id_mm.c:= MM_GetPtr
+16/keen/id_mm.c:void MM_GetPtr (memptr *baseptr,unsigned long size)
+16/keen/id_mm.c:			MM_SortMem ();
+16/keen/id_mm.c:= MM_FreePtr
+16/keen/id_mm.c:void MM_FreePtr (memptr *baseptr)
+16/keen/id_mm.c:		Quit ("MM_FreePtr: Block not found!");
+16/keen/id_mm.c:= MM_SetPurge
+16/keen/id_mm.c:void MM_SetPurge (memptr *baseptr, int purge)
+16/keen/id_mm.c:			Quit ("MM_SetPurge: Block not found!");
+16/keen/id_mm.c:= MM_SetLock
+16/keen/id_mm.c:void MM_SetLock (memptr *baseptr, boolean locked)
+16/keen/id_mm.c:			Quit ("MM_SetLock: Block not found!");
+16/keen/id_mm.c:= MM_SortMem
+16/keen/id_mm.c:void MM_SortMem (void)
+16/keen/id_mm.c:= MM_ShowMemory
+16/keen/id_mm.c:void MM_ShowMemory (void)
+16/keen/id_mm.c:			Quit ("MM_ShowMemory: Memory block order currupted!");
+16/keen/id_mm.c:= MM_UnusedMemory
+16/keen/id_mm.c:long MM_UnusedMemory (void)
+16/keen/id_mm.c:= MM_TotalFree
+16/keen/id_mm.c:long MM_TotalFree (void)
+16/keen/id_us.c:	MM_GetPtr(save,(w * h) * CHARWIDTH);
+16/keen/id_us.c:	MM_FreePtr(save);
+16/keen/id_us.c:	MM_GetPtr(&LineOffsets,MaxHelpLines * sizeof(word));
+16/keen/id_us.c:		MM_GetPtr(&dupe,5600);
+16/keen/id_us.c:		MM_FreePtr(&dupe);
+16/keen/id_us.c:			MM_FreePtr(&LineOffsets);
+16/keen/id_us.c:			MM_GetPtr(&buf,len);
+16/keen/id_us.c:			MM_FreePtr(&buf);
+16/keen/id_us.c:			MM_FreePtr(&LineOffsets);
+16/keen/id_vw.c:	MM_GetPtr (&(memptr)screenseg,0x10000l);	// grab 64k for floating screen
+16/keen/id_vw.c:		MM_SetLock (&grsegs[cursornumber],false);
+16/keen/id_vw.c:		MM_FreePtr (&cursorsave);
+16/keen/id_vw.c:	MM_SetLock (&grsegs[cursornumber],true);
+16/keen/id_vw.c:	MM_GetPtr (&cursorsave,cursorwidth*cursorheight*5);
+16/keen/kd_demo.c:	MM_GetPtr (&bigbuffer,expanded);
+16/keen/kd_demo.c:			MM_FreePtr (&bigbuffer);
+16/keen/kd_demo.c:			MM_FreePtr (&bigbuffer);
+16/keen/kd_demo.c:	MM_FreePtr (&bigbuffer);
+16/keen/kd_demo.c:	MM_GetPtr (&bigbuffer,expanded);
+16/keen/kd_demo.c:			MM_FreePtr (&bigbuffer);
+16/keen/kd_demo.c:			MM_FreePtr (&bigbuffer);
+16/keen/kd_demo.c:	MM_FreePtr (&bigbuffer);
+16/keen/kd_main.c:	US_PrintUnsigned (MM_UnusedMemory()/1024);
+16/keen/kd_main.c:	US_PrintUnsigned (MM_TotalFree()/1024);
+16/keen/kd_main.c:	MM_ShowMemory ();
+16/keen/kd_main.c:  MM_Shutdown ();
+16/keen/kd_main.c:	MM_Startup ();
+16/keen/kd_main.c:	MM_SetLock (&grsegs[STARTFONT],true);
+16/keen/kd_main.c:	MM_SetLock (&grsegs[STARTFONTM],true);
+16/keen/kd_main.c:	MM_SetLock (&grsegs[STARTTILE8],true);
+16/keen/kd_main.c:	MM_SetLock (&grsegs[STARTTILE8M],true);
+16/keen/kd_main.c:		MM_SetLock (&grsegs[i],true);
+16/keen/lscr/loadscn2.c://       UseID_Memory - TRUE = use MM_GetPtr else farmalloc.
+16/keen/soft.c:		MM_GetPtr(DstPtr,CompHeader.OrginalLen);
+16/keen/soft.c:		MM_GetPtr(DstPtr,CompHeader.OrginalLen);
+16/keen/soft.c:		if ((MM_TotalFree() < SrcLen) && (CompHeader.CompType))
+16/keen/soft.c:			MM_FreePtr(&SrcPtr);
+16/keen/soft.c:			MM_GetPtr(&SHP->Data,size);
+16/keen/soft.c:		MM_FreePtr(&IFFfile);
+16/keen/soft.c:			MM_GetPtr(MemPtr,FileEntry.OrginalLength);
+16/wf3d8086/id_ca.c:	MM_GetPtr (ptr,size);
+16/wf3d8086/id_ca.c:	MM_GetPtr (&(memptr)grstarts,(NUMCHUNKS+1)*FILEPOSSIZE);
+16/wf3d8086/id_ca.c:	MM_GetPtr(&(memptr)pictable,NUMPICS*sizeof(pictabletype));
+16/wf3d8086/id_ca.c:	MM_GetPtr(&compseg,chunkcomplen);
+16/wf3d8086/id_ca.c:	MM_FreePtr(&compseg);
+16/wf3d8086/id_ca.c:	MM_GetPtr (&(memptr)tinf,length);
+16/wf3d8086/id_ca.c:		MM_GetPtr(&(memptr)mapheaderseg[i],sizeof(maptype));
+16/wf3d8086/id_ca.c:		MM_SetLock(&(memptr)mapheaderseg[i],true);
+16/wf3d8086/id_ca.c:		MM_GetPtr (&(memptr)mapsegs[i],64*64*2);
+16/wf3d8086/id_ca.c:		MM_SetLock (&(memptr)mapsegs[i],true);
+16/wf3d8086/id_ca.c:	MM_GetPtr (&(memptr)audiostarts,length);
+16/wf3d8086/id_ca.c:		MM_SetPurge (&(memptr)audiosegs[chunk],0);
+16/wf3d8086/id_ca.c:	MM_GetPtr (&(memptr)audiosegs[chunk],compressed);
+16/wf3d8086/id_ca.c:		MM_GetPtr(&bigbufferseg,compressed);
+16/wf3d8086/id_ca.c:		MM_SetLock (&bigbufferseg,true);
+16/wf3d8086/id_ca.c:	MM_GetPtr (&(memptr)audiosegs[chunk],expanded);
+16/wf3d8086/id_ca.c:		MM_FreePtr(&bigbufferseg);
+16/wf3d8086/id_ca.c:			MM_SetPurge (&(memptr)audiosegs[start],3);		// make purgable
+16/wf3d8086/id_ca.c:	MM_GetPtr (&grsegs[chunk],expanded);
+16/wf3d8086/id_ca.c:		MM_SetPurge (&grsegs[chunk],0);
+16/wf3d8086/id_ca.c:		MM_GetPtr(&bigbufferseg,compressed);
+16/wf3d8086/id_ca.c:		MM_SetLock (&bigbufferseg,true);
+16/wf3d8086/id_ca.c:		MM_FreePtr(&bigbufferseg);
+16/wf3d8086/id_ca.c:	MM_GetPtr(&bigbufferseg,compressed);
+16/wf3d8086/id_ca.c:	MM_SetLock (&bigbufferseg,true);
+16/wf3d8086/id_ca.c:	MM_FreePtr(&bigbufferseg);
+16/wf3d8086/id_ca.c:			MM_GetPtr(&bigbufferseg,compressed);
+16/wf3d8086/id_ca.c:			MM_SetLock (&bigbufferseg,true);
+16/wf3d8086/id_ca.c:		MM_GetPtr (&buffer2seg,expanded);
+16/wf3d8086/id_ca.c:		MM_FreePtr (&buffer2seg);
+16/wf3d8086/id_ca.c:			MM_FreePtr(&bigbufferseg);
+16/wf3d8086/id_ca.c:			MM_SetPurge (&(memptr)grsegs[i],3);
+16/wf3d8086/id_ca.c:			MM_SetPurge (&(memptr)grsegs[i],3);
+16/wf3d8086/id_ca.c:			MM_SetPurge (&(memptr)audiosegs[i],3);
+16/wf3d8086/id_ca.c:				MM_SetPurge(&grsegs[i],0);	// sure it stays there!
+16/wf3d8086/id_ca.c:				MM_SetPurge(&grsegs[i],3);
+16/wf3d8086/id_ca.c:				MM_GetPtr(&bigbufferseg,compressed);
+16/wf3d8086/id_ca.c:				MM_SetLock (&bigbufferseg,true);
+16/wf3d8086/id_ca.c:				MM_FreePtr(&bigbufferseg);
+16/wf3d8086/id_mm.c:MM_SizePtr to change the size of a given pointer
+16/wf3d8086/id_mm.c://#define GETNEWBLOCK {if(!(mmnew=mmfree))Quit("MM_GETNEWBLOCK: No free blocks!")\
+16/wf3d8086/id_mm.c:void 		MM_MapEMS (void);
+16/wf3d8086/id_mm.c:			MM_FreePtr(scan->useptr);
+16/wf3d8086/id_mm.c:	Quit ("MM_ClearBlock: No purgable blocks!");
+16/wf3d8086/id_mm.c:= MM_Startup
+16/wf3d8086/id_mm.c:void MM_Startup (void)
+16/wf3d8086/id_mm.c:		MM_Shutdown ();
+16/wf3d8086/id_mm.c:	MM_GetPtr (&bufferseg,BUFFERSIZE);
+16/wf3d8086/id_mm.c:= MM_Shutdown
+16/wf3d8086/id_mm.c:void MM_Shutdown (void)
+16/wf3d8086/id_mm.c:= MM_GetPtr
+16/wf3d8086/id_mm.c:void MM_GetPtr (memptr *baseptr,unsigned long size)
+16/wf3d8086/id_mm.c:			MM_SortMem ();
+16/wf3d8086/id_mm.c:		Quit ("MM_GetPtr: Out of memory!");
+16/wf3d8086/id_mm.c:= MM_FreePtr
+16/wf3d8086/id_mm.c:void MM_FreePtr (memptr *baseptr)
+16/wf3d8086/id_mm.c:		Quit ("MM_FreePtr: Block not found!");
+16/wf3d8086/id_mm.c:= MM_SetPurge
+16/wf3d8086/id_mm.c:void MM_SetPurge (memptr *baseptr, int purge)
+16/wf3d8086/id_mm.c:			Quit ("MM_SetPurge: Block not found!");
+16/wf3d8086/id_mm.c:= MM_SetLock
+16/wf3d8086/id_mm.c:void MM_SetLock (memptr *baseptr, boolean locked)
+16/wf3d8086/id_mm.c:			Quit ("MM_SetLock: Block not found!");
+16/wf3d8086/id_mm.c:= MM_SortMem
+16/wf3d8086/id_mm.c:void MM_SortMem (void)
+16/wf3d8086/id_mm.c:		MM_SetLock(&(memptr)audiosegs[playing],true);
+16/wf3d8086/id_mm.c:		MM_SetLock(&(memptr)audiosegs[playing],false);
+16/wf3d8086/id_mm.c:= MM_ShowMemory
+16/wf3d8086/id_mm.c:void MM_ShowMemory (void)
+16/wf3d8086/id_mm.c:			Quit ("MM_ShowMemory: Memory block order currupted!");
+16/wf3d8086/id_mm.c:= MM_DumpData
+16/wf3d8086/id_mm.c:void MM_DumpData (void)
+16/wf3d8086/id_mm.c:		Quit ("MM_DumpData: Couldn't open MMDUMP.TXT!");
+16/wf3d8086/id_mm.c:= MM_UnusedMemory
+16/wf3d8086/id_mm.c:long MM_UnusedMemory (void)
+16/wf3d8086/id_mm.c:= MM_TotalFree
+16/wf3d8086/id_mm.c:long MM_TotalFree (void)
+16/wf3d8086/id_mm.c:= MM_BombOnError
+16/wf3d8086/id_mm.c:void MM_BombOnError (boolean bomb)
+16/wf3d8086/id_pm.c:			MM_SetPurge(&MainMemPages[i],level);
+16/wf3d8086/id_pm.c:				MM_BombOnError(false);
+16/wf3d8086/id_pm.c:				MM_GetPtr(p,PMPageSize);		// Try to reallocate
+16/wf3d8086/id_pm.c:				MM_BombOnError(true);
+16/wf3d8086/id_pm.c:	MM_BombOnError(false);
+16/wf3d8086/id_pm.c:		MM_GetPtr(p,PMPageSize);
+16/wf3d8086/id_pm.c:	MM_BombOnError(true);
+16/wf3d8086/id_pm.c:			MM_FreePtr(p);
+16/wf3d8086/id_pm.c:	MM_GetPtr(&(memptr)PMSegPages,sizeof(PageListStruct) * PMNumBlocks);
+16/wf3d8086/id_pm.c:	MM_SetLock(&(memptr)PMSegPages,true);
+16/wf3d8086/id_pm.c:	MM_GetPtr(&buf,size);
+16/wf3d8086/id_pm.c:	MM_FreePtr(&buf);
+16/wf3d8086/id_pm.c:	MM_GetPtr(&buf,size);
+16/wf3d8086/id_pm.c:	MM_FreePtr(&buf);
+16/wf3d8086/id_pm.c:		MM_SetLock(&(memptr)PMSegPages,false);
+16/wf3d8086/id_pm.c:		MM_FreePtr(&(void _seg *)PMSegPages);
+16/wf3d8086/id_sd.c:	MM_GetPtr(&list,PMPageSize);
+16/wf3d8086/id_sd.c:	MM_GetPtr((memptr *)&DigiList,i * sizeof(word) * 2);
+16/wf3d8086/id_sd.c:	MM_FreePtr(&list);
+16/wf3d8086/id_vh.c:#define UNCACHEGRCHUNK(chunk)	{MM_FreePtr(&grsegs[chunk]);grneeded[chunk]&=~ca_levelbit;}
+16/wf3d8086/id_vh.c:	MM_GetPtr (&(memptr)temp,size);
+16/wf3d8086/id_vh.c:	MM_FreePtr (&(memptr)temp);
+16/wf3d8086/obj/wolf3d.map: 193E:0001 0E87 C=CODE   S=ID_MM_TEXT     G=(none)  M=ID_MM.C    ACBP=28
+16/wf3d8086/oldscale.c:			MM_FreePtr (&(memptr)scaledirectory[i]);
+16/wf3d8086/oldscale.c:	MM_SortMem ();
+16/wf3d8086/oldscale.c:	MM_GetPtr (&(memptr)work,20000);
+16/wf3d8086/oldscale.c:			MM_FreePtr (&(memptr)work);
+16/wf3d8086/oldscale.c:	MM_FreePtr (&(memptr)work);
+16/wf3d8086/oldscale.c:	MM_SortMem ();
+16/wf3d8086/oldscale.c:		MM_SetLock (&(memptr)scaledirectory[i],true);
+16/wf3d8086/oldscale.c:	MM_GetPtr (finalspot,totalsize);
+16/wf3d8086/wl_debug.c:	US_PrintUnsigned (MM_UnusedMemory()/1024);
+16/wf3d8086/wl_debug.c:	US_PrintUnsigned (MM_TotalFree()/1024);
+16/wf3d8086/wl_debug.c:	MM_GetPtr (&buffer,64000);
+16/wf3d8086/wl_game.c:	MM_SortMem ();
+16/wf3d8086/wl_game.c:	MM_GetPtr (&demobuffer,MAXDEMOSIZE);
+16/wf3d8086/wl_game.c:	MM_SetLock (&demobuffer,true);
+16/wf3d8086/wl_game.c:	MM_FreePtr (&demobuffer);
+16/wf3d8086/wl_game.c:	MM_SetLock (&grsegs[dems[demonumber]],true);
+16/wf3d8086/wl_game.c:	MM_SetLock (&demobuffer,true);
+16/wf3d8086/wl_game.c:	MM_FreePtr (&demobuffer);
+16/wf3d8086/wl_inter.c:	MM_SortMem ();
+16/wf3d8086/wl_inter.c:				MM_FreePtr ((memptr *)&audiosegs[start]);
+16/wf3d8086/wl_main.c:	MM_Shutdown ();
+16/wf3d8086/wl_main.c:	MM_Startup ();                  // so the signon screen can be freed
+16/wf3d8086/wl_main.c:	MM_SetLock (&grsegs[STARTFONT],true);
+16/wf3d8086/wl_main.c://	MM_BombOnError (false);
+16/wf3d8086/wl_main.c:	MM_BombOnError (true);
+16/wf3d8086/wl_main.c:	MM_SortMem ();
+16/wf3d8086/wl_main.c://	MM_GetPtr(&nullblock,nsize);
+16/wf3d8086/wl_main.c:			MM_SortMem ();
+16/wf3d8086/wl_menu.c:			MM_SortMem ();
+16/wf3d8086/wl_menu.c:								MM_SetPurge (&(memptr)audiosegs[start],3);		// make purgable
+16/wf3d8086/wl_menu.c:				MM_SortMem();
+16/wf3d8086/wl_menu.c:	MM_SortMem ();
+16/wf3d8086/wl_menu.c:		MM_FreePtr ((memptr *)&audiosegs[STARTMUSIC + lastmusic]);
+16/wf3d8086/wl_menu.c:	MM_BombOnError (false);
+16/wf3d8086/wl_menu.c:	MM_BombOnError (true);
+16/wf3d8086/wl_menu.c:		MM_SetLock(&((memptr)audiosegs[STARTMUSIC + chunk]),true);
+16/wf3d8086/wl_menu.c:		MM_FreePtr ((memptr *)&audiosegs[STARTMUSIC + lastmusic]);
+16/wf3d8086/wl_play.c:			MM_SetPurge(&((memptr)audiosegs[STARTMUSIC + i]),3);
+16/wf3d8086/wl_play.c:			MM_SetLock(&((memptr)audiosegs[STARTMUSIC + i]),false);
+16/wf3d8086/wl_play.c:	MM_BombOnError (false);
+16/wf3d8086/wl_play.c:	MM_BombOnError (true);
+16/wf3d8086/wl_play.c:		MM_SetLock(&((memptr)audiosegs[STARTMUSIC + chunk]),true);
+16/wf3d8086/wl_scale.c:			MM_FreePtr (&(memptr)scaledirectory[i]);
+16/wf3d8086/wl_scale.c:	MM_SortMem ();
+16/wf3d8086/wl_scale.c:	MM_GetPtr (&(memptr)work,20000);
+16/wf3d8086/wl_scale.c:	MM_FreePtr (&(memptr)work);
+16/wf3d8086/wl_scale.c:	MM_SortMem ();
+16/wf3d8086/wl_scale.c:		MM_SetLock (&(memptr)scaledirectory[i],true);
+16/wf3d8086/wl_scale.c:	MM_GetPtr (finalspot,totalsize);
+16/wf3d8086/wl_text.c:	MM_SortMem ();
+16/wf3d8086/wl_text.c:	MM_SortMem ();
+16/wf3d8086/wl_text.c:	MM_SetLock (&grsegs[artnum], true);
+16/wf3d8086/wl_text.c:	MM_SetLock (&layout, true);
+16/wf3d8086/wl_text.c:	MM_FreePtr (&grsegs[artnum]);
+16/wf3d8086/wl_text.c:	MM_FreePtr (&layout);
+16/wf3d8086/wl_text.c:	MM_SortMem ();
+16/wf3d8086/wl_text.c:	MM_SortMem ();
+16/wf3d8086/wl_text.c:	MM_SortMem ();
+16/wf3d8086/wl_text.c:	MM_SetLock (&grsegs[artnum], true);
+16/wf3d8086/wl_text.c:	MM_SetLock (&layout, true);
+16/wf3d8086/wl_text.c:	MM_FreePtr (&grsegs[artnum]);
+16/wf3d8086/wl_text.c:	MM_FreePtr (&layout);
+16/wf3d8086/wl_text.c:	MM_SortMem ();
+16/wf3d8086/wolf3d.map: 182E:0000 0E47 C=CODE   S=ID_MM_TEXT     G=(none)  M=ID_MM.C    ACBP=28
+16/wolf3d/WOLFSRC/ID_CA.C:	MM_GetPtr (ptr,size);
+16/wolf3d/WOLFSRC/ID_CA.C:	MM_GetPtr (&(memptr)grstarts,(NUMCHUNKS+1)*FILEPOSSIZE);
+16/wolf3d/WOLFSRC/ID_CA.C:	MM_GetPtr(&(memptr)pictable,NUMPICS*sizeof(pictabletype));
+16/wolf3d/WOLFSRC/ID_CA.C:	MM_GetPtr(&compseg,chunkcomplen);
+16/wolf3d/WOLFSRC/ID_CA.C:	MM_FreePtr(&compseg);
+16/wolf3d/WOLFSRC/ID_CA.C:	MM_GetPtr (&(memptr)tinf,length);
+16/wolf3d/WOLFSRC/ID_CA.C:		MM_GetPtr(&(memptr)mapheaderseg[i],sizeof(maptype));
+16/wolf3d/WOLFSRC/ID_CA.C:		MM_SetLock(&(memptr)mapheaderseg[i],true);
+16/wolf3d/WOLFSRC/ID_CA.C:		MM_GetPtr (&(memptr)mapsegs[i],64*64*2);
+16/wolf3d/WOLFSRC/ID_CA.C:		MM_SetLock (&(memptr)mapsegs[i],true);
+16/wolf3d/WOLFSRC/ID_CA.C:	MM_GetPtr (&(memptr)audiostarts,length);
+16/wolf3d/WOLFSRC/ID_CA.C:		MM_SetPurge (&(memptr)audiosegs[chunk],0);
+16/wolf3d/WOLFSRC/ID_CA.C:	MM_GetPtr (&(memptr)audiosegs[chunk],compressed);
+16/wolf3d/WOLFSRC/ID_CA.C:		MM_GetPtr(&bigbufferseg,compressed);
+16/wolf3d/WOLFSRC/ID_CA.C:		MM_SetLock (&bigbufferseg,true);
+16/wolf3d/WOLFSRC/ID_CA.C:	MM_GetPtr (&(memptr)audiosegs[chunk],expanded);
+16/wolf3d/WOLFSRC/ID_CA.C:		MM_FreePtr(&bigbufferseg);
+16/wolf3d/WOLFSRC/ID_CA.C:			MM_SetPurge (&(memptr)audiosegs[start],3);		// make purgable
+16/wolf3d/WOLFSRC/ID_CA.C:	MM_GetPtr (&grsegs[chunk],expanded);
+16/wolf3d/WOLFSRC/ID_CA.C:		MM_SetPurge (&grsegs[chunk],0);
+16/wolf3d/WOLFSRC/ID_CA.C:		MM_GetPtr(&bigbufferseg,compressed);
+16/wolf3d/WOLFSRC/ID_CA.C:		MM_SetLock (&bigbufferseg,true);
+16/wolf3d/WOLFSRC/ID_CA.C:		MM_FreePtr(&bigbufferseg);
+16/wolf3d/WOLFSRC/ID_CA.C:	MM_GetPtr(&bigbufferseg,compressed);
+16/wolf3d/WOLFSRC/ID_CA.C:	MM_SetLock (&bigbufferseg,true);
+16/wolf3d/WOLFSRC/ID_CA.C:	MM_FreePtr(&bigbufferseg);
+16/wolf3d/WOLFSRC/ID_CA.C:			MM_GetPtr(&bigbufferseg,compressed);
+16/wolf3d/WOLFSRC/ID_CA.C:			MM_SetLock (&bigbufferseg,true);
+16/wolf3d/WOLFSRC/ID_CA.C:		MM_GetPtr (&buffer2seg,expanded);
+16/wolf3d/WOLFSRC/ID_CA.C:		MM_FreePtr (&buffer2seg);
+16/wolf3d/WOLFSRC/ID_CA.C:			MM_FreePtr(&bigbufferseg);
+16/wolf3d/WOLFSRC/ID_CA.C:			MM_SetPurge (&(memptr)grsegs[i],3);
+16/wolf3d/WOLFSRC/ID_CA.C:			MM_SetPurge (&(memptr)grsegs[i],3);
+16/wolf3d/WOLFSRC/ID_CA.C:			MM_SetPurge (&(memptr)audiosegs[i],3);
+16/wolf3d/WOLFSRC/ID_CA.C:				MM_SetPurge(&grsegs[i],0);	// sure it stays there!
+16/wolf3d/WOLFSRC/ID_CA.C:				MM_SetPurge(&grsegs[i],3);
+16/wolf3d/WOLFSRC/ID_CA.C:				MM_GetPtr(&bigbufferseg,compressed);
+16/wolf3d/WOLFSRC/ID_CA.C:				MM_SetLock (&bigbufferseg,true);
+16/wolf3d/WOLFSRC/ID_CA.C:				MM_FreePtr(&bigbufferseg);
+16/wolf3d/WOLFSRC/ID_MM.C:MM_SizePtr to change the size of a given pointer
+16/wolf3d/WOLFSRC/ID_MM.C://#define GETNEWBLOCK {if(!(mmnew=mmfree))Quit("MM_GETNEWBLOCK: No free blocks!")\
+16/wolf3d/WOLFSRC/ID_MM.C:void 		MM_MapEMS (void);
+16/wolf3d/WOLFSRC/ID_MM.C:			MM_FreePtr(scan->useptr);
+16/wolf3d/WOLFSRC/ID_MM.C:	Quit ("MM_ClearBlock: No purgable blocks!");
+16/wolf3d/WOLFSRC/ID_MM.C:= MM_Startup
+16/wolf3d/WOLFSRC/ID_MM.C:void MM_Startup (void)
+16/wolf3d/WOLFSRC/ID_MM.C:		MM_Shutdown ();
+16/wolf3d/WOLFSRC/ID_MM.C:	MM_GetPtr (&bufferseg,BUFFERSIZE);
+16/wolf3d/WOLFSRC/ID_MM.C:= MM_Shutdown
+16/wolf3d/WOLFSRC/ID_MM.C:void MM_Shutdown (void)
+16/wolf3d/WOLFSRC/ID_MM.C:= MM_GetPtr
+16/wolf3d/WOLFSRC/ID_MM.C:void MM_GetPtr (memptr *baseptr,unsigned long size)
+16/wolf3d/WOLFSRC/ID_MM.C:			MM_SortMem ();
+16/wolf3d/WOLFSRC/ID_MM.C:		Quit ("MM_GetPtr: Out of memory!");
+16/wolf3d/WOLFSRC/ID_MM.C:= MM_FreePtr
+16/wolf3d/WOLFSRC/ID_MM.C:void MM_FreePtr (memptr *baseptr)
+16/wolf3d/WOLFSRC/ID_MM.C:		Quit ("MM_FreePtr: Block not found!");
+16/wolf3d/WOLFSRC/ID_MM.C:= MM_SetPurge
+16/wolf3d/WOLFSRC/ID_MM.C:void MM_SetPurge (memptr *baseptr, int purge)
+16/wolf3d/WOLFSRC/ID_MM.C:			Quit ("MM_SetPurge: Block not found!");
+16/wolf3d/WOLFSRC/ID_MM.C:= MM_SetLock
+16/wolf3d/WOLFSRC/ID_MM.C:void MM_SetLock (memptr *baseptr, boolean locked)
+16/wolf3d/WOLFSRC/ID_MM.C:			Quit ("MM_SetLock: Block not found!");
+16/wolf3d/WOLFSRC/ID_MM.C:= MM_SortMem
+16/wolf3d/WOLFSRC/ID_MM.C:void MM_SortMem (void)
+16/wolf3d/WOLFSRC/ID_MM.C:		MM_SetLock(&(memptr)audiosegs[playing],true);
+16/wolf3d/WOLFSRC/ID_MM.C:		MM_SetLock(&(memptr)audiosegs[playing],false);
+16/wolf3d/WOLFSRC/ID_MM.C:= MM_ShowMemory
+16/wolf3d/WOLFSRC/ID_MM.C:void MM_ShowMemory (void)
+16/wolf3d/WOLFSRC/ID_MM.C:			Quit ("MM_ShowMemory: Memory block order currupted!");
+16/wolf3d/WOLFSRC/ID_MM.C:= MM_DumpData
+16/wolf3d/WOLFSRC/ID_MM.C:void MM_DumpData (void)
+16/wolf3d/WOLFSRC/ID_MM.C:		Quit ("MM_DumpData: Couldn't open MMDUMP.TXT!");
+16/wolf3d/WOLFSRC/ID_MM.C:= MM_UnusedMemory
+16/wolf3d/WOLFSRC/ID_MM.C:long MM_UnusedMemory (void)
+16/wolf3d/WOLFSRC/ID_MM.C:= MM_TotalFree
+16/wolf3d/WOLFSRC/ID_MM.C:long MM_TotalFree (void)
+16/wolf3d/WOLFSRC/ID_MM.C:= MM_BombOnError
+16/wolf3d/WOLFSRC/ID_MM.C:void MM_BombOnError (boolean bomb)
+16/wolf3d/WOLFSRC/ID_PM.C:			MM_SetPurge(&MainMemPages[i],level);
+16/wolf3d/WOLFSRC/ID_PM.C:				MM_BombOnError(false);
+16/wolf3d/WOLFSRC/ID_PM.C:				MM_GetPtr(p,PMPageSize);		// Try to reallocate
+16/wolf3d/WOLFSRC/ID_PM.C:				MM_BombOnError(true);
+16/wolf3d/WOLFSRC/ID_PM.C:	MM_BombOnError(false);
+16/wolf3d/WOLFSRC/ID_PM.C:		MM_GetPtr(p,PMPageSize);
+16/wolf3d/WOLFSRC/ID_PM.C:	MM_BombOnError(true);
+16/wolf3d/WOLFSRC/ID_PM.C:			MM_FreePtr(p);
+16/wolf3d/WOLFSRC/ID_PM.C:	MM_GetPtr(&(memptr)PMSegPages,sizeof(PageListStruct) * PMNumBlocks);
+16/wolf3d/WOLFSRC/ID_PM.C:	MM_SetLock(&(memptr)PMSegPages,true);
+16/wolf3d/WOLFSRC/ID_PM.C:	MM_GetPtr(&buf,size);
+16/wolf3d/WOLFSRC/ID_PM.C:	MM_FreePtr(&buf);
+16/wolf3d/WOLFSRC/ID_PM.C:	MM_GetPtr(&buf,size);
+16/wolf3d/WOLFSRC/ID_PM.C:	MM_FreePtr(&buf);
+16/wolf3d/WOLFSRC/ID_PM.C:		MM_SetLock(&(memptr)PMSegPages,false);
+16/wolf3d/WOLFSRC/ID_PM.C:		MM_FreePtr(&(void _seg *)PMSegPages);
+16/wolf3d/WOLFSRC/ID_SD.C:	MM_GetPtr(&list,PMPageSize);
+16/wolf3d/WOLFSRC/ID_SD.C:	MM_GetPtr((memptr *)&DigiList,i * sizeof(word) * 2);
+16/wolf3d/WOLFSRC/ID_SD.C:	MM_FreePtr(&list);
+16/wolf3d/WOLFSRC/ID_VH.C:#define UNCACHEGRCHUNK(chunk)	{MM_FreePtr(&grsegs[chunk]);grneeded[chunk]&=~ca_levelbit;}
+16/wolf3d/WOLFSRC/ID_VH.C:	MM_GetPtr (&(memptr)temp,size);
+16/wolf3d/WOLFSRC/ID_VH.C:	MM_FreePtr (&(memptr)temp);
+16/wolf3d/WOLFSRC/OLDSCALE.C:			MM_FreePtr (&(memptr)scaledirectory[i]);
+16/wolf3d/WOLFSRC/OLDSCALE.C:	MM_SortMem ();
+16/wolf3d/WOLFSRC/OLDSCALE.C:	MM_GetPtr (&(memptr)work,20000);
+16/wolf3d/WOLFSRC/OLDSCALE.C:			MM_FreePtr (&(memptr)work);
+16/wolf3d/WOLFSRC/OLDSCALE.C:	MM_FreePtr (&(memptr)work);
+16/wolf3d/WOLFSRC/OLDSCALE.C:	MM_SortMem ();
+16/wolf3d/WOLFSRC/OLDSCALE.C:		MM_SetLock (&(memptr)scaledirectory[i],true);
+16/wolf3d/WOLFSRC/OLDSCALE.C:	MM_GetPtr (finalspot,totalsize);
+16/wolf3d/WOLFSRC/WL_DEBUG.C:	US_PrintUnsigned (MM_UnusedMemory()/1024);
+16/wolf3d/WOLFSRC/WL_DEBUG.C:	US_PrintUnsigned (MM_TotalFree()/1024);
+16/wolf3d/WOLFSRC/WL_DEBUG.C:	MM_GetPtr (&buffer,64000);
+16/wolf3d/WOLFSRC/WL_GAME.C:	MM_SortMem ();
+16/wolf3d/WOLFSRC/WL_GAME.C:	MM_GetPtr (&demobuffer,MAXDEMOSIZE);
+16/wolf3d/WOLFSRC/WL_GAME.C:	MM_SetLock (&demobuffer,true);
+16/wolf3d/WOLFSRC/WL_GAME.C:	MM_FreePtr (&demobuffer);
+16/wolf3d/WOLFSRC/WL_GAME.C:	MM_SetLock (&grsegs[dems[demonumber]],true);
+16/wolf3d/WOLFSRC/WL_GAME.C:	MM_SetLock (&demobuffer,true);
+16/wolf3d/WOLFSRC/WL_GAME.C:	MM_FreePtr (&demobuffer);
+16/wolf3d/WOLFSRC/WL_INTER.C:	MM_SortMem ();
+16/wolf3d/WOLFSRC/WL_INTER.C:				MM_FreePtr ((memptr *)&audiosegs[start]);
+16/wolf3d/WOLFSRC/WL_MAIN.C:	MM_Shutdown ();
+16/wolf3d/WOLFSRC/WL_MAIN.C:	MM_Startup ();                  // so the signon screen can be freed
+16/wolf3d/WOLFSRC/WL_MAIN.C:	MM_SetLock (&grsegs[STARTFONT],true);
+16/wolf3d/WOLFSRC/WL_MAIN.C://	MM_BombOnError (false);
+16/wolf3d/WOLFSRC/WL_MAIN.C:	MM_BombOnError (true);
+16/wolf3d/WOLFSRC/WL_MAIN.C:	MM_SortMem ();
+16/wolf3d/WOLFSRC/WL_MAIN.C://	MM_GetPtr(&nullblock,nsize);
+16/wolf3d/WOLFSRC/WL_MAIN.C:			MM_SortMem ();
+16/wolf3d/WOLFSRC/WL_MENU.C:			MM_SortMem ();
+16/wolf3d/WOLFSRC/WL_MENU.C:								MM_SetPurge (&(memptr)audiosegs[start],3);		// make purgable
+16/wolf3d/WOLFSRC/WL_MENU.C:				MM_SortMem();
+16/wolf3d/WOLFSRC/WL_MENU.C:	MM_SortMem ();
+16/wolf3d/WOLFSRC/WL_MENU.C:		MM_FreePtr ((memptr *)&audiosegs[STARTMUSIC + lastmusic]);
+16/wolf3d/WOLFSRC/WL_MENU.C:	MM_BombOnError (false);
+16/wolf3d/WOLFSRC/WL_MENU.C:	MM_BombOnError (true);
+16/wolf3d/WOLFSRC/WL_MENU.C:		MM_SetLock(&((memptr)audiosegs[STARTMUSIC + chunk]),true);
+16/wolf3d/WOLFSRC/WL_MENU.C:		MM_FreePtr ((memptr *)&audiosegs[STARTMUSIC + lastmusic]);
+16/wolf3d/WOLFSRC/WL_PLAY.C:			MM_SetPurge(&((memptr)audiosegs[STARTMUSIC + i]),3);
+16/wolf3d/WOLFSRC/WL_PLAY.C:			MM_SetLock(&((memptr)audiosegs[STARTMUSIC + i]),false);
+16/wolf3d/WOLFSRC/WL_PLAY.C:	MM_BombOnError (false);
+16/wolf3d/WOLFSRC/WL_PLAY.C:	MM_BombOnError (true);
+16/wolf3d/WOLFSRC/WL_PLAY.C:		MM_SetLock(&((memptr)audiosegs[STARTMUSIC + chunk]),true);
+16/wolf3d/WOLFSRC/WL_SCALE.C:			MM_FreePtr (&(memptr)scaledirectory[i]);
+16/wolf3d/WOLFSRC/WL_SCALE.C:	MM_SortMem ();
+16/wolf3d/WOLFSRC/WL_SCALE.C:	MM_GetPtr (&(memptr)work,20000);
+16/wolf3d/WOLFSRC/WL_SCALE.C:	MM_FreePtr (&(memptr)work);
+16/wolf3d/WOLFSRC/WL_SCALE.C:	MM_SortMem ();
+16/wolf3d/WOLFSRC/WL_SCALE.C:		MM_SetLock (&(memptr)scaledirectory[i],true);
+16/wolf3d/WOLFSRC/WL_SCALE.C:	MM_GetPtr (finalspot,totalsize);
+16/wolf3d/WOLFSRC/WL_TEXT.C:	MM_SortMem ();
+16/wolf3d/WOLFSRC/WL_TEXT.C:	MM_SortMem ();
+16/wolf3d/WOLFSRC/WL_TEXT.C:	MM_SetLock (&grsegs[artnum], true);
+16/wolf3d/WOLFSRC/WL_TEXT.C:	MM_SetLock (&layout, true);
+16/wolf3d/WOLFSRC/WL_TEXT.C:	MM_FreePtr (&grsegs[artnum]);
+16/wolf3d/WOLFSRC/WL_TEXT.C:	MM_FreePtr (&layout);
+16/wolf3d/WOLFSRC/WL_TEXT.C:	MM_SortMem ();
+16/wolf3d/WOLFSRC/WL_TEXT.C:	MM_SortMem ();
+16/wolf3d/WOLFSRC/WL_TEXT.C:	MM_SortMem ();
+16/wolf3d/WOLFSRC/WL_TEXT.C:	MM_SetLock (&grsegs[artnum], true);
+16/wolf3d/WOLFSRC/WL_TEXT.C:	MM_SetLock (&layout, true);
+16/wolf3d/WOLFSRC/WL_TEXT.C:	MM_FreePtr (&grsegs[artnum]);
+16/wolf3d/WOLFSRC/WL_TEXT.C:	MM_FreePtr (&layout);
+16/wolf3d/WOLFSRC/WL_TEXT.C:	MM_SortMem ();
+16/wolf3d/WOLFSRC/WOLF3D.MAP: 182E:0000 0E47 C=CODE   S=ID_MM_TEXT     G=(none)  M=ID_MM.C    ACBP=28

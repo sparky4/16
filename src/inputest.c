@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -30,11 +30,11 @@ main(int argc, char *argv[])
 	global_game_variables_t gvar;
 	player_t player[MaxPlayers];
 	//extern struct inconfig inpu;
-	testkeyin=1;
-	testcontrolnoisy=0;
-	testctrltype=0;
+	testkeyin=0;
+	testcontrolnoisy=1;
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick1);
+	IN_SetControlType(0,&player,ctrl_Joystick1);
 	//while(!IN_KeyDown(sc_Escape))
 	player[0].q=1;
 	player[0].d=2;
@@ -43,7 +43,7 @@ main(int argc, char *argv[])
 	start_timer(&gvar);
 	while(!IN_KeyDown(sc_Escape))
 	{
-		shinkutxt(&gvar);
+		//shinkutxt(&gvar);
 		IN_ReadControl(0,&player);
 		#define INC_PER_FRAME if(player[0].q&1) player[0].persist_aniframe++; if(player[0].persist_aniframe>4) player[0].persist_aniframe = 1;
 		switch(player[0].d)
@@ -107,5 +107,4 @@ main(int argc, char *argv[])
 	printf("version %s\n", VERSION);
 	printf("testkeyin=%u\n", testkeyin);
 	printf("testcontrolnoisy=%u\n", testcontrolnoisy);
-	printf("testctrltype=%u\n", testctrltype);
 }

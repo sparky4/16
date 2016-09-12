@@ -37,9 +37,16 @@
 
 //#define NUMMAPS		39
 //#define MAPPLANES		3
-#define PROFILE
+//++++#define PROFILE//++++
 
 //===========================================================================
+
+/*typedef struct
+{
+	unsigned	RLEWtag;
+	long		headeroffsets[100];
+	byte		tileinfo[];
+} mapfiletype;*/
 
 /*typedef	struct
 {
@@ -83,15 +90,16 @@ extern	void	(*finishcachebox)	(void);
 
 void CA_OpenDebug (global_game_variables_t *gvar);
 void CA_CloseDebug (global_game_variables_t *gvar);
-boolean CA_FarRead (int handle, byte huge *dest, dword length, mminfo_t *mm);
-boolean CA_FarWrite (int handle, byte huge *source, dword length, mminfo_t *mm);
+boolean CA_FarRead (int handle, byte huge *dest, dword length, global_game_variables_t *gvar);
+boolean CA_FarWrite (int handle, byte huge *source, dword length, global_game_variables_t *gvar);
 
-boolean CA_ReadFile (char *filename, memptr *ptr, mminfo_t *mm);
-boolean CA_LoadFile (char *filename, memptr *ptr, mminfo_t *mm, mminfotype *mmi);
+boolean CA_ReadFile (char *filename, memptr *ptr, global_game_variables_t *gvar);
+boolean CA_WriteFile (char *filename, void far *ptr, long length, global_game_variables_t *gvar);
+boolean CA_LoadFile (char *filename, memptr *ptr, global_game_variables_t *gvar);
 
-//long CA_RLEWCompress (unsigned huge *source, long length, unsigned huge *dest,unsigned rlewtag);
+long CA_RLEWCompress (unsigned huge *source, long length, unsigned huge *dest,unsigned rlewtag);
 
-//void CA_RLEWexpand (unsigned huge *source, unsigned huge *dest,long length,unsigned rlewtag);
+void CA_RLEWexpand (unsigned huge *source, unsigned huge *dest,long length,unsigned rlewtag);
 
 void CA_Startup (global_game_variables_t *gvar);
 void CA_Shutdown (global_game_variables_t *gvar);
@@ -102,12 +110,13 @@ void CA_Shutdown (global_game_variables_t *gvar);
 /*void CA_UpLevel (void);
 void CA_DownLevel (void);
 
-void CA_SetAllPurge (void);
+void CA_SetGrPurge (void);
+void CA_SetAllPurge (void);*/
 
-void CA_ClearMarks (void);
-void CA_ClearAllMarks (void);
+void CA_ClearMarks (global_game_variables_t *gvar);
+void CA_ClearAllMarks (global_game_variables_t *gvar);
 
-#define CA_MarkGrChunk(chunk)	grneeded[chunk]|=ca_levelbit
+/*#define CA_MarkGrChunk(chunk)	grneeded[chunk]|=ca_levelbit
 
 void CA_CacheGrChunk (int chunk);
 void CA_CacheMap (int mapnum);

@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -27,20 +27,23 @@
 
 #include "src/lib/16_head.h"
 #include "src/lib/bitmap.h"
-#include "src/lib/planar.h"
-#include "src/lib/modex16/16planar.h"
+//#include "src/lib/planar.h"
+//#include "src/lib/modex16/16planar.h"
 #include "src/lib/16text.h"
-#include "src/lib/modex16/16render.h"
-#include "src/lib/modex16/320x240.h"
+#include "src/lib/16render.h"
+////#include "src/lib/modex16/320x240.h"
 // #include "src/lib/modex16/320x200.h"
 // #include "src/lib/modex16/256x192.h"
 // #include "src/lib/modex16/192x144_.h"
 // #include "src/lib/modex16/160x120.h"
 
+#ifdef __WATCOMC__
 #include <hw/cpu/cpu.h>
 #include <hw/dos/dos.h>
 #include <hw/vga/vga.h>
 #include <hw/vga/vrl.h>
+#include <hw/vga/vrs.h>
+#endif
 
 static struct pcxHeader {
 	byte id;
@@ -148,7 +151,7 @@ void modexPalWhite();
 void modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset);
 void modexPalUpdate1(byte *p);
 void modexPalUpdate0(byte *p);
-void modexPalOverscan(byte *p, word col);
+void modexPalOverscan(word col);
 void modexchkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, word *offset*/);
 void modexputPixel(page_t *page, int x, int y, byte color);
 byte modexgetPixel(page_t *page, int x, int y);
@@ -184,7 +187,6 @@ void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, c
 void modexpdump(page_t *pee);
 void modexcls(page_t *page, byte color, byte *Where);
 void modexWaitBorder();
-void bios_cls();
 void modexprintmeminfo(video_t *v);
 
 #endif

@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -29,7 +29,7 @@
 
 typedef unsigned char byte;
 typedef unsigned short word;
-typedef unsigned long  dword;
+typedef unsigned long dword;
 typedef signed char sbyte;
 typedef signed short sword;
 typedef signed long sdword;
@@ -41,5 +41,20 @@ typedef unsigned long int diword;
 typedef signed long int sdiword;
 
 typedef	enum	{false,true}	boolean;
+/*typedef unsigned memseg;
+
+memptr should be replaced by memseg in code.
+
+on usage where you need pointer convert memseg type (segment) to far pointer by
+MK_FP(segment value, 0)*/
+#ifdef __WATCOMC__
+typedef void __based( void ) * memptr;	////old //----typedef void __based(__self) * memptr;
+typedef unsigned short _seg; // it will contains segment value (as Borland _seg)
+#define __SEGA __segment
+#endif
+#ifdef __BORLANDC__
+typedef void _seg * memptr;
+#define __SEGA _seg
+#endif
 
 #endif/*_TYPE_H_*/

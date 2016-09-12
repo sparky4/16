@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -46,6 +46,7 @@
 #include <i86.h>
 #include <unistd.h>
 #include <alloca.h>
+#include <stdint.h> //16_vrs.h
 #endif
 #include "src/lib/nyan/kitten.h"
 #include "src/lib/types.h"
@@ -154,6 +155,7 @@ extern	int			profilehandle,debughandle;	//make it into game global
 #define	nil	((void *)0)
 #ifdef __BORLANDC__
 #define _FCORELEFT 0x90000UL-16UL
+#define sprite
 #endif
 #ifdef __WATCOMC__
 #define _FCORELEFT 0x90000UL+16UL
@@ -164,13 +166,6 @@ extern	int			profilehandle,debughandle;	//make it into game global
 #define pokew(segm,ofs,value) (peekw((segm),(ofs)) = (word)(value))
 
 typedef union REGPACK	regs_t;
-#endif
-
-#ifdef __WATCOMC__
-typedef void __based(__self) * memptr;
-#endif
-#ifdef __BORLANDC__
-typedef void _seg * memptr;
 #endif
 
 #define INPUT_STATUS_1		0x03da

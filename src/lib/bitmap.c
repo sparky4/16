@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -126,7 +126,7 @@ bitmapLoadPcx(char *filename) {
 		result.data[index] = val;
 	}
 	} while(index < bufSize);
-	printf("index=%d\n", index);
+	//printf("index=%d\n", index);
 
 	loadPcxPalette(file, &result);
 

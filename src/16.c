@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -27,7 +27,6 @@ engi_stat_t engi_stat;
 const char *cpus;
 byte *dpal, *gpal;
 player_t player[MaxPlayers];
-//page_t screen;
 
 void
 main(int argc, char *argv[])
@@ -59,20 +58,18 @@ main(int argc, char *argv[])
 #endif
 	}
 	_DEBUG("Serial debug output started\n"); // NTS: All serial output must end messages with newline, or DOSBox-X will not emit text to log
+	_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);
 
-	//screen = modexDefaultPage();
 	engi_stat = ENGI_RUN;
 	textInit();
 
 	/* save the palette */
 	dpal = modexNewPal();
 	modexPalSave(dpal);
-//	modexFadeOff(4, dpal);
-	//printf("pal load\n");
-	//gpal = modexNewPal();
-	/*modexPalSave(gpal);
-	modexSavePalFile("data/g.pal", gpal);*/
-//0000	printf("wwww loop wwww\n");
+	modexFadeOff(4, dpal);
+	gpal = modexNewPal();
+	modexPalSave(gpal);
+	modexSavePalFile("data/g.pal", gpal);
 	VGAmodeX(1, 1, &gvar);
 //	modexPalBlack();	//so player will not see loadings~
 	IN_Startup();
@@ -84,6 +81,7 @@ main(int argc, char *argv[])
 		IN_ReadControl(0,&player);
 		if(IN_KeyDown(sc_Escape)) engi_stat = ENGI_EXIT;
 		shinku(&gvar);
+		_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);
 	}
 	switch(detectcpu())
 	{
@@ -97,5 +95,5 @@ main(int argc, char *argv[])
 	printf("version %s\n", VERSION);
 	printf("detected CPU type: %s\n", cpus);
 	IN_Shutdown();
-//	modexFadeOn(4, dpal);
+	modexFadeOn(4, dpal);
 }

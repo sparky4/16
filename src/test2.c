@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -29,7 +29,7 @@
 void main() {
 	FILE *file;
     bitmap_t bmp;
-    planar_buf_t *p;
+//----    planar_buf_t *p;
     word size;
     int i;
     int plane;

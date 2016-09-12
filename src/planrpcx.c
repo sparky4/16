@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -24,6 +24,7 @@
 #include <dos.h>
 #include <string.h>
 #include "src/lib/modex16.h"
+#include "src/lib/modex16/16planar.h"
 
 global_game_variables_t gvar;
 planar_buf_t p, ptmp;

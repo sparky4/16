@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -28,7 +28,6 @@
 #include "src/lib/modex16.h"
 #include "src/lib/16_in.h"
 #include "src/lib/bitmap.h"
-#include "src/lib/planar.h"
 #include "src/lib/mapread.h" //map is loaded here www
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
@@ -38,12 +37,14 @@
 #include <hw/vga/vga.h>
 #include <hw/vga/vrl.h>
 
-//#define SPRITE
+#define SPRITE
 //#define TILERENDER
 
-#define PBUFSFUN		modexDrawSpritePBufRegion
-#define PBUFBFUN		modexDrawBmpPBufRegion
-#define PLAYERBMPDATA	&player[pn].data
+//modexDrawSpritePBufRegion
+//modexDrawBmpPBufRegion
+#define PBUFSFUN		modexDrawSpriteRegion
+#define PBUFBFUN		modexDrawBmpRegion
+#define PLAYERBMPDATA	player[pn].data
 
 typedef struct {
 	map_t *map;
@@ -65,7 +66,8 @@ typedef struct
 #define MAPW	40
 #define MAPH	30
 
-extern boolean pageflipflop;
+extern boolean pageflipflop, pageploop;
+extern unsigned char shinku_fps_indicator_page;
 
 //map_t allocMap(int w, int h);
 //void initMap(map_t *map);
@@ -89,7 +91,5 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 //void qclean();
 void shinku(global_game_variables_t *gv);
 void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch);
-
-extern unsigned char shinku_fps_indicator_page;
 
 #endif /*__SCROLL16_H_*/

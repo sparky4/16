@@ -1,11 +1,11 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
  * Project 16 is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either verson 3 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * Project 16 is distributed in the hope that it will be useful,
@@ -62,7 +62,12 @@ void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
 static void
 vgaSetMode(byte mode)
 {
-  int10_setmode(mode);
+	union REGS regs;
+
+	regs.h.ah = SET_MODE;
+	regs.h.al = mode;
+	int86(VIDEO_INT, &regs, &regs);
+  //int10_setmode(mode);
 }
 
 //---------------------------------------------------
@@ -85,11 +90,13 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 
 	vgaSetMode(VGA_256_COLOR_MODE);
 	vga_enable_256color_modex();
-	/* reprogram the CRT controller */
-// 	outp(CRTC_INDEX, 0x11); /* VSync End reg contains register write prot */
-// 	outp(CRTC_DATA, 0x7f);  /* get current write protect on varios regs */
+
 	update_state_from_vga();
 	vga_read_crtc_mode(&cm);
+
+	/* reprogram the CRT controller */
+	//outp(CRTC_INDEX, 0x11); /* VSync End reg contains register write prot */
+	//outp(CRTC_DATA, 0x7f);  /* get current write protect on varios regs */
 
 	switch(vq)
 	{
@@ -112,7 +119,7 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 			cm.horizontal_total=0x5f + 5; /* CRTC[0]             -5 */
 			cm.horizontal_display_end=0x4f + 1; /* CRTC[1]       -1 */
 			cm.horizontal_blank_start=0x50 + 1; /* CRTC[2] */
-			cm.horizontal_blank_end=0x82 + 1;   /* CRTC[3] bit 0-4 & CRTC[5] bit 7 */
+//			cm.horizontal_blank_end=0x82 + 1;   /* CRTC[3] bit 0-4 & CRTC[5] bit 7 *///skewing ^^;
 			cm.horizontal_start_retrace=0x54;/* CRTC[4] */
 			cm.horizontal_end_retrace=0x80;	/* CRTC[5] bit 0-4 */
 			//cm.horizontal_start_delay_after_total=0x3e; /* CRTC[3] bit 5-6 */
@@ -191,7 +198,8 @@ modexDefaultPage(page_t *p)
 	page.tilemidposscreenx = page.tw/2;
 	page.tilemidposscreeny = (page.th/2)+1;
 	page.stridew=page.width/4;
-	page.pagesize = (word)(page.width/4)*page.height;
+	page.pagesize = (word)(page.stridew)*page.height;
+	page.pi=page.width*4;
 	page.id = 0;
 
     return page;
@@ -215,9 +223,10 @@ modexNextPage(page_t *p) {
 	result.th = p->th;
 	result.tilesw = p->tilesw;
 	result.tilesh = p->tilesh;
-	result.id = p->id+1;
 	result.stridew=p->stridew;
 	result.pagesize = p->pagesize;
+	result.pi=result.width*4;
+	result.id = p->id+1;
 
 	return result;
 }
@@ -240,8 +249,17 @@ modexNextPageFlexibleSize(page_t *p, word x, word y)
 	result.tilesw=result.width/TILEWH;
 	result.tilesh=result.height/TILEWH;
 	result.id = p->id+1;
-	result.stridew=result.width/4;
-	result.pagesize = (word)(result.width/4)*result.height;
+	result.stridew=p->sw/4;//result.width/4;
+	result.pagesize = (word)(result.stridew)*result.height;
+	switch(result.id)
+	{
+		case 2:
+			result.pi=p->width*4;
+		break;
+		case 3:
+			result.pi=p->pi;
+		break;
+	}
 
 	return result;
 }
@@ -264,7 +282,10 @@ void modexHiganbanaPageSetup(video_t *video)
 	video->num_of_pages=0;
 	(video->page[0]) = modexDefaultPage(&(video->page[0]));	video->num_of_pages++;	//video->page[0].width += (TILEWHD); video->page[0].height += (TILEWHD);
 	(video->page[1]) = modexNextPage(&(video->page[0]));	video->num_of_pages++;
+//0000	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), (video->page[0]).width, TILEWH*4);		video->num_of_pages++;
+//0000	(video->page[3]) = (video->page[2]);		video->num_of_pages++;
 	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), TILEWH*4, TILEWH*4);		video->num_of_pages++;
+//	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), video->page[0].width, 176);	video->num_of_pages++;
 	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), video->page[0].sw, 208);	video->num_of_pages++;
 // 	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), video->page[0].width, 172);	video->num_of_pages++;
 // 	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), 72, 128);		video->num_of_pages++;
@@ -292,14 +313,14 @@ modexShowPage(page_t *page) {
     low_address  = LOW_ADDRESS  | (offset << 8);
 
     /* wait for appropriate timing and then program CRTC */
-    while ((inp(INPUT_STATUS_1) & DISPLAY_ENABLE));
+    //while ((inp(INPUT_STATUS_1) & DISPLAY_ENABLE));
     outpw(CRTC_INDEX, high_address);
     outpw(CRTC_INDEX, low_address);
     outp(CRTC_INDEX, 0x13);
     outp(CRTC_DATA, crtcOffset);
 
     /*  wait for one retrace */
-    while (!(inp(INPUT_STATUS_1) & VRETRACE));
+    //while (!(inp(INPUT_STATUS_1) & VRETRACE));
 
     /* do PEL panning here */
     outp(AC_INDEX, 0x33);
@@ -334,6 +355,8 @@ modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
     if((x & 0x03) && !((x+w) & 0x03)) {
       right=0x0f;
     }
+
+	//printf("modexClearRegion(x=%u, y=%u, w=%u, h=%u, left=%u, right=%u)\n", x, y, w, h, left, right);
 
     __asm {
 	    PUSHF
@@ -402,13 +425,20 @@ modexCopyPageRegion(page_t *dest, page_t *src,
 {
     word doffset = (word)dest->data + dy*(dest->stridew) + dx/4;
     word soffset = (word)src->data + sy*(src->stridew) + sx/4;
-    word scans   = vga_state.vga_stride;
+    word scans   = vga_state.vga_stride;				//++++0000 the quick and dirty fix of the major issue with p16 video display wwww
     word nextSrcRow = src->stridew - scans - 1;
     word nextDestRow = dest->stridew - scans - 1;
     byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08};  /* clips for rectangles not on 4s */
-    byte rclip[] = {0x0f, 0x01, 0x03, 0x07};
+    byte rclip[] = {0x00, 0x01, 0x03, 0x07};
     byte left = lclip[sx&0x03];
     byte right = rclip[(sx+width)&0x03];
+
+	/* handle the case which requires an extra group */
+	if((sx & 0x03) && !((sx+width) & 0x03)) {
+		right=0x0f;
+	}
+
+//	printf("modexCopyPageRegion(src->stridew=%u, dest->stridew=%u, sx=%u, sy=%u, dx=%u, dy=%u, width=%u, height=%u, left=%u, right=%u)\n", src->stridew, dest->stridew, sx, sy, dx, dy, width, height, left, right);
 
     __asm {
 	    PUSHF
@@ -830,7 +860,7 @@ modexPalUpdate0(byte *p)
 }
 
 void
-modexPalOverscan(byte *p, word col)
+modexPalOverscan(word col)
 {
 	//modexWaitBorder();
 	vga_wait_for_vsync();
@@ -1129,33 +1159,6 @@ modexWaitBorder() {
 	}
 }
 
-void bios_cls() {
-	VGA_ALPHA_PTR ap;
-	VGA_RAM_PTR rp;
-	unsigned char m;
-
-	m = int10_getmode();
-	if ((rp=vga_state.vga_graphics_ram) != NULL && !(m <= 3 || m == 7)) {
-		unsigned int i,im;
-
-		im = (FP_SEG(vga_state.vga_graphics_ram_fence) - FP_SEG(vga_state.vga_graphics_ram));
-		if (im > 0xFFE) im = 0xFFE;
-		im <<= 4;
-		for (i=0;i < im;i++) vga_state.vga_graphics_ram[i] = 0;
-	}
-	else if ((ap=vga_state.vga_alpha_ram) != NULL) {
-		unsigned int i,im;
-
-		im = (FP_SEG(vga_state.vga_alpha_ram_fence) - FP_SEG(vga_state.vga_alpha_ram));
-		if (im > 0x7FE) im = 0x7FE;
-		im <<= 4 - 1; /* because ptr is type uint16_t */
-		for (i=0;i < im;i++) vga_state.vga_alpha_ram[i] = 0x0720;
-	}
-	else {
-		printf("WARNING: bios cls no ptr\n");
-	}
-}
-
 void modexprintmeminfo(video_t *v)
 {
 	byte i;
@@ -1165,9 +1168,10 @@ void modexprintmeminfo(video_t *v)
 	{
 		printf("	[%u]=", i);
 		printf("(%Fp)", (v->page[i].data));
-		printf(" size=%u", v->page[i].pagesize);
-		printf(" sw=%lu  sh=%lu ", (unsigned long)v->page[i].sw, (unsigned long)v->page[i].sh);
-		printf(" width=%lu  height=%lu", (unsigned long)v->page[i].width, (unsigned long)v->page[i].height);
+		printf(" size=%u	", v->page[i].pagesize);
+		printf("w=%lu  h=%lu ", (unsigned long)v->page[i].width, (unsigned long)v->page[i].height);
+		printf("sw=%lu  sh=%lu ", (unsigned long)v->page[i].sw, (unsigned long)v->page[i].sh);
+		printf("pi=%u", v->page[i].pi);
 		printf("\n");
 	}
 }

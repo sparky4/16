@@ -3,6 +3,10 @@
 
 // TODO: Could we also provide a build mode to emit debug to the "Bochs E9 hack?"
 #ifdef DEBUGSERIAL
+# include <stdarg.h>
+# include <stdlib.h>
+# include <stdio.h>
+
 unsigned char _DEBUG_INITed = 0;
 struct info_8250 *_DEBUG_uart = NULL;
 
@@ -56,6 +60,17 @@ void _DEBUG(const char *msg) {
 			uart_8250_write(_DEBUG_uart,(uint8_t)c); // then write it
 		}
 	}
+}
+
+static char _DEBUGF_TMP[256];
+
+void _DEBUGF(const char *fmt,...) {
+	va_list va;
+
+	va_start(va,fmt);
+	vsnprintf(_DEBUGF_TMP,sizeof(_DEBUGF_TMP),fmt,va);
+	_DEBUG(_DEBUGF_TMP);
+	va_end(va);
 }
 #endif
 

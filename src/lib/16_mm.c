@@ -962,9 +962,11 @@ void MM_GetPtr (memptr *baseptr, dword size, mminfo_t *mm, mminfotype *mmi)
 	mm->mmnew->length = needed;
 	mm->mmnew->useptr = baseptr;
 	//if(mm->mmnew->useptr==NULL){
-	printf("baseptr=%04x	", baseptr); printf("useptr=%04x\n", mm->mmnew->useptr);
-	printf("*baseptr=%04x	", *baseptr); printf("*useptr=%04x\n", *(mm->mmnew->useptr));
-	//printf("*baseptr=%Fp	", *baseptr); printf("*useptr=%Fp\n", *(mm->mmnew->useptr));
+#ifdef __DEBUG__
+		printf("baseptr=%04x	", baseptr); printf("useptr=%04x\n", mm->mmnew->useptr);
+		printf("*baseptr=%04x	", *baseptr); printf("*useptr=%04x\n", *(mm->mmnew->useptr));
+		printf("*baseptr=%Fp	", *baseptr); printf("*useptr=%Fp\n", *(mm->mmnew->useptr));
+#endif
 	//exit(-5); }
 	mm->mmnew->attributes = BASEATTRIBUTES;
 
@@ -1352,7 +1354,7 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 			//printf("+	%u	%lu\n", w, scan->length);
 			strcat(scratch0, "+");
 		}
-		strcat(scratch0, AARESET); strcat(scratch0, AAGREY); strcat(scratch0,"_");
+		//++==++==optional strcat(scratch0, AARESET); strcat(scratch0, AAGREY); strcat(scratch0,"_");
 //++++		VW_Plot(scan->start,0,15);
 //++++				modexClearRegion(page, chx, chy, 4, 4, 15);
 //++++			VW_Hlin(end+1,scan->next->start,0,0);	// black = free
@@ -1362,7 +1364,7 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 		if (scan->next && scan->next->start >= end+1)
 		{
 			strcat(scratch0, AARESET);
-			strcat(scratch0, "\n");
+			//++==++==optional strcat(scratch0, "\n");
 			strcat(scratch0,AAGREEN);
 			for(w=(end+1)/80;w<=((scan->next->start-scan->start)/80);w++)
 			//for(w=(wwww)/80;w<=((end+1)/80);w++)
@@ -1594,24 +1596,28 @@ dword MM_TotalFree(mminfo_t *mm)
 =====================
 */
 
-void MM_Report(/*page_t *page, */mminfo_t *mm, mminfotype *mmi)
+void MM_Report(global_game_variables_t *gvar)
 {
+	printf("========================================\n");
+	printf("		MM_Report\n");
+	printf("========================================\n");
 	if(MML_CheckForEMS())
 	{
-		printf("EMM v%x.%x available\n", mm->EMSVer>>4,mm->EMSVer&0x0F);
-		printf("totalEMSpages=%u\n", mm->totalEMSpages);
-		printf("freeEMSpages=%u\n", mm->freeEMSpages);
-		printf("EMSpageframe=%x\n", mm->EMSpageframe);
+		printf("	LIMEMS\n");
+		printf("		EMM v%x.%x available\n", gvar->mm.EMSVer>>4,gvar->mm.EMSVer&0x0F);
+		printf("		totalEMSpages:	%u	", gvar->mm.totalEMSpages); printf("freeEMSpages:	%u\n", gvar->mm.freeEMSpages);
+		printf("		EMSpageframe:	%x\n", gvar->mm.EMSpageframe);
 	}
-	if(MML_CheckForXMS(mm)) printf("XMSaddr=%X\n", *XMSaddr);
-	printf("near=%lu\n", mmi->nearheap);
-	printf("far=%lu\n", mmi->farheap);
-	printf("EMSmem=%lu\n", mmi->EMSmem);
-	printf("XMSmem=%lu\n", mmi->XMSmem);
-	printf("mainmem=%lu\n", mmi->mainmem);
-	printf("UnusedMemory=%lu\n", MM_UnusedMemory(mm));
-	printf("TotalFree=%lu\n", MM_TotalFree(mm));
-	printf("TotalUsed=%lu\n", mmi->mainmem+mmi->EMSmem+mmi->XMSmem+mmi->XMSmem);
+	if(MML_CheckForXMS(&(gvar->mm)))
+	{
+		printf("	XMS\n");
+		printf("		XMSaddr:	%X\n", *XMSaddr);
+	}
+	printf("near:	%lu	", gvar->mmi.nearheap); printf("far:	%lu\n", gvar->mmi.farheap); if(MML_CheckForEMS())
+	printf("EMSmem:	%lu	", gvar->mmi.EMSmem); if(MML_CheckForXMS(&(gvar->mm))) printf("XMSmem:	%lu", gvar->mmi.XMSmem); printf("\n");
+	//printf("mainmem:	%lu\n", gvar->mmi.mainmem);
+	printf("Total convmem:	%lu	", gvar->mmi.mainmem); printf("TotalFree:	%lu	", MM_TotalFree(&(gvar->mm))); printf("TotalUsed:	%lu\n", gvar->mmi.mainmem+gvar->mmi.EMSmem+gvar->mmi.XMSmem+gvar->mmi.XMSmem);
+	printf("			UnusedMemory:	%lu\n", MM_UnusedMemory(&(gvar->mm)));
 }
 
 //==========================================================================
