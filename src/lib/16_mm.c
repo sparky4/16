@@ -284,7 +284,8 @@ void MML_ShutdownEMS(mminfo_t *mm)
 #ifdef __WATCOMC__
 	}
 #endif
-	if(errorflag==true) printf("MML_ShutdownEMS: Error freeing EMS!\n");	//++++ add something
+	if(errorflag==true)
+		Quit("MML_ShutdownEMS: Error freeing EMS!\n");	//++++ add something
 }
 
 /*
@@ -1123,8 +1124,8 @@ void MM_SetPurge(memptr *baseptr, int purge, mminfo_t *mm)
 			mm->mmrover = mm->mmhead;
 		else if(mm->mmrover == start)
 		{
-			printf("MM_SetPurge: Block not found!");
-			return;
+			Quit("MM_SetPurge: Block not found!");
+			//return;
 		}
 
 	} while(1);
@@ -1163,8 +1164,8 @@ void MM_SetLock(memptr *baseptr, boolean locked, mminfo_t *mm)
 			mm->mmrover = mm->mmhead;
 		else if(mm->mmrover == start)
 		{
-			printf("MM_SetLock: Block not found!");
-			return;
+			Quit("MM_SetLock: Block not found!");
+			//return;
 		}
 
 	} while(1);
@@ -1596,7 +1597,7 @@ dword MM_TotalFree(mminfo_t *mm)
 =====================
 */
 
-void MM_Report(global_game_variables_t *gvar)
+void MM_Report_(global_game_variables_t *gvar)
 {
 	printf("========================================\n");
 	printf("		MM_Report\n");

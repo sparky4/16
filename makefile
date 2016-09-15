@@ -91,7 +91,7 @@ UPXQ=-qqq
 S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#54096#60000
 Z_FLAGS=-zk0 -zc -zp8 -zm
 O_FLAGS=-obmilr -oe=24 -out -oh -ei -onac -ol+ -ok##x
-T_FLAGS=-bt=dos -mh -0 -fpi87 -fo=.$(OBJ) -d1
+T_FLAGS=-bt=dos -mh -0 -fpi87 -fo=.$(OBJ) -d1 -e=256
 
 CPPFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1
 !ifeq DEBUGSERIAL 1
@@ -288,6 +288,7 @@ mapread.$(OBJ):   $(SRCLIB)/mapread.c $(SRCLIB)/mapread.h
 16_timer.$(OBJ):  $(SRCLIB)/16_timer.c $(SRCLIB)/16_timer.h
 16_in.$(OBJ):     $(SRCLIB)/16_in.c $(SRCLIB)/16_in.h
 16_mm.$(OBJ):     $(SRCLIB)/16_mm.c $(SRCLIB)/16_mm.h
+16_pm.$(OBJ):     $(SRCLIB)/16_pm.c $(SRCLIB)/16_pm.h
 16_ca.$(OBJ):     $(SRCLIB)/16_ca.c $(SRCLIB)/16_ca.h
 16_dbg.$(OBJ):    $(SRCLIB)/16_dbg.c $(SRCLIB)/16_dbg.h
 midi.$(OBJ):      $(SRCLIB)/midi.c $(SRCLIB)/midi.h

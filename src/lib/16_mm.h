@@ -196,7 +196,7 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 void MM_DumpData(mminfo_t *mm);
 dword MM_UnusedMemory(mminfo_t *mm);
 dword MM_TotalFree(mminfo_t *mm);
-void MM_Report(global_game_variables_t *gvar);
+void MM_Report_(global_game_variables_t *gvar);
 static void MM_EMSerr(byte *stri, byte err);
 void MM_BombOnError(boolean bomb, mminfo_t *mm);
 //void MM_GetNewBlock(mminfo_t *mm);

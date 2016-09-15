@@ -7,7 +7,7 @@
 #include "src/lib/16_hc.h"
 #include "src/lib/16_mm.h"
 
-//	NOTE! PMPageSize must be an even divisor of EMSPageSize, and >= 1024
+/*//	NOTE! PMPageSize must be an even divisor of EMSPageSize, and >= 1024
 #define	EMSPageSize		16384
 #define	EMSPageSizeSeg	(EMSPageSize >> 4)
 #define	EMSPageSizeKB	(EMSPageSize >> 10)
@@ -38,7 +38,7 @@ typedef	enum
 
 typedef	struct
 		{
-			longword	offset;		// Offset of chunk into file
+			dword	offset;		// Offset of chunk into file
 			word		length;		// Length of the chunk
 
 			int			xmsPage;	// If in XMS, (xmsPage * PMPageSize) gives offset into XMS handle
@@ -47,13 +47,13 @@ typedef	struct
 			int			emsPage;	// If in EMS, logical page/offset into page
 			int			mainPage;	// If in Main, index into handle array
 
-			longword	lastHit;	// Last frame number of hit
+			dword	lastHit;	// Last frame number of hit
 		} PageListStruct;
 
 typedef	struct
 		{
 			int			baseEMSPage;	// Base EMS page for this phys frame
-			longword	lastHit;		// Last frame number of hit
+			dword	lastHit;		// Last frame number of hit
 		} EMSListStruct;
 
 extern	boolean			XMSPresent,EMSPresent;
@@ -61,7 +61,7 @@ extern	word			XMSPagesAvail,EMSPagesAvail;
 
 extern	word			ChunksInFile,
 						PMSpriteStart,PMSoundStart;
-extern	PageListStruct	far *PMPages;
+extern	PageListStruct	far *PMPages;*///moved to src/lib/typdefst.h
 
 #define	PM_GetSoundPage(v)	PM_GetPage(PMSoundStart + (v))
 #define	PM_GetSpritePage(v)	PM_GetPage(PMSpriteStart + (v))

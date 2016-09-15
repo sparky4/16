@@ -133,7 +133,7 @@ for(w=0;w<2;w++)
 	getch();
 	MM_ShowMemory(&gvar, &gvar.mm);
 	MM_DumpData(&gvar.mm);
-	MM_Report(&gvar);
+	MM_Report_(&gvar);
 	if(baka) printf("\nyay!\n");
 	else printf("\npoo!\n");
 	printf("press any key to continue!\n");
