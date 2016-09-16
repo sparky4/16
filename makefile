@@ -168,8 +168,7 @@ TESTEXEC = &
     inputest.exe &
     palettel.exe &
     exmmtest.exe &
-    vrstest.exe &
-    vgacamm.exe
+    vrstest.exe
 EXEC = &
     16.exe &
     bakapi.exe &
@@ -204,7 +203,7 @@ inputest.exe:     inputest.$(OBJ) $(16LIB) $(DOSLIBLIBS)
 #sountest.exe:    sountest.$(OBJ) $(16LIB)
 pcxtest.exe:      pcxtest.$(OBJ) gfx.lib $(DOSLIBLIBS)
 vrstest.exe:      vrstest.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
-vgacamm.exe:      vgacamm.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
+#vgacamm.exe:      vgacamm.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
 palettec.exe:     palettec.$(OBJ) gfx.lib $(DOSLIBLIBS)
 palettel.exe:     palettel.$(OBJ) gfx.lib $(DOSLIBLIBS)
 pcxtest2.exe:     pcxtest2.$(OBJ) gfx.lib $(DOSLIBLIBS)
@@ -224,7 +223,7 @@ test.$(OBJ):      $(SRC)/test.c $(SRCLIB)/modex16.h
 test0.$(OBJ):     $(SRC)/test0.c
 pcxtest.$(OBJ):   $(SRC)/pcxtest.c $(SRCLIB)/modex16.h
 vrstest.$(OBJ):   $(SRC)/vrstest.c $(SRCLIB)/modex16.h
-vgacamm.$(OBJ):   $(SRC)/vgacamm.c $(SRCLIB)/modex16.h
+#vgacamm.$(OBJ):   $(SRC)/vgacamm.c $(SRCLIB)/modex16.h
 #planrpcx.$(OBJ): $(SRC)/planrpcx.c $(SRCLIB)/modex16.h
 pcxtest2.$(OBJ):  $(SRC)/pcxtest2.c $(SRCLIB)/modex16.h
 palettec.$(OBJ):  $(SRC)/palettec.c
