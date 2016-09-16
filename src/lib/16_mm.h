@@ -193,7 +193,7 @@ void MM_FreePtr(memptr *baseptr, mminfo_t *mm);
 void MM_SetPurge(memptr *baseptr, int purge, mminfo_t *mm);
 void MM_SetLock(memptr *baseptr, boolean locked, mminfo_t *mm);
 void MM_SortMem(mminfo_t *mm);
-void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm);
+void MM_ShowMemory(global_game_variables_t *gvar);//,/*page_t *page, */mminfo_t *mm);
 void MM_DumpData(mminfo_t *mm);
 dword MM_UnusedMemory(mminfo_t *mm);
 dword MM_TotalFree(mminfo_t *mm);

@@ -152,7 +152,7 @@ void main() {
 		}
 	}
 	VGAmodeX(0, 1, &gvar);
-	MM_ShowMemory(&gvar, &gvar.mm);
+	MM_ShowMemory(&gvar);
 	MM_DumpData(&gvar.mm);
 	free(spri.sprite_vrl_cont);
 	MM_FreePtr(&bigbuffer, &gvar.mm);

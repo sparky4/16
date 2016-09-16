@@ -1297,7 +1297,7 @@ void MM_SortMem(mminfo_t *mm)
 =====================
 */
 
-void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
+void MM_ShowMemory(global_game_variables_t *gvar)
 {
 	//huge mmblocktype huge *scan;
 	mmblocktype far *scan;
@@ -1313,7 +1313,7 @@ void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm)
 //++++mh	temp = bufferofs;
 //++++mh	bufferofs = 0;
 //****	VW_SetScreen (0,0);
-	scan = mm->mmhead;
+	scan = gvar->mm.mmhead;
 	end = -1;
 
 	CA_OpenDebug (gvar);

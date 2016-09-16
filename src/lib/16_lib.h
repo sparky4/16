@@ -24,8 +24,10 @@
 #define	__16_LIB__
 
 #include "src/lib/16_head.h"
+#include "src/lib/16_mm.h"
 #include "src/lib/16_in.h"
 
+void DebugMemory (global_game_variables_t *gvar);
 void Quit (char *error);
 
 #endif

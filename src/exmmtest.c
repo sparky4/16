@@ -132,7 +132,7 @@ for(w=0;w<2;w++)
 	//printf("red = locked\n");
 	printf("press any key to continue!\n");
 	getch();
-	MM_ShowMemory(&gvar, &gvar.mm);
+	MM_ShowMemory(&gvar);
 	MM_DumpData(&gvar.mm);
 	MM_Report_(&gvar);
 	if(baka) printf("\nyay!\n");

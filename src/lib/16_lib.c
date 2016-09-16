@@ -28,6 +28,33 @@
 //===========================================================================
 
 /*
+==================
+=
+= DebugMemory
+=
+==================
+*/
+
+void DebugMemory (global_game_variables_t *gvar)
+{
+	/*VW_FixRefreshBuffer ();
+	US_CenterWindow (16,7);
+
+	US_CPrint ("Memory Usage");
+	US_CPrint ("------------");
+	US_Print ("Total     :");
+	US_PrintUnsigned (mminfo.mainmem/1024);
+	US_Print ("k\nFree      :");
+	US_PrintUnsigned (MM_UnusedMemory()/1024);
+	US_Print ("k\nWith purge:");
+	US_PrintUnsigned (MM_TotalFree()/1024);
+	US_Print ("k\n");
+	VW_UpdateScreen();*/
+	IN_Ack ();
+	MM_ShowMemory (gvar);
+}
+
+/*
 ==========================
 =
 = Quit
