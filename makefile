@@ -106,7 +106,7 @@ LIBFLAGS=$(WLIBQ) -b -n
 # objects
 #
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
-16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_timer.$(OBJ)
+16LIBOBJS = 16_lib.$(OBJ) 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_timer.$(OBJ)
 GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16_vrs.$(OBJ) 16_sprit.$(OBJ) #scroll16.$(OBJ)
 #16planar.$(OBJ) planar.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
@@ -154,6 +154,8 @@ DOSLIBLIBS += $(DOSLIB_8250)/dos86h/8250.lib
 # List of executables to build
 #
 TESTEXEC = &
+    tesuto.exe &
+    0.exe &
     test.exe &
     test0.exe &
     pcxtest.exe &
@@ -172,8 +174,6 @@ TESTEXEC = &
 EXEC = &
     16.exe &
     bakapi.exe &
-    tesuto.exe &
-    0.exe &
     $(TESTEXEC)
 
 all: $(EXEC) joytest.exe
@@ -292,6 +292,7 @@ mapread.$(OBJ):   $(SRCLIB)/mapread.c $(SRCLIB)/mapread.h
 16_dbg.$(OBJ):    $(SRCLIB)/16_dbg.c $(SRCLIB)/16_dbg.h
 midi.$(OBJ):      $(SRCLIB)/midi.c $(SRCLIB)/midi.h
 16_head.$(OBJ):   $(SRCLIB)/16_head.c $(SRCLIB)/16_head.h
+16_lib.$(OBJ):   $(SRCLIB)/16_lib.c $(SRCLIB)/16_lib.h
 16_hc.$(OBJ):     $(SRCLIB)/16_hc.c $(SRCLIB)/16_hc.h
 16_snd.$(OBJ):    $(SRCLIB)/16_snd.c $(SRCLIB)/16_snd.h
 jsmn.$(OBJ):      $(JSMNLIB)/jsmn.c $(JSMNLIB)/jsmn.h

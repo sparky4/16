@@ -20,9 +20,6 @@
  *
  */
 
-#include <stdio.h>
-#include <dos.h>
-#include <string.h>
 #include "src/lib/modex16.h"
 #include "src/lib/16_sprit.h"
 #include "src/lib/16_ca.h"
