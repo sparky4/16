@@ -98,7 +98,7 @@ PML_StartupEMS(void)
 	CPURegs.x.dx = (word)EMMDriverName;
 	CPURegs.x.ax = 0x3d00;
 	geninterrupt(0x21);			// try to open EMMXXXX0 device
-asm	jnc	gothandle
+__asm	jnc	gothandle
 	goto error;
 
 gothandle:
