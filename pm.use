@@ -270,3 +270,8 @@ Binary file 16/wolf3d/WOLFSRC/WOLF3D.EXE matches
 16/wolf3d/WOLFSRC/WOLF3D.MAP: 1912:114B       _PM_Shutdown
 16/wolf3d/WOLFSRC/WOLFHACK.C:	src = PM_GetPage(0);
 16/wolf3d/WOLFSRC/WOLFHACK.C:	src = PM_GetPage(1);
+
+16/wf3d8086/id_pm.c:		longword last = MAXLONG;
+16/wf3d8086/id_pm.c:	for (i = 0,page = PMPages,lru = -1,last = MAXLONG;i < ChunksInFile;i++,page++)
+16/wf3d8086/id_pm.c:	for (i = 0,page = PMPages,lru = -1,last = MAXLONG;i < ChunksInFile;i++,page++)
+16/wf3d8086/id_pm.c:	if (++PMFrameCount >= MAXLONG - 4)

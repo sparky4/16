@@ -95,7 +95,7 @@ main(int argc, char *argv[])
 		bakapee2 = "data/test.map";
 	}
 //	printf("main()=%Fp	start MM\n", *argv[0]);
-	MM_Startup(&gvar.mm, &gvar.mmi);
+	MM_Startup(&gvar);
 	//PM_Startup();
 	//PM_UnlockMainMem();
 	CA_Startup(&gvar);
@@ -133,7 +133,7 @@ for(w=0;w<2;w++)
 	printf("press any key to continue!\n");
 	getch();
 	MM_ShowMemory(&gvar);
-	MM_DumpData(&gvar.mm);
+	MM_DumpData(&gvar);
 	MM_Report_(&gvar);
 	if(baka) printf("\nyay!\n");
 	else printf("\npoo!\n");
@@ -142,10 +142,10 @@ for(w=0;w<2;w++)
 #ifdef FILEREAD
 }
 #endif
-	MM_FreePtr(&bigbuffer, &gvar.mm);
+	MM_FreePtr(&bigbuffer, &gvar);
 	//PM_Shutdown();
 	CA_Shutdown(&gvar);
-	MM_Shutdown(&gvar.mm);
+	MM_Shutdown(&gvar);
 	free(bakapee1); free(bakapee2);
 	printf("========================================\n");
 	printf("near=	%Fp ", gvar.mm.nearheap);

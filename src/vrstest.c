@@ -72,7 +72,7 @@ void main() {
 	//gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 
 	gvar.mm.mmstarted=0;
-	MM_Startup(&gvar.mm, &gvar.mmi);
+	MM_Startup(&gvar);
 	CA_Startup(&gvar);
 	// What should be done by read_vrs:
 	//sega = (mm.bufferseg);
@@ -153,12 +153,12 @@ void main() {
 	}
 	VGAmodeX(0, 1, &gvar);
 	MM_ShowMemory(&gvar);
-	MM_DumpData(&gvar.mm);
+	MM_DumpData(&gvar);
 	free(spri.sprite_vrl_cont);
-	MM_FreePtr(&bigbuffer, &gvar.mm);
+	MM_FreePtr(&bigbuffer, &gvar);
 	//MM_FreePtr(&((void __based(sega)*)spri.spritesheet->buffer), &mm);
 	CA_Shutdown(&gvar);
-	MM_Shutdown(&gvar.mm);
+	MM_Shutdown(&gvar);
 	//printf("CPU to VGA: %f\n", t1);
 	//printf("VGA to VGA: %f\n", t2);
 	heapdump(&gvar);

@@ -42,6 +42,7 @@
 #include <sys/stat.h>
 #include <mem.h>
 #include <string.h>
+#include <limits.h>
 #ifdef __WATCOMC__
 #include <i86.h>
 #include <unistd.h>
@@ -160,20 +161,6 @@ extern	int			profilehandle,debughandle;	//make it into game global
 #ifdef __WATCOMC__
 #define _FCORELEFT 0x90000UL+16UL
 extern union REGS CPURegs;
-
-#define _AX CPURegs.x.ax
-#define _BX CPURegs.x.bx
-#define _CX CPURegs.x.cx
-#define _DX CPURegs.x.dx
-
-#define _AH CPURegs.h.ah
-#define _AL CPURegs.h.al
-#define _BH CPURegs.h.bh
-#define _BL CPURegs.h.bl
-#define _CH CPURegs.h.ch
-#define _CL CPURegs.h.cl
-#define _DH CPURegs.h.dh
-#define _DL CPURegs.h.dl
 
 #define geninterrupt(n) int86(n,&CPURegs,&CPURegs);
 #define peekb(segm,ofs) (*(byte far*)MK_FP((segm),(ofs)))
