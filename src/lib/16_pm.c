@@ -14,29 +14,29 @@
 	int				MainPagesAvail;
 
 //	EMS specific variables
-	boolean			EMSPresent;
-	word			EMSAvail,EMSPagesAvail,EMSHandle,
-					EMSPageFrame,EMSPhysicalPage;
+	boolean			gvar->pm.emm.EMSPresent;
+	word			gvar->pm.emm.EMSAvail,gvar->pm.emm.EMSPagesAvail,gvar->pm.emm.EMSHandle,
+					gvar->pm.emm.EMSPageFrame,gvar->pm.emm.EMSPhysicalPage;
 	EMSListStruct	EMSList[EMSFrameCount];
 
 //	XMS specific variables
-	boolean			XMSPresent;
-	word			XMSAvail,XMSPagesAvail,XMSHandle;
+	boolean			gvar->pm.xmm.XMSPresent;
+	word			gvar->pm.xmm.XMSAvail,gvar->pm.xmm.XMSPagesAvail,gvar->pm.xmm.XMSHandle;
 	dword		XMSDriver;
-	int				XMSProtectPage = -1;
+	int				gvar->pm.xmm.XMSProtectPage = -1;
 
 //	File specific variables
 	char			PageFileName[13] = {"VSWAP."};
 	int				PageFile = -1;
-	word			ChunksInFile;
+	word			gvar->pm.fi.ChunksInFile;
 	word			PMSpriteStart,PMSoundStart;
 
 //	General usage variables
 	boolean			PMStarted,
 					PMPanicMode,
 					PMThrashing;
-	word			XMSPagesUsed,
-					EMSPagesUsed,
+	word			gvar->pm.xmm.XMSPagesUsed,
+					gvar->pm.emm.EMSPagesUsed,
 					MainPagesUsed,
 					PMNumBlocks;
 	long			PMFrameCount;
@@ -55,12 +55,12 @@ static	char		*ParmStrings[] = {"nomain","noems","noxms",nil};
 //	PML_MapEMS() - Maps a logical page to a physical page
 //
 void
-PML_MapEMS(word logical,word physical)
+PML_MapEMS(word logical, word physical, global_game_variables_t *gvar)
 {
 	union REGS CPURegs;
 	CPURegs.h.al = physical;
 	CPURegs.x.bx = logical;
-	CPURegs.x.dx = EMSHandle;
+	CPURegs.x.dx = gvar->pm.emm.EMSHandle;
 	CPURegs.h.ah = EMS_MAPPAGE;
 	__asm
 	{
@@ -86,37 +86,66 @@ PML_MapEMS(word logical,word physical)
 	char	EMMDriverName[9] = "EMMXXXX0";
 
 boolean
-PML_StartupEMS(void)
+PML_StartupEMS(global_game_variables_t *gvar)
 {
+	boolean emmcfems;
 	union REGS CPURegs;
+
 	int		i;
 	long	size;
 
-	EMSPresent = false;			// Assume that we'll fail
-	EMSAvail = 0;
+	gvar->pm.emm.EMSPresent = false;			// Assume that we'll fail
+	gvar->pm.emm.EMSAvail = 0;
+	emmcfems=0;
 
-	CPURegs.x.dx = (word)EMMDriverName;
-	CPURegs.x.ax = 0x3d00;
-	geninterrupt(0x21);			// try to open EMMXXXX0 device
-__asm	jnc	gothandle
-	goto error;
+	__asm {
+	//CPURegs.x.dx = (word)EMMDriverName;
+	//CPURegs.x.ax = 0x3d00;
+	//geninterrupt(0x21);			// try to open EMMXXXX0 device
+		mov	dx,OFFSET EMMDriverName
+		mov	ax,0x3d00
+		int	0x21		// try to open EMMXXXX0 device
+	 	jnc	gothandle
+	 	//fail
+		mov	emmcfems,1
+		jmp		Aend
+#ifdef __BORLANDC__
+	}
+#endif
 
 gothandle:
-	CPURegs.x.bx = CPURegs.x.ax;
-	CPURegs.x.ax = 0x4400;
-	geninterrupt(0x21);			// get device info
-asm	jnc	gotinfo;
-	goto error;
-
+#ifdef __BORLANDC__
+	__asm {
+#endif
+	//CPURegs.x.bx = CPURegs.x.ax;
+	//CPURegs.x.ax = 0x4400;
+	//geninterrupt(0x21);			// get device info
+		mov	bx,ax
+		mov	ax,0x4400
+		int	0x21			// get device info
+		jnc	gotinfo
+		//fail
+		mov	emmcfems,1
+		jmp		Aend
+#ifdef __BORLANDC__
+	}
+#endif
+Aend:
 gotinfo:
-asm	and	dx,0x80
+#ifndef __BORLANDC__
+	}
+#endif
+	if(emmcfems!=0) goto error;
+	__asm and	dx,0x80
 	if (!CPURegs.x.dx)
 		goto error;
 
 	CPURegs.x.ax = 0x4407;
 	geninterrupt(0x21);			// get status
-asm	jc	error
-	if (!CPURegs.l.al)
+	__asm mov	emmcfems,1
+	if(emmcfems!=0) goto error;
+
+	if (!CPURegs.h.al)
 		goto error;
 
 	CPURegs.h.ah = 0x3e;
@@ -129,14 +158,14 @@ asm	jc	error
 
 	CPURegs.h.ah = EMS_VERSION;
 	geninterrupt(EMS_INT);
-	if (CPURegs.h.ah || (CPURegs.l.al < 0x32))	// only work on EMS 3.2 or greater (silly, but...)
+	if (CPURegs.h.ah || (CPURegs.h.al < 0x32))	// only work on EMS 3.2 or greater (silly, but...)
 		goto error;
 
 	CPURegs.h.ah = EMS_GETFRAME;
 	geninterrupt(EMS_INT);
 	if (CPURegs.h.ah)
 		goto error;				// find the page frame address
-	EMSPageFrame = CPURegs.x.bx;
+	gvar->pm.emm.EMSPageFrame = CPURegs.x.bx;
 
 	CPURegs.h.ah = EMS_GETPAGES;
 	geninterrupt(EMS_INT);
@@ -144,48 +173,48 @@ asm	jc	error
 		goto error;
 	if (CPURegs.x.bx < 2)
 		goto error;         	// Require at least 2 pages (32k)
-	EMSAvail = CPURegs.x.bx;
+	gvar->pm.emm.EMSAvail = CPURegs.x.bx;
 
 	// Don't hog all available EMS
-	size = EMSAvail * (long)EMSPageSize;
-	if (size - (EMSPageSize * 2) > (ChunksInFile * (long)PMPageSize))
+	size = gvar->pm.emm.EMSAvail * (long)EMSPageSize;
+	if (size - (EMSPageSize * 2) > (gvar->pm.fi.ChunksInFile * (long)PMPageSize))
 	{
-		size = (ChunksInFile * (long)PMPageSize) + EMSPageSize;
-		EMSAvail = size / EMSPageSize;
+		size = (gvar->pm.fi.ChunksInFile * (long)PMPageSize) + EMSPageSize;
+		gvar->pm.emm.EMSAvail = size / EMSPageSize;
 	}
 
-	CPURegs.h.ah = EMSCPURegs.l.alLOCPAGES;
-	CPURegs.x.bx = EMSAvail;
+	CPURegs.h.ah = EMS_ALLOCPAGES;
+	CPURegs.x.bx = gvar->pm.emm.EMSAvail;
 	geninterrupt(EMS_INT);
 	if (CPURegs.h.ah)
 		goto error;
-	EMSHandle = CPURegs.x.dx;
+	gvar->pm.emm.EMSHandle = CPURegs.x.dx;
 
-	mminfo.EMSmem += EMSAvail * (long)EMSPageSize;
+	gvar->mmi.EMSmem += gvar->pm.emm.EMSAvail * (long)EMSPageSize;
 
 	// Initialize EMS mapping cache
 	for (i = 0;i < EMSFrameCount;i++)
-		EMSList[i].baseEMSPage = -1;
+		gvar->pm.emm.EMSList[i].baseEMSPage = -1;
 
-	EMSPresent = true;			// We have EMS
+	gvar->pm.emm.EMSPresent = true;			// We have EMS
 
 error:
-	return(EMSPresent);
+	return(gvar->pm.emm.EMSPresent);
 }
 
 //
 //	PML_ShutdownEMS() - If EMS was used, deallocate it
 //
 void
-PML_ShutdownEMS(void)
+PML_ShutdownEMS(global_game_variables_t *gvar)
 {
-	if (EMSPresent)
+	union REGS CPURegs;
+
+	if (gvar->pm.emm.EMSPresent)
 	{
-		__asm {
-			mov	ah,EMS_FREEPAGES
-			mov	dx,[EMSHandle]
-			int	EMS_INT
-		}
+			CPURegs.h.ah=EMS_FREEPAGES;
+			CPURegs.x.ax=gvar->pm.emm.EMSHandle;
+			geninterrupt(EMS_INT);
 		if (CPURegs.h.ah)
 		{
 			Quit("PML_ShutdownEMS: Error freeing EMS\n");
@@ -207,46 +236,51 @@ PML_ShutdownEMS(void)
 //		Allocates any remaining XMS (rounded down to the nearest page size)
 //
 boolean
-PML_StartupXMS(void)
+PML_StartupXMS(global_game_variables_t *gvar)
 {
-	XMSPresent = false;					// Assume failure
-	XMSAvail = 0;
+	union REGS CPURegs;
 
-asm	mov	ax,0x4300
-asm	int	XMS_INT         				// Check for presence of XMS driver
-	if (CPURegs.l.al != 0x80)
+	XMSD;
+	gvar->pm.xmm.XMSPresent = false;					// Assume failure
+	gvar->pm.xmm.XMSAvail = 0;
+
+	CPURegs.x.ax=0x4300;
+	geninterrupt(XMS_INT);         				// Check for presence of XMS driver
+	if (CPURegs.h.al != 0x80)
 		goto error;
 
 
-asm	mov	ax,0x4310
-asm	int	XMS_INT							// Get address of XMS driver
-asm	mov	[WORD PTR XMSDriver],bx
-asm	mov	[WORD PTR XMSDriver+2],es		// function pointer to XMS driver
+	__asm {
+		mov	ax,0x4310
+		int	XMS_INT							// Get address of XMS driver
+		mov	[WORD PTR XMSDriver],bx
+		mov	[WORD PTR XMSDriver+2],es		// function pointer to XMS driver
+	}
 
 	XMS_CALL(XMS_QUERYFREE);			// Find out how much XMS is available
-	XMSAvail = CPURegs.x.ax;
+	gvar->pm.xmm.XMSAvail = CPURegs.x.ax;
 	if (!CPURegs.x.ax)				// AJR: bugfix 10/8/92
 		goto error;
 
-	XMSAvail &= ~(PMPageSizeKB - 1);	// Round off to nearest page size
-	if (XMSAvail < (PMPageSizeKB * 2))	// Need at least 2 pages
+	gvar->pm.xmm.XMSAvail &= ~(PMPageSizeKB - 1);	// Round off to nearest page size
+	if (gvar->pm.xmm.XMSAvail < (PMPageSizeKB * 2))	// Need at least 2 pages
 		goto error;
 
-	CPURegs.x.dx = XMSAvail;
-	XMS_CALL(XMSCPURegs.l.alLOC);				// And do the allocation
-	XMSHandle = CPURegs.x.dx;
+	CPURegs.x.dx = gvar->pm.xmm.XMSAvail;
+	XMS_CALL(XMS_ALLOC);				// And do the allocation
+	gvar->pm.xmm.XMSHandle = CPURegs.x.dx;
 
 	if (!CPURegs.x.ax)				// AJR: bugfix 10/8/92
 	{
-		XMSAvail = 0;
+		gvar->pm.xmm.XMSAvail = 0;
 		goto error;
 	}
 
-	mminfo.XMSmem += XMSAvail * 1024;
+	gvar->mmi.XMSmem += gvar->pm.xmm.XMSAvail * 1024;
 
-	XMSPresent = true;
+	gvar->pm.xmm.XMSPresent = true;
 error:
-	return(XMSPresent);
+	return(gvar->pm.xmm.XMSPresent);
 }
 
 //
@@ -254,8 +288,9 @@ error:
 //		Will round an odd-length request up to the next even value
 //
 void
-PML_XMSCopy(boolean toxms,byte far *addr,word xmspage,word length)
+PML_XMSCopy(boolean toxms,byte far *addr,word xmspage,word length, global_game_variables_t *gvar)
 {
+	XMSD;
 	dword	xoffset;
 	struct
 	{
@@ -275,15 +310,19 @@ PML_XMSCopy(boolean toxms,byte far *addr,word xmspage,word length)
 	xoffset = (dword)xmspage * PMPageSize;
 
 	copy.length = (length + 1) & ~1;
-	copy.source_handle = toxms? 0 : XMSHandle;
+	copy.source_handle = toxms? 0 : gvar->pm.xmm.XMSHandle;
 	copy.source_offset = toxms? (long)addr : xoffset;
-	copy.target_handle = toxms? XMSHandle : 0;
+	copy.target_handle = toxms? gvar->pm.xmm.XMSHandle : 0;
 	copy.target_offset = toxms? xoffset : (long)addr;
 
-asm	push si
-	CPURegs.i.si = (word)&copy;
+	__asm {
+		push si
+	}
+	CPURegs.x.si = (word)&copy;
 	XMS_CALL(XMS_MOVE);
-asm	pop	si
+	__asm {
+		pop	si
+	}
 	if (!CPURegs.x.ax)
 	{
 		Quit("PML_XMSCopy: Error on copy");
@@ -320,13 +359,14 @@ PML_CopyFromXMS(byte far *target,int sourcepage,word length)
 //	PML_ShutdownXMS()
 //
 void
-PML_ShutdownXMS(void)
+PML_ShutdownXMS(global_game_variables_t *gvar)
 {
-	if (XMSPresent)
+	XMSD;
+	if (gvar->pm.xmm.XMSPresent)
 	{
-		CPURegs.x.dx = XMSHandle;
+		CPURegs.x.dx = gvar->pm.xmm.XMSHandle;
 		XMS_CALL(XMS_FREE);
-		if (CPURegs.l.bl)
+		if (CPURegs.h.bl)
 		{
 			Quit("PML_ShutdownXMS: Error freeing XMS");
 			//return;
@@ -346,13 +386,14 @@ PML_ShutdownXMS(void)
 //		PM_UnlockMainMem() macros should be used instead.
 //
 void
-PM_SetMainMemPurge(int level)
+PM_SetMainMemPurge(int level, global_game_variables_t *gvar)
 {
 	int	i;
 
 	for (i = 0;i < PMMaxMainMem;i++)
-		if (MainMemPages[i])
-			MM_SetPurge(&MainMemPages[i],level);
+		if (gvar->pm.mm.MainMemPages[i])
+			MM_SetPurge(&gvar->pm.mm.MainMemPages[i],level);
+	return 0;//TODO FIX
 }
 
 //
@@ -380,7 +421,7 @@ PM_CheckMainMem(void)
 	if (!MainPresent)
 		return;
 
-	for (i = 0,page = PMPages;i < ChunksInFile;i++,page++)
+	for (i = 0,page = PMPages;i < gvar->pm.fi.ChunksInFile;i++,page++)
 	{
 		n = page->mainPage;
 		if (n != -1)						// Is the page using main memory?
@@ -535,19 +576,19 @@ PML_OpenPageFile(void)
 	}
 
 	// Read in header variables
-	read(PageFile,&ChunksInFile,sizeof(ChunksInFile));
+	read(PageFile,&gvar->pm.fi.ChunksInFile,sizeof(gvar->pm.fi.ChunksInFile));
 	read(PageFile,&PMSpriteStart,sizeof(PMSpriteStart));
 	read(PageFile,&PMSoundStart,sizeof(PMSoundStart));
 
 	// Allocate and clear the page list
-	PMNumBlocks = ChunksInFile;
+	PMNumBlocks = gvar->pm.fi.ChunksInFile;
 	MM_GetPtr(&(memptr)PMSegPages,sizeof(PageListStruct) * PMNumBlocks);
 	MM_SetLock(&(memptr)PMSegPages,true);
 	PMPages = (PageListStruct far *)PMSegPages;
 	_fmemset(PMPages,0,sizeof(PageListStruct) * PMNumBlocks);
 
 	// Read in the chunk offsets
-	size = sizeof(dword) * ChunksInFile;
+	size = sizeof(dword) * gvar->pm.fi.ChunksInFile;
 	MM_GetPtr(&buf,size);
 	if (!CA_FarRead(PageFile,(byte far *)buf,size))
 	{
@@ -555,12 +596,12 @@ PML_OpenPageFile(void)
 		//return;
 	}
 	offsetptr = (dword far *)buf;
-	for (i = 0,page = PMPages;i < ChunksInFile;i++,page++)
+	for (i = 0,page = PMPages;i < gvar->pm.fi.ChunksInFile;i++,page++)
 		page->offset = *offsetptr++;
 	MM_FreePtr(&buf);
 
 	// Read in the chunk lengths
-	size = sizeof(word) * ChunksInFile;
+	size = sizeof(word) * gvar->pm.fi.ChunksInFile;
 	MM_GetPtr(&buf,size);
 	if (!CA_FarRead(PageFile,(byte far *)buf,size))
 	{
@@ -568,7 +609,7 @@ PML_OpenPageFile(void)
 		//return;
 	}
 	lengthptr = (word far *)buf;
-	for (i = 0,page = PMPages;i < ChunksInFile;i++,page++)
+	for (i = 0,page = PMPages;i < gvar->pm.fi.ChunksInFile;i++,page++)
 		page->length = *lengthptr++;
 	MM_FreePtr(&buf);
 }
@@ -595,7 +636,7 @@ PML_ClosePageFile(void)
 /////////////////////////////////////////////////////////////////////////////
 
 //
-//	PML_GetEMSAddress()
+//	PML_Getgvar->pm.emm.EMSAddress()
 //
 // 		Page is in EMS, so figure out which EMS physical page should be used
 //  		to map our page in. If normal page, use EMS physical page 3, else
@@ -604,7 +645,7 @@ PML_ClosePageFile(void)
 #ifdef __DEBUG__
 #pragma argsused	// DEBUG - remove lock parameter
 memptr
-PML_GetEMSAddress(int page,PMLockType lock)
+PML_Getgvar->pm.emm.EMSAddress(int page,PMLockType lock)
 {
 	int		i,emspage;
 	word	emsoff,emsbase,offset;
@@ -616,7 +657,7 @@ PML_GetEMSAddress(int page,PMLockType lock)
 	// See if this page is already mapped in
 	for (i = 0;i < EMSFrameCount;i++)
 	{
-		if (EMSList[i].baseEMSPage == emsbase)
+		if (EMSList[i].basegvar->pm.emm.EMSPage == emsbase)
 		{
 			emspage = i;	// Yep - don't do a redundant remapping
 			break;
@@ -636,21 +677,21 @@ PML_GetEMSAddress(int page,PMLockType lock)
 			}
 		}
 
-		EMSList[emspage].baseEMSPage = emsbase;
+		EMSList[emspage].basegvar->pm.emm.EMSPage = emsbase;
 		PML_MapEMS(page / PMEMSSubPage,emspage);
 	}
 
 	if (emspage == -1)
-		Quit("PML_GetEMSAddress: EMS find failed");
+		Quit("PML_Getgvar->pm.emm.EMSAddress: EMS find failed");
 
 	EMSList[emspage].lastHit = PMFrameCount;
 	offset = emspage * EMSPageSizeSeg;
 	offset += emsoff * PMPageSizeSeg;
-	return((memptr)(EMSPageFrame + offset));
+	return((memptr)(gvar->pm.emm.EMSPageFrame + offset));
 }
 #else
 memptr
-PML_GetEMSAddress(int page,PMLockType lock)
+PML_Getgvar->pm.emm.EMSAddress(int page,PMLockType lock)
 {
 	word	emspage;
 
@@ -658,7 +699,7 @@ PML_GetEMSAddress(int page,PMLockType lock)
 
 	PML_MapEMS(page / PMEMSSubPage,emspage);
 
-	return((memptr)(EMSPageFrame + (emspage * EMSPageSizeSeg)
+	return((memptr)(gvar->pm.emm.EMSPageFrame + (emspage * EMSPageSizeSeg)
 			+ ((page & (PMEMSSubPage - 1)) * PMPageSizeSeg)));
 }
 #endif
@@ -678,7 +719,7 @@ PM_GetPageAddress(int pagenum)
 	if (page->mainPage != -1)
 		return(MainMemPages[page->mainPage]);
 	else if (page->emsPage != -1)
-		return(PML_GetEMSAddress(page->emsPage,page->locked));
+		return(PML_Getgvar->pm.emm.EMSAddress(page->emsPage,page->locked));
 	else
 		return(nil);
 }
@@ -694,7 +735,7 @@ PML_GiveLRUPage(boolean mainonly)
 	long			last;
 	PageListStruct	far *page;
 
-	for (i = 0,page = PMPages,lru = -1,last = MAXLONG;i < ChunksInFile;i++,page++)
+	for (i = 0,page = PMPages,lru = -1,last = MAXLONG;i < gvar->pm.fi.ChunksInFile;i++,page++)
 	{
 		if
 		(
@@ -715,24 +756,24 @@ PML_GiveLRUPage(boolean mainonly)
 }
 
 //
-//	PML_GiveLRUXMSPage() - Returns the page # of the least recently used
+//	PML_GiveLRUgvar->pm.xmm.XMSPage() - Returns the page # of the least recently used
 //		(and present) XMS page.
-//	This routine won't return the XMS page protected (by XMSProtectPage)
+//	This routine won't return the XMS page protected (by gvar->pm.xmm.XMSProtectPage)
 //
 int
-PML_GiveLRUXMSPage(void)
+PML_GiveLRUgvar->pm.xmm.XMSPage(void)
 {
 	int				i,lru;
 	long			last;
 	PageListStruct	far *page;
 
-	for (i = 0,page = PMPages,lru = -1,last = MAXLONG;i < ChunksInFile;i++,page++)
+	for (i = 0,page = PMPages,lru = -1,last = MAXLONG;i < gvar->pm.fi.ChunksInFile;i++,page++)
 	{
 		if
 		(
 			(page->xmsPage != -1)
 		&&	(page->lastHit < last)
-		&&	(i != XMSProtectPage)
+		&&	(i != gvar->pm.xmm.XMSProtectPage)
 		)
 		{
 			last = page->lastHit;
@@ -752,18 +793,18 @@ PML_PutPageInXMS(int pagenum)
 	int				usexms;
 	PageListStruct	far *page;
 
-	if (!XMSPresent)
+	if (!gvar->pm.xmm.XMSPresent)
 		return;
 
 	page = &PMPages[pagenum];
 	if (page->xmsPage != -1)
 		return;					// Already in XMS
 
-	if (XMSPagesUsed < XMSPagesAvail)
-		page->xmsPage = XMSPagesUsed++;
+	if (gvar->pm.xmm.XMSPagesUsed < gvar->pm.xmm.XMSPagesAvail)
+		page->xmsPage = gvar->pm.xmm.XMSPagesUsed++;
 	else
 	{
-		usexms = PML_GiveLRUXMSPage();
+		usexms = PML_GiveLRUgvar->pm.xmm.XMSPage();
 		if (usexms == -1)
 			Quit("PML_PutPageInXMS: No XMS LRU");
 		page->xmsPage = PMPages[usexms].xmsPage;
@@ -830,11 +871,11 @@ PML_GetAPageBuffer(int pagenum,boolean mainonly)
 	PageListStruct	far *page;
 
 	page = &PMPages[pagenum];
-	if ((EMSPagesUsed < EMSPagesAvail) && !mainonly)
+	if ((gvar->pm.emm.EMSPagesUsed < gvar->pm.emm.EMSPagesAvail) && !mainonly)
 	{
 		// There's remaining EMS - use it
-		page->emsPage = EMSPagesUsed++;
-		addr = PML_GetEMSAddress(page->emsPage,page->locked);
+		page->emsPage = gvar->pm.emm.EMSPagesUsed++;
+		addr = PML_Getgvar->pm.emm.EMSAddress(page->emsPage,page->locked);
 	}
 	else if (MainPagesUsed < MainPagesAvail)
 	{
@@ -868,7 +909,7 @@ PML_GetAPageBuffer(int pagenum,boolean mainonly)
 //	PML_GetPageFromXMS() - If page is in XMS, find LRU main/EMS page and
 //		replace it with the page from XMS. If mainonly is true, will only
 //		search for LRU main page.
-//	XMSProtectPage is set to the page to be retrieved from XMS, so that if
+//	gvar->pm.xmm.XMSProtectPage is set to the page to be retrieved from XMS, so that if
 //		the page from which we're stealing the main/EMS from isn't in XMS,
 //		it won't copy over the page that we're trying to get from XMS.
 //		(pages that are being purged are copied into XMS, if possible)
@@ -881,15 +922,15 @@ PML_GetPageFromXMS(int pagenum,boolean mainonly)
 	PageListStruct	far *page;
 
 	page = &PMPages[pagenum];
-	if (XMSPresent && (page->xmsPage != -1))
+	if (gvar->pm.xmm.XMSPresent && (page->xmsPage != -1))
 	{
-		XMSProtectPage = pagenum;
+		gvar->pm.xmm.XMSProtectPage = pagenum;
 		checkaddr = PML_GetAPageBuffer(pagenum,mainonly);
 		if (FP_OFF(checkaddr))
 			Quit("PML_GetPageFromXMS: Non segment pointer");
 		addr = (memptr)FP_SEG(checkaddr);
 		PML_CopyFromXMS(addr,page->xmsPage,page->length);
-		XMSProtectPage = -1;
+		gvar->pm.xmm.XMSProtectPage = -1;
 	}
 
 	return(addr);
@@ -923,17 +964,19 @@ PM_GetPage(int pagenum)
 {
 	memptr	result;
 
-	if (pagenum >= ChunksInFile)
+	if (pagenum >= gvar->pm.fi.ChunksInFile)
 		Quit("PM_GetPage: Invalid page request");
 
-#if 0	// for debugging
-asm	mov	dx,STATUS_REGISTER_1
-asm	in	al,dx
-asm	mov	dx,ATR_INDEX
-asm	mov	al,ATR_OVERSCAN
-asm	out	dx,al
-asm	mov	al,10	// bright green
-asm	out	dx,al
+#if __DEBUG__	// for debugging
+	__asm {
+		mov	dx,STATUS_REGISTER_1
+		in	al,dx
+		mov	dx,ATR_INDEX
+		mov	al,ATR_OVERSCAN
+		out	dx,al
+		mov	al,10	// bright green
+		out	dx,al
+	}
 #endif
 
 	if (!(result = PM_GetPageAddress(pagenum)))
@@ -952,16 +995,17 @@ if (!PMPages[pagenum].offset)	// JDC: sparse page
 	}
 	PMPages[pagenum].lastHit = PMFrameCount;
 
-#if 0	// for debugging
-asm	mov	dx,STATUS_REGISTER_1
-asm	in	al,dx
-asm	mov	dx,ATR_INDEX
-asm	mov	al,ATR_OVERSCAN
-asm	out	dx,al
-asm	mov	al,3	// blue
-asm	out	dx,al
-asm	mov	al,0x20	// normal
-asm	out	dx,al
+#if __DEBUG__	// for debugging
+	__asm{
+		mov	dx,STATUS_REGISTER_1
+		in	al,dx
+		mov	dx,ATR_INDEX
+		mov	al,ATR_OVERSCAN
+		out	dx,al
+		mov	al,3	// blue
+		out	dx,al
+		mov	al,0x20	// normal
+		out	dx,al
 #endif
 
 	return(result);
@@ -1002,12 +1046,12 @@ PM_Preload(boolean (*update)(word current,word total))
 	memptr			addr;
 	PageListStruct	far *p;
 
-	mainfree = (MainPagesAvail - MainPagesUsed) + (EMSPagesAvail - EMSPagesUsed);
-	xmsfree = (XMSPagesAvail - XMSPagesUsed);
+	mainfree = (MainPagesAvail - MainPagesUsed) + (gvar->pm.emm.EMSPagesAvail - gvar->pm.emm.EMSPagesUsed);
+	xmsfree = (gvar->pm.xmm.XMSPagesAvail - gvar->pm.xmm.XMSPagesUsed);
 
 	xmstotal = maintotal = 0;
 
-	for (i = 0;i < ChunksInFile;i++)
+	for (i = 0;i < gvar->pm.fi.ChunksInFile;i++)
 	{
 		if (!PMPages[i].offset)
 			continue;			// sparse
@@ -1045,8 +1089,8 @@ PM_Preload(boolean (*update)(word current,word total))
 			||	PMPages[page].emsPage != -1 )
 			page++;
 
-		if (page >= ChunksInFile)
-			Quit ("PM_Preload: Pages>=ChunksInFile");
+		if (page >= gvar->pm.fi.ChunksInFile)
+			Quit ("PM_Preload: Pages>=gvar->pm.fi.ChunksInFile");
 
 		PM_GetPage(page);
 
@@ -1072,13 +1116,13 @@ PM_Preload(boolean (*update)(word current,word total))
 			while ( !PMPages[page].offset || PMPages[page].xmsPage != -1 )
 				page++;
 
-			if (page >= ChunksInFile)
-				Quit ("PM_Preload: Pages>=ChunksInFile");
+			if (page >= gvar->pm.fi.ChunksInFile)
+				Quit ("PM_Preload: Pages>=gvar->pm.fi.ChunksInFile");
 
 			p = &PMPages[page];
 
-			p->xmsPage = XMSPagesUsed++;
-			if (XMSPagesUsed > XMSPagesAvail)
+			p->xmsPage = gvar->pm.xmm.XMSPagesUsed++;
+			if (gvar->pm.xmm.XMSPagesUsed > gvar->pm.xmm.XMSPagesAvail)
 				Quit("PM_Preload: Exceeded XMS pages");
 			if (p->length > PMPageSize)
 				Quit("PM_Preload: Page too long");
@@ -1161,12 +1205,12 @@ PM_Reset(void)
 	int				i;
 	PageListStruct	far *page;
 
-	XMSPagesAvail = XMSAvail / PMPageSizeKB;
+	gvar->pm.xmm.XMSPagesAvail = gvar->pm.xmm.XMSAvail / PMPageSizeKB;
 
-	EMSPagesAvail = EMSAvail * (EMSPageSizeKB / PMPageSizeKB);
-	EMSPhysicalPage = 0;
+	gvar->pm.emm.EMSPagesAvail = gvar->pm.emm.EMSAvail * (EMSPageSizeKB / PMPageSizeKB);
+	gvar->pm.emm.EMSPhysicalPage = 0;
 
-	MainPagesUsed = EMSPagesUsed = XMSPagesUsed = 0;
+	MainPagesUsed = gvar->pm.emm.EMSPagesUsed = gvar->pm.xmm.XMSPagesUsed = 0;
 
 	PMPanicMode = false;
 
@@ -1216,7 +1260,7 @@ PM_Startup(void)
 	if (!noxms)
 		PML_StartupXMS();
 
-	if (nomain && !EMSPresent)
+	if (nomain && !gvar->pm.emm.EMSPresent)
 	{
 		Quit("PM_Startup: No main or EMS\n");
 		//return;

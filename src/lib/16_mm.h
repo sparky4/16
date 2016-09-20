@@ -65,6 +65,12 @@
 
 //--------
 
+#define	XMS_INT			0x2f
+#define	XMSD			word XMSDriver=gvar->pm.xmm.XMSDriver;
+#define	XMS_CALL(v)		CPURegs.h.ah = (v);\
+ 						XMSDriver=gvar->pm.xmm.XMSDriver;\
+						__asm call [WORD PTR XMSDriver]
+
 #define	XMS_VERSION		0x00
 
 #define	XMS_ALLOCHMA	0x01
@@ -76,7 +82,7 @@
 #define	XMS_LDISABLEA20	0x06
 #define	XMS_QUERYA20	0x07
 
-#define	XMS_QUERYREE	0x08
+#define	XMS_QUERYFREE	0x08
 #define	XMS_ALLOC		0x09
 #define	XMS_FREE		0x0A
 #define	XMS_MOVE		0x0B

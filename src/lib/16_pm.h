@@ -6,6 +6,7 @@
 #include "src/lib/16_head.h"
 #include "src/lib/16_hc.h"
 #include "src/lib/16_mm.h"
+#include <dos.h>
 
 /*//	NOTE! PMPageSize must be an even divisor of EMSPageSize, and >= 1024
 #define	EMSPageSize		16384
@@ -84,4 +85,4 @@ extern	void	PM_Startup(void),
 extern	memptr	PM_GetPageAddress(int pagenum),
 				PM_GetPage(int pagenum);		// Use this one to cache page
 
-void PM_SetMainMemPurge(int level);
+PM_SetMainMemPurge(int level, global_game_variables_t *gvar);

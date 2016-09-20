@@ -256,7 +256,7 @@ typedef struct
 {
 	boolean			XMSPresent;
 	word			XMSAvail,XMSPagesAvail,XMSHandle;
-	dword		XMSDriver;
+	word			XMSDriver;	//TODO: changed to word
 	int				XMSProtectPage;// = -1;
 } pm_xmmi_t;
 
