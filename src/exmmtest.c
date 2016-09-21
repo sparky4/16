@@ -98,8 +98,8 @@ main(int argc, char *argv[])
 //	printf("main()=%Fp	start MM\n", *argv[0]);
 	MM_Startup(&gvar);
 	PM_Startup(&gvar);
-	//++++PM_UnlockMainMem(&gvar);
-	PM_LockMainMem(&gvar);
+	PM_UnlockMainMem(&gvar);
+	//PM_LockMainMem(&gvar);
 	CA_Startup(&gvar);
 //	printf("		done!\n");
 	PRINTBB;
