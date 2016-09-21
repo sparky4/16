@@ -23,6 +23,7 @@
 	exmm test
 */
 #include "src/lib/16_head.h"
+#include "src/lib/16_pm.h"
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 #include "src/lib/16_hc.h"
@@ -96,8 +97,9 @@ main(int argc, char *argv[])
 	}
 //	printf("main()=%Fp	start MM\n", *argv[0]);
 	MM_Startup(&gvar);
-	//PM_Startup();
-	//PM_UnlockMainMem();
+	PM_Startup(&gvar);
+	//++++PM_UnlockMainMem(&gvar);
+	PM_LockMainMem(&gvar);
 	CA_Startup(&gvar);
 //	printf("		done!\n");
 	PRINTBB;
@@ -143,7 +145,7 @@ for(w=0;w<2;w++)
 }
 #endif
 	MM_FreePtr(&bigbuffer, &gvar);
-	//PM_Shutdown();
+	PM_Shutdown(&gvar);
 	CA_Shutdown(&gvar);
 	MM_Shutdown(&gvar);
 	free(bakapee1); free(bakapee2);
