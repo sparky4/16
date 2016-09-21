@@ -250,7 +250,7 @@ End:
 	gvar->mm.EMSpageframe=EMSpageframe;
 	gvar->mm.EMSpagesmapped=EMSpagesmapped;
 	gvar->mm.EMShandle=EMShandle;
-	gvar->pm.emm.EMSVer=EMSVer;
+	gvar->mm.EMSVer=EMSVer;
 	return 0;
 }
 
@@ -380,7 +380,7 @@ byte MM_MapXEMS(global_game_variables_t *gvar)
 	int	i;
 	EMShandle=gvar->mm.EMShandle;
 
-	if(gvar->pm.emm.EMSVer<0x40)
+	if(gvar->mm.EMSVer<0x40)
 		return 5;
 
 	for (i=0;i<MAPPAGES;i++)
@@ -1605,7 +1605,7 @@ void MM_Report_(global_game_variables_t *gvar)
 	if(MML_CheckForEMS())
 	{
 		printf("	LIMEMS\n");
-		printf("		EMM v%x.%x available\n", gvar->pm.emm.EMSVer>>4,gvar->pm.emm.EMSVer&0x0F);
+		printf("		EMM v%x.%x available\n", gvar->pm.emm.EMSVer>>4,gvar->mm.EMSVer&0x0F);
 		printf("		totalEMSpages:	%u	", gvar->mm.totalEMSpages); printf("freeEMSpages:	%u\n", gvar->mm.freeEMSpages);
 		printf("		EMSpageframe:	%x\n", gvar->mm.EMSpageframe);
 	}

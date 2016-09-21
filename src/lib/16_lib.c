@@ -90,7 +90,7 @@ void Quit (char *error)
 	{
 	  movedata ((unsigned)screen,7,0xb800,0,7*160);
 	  //gotoxy (10,4);
-	  puts(error);
+	  fprintf(stderr, "%s\n", error);
 	  //gotoxy (1,8);
 	  exit(1);
 	}
