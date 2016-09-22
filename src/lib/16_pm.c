@@ -151,8 +151,13 @@ PML_StartupEMS(global_game_variables_t *gvar)
 	__asm {
 		jnc	gothandle
 		mov	errorflag,1
-		gothandle:
+#ifdef __BORLANDC__
 	}
+#endif
+		gothandle:
+#ifdef __WATCOMC__
+	}
+#endif
 	if(errorflag)
 		goto error;
 
@@ -163,8 +168,13 @@ PML_StartupEMS(global_game_variables_t *gvar)
 	__asm {
 		jnc	gotinfo
 		mov	errorflag,1
-		gotinfo:
+#ifdef __BORLANDC__
 	}
+#endif
+		gotinfo:
+#ifdef __WATCOMC__
+	}
+#endif
 	if(errorflag)
 		goto error;
 
@@ -180,8 +190,13 @@ __asm	and	dx,0x80
 		jmp	end
 		error:
 		mov	errorflag,1
-		end:
+#ifdef __BORLANDC__
 	}
+#endif
+		end:
+#ifdef __WATCOMC__
+	}
+#endif
 	if (!_AL)
 		goto error;
 
@@ -328,7 +343,9 @@ error:
 void
 PML_XMSCopy(boolean toxms,byte far *addr,word xmspage,word length, global_game_variables_t *gvar)
 {
+#ifdef __WATCOMC__
 	XMSD;
+#endif
 	dword	xoffset;
 	struct
 	{
