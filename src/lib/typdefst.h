@@ -171,6 +171,7 @@ typedef struct
 #endif
 	//byte		EMS_status;
 	word numUMBs,UMBbase[MAXUMBS];
+	word			totalEMSpages, freeEMSpages, EMSpagesmapped, EMShandle, EMSpageframe,EMSVer;
 	//dword	numUMBs,UMBbase[MAXUMBS];
 	//huge mmblocktype	huge mmblocks[MAXBLOCKS],huge *mmhead,huge *mmfree,huge *mmrover,huge *mmnew;
 	mmblocktype	far mmblocks[MAXBLOCKS],far *mmhead,far *mmfree,far *mmrover,far *mmnew;

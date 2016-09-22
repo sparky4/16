@@ -110,5 +110,5 @@ extern	void	PM_Startup(global_game_variables_t *gvar),
 extern	memptr	PM_GetPageAddress(int pagenum, global_game_variables_t *gvar),
 				PM_GetPage(int pagenum, global_game_variables_t *gvar);		// Use this one to cache page
 
-void PM_SetMainMemPurge(int level, global_game_variables_t *gvar);
+//void PM_SetMainMemPurge(int level, global_game_variables_t *gvar);
 #endif

@@ -97,9 +97,11 @@ main(int argc, char *argv[])
 	}
 	//printf("main()=%Fp	start MM\n", *argv[0]);
 	MM_Startup(&gvar);
+#ifdef __DEBUG_PM__
 	PM_Startup(&gvar);
-	PM_CheckMainMem(&gvar);
+	//PM_CheckMainMem(&gvar);
 	PM_UnlockMainMem(&gvar);
+#endif
 	CA_Startup(&gvar);
 //	printf("		done!\n");
 	PRINTBB;
@@ -144,8 +146,12 @@ for(w=0;w<2;w++)
 #ifdef FILEREAD
 }
 #endif
+	printf("bakapee1=%s\n", bakapee1);
+	printf("bakapee2=%s\n", bakapee2);
 	MM_FreePtr(&bigbuffer, &gvar);
+#ifdef __DEBUG_PM__
 	PM_Shutdown(&gvar);
+#endif
 	CA_Shutdown(&gvar);
 	MM_Shutdown(&gvar);
 	free(bakapee1); free(bakapee2);

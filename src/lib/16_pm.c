@@ -44,9 +44,9 @@
 
 //	XMS specific variables
 	boolean			gvar->pm.xmm.XMSPresent;
-	word			gvar->pm.xmm.XMSAvail,gvar->pm.xmm.XMSPagesAvail,gvar->pm.xmm.XMSHandle;
-	dword		XMSDriver;
-	int				gvar->pm.xmm.XMSProtectPage = -1;
+	word			gvar->pm.xmm.XMSAvail,gvar->pm.xmm.XMSPagesAvail,gvar->pm.xmm.XMSHandle;*/
+	word		XMSDriver;
+/*	int				gvar->pm.xmm.XMSProtectPage = -1;
 
 //	File specific variables
 	char			gvar->pm.fi.PageFileName[13] = {"VSWAP."};
@@ -293,7 +293,7 @@ PML_ShutdownEMS(global_game_variables_t *gvar)
 boolean
 PML_StartupXMS(global_game_variables_t *gvar)
 {
-	XMSD;
+	//XMSD;
 	gvar->pm.xmm.XMSPresent = false;					// Assume failure
 	gvar->pm.xmm.XMSAvail = 0;
 
@@ -310,7 +310,7 @@ PML_StartupXMS(global_game_variables_t *gvar)
 		mov	[WORD PTR XMSDriver+2],es		// function pointer to XMS driver
 	}
 
-	XMS_CALL(XMS_QUERYFREE, gvar);			// Find out how much XMS is available
+	XMS_CALL(XMS_QUERYFREE);			// Find out how much XMS is available
 	gvar->pm.xmm.XMSAvail = _AX;
 	if (!_AX)				// AJR: bugfix 10/8/92
 		goto error;
@@ -320,7 +320,7 @@ PML_StartupXMS(global_game_variables_t *gvar)
 		goto error;
 
 	_DX = gvar->pm.xmm.XMSAvail;
-	XMS_CALL(XMS_ALLOC, gvar);				// And do the allocation
+	XMS_CALL(XMS_ALLOC);				// And do the allocation
 	gvar->pm.xmm.XMSHandle = _DX;
 
 	if (!_AX)				// AJR: bugfix 10/8/92
@@ -344,7 +344,7 @@ void
 PML_XMSCopy(boolean toxms,byte far *addr,word xmspage,word length, global_game_variables_t *gvar)
 {
 #ifdef __WATCOMC__
-	XMSD;
+	//XMSD;
 #endif
 	dword	xoffset;
 	struct
@@ -374,7 +374,7 @@ PML_XMSCopy(boolean toxms,byte far *addr,word xmspage,word length, global_game_v
 		push si
 	}
 	_SI = (word)&copy;
-	XMS_CALL(XMS_MOVE, gvar);
+	XMS_CALL(XMS_MOVE);
 	__asm {
 		pop	si
 	}
@@ -416,11 +416,11 @@ PML_CopyFromXMS(byte far *target,int sourcepage,word length, global_game_variabl
 void
 PML_ShutdownXMS(global_game_variables_t *gvar)
 {
-	XMSD;
+	//XMSD;
 	if (gvar->pm.xmm.XMSPresent)
 	{
 		_DX = gvar->pm.xmm.XMSHandle;
-		XMS_CALL(XMS_FREE, gvar);
+		XMS_CALL(XMS_FREE);
 		if (_BL)
 		{
 			Quit("PML_ShutdownXMS: Error freeing XMS");
@@ -1277,6 +1277,9 @@ PM_Reset(global_game_variables_t *gvar)
 
 	gvar->pm.PMPanicMode = false;
 
+	gvar->pm.fi.PageFile = -1;
+	gvar->pm.xmm.XMSProtectPage = -1;
+
 	// Initialize page list
 	for (i = 0,page = gvar->pm.PMPages;i < gvar->pm.PMNumBlocks;i++,page++)
 	{
@@ -1300,8 +1303,6 @@ PM_Startup(global_game_variables_t *gvar)
 		return;
 
 	strcat(&(gvar->pm.fi.PageFileName), "VSWAP.");
-	gvar->pm.fi.PageFile = -1;
-	gvar->pm.xmm.XMSProtectPage = -1;
 
 	nomain = noems = noxms = false;
 	for (i = 1;i <
