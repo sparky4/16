@@ -170,8 +170,6 @@ typedef struct
 	void __near	*nearheap;
 #endif
 	//byte		EMS_status;
-	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;//TODO: PM use
-	unsigned int EMSVer;
 	word numUMBs,UMBbase[MAXUMBS];
 	//dword	numUMBs,UMBbase[MAXUMBS];
 	//huge mmblocktype	huge mmblocks[MAXBLOCKS],huge *mmhead,huge *mmfree,huge *mmrover,huge *mmnew;
@@ -248,6 +246,7 @@ typedef struct
 	boolean			EMSPresent;
 	word			EMSAvail,EMSPagesAvail,EMSHandle,
 					EMSPageFrame,EMSPhysicalPage, EMSVer;
+	word			totalEMSpages, freeEMSpages, EMSpagesmapped;
 	EMSListStruct	EMSList[EMSFrameCount];
 } pm_emmi_t;
 

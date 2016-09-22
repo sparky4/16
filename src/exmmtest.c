@@ -95,11 +95,10 @@ main(int argc, char *argv[])
 		bakapee1 = "data/koishi~.pcx";
 		bakapee2 = "data/test.map";
 	}
-//	printf("main()=%Fp	start MM\n", *argv[0]);
+	//printf("main()=%Fp	start MM\n", *argv[0]);
 	MM_Startup(&gvar);
 	PM_Startup(&gvar);
-	PM_UnlockMainMem(&gvar);
-	//PM_LockMainMem(&gvar);
+	//PM_UnlockMainMem(&gvar);
 	CA_Startup(&gvar);
 //	printf("		done!\n");
 	PRINTBB;

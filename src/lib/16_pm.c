@@ -28,7 +28,7 @@
 
 #include "src/lib/16_pm.h"
 #pragma hdrstop
-union REGS CPURegs;
+
 /*
 //	Main Mem specific variables
 	boolean			MainPresent;
@@ -77,23 +77,50 @@ static	char		*ParmStrings[] = {"nomain","noems","noxms",nil};
 //
 //	PML_MapEMS() - Maps a logical page to a physical page
 //
-void
-PML_MapEMS(word logical, word physical, global_game_variables_t *gvar)
+byte
+PML_MapEMS(word logical, byte physical, global_game_variables_t *gvar)
 {
-	union REGS CPURegs;
-	CPURegs.h.al = physical;
-	CPURegs.x.bx = logical;
-	CPURegs.x.dx = gvar->pm.emm.EMSHandle;
-	CPURegs.h.ah = EMS_MAPPAGE;
-	__asm {
-		int	EMS_INT
-	}
+	byte	str[160];
+	unsigned	EMShandle;
+	byte err;
+	boolean	errorflag=false;
+	int	i;
+	EMShandle=gvar->pm.emm.EMSHandle;
 
-	if(CPURegs.h.ah)
-	{
-		Quit("PML_MapEMS: Page mapping failed\n");
-		return;
+	__asm {
+		mov	ah,EMS_MAPPAGE
+		mov	al,physical
+		mov	bx,logical
+		mov	dx,EMShandle
+		int	EMS_INT
+		or	ah,ah
+		jnz	error
+		jmp End
+#ifdef __BORLANDC__
 	}
+#endif
+		error:
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		mov	err,ah
+		mov	errorflag,1
+#ifdef __BORLANDC__
+	}
+#endif
+		End:
+#ifdef __WATCOMC__
+	}
+#endif
+	if(errorflag==true)
+	{
+		strcpy(str,"MM_MapEMS: EMS error ");
+		MM_EMSerr(str, err);
+		printf("%s\n",str);
+		Quit("PML_MapEMS: Page mapping failed\n");
+		return err;
+	}
+	return 0;
 }
 
 //
@@ -111,7 +138,6 @@ boolean
 PML_StartupEMS(global_game_variables_t *gvar)
 {
 	boolean emmcfems;
-	union REGS CPURegs;
 
 	int		i;
 	long	size;
@@ -121,8 +147,8 @@ PML_StartupEMS(global_game_variables_t *gvar)
 	emmcfems=0;
 
 	__asm {
-	//CPURegs.x.dx = (word)EMMDriverName;
-	//CPURegs.x.ax = 0x3d00;
+	//_DX = (word)EMMDriverName;
+	//_AX = 0x3d00;
 	//geninterrupt(0x21);			// try to open EMMXXXX0 device
 		mov	dx,OFFSET EMMDriverName
 		mov	ax,0x3d00
@@ -139,8 +165,8 @@ gothandle:
 #ifdef __BORLANDC__
 	__asm {
 #endif
-	//CPURegs.x.bx = CPURegs.x.ax;
-	//CPURegs.x.ax = 0x4400;
+	//_BX = _AX;
+	//_AX = 0x4400;
 	//geninterrupt(0x21);			// get device info
 		mov	bx,ax
 		mov	ax,0x4400
@@ -159,43 +185,43 @@ gotinfo:
 #endif
 	if(emmcfems!=0) goto error;
 	__asm and	dx,0x80
-	if (!CPURegs.x.dx)
+	if (!_DX)
 		goto error;
 
-	CPURegs.x.ax = 0x4407;
+	_AX = 0x4407;
 	geninterrupt(0x21);			// get status
 	__asm mov	emmcfems,1
 	if(emmcfems!=0) goto error;
 
-	if (!CPURegs.h.al)
+	if (!_AL)
 		goto error;
 
-	CPURegs.h.ah = 0x3e;
+	_AH = 0x3e;
 	geninterrupt(0x21);			// close handle
 
-	CPURegs.h.ah = EMS_STATUS;
+	_AH = EMS_STATUS;
 	geninterrupt(EMS_INT);
-	if (CPURegs.h.ah)
+	if (_AH)
 		goto error;				// make sure EMS hardware is present
 
-	CPURegs.h.ah = EMS_VERSION;
+	_AH = EMS_VERSION;
 	geninterrupt(EMS_INT);
-	if (CPURegs.h.ah || (CPURegs.h.al < 0x32))	// only work on EMS 3.2 or greater (silly, but...)
+	if (_AH || (_AL < 0x32))	// only work on EMS 3.2 or greater (silly, but...)
 		goto error;
 
-	CPURegs.h.ah = EMS_GETFRAME;
+	_AH = EMS_GETFRAME;
 	geninterrupt(EMS_INT);
-	if (CPURegs.h.ah)
+	if (_AH)
 		goto error;				// find the page frame address
-	gvar->pm.emm.EMSPageFrame = CPURegs.x.bx;
+	gvar->pm.emm.EMSPageFrame = _BX;
 
-	CPURegs.h.ah = EMS_GETPAGES;
+	_AH = EMS_GETPAGES;
 	geninterrupt(EMS_INT);
-	if (CPURegs.h.ah)
+	if (_AH)
 		goto error;
-	if (CPURegs.x.bx < 2)
+	if (_BX < 2)
 		goto error;         	// Require at least 2 pages (32k)
-	gvar->pm.emm.EMSAvail = CPURegs.x.bx;
+	gvar->pm.emm.EMSAvail = _BX;
 
 	// Don't hog all available EMS
 	size = gvar->pm.emm.EMSAvail * (long)EMSPageSize;
@@ -205,12 +231,12 @@ gotinfo:
 		gvar->pm.emm.EMSAvail = size / EMSPageSize;
 	}
 
-	CPURegs.h.ah = EMS_ALLOCPAGES;
-	CPURegs.x.bx = gvar->pm.emm.EMSAvail;
+	_AH = EMS_ALLOCPAGES;
+	_BX = gvar->pm.emm.EMSAvail;
 	geninterrupt(EMS_INT);
-	if (CPURegs.h.ah)
+	if (_AH)
 		goto error;
-	gvar->pm.emm.EMSHandle = CPURegs.x.dx;
+	gvar->pm.emm.EMSHandle = _DX;
 
 	gvar->mmi.EMSmem += gvar->pm.emm.EMSAvail * (long)EMSPageSize;
 
@@ -230,14 +256,12 @@ error:
 void
 PML_ShutdownEMS(global_game_variables_t *gvar)
 {
-	union REGS CPURegs;
-
 	if (gvar->pm.emm.EMSPresent)
 	{
-			CPURegs.h.ah=EMS_FREEPAGES;
-			CPURegs.x.ax=gvar->pm.emm.EMSHandle;
+			_AH=EMS_FREEPAGES;
+			_AX=gvar->pm.emm.EMSHandle;
 			geninterrupt(EMS_INT);
-		if (CPURegs.h.ah)
+		if (_AH)
 		{
 			Quit("PML_ShutdownEMS: Error freeing EMS\n");
 			//return;
@@ -260,15 +284,13 @@ PML_ShutdownEMS(global_game_variables_t *gvar)
 boolean
 PML_StartupXMS(global_game_variables_t *gvar)
 {
-	union REGS CPURegs;
-
 	XMSD;
 	gvar->pm.xmm.XMSPresent = false;					// Assume failure
 	gvar->pm.xmm.XMSAvail = 0;
 
-	CPURegs.x.ax=0x4300;
+	_AX=0x4300;
 	geninterrupt(XMS_INT);         				// Check for presence of XMS driver
-	if (CPURegs.h.al != 0x80)
+	if (_AL != 0x80)
 		goto error;
 
 
@@ -280,19 +302,19 @@ PML_StartupXMS(global_game_variables_t *gvar)
 	}
 
 	XMS_CALL(XMS_QUERYFREE, gvar);			// Find out how much XMS is available
-	gvar->pm.xmm.XMSAvail = CPURegs.x.ax;
-	if (!CPURegs.x.ax)				// AJR: bugfix 10/8/92
+	gvar->pm.xmm.XMSAvail = _AX;
+	if (!_AX)				// AJR: bugfix 10/8/92
 		goto error;
 
 	gvar->pm.xmm.XMSAvail &= ~(PMPageSizeKB - 1);	// Round off to nearest page size
 	if (gvar->pm.xmm.XMSAvail < (PMPageSizeKB * 2))	// Need at least 2 pages
 		goto error;
 
-	CPURegs.x.dx = gvar->pm.xmm.XMSAvail;
+	_DX = gvar->pm.xmm.XMSAvail;
 	XMS_CALL(XMS_ALLOC, gvar);				// And do the allocation
-	gvar->pm.xmm.XMSHandle = CPURegs.x.dx;
+	gvar->pm.xmm.XMSHandle = _DX;
 
-	if (!CPURegs.x.ax)				// AJR: bugfix 10/8/92
+	if (!_AX)				// AJR: bugfix 10/8/92
 	{
 		gvar->pm.xmm.XMSAvail = 0;
 		goto error;
@@ -340,12 +362,12 @@ PML_XMSCopy(boolean toxms,byte far *addr,word xmspage,word length, global_game_v
 	__asm {
 		push si
 	}
-	CPURegs.x.si = (word)&copy;
+	_SI = (word)&copy;
 	XMS_CALL(XMS_MOVE, gvar);
 	__asm {
 		pop	si
 	}
-	if (!CPURegs.x.ax)
+	if (!_AX)
 	{
 		Quit("PML_XMSCopy: Error on copy");
 		//return;
@@ -386,9 +408,9 @@ PML_ShutdownXMS(global_game_variables_t *gvar)
 	XMSD;
 	if (gvar->pm.xmm.XMSPresent)
 	{
-		CPURegs.x.dx = gvar->pm.xmm.XMSHandle;
+		_DX = gvar->pm.xmm.XMSHandle;
 		XMS_CALL(XMS_FREE, gvar);
-		if (CPURegs.h.bl)
+		if (_BL)
 		{
 			Quit("PML_ShutdownXMS: Error freeing XMS");
 			//return;
