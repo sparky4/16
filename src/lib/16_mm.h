@@ -67,15 +67,6 @@
 
 #define	XMS_INT			0x2f
 #define	XMSD			dword XMSDriver=gvar->pm.xmm.XMSDriver;
-inline void	XMS_CALL(byte v, global_game_variables_t *gvar)
-{
-	XMSD;
-	XMSDriver=gvar->pm.xmm.XMSDriver;
-	__asm {
-		mov v,ah
-		call [WORD PTR XMSDriver]
-	}
-}
 
 #define	XMS_VERSION		0x00
 
@@ -214,6 +205,7 @@ void MM_Report_(global_game_variables_t *gvar);
 void MM_BombOnError(boolean bomb, global_game_variables_t *gvar);
 //void MM_GetNewBlock(mminfo_t *mm);
 //void MM_FreeBlock(mmblocktype *x, mminfo_t *mm);
+void	XMS_CALL(byte v, global_game_variables_t *gvar);
 
 //==========================================================================
 

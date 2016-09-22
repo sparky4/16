@@ -73,8 +73,6 @@ void		(* XMSaddr) (void);		// far pointer to XMS driver
 =============================================================================
 */
 
-static	char *ParmStringsexmm[] = {"noems","noxms",""};
-
 /*
 ======================
 =
@@ -753,18 +751,18 @@ void MM_Startup(global_game_variables_t *gvar)
 {
 	int i;
 	//dword length,seglength;
-	dword length; word seglength;
+	dword length;
 	//huge void huge	*start;
 	void far	*start;
-	word	segstart;//,endfree;
+	word	segstart,seglength,endfree;
 	//memptr *peeonself;
 
 	if(gvar->mm.mmstarted)
 		MM_Shutdown(gvar);
 
+
 	gvar->mm.mmstarted = true;
 	gvar->mm.bombonerror = true;
-
 //
 // set up the linked list (everything in the free list;
 //
@@ -803,6 +801,8 @@ void MM_Startup(global_game_variables_t *gvar)
 	length=coreleft();
 	//huge start = (void huge *)(gvar->mm.nearheap = malloc(length));
 	start = (void far *)(gvar->mm.nearheap = malloc(length));
+	printf("Borland C unique function\n");
+	printf("	coreleft()				%lu\n", coreleft());
 #endif
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;
@@ -820,8 +820,8 @@ void MM_Startup(global_game_variables_t *gvar)
 	_fheapgrow();
 #endif
 #ifdef __BORLANDC__
-	printf("farcoreleft()				%lu\n", farcoreleft());
-	printf("(farcoreleft()+32)-_FCORELEFT	%d\n", (sword)((farcoreleft()+32)-_FCORELEFT));
+	printf("	farcoreleft()				%lu\n", farcoreleft());
+	printf("	(farcoreleft()+32)-_FCORELEFT	%d\n", (sword)((farcoreleft()+32)-_FCORELEFT));
 #endif
 	length=_FCORELEFT;//_fcoreleft();//(dword)GetFarFreeSize();//0xffffUL*4UL;
 	start = gvar->mm.farheap = _fmalloc(length);
@@ -832,34 +832,16 @@ void MM_Startup(global_game_variables_t *gvar)
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
 	MML_UseSpace(segstart,seglength, gvar);
 	gvar->mmi.farheap = length;
+	gvar->mmi.mainmem = gvar->mmi.nearheap + gvar->mmi.farheap;
 	//printf("start=%Fp	segstart=%x	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
 
-	gvar->mmi.mainmem = gvar->mmi.nearheap + gvar->mmi.farheap;
+goto xmsskip;	//INFO: 16_PM dose this job better
 
 //
 // detect EMS and allocate up to 64K at page frame
 //
 	gvar->mmi.EMSmem = 0;
 //goto emsskip;	//0000
-	for(i = 1;i <
-#ifdef __WATCOMC__
-	__argc
-#endif
-#ifdef __BORLANDC__
-	_argc
-#endif
-	;i++)
-	{
-		if(US_CheckParm(
-#ifdef __WATCOMC__
-	__argv[i]
-#endif
-#ifdef __BORLANDC__
-	_argv[i]
-#endif
-			,ParmStringsexmm) == 0)
-			goto emsskip;				// param NOEMS
-	}
 	if(MML_CheckForEMS())
 	{
 		MML_SetupEMS(gvar);					// allocate space
@@ -874,28 +856,9 @@ void MM_Startup(global_game_variables_t *gvar)
 //
 // detect XMS and get upper memory blocks
 //
-emsskip:
+//emsskip:
 	gvar->mmi.XMSmem = 0;
-goto xmsskip;//0000
-	for(i = 1;i <
-#ifdef __WATCOMC__
-	__argc
-#endif
-#ifdef __BORLANDC__
-	_argc
-#endif
-	;i++)
-	{
-		if(US_CheckParm(
-#ifdef __WATCOMC__
-	__argv[i]
-#endif
-#ifdef __BORLANDC__
-	_argv[i]
-#endif
-			,ParmStringsexmm) == 0)
-			goto xmsskip;				// param NOXMS
-	}
+//goto xmsskip;//0000
 	if(MML_CheckForXMS(gvar))
 	{
 		MML_SetupXMS(gvar);					// allocate as many UMBs as possible
@@ -1109,8 +1072,8 @@ void MM_FreePtr(memptr *baseptr, global_game_variables_t *gvar)
 
 void MM_SetPurge(memptr *baseptr, int purge, global_game_variables_t *gvar)
 {
-	//huge mmblocktype huge *start;
-	mmblocktype far *start;
+	 mmblocktype huge *start;
+	//mmblocktype far *start;
 
 	start = gvar->mm.mmrover;
 
@@ -1125,10 +1088,24 @@ void MM_SetPurge(memptr *baseptr, int purge, global_game_variables_t *gvar)
 			gvar->mm.mmrover = gvar->mm.mmhead;
 		else if(gvar->mm.mmrover == start)
 		{
-			//Quit("MM_SetPurge: Block not found!");
-			printf("%Fp	%u\n", start->start, start->length);
-			printf("MM_SetPurge: Block not found!\n");
-			exit(1);
+#ifdef __DEBUG_PM__
+			printf("\n\nstart->useptr	gvar->mm.mmhead->useptr\n");
+			printf("	%Fp	%Fp\n", start->useptr, gvar->mm.mmhead->useptr);
+			printf("&	%Fp	%Fp\n", &(start->useptr), &(gvar->mm.mmhead->useptr));
+			printf("baseptr			gvar->mm.mmrover->useptr\n");
+			printf("	%Fp	%Fp\n", baseptr, gvar->mm.mmrover->useptr);
+			printf("&	%Fp	%Fp\n", &(baseptr), &(gvar->mm.mmrover->useptr));
+			printf("*	%Fp	%Fp\n", *(baseptr), *(gvar->mm.mmrover->useptr));
+			printf("start		 	gvar->mm.mmrover gvar->mm.mmrover->next\n");
+			printf("	%Fp	%Fp	%Fp\n", start, gvar->mm.mmrover, gvar->mm.mmrover->next);
+			printf("&	%Fp	%Fp	%Fp\n", &start, &gvar->mm.mmrover, gvar->mm.mmrover->next);
+			getch();
+			MM_ShowMemory(gvar);
+			MM_DumpData(gvar);
+			MM_Report_(gvar);
+			getch();
+#endif
+			Quit("MM_SetPurge: Block not found!");
 			return;
 		}
 
@@ -1791,6 +1768,16 @@ void MM_FreeBlock(mmblocktype *x, global_game_variables_t *gvar)
 	x->next=gvar->mm.mmfree;
 	gvar->mm.mmfree=x;
 }*/
+
+void	XMS_CALL(byte v, global_game_variables_t *gvar)
+{
+	XMSD;
+	//XMSDriver=gvar->pm.xmm.XMSDriver;
+	__asm {
+		mov v,ah
+		call [WORD PTR XMSDriver]
+	}
+}
 
 /*void MM_seguin(void)
 {

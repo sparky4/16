@@ -152,6 +152,7 @@ static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 extern	int			profilehandle,debughandle;	//make it into game global
 
 #define __DEBUG__
+#define __DEBUG_PM__
 
 #define	nil	((void *)0)
 #ifdef __BORLANDC__
@@ -198,6 +199,7 @@ int US_CheckParm(char *parm,char **strings);
 #ifdef __BORLANDC__
 void Quit (char *error);
 #endif
+void	XMS_CALL(byte v, global_game_variables_t *gvar);
 byte dirchar(byte in);
 
 #endif/*_LIBHEAD_H_*/

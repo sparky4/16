@@ -137,62 +137,51 @@ PML_MapEMS(word logical, byte physical, global_game_variables_t *gvar)
 boolean
 PML_StartupEMS(global_game_variables_t *gvar)
 {
-	boolean emmcfems;
-
 	int		i;
 	long	size;
+	boolean	errorflag;
 
 	gvar->pm.emm.EMSPresent = false;			// Assume that we'll fail
 	gvar->pm.emm.EMSAvail = 0;
-	emmcfems=0;
+	errorflag=0;
 
+	_DX = (word)EMMDriverName;
+	_AX = 0x3d00;
+	geninterrupt(0x21);			// try to open EMMXXXX0 device
 	__asm {
-	//_DX = (word)EMMDriverName;
-	//_AX = 0x3d00;
-	//geninterrupt(0x21);			// try to open EMMXXXX0 device
-		mov	dx,OFFSET EMMDriverName
-		mov	ax,0x3d00
-		int	0x21		// try to open EMMXXXX0 device
-	 	jnc	gothandle
-	 	//fail
-		mov	emmcfems,1
-		jmp		Aend
-#ifdef __BORLANDC__
+		jnc	gothandle
+		mov	errorflag,1
+		gothandle:
 	}
-#endif
+	if(errorflag)
+		goto error;
 
-gothandle:
-#ifdef __BORLANDC__
+//gothandle:
+	_BX = _AX;
+	_AX = 0x4400;
+	geninterrupt(0x21);			// get device info
 	__asm {
-#endif
-	//_BX = _AX;
-	//_AX = 0x4400;
-	//geninterrupt(0x21);			// get device info
-		mov	bx,ax
-		mov	ax,0x4400
-		int	0x21			// get device info
 		jnc	gotinfo
-		//fail
-		mov	emmcfems,1
-		jmp		Aend
-#ifdef __BORLANDC__
+		mov	errorflag,1
+		gotinfo:
 	}
-#endif
-Aend:
-gotinfo:
-#ifndef __BORLANDC__
-	}
-#endif
-	if(emmcfems!=0) goto error;
-	__asm and	dx,0x80
+	if(errorflag)
+		goto error;
+
+//gotinfo:
+__asm	and	dx,0x80
 	if (!_DX)
 		goto error;
 
 	_AX = 0x4407;
 	geninterrupt(0x21);			// get status
-	__asm mov	emmcfems,1
-	if(emmcfems!=0) goto error;
-
+	__asm {
+		jc	error
+		jmp	end
+		error:
+		mov	errorflag,1
+		end:
+	}
 	if (!_AL)
 		goto error;
 
@@ -256,11 +245,16 @@ error:
 void
 PML_ShutdownEMS(global_game_variables_t *gvar)
 {
+	word EMSHandle;
+	EMSHandle=gvar->pm.emm.EMSHandle;
+
 	if (gvar->pm.emm.EMSPresent)
 	{
-			_AH=EMS_FREEPAGES;
-			_AX=gvar->pm.emm.EMSHandle;
-			geninterrupt(EMS_INT);
+		__asm {
+			mov	ah,EMS_FREEPAGES
+			mov	dx,[EMSHandle]
+			int	EMS_INT
+		}
 		if (_AH)
 		{
 			Quit("PML_ShutdownEMS: Error freeing EMS\n");
@@ -435,8 +429,15 @@ PM_SetMainMemPurge(int level, global_game_variables_t *gvar)
 	int	i;
 
 	for (i = 0;i < PMMaxMainMem;i++)
+	{
+#ifdef __DEBUG_PM__
+		printf("PM_SetMainMemPurge()	info of gvar->pm.mm.MainMemPages[i]\n");
+		printf("	%Fp,	%Fp\n", gvar->pm.mm.MainMemPages[i],		(gvar->pm.mm.MainMemPages[i]));
+		printf("&	%Fp,	%Fp\n", &gvar->pm.mm.MainMemPages[i],	&(gvar->pm.mm.MainMemPages[i]));
+#endif
 		if (gvar->pm.mm.MainMemPages[i])
-			MM_SetPurge(&gvar->pm.mm.MainMemPages[i],level, gvar);
+			MM_SetPurge((gvar->pm.mm.MainMemPages[i]),level, gvar);
+	}
 }
 
 //
