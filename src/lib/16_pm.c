@@ -293,7 +293,6 @@ PML_ShutdownEMS(global_game_variables_t *gvar)
 boolean
 PML_StartupXMS(global_game_variables_t *gvar)
 {
-	//XMSD;
 	gvar->pm.xmm.XMSPresent = false;					// Assume failure
 	gvar->pm.xmm.XMSAvail = 0;
 
@@ -343,9 +342,6 @@ error:
 void
 PML_XMSCopy(boolean toxms,byte far *addr,word xmspage,word length, global_game_variables_t *gvar)
 {
-#ifdef __WATCOMC__
-	//XMSD;
-#endif
 	dword	xoffset;
 	struct
 	{
@@ -416,7 +412,6 @@ PML_CopyFromXMS(byte far *target,int sourcepage,word length, global_game_variabl
 void
 PML_ShutdownXMS(global_game_variables_t *gvar)
 {
-	//XMSD;
 	if (gvar->pm.xmm.XMSPresent)
 	{
 		_DX = gvar->pm.xmm.XMSHandle;
@@ -821,7 +816,7 @@ PML_GiveLRUPage(boolean mainonly, global_game_variables_t *gvar)
 //
 //	PML_GiveLRUXMSPage() - Returns the page # of the least recently used
 //		(and present) XMS page.
-//	This routine won't return the XMS page protected (by gvar->pm.xmm.XMSProtectPage)
+//	This routine won't return the XMS page protected (by XMSProtectPage)
 //
 int
 PML_GiveLRUXMSPage(global_game_variables_t *gvar)
