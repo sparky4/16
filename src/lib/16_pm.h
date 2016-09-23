@@ -33,6 +33,8 @@
 #include "src/lib/16_mm.h"
 #include <dos.h>
 
+extern boolean pmdebug;
+
 /*//	NOTE! PMPageSize must be an even divisor of EMSPageSize, and >= 1024
 #define	EMSPageSize		16384
 #define	EMSPageSizeSeg	(EMSPageSize >> 4)
@@ -110,5 +112,5 @@ extern	void	PM_Startup(global_game_variables_t *gvar),
 extern	memptr	PM_GetPageAddress(int pagenum, global_game_variables_t *gvar),
 				PM_GetPage(int pagenum, global_game_variables_t *gvar);		// Use this one to cache page
 
-//void PM_SetMainMemPurge(int level, global_game_variables_t *gvar);
+void PM_SetMainMemPurge(int level, global_game_variables_t *gvar);
 #endif

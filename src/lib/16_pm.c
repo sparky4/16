@@ -29,6 +29,8 @@
 #include "src/lib/16_pm.h"
 #pragma hdrstop
 
+boolean pmdebug=0;
+
 /*
 //	Main Mem specific variables
 	boolean			MainPresent;

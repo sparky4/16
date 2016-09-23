@@ -86,6 +86,7 @@ main(int argc, char *argv[])
 	//file name //
 
 	gvar.mm.mmstarted=0;
+	pmdebug=0;
 
 	//PRINTBB
 	if(argv[1]){ bakapee1 = argv[1];
@@ -97,11 +98,12 @@ main(int argc, char *argv[])
 	}
 	//printf("main()=%Fp	start MM\n", *argv[0]);
 	MM_Startup(&gvar);
-#ifdef __DEBUG_PM__
-	PM_Startup(&gvar);
-	//PM_CheckMainMem(&gvar);
-	PM_UnlockMainMem(&gvar);
-#endif
+	if(pmdebug>0)
+	{
+		PM_Startup(&gvar);
+		PM_CheckMainMem(&gvar);
+		PM_UnlockMainMem(&gvar);
+	}
 	CA_Startup(&gvar);
 //	printf("		done!\n");
 	PRINTBB;
@@ -149,9 +151,8 @@ for(w=0;w<2;w++)
 	printf("bakapee1=%s\n", bakapee1);
 	printf("bakapee2=%s\n", bakapee2);
 	MM_FreePtr(&bigbuffer, &gvar);
-#ifdef __DEBUG_PM__
-	PM_Shutdown(&gvar);
-#endif
+	if(pmdebug>0)
+		PM_Shutdown(&gvar);
 	CA_Shutdown(&gvar);
 	MM_Shutdown(&gvar);
 	free(bakapee1); free(bakapee2);
