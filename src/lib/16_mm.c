@@ -47,6 +47,7 @@ Open Watcom port by sparky4
 
 */
 #include "src/lib/16_mm.h"
+#include "src/lib/16_pm.h"
 #include "src/lib/16_ca.h"
 #pragma hdrstop
 
@@ -836,6 +837,8 @@ void MM_Startup(global_game_variables_t *gvar)
 
 	gvar->mmi.mainmem = gvar->mmi.nearheap + gvar->mmi.farheap;
 
+	if(pmdebug>0)
+	{
 //
 // detect EMS and allocate up to 64K at page frame
 //
@@ -900,7 +903,7 @@ goto xmsskip;//0000
 	{
 		MML_SetupXMS(gvar);					// allocate as many UMBs as possible
 	}
-
+	}
 //
 // allocate the misc buffer
 //
