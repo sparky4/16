@@ -47,7 +47,6 @@ Open Watcom port by sparky4
 
 */
 #include "src/lib/16_mm.h"
-#include "src/lib/16_pm.h"
 #include "src/lib/16_ca.h"
 #pragma hdrstop
 
@@ -837,8 +836,7 @@ void MM_Startup(global_game_variables_t *gvar)
 
 	gvar->mmi.mainmem = gvar->mmi.nearheap + gvar->mmi.farheap;
 
-	if(pmdebug>0)
-	{
+	if(!pmdebug) {
 //
 // detect EMS and allocate up to 64K at page frame
 //
@@ -937,8 +935,10 @@ void MM_Shutdown(global_game_variables_t *gvar)
 #ifdef __BORLANDC__
 	free(gvar->mm.nearheap);//	printf("		near freed\n");
 #endif
+	if(!pmdebug) {
 	if(MML_CheckForEMS()){ MML_ShutdownEMS(gvar); }//printf("		EMS freed\n"); }
 	if(MML_CheckForXMS(gvar)){ MML_ShutdownXMS(gvar); }//printf("		XMS freed\n"); }
+	}
 }
 
 //==========================================================================

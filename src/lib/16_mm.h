@@ -27,6 +27,7 @@
 #include "src/lib/16_hc.h"
 #include "src/lib/16_lib.h"
 //++++mh	#include "src/lib/16_in.h"
+extern boolean pmdebug;
 
 
 #ifdef __DEBUG__		// 1 == Debug/Dev  ;  0 == Production/final
