@@ -1348,10 +1348,7 @@ PM_Startup(global_game_variables_t *gvar)
 	int		i;
 
 	if (PMStarted)
-	{
-		printf("pee\n");
 		return;
-	}
 
 	strcpy(&(gvar->pm.fi.PageFileName), "VSWAP.");
 

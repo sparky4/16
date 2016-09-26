@@ -236,7 +236,7 @@ typedef	struct
 //	Main Mem specific variables
 typedef struct
 {
-//	boolean			MainPresent;
+	boolean			MainPresent;
 	memptr			MainMemPages[PMMaxMainMem];
 	PMBlockAttr		MainMemUsed[PMMaxMainMem];
 	int				MainPagesAvail;
@@ -245,7 +245,7 @@ typedef struct
 //	EMS specific variables
 typedef struct
 {
-//	boolean			EMSPresent;
+	boolean			EMSPresent;
 	unsigned int			EMSVer;
 	word			EMSAvail,EMSPagesAvail,EMSHandle,
 					EMSPageFrame,EMSPhysicalPage;
@@ -256,7 +256,7 @@ typedef struct
 //	XMS specific variables
 typedef struct
 {
-//	boolean			XMSPresent;
+	boolean			XMSPresent;
 	word			XMSAvail,XMSPagesAvail,XMSHandle;
 	dword			XMSDriver;	//TODO: changed to word
 	int				XMSProtectPage;// = -1;
