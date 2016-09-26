@@ -157,8 +157,8 @@ byte MML_SetupEMS(global_game_variables_t *gvar)
 
 	unsigned int EMSVer = 0;
 	//byte	EMS_status;
-	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
-	totalEMSpages = freeEMSpages = EMSpageframe = EMSpagesmapped = 0;
+	unsigned	totalEMSpages,freeEMSpages,EMSPageFrame,EMSpagesmapped,EMSHandle;
+	totalEMSpages = freeEMSpages = EMSPageFrame = EMSpagesmapped = 0;
 
 	__asm {
 		mov	ah,EMS_STATUS
@@ -179,7 +179,7 @@ byte MML_SetupEMS(global_game_variables_t *gvar)
 		int	EMS_INT						// find the page frame address
 		or	ah,ah
 		jnz	error
-		mov	[EMSpageframe],bx
+		mov	[EMSPageFrame],bx
 
 		mov	ah,EMS_GETPAGES
 		int	EMS_INT						// find out how much EMS is there
@@ -218,7 +218,7 @@ byte MML_SetupEMS(global_game_variables_t *gvar)
 		int	EMS_INT
 		or	ah,ah
 		jnz	error
-		mov	[EMShandle],dx
+		mov	[EMSHandle],dx
 		jmp End
 #ifdef __BORLANDC__
 	}
@@ -247,9 +247,9 @@ End:
 	}
 	gvar->mm.totalEMSpages=totalEMSpages;
 	gvar->mm.freeEMSpages=freeEMSpages;
-	gvar->mm.EMSpageframe=EMSpageframe;
+	gvar->mm.EMSPageFrame=EMSPageFrame;
 	gvar->mm.EMSpagesmapped=EMSpagesmapped;
-	gvar->mm.EMShandle=EMShandle;
+	gvar->mm.EMSHandle=EMSHandle;
 	gvar->mm.EMSVer=EMSVer;
 	return 0;
 }
@@ -266,13 +266,13 @@ End:
 void MML_ShutdownEMS(global_game_variables_t *gvar)
 {
 	boolean errorflag=false;
-	unsigned EMShandle=gvar->mm.EMShandle;
+	unsigned EMSHandle=gvar->mm.EMSHandle;
 
-	if(!EMShandle)
+	if(!EMSHandle)
 		return;
 	__asm {
 		mov	ah,EMS_FREEPAGES
-		mov	dx,[EMShandle]
+		mov	dx,[EMSHandle]
 		int	EMS_INT
 		or	ah,ah
 		jz	ok
@@ -303,11 +303,11 @@ void MML_ShutdownEMS(global_game_variables_t *gvar)
 byte MM_MapEMS(global_game_variables_t *gvar)
 {
 	byte	str[160];
-	unsigned	EMShandle;
+	unsigned	EMSHandle;
 	byte err;
 	boolean	errorflag=false;
 	int	i;
-	EMShandle=gvar->mm.EMShandle;
+	EMSHandle=gvar->mm.EMSHandle;
 
 	for (i=0;i<4/*MAPPAGES*/;i++)
 	{
@@ -315,7 +315,7 @@ byte MM_MapEMS(global_game_variables_t *gvar)
 			mov	ah,EMS_MAPPAGE
 			mov	bx,[i]			// logical page
 			mov	al,bl			// physical page
-			mov	dx,[EMShandle]	// handle
+			mov	dx,[EMSHandle]	// handle
 			int	EMS_INT
 			or	ah,ah
 			jnz	error
@@ -375,10 +375,10 @@ byte MM_MapXEMS(global_game_variables_t *gvar)
 //END SUB
 	byte	str[160];
 	byte err;
-	word	EMShandle;
+	word	EMSHandle;
 	boolean	errorflag=false;
 	int	i;
-	EMShandle=gvar->mm.EMShandle;
+	EMSHandle=gvar->mm.EMSHandle;
 
 	if(gvar->mm.EMSVer<0x40)
 		return 5;
@@ -389,7 +389,7 @@ byte MM_MapXEMS(global_game_variables_t *gvar)
 			mov	ah,EMS_MAPXPAGE
 			mov	cx,[i]			// logical page
 			mov	al,bl			// physical page
-			mov	dx,[EMShandle]	// handle
+			mov	dx,[EMSHandle]	// handle
 			int	EMS_INT
 			or	ah,ah
 			jnz	error
@@ -836,7 +836,9 @@ void MM_Startup(global_game_variables_t *gvar)
 
 	gvar->mmi.mainmem = gvar->mmi.nearheap + gvar->mmi.farheap;
 
-	if(!pmdebug) {
+#ifdef __DEBUG__
+	if(!debugpm) {
+#endif
 //
 // detect EMS and allocate up to 64K at page frame
 //
@@ -865,7 +867,7 @@ void MM_Startup(global_game_variables_t *gvar)
 	{
 		MML_SetupEMS(gvar);					// allocate space
 		//TODO: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!
-		MML_UseSpace(gvar->mm.EMSpageframe,(MAPPAGES)*0x4000lu, gvar);
+		MML_UseSpace(gvar->mm.EMSPageFrame,(MAPPAGES)*0x4000lu, gvar);
 		//if(gvar->pm.emm.EMSVer<0x40)
 			MM_MapEMS(gvar);					// map in used pages
 		//else
@@ -901,7 +903,9 @@ goto xmsskip;//0000
 	{
 		MML_SetupXMS(gvar);					// allocate as many UMBs as possible
 	}
+#ifdef __DEBUG__
 	}
+#endif
 //
 // allocate the misc buffer
 //
@@ -935,10 +939,14 @@ void MM_Shutdown(global_game_variables_t *gvar)
 #ifdef __BORLANDC__
 	free(gvar->mm.nearheap);//	printf("		near freed\n");
 #endif
-	if(!pmdebug) {
+#ifdef __DEBUG__
+	if(!debugpm) {
+#endif
 	if(MML_CheckForEMS()){ MML_ShutdownEMS(gvar); }//printf("		EMS freed\n"); }
 	if(MML_CheckForXMS(gvar)){ MML_ShutdownXMS(gvar); }//printf("		XMS freed\n"); }
+#ifdef __DEBUG__
 	}
+#endif
 }
 
 //==========================================================================
@@ -966,10 +974,12 @@ void MM_GetPtr (memptr *baseptr, dword size, global_game_variables_t *gvar)
 	gvar->mm.mmnew->length = needed;
 	gvar->mm.mmnew->useptr = baseptr;
 	//if(gvar->mm.mmnew->useptr==NULL){
-#ifdef __DEBUG__
-		printf("baseptr=%04x	", baseptr); printf("useptr=%04x\n", gvar->mm.mmnew->useptr);
-		printf("*baseptr=%04x	", *baseptr); printf("*useptr=%04x\n", *(gvar->mm.mmnew->useptr));
-		printf("*baseptr=%Fp	", *baseptr); printf("*useptr=%Fp\n", *(gvar->mm.mmnew->useptr));
+#ifdef __DEBUG_MM__
+		printf("MM_GetPtr\n");
+		//%04x
+		printf("	baseptr=%Fp	", baseptr); printf("useptr=%Fp\n", gvar->mm.mmnew->useptr);
+		printf("	*baseptr=%Fp	", *baseptr); printf("*useptr=%Fp\n", *(gvar->mm.mmnew->useptr));
+		printf("	&baseptr=%Fp	", &baseptr); printf("&useptr=%Fp\n", &(gvar->mm.mmnew->useptr));
 #endif
 	//exit(-5); }
 	gvar->mm.mmnew->attributes = BASEATTRIBUTES;
@@ -1108,6 +1118,7 @@ void MM_FreePtr(memptr *baseptr, global_game_variables_t *gvar)
 =
 =====================
 */
+
 
 void MM_SetPurge(memptr *baseptr, int purge, global_game_variables_t *gvar)
 {
@@ -1610,7 +1621,7 @@ void MM_Report_(global_game_variables_t *gvar)
 		printf("	LIMEMS\n");
 		printf("		EMM v%x.%x available\n", gvar->mm.EMSVer>>4,gvar->mm.EMSVer&0x0F);
 		printf("		totalEMSpages:	%u	", gvar->mm.totalEMSpages); printf("freeEMSpages:	%u\n", gvar->mm.freeEMSpages);
-		printf("		EMSpageframe:	%x\n", gvar->mm.EMSpageframe);
+		printf("		EMSPageFrame:	%x\n", gvar->mm.EMSPageFrame);
 	}
 	if(MML_CheckForXMS(gvar))
 	{

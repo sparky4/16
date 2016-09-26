@@ -155,6 +155,7 @@ typedef struct mmblockstruct
 typedef struct
 {
 	dword	nearheap,farheap,EMSmem,XMSmem,mainmem;
+//	boolean		PMStarted, MainPresent, EMSPresent, XMSPresent;
 } mminfotype;
 
 typedef struct
@@ -169,9 +170,9 @@ typedef struct
 #ifdef __WATCOMC__
 	void __near	*nearheap;
 #endif
-	//byte		EMS_status;
+	unsigned int		EMSVer;
 	word numUMBs,UMBbase[MAXUMBS];
-	word			totalEMSpages, freeEMSpages, EMSpagesmapped, EMShandle, EMSpageframe,EMSVer;
+	word			totalEMSpages, freeEMSpages, EMSpagesmapped, EMSHandle, EMSPageFrame;
 	//dword	numUMBs,UMBbase[MAXUMBS];
 	//huge mmblocktype	huge mmblocks[MAXBLOCKS],huge *mmhead,huge *mmfree,huge *mmrover,huge *mmnew;
 	mmblocktype	far mmblocks[MAXBLOCKS],far *mmhead,far *mmfree,far *mmrover,far *mmnew;
@@ -235,7 +236,7 @@ typedef	struct
 //	Main Mem specific variables
 typedef struct
 {
-	boolean			MainPresent;
+//	boolean			MainPresent;
 	memptr			MainMemPages[PMMaxMainMem];
 	PMBlockAttr		MainMemUsed[PMMaxMainMem];
 	int				MainPagesAvail;
@@ -244,9 +245,10 @@ typedef struct
 //	EMS specific variables
 typedef struct
 {
-	boolean			EMSPresent;
+//	boolean			EMSPresent;
+	unsigned int			EMSVer;
 	word			EMSAvail,EMSPagesAvail,EMSHandle,
-					EMSPageFrame,EMSPhysicalPage, EMSVer;
+					EMSPageFrame,EMSPhysicalPage;
 	word			totalEMSpages, freeEMSpages, EMSpagesmapped;
 	EMSListStruct	EMSList[EMSFrameCount];
 } pm_emmi_t;
@@ -254,7 +256,7 @@ typedef struct
 //	XMS specific variables
 typedef struct
 {
-	boolean			XMSPresent;
+//	boolean			XMSPresent;
 	word			XMSAvail,XMSPagesAvail,XMSHandle;
 	dword			XMSDriver;	//TODO: changed to word
 	int				XMSProtectPage;// = -1;

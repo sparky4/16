@@ -27,11 +27,10 @@
 #include "src/lib/16_hc.h"
 #include "src/lib/16_lib.h"
 //++++mh	#include "src/lib/16_in.h"
-extern boolean pmdebug;
-
 
 #ifdef __DEBUG__		// 1 == Debug/Dev  ;  0 == Production/final
 #define OUT_OF_MEM_MSG	"MM_GetPtr: Out of memory!\nYou were short :%lu bytes\n"
+extern boolean debugpm;
 #else
 #define OUT_OF_MEM_MSG	"\npee\n"
 #endif
@@ -106,7 +105,7 @@ extern boolean pmdebug;
 
 extern	void		(* beforesort) (void);
 extern	void		(* aftersort) (void);
-extern void		(* XMSaddr) (void);		// far pointer to XMS driver
+extern	void		(* XMSaddr) (void);		// far pointer to XMS driver
 
 //==========================================================================
 
