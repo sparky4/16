@@ -86,7 +86,7 @@ main(int argc, char *argv[])
 	//file name //
 
 	gvar.mm.mmstarted=0;
-	debugpm=0;
+	debugpm=1;
 
 	//PRINTBB
 	if(argv[1]){ bakapee1 = argv[1];

@@ -679,7 +679,10 @@ PML_OpenPageFile(global_game_variables_t *gvar)
 	gvar->pm.fi.PageFile = open(gvar->pm.fi.PageFileName,O_RDONLY + O_BINARY);
 	if (gvar->pm.fi.PageFile == -1)
 	{
-		Quit("PML_OpenPageFile: Unable to open page file");
+		//Quit("PML_OpenPageFile: Unable to open page file");
+		printf("PML_OpenPageFile: Unable to open page file");
+		printf(": %s\n", gvar->pm.fi.PageFileName);
+		exit(-1);
 		//return;
 	}
 
@@ -1350,7 +1353,7 @@ PM_Startup(global_game_variables_t *gvar)
 		return;
 	}
 
-	strcat(&(gvar->pm.fi.PageFileName), "VSWAP.");
+	strcpy(&(gvar->pm.fi.PageFileName), "VSWAP.");
 
 	nomain = noems = noxms = false;
 	for (i = 1;i <
