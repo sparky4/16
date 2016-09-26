@@ -31,6 +31,7 @@
 #include "src/lib/16_head.h"
 #include "src/lib/16_hc.h"
 #include "src/lib/16_mm.h"
+#include "src/lib/16_ca.h"
 #include <dos.h>
 
 #ifdef __DEBUG__
