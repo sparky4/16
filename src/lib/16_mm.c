@@ -836,9 +836,8 @@ void MM_Startup(global_game_variables_t *gvar)
 
 	gvar->mmi.mainmem = gvar->mmi.nearheap + gvar->mmi.farheap;
 
-#ifdef __DEBUG__
+#ifndef __16_PM__
 	if(!debugpm) {
-#endif
 //
 // detect EMS and allocate up to 64K at page frame
 //
@@ -903,7 +902,7 @@ goto xmsskip;//0000
 	{
 		MML_SetupXMS(gvar);					// allocate as many UMBs as possible
 	}
-#ifdef __DEBUG__
+
 	}
 #endif
 //
@@ -1619,9 +1618,9 @@ void MM_Report_(global_game_variables_t *gvar)
 	if(MML_CheckForEMS())
 	{
 		printf("	LIMEMS\n");
-		printf("		EMM v%x.%x available\n", gvar->mm.EMSVer>>4,gvar->mm.EMSVer&0x0F);
-		printf("		totalEMSpages:	%u	", gvar->mm.totalEMSpages); printf("freeEMSpages:	%u\n", gvar->mm.freeEMSpages);
-		printf("		EMSPageFrame:	%x\n", gvar->mm.EMSPageFrame);
+		printf("		EMM v%x.%x available\n", gvar->pm.emm.EMSVer>>4,gvar->pm.emm.EMSVer&0x0F);
+		printf("		totalEMSpages:	%u	", gvar->pm.emm.totalEMSpages); printf("freeEMSpages:	%u\n", gvar->pm.emm.freeEMSpages);
+		printf("		EMSPageFrame:	%x\n", gvar->pm.emm.EMSPageFrame);
 	}
 	if(MML_CheckForXMS(gvar))
 	{
@@ -1629,7 +1628,7 @@ void MM_Report_(global_game_variables_t *gvar)
 		printf("		XMSaddr:	%X\n", *XMSaddr);
 	}
 	printf("near:	%lu	", gvar->mmi.nearheap); printf("far:	%lu\n", gvar->mmi.farheap); if(MML_CheckForEMS())
-	printf("EMSmem:	%lu	", gvar->mmi.EMSmem); if(MML_CheckForXMS(gvar)) printf("XMSmem:	%lu", gvar->mmi.XMSmem); printf("\n");
+	printf("EMSmem:	%lu	", gvar->pm.emm.EMSAvail/*gvar->mmi.EMSmem*/); if(MML_CheckForXMS(gvar)) printf("XMSmem:	%lu", gvar->mmi.XMSmem); printf("\n");
 	//printf("mainmem:	%lu\n", gvar->mmi.mainmem);
 	printf("Total convmem:	%lu	", gvar->mmi.mainmem); printf("TotalFree:	%lu	", MM_TotalFree(gvar)); printf("TotalUsed:	%lu\n", gvar->mmi.mainmem+gvar->mmi.EMSmem+gvar->mmi.XMSmem+gvar->mmi.XMSmem);
 	printf("			UnusedMemory:	%lu\n", MM_UnusedMemory(gvar));

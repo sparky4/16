@@ -88,7 +88,7 @@ void Quit (char *error)
 
 	if (error && *error)
 	{
-	  movedata ((unsigned)screen,7,0xb800,0,7*160);
+	  //movedata ((unsigned)screen,7,0xb800,0,7*160);
 	  //gotoxy (10,4);
 	  fprintf(stderr, "%s\n", error);
 	  //gotoxy (1,8);

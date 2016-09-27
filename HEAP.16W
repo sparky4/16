@@ -1,47 +1,47 @@
 
 	== default ==
 
-  USED block at 28020016 of size 66
-  USED block at 28020058 of size 66
-  FREE block at 2802009a of size 18
-  USED block at 280200ac of size 136
-  USED block at 28020134 of size 20
-  FREE block at 28020148 of size 7860
+  USED block at 27fb0016 of size 66
+  USED block at 27fb0058 of size 66
+  USED block at 27fb009a of size 136
+  FREE block at 27fb0122 of size 18
+  USED block at 27fb0134 of size 20
+  FREE block at 27fb0148 of size 7860
 OK - end of heap
 
 	== near ==
 
-  USED block at 180194d6 of size 12
-  USED block at 180194e2 of size 332
-  USED block at 1801962e of size 52
-  USED block at 18019662 of size 20
-  USED block at 18019676 of size 20
-  USED block at 1801968a of size 20
-  USED block at 1801969e of size 20
-  USED block at 180196b2 of size 20
-  USED block at 180196c6 of size 26934
+  USED block at 17fae436 of size 12
+  USED block at 17fae442 of size 332
+  USED block at 17fae58e of size 52
+  USED block at 17fae5c2 of size 20
+  USED block at 17fae5d6 of size 20
+  USED block at 17fae5ea of size 20
+  USED block at 17fae5fe of size 20
+  USED block at 17fae612 of size 20
+  USED block at 17fae626 of size 6614
 OK - end of heap
 
 	== far ==
 
-  USED block at 28020016 of size 66
-  USED block at 28020058 of size 66
-  USED block at 2802009a of size 18
-  USED block at 280200ac of size 136
-  USED block at 28020134 of size 20
-  USED block at 28020148 of size 7860
+  USED block at 27fb0016 of size 66
+  USED block at 27fb0058 of size 66
+  USED block at 27fb009a of size 136
+  USED block at 27fb0122 of size 18
+  USED block at 27fb0134 of size 20
+  USED block at 27fb0148 of size 7860
 OK - end of heap
 
 Memory Type         Total      Used       Free
 ----------------  --------   --------   --------
 Default		   8166		288	  7878
-Near		   27430	496	  26934
-Far		   8166		288	  7878
+Near		   7110		496	  6614
+Far		   8166		0	  7878
 ----------------  --------   --------   --------
-coreleft = 26932
-farcoreleft = 51040
+coreleft = 6612
+farcoreleft = 30720
 GetFreeSize = 24128
-GetNearFreeSize = 26934
+GetNearFreeSize = 6614
 GetFarFreeSize = 24128
-memavl = 26932
-stackavail = 11268
+memavl = 6612
+stackavail = 31588

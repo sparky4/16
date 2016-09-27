@@ -34,20 +34,20 @@ boolean debugpm=0;
 #endif
 
 //	Main Mem specific variables
-/*	boolean			MainPresent;
-	memptr			MainMemPages[PMMaxMainMem];
+	boolean			MainPresent;
+/*	memptr			MainMemPages[PMMaxMainMem];
 	PMBlockAttr		gvar->pm.mm.MainMemUsed[PMMaxMainMem];
-	int				gvar->pm.mm.MainPagesAvail;
+	int				gvar->pm.mm.MainPagesAvail;*/
 
 //	EMS specific variables
 	boolean			EMSPresent;
-	word			gvar->pm.emm.EMSAvail,gvar->pm.emm.EMSPagesAvail,gvar->pm.emm.EMSHandle,
+/*	word			gvar->pm.emm.EMSAvail,gvar->pm.emm.EMSPagesAvail,gvar->pm.emm.EMSHandle,
 					gvar->pm.emm.EMSPageFrame,gvar->pm.emm.EMSPhysicalPage;
-	gvar->pm.emm.EMSListStruct	gvar->pm.emm.EMSList[EMSFrameCount];
+	gvar->pm.emm.EMSListStruct	gvar->pm.emm.EMSList[EMSFrameCount];*/
 
 //	XMS specific variables
 	boolean			XMSPresent;
-	word			gvar->pm.xmm.XMSAvail,gvar->pm.xmm.XMSPagesAvail,gvar->pm.xmm.XMSHandle;*/
+	//word			gvar->pm.xmm.XMSAvail,gvar->pm.xmm.XMSPagesAvail,gvar->pm.xmm.XMSHandle;
 	word		XMSDriver;
 /*	int				gvar->pm.xmm.XMSProtectPage = -1;
 
@@ -55,10 +55,10 @@ boolean debugpm=0;
 	char			gvar->pm.fi.PageFileName[13] = {"VSWAP."};
 	int				PageFile = -1;
 	word			gvar->pm.fi.ChunksInFile;
-	word			PMSpriteStart,PMSoundStart;
+	word			PMSpriteStart,PMSoundStart;*/
 
 //	General usage variables
-	boolean			PMStarted,
+	boolean			PMStarted;/*,
 					gvar->pm.PMPanicMode,
 					gvar->pm.PMThrashing;
 	word			gvar->pm.XMSPagesUsed,
@@ -67,9 +67,8 @@ boolean debugpm=0;
 					gvar->pm.PMNumBlocks;
 	long			PMFrameCount;
 	PageListStruct	far *gvar->pm.PMPages,
-					_seg *gvar->pm.PMSegPages;
-*/
-boolean		PMStarted, MainPresent, EMSPresent, XMSPresent;
+					_seg *gvar->pm.PMSegPages;*/
+
 static	char		*ParmStrings[] = {"nomain","noems","noxms",nil};
 
 /////////////////////////////////////////////////////////////////////////////
@@ -141,7 +140,7 @@ PML_StartupEMS(global_game_variables_t *gvar)
 {
 	int		i;
 	long	size;
-	byte	str[160];
+	byte	str[64];
 	byte err;
 
 	boolean errorflag=0;
@@ -226,6 +225,7 @@ End1:
 #ifdef __WATCOMC__
 	}
 #endif
+/*
 	if(errorflag==false)
 	{
 		// Don't hog all available EMS
@@ -236,7 +236,7 @@ End1:
 			gvar->pm.emm.EMSAvail = size / EMSPageSize;
 		}
 	}
-
+*/
 	__asm {
 		mov	ah,EMS_ALLOCPAGES
 		mov	bx,[EMSAvail];
@@ -285,6 +285,8 @@ End2:
 	gvar->pm.emm.EMSAvail = EMSAvail;
 	gvar->pm.emm.EMSVer = EMSVer;
 	gvar->pm.emm.EMSHandle = EMSHandle;
+	gvar->pm.emm.freeEMSpages = freeEMSpages;
+	gvar->pm.emm.totalEMSpages = totalEMSpages;
 
 	return(EMSPresent);
 }
@@ -296,6 +298,10 @@ void
 PML_ShutdownEMS(global_game_variables_t *gvar)
 {
 	word EMSHandle;
+	byte err;
+	byte	str[64];
+	boolean errorflag=false;
+
 	EMSHandle=gvar->pm.emm.EMSHandle;
 
 	if (EMSPresent)
@@ -304,9 +310,30 @@ PML_ShutdownEMS(global_game_variables_t *gvar)
 			mov	ah,EMS_FREEPAGES
 			mov	dx,[EMSHandle]
 			int	EMS_INT
+			jc	errors
+			jmp	Ends
+#ifdef __BORLANDC__
 		}
-		if (_AH)
+#endif
+			errors:
+#ifdef __BORLANDC__
+		__asm {
+#endif
+			mov	err,ah
+			mov	errorflag,1
+			jmp Ends
+#ifdef __BORLANDC__
+		}
+#endif
+		Ends:
+#ifdef __WATCOMC__
+		}
+#endif
+		if(errorflag==true)
 		{
+			strcpy(str,"PML_ShutdownEMS: Error freeing EMS ");
+			MM_EMSerr(str, err);
+			printf("%s\n",str);
 			Quit("PML_ShutdownEMS: Error freeing EMS\n");
 			//return;
 		}
@@ -480,11 +507,7 @@ PM_SetMainMemPurge(int level, global_game_variables_t *gvar)
 	{
 #ifdef __DEBUG_PM__
 		printf("PM_SetMainMemPurge()	info of gvar->pm.mm.MainMemPages[i]\n");
-		//printf("	%Fp,	%Fp\n", gvar->pm.mm.MainMemPages[i],		(gvar->pm.mm.MainMemPages[i]));
 		printf("&	%Fp,	%Fp\n", &gvar->pm.mm.MainMemPages[i],	&(gvar->pm.mm.MainMemPages[i]));
-		//MM_ShowMemory(gvar);
-		//MM_DumpData(gvar);
-		//MM_Report_(gvar);
 #endif
 		if (gvar->pm.mm.MainMemPages[i])
 			MM_SetPurge(&(gvar->pm.mm.MainMemPages[i]),level, gvar);
@@ -492,9 +515,7 @@ PM_SetMainMemPurge(int level, global_game_variables_t *gvar)
 
 	else
 	{
-		printf("MainPresent IS NULL\n");
-		printf("%x	", MainPresent);
-		exit(-4);
+		Quit("MainPresent IS NULL\n");
 	}
 }
 
@@ -679,10 +700,7 @@ PML_OpenPageFile(global_game_variables_t *gvar)
 	gvar->pm.fi.PageFile = open(gvar->pm.fi.PageFileName,O_RDONLY + O_BINARY);
 	if (gvar->pm.fi.PageFile == -1)
 	{
-		//Quit("PML_OpenPageFile: Unable to open page file");
-		printf("PML_OpenPageFile: Unable to open page file");
-		printf(": %s\n", gvar->pm.fi.PageFileName);
-		exit(-1);
+		Quit("PML_OpenPageFile: Unable to open page file");
 		//return;
 	}
 
@@ -1383,19 +1401,18 @@ PM_Startup(global_game_variables_t *gvar)
 		}
 	}
 
-	PML_OpenPageFile(gvar);
+	//0000++++PML_OpenPageFile(gvar);
 
 	if (!noems)
 		PML_StartupEMS(gvar);
 	if (!noxms)
-		PML_StartupXMS(gvar);
+		//++++PML_StartupXMS(gvar);	//TODO: convert
 
-	if (nomain && !EMSPresent)
+	if (!nomain && !EMSPresent)
 	{
 		Quit("PM_Startup: No main or EMS\n");
 		//return;
 	}
-	printf("PML_StartupMainMem\n");
 	PML_StartupMainMem(gvar);
 
 	PM_Reset(gvar);

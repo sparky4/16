@@ -67,7 +67,7 @@ void
 main(int argc, char *argv[])
 {
 	byte w=1;
-	global_game_variables_t gvar;
+	static global_game_variables_t gvar;
 #ifdef __WATCOMC__
 	__segment sega;
 #endif
@@ -86,7 +86,7 @@ main(int argc, char *argv[])
 	//file name //
 
 	gvar.mm.mmstarted=0;
-	debugpm=1;
+	debugpm=1;	//debug pm
 
 	//PRINTBB
 	if(argv[1]){ bakapee1 = argv[1];
@@ -96,11 +96,13 @@ main(int argc, char *argv[])
 		bakapee1 = "data/koishi~.pcx";
 		bakapee2 = "data/test.map";
 	}
-	//printf("main()=%Fp	start MM\n", *argv[0]);
+	printf("main()=%Fp	start MM\n", *argv[0]);
 	MM_Startup(&gvar);
+	printf("ok\n");
 	if(debugpm>0)
 	{
 		PM_Startup(&gvar);
+		printf("pmstarted ok\n");
 		//PM_CheckMainMem(&gvar);
 		PM_UnlockMainMem(&gvar);
 	}
