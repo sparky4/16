@@ -1368,7 +1368,7 @@ PM_Startup(global_game_variables_t *gvar)
 	if (PMStarted)
 		return;
 
-	strcpy(&(gvar->pm.fi.PageFileName), "VSWAP.");
+	//strcpy(&(gvar->pm.fi.PageFileName), "VSWAP.");
 
 	nomain = noems = noxms = false;
 	for (i = 1;i <
