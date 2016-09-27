@@ -1626,7 +1626,7 @@ void MM_Report_(global_game_variables_t *gvar)
 		printf("	XMS\n");
 		printf("		XMSaddr:	%X\n", *XMSaddr);
 	}
-	printf("near:	%lu	", gvar->mmi.nearheap); printf("far:	%lu\n", gvar->mmi.farheap); if(MML_CheckForEMS())
+	printf("near:	%lu		", gvar->mmi.nearheap); printf("far:	%lu\n", gvar->mmi.farheap); if(MML_CheckForEMS())
 	printf("EMSmem:	%lu	", gvar->mmi.EMSmem); if(MML_CheckForXMS(gvar)) printf("XMSmem:	%lu", gvar->mmi.XMSmem); printf("\n");
 	//printf("mainmem:	%lu\n", gvar->mmi.mainmem);
 	printf("Total convmem:	%lu	", gvar->mmi.mainmem); printf("TotalFree:	%lu	", MM_TotalFree(gvar)); printf("TotalUsed:	%lu\n", gvar->mmi.mainmem+gvar->mmi.EMSmem+gvar->mmi.XMSmem+gvar->mmi.XMSmem);

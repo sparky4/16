@@ -266,7 +266,7 @@ End2:
 
 	if(errorflag==false)
 	{
-	gvar->mmi.EMSmem += gvar->pm.emm.EMSAvail * (long)EMSPageSize;
+	gvar->mmi.EMSmem = EMSAvail * (dword)EMSPageSize;
 
 	// Initialize EMS mapping cache
 	for (i = 0;i < EMSFrameCount;i++)
