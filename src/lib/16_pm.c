@@ -150,6 +150,7 @@ PML_StartupEMS(global_game_variables_t *gvar)
 	totalEMSpages = freeEMSpages = EMSPageFrame = 0;
 	gvar->pm.emm.EMSPresent = false;			// Assume that we'll fail
 	gvar->pm.emm.EMSAvail = 0;
+	gvar->mmi.EMSmem = 0;
 
 	__asm {
 		mov	dx,OFFSET emmname	//fix by andrius4669
