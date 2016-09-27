@@ -62,12 +62,12 @@ void segatesuto()
 //	getch();
 }
 #endif
-global_game_variables_t gvar;
+
 void
 main(int argc, char *argv[])
 {
 	byte w=1;
-	//static global_game_variables_t gvar;
+	static global_game_variables_t gvar;
 #ifdef __WATCOMC__
 	__segment sega;
 #endif
