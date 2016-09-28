@@ -35,7 +35,7 @@
 #include <dos.h>
 
 #ifdef __DEBUG__
-extern boolean debugpm;
+extern boolean dbg_debugpm;
 #endif
 
 /*//	NOTE! PMPageSize must be an even divisor of EMSPageSize, and >= 1024

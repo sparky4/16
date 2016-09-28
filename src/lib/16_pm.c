@@ -30,7 +30,7 @@
 #pragma hdrstop
 
 #ifdef __DEBUG__
-boolean debugpm=0;
+boolean dbg_debugpm=0;
 #endif
 
 //	Main Mem specific variables

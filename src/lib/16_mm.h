@@ -30,7 +30,7 @@
 
 #ifdef __DEBUG__		// 1 == Debug/Dev  ;  0 == Production/final
 #define OUT_OF_MEM_MSG	"MM_GetPtr: Out of memory!\nYou were short :%lu bytes\n"
-extern boolean debugpm;
+extern boolean dbg_debugpm;
 #else
 #define OUT_OF_MEM_MSG	"\npee\n"
 #endif
