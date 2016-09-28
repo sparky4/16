@@ -100,7 +100,7 @@ main(int argc, char *argv[])
 	//printf("main()=%Fp	start MM\n", *argv[0]);
 	MM_Startup(&gvar);
 	//printf("ok\n");
-#ifdef __WATCOMC__
+//#ifdef __WATCOMC__
 	if(dbg_debugpm>0)
 	{
 		PM_Startup(&gvar);
@@ -108,7 +108,7 @@ main(int argc, char *argv[])
 		//PM_CheckMainMem(&gvar);
 		PM_UnlockMainMem(&gvar);
 	}
-#endif
+//#endif
 	CA_Startup(&gvar);
 //	printf("		done!\n");
 	//0000PRINTBB;
@@ -156,10 +156,10 @@ for(w=0;w<2;w++)
 	//printf("bakapee1=%s\n", bakapee1);
 	//printf("bakapee2=%s\n", bakapee2);
 	MM_FreePtr(&bigbuffer, &gvar);
-#ifdef __WATCOMC__
+//#ifdef __WATCOMC__
 	if(dbg_debugpm>0)
 		PM_Shutdown(&gvar);
-#endif
+//#endif
 	CA_Shutdown(&gvar);
 	MM_Shutdown(&gvar);
 	free(bakapee1); free(bakapee2);
