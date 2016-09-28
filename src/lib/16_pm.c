@@ -1472,9 +1472,9 @@ PM_Startup(global_game_variables_t *gvar)
 
 	//0000+=+=PML_OpenPageFile(gvar);
 
-	if (!noems)
+	if (!noems && MML_CheckForEMS())
 		PML_StartupEMS(gvar);
-	if (!noxms)
+	if (!noxms && MML_CheckForXMS(gvar))
 		PML_StartupXMS(gvar);
 
 	if (!nomain && !gvar->pm.emm.EMSPresent)
@@ -1496,8 +1496,8 @@ PM_Startup(global_game_variables_t *gvar)
 void
 PM_Shutdown(global_game_variables_t *gvar)
 {
-	PML_ShutdownXMS(gvar);
-	PML_ShutdownEMS(gvar);
+	if(MML_CheckForXMS(gvar)) PML_ShutdownXMS(gvar);
+	if(MML_CheckForEMS()) PML_ShutdownEMS(gvar);
 
 	if (!gvar->pm.PMStarted)
 		return;
