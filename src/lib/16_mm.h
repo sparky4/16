@@ -79,7 +79,7 @@ extern boolean dbg_debugpm;
 #define	XMS_GDISABLEA20	0x04
 #define	XMS_LENABLEA20	0x05
 #define	XMS_LDISABLEA20	0x06
-#define	XMS_QUERYA20	0x07
+#define	XMS_QUERYA20		0x07
 
 #define	XMS_QUERYFREE	0x08
 #define	XMS_ALLOC		0x09
@@ -106,6 +106,7 @@ extern boolean dbg_debugpm;
 extern	void		(* beforesort) (void);
 extern	void		(* aftersort) (void);
 extern	void		(* XMSaddr) (void);		// far pointer to XMS driver
+extern	dword	XMSDriver;
 
 //==========================================================================
 

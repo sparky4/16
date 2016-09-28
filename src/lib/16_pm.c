@@ -48,7 +48,7 @@ boolean dbg_debugpm=0;
 //	XMS specific variables
 	//boolean			XMSPresent;
 	//word			gvar->pm.xmm.XMSAvail,gvar->pm.xmm.XMSPagesAvail,gvar->pm.xmm.XMSHandle;
-	word		XMSDriver;
+	dword		XMSDriver;
 /*	int				gvar->pm.xmm.XMSProtectPage = -1;
 
 //	File specific variables
@@ -92,9 +92,9 @@ PML_MapEMS(word logical, byte physical, global_game_variables_t *gvar)
 
 	__asm {
 		mov	ah,EMS_MAPPAGE
-		mov	al,physical
-		mov	bx,logical
-		mov	dx,EMShandle
+		mov	al,[physical]
+		mov	bx,[logical]
+		mov	dx,[EMShandle]
 		int	EMS_INT
 		or	ah,ah
 		jnz	error
@@ -240,7 +240,7 @@ PML_StartupEMS(global_game_variables_t *gvar)
 */
 	__asm {
 		mov	ah,EMS_ALLOCPAGES
-		mov	bx,[EMSAvail];
+		mov	bx,[EMSAvail]
 		int	EMS_INT
 		or	ah,ah
 		jnz	erroreuu
@@ -359,7 +359,7 @@ PML_StartupXMS(global_game_variables_t *gvar)
 	boolean errorflag;
 	word XMSAvail, XMSHandle;
 	errorflag=gvar->pm.xmm.XMSPresent = false;					// Assume failure
-	XMSAvail = gvar->pm.xmm.XMSAvail = 0;
+	gvar->pm.xmm.XMSAvail = gvar->mmi.XMSmem = 0;
 
 	__asm {
 		mov	ax,0x4300
@@ -374,7 +374,7 @@ PML_StartupXMS(global_game_variables_t *gvar)
 
 		//XMS_CALL(XMS_QUERYFREE);			// Find out how much XMS is available
 		mov	ah,XMS_QUERYFREE
-		call	[WORD PTR XMSDriver]
+		call	[DWORD PTR XMSDriver]
 		mov	[XMSAvail],ax
 		or	ax,ax				// AJR: bugfix 10/8/92
 		jz	errorxu
@@ -396,9 +396,11 @@ PML_StartupXMS(global_game_variables_t *gvar)
 #ifdef __WATCOMC__
 	}
 #endif
-	gvar->pm.xmm.XMSAvail &= ~(PMPageSizeKB - 1);	// Round off to nearest page size
-	if (gvar->pm.xmm.XMSAvail < (PMPageSizeKB * 2))	// Need at least 2 pages
+	XMSAvail &= ~(PMPageSizeKB - 1);	// Round off to nearest page size
+	if (XMSAvail < (PMPageSizeKB * 2)){	// Need at least 2 pages
+		printf("PISS! %u\n", XMSAvail);
 		goto error;
+	}
 
 	__asm {
 		mov	dx,[XMSAvail]
@@ -431,11 +433,13 @@ PML_StartupXMS(global_game_variables_t *gvar)
 	if(errorflag==false)
 	{
 		gvar->pm.xmm.XMSAvail = XMSAvail;
-		gvar->mmi.XMSmem += gvar->pm.xmm.XMSAvail * 1024;
+		gvar->mmi.XMSmem += gvar->pm.xmm.XMSAvail * (dword)1024;
 		gvar->pm.xmm.XMSHandle = XMSHandle;
 
 		gvar->pm.xmm.XMSPresent = true;
-	}
+		printf("	%u	%u	%u\n", gvar->mmi.XMSmem, gvar->pm.xmm.XMSAvail, XMSAvail);
+		getch();
+	}else printf("	errorflag\n");
 error:
 	return(gvar->pm.xmm.XMSPresent);
 }
@@ -1470,17 +1474,13 @@ PM_Startup(global_game_variables_t *gvar)
 
 	if (!noems)
 		PML_StartupEMS(gvar);
-	/*if (!noxms)
-	{
-		//++++
-		printf("PML_StartupXMS ");
-		PML_StartupXMS(gvar);	//TODO: convert
-		printf("ok!\n");
-	}*/
+	if (!noxms)
+		PML_StartupXMS(gvar);
 
 	if (!nomain && !gvar->pm.emm.EMSPresent)
 	{
-		Quit("PM_Startup: No main or EMS\n");
+		printf("PM_Startup: No main or EMS\n");
+		exit(-5);
 		//return;
 	}
 	PML_StartupMainMem(gvar);

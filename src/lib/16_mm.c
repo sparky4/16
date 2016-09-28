@@ -1625,7 +1625,7 @@ void MM_Report_(global_game_variables_t *gvar)
 	if(MML_CheckForXMS(gvar))
 	{
 		printf("	XMS\n");
-		printf("		XMSaddr:	%X\n", *XMSaddr);
+		printf("		XMSDriver:	%X\n", XMSDriver);
 	}
 	printf("nearheap:	%lu		", gvar->mmi.nearheap); printf("farheap:	%lu\n", gvar->mmi.farheap);
 	if(MML_CheckForEMS()) printf("EMSmem:		%lu	", gvar->mmi.EMSmem); if(MML_CheckForXMS(gvar)) printf("XMSmem:		%lu", gvar->mmi.XMSmem); printf("\n");
