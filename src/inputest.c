@@ -30,8 +30,8 @@ main(int argc, char *argv[])
 	global_game_variables_t gvar;
 	player_t player[MaxPlayers];
 	//extern struct inconfig inpu;
-	testkeyin=0;
-	testcontrolnoisy=1;
+	dbg_testkeyin=0;
+	dbg_testcontrolnoisy=1;
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick1);
 	IN_SetControlType(0,&player,ctrl_Joystick1);
@@ -105,6 +105,6 @@ main(int argc, char *argv[])
 	//printf("%u\n", in.Keyboard[sc_Escape]);
 	printf("inputest.exe ");
 	printf("version %s\n", VERSION);
-	printf("testkeyin=%u\n", testkeyin);
-	printf("testcontrolnoisy=%u\n", testcontrolnoisy);
+	printf("testkeyin=%u\n", dbg_testkeyin);
+	printf("testcontrolnoisy=%u\n", dbg_testcontrolnoisy);
 }

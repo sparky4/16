@@ -38,7 +38,9 @@
 
 #include "src/lib/16_in.h"
 
-boolean testkeyin=0,testcontrolnoisy=0;
+#ifdef __DEBUG_InputMgr__
+boolean dbg_testkeyin=0,dbg_testcontrolnoisy=0;
+#endif
 
 /*
 =============================================================================
@@ -234,9 +236,9 @@ static	boolean	special;
 
 	if (INL_KeyHook && !special)
 		INL_KeyHook();
-//#ifdef TESTKEYIN
-	if(testkeyin > 0) printf("%c	%u	[0x%x %u]	%u\n", c, c, k, k, inpu.Keyboard[k]);
-//endif
+#ifdef __DEBUG_InputMgr__
+	if(dbg_testkeyin > 0) printf("%c	%u	[0x%x %u]	%u\n", c, c, k, k, inpu.Keyboard[k]);
+#endif
 	outp(0x20,0x20);
 }
 
@@ -881,7 +883,9 @@ register	KeyboardDef	*def;
 						default:
 						break;
 					}
-					//if(testcontrolnoisy > 0){ printf("dir=%c ", dirchar(dir)); printf("pdir=%c	", dirchar(player[pn].pdir)); }
+#ifdef __DEBUG_InputMgr__
+					//if(dbg_testcontrolnoisy > 0){ printf("dir=%c ", dirchar(dir)); printf("pdir=%c	", dirchar(player[pn].pdir)); }
+#endif
 				}
 			}
 			//input from player
@@ -962,7 +966,8 @@ register	KeyboardDef	*def;
 		}
 	}
 #endif
-if(testcontrolnoisy > 0)
+#ifdef __DEBUG_InputMgr__
+if(dbg_testcontrolnoisy > 0)
 if(player[pn].info.dir!=2/*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right])*/ || player[pn].q>1)
 {
 	//printf("b1=%u b2=%u b3=%u b4=%u	", player[pn].info.button0, player[pn].info.button1, player[pn].info.button2, player[pn].info.button3);
@@ -973,6 +978,7 @@ if(player[pn].info.dir!=2/*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] |
 	//else if(!realdelta) printf("%c%d %c%d %c%d %c%d", dirchar(0), inpu.Keyboard[def->up], dirchar(4), inpu.Keyboard[def->down], dirchar(1), inpu.Keyboard[def->left], dirchar(3), inpu.Keyboard[def->right]);
 	printf("\n");
 }
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -1239,9 +1245,9 @@ void IN_ClearKey(byte code)
 
 boolean IN_qb(byte kee)
 {
-//#ifdef TESTKEYIN
-//	if(testkeyin > 0) printf("%u\n", inpu.Keyboard[kee]);
-//#endif
+#ifdef __DEBUG_InputMgr__
+//	if(dbg_testkeyin > 0) printf("%u\n", inpu.Keyboard[kee]);
+#endif
 	if(inpu.Keyboard[kee]==true) return 1;
 	else return 0;
 }
