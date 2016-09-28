@@ -156,50 +156,50 @@ PML_StartupEMS(global_game_variables_t *gvar)
 		mov	dx,OFFSET emmname	//fix by andrius4669
 		mov	ax,0x3d00
 		int	EMS_INT		// try to open EMMXXXX0 device
-		jc	erroreu
+		jc	error1
 
 		mov	bx,ax
 		mov	ax,0x4400
 
 		int	EMS_INT		// get device info
-		jc	erroreu
+		jc	error1
 
 		and	dx,0x80
-		jz	erroreu
+		jz	error1
 
 		mov	ax,0x4407
 
 		int	EMS_INT		// get status
-		jc	erroreu
+		jc	error1
 		or	al,al
-		jz	erroreu
+		jz	error1
 
 		mov	ah,0x3e
 		int	EMS_INT		// close handle
-		jc	erroreu
+		jc	error1
 
 		mov	ah,EMS_STATUS
 		int	EMS_INT
-		jc	erroreu			// make sure EMS hardware is present
+		jc	error1			// make sure EMS hardware is present
 
 		mov	ah,EMS_VERSION
 		int	EMS_INT			// only work on EMS 3.2 or greater (silly, but...)
 		or	ah,ah
-		jnz	erroreu
+		jnz	error1
 		mov	[EMSVer],ax		//	set EMSVer
 		cmp	al,0x32			// only work on ems 3.2 or greater
-		jb	erroreu
+		jb	error1
 
 		mov	ah,EMS_GETFRAME
 		int	EMS_INT			// find the page frame address
 		or	ah,ah
-		jnz	erroreu
+		jnz	error1
 		mov	[EMSPageFrame],bx
 
 		mov	ah,EMS_GETPAGES
 		int	EMS_INT			// find out how much EMS is there
 		or	ah,ah
-		jnz	erroreu
+		jnz	error1
 		or	bx,bx
 		jz	noEMS			// no EMS at all to allocate
 		cmp	bx,2
@@ -207,22 +207,22 @@ PML_StartupEMS(global_game_variables_t *gvar)
 		mov	[totalEMSpages],dx
 		mov	[freeEMSpages],bx
 		mov	[EMSAvail],bx
-		jmp	Endeu
+		jmp End1
 #ifdef __BORLANDC__
 	}
 #endif
-		erroreu:
+	error1:
 #ifdef __BORLANDC__
 	__asm {
 #endif
 		mov	err,ah
 		mov	errorflag,1
-		jmp	Endeu
+		jmp End1
 #ifdef __BORLANDC__
 	}
 #endif
-		noEMS:
-		Endeu:
+noEMS:
+End1:
 #ifdef __WATCOMC__
 	}
 #endif
@@ -240,34 +240,32 @@ PML_StartupEMS(global_game_variables_t *gvar)
 */
 	__asm {
 		mov	ah,EMS_ALLOCPAGES
-		mov	bx,[EMSAvail]
+		mov	bx,[EMSAvail];
 		int	EMS_INT
 		or	ah,ah
-		jnz	erroreuu
+		jnz	error2
 		mov	[EMSHandle],dx
-		jmp	Endeuu
+		jmp	End2
 #ifdef __BORLANDC__
 	}
 #endif
-		erroreuu:
+	error2:
 #ifdef __BORLANDC__
 	__asm {
 #endif
 		mov	err,ah
 		mov	errorflag,1
-		jmp Endeuu
+		jmp End2
 #ifdef __BORLANDC__
 	}
 #endif
-		Endeuu:
+End2:
 #ifdef __WATCOMC__
 	}
 #endif
 
 	if(errorflag==false)
 	{
-	//gvar->pm.emm.EMSAvail = EMSAvail;
-	//gvar->mmi.EMSmem = gvar->pm.emm.EMSAvail * (dword)EMSPageSize;
 	gvar->mmi.EMSmem = EMSAvail * (dword)EMSPageSize;
 
 	// Initialize EMS mapping cache
@@ -285,6 +283,7 @@ PML_StartupEMS(global_game_variables_t *gvar)
 
 	gvar->pm.emm.EMSPresent = true;			// We have EMS
 	gvar->pm.emm.EMSPageFrame = EMSPageFrame;
+	gvar->pm.emm.EMSAvail = EMSAvail;
 	gvar->pm.emm.EMSVer = EMSVer;
 	gvar->pm.emm.EMSHandle = EMSHandle;
 	gvar->pm.emm.freeEMSpages = freeEMSpages;
