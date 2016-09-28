@@ -140,7 +140,7 @@ boolean MML_CheckForEMS(void)
 	return(emmcfems);
 }
 
-
+#ifndef __16_PM__
 /*
 ======================
 =
@@ -424,7 +424,7 @@ byte MM_MapXEMS(global_game_variables_t *gvar)
 	gvar->mmi.EMSmem = (i)*0x4000lu;
 	return 0;
 }
-
+#endif
 //==========================================================================
 
 /*
@@ -459,7 +459,7 @@ boolean MML_CheckForXMS(global_game_variables_t *gvar)
 	else return true;
 }
 
-
+#ifndef __16_PM__
 /*
 ======================
 =
@@ -546,7 +546,7 @@ void MML_ShutdownXMS(global_game_variables_t *gvar)
 		}
 	}
 }
-
+#endif
 //==========================================================================
 
 /*
@@ -817,12 +817,13 @@ void MM_Startup(global_game_variables_t *gvar)
 	//printf("_FARCORELEFT				%lu\n", _FCORELEFT);
 #ifdef __WATCOMC__
 	_fheapgrow();
+	length=_FCORELEFT;//_fcoreleft();//(dword)GetFarFreeSize();//0xffffUL*4UL;
 #endif
 #ifdef __BORLANDC__
 	printf("farcoreleft()				%lu\n", farcoreleft());
 	printf("(farcoreleft()+32)-_FCORELEFT	%d\n", (sword)((farcoreleft()+32)-_FCORELEFT));
+	length=farcoreleft();//_fcoreleft();//(dword)GetFarFreeSize();//0xffffUL*4UL;
 #endif
-	length=_FCORELEFT;//_fcoreleft();//(dword)GetFarFreeSize();//0xffffUL*4UL;
 	start = gvar->mm.farheap = _fmalloc(length);
 	//start = gvar->mm.farheap = halloc(length, 1);
 	length -= 16-(FP_OFF(start)&15);
@@ -864,7 +865,7 @@ void MM_Startup(global_game_variables_t *gvar)
 	if(MML_CheckForEMS())
 	{
 		MML_SetupEMS(gvar);					// allocate space
-		//TODO: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!
+		//16_PM: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!
 		MML_UseSpace(gvar->mm.EMSPageFrame,(MAPPAGES)*0x4000lu, gvar);
 		//if(gvar->pm.emm.EMSVer<0x40)
 			MM_MapEMS(gvar);					// map in used pages
@@ -1626,11 +1627,13 @@ void MM_Report_(global_game_variables_t *gvar)
 		printf("	XMS\n");
 		printf("		XMSaddr:	%X\n", *XMSaddr);
 	}
-	printf("near:	%lu		", gvar->mmi.nearheap); printf("far:	%lu\n", gvar->mmi.farheap); if(MML_CheckForEMS())
-	printf("EMSmem:	%lu	", gvar->mmi.EMSmem); if(MML_CheckForXMS(gvar)) printf("XMSmem:	%lu", gvar->mmi.XMSmem); printf("\n");
+	printf("nearheap:	%lu		", gvar->mmi.nearheap); printf("farheap:	%lu\n", gvar->mmi.farheap);
+	if(MML_CheckForEMS()) printf("EMSmem:		%lu	", gvar->mmi.EMSmem); if(MML_CheckForXMS(gvar)) printf("XMSmem:		%lu", gvar->mmi.XMSmem); printf("\n");
+	printf("convmem:\n"); DebugMemory_(gvar, 0);
 	//printf("mainmem:	%lu\n", gvar->mmi.mainmem);
-	printf("Total convmem:	%lu	", gvar->mmi.mainmem); printf("TotalFree:	%lu	", MM_TotalFree(gvar)+gvar->mmi.EMSmem+gvar->mmi.XMSmem+gvar->mmi.XMSmem); printf("TotalUsed:	%lu\n", gvar->mmi.mainmem);
-	printf("			UnusedMemory:	%lu\n", MM_UnusedMemory(gvar));
+	//printf("Total convmem:	%lu	", gvar->mmi.mainmem); printf("TotalFree:	%lu	", MM_TotalFree(gvar)+gvar->mmi.EMSmem+gvar->mmi.XMSmem+gvar->mmi.XMSmem); printf("TotalUsed:	%lu\n", gvar->mmi.mainmem);
+	//printf("			UnusedMemory:	%lu\n", MM_UnusedMemory(gvar));
+
 }
 
 //==========================================================================

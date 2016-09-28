@@ -1155,6 +1155,9 @@ IN_Ack()
 {
 	word	i;
 
+	if (!inst.IN_Started)
+		return;
+
 	IN_ClearKey(inpu.LastScan);
 	inpu.LastScan = sc_None;
 

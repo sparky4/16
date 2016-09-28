@@ -23,7 +23,7 @@
  * 16 library
  */
 
-#include "src/lib/16_lib.h"
+#include "src/lib/16_tail.h"
 
 //===========================================================================
 
@@ -35,7 +35,7 @@
 ==================
 */
 
-void DebugMemory (global_game_variables_t *gvar)
+void DebugMemory_(global_game_variables_t *gvar, boolean q)
 {
 	/*VW_FixRefreshBuffer ();
 	US_CenterWindow (16,7);
@@ -50,10 +50,24 @@ void DebugMemory (global_game_variables_t *gvar)
 	US_PrintUnsigned (MM_TotalFree()/1024);
 	US_Print ("k\n");
 	VW_UpdateScreen();*/
+	if(q){
+	printf("========================================\n");
+	printf("		DebugMemory_\n");
+	printf("========================================\n");}
+	if(q) { printf("Memory Usage\n");
+	printf("------------\n"); }else printf("  ");
+	printf("Total:	"); if(q) printf("	"); printf("%uk", gvar->mmi.mainmem/1024);
+	if(q) printf("\n"); else printf("	");
+	printf("Free:	"); if(q) printf("	"); printf("%uk", MM_UnusedMemory(gvar)/1024);
+	if(q) printf("\n"); else printf("	");
+	printf("With purge:"); if(q) printf("	"); printf("%uk\n", MM_TotalFree(gvar)/1024);
+	if(q) printf("------------\n");
+#ifdef __WATCOMC__
 	IN_Ack ();
-	MM_ShowMemory (gvar);
+#endif
+	if(q) MM_ShowMemory (gvar);
 }
-
+#ifdef __WATCOMC__
 /*
 ==========================
 =
@@ -111,5 +125,6 @@ void Quit (char *error)
 
 	exit(0);
 }
+#endif
 
 //===========================================================================

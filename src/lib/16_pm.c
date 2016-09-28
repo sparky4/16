@@ -98,7 +98,7 @@ PML_MapEMS(word logical, byte physical, global_game_variables_t *gvar)
 		int	EMS_INT
 		or	ah,ah
 		jnz	error
-		jmp End
+		jmp	End
 #ifdef __BORLANDC__
 	}
 #endif
@@ -156,50 +156,50 @@ PML_StartupEMS(global_game_variables_t *gvar)
 		mov	dx,OFFSET emmname	//fix by andrius4669
 		mov	ax,0x3d00
 		int	EMS_INT		// try to open EMMXXXX0 device
-		jc	error1
+		jc	erroreu
 
 		mov	bx,ax
 		mov	ax,0x4400
 
 		int	EMS_INT		// get device info
-		jc	error1
+		jc	erroreu
 
 		and	dx,0x80
-		jz	error1
+		jz	erroreu
 
 		mov	ax,0x4407
 
 		int	EMS_INT		// get status
-		jc	error1
+		jc	erroreu
 		or	al,al
-		jz	error1
+		jz	erroreu
 
 		mov	ah,0x3e
 		int	EMS_INT		// close handle
-		jc	error1
+		jc	erroreu
 
 		mov	ah,EMS_STATUS
 		int	EMS_INT
-		jc	error1			// make sure EMS hardware is present
+		jc	erroreu			// make sure EMS hardware is present
 
 		mov	ah,EMS_VERSION
 		int	EMS_INT			// only work on EMS 3.2 or greater (silly, but...)
 		or	ah,ah
-		jnz	error1
+		jnz	erroreu
 		mov	[EMSVer],ax		//	set EMSVer
 		cmp	al,0x32			// only work on ems 3.2 or greater
-		jb	error1
+		jb	erroreu
 
 		mov	ah,EMS_GETFRAME
 		int	EMS_INT			// find the page frame address
 		or	ah,ah
-		jnz	error1
+		jnz	erroreu
 		mov	[EMSPageFrame],bx
 
 		mov	ah,EMS_GETPAGES
 		int	EMS_INT			// find out how much EMS is there
 		or	ah,ah
-		jnz	error1
+		jnz	erroreu
 		or	bx,bx
 		jz	noEMS			// no EMS at all to allocate
 		cmp	bx,2
@@ -207,22 +207,22 @@ PML_StartupEMS(global_game_variables_t *gvar)
 		mov	[totalEMSpages],dx
 		mov	[freeEMSpages],bx
 		mov	[EMSAvail],bx
-		jmp End1
+		jmp	Endeu
 #ifdef __BORLANDC__
 	}
 #endif
-	error1:
+		erroreu:
 #ifdef __BORLANDC__
 	__asm {
 #endif
 		mov	err,ah
 		mov	errorflag,1
-		jmp End1
+		jmp	Endeu
 #ifdef __BORLANDC__
 	}
 #endif
-noEMS:
-End1:
+		noEMS:
+		Endeu:
 #ifdef __WATCOMC__
 	}
 #endif
@@ -243,30 +243,31 @@ End1:
 		mov	bx,[EMSAvail];
 		int	EMS_INT
 		or	ah,ah
-		jnz	error2
+		jnz	erroreuu
 		mov	[EMSHandle],dx
-		jmp	End2
+		jmp	Endeuu
 #ifdef __BORLANDC__
 	}
 #endif
-	error2:
+		erroreuu:
 #ifdef __BORLANDC__
 	__asm {
 #endif
 		mov	err,ah
 		mov	errorflag,1
-		jmp End2
+		jmp Endeuu
 #ifdef __BORLANDC__
 	}
 #endif
-End2:
+		Endeuu:
 #ifdef __WATCOMC__
 	}
 #endif
 
 	if(errorflag==false)
 	{
-	gvar->mmi.EMSmem = EMSAvail * (dword)EMSPageSize;
+	gvar->pm.emm.EMSAvail = EMSAvail;
+	gvar->mmi.EMSmem = gvar->pm.emm.EMSAvail * (dword)EMSPageSize;
 
 	// Initialize EMS mapping cache
 	for (i = 0;i < EMSFrameCount;i++)
@@ -283,7 +284,6 @@ End2:
 
 	gvar->pm.emm.EMSPresent = true;			// We have EMS
 	gvar->pm.emm.EMSPageFrame = EMSPageFrame;
-	gvar->pm.emm.EMSAvail = EMSAvail;
 	gvar->pm.emm.EMSVer = EMSVer;
 	gvar->pm.emm.EMSHandle = EMSHandle;
 	gvar->pm.emm.freeEMSpages = freeEMSpages;
@@ -311,22 +311,22 @@ PML_ShutdownEMS(global_game_variables_t *gvar)
 			mov	ah,EMS_FREEPAGES
 			mov	dx,[EMSHandle]
 			int	EMS_INT
-			jc	errors
-			jmp	Ends
+			jc	errores
+			jmp	Endes
 #ifdef __BORLANDC__
 		}
 #endif
-			errors:
+			errores:
 #ifdef __BORLANDC__
 		__asm {
 #endif
 			mov	err,ah
 			mov	errorflag,1
-			jmp Ends
+			jmp	Endes
 #ifdef __BORLANDC__
 		}
 #endif
-		Ends:
+			Endes:
 #ifdef __WATCOMC__
 		}
 #endif
@@ -356,44 +356,86 @@ PML_ShutdownEMS(global_game_variables_t *gvar)
 boolean
 PML_StartupXMS(global_game_variables_t *gvar)
 {
-	gvar->pm.xmm.XMSPresent = false;					// Assume failure
-	gvar->pm.xmm.XMSAvail = 0;
-
-	_AX=0x4300;
-	geninterrupt(XMS_INT);         				// Check for presence of XMS driver
-	if (_AL != 0x80)
-		goto error;
-
+	boolean errorflag;
+	word XMSAvail, XMSHandle;
+	errorflag=gvar->pm.xmm.XMSPresent = false;					// Assume failure
+	XMSAvail = gvar->pm.xmm.XMSAvail = 0;
 
 	__asm {
+		mov	ax,0x4300
+		int	XMS_INT         				// Check for presence of XMS driver
+		cmp	al,0x80
+		jne	errorxu
+
 		mov	ax,0x4310
 		int	XMS_INT							// Get address of XMS driver
 		mov	[WORD PTR XMSDriver],bx
 		mov	[WORD PTR XMSDriver+2],es		// function pointer to XMS driver
+
+		//XMS_CALL(XMS_QUERYFREE);			// Find out how much XMS is available
+		mov	ah,XMS_QUERYFREE
+		call	[WORD PTR XMSDriver]
+		mov	[XMSAvail],ax
+		or	ax,ax				// AJR: bugfix 10/8/92
+		jz	errorxu
+		jmp	Endxu
+#ifdef __BORLANDC__
 	}
-
-	XMS_CALL(XMS_QUERYFREE);			// Find out how much XMS is available
-	gvar->pm.xmm.XMSAvail = _AX;
-	if (!_AX)				// AJR: bugfix 10/8/92
-		goto error;
-
+#endif
+		errorxu:
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		//mov	err,ah
+		mov	errorflag,1
+		jmp	Endxu
+#ifdef __BORLANDC__
+	}
+#endif
+		Endxu:
+#ifdef __WATCOMC__
+	}
+#endif
 	gvar->pm.xmm.XMSAvail &= ~(PMPageSizeKB - 1);	// Round off to nearest page size
 	if (gvar->pm.xmm.XMSAvail < (PMPageSizeKB * 2))	// Need at least 2 pages
 		goto error;
 
-	_DX = gvar->pm.xmm.XMSAvail;
-	XMS_CALL(XMS_ALLOC);				// And do the allocation
-	gvar->pm.xmm.XMSHandle = _DX;
-
-	if (!_AX)				// AJR: bugfix 10/8/92
-	{
-		gvar->pm.xmm.XMSAvail = 0;
-		goto error;
+	__asm {
+		mov	dx,[XMSAvail]
+		//XMS_CALL(XMS_ALLOC);				// And do the allocation
+		mov	ah,XMS_ALLOC
+		call	[WORD PTR XMSDriver]
+		mov	[XMSHandle],dx
+		or	ax,ax				// AJR: bugfix 10/8/92
+		jz	errorxuu
+		jmp	Endxuu
+#ifdef __BORLANDC__
+		}
+#endif
+		errorxuu:
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		//mov	err,ah
+		mov	[XMSAvail],0
+		mov	errorflag,1
+		jmp	Endxuu
+#ifdef __BORLANDC__
 	}
+#endif
+		Endxuu:
+#ifdef __WATCOMC__
+	}
+#endif
 
-	gvar->mmi.XMSmem += gvar->pm.xmm.XMSAvail * 1024;
+	if(errorflag==false)
+	{
+		gvar->pm.xmm.XMSAvail = XMSAvail;
+		gvar->mmi.XMSmem += gvar->pm.xmm.XMSAvail * 1024;
+		gvar->pm.xmm.XMSHandle = XMSHandle;
 
-	gvar->pm.xmm.XMSPresent = true;
+		gvar->pm.xmm.XMSPresent = true;
+	}
 error:
 	return(gvar->pm.xmm.XMSPresent);
 }
@@ -475,11 +517,36 @@ PML_CopyFromXMS(byte far *target,int sourcepage,word length, global_game_variabl
 void
 PML_ShutdownXMS(global_game_variables_t *gvar)
 {
+	boolean errorflag=false;
+	word XMSHandle = gvar->pm.xmm.XMSHandle;
 	if (gvar->pm.xmm.XMSPresent)
 	{
-		_DX = gvar->pm.xmm.XMSHandle;
-		XMS_CALL(XMS_FREE);
-		if (_BL)
+		__asm {
+			mov	dx,[XMSHandle]
+			//XMS_CALL(XMS_FREE);
+			mov	ah,XMS_FREE
+			call	[WORD PTR XMSDriver]
+			or	bl,bl
+			jz	errorxs
+			jmp	Endxs
+#ifdef __BORLANDC__
+		}
+#endif
+			errorxs:
+#ifdef __BORLANDC__
+		__asm {
+#endif
+			//mov	err,ah
+			mov	errorflag,1
+			jmp	Endxs
+#ifdef __BORLANDC__
+		}
+#endif
+			Endxs:
+#ifdef __WATCOMC__
+		}
+#endif
+		if(errorflag==true)
 		{
 			Quit("PML_ShutdownXMS: Error freeing XMS");
 			//return;
@@ -611,9 +678,6 @@ PML_StartupMainMem(global_game_variables_t *gvar)
 	gvar->pm.mm.MainPagesAvail = 0;
 	gvar->pm.mm.MainPresent = false;
 	MM_BombOnError(false, gvar);
-	printf("PML_StartupMainMem()\n");
-	printf("	p=%04x	MainMemPages=%04x\n", p, gvar->pm.mm.MainMemPages);
-	printf("	p=%Fp	MainMemPages=%Fp\n", p, gvar->pm.mm.MainMemPages);
 	for (i = 0,p = gvar->pm.mm.MainMemPages;i < PMMaxMainMem;i++,p++)
 	{
 		MM_GetPtr(p,PMPageSize, gvar);
@@ -1402,12 +1466,17 @@ PM_Startup(global_game_variables_t *gvar)
 		}
 	}
 
-	//0000++++PML_OpenPageFile(gvar);
+	//0000+=+=PML_OpenPageFile(gvar);
 
 	if (!noems)
 		PML_StartupEMS(gvar);
-	if (!noxms)
-		//++++PML_StartupXMS(gvar);	//TODO: convert
+	/*if (!noxms)
+	{
+		//++++
+		printf("PML_StartupXMS ");
+		PML_StartupXMS(gvar);	//TODO: convert
+		printf("ok!\n");
+	}*/
 
 	if (!nomain && !gvar->pm.emm.EMSPresent)
 	{

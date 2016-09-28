@@ -20,14 +20,16 @@
  *
  */
 
-#ifndef	__16_LIB__
-#define	__16_LIB__
+#ifndef	__16_TAIL__
+#define	__16_TAIL__
 
 #include "src/lib/16_head.h"
 #include "src/lib/16_mm.h"
 #include "src/lib/16_in.h"
 
-void DebugMemory (global_game_variables_t *gvar);
+void DebugMemory_(global_game_variables_t *gvar, boolean q);
+#ifdef __WATCOMC__
 void Quit (char *error);
+#endif
 
 #endif

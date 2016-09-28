@@ -27,7 +27,7 @@
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 #include "src/lib/16_hc.h"
-#include "src/lib/16_lib.h"
+#include "src/lib/16_tail.h"
 //#include "src/lib/modex16.h"
 #pragma hdrstop
 
@@ -97,19 +97,21 @@ main(int argc, char *argv[])
 		bakapee1 = "data/koishi~.pcx";
 		bakapee2 = "data/test.map";
 	}
-	printf("main()=%Fp	start MM\n", *argv[0]);
+	//printf("main()=%Fp	start MM\n", *argv[0]);
 	MM_Startup(&gvar);
-	printf("ok\n");
+	//printf("ok\n");
+#ifdef __WATCOMC__
 	if(debugpm>0)
 	{
 		PM_Startup(&gvar);
-		printf("pmstarted ok\n");
+		//printf("pmstarted ok\n");
 		//PM_CheckMainMem(&gvar);
 		PM_UnlockMainMem(&gvar);
 	}
+#endif
 	CA_Startup(&gvar);
 //	printf("		done!\n");
-	PRINTBB;
+	//0000PRINTBB;
 //	printf("press any key to continue!\n");
 //	getch();
 #ifdef FILEREAD
@@ -140,10 +142,7 @@ for(w=0;w<2;w++)
 	//printf("medium blue = non purgable\n");
 	//printf("red = locked\n");
 	printf("press any key to continue!\n");
-	getch();
-	MM_ShowMemory(&gvar);
-	MM_DumpData(&gvar);
-	MM_Report_(&gvar);
+	DebugMemory_(&gvar, 1);
 	if(baka) printf("\nyay!\n");
 	else printf("\npoo!\n");
 	printf("press any key to continue!\n");
@@ -151,11 +150,16 @@ for(w=0;w<2;w++)
 #ifdef FILEREAD
 }
 #endif
-	printf("bakapee1=%s\n", bakapee1);
-	printf("bakapee2=%s\n", bakapee2);
+	DebugMemory_(&gvar, 1);
+	MM_DumpData(&gvar);
+	MM_Report_(&gvar);
+	//printf("bakapee1=%s\n", bakapee1);
+	//printf("bakapee2=%s\n", bakapee2);
 	MM_FreePtr(&bigbuffer, &gvar);
+#ifdef __WATCOMC__
 	if(debugpm>0)
 		PM_Shutdown(&gvar);
+#endif
 	CA_Shutdown(&gvar);
 	MM_Shutdown(&gvar);
 	free(bakapee1); free(bakapee2);
