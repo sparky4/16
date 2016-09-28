@@ -92,17 +92,17 @@ PML_MapEMS(word logical, byte physical, global_game_variables_t *gvar)
 
 	__asm {
 		mov	ah,EMS_MAPPAGE
-		mov	al,[physical]
-		mov	bx,[logical]
-		mov	dx,[EMShandle]
+		mov	al,physical
+		mov	bx,logical
+		mov	dx,EMShandle
 		int	EMS_INT
 		or	ah,ah
-		jnz	error
-		jmp	End
+		jnz	errorme
+		jmp	Endme
 #ifdef __BORLANDC__
 	}
 #endif
-		error:
+		errorme:
 #ifdef __BORLANDC__
 	__asm {
 #endif
@@ -111,7 +111,7 @@ PML_MapEMS(word logical, byte physical, global_game_variables_t *gvar)
 #ifdef __BORLANDC__
 	}
 #endif
-		End:
+		Endme:
 #ifdef __WATCOMC__
 	}
 #endif
@@ -266,8 +266,9 @@ PML_StartupEMS(global_game_variables_t *gvar)
 
 	if(errorflag==false)
 	{
-	gvar->pm.emm.EMSAvail = EMSAvail;
-	gvar->mmi.EMSmem = gvar->pm.emm.EMSAvail * (dword)EMSPageSize;
+	//gvar->pm.emm.EMSAvail = EMSAvail;
+	//gvar->mmi.EMSmem = gvar->pm.emm.EMSAvail * (dword)EMSPageSize;
+	gvar->mmi.EMSmem = EMSAvail * (dword)EMSPageSize;
 
 	// Initialize EMS mapping cache
 	for (i = 0;i < EMSFrameCount;i++)
