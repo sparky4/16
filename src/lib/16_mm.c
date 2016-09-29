@@ -1616,25 +1616,24 @@ void MM_Report_(global_game_variables_t *gvar)
 	printf("========================================\n");
 	if(MML_CheckForEMS())
 	{
-		printf("	LIMEMS\n");
-		printf("		EMM v%x.%x available\n", gvar->pm.emm.EMSVer>>4,gvar->pm.emm.EMSVer&0x0F);
-		printf("		totalEMSpages:	%u	", gvar->pm.emm.totalEMSpages); printf("freeEMSpages:	%u\n", gvar->pm.emm.freeEMSpages);
-		printf("		EMSPageFrame:	%04x\n", gvar->pm.emm.EMSPageFrame);
+		printf("	%cLIMEMS	%u\n", 0xC9, gvar->pm.emm.EMSPresent);
+		printf("	%c%cEMM v%x.%x available\n", 0xC7, 0xC4, gvar->pm.emm.EMSVer>>4,gvar->pm.emm.EMSVer&0x0F);
+		printf("	%c%ctotalEMSpages:	%u	", 0xC7, 0xC4, gvar->pm.emm.totalEMSpages); printf("freeEMSpages:	%u\n", gvar->pm.emm.freeEMSpages);
+		printf("	%c%cEMSPageFrame:	%04x\n", 0xD3, 0xC4, gvar->pm.emm.EMSPageFrame);
 	}
 	if(MML_CheckForXMS())
 	{
-		printf("	XMS\n");
+		printf("	%cXMS	%u\n", 0xC9, gvar->pm.xmm.XMSPresent);
 //++++		printf("		XMS v%x.%x available\n", gvar->pm.xmm.XMSVer>>4,gvar->pm.xmm.XMSVer&0x0F);
-		printf("		XMSDriver:	%Fp\n", XMSDriver);
-		printf("		XMSHandle:	%04x\n", gvar->pm.xmm.XMSHandle);
+		printf("	%c%cXMSDriver:	%Fp\n", 0xC7, 0xC4, XMSDriver);
+		printf("	%c%cXMSHandle:	%04x\n", 0xD3, 0xC4, gvar->pm.xmm.XMSHandle);
 	}
-	printf("nearheap:	%lu		", gvar->mmi.nearheap); printf("farheap:	%lu\n", gvar->mmi.farheap);
-	if(MML_CheckForEMS()) printf("EMSmem:		%lu	", gvar->mmi.EMSmem); if(MML_CheckForXMS()) printf("XMSmem:		%lu", gvar->mmi.XMSmem); printf("\n");
-	printf("convmem:\n"); DebugMemory_(gvar, 0);
+	printf("	%cConv.	%u\n", 0xC9, gvar->pm.mm.MainPresent); DebugMemory_(gvar, 0);
 	//printf("mainmem:	%lu\n", gvar->mmi.mainmem);
 	//printf("Total convmem:	%lu	", gvar->mmi.mainmem); printf("TotalFree:	%lu	", MM_TotalFree(gvar)+gvar->mmi.EMSmem+gvar->mmi.XMSmem+gvar->mmi.XMSmem); printf("TotalUsed:	%lu\n", gvar->mmi.mainmem);
 	//printf("			UnusedMemory:	%lu\n", MM_UnusedMemory(gvar));
-
+	printf("nearheap:	%lu		", gvar->mmi.nearheap); printf("farheap:	%lu\n", gvar->mmi.farheap);
+	if(MML_CheckForEMS()) printf("EMSmem:		%lu	", gvar->mmi.EMSmem); if(MML_CheckForXMS()) printf("XMSmem:		%lu", gvar->mmi.XMSmem); printf("\n");
 }
 
 //==========================================================================

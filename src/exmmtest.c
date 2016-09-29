@@ -177,12 +177,12 @@ for(w=0;w<2;w++)
 	printf("&bigb=%Fp ", &bigbuffer);
 	//printf("&bigb=%04x", &bigbuffer);
 	printf("\n");
-#endif
 	printf("========================================\n");
+#endif
 #ifdef __WATCOMC__
 //this is far	printf("Total free:			%lu\n", (dword)(GetFreeSize()));
-	printf("Total near free:		%lu\n", (dword)(GetNearFreeSize()));
-	printf("Total far free:			%lu\n", (dword)(GetFarFreeSize()));
+	printf("Total near free:		%lub\n", (dword)(GetNearFreeSize()));
+	printf("Total far free:			%lub\n", (dword)(GetFarFreeSize()));
 	heapdump(&gvar);
 	segatesuto();
 #endif

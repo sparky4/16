@@ -55,7 +55,7 @@ void DebugMemory_(global_game_variables_t *gvar, boolean q)
 	printf("		DebugMemory_\n");
 	printf("========================================\n");}
 	if(q) { printf("Memory Usage\n");
-	printf("------------\n"); }else printf("  ");
+	printf("------------\n"); }else printf("	%c%c", 0xD3, 0xC4);
 	printf("Total:	"); if(q) printf("	"); printf("%uk", gvar->mmi.mainmem/1024);
 	if(q) printf("\n"); else printf("	");
 	printf("Free:	"); if(q) printf("	"); printf("%uk", MM_UnusedMemory(gvar)/1024);

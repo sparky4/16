@@ -1546,14 +1546,14 @@ PM_Startup(global_game_variables_t *gvar)
 		PML_StartupEMS(gvar);
 	if (!noxms && MML_CheckForXMS())
 		PML_StartupXMS(gvar);
+	if(!nomain)
+		PML_StartupMainMem(gvar);
 
-	if (!nomain && !gvar->pm.emm.EMSPresent)
+	if (!gvar->pm.mm.MainPresent && !gvar->pm.emm.EMSPresent && !gvar->pm.xmm.XMSPresent)
 	{
-		printf("PM_Startup: No main or EMS\n");
-		exit(-5);
+		Quit("PM_Startup: No main or EMS\n");
 		//return;
 	}
-	PML_StartupMainMem(gvar);
 
 	PM_Reset(gvar);
 
