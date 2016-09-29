@@ -1619,12 +1619,14 @@ void MM_Report_(global_game_variables_t *gvar)
 		printf("	LIMEMS\n");
 		printf("		EMM v%x.%x available\n", gvar->pm.emm.EMSVer>>4,gvar->pm.emm.EMSVer&0x0F);
 		printf("		totalEMSpages:	%u	", gvar->pm.emm.totalEMSpages); printf("freeEMSpages:	%u\n", gvar->pm.emm.freeEMSpages);
-		printf("		EMSPageFrame:	%x\n", gvar->pm.emm.EMSPageFrame);
+		printf("		EMSPageFrame:	%04x\n", gvar->pm.emm.EMSPageFrame);
 	}
 	if(MML_CheckForXMS())
 	{
 		printf("	XMS\n");
-		printf("		XMSDriver:	%X\n", gvar->pm.xmm.XMSDriver);
+//++++		printf("		XMS v%x.%x available\n", gvar->pm.xmm.XMSVer>>4,gvar->pm.xmm.XMSVer&0x0F);
+		printf("		XMSDriver:	%Fp\n", XMSDriver);
+		printf("		XMSHandle:	%04x\n", gvar->pm.xmm.XMSHandle);
 	}
 	printf("nearheap:	%lu		", gvar->mmi.nearheap); printf("farheap:	%lu\n", gvar->mmi.farheap);
 	if(MML_CheckForEMS()) printf("EMSmem:		%lu	", gvar->mmi.EMSmem); if(MML_CheckForXMS()) printf("XMSmem:		%lu", gvar->mmi.XMSmem); printf("\n");

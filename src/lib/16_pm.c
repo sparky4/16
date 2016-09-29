@@ -354,15 +354,22 @@ PML_ShutdownEMS(global_game_variables_t *gvar)
 boolean
 PML_StartupXMS(global_game_variables_t *gvar)
 {
-	boolean errorflag;
+//#define STARTUPXMSASM
 	byte err;
-	word /*XMSAvail,*/ XMSHandle;
-
-	word XMSAvail1, XMSAvail2, XMSAvail3, XMSAvail4;
-
+#ifndef STARTUPXMSASM
+#define XMSAVI	gvar->pm.xmm.XMSAvail
+#define XMSHAN gvar->pm.xmm.XMSHandle
+#else
+	#define BRACKETXMS
+	word XMSAvail, XMSHandle;
+#define XMSAVI	XMSAvail
+#define XMSHAN XMSHandle
+#endif
+//++++	word XMSVer;
+	boolean errorflag=false;
 	word e=0;
-	errorflag=gvar->pm.xmm.XMSPresent = false;					// Assume failure
-	gvar->pm.xmm.XMSAvail = gvar->mmi.XMSmem = 0;
+	gvar->pm.xmm.XMSPresent = false;					// Assume failure
+	XMSAVI = gvar->mmi.XMSmem = 0;
 
 	__asm {
 		mov	ax,0x4300
@@ -375,20 +382,23 @@ PML_StartupXMS(global_game_variables_t *gvar)
 		int	XMS_INT							// Get address of XMS driver
 		mov	[WORD PTR XMSDriver],bx
 		mov	[WORD PTR XMSDriver+2],es		// function pointer to XMS driver
+//++++		mov	ah,0
+//++++		call	[DWORD PTR XMSDriver]						//; Get XMS Version Number
+//++++		mov	[XMSVer],ax
 		mov	e,2
 
-		//XMS_CALL(XMS_QUERYFREE);			// Find out how much XMS is available
+#ifdef STARTUPXMSASM
 		mov	ah,XMS_QUERYFREE			// Find out how much XMS is available
-		call	[DWORD PTR XMSDriver]
-		//mov	[XMSAvail],ax
-		//mov	XMSAvail1,ax
-		//mov	ax,XMSAvail2
-		//mov	[XMSAvail3],ax
-		mov	ax,[XMSAvail4]
-		mov	err,bl
-		cmp	ax,0				// AJR: bugfix 10/8/92
-		je	error1
+		call	[DWORD PTR XMSDriver]//DWORD PTR
+#ifndef BRACKETXMS
+		mov	XMSAVI,ax
+#else
+		mov	[XMSAVI],ax
+#endif
+		or	ax,ax				// AJR: bugfix 10/8/92
+		jz	error1
 		mov	e,3
+#endif
 		jmp	End1
 #ifdef __BORLANDC__
 	}
@@ -407,29 +417,45 @@ End1:
 #ifdef __WATCOMC__
 	}
 #endif
-
-//	XMS_CALL(XMS_QUERYFREE);			// Find out how much XMS is available
-//	XMSAvail = _AX;
-//	if (!_AX)				// AJR: bugfix 10/8/92
-//		goto error;
-
-	printf("	XMSAvail=%u	e=%u\n", XMSAvail4, e);
-	//printf("	%u	%u	%u	%u\n", XMSAvail1, XMSAvail2, XMSAvail3, XMSAvail4);
-	XMSAvail4 &= ~(PMPageSizeKB - 1);	// Round off to nearest page size
-	if (XMSAvail4 < (PMPageSizeKB * 2)){	// Need at least 2 pages
-		printf("PISS! %u\n", XMSAvail4);
+	if(errorflag==true) goto error;
+#ifndef STARTUPXMSASM
+	XMS_CALL(XMS_QUERYFREE);			// Find out how much XMS is available
+	XMSAVI = _AX;
+	if (!_AX)				// AJR: bugfix 10/8/92
+	{
+		errorflag = true;
+		err = _BL;
 		goto error;
 	}
+	e++;
+#endif
 
+#ifdef __DEBUG_PM__
+//++++	printf("XMSVer=%02X	", XMSVer);
+	printf("XMSAvail=%u\n", XMSAVI);
+#endif
+	XMSAVI &= ~(PMPageSizeKB - 1);	// Round off to nearest page size
+	if (XMSAVI < (PMPageSizeKB * 2))	// Need at least 2 pages
+	{
+		errorflag=true;
+		goto error;
+	}
+#ifdef STARTUPXMSASM
 	__asm {
-		mov	dx,[XMSAvail4]
-		//XMS_CALL(XMS_ALLOC);				// And do the allocation
-		mov	ah,XMS_ALLOC
-		call	[DWORD PTR XMSDriver]
-		mov	XMSHandle,dx
-		mov	err,bl
-		cmp	ax,0				// AJR: bugfix 10/8/92
-		je	error2
+#ifndef BRACKETXMS
+		mov	dx,XMSAVI
+#else
+		mov	dx,[XMSAVI]
+#endif
+		mov	ah,XMS_ALLOC				// And do the allocation
+		call	[DWORD PTR XMSDriver]//DWORD PTR
+#ifndef BRACKETXMS
+		mov	XMSHAN,dx
+#else
+		mov	[XMSHAN],dx
+#endif
+		or	ax,ax				// AJR: bugfix 10/8/92
+		jz	error2
 		mov	e,4
 		jmp	End2
 #ifdef __BORLANDC__
@@ -449,59 +475,43 @@ End2:
 #ifdef __WATCOMC__
 	}
 #endif
-
-	if(errorflag==false)
-	{
-		gvar->mmi.XMSmem = XMSAvail4 * (dword)1024;
-		gvar->pm.xmm.XMSAvail = XMSAvail4;
-		gvar->pm.xmm.XMSHandle = XMSHandle;
-
-		gvar->pm.xmm.XMSPresent = true;
-		printf("	%u	%u	%u\n", gvar->mmi.XMSmem, gvar->pm.xmm.XMSAvail, XMSAvail4);
-		getch();
-	}else printf("	%u	errorflag=%02X\n", XMSAvail4, err);
-error:
-	return(gvar->pm.xmm.XMSPresent);
-/*
-	gvar->pm.xmm.XMSPresent = false;					// Assume failure
-	gvar->pm.xmm.XMSAvail = 0;
-
-__asm	mov	ax,0x4300
-__asm	int	XMS_INT         				// Check for presence of XMS driver
-	if (_AL != 0x80)
-		goto error;
-
-
-__asm	mov	ax,0x4310
-__asm	int	XMS_INT							// Get address of XMS driver
-__asm	mov	[WORD PTR XMSDriver],bx
-__asm	mov	[WORD PTR XMSDriver+2],es		// function pointer to XMS driver
-
-	XMS_CALL(XMS_QUERYFREE);			// Find out how much XMS is available
-	gvar->pm.xmm.XMSAvail = _AX;
-	if (!_AX)				// AJR: bugfix 10/8/92
-		goto error;
-
-	gvar->pm.xmm.XMSAvail &= ~(PMPageSizeKB - 1);	// Round off to nearest page size
-	if (gvar->pm.xmm.XMSAvail < (PMPageSizeKB * 2))	// Need at least 2 pages
-		goto error;
-
-	_DX = gvar->pm.xmm.XMSAvail;
+#else
+	_DX = XMSAVI;
 	XMS_CALL(XMS_ALLOC);				// And do the allocation
-	gvar->pm.xmm.XMSHandle = _DX;
-
+	XMSHAN = _DX;
 	if (!_AX)				// AJR: bugfix 10/8/92
 	{
-		gvar->pm.xmm.XMSAvail = 0;
+		errorflag=true;
+		err = _BL;
 		goto error;
 	}
-
-	gvar->mmi.XMSmem = gvar->pm.xmm.XMSAvail * 1024;
-
-	gvar->pm.xmm.XMSPresent = true;
+	e++;
+#endif
 error:
-	printf("XMSstart	%u	%u\n", gvar->mmi.XMSmem, gvar->pm.xmm.XMSAvail);
-	return(gvar->pm.xmm.XMSPresent);*/
+	if(errorflag==false)
+	{
+		gvar->mmi.XMSmem = (dword)(XMSAVI) * 1024;
+#ifdef STARTUPXMSASM
+		gvar->pm.xmm.XMSAvail = XMSAVI;
+		gvar->pm.xmm.XMSHandle = XMSHAN;
+#endif
+//++++		gvar->pm.xmm.XMSVer = XMSVer;
+		gvar->pm.xmm.XMSPresent = true;
+#ifdef __DEBUG_PM__
+		printf("	XMSmem=%lu	XMSAvail=%u\n", gvar->mmi.XMSmem, XMSAVI);
+#endif
+	}
+	else
+	{
+#ifdef __DEBUG_PM__
+		//printf("XMSHandle\n");
+		//printf("	1=%u	2=%u	3=%u	4=%u\n", XMSHandle1, XMSHandle2, XMSHandle3, XMSHandle4);
+		//printf("	2=%u	", XMSHandle);
+		//printf("	%u", gvar->pm.xmm.XMSHandle);
+		printf("err=%02X	e=%u\n", err, e);
+#endif
+	}
+	return(gvar->pm.xmm.XMSPresent);
 }
 
 //
