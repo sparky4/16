@@ -422,13 +422,14 @@ End1:
 	}
 
 	__asm {
-		mov	dx,XMSAvail4
+		mov	dx,[XMSAvail4]
 		//XMS_CALL(XMS_ALLOC);				// And do the allocation
 		mov	ah,XMS_ALLOC
 		call	[DWORD PTR XMSDriver]
 		mov	XMSHandle,dx
-		or	ax,ax				// AJR: bugfix 10/8/92
-		jz	error2
+		mov	err,bl
+		cmp	ax,0				// AJR: bugfix 10/8/92
+		je	error2
 		mov	e,4
 		jmp	End2
 #ifdef __BORLANDC__
