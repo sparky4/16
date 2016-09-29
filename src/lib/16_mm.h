@@ -67,7 +67,7 @@ extern boolean dbg_debugpm;
 
 #define	XMS_INT			0x2f
 #define	XMS_CALL(v)		_AH = (v);\
-						__asm call [WORD PTR XMSDriver]
+						__asm call [DWORD PTR XMSDriver]
 /*__asm { mov ah,[v]\*///}
 
 #define	XMS_VERSION		0x00
@@ -185,7 +185,7 @@ boolean MML_CheckForEMS(void);
 //void MML_ShutdownEMS(mminfo_t *mm);
 byte MM_MapEMS(global_game_variables_t *gvar);
 //byte MM_MapXEMS(global_game_variables_t *gvar);
-boolean MML_CheckForXMS(global_game_variables_t *gvar);
+boolean MML_CheckForXMS(void);
 //void MML_SetupXMS(mminfo_t *mm, mminfotype *mmi);
 //void MML_ShutdownXMS(mminfo_t *mm);
 void MML_UseSpace(word segstart, dword seglength, global_game_variables_t *gvar);
@@ -208,6 +208,7 @@ void MM_Report_(global_game_variables_t *gvar);
 void MM_BombOnError(boolean bomb, global_game_variables_t *gvar);
 //void MM_GetNewBlock(mminfo_t *mm);
 //void MM_FreeBlock(mmblocktype *x, mminfo_t *mm);
+void xms_call(byte v, global_game_variables_t *gvar);
 
 //==========================================================================
 

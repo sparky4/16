@@ -437,10 +437,9 @@ byte MM_MapXEMS(global_game_variables_t *gvar)
 =======================
 */
 
-boolean MML_CheckForXMS(global_game_variables_t *gvar)
+boolean MML_CheckForXMS(void)
 {
 	boolean	errorflag=false;
-	gvar->mm.numUMBs = 0;
 
 	__asm {
 		mov	ax,0x4300
@@ -898,7 +897,7 @@ goto xmsskip;//0000
 			,ParmStringsexmm) == 0)
 			goto xmsskip;				// param NOXMS
 	}
-	if(MML_CheckForXMS(gvar))
+	if(MML_CheckForXMS())
 	{
 		MML_SetupXMS(gvar);					// allocate as many UMBs as possible
 	}
@@ -942,7 +941,7 @@ void MM_Shutdown(global_game_variables_t *gvar)
 	if(!dbg_debugpm) {
 #endif
 	if(MML_CheckForEMS()){ MML_ShutdownEMS(gvar); }//printf("		EMS freed\n"); }
-	if(MML_CheckForXMS(gvar)){ MML_ShutdownXMS(gvar); }//printf("		XMS freed\n"); }
+	if(MML_CheckForXMS()){ MML_ShutdownXMS(gvar); }//printf("		XMS freed\n"); }
 #ifdef __DEBUG__
 	}
 #endif
@@ -1622,13 +1621,13 @@ void MM_Report_(global_game_variables_t *gvar)
 		printf("		totalEMSpages:	%u	", gvar->pm.emm.totalEMSpages); printf("freeEMSpages:	%u\n", gvar->pm.emm.freeEMSpages);
 		printf("		EMSPageFrame:	%x\n", gvar->pm.emm.EMSPageFrame);
 	}
-	if(MML_CheckForXMS(gvar))
+	if(MML_CheckForXMS())
 	{
 		printf("	XMS\n");
-		printf("		XMSDriver:	%X\n", XMSDriver);
+		printf("		XMSDriver:	%X\n", gvar->pm.xmm.XMSDriver);
 	}
 	printf("nearheap:	%lu		", gvar->mmi.nearheap); printf("farheap:	%lu\n", gvar->mmi.farheap);
-	if(MML_CheckForEMS()) printf("EMSmem:		%lu	", gvar->mmi.EMSmem); if(MML_CheckForXMS(gvar)) printf("XMSmem:		%lu", gvar->mmi.XMSmem); printf("\n");
+	if(MML_CheckForEMS()) printf("EMSmem:		%lu	", gvar->mmi.EMSmem); if(MML_CheckForXMS()) printf("XMSmem:		%lu", gvar->mmi.XMSmem); printf("\n");
 	printf("convmem:\n"); DebugMemory_(gvar, 0);
 	//printf("mainmem:	%lu\n", gvar->mmi.mainmem);
 	//printf("Total convmem:	%lu	", gvar->mmi.mainmem); printf("TotalFree:	%lu	", MM_TotalFree(gvar)+gvar->mmi.EMSmem+gvar->mmi.XMSmem+gvar->mmi.XMSmem); printf("TotalUsed:	%lu\n", gvar->mmi.mainmem);
@@ -1802,6 +1801,15 @@ void MM_FreeBlock(mmblocktype *x, global_game_variables_t *gvar)
 	x->next=gvar->mm.mmfree;
 	gvar->mm.mmfree=x;
 }*/
+
+void xms_call(byte v, global_game_variables_t *gvar)
+{
+	dword XMSDriver = gvar->pm.xmm.XMSDriver;
+	__asm {
+		mov	ah,[v]
+		call [DWORD PTR XMSDriver]
+	}
+}
 
 /*void MM_seguin(void)
 {

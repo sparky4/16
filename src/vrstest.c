@@ -22,11 +22,13 @@
 
 #include "src/lib/modex16.h"
 #include "src/lib/16_sprit.h"
+#include "src/lib/16_tail.h"
+#include "src/lib/16_pm.h"
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 
 void main() {
-	global_game_variables_t gvar;
+	static global_game_variables_t gvar;
 	__segment sega;
 	memptr bigbuffer;
 	int i;
@@ -73,6 +75,8 @@ void main() {
 
 	gvar.mm.mmstarted=0;
 	MM_Startup(&gvar);
+	PM_Startup(&gvar);
+	PM_UnlockMainMem(&gvar);
 	CA_Startup(&gvar);
 	// What should be done by read_vrs:
 	//sega = (mm.bufferseg);
@@ -157,6 +161,7 @@ void main() {
 	free(spri.sprite_vrl_cont);
 	MM_FreePtr(&bigbuffer, &gvar);
 	//MM_FreePtr(&((void __based(sega)*)spri.spritesheet->buffer), &mm);
+	PM_Shutdown(&gvar);
 	CA_Shutdown(&gvar);
 	MM_Shutdown(&gvar);
 	//printf("CPU to VGA: %f\n", t1);
