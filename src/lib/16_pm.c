@@ -48,7 +48,8 @@ boolean dbg_debugpm=0;
 //	XMS specific variables
 	//boolean			XMSPresent;
 	//word			gvar->pm.xmm.XMSAvail,gvar->pm.xmm.XMSPagesAvail,gvar->pm.xmm.XMSHandle;
-	dword		XMSDriver;
+	dword			XMSDriver;	//hard to put in gvar
+	word				XMSVer;	//hard to put in gvar
 /*	int				gvar->pm.xmm.XMSProtectPage = -1;
 
 //	File specific variables
@@ -357,8 +358,7 @@ PML_StartupXMS(global_game_variables_t *gvar)
 //TODO: translate the _REG into working assembly
 //#define STARTUPXMSASM
 	byte err;
-	word XMSAvail, XMSHandle;
-//++++	word XMSVer;
+	word XMSAvail, XMSHandle;//, XMSVer;
 	boolean errorflag=false;
 	word e=0;
 	gvar->pm.xmm.XMSPresent = false;					// Assume failure
@@ -375,14 +375,15 @@ PML_StartupXMS(global_game_variables_t *gvar)
 		int	XMS_INT							// Get address of XMS driver
 		mov	[WORD PTR XMSDriver],bx
 		mov	[WORD PTR XMSDriver+2],es		// function pointer to XMS driver
-//++++		mov	ah,0
-//++++		call	[DWORD PTR XMSDriver]						//; Get XMS Version Number
-//++++		mov	[XMSVer],ax
+
+		mov	ah,XMS_VERSION
+		call	[DWORD PTR XMSDriver]						//; Get XMS Version Number
+		mov	[XMSVer],ax
 		mov	e,2
 
 #ifdef STARTUPXMSASM
 		mov	ah,XMS_QUERYFREE			// Find out how much XMS is available
-		call	[DWORD PTR XMSDriver]//DWORD PTR
+		call	[DWORD PTR XMSDriver]
 		mov	XMSAvail,ax
 		or	ax,ax				// AJR: bugfix 10/8/92
 		jz	error1
@@ -420,8 +421,9 @@ End1:
 #endif
 
 #ifdef __DEBUG_PM__
-//++++	printf("XMSVer=%02X	", XMSVer);
+	printf("XMSVer=%02X	", XMSVer);
 	printf("XMSAvail=%u\n", XMSAvail);
+	getch();
 #endif
 	XMSAvail &= ~(PMPageSizeKB - 1);	// Round off to nearest page size
 	if (XMSAvail < (PMPageSizeKB * 2))	// Need at least 2 pages
@@ -433,7 +435,7 @@ End1:
 	__asm {
 		mov	dx,XMSAvail
 		mov	ah,XMS_ALLOC				// And do the allocation
-		call	[DWORD PTR XMSDriver]//DWORD PTR
+		call	[DWORD PTR XMSDriver]
 		mov	XMSHandle,dx
 		or	ax,ax				// AJR: bugfix 10/8/92
 		jz	error2
@@ -474,7 +476,7 @@ error:
 		gvar->mmi.XMSmem = (dword)(XMSAvail) * 1024;
 		gvar->pm.xmm.XMSAvail = XMSAvail;
 		gvar->pm.xmm.XMSHandle = XMSHandle;
-//++++		gvar->pm.xmm.XMSVer = XMSVer;
+		//gvar->pm.xmm.XMSVer = XMSVer;
 		gvar->pm.xmm.XMSPresent = true;
 #ifdef __DEBUG_PM__
 		printf("	XMSmem=%lu	XMSAvail=%u\n", gvar->mmi.XMSmem, XMSAvail);

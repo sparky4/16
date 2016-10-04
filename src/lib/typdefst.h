@@ -257,7 +257,7 @@ typedef struct
 typedef struct
 {
 	boolean			XMSPresent;
-	word			XMSAvail,XMSPagesAvail,XMSHandle;//++++,XMSVer;
+	word			XMSAvail,XMSPagesAvail,XMSHandle;//,XMSVer;
 	dword			XMSDriver;
 	int				XMSProtectPage;// = -1;
 } pm_xmmi_t;

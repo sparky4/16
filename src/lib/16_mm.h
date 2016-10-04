@@ -107,6 +107,7 @@ extern	void		(* beforesort) (void);
 extern	void		(* aftersort) (void);
 extern	void		(* XMSaddr) (void);		// far pointer to XMS driver
 extern	dword	XMSDriver;
+extern	word		XMSVer;
 
 //==========================================================================
 

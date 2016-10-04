@@ -1627,7 +1627,7 @@ void MM_Report_(global_game_variables_t *gvar)
 	if(MML_CheckForXMS())
 	{
 		printf("	%cXMS	%u\n", 0xC9, gvar->pm.xmm.XMSPresent);
-//++++		printf("		XMS v%x.%x available\n", gvar->pm.xmm.XMSVer>>4,gvar->pm.xmm.XMSVer&0x0F);
+		printf("	%c%cXMS v%x.%x available\n", 0xC7, 0xC4, XMSVer>>8,XMSVer&0x0F);
 		printf("	%c%cXMSDriver:	%Fp\n", 0xC7, 0xC4, XMSDriver);
 		printf("	%c%cXMSHandle:	%04x\n", 0xC7, 0xC4, gvar->pm.xmm.XMSHandle);
 		printf("	%c%cXMSmem:	%lu\n", 0xD3, 0xC4, gvar->mmi.XMSmem);
