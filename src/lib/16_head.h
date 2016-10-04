@@ -152,7 +152,7 @@ static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 extern	int			profilehandle,debughandle;	//make it into game global
 
 #define __DEBUG__
-//#define __DEBUG_PM__
+#define __DEBUG_PM__
 //#define __DEBUG_MM__
 
 #define	nil	((void *)0)
