@@ -356,6 +356,7 @@ PML_StartupXMS(global_game_variables_t *gvar)
 {
 //#define STARTUPXMSASM
 	byte err;
+	#define BRACKETXMS
 	word XMSAvail, XMSHandle;
 #define XMSAVI	XMSAvail
 #define XMSHAN XMSHandle
@@ -383,10 +384,14 @@ PML_StartupXMS(global_game_variables_t *gvar)
 
 #ifdef STARTUPXMSASM
 		mov	ah,XMS_QUERYFREE			// Find out how much XMS is available
-		call	[DWORD PTR XMSDriver]
+		call	[DWORD PTR XMSDriver]//DWORD PTR
+#ifndef BRACKETXMS
 		mov	XMSAVI,ax
-		cmp	bl,0xa0				// AJR: bugfix 10/8/92
-		je	error1
+#else
+		mov	[XMSAVI],ax
+#endif
+		or	ax,ax				// AJR: bugfix 10/8/92
+		jz	error1
 		mov	e,3
 #endif
 		jmp	End1
@@ -411,7 +416,7 @@ End1:
 #ifndef STARTUPXMSASM
 	XMS_CALL(XMS_QUERYFREE);			// Find out how much XMS is available
 	XMSAVI = _AX;
-	if (_BL)				// AJR: bugfix 10/8/92
+	if (!_AX)				// AJR: bugfix 10/8/92
 	{
 		errorflag = true;
 		err = _BL;
@@ -422,8 +427,7 @@ End1:
 
 #ifdef __DEBUG_PM__
 //++++	printf("XMSVer=%02X	", XMSVer);
-	printf("XMSAvail=%u\n", (XMSAVI));
-	getch();
+	printf("XMSAvail=%u\n", XMSAVI);
 #endif
 	XMSAVI &= ~(PMPageSizeKB - 1);	// Round off to nearest page size
 	if (XMSAVI < (PMPageSizeKB * 2))	// Need at least 2 pages
@@ -433,16 +437,20 @@ End1:
 	}
 #ifdef STARTUPXMSASM
 	__asm {
+#ifndef BRACKETXMS
 		mov	dx,XMSAVI
+#else
+		mov	dx,[XMSAVI]
+#endif
 		mov	ah,XMS_ALLOC				// And do the allocation
-		call	[DWORD PTR XMSDriver]
+		call	[DWORD PTR XMSDriver]//DWORD PTR
 #ifndef BRACKETXMS
 		mov	XMSHAN,dx
 #else
 		mov	[XMSHAN],dx
 #endif
-		cmp	ax,0				// AJR: bugfix 10/8/92
-		je	error2
+		or	ax,ax				// AJR: bugfix 10/8/92
+		jz	error2
 		mov	e,4
 		jmp	End2
 #ifdef __BORLANDC__
@@ -477,8 +485,8 @@ End2:
 error:
 	if(errorflag==false)
 	{
-		gvar->mmi.XMSmem = (XMSAVI) * 1024ul;
-		gvar->pm.xmm.XMSAvail = (word)XMSAVI;
+		gvar->mmi.XMSmem = (dword)(XMSAVI) * 1024;
+		gvar->pm.xmm.XMSAvail = XMSAVI;
 		gvar->pm.xmm.XMSHandle = XMSHAN;
 //++++		gvar->pm.xmm.XMSVer = XMSVer;
 		gvar->pm.xmm.XMSPresent = true;
@@ -493,10 +501,7 @@ error:
 		//printf("	1=%u	2=%u	3=%u	4=%u\n", XMSHandle1, XMSHandle2, XMSHandle3, XMSHandle4);
 		//printf("	2=%u	", XMSHandle);
 		//printf("	%u", gvar->pm.xmm.XMSHandle);
-		printf("XMSerr\n");
-		printf("	%u,	%lu\n", (word)XMSAVI, (dword)XMSAVI);
-		printf("	err=%02X	e=%u\n", err, e);
-		getch();
+		printf("err=%02X	e=%u\n", err, e);
 #endif
 	}
 	return(gvar->pm.xmm.XMSPresent);
