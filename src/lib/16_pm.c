@@ -354,17 +354,15 @@ PML_ShutdownEMS(global_game_variables_t *gvar)
 boolean
 PML_StartupXMS(global_game_variables_t *gvar)
 {
+//TODO: translate the _REG into working assembly
 //#define STARTUPXMSASM
 	byte err;
-	#define BRACKETXMS
 	word XMSAvail, XMSHandle;
-#define XMSAVI	XMSAvail
-#define XMSHAN XMSHandle
 //++++	word XMSVer;
 	boolean errorflag=false;
 	word e=0;
 	gvar->pm.xmm.XMSPresent = false;					// Assume failure
-	XMSAVI = gvar->mmi.XMSmem = 0;
+	XMSAvail = gvar->mmi.XMSmem = 0;
 
 	__asm {
 		mov	ax,0x4300
@@ -385,11 +383,7 @@ PML_StartupXMS(global_game_variables_t *gvar)
 #ifdef STARTUPXMSASM
 		mov	ah,XMS_QUERYFREE			// Find out how much XMS is available
 		call	[DWORD PTR XMSDriver]//DWORD PTR
-#ifndef BRACKETXMS
-		mov	XMSAVI,ax
-#else
-		mov	[XMSAVI],ax
-#endif
+		mov	XMSAvail,ax
 		or	ax,ax				// AJR: bugfix 10/8/92
 		jz	error1
 		mov	e,3
@@ -415,7 +409,7 @@ End1:
 	if(errorflag==true) goto error;
 #ifndef STARTUPXMSASM
 	XMS_CALL(XMS_QUERYFREE);			// Find out how much XMS is available
-	XMSAVI = _AX;
+	XMSAvail = _AX;
 	if (!_AX)				// AJR: bugfix 10/8/92
 	{
 		errorflag = true;
@@ -427,28 +421,20 @@ End1:
 
 #ifdef __DEBUG_PM__
 //++++	printf("XMSVer=%02X	", XMSVer);
-	printf("XMSAvail=%u\n", XMSAVI);
+	printf("XMSAvail=%u\n", XMSAvail);
 #endif
-	XMSAVI &= ~(PMPageSizeKB - 1);	// Round off to nearest page size
-	if (XMSAVI < (PMPageSizeKB * 2))	// Need at least 2 pages
+	XMSAvail &= ~(PMPageSizeKB - 1);	// Round off to nearest page size
+	if (XMSAvail < (PMPageSizeKB * 2))	// Need at least 2 pages
 	{
 		errorflag=true;
 		goto error;
 	}
 #ifdef STARTUPXMSASM
 	__asm {
-#ifndef BRACKETXMS
-		mov	dx,XMSAVI
-#else
-		mov	dx,[XMSAVI]
-#endif
+		mov	dx,XMSAvail
 		mov	ah,XMS_ALLOC				// And do the allocation
 		call	[DWORD PTR XMSDriver]//DWORD PTR
-#ifndef BRACKETXMS
-		mov	XMSHAN,dx
-#else
-		mov	[XMSHAN],dx
-#endif
+		mov	XMSHandle,dx
 		or	ax,ax				// AJR: bugfix 10/8/92
 		jz	error2
 		mov	e,4
@@ -471,9 +457,9 @@ End2:
 	}
 #endif
 #else
-	_DX = XMSAVI;
+	_DX = XMSAvail;
 	XMS_CALL(XMS_ALLOC);				// And do the allocation
-	XMSHAN = _DX;
+	XMSHandle = _DX;
 	if (!_AX)				// AJR: bugfix 10/8/92
 	{
 		errorflag=true;
@@ -485,13 +471,13 @@ End2:
 error:
 	if(errorflag==false)
 	{
-		gvar->mmi.XMSmem = (dword)(XMSAVI) * 1024;
-		gvar->pm.xmm.XMSAvail = XMSAVI;
-		gvar->pm.xmm.XMSHandle = XMSHAN;
+		gvar->mmi.XMSmem = (dword)(XMSAvail) * 1024;
+		gvar->pm.xmm.XMSAvail = XMSAvail;
+		gvar->pm.xmm.XMSHandle = XMSHandle;
 //++++		gvar->pm.xmm.XMSVer = XMSVer;
 		gvar->pm.xmm.XMSPresent = true;
 #ifdef __DEBUG_PM__
-		printf("	XMSmem=%lu	XMSAvail=%u\n", gvar->mmi.XMSmem, XMSAVI);
+		printf("	XMSmem=%lu	XMSAvail=%u\n", gvar->mmi.XMSmem, XMSAvail);
 #endif
 	}
 	else
@@ -501,7 +487,7 @@ error:
 		//printf("	1=%u	2=%u	3=%u	4=%u\n", XMSHandle1, XMSHandle2, XMSHandle3, XMSHandle4);
 		//printf("	2=%u	", XMSHandle);
 		//printf("	%u", gvar->pm.xmm.XMSHandle);
-		printf("err=%02X	e=%u\n", err, e);
+		printf("	err=%02X	e=%u\n", err, e);
 #endif
 	}
 	return(gvar->pm.xmm.XMSPresent);
@@ -1565,7 +1551,7 @@ PM_Shutdown(global_game_variables_t *gvar)
 	if (!gvar->pm.PMStarted)
 		return;
 
-	PML_ClosePageFile(gvar);
+	//PML_ClosePageFile(gvar);
 
 	PML_ShutdownMainMem(gvar);
 }

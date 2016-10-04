@@ -50,6 +50,9 @@ void main() {
 	struct vrl_container *vrl;
 	word w=0;
 
+	gvar.mm.mmstarted=0;
+	dbg_debugpm=1;
+
 	// DOSLIB: check our environment
 	probe_dos();
 
@@ -73,7 +76,6 @@ void main() {
 
 	//gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 
-	gvar.mm.mmstarted=0;
 	MM_Startup(&gvar);
 	PM_Startup(&gvar);
 	PM_UnlockMainMem(&gvar);
@@ -141,7 +143,7 @@ void main() {
 	t2 = (*clockw-start)/18.2;
 
 	for (i = 0; i < 5; i++){
-	spri.delay = 1; animate_spri(&spri); spri.x += 20; sleep(1); }
+	spri.delay = 1; animate_spri(&spri); spri.x += 20; /*sleep(1);*/ }
 
 	while(!kbhit())
 	{
@@ -158,6 +160,7 @@ void main() {
 	VGAmodeX(0, 1, &gvar);
 	MM_ShowMemory(&gvar);
 	MM_DumpData(&gvar);
+	MM_Report_(&gvar);
 	free(spri.sprite_vrl_cont);
 	MM_FreePtr(&bigbuffer, &gvar);
 	//MM_FreePtr(&((void __based(sega)*)spri.spritesheet->buffer), &mm);
@@ -171,8 +174,8 @@ void main() {
 	printf("version %s\n", VERSION);
 	printf("t1: %f\n", t1);
 	printf("t2: %f\n", t2);
-	printf("gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
-	printf("gvar.video.page[0].height: %u\n", gvar.video.page[0].height);
+//0000	printf("gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
+//0000	printf("gvar.video.page[0].height: %u\n", gvar.video.page[0].height);
 	printf("Num %d", num_of_vrl);
 	if(baka) printf("\nyay!\n");
 	else printf("\npoo!\n");

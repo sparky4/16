@@ -940,8 +940,10 @@ void MM_Shutdown(global_game_variables_t *gvar)
 #ifdef __DEBUG__
 	if(!dbg_debugpm) {
 #endif
+#ifndef __16_PM__
 	if(MML_CheckForEMS()){ MML_ShutdownEMS(gvar); }//printf("		EMS freed\n"); }
 	if(MML_CheckForXMS()){ MML_ShutdownXMS(gvar); }//printf("		XMS freed\n"); }
+#endif
 #ifdef __DEBUG__
 	}
 #endif
