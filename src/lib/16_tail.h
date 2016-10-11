@@ -24,8 +24,12 @@
 #define	__16_TAIL__
 
 #include "src/lib/16_head.h"
+#include "src/lib/16_pm.h"
 #include "src/lib/16_mm.h"
+#include "src/lib/16_ca.h"
 #include "src/lib/16_in.h"
+
+extern boolean dbg_debugpm;
 
 void DebugMemory_(global_game_variables_t *gvar, boolean q);
 #ifdef __WATCOMC__

@@ -25,6 +25,70 @@
 
 #include "src/lib/16_tail.h"
 
+/*
+==========================
+=
+= Startup16
+=
+= Load a few things right away
+=
+==========================
+*/
+
+void Startup16(global_game_variables_t *gvar)
+{
+	// DOSLIB: check our environment
+	probe_dos();
+
+	// DOSLIB: what CPU are we using?
+	// NTS: I can see from the makefile Sparky4 intends this to run on 8088 by the -0 switch in CFLAGS.
+	//      So this code by itself shouldn't care too much what CPU it's running on. Except that other
+	//      parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
+	//      the CPU to carry out tasks. --J.C.
+	cpu_probe();
+
+	// DOSLIB: check for VGA
+	if (!probe_vga()) {
+		printf("VGA probe failed\n");
+		return;
+	}
+	// hardware must be VGA or higher!
+	if (!(vga_state.vga_flags & VGA_IS_VGA)) {
+		printf("This program requires VGA or higher graphics hardware\n");
+		return;
+	}
+
+	gvar->mm.mmstarted=0;
+	gvar->pm.PMStarted=0;
+	MM_Startup(gvar);
+	IN_Startup(gvar);
+	PM_Startup(gvar);
+	PM_UnlockMainMem(gvar);
+	CA_Startup(gvar);
+
+}
+
+//===========================================================================
+
+/*
+==========================
+=
+= Shutdown16
+=
+= Shuts down all ID_?? managers
+=
+==========================
+*/
+
+void Shutdown16(global_game_variables_t *gvar)
+{
+	PM_Shutdown(gvar);
+	IN_Shutdown(gvar);
+	CA_Shutdown(gvar);
+	MM_Shutdown(gvar);
+}
+
+
 //===========================================================================
 
 /*

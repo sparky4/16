@@ -903,11 +903,11 @@ goto xmsskip;//0000
 	}
 
 	}
+xmsskip:
 #endif
 //
 // allocate the misc buffer
 //
-xmsskip:
 	gvar->mm.mmrover = gvar->mm.mmhead;		// start looking for space after low block
 
 	MM_GetPtr(&(gvar->mm.bufferseg),BUFFERSIZE, gvar);
