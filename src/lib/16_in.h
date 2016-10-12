@@ -225,7 +225,9 @@ typedef	struct
 //0000	planar_buf_t huge *data; //supposively the sprite sheet data
 //	planar_buf_t data; //supposively the sprite sheet data
 ////0000----
+#ifdef	__WATCOMC__
 	struct sprite *spri;	//supposively the sprite sheet data
+#endif
 	bitmap_t *data;		//supposively the sprite sheet data//old format
 	sword hp; //hitpoints of the player
 	int persist_aniframe;    /* gonna be increased to 1 before being used, so 0 is ok for default */
