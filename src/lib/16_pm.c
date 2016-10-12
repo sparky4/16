@@ -155,13 +155,13 @@ PML_StartupEMS(global_game_variables_t *gvar)
 	__asm {
 		mov	dx,OFFSET emmname	//fix by andrius4669
 		mov	ax,0x3d00
-		int	EMS_INT		// try to open EMMXXXX0 device
+		int	EMM_INT		// try to open EMMXXXX0 device
 		jc	error1
 
 		mov	bx,ax
 		mov	ax,0x4400
 
-		int	EMS_INT		// get device info
+		int	EMM_INT		// get device info
 		jc	error1
 
 		and	dx,0x80
@@ -169,13 +169,13 @@ PML_StartupEMS(global_game_variables_t *gvar)
 
 		mov	ax,0x4407
 
-		int	EMS_INT		// get status
+		int	EMM_INT		// get status
 		jc	error1
 		or	al,al
 		jz	error1
 
 		mov	ah,0x3e
-		int	EMS_INT		// close handle
+		int	EMM_INT		// close handle
 		jc	error1
 
 		mov	ah,EMS_STATUS

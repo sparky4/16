@@ -22,22 +22,6 @@
 
 #include "src/lib/16_head.h"
 
-/* Function: Wait **********************************************************
-*
-*     Parameters:    wait - time in microseconds
-*
-*     Description:    pauses for a specified number of microseconds.
-*
-*/
-void wait(clock_t wait){
-	clock_t goal;
-
-	if(!wait) return;
-
-	goal = wait + clock();
-	while((goal > clock()) && !kbhit()) ;
-} /* End of wait */
-
 long int
 filesize(FILE *fp)
 {
@@ -133,7 +117,9 @@ void Quit (char *error)
 	{
 	  //movedata ((unsigned)screen,7,0xb800,0,7*160);
 	  //gotoxy (10,4);
+		printf("\n");
 	  puts(error);
+		printf("\n");
 	  //gotoxy (1,8);
 	  exit(1);
 	}

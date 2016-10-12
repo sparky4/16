@@ -166,6 +166,7 @@ static	Direction	DirTable[] =		// Quick lookup for total direction
 #endif
 
 //	Internal routines
+
 ///////////////////////////////////////////////////////////////////////////
 //
 //	INL_KeyService() - Handles a keyboard interrupt (key up/down)
@@ -245,9 +246,13 @@ static	boolean	special;
 void
 Mouse(int x)
 {
-	union REGS CPURegs;
-	x = CPURegs.x.ax;
-	int86(MouseInt,&CPURegs,&CPURegs);
+	//union REGS CPURegs;
+	//x = CPURegs.x.ax;
+	__asm {
+		mov	ax,x
+		int	MouseInt
+	}
+	//int86(MouseInt,&CPURegs,&CPURegs);
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -301,8 +306,7 @@ IN_GetJoyAbs(word joy,word *xp,word *yp)
 	yb = 1 << ys;
 
 // Read the absolute joystick values
-	__asm
-	{
+	__asm {
 		pushf				// Save some registers
 		push	si
 		push	di
@@ -322,8 +326,13 @@ IN_GetJoyAbs(word joy,word *xp,word *yp)
 
 		push	bp			// Don't mess up stack frame
 		mov		bp,MaxJoyValue
-
+#ifdef __BORLANDC__
+	}
+#endif
 loo:
+#ifdef __BORLANDC__
+	__asm {
+#endif
 		in		al,dx		// Get bits indicating whether all are finished
 
 		dec		bp			// Check bounding register
@@ -340,8 +349,13 @@ loo:
 
 		add		cl,bl
 		jnz		loo		// If both bits were 0, drop out
-
+#ifdef __BORLANDC__
+	}
+#endif
 done:
+#ifdef __BORLANDC__
+	__asm {
+#endif
 		pop		bp
 
 		mov		cl,[xs]		// Get the number of bits to shift
@@ -639,9 +653,23 @@ IN_Startup()
 
 	checkjoys = true;
 	checkmouse = true;
-	for (i = 1;i < __argc;i++)
+	for (i = 1;i <
+#ifdef __WATCOMC__
+	__argc
+#endif
+#ifdef __BORLANDC__
+	_argc
+#endif
+	;i++)
 	{
-		switch (US_CheckParm(__argv[i],ParmStringsIN))
+		switch (US_CheckParm(
+#ifdef __WATCOMC__
+	__argv[i]
+#endif
+#ifdef __BORLANDC__
+	_argv[i]
+#endif
+		,ParmStringsIN))
 		{
 		case 0:
 			checkjoys = false;

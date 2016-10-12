@@ -28,8 +28,8 @@
 #error i8088 only
 #endif
 
-#ifndef _LIBHEAD_H_
-#define _LIBHEAD_H_
+#ifndef __16_HEAD_H__
+#define __16_HEAD_H__
 #include <dos.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,11 +43,18 @@
 #include <mem.h>
 #include <string.h>
 #include <limits.h>
+#include <errno.h>
+#include <process.h>
 #ifdef __WATCOMC__
 #include <i86.h>
 #include <unistd.h>
 #include <alloca.h>
 #include <stdint.h> //16_vrs.h
+#endif
+#ifdef __BORLANDC__
+#include <values.h>
+#include <dir.h>
+#define TILEWH	16
 #endif
 #include "src/lib/nyan/kitten.h"
 #include "src/lib/types.h"
@@ -192,8 +199,6 @@ typedef union REGPACK	regs_t;
 #define INPUT_STATUS_1		0x03da
 
 /* local function */
-void wait(clock_t wait);
-
 long int filesize(FILE *fp);
 void printmeminfoline(byte *strc, const byte *pee, size_t h_total, size_t h_used, size_t h_free);
 int US_CheckParm(char *parm,char **strings);
@@ -202,4 +207,4 @@ void Quit (char *error);
 #endif
 byte dirchar(byte in);
 
-#endif/*_LIBHEAD_H_*/
+#endif/*__16_HEAD_H__*/

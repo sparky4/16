@@ -37,6 +37,7 @@
 
 void Startup16(global_game_variables_t *gvar)
 {
+#ifdef __WATCOMC__
 	// DOSLIB: check our environment
 	probe_dos();
 
@@ -57,7 +58,7 @@ void Startup16(global_game_variables_t *gvar)
 		printf("This program requires VGA or higher graphics hardware\n");
 		return;
 	}
-
+#endif
 	gvar->mm.mmstarted=0;
 	gvar->pm.PMStarted=0;
 	MM_Startup(gvar);
