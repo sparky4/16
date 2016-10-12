@@ -166,7 +166,7 @@ TESTEXEC = &
     fonttest.exe &
     fontgfx.exe &
     scroll.exe &
-#zcroll.c &
+    zcroll.exe &
     vgmtest.exe &
     inputest.exe &
     palettel.exe &

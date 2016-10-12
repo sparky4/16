@@ -20,7 +20,6 @@
  *
  */
 
-#include "src/lib/16_tail.h"
 #include "src/lib/scroll16.h"
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
@@ -62,38 +61,9 @@ void main(int argc, char *argv[])
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
 
-	// DOSLIB: check our environment
-	probe_dos();
-
-	// DOSLIB: what CPU are we using?
-	// NTS: I can see from the makefile Sparky4 intends this to run on 8088 by the -0 switch in CFLAGS.
-	//      So this code by itself shouldn't care too much what CPU it's running on. Except that other
-	//      parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
-	//      the CPU to carry out tasks. --J.C.
-	cpu_probe();
-
-	// DOSLIB: check for VGA
-	if (!probe_vga()) {
-		printf("VGA probe failed\n");
-		return;
-	}
-	// hardware must be VGA or higher!
-	if (!(vga_state.vga_flags & VGA_IS_VGA)) {
-		printf("This program requires VGA or higher graphics hardware\n");
-		return;
-	}
-
-	if (_DEBUG_INIT() == 0) {
-#ifdef DEBUGSERIAL
-		printf("WARNING: Failed to initialize DEBUG output\n");
-#endif
-	}
-	_DEBUG("Serial debug output started\n"); // NTS: All serial output must end messages with newline, or DOSBox-X will not emit text to log
-	_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);
+	Startup16(&gvar);
 
 	pan.pn=1;
-
-	start_timer(&gvar);
 
 	/* create the map */
 	fprintf(stderr, "testing map load~	");
@@ -119,7 +89,6 @@ void main(int argc, char *argv[])
 
 #endif
 	/*	input!	*/
-	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
 	//IN_Default(1,&player,ctrl_Joystick);
 
@@ -318,7 +287,7 @@ void main(int argc, char *argv[])
 #endif
 	VGAmodeX(0, 1, &gvar);
 #endif
-	IN_Shutdown();
+	Shutdown16(&gvar);
 	printf("\nProject 16 scroll.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	printf("tx: %d	", mv[0].tx);

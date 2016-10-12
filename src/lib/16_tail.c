@@ -58,6 +58,14 @@ void Startup16(global_game_variables_t *gvar)
 		printf("This program requires VGA or higher graphics hardware\n");
 		return;
 	}
+
+	if (_DEBUG_INIT() == 0) {
+#ifdef DEBUGSERIAL
+		printf("WARNING: Failed to initialize DEBUG output\n");
+#endif
+	}
+	_DEBUG("Serial debug output started\n"); // NTS: All serial output must end messages with newline, or DOSBox-X will not emit text to log
+	_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);
 #endif
 	gvar->mm.mmstarted=0;
 	gvar->pm.PMStarted=0;
@@ -66,6 +74,10 @@ void Startup16(global_game_variables_t *gvar)
 	PM_Startup(gvar);
 	PM_UnlockMainMem(gvar);
 	CA_Startup(gvar);
+#ifdef __WATCOMC__
+	start_timer(gvar);
+	
+#endif
 
 }
 

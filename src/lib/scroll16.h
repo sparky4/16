@@ -31,6 +31,7 @@
 #include "src/lib/mapread.h" //map is loaded here www
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
+#include "src/lib/16_tail.h"
 
 #include <hw/cpu/cpu.h>
 #include <hw/dos/dos.h>
