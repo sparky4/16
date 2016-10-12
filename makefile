@@ -166,6 +166,7 @@ TESTEXEC = &
     fonttest.exe &
     fontgfx.exe &
     scroll.exe &
+#zcroll.c &
     vgmtest.exe &
     inputest.exe &
     palettel.exe &
@@ -189,6 +190,8 @@ bakapi.exe:       bakapi.$(OBJ) gfx.lib $(DOSLIBLIBS)
 #
 scroll.exe:       scroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
 scroll.$(OBJ):    $(SRC)/scroll.c
+zcroll.exe:       zcroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
+zcroll.$(OBJ):    $(SRC)/zcroll.c
 tesuto.exe:       tesuto.$(OBJ) 16_head.$(OBJ) gfx.lib $(DOSLIBLIBS)
 tesuto.$(OBJ):    $(SRC)/tesuto.c
 0.exe:            0.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
