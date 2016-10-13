@@ -226,7 +226,8 @@ typedef	struct
 //	planar_buf_t data; //supposively the sprite sheet data
 ////0000----
 #ifdef	__WATCOMC__
-	struct sprite *spri;	//supposively the sprite sheet data
+	struct sprite	*spri;	//supposively the sprite sheet data
+	memptr		gr;
 #endif
 	bitmap_t *data;		//supposively the sprite sheet data//old format
 	sword hp; //hitpoints of the player

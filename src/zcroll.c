@@ -35,7 +35,7 @@ float t;
 sword bakapee;
 pan_t pan;
 //debugswitches
-boolean panswitch=0;
+boolean panswitch=0,baka=0;
 //extern boolean pageflipflop=1;
 	unsigned int i;
 	const char *cpus;
@@ -74,8 +74,7 @@ void main(int argc, char *argv[])
 	//mappalptr = map.tiles->btdata->palette;
 
 	/* data */
-	player[0].data = malloc(48*128); //TODO use exmm
-	*player[0].data = bitmapLoadPcx("data/chikyuu.pcx"); // load sprite
+	if(CA_LoadFile("data/spri/chikyuu.vrs", &(player[0].gr), &gvar)) baka=1; else baka=0;
 
 	/* create the planar buffer */
 ////++++	(player[0].data) = *planar_buf_from_bitmap(&p);
