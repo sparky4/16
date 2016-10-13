@@ -24,9 +24,6 @@
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
 
-//#define FADE
-#define MODEX	//this is for mode x initiating
-
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 //bitmap_t *p;
 global_game_variables_t gvar;
@@ -73,7 +70,6 @@ void main(int argc, char *argv[])
 	fprintf(stderr, "yay map loaded~~\n");
 
 	/* draw the tiles */
-#ifdef MODEX
 	ptr = map.data;
 	//mappalptr = map.tiles->btdata->palette;
 
@@ -87,26 +83,20 @@ void main(int argc, char *argv[])
 	pp = planar_buf_from_bitmap(&p);
 	printf("done!\n");*/
 
-#endif
 	/*	input!	*/
 	IN_Default(0,&player,ctrl_Joystick);
 	//IN_Default(1,&player,ctrl_Joystick);
 
 	/* save the palette */
-#ifdef MODEX
-#ifdef FADE
 	dpal = modexNewPal();
 	modexPalSave(dpal);
 	modexFadeOff(4, dpal);
-#endif
 
 	textInit();
 	VGAmodeX(bakapee, 1, &gvar);
 //	printf("%dx%d\n", gvar.video.page[0].sw, gvar.video.page[0].sh);
-#ifdef FADE
 	modexPalBlack();	//reset the palette~
-#endif
-#endif
+
 //	printf("Total used @ before palette initiation:		%zu\n", oldfreemem-GetFreeSize());
 //++++	player[0].data.offset=(paloffset/3);
 //++++	modexPalUpdate1(&player[0].data, &paloffset, 0, 0);
@@ -119,14 +109,11 @@ void main(int argc, char *argv[])
 //	printf("\n====\n");
 //	printf("0	paloffset=	%d\n", paloffset/3);
 //	printf("====\n\n");
-#ifdef MODEX
-#ifdef FADE
+
 	gpal = modexNewPal();
 	modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);
 	modexPalBlack();	//so player will not see loadings~
-#endif
-#endif
 
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
@@ -177,11 +164,7 @@ void main(int argc, char *argv[])
 // 	}
 	modexClearRegion(mv[3].page, 0, 128, 24, 36, 15);
 
-#ifdef MODEX
-#ifdef FADE
 	modexFadeOn(4, gpal);
-#endif
-#endif
 	while(!IN_KeyDown(sc_Escape) && player[0].hp>0)
 	{
 		shinku(&gvar);
@@ -218,19 +201,14 @@ void main(int argc, char *argv[])
 	if(IN_KeyDown(25)){ modexpdump(mv[0].page); modexpdump(mv[1].page);
 		 IN_UserInput(1,1);
 	}	//p
-#ifdef MODEX
-#ifdef FADE
 	if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv[0].page); modexpdump(mv[1].page);  IN_UserInput(1,1); }
 	if(IN_KeyDown(22)){
 	paloffset=0; modexPalBlack(); modexPalUpdate(player[0].data, &paloffset, 0, 0);
-	printf("1paloffset	=	%d\n", paloffset/3);
-	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	printf("2paloffset	=	%d\n", paloffset/3);
 	 modexpdump(mv[0].page); modexpdump(mv[1].page);
 		IN_UserInput(1,1);
 	}
-#endif
-#endif
+
 	//pan switch
 	if(IN_KeyDown(88)){panswitch=!panswitch; IN_UserInput(1,1);}	//f12
 	if(IN_KeyDown(87))	//f11
@@ -279,14 +257,10 @@ void main(int argc, char *argv[])
 
 	/* fade back to text mode */
 	/* but 1st lets save the game palette~ */
-#ifdef MODEX
-#ifdef FADE
 	modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);
 	modexFadeOff(4, gpal);
-#endif
 	VGAmodeX(0, 1, &gvar);
-#endif
 	Shutdown16(&gvar);
 	printf("\nProject 16 scroll.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
@@ -302,11 +276,6 @@ void main(int argc, char *argv[])
 	printf("	hp: %d", (player[0].hp));	printf("	q: %d", player[0].q);	printf("	player.info.dir: %d", player[0].info.dir);	printf("	player.d: %d ", player[0].d);
 		printf("	pdir=%d\n", player[0].pdir);
 	printf("	tile data value at player trigger position: %d\n\n", mv[0].map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))]);
-//	printf("palette offset:	%d\n", paloffset/3);
-//++++	printf("Total used: %zu\n", oldfreemem-GetFreeSize());
-//++++	printf("Total free: %zu\n", GetFreeSize());
-//not used now	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
-//not used now	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
 	printf("Virtual Screen: %dx", gvar.video.page[0].width);	printf("%d	", gvar.video.page[0].height);
 	printf("Screen: %dx", gvar.video.page[0].sw);	printf("%d\n", gvar.video.page[0].sh);
 	printf("virtual tile resolution: %dx", gvar.video.page[0].tilesw);	printf("%d	", gvar.video.page[0].tilesh);
@@ -330,9 +299,5 @@ void main(int argc, char *argv[])
 		default: cpus = "internal error"; break;
 	}
 	printf("detected CPU type: %s\n", cpus);
-#ifdef MODEX
-#ifdef FADE
 	modexFadeOn(4, dpal);
-#endif
-#endif
 }

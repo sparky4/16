@@ -158,8 +158,6 @@ TESTEXEC = &
     0.exe &
     test.exe &
     test0.exe &
-    pcxtest.exe &
-    pcxtest2.exe &
     palettec.exe &
     maptest.exe &
     fmemtest.exe &
@@ -176,6 +174,8 @@ EXEC = &
     16.exe &
     bakapi.exe &
     $(TESTEXEC)
+    #pcxtest.exe &
+    #pcxtest2.exe &
 
 all: $(EXEC) joytest.exe
 
