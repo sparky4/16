@@ -156,26 +156,29 @@ DOSLIBLIBS += $(DOSLIB_8250)/dos86h/8250.lib
 TESTEXEC = &
     tesuto.exe &
     0.exe &
-    test.exe &
-    test0.exe &
-    palettec.exe &
+    scroll.exe &
+    zcroll.exe &
+    exmmtest.exe &
+    vrstest.exe
+TESTEXEC2 = &
+    vgmtest.exe &
+    inputest.exe &
     maptest.exe &
     fmemtest.exe &
     fonttest.exe &
     fontgfx.exe &
-    scroll.exe &
-    zcroll.exe &
-    vgmtest.exe &
-    inputest.exe &
+    test.exe &
+    test0.exe &
+    pcxtest.exe &
+    pcxtest2.exe
+UTILEXEC = &
     palettel.exe &
-    exmmtest.exe &
-    vrstest.exe
+    palettec.exe
 EXEC = &
     16.exe &
     bakapi.exe &
+    $(UTILEXEC) &
     $(TESTEXEC)
-    #pcxtest.exe &
-    #pcxtest2.exe &
 
 all: $(EXEC) joytest.exe
 
