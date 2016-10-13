@@ -33,11 +33,10 @@ void main() {
 	memptr bigbuffer;
 	int i;
 	word start;
-	int plane;
 	float t1, t2;
 	boolean baka;
 	byte *pal;
-	int size, size1;
+	int size;
 	struct sprite spri;
 	vrl1_vgax_offset_t * off, *off1;
 	struct vrs_container vrs;
@@ -47,7 +46,6 @@ void main() {
 	uint32_t vrl_size;
 	int num_of_vrl;
 	struct vrl1_vgax_header huge *curr_vrl;
-	struct vrl_container *vrl;
 	word w=0;
 
 	gvar.mm.mmstarted=0;
