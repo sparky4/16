@@ -842,23 +842,9 @@ void MM_Startup(global_game_variables_t *gvar)
 //
 	gvar->mmi.EMSmem = 0;
 //goto emsskip;	//0000
-	for(i = 1;i <
-#ifdef __WATCOMC__
-	__argc
-#endif
-#ifdef __BORLANDC__
-	_argc
-#endif
-	;i++)
+	for(i = 1;i < _argc;i++)
 	{
-		if(US_CheckParm(
-#ifdef __WATCOMC__
-	__argv[i]
-#endif
-#ifdef __BORLANDC__
-	_argv[i]
-#endif
-			,ParmStringsexmm) == 0)
+		if(US_CheckParm(_argv[i],ParmStringsexmm) == 0)
 			goto emsskip;				// param NOEMS
 	}
 	if(MML_CheckForEMS())
@@ -878,23 +864,9 @@ void MM_Startup(global_game_variables_t *gvar)
 emsskip:
 	gvar->mmi.XMSmem = 0;
 goto xmsskip;//0000
-	for(i = 1;i <
-#ifdef __WATCOMC__
-	__argc
-#endif
-#ifdef __BORLANDC__
-	_argc
-#endif
-	;i++)
+	for(i = 1;i < _argc;i++)
 	{
-		if(US_CheckParm(
-#ifdef __WATCOMC__
-	__argv[i]
-#endif
-#ifdef __BORLANDC__
-	_argv[i]
-#endif
-			,ParmStringsexmm) == 0)
+		if(US_CheckParm( _argv[i],ParmStringsexmm) == 0)
 			goto xmsskip;				// param NOXMS
 	}
 	if(MML_CheckForXMS())

@@ -653,23 +653,9 @@ IN_Startup()
 
 	checkjoys = true;
 	checkmouse = true;
-	for (i = 1;i <
-#ifdef __WATCOMC__
-	__argc
-#endif
-#ifdef __BORLANDC__
-	_argc
-#endif
-	;i++)
+	for (i = 1;i < _argc;i++)
 	{
-		switch (US_CheckParm(
-#ifdef __WATCOMC__
-	__argv[i]
-#endif
-#ifdef __BORLANDC__
-	_argv[i]
-#endif
-		,ParmStringsIN))
+		switch (US_CheckParm(_argv[i],ParmStringsIN))
 		{
 		case 0:
 			checkjoys = false;

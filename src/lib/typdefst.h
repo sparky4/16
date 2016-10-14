@@ -120,7 +120,7 @@ typedef struct
 } pan_t;
 
 //video
-#define NUMCHUNKS	3016	//keen
+#define NUMCHUNKS	416	//keen
 
 typedef struct
 {
@@ -321,9 +321,9 @@ typedef struct
 	byte		ca_levelbit,ca_levelnum;
 	ca_handle_t	file;		//files to open
 	ca_mapinfo_t	camap;
-	//_seg	*grsegs[NUMCHUNKS];
-	//byte		far	grneeded[NUMCHUNKS];
-	//huffnode huffnode;
+	__SEGA	*grsegs[NUMCHUNKS];
+	byte		far	grneeded[NUMCHUNKS];
+	huffnode huffnode;
 } ca_t;
 
 //==========================================================================

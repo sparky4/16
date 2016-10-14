@@ -1491,23 +1491,9 @@ PM_Startup(global_game_variables_t *gvar)
 	//strcpy(&(gvar->pm.fi.PageFileName), "VSWAP.");
 
 	nomain = noems = noxms = false;
-	for (i = 1;i <
-#ifdef __WATCOMC__
-	__argc
-#endif
-#ifdef __BORLANDC__
-	_argc
-#endif
-	;i++)
+	for (i = 1;i < _argc;i++)
 	{
-		switch (US_CheckParm(
-#ifdef __WATCOMC__
-	__argv[i]
-#endif
-#ifdef __BORLANDC__
-	_argv[i]
-#endif
-		,ParmStrings))
+		switch (US_CheckParm(_argv[i],ParmStrings))
 		{
 		case 0:
 			nomain = true;
