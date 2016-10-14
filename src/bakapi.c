@@ -276,7 +276,7 @@ pee:
 	}
 #else // !defined(BOINK)
 // FIXME: Does not compile. Do you want to remove this?
-// TODO: This is a testing sextion for textrendering and panning for project 16 --sparky4
+// INFO: This is a testing section for textrendering and panning for project 16 --sparky4
 	while(1)
 	{ // conditions of screen saver
 // 		while(!kbhit())
