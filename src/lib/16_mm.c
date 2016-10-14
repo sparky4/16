@@ -439,6 +439,7 @@ byte MM_MapXEMS(global_game_variables_t *gvar)
 
 boolean MML_CheckForXMS(void)
 {
+	//numUMBs = 0;
 	boolean	errorflag=false;
 
 	__asm {
