@@ -902,7 +902,7 @@ void CA_RLEWexpand (unsigned huge *source, unsigned huge *dest,long length,
 //
 // NOTE: A repeat count that produces 0xfff0 bytes can blow this!
 //
-	__asm{
+	__asm {
 		mov	bx,rlewtag
 		mov	si,sourceoff
 		mov	di,destoff
