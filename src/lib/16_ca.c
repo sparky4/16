@@ -226,7 +226,7 @@ boolean CA_FarRead(int handle, byte huge *dest, dword length, global_game_variab
 	boolean flag;
 	//dword fat=0;
 	//word segm=0;
-	if(gvar->mm.EMSVer<0x40)
+	if(gvar->pm.emm.EMSVer<0x40)
 	if(length>0xfffflu)
 	{
 		printf("File is a fat bakapee\n");
@@ -298,7 +298,7 @@ boolean CA_FarWrite(int handle, byte huge *source, dword length, global_game_var
 	boolean flag;
 	//dword fat=0;
 	//word segm=0;
-	if(gvar->mm.EMSVer<0x40)
+	if(gvar->pm.emm.EMSVer<0x40)
 	if(length>0xfffflu)
 	{
 		printf("File is a fat bakapee\n");
@@ -438,7 +438,7 @@ boolean CA_LoadFile(char *filename, memptr *ptr, global_game_variables_t *gvar)
 		return false;
 
 	size = filelength(handle);
-	MM_GetPtr(ptr,size, &(gvar->mm), &(gvar->mmi));	//TODO: gvar parameters
+	MM_GetPtr(ptr,size, gvar);
 	if(!CA_FarRead(handle,*ptr,size, gvar))
 	{
 		close(handle);
@@ -902,7 +902,7 @@ void CA_RLEWexpand (unsigned huge *source, unsigned huge *dest,long length,
 //
 // NOTE: A repeat count that produces 0xfff0 bytes can blow this!
 //
-	__asm{
+	__asm {
 		mov	bx,rlewtag
 		mov	si,sourceoff
 		mov	di,destoff

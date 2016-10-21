@@ -28,8 +28,8 @@
 #error i8088 only
 #endif
 
-#ifndef _LIBHEAD_H_
-#define _LIBHEAD_H_
+#ifndef __16_HEAD_H__
+#define __16_HEAD_H__
 #include <dos.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,11 +42,19 @@
 #include <sys/stat.h>
 #include <mem.h>
 #include <string.h>
+#include <limits.h>
+#include <errno.h>
+#include <process.h>
 #ifdef __WATCOMC__
 #include <i86.h>
 #include <unistd.h>
 #include <alloca.h>
 #include <stdint.h> //16_vrs.h
+#endif
+#ifdef __BORLANDC__
+#include <values.h>
+#include <dir.h>
+#define TILEWH	16
 #endif
 #include "src/lib/nyan/kitten.h"
 #include "src/lib/types.h"
@@ -151,6 +159,8 @@ static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 extern	int			profilehandle,debughandle;	//make it into game global
 
 #define __DEBUG__
+//#define __DEBUG_PM__
+//#define __DEBUG_MM__
 
 #define	nil	((void *)0)
 #ifdef __BORLANDC__
@@ -159,7 +169,25 @@ extern	int			profilehandle,debughandle;	//make it into game global
 #endif
 #ifdef __WATCOMC__
 #define _FCORELEFT 0x90000UL+16UL
+static union REGS CPURegs;
 
+#define _AX CPURegs.x.ax
+#define _BX CPURegs.x.bx
+#define _CX CPURegs.x.cx
+#define _DX CPURegs.x.dx
+
+#define _SI CPURegs.x.si
+
+#define _AH CPURegs.h.ah
+#define _AL CPURegs.h.al
+#define _BH CPURegs.h.bh
+#define _BL CPURegs.h.bl
+#define _CH CPURegs.h.ch
+#define _CL CPURegs.h.cl
+#define _DH CPURegs.h.dh
+#define _DL CPURegs.h.dl
+
+#define geninterrupt(n) int86(n,&CPURegs,&CPURegs);
 #define peekb(segm,ofs) (*(byte far*)MK_FP((segm),(ofs)))
 #define peekw(segm,ofs) (*(word far*)MK_FP((segm),(ofs)))
 #define pokeb(segm,ofs,value) (peekb((segm),(ofs)) = (byte)(value))
@@ -171,11 +199,12 @@ typedef union REGPACK	regs_t;
 #define INPUT_STATUS_1		0x03da
 
 /* local function */
-void wait(clock_t wait);
-
 long int filesize(FILE *fp);
 void printmeminfoline(byte *strc, const byte *pee, size_t h_total, size_t h_used, size_t h_free);
 int US_CheckParm(char *parm,char **strings);
+#ifdef __BORLANDC__
+void Quit (char *error);
+#endif
 byte dirchar(byte in);
 
-#endif/*_LIBHEAD_H_*/
+#endif/*__16_HEAD_H__*/

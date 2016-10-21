@@ -25,19 +25,20 @@
 #include <malloc.h>
 #include "src/lib/16_head.h"
 #include "src/lib/16_hc.h"
-//#include "src/lib/modex16.h"
+#include "src/lib/16_tail.h"
 //++++mh	#include "src/lib/16_in.h"
 
 #ifdef __DEBUG__		// 1 == Debug/Dev  ;  0 == Production/final
 #define OUT_OF_MEM_MSG	"MM_GetPtr: Out of memory!\nYou were short :%lu bytes\n"
+extern boolean dbg_debugpm;
 #else
 #define OUT_OF_MEM_MSG	"\npee\n"
 #endif
 
 //#define GETNEWBLOCK {if(!(mmnew=mmfree))Quit("MM_GETNEWBLOCK: No free blocks!") ;mmfree=mmfree->next;}
-#define GETNEWBLOCK {if(!mm->mmfree)MML_ClearBlock(mm);mm->mmnew=mm->mmfree;mm->mmfree=mm->mmfree->next;}
+#define GETNEWBLOCK {if(!gvar->mm.mmfree)MML_ClearBlock(gvar);gvar->mm.mmnew=gvar->mm.mmfree;gvar->mm.mmfree=gvar->mm.mmfree->next;}
 
-#define FREEBLOCK(x) {*x->useptr=NULL;x->next=mm->mmfree;mm->mmfree=x;}
+#define FREEBLOCK(x) {*x->useptr=NULL;x->next=gvar->mm.mmfree;gvar->mm.mmfree=x;}
 
 #define SAVENEARHEAP	0x200		// space to leave in data segment
 #define SAVEFARHEAP	0//x400			// space to leave in far heap
@@ -52,6 +53,7 @@
 //--------
 
 #define	EMS_INT			0x67
+#define	EMM_INT			0x21
 
 #define	EMS_STATUS		0x40
 #define	EMS_GETFRAME	0x41
@@ -64,27 +66,32 @@
 
 //--------
 
+#define	XMS_INT			0x2f
+#define	XMS_CALL(v)		_AH = (v);\
+						__asm call [DWORD PTR XMSDriver]
+/*__asm { mov ah,[v]\*///}
+
 #define	XMS_VERSION		0x00
 
-#define	XMS_ALLOCHMA	0x01
+#define	XMS_ALLOCHMA		0x01
 #define	XMS_FREEHMA		0x02
 
 #define	XMS_GENABLEA20	0x03
 #define	XMS_GDISABLEA20	0x04
 #define	XMS_LENABLEA20	0x05
 #define	XMS_LDISABLEA20	0x06
-#define	XMS_QUERYA20	0x07
+#define	XMS_QUERYA20		0x07
 
-#define	XMS_QUERYREE	0x08
+#define	XMS_QUERYFREE	0x08
 #define	XMS_ALLOC		0x09
-#define	XMS_FREE		0x0A
-#define	XMS_MOVE		0x0B
-#define	XMS_LOCK		0x0C
+#define	XMS_FREE			0x0A
+#define	XMS_MOVE			0x0B
+#define	XMS_LOCK			0x0C
 #define	XMS_UNLOCK		0x0D
 #define	XMS_GETINFO		0x0E
 #define	XMS_RESIZE		0x0F
 
-#define	XMS_ALLOCUMB	0x10
+#define	XMS_ALLOCUMB		0x10
 #define	XMS_FREEUMB		0x11
 
 //==========================================================================
@@ -99,7 +106,9 @@
 
 extern	void		(* beforesort) (void);
 extern	void		(* aftersort) (void);
-extern void		(* XMSaddr) (void);		// far pointer to XMS driver
+extern	void		(* XMSaddr) (void);		// far pointer to XMS driver
+extern	dword	XMSDriver;
+extern	word		XMSVer;
 
 //==========================================================================
 
@@ -118,7 +127,7 @@ extern void		(* XMSaddr) (void);		// far pointer to XMS driver
 
 //moved to typedefst
 //#define MAXUMBS		12
-#define MAPPAGES		4//mm->EMSpagesmapped
+#define MAPPAGES		4//gvar->mm.EMSpagesmapped
 
 //moved to typdefst
 /*typedef struct mmblockstruct
@@ -174,33 +183,34 @@ typedef struct
 //==========================================================================
 
 boolean MML_CheckForEMS(void);
-byte MML_SetupEMS(mminfo_t *mm);
-void MML_ShutdownEMS(mminfo_t *mm);
-byte MM_MapEMS(mminfo_t *mm, mminfotype *mmi);
-byte MM_MapXEMS(mminfo_t *mm, mminfotype *mmi);
-boolean MML_CheckForXMS(mminfo_t *mm);
-void MML_SetupXMS(mminfo_t *mm, mminfotype *mmi);
-void MML_ShutdownXMS(mminfo_t *mm);
-void MML_UseSpace(word segstart, dword seglength, mminfo_t *mm);
-void MML_ClearBlock(mminfo_t *mm);
+//byte MML_SetupEMS(mminfo_t *mm);
+//void MML_ShutdownEMS(mminfo_t *mm);
+byte MM_MapEMS(global_game_variables_t *gvar);
+//byte MM_MapXEMS(global_game_variables_t *gvar);
+boolean MML_CheckForXMS(void);
+//void MML_SetupXMS(mminfo_t *mm, mminfotype *mmi);
+//void MML_ShutdownXMS(mminfo_t *mm);
+void MML_UseSpace(word segstart, dword seglength, global_game_variables_t *gvar);
+void MML_ClearBlock(global_game_variables_t *gvar);
 
-void MM_Startup(mminfo_t *mm, mminfotype *mmi);
-void MM_Shutdown(mminfo_t *mm);
+void MM_Startup(global_game_variables_t *gvar);
+void MM_Shutdown(global_game_variables_t *gvar);
 
-void MM_GetPtr(memptr *baseptr,dword size, mminfo_t *mm, mminfotype *mmi);
-void MM_FreePtr(memptr *baseptr, mminfo_t *mm);
-void MM_SetPurge(memptr *baseptr, int purge, mminfo_t *mm);
-void MM_SetLock(memptr *baseptr, boolean locked, mminfo_t *mm);
-void MM_SortMem(mminfo_t *mm);
-void MM_ShowMemory(global_game_variables_t *gvar,/*page_t *page, */mminfo_t *mm);
-void MM_DumpData(mminfo_t *mm);
-dword MM_UnusedMemory(mminfo_t *mm);
-dword MM_TotalFree(mminfo_t *mm);
-void MM_Report(global_game_variables_t *gvar);
-static void MM_EMSerr(byte *stri, byte err);
-void MM_BombOnError(boolean bomb, mminfo_t *mm);
+void MM_GetPtr(memptr *baseptr,dword size, global_game_variables_t *gvar);
+void MM_FreePtr(memptr *baseptr, global_game_variables_t *gvar);
+void MM_SetPurge(memptr *baseptr, int purge, global_game_variables_t *gvar);
+void MM_SetLock(memptr *baseptr, boolean locked, global_game_variables_t *gvar);
+void MM_SortMem(global_game_variables_t *gvar);
+void MM_ShowMemory(global_game_variables_t *gvar);
+void MM_DumpData(global_game_variables_t *gvar);
+dword MM_UnusedMemory(global_game_variables_t *gvar);
+dword MM_TotalFree(global_game_variables_t *gvar);
+void MM_Report_(global_game_variables_t *gvar);
+/*static */void MM_EMSerr(byte *stri, byte err);
+void MM_BombOnError(boolean bomb, global_game_variables_t *gvar);
 //void MM_GetNewBlock(mminfo_t *mm);
 //void MM_FreeBlock(mmblocktype *x, mminfo_t *mm);
+void xms_call(byte v, global_game_variables_t *gvar);
 
 //==========================================================================
 

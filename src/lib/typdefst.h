@@ -120,7 +120,7 @@ typedef struct
 } pan_t;
 
 //video
-#define NUMCHUNKS	3016	//keen
+#define NUMCHUNKS	416	//keen
 
 typedef struct
 {
@@ -135,6 +135,12 @@ typedef struct
 	//0000word startclk; float clk, tickclk;	//timer
 } video_t;
 
+//from 16_mm
+//==========================================================================
+
+#define MAXBLOCKS		1024
+#define MAXUMBS		12
+
 typedef struct mmblockstruct
 {
 	word	start,length;
@@ -146,15 +152,10 @@ typedef struct mmblockstruct
 	struct mmblockstruct far *next;
 } mmblocktype;
 
-//from 16_mm
-//==========================================================================
-
-#define MAXBLOCKS		1024
-#define MAXUMBS		12
-
 typedef struct
 {
 	dword	nearheap,farheap,EMSmem,XMSmem,mainmem;
+//	boolean		PMStarted, MainPresent, EMSPresent, XMSPresent;
 } mminfotype;
 
 typedef struct
@@ -169,14 +170,125 @@ typedef struct
 #ifdef __WATCOMC__
 	void __near	*nearheap;
 #endif
-	//byte		EMS_status;
-	unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
-	unsigned int EMSVer;
+	unsigned int		EMSVer;
 	word numUMBs,UMBbase[MAXUMBS];
+	word			totalEMSpages, freeEMSpages, EMSpagesmapped, EMSHandle, EMSPageFrame;
 	//dword	numUMBs,UMBbase[MAXUMBS];
 	//huge mmblocktype	huge mmblocks[MAXBLOCKS],huge *mmhead,huge *mmfree,huge *mmrover,huge *mmnew;
 	mmblocktype	far mmblocks[MAXBLOCKS],far *mmhead,far *mmfree,far *mmrover,far *mmnew;
 } mminfo_t;
+
+//==========================================================================
+
+
+//from 16_pm
+//==========================================================================
+
+//	NOTE! PMPageSize must be an even divisor of EMSPageSize, and >= 1024
+#define	EMSPageSize		16384
+#define	EMSPageSizeSeg	(EMSPageSize >> 4)
+#define	EMSPageSizeKB	(EMSPageSize >> 10)
+#define	EMSFrameCount	4
+#define	PMPageSize		4096
+#define	PMPageSizeSeg	(PMPageSize >> 4)
+#define	PMPageSizeKB	(PMPageSize >> 10)
+#define	PMEMSSubPage	(EMSPageSize / PMPageSize)
+
+#define	PMMinMainMem	10			// Min acceptable # of pages from main
+#define	PMMaxMainMem	100			// Max number of pages in main memory
+
+#define	PMThrashThreshold	1	// Number of page thrashes before panic mode
+#define	PMUnThrashThreshold	5	// Number of non-thrashing frames before leaving panic mode
+
+typedef	enum
+		{
+			pml_Unlocked,
+			pml_Locked
+		} PMLockType;
+
+typedef	enum
+		{
+			pmba_Unused = 0,
+			pmba_Used = 1,
+			pmba_Allocated = 2
+		} PMBlockAttr;
+
+typedef	struct
+		{
+			dword	offset;		// Offset of chunk into file
+			word		length;		// Length of the chunk
+
+			int			xmsPage;	// If in XMS, (xmsPage * PMPageSize) gives offset into XMS handle
+
+			PMLockType	locked;		// If set, this page can't be purged
+			int			emsPage;	// If in EMS, logical page/offset into page
+			int			mainPage;	// If in Main, index into handle array
+
+			dword	lastHit;	// Last frame number of hit
+		} PageListStruct;
+
+typedef	struct
+		{
+			int			baseEMSPage;	// Base EMS page for this phys frame
+			dword	lastHit;		// Last frame number of hit
+		} EMSListStruct;
+
+//	Main Mem specific variables
+typedef struct
+{
+	boolean			MainPresent;
+	memptr			MainMemPages[PMMaxMainMem];
+	PMBlockAttr		MainMemUsed[PMMaxMainMem];
+	int				MainPagesAvail;
+} pm_mmi_t;
+
+//	EMS specific variables
+typedef struct
+{
+	boolean			EMSPresent;
+	unsigned int			EMSVer;
+	word			EMSAvail,EMSPagesAvail,EMSHandle,
+					EMSPageFrame,EMSPhysicalPage;
+	word			totalEMSpages, freeEMSpages, EMSpagesmapped;
+	EMSListStruct	EMSList[EMSFrameCount];
+} pm_emmi_t;
+
+//	XMS specific variables
+typedef struct
+{
+	boolean			XMSPresent;
+	word			XMSAvail,XMSPagesAvail,XMSHandle;//,XMSVer;
+	dword			XMSDriver;
+	int				XMSProtectPage;// = -1;
+} pm_xmmi_t;
+
+//	File specific variables
+typedef struct
+{
+	char			PageFileName[13];// = {"VSWAP."};
+	int				PageFile;// = -1;
+	word			ChunksInFile;
+	word			PMSpriteStart,PMSoundStart;
+} pm_fi_t;
+
+//	General usage variables
+typedef struct
+{
+	boolean			PMStarted,
+					PMPanicMode,
+					PMThrashing;
+	word			XMSPagesUsed,
+					EMSPagesUsed,
+					MainPagesUsed,
+					PMNumBlocks;
+	long			PMFrameCount;
+	PageListStruct	far *PMPages;
+	__SEGA *PMSegPages;
+	pm_mmi_t	mm;
+	pm_emmi_t	emm;
+	pm_xmmi_t	xmm;
+	pm_fi_t	fi;
+} pm_t;
 
 //==========================================================================
 
@@ -209,9 +321,9 @@ typedef struct
 	byte		ca_levelbit,ca_levelnum;
 	ca_handle_t	file;		//files to open
 	ca_mapinfo_t	camap;
-	//_seg	*grsegs[NUMCHUNKS];
-	//byte		far	grneeded[NUMCHUNKS];
-	//huffnode huffnode;
+	__SEGA	*grsegs[NUMCHUNKS];
+	byte		far	grneeded[NUMCHUNKS];
+	huffnode huffnode;
 } ca_t;
 
 //==========================================================================
@@ -221,6 +333,7 @@ typedef struct
 {
 	video_t	video;	// video settings variable
 	ca_t		ca;	// ca stuff
+	pm_t		pm;	// pm stuff
 	byte *pee;		// message for fps
 	loghandle_t handle;	//handles for file logging
 	kurokku_t kurokku;	//clock struct

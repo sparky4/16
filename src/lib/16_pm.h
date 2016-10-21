@@ -1,3 +1,28 @@
+/* Project 16 Source Code~
+ * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
+ *
+ * This file is part of Project 16.
+ *
+ * Project 16 is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Project 16 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>, or
+ * write to the Free Software Foundation, Inc., 51 Franklin Street,
+ * Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ */
+
+#ifndef __16_PM__
+#define __16_PM__
+
 //
 //	ID_PM.H
 //	Header file for Id Engine's Page Manager
@@ -6,8 +31,14 @@
 #include "src/lib/16_head.h"
 #include "src/lib/16_hc.h"
 #include "src/lib/16_mm.h"
+#include "src/lib/16_ca.h"
+#include <dos.h>
 
-//	NOTE! PMPageSize must be an even divisor of EMSPageSize, and >= 1024
+#ifdef __DEBUG__
+extern boolean dbg_debugpm;
+#endif
+
+/*//	NOTE! PMPageSize must be an even divisor of EMSPageSize, and >= 1024
 #define	EMSPageSize		16384
 #define	EMSPageSizeSeg	(EMSPageSize >> 4)
 #define	EMSPageSizeKB	(EMSPageSize >> 10)
@@ -38,7 +69,7 @@ typedef	enum
 
 typedef	struct
 		{
-			longword	offset;		// Offset of chunk into file
+			dword	offset;		// Offset of chunk into file
 			word		length;		// Length of the chunk
 
 			int			xmsPage;	// If in XMS, (xmsPage * PMPageSize) gives offset into XMS handle
@@ -47,13 +78,13 @@ typedef	struct
 			int			emsPage;	// If in EMS, logical page/offset into page
 			int			mainPage;	// If in Main, index into handle array
 
-			longword	lastHit;	// Last frame number of hit
+			dword	lastHit;	// Last frame number of hit
 		} PageListStruct;
 
 typedef	struct
 		{
 			int			baseEMSPage;	// Base EMS page for this phys frame
-			longword	lastHit;		// Last frame number of hit
+			dword	lastHit;		// Last frame number of hit
 		} EMSListStruct;
 
 extern	boolean			XMSPresent,EMSPresent;
@@ -61,27 +92,29 @@ extern	word			XMSPagesAvail,EMSPagesAvail;
 
 extern	word			ChunksInFile,
 						PMSpriteStart,PMSoundStart;
-extern	PageListStruct	far *PMPages;
+extern	PageListStruct	far *PMPages;*///moved to src/lib/typdefst.h
 
 #define	PM_GetSoundPage(v)	PM_GetPage(PMSoundStart + (v))
 #define	PM_GetSpritePage(v)	PM_GetPage(PMSpriteStart + (v))
 
-#define	PM_LockMainMem()	PM_SetMainMemPurge(0)
-#define	PM_UnlockMainMem()	PM_SetMainMemPurge(3)
+#define	PM_LockMainMem(gvar)	PM_SetMainMemPurge(0, gvar)
+#define	PM_UnlockMainMem(gvar)	PM_SetMainMemPurge(3, gvar)
 
 
 extern	char	PageFileName[13];
 
 
-extern	void	PM_Startup(void),
-				PM_Shutdown(void),
-				PM_Reset(void),
-				PM_Preload(boolean (*update)(word current,word total)),
-				PM_NextFrame(void),
-				PM_SetPageLock(int pagenum,PMLockType lock),
+extern	void	PM_Startup(global_game_variables_t *gvar),
+				PM_Shutdown(global_game_variables_t *gvar),
+				PM_Reset(global_game_variables_t *gvar),
+				PM_Preload(boolean (*update)(word current,word total), global_game_variables_t *gvar),
+				PM_NextFrame(global_game_variables_t *gvar),
+				PM_SetPageLock(int pagenum,PMLockType lock, global_game_variables_t *gvar),
 				PM_SetMainPurge(int level),
-				PM_CheckMainMem(void);
-extern	memptr	PM_GetPageAddress(int pagenum),
-				PM_GetPage(int pagenum);		// Use this one to cache page
+				PM_CheckMainMem(global_game_variables_t *gvar);
+extern	memptr	PM_GetPageAddress(int pagenum, global_game_variables_t *gvar),
+				PM_GetPage(int pagenum, global_game_variables_t *gvar);		// Use this one to cache page
 
-void PM_SetMainMemPurge(int level);
+void PM_SetMainMemPurge(int level, global_game_variables_t *gvar);
+void PML_StartupMainMem(global_game_variables_t *gvar);
+#endif

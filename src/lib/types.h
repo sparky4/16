@@ -57,4 +57,7 @@ typedef void _seg * memptr;
 #define __SEGA _seg
 #endif
 
+#define _argv __argv
+#define _argc __argc
+
 #endif/*_TYPE_H_*/

@@ -22,22 +22,6 @@
 
 #include "src/lib/16_head.h"
 
-/* Function: Wait **********************************************************
-*
-*     Parameters:    wait - time in microseconds
-*
-*     Description:    pauses for a specified number of microseconds.
-*
-*/
-void wait(clock_t wait){
-	clock_t goal;
-
-	if(!wait) return;
-
-	goal = wait + clock();
-	while((goal > clock()) && !kbhit()) ;
-} /* End of wait */
-
 long int
 filesize(FILE *fp)
 {
@@ -94,6 +78,8 @@ US_CheckParm(char *parm,char **strings)
 	}
 	return(-1);
 }
+#ifdef __BORLANDC__
+//===========================================================================
 
 /*
 ==========================
@@ -103,60 +89,60 @@ US_CheckParm(char *parm,char **strings)
 ==========================
 */
 
-/*void Quit(char *error, ...)
+void Quit (char *error)
 {
-	short exit_code=0;
-	unsigned	finscreen;
+	unsigned        finscreen;
+	memptr	screen;
+	union REGS in, out;
 
-	va_list ap;
-
-	va_start(ap,error);
-
-#ifndef CATALOG
-	if (!error)
+	//ClearMemory ();
+	if (!*error)
 	{
-		CA_SetAllPurge ();
-		CA_CacheGrChunk (PIRACY);
-		finscreen = (unsigned)grsegs[PIRACY];
+	 //WriteConfig ();
 	}
-#endif
+	else
+	{
+	 //CA_CacheGrChunk (ERRORSCREEN);
+	 //screen = grsegs[ERRORSCREEN];
+	}
 
 	//ShutdownId ();
+	//IN_Shutdown();
+	//modexLeave();
+	in.h.ah = 0x00;
+	in.h.al = 0x3;
+	int86(0x10, &in, &out);
 
 	if (error && *error)
 	{
-		vprintf(error,ap);
-		exit_code = 1;
+	  //movedata ((unsigned)screen,7,0xb800,0,7*160);
+	  //gotoxy (10,4);
+		printf("\n");
+	  puts(error);
+		printf("\n");
+	  //gotoxy (1,8);
+	  exit(1);
 	}
-#ifndef CATALOG
 	else
-	if (!NoWait)
+	if (!error || !(*error))
 	{
-		movedata (finscreen,0,0xb800,0,4000);
-		bioskey (0);
+		//clrscr();
+		//#ifndef JAPAN
+		movedata ((unsigned)screen,7,0xb800,0,4000);
+		//gotoxy(1,24);
+		//#endif
+//asm	mov	bh,0
+//asm	mov	dh,23	// row
+//asm	mov	dl,0	// collumn
+//asm	mov ah,2
+//asm	int	0x10
 	}
+
+	exit(0);
+}
+
+//===========================================================================
 #endif
-
-	va_end(ap);
-
-#ifndef CATALOG
-	if (!error)
-	{
-		_argc = 2;
-		_argv[1] = "LAST.SHL";
-		_argv[2] = "ENDSCN.SCN";
-		_argv[3] = NULL;
-		if (execv("LOADSCN.EXE", _argv) == -1)
-		{
-			clrscr();
-			puts("Couldn't find executable LOADSCN.EXE.\n");
-			exit(1);
-		}
-	}
-#endif
-
-	exit(exit_code);
-}*/
 
 byte dirchar(byte in)
 {

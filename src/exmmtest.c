@@ -23,6 +23,8 @@
 	exmm test
 */
 #include "src/lib/16_head.h"
+#include "src/lib/16_tail.h"
+#include "src/lib/16_pm.h"
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 #include "src/lib/16_hc.h"
@@ -60,12 +62,13 @@ void segatesuto()
 //	getch();
 }
 #endif
+//static global_game_variables_t gvar;
 
 void
 main(int argc, char *argv[])
 {
 	byte w=1;
-	global_game_variables_t gvar;
+	static global_game_variables_t gvar;
 #ifdef __WATCOMC__
 	__segment sega;
 #endif
@@ -84,6 +87,7 @@ main(int argc, char *argv[])
 	//file name //
 
 	gvar.mm.mmstarted=0;
+	dbg_debugpm=1;	//debug pm
 
 	//PRINTBB
 	if(argv[1]){ bakapee1 = argv[1];
@@ -93,13 +97,21 @@ main(int argc, char *argv[])
 		bakapee1 = "data/koishi~.pcx";
 		bakapee2 = "data/test.map";
 	}
-//	printf("main()=%Fp	start MM\n", *argv[0]);
-	MM_Startup(&gvar.mm, &gvar.mmi);
-	//PM_Startup();
-	//PM_UnlockMainMem();
+	//printf("main()=%Fp	start MM\n", *argv[0]);
+	MM_Startup(&gvar);
+	//printf("ok\n");
+//#ifdef __WATCOMC__
+	if(dbg_debugpm>0)
+	{
+		PM_Startup(&gvar);
+		//printf("pmstarted ok\n");
+		//PM_CheckMainMem(&gvar);
+		PM_UnlockMainMem(&gvar);
+	}
+//#endif
 	CA_Startup(&gvar);
 //	printf("		done!\n");
-	PRINTBB;
+	//0000PRINTBB;
 //	printf("press any key to continue!\n");
 //	getch();
 #ifdef FILEREAD
@@ -129,11 +141,8 @@ for(w=0;w<2;w++)
 	//printf("dark purple = purgable\n");
 	//printf("medium blue = non purgable\n");
 	//printf("red = locked\n");
-	printf("press any key to continue!\n");
-	getch();
-	MM_ShowMemory(&gvar, &gvar.mm);
-	MM_DumpData(&gvar.mm);
-	MM_Report(&gvar);
+//	printf("press any key to continue!\n");
+//	DebugMemory_(&gvar, 1);
 	if(baka) printf("\nyay!\n");
 	else printf("\npoo!\n");
 	printf("press any key to continue!\n");
@@ -141,10 +150,18 @@ for(w=0;w<2;w++)
 #ifdef FILEREAD
 }
 #endif
-	MM_FreePtr(&bigbuffer, &gvar.mm);
-	//PM_Shutdown();
+	DebugMemory_(&gvar, 1);
+	MM_DumpData(&gvar);
+	MM_Report_(&gvar);
+	//printf("bakapee1=%s\n", bakapee1);
+	//printf("bakapee2=%s\n", bakapee2);
+	MM_FreePtr(&bigbuffer, &gvar);
+//#ifdef __WATCOMC__
+	if(dbg_debugpm>0)
+		PM_Shutdown(&gvar);
+//#endif
 	CA_Shutdown(&gvar);
-	MM_Shutdown(&gvar.mm);
+	MM_Shutdown(&gvar);
 	free(bakapee1); free(bakapee2);
 	printf("========================================\n");
 	printf("near=	%Fp ", gvar.mm.nearheap);
@@ -160,12 +177,12 @@ for(w=0;w<2;w++)
 	printf("&bigb=%Fp ", &bigbuffer);
 	//printf("&bigb=%04x", &bigbuffer);
 	printf("\n");
-#endif
 	printf("========================================\n");
+#endif
 #ifdef __WATCOMC__
 //this is far	printf("Total free:			%lu\n", (dword)(GetFreeSize()));
-	printf("Total near free:		%lu\n", (dword)(GetNearFreeSize()));
-	printf("Total far free:			%lu\n", (dword)(GetFarFreeSize()));
+	printf("Total near free:		%lub\n", (dword)(GetNearFreeSize()));
+	printf("Total far free:			%lub\n", (dword)(GetFarFreeSize()));
 	heapdump(&gvar);
 	segatesuto();
 #endif

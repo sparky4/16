@@ -91,7 +91,7 @@ UPXQ=-qqq
 S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#54096#60000
 Z_FLAGS=-zk0 -zc -zp8 -zm
 O_FLAGS=-obmilr -oe=24 -out -oh -ei -onac -ol+ -ok##x
-T_FLAGS=-bt=dos -mh -0 -fpi87 -fo=.$(OBJ) -d1
+T_FLAGS=-bt=dos -mh -0 -fpi87 -fo=.$(OBJ) -d1###### -e=65536
 
 CPPFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1
 !ifeq DEBUGSERIAL 1
@@ -106,8 +106,8 @@ LIBFLAGS=$(WLIBQ) -b -n
 # objects
 #
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
-16LIBOBJS = 16_in.$(OBJ) 16_mm.$(OBJ) wcpu.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_timer.$(OBJ)
-GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16_vrs.$(OBJ) 16_sprit.$(OBJ) #scroll16.$(OBJ)
+GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16_vrs.$(OBJ) 16_sprit.$(OBJ)
+16LIBOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_in.$(OBJ) 16_head.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) wcpu.$(OBJ) 16_timer.$(OBJ)
 #16planar.$(OBJ) planar.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 !ifeq DEBUGSERIAL 1
@@ -154,27 +154,30 @@ DOSLIBLIBS += $(DOSLIB_8250)/dos86h/8250.lib
 # List of executables to build
 #
 TESTEXEC = &
-    test.exe &
-    test0.exe &
-    pcxtest.exe &
-    pcxtest2.exe &
-    palettec.exe &
+    tesuto.exe &
+    0.exe &
+    scroll.exe &
+    zcroll.exe &
+    exmmtest.exe &
+    vrstest.exe
+TESTEXEC2 = &
+    vgmtest.exe &
+    inputest.exe &
     maptest.exe &
     fmemtest.exe &
     fonttest.exe &
     fontgfx.exe &
-    scroll.exe &
-    vgmtest.exe &
-    inputest.exe &
+    test.exe &
+    test0.exe &
+    pcxtest.exe &
+    pcxtest2.exe
+UTILEXEC = &
     palettel.exe &
-    exmmtest.exe &
-    vrstest.exe &
-    vgacamm.exe
+    palettec.exe
 EXEC = &
     16.exe &
     bakapi.exe &
-    tesuto.exe &
-    0.exe &
+    $(UTILEXEC) &
     $(TESTEXEC)
 
 all: $(EXEC) joytest.exe
@@ -190,6 +193,8 @@ bakapi.exe:       bakapi.$(OBJ) gfx.lib $(DOSLIBLIBS)
 #
 scroll.exe:       scroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
 scroll.$(OBJ):    $(SRC)/scroll.c
+zcroll.exe:       zcroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
+zcroll.$(OBJ):    $(SRC)/zcroll.c
 tesuto.exe:       tesuto.$(OBJ) 16_head.$(OBJ) gfx.lib $(DOSLIBLIBS)
 tesuto.$(OBJ):    $(SRC)/tesuto.c
 0.exe:            0.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
@@ -204,7 +209,7 @@ inputest.exe:     inputest.$(OBJ) $(16LIB) $(DOSLIBLIBS)
 #sountest.exe:    sountest.$(OBJ) $(16LIB)
 pcxtest.exe:      pcxtest.$(OBJ) gfx.lib $(DOSLIBLIBS)
 vrstest.exe:      vrstest.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
-vgacamm.exe:      vgacamm.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
+#vgacamm.exe:      vgacamm.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
 palettec.exe:     palettec.$(OBJ) gfx.lib $(DOSLIBLIBS)
 palettel.exe:     palettel.$(OBJ) gfx.lib $(DOSLIBLIBS)
 pcxtest2.exe:     pcxtest2.$(OBJ) gfx.lib $(DOSLIBLIBS)
@@ -224,7 +229,7 @@ test.$(OBJ):      $(SRC)/test.c $(SRCLIB)/modex16.h
 test0.$(OBJ):     $(SRC)/test0.c
 pcxtest.$(OBJ):   $(SRC)/pcxtest.c $(SRCLIB)/modex16.h
 vrstest.$(OBJ):   $(SRC)/vrstest.c $(SRCLIB)/modex16.h
-vgacamm.$(OBJ):   $(SRC)/vgacamm.c $(SRCLIB)/modex16.h
+#vgacamm.$(OBJ):   $(SRC)/vgacamm.c $(SRCLIB)/modex16.h
 #planrpcx.$(OBJ): $(SRC)/planrpcx.c $(SRCLIB)/modex16.h
 pcxtest2.$(OBJ):  $(SRC)/pcxtest2.c $(SRCLIB)/modex16.h
 palettec.$(OBJ):  $(SRC)/palettec.c
@@ -288,10 +293,12 @@ mapread.$(OBJ):   $(SRCLIB)/mapread.c $(SRCLIB)/mapread.h
 16_timer.$(OBJ):  $(SRCLIB)/16_timer.c $(SRCLIB)/16_timer.h
 16_in.$(OBJ):     $(SRCLIB)/16_in.c $(SRCLIB)/16_in.h
 16_mm.$(OBJ):     $(SRCLIB)/16_mm.c $(SRCLIB)/16_mm.h
+16_pm.$(OBJ):     $(SRCLIB)/16_pm.c $(SRCLIB)/16_pm.h
 16_ca.$(OBJ):     $(SRCLIB)/16_ca.c $(SRCLIB)/16_ca.h
 16_dbg.$(OBJ):    $(SRCLIB)/16_dbg.c $(SRCLIB)/16_dbg.h
 midi.$(OBJ):      $(SRCLIB)/midi.c $(SRCLIB)/midi.h
 16_head.$(OBJ):   $(SRCLIB)/16_head.c $(SRCLIB)/16_head.h
+16_tail.$(OBJ):   $(SRCLIB)/16_tail.c $(SRCLIB)/16_tail.h
 16_hc.$(OBJ):     $(SRCLIB)/16_hc.c $(SRCLIB)/16_hc.h
 16_snd.$(OBJ):    $(SRCLIB)/16_snd.c $(SRCLIB)/16_snd.h
 jsmn.$(OBJ):      $(JSMNLIB)/jsmn.c $(JSMNLIB)/jsmn.h

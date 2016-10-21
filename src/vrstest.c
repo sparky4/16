@@ -20,25 +20,23 @@
  *
  */
 
-#include <stdio.h>
-#include <dos.h>
-#include <string.h>
 #include "src/lib/modex16.h"
 #include "src/lib/16_sprit.h"
+#include "src/lib/16_tail.h"
+#include "src/lib/16_pm.h"
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 
 void main() {
-	global_game_variables_t gvar;
+	static global_game_variables_t gvar;
 	__segment sega;
 	memptr bigbuffer;
 	int i;
 	word start;
-	int plane;
 	float t1, t2;
 	boolean baka;
 	byte *pal;
-	int size, size1;
+	int size;
 	struct sprite spri;
 	vrl1_vgax_offset_t * off, *off1;
 	struct vrs_container vrs;
@@ -48,8 +46,10 @@ void main() {
 	uint32_t vrl_size;
 	int num_of_vrl;
 	struct vrl1_vgax_header huge *curr_vrl;
-	struct vrl_container *vrl;
 	word w=0;
+
+	gvar.mm.mmstarted=0;
+	dbg_debugpm=1;
 
 	// DOSLIB: check our environment
 	probe_dos();
@@ -74,8 +74,9 @@ void main() {
 
 	//gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 
-	gvar.mm.mmstarted=0;
-	MM_Startup(&gvar.mm, &gvar.mmi);
+	MM_Startup(&gvar);
+	PM_Startup(&gvar);
+	PM_UnlockMainMem(&gvar);
 	CA_Startup(&gvar);
 	// What should be done by read_vrs:
 	//sega = (mm.bufferseg);
@@ -140,7 +141,7 @@ void main() {
 	t2 = (*clockw-start)/18.2;
 
 	for (i = 0; i < 5; i++){
-	spri.delay = 1; animate_spri(&spri); spri.x += 20; sleep(1); }
+	spri.delay = 1; animate_spri(&spri); spri.x += 20; /*sleep(1);*/ }
 
 	while(!kbhit())
 	{
@@ -155,13 +156,15 @@ void main() {
 		}
 	}
 	VGAmodeX(0, 1, &gvar);
-	MM_ShowMemory(&gvar, &gvar.mm);
-	MM_DumpData(&gvar.mm);
+	MM_ShowMemory(&gvar);
+	MM_DumpData(&gvar);
+	MM_Report_(&gvar);
 	free(spri.sprite_vrl_cont);
-	MM_FreePtr(&bigbuffer, &gvar.mm);
+	MM_FreePtr(&bigbuffer, &gvar);
 	//MM_FreePtr(&((void __based(sega)*)spri.spritesheet->buffer), &mm);
+	PM_Shutdown(&gvar);
 	CA_Shutdown(&gvar);
-	MM_Shutdown(&gvar.mm);
+	MM_Shutdown(&gvar);
 	//printf("CPU to VGA: %f\n", t1);
 	//printf("VGA to VGA: %f\n", t2);
 	heapdump(&gvar);
@@ -169,8 +172,8 @@ void main() {
 	printf("version %s\n", VERSION);
 	printf("t1: %f\n", t1);
 	printf("t2: %f\n", t2);
-	printf("gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
-	printf("gvar.video.page[0].height: %u\n", gvar.video.page[0].height);
+//0000	printf("gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
+//0000	printf("gvar.video.page[0].height: %u\n", gvar.video.page[0].height);
 	printf("Num %d", num_of_vrl);
 	if(baka) printf("\nyay!\n");
 	else printf("\npoo!\n");

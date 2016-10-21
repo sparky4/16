@@ -38,7 +38,9 @@
 
 #include "src/lib/16_in.h"
 
-boolean testkeyin=0,testcontrolnoisy=0;
+#ifdef __DEBUG_InputMgr__
+boolean dbg_testkeyin=0,dbg_testcontrolnoisy=0;
+#endif
 
 /*
 =============================================================================
@@ -164,6 +166,7 @@ static	Direction	DirTable[] =		// Quick lookup for total direction
 #endif
 
 //	Internal routines
+
 ///////////////////////////////////////////////////////////////////////////
 //
 //	INL_KeyService() - Handles a keyboard interrupt (key up/down)
@@ -234,18 +237,22 @@ static	boolean	special;
 
 	if (INL_KeyHook && !special)
 		INL_KeyHook();
-//#ifdef TESTKEYIN
-	if(testkeyin > 0) printf("%c	%u	[0x%x %u]	%u\n", c, c, k, k, inpu.Keyboard[k]);
-//endif
+#ifdef __DEBUG_InputMgr__
+	if(dbg_testkeyin > 0) printf("%c	%u	[0x%x %u]	%u\n", c, c, k, k, inpu.Keyboard[k]);
+#endif
 	outp(0x20,0x20);
 }
 
 void
 Mouse(int x)
 {
-	union REGS CPURegs;
-	x = CPURegs.x.ax;
-	int86(MouseInt,&CPURegs,&CPURegs);
+	//union REGS CPURegs;
+	//x = CPURegs.x.ax;
+	__asm {
+		mov	ax,x
+		int	MouseInt
+	}
+	//int86(MouseInt,&CPURegs,&CPURegs);
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -299,8 +306,7 @@ IN_GetJoyAbs(word joy,word *xp,word *yp)
 	yb = 1 << ys;
 
 // Read the absolute joystick values
-	__asm
-	{
+	__asm {
 		pushf				// Save some registers
 		push	si
 		push	di
@@ -320,8 +326,13 @@ IN_GetJoyAbs(word joy,word *xp,word *yp)
 
 		push	bp			// Don't mess up stack frame
 		mov		bp,MaxJoyValue
-
+#ifdef __BORLANDC__
+	}
+#endif
 loo:
+#ifdef __BORLANDC__
+	__asm {
+#endif
 		in		al,dx		// Get bits indicating whether all are finished
 
 		dec		bp			// Check bounding register
@@ -338,8 +349,13 @@ loo:
 
 		add		cl,bl
 		jnz		loo		// If both bits were 0, drop out
-
+#ifdef __BORLANDC__
+	}
+#endif
 done:
+#ifdef __BORLANDC__
+	__asm {
+#endif
 		pop		bp
 
 		mov		cl,[xs]		// Get the number of bits to shift
@@ -637,9 +653,9 @@ IN_Startup()
 
 	checkjoys = true;
 	checkmouse = true;
-	for (i = 1;i < __argc;i++)
+	for (i = 1;i < _argc;i++)
 	{
-		switch (US_CheckParm(__argv[i],ParmStringsIN))
+		switch (US_CheckParm(_argv[i],ParmStringsIN))
 		{
 		case 0:
 			checkjoys = false;
@@ -881,7 +897,9 @@ register	KeyboardDef	*def;
 						default:
 						break;
 					}
-					//if(testcontrolnoisy > 0){ printf("dir=%c ", dirchar(dir)); printf("pdir=%c	", dirchar(player[pn].pdir)); }
+#ifdef __DEBUG_InputMgr__
+					//if(dbg_testcontrolnoisy > 0){ printf("dir=%c ", dirchar(dir)); printf("pdir=%c	", dirchar(player[pn].pdir)); }
+#endif
 				}
 			}
 			//input from player
@@ -962,7 +980,8 @@ register	KeyboardDef	*def;
 		}
 	}
 #endif
-if(testcontrolnoisy > 0)
+#ifdef __DEBUG_InputMgr__
+if(dbg_testcontrolnoisy > 0)
 if(player[pn].info.dir!=2/*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right])*/ || player[pn].q>1)
 {
 	//printf("b1=%u b2=%u b3=%u b4=%u	", player[pn].info.button0, player[pn].info.button1, player[pn].info.button2, player[pn].info.button3);
@@ -973,6 +992,7 @@ if(player[pn].info.dir!=2/*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] |
 	//else if(!realdelta) printf("%c%d %c%d %c%d %c%d", dirchar(0), inpu.Keyboard[def->up], dirchar(4), inpu.Keyboard[def->down], dirchar(1), inpu.Keyboard[def->left], dirchar(3), inpu.Keyboard[def->right]);
 	printf("\n");
 }
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -1155,6 +1175,9 @@ IN_Ack()
 {
 	word	i;
 
+	if (!inst.IN_Started)
+		return;
+
 	IN_ClearKey(inpu.LastScan);
 	inpu.LastScan = sc_None;
 
@@ -1236,9 +1259,9 @@ void IN_ClearKey(byte code)
 
 boolean IN_qb(byte kee)
 {
-//#ifdef TESTKEYIN
-//	if(testkeyin > 0) printf("%u\n", inpu.Keyboard[kee]);
-//#endif
+#ifdef __DEBUG_InputMgr__
+//	if(dbg_testkeyin > 0) printf("%u\n", inpu.Keyboard[kee]);
+#endif
 	if(inpu.Keyboard[kee]==true) return 1;
 	else return 0;
 }

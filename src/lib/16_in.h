@@ -36,15 +36,9 @@
 #include "src/lib/bitmap.h"	//old format
 #endif
 #ifdef	__DEBUG__
-//#define	__DEBUG_InputMgr__
+#define	__DEBUG_InputMgr__
+extern boolean dbg_testkeyin,dbg_testcontrolnoisy;
 #endif
-
-#ifdef	__DEBUG_InputMgr__
-//#define TESTKEYIN
-//#define TESTCONTROLNOISY
-#endif
-
-extern boolean testkeyin,testcontrolnoisy;
 
 //if else for gfxtesting and direction
 //player[pn].d == 2 ||
@@ -231,7 +225,10 @@ typedef	struct
 //0000	planar_buf_t huge *data; //supposively the sprite sheet data
 //	planar_buf_t data; //supposively the sprite sheet data
 ////0000----
-	struct sprite *spri;	//supposively the sprite sheet data
+#ifdef	__WATCOMC__
+	struct sprite	*spri;	//supposively the sprite sheet data
+	memptr		gr;
+#endif
 	bitmap_t *data;		//supposively the sprite sheet data//old format
 	sword hp; //hitpoints of the player
 	int persist_aniframe;    /* gonna be increased to 1 before being used, so 0 is ok for default */
