@@ -334,10 +334,11 @@ typedef struct
 	video_t	video;	// video settings variable
 	ca_t		ca;	// ca stuff
 	pm_t		pm;	// pm stuff
-	byte *pee;		// message for fps
 	loghandle_t handle;	//handles for file logging
 	kurokku_t kurokku;	//clock struct
 	mminfo_t mm; mminfotype mmi;
 } global_game_variables_t;
+
+extern char global_temp_status_text[512];
 
 #endif /* _TYPEDEFSTRUCT_H_ */

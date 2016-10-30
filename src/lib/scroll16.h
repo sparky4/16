@@ -70,6 +70,8 @@ typedef struct
 extern boolean pageflipflop, pageploop;
 extern unsigned char shinku_fps_indicator_page;
 
+extern char global_temp_status_text[512];
+
 //map_t allocMap(int w, int h);
 //void initMap(map_t *map);
 void walk(map_view_t *pip, player_t *player, word pn);

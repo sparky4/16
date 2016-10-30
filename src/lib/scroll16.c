@@ -774,9 +774,16 @@ void shinku(global_game_variables_t *gv)
 //	vga_restore_rm0wm0();
 	if(elapsed_timer(gv) >= (1.0 / gv->kurokku.frames_per_second))
 	{
-		sprintf(gv->pee, "%.0f fps", (double)gv->kurokku.tiku/ticktock(gv));
+        // NTS: For some bizarre reason, gv->pee is not initialized, but the pointer is not NULL even
+        //      though it should be. Instead it's NULL as a near pointer but contains a non-null
+        //      segment value, so testing against NULL doesn't work. It is initialized properly if
+        //      you call start_timer() though which uses near malloc. Rather than fight with that,
+        //      I decided it would be better to declare a temp buffer statically and sprintf to that.
+        //
+        //      This fixes *** Null pointer assignment detected error message in ZCROLL.EXE on exit.
+		sprintf(global_temp_status_text, "%.0f fps", (double)gv->kurokku.tiku/ticktock(gv));
 		//modexClearRegion(&(gv->video.page[shinku_fps_indicator_page]), x, y, w, h, 45);
-		modexprint(&(gv->video.page[/*!*/(gv->video.p)]), x, y, type, col, bgcol, gv->pee);
+		modexprint(&(gv->video.page[/*!*/(gv->video.p)]), x, y, type, col, bgcol, global_temp_status_text);
 		gv->kurokku.tiku=0;
 		/* block copy to visible RAM from offscreen */
 //		vga_setup_wm1_block_copy();
