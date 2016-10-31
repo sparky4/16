@@ -4,21 +4,21 @@
 #
 # Possible optimizations for 8088 class processors
 #
-# -oaRelax alias checking
-# -obTry to generate straight line code
+# -oa	Relax alias checking
+# -ob	Try to generate straight line code
 # -oe - expand user functions inline (-oe=20 is default, adds lots of code)
-# -ohEnable repeated optimizations
-# -oigenerate certain lib funcs inline
-# -oi+Set max inline depth (C++ only, use -oi for C)
-# -okFlowing of register save into function flow graph
-# -olloop optimizations
-# -ol+loop optimizations plus unrolling
-# -orReorder for pipelined (486+ procs); not sure if good to use
-# -osFavor space over time
-# -otFavor time over space
-# -eiAllocate an "int" for all enum types
-# -zp2Allow compiler to add padding to structs
-# -zpwUse with above; make sure you are warning free!
+# -oh	Enable repeated optimizations
+# -oi	generate certain lib funcs inline
+# -oi	+Set max inline depth (C++ only, use -oi for C)
+# -ok	Flowing of register save into function flow graph
+# -ol	loop optimizations
+# -ol+	loop optimizations plus unrolling
+# -or	Reorder for pipelined (486+ procs); not sure if good to use
+# -os	Favor space over time
+# -ot	Favor time over space
+# -ei	Allocate an "int" for all enum types
+# -zp2	Allow compiler to add padding to structs
+# -zpw	Use with above; make sure you are warning free!
 # -0	8088/8086 class code generation
 # -s	disable stack overflow checking
 
@@ -106,9 +106,10 @@ LIBFLAGS=$(WLIBQ) -b -n
 # objects
 #
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
-GFXLIBOBJS = 16_vl.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16_vrs.$(OBJ) 16_sprit.$(OBJ)
-OLDLIBOBJS=bitmap.$(OBJ) mapread.$(OBJ)
-16LIBOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_in.$(OBJ) 16_head.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) wcpu.$(OBJ) 16_timer.$(OBJ) 16_map.$(OBJ) jsmn.$(OBJ)
+OLDLIBOBJS=bitmap.$(OBJ) mapread.$(OBJ) 16render.$(OBJ)
+GFXLIBOBJS = 16_vl.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16_vrs.$(OBJ) 16_sprit.$(OBJ) $(OLDLIBOBJS)
+16LIBOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_in.$(OBJ) 16_head.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) wcpu.$(OBJ) 16_timer.$(OBJ) jsmn.$(OBJ)
+####++++ 16_map.$(OBJ)
 #16planar.$(OBJ) planar.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 !ifeq DEBUGSERIAL 1
@@ -157,11 +158,11 @@ DOSLIBLIBS += $(DOSLIB_8250)/dos86h/8250.lib
 TESTEXEC = &
 	tesuto.exe &
 	0.exe &
+	scroll.exe &
 	zcroll.exe &
 	exmmtest.exe &
 	vrstest.exe
 TESTEXEC2 = &
-	scroll.exe &
 	vgmtest.exe &
 	inputest.exe &
 	maptest.exe &
@@ -193,7 +194,7 @@ bakapi.exe:		bakapi.$(OBJ) gfx.lib $(DOSLIBLIBS)
 #
 # Test Executables!
 #
-scroll.exe:	scroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS) $(OLDLIBOBJS)
+scroll.exe:	scroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
 scroll.$(OBJ):	$(SRC)/scroll.c
 zcroll.exe:	zcroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
 zcroll.$(OBJ):	$(SRC)/zcroll.c
@@ -209,12 +210,12 @@ fonttest.exe:	 fonttest.$(OBJ) gfx.lib
 fontgfx.exe:	fontgfx.$(OBJ) gfx.lib $(DOSLIBLIBS)
 inputest.exe:	 inputest.$(OBJ) $(16LIB) $(DOSLIBLIBS)
 #sountest.exe:	sountest.$(OBJ) $(16LIB)
-pcxtest.exe:	pcxtest.$(OBJ) gfx.lib $(DOSLIBLIBS) $(OLDLIBOBJS)
+pcxtest.exe:	pcxtest.$(OBJ) gfx.lib $(DOSLIBLIBS)
 vrstest.exe:	vrstest.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
 #vgacamm.exe:	vgacamm.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
 palettec.exe:	 palettec.$(OBJ) gfx.lib $(DOSLIBLIBS)
 palettel.exe:	 palettel.$(OBJ) gfx.lib $(DOSLIBLIBS)
-pcxtest2.exe:	 pcxtest2.$(OBJ) gfx.lib $(DOSLIBLIBS) $(OLDLIBOBJS)
+pcxtest2.exe:	 pcxtest2.$(OBJ) gfx.lib $(DOSLIBLIBS)
 #planrpcx.exe:	planrpcx.$(OBJ) gfx.lib
 maptest.exe:	maptest.$(OBJ) 16_map.$(OBJ) 16_head.$(OBJ) gfx.lib $(DOSLIBLIBS)
 fmemtest.exe:	 fmemtest.$(OBJ)

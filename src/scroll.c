@@ -48,7 +48,7 @@ boolean panswitch=0;
 	//map_view_db_t pgid[4];
 	word pg;
 //#ifdef FADE
-	static word paloffset=0;
+	//static word paloffset=0;
 	byte *dpal;
 //#endif
 	byte *gpal;
