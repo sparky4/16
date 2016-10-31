@@ -151,7 +151,7 @@ modexDrawBmpRegion(page_t *page, int x, int y,
 	word scanCount = width/4 + (width%4 ? 1 :0);
 	word nextPageRow = page->width/4 - scanCount;
 	word nextBmpRow = (word) bmp->width - width;
-	word rowCounter;
+	word rowCounter=0;
 	byte planeCounter = 4;
 
     __asm {
@@ -218,7 +218,7 @@ modexDrawSpriteRegion(page_t *page, int x, int y,
 	word scanCount = width/4 + (width%4 ? 1 :0);
 	word nextPageRow = page->width/4 - scanCount;
 	word nextBmpRow = (word) bmp->width - width;
-	word rowCounter;
+	word rowCounter=0;
 	byte planeCounter = 4;
 
     __asm {
@@ -297,7 +297,7 @@ modexDrawBmpPBufRegion(page_t *page, int x, int y,
 	word scanCount = width/4 + (width%4 ? 1 :0);
 	word nextPageRow = page->width/4 - scanCount;
 	word nextBmpRow = (word) bmp->width - width;
-	word rowCounter;
+	word rowCounter=0;
 	byte planeCounter = 4;
 
     __asm {
@@ -375,7 +375,7 @@ modexDrawSpritePBufRegion(page_t *page, int x, int y,
 	word scanCount = width/4 + (width%4 ? 1 :0);
 	word nextPageRow = page->width/4 - scanCount;
 	word nextBmpRow = (word) bmp->width - width;
-	word rowCounter;
+	word rowCounter=0;
 	byte planeCounter = 4;
 
     __asm {
@@ -433,41 +433,4 @@ modexDrawSpritePBufRegion(page_t *page, int x, int y,
 		DEC planeCounter
 		JNZ PLANE_LOOP	  ; do all 4 planes
     }
-}
-
-void modexDrawChar(page_t *page, int x/*for planar selection only*/, word t, word col, word bgcol, word addr)
-{
-	/* vertical drawing routine by joncampbell123.
-	 *
-	 * optimize for VGA mode X planar memory to minimize the number of times we do I/O write to map mask register.
-	 * so, we enumerate over columns (not rows!) to draw every 4th pixel. bit masks are used because of the font bitmap.
-	 *
-	 * NTS: addr defines what VGA memory address we use, "x" is redundant except to specify which of the 4 pixels we select in the map mask register. */
-	word rows = romFonts[t].charSize;
-	word drawaddr;
-	word colm, row;
-	byte fontbyte;
-	byte plane;
-	byte m1,m2;
-
-	plane = x & 3;
-	m1 = 0x80; // left half
-	m2 = 0x08; // right half
-	for (colm=0;colm < 4;colm++) {
-		drawaddr = addr;
-		modexSelectPlane(PLANE(plane));
-		for (row=0;row < rows;row++) {
-			fontbyte = romFontsData.l[row];
-			vga_state.vga_graphics_ram[drawaddr  ] = (fontbyte & m1) ? col : bgcol;
-			vga_state.vga_graphics_ram[drawaddr+1] = (fontbyte & m2) ? col : bgcol;
-			drawaddr += page->width >> 2;
-		}
-
-		m1 >>= 1;
-		m2 >>= 1;
-		if ((++plane) == 4) {
-			addr++;
-			plane = 0;
-		}
-	}
 }

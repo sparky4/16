@@ -223,7 +223,7 @@ void CAL_GetGrChunkLength (int chunk)
 
 boolean CA_FarRead(int handle, byte huge *dest, dword length, global_game_variables_t *gvar)
 {
-	boolean flag;
+	boolean flag=0;
 	//dword fat=0;
 	//word segm=0;
 	if(gvar->pm.emm.EMSVer<0x40)
@@ -295,7 +295,7 @@ End:
 
 boolean CA_FarWrite(int handle, byte huge *source, dword length, global_game_variables_t *gvar)
 {
-	boolean flag;
+	boolean flag=0;
 	//dword fat=0;
 	//word segm=0;
 	if(gvar->pm.emm.EMSVer<0x40)
@@ -398,7 +398,7 @@ boolean CA_ReadFile(char *filename, memptr *ptr, global_game_variables_t *gvar)
 boolean CA_WriteFile (char *filename, void far *ptr, long length, global_game_variables_t *gvar)
 {
 	int handle;
-	sdword size;
+	//sdword size;
 	//long size;
 
 	handle = open(filename,O_CREAT | O_BINARY | O_WRONLY,
@@ -1102,8 +1102,8 @@ dinorm:
 
 void CAL_SetupMapFile (global_game_variables_t *gvar)
 {
-	int handle;
-	long length;
+// 	int handle;
+// 	long length;
 
 //
 // load maphead.ext (offsets and tileinfo for map file)

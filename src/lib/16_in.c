@@ -751,7 +751,7 @@ IN_SetKeyHook(void (*hook)())
 void
 IN_ClearKeysDown()
 {
-	int	i;
+	//int	i;
 
 	inpu.LastScan = sc_None;
 	inpu.LastASCII = key_None;
@@ -821,7 +821,9 @@ void near
 IN_ReadControl(int pn,player_t *player)
 {
 			boolean		realdelta;
+#if DEMO0
 			byte		dbyte;
+#endif
 			word		buttons;
 			int			dx,dy;
 			Motion		mx,my;

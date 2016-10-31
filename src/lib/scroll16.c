@@ -362,7 +362,7 @@ initMap(map_t *map) {
 
 void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 {
-	word x, y;  /* coordinate for drawing */
+	word x;//, y;  /* coordinate for drawing */
 
 	/* increment the pixel position and update the page */
 	mv[id].page->dx += player[plid].speed;
@@ -392,7 +392,7 @@ void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 
 void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 {
-	word x, y;  /* coordinate for drawing */
+	word x;//,y;  /* coordinate for drawing */
 
 	/* decrement the pixel position and update the page */
 	mv[id].page->dx -= player[plid].speed;
@@ -422,7 +422,7 @@ void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 
 void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 {
-	word x, y;  /* coordinate for drawing */
+	word y;//x,  /* coordinate for drawing */
 
 	/* decrement the pixel position and update the page */
 	mv[id].page->dy -= player[plid].speed;
@@ -451,7 +451,7 @@ void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 
 void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 {
-	word x, y;  /* coordinate for drawing */
+	word y;//x,  /* coordinate for drawing */
 
 	/* increment the pixel position and update the page */
 	mv[id].page->dy += player[plid].speed;
@@ -594,7 +594,7 @@ sword chkmap(map_t *map, word q)
 //TODO: player position here
 void mapGoTo(map_view_t *mv, int tx, int ty)
 {
-	int px, py;
+	int py;//px,
 	unsigned int i;
 
 	/* set up the coordinates */
@@ -634,8 +634,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 {
 	word rx;
 	word ry;
-	word textx=0;
-	word texty=0;
+	//word textx=0, texty=0;
 	//if(i==0) i=2;
 	if(i==0)
 	{
@@ -761,8 +760,8 @@ void shinku(global_game_variables_t *gv)
 {
 	word x = (0) + gv->video.page[/*!*/(gv->video.p)].dx; // follow the screen
 	word y = (0) + gv->video.page[/*!*/(gv->video.p)].dy; // follow the screen
-	word w = 64, h = 8, col = 7, bgcol = 0, type = 1;
-	byte o,o2,i;
+	word col = 7, bgcol = 0, type = 1;//w = 64, h = 8,
+	//byte o,o2,i;
 	//modexCopyPageRegion(pip[1].page, pip[2].page, 16, 16, 16, 16, (14*8)+4, 8+4);
 	/* block copy to visible RAM from offscreen */
 //	vga_setup_wm1_block_copy();

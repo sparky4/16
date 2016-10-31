@@ -30,7 +30,6 @@
 //#include "src/lib/planar.h"
 //#include "src/lib/modex16/16planar.h"
 #include "src/lib/16text.h"
-#include "src/lib/16render.h"
 ////#include "src/lib/modex16/320x240.h"
 // #include "src/lib/modex16/320x200.h"
 // #include "src/lib/modex16/256x192.h"
@@ -162,6 +161,7 @@ static inline byte modexreadPixel(page_t *page, int x, int y, word addr)
 }
 #endif
 
+void modexDrawChar(page_t *page, int x/*for planar selection only*/, word t, word col, word bgcol, word addr);
 void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
 void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
 void modexpdump(page_t *pee);

@@ -42,6 +42,8 @@
 #define SPRITE
 //#define TILERENDER
 
+extern void modexDrawSpriteRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp);
+
 //modexDrawSpritePBufRegion
 //modexDrawBmpPBufRegion
 #define PBUFSFUN		modexDrawSpriteRegion

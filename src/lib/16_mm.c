@@ -72,9 +72,9 @@ void		(* XMSaddr) (void);		// far pointer to XMS driver
 
 =============================================================================
 */
-
+#ifndef __16_PM__
 static	char *ParmStringsexmm[] = {"noems","noxms",""};
-
+#endif
 /*
 ======================
 =
@@ -87,7 +87,7 @@ static	char *ParmStringsexmm[] = {"noems","noxms",""};
 
 boolean MML_CheckForEMS(void)
 {
-	boolean emmcfems;
+	boolean emmcfems=0;
 	static char	emmname[] = "EMMXXXX0";	//fix by andrius4669
 	__asm {
 		mov	dx,OFFSET emmname	//fix by andrius4669
@@ -717,7 +717,7 @@ void MML_UseSpace(word segstart, dword seglength, global_game_variables_t *gvar)
 void MML_ClearBlock(global_game_variables_t *gvar)
 {
 	//huge mmblocktype huge *scan,huge *last;
-	mmblocktype far *scan,far *last;
+	mmblocktype __far *scan;//,far *last;
 
 	scan = gvar->mm.mmhead->next;
 
@@ -1175,8 +1175,8 @@ void MM_SortMem(global_game_variables_t *gvar)
 {
 	//huge mmblocktype huge *scan,huge *last,huge *next;
 	mmblocktype far *scan,far *last,far *next;
-	unsigned	start,length,source,dest,oldborder;
-	int			playing;
+	unsigned	start,length,source,dest;//++++,oldborder;
+	//++++int			playing;
 
 	//
 	// lock down a currently playing sound
@@ -1286,18 +1286,18 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 {
 	//huge mmblocktype huge *scan;
 	mmblocktype far *scan;
-	word temp;
+	//word temp;
 	sdword	end,owner;
 	//word chx,chy;
 	word w;
 	//dword wwww;
-	byte    scratch[160],scratch0[4096],scratch1[160],str[16];
+	byte    scratch[160],scratch0[4096],str[16];//[[[[scratch1[160],
 	//byte d = '#';
-//****	VW_SetDefaultColors();
-//****	VW_SetLineWidth(40);
+//[[[[	VW_SetDefaultColors();
+//[[[[	VW_SetLineWidth(40);
 //++++mh	temp = bufferofs;
 //++++mh	bufferofs = 0;
-//****	VW_SetScreen (0,0);
+//[[[[	VW_SetScreen (0,0);
 	scan = gvar->mm.mmhead;
 	end = -1;
 

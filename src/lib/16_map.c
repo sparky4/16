@@ -33,9 +33,9 @@ int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 }
 
 void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
-	int i, j, k, indent, inner_end;
+	int i, j, k, indent=0, inner_end;
 	bitmap_t bp;
-	char *s;
+	//char *s;
 	i = 0;
 	while(i<count) {
 		if(jsoneq(js, &(t[i]), "layers") == 0) {

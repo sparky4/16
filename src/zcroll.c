@@ -23,6 +23,7 @@
 #include "src/lib/scroll16.h"
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
+#include "src/lib/16render.h"
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 //bitmap_t *p;

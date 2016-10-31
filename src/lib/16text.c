@@ -27,8 +27,8 @@ font_t romFonts[4];
 fontdata_t romFontsData;
 
 static void getRomFontAddr(char fontNum, int index) {
-    word fontSeg;
-    word fontOff;
+    word fontSeg=0;
+    word fontOff=0;
 
     __asm {
 	        PUSH AX

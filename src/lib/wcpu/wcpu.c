@@ -25,7 +25,7 @@
 
 byte detectcpu()
 {
-	byte cputype;
+	byte cputype=0;
 	__asm
 	{
 		PUSHF			; we gonna modify flags, so back them up
