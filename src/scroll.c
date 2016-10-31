@@ -23,6 +23,7 @@
 #include "src/lib/scroll16.h"
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
+#include "src/lib/mapread.h"
 
 //#define FADE
 #define MODEX	//this is for mode x initiating
@@ -56,7 +57,7 @@ boolean panswitch=0;
 
 void main(int argc, char *argv[])
 {
-	byte *mesg=malloc(sizeof(dword));
+	//byte *mesg=malloc(sizeof(dword));
 
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;

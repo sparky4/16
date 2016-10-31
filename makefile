@@ -108,7 +108,7 @@ LIBFLAGS=$(WLIBQ) -b -n
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
 GFXLIBOBJS = 16_vl.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16_vrs.$(OBJ) 16_sprit.$(OBJ)
 OLDGFXLIBOBJS=bitmap.$(OBJ)
-16LIBOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_in.$(OBJ) 16_head.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) wcpu.$(OBJ) 16_timer.$(OBJ)
+16LIBOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_in.$(OBJ) 16_head.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) wcpu.$(OBJ) 16_timer.$(OBJ) 16_map.$(OBJ) jsmn.$(OBJ)
 #16planar.$(OBJ) planar.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 !ifeq DEBUGSERIAL 1
@@ -187,15 +187,15 @@ testexec: $(EXEC) joytest.exe $(TESTEXEC2)
 #
 # game and bakapi executables
 #
-16.exe:           16.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
+16.exe:           16.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
 bakapi.exe:       bakapi.$(OBJ) gfx.lib $(DOSLIBLIBS)
 
 #
 # Test Executables!
 #
-scroll.exe:       scroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS) $(OLDGFXLIBOBJS)
+scroll.exe:       scroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS) $(OLDGFXLIBOBJS)
 scroll.$(OBJ):    $(SRC)/scroll.c
-zcroll.exe:       zcroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
+zcroll.exe:       zcroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
 zcroll.$(OBJ):    $(SRC)/zcroll.c
 tesuto.exe:       tesuto.$(OBJ) 16_head.$(OBJ) gfx.lib $(DOSLIBLIBS)
 tesuto.$(OBJ):    $(SRC)/tesuto.c
@@ -216,7 +216,7 @@ palettec.exe:     palettec.$(OBJ) gfx.lib $(DOSLIBLIBS)
 palettel.exe:     palettel.$(OBJ) gfx.lib $(DOSLIBLIBS)
 pcxtest2.exe:     pcxtest2.$(OBJ) gfx.lib $(DOSLIBLIBS) $(OLDGFXLIBOBJS)
 #planrpcx.exe:    planrpcx.$(OBJ) gfx.lib
-maptest.exe:      maptest.$(OBJ) 16_map.$(OBJ) 16_head.$(OBJ) jsmn.$(OBJ) gfx.lib $(DOSLIBLIBS)
+maptest.exe:      maptest.$(OBJ) 16_map.$(OBJ) 16_head.$(OBJ) gfx.lib $(DOSLIBLIBS)
 fmemtest.exe:     fmemtest.$(OBJ)
 exmmtest.exe:     exmmtest.$(OBJ) $(16LIB) $(DOSLIBLIBS)
 vgmtest.exe:      vgmtest.$(OBJ) vgmsnd.lib $(16LIB) $(DOSLIBLIBS)

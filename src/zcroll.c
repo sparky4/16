@@ -53,8 +53,6 @@ boolean panswitch=0,baka=0;
 
 void main(int argc, char *argv[])
 {
-	byte *mesg=malloc(sizeof(dword));
-
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
 

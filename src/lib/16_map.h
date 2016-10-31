@@ -20,10 +20,10 @@
  *
  */
 
-#ifndef _LIBMAPREAD_H_
-#define _LIBMAPREAD_H_
+#ifndef _16_MAP__H_
+#define _16_MAP__H_
 
-#include "jsmn/jsmn.h"
+#include "src/lib/jsmn/jsmn.h"
 //#include "stdio.h" included in 16_head.h
 //#include "stdlib.h" included in 16_head.h
 #include "src/lib/16_vl.h"
