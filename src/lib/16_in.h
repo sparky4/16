@@ -33,7 +33,7 @@
 #ifdef __WATCOMC__	//borland C BCEXMM.EXE
 #include "src/lib/16_dbg.h"
 #include "src/lib/16_sprit.h"
-#include "src/lib/bitmap.h"	//old format
+//#include "src/lib/bitmap.h"	//old format
 #endif
 #ifdef	__DEBUG__
 #define	__DEBUG_InputMgr__

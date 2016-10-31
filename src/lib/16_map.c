@@ -84,7 +84,7 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 					map->tiles[k]->debug_text=false;
 					//Fix to load tileset specified.
 					//And move to vrs, probably
-					bp = bitmapLoadPcx("data/ed.pcx");
+					//bp = bitmapLoadPcx("data/ed.pcx");
 					map->tiles[k]->btdata = &bp;
 					k++;
 				}
@@ -151,6 +151,6 @@ int loadmap(char *mn, map_t *map) {
 	free(js);
 	free(tok);
 	fclose(fh);
-	
+
 	return 0;
 }

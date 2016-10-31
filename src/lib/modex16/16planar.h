@@ -28,7 +28,7 @@
 #ifndef PLANW_H
 #define PLANW_H
 
-#include "src/lib/modex16.h"
+#include "src/lib/16_vl.h"
 
 planar_buf_t planarLoadPcx(char *filename);
 tileset_t planarLoadPcxTiles(char *filename, word twidth, word theight);

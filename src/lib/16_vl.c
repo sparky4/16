@@ -23,7 +23,7 @@
 #include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "src/lib/modex16.h"
+#include "src/lib/16_vl.h"
 
 byte far* VGA=(byte far*) 0xA0000000;   /* this points to video memory. */
 

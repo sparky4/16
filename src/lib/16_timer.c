@@ -22,6 +22,8 @@
 
 #include "src/lib/16_timer.h"
 
+static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
+
 clock_t start_timer(global_game_variables_t *gv)
 {
 	gv->kurokku.t = clock();

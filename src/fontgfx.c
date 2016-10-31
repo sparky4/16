@@ -21,9 +21,9 @@
  */
 #include <stdio.h>
 #include <conio.h>
-#include "lib/types.h"
+#include "src/lib/types.h"
 //#include "lib/16text.h"
-#include "lib/modex16.h"
+#include "src/lib/16_vl.h"
 
 #include <hw/cpu/cpu.h>
 #include <hw/dos/dos.h>

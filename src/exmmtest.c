@@ -28,7 +28,7 @@
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 #include "src/lib/16_hc.h"
-//#include "src/lib/modex16.h"
+//#include "src/lib/16_vl.h"
 #pragma hdrstop
 
 #pragma warn -pro
@@ -69,9 +69,9 @@ main(int argc, char *argv[])
 {
 	byte w=1;
 	static global_game_variables_t gvar;
-#ifdef __WATCOMC__
-	__segment sega;
-#endif
+//#ifdef __WATCOMC__
+//	__segment sega;
+//#endif
 	memptr bigbuffer;
 
 	//static byte bakapee[64];
@@ -133,9 +133,9 @@ for(w=0;w<2;w++)
 	}
 //	close(bakapeehandle);
 	//hmm functions in cache system use the buffered stuff
-#ifdef __WATCOMC__
-	printf("\nsize of big buffer~=%u\n", _bmsize(sega, bigbuffer));
-#endif
+//#ifdef __WATCOMC__
+//	printf("\nsize of big buffer~=%u\n", _bmsize(sega, bigbuffer));
+//#endif
 
 	printf("contents of the buffer\n[\n%s\n]\n", bigbuffer);
 	//printf("dark purple = purgable\n");

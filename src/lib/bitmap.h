@@ -26,7 +26,7 @@
 #ifndef BITMAP_H
 #define BITMAP_H
 
-#include "src/lib/modex16.h"
+#include "src/lib/16_vl.h"
 
 bitmap_t bitmapLoadPcx(char *filename);
 tileset_t bitmapLoadPcxTiles(char *filename, word twidth, word theight);

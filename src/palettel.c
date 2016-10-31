@@ -20,7 +20,7 @@
  *
  */
 
-#include "src/lib/modex16.h"
+#include "src/lib/16_vl.h"
 #include "src/lib/bakapee.h"
 
 global_game_variables_t gvar;

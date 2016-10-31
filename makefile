@@ -66,7 +66,7 @@ SRCLIB=src/lib
 JSMNLIB=src/lib/jsmn
 NYANLIB=src/lib/nyan
 EXMMLIB=src/lib/exmm
-MODEXLIB16=src/lib/modex16
+MODEXLIB16=src/lib/16_vl
 MODEXLIB=src/lib/modex
 VGMSNDLIB=src/lib/vgmsnd
 DOSLIB=src/lib/doslib
@@ -106,7 +106,8 @@ LIBFLAGS=$(WLIBQ) -b -n
 # objects
 #
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
-GFXLIBOBJS = modex16.$(OBJ) bitmap.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16_vrs.$(OBJ) 16_sprit.$(OBJ)
+GFXLIBOBJS = 16_vl.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16render.$(OBJ) 16_vrs.$(OBJ) 16_sprit.$(OBJ)
+OLDGFXLIBOBJS=bitmap.$(OBJ)
 16LIBOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_in.$(OBJ) 16_head.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) wcpu.$(OBJ) 16_timer.$(OBJ)
 #16planar.$(OBJ) planar.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
@@ -181,6 +182,7 @@ EXEC = &
     $(TESTEXEC)
 
 all: $(EXEC) joytest.exe
+testexec: $(EXEC) joytest.exe $(TESTEXEC2)
 
 #
 # game and bakapi executables
@@ -191,7 +193,7 @@ bakapi.exe:       bakapi.$(OBJ) gfx.lib $(DOSLIBLIBS)
 #
 # Test Executables!
 #
-scroll.exe:       scroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
+scroll.exe:       scroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS) $(OLDGFXLIBOBJS)
 scroll.$(OBJ):    $(SRC)/scroll.c
 zcroll.exe:       zcroll.$(OBJ) mapread.$(OBJ) jsmn.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
 zcroll.$(OBJ):    $(SRC)/zcroll.c
@@ -207,12 +209,12 @@ fonttest.exe:     fonttest.$(OBJ) gfx.lib
 fontgfx.exe:      fontgfx.$(OBJ) gfx.lib $(DOSLIBLIBS)
 inputest.exe:     inputest.$(OBJ) $(16LIB) $(DOSLIBLIBS)
 #sountest.exe:    sountest.$(OBJ) $(16LIB)
-pcxtest.exe:      pcxtest.$(OBJ) gfx.lib $(DOSLIBLIBS)
+pcxtest.exe:      pcxtest.$(OBJ) gfx.lib $(DOSLIBLIBS) $(OLDGFXLIBOBJS)
 vrstest.exe:      vrstest.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
 #vgacamm.exe:      vgacamm.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
 palettec.exe:     palettec.$(OBJ) gfx.lib $(DOSLIBLIBS)
 palettel.exe:     palettel.$(OBJ) gfx.lib $(DOSLIBLIBS)
-pcxtest2.exe:     pcxtest2.$(OBJ) gfx.lib $(DOSLIBLIBS)
+pcxtest2.exe:     pcxtest2.$(OBJ) gfx.lib $(DOSLIBLIBS) $(OLDGFXLIBOBJS)
 #planrpcx.exe:    planrpcx.$(OBJ) gfx.lib
 maptest.exe:      maptest.$(OBJ) 16_map.$(OBJ) 16_head.$(OBJ) jsmn.$(OBJ) gfx.lib $(DOSLIBLIBS)
 fmemtest.exe:     fmemtest.$(OBJ)
@@ -224,17 +226,17 @@ vgmtest.exe:      vgmtest.$(OBJ) vgmsnd.lib $(16LIB) $(DOSLIBLIBS)
 #
 16.$(OBJ):        $(SRC)/16.c $(SRC)/16.h
 bakapi.$(OBJ):    $(SRC)/bakapi.c $(SRC)/bakapi.h
-test.$(OBJ):      $(SRC)/test.c $(SRCLIB)/modex16.h
-#test2.$(OBJ):    $(SRC)/test2.c $(SRCLIB)/modex16.h
+test.$(OBJ):      $(SRC)/test.c $(SRCLIB)/16_vl.h
+#test2.$(OBJ):    $(SRC)/test2.c $(SRCLIB)/16_vl.h
 test0.$(OBJ):     $(SRC)/test0.c
-pcxtest.$(OBJ):   $(SRC)/pcxtest.c $(SRCLIB)/modex16.h
-vrstest.$(OBJ):   $(SRC)/vrstest.c $(SRCLIB)/modex16.h
-#vgacamm.$(OBJ):   $(SRC)/vgacamm.c $(SRCLIB)/modex16.h
-#planrpcx.$(OBJ): $(SRC)/planrpcx.c $(SRCLIB)/modex16.h
-pcxtest2.$(OBJ):  $(SRC)/pcxtest2.c $(SRCLIB)/modex16.h
+pcxtest.$(OBJ):   $(SRC)/pcxtest.c $(SRCLIB)/16_vl.h
+vrstest.$(OBJ):   $(SRC)/vrstest.c $(SRCLIB)/16_vl.h
+#vgacamm.$(OBJ):   $(SRC)/vgacamm.c $(SRCLIB)/16_vl.h
+#planrpcx.$(OBJ): $(SRC)/planrpcx.c $(SRCLIB)/16_vl.h
+pcxtest2.$(OBJ):  $(SRC)/pcxtest2.c $(SRCLIB)/16_vl.h
 palettec.$(OBJ):  $(SRC)/palettec.c
 palettel.$(OBJ):  $(SRC)/palettel.c
-maptest.$(OBJ):   $(SRC)/maptest.c $(SRCLIB)/modex16.h
+maptest.$(OBJ):   $(SRC)/maptest.c $(SRCLIB)/16_vl.h
 #emmtest.$(OBJ):  $(SRC)/emmtest.c
 #emsdump.$(OBJ):  $(SRC)/emsdump.c
 fmemtest.$(OBJ):  $(SRC)/fmemtest.c
@@ -278,7 +280,7 @@ joytest.exe:
 	cd $(DOSLIB_JOYSTICK:$(to_os_path)) && $(DOSLIBMAKE) && cd $(BUILD_ROOT)
 	$(COPYCOMMAND) $(DOSLIB_JOYSTICK:$(to_os_path))$(DIRSEP)dos86h$(DIRSEP)test.exe joytest.exe
 
-modex16.$(OBJ):   $(SRCLIB)/modex16.c $(SRCLIB)/modex16.h
+16_vl.$(OBJ):   $(SRCLIB)/16_vl.c $(SRCLIB)/16_vl.h
 bakapee.$(OBJ):   $(SRCLIB)/bakapee.c $(SRCLIB)/bakapee.h
 16render.$(OBJ):  $(SRCLIB)/16render.c $(SRCLIB)/16render.h
 16planar.$(OBJ):  $(MODEXLIB16)/16planar.c $(MODEXLIB16)/16planar.h

@@ -20,10 +20,12 @@
  *
  */
 
-#include "src/lib/modex16.h"
+#include "src/lib/16_vl.h"
 #include "src/lib/16_sprit.h"
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
+
+static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 
 void main() {
 	global_game_variables_t gvar;

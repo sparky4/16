@@ -770,9 +770,7 @@ void MM_Startup(global_game_variables_t *gvar)
 	gvar->mm.mmhead = NULL;
 	gvar->mm.mmfree = &(gvar->mm.mmblocks[0]);
 	for(i=0;i<MAXBLOCKS-1;i++)
-	{
 		gvar->mm.mmblocks[i].next = &(gvar->mm.mmblocks[i+1]);
-	}
 	gvar->mm.mmblocks[i].next = NULL;
 
 //
