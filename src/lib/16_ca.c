@@ -503,10 +503,10 @@ void CAL_HuffExpand (byte huge *source, byte huge *dest,
 {
 //  unsigned bit,byte,node,code;
   unsigned sourceseg,sourceoff,destseg,destoff,endoff;
-  huffnode *headptr;
+////	huffnode *headptr;
 //  huffnode *nodeon;
 
-  headptr = hufftable+254;	// head node is allways node 254
+////	headptr = hufftable+254;	// head node is allways node 254
 
   source++;	// normalize
   source--;
