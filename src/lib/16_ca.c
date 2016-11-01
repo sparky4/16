@@ -239,45 +239,45 @@ boolean CA_FarRead(int handle, byte huge *dest, dword length, global_game_variab
 
 	//if(!fat&&!segm)
 	//{
-		__asm {
-			push	ds
-			mov	bx,[handle]
-			mov	cx,[WORD PTR length]
-			mov	dx,[WORD PTR dest]
-			mov	ds,[WORD PTR dest+2]
-			mov	ah,0x3f				// READ w/handle
-			int	21h
-			pop	ds
-			jnc	good
-			mov	errno,ax
-			mov	flag,0
-			jmp End
+	__asm {
+		push	ds
+		mov	bx,[handle]
+		mov	cx,[WORD PTR length]
+		mov	dx,[WORD PTR dest]
+		mov	ds,[WORD PTR dest+2]
+		mov	ah,0x3f				// READ w/handle
+		int	21h
+		pop	ds
+		jnc	good
+		mov	errno,ax
+		mov	flag,0
+		jmp End
 #ifdef __BORLANDC__
-		}
+	}
 #endif
 good:
 #ifdef __BORLANDC__
-		__asm {
+	__asm {
 #endif
-			cmp	ax,[WORD PTR length]
-			je	done
-//			errno = EINVFMT;			// user manager knows this is bad read
-			mov	flag,0
-			jmp End
+		cmp	ax,[WORD PTR length]
+		je	done
+//		errno = EINVFMT;			// user manager knows this is bad read
+		mov	flag,0
+		jmp End
 #ifdef __BORLANDC__
-		}
+	}
 #endif
 done:
 #ifdef __BORLANDC__
-		__asm {
+	__asm {
 #endif
-			mov	flag,1
+		mov	flag,1
 #ifdef __BORLANDC__
-		}
+	}
 #endif
 End:
 #ifdef __WATCOMC__
-		}
+	}
 #endif
 	return flag;
 }
@@ -311,45 +311,45 @@ boolean CA_FarWrite(int handle, byte huge *source, dword length, global_game_var
 
 	//if(!fat&&!segm)
 	//{
-		__asm {
-			push	ds
-			mov	bx,[handle]
-			mov	cx,[WORD PTR length]
-			mov	dx,[WORD PTR source]
-			mov	ds,[WORD PTR source+2]
-			mov	ah,0x40			// WRITE w/handle
-			int	21h
-			pop	ds
-			jnc	good
-			mov	errno,ax
-			mov flag,0
-			jmp End
+	__asm {
+		push	ds
+		mov	bx,[handle]
+		mov	cx,[WORD PTR length]
+		mov	dx,[WORD PTR source]
+		mov	ds,[WORD PTR source+2]
+		mov	ah,0x40			// WRITE w/handle
+		int	21h
+		pop	ds
+		jnc	good
+		mov	errno,ax
+		mov flag,0
+		jmp End
 #ifdef __BORLANDC__
-		}
+	}
 #endif
 good:
 #ifdef __BORLANDC__
-		__asm {
+	__asm {
 #endif
-			cmp	ax,[WORD PTR length]
-			je	done
-			//errno = ENOMEM;				// user manager knows this is bad write
-			mov	flag,0
-			jmp End
+		cmp	ax,[WORD PTR length]
+		je	done
+//		errno = ENOMEM;				// user manager knows this is bad write
+		mov	flag,0
+		jmp End
 #ifdef __BORLANDC__
-		}
+	}
 #endif
 done:
 #ifdef __BORLANDC__
-		__asm {
+	__asm {
 #endif
-			mov	flag,1
+		mov	flag,1
 #ifdef __BORLANDC__
-		}
+	}
 #endif
 End:
 #ifdef __WATCOMC__
-		}
+	}
 #endif
 	return flag;
 }

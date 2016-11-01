@@ -341,4 +341,6 @@ typedef struct
 
 extern char global_temp_status_text[512];
 
+#define EINVFMT EMFILE
+
 #endif /* _TYPEDEFSTRUCT_H_ */
