@@ -237,9 +237,9 @@ again:
 		}
 	}
 
-	free(js);
-	free(tok);
-	fclose(fh);
+	//free(js);
+	//free(tok);
+	//fclose(fh);
 
 	return 0;
 }

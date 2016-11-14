@@ -46,10 +46,10 @@ static struct pcxHeader {
 } head;
 
 static void loadPcxStage1(FILE *file, bitmap_t *result) {
-	long bufSize;
-	int index;
-	byte count, val;
-	long int pos;
+	//long bufSize;
+	//int index;
+	//byte count, val;
+	//long int pos;
 
 	/* read the header */
 	fread(&head, sizeof(char), sizeof(struct pcxHeader), file);
