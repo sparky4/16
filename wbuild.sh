@@ -6,7 +6,7 @@ wmake -h comp
 #then
 #	echo dumping *.err
 	#cat *.err
-	wmake vomitchan
+	wmake -h vomitchan
 #fi
 #if [ -f 16_head.o ]
 #then

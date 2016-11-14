@@ -503,10 +503,10 @@ void CAL_HuffExpand (byte huge *source, byte huge *dest,
 {
 //  unsigned bit,byte,node,code;
   unsigned sourceseg,sourceoff,destseg,destoff,endoff;
-////	huffnode *headptr;
+	huffnode *headptr;
 //  huffnode *nodeon;
 
-////	headptr = hufftable+254;	// head node is allways node 254
+	headptr = hufftable+254;	// head node is allways node 254
 
   source++;	// normalize
   source--;
@@ -533,7 +533,7 @@ void CAL_HuffExpand (byte huge *source, byte huge *dest,
 //--------------------------
 
 	__asm {
-////		mov	bx,[headptr]
+		mov	bx,[word ptr headptr]
 
 		mov	si,[sourceoff]
 		mov	di,[destoff]
@@ -597,7 +597,7 @@ storebyteshort:
 #endif
 		mov	[es:di],dl
 		inc	di					// write a decopmpressed byte out
-////		mov	bx,[headptr]		// back to the head node for next bit
+		mov	bx,[word ptr headptr]		// back to the head node for next bit
 
 		cmp	di,ax				// done?
 		jne	expandshort
@@ -613,7 +613,7 @@ storebyteshort:
   length--;
 
 	__asm {
-////		mov	bx,[headptr]
+		mov	bx,[word ptr headptr]
 		mov	cl,1
 
 		mov	si,[sourceoff]
@@ -685,7 +685,7 @@ storebyte:
 #endif
 		mov	[es:di],dl
 		inc	di		// write a decopmpressed byte out
-////		mov	bx,[headptr]	// back to the head node for next bit
+		mov	bx,[word ptr headptr]	// back to the head node for next bit
 
 		cmp	di,0x10		// normalize es:di
 		jb	dinorm
