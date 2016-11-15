@@ -407,6 +407,7 @@ reinitlibs: .symbolic
 	@rm -rf 16/CatacombApocalypse
 	@rm -rf 16/wolf3d
 	@rm -rf 16/keen
+	@rm -rf 16/Catacomb3D
 	@wmake -h initlibs
 
 initlibs: .symbolic
