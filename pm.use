@@ -91,6 +91,8 @@ Binary file 16/wf3d8086/obj/wolf3d.exe matches
 16/wf3d8086/obj/wolf3d.map: 1A26:11CF       _PM_Shutdown
 16/wf3d8086/oldscale.c:	shape = PM_GetSpritePage (shapenum);
 16/wf3d8086/oldscale.c:	shape = PM_GetSpritePage (shapenum);
+
+
 16/wf3d8086/wl_act2.c:	PM_UnlockMainMem ();
 16/wf3d8086/wl_act2.c:	PM_CheckMainMem ();
 16/wf3d8086/wl_debug.c:		addr = PM_GetPageAddress(i);
@@ -121,6 +123,8 @@ Binary file 16/wf3d8086/obj/wolf3d.exe matches
 16/wf3d8086/wl_play.c:		PM_CheckMainMem ();
 16/wf3d8086/wl_scale.c:	shape = PM_GetSpritePage (shapenum);
 16/wf3d8086/wl_scale.c:	shape = PM_GetSpritePage (shapenum);
+
+
 16/wf3d8086/wolf3d.map: 19127H 1A286H 01160H ID_PM_TEXT         CODE
 16/wf3d8086/wolf3d.map: 1912:0007 1160 C=CODE   S=ID_PM_TEXT     G=(none)  M=ID_PM.C    ACBP=28
 16/wf3d8086/wolf3d.map: 1912:02DF       _PM_CheckMainMem
