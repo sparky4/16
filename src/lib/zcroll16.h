@@ -24,7 +24,7 @@
 #define __ZCROLL16_H_
 
 #include "src/lib/16_head.h"
-#include "src/lib/16_entity.h"
+#include "src/lib/16_enti.h"
 //#include "src/lib/bakapee.h"
 #include "src/lib/16_vl.h"
 //#include "src/lib/16_in.h"
