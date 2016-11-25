@@ -22,6 +22,8 @@
 
 #include "src/lib/16_timer.h"
 
+static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
+
 clock_t start_timer(global_game_variables_t *gv)
 {
 	gv->kurokku.t = clock();
@@ -29,8 +31,8 @@ clock_t start_timer(global_game_variables_t *gv)
 	gv->kurokku.clock_start = *clockw;
 	gv->kurokku.clock = clockw;
 	//gv->kurokku.frames_per_second = 60;
-	gv->pee = _nmalloc(sizeof(byte)*16);
-	//turn this off if XT
+
+    //turn this off if XT
 	switch(detectcpu())
 	{
 		case 0:
@@ -63,6 +65,9 @@ double time_in_seconds(global_game_variables_t *gv)
 	return (gv->kurokku.t) / CLOCKS_PER_SEC;
 }
 
+// big global status text buffer
+char global_temp_status_text[512];
+
 /*double time_in_seconds(time_t in_t)
 {
 	return (in_t) / CLOCKS_PER_SEC;
@@ -75,8 +80,8 @@ void shinkutxt(global_game_variables_t *gv)
 	if(elapsed_timer(gv) >= (1.0 / gv->kurokku.frames_per_second))
 	{
 		//t=(((*(gv->clock))-gv->clock_start) /18.2);
-		sprintf(gv->pee, "%.0f fps", (double)gv->kurokku.tiku/ticktock(gv));
-		fprintf(stderr, "%s\n", gv->pee);
+		sprintf(global_temp_status_text, "%.0f fps", (double)gv->kurokku.tiku/ticktock(gv));
+		fprintf(stderr, "%s\n", global_temp_status_text);
 		//(gv->clock_start)=*(gv->clock);
 		gv->kurokku.tiku=0;
 	}

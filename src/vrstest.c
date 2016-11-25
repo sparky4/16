@@ -20,25 +20,28 @@
  *
  */
 
-#include "src/lib/modex16.h"
+//#include "src/lib/16_head.h"
+#include "src/lib/16_vl.h"
 #include "src/lib/16_sprit.h"
 #include "src/lib/16_tail.h"
 #include "src/lib/16_pm.h"
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 
+static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
+
 void main() {
 	static global_game_variables_t gvar;
-	__segment sega;
+	//__segment sega;
 	memptr bigbuffer;
 	int i;
 	word start;
 	float t1, t2;
 	boolean baka;
-	byte *pal;
-	int size;
+	byte *pal=0;
+	int size=0;
 	struct sprite spri;
-	vrl1_vgax_offset_t * off, *off1;
+	//vrl1_vgax_offset_t * off, *off1;
 	struct vrs_container vrs;
 	vrl1_vgax_offset_t **vrl_line_offsets;
 	uint32_t huge *vrl_headers_offsets;

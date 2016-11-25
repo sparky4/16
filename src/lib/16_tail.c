@@ -76,7 +76,7 @@ void Startup16(global_game_variables_t *gvar)
 	CA_Startup(gvar);
 #ifdef __WATCOMC__
 	start_timer(gvar);
-	
+
 #endif
 
 }
@@ -155,8 +155,8 @@ void DebugMemory_(global_game_variables_t *gvar, boolean q)
 
 void Quit (char *error)
 {
-	unsigned        finscreen;
-	memptr	screen;
+	//unsigned        finscreen;
+	memptr	screen=0;
 	union REGS in, out;
 
 	//ClearMemory ();

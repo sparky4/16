@@ -23,6 +23,7 @@
 #include "src/lib/zcroll16.h"
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
+#include "src/lib/16render.h"
 
 global_game_variables_t gvar;
 static map_t map;
@@ -50,15 +51,13 @@ memptr pal;
 
 void main(int argc, char *argv[])
 {
-	byte *mesg=malloc(sizeof(dword));
-	int i;
-
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
 
 	Startup16(&gvar);
 
 	pan.pn=0;
+	// OK, this one takes hellova time and needs to be done in farmalloc or MM_...
 	player = malloc(sizeof(player_t));
 	player->ent = malloc(sizeof(entity_t));
 	player->ent->spri = malloc(sizeof(struct sprite));

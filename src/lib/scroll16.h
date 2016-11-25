@@ -25,10 +25,12 @@
 
 #include "src/lib/16_head.h"
 #include "src/lib/bakapee.h"
-#include "src/lib/modex16.h"
+#include "src/lib/16_vl.h"
 #include "src/lib/16_in.h"
 #include "src/lib/bitmap.h"
 #include "src/lib/mapread.h" //map is loaded here www
+#include "src/lib/16render.h"
+//#include "src/lib/16_map.h"	//new map stuff
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
 #include "src/lib/16_tail.h"
@@ -40,6 +42,8 @@
 
 #define SPRITE
 //#define TILERENDER
+
+extern void modexDrawSpriteRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp);
 
 //modexDrawSpritePBufRegion
 //modexDrawBmpPBufRegion
@@ -69,6 +73,8 @@ typedef struct
 
 extern boolean pageflipflop, pageploop;
 extern unsigned char shinku_fps_indicator_page;
+
+extern char global_temp_status_text[512];
 
 //map_t allocMap(int w, int h);
 //void initMap(map_t *map);

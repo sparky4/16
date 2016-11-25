@@ -48,14 +48,16 @@ memptr should be replaced by memseg in code.
 on usage where you need pointer convert memseg type (segment) to far pointer by
 MK_FP(segment value, 0)*/
 #ifdef __WATCOMC__
-typedef void __based( void ) * memptr;	////old //----typedef void __based(__self) * memptr;
-typedef unsigned short _seg; // it will contains segment value (as Borland _seg)
+//typedef unsigned short _seg; // it will contains segment value (as Borland _seg)
+#define _seg __based( void )
 #define __SEGA __segment
 #endif
 #ifdef __BORLANDC__
-typedef void _seg * memptr;
+//typedef void _seg * memptr;
 #define __SEGA _seg
 #endif
+
+typedef void _seg * memptr;//typedef void __based( void ) * memptr;	////old //----typedef void __based(__self) * memptr;
 
 #define _argv __argv
 #define _argc __argc

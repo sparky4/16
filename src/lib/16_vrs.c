@@ -26,21 +26,14 @@
 int read_vrs(global_game_variables_t *gvar, char *filename, struct vrs_container *vrs_cont){
 	int fd;
 	dword size;
-#ifdef __WATCOMC__
-	__segment seg;
-	void __based(seg)* bigbuffer;
-#endif
-#ifdef __BORLANDC__
-	memptr bigbuffer;
-#endif
 	byte huge *buffer;
 	vrl1_vgax_offset_t **vrl_line_offsets;
 	uint32_t huge *vrl_headers_offsets;
 	uint16_t huge *vrl_id_iter;
 	uint32_t vrl_size;
-	int num_of_vrl, i;
+	int num_of_vrl=0, i;
 	struct vrl1_vgax_header huge *curr_vrl;
-	int success;
+	int success=1;
 
 	// Open filename, get size of file,
 	// populate the vrs_container if all tests pass
@@ -60,7 +53,7 @@ int read_vrs(global_game_variables_t *gvar, char *filename, struct vrs_container
 	vrs_cont->buffer = buffer;
 
 	// Calculate vrl offsets
-	
+
 	// Count sprites
 	vrl_id_iter = (uint16_t huge *)(buffer + vrs_cont->vrs_hdr->offset_table[VRS_HEADER_OFFSET_SPRITE_ID_LIST]);
 	while(vrl_id_iter[num_of_vrl]){
@@ -101,7 +94,7 @@ int get_vrl_by_id(struct vrs_container /*huge*/ *vrs_cont, uint16_t id, struct v
 	}
 
 	// Get id list from .vrs blob (base + offset)
-	ids = (uint16_t huge*)(vrs_cont->buffer + 
+	ids = (uint16_t huge*)(vrs_cont->buffer +
 		vrs_cont->vrs_hdr->offset_table[VRS_HEADER_OFFSET_SPRITE_ID_LIST]);
 
 	// Loop through the id list until we found the right one or hit the end of the list

@@ -21,11 +21,12 @@
  */
 
 #include <stdio.h>
-#include "src/lib/modex16.h"
+#include "src/lib/16_vl.h"
 #include "src/lib/16_in.h"
 #include "src/lib/scroll16.h"
 #include "src/lib/bakapee.h"
 
+static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 global_game_variables_t gvar;
 player_t player[MaxPlayers];
 map_view_t mv[4];

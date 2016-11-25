@@ -23,7 +23,7 @@
 #include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "src/lib/modex16.h"
+#include "src/lib/16_vl.h"
 
 byte far* VGA=(byte far*) 0xA0000000;   /* this points to video memory. */
 
@@ -78,7 +78,7 @@ vgaSetMode(byte mode)
 byte/*FIXME: why long? "long" is 32-bit datatype, VGA modes are 8-bit numbers. */
 vgaGetMode()
 {
-    return int10_getmode();
+	return int10_getmode();
 }
 
 /* -========================= Entry  Points ==========================- */
@@ -86,7 +86,7 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 {
 	word i;
 	struct vga_mode_params cm;
-	int CRTParmCount;
+	//int CRTParmCount;
 
 	vgaSetMode(VGA_256_COLOR_MODE);
 	vga_enable_256color_modex();
@@ -116,8 +116,8 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 			cm.word_mode = 0;
 			cm.dword_mode = 0;
 			// 320x240 mode 60Hz
-			cm.horizontal_total=0x5f + 5; /* CRTC[0]             -5 */
-			cm.horizontal_display_end=0x4f + 1; /* CRTC[1]       -1 */
+			cm.horizontal_total=0x5f + 5; /* CRTC[0]			 -5 */
+			cm.horizontal_display_end=0x4f + 1; /* CRTC[1]	   -1 */
 			cm.horizontal_blank_start=0x50 + 1; /* CRTC[2] */
 //			cm.horizontal_blank_end=0x82 + 1;   /* CRTC[3] bit 0-4 & CRTC[5] bit 7 *///skewing ^^;
 			cm.horizontal_start_retrace=0x54;/* CRTC[4] */
@@ -155,7 +155,7 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 	{
 		case 1: {
 			/* clear video memory */
-			dword far*ptr=(dword far*)vga_state.vga_graphics_ram;//VGA;      /* used for faster screen clearing */
+			dword far*ptr=(dword far*)vga_state.vga_graphics_ram;//VGA;	  /* used for faster screen clearing */
 			vga_write_sequencer(2/*map mask register*/,0xf/*all 4 planes*/);
 			for(i = 0;i < 0x4000; i++) ptr[i] = 0x0000; // 0x4000 x dword = 64KB
 		}
@@ -179,14 +179,14 @@ modexLeave() {
 page_t
 modexDefaultPage(page_t *p)
 {
-    page_t page;
+	page_t page;
 
-    /* default page values */
+	/* default page values */
 	//page.data = VGA;
 	//page.data = (byte far *)(vga_state.vga_graphics_ram);
 	page.data = (vga_state.vga_graphics_ram);
-    page.dx = 0;
-    page.dy = 0;
+	page.dx = 0;
+	page.dy = 0;
 	page.sw = p->sw;
 	page.sh = p->sh;
 	page.width = p->sw+TILEWHD;
@@ -202,7 +202,7 @@ modexDefaultPage(page_t *p)
 	page.pi=page.width*4;
 	page.id = 0;
 
-    return page;
+	return page;
 }
 
 /* returns the next page in contiguous memory
@@ -210,15 +210,15 @@ modexDefaultPage(page_t *p)
  */
 page_t
 modexNextPage(page_t *p) {
-    page_t result;
+	page_t result;
 
-    result.data = p->data + (p->pagesize);
-    result.dx = 0;
-    result.dy = 0;
+	result.data = p->data + (p->pagesize);
+	result.dx = 0;
+	result.dy = 0;
 	result.sw = p->sw;
 	result.sh = p->sh;
-    result.width = p->width;
-    result.height = p->height;
+	result.width = p->width;
+	result.height = p->height;
 	result.tw = p->tw;
 	result.th = p->th;
 	result.tilesw = p->tilesw;
@@ -296,78 +296,78 @@ void modexHiganbanaPageSetup(video_t *video)
 
 void
 modexShowPage(page_t *page) {
-    word high_address;
-    word low_address;
-    word offset;
-    byte crtcOffset;
+	word high_address;
+	word low_address;
+	word offset;
+	byte crtcOffset;
 
-    /* calculate offset */
-    offset = (word) page->data;
-    offset += page->dy * (page->width >> 2 );
-    offset += page->dx >> 2;
+	/* calculate offset */
+	offset = (word) page->data;
+	offset += page->dy * (page->width >> 2 );
+	offset += page->dx >> 2;
 
-    /* calculate crtcOffset according to virtual width */
-    crtcOffset = page->width >> 3;
+	/* calculate crtcOffset according to virtual width */
+	crtcOffset = page->width >> 3;
 
-    high_address = HIGH_ADDRESS | (offset & 0xff00);
-    low_address  = LOW_ADDRESS  | (offset << 8);
+	high_address = HIGH_ADDRESS | (offset & 0xff00);
+	low_address  = LOW_ADDRESS  | (offset << 8);
 
-    /* wait for appropriate timing and then program CRTC */
-    //while ((inp(INPUT_STATUS_1) & DISPLAY_ENABLE));
-    outpw(CRTC_INDEX, high_address);
-    outpw(CRTC_INDEX, low_address);
-    outp(CRTC_INDEX, 0x13);
-    outp(CRTC_DATA, crtcOffset);
+	/* wait for appropriate timing and then program CRTC */
+	//while ((inp(INPUT_STATUS_1) & DISPLAY_ENABLE));
+	outpw(CRTC_INDEX, high_address);
+	outpw(CRTC_INDEX, low_address);
+	outp(CRTC_INDEX, 0x13);
+	outp(CRTC_DATA, crtcOffset);
 
-    /*  wait for one retrace */
-    //while (!(inp(INPUT_STATUS_1) & VRETRACE));
+	/*  wait for one retrace */
+	//while (!(inp(INPUT_STATUS_1) & VRETRACE));
 
-    /* do PEL panning here */
-    outp(AC_INDEX, 0x33);
-    outp(AC_INDEX, (page->dx & 0x03) << 1);
+	/* do PEL panning here */
+	outp(AC_INDEX, 0x33);
+	outp(AC_INDEX, (page->dx & 0x03) << 1);
 }
 
 void
 modexPanPage(page_t *page, int dx, int dy) {
-    page->dx = dx;
-    page->dy = dy;
+	page->dx = dx;
+	page->dy = dy;
 }
 
 void
 modexSelectPlane(byte plane) {
-    outp(SC_INDEX, MAP_MASK);	  /* select plane */
-    outp(SC_DATA,  plane);
+	outp(SC_INDEX, MAP_MASK);	  /* select plane */
+	outp(SC_DATA,  plane);
 }
 
 void
 modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
-    word pageOff = (word) page->data;
-    word xoff=x/4;       /* xoffset that begins each row */
-    word scanCount=w/4;  /* number of iterations per row (excluding right clip)*/
-    word poffset = pageOff + y*(page->stridew) + xoff; /* starting offset */
-    word nextRow = page->stridew-scanCount-1;  /* loc of next row */
-    byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08};  /* clips for rectangles not on 4s */
-    byte rclip[] = {0x00, 0x01, 0x03, 0x07};
-    byte left = lclip[x&0x03];
-    byte right = rclip[(x+w)&0x03];
+	word pageOff = (word) page->data;
+	word xoff=x/4;	   /* xoffset that begins each row */
+	word scanCount=w/4;  /* number of iterations per row (excluding right clip)*/
+	word poffset = pageOff + y*(page->stridew) + xoff; /* starting offset */
+	word nextRow = page->stridew-scanCount-1;  /* loc of next row */
+	byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08};  /* clips for rectangles not on 4s */
+	byte rclip[] = {0x00, 0x01, 0x03, 0x07};
+	byte left = lclip[x&0x03];
+	byte right = rclip[(x+w)&0x03];
 
-    /* handle the case which requires an extra group */
-    if((x & 0x03) && !((x+w) & 0x03)) {
-      right=0x0f;
-    }
+	/* handle the case which requires an extra group */
+	if((x & 0x03) && !((x+w) & 0x03)) {
+	  right=0x0f;
+	}
 
 	//printf("modexClearRegion(x=%u, y=%u, w=%u, h=%u, left=%u, right=%u)\n", x, y, w, h, left, right);
 
-    __asm {
-	    PUSHF
-	    PUSH ES
-	    PUSH AX
-	    PUSH BX
-	    PUSH CX
-	    PUSH DX
-	    PUSH SI
-	    PUSH DI
-		MOV AX, SCREEN_SEG      ; go to the VGA memory
+	__asm {
+		PUSHF
+		PUSH ES
+		PUSH AX
+		PUSH BX
+		PUSH CX
+		PUSH DX
+		PUSH SI
+		PUSH DI
+		MOV AX, SCREEN_SEG	  ; go to the VGA memory
 		MOV ES, AX
 		MOV DI, poffset	 ; go to the first pixel
 		MOV DX, SC_INDEX	; point to the map mask
@@ -376,39 +376,39 @@ modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
 		INC DX
 		MOV AL, color	   ; get ready to write colors
 	SCAN_START:
-		MOV CX, scanCount       ; count the line
-		MOV BL, AL	      ; remember color
-		MOV AL, left	    ; do the left clip
-		OUT DX, AL	      ; set the left clip
-		MOV AL, BL	      ; restore color
+		MOV CX, scanCount	   ; count the line
+		MOV BL, AL		  ; remember color
+		MOV AL, left		; do the left clip
+		OUT DX, AL		  ; set the left clip
+		MOV AL, BL		  ; restore color
 		STOSB		   ; write the color
 		DEC CX
-		JZ SCAN_DONE	    ; handle 1 group stuff
+		JZ SCAN_DONE		; handle 1 group stuff
 
 		;-- write the main body of the scanline
-		MOV BL, AL	      ; remember color
-		MOV AL, 0x0f	    ; write to all pixels
+		MOV BL, AL		  ; remember color
+		MOV AL, 0x0f		; write to all pixels
 		OUT DX, AL
-		MOV AL, BL	      ; restore color
-		REP STOSB	       ; write the color
+		MOV AL, BL		  ; restore color
+		REP STOSB		   ; write the color
 	SCAN_DONE:
-		MOV BL, AL	      ; remeber color
+		MOV BL, AL		  ; remeber color
 		MOV AL, right
-		OUT DX, AL	      ; do the right clip
-		MOV AL, BL	      ; restore color
+		OUT DX, AL		  ; do the right clip
+		MOV AL, BL		  ; restore color
 		STOSB		   ; write pixel
 		ADD DI, nextRow	 ; go to the next row
 		DEC h
 		JNZ SCAN_START
-	    POP DI
-	    POP SI
-	    POP DX
-	    POP CX
-	    POP BX
-	    POP AX
-	    POP ES
-	    POPF
-    }
+		POP DI
+		POP SI
+		POP DX
+		POP CX
+		POP BX
+		POP AX
+		POP ES
+		POPF
+	}
 }
 
 /* moved to src/lib/modex16/16render.c */
@@ -419,19 +419,19 @@ modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
  */
 void
 modexCopyPageRegion(page_t *dest, page_t *src,
-		    word sx, word sy,
-		    word dx, word dy,
-		    word width, word height)
+			word sx, word sy,
+			word dx, word dy,
+			word width, word height)
 {
-    word doffset = (word)dest->data + dy*(dest->stridew) + dx/4;
-    word soffset = (word)src->data + sy*(src->stridew) + sx/4;
-    word scans   = vga_state.vga_stride;				//++++0000 the quick and dirty fix of the major issue with p16 video display wwww
-    word nextSrcRow = src->stridew - scans - 1;
-    word nextDestRow = dest->stridew - scans - 1;
-    byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08};  /* clips for rectangles not on 4s */
-    byte rclip[] = {0x00, 0x01, 0x03, 0x07};
-    byte left = lclip[sx&0x03];
-    byte right = rclip[(sx+width)&0x03];
+	word doffset = (word)dest->data + dy*(dest->stridew) + dx/4;
+	word soffset = (word)src->data + sy*(src->stridew) + sx/4;
+	word scans   = vga_state.vga_stride;				//++++0000 the quick and dirty fix of the major issue with p16 video display wwww
+	word nextSrcRow = src->stridew - scans - 1;
+	word nextDestRow = dest->stridew - scans - 1;
+	byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08};  /* clips for rectangles not on 4s */
+	byte rclip[] = {0x00, 0x01, 0x03, 0x07};
+	byte left = lclip[sx&0x03];
+	byte right = rclip[(sx+width)&0x03];
 
 	/* handle the case which requires an extra group */
 	if((sx & 0x03) && !((sx+width) & 0x03)) {
@@ -440,18 +440,18 @@ modexCopyPageRegion(page_t *dest, page_t *src,
 
 //	printf("modexCopyPageRegion(src->stridew=%u, dest->stridew=%u, sx=%u, sy=%u, dx=%u, dy=%u, width=%u, height=%u, left=%u, right=%u)\n", src->stridew, dest->stridew, sx, sy, dx, dy, width, height, left, right);
 
-    __asm {
-	    PUSHF
-	    PUSH ES
-	    PUSH AX
-	    PUSH BX
-	    PUSH CX
-	    PUSH DX
-	    PUSH SI
-	    PUSH DI
+	__asm {
+		PUSHF
+		PUSH ES
+		PUSH AX
+		PUSH BX
+		PUSH CX
+		PUSH DX
+		PUSH SI
+		PUSH DI
 
-		MOV AX, SCREEN_SEG      ; work in the vga space
-		MOV ES, AX	      ;
+		MOV AX, SCREEN_SEG	  ; work in the vga space
+		MOV ES, AX		  ;
 		MOV DI, doffset	 ;
 		MOV SI, soffset	 ;
 
@@ -460,9 +460,9 @@ modexCopyPageRegion(page_t *dest, page_t *src,
 		OUT DX, AX
 
 		MOV AX, SC_INDEX	; point to the mask register
-		MOV DX, AX	      ;
+		MOV DX, AX		  ;
 		MOV AL, MAP_MASK	;
-		OUT DX, AL	      ;
+		OUT DX, AL		  ;
 		INC DX		  ;
 
 	ROW_START:
@@ -471,183 +471,183 @@ modexCopyPageRegion(page_t *dest, page_t *src,
 		MOV DS, AX
 		MOV CX, scans	   ; the number of latches
 
-		MOV AL, left	    ; do the left column
-		OUT DX, AL	      ;
+		MOV AL, left		; do the left column
+		OUT DX, AL		  ;
 		MOVSB		   ;
 		DEC CX		  ;
 
-		MOV AL, 0fh	     ; do the inner columns
+		MOV AL, 0fh		 ; do the inner columns
 		OUT DX, AL
-		REP MOVSB	       ; copy the pixels
+		REP MOVSB		   ; copy the pixels
 
 		MOV AL, right	   ; do the right column
 		OUT DX, AL
 		MOVSB
 		POP DS
 
-		MOV AX, SI	      ; go the start of the next row
-		ADD AX, nextSrcRow      ;
-		MOV SI, AX	      ;
-		MOV AX, DI	      ;
-		ADD AX, nextDestRow     ;
-		MOV DI, AX	      ;
+		MOV AX, SI		  ; go the start of the next row
+		ADD AX, nextSrcRow	  ;
+		MOV SI, AX		  ;
+		MOV AX, DI		  ;
+		ADD AX, nextDestRow	 ;
+		MOV DI, AX		  ;
 
-		DEC height	      ; do the rest of the actions
+		DEC height		  ; do the rest of the actions
 		JNZ ROW_START	   ;
 
-		MOV DX, GC_INDEX+1      ; go back to CPU data
-		MOV AL, 0ffh	    ; none from latches
-		OUT DX, AL	      ;
+		MOV DX, GC_INDEX+1	  ; go back to CPU data
+		MOV AL, 0ffh		; none from latches
+		OUT DX, AL		  ;
 
-	    POP DI
-	    POP SI
-	    POP DX
-	    POP CX
-	    POP BX
-	    POP AX
-	    POP ES
-	    POPF
-    }
+		POP DI
+		POP SI
+		POP DX
+		POP CX
+		POP BX
+		POP AX
+		POP ES
+		POPF
+	}
 }
 
 
 /* fade and flash */
 void
 modexFadeOn(word fade, byte *palette) {
-    fadePalette(-fade, 64, 64/fade+1, palette);
+	fadePalette(-fade, 64, 64/fade+1, palette);
 }
 
 
 void
 modexFadeOff(word fade, byte *palette) {
-    fadePalette(fade, 0, 64/fade+1, palette);
+	fadePalette(fade, 0, 64/fade+1, palette);
 }
 
 
 void
 modexFlashOn(word fade, byte *palette) {
-    fadePalette(fade, -64, 64/fade+1, palette);
+	fadePalette(fade, -64, 64/fade+1, palette);
 }
 
 
 void
 modexFlashOff(word fade, byte *palette) {
-    fadePalette(-fade, 0, 64/fade+1, palette);
+	fadePalette(-fade, 0, 64/fade+1, palette);
 }
 
 
 static void
 fadePalette(sbyte fade, sbyte start, word iter, byte *palette) {
-    word i;
-    byte dim = start;
+	word i;
+	byte dim = start;
 
-    /* handle the case where we just update */
-    if(iter == 0) {
+	/* handle the case where we just update */
+	if(iter == 0) {
 	modexPalUpdate1(palette);
 	return;
-    }
+	}
 
-    while(iter > 0) {  /* FadeLoop */
+	while(iter > 0) {  /* FadeLoop */
 	for(i=0; i<PAL_SIZE; i++) { /* loadpal_loop */
-	    tmppal[i] = palette[i] - dim;
-	    if(tmppal[i] > 127) {
+		tmppal[i] = palette[i] - dim;
+		if(tmppal[i] > 127) {
 		tmppal[i] = 0;
-	    } else if(tmppal[i] > 63) {
+		} else if(tmppal[i] > 63) {
 		tmppal[i] = 63;
-	    }
+		}
 	}
 	modexPalUpdate1(tmppal);
 	iter--;
 	dim += fade;
-    }
+	}
 }
 
 
 /* save and load */
 void
 modexPalSave(byte *palette) {
-    int  i;
+	int  i;
 
-    outp(PAL_READ_REG, 0);      /* start at palette entry 0 */
-    for(i=0; i<PAL_SIZE; i++) {
+	outp(PAL_READ_REG, 0);	  /* start at palette entry 0 */
+	for(i=0; i<PAL_SIZE; i++) {
 	palette[i] = inp(PAL_DATA_REG); /* read the palette data */
-    }
+	}
 }
 
 
 byte *
 modexNewPal() {
-    byte *ptr;
-    ptr = malloc(PAL_SIZE);
+	byte *ptr;
+	ptr = malloc(PAL_SIZE);
 
-    /* handle errors */
-    if(!ptr) {
+	/* handle errors */
+	if(!ptr) {
 	printf("Could not allocate palette.\n");
 	exit(-1);
-    }
+	}
 
-    return ptr;
+	return ptr;
 }
 
 
 void
 modexLoadPalFile(byte *filename, byte **palette) {
-    FILE *file;
-    byte *ptr;
+	FILE *file;
+	byte *ptr;
 
-    /* free the palette if it exists */
-    if(*palette) {
+	/* free the palette if it exists */
+	if(*palette) {
 	free(*palette);
-    }
+	}
 
-    /* allocate the new palette */
-    *palette = modexNewPal();
+	/* allocate the new palette */
+	*palette = modexNewPal();
 
-    /* open the file */
-    file = fopen(filename, "rb");
-    if(!file) {
+	/* open the file */
+	file = fopen(filename, "rb");
+	if(!file) {
 	printf("Could not open palette file: %s\n", filename);
 	exit(-2);
-    }
+	}
 
-    /* read the file */
-    ptr = *palette;
-    while(!feof(file)) {
+	/* read the file */
+	ptr = *palette;
+	while(!feof(file)) {
 	*ptr++ = fgetc(file);
-    }
+	}
 
-    fclose(file);
+	fclose(file);
 }
 
 
 void
 modexSavePalFile(char *filename, byte *pal) {
-    unsigned int i;
-    FILE *file;
+	//unsigned int i;
+	FILE *file;
 
-    /* open the file for writing */
-    file = fopen(filename, "wb");
-    if(!file) {
+	/* open the file for writing */
+	file = fopen(filename, "wb");
+	if(!file) {
 	printf("Could not open %s for writing\n", filename);
 	exit(-2);
-    }
+	}
 
-    /* write the data to the file */
-    fwrite(pal, 1, PAL_SIZE, file);
-    fclose(file);
+	/* write the data to the file */
+	fwrite(pal, 1, PAL_SIZE, file);
+	fclose(file);
 }
 
 
 /* blanking */
 void
 modexPalBlack() {
-    fadePalette(-1, 64, 1, tmppal);
+	fadePalette(-1, 64, 1, tmppal);
 }
 
 
 void
 modexPalWhite() {
-    fadePalette(-1, -64, 1, tmppal);
+	fadePalette(-1, -64, 1, tmppal);
 }
 
 
@@ -677,9 +677,9 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 	{
 		q=(*i);
 		qq=(*i)/3;
-//	      printf("q: %02d\n", (q));
-//	      printf("qq: %02d\n", (qq));
-		//printf("      (*i)-q=%02d\n", (*i)-q);
+//		  printf("q: %02d\n", (q));
+//		  printf("qq: %02d\n", (qq));
+		//printf("	  (*i)-q=%02d\n", (*i)-q);
 		outp(PAL_WRITE_REG, qq);  /* start at the beginning of palette */
 	}
 	if((*i)<PAL_SIZE/2 && w==0)
@@ -696,7 +696,7 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 			else if(qp>0 && (*i)>=(qp) && (*i)<((qp)+3))
 			{
 				//printf("qp=%d\n", qp);
-				//printf("	      (*i)=%d a[%d]=%d\n", (*i), qp, a[qp]);
+				//printf("		  (*i)=%d a[%d]=%d\n", (*i), qp, a[qp]);
 				printf("		%d's color=%d\n", (*i), (a[qp])-(bmp->offset*3)+qp);
 				//outp(PAL_DATA_REG, p[((a[qp])-(bmp->offset*3)+qp)]);// fix this shit!
 				if((*i)+1==(qp)+3){ w++; /*(*i)++;*/ break; }
@@ -711,7 +711,7 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 			}
 		}
 		//if(qp>0) printf("qp=%d\n", qp);
-		//if(qp>0) printf("					     (*i)=%d\n", (*i)/3);
+		//if(qp>0) printf("						 (*i)=%d\n", (*i)/3);
 	}
 	//modexWaitBorder();	  /* waits one retrace -- less flicker */
 	vga_wait_for_vsync();
@@ -728,7 +728,7 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 			else if(qp>0 && (*i)>=(qp) && (*i)<((qp)+3))
 			{
 				//printf("qp=%d\n", qp);
-				//printf("	      (*i)=%d a[%d]=%d\n", (*i), qp, a[qp]);
+				//printf("		  (*i)=%d a[%d]=%d\n", (*i), qp, a[qp]);
 				printf("		%d's color=%d\n", (*i), (a[qp]-(bmp->offset*3)+qp));
 				//outp(PAL_DATA_REG, p[((a[qp])-(bmp->offset*3)+qp)]);// fix this shit!
 				if((*i)+1==(qp)+3){ w++; /*(*i)++;*/ break; }
@@ -740,7 +740,7 @@ modexPalUpdate(bitmap_t *bmp, word *i, word qp, word aqoffset)
 				printf("p[]=%d  qp=%d   p[]-qp=%d\n", ((*i)-(bmp->offset*3)), qp, ((*i)-(bmp->offset*3))+qp); }
 			}
 		}
-		//printf("					      (*i)=%d\n", (*i)/3);
+		//printf("						  (*i)=%d\n", (*i)/3);
 	}
 
 printf("\nqqqqqqqq\n\n");
@@ -760,7 +760,7 @@ printf("\nqqqqqqqq\n\n");
 aqpee:
 		while(aq<=aa)
 		{
-//		      printf("a[%02d]=(%d)\n", aq, a[aq]);
+//			  printf("a[%02d]=(%d)\n", aq, a[aq]);
 			if(a[aq]==-1) aq++;
 			else { aqoffset++; break; }
 		}
@@ -788,12 +788,12 @@ aqpee:
 			//printf("%02d", bmp->data[lq]);
 			//printf("\n%02d\n", bmp->offset);
 			printf("aq=%02d ", aq);
-			printf("a[aq]=%02d      ", a[aq]);
+			printf("a[aq]=%02d	  ", a[aq]);
 			printf("a[aq]+aqpp=%02d ", a[aq]+aqpp);
 			printf("a[aq]-aqpp=%02d\n", a[aq]-aqpp);
 			//bmp->data[lq]=((bmp->data[lq]+bmp->offset)-a[aq]);
 //++++		  bmp->data[lq]=a[aq]-aqpp;
-//		      printf("_%d ", bmp->data[lq]);
+//			  printf("_%d ", bmp->data[lq]);
 			//if(lq > 0 && lq%bmp->width==0) printf("\n");
 		}
 		else if(bmp->data[lq]+bmp->offset < ((*i)/3)-aqpp)
@@ -810,8 +810,8 @@ aqpee:
 		//if(lq > 0 && lq%bmp->width==0) printf("\n");
 	}
 
-//printf("	      aq=%02d\n", aq);
-//printf("	      aa=%02d\n", aa);
+//printf("		  aq=%02d\n", aq);
+//printf("		  aa=%02d\n", aa);
 
 	//update the palette~
 	modexPalUpdate(bmp, &pp, aq, aqoffset);
@@ -878,23 +878,23 @@ void modexchkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*
 		modexPalSave(pal);
 		//printf("q: %02d\n", (*q));
 		printf("chkcolor start~\n");
-		printf("1			       (*z): %d\n", (*z)/3);
-		printf("1			       (*i): %d\n", (*i)/3);
-//	      printf("1 offset of color in palette    (*q): %d\n", (*q)/3);
+		printf("1				   (*z): %d\n", (*z)/3);
+		printf("1				   (*i): %d\n", (*i)/3);
+//		  printf("1 offset of color in palette	(*q): %d\n", (*q)/3);
 		printf("wwwwwwwwwwwwwwww\n");
 		//check palette for dups
 		for(; (*z)<PAL_SIZE; (*z)+=3)
 		{
-			//printf("\n	    z: %d\n", (*z));
-			//printf("	      q: %d\n", (*q));
-			//printf("	      z+q: %d\n\n", ((*z)+(*q)));
+			//printf("\n		z: %d\n", (*z));
+			//printf("		  q: %d\n", (*q));
+			//printf("		  z+q: %d\n\n", ((*z)+(*q)));
 			//if((*z)%3==0)
 			//{
 //----			  if(pal[(*z)]==pal[(*z)+3] && pal[(*z)+1]==pal[(*z)+4] && pal[(*z)+2]==pal[(*z)+5])
 				if((*z)==(*i))
 				{
-//				      printf("\n%d    [%02d][%02d][%02d]\n", (*z), pal[(*z)], pal[(*z)+1], pal[(*z)+2]);
-//				      printf("%d      [%02d][%02d][%02d]\n\n", (*z)+3, pal[(*z)+3], pal[(*z)+4], pal[(*z)+5]);
+//					  printf("\n%d	[%02d][%02d][%02d]\n", (*z), pal[(*z)], pal[(*z)+1], pal[(*z)+2]);
+//					  printf("%d	  [%02d][%02d][%02d]\n\n", (*z)+3, pal[(*z)+3], pal[(*z)+4], pal[(*z)+5]);
 //0000				  (*z)-=3;
 					break;
 				}
@@ -903,23 +903,23 @@ void modexchkcolor(bitmap_t *bmp, word *q, word *a, word *aa, word *z, word *i/*
 					//printf("zz: %02d\n", zz/3);
 					if(zz%3==0)
 					{
-						if(pal[((*z)+(*q))]==pal[((*z)+(*q))+3] && pal[((*z)+(*q))+1]==pal[((*z)+(*q))+4] && pal[((*z)+(*q))+2]==pal[((*z)+(*q))+5])    //break if duplicate colors found in palette because it have reached the end of the current data of the palette
+						if(pal[((*z)+(*q))]==pal[((*z)+(*q))+3] && pal[((*z)+(*q))+1]==pal[((*z)+(*q))+4] && pal[((*z)+(*q))+2]==pal[((*z)+(*q))+5])	//break if duplicate colors found in palette because it have reached the end of the current data of the palette
 						{
-//						      (*z)-=3;
-//						      (*i)-=3;
-//						      printf("\nzq1:%d[%02d][%02d][%02d]\n", (zz+q), pal[(zz+q)], pal[(zz+q)+1], pal[(zz+q)+2]);
-//						      printf("zq2:%d[%02d][%02d][%02d]\n\n", (zz+q)+3, pal[(zz+q)+3], pal[(zz+q)+4], pal[(zz+q)+5]);
+//							  (*z)-=3;
+//							  (*i)-=3;
+//							  printf("\nzq1:%d[%02d][%02d][%02d]\n", (zz+q), pal[(zz+q)], pal[(zz+q)+1], pal[(zz+q)+2]);
+//							  printf("zq2:%d[%02d][%02d][%02d]\n\n", (zz+q)+3, pal[(zz+q)+3], pal[(zz+q)+4], pal[(zz+q)+5]);
 							break;
 						}
 						else if(pal[zz]==pal[((*z)+(*q))] && pal[zz+1]==pal[((*z)+(*q))+1] && pal[zz+2]==pal[((*z)+(*q))+2])
 						{
-//						      printf("\n\nwwwwwwwwwwwwwwww\n");
-//						      printf("	zq: %d  [%02d][%02d][%02d] value that is needing to be changed~\n", ((*z)+(*q))/3, pal[((*z)+(*q))], pal[((*z)+(*q))+1], pal[((*z)+(*q))+2]);
-//						      printf("	zz: %d  [%02d][%02d][%02d] value that the previous value is going to change to~\n", (zz)/3, pal[zz], pal[zz+1], pal[zz+2]);
-//						      //printf("      zv: %d  [%02d][%02d][%02d] wwww\n", (zz-z+q)/3, pal[(zz-z+q)], pal[(zz-z+q)+1], pal[(zz-z+q)+2]);
-//						      printf("	z : %d  [%02d][%02d][%02d] offset value~\n", (*z)/3, pal[(*z)], pal[(*z)+1], pal[(*z)+2]);
+//							  printf("\n\nwwwwwwwwwwwwwwww\n");
+//							  printf("	zq: %d  [%02d][%02d][%02d] value that is needing to be changed~\n", ((*z)+(*q))/3, pal[((*z)+(*q))], pal[((*z)+(*q))+1], pal[((*z)+(*q))+2]);
+//							  printf("	zz: %d  [%02d][%02d][%02d] value that the previous value is going to change to~\n", (zz)/3, pal[zz], pal[zz+1], pal[zz+2]);
+//							  //printf("	  zv: %d  [%02d][%02d][%02d] wwww\n", (zz-z+q)/3, pal[(zz-z+q)], pal[(zz-z+q)+1], pal[(zz-z+q)+2]);
+//							  printf("	z : %d  [%02d][%02d][%02d] offset value~\n", (*z)/3, pal[(*z)], pal[(*z)+1], pal[(*z)+2]);
 //++++						  (*i)--;
-//						      (*z)--;
+//							  (*z)--;
 							//expand dong here
 /*
 planned features that i plan to implement~
@@ -933,10 +933,10 @@ no... wait.... no wwww
 								a[(((*z)+(*q)))]=zz;
 							//}
 							(*aa)=(((*z)+(*q)));
-							printf("!!				      a[%02d]: %d\n", (((*z)+(*q))/3), zz/3);
-//						      printf("\n	      aa: %d\n\n", (*aa));
-//						      printf("	a[%02d]=(%02d) offset array i think the palette should be updated again~\n", ((*z)+(*q))/3, a[((*z)+(*q))/3]);
-//						      printf("wwwwwwwwwwwwwwww\n\n");
+							printf("!!					  a[%02d]: %d\n", (((*z)+(*q))/3), zz/3);
+//							  printf("\n		  aa: %d\n\n", (*aa));
+//							  printf("	a[%02d]=(%02d) offset array i think the palette should be updated again~\n", ((*z)+(*q))/3, a[((*z)+(*q))/3]);
+//							  printf("wwwwwwwwwwwwwwww\n\n");
 						}
 						/*else
 						{
@@ -951,9 +951,9 @@ no... wait.... no wwww
 				}
 		}
 		printf("wwwwwwwwwwwwwwww\n");
-		printf("2			       (*z): %d\n", (*z)/3);
-		printf("2			       (*i): %d\n", (*i)/3);
-//	      printf("2 offset of color in palette    (*q): %d\n", (*q)/3);
+		printf("2				   (*z): %d\n", (*z)/3);
+		printf("2				   (*i): %d\n", (*i)/3);
+//		  printf("2 offset of color in palette	(*q): %d\n", (*q)/3);
 		printf("chkcolor end~\n");
 		free(pal);
 }
@@ -988,11 +988,48 @@ byte modexgetPixel(page_t *page, int x, int y)
 
 }
 
+void modexDrawChar(page_t *page, int x/*for planar selection only*/, word t, word col, word bgcol, word addr)
+{
+	/* vertical drawing routine by joncampbell123.
+	 *
+	 * optimize for VGA mode X planar memory to minimize the number of times we do I/O write to map mask register.
+	 * so, we enumerate over columns (not rows!) to draw every 4th pixel. bit masks are used because of the font bitmap.
+	 *
+	 * NTS: addr defines what VGA memory address we use, "x" is redundant except to specify which of the 4 pixels we select in the map mask register. */
+	word rows = romFonts[t].charSize;
+	word drawaddr;
+	word colm, row;
+	byte fontbyte;
+	byte plane;
+	byte m1,m2;
+
+	plane = x & 3;
+	m1 = 0x80; // left half
+	m2 = 0x08; // right half
+	for (colm=0;colm < 4;colm++) {
+		drawaddr = addr;
+		modexSelectPlane(PLANE(plane));
+		for (row=0;row < rows;row++) {
+			fontbyte = romFontsData.l[row];
+			vga_state.vga_graphics_ram[drawaddr  ] = (fontbyte & m1) ? col : bgcol;
+			vga_state.vga_graphics_ram[drawaddr+1] = (fontbyte & m2) ? col : bgcol;
+			drawaddr += page->width >> 2;
+		}
+
+		m1 >>= 1;
+		m2 >>= 1;
+		if ((++plane) == 4) {
+			addr++;
+			plane = 0;
+		}
+	}
+}
+
 void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str)
 {
 	word s, o, w;
 	word x_draw = x;
-	word addr = (word) romFontsData.l;
+	//word addr = (word) romFontsData.l;
 	word addrq = (page->width/4) * y + (x / 4) + ((word)page->data);
 	word addrr = addrq;
 	byte c;
@@ -1068,14 +1105,14 @@ void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, c
 	}
 	//load the letter 'A'
 	__asm {
-	    PUSHF
-	    PUSH ES
-	    PUSH AX
-	    PUSH BX
-	    PUSH CX
-	    PUSH DX
-	    PUSH SI
-	    PUSH DI
+		PUSHF
+		PUSH ES
+		PUSH AX
+		PUSH BX
+		PUSH CX
+		PUSH DX
+		PUSH SI
+		PUSH DI
 
 		MOV DI, addr
 		MOV SI, o
@@ -1092,14 +1129,14 @@ void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, c
 		DEC CX
 		JNZ L1
 
-	    POP DI
-	    POP SI
-	    POP DX
-	    POP CX
-	    POP BX
-	    POP AX
-	    POP ES
-	    POPF
+		POP DI
+		POP SI
+		POP DX
+		POP CX
+		POP BX
+		POP AX
+		POP ES
+		POPF
 	}
 
 		for(i=0; i<w; i++)

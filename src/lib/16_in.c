@@ -42,6 +42,8 @@
 boolean dbg_testkeyin=0,dbg_testcontrolnoisy=0;
 #endif
 
+static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
+
 /*
 =============================================================================
 
@@ -748,7 +750,7 @@ IN_SetKeyHook(void (*hook)())
 void
 IN_ClearKeysDown()
 {
-	int	i;
+	//int	i;
 
 	inpu.LastScan = sc_None;
 	inpu.LastASCII = key_None;
@@ -818,7 +820,9 @@ void near
 IN_ReadControl(player_t *player)
 {
 			boolean		realdelta;
+#if DEMO0
 			byte		dbyte;
+#endif
 			word		buttons;
 			int			dx,dy;
 			Motion		mx,my;

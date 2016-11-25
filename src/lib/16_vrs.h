@@ -22,7 +22,7 @@
 #ifndef __16_VRS__
 #define __16_VRS__
 
-#include "src/lib/modex16.h"
+#include "src/lib/16_vl.h"
 #include "src/lib/typdefst.h"
 //#include <hw/cpu/cpu.h>
 //#include <hw/dos/dos.h>

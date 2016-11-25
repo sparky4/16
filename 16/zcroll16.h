@@ -26,7 +26,7 @@
 #include "src/lib/16_head.h"
 #include "src/lib/16_entity.h"
 //#include "src/lib/bakapee.h"
-#include "src/lib/modex16.h"
+#include "src/lib/16_vl.h"
 //#include "src/lib/16_in.h"
 #include "src/lib/bitmap.h"
 #include "src/lib/16_map.h" //map is loaded here www
@@ -73,7 +73,7 @@ typedef struct {
  * 1. Calculate, store and update a panning info, which includes, but not limited to:
  * 	combined layer information, actual map representation (reflecting real state of the game),
  * 	pixel shift for smooth tile scrolling.
- * 2. Provide ways to draw a visible part of map. For simplicity with smooth scrolling, 
+ * 2. Provide ways to draw a visible part of map. For simplicity with smooth scrolling,
  * 	additional row/column is always drawn at the each side of the map. This implies that 'fence'
  * 	should have a sprite too. Map is drawn left-to-right, top-to-bottom.
  */

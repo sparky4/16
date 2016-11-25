@@ -20,7 +20,7 @@
  *
  */
 
-#include "16_map.h"
+#include "src/lib/16_map.h"
 
 // Ideally, preprocess json during compilation and read serialized data
 
@@ -33,9 +33,9 @@ int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 }
 
 void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
-	int i, j, k, indent, inner_end;
+	int i, j, k, indent=0, inner_end;
 	bitmap_t bp;
-	char *s;
+	//char *s;
 	i = 0;
 	while(i<count) {
 		if(jsoneq(js, &(t[i]), "layers") == 0) {
@@ -84,7 +84,7 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 					map->tiles[k]->debug_text=false;
 					//Fix to load tileset specified.
 					//And move to vrs, probably
-					bp = bitmapLoadPcx("data/ed.pcx");
+					//bp = bitmapLoadPcx("data/ed.pcx");
 					map->tiles[k]->btdata = &bp;
 					k++;
 				}
@@ -151,6 +151,6 @@ int loadmap(char *mn, map_t *map) {
 	free(js);
 	free(tok);
 	fclose(fh);
-	
+
 	return 0;
 }

@@ -23,11 +23,12 @@
 #include <stdio.h>
 #include <dos.h>
 #include <string.h>
-#include "src/lib/modex16.h"
+#include "src/lib/16_vl.h"
 #include "src/lib/bitmap.h"
 //----#include "src/lib/planar.h"
 
 global_game_variables_t gvar;
+static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 
 void main() {
 	bitmap_t bmp;

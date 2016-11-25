@@ -223,7 +223,7 @@ void CAL_GetGrChunkLength (int chunk)
 
 boolean CA_FarRead(int handle, byte huge *dest, dword length, global_game_variables_t *gvar)
 {
-	boolean flag;
+	boolean flag=0;
 	//dword fat=0;
 	//word segm=0;
 	if(gvar->pm.emm.EMSVer<0x40)
@@ -239,45 +239,45 @@ boolean CA_FarRead(int handle, byte huge *dest, dword length, global_game_variab
 
 	//if(!fat&&!segm)
 	//{
-		__asm {
-			push	ds
-			mov	bx,[handle]
-			mov	cx,[WORD PTR length]
-			mov	dx,[WORD PTR dest]
-			mov	ds,[WORD PTR dest+2]
-			mov	ah,0x3f				// READ w/handle
-			int	21h
-			pop	ds
-			jnc	good
-			mov	errno,ax
-			mov	flag,0
-			jmp End
+	__asm {
+		push	ds
+		mov	bx,[handle]
+		mov	cx,[WORD PTR length]
+		mov	dx,[WORD PTR dest]
+		mov	ds,[WORD PTR dest+2]
+		mov	ah,0x3f				// READ w/handle
+		int	21h
+		pop	ds
+		jnc	good
+		mov	errno,ax
+		mov	flag,0
+		jmp End
 #ifdef __BORLANDC__
-		}
+	}
 #endif
 good:
 #ifdef __BORLANDC__
-		__asm {
+	__asm {
 #endif
-			cmp	ax,[WORD PTR length]
-			je	done
-//			errno = EINVFMT;			// user manager knows this is bad read
-			mov	flag,0
-			jmp End
+		cmp	ax,[WORD PTR length]
+		je	done
+//		errno = EINVFMT;			// user manager knows this is bad read
+		mov	flag,0
+		jmp End
 #ifdef __BORLANDC__
-		}
+	}
 #endif
 done:
 #ifdef __BORLANDC__
-		__asm {
+	__asm {
 #endif
-			mov	flag,1
+		mov	flag,1
 #ifdef __BORLANDC__
-		}
+	}
 #endif
 End:
 #ifdef __WATCOMC__
-		}
+	}
 #endif
 	return flag;
 }
@@ -295,7 +295,7 @@ End:
 
 boolean CA_FarWrite(int handle, byte huge *source, dword length, global_game_variables_t *gvar)
 {
-	boolean flag;
+	boolean flag=0;
 	//dword fat=0;
 	//word segm=0;
 	if(gvar->pm.emm.EMSVer<0x40)
@@ -311,45 +311,45 @@ boolean CA_FarWrite(int handle, byte huge *source, dword length, global_game_var
 
 	//if(!fat&&!segm)
 	//{
-		__asm {
-			push	ds
-			mov	bx,[handle]
-			mov	cx,[WORD PTR length]
-			mov	dx,[WORD PTR source]
-			mov	ds,[WORD PTR source+2]
-			mov	ah,0x40			// WRITE w/handle
-			int	21h
-			pop	ds
-			jnc	good
-			mov	errno,ax
-			mov flag,0
-			jmp End
+	__asm {
+		push	ds
+		mov	bx,[handle]
+		mov	cx,[WORD PTR length]
+		mov	dx,[WORD PTR source]
+		mov	ds,[WORD PTR source+2]
+		mov	ah,0x40			// WRITE w/handle
+		int	21h
+		pop	ds
+		jnc	good
+		mov	errno,ax
+		mov flag,0
+		jmp End
 #ifdef __BORLANDC__
-		}
+	}
 #endif
 good:
 #ifdef __BORLANDC__
-		__asm {
+	__asm {
 #endif
-			cmp	ax,[WORD PTR length]
-			je	done
-			//errno = ENOMEM;				// user manager knows this is bad write
-			mov	flag,0
-			jmp End
+		cmp	ax,[WORD PTR length]
+		je	done
+//		errno = ENOMEM;				// user manager knows this is bad write
+		mov	flag,0
+		jmp End
 #ifdef __BORLANDC__
-		}
+	}
 #endif
 done:
 #ifdef __BORLANDC__
-		__asm {
+	__asm {
 #endif
-			mov	flag,1
+		mov	flag,1
 #ifdef __BORLANDC__
-		}
+	}
 #endif
 End:
 #ifdef __WATCOMC__
-		}
+	}
 #endif
 	return flag;
 }
@@ -398,7 +398,7 @@ boolean CA_ReadFile(char *filename, memptr *ptr, global_game_variables_t *gvar)
 boolean CA_WriteFile (char *filename, void far *ptr, long length, global_game_variables_t *gvar)
 {
 	int handle;
-	sdword size;
+	//sdword size;
 	//long size;
 
 	handle = open(filename,O_CREAT | O_BINARY | O_WRONLY,
@@ -503,10 +503,10 @@ void CAL_HuffExpand (byte huge *source, byte huge *dest,
 {
 //  unsigned bit,byte,node,code;
   unsigned sourceseg,sourceoff,destseg,destoff,endoff;
-  huffnode *headptr;
+	huffnode *headptr;
 //  huffnode *nodeon;
 
-  headptr = hufftable+254;	// head node is allways node 254
+	headptr = hufftable+254;	// head node is allways node 254
 
   source++;	// normalize
   source--;
@@ -533,7 +533,7 @@ void CAL_HuffExpand (byte huge *source, byte huge *dest,
 //--------------------------
 
 	__asm {
-////		mov	bx,[headptr]
+		mov	bx,[word ptr headptr]
 
 		mov	si,[sourceoff]
 		mov	di,[destoff]
@@ -597,7 +597,7 @@ storebyteshort:
 #endif
 		mov	[es:di],dl
 		inc	di					// write a decopmpressed byte out
-////		mov	bx,[headptr]		// back to the head node for next bit
+		mov	bx,[word ptr headptr]		// back to the head node for next bit
 
 		cmp	di,ax				// done?
 		jne	expandshort
@@ -613,7 +613,7 @@ storebyteshort:
   length--;
 
 	__asm {
-////		mov	bx,[headptr]
+		mov	bx,[word ptr headptr]
 		mov	cl,1
 
 		mov	si,[sourceoff]
@@ -685,7 +685,7 @@ storebyte:
 #endif
 		mov	[es:di],dl
 		inc	di		// write a decopmpressed byte out
-////		mov	bx,[headptr]	// back to the head node for next bit
+		mov	bx,[word ptr headptr]	// back to the head node for next bit
 
 		cmp	di,0x10		// normalize es:di
 		jb	dinorm
@@ -1102,8 +1102,8 @@ dinorm:
 
 void CAL_SetupMapFile (global_game_variables_t *gvar)
 {
-	int handle;
-	long length;
+// 	int handle;
+// 	long length;
 
 //
 // load maphead.ext (offsets and tileinfo for map file)

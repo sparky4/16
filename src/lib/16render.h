@@ -23,7 +23,7 @@
 #ifndef __RENDER_H__
 #define __RENDER_H__
 
-#include "src/lib/modex16.h"
+#include "src/lib/16_vl.h"
 
 void modexDrawPBufRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, planar_buf_t *p, boolean sprite);
 void modexDrawPBuf(page_t *page, int x, int y, planar_buf_t *p, boolean sprite); /*temp*/
@@ -36,6 +36,5 @@ void modexDrawBmpPBuf(page_t *page, int x, int y, planar_buf_t *bmp); /*pbuf ver
 void modexDrawBmpPBufRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, planar_buf_t *bmp);
 void modexDrawSpritePBuf(page_t *page, int x, int y, planar_buf_t *bmp);
 void modexDrawSpritePBufRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, planar_buf_t *bmp);
-void modexDrawChar(page_t *page, int x/*for planar selection only*/, word t, word col, word bgcol, word addr);
 
 #endif

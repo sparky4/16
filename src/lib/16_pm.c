@@ -70,6 +70,26 @@ boolean dbg_debugpm=0;
 	PageListStruct	far *gvar->pm.PMPages,
 					_seg *gvar->pm.PMSegPages;*/
 
+static union REGS CPURegs;
+
+#define _AX CPURegs.x.ax
+#define _BX CPURegs.x.bx
+#define _CX CPURegs.x.cx
+#define _DX CPURegs.x.dx
+
+#define _SI CPURegs.x.si
+
+#define _AH CPURegs.h.ah
+#define _AL CPURegs.h.al
+#define _BH CPURegs.h.bh
+#define _BL CPURegs.h.bl
+#define _CH CPURegs.h.ch
+#define _CL CPURegs.h.cl
+#define _DH CPURegs.h.dh
+#define _DL CPURegs.h.dl
+
+#define geninterrupt(n) int86(n,&CPURegs,&CPURegs);
+
 static	char		*ParmStrings[] = {"nomain","noems","noxms",nil};
 
 /////////////////////////////////////////////////////////////////////////////
@@ -84,9 +104,9 @@ static	char		*ParmStrings[] = {"nomain","noems","noxms",nil};
 byte
 PML_MapEMS(word logical, byte physical, global_game_variables_t *gvar)
 {
-	byte	err, str[160];
+	byte	err=0, str[160];
 	unsigned	EMShandle;
-	int	i;
+	//int	i;
 
 	boolean	errorflag=false;
 	EMShandle=gvar->pm.emm.EMSHandle;
@@ -141,12 +161,12 @@ PML_StartupEMS(global_game_variables_t *gvar)
 {
 	int		i;
 	//long	size;
-	byte	err, str[64];
+	byte	err=0, str[64];
 
 	boolean errorflag=false;
 	static char	emmname[] = "EMMXXXX0";	//fix by andrius4669
 	unsigned int EMSVer = 0;
-	unsigned	totalEMSpages,freeEMSpages,EMSPageFrame,EMSHandle,EMSAvail;
+	unsigned	totalEMSpages,freeEMSpages,EMSPageFrame,EMSHandle=0,EMSAvail=0;
 	totalEMSpages = freeEMSpages = EMSPageFrame = 0;
 	gvar->pm.emm.EMSPresent = false;			// Assume that we'll fail
 	gvar->pm.emm.EMSAvail = 0;
@@ -299,7 +319,7 @@ void
 PML_ShutdownEMS(global_game_variables_t *gvar)
 {
 	word EMSHandle;
-	byte err,str[64];
+	byte err=0, str[64];
 
 	boolean errorflag=false;
 	EMSHandle=gvar->pm.emm.EMSHandle;
@@ -727,7 +747,7 @@ PM_CheckMainMem(global_game_variables_t *gvar)
 void
 PML_StartupMainMem(global_game_variables_t *gvar)
 {
-	int		i,n;
+	int		i;//,n;
 	memptr	*p;
 
 	gvar->pm.mm.MainPagesAvail = 0;
@@ -1285,15 +1305,15 @@ PM_SetPageLock(int pagenum,PMLockType lock, global_game_variables_t *gvar)
 void
 PM_Preload(boolean (*update)(word current,word total), global_game_variables_t *gvar)
 {
-	int				i,j,
+	int				i,//j,
 					page,oogypage;
 	word			current,total,
-					totalnonxms,totalxms,
+					//totalnonxms,totalxms,
 					mainfree,maintotal,
-					emsfree,emstotal,
+					//emstotal,emsfree,
 					xmsfree,xmstotal;
 	memptr			addr;
-	PageListStruct	far *p;
+	PageListStruct	__far *p;
 
 	mainfree = (gvar->pm.mm.MainPagesAvail - gvar->pm.MainPagesUsed) + (gvar->pm.emm.EMSPagesAvail - gvar->pm.EMSPagesUsed);
 	xmsfree = (gvar->pm.xmm.XMSPagesAvail - gvar->pm.XMSPagesUsed);

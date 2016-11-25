@@ -155,12 +155,14 @@
 #define KEY_MENU		(0x75)
 */
 
-static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
+//static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 extern	int			profilehandle,debughandle;	//make it into game global
 
 #define __DEBUG__
 //#define __DEBUG_PM__
 //#define __DEBUG_MM__
+
+//#define OLD16_VL
 
 #define	nil	((void *)0)
 #ifdef __BORLANDC__
@@ -169,7 +171,7 @@ extern	int			profilehandle,debughandle;	//make it into game global
 #endif
 #ifdef __WATCOMC__
 #define _FCORELEFT 0x90000UL+16UL
-static union REGS CPURegs;
+/*static union REGS CPURegs;
 
 #define _AX CPURegs.x.ax
 #define _BX CPURegs.x.bx
@@ -187,7 +189,7 @@ static union REGS CPURegs;
 #define _DH CPURegs.h.dh
 #define _DL CPURegs.h.dl
 
-#define geninterrupt(n) int86(n,&CPURegs,&CPURegs);
+#define geninterrupt(n) int86(n,&CPURegs,&CPURegs);*/
 #define peekb(segm,ofs) (*(byte far*)MK_FP((segm),(ofs)))
 #define peekw(segm,ofs) (*(word far*)MK_FP((segm),(ofs)))
 #define pokeb(segm,ofs,value) (peekb((segm),(ofs)) = (byte)(value))

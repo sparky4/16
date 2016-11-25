@@ -25,11 +25,31 @@
 #include <malloc.h>
 #include "src/lib/bitmap.h"
 
+static struct pcxHeader {
+	byte id;
+	byte version;
+	byte encoding;
+	byte bpp;
+	word xmin;
+	word ymin;
+	word xmax;
+	word ymax;
+	word hres;
+	word vres;
+	byte pal16[48];
+	byte res1;
+	word bpplane;
+	word palType;
+	word hScreenSize;
+	word vScreenSize;
+	byte padding[54];
+} head;
+
 static void loadPcxStage1(FILE *file, bitmap_t *result) {
-	long bufSize;
-	int index;
-	byte count, val;
-	long int pos;
+	//long bufSize;
+	//int index;
+	//byte count, val;
+	//long int pos;
 
 	/* read the header */
 	fread(&head, sizeof(char), sizeof(struct pcxHeader), file);
