@@ -157,12 +157,12 @@ DOSLIBLIBS += $(DOSLIB_8250)/dos86h/8250.lib
 TESTEXEC = &
 	tesuto.exe &
 	0.exe &
-	scroll.exe &
-	zcroll.exe &
 	exmmtest.exe &
+	vgmtest.exe &
 	vrstest.exe
 TESTEXEC2 = &
-	vgmtest.exe &
+	scroll.exe &
+	zcroll.exe &
 	inputest.exe &
 	maptest.exe &
 	fmemtest.exe &

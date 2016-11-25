@@ -48,7 +48,7 @@ UINT8 OPL2_ReadStatus(void)
 void
 main(int argc, char *argv[])
 {
-	global_game_variables_t gvar;
+	//++++global_game_variables_t gvar;
 	VGM_FILE pee[9];
 	player_t player[MaxPlayers];
 	char *bakapee;
@@ -64,7 +64,7 @@ main(int argc, char *argv[])
 	while(!IN_KeyDown(sc_Escape))
 	//while(!kbhit())
 	{
-		IN_ReadControl(0,&player);
+		IN_ReadControl(/*0,*/&player);
 		UpdateSoundEngine();
 	}
 	StopMusic();

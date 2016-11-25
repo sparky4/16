@@ -33,6 +33,7 @@
 #ifdef __WATCOMC__	//borland C BCEXMM.EXE
 #include "src/lib/16_dbg.h"
 #include "src/lib/16_sprit.h"
+#include "src/lib/16_enti.h"
 //#include "src/lib/bitmap.h"	//old format
 #endif
 #ifdef	__DEBUG__
@@ -43,8 +44,8 @@ extern boolean dbg_testkeyin,dbg_testcontrolnoisy;
 //if else for gfxtesting and direction
 //player[pn].d == 2 ||
 //player[pn].d != 2 ||
-#define DIRECTIONIFELSE	(player[pn].info.dir == 2)
-//#define NDIRECTIONIFELSE	(player[pn].info.dir != 2)
+#define DIRECTIONIFELSE	(player->info.dir == 2)//(player[pn].info.dir == 2)
+//#define NDIRECTIONIFELSE	(player->info.dir != 2)//(player[pn].info.dir != 2)
 
 #define	KeyInt	9	// The keyboard ISR number
 

@@ -178,7 +178,7 @@ void main(int argc, char *argv[])
 	//default player position on the viewable map
 	player[0].tx = mv[0].tx + mv[0].page->tilemidposscreenx;
 	player[0].ty = mv[0].ty + mv[0].page->tilemidposscreeny;
-	IN_initplayer(&player, 0);
+	IN_initplayer(&player);//, 0);
 	//IN_initplayer(&player, 1);
 
 #ifndef	SPRITE
@@ -221,7 +221,7 @@ void main(int argc, char *argv[])
 	//when player[0].tx or player[0].ty == 0 or player[0].tx == 20 or player[0].ty == 15 then stop because that is edge of map and you do not want to walk of the map
 
 	//player movement
-		IN_ReadControl(0,&player);
+		IN_ReadControl(/*0,*/&player);
 	if(!panswitch){
 		walk(mv, player, 0);
 	}else{

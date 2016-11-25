@@ -25,7 +25,7 @@ int main(int argc,char **argv) {
 
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
-	IN_initplayer(&player, 0);
+	IN_initplayer(&player);//, 0);
 
 	if (argc < 3) {
 		fprintf(stderr,"drawvrl <VRL file> <palette file>\n");
@@ -134,7 +134,7 @@ int main(int argc,char **argv) {
 
 		while(!IN_KeyDown(sc_Escape))
 		{
-			IN_ReadControl(0,&player);
+			IN_ReadControl(/*0,*/&player);
 			if(IN_KeyDown(2)) modexShowPage(&(gvar.video.page[0]));
 			if(IN_KeyDown(3)) modexShowPage(&(gvar.video.page[1]));
 			if(IN_KeyDown(68))	//f10

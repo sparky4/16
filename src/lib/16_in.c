@@ -686,7 +686,7 @@ IN_Startup()
 void
 IN_Default(boolean gotit,player_t *player,ControlType nt)
 {
-	int i;
+	//int i;
 	if
 	(
 		(!gotit)
