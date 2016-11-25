@@ -1,0 +1,10 @@
+Please, refer for the actual diff for the commit the file was introoduced.
+
+Basically, I was aiming to:
+1. Rewrite scroll16 to use only one player, instead of 1 of 4 possible.
+2. Group panning and movement functions togeather, instead of using different functions for each move.
+3. Make map struct store the initial map, and the current map to be stored in map_view struct. That is calculated based on several layers of original map and NPC movement. Current map is (potentially) of 1 layer only, and directly represents what is to be drawn (applied z-ordering! Yay!).
+4. Also, I have tried to clean zcroll.c a bit.
+5. Also also, tried to separate movement functions from player and to generalize it to a movable npc/entity.
+6. Instead of drawing map as a rectangle of tiles and a few strips to fill the black area of partially visible tiles, draw just a slightly bigger rectangle, with it's edges a bit out of the screen. That shouldn't be too resourse-consuming, I believe, but requires less explicit calls and reads. Probably.
+7. As stuff did not quite initialize properly, I have disabled keyboard interrupt vector override to be able to shut down program prematurely in case something goes wrong. So, in case you just want to replace these new files with the older and working ones, please remember to re-enable that, or you won't be able to controll the game without it.

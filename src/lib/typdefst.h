@@ -64,11 +64,12 @@ typedef struct {
 	byte *palette;
 } planar_buf_t;
 
+
+enum direction {STOP, UP, DOWN, LEFT, RIGHT};
 typedef struct {
+	int dx, dy; //backwards compait
 	word id;	/* the Identification number of the page~ For layering~ */
 	byte far* data;	/* the data for the page */
-	word dx;		/* col we are viewing on the virtual screen */
-	word dy;		/* row we are viewing on the virtual screen */
 	word sw;		/* screen width */
 	word sh;		/* screen heigth */
 	word tw;		/* screen width in tiles */
@@ -84,8 +85,9 @@ typedef struct {
 	word stridew;			/*width/4*/
 	word pagesize;			/* page size */
 	word pi;				/* incremention page by this much to preserve location */
+	word delta;			// How much should we shift the page for smooth scrolling
+	enum direction d;			// Direction we should shift the page
 } page_t;
-
 typedef struct
 {
 	//sprite ....

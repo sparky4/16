@@ -24,6 +24,7 @@
 #define __ZCROLL16_H_
 
 #include "src/lib/16_head.h"
+#include "src/lib/16_entity.h"
 //#include "src/lib/bakapee.h"
 #include "src/lib/modex16.h"
 //#include "src/lib/16_in.h"
@@ -46,6 +47,13 @@
 #define PBUFBFUN		modexDrawBmpRegion
 #define PLAYERBMPDATA	player->data
 
+
+#define MAPW	40
+#define MAPH	30
+
+extern boolean pageflipflop, pageploop;
+extern unsigned char shinku_fps_indicator_page;
+
 typedef struct {
 	map_t *map;
 	page_t *page;
@@ -55,36 +63,8 @@ typedef struct {
 	word dyThresh; //Threshold for physical tile switch
 	video_t *video;	//pointer to game variables of the video
 	pan_t *pan;		//pointer the the page panning debug system
+	int dx, dy, delta, d;
 } map_view_t;
-
-#define MAPW	40
-#define MAPH	30
-
-enum direction {STOP, UP, DOWN, LEFT, RIGHT};
-typedef struct {
-	word id;	/* the Identification number of the page~ For layering~ */
-	byte far* data;	/* the data for the page */
-	word sw;		/* screen width */
-	word sh;		/* screen heigth */
-	word tw;		/* screen width in tiles */
-	word th;		/* screen height in tiles */
-	word width;		/* virtual width of the page */
-	word height;	/* virtual height of the page */
-	word tilesw;		/* virtual screen width in tiles */
-	word tilesh;		/* virtual screen height in tiles */
-	sword tilemidposscreenx;	/* middle tile position */
-	sword tilemidposscreeny;	/* middle tile position */
-	sword tileplayerposscreenx;	/* player position on screen */
-	sword tileplayerposscreeny;	/* player position on screen */
-	word stridew;			/*width/4*/
-	word pagesize;			/* page size */
-	word pi;				/* incremention page by this much to preserve location */
-	word delta;			// How much should we shift the page for smooth scrolling
-	direction d;			// Direction we should shift the page
-} page_t;
-extern boolean pageflipflop, pageploop;
-extern unsigned char shinku_fps_indicator_page;
-
 /* Map is presumed to:
  * 1. Have all the required layers and tilesets within itself
  * 2. Have a 'fence' around accessible blocks to simplify boundary logic

@@ -39,10 +39,10 @@ typedef struct {
 	word tileWidth;
 	unsigned int rows;
 	unsigned int cols;
-#ifdef __DEBUG__
+	#ifdef __DEBUG__
 	boolean debug_text;	//show the value of the tile! wwww
 	byte *debug_data;
-#endif
+	#endif
 } tiles_t;
 
 //TODO: 16_mm and 16_ca must handle this
@@ -52,7 +52,7 @@ typedef struct {
 	//unsigned	planelength[3];
 	byte	* huge *data;	//TODO: 16_mm and 16_ca must handle this
 	tiles_t **tiles;		//TODO: 16_mm and 16_ca must handle this
-	int width, height;		//this has to be signed!
+	unsigned int width, height;		//this has to be positive
 	char		name[16];
 } map_t;
 

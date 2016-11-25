@@ -20,140 +20,129 @@
  *
  */
 
-#include "src/lib/scroll16.h"
+#include "src/lib/zcroll16.h"
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
 
-//word far *clock= (word far*) 0x046C; /* 18.2hz clock */
-//bitmap_t *p;
 global_game_variables_t gvar;
 static map_t map;
-player_t player[MaxPlayers];
-map_view_t mv[4];
-//word pn=0; //i forgot ww
+player_t *player;
+map_view_t *mv;
 float t;
 sword bakapee;
 pan_t pan;
 //debugswitches
 boolean panswitch=0,baka=0;
 //extern boolean pageflipflop=1;
-	unsigned int i;
-	const char *cpus;
-	//static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
+unsigned int i;
+const char *cpus;
+//static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 
-	//map_view_db_t pgid[4];
-	word pg;
+//map_view_db_t pgid[4];
+word pg;
 //#ifdef FADE
-	static word paloffset=0;
-	byte *dpal;
+static word paloffset=0;
+byte *dpal;
 //#endif
-	byte *gpal;
-	byte *ptr;
-	byte *mappalptr;
+byte *gpal;
+byte *ptr;
+memptr pal;
 
 void main(int argc, char *argv[])
 {
 	byte *mesg=malloc(sizeof(dword));
+	int i;
 
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
 
 	Startup16(&gvar);
 
-	pan.pn=1;
+	pan.pn=0;
+	player = malloc(sizeof(player_t));
+	player->ent = malloc(sizeof(entity_t));
+	player->ent->spri = malloc(sizeof(struct sprite));
+	player->ent->spri->spritesheet = malloc(sizeof(struct vrs_container));
 
-	/* create the map */
+	// create the map 
 	fprintf(stderr, "testing map load~	");
 	loadmap("data/test.map", &map);
 	chkmap(&map, 0);
 	printf("chkmap ok	");
 	fprintf(stderr, "yay map loaded~~\n");
 
-	/* draw the tiles */
-	ptr = map.data;
-	//mappalptr = map.tiles->btdata->palette;
+	// data 
+	read_vrs(&gvar, "data/spri/chikyuu.vrs", player->ent->spri->spritesheet);
 
-	/* data */
-	if(CA_LoadFile("data/spri/chikyuu.vrs", &(player[0].gr), &gvar)) baka=1; else baka=0;
+	//	input!	
+	IN_Default(0, player,ctrl_Joystick);
 
-	/* create the planar buffer */
-////++++	(player[0].data) = *planar_buf_from_bitmap(&p);
-	/*++++printf("load pee!!	");
-	pp = planar_buf_from_bitmap(&p);
-	printf("done!\n");*/
-
-	/*	input!	*/
-	IN_Default(0,&player,ctrl_Joystick);
-	//IN_Default(1,&player,ctrl_Joystick);
-
-	/* save the palette */
+	// save the palette 
 	dpal = modexNewPal();
 	modexPalSave(dpal);
 	modexFadeOff(4, dpal);
 
 	textInit();
 	VGAmodeX(bakapee, 1, &gvar);
-//	printf("%dx%d\n", gvar.video.page[0].sw, gvar.video.page[0].sh);
 	modexPalBlack();	//reset the palette~
 
-//	printf("Total used @ before palette initiation:		%zu\n", oldfreemem-GetFreeSize());
-//++++	player[0].data.offset=(paloffset/3);
-//++++	modexPalUpdate1(&player[0].data, &paloffset, 0, 0);
-		modexPalUpdate1(player[0].data->palette);
-//++++0000		modexPalUpdate1(map.tiles->btdata->palette);
-	//printf("	%d\n", sizeof(ptmp->data));
-	//printf("1:	%d\n", paloffset);
-//++++	map.tiles->data->offset=(paloffset/3);
-	//XTmodexPalUpdate(map.tiles->data, &paloffset, 0, 0);
-//	printf("\n====\n");
-//	printf("0	paloffset=	%d\n", paloffset/3);
-//	printf("====\n\n");
+	CA_LoadFile("data/spri/chikyuu.pal", &pal, &gvar);
+	modexPalUpdate1(pal);
 
 	gpal = modexNewPal();
 	modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);
 	modexPalBlack();	//so player will not see loadings~
-
-	/* setup camera and screen~ */
+	// setup camera and screen~
 	modexHiganbanaPageSetup(&gvar.video);
-	for(i=0;i<gvar.video.num_of_pages;i++)
-	{
-		mv[i].page = &gvar.video.page[i];
-		mv[i].map = &map;
-		mv[i].video = &gvar.video;
-		mv[i].pan	= &pan;
-	}
+	mv->page = &gvar.video.page[0];
+	mv->map = &map;
+	mv->video = &gvar.video;
+	mv->pan	= &pan;
+	player->ent->spri->x = player->ent->spri->y = 20;
 
-	/* set up paging */
+	// set up paging
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(mv, 0, 0);
-	//_fmemcpy(mv[1].page->data, mv[0].page->data, mv[0].page->pagesize);
+	//_fmemcpy(mv[1].page->data, mv->page->data, mv->page->pagesize);
 
 	//TODO: put player in starting position of spot
 	//default player position on the viewable map
-	player[0].tx = mv[0].tx + mv[0].page->tilemidposscreenx;
-	player[0].ty = mv[0].ty + mv[0].page->tilemidposscreeny;
-	IN_initplayer(&player, 0);
+	player->tx = mv->tx + mv->page->tilemidposscreenx;
+	player->ty = mv->ty + mv->page->tilemidposscreeny;
+	IN_initplayer(player);
 	//IN_initplayer(&player, 1);
 
 #ifndef	SPRITE
-	modexClearRegion(mv[0].page, player[0].x, player[0].y-TILEWH, 16, 32, 15);
-	//modexClearRegion(mv[1].page, player[0].x, player[0].y-TILEWH, 16, 32, 15);
+	modexClearRegion(mv->page, player->x, player->y-TILEWH, 16, 32, 15);
+	//modexClearRegion(mv[1].page, player->x, player->y-TILEWH, 16, 32, 15);
 #else
-	//PBUFSFUN(mv[1].page, player[0].x, player[0].y-TILEWH, 16, 64, 24, 32,	PLAYERBMPDATA);
-	PBUFSFUN(mv[0].page, player[0].x, player[0].y-TILEWH, 16, 64, 16, 32,	player[0].data);
+	//PBUFSFUN(mv[1].page, player->x, player->y-TILEWH, 16, 64, 24, 32,	PLAYERBMPDATA);
+//	PBUFSFUN(mv->page, player->x, player->y-TILEWH, 16, 64, 16, 32,	player->data);
+	i = set_anim_by_id(player->ent->spri, 11);
+	print_anim_ids(player->ent->spri);
+	if (i == -1)
+	{
+		modexFadeOff(4, gpal);
+	VGAmodeX(0, 1, &gvar);
+	Shutdown16(&gvar);
+	printf("Wrong");
+		modexFadeOn(4, dpal);
+return;
+	}
+return;
+	//animate_spri(&(player->ent->spri));
 #endif
 
-	if(!pageflipflop)	modexShowPage(mv[1].page);
-	else			modexShowPage(mv[0].page);//!(gvar.video.p)
-		shinku_fps_indicator_page = 0; // we're on page 1 now, shinku(). follow along please or it will not be visible.
+	modexShowPage(mv->page);//!(gvar.video.p)
+	shinku_fps_indicator_page = 0; // we're on page 1 now, shinku(). follow along please or it will not be visible.
 
-	/* buffer pages */
+	// buffer pages 
 // 	modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 47);
 // 	modexClearRegion(mv[3].page, 0, 0, mv[3].page->width, mv[3].page->height, 45);
 // 	{
 // 		unsigned int k,j,o;
-// 		/* fill screen with a distinctive pattern */
+// 		// fill screen with a distinctive pattern 
 // 		for (k=0;k < vga_state.vga_width;k++) {
 // 			o = k >> 2;
 // 			vga_write_sequencer(0x02/*map mask*/,1 << (k&3));
@@ -161,97 +150,77 @@ void main(int argc, char *argv[])
 // 					vga_state.vga_graphics_ram[o] = (k^j)&15; // VRL samples put all colors in first 15!
 // 		}
 // 	}
-	modexClearRegion(mv[3].page, 0, 128, 24, 36, 15);
 
-	modexFadeOn(4, gpal);
-	while(!IN_KeyDown(sc_Escape) && player[0].hp>0)
+//	modexFadeOn(4, gpal);*/
+	while(!IN_KeyDown(sc_Escape) && player->hp>0)
 	{
 		shinku(&gvar);
-	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
-	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
-	//when player[0].tx or player[0].ty == 0 or player[0].tx == 20 or player[0].ty == 15 then stop because that is edge of map and you do not want to walk of the map
+		//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
+		//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
+		//when player->tx or player->ty == 0 or player->tx == 20 or player->ty == 15 then stop because that is edge of map and you do not want to walk of the map
 
-	//player movement
-		IN_ReadControl(0,&player);
-	if(!panswitch){
-		walk(mv, player, 0);
-	}else{
-		panpagemanual(mv, player, 0);
-		//printf("	player[0].q: %d", player[0].q);	printf("	player[0].d: %d\n", player[0].d);
-	}
-
-	//the scripting stuff....
-	//if(((player[0].triggerx == TRIGGX && player[0].triggery == TRIGGY) && IN_KeyDown(0x1C))||(player[0].tx == 5 && player[0].ty == 5))
-	if(((mv[0].map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))] == 0) && IN_KeyDown(0x1C))||(player[0].tx == 5 && player[0].ty == 5))
-	{
-		short i;
-		for(i=800; i>=400; i--)
-		{
-			sound(i);
+		//player movement
+		IN_ReadControl(player);
+		if(!panswitch){
+			walk(player->ent, mv);
 		}
-		nosound();
-	}
-	if(player[0].q == (TILEWH/(player[0].speed))+1 && player[0].info.dir != 2 && (player[0].triggerx == 5 && player[0].triggery == 5)){ player[0].hp--; }
-	//debugging binds!
-	if(IN_KeyDown(2)){ modexShowPage(mv[0].page); pan.pn=0; }
-	if(IN_KeyDown(3)){ modexShowPage(mv[1].page); pan.pn=1; }
-	if(IN_KeyDown(4)){ modexShowPage(mv[2].page); pan.pn=2; }
-	if(IN_KeyDown(4+1)){ modexShowPage(mv[3].page); pan.pn=3; }
-	if(IN_KeyDown(25)){ modexpdump(mv[0].page); modexpdump(mv[1].page);
-		 IN_UserInput(1,1);
-	}	//p
-	if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv[0].page); modexpdump(mv[1].page);  IN_UserInput(1,1); }
-	if(IN_KeyDown(22)){
-	paloffset=0; modexPalBlack(); modexPalUpdate(player[0].data, &paloffset, 0, 0);
-	printf("2paloffset	=	%d\n", paloffset/3);
-	 modexpdump(mv[0].page); modexpdump(mv[1].page);
-		IN_UserInput(1,1);
-	}
 
-	//pan switch
-	if(IN_KeyDown(88)){panswitch=!panswitch; IN_UserInput(1,1);}	//f12
-	if(IN_KeyDown(87))	//f11
-	{
-		pageflipflop=!pageflipflop;
-		IN_UserInput(1,1);
-// 		VGAmodeX(0, 0, &gvar);
-// 		IN_Shutdown();
-// 		__asm
-// 		{
-// 			mov ah,31h
-// 			int 21h
-// 		}
-	}
-	if(IN_KeyDown(68))	//f10
-	{
-		gvar.kurokku.fpscap=!gvar.kurokku.fpscap;
-		IN_UserInput(1,1);
-	}
-	if(IN_KeyDown(67))	//f9
-	{
-		modexClearRegion(mv[1].page, 0, 0, mv[1].page->width, mv[1].page->height, 2);
-		modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 3);
-		modexClearRegion(mv[3].page, 0, 0, mv[3].page->width, mv[3].page->height, 4);
-		modexClearRegion(mv[3].page, 0, 0, 20, 36, 15);
-		//IN_UserInput(1,1);
-	}
-	if(IN_KeyDown(66))	//f8
-	{
-//		modexDrawSprite(mv[0].page, 16, 16, p);
-		modexDrawSprite(mv[0].page, 32+48, 16, (player[0].data));
-	}
-	//TODO fmemtest into page
-	/*if(IN_KeyDown(4+1))	//4
-	{
-		pg=1;
-		SELECT_ALL_PLANES();
-		_fmemset(((mv[pg].page->data+4)+(16*(mv[pg].page->width/4))), 15, 4);
-	}*/
+		//the scripting stuff....
+/*		if(((mv->map->data[(player->triggerx-1)+(map.width*(player->triggery-1))] == 0) && IN_KeyDown(0x1C))||(player->tx == 5 && player->ty == 5))
+		{
+			short i;
+			for(i=800; i>=400; i--)
+			{
+				sound(i);
+			}
+			nosound();
+		}
+		if(player->q == (TILEWH/(player->speed))+1 && player->info.dir != 2 && (player->triggerx == 5 && player->triggery == 5)){ player->hp--; }
+*/		//debugging binds!
+		if(IN_KeyDown(2)){ modexShowPage(mv->page); pan.pn=0; }
+		if(IN_KeyDown(25)){ modexpdump(mv->page);
+			 IN_UserInput(1,1);
+		}	//p
+		if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv->page); IN_UserInput(1,1); }
+		if(IN_KeyDown(22)){
+			printf("2paloffset	=	%d\n", paloffset/3);
+			IN_UserInput(1,1);
+		}
 
-	//9
-	if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate1(dpal); IN_UserInput(1,1); }
-	//if(IN_KeyDown(11)){ modexPalOverscan(15); }
-	if((player[0].q==1) && !(player[0].x%TILEWH==0 && player[0].y%TILEWH==0)) break;	//incase things go out of sync!
+		//pan switch
+		if(IN_KeyDown(88)){panswitch=!panswitch; IN_UserInput(1,1);}	//f12
+		if(IN_KeyDown(87))	//f11
+		{
+			pageflipflop=!pageflipflop;
+			IN_UserInput(1,1);
+		}
+		if(IN_KeyDown(68))	//f10
+		{
+			gvar.kurokku.fpscap=!gvar.kurokku.fpscap;
+			IN_UserInput(1,1);
+		}
+		if(IN_KeyDown(67))	//f9
+		{
+			modexClearRegion(mv->page, 0, 0, mv->page->width, mv->page->height, 2);
+		}
+		if(IN_KeyDown(66))	//f8
+		{
+	//		modexDrawSprite(mv->page, 16, 16, p);
+			modexDrawSprite(mv->page, 32+48, 16, (player->data));
+		}
+		//TODO fmemtest into page
+		/*if(IN_KeyDown(4+1))	//4
+		{
+			pg=1;
+			SELECT_ALL_PLANES();
+			_fmemset(((mv[pg].page->data+4)+(16*(mv[pg].page->width/4))), 15, 4);
+		}*/
+
+		//9
+		if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate1(dpal); IN_UserInput(1,1); }
+		//if(IN_KeyDown(11)){ modexPalOverscan(15); }
+		if((player->q==1) && !(player->x%TILEWH==0 && player->y%TILEWH==0)) break;	//incase things go out of sync!
+		player->hp = 0;
 	}
 
 	/* fade back to text mode */
@@ -263,18 +232,18 @@ void main(int argc, char *argv[])
 	Shutdown16(&gvar);
 	printf("\nProject 16 scroll.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
-	printf("tx: %d	", mv[0].tx);
-	printf("ty: %d\n", mv[0].ty);
+	printf("tx: %d	", mv->tx);
+	printf("ty: %d\n", mv->ty);
 	printf("\n");
 	printf("player vars:\n");
-	printf("	x: %d", player[0].x); printf("	y: %d\n", player[0].y);
-	//if(player[0].hp==0) printf("%d wwww\n", player[0].y+8);
-	//else printf("\nplayer[0].y: %d\n", player[0].y);
-	printf("	tx: %d", player[0].tx); printf("	ty: %d\n", player[0].ty);
-	printf("	triggx: %d", player[0].triggerx); printf("	triggy: %d\n", player[0].triggery);
-	printf("	hp: %d", (player[0].hp));	printf("	q: %d", player[0].q);	printf("	player.info.dir: %d", player[0].info.dir);	printf("	player.d: %d ", player[0].d);
-		printf("	pdir=%d\n", player[0].pdir);
-	printf("	tile data value at player trigger position: %d\n\n", mv[0].map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))]);
+	printf("	x: %d", player->x); printf("	y: %d\n", player->y);
+	//if(player->hp==0) printf("%d wwww\n", player->y+8);
+	//else printf("\nplayer->y: %d\n", player->y);
+	printf("	tx: %d", player->tx); printf("	ty: %d\n", player->ty);
+	printf("	triggx: %d", player->triggerx); printf("	triggy: %d\n", player->triggery);
+	printf("	hp: %d", (player->hp));	printf("	q: %d", player->q);	printf("	player.info.dir: %d", player->info.dir);	printf("	player.d: %d ", player->d);
+		printf("	pdir=%d\n", player->pdir);
+	printf("	tile data value at player trigger position: %d\n\n", mv->map->data[(player->triggerx-1)+(map.width*(player->triggery-1))]);
 	printf("Virtual Screen: %dx", gvar.video.page[0].width);	printf("%d	", gvar.video.page[0].height);
 	printf("Screen: %dx", gvar.video.page[0].sw);	printf("%d\n", gvar.video.page[0].sh);
 	printf("virtual tile resolution: %dx", gvar.video.page[0].tilesw);	printf("%d	", gvar.video.page[0].tilesh);
@@ -287,7 +256,7 @@ void main(int argc, char *argv[])
 	//0000printf("\ngvar.video.tickclk=%f\n", gvar.video.tickclk);
 	//0000printf("gvar.video.clk=%f", gvar.video.clk);
 	printf("\n");
-	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[0].map->width, mv[0].map->height, mv[0].map->data[0]);
+	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv->map->width, mv->map->height, mv->map->data[0]);
 
 	printf("\n");
 	switch(detectcpu())

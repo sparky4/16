@@ -66,11 +66,11 @@ void print_anim_ids(struct sprite *spri)
 					 vrs->offset_table[VRS_HEADER_OFFSET_ANIMATION_ID_LIST]);
 
 	if(!anim_ids[new_anim_index])
-		exit(3);
+		return;
 	// Loop through animation id untill match or end of list
 	while(iter_id = anim_ids[new_anim_index])
 	{
-		// Return on successful match
+		printf("s%d ", iter_id);
 		new_anim_index++;
 	}
 }
