@@ -25,6 +25,8 @@
 #include "src/lib/wcpu/wcpu.h"
 #include "src/lib/16render.h"
 
+//TODO: known issues the array dependent mv stuff and player arrays
+
 global_game_variables_t gvar;
 static map_t map;
 player_t *player;
@@ -41,10 +43,10 @@ const char *cpus;
 
 //map_view_db_t pgid[4];
 word pg;
-//#ifdef FADE
+#ifdef FADE
 static word paloffset=0;
 byte *dpal;
-//#endif
+#endif
 byte *gpal;
 byte *ptr;
 memptr pal;
@@ -58,6 +60,7 @@ void main(int argc, char *argv[])
 
 	pan.pn=0;
 	// OK, this one takes hellova time and needs to be done in farmalloc or MM_...
+	//USE MM AND CA AND PM WWWWWWWW
 	player = malloc(sizeof(player_t));
 	player->ent = malloc(sizeof(entity_t));
 	player->ent->spri = malloc(sizeof(struct sprite));
@@ -70,29 +73,34 @@ void main(int argc, char *argv[])
 	printf("chkmap ok	");
 	fprintf(stderr, "yay map loaded~~\n");
 
-//goto pee;
 	// data
-	read_vrs(&gvar, "data/spri/chikyuu.vrs", player->ent->spri->spritesheet);
+	printf("loading sprite\n");
+	read_vrs(&gvar, "data/spri/chikyuu.vrs", player->ent->spri->spritesheet); printf("sprite loaded\n");
 
 	//	input!
-	IN_Default(0, player,ctrl_Joystick);
+	IN_Default(0, player,ctrl_Joystick); printf("IN_defaulted\n");
 
 	// save the palette
+#ifdef FADE
 	dpal = modexNewPal();
 	modexPalSave(dpal);
 	modexFadeOff(4, dpal);
-
+#endif
 	textInit();
 	VGAmodeX(bakapee, 1, &gvar);
+	#ifdef MODEXZ
+#ifdef FADE
 	modexPalBlack();	//reset the palette~
-
+		printf("VGA\n");
 	CA_LoadFile("data/spri/chikyuu.pal", &pal, &gvar);
 	modexPalUpdate1(pal);
-
+		printf("pallette\n");
 	gpal = modexNewPal();
 	modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);
 	modexPalBlack();	//so player will not see loadings~
+#endif
+
 	// setup camera and screen~
 	modexHiganbanaPageSetup(&gvar.video);
 	mv->page = &gvar.video.page[0];
@@ -100,57 +108,43 @@ void main(int argc, char *argv[])
 	mv->video = &gvar.video;
 	mv->pan	= &pan;
 	player->ent->spri->x = player->ent->spri->y = 20;
+	printf("pages ok\n");
 
 	// set up paging
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(mv, 0, 0);
-	//_fmemcpy(mv[1].page->data, mv->page->data, mv->page->pagesize);
+#endif
 
 	//TODO: put player in starting position of spot
 	//default player position on the viewable map
 	player->tx = mv->tx + mv->page->tilemidposscreenx;
 	player->ty = mv->ty + mv->page->tilemidposscreeny;
-	IN_initplayer(player);
-	//IN_initplayer(&player, 1);
+	IN_initplayer(player);	printf("player inited\n");
 
-// #ifndef	SPRITE
-// 	modexClearRegion(mv->page, player->x, player->y-TILEWH, 16, 32, 15);
-// 	//modexClearRegion(mv[1].page, player->x, player->y-TILEWH, 16, 32, 15);
-// #else
-// 	//PBUFSFUN(mv[1].page, player->x, player->y-TILEWH, 16, 64, 24, 32,	PLAYERBMPDATA);
-// //	PBUFSFUN(mv->page, player->x, player->y-TILEWH, 16, 64, 16, 32,	player->data);
 	i = set_anim_by_id(player->ent->spri, 11);
 	print_anim_ids(player->ent->spri);
 	if (i == -1)
 	{
+#ifdef FADE
 		modexFadeOff(4, gpal);
+#endif
 	VGAmodeX(0, 1, &gvar);
 	Shutdown16(&gvar);
 	printf("Wrong");
+#ifdef FADE
 		modexFadeOn(4, dpal);
+#endif
 	exit(-4);
 	}
 	//animate_spri(&(player->ent->spri));
-// #endif
+	printf("spri ok\n");
 
 	modexShowPage(mv->page);//!(gvar.video.p)
 	shinku_fps_indicator_page = 0; // we're on page 1 now, shinku(). follow along please or it will not be visible.
-
-	// buffer pages
-// 	modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 47);
-// 	modexClearRegion(mv[3].page, 0, 0, mv[3].page->width, mv[3].page->height, 45);
-// 	{
-// 		unsigned int k,j,o;
-// 		// fill screen with a distinctive pattern
-// 		for (k=0;k < vga_state.vga_width;k++) {
-// 			o = k >> 2;
-// 			vga_write_sequencer(0x02/*map mask*/,1 << (k&3));
-// 				for (j=0;j < vga_state.vga_height;j++,o += vga_state.vga_stride)
-// 					vga_state.vga_graphics_ram[o] = (k^j)&15; // VRL samples put all colors in first 15!
-// 		}
-// 	}
-
-//	modexFadeOn(4, gpal);*/
+#ifdef FADE
+	modexFadeOn(4, gpal);
+#endif
+	printf("LOOP\n");
 	while(!IN_KeyDown(sc_Escape) && player->hp>0)
 	{
 		shinku(&gvar);
@@ -180,11 +174,13 @@ void main(int argc, char *argv[])
 		if(IN_KeyDown(25)){ modexpdump(mv->page);
 			 IN_UserInput(1,1);
 		}	//p
+#ifdef FADE
 		if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv->page); IN_UserInput(1,1); }
 		if(IN_KeyDown(22)){
 			printf("2paloffset	=	%d\n", paloffset/3);
 			IN_UserInput(1,1);
 		}
+#endif
 
 		//pan switch
 		if(IN_KeyDown(88)){panswitch=!panswitch; IN_UserInput(1,1);}	//f12
@@ -216,20 +212,24 @@ void main(int argc, char *argv[])
 		}*/
 
 		//9
+#ifdef FADE
 		if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate1(dpal); IN_UserInput(1,1); }
 		//if(IN_KeyDown(11)){ modexPalOverscan(15); }
+#endif
 		if((player->q==1) && !(player->x%TILEWH==0 && player->y%TILEWH==0)) break;	//incase things go out of sync!
 		player->hp = 0;
 	}
-//pee:
+
 	/* fade back to text mode */
 	/* but 1st lets save the game palette~ */
+#ifdef FADE
 	modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);
 	modexFadeOff(4, gpal);
+#endif
 	VGAmodeX(0, 1, &gvar);
 	Shutdown16(&gvar);
-	printf("\nProject 16 scroll.exe. This is just a test file!\n");
+	printf("\nProject 16 zcroll.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	printf("tx: %d	", mv->tx);
 	printf("ty: %d\n", mv->ty);
@@ -266,5 +266,7 @@ void main(int argc, char *argv[])
 		default: cpus = "internal error"; break;
 	}
 	printf("detected CPU type: %s\n", cpus);
+#ifdef FADE
 	modexFadeOn(4, dpal);
+#endif
 }
