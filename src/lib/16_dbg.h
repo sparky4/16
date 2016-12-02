@@ -2,6 +2,10 @@
 #ifndef _SRC_LIB_16_DBG
 #define _SRC_LIB_16_DBG
 
+#define __DEBUG__
+//#define __DEBUG_PM__
+//#define __DEBUG_MM__
+
 # ifdef DEBUGSERIAL
 #  include <hw/8250/8250.h>
 

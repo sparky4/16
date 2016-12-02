@@ -113,12 +113,12 @@ void main(int argc, char *argv[])
 	IN_initplayer(player);
 	//IN_initplayer(&player, 1);
 
-#ifndef	SPRITE
-	modexClearRegion(mv->page, player->x, player->y-TILEWH, 16, 32, 15);
-	//modexClearRegion(mv[1].page, player->x, player->y-TILEWH, 16, 32, 15);
-#else
-	//PBUFSFUN(mv[1].page, player->x, player->y-TILEWH, 16, 64, 24, 32,	PLAYERBMPDATA);
-//	PBUFSFUN(mv->page, player->x, player->y-TILEWH, 16, 64, 16, 32,	player->data);
+// #ifndef	SPRITE
+// 	modexClearRegion(mv->page, player->x, player->y-TILEWH, 16, 32, 15);
+// 	//modexClearRegion(mv[1].page, player->x, player->y-TILEWH, 16, 32, 15);
+// #else
+// 	//PBUFSFUN(mv[1].page, player->x, player->y-TILEWH, 16, 64, 24, 32,	PLAYERBMPDATA);
+// //	PBUFSFUN(mv->page, player->x, player->y-TILEWH, 16, 64, 16, 32,	player->data);
 	i = set_anim_by_id(player->ent->spri, 11);
 	print_anim_ids(player->ent->spri);
 	if (i == -1)
@@ -128,11 +128,10 @@ void main(int argc, char *argv[])
 	Shutdown16(&gvar);
 	printf("Wrong");
 		modexFadeOn(4, dpal);
-return;
+	exit(-4);
 	}
-return;
 	//animate_spri(&(player->ent->spri));
-#endif
+// #endif
 
 	modexShowPage(mv->page);//!(gvar.video.p)
 	shinku_fps_indicator_page = 0; // we're on page 1 now, shinku(). follow along please or it will not be visible.
