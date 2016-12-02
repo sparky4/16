@@ -83,3 +83,4 @@ pointers from 2nd screen follows the 1st
 size and dimentions and stuff are the same but addresses are different
 data is different 
 
+https://www.quora.com/How-such-smooth-scrolling-was-achieved-in-games-like-Super-Mario-and-Commander-Keen

@@ -394,3 +394,24 @@ vrstest.exe : No more files
 WARNING: Cannot find 1 file
 7z a -v64k /var/www/vrstest.exe.zip vrstest.exe
 rm -f *.err
+[master 5b5b1d3] wwww 16_entity.h -
+ 5 files changed, 397 insertions(+), 1 deletion(-)
+ create mode 100755 16_enti.h
+ mode change 100644 => 100755 WHAT_WAS_CHANGED
+ rename src/lib/{16_entity.h => 16_enti.h} (100%)
+ mode change 100644 => 100755
+ mode change 100644 => 100755 src/lib/tst.c
+wcl -DTARGET_MSDOS=16 -DMSDOS=1 -DDEBUGSERIAL -q -bt=dos -wx -mh -0 -fpi87 -fo=.obj -d1 -wo -i"src/lib/doslib" -obmilr -oe=24 -out -oh -ei -onac -ol+ -ok -sg -st -of+ -zu -zdf -zff -zgf -zq -k32768 -zk0 -zc -zp8 -zm  -c src/16.c
+Error: Compiler returned a bad status compiling 'src/16.c'
+                       Ultimate Packer for eXecutables
+                          Copyright (C) 1996 - 2013
+UPX 3.91        Markus Oberhumer, Laszlo Molnar & John Reiser   Sep 30th 2013
+
+        File size         Ratio      Format      Name
+   --------------------   ------   -----------   -----------
+
+Packed 0 files.
+cat *.err
+src/lib/16_in.h(237): Error! E1022: Missing or misspelled data type near 'entity_t'
+src/16.c(81): Error! E1151: Parameter count does not agree with previous definition
+src/16.c(81): Note! I2002: 'IN_ReadControl' defined in: src/lib/16_in.h(291)

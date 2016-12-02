@@ -63,20 +63,21 @@ void main(int argc, char *argv[])
 	player->ent->spri = malloc(sizeof(struct sprite));
 	player->ent->spri->spritesheet = malloc(sizeof(struct vrs_container));
 
-	// create the map 
+	// create the map
 	fprintf(stderr, "testing map load~	");
 	loadmap("data/test.map", &map);
 	chkmap(&map, 0);
 	printf("chkmap ok	");
 	fprintf(stderr, "yay map loaded~~\n");
 
-	// data 
+//goto pee;
+	// data
 	read_vrs(&gvar, "data/spri/chikyuu.vrs", player->ent->spri->spritesheet);
 
-	//	input!	
+	//	input!
 	IN_Default(0, player,ctrl_Joystick);
 
-	// save the palette 
+	// save the palette
 	dpal = modexNewPal();
 	modexPalSave(dpal);
 	modexFadeOff(4, dpal);
@@ -136,12 +137,12 @@ return;
 	modexShowPage(mv->page);//!(gvar.video.p)
 	shinku_fps_indicator_page = 0; // we're on page 1 now, shinku(). follow along please or it will not be visible.
 
-	// buffer pages 
+	// buffer pages
 // 	modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 47);
 // 	modexClearRegion(mv[3].page, 0, 0, mv[3].page->width, mv[3].page->height, 45);
 // 	{
 // 		unsigned int k,j,o;
-// 		// fill screen with a distinctive pattern 
+// 		// fill screen with a distinctive pattern
 // 		for (k=0;k < vga_state.vga_width;k++) {
 // 			o = k >> 2;
 // 			vga_write_sequencer(0x02/*map mask*/,1 << (k&3));
@@ -221,7 +222,7 @@ return;
 		if((player->q==1) && !(player->x%TILEWH==0 && player->y%TILEWH==0)) break;	//incase things go out of sync!
 		player->hp = 0;
 	}
-
+//pee:
 	/* fade back to text mode */
 	/* but 1st lets save the game palette~ */
 	modexPalSave(gpal);
