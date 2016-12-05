@@ -342,7 +342,7 @@ typedef struct
 } global_game_variables_t;
 
 extern char global_temp_status_text[512];
-
+#ifdef __WATCOMC__
 #define EINVFMT EMFILE
-
+#endif
 #endif /* _TYPEDEFSTRUCT_H_ */

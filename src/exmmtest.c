@@ -87,7 +87,10 @@ main(int argc, char *argv[])
 	//file name //
 
 	gvar.mm.mmstarted=0;
+
+#ifdef __DEBUG_PM__
 	dbg_debugpm=1;	//debug pm
+#endif
 
 	//PRINTBB
 	if(argv[1]){ bakapee1 = argv[1];
@@ -101,13 +104,17 @@ main(int argc, char *argv[])
 	MM_Startup(&gvar);
 	//printf("ok\n");
 //#ifdef __WATCOMC__
+#ifdef __DEBUG_PM__
 	if(dbg_debugpm>0)
 	{
+#endif
 		PM_Startup(&gvar);
 		//printf("pmstarted ok\n");
 		//PM_CheckMainMem(&gvar);
 		PM_UnlockMainMem(&gvar);
+#ifdef __DEBUG_PM__
 	}
+#endif
 //#endif
 	CA_Startup(&gvar);
 //	printf("		done!\n");
@@ -157,7 +164,9 @@ for(w=0;w<2;w++)
 	//printf("bakapee2=%s\n", bakapee2);
 	MM_FreePtr(&bigbuffer, &gvar);
 //#ifdef __WATCOMC__
+#ifdef __DEBUG_PM__
 	if(dbg_debugpm>0)
+#endif
 		PM_Shutdown(&gvar);
 //#endif
 	CA_Shutdown(&gvar);

@@ -32,11 +32,10 @@
 #include "src/lib/16_hc.h"
 #include "src/lib/16_mm.h"
 #include "src/lib/16_ca.h"
-#include <dos.h>
-
-#ifdef __DEBUG__
-extern boolean dbg_debugpm;
+#ifdef __WATCOMC__
+#include "src/lib/16_dbg.h"
 #endif
+#include <dos.h>
 
 /*//	NOTE! PMPageSize must be an even divisor of EMSPageSize, and >= 1024
 #define	EMSPageSize		16384

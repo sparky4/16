@@ -29,8 +29,6 @@
 #include "src/lib/16_ca.h"
 #include "src/lib/16_in.h"
 
-extern boolean dbg_debugpm;
-
 void DebugMemory_(global_game_variables_t *gvar, boolean q);
 void Shutdown16(global_game_variables_t *gvar);
 void Startup16(global_game_variables_t *gvar);

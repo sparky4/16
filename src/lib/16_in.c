@@ -38,10 +38,6 @@
 
 #include "src/lib/16_in.h"
 
-#ifdef __DEBUG_InputMgr__
-boolean dbg_testkeyin=0,dbg_testcontrolnoisy=0;
-#endif
-
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 
 /*

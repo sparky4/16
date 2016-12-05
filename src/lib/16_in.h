@@ -36,10 +36,6 @@
 #include "src/lib/16_enti.h"
 //#include "src/lib/bitmap.h"	//old format
 #endif
-#ifdef	__DEBUG__
-#define	__DEBUG_InputMgr__
-extern boolean dbg_testkeyin,dbg_testcontrolnoisy;
-#endif
 
 //if else for gfxtesting and direction
 //player[pn].d == 2 ||

@@ -29,10 +29,6 @@
 #include "src/lib/16_pm.h"
 #pragma hdrstop
 
-#ifdef __DEBUG__
-boolean dbg_debugpm=0;
-#endif
-
 //	Main Mem specific variables
 	//boolean			MainPresent;
 /*	memptr			MainMemPages[PMMaxMainMem];

@@ -52,8 +52,9 @@ void main() {
 	word w=0;
 
 	gvar.mm.mmstarted=0;
+#ifdef __DEBUG_PM__
 	dbg_debugpm=1;
-
+#endif
 	// DOSLIB: check our environment
 	probe_dos();
 
