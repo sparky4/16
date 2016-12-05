@@ -174,7 +174,8 @@ TESTEXEC2 = &
 	pcxtest2.exe
 UTILEXEC = &
 	palettel.exe &
-	palettec.exe
+	palettec.exe &
+	db.exe
 EXEC = &
 	16.exe &
 	bakapi.exe &
@@ -220,6 +221,7 @@ maptest.exe:	maptest.$(OBJ) 16_map.$(OBJ) 16_head.$(OBJ) gfx.lib $(DOSLIBLIBS)
 fmemtest.exe:	 fmemtest.$(OBJ)
 exmmtest.exe:	 exmmtest.$(OBJ) $(16LIB) $(DOSLIBLIBS)
 vgmtest.exe:	vgmtest.$(OBJ) vgmsnd.lib $(16LIB) $(DOSLIBLIBS)
+db.exe:		db.$(OBJ)
 
 #
 # executable's objects
@@ -251,6 +253,7 @@ inputest.$(OBJ):$(SRC)/inputest.c
 #tsthimem.$(OBJ): $(SRC)/tsthimem.c
 exmmtest.$(OBJ):$(SRC)/exmmtest.c
 vgmtest.$(OBJ):$(SRC)/vgmtest.c
+db.$(OBJ):$(SRC)/db.c
 
 #
 # non executable objects libraries
