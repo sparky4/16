@@ -225,13 +225,13 @@ typedef	struct
 #ifdef	__WATCOMC__
 	struct sprite	*spri;	//supposively the sprite sheet data
 	memptr		gr;
+	entity_t		*ent;
 #endif
 	bitmap_t *data;		//supposively the sprite sheet data//old format
 	sword hp; //hitpoints of the player
 	int persist_aniframe;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	CursorInfo	info;
 	ControlType	Controls;
-	entity_t *ent;
 	int dx, dy, delta;
 } player_t;
 

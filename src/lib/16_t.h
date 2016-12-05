@@ -59,7 +59,9 @@ MK_FP(segment value, 0)*/
 
 typedef void _seg * memptr;//typedef void __based( void ) * memptr;	////old //----typedef void __based(__self) * memptr;
 
+#ifdef __WATCOMC__
 #define _argv __argv
 #define _argc __argc
+#endif
 
 #endif/*_TYPE_H_*/

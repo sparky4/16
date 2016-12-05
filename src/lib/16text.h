@@ -31,7 +31,8 @@
 #include <jstring.h>
 #include <jctype.h>
 #endif
-#include "src/lib/types.h"
+//#include "src/lib/16_t.h"
+#include "src/lib/16_head.h"
 
 /* font information type */
 typedef struct font {

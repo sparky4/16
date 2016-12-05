@@ -84,7 +84,9 @@ static union REGS CPURegs;
 #define _DH CPURegs.h.dh
 #define _DL CPURegs.h.dl
 
+#ifdef __WATCOMC__
 #define geninterrupt(n) int86(n,&CPURegs,&CPURegs);
+#endif
 
 static	char		*ParmStrings[] = {"nomain","noems","noxms",nil};
 
@@ -1504,7 +1506,7 @@ PM_Startup(global_game_variables_t *gvar)
 	if (gvar->pm.PMStarted)
 		return;
 
-	//strcpy(&(gvar->pm.fi.PageFileName), "VSWAP.");
+	//0000+=+=strcpy(&(gvar->pm.fi.PageFileName), "VSWAP.");
 
 	nomain = noems = noxms = false;
 	for (i = 1;i < _argc;i++)

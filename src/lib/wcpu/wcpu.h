@@ -23,7 +23,7 @@
 #ifndef _WCPU_H_
 #define _WCPU_H_
 #include <stdio.h>
-#include "src/lib/types.h"
+#include "src/lib/16_t.h"
 
 //#define TEST
 

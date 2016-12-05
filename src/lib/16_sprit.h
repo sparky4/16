@@ -23,7 +23,6 @@
 #define __16_SPRI__
 
 #include "src/lib/16_vrs.h"
-#include "src/lib/typdefst.h"
 
 struct sprite
 {

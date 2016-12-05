@@ -20,7 +20,6 @@
  *
  */
 #include "src/lib/16_vrs.h"
-#include "src/lib/typdefst.h"
 
 // Read .vrs file into far memory
 int read_vrs(global_game_variables_t *gvar, char *filename, struct vrs_container *vrs_cont){
@@ -46,7 +45,7 @@ int read_vrs(global_game_variables_t *gvar, char *filename, struct vrs_container
 	close(fd);
 	if(!success)
 	{
-		fprintf(stderr, "Unablee to load file");
+		fprintf(stderr, "Unable to load file");
 		exit(3);
 	}
 	vrs_cont->data_size = size - sizeof(struct vrs_header);

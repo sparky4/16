@@ -23,7 +23,7 @@
 #ifndef _TYPEDEFSTRUCT_H_
 #define _TYPEDEFSTRUCT_H_
 
-#include "src/lib/types.h"
+#include "src/lib/16_t.h"
 
 #define AARED		"\x1b[41;31m"
 #define AABLUE		"\x1b[44;34m"

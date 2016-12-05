@@ -50,16 +50,16 @@
 #include <unistd.h>
 #include <alloca.h>
 #include <stdint.h> //16_vrs.h
+#include "src/lib/16_dbg.h"
 #endif
 #ifdef __BORLANDC__
 #include <values.h>
 #include <dir.h>
 #define TILEWH	16
 #endif
+#include "src/lib/16_t.h"
+#include "src/lib/16_tdef.h"
 #include "src/lib/nyan/kitten.h"
-#include "src/lib/types.h"
-#include "src/lib/typdefst.h"
-#include "src/lib/16_in.h"
 
 #define VERSION __DATE__ " " __TIME__
 
