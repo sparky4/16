@@ -35,5 +35,7 @@ void Startup16(global_game_variables_t *gvar);
 #ifdef __WATCOMC__
 void Quit (char *error);
 #endif
+void nibbletest();
+void booleantest();
 
 #endif

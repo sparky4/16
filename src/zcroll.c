@@ -24,9 +24,12 @@
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
 #include "src/lib/16render.h"
+#include "src/lib/16_dbg.h"
+
+#define MODEXZ
+boolean dbg_noplayerinpu=1;
 
 //TODO: known issues the array dependent mv stuff and player arrays
-
 global_game_variables_t gvar;
 static map_t map;
 player_t *player;
@@ -60,7 +63,7 @@ void main(int argc, char *argv[])
 
 	pan.pn=0;
 	// OK, this one takes hellova time and needs to be done in farmalloc or MM_...
-	//USE MM AND CA AND PM WWWWWWWW
+	//TODO: USE MM AND CA AND PM WWWWWWWW
 	player = malloc(sizeof(player_t));
 	player->ent = malloc(sizeof(entity_t));
 	player->ent->spri = malloc(sizeof(struct sprite));
@@ -78,7 +81,10 @@ void main(int argc, char *argv[])
 	read_vrs(&gvar, "data/spri/chikyuu.vrs", player->ent->spri->spritesheet); printf("sprite loaded\n");
 
 	//	input!
+if(!dbg_noplayerinpu)
+{
 	IN_Default(0, player,ctrl_Joystick); printf("IN_defaulted\n");
+}
 
 	// save the palette
 #ifdef FADE
@@ -88,7 +94,7 @@ void main(int argc, char *argv[])
 #endif
 	textInit();
 	VGAmodeX(bakapee, 1, &gvar);
-	#ifdef MODEXZ
+#ifdef MODEXZ
 #ifdef FADE
 	modexPalBlack();	//reset the palette~
 		printf("VGA\n");
@@ -102,13 +108,19 @@ void main(int argc, char *argv[])
 #endif
 
 	// setup camera and screen~
+if(dbg_noplayerinpu)
+{
+	//sprintf(&gvar.pee, "press a key for video setup");
+	strcpy(global_temp_status_text, "press a key for video setup");
+	modexprint(mv->page, 0, 64, 1, 7, 0, global_temp_status_text);
+	getch();
+}
 	modexHiganbanaPageSetup(&gvar.video);
 	mv->page = &gvar.video.page[0];
 	mv->map = &map;
 	mv->video = &gvar.video;
 	mv->pan	= &pan;
 	player->ent->spri->x = player->ent->spri->y = 20;
-	printf("pages ok\n");
 
 	// set up paging
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
@@ -145,6 +157,7 @@ void main(int argc, char *argv[])
 	modexFadeOn(4, gpal);
 #endif
 	printf("LOOP\n");
+	if(!dbg_noplayerinpu)
 	while(!IN_KeyDown(sc_Escape) && player->hp>0)
 	{
 		shinku(&gvar);
@@ -219,6 +232,12 @@ void main(int argc, char *argv[])
 		if((player->q==1) && !(player->x%TILEWH==0 && player->y%TILEWH==0)) break;	//incase things go out of sync!
 		player->hp = 0;
 	}
+
+	else
+		while(!kbhit())
+		{
+			shinku(&gvar);
+		}
 
 	/* fade back to text mode */
 	/* but 1st lets save the game palette~ */

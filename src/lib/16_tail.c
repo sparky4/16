@@ -70,13 +70,13 @@ void Startup16(global_game_variables_t *gvar)
 	gvar->mm.mmstarted=0;
 	gvar->pm.PMStarted=0;
 	MM_Startup(gvar);
+if(!dbg_noplayerinpu)
 	IN_Startup(gvar);
 	PM_Startup(gvar);
 	PM_UnlockMainMem(gvar);
 	CA_Startup(gvar);
 #ifdef __WATCOMC__
 	start_timer(gvar);
-
 #endif
 
 }
@@ -96,6 +96,7 @@ void Startup16(global_game_variables_t *gvar)
 void Shutdown16(global_game_variables_t *gvar)
 {
 	PM_Shutdown(gvar);
+if(!dbg_noplayerinpu)
 	IN_Shutdown(gvar);
 	CA_Shutdown(gvar);
 	MM_Shutdown(gvar);
@@ -205,3 +206,51 @@ void Quit (char *error)
 #endif
 
 //===========================================================================
+
+const char *nibble_to_binary(nibble x)
+{
+	static char b[9];
+	int z;
+
+	b[0] = '\0';
+	for (z = 8; z > 0; z >>= 1)
+	{
+		strcat(b, ((x & z) == z) ? "1" : "0");
+	}
+	return b;
+}
+
+const char *boolean_to_binary(boolean x)
+{
+	static char b[9];
+	int z;
+
+	b[0] = '\0';
+	for (z = 1; z > 0; z >>= 1)
+	{
+		strcat(b, ((x & z) == z) ? "1" : "0");
+	}
+	return b;
+}
+
+void nibbletest()
+{
+	nibble pee;
+	printf("nibbletest\n");
+	/* nibble to binary string */
+	for(pee=0;pee<18;pee++)
+		printf("	%u %s\n", pee, nibble_to_binary(pee));
+	printf("	sizeof(nibble)=%s\n", nibble_to_binary(sizeof(nibble)));
+	printf("end of nibble test\n");
+}
+
+void booleantest()
+{
+	boolean pee;
+	printf("booleantest\n");
+	/* boolean to binary string */
+	for(pee=0;pee<4;pee++)
+		printf("	%u %s\n", pee, boolean_to_binary(pee));
+	printf("	sizeof(boolean)=%s\n", boolean_to_binary(sizeof(boolean)));
+	printf("end of boolean test\n");
+}

@@ -1,5 +1,16 @@
+#include "src/lib/16_dbg.h"
+//#include "src/16.h"
 
-#include "src/16.h"
+
+#ifdef __DEBUG__
+#ifdef __DEBUG_PM__
+boolean dbg_debugpm=0;
+#endif
+#ifdef __DEBUG_InputMgr__
+boolean dbg_testkeyin=0,dbg_testcontrolnoisy=0,dbg_noplayerinpu=0;
+#endif
+#endif
+
 
 // TODO: Could we also provide a build mode to emit debug to the "Bochs E9 hack?"
 #ifdef DEBUGSERIAL
@@ -9,15 +20,6 @@
 
 unsigned char _DEBUG_INITed = 0;
 struct info_8250 *_DEBUG_uart = NULL;
-
-#ifdef __DEBUG__
-#ifdef __DEBUG_PM__
-boolean dbg_debugpm=0;
-#endif
-#ifdef __DEBUG_InputMgr__
-boolean dbg_testkeyin=0,dbg_testcontrolnoisy=0;
-#endif
-#endif
 
 int _DEBUG_INIT() {
 	if (!_DEBUG_INITed) {

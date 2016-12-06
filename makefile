@@ -161,9 +161,9 @@ TESTEXEC = &
 	vgmtest.exe &
 	scroll.exe &
 	zcroll.exe &
+	inputest.exe &
 	vrstest.exe
 TESTEXEC2 = &
-	inputest.exe &
 	maptest.exe &
 	fmemtest.exe &
 	fonttest.exe &

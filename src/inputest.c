@@ -23,6 +23,7 @@
 	input test
 */
 #include "src/lib/16_in.h"
+#include "src/lib/16_tail.h"
 
 void
 main(int argc, char *argv[])
@@ -30,21 +31,30 @@ main(int argc, char *argv[])
 	global_game_variables_t gvar;
 	player_t player[MaxPlayers];
 	//extern struct inconfig inpu;
-	dbg_testkeyin=1;
+	dbg_testkeyin=0;
 	dbg_testcontrolnoisy=1;
-	IN_Startup();
-	IN_Default(0,&player,ctrl_Joystick1);
-	IN_SetControlType(0,&player,ctrl_Joystick1);
-	//while(!IN_KeyDown(sc_Escape))
+	dbg_noplayerinpu=1;
+	if(!dbg_noplayerinpu)
+	{
+		IN_Startup();
+		IN_Default(0,&player,ctrl_Joystick1);
+		IN_SetControlType(/*0,*/&player,ctrl_Joystick1);
+	}
 	player[0].q=1;
 	player[0].d=2;
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
 	start_timer(&gvar);
+	nibbletest();
+	if(dbg_noplayerinpu) getch();
+	booleantest();
+	//printf("nibble size is %u\n", sizeof(nibble));
+	if(!dbg_noplayerinpu){
+	printf("dbg_testkeyin=%u	dbg_testcontrolnoisy=%u	dbg_noplayerinpu=%u\nloop if this is not responsive then please KILL or reset machine sorry!!\n", dbg_testkeyin, dbg_testcontrolnoisy, dbg_noplayerinpu);
 	while(!IN_KeyDown(sc_Escape))
 	{
-		//shinkutxt(&gvar);
-		IN_ReadControl(0,&player);
+		shinkutxt(&gvar);
+		IN_ReadControl(/*0,*/&player);
 		#define INC_PER_FRAME if(player[0].q&1) player[0].persist_aniframe++; if(player[0].persist_aniframe>4) player[0].persist_aniframe = 1;
 		switch(player[0].d)
 		{
@@ -101,10 +111,11 @@ main(int argc, char *argv[])
 			//IN_Ack();
 		}
 	}
-	IN_Shutdown();
+	IN_Shutdown(); }
 	//printf("%u\n", in.Keyboard[sc_Escape]);
 	printf("inputest.exe ");
 	printf("version %s\n", VERSION);
 	printf("testkeyin=%u\n", dbg_testkeyin);
 	printf("testcontrolnoisy=%u\n", dbg_testcontrolnoisy);
+	printf("dbg_noplayerinpu=%u\n", dbg_noplayerinpu);
 }

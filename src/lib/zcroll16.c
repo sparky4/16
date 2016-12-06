@@ -185,47 +185,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 	}
 }
 
-unsigned char shinku_fps_indicator_page = 2;
 boolean pageflipflop = 1;
-boolean pageploop = 1;
-
-/*	sync	*/
-void shinku(global_game_variables_t *gv)
-{
-	word x = (0) + gv->video.page[/*!*/(gv->video.p)].dx; // follow the screen
-	word y = (0) + gv->video.page[/*!*/(gv->video.p)].dy; // follow the screen
-	word w = 64, h = 8, col = 7, bgcol = 0, type = 1;
-	byte o,o2,i;
-	if(elapsed_timer(gv) >= (1.0 / gv->kurokku.frames_per_second))
-	{
-		sprintf(gv->pee, "%.0f fps", (double)gv->kurokku.tiku/ticktock(gv));
-		//modexClearRegion(&(gv->video.page[shinku_fps_indicator_page]), x, y, w, h, 45);
-		modexprint(&(gv->video.page[/*!*/(gv->video.p)]), x, y, type, col, bgcol, gv->pee);
-		gv->kurokku.tiku=0;
-	}else //copy dat sheet
-	gv->kurokku.tiku++;
-
-	switch(gv->kurokku.fpscap)
-	{
-		case 0:
-			gv->kurokku.frames_per_second=1;
-		break;
-		case 1:
-			//turn this off if XT
-			vga_wait_for_vsync();
-			gv->kurokku.frames_per_second=60;
-		break;
-	}
-	/*
-	if(pageflipflop){
-		if(gv->video.r){
-			if(!pageploop) modexCopyPageRegion(&(gv->video.page[(gv->video.p)]), &(gv->video.page[(!gv->video.p)]), 0, 0, 0, 0, gv->video.page[gv->video.p].width, gv->video.page[!gv->video.p].height);
-			modexShowPage(&(gv->video.page[gv->video.p]));
-			if(!pageploop) gv->video.p=!gv->video.p;
-			gv->video.r=!gv->video.r;
-		}
-	}*/
-}
 
 void near animatePlayer(map_view_t *pip, player_t *player,  sword scrollswitch)
 {

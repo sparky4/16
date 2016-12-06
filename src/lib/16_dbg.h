@@ -2,16 +2,21 @@
 #ifndef _SRC_LIB_16_DBG
 #define _SRC_LIB_16_DBG
 
-//#define __DEBUG__
+#include "src/lib/16_head.h"
+#include "src/lib/16_tdef.h"
+
+#define __DEBUG__
+#define __DEBUG_InputMgr__
 //#define __DEBUG_PM__
 //#define __DEBUG_MM__
 
+
 #ifdef __DEBUG__
 #ifdef __DEBUG_PM__
-extern boolean dbg_debugpm=0;
+extern boolean dbg_debugpm;
 #endif
 #ifdef __DEBUG_InputMgr__
-extern boolean dbg_testkeyin=0,dbg_testcontrolnoisy=0;
+extern boolean dbg_testkeyin,dbg_testcontrolnoisy,dbg_noplayerinpu;
 #endif
 #endif
 

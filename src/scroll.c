@@ -24,9 +24,12 @@
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
 #include "src/lib/mapread.h"
+#include "src/lib/16_dbg.h"
 
 //#define FADE
 #define MODEX	//this is for mode x initiating
+
+boolean dbg_noplayerinpu=1;
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 //bitmap_t *p;
@@ -39,7 +42,7 @@ float t;
 sword bakapee;
 pan_t pan;
 //debugswitches
-boolean panswitch=0;
+boolean panswitch=1;
 //extern boolean pageflipflop=1;
 	unsigned int i;
 	const char *cpus;
@@ -119,9 +122,12 @@ void main(int argc, char *argv[])
 
 #endif
 	/*	input!	*/
+	if(!dbg_noplayerinpu)
+	{
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
 	//IN_Default(1,&player,ctrl_Joystick);
+	}
 
 	/* save the palette */
 #ifdef MODEX
@@ -213,6 +219,7 @@ void main(int argc, char *argv[])
 	modexFadeOn(4, gpal);
 #endif
 #endif
+	if(!dbg_noplayerinpu)
 	while(!IN_KeyDown(sc_Escape) && player[0].hp>0)
 	{
 		shinku(&gvar);
@@ -307,6 +314,11 @@ void main(int argc, char *argv[])
 	//if(IN_KeyDown(11)){ modexPalOverscan(15); }
 	if((player[0].q==1) && !(player[0].x%TILEWH==0 && player[0].y%TILEWH==0)) break;	//incase things go out of sync!
 	}
+	else
+		while(!kbhit())
+		{
+			shinku(&gvar);
+		}
 
 	/* fade back to text mode */
 	/* but 1st lets save the game palette~ */
@@ -318,6 +330,7 @@ void main(int argc, char *argv[])
 #endif
 	VGAmodeX(0, 1, &gvar);
 #endif
+	if(!dbg_noplayerinpu)
 	IN_Shutdown();
 	printf("\nProject 16 scroll.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
