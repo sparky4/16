@@ -8,3 +8,14 @@ Basically, I was aiming to:
 5. Also also, tried to separate movement functions from player and to generalize it to a movable npc/entity.
 6. Instead of drawing map as a rectangle of tiles and a few strips to fill the black area of partially visible tiles, draw just a slightly bigger rectangle, with it's edges a bit out of the screen. That shouldn't be too resourse-consuming, I believe, but requires less explicit calls and reads. Probably.
 7. As stuff did not quite initialize properly, I have disabled keyboard interrupt vector override to be able to shut down program prematurely in case something goes wrong. So, in case you just want to replace these new files with the older and working ones, please remember to re-enable that, or you won't be able to controll the game without it.
+
+
+==== changed or planned ones by sparky4 ====
+planned ones:
+	zcroll16 and scroll16 merge with different functions
+	16_map and mapread too
+	I think there may be more
+
+changes by sparky4 worth mentioning:
+	renamed: src/lib/types.h => src/lib/16_t.h
+	renamed: src/lib/types.h => src/lib/16_tdef.h
