@@ -27,7 +27,7 @@
 #include "src/lib/16_dbg.h"
 
 #define MODEXZ
-//boolean dbg_noplayerinpu=1;
+boolean dbg_noplayerinpu=0;
 
 //TODO: known issues the array dependent mv stuff and player arrays
 global_game_variables_t gvar;
@@ -76,14 +76,11 @@ void main(int argc, char *argv[])
 	fprintf(stderr, "yay map loaded~~\n");
 
 	// data
-	printf("loading sprite\n");
-	read_vrs(&gvar, "data/spri/chikyuu.vrs", player[0].ent->spri->spritesheet); printf("sprite loaded\n");
+	read_vrs(&gvar, "data/spri/chikyuu.vrs", player[0].ent->spri->spritesheet);
 
 	//	input!
 if(!dbg_noplayerinpu)
-{
-	IN_Default(0, &player,ctrl_Keyboard1); printf("IN_defaulted\n");
-}
+	IN_Default(0, &player,ctrl_Keyboard1);
 
 	// save the palette
 #ifdef FADE
@@ -96,10 +93,8 @@ if(!dbg_noplayerinpu)
 #ifdef MODEXZ
 #ifdef FADE
 	modexPalBlack();	//reset the palette~
-		printf("VGA\n");
 	CA_LoadFile("data/spri/chikyuu.pal", &pal, &gvar);
 	modexPalUpdate1(pal);
-		printf("pallette\n");
 	gpal = modexNewPal();
 	modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);
@@ -107,13 +102,9 @@ if(!dbg_noplayerinpu)
 #endif
 
 	// setup camera and screen~
-if(dbg_noplayerinpu)
-{
-	//sprintf(&gvar.pee, "press a key for video setup");
 	strcpy(global_temp_status_text, "press a key for video setup");
 	modexprint(mv[0].page, 0, 64, 1, 7, 0, global_temp_status_text);
-	getch();
-}
+
 	modexHiganbanaPageSetup(&gvar.video);
 	mv[0].page = &gvar.video.page[0];
 	mv[0].map = &map;
@@ -123,14 +114,14 @@ if(dbg_noplayerinpu)
 
 	// set up paging
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
-	mapGoTo(&mv, 0, 0);
+	mapGoTo(mv, 0, 0);
 #endif
 
 	//TODO: put player in starting position of spot
 	//default player position on the viewable map
 	player[0].tx = mv[0].tx + mv[0].page->tilemidposscreenx;
 	player[0].ty = mv[0].ty + mv[0].page->tilemidposscreeny;
-	IN_initplayer(&player, 0);	printf("player inited\n");
+	IN_initplayer(&player, 0);
 
 	i = set_anim_by_id(player[0].ent->spri, 11);
 	print_anim_ids(player[0].ent->spri);
@@ -148,16 +139,14 @@ if(dbg_noplayerinpu)
 	exit(-4);
 	}
 	//animate_spri(&(player[0].ent->spri));
-	printf("spri ok\n");
 
 	modexShowPage(mv[0].page);//!(gvar.video.p)
 	shinku_fps_indicator_page = 0; // we're on page 1 now, shinku(). follow along please or it will not be visible.
 #ifdef FADE
 	modexFadeOn(4, gpal);
 #endif
-	printf("LOOP\n");
 	if(!dbg_noplayerinpu)
-	while(!IN_KeyDown(sc_Escape) && player[0].hp>0)
+	while(!IN_KeyDown(sc_Escape))// && player[0].hp>0)
 	{
 		shinku(&gvar);
 		//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
@@ -271,8 +260,6 @@ if(dbg_noplayerinpu)
 	//printf("mv[%u].tx: %d", pan.pn, mv[pan.pn].tx); printf("	mv[%u].ty: %d	", pan.pn, mv[pan.pn].ty);
 	printf("gvar.video.p=%u ", gvar.video.p); printf("gvar.video.r=%u ", gvar.video.r);
 	printf("pageflipflop=%u\n", pageflipflop);
-	//0000printf("\ngvar.video.tickclk=%f\n", gvar.video.tickclk);
-	//0000printf("gvar.video.clk=%f", gvar.video.clk);
 	printf("\n");
 	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[0].map->width, mv[0].map->height, mv[0].map->data[0]);
 
