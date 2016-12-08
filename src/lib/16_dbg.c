@@ -9,6 +9,7 @@ boolean dbg_debugpm=0;
 #ifdef __DEBUG_InputMgr__
 boolean dbg_testkeyin=0,dbg_testcontrolnoisy=0,dbg_noplayerinpu=0;
 #endif
+boolean dbg_nommpmca=0;
 #endif
 
 

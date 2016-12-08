@@ -38,6 +38,8 @@
 void Startup16(global_game_variables_t *gvar)
 {
 #ifdef __WATCOMC__
+	start_timer(gvar);
+
 	// DOSLIB: check our environment
 	probe_dos();
 
@@ -69,16 +71,21 @@ void Startup16(global_game_variables_t *gvar)
 #endif
 	gvar->mm.mmstarted=0;
 	gvar->pm.PMStarted=0;
+#ifdef __DEBUG__
+	if(!dbg_nommpmca)
+#endif
 	MM_Startup(gvar);
 if(!dbg_noplayerinpu)
 	IN_Startup(gvar);
+#ifdef __DEBUG__
+	if(!dbg_nommpmca){
+#endif
 	PM_Startup(gvar);
 	PM_UnlockMainMem(gvar);
 	CA_Startup(gvar);
-#ifdef __WATCOMC__
-	start_timer(gvar);
+#ifdef __DEBUG__
+	}
 #endif
-
 }
 
 //===========================================================================
@@ -95,11 +102,20 @@ if(!dbg_noplayerinpu)
 
 void Shutdown16(global_game_variables_t *gvar)
 {
+#ifdef __DEBUG__
+	if(!dbg_nommpmca)
+#endif
 	PM_Shutdown(gvar);
 if(!dbg_noplayerinpu)
 	IN_Shutdown(gvar);
+#ifdef __DEBUG__
+	if(!dbg_nommpmca){
+#endif
 	CA_Shutdown(gvar);
 	MM_Shutdown(gvar);
+#ifdef __DEBUG__
+	}
+#endif
 }
 
 

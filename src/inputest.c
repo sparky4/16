@@ -36,6 +36,8 @@ main(int argc, char *argv[])
 	dbg_noplayerinpu=0;
 	if(!dbg_noplayerinpu)
 	{
+		start_timer(&gvar);
+		//Startup16(&gvar);
 		IN_Startup();
 		//IN_Default(0,&player,ctrl_Joystick1);
 		//IN_SetControlType(0,&player,ctrl_Joystick1);
@@ -46,7 +48,7 @@ main(int argc, char *argv[])
 	player[0].d=2;
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
-	start_timer(&gvar);
+
 	nibbletest();
 	if(dbg_noplayerinpu) getch();
 	booleantest();
@@ -113,7 +115,9 @@ main(int argc, char *argv[])
 			//IN_Ack();
 		}
 	}
-	IN_Shutdown(); }
+	IN_Shutdown();
+		//Shutdown16(&gvar);
+	}
 	//printf("%u\n", in.Keyboard[sc_Escape]);
 	printf("inputest.exe ");
 	printf("version %s\n", VERSION);

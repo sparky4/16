@@ -29,7 +29,7 @@
 //#define FADE
 #define MODEX	//this is for mode x initiating
 
-//boolean dbg_noplayerinpu=1;
+boolean dbg_nommpmca=1;
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 //bitmap_t *p;
@@ -69,8 +69,6 @@ void main(int argc, char *argv[])
 
 	pan.pn=1;
 
-	start_timer(&gvar);
-
 	/* create the map */
 	fprintf(stderr, "testing map load~	");
 	loadmap("data/test.map", &map);
@@ -96,11 +94,7 @@ void main(int argc, char *argv[])
 #endif
 	/*	input!	*/
 	if(!dbg_noplayerinpu)
-	{
-	IN_Startup();
 	IN_Default(0,&player,ctrl_Keyboard1);
-	//IN_Default(1,&player,ctrl_Joystick);
-	}
 
 	/* save the palette */
 #ifdef MODEX
@@ -205,7 +199,7 @@ void main(int argc, char *argv[])
 	if(!panswitch){
 		walk(mv, &player, 0);
 	}else{
-		panpagemanual(mv, player, 0);
+		panpagemanual(mv, &player, 0);
 		//printf("	player[0].q: %d", player[0].q);	printf("	player[0].d: %d\n", player[0].d);
 	}
 
@@ -303,8 +297,7 @@ void main(int argc, char *argv[])
 #endif
 	VGAmodeX(0, 1, &gvar);
 #endif
-	if(!dbg_noplayerinpu)
-	IN_Shutdown();
+	Shutdown16(&gvar);
 	printf("\nProject 16 scroll.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	printf("tx: %d	", mv[0].tx);
@@ -333,8 +326,7 @@ void main(int argc, char *argv[])
 	//printf("mv[%u].tx: %d", pan.pn, mv[pan.pn].tx); printf("	mv[%u].ty: %d	", pan.pn, mv[pan.pn].ty);
 	printf("gvar.video.p=%u ", gvar.video.p); printf("gvar.video.r=%u ", gvar.video.r);
 	printf("pageflipflop=%u\n", pageflipflop);
-	//0000printf("\ngvar.video.tickclk=%f\n", gvar.video.tickclk);
-	//0000printf("gvar.video.clk=%f", gvar.video.clk);
+	//printf("gvar.kurokku:	"); printf("%.0f ", clock());	printf("tiku=%lu ", gvar.kurokku.tiku);	printf("t=%.0f ", gvar.kurokku.t);	printf("ticktock()=%f ", ticktock(&gvar));	printf("%.0f fps", (double)gvar.kurokku.tiku/ticktock(&gvar));
 	printf("\n");
 	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[0].map->width, mv[0].map->height, mv[0].map->data[0]);
 
