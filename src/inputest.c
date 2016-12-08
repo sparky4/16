@@ -33,12 +33,14 @@ main(int argc, char *argv[])
 	//extern struct inconfig inpu;
 	dbg_testkeyin=0;
 	dbg_testcontrolnoisy=1;
-	dbg_noplayerinpu=1;
+	dbg_noplayerinpu=0;
 	if(!dbg_noplayerinpu)
 	{
 		IN_Startup();
-		IN_Default(0,&player,ctrl_Joystick1);
-		IN_SetControlType(/*0,*/&player,ctrl_Joystick1);
+		//IN_Default(0,&player,ctrl_Joystick1);
+		//IN_SetControlType(0,&player,ctrl_Joystick1);
+		IN_Default(0,&player,ctrl_Keyboard1);
+		IN_SetControlType(0,&player,ctrl_Keyboard1);
 	}
 	player[0].q=1;
 	player[0].d=2;
@@ -50,11 +52,11 @@ main(int argc, char *argv[])
 	booleantest();
 	//printf("nibble size is %u\n", sizeof(nibble));
 	if(!dbg_noplayerinpu){
-	printf("dbg_testkeyin=%u	dbg_testcontrolnoisy=%u	dbg_noplayerinpu=%u\nloop if this is not responsive then please KILL or reset machine sorry!!\n", dbg_testkeyin, dbg_testcontrolnoisy, dbg_noplayerinpu);
+	//printf("dbg_testkeyin=%u	dbg_testcontrolnoisy=%u	dbg_noplayerinpu=%u\nloop if this is not responsive then please KILL or reset machine sorry!!\n", dbg_testkeyin, dbg_testcontrolnoisy, dbg_noplayerinpu);
 	while(!IN_KeyDown(sc_Escape))
 	{
 		shinkutxt(&gvar);
-		IN_ReadControl(/*0,*/&player);
+		IN_ReadControl(0, &player);
 		#define INC_PER_FRAME if(player[0].q&1) player[0].persist_aniframe++; if(player[0].persist_aniframe>4) player[0].persist_aniframe = 1;
 		switch(player[0].d)
 		{

@@ -506,7 +506,7 @@ INL_StartKbd()
 	IN_ClearKeysDown();
 
 	OldKeyVect = _dos_getvect(KeyInt);
-	//_dos_setvect(KeyInt,INL_KeyService);
+	_dos_setvect(KeyInt,INL_KeyService);
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -682,7 +682,7 @@ IN_Startup()
 void
 IN_Default(boolean gotit,player_t *player,ControlType nt)
 {
-	//int i;
+	int i;
 	if
 	(
 		(!gotit)
@@ -701,8 +701,9 @@ IN_Default(boolean gotit,player_t *player,ControlType nt)
 	//in.KbdDefs[0].downleft = 0x4f;
 	inpu.KbdDefs[0].down = 0x50;
 	//in.KbdDefs[0].downright = 0x51;
-	IN_SetControlType(player,nt);
-	player->d=2;
+	IN_SetControlType(0,player,nt);
+	for(i=0; i>MaxPlayers;i++)
+		player[i].d=2;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -813,7 +814,7 @@ IN_ReadCursor(CursorInfo *info)
 //
 ///////////////////////////////////////////////////////////////////////////
 void near
-IN_ReadControl(player_t *player)
+IN_ReadControl(int pn,player_t *player)
 {
 			boolean		realdelta;
 #if DEMO0
@@ -853,7 +854,7 @@ register	KeyboardDef	*def;
 	else
 	{
 #endif
-		switch (type = player->Controls)
+		switch (type = player[pn].Controls)
 		{
 		case ctrl_Keyboard1:
 		case ctrl_Keyboard2:
@@ -868,7 +869,7 @@ register	KeyboardDef	*def;
 			else if (Keyboard[def->downright])
 				mx = motion_Right,my = motion_Down;*/
 //TODO: make this into a function that the joystick AND keyboard can use wwww
-			if(DIRECTIONIFELSE)//(player->info.dir == 2)
+			if(DIRECTIONIFELSE)//(player[pn].info.dir == 2)
 			{
 			if(!inpu.Keyboard[def->left] && !inpu.Keyboard[def->right]){
 				if((inpu.Keyboard[def->up] && !inpu.Keyboard[def->down]))
@@ -881,7 +882,7 @@ register	KeyboardDef	*def;
 				if((inpu.Keyboard[def->right] && !inpu.Keyboard[def->left]))
 					mx = motion_Right;
 			}else{	//2 keys pressed
-					switch (player->pdir)
+					switch (player[pn].pdir)
 					{
 						case 0:
 						case 4:
@@ -897,7 +898,7 @@ register	KeyboardDef	*def;
 						break;
 					}
 #ifdef __DEBUG_InputMgr__
-					//if(dbg_testcontrolnoisy > 0){ printf("dir=%c ", dirchar(dir)); printf("pdir=%c	", dirchar(player->pdir)); }
+					//if(dbg_testcontrolnoisy > 0){ printf("dir=%c ", dirchar(dir)); printf("pdir=%c	", dirchar(player[pn].pdir)); }
 #endif
 				}
 			}
@@ -935,23 +936,23 @@ register	KeyboardDef	*def;
 		dy = my;// * 127;
 	}
 
-	player->info.x = dx;
-	player->info.xaxis = mx;
-	player->info.y = dy;
-	player->info.yaxis = my;
-	player->info.button0 = buttons & (1 << 0);
-	player->info.button1 = buttons & (1 << 1);
-	player->info.button2 = buttons & (1 << 2);
-	player->info.button3 = buttons & (1 << 3);
-//	player->info.dir = DirTable[((my + 1) * 3) + (mx + 1)];
+	player[pn].info.x = dx;
+	player[pn].info.xaxis = mx;
+	player[pn].info.y = dy;
+	player[pn].info.yaxis = my;
+	player[pn].info.button0 = buttons & (1 << 0);
+	player[pn].info.button1 = buttons & (1 << 1);
+	player[pn].info.button2 = buttons & (1 << 2);
+	player[pn].info.button3 = buttons & (1 << 3);
+//	player[pn].info.dir = DirTable[((my + 1) * 3) + (mx + 1)];
 	conpee=(((my + 1) * 2) + (mx + 1))-1;
-	player->info.dir = DirTable[conpee];
+	player[pn].info.dir = DirTable[conpee];
 
-	if(DirTable[conpee]!=2)	player->pdir=DirTable[conpee];
-	if(player->q==1 &&( dir!=2 || (mx!=motion_None || my!=motion_None)))
+	if(DirTable[conpee]!=2)	player[pn].pdir=DirTable[conpee];
+	if(player[pn].q==1 &&( dir!=2 || (mx!=motion_None || my!=motion_None)))
 	{
-		if(dir==2) player->d = player->info.dir;
-		else player->d = DirTable[dir];
+		if(dir==2) player[pn].d = player[pn].info.dir;
+		else player[pn].d = DirTable[dir];
 	}
 
 #if DEMO0
@@ -981,13 +982,13 @@ register	KeyboardDef	*def;
 #endif
 #ifdef __DEBUG_InputMgr__
 if(dbg_testcontrolnoisy > 0)
-if(player->info.dir!=2/*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right])*/ || player->q>1)
+if(player[pn].info.dir!=2/*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right])*/ || player[pn].q>1)
 {
-	//printf("b1=%u b2=%u b3=%u b4=%u	", player->info.button0, player->info.button1, player->info.button2, player->info.button3);
-	//printf("q=%d ", player->q);
+	//printf("b1=%u b2=%u b3=%u b4=%u	", player[pn].info.button0, player[pn].info.button1, player[pn].info.button2, player[pn].info.button3);
+	//printf("q=%d ", player[pn].q);
 	//printf("cpee=%c ", dirchar(conpee));
-	printf("pdir=%c d=%c dir=%c ", dirchar(player->pdir), dirchar(player->d), dirchar(player->info.dir));
-	/*if(realdelta) */printf("dx=%d	dy=%d	mx=%d	my=%d", player->info.x, player->info.y, player->info.xaxis, player->info.yaxis);
+	printf("pdir=%c d=%c dir=%c ", dirchar(player[pn].pdir), dirchar(player[pn].d), dirchar(player[pn].info.dir));
+	/*if(realdelta) */printf("dx=%d	dy=%d	mx=%d	my=%d", player[pn].info.x, player[pn].info.y, player[pn].info.xaxis, player[pn].info.yaxis);
 	//else if(!realdelta) printf("%c%d %c%d %c%d %c%d", dirchar(0), inpu.Keyboard[def->up], dirchar(4), inpu.Keyboard[def->down], dirchar(1), inpu.Keyboard[def->left], dirchar(3), inpu.Keyboard[def->right]);
 	printf("\n");
 }
@@ -1001,10 +1002,10 @@ if(player->info.dir!=2/*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || i
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-IN_SetControlType(player_t *player,ControlType type)
+IN_SetControlType(word pn,player_t *player,ControlType type)
 {
 	// DEBUG - check that requested type is present?
-	player->Controls = type;
+	player[pn].Controls = type;
 }
 
 #if DEMO0
@@ -1266,16 +1267,20 @@ boolean IN_qb(byte kee)
 }
 
 //init player!
-void IN_initplayer(player_t *player)
+void IN_initplayer(player_t *player, word pn)
 {
-	player->x = player->tx*TILEWH;
-	player->y = player->ty*TILEWH;
-	player->triggerx = player->tx;
-	player->triggery = player->ty+1;
-	player->q=1;
-	player->d=2;
-	player->hp=4;
-	player->speed=4;
-	player->persist_aniframe=0;
-	player->spt=(TILEWH/(player->speed));	//speed per tile wwww
+	player[pn].x = player[pn].tx*TILEWH;
+	player[pn].y = player[pn].ty*TILEWH;
+	player[pn].triggerx = player[pn].tx;
+	player[pn].triggery = player[pn].ty+1;
+/*	player[0].info.x = player[0].tx;
+	player[0].info.xaxis = player[0].tx*TILEWH;
+	player[0].info.y = player[0].ty;
+	player[0].info.yaxis = player[0].ty*TILEWH;*/
+	player[pn].q=1;
+	player[pn].d=2;
+	player[pn].hp=4;
+	player[pn].speed=4;
+	player[pn].persist_aniframe=0;
+	player[pn].spt=(TILEWH/(player[pn].speed));	//speed per tile wwww
 }

@@ -29,7 +29,7 @@
 //#define FADE
 #define MODEX	//this is for mode x initiating
 
-boolean dbg_noplayerinpu=1;
+//boolean dbg_noplayerinpu=1;
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 //bitmap_t *p;
@@ -42,7 +42,7 @@ float t;
 sword bakapee;
 pan_t pan;
 //debugswitches
-boolean panswitch=1;
+boolean panswitch=0;//1
 //extern boolean pageflipflop=1;
 	unsigned int i;
 	const char *cpus;
@@ -65,34 +65,7 @@ void main(int argc, char *argv[])
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
 
-	// DOSLIB: check our environment
-	probe_dos();
-
-	// DOSLIB: what CPU are we using?
-	// NTS: I can see from the makefile Sparky4 intends this to run on 8088 by the -0 switch in CFLAGS.
-	//      So this code by itself shouldn't care too much what CPU it's running on. Except that other
-	//      parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
-	//      the CPU to carry out tasks. --J.C.
-	cpu_probe();
-
-	// DOSLIB: check for VGA
-	if (!probe_vga()) {
-		printf("VGA probe failed\n");
-		return;
-	}
-	// hardware must be VGA or higher!
-	if (!(vga_state.vga_flags & VGA_IS_VGA)) {
-		printf("This program requires VGA or higher graphics hardware\n");
-		return;
-	}
-
-	if (_DEBUG_INIT() == 0) {
-#ifdef DEBUGSERIAL
-		printf("WARNING: Failed to initialize DEBUG output\n");
-#endif
-	}
-	_DEBUG("Serial debug output started\n"); // NTS: All serial output must end messages with newline, or DOSBox-X will not emit text to log
-	_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);
+	Startup16(&gvar);
 
 	pan.pn=1;
 
@@ -125,7 +98,7 @@ void main(int argc, char *argv[])
 	if(!dbg_noplayerinpu)
 	{
 	IN_Startup();
-	IN_Default(0,&player,ctrl_Joystick);
+	IN_Default(0,&player,ctrl_Keyboard1);
 	//IN_Default(1,&player,ctrl_Joystick);
 	}
 
@@ -184,7 +157,7 @@ void main(int argc, char *argv[])
 	//default player position on the viewable map
 	player[0].tx = mv[0].tx + mv[0].page->tilemidposscreenx;
 	player[0].ty = mv[0].ty + mv[0].page->tilemidposscreeny;
-	IN_initplayer(&player);//, 0);
+	IN_initplayer(&player, 0);
 	//IN_initplayer(&player, 1);
 
 #ifndef	SPRITE
@@ -228,9 +201,9 @@ void main(int argc, char *argv[])
 	//when player[0].tx or player[0].ty == 0 or player[0].tx == 20 or player[0].ty == 15 then stop because that is edge of map and you do not want to walk of the map
 
 	//player movement
-		IN_ReadControl(/*0,*/&player);
+		IN_ReadControl(0, &player);
 	if(!panswitch){
-		walk(mv, player, 0);
+		walk(mv, &player, 0);
 	}else{
 		panpagemanual(mv, player, 0);
 		//printf("	player[0].q: %d", player[0].q);	printf("	player[0].d: %d\n", player[0].d);

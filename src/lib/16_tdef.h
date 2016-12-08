@@ -65,9 +65,10 @@ typedef struct {
 } planar_buf_t;
 
 typedef struct {
-	int dx, dy; //backwards compait
-	nibble id;	/* the Identification number of the page~ For layering~ */
+	/*nibble*/word id;	/* the Identification number of the page~ For layering~ */
 	byte far* data;	/* the data for the page */
+	word dx;		/* col we are viewing on the virtual screen */
+	word dy;		/* row we are viewing on the virtual screen */
 	word sw;		/* screen width */
 	word sh;		/* screen heigth */
 	word tw;		/* screen width in tiles */

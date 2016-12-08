@@ -40,8 +40,8 @@
 //if else for gfxtesting and direction
 //player[pn].d == 2 ||
 //player[pn].d != 2 ||
-#define DIRECTIONIFELSE	(player->info.dir == 2)//(player[pn].info.dir == 2)
-//#define NDIRECTIONIFELSE	(player->info.dir != 2)//(player[pn].info.dir != 2)
+#define DIRECTIONIFELSE	(player[pn].info.dir == 2)
+//#define NDIRECTIONIFELSE	(player[pn].info.dir != 2)
 
 #define	KeyInt	9	// The keyboard ISR number
 
@@ -50,7 +50,7 @@
 #define	JoyScaleShift	8
 #define	MaxJoyValue		5000
 
-#define	MaxPlayers	1
+#define	MaxPlayers		2//futre plans for multiple playable charaters and being able to alternate
 #define	MaxKbds		2
 #define	MaxJoys		2
 #define	MaxPads		2
@@ -232,7 +232,7 @@ typedef	struct
 	int persist_aniframe;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	CursorInfo	info;
 	ControlType	Controls;
-	int dx, dy, delta;
+	int dx, dy, delta;	//TODO: what is this? ^^
 } player_t;
 
 /*
@@ -285,8 +285,8 @@ extern void IN_SetKeyHook(void (*hook)());
 extern void IN_ClearKeysDown();
 //static void INL_AdjustCursor(CursorInfo *info,word buttons,int dx,int dy);
 extern void IN_ReadCursor(CursorInfo *info);
-extern void near IN_ReadControl(player_t *player);
-extern void IN_SetControlType(player_t *player,ControlType type);
+extern void near IN_ReadControl(int pn,player_t *player);
+extern void IN_SetControlType(word pn,player_t *player,ControlType type);
 #if DEMO0
 extern boolean IN_StartDemoRecord(word bufsize);
 extern void IN_StartDemoPlayback(byte /*__segment*/ *buffer,word bufsize);
@@ -303,6 +303,6 @@ extern boolean IN_UserInput(dword delay,boolean clear);
 extern boolean IN_KeyDown(byte code);
 extern void IN_ClearKey(byte code);
 extern boolean IN_qb(byte kee);
-void IN_initplayer(player_t *player);
+void IN_initplayer(player_t *player, word pn);
 
 #endif

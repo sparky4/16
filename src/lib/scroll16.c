@@ -26,6 +26,10 @@
 
 void walk(map_view_t *pip, player_t *player, word pn)
 {
+//			modexLeave();
+//			IN_Shutdown();
+//			exit(-5);
+
 	#define INC_PER_FRAME if(player[pn].q&1) player[pn].persist_aniframe++; if(player[pn].persist_aniframe>4) player[pn].persist_aniframe = 1;
 	//printf("player[%d].d=%d\n", pn, player[pn].d);
 	switch(player[pn].d)
