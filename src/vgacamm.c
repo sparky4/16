@@ -28,7 +28,7 @@
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 
 void main() {
-	global_game_variables_t gvar;
+	static global_game_variables_t gvar;
 	__segment sega;
 	memptr bigbuffer;
 	int i;

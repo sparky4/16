@@ -25,7 +25,6 @@
 /*
  * BAKAPEE!
  */
-global_game_variables_t gvar;
 static bakapee_t bakapee;
 word key,d,xpos,ypos,xdir,ydir;
 sword vgamodex_mode = 1; // 320x240 default
@@ -34,6 +33,7 @@ int ch=0x0;
 void
 main(int argc, char *argvar[])
 {
+	static global_game_variables_t gvar;
 	char *a;
 	int i;
 	word panq=1, pand=0;

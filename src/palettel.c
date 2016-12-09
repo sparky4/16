@@ -23,7 +23,6 @@
 #include "src/lib/16_vl.h"
 #include "src/lib/bakapee.h"
 
-global_game_variables_t gvar;
 byte *pal;
 char *bakapee;
 word i;
@@ -31,6 +30,7 @@ word i;
 void
 main(int argc, char *argv[])
 {
+	static global_game_variables_t gvar;
 	//page.width += 32;
 	//page.height += 32;
 	pal = modexNewPal();

@@ -29,10 +29,9 @@
 #include <hw/dos/dos.h>
 #include <hw/vga/vga.h>
 
-global_game_variables_t gvar;
-
 void main(int argc, char near *argv[])
 {
+	static global_game_variables_t gvar;
 	//JMOJI
 	static byte e;
 	//word ri;

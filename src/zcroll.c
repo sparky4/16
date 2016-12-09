@@ -29,7 +29,6 @@
 #define MODEXZ
 
 //TODO: known issues the array dependent mv stuff and player arrays
-global_game_variables_t gvar;
 static map_t map;
 player_t player[MaxPlayers];
 map_view_t mv[4];
@@ -55,6 +54,7 @@ memptr pal;
 
 void main(int argc, char *argv[])
 {
+	static global_game_variables_t gvar;
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
 
@@ -88,9 +88,6 @@ void main(int argc, char *argv[])
 #endif
 	textInit();
 	VGAmodeX(bakapee, 1, &gvar);
-	//strcpy(global_temp_status_text, "press enter for video setup\nescape to quit");
-	//modexprint(&gvar.video.page[0], 64, 64, 1, 7, 0, global_temp_status_text);
-	//while(!IN_KeyDown(sc_Enter)){ if(IN_KeyDown(sc_Escape)) goto quit; } IN_UserInput(1,1); //wwww
 #ifdef MODEXZ
 #ifdef FADE
 	modexPalBlack();	//reset the palette~
@@ -103,9 +100,6 @@ void main(int argc, char *argv[])
 #endif
 
 	// setup camera and screen~
-	strcpy(global_temp_status_text, "press enter for page setup\nescape to quit");
-	modexprint(&gvar.video.page[0], 64, 64, 1, 7, 0, global_temp_status_text);
-	while(!IN_KeyDown(sc_Enter)){ if(IN_KeyDown(sc_Escape)) goto quit; } IN_UserInput(1,1); //wwww
 	modexHiganbanaPageSetup(&gvar.video);
 	for(i=0;i<gvar.video.num_of_pages;i++)
 	{
@@ -116,15 +110,9 @@ void main(int argc, char *argv[])
 	}
 	player[0].ent->spri->x = player[0].ent->spri->y = 20;
 
-	strcpy(global_temp_status_text, "press enter for mapGoTo setup\nescape to quit");
-	modexprint(mv[0].page/*&gvar.video.page[0]*/, 64, 64, 1, 7, 0, global_temp_status_text);
-	while(!IN_KeyDown(sc_Enter)){ if(IN_KeyDown(sc_Escape)) goto quit; } IN_UserInput(1,1); //wwww
 	// set up paging
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(mv, 0, 0);
-	strcpy(global_temp_status_text, "press enter for final initiation setup\nescape to quit");
-	modexprint(&gvar.video.page[0], 64, 64, 1, 7, 0, global_temp_status_text);
-	while(!IN_KeyDown(sc_Enter)){ if(IN_KeyDown(sc_Escape)) goto quit; } IN_UserInput(1,1); //wwww
 #endif
 
 	//TODO: put player in starting position of spot
@@ -140,21 +128,22 @@ void main(int argc, char *argv[])
 #ifdef FADE
 		modexFadeOff(4, gpal);
 #endif
-	VGAmodeX(0, 1, &gvar);
-	Shutdown16(&gvar);
-	printf("Wrong");
+		Quit(&gvar, "Wrong");
 #ifdef FADE
 		modexFadeOn(4, dpal);
 #endif
 	exit(-4);
 	}
-	//animate_spri(&(player[0].ent->spri));
+	//++++animate_spri(&(player[0].ent->spri));
 
 	modexShowPage(mv[0].page);//!(gvar.video.p)
 	shinku_fps_indicator_page = 0; // we're on page 1 now, shinku(). follow along please or it will not be visible.
 #ifdef FADE
 	modexFadeOn(4, gpal);
 #endif
+	strcpy(global_temp_status_text, "press enter for the loop of zcroll\nescape to quit");
+	modexprint(&gvar.video.page[0], 144, 72, 1, 7, 0, global_temp_status_text);
+	while(!IN_KeyDown(sc_Enter)){ if(IN_KeyDown(sc_Escape)) goto quit; } IN_UserInput(1,1); //wwww
 	while(!IN_KeyDown(sc_Escape))// && player[0].hp>0)
 	{
 		shinku(&gvar);

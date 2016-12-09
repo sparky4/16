@@ -28,7 +28,7 @@
 void
 main(int argc, char *argv[])
 {
-	global_game_variables_t gvar;
+	static global_game_variables_t gvar;
 	player_t player[MaxPlayers];
 	//extern struct inconfig inpu;
 	dbg_testkeyin=0;

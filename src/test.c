@@ -27,13 +27,13 @@
 #include "src/lib/bakapee.h"
 
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
-global_game_variables_t gvar;
 player_t player[MaxPlayers];
 map_view_t mv[4];
 pan_t pan;
 
 void main(int argc, char *argv[])
 {
+	static global_game_variables_t gvar;
 	int i, j;
 	word startclk, endclk;
 	word k;

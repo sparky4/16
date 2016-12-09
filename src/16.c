@@ -22,7 +22,6 @@
 
 #include "src/16.h"
 
-global_game_variables_t gvar;
 engi_stat_t engi_stat;
 const char *cpus;
 byte *dpal, *gpal;
@@ -31,6 +30,7 @@ player_t player[MaxPlayers];
 void
 main(int argc, char *argv[])
 {
+	static global_game_variables_t gvar;
 	// DOSLIB: check our environment
 	probe_dos();
 

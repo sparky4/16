@@ -27,10 +27,10 @@
 #include "src/lib/bitmap.h"
 //----#include "src/lib/planar.h"
 
-global_game_variables_t gvar;
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 
 void main() {
+	static global_game_variables_t gvar;
 	bitmap_t bmp;
 //----	planar_buf_t *p;
 	int i;

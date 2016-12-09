@@ -22,11 +22,10 @@
 
 #include "src/lib/16_vl.h"
 
-global_game_variables_t gvar;
-
 void
 main(int argc, char *argv[])
 {
+	static global_game_variables_t gvar;
 	byte *pal;
 	byte *bakapee;
 
