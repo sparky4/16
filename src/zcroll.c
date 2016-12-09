@@ -27,7 +27,6 @@
 #include "src/lib/16_dbg.h"
 
 #define MODEXZ
-boolean dbg_noplayerinpu=0;
 
 //TODO: known issues the array dependent mv stuff and player arrays
 global_game_variables_t gvar;
@@ -63,7 +62,7 @@ void main(int argc, char *argv[])
 
 	pan.pn=0;
 	// OK, this one takes hellova time and needs to be done in farmalloc or MM_...
-	//TODO: USE MM AND CA AND PM WWWWWWWW
+	//IN CA i think you use CAL_SetupGrFile but i do think we should work together on this part --sparky4
 	player[0].ent = malloc(sizeof(entity_t));
 	player[0].ent->spri = malloc(sizeof(struct sprite));
 	player[0].ent->spri->spritesheet = malloc(sizeof(struct vrs_container));
@@ -79,7 +78,6 @@ void main(int argc, char *argv[])
 	read_vrs(&gvar, "data/spri/chikyuu.vrs", player[0].ent->spri->spritesheet);
 
 	//	input!
-if(!dbg_noplayerinpu)
 	IN_Default(0, &player,ctrl_Keyboard1);
 
 	// save the palette
@@ -90,6 +88,9 @@ if(!dbg_noplayerinpu)
 #endif
 	textInit();
 	VGAmodeX(bakapee, 1, &gvar);
+	//strcpy(global_temp_status_text, "press enter for video setup\nescape to quit");
+	//modexprint(&gvar.video.page[0], 64, 64, 1, 7, 0, global_temp_status_text);
+	//while(!IN_KeyDown(sc_Enter)){ if(IN_KeyDown(sc_Escape)) goto quit; } IN_UserInput(1,1); //wwww
 #ifdef MODEXZ
 #ifdef FADE
 	modexPalBlack();	//reset the palette~
@@ -102,19 +103,28 @@ if(!dbg_noplayerinpu)
 #endif
 
 	// setup camera and screen~
-	strcpy(global_temp_status_text, "press a key for video setup");
-	modexprint(mv[0].page, 0, 64, 1, 7, 0, global_temp_status_text);
-
+	strcpy(global_temp_status_text, "press enter for page setup\nescape to quit");
+	modexprint(&gvar.video.page[0], 64, 64, 1, 7, 0, global_temp_status_text);
+	while(!IN_KeyDown(sc_Enter)){ if(IN_KeyDown(sc_Escape)) goto quit; } IN_UserInput(1,1); //wwww
 	modexHiganbanaPageSetup(&gvar.video);
-	mv[0].page = &gvar.video.page[0];
-	mv[0].map = &map;
-	mv[0].video = &gvar.video;
-	mv[0].pan	= &pan;
+	for(i=0;i<gvar.video.num_of_pages;i++)
+	{
+		mv[i].page = &gvar.video.page[i];
+		mv[i].map = &map;
+		mv[i].video = &gvar.video;
+		mv[i].pan	= &pan;
+	}
 	player[0].ent->spri->x = player[0].ent->spri->y = 20;
 
+	strcpy(global_temp_status_text, "press enter for mapGoTo setup\nescape to quit");
+	modexprint(mv[0].page/*&gvar.video.page[0]*/, 64, 64, 1, 7, 0, global_temp_status_text);
+	while(!IN_KeyDown(sc_Enter)){ if(IN_KeyDown(sc_Escape)) goto quit; } IN_UserInput(1,1); //wwww
 	// set up paging
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(mv, 0, 0);
+	strcpy(global_temp_status_text, "press enter for final initiation setup\nescape to quit");
+	modexprint(&gvar.video.page[0], 64, 64, 1, 7, 0, global_temp_status_text);
+	while(!IN_KeyDown(sc_Enter)){ if(IN_KeyDown(sc_Escape)) goto quit; } IN_UserInput(1,1); //wwww
 #endif
 
 	//TODO: put player in starting position of spot
@@ -145,7 +155,6 @@ if(!dbg_noplayerinpu)
 #ifdef FADE
 	modexFadeOn(4, gpal);
 #endif
-	if(!dbg_noplayerinpu)
 	while(!IN_KeyDown(sc_Escape))// && player[0].hp>0)
 	{
 		shinku(&gvar);
@@ -222,14 +231,9 @@ if(!dbg_noplayerinpu)
 		player[0].hp = 0;
 	}
 
-	else
-		while(!kbhit())
-		{
-			shinku(&gvar);
-		}
-
 	/* fade back to text mode */
 	/* but 1st lets save the game palette~ */
+	quit:
 #ifdef FADE
 	modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);
@@ -239,31 +243,7 @@ if(!dbg_noplayerinpu)
 	Shutdown16(&gvar);
 	printf("\nProject 16 zcroll.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
-	printf("tx: %d	", mv[0].tx);
-	printf("ty: %d\n", mv[0].ty);
-	printf("\n");
-	printf("player vars:\n");
-	printf("	x: %d", player[0].x); printf("	y: %d\n", player[0].y);
-	//if(player[0].hp==0) printf("%d wwww\n", player[0].y+8);
-	//else printf("\nplayer[0].y: %d\n", player[0].y);
-	printf("	tx: %d", player[0].tx); printf("	ty: %d\n", player[0].ty);
-	printf("	triggx: %d", player[0].triggerx); printf("	triggy: %d\n", player[0].triggery);
-	printf("	hp: %d", (player[0].hp));	printf("	q: %d", player[0].q);	printf("	player.info.dir: %d", player[0].info.dir);	printf("	player.d: %d ", player[0].d);
-		printf("	pdir=%d\n", player[0].pdir);
-	printf("	tile data value at player trigger position: %d\n\n", mv[0].map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))]);
-	printf("Virtual Screen: %dx", gvar.video.page[0].width);	printf("%d	", gvar.video.page[0].height);
-	printf("Screen: %dx", gvar.video.page[0].sw);	printf("%d\n", gvar.video.page[0].sh);
-	printf("virtual tile resolution: %dx", gvar.video.page[0].tilesw);	printf("%d	", gvar.video.page[0].tilesh);
-	printf("tile resolution: %dx", gvar.video.page[0].tw);	printf("%d\n", gvar.video.page[0].th);
-	printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);
-	modexprintmeminfo(&gvar.video);
-	//printf("mv[%u].tx: %d", pan.pn, mv[pan.pn].tx); printf("	mv[%u].ty: %d	", pan.pn, mv[pan.pn].ty);
-	printf("gvar.video.p=%u ", gvar.video.p); printf("gvar.video.r=%u ", gvar.video.r);
-	printf("pageflipflop=%u\n", pageflipflop);
-	printf("\n");
-	//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[0].map->width, mv[0].map->height, mv[0].map->data[0]);
-
-	printf("\n");
+	SCROLLEXITMESG;
 	switch(detectcpu())
 	{
 		case 0: cpus = "8086/8088 or 186/88"; break;

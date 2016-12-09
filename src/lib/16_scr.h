@@ -84,6 +84,42 @@ typedef struct
 #define MAPW	40
 #define MAPH	30
 
+	//if(player[0].hp==0) printf("%d wwww\n", player[0].y+8);
+	//else printf("\nplayer[0].y: %d\n", player[0].y);
+//	printf("palette offset:	%d\n", paloffset/3);
+//++++	printf("Total used: %zu\n", oldfreemem-GetFreeSize());
+//++++	printf("Total free: %zu\n", GetFreeSize());
+//not used now	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
+//not used now	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
+//printf("mv[%u].tx: %d", pan.pn, mv[pan.pn].tx); printf("	mv[%u].ty: %d	", pan.pn, mv[pan.pn].ty);
+//printf("gvar.kurokku:	"); printf("%.0f ", clock());	printf("tiku=%lu ", gvar.kurokku.tiku);	printf("t=%.0f ", gvar.kurokku.t);	printf("ticktock()=%f ", ticktock(&gvar));	printf("%.0f fps", (double)gvar.kurokku.tiku/ticktock(&gvar));
+//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[0].map->width, mv[0].map->height, mv[0].map->data[0]);
+#define SCROLLEXITMESG 	printf("tx: %d	", mv[0].tx);\
+	printf("ty: %d\n", mv[0].ty);\
+	printf("\n");\
+	printf("player vars:\n");\
+	printf("	x: %d", player[0].x); printf("	y: %d\n", player[0].y);\
+	\
+	printf("	tx: %d", player[0].tx); printf("	ty: %d\n", player[0].ty);\
+	printf("	triggx: %d", player[0].triggerx); printf("	triggy: %d\n", player[0].triggery);\
+	printf("	hp: %d", (player[0].hp));	printf("	q: %d", player[0].q);	printf("	player.info.dir: %d", player[0].info.dir);	printf("	player.d: %d ", player[0].d);\
+		printf("	pdir=%d\n", player[0].pdir);\
+	printf("	tile data value at player trigger position: %d\n\n", mv[0].map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))]);\
+\
+	printf("Virtual Screen: %dx", gvar.video.page[0].width);	printf("%d	", gvar.video.page[0].height);\
+	printf("Screen: %dx", gvar.video.page[0].sw);	printf("%d\n", gvar.video.page[0].sh);\
+	printf("virtual tile resolution: %dx", gvar.video.page[0].tilesw);	printf("%d	", gvar.video.page[0].tilesh);\
+	printf("tile resolution: %dx", gvar.video.page[0].tw);	printf("%d\n", gvar.video.page[0].th);\
+	printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);\
+	modexprintmeminfo(&gvar.video);\
+\
+	printf("gvar.video.p=%u ", gvar.video.p); printf("gvar.video.r=%u ", gvar.video.r);\
+	printf("pageflipflop=%u\n", pageflipflop);\
+\
+	printf("&global_temp_status_text = %Fp\n", &global_temp_status_text);\
+\
+	printf("\n");
+
 extern boolean pageflipflop, pageploop;
 extern unsigned char shinku_fps_indicator_page;
 

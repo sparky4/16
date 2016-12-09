@@ -9,6 +9,9 @@ broke much code w 1. Rewrite scroll16 to use only one player, instead of 1 of 4 
 6. Instead of drawing map as a rectangle of tiles and a few strips to fill the black area of partially visible tiles, draw just a slightly bigger rectangle, with it's edges a bit out of the screen. That shouldn't be too resourse-consuming, I believe, but requires less explicit calls and reads. Probably. // as long as it is faster do it! also make a graphical representation of it w --sparky4
 broke way too much code with this wwww7. As stuff did not quite initialize properly, I have disabled keyboard interrupt vector override to be able to shut down program prematurely in case something goes wrong. So, in case you just want to replace these new files with the older and working ones, please remember to re-enable that, or you won't be able to controll the game without it. // YOU BROKE 16_IN WITH ONE PLAYER INSTEAD OF USING AN ARRAY OF 1 WWWWWWW --sparky4
 
+Read This:
+https://en.wikipedia.org/wiki/Adaptive_tile_refresh
+
 
 ==== changed or planned ones by sparky4 ====
 planned ones:
