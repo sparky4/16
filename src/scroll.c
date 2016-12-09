@@ -20,7 +20,7 @@
  *
  */
 
-#include "src/lib/scroll16.h"
+#include "src/lib/16_scr.h"
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
 #include "src/lib/mapread.h"
@@ -93,7 +93,6 @@ void main(int argc, char *argv[])
 
 #endif
 	/*	input!	*/
-	if(!dbg_noplayerinpu)
 	IN_Default(0,&player,ctrl_Keyboard1);
 
 	/* save the palette */
@@ -186,7 +185,6 @@ void main(int argc, char *argv[])
 	modexFadeOn(4, gpal);
 #endif
 #endif
-	if(!dbg_noplayerinpu)
 	while(!IN_KeyDown(sc_Escape) && player[0].hp>0)
 	{
 		shinku(&gvar);
@@ -281,11 +279,6 @@ void main(int argc, char *argv[])
 	//if(IN_KeyDown(11)){ modexPalOverscan(15); }
 	if((player[0].q==1) && !(player[0].x%TILEWH==0 && player[0].y%TILEWH==0)) break;	//incase things go out of sync!
 	}
-	else
-		while(!kbhit())
-		{
-			shinku(&gvar);
-		}
 
 	/* fade back to text mode */
 	/* but 1st lets save the game palette~ */

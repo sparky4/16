@@ -75,7 +75,6 @@ void Startup16(global_game_variables_t *gvar)
 	if(!dbg_nommpmca)
 #endif
 	MM_Startup(gvar);
-if(!dbg_noplayerinpu)
 	IN_Startup(gvar);
 #ifdef __DEBUG__
 	if(!dbg_nommpmca){
@@ -106,7 +105,6 @@ void Shutdown16(global_game_variables_t *gvar)
 	if(!dbg_nommpmca)
 #endif
 	PM_Shutdown(gvar);
-if(!dbg_noplayerinpu)
 	IN_Shutdown(gvar);
 #ifdef __DEBUG__
 	if(!dbg_nommpmca){

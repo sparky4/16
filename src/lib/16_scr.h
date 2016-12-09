@@ -24,6 +24,7 @@
 #define __SCROLL16_H_
 
 #include "src/lib/16_head.h"
+#include "src/lib/16_tail.h"
 #include "src/lib/bakapee.h"
 #include "src/lib/16_vl.h"
 #include "src/lib/16_in.h"
@@ -33,7 +34,6 @@
 //#include "src/lib/16_map.h"	//new map stuff
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
-#include "src/lib/16_tail.h"
 
 #include <hw/cpu/cpu.h>
 #include <hw/dos/dos.h>

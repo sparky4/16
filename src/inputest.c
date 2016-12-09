@@ -33,27 +33,22 @@ main(int argc, char *argv[])
 	//extern struct inconfig inpu;
 	dbg_testkeyin=0;
 	dbg_testcontrolnoisy=1;
-	dbg_noplayerinpu=0;
-	if(!dbg_noplayerinpu)
-	{
-		start_timer(&gvar);
-		//Startup16(&gvar);
-		IN_Startup();
-		//IN_Default(0,&player,ctrl_Joystick1);
-		//IN_SetControlType(0,&player,ctrl_Joystick1);
-		IN_Default(0,&player,ctrl_Keyboard1);
-		IN_SetControlType(0,&player,ctrl_Keyboard1);
-	}
+	start_timer(&gvar);
+	//Startup16(&gvar);
+	IN_Startup();
+	//IN_Default(0,&player,ctrl_Joystick1);
+	//IN_SetControlType(0,&player,ctrl_Joystick1);
+	IN_Default(0,&player,ctrl_Keyboard1);
+	IN_SetControlType(0,&player,ctrl_Keyboard1);
+
 	player[0].q=1;
 	player[0].d=2;
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
 
 	nibbletest();
-	if(dbg_noplayerinpu) getch();
 	booleantest();
 	//printf("nibble size is %u\n", sizeof(nibble));
-	if(!dbg_noplayerinpu){
 	//printf("dbg_testkeyin=%u	dbg_testcontrolnoisy=%u	dbg_noplayerinpu=%u\nloop if this is not responsive then please KILL or reset machine sorry!!\n", dbg_testkeyin, dbg_testcontrolnoisy, dbg_noplayerinpu);
 	while(!IN_KeyDown(sc_Escape))
 	{
@@ -117,11 +112,9 @@ main(int argc, char *argv[])
 	}
 	IN_Shutdown();
 		//Shutdown16(&gvar);
-	}
 	//printf("%u\n", in.Keyboard[sc_Escape]);
 	printf("inputest.exe ");
 	printf("version %s\n", VERSION);
 	printf("testkeyin=%u\n", dbg_testkeyin);
 	printf("testcontrolnoisy=%u\n", dbg_testcontrolnoisy);
-	printf("dbg_noplayerinpu=%u\n", dbg_noplayerinpu);
 }

@@ -22,7 +22,7 @@
 /*
 	scroll16 library~
 */
-#include "src/lib/scroll16.h"
+#include "src/lib/16_scr.h"
 
 void walk(map_view_t *pip, player_t *player, word pn)
 {

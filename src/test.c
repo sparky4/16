@@ -23,7 +23,7 @@
 #include <stdio.h>
 #include "src/lib/16_vl.h"
 #include "src/lib/16_in.h"
-#include "src/lib/scroll16.h"
+#include "src/lib/16_scr.h"
 #include "src/lib/bakapee.h"
 
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
