@@ -1,0 +1,33 @@
+kd_act1.c:#define PLACESPRITE RF_PlaceSprite (&ob->sprite,ob->x,ob->y,ob->shapenum, \
+kd_act1.c:	RF_PlaceSprite (&ob->sprite,ob->x,ob->y,ob->shapenum,spritedraw,1);
+kd_act1.c:	RF_PlaceSprite (&ob->sprite,ob->x,ob->y,ob->shapenum,spritedraw,2);
+kd_act1.c:	RF_PlaceSprite (&ob->sprite,ob->x,ob->y,ob->shapenum,spritedraw,3);
+kd_act2.c:#define PLACESPRITE RF_PlaceSprite (&ob->sprite,ob->x,ob->y,ob->shapenum, \
+kd_act2.c:		RF_RemoveSprite (&ob->sprite);
+kd_demo.c:			RF_Scroll(move,0);
+kd_demo.c:			RF_Refresh();
+kd_demo.c:		RF_Scroll(offset - originxglobal,0);
+kd_demo.c:		RF_Refresh();
+kd_demo.c:			RF_Refresh();
+kd_keen.c:#define PLACESPRITE RF_PlaceSprite (&ob->sprite,ob->x,ob->y,ob->shapenum, \
+kd_keen.c:	RF_PlaceSprite (&ob->sprite
+kd_keen.c:	RF_PlaceSprite (&ob->sprite
+kd_keen.c:						RF_ForceRefresh ();
+kd_main.c:  RF_Shutdown ();
+kd_main.c:	RF_Startup ();
+kd_play.c:		RF_ForceRefresh();
+kd_play.c:		RF_ForceRefresh ();
+kd_play.c:			RF_ForceRefresh();		// don't refresh if loading a new game
+kd_play.c:		RF_ForceRefresh();
+kd_play.c:	RF_RemoveSprite (&gone->sprite);
+kd_play.c:		RF_ForceRefresh();
+kd_play.c:		RF_SetRefreshHook (NULL);
+kd_play.c:	RF_NewMap ();
+kd_play.c:	RF_MarkTileGraphics ();
+kd_play.c:		RF_SetRefreshHook (&FadeAndUnhook);
+kd_play.c:		RF_NewPosition (orgx,orgy);
+kd_play.c:		RF_Scroll (xscroll,yscroll);
+kd_play.c:						RF_RemoveSprite (&obj->sprite);
+kd_play.c:		RF_Refresh();
+kd_play.c:			RF_SetRefreshHook (&FadeAndUnhook);
+kd_play.c:			RF_NewPosition (orgx,orgy);
