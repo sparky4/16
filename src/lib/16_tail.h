@@ -32,10 +32,9 @@
 void DebugMemory_(global_game_variables_t *gvar, boolean q);
 void Shutdown16(global_game_variables_t *gvar);
 void Startup16(global_game_variables_t *gvar);
-#ifdef __WATCOMC__
-void Quit (char *error);
-#endif
+void ClearMemory (global_game_variables_t *gvar);
+void Quit (global_game_variables_t *gvar, char *error);
 void nibbletest();
 void booleantest();
 
-#endif
+#endif	/*__16_TAIL__ */

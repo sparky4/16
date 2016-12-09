@@ -1028,7 +1028,7 @@ dinorm:
 
 	if ((handle = open(GREXT"DICT."EXT,
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit ("Can't open "GREXT"DICT."EXT"!");
+		Quit (gvar, "Can't open "GREXT"DICT."EXT"!");
 
 	read(handle, &grhuffman, sizeof(grhuffman));
 	close(handle);
@@ -1040,7 +1040,7 @@ dinorm:
 
 	if ((handle = open(GREXT"HEAD."EXT,
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit ("Can't open "GREXT"HEAD."EXT"!");
+		Quit (gvar, "Can't open "GREXT"HEAD."EXT"!");
 
 	CA_FarRead(handle, (memptr)grstarts, (NUMCHUNKS+1)*FILEPOSSIZE);
 
@@ -1054,7 +1054,7 @@ dinorm:
 //
 	grhandle = open(GREXT"GRAPH."EXT, O_RDONLY | O_BINARY);
 	if (grhandle == -1)
-		Quit ("Cannot open "GREXT"GRAPH."EXT"!");
+		Quit (gvar, "Cannot open "GREXT"GRAPH."EXT"!");
 
 
 //
@@ -1134,11 +1134,11 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 // #ifdef MAPHEADERLINKED
 // 	if ((maphandle = open("GAMEMAPS."EXT,
 // 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-// 		Quit ("Can't open GAMEMAPS."EXT"!");
+// 		Quit (gvar, "Can't open GAMEMAPS."EXT"!");
 // //#else
 // 	if ((maphandle = open("MAPTEMP."EXT,
 // 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-// 		Quit ("Can't open MAPTEMP."EXT"!");
+// 		Quit (gvar, "Can't open MAPTEMP."EXT"!");
 // #endif
 }
 
@@ -1164,7 +1164,7 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 #ifndef AUDIOHEADERLINKED
 	if ((handle = open("AUDIOHED."EXT,
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit ("Can't open AUDIOHED."EXT"!");
+		Quit (gvar, "Can't open AUDIOHED."EXT"!");
 	length = filelength(handle);
 	MM_GetPtr (&(memptr)audiostarts,length);
 	CA_FarRead(handle, (byte far *)audiostarts, length);
@@ -1181,11 +1181,11 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 #ifndef AUDIOHEADERLINKED
 	if ((audiohandle = open("AUDIOT."EXT,
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit ("Can't open AUDIOT."EXT"!");
+		Quit (gvar, "Can't open AUDIOT."EXT"!");
 #else
 	if ((audiohandle = open("AUDIO."EXT,
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit ("Can't open AUDIO."EXT"!");
+		Quit (gvar, "Can't open AUDIO."EXT"!");
 #endif
 }*/
 
@@ -1291,7 +1291,7 @@ void CA_CacheAudioChunk (int chunk)
 // MDM begin - (GAMERS EDGE)
 //
 	if (!FindFile("AUDIO."EXT,NULL,2))
-		Quit("CA_CacheAudioChunk(): Can't find audio files.");
+		Quit (gvar, "CA_CacheAudioChunk(): Can't find audio files.");
 //
 // MDM end
 
@@ -1630,7 +1630,7 @@ void CAL_CacheSprite (int chunk, byte far *compressed)
 		break;
 
 	default:
-		Quit ("CAL_CacheSprite: Bad shifts number!");
+		Quit (gvar, "CAL_CacheSprite: Bad shifts number!");
 	}
 
 #endif
@@ -1789,7 +1789,7 @@ void CA_CacheGrChunk (int chunk)
 // MDM begin - (GAMERS EDGE)
 //
 	if (!FindFile("EGAGRAPH."EXT,NULL,2))
-		Quit("CA_CacheGrChunk(): Can't find graphics files.");
+		Quit (gvar, "CA_CacheGrChunk(): Can't find graphics files.");
 //
 // MDM end
 
@@ -2255,7 +2255,7 @@ void CA_CacheMarks (char *title)
 // MDM begin - (GAMERS EDGE)
 //
 	if (!FindFile("EGAGRAPH."EXT,NULL,2))
-		Quit("CA_CacheMarks(): Can't find graphics files.");
+		Quit (gvar, "CA_CacheMarks(): Can't find graphics files.");
 //
 // MDM end
 

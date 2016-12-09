@@ -28,7 +28,7 @@ Primary coder: John Carmack
 
 RELIES ON
 ---------
-Quit (char *error) function
+Quit (global_game_variables_t *gvar, char *error) function
 
 
 WORK TO DO
@@ -285,7 +285,7 @@ void MML_ShutdownEMS(global_game_variables_t *gvar)
 	}
 #endif
 	if(errorflag==true)
-		Quit("MML_ShutdownEMS: Error freeing EMS!\n");	//++++ add something
+		Quit (gvar, "MML_ShutdownEMS: Error freeing EMS!\n");	//++++ add something
 }
 
 /*
@@ -1105,7 +1105,7 @@ void MM_SetPurge(memptr *baseptr, int purge, global_game_variables_t *gvar)
 			gvar->mm.mmrover = gvar->mm.mmhead;
 		else if(gvar->mm.mmrover == start)
 		{
-			Quit("MM_SetPurge: Block not found!");
+			Quit (gvar, "MM_SetPurge: Block not found!");
 			//return;
 		}
 
@@ -1145,7 +1145,7 @@ void MM_SetLock(memptr *baseptr, boolean locked, global_game_variables_t *gvar)
 			gvar->mm.mmrover = gvar->mm.mmhead;
 		else if(gvar->mm.mmrover == start)
 		{
-			Quit("MM_SetLock: Block not found!");
+			Quit (gvar, "MM_SetLock: Block not found!");
 			//return;
 		}
 

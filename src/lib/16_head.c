@@ -78,71 +78,7 @@ US_CheckParm(char *parm,char **strings)
 	}
 	return(-1);
 }
-#ifdef __BORLANDC__
-//===========================================================================
 
-/*
-==========================
-=
-= Quit
-=
-==========================
-*/
-
-void Quit (char *error)
-{
-	unsigned        finscreen;
-	memptr	screen;
-	union REGS in, out;
-
-	//ClearMemory ();
-	if (!*error)
-	{
-	 //WriteConfig ();
-	}
-	else
-	{
-	 //CA_CacheGrChunk (ERRORSCREEN);
-	 //screen = grsegs[ERRORSCREEN];
-	}
-
-	//ShutdownId ();
-	//IN_Shutdown();
-	//modexLeave();
-	in.h.ah = 0x00;
-	in.h.al = 0x3;
-	int86(0x10, &in, &out);
-
-	if (error && *error)
-	{
-	  //movedata ((unsigned)screen,7,0xb800,0,7*160);
-	  //gotoxy (10,4);
-		printf("\n");
-	  puts(error);
-		printf("\n");
-	  //gotoxy (1,8);
-	  exit(1);
-	}
-	else
-	if (!error || !(*error))
-	{
-		//clrscr();
-		//#ifndef JAPAN
-		movedata ((unsigned)screen,7,0xb800,0,4000);
-		//gotoxy(1,24);
-		//#endif
-//asm	mov	bh,0
-//asm	mov	dh,23	// row
-//asm	mov	dl,0	// collumn
-//asm	mov ah,2
-//asm	int	0x10
-	}
-
-	exit(0);
-}
-
-//===========================================================================
-#endif
 
 byte dirchar(byte in)
 {

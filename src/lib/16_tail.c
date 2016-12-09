@@ -71,20 +71,13 @@ void Startup16(global_game_variables_t *gvar)
 #endif
 	gvar->mm.mmstarted=0;
 	gvar->pm.PMStarted=0;
-#ifdef __DEBUG__
-	if(!dbg_nommpmca)
-#endif
 	MM_Startup(gvar);
+#ifdef __WATCOMC__
 	IN_Startup(gvar);
-#ifdef __DEBUG__
-	if(!dbg_nommpmca){
 #endif
 	PM_Startup(gvar);
 	PM_UnlockMainMem(gvar);
 	CA_Startup(gvar);
-#ifdef __DEBUG__
-	}
-#endif
 }
 
 //===========================================================================
@@ -101,21 +94,159 @@ void Startup16(global_game_variables_t *gvar)
 
 void Shutdown16(global_game_variables_t *gvar)
 {
-#ifdef __DEBUG__
-	if(!dbg_nommpmca)
-#endif
 	PM_Shutdown(gvar);
+#ifdef __WATCOMC__
 	IN_Shutdown(gvar);
-#ifdef __DEBUG__
-	if(!dbg_nommpmca){
 #endif
 	CA_Shutdown(gvar);
 	MM_Shutdown(gvar);
-#ifdef __DEBUG__
-	}
-#endif
 }
 
+
+//===========================================================================
+
+/*
+====================
+=
+= ReadConfig
+=
+====================
+*/
+
+/*void ReadConfig(void)
+{
+	int                     file;
+	SDMode          sd;
+	SMMode          sm;
+	SDSMode         sds;
+
+
+	if ( (file = open(configname,O_BINARY | O_RDONLY)) != -1)
+	{
+	//
+	// valid config file
+	//
+		read(file,Scores,sizeof(HighScore) * MaxScores);
+
+		read(file,&sd,sizeof(sd));
+		read(file,&sm,sizeof(sm));
+		read(file,&sds,sizeof(sds));
+
+		read(file,&mouseenabled,sizeof(mouseenabled));
+		read(file,&joystickenabled,sizeof(joystickenabled));
+		read(file,&joypadenabled,sizeof(joypadenabled));
+		read(file,&joystickprogressive,sizeof(joystickprogressive));
+		read(file,&joystickport,sizeof(joystickport));
+
+		read(file,&dirscan,sizeof(dirscan));
+		read(file,&buttonscan,sizeof(buttonscan));
+		read(file,&buttonmouse,sizeof(buttonmouse));
+		read(file,&buttonjoy,sizeof(buttonjoy));
+
+		read(file,&viewsize,sizeof(viewsize));
+		read(file,&mouseadjustment,sizeof(mouseadjustment));
+
+		close(file);
+
+		if (sd == sdm_AdLib && !AdLibPresent && !SoundBlasterPresent)
+		{
+			sd = sdm_PC;
+			sd = smm_Off;
+		}
+
+		if ((sds == sds_SoundBlaster && !SoundBlasterPresent) ||
+			(sds == sds_SoundSource && !SoundSourcePresent))
+			sds = sds_Off;
+
+		if (!MousePresent)
+			mouseenabled = false;
+		if (!JoysPresent[joystickport])
+			joystickenabled = false;
+
+		MainMenu[6].active=1;
+		MainItems.curpos=0;
+	}
+	else
+	{
+	//
+	// no config file, so select by hardware
+	//
+		if (SoundBlasterPresent || AdLibPresent)
+		{
+			sd = sdm_AdLib;
+			sm = smm_AdLib;
+		}
+		else
+		{
+			sd = sdm_PC;
+			sm = smm_Off;
+		}
+
+		if (SoundBlasterPresent)
+			sds = sds_SoundBlaster;
+		else if (SoundSourcePresent)
+			sds = sds_SoundSource;
+		else
+			sds = sds_Off;
+
+		if (MousePresent)
+			mouseenabled = true;
+
+		joystickenabled = false;
+		joypadenabled = false;
+		joystickport = 0;
+		joystickprogressive = false;
+
+		viewsize = 15;
+		mouseadjustment=5;
+	}
+
+	SD_SetMusicMode (sm);
+	SD_SetSoundMode (sd);
+	SD_SetDigiDevice (sds);
+}*/
+
+
+/*
+====================
+=
+= WriteConfig
+=
+====================
+*/
+
+/*void WriteConfig(void)
+{
+	int                     file;
+
+	file = open(configname,O_CREAT | O_BINARY | O_WRONLY,
+				S_IREAD | S_IWRITE | S_IFREG);
+
+	if (file != -1)
+	{
+		write(file,Scores,sizeof(HighScore) * MaxScores);
+
+		write(file,&SoundMode,sizeof(SoundMode));
+		write(file,&MusicMode,sizeof(MusicMode));
+		write(file,&DigiMode,sizeof(DigiMode));
+
+		write(file,&mouseenabled,sizeof(mouseenabled));
+		write(file,&joystickenabled,sizeof(joystickenabled));
+		write(file,&joypadenabled,sizeof(joypadenabled));
+		write(file,&joystickprogressive,sizeof(joystickprogressive));
+		write(file,&joystickport,sizeof(joystickport));
+
+		write(file,&dirscan,sizeof(dirscan));
+		write(file,&buttonscan,sizeof(buttonscan));
+		write(file,&buttonmouse,sizeof(buttonmouse));
+		write(file,&buttonjoy,sizeof(buttonjoy));
+
+		write(file,&viewsize,sizeof(viewsize));
+		write(file,&mouseadjustment,sizeof(mouseadjustment));
+
+		close(file);
+	}
+}*/
 
 //===========================================================================
 
@@ -159,7 +290,22 @@ void DebugMemory_(global_game_variables_t *gvar, boolean q)
 #endif
 	if(q) MM_ShowMemory (gvar);
 }
-#ifdef __WATCOMC__
+
+/*
+==========================
+=
+= ClearMemory
+=
+==========================
+*/
+
+void ClearMemory (global_game_variables_t *gvar)
+{
+	PM_UnlockMainMem(gvar);
+	//snd
+	MM_SortMem (gvar);
+}
+
 /*
 ==========================
 =
@@ -168,46 +314,43 @@ void DebugMemory_(global_game_variables_t *gvar, boolean q)
 ==========================
 */
 
-void Quit (char *error)
+void Quit (global_game_variables_t *gvar, char *error)
 {
 	//unsigned        finscreen;
 	memptr	screen=0;
-	union REGS in, out;
 
-	//ClearMemory ();
+	ClearMemory (gvar);
 	if (!*error)
 	{
-	 //WriteConfig ();
+// #ifndef JAPAN
+// 		CA_CacheGrChunk (ORDERSCREEN);
+// 		screen = grsegs[ORDERSCREEN];
+// #endif
+// 		WriteConfig ();
 	}
 	else
 	{
-	 //CA_CacheGrChunk (ERRORSCREEN);
-	 //screen = grsegs[ERRORSCREEN];
+// 		CA_CacheGrChunk (ERRORSCREEN);
+// 		screen = grsegs[ERRORSCREEN];
 	}
-
-	//ShutdownId ();
-	IN_Shutdown();
-	//modexLeave();
-	in.h.ah = 0x00;
-	in.h.al = 0x3;
-	int86(0x10, &in, &out);
+	Shutdown16(gvar);
 
 	if (error && *error)
 	{
-	  //movedata ((unsigned)screen,7,0xb800,0,7*160);
-	  //gotoxy (10,4);
-	  fprintf(stderr, "%s\n", error);
-	  //gotoxy (1,8);
-	  exit(1);
+		movedata((unsigned)screen,7,0xb800,0,7*160);
+		gotoxy (10,4);
+		fprintf(stderr, "%s\n", error);
+		gotoxy (1,8);
+		exit(1);
 	}
 	else
 	if (!error || !(*error))
 	{
-		//clrscr();
-		//#ifndef JAPAN
+		clrscr();
+#ifndef JAPAN
 		movedata ((unsigned)screen,7,0xb800,0,4000);
-		//gotoxy(1,24);
-		//#endif
+		gotoxy(1,24);
+#endif
 //asm	mov	bh,0
 //asm	mov	dh,23	// row
 //asm	mov	dl,0	// collumn
@@ -217,7 +360,6 @@ void Quit (char *error)
 
 	exit(0);
 }
-#endif
 
 //===========================================================================
 

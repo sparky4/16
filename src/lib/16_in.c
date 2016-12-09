@@ -850,7 +850,7 @@ register	KeyboardDef	*def;
 		realdelta = false;
 	}
 	else if (DemoMode == demo_PlayDone)
-		Quit("Demo playback exceeded");
+		Quit ("Demo playback exceeded");
 	else
 	{
 #endif
@@ -973,7 +973,7 @@ register	KeyboardDef	*def;
 				DemoOffset += 2;
 
 			if (DemoOffset >= DemoSize)
-				Quit("Demo buffer overflow");
+				Quit ("Demo buffer overflow");
 
 			DemoBuffer[DemoOffset] = 1;
 			DemoBuffer[DemoOffset + 1] = dbyte;

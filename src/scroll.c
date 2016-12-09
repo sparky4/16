@@ -29,8 +29,6 @@
 //#define FADE
 #define MODEX	//this is for mode x initiating
 
-extern boolean dbg_nommpmca;
-
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 //bitmap_t *p;
 global_game_variables_t gvar;
@@ -60,8 +58,6 @@ boolean panswitch=0;//1
 
 void main(int argc, char *argv[])
 {
-	dbg_nommpmca=1;
-
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
 

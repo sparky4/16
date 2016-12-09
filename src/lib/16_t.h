@@ -67,6 +67,20 @@ typedef void _seg * memptr;//typedef void __based( void ) * memptr;	////old //--
 #ifdef __WATCOMC__
 #define _argv __argv
 #define _argc __argc
+
+//from http://www.verycomputer.com/3_65d875cc818b54ec_1.htm
+void clrscr(void);
+#pragma aux clrscr= \
+  " mov ah, 0fh " \
+  " int 10h " \
+  " xor ah, ah " \
+  " int 10h " ;
+//from http://stackoverflow.com/questions/18425748/gotoxy-function-using-printf-s-position
+inline void gotoxy(int x,int y)
+{
+	printf("\x1B[%d;%df", y, x);
+	fflush(stdout);  // @jxh
+}
 #endif
 
 #endif/*_TYPE_H_*/

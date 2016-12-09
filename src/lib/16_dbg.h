@@ -18,7 +18,6 @@ extern boolean dbg_debugpm;
 #ifdef __DEBUG_InputMgr__
 extern boolean dbg_testkeyin,dbg_testcontrolnoisy;
 #endif
-extern boolean dbg_nommpmca;
 #endif
 
 # ifdef DEBUGSERIAL
