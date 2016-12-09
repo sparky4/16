@@ -20,7 +20,7 @@
  *
  */
 
-#include "src/lib/zcroll16.h"
+#include "src/lib/scroll16.h"
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
 #include "src/lib/16render.h"
@@ -156,7 +156,7 @@ if(!dbg_noplayerinpu)
 		//player movement
 		IN_ReadControl(0, &player);
 		if(!panswitch){
-			walk(player[0].ent, mv);
+			ZC_walk(player[0].ent, mv);
 			//walk(mv, &player, 0);
 		}
 

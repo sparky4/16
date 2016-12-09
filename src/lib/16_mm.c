@@ -756,7 +756,6 @@ void MM_Startup(global_game_variables_t *gvar)
 	//huge void huge	*start;
 	void far	*start;
 	word	segstart;//,endfree;
-	//memptr *peeonself;
 
 	if(gvar->mm.mmstarted)
 		MM_Shutdown(gvar);
@@ -782,11 +781,8 @@ void MM_Startup(global_game_variables_t *gvar)
 	gvar->mm.mmnew->length = 0xffff;
 	gvar->mm.mmnew->attributes = LOCKBIT;
 	gvar->mm.mmnew->next = NULL;
-	//gvar->mm.mmnew->useptr = peeonself;
 	gvar->mm.mmrover = gvar->mm.mmhead;
 
-	//printf("		%x\n", peeonself);
-	//printf("		%x\n", *peeonself);
 //
 // get all available near conventional memory segments
 //

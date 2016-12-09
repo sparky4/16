@@ -56,11 +56,24 @@ typedef struct {
 	page_t *page;
 	int tx; //appears to be the top left tile position on the viewable screen map
 	int ty; //appears to be the top left tile position on the viewable screen map
-	word dxThresh; //????
-	word dyThresh; //????
+	word dxThresh; //Threshold for physical tile switch
+	word dyThresh; //Threshold for physical tile switch
 	video_t *video;	//pointer to game variables of the video
 	pan_t *pan;		//pointer the the page panning debug system
+	int dx, dy, delta, d;
 } map_view_t;
+/* Map is presumed to:
+ * 1. Have all the required layers and tilesets within itself
+ * 2. Have a 'fence' around accessible blocks to simplify boundary logic
+ * 3. Have a persistent map and tile size among the layers
+ * Map view is presumed to:
+ * 1. Calculate, store and update a panning info, which includes, but not limited to:
+ * 	combined layer information, actual map representation (reflecting real state of the game),
+ * 	pixel shift for smooth tile scrolling.
+ * 2. Provide ways to draw a visible part of map. For simplicity with smooth scrolling,
+ * 	additional row/column is always drawn at the each side of the map. This implies that 'fence'
+ * 	should have a sprite too. Map is drawn left-to-right, top-to-bottom.
+ */
 
 typedef struct
 {
@@ -98,5 +111,14 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 //void qclean();
 void shinku(global_game_variables_t *gv);
 void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch);
+
+// Move an entity around. Should actually be in 16_entity
+boolean ZC_walk(entity_t *ent, map_view_t *map_v);
+
+// Move player around and call map scrolling if required/possible
+void walk_player(player_t *player, map_view_t *map_v);
+
+// Scroll map in one direction (assumed from player's movement)
+void near mapScroll(map_view_t *mv, player_t *player);
 
 #endif /*__SCROLL16_H_*/

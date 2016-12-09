@@ -924,3 +924,95 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 	//printf("x=%d	y=%d	bx=%d		by=%d\n", x, y, bx, by);
 	pip->video->r=1;
 }
+
+/*
+ * from zcroll16.c
+*/
+
+boolean boundary_check(int x, int y, int dx, int dy, int h, int w)
+{
+	return (dx > 0 && (x + dx) < w) || (dx < 0 && (x + dx) >= 0) || (dy > 0 && (y + dy) < h) || (dy < 0 && (y + dy) >= 0) || (dx == dy && dx == 0);
+}
+
+boolean coll_check(int x, int y, int dx, int dy, map_view_t *map_v)
+{
+	// Assume everything crosses at most 1 tile at once
+	return dx && 1;//crossable_tile(x + dx, map_v) || dy && crossable_tile(y + dy, map_v);
+}
+
+boolean ZC_walk(entity_t *ent, map_view_t *map_v)
+{
+	//return 1;
+	int dx = 1;
+	int dy = 1;
+	switch(ent->d)
+	{
+		case 2:
+			return 0;
+		case 1:
+			dx = -dx;
+		case 3:
+			dy = 0;
+			break;
+		case 0:
+			dy = -dy;
+		case 4:
+			dx = 0;
+			break;
+	}
+	if(coll_check(ent->x, ent->y, dx, dy,  map_v))
+	{
+		// Allow movement
+		// Set speed
+		// Start animation
+		// Mark next tile as occupied
+		// Mark this tile as vacant
+		return 1;
+	}
+	return 0;
+}
+
+void player_walk(player_t *player, map_view_t *map_v){
+	int dx=16, dy=16;
+	if(ZC_walk(player->ent, map_v) && boundary_check(map_v->tx, map_v->ty, dx, dy, map_v->map->width - 2*map_v->page->tilesw, map_v->map->height - 2*map_v->page->tilesh))
+	{
+		mapScroll(map_v, player);
+		// (Un)load stuff?
+	}
+}
+
+void near mapScroll(map_view_t *mv, player_t *player)
+{
+	//word x, y;  /* coordinate for drawing */
+	int c = 1;
+	int delta;
+	mv->delta += player->dx | player->dy;
+	delta = mv->delta;
+	mv->d = (player->dx) ? (player->dx > 0) ? 3 : 1 : (player->dy) ? (player->dy > 0) ? 4 : 0 : 2;
+	switch(mv->d){
+		case 4:
+			c = -1;
+			delta = -delta;
+		case 0:
+			if(!(delta + mv->dxThresh))
+			{
+				mv->delta = 0;
+				mv->ty += c;
+			}
+			break;
+		case 3:
+			c = -1;
+			delta = -delta;
+		case 1:
+			if(!(delta + mv->dyThresh))
+			{
+				mv->delta = 0;
+				mv->tx += c;
+			}
+			break;
+		default:
+			break;
+	}
+
+	mv->video->r=1;
+}
