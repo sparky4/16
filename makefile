@@ -318,7 +318,7 @@ modex.$(OBJ):	 $(MODEXLIB)/modex.asm
 #other~
 #
 clean: .symbolic
-	@if exist pee.txt wmake -h initlibs
+	@if not exist $(DOSLIB)/buildall.sh wmake -h initlibs
 	@for %f in ($(EXEC)) do @if exist %f $(REMOVECOMMAND) %f
 !ifdef __LINUX__
 	@rm *.LIB
@@ -414,7 +414,6 @@ reinitlibs: .symbolic
 	@wmake -h initlibs
 
 initlibs: .symbolic
-	@$(COPYCOMMAND) data/pee.txt .
 	@$(COPYCOMMAND) git_con.fig .git/config
 	@$(COPYCOMMAND) git_modu.les .gitmodules
 	@$(COPYCOMMAND) git_igno.re .gitignore
