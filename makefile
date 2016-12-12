@@ -42,8 +42,8 @@ COPYCOMMAND=cp -f
 DIRSEP=/
 OBJ=obj
 DUMP=cat
-DOSLIBMAKE=./make.sh
-DOSLIBMAKEALL=./buildall.sh
+DOSLIBMAKE=./make.sh build all dos86h
+DOSLIBMAKEALL=./buildall.sh build all dos86h
 !else		#DOS ^^
 to_os_path=/=\
 REMOVECOMMAND=del
