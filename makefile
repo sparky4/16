@@ -318,6 +318,7 @@ modex.$(OBJ):	 $(MODEXLIB)/modex.asm
 #other~
 #
 clean: .symbolic
+	@if exist pee.txt wmake -h initlibs
 	@for %f in ($(EXEC)) do @if exist %f $(REMOVECOMMAND) %f
 !ifdef __LINUX__
 	@rm *.LIB
@@ -367,9 +368,9 @@ comq: .symbolic
 
 www: .symbolic
 	@ssh -p 26 sparky4@4ch.mooo.com 'rm -f /var/www/16/*exe*'
-	#@rm -f /var/www/$(EXEC)*
-	@rm -f /var/www/*.exe.zip*
-	#@cp ./$(EXEC) $(DIRSEP)var$(DIRSEP)www$(DIRSEP)
+	#@$(REMOVECOMMAND) -f /var/www/$(EXEC)*
+	@$(REMOVECOMMAND) -f /var/www/*.exe.zip*
+	#@$(COPYCOMMAND) ./$(EXEC) $(DIRSEP)var$(DIRSEP)www$(DIRSEP)
 	@./src/util/z.sh $(EXEC) $(EXEC)
 	@scp -r -P 26 *.exe 4ch.mooo.com:/var/www/16/
 	@scp -r -P 26 x4get.bat 4ch.mooo.com:/var/www/16/
@@ -404,18 +405,19 @@ uplibs: .symbolic
 	@cd $(BUILD_ROOT)
 
 reinitlibs: .symbolic
-	@rm -rf $(DOSLIB)
-	@rm -rf $(JSMNLIB)
-	@rm -rf 16/CatacombApocalypse
-	@rm -rf 16/wolf3d
-	@rm -rf 16/keen
-	@rm -rf 16/Catacomb3D
+	@$(REMOVECOMMAND) -rf $(DOSLIB)
+	@$(REMOVECOMMAND) -rf $(JSMNLIB)
+	@$(REMOVECOMMAND) -rf 16/CatacombApocalypse
+	@$(REMOVECOMMAND) -rf 16/wolf3d
+	@$(REMOVECOMMAND) -rf 16/keen
+	@$(REMOVECOMMAND) -rf 16/Catacomb3D
 	@wmake -h initlibs
 
 initlibs: .symbolic
-	@cp git_con.fig .git/config
-	@cp git_modu.les .gitmodules
-	@cp git_igno.re .gitignore
+	@$(COPYCOMMAND) data/pee.txt .
+	@$(COPYCOMMAND) git_con.fig .git/config
+	@$(COPYCOMMAND) git_modu.les .gitmodules
+	@$(COPYCOMMAND) git_igno.re .gitignore
 	@cd $(SRCLIB:$(to_os_path))
 	@git clone https://github.com/joncampbell123/doslib.git
 	@git clone https://github.com/zserge/jsmn.git
@@ -426,7 +428,7 @@ initlibs: .symbolic
 	@git clone https://github.com/keendreams/keen.git
 	@git clone https://github.com/FlatRockSoft/Catacomb3D.git
 	@cd $(BUILD_ROOT)
-	@cp $(DOSLIB)/make-lowercase .
+	@$(COPYCOMMAND) $(DOSLIB)/make-lowercase .
 
 ##
 ##	experimental libs
