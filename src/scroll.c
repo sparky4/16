@@ -23,7 +23,6 @@
 #include "src/lib/16_scr.h"
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
-#include "src/lib/mapread.h"
 #include "src/lib/16_dbg.h"
 
 //#define FADE

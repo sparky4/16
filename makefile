@@ -106,10 +106,10 @@ LIBFLAGS=$(WLIBQ) -b -n
 # objects
 #
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
-OLDLIBOBJS=bitmap.$(OBJ) mapread.$(OBJ) 16render.$(OBJ)
+OLDLIBOBJS=bitmap.$(OBJ) 16render.$(OBJ)
 GFXLIBOBJS = 16_vl.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) 16_scr.$(OBJ) 16_vrs.$(OBJ) 16_sprit.$(OBJ) $(OLDLIBOBJS)
-16LIBOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_in.$(OBJ) 16_head.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) wcpu.$(OBJ) 16_timer.$(OBJ) jsmn.$(OBJ)
-#16planar.$(OBJ) planar.$(OBJ)
+16LIBOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_in.$(OBJ) 16_head.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) wcpu.$(OBJ) 16_timer.$(OBJ) jsmn.$(OBJ) 16_map.$(OBJ)
+#16planar.$(OBJ) planar.$(OBJ) mapread.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 !ifeq DEBUGSERIAL 1
 DOSLIBOBJ += 8250.$(OBJ)

@@ -31,14 +31,17 @@
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 
+//#define DEBUG_MAPDATA
+//#define DEBUG_MAPVAR
+//#define DEBUG_DUMPVARS
+//#define DEBUG_JS
+
 //TODO: 16_mm and 16_ca must handle this
 typedef struct {
 	bitmap_t huge *btdata;		//old
 	planar_buf_t huge *data;	//old
-	word tileHeight;
-	word tileWidth;
-	unsigned int rows;
-	unsigned int cols;
+	word tileHeight, tileWidth;
+	unsigned int rows, cols;
 	#ifdef __DEBUG__
 	boolean debug_text;	//show the value of the tile! wwww
 	byte *debug_data;
@@ -50,12 +53,17 @@ typedef struct {
 typedef struct {
 	//long		planestart[3];
 	//unsigned	planelength[3];
-	byte	* huge *data;	//TODO: 16_mm and 16_ca must handle this
-	tiles_t **tiles;		//TODO: 16_mm and 16_ca must handle this
-	unsigned int width, height;		//this has to be positive
+	byte *data;			//TODO: 16_mm and 16_ca must handle this
+	byte * huge *layerdata;	//TODO: 16_mm and 16_ca must handle this
+	tiles_t *tiles;		//TODO: 16_mm and 16_ca must handle this
+	tiles_t * huge *layertile;	//TODO: 16_mm and 16_ca must handle this
+	int width, height;		//this has to be signed!
 	char		name[16];
 } map_t;
 
+int jsoneq(const char *json, jsmntok_t *tok, const char *s);
+word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, map_t *map, dword q);
 int loadmap(char *mn, map_t *map);
+int newloadmap(char *mn, map_t *map);
 
-#endif/*_LIBMAPREAD_H_*/
+#endif/*_16_LIB__H_*/
