@@ -20,7 +20,7 @@
  *
  */
 
-#include "src/lib/16_scr.h"
+#include "src/lib/scroll16.h"
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/wcpu.h"
 #include "src/lib/16render.h"
@@ -154,8 +154,8 @@ void main(int argc, char *argv[])
 		//player movement
 		IN_ReadControl(0, &player);
 		if(!panswitch){
-			ZC_walk(player[0].ent, mv);
-			//walk(mv, &player, 0);
+			//ZC_walk(player[0].ent, mv);
+			walk(mv, &player, 0);
 		}
 
 		//the scripting stuff....

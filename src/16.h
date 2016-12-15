@@ -27,7 +27,7 @@
 #include "src/lib/16_tail.h"
 #include "src/lib/16_vl.h"
 #include "src/lib/wcpu/wcpu.h"
-#include "src/lib/16_scr.h"
+#include "src/lib/scroll16.h"
 #include "src/lib/16_timer.h"
 #include "src/lib/16_dbg.h"
 
