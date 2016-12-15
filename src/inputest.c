@@ -46,13 +46,12 @@ main(int argc, char *argv[])
 	player[0].persist_aniframe=0;
 	player[0].speed=4;
 
-	nibbletest();
-	booleantest();
-	//printf("nibble size is %u\n", sizeof(nibble));
+//0000	nibbletest();
+//0000	booleantest();
 	//printf("dbg_testkeyin=%u	dbg_testcontrolnoisy=%u	dbg_noplayerinpu=%u\nloop if this is not responsive then please KILL or reset machine sorry!!\n", dbg_testkeyin, dbg_testcontrolnoisy, dbg_noplayerinpu);
 	while(!IN_KeyDown(sc_Escape))
 	{
-		shinkutxt(&gvar);
+//0000		shinkutxt(&gvar);
 		IN_ReadControl(0, &player);
 		#define INC_PER_FRAME if(player[0].q&1) player[0].persist_aniframe++; if(player[0].persist_aniframe>4) player[0].persist_aniframe = 1;
 		switch(player[0].d)
