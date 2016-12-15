@@ -1,59 +1,59 @@
 
 	== default ==
 
-  FREE block at 2fb10016 of size 18
-  USED block at 2fb10028 of size 50
-  USED block at 2fb1005a of size 50
-  USED block at 2fb1008c of size 50
-  USED block at 2fb100be of size 50
-  USED block at 2fb100f0 of size 50
-  USED block at 2fb10122 of size 50
-  USED block at 2fb10154 of size 50
-  USED block at 2fb10186 of size 50
-  USED block at 2fb101b8 of size 50
-  USED block at 2fb101ea of size 50
-  USED block at 2fb1021c of size 50
-  USED block at 2fb1024e of size 50
-  USED block at 2fb10280 of size 50
-  FREE block at 2fb102b2 of size 14
-  USED block at 2fb102c0 of size 20
-  USED block at 2fb102d4 of size 136
-  FREE block at 2fb1035c of size 7328
+  FREE block at 28a00016 of size 18
+  USED block at 28a00028 of size 50
+  USED block at 28a0005a of size 50
+  USED block at 28a0008c of size 50
+  USED block at 28a000be of size 50
+  USED block at 28a000f0 of size 50
+  USED block at 28a00122 of size 50
+  USED block at 28a00154 of size 50
+  USED block at 28a00186 of size 50
+  USED block at 28a001b8 of size 50
+  USED block at 28a001ea of size 50
+  USED block at 28a0021c of size 50
+  USED block at 28a0024e of size 50
+  USED block at 28a00280 of size 50
+  FREE block at 28a002b2 of size 14
+  USED block at 28a002c0 of size 20
+  USED block at 28a002d4 of size 136
+  FREE block at 28a0035c of size 7328
 OK - end of heap
 
 	== near ==
 
-  USED block at 1fb0ec66 of size 12
-  USED block at 1fb0ec72 of size 330
-  USED block at 1fb0edbc of size 52
-  USED block at 1fb0edf0 of size 20
-  USED block at 1fb0ee04 of size 20
-  USED block at 1fb0ee18 of size 20
-  USED block at 1fb0ee2c of size 20
-  USED block at 1fb0ee40 of size 20
-  USED block at 1fb0ee54 of size 4520
+  USED block at 189fec66 of size 12
+  USED block at 189fec72 of size 330
+  USED block at 189fedbc of size 52
+  USED block at 189fedf0 of size 20
+  USED block at 189fee04 of size 20
+  USED block at 189fee18 of size 20
+  USED block at 189fee2c of size 20
+  USED block at 189fee40 of size 20
+  USED block at 189fee54 of size 4520
 OK - end of heap
 
 	== far ==
 
-  USED block at 2fb10016 of size 18
-  USED block at 2fb10028 of size 50
-  USED block at 2fb1005a of size 50
-  USED block at 2fb1008c of size 50
-  USED block at 2fb100be of size 50
-  USED block at 2fb100f0 of size 50
-  USED block at 2fb10122 of size 50
-  USED block at 2fb10154 of size 50
-  USED block at 2fb10186 of size 50
-  USED block at 2fb101b8 of size 50
-  USED block at 2fb101ea of size 50
-  USED block at 2fb1021c of size 50
-  USED block at 2fb1024e of size 50
-  USED block at 2fb10280 of size 50
-  USED block at 2fb102b2 of size 14
-  USED block at 2fb102c0 of size 20
-  USED block at 2fb102d4 of size 136
-  USED block at 2fb1035c of size 7328
+  USED block at 28a00016 of size 18
+  USED block at 28a00028 of size 50
+  USED block at 28a0005a of size 50
+  USED block at 28a0008c of size 50
+  USED block at 28a000be of size 50
+  USED block at 28a000f0 of size 50
+  USED block at 28a00122 of size 50
+  USED block at 28a00154 of size 50
+  USED block at 28a00186 of size 50
+  USED block at 28a001b8 of size 50
+  USED block at 28a001ea of size 50
+  USED block at 28a0021c of size 50
+  USED block at 28a0024e of size 50
+  USED block at 28a00280 of size 50
+  USED block at 28a002b2 of size 14
+  USED block at 28a002c0 of size 20
+  USED block at 28a002d4 of size 136
+  USED block at 28a0035c of size 7328
 OK - end of heap
 
 Memory Type         Total      Used       Free
@@ -63,9 +63,9 @@ Near		   5014		494	  4520
 Far		   8166		806	  7360
 ----------------  --------   --------   --------
 coreleft = 4518
-farcoreleft = 3512
-GetFreeSize = 64548
+farcoreleft = 28106
+GetFreeSize = 23610
 GetNearFreeSize = 4520
-GetFarFreeSize = 64548
+GetFarFreeSize = 23610
 memavl = 4518
-stackavail = 31515
+stackavail = 31527

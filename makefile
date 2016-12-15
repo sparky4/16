@@ -32,6 +32,8 @@
 # serial output is plain text ASCII.
 DEBUGSERIAL=1
 
+DOSLIB_MEMMODE=dos86l
+
 #192x144
 #wwww will add these
 !ifdef __LINUX__
@@ -42,8 +44,8 @@ COPYCOMMAND=cp -f
 DIRSEP=/
 OBJ=obj
 DUMP=cat
-DOSLIBMAKE=./make.sh build all dos86h
-DOSLIBMAKEALL=./buildall.sh build all dos86h
+DOSLIBMAKE=./make.sh build all $(DOSLIB_MEMMODE)
+DOSLIBMAKEALL=./buildall.sh build all $(DOSLIB_MEMMODE)
 !else		#DOS ^^
 to_os_path=/=\
 REMOVECOMMAND=del
@@ -91,7 +93,8 @@ UPXQ=-qqq
 S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -zq -k32768#54096#60000
 Z_FLAGS=-zk0 -zc -zp8 -zm
 O_FLAGS=-obmilr -oe=24 -out -oh -ei -onac -ol+ -ok##x
-T_FLAGS=-bt=dos -wx -mh -0 -fpi87 -fo=.$(OBJ) -d1###### -e=65536
+T_FLAGS=-bt=dos -wx -ml -0 -fpi87 -fo=.$(OBJ) -d1###### -e=65536
+#-mh
 
 CPPFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1
 !ifeq DEBUGSERIAL 1
@@ -118,9 +121,9 @@ DOSLIBOBJ += 8250.$(OBJ)
 #
 # libraries
 #
-DOSLIBLIBS = $(DOSLIB_CPU)/dos86h/cpu.lib $(DOSLIB_DOS)/dos86h/dos.lib $(DOSLIB_VGA)/dos86h/vga.lib
+DOSLIBLIBS = $(DOSLIB_CPU)/$(DOSLIB_MEMMODE)/cpu.lib $(DOSLIB_DOS)/$(DOSLIB_MEMMODE)/dos.lib $(DOSLIB_VGA)/$(DOSLIB_MEMMODE)/vga.lib
 !ifeq DEBUGSERIAL 1
-DOSLIBLIBS += $(DOSLIB_8250)/dos86h/8250.lib
+DOSLIBLIBS += $(DOSLIB_8250)/$(DOSLIB_MEMMODE)/8250.lib
 !endif
 16LIB=$(16LIBOBJS)#16.lib bad program lock up
 
@@ -131,7 +134,7 @@ DOSLIBLIBS += $(DOSLIB_8250)/dos86h/8250.lib
 
 .asm : $(MODEXLIB)
 
-.lib : .;$(DOSLIB_CPU)/dos86h;$(DOSLIB_DOS)/dos86h;$(DOSLIB_VGA)/dos86h;$(DOSLIB_8250)/dos86h
+.lib : .;$(DOSLIB_CPU)/$(DOSLIB_MEMMODE);$(DOSLIB_DOS)/$(DOSLIB_MEMMODE);$(DOSLIB_VGA)/$(DOSLIB_MEMMODE);$(DOSLIB_8250)/$(DOSLIB_MEMMODE)
 
 .obj : .
 
@@ -268,20 +271,20 @@ gfx.lib: $(GFXLIBOBJS)
 #	doslib
 #
 # library deps 16-bit huge
-$(DOSLIB_CPU)/dos86h/cpu.lib:
+$(DOSLIB_CPU)/$(DOSLIB_MEMMODE)/cpu.lib:
 	cd $(DOSLIB_CPU:$(to_os_path)) && $(DOSLIBMAKE) && cd $(BUILD_ROOT)
-$(DOSLIB_DOS)/dos86h/dos.lib:
+$(DOSLIB_DOS)/$(DOSLIB_MEMMODE)/dos.lib:
 	cd $(DOSLIB_DOS:$(to_os_path)) && $(DOSLIBMAKE) && cd $(BUILD_ROOT)
-$(DOSLIB_VGA)/dos86h/vgatty.lib:
+$(DOSLIB_VGA)/$(DOSLIB_MEMMODE)/vgatty.lib:
 	cd $(DOSLIB_VGA:$(to_os_path)) && $(DOSLIBMAKE) && cd $(BUILD_ROOT)
-$(DOSLIB_VGA)/dos86h/vga.lib:
+$(DOSLIB_VGA)/$(DOSLIB_MEMMODE)/vga.lib:
 	cd $(DOSLIB_VGA:$(to_os_path)) && $(DOSLIBMAKE) && cd $(BUILD_ROOT)
-$(DOSLIB_8250)/dos86h/8250.lib:
+$(DOSLIB_8250)/$(DOSLIB_MEMMODE)/8250.lib:
 	cd $(DOSLIB_8250:$(to_os_path)) && $(DOSLIBMAKE) && cd $(BUILD_ROOT)
 
 joytest.exe:
 	cd $(DOSLIB_JOYSTICK:$(to_os_path)) && $(DOSLIBMAKE) && cd $(BUILD_ROOT)
-	$(COPYCOMMAND) $(DOSLIB_JOYSTICK:$(to_os_path))$(DIRSEP)dos86h$(DIRSEP)test.exe joytest.exe
+	$(COPYCOMMAND) $(DOSLIB_JOYSTICK:$(to_os_path))$(DIRSEP)$(DOSLIB_MEMMODE)$(DIRSEP)test.exe joytest.exe
 
 16_vl.$(OBJ):$(SRCLIB)/16_vl.c $(SRCLIB)/16_vl.h
 bakapee.$(OBJ):$(SRCLIB)/bakapee.c $(SRCLIB)/bakapee.h
