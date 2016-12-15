@@ -32,8 +32,6 @@
 # serial output is plain text ASCII.
 DEBUGSERIAL=1
 
-DOSLIB_MEMMODE=dos86l
-
 #192x144
 #wwww will add these
 !ifdef __LINUX__
@@ -44,8 +42,8 @@ COPYCOMMAND=cp -f
 DIRSEP=/
 OBJ=obj
 DUMP=cat
-DOSLIBMAKE=./make.sh build all $(DOSLIB_MEMMODE)
-DOSLIBMAKEALL=./buildall.sh build all $(DOSLIB_MEMMODE)
+DOSLIBMAKE=./make.sh build all
+DOSLIBMAKEALL=./buildall.sh build all
 !else		#DOS ^^
 to_os_path=/=\
 REMOVECOMMAND=del
@@ -79,6 +77,7 @@ DOSLIB_DOS=src/lib/doslib/hw/dos
 DOSLIB_VGA=src/lib/doslib/hw/vga
 DOSLIB_8250=src/lib/doslib/hw/8250
 DOSLIB_JOYSTICK=src/lib/doslib/hw/joystick
+DOSLIB_MEMMODE=dos86l
 
 #
 # quiet flags
@@ -272,18 +271,18 @@ gfx.lib: $(GFXLIBOBJS)
 #
 # library deps 16-bit huge
 $(DOSLIB_CPU)/$(DOSLIB_MEMMODE)/cpu.lib:
-	cd $(DOSLIB_CPU:$(to_os_path)) && $(DOSLIBMAKE) && cd $(BUILD_ROOT)
+	cd $(DOSLIB_CPU:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
 $(DOSLIB_DOS)/$(DOSLIB_MEMMODE)/dos.lib:
-	cd $(DOSLIB_DOS:$(to_os_path)) && $(DOSLIBMAKE) && cd $(BUILD_ROOT)
+	cd $(DOSLIB_DOS:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
 $(DOSLIB_VGA)/$(DOSLIB_MEMMODE)/vgatty.lib:
-	cd $(DOSLIB_VGA:$(to_os_path)) && $(DOSLIBMAKE) && cd $(BUILD_ROOT)
+	cd $(DOSLIB_VGA:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
 $(DOSLIB_VGA)/$(DOSLIB_MEMMODE)/vga.lib:
-	cd $(DOSLIB_VGA:$(to_os_path)) && $(DOSLIBMAKE) && cd $(BUILD_ROOT)
+	cd $(DOSLIB_VGA:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
 $(DOSLIB_8250)/$(DOSLIB_MEMMODE)/8250.lib:
-	cd $(DOSLIB_8250:$(to_os_path)) && $(DOSLIBMAKE) && cd $(BUILD_ROOT)
+	cd $(DOSLIB_8250:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
 
 joytest.exe:
-	cd $(DOSLIB_JOYSTICK:$(to_os_path)) && $(DOSLIBMAKE) && cd $(BUILD_ROOT)
+	cd $(DOSLIB_JOYSTICK:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
 	$(COPYCOMMAND) $(DOSLIB_JOYSTICK:$(to_os_path))$(DIRSEP)$(DOSLIB_MEMMODE)$(DIRSEP)test.exe joytest.exe
 
 16_vl.$(OBJ):$(SRCLIB)/16_vl.c $(SRCLIB)/16_vl.h
@@ -391,12 +390,12 @@ vomitchan: .symbolic
 #git submodule add <repo>
 mkdl: .symbolic
 	@cd $(DOSLIB:$(to_os_path))
-	@$(DOSLIBMAKEALL)
+	@$(DOSLIBMAKEALL) $(DOSLIB_MEMMODE)
 	@cd $(BUILD_ROOT)
 
 cldl: .symbolic
 	@cd $(DOSLIB:$(to_os_path))
-	@$(DOSLIBMAKEALL) clean
+	@$(DOSLIBMAKEALL) $(DOSLIB_MEMMODE) clean
 	@cd $(BUILD_ROOT)
 
 uplibs: .symbolic
