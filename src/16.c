@@ -31,37 +31,9 @@ void
 main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
-	// DOSLIB: check our environment
-	probe_dos();
-
-	// DOSLIB: what CPU are we using?
-	// NTS: I can see from the makefile Sparky4 intends this to run on 8088 by the -0 switch in CFLAGS.
-	//      So this code by itself shouldn't care too much what CPU it's running on. Except that other
-	//      parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
-	//      the CPU to carry out tasks. --J.C.
-	cpu_probe();
-
-	// DOSLIB: check for VGA
-	if (!probe_vga()) {
-		printf("VGA probe failed\n");
-		return;
-	}
-	// hardware must be VGA or higher!
-	if (!(vga_state.vga_flags & VGA_IS_VGA)) {
-		printf("This program requires VGA or higher graphics hardware\n");
-		return;
-	}
-
-	if (_DEBUG_INIT() == 0) {
-#ifdef DEBUGSERIAL
-		printf("WARNING: Failed to initialize DEBUG output\n");
-#endif
-	}
-	_DEBUG("Serial debug output started\n"); // NTS: All serial output must end messages with newline, or DOSBox-X will not emit text to log
-	_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);
+	Startup16(&gvar);
 
 	engi_stat = ENGI_RUN;
-	textInit();
 
 	/* save the palette */
 	dpal = modexNewPal();
@@ -72,10 +44,8 @@ main(int argc, char *argv[])
 	modexSavePalFile("data/g.pal", gpal);
 	VGAmodeX(1, 1, &gvar);
 //	modexPalBlack();	//so player will not see loadings~
-	IN_Startup();
 	IN_Default(0,&player,ctrl_Joystick);
 	//modexprint(&screen, 32, 32, 1, 2, 0, "a", 1);
-	start_timer(&gvar);
 	while(ENGI_EXIT != engi_stat)
 	{
 		IN_ReadControl(0,&player);
@@ -90,10 +60,10 @@ main(int argc, char *argv[])
 		case 2: cpus = "386 or newer"; break;
 		default: cpus = "internal error"; break;
 	}
+	Shutdown16(&gvar);
 	VGAmodeX(0, 1, &gvar);
 	printf("Project 16 16.exe. This is supposed to be the actual finished game executable!\n");
 	printf("version %s\n", VERSION);
 	printf("detected CPU type: %s\n", cpus);
-	IN_Shutdown();
 	modexFadeOn(4, dpal);
 }

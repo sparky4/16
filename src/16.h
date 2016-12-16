@@ -31,12 +31,4 @@
 #include "src/lib/16_timer.h"
 #include "src/lib/16_dbg.h"
 
-typedef enum {
-	ENGI_EXIT,
-	ENGI_QUIT,
-	ENGI_RUN,
-	ENGI_INPUT,
-	ENGI_PAUSE
-} engi_stat_t;
-
 #endif /*__16_H_*/

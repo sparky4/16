@@ -20,7 +20,7 @@
  *
  */
 
-#include "16text.h"
+#include "src/lib/16text.h"
 
 /* this array holds the rom font descriptors */
 font_t romFonts[4];

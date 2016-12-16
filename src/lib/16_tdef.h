@@ -330,6 +330,14 @@ typedef struct
 //==========================================================================
 
 //actual global game varables!
+typedef enum {
+	ENGI_EXIT,
+	ENGI_QUIT,
+	ENGI_RUN,
+	ENGI_INPUT,
+	ENGI_PAUSE
+} engi_stat_t;
+
 typedef struct
 {
 	video_t	video;	// video settings variable

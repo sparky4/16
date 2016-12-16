@@ -56,6 +56,7 @@ DOSLIBMAKEALL=.\build.bat
 !endif
 
 TARGET_OS = dos
+MEMORYMODE = l
 
 BUILD_ROOT=$+$(%__CWD__)$-
 #EXMMTESTDIR=16$(DIRSEP)exmmtest$(DIRSEP)
@@ -77,7 +78,7 @@ DOSLIB_DOS=src/lib/doslib/hw/dos
 DOSLIB_VGA=src/lib/doslib/hw/vga
 DOSLIB_8250=src/lib/doslib/hw/8250
 DOSLIB_JOYSTICK=src/lib/doslib/hw/joystick
-DOSLIB_MEMMODE=dos86l
+DOSLIB_MEMMODE=dos86$(MEMORYMODE)
 
 #
 # quiet flags
@@ -92,8 +93,7 @@ UPXQ=-qqq
 S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -zq -k32768#54096#60000
 Z_FLAGS=-zk0 -zc -zp8 -zm
 O_FLAGS=-obmilr -oe=24 -out -oh -ei -onac -ol+ -ok##x
-T_FLAGS=-bt=dos -wx -ml -0 -fpi87 -fo=.$(OBJ) -d1###### -e=65536
-#-mh
+T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 -fo=.$(OBJ) -d1###### -e=65536
 
 CPPFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1
 !ifeq DEBUGSERIAL 1
@@ -101,7 +101,7 @@ CPPFLAGS += -DDEBUGSERIAL
 !endif
 AFLAGS=$(WCLQ) $(T_FLAGS)
 CFLAGS=$(WCLQ) $(T_FLAGS) -wo -i"$(DOSLIB)" $(O_FLAGS) $(S_FLAGS) $(Z_FLAGS)
-LFLAGS=$(WCLQ) -l=dos -fm=$^&.mah $(S_FLAGS)
+LFLAGS=$(WCLQ) -l=dos -fd -fm=$^&.mah $(S_FLAGS)
 LIBFLAGS=$(WLIBQ) -b -n
 
 #
@@ -110,7 +110,7 @@ LIBFLAGS=$(WLIBQ) -b -n
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
 OLDLIBOBJS=bitmap.$(OBJ) 16render.$(OBJ)
 GFXLIBOBJS = 16_vl.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16_vrs.$(OBJ) 16_sprit.$(OBJ) $(OLDLIBOBJS)
-16LIBOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_in.$(OBJ) 16_head.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) wcpu.$(OBJ) 16_timer.$(OBJ) jsmn.$(OBJ) 16_map.$(OBJ)
+16LIBOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_in.$(OBJ) 16_head.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) wcpu.$(OBJ) 16_timer.$(OBJ) jsmn.$(OBJ) 16_map.$(OBJ) 16text.$(OBJ)
 #16planar.$(OBJ) planar.$(OBJ) mapread.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 !ifeq DEBUGSERIAL 1
@@ -294,7 +294,7 @@ bakapee.$(OBJ):$(SRCLIB)/bakapee.c $(SRCLIB)/bakapee.h
 bitmap.$(OBJ):	$(SRCLIB)/bitmap.c $(SRCLIB)/bitmap.h
 planar.$(OBJ):	$(SRCLIB)/planar.c $(SRCLIB)/planar.h
 scroll16.$(OBJ):$(SRCLIB)/scroll16.c $(SRCLIB)/scroll16.h
-16text.$(OBJ):	$(SRCLIB)/16text.c
+16text.$(OBJ):	$(SRCLIB)/16text.c $(SRCLIB)/16text.h
 mapread.$(OBJ):$(SRCLIB)/mapread.c $(SRCLIB)/mapread.h
 16_map.$(OBJ):$(SRCLIB)/16_map.c $(SRCLIB)/16_map.h
 16_timer.$(OBJ):$(SRCLIB)/16_timer.c $(SRCLIB)/16_timer.h

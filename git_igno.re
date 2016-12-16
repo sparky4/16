@@ -19,6 +19,7 @@ TODO~
 LICENCE~
 *.mah
 *.MAH
+__wcl__.lnk
 !bcexmm.map
 !makefile
 !modex.lib
