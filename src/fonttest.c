@@ -21,8 +21,8 @@
  */
 #include <stdio.h>
 #include <conio.h>
-#include "lib/16_t.h"
-#include "lib/16text.h"
+#include "src/lib/16_t.h"
+#include "src/lib/16text.h"
 
 void main(int argc, char near *argv[])
 {

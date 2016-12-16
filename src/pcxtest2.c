@@ -85,7 +85,7 @@ void main() {
 	}
 
 //0000	bmp = bitmapLoadPcx("data/koishi~~.pcx");
-	bmp = bitmapLoadPcx("data/chikyuu.pcx");
+	bmp = bitmapLoadPcx("data/chikyuu.pcx", &gvar);
 //	bmp = bitmapLoadPcx("data/koishi^^.pcx");
 //	bmp = bitmapLoadPcx("16/PCX_LIB/chikyuu.pcx");
 //----	p = planar_buf_from_bitmap(&bmp);

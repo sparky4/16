@@ -28,7 +28,7 @@
 
 #define MODEXZ
 
-//TODO: known issues the array dependent mv stuff and player arrays
+//bitmap_t p;
 static map_t map;
 player_t player[MaxPlayers];
 map_view_t mv[4];
@@ -76,8 +76,8 @@ void main(int argc, char *argv[])
 
 	// data
 	read_vrs(&gvar, "data/spri/chikyuu.vrs", player[0].ent->spri->spritesheet);
-	player[0].data = malloc(48*128); //TODO use exmm
-	*player[0].data = bitmapLoadPcx("data/chikyuu.pcx"); // load sprite
+	player[0].data = malloc(72*128); //TODO use exmm
+	*player[0].data = bitmapLoadPcx("data/chikyuu.pcx", &gvar); // load sprite
 
 	//	input!
 	IN_Default(0, &player,ctrl_Keyboard1);
@@ -93,8 +93,10 @@ void main(int argc, char *argv[])
 #ifdef MODEXZ
 #ifdef FADE
 	modexPalBlack();	//reset the palette~
+#endif
 	CA_LoadFile("data/spri/chikyuu.pal", &pal, &gvar);
 	modexPalUpdate1(pal);
+#ifdef FADE
 	gpal = modexNewPal();
 	modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);
@@ -178,7 +180,6 @@ void main(int argc, char *argv[])
 		}	//p
 #ifdef FADE
 		if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv[0].page); IN_UserInput(1,1); } //p
-		if(IN_KeyDown(23)){ modexDrawSprite(mv[1].page, 160, 120, player[0].data); IN_UserInput(1,1); } //o
 		if(IN_KeyDown(22)){
 			printf("2paloffset	=	%d\n", paloffset/3);
 			IN_UserInput(1,1);
@@ -203,8 +204,8 @@ void main(int argc, char *argv[])
 		}
 		if(IN_KeyDown(66))	//f8
 		{
-	//		modexDrawSprite(mv[0].page, 16, 16, p);
-			modexDrawSprite(mv[0].page, 32+48, 16, (player[0].data));
+//			modexDrawSprite(mv[0].page, 16, 16, &p);
+			modexDrawSprite(mv[0].page, 32+72, 16, (player[0].data));
 		}
 		//TODO fmemtest into page
 		/*if(IN_KeyDown(4+1))	//4

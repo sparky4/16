@@ -25,7 +25,7 @@
 #include <string.h>
 #include "src/lib/16_vl.h"
 #include "src/lib/bitmap.h"
-//----#include "src/lib/planar.h"
+#include "src/lib/16render.h"
 
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 
@@ -33,9 +33,7 @@ void main() {
 	static global_game_variables_t gvar;
 	bitmap_t bmp;
 //----	planar_buf_t *p;
-	int i;
 	word start;
-	int plane;
 	float t1, t2;
 
 	// DOSLIB: check our environment
@@ -60,7 +58,7 @@ void main() {
 	}
 
 //0000	bmp = bitmapLoadPcx("data/koishi~~.pcx");
-	bmp = bitmapLoadPcx("data/chikyuu.pcx");
+	bmp = bitmapLoadPcx("data/chikyuu.pcx", &gvar);
 //	bmp = bitmapLoadPcx("data/koishi^^.pcx");
 //	bmp = bitmapLoadPcx("16/PCX_LIB/chikyuu.pcx");
 //----	p = planar_buf_from_bitmap(&bmp);

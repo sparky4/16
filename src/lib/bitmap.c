@@ -24,6 +24,9 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include "src/lib/bitmap.h"
+#include "src/lib/16_mm.h"
+#include "src/lib/16_pm.h"
+#include "src/lib/16_ca.h"
 
 static struct pcxHeader {
 	byte id;
@@ -91,7 +94,7 @@ static void loadPcxPalette(FILE *file, bitmap_t *result) {
 
 
 bitmap_t
-bitmapLoadPcx(char *filename) {
+bitmapLoadPcx(char *filename, global_game_variables_t *gv) {
 	FILE *file;
 	bitmap_t result;
 	dword bufSize;
@@ -111,7 +114,9 @@ bitmapLoadPcx(char *filename) {
 	/* allocate the buffer */
 	//printf("%zu\n", _memmax());
 	bufSize = (/*(dword)*/result.width * result.height);
-	result.data = _fmalloc(bufSize);
+	//CA_LoadFile(filename, (memptr *)(result.data), gv);
+	result.data = malloc(bufSize);
+
 //	result.data = (byte far *)_fmalloc(bufSize);
 //	result.data = (byte __huge *)halloc(bufSize, sizeof(byte));
 	/*printf("&bufSize=%p\n", &bufSize);
@@ -121,7 +126,6 @@ bitmapLoadPcx(char *filename) {
 	printf("Size of result.width is %zu \n", result.width);
 	printf("Size of result.height is %zu \n", result.height);
 	printf("Dimensions of result is %lu\n", (dword)result.width*result.height);*/
-	//exit(0);
 	if(!result.data) {
 		fprintf(stderr, "Could not allocate memory for bitmap data.");
 		fclose(file);

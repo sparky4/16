@@ -173,11 +173,11 @@ TESTEXEC2 = &
 	test.exe &
 	test0.exe &
 	pcxtest.exe &
-	pcxtest2.exe
+	pcxtest2.exe &
+	db.exe
 UTILEXEC = &
 	palettel.exe &
-	palettec.exe &
-	db.exe
+	palettec.exe
 EXEC = &
 	16.exe &
 	bakapi.exe &
@@ -212,7 +212,7 @@ fonttest.exe:	 fonttest.$(OBJ) gfx.lib
 fontgfx.exe:	fontgfx.$(OBJ) gfx.lib $(DOSLIBLIBS)
 inputest.exe:	 inputest.$(OBJ) $(16LIB) $(DOSLIBLIBS)
 #sountest.exe:	sountest.$(OBJ) $(16LIB)
-pcxtest.exe:	pcxtest.$(OBJ) gfx.lib $(DOSLIBLIBS)
+pcxtest.exe:	pcxtest.$(OBJ) gfx.lib $(DOSLIBLIBS) $(16LIB)##++++
 vrstest.exe:	vrstest.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
 #vgacamm.exe:	vgacamm.$(OBJ) $(16LIB) gfx.lib $(DOSLIBLIBS)
 palettec.exe:	 palettec.$(OBJ) gfx.lib $(DOSLIBLIBS)
@@ -255,7 +255,7 @@ inputest.$(OBJ):$(SRC)/inputest.c
 #tsthimem.$(OBJ): $(SRC)/tsthimem.c
 exmmtest.$(OBJ):$(SRC)/exmmtest.c
 vgmtest.$(OBJ):$(SRC)/vgmtest.c
-db.$(OBJ):$(SRC)/db.c
+db.$(OBJ):$(SRC)/util/db.c
 
 #
 # non executable objects libraries

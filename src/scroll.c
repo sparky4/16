@@ -28,8 +28,7 @@
 //#define FADE
 #define MODEX	//this is for mode x initiating
 
-//word far *clock= (word far*) 0x046C; /* 18.2hz clock */
-//bitmap_t *p;
+//bitmap_t p;
 static map_t map;
 player_t player[MaxPlayers];
 map_view_t mv[4];
@@ -77,8 +76,8 @@ void main(int argc, char *argv[])
 	//mappalptr = map.tiles->btdata->palette;
 
 	/* data */
-	//player[0].data = _fmalloc(48*128); //TODO use exmm
-	*player[0].data = bitmapLoadPcx("data/chikyuu.pcx"); // load sprite
+	player[0].data = malloc(72*128); //TODO use exmm
+	*player[0].data = bitmapLoadPcx("data/chikyuu.pcx", &gvar); // load sprite
 
 	/* create the planar buffer */
 ////++++	(player[0].data) = *planar_buf_from_bitmap(&p);
@@ -218,7 +217,6 @@ void main(int argc, char *argv[])
 #ifdef MODEX
 #ifdef FADE
 	if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv[0].page); modexpdump(mv[1].page);  IN_UserInput(1,1); } //p
-	if(IN_KeyDown(23)){ modexDrawSprite(mv[1].page, 160, 120, player[0].data); IN_UserInput(1,1); } //o
 	if(IN_KeyDown(22)){
 	paloffset=0; modexPalBlack(); modexPalUpdate(player[0].data, &paloffset, 0, 0);
 	printf("1paloffset	=	%d\n", paloffset/3);
@@ -258,8 +256,8 @@ void main(int argc, char *argv[])
 	}
 	if(IN_KeyDown(66))	//f8
 	{
-//		modexDrawSprite(mv[0].page, 16, 16, p);
-		modexDrawSprite(mv[0].page, 32+48, 16, (player[0].data));
+//		modexDrawSprite(mv[0].page, 16, 16, &p);
+		modexDrawSprite(mv[0].page, 32+72, 16, (player[0].data));
 	}
 	//TODO fmemtest into page
 	/*if(IN_KeyDown(4+1))	//4
