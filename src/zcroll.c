@@ -76,6 +76,8 @@ void main(int argc, char *argv[])
 
 	// data
 	read_vrs(&gvar, "data/spri/chikyuu.vrs", player[0].ent->spri->spritesheet);
+	player[0].data = malloc(48*128); //TODO use exmm
+	*player[0].data = bitmapLoadPcx("data/chikyuu.pcx"); // load sprite
 
 	//	input!
 	IN_Default(0, &player,ctrl_Keyboard1);
@@ -141,9 +143,9 @@ void main(int argc, char *argv[])
 #ifdef FADE
 	modexFadeOn(4, gpal);
 #endif
-	strcpy(global_temp_status_text, "press enter for the loop of zcroll\nescape to quit");
+	/*strcpy(global_temp_status_text, "press enter for the loop of zcroll\nescape to quit");
 	modexprint(&gvar.video.page[0], 144, 72, 1, 7, 0, global_temp_status_text);
-	while(!IN_KeyDown(sc_Enter)){ if(IN_KeyDown(sc_Escape)) goto quit; } IN_UserInput(1,1); //wwww
+	while(!IN_KeyDown(sc_Enter)){ if(IN_KeyDown(sc_Escape)) goto quit; } IN_UserInput(1,1);*///wwww
 	while(!IN_KeyDown(sc_Escape))// && player[0].hp>0)
 	{
 		shinku(&gvar);
@@ -175,7 +177,8 @@ void main(int argc, char *argv[])
 			 IN_UserInput(1,1);
 		}	//p
 #ifdef FADE
-		if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv[0].page); IN_UserInput(1,1); }
+		if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv[0].page); IN_UserInput(1,1); } //p
+		if(IN_KeyDown(23)){ modexDrawSprite(mv[1].page, 160, 120, player[0].data); IN_UserInput(1,1); } //o
 		if(IN_KeyDown(22)){
 			printf("2paloffset	=	%d\n", paloffset/3);
 			IN_UserInput(1,1);
@@ -222,7 +225,7 @@ void main(int argc, char *argv[])
 
 	/* fade back to text mode */
 	/* but 1st lets save the game palette~ */
-	quit:
+	//quit:
 #ifdef FADE
 	modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);

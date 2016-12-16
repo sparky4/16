@@ -1,0 +1,71 @@
+
+	== default ==
+
+  FREE block at 29720016 of size 18
+  USED block at 29720028 of size 50
+  USED block at 2972005a of size 50
+  USED block at 2972008c of size 50
+  USED block at 297200be of size 50
+  USED block at 297200f0 of size 50
+  USED block at 29720122 of size 50
+  USED block at 29720154 of size 50
+  USED block at 29720186 of size 50
+  USED block at 297201b8 of size 50
+  USED block at 297201ea of size 50
+  USED block at 2972021c of size 50
+  USED block at 2972024e of size 50
+  USED block at 29720280 of size 50
+  FREE block at 297202b2 of size 14
+  USED block at 297202c0 of size 20
+  USED block at 297202d4 of size 136
+  FREE block at 2972035c of size 7328
+OK - end of heap
+
+	== near ==
+
+  USED block at 1971ec66 of size 12
+  USED block at 1971ec72 of size 528
+  USED block at 1971ee82 of size 72
+  USED block at 1971eeca of size 20
+  USED block at 1971eede of size 20
+  USED block at 1971eef2 of size 20
+  USED block at 1971ef06 of size 20
+  USED block at 1971ef1a of size 20
+  USED block at 1971ef2e of size 4302
+OK - end of heap
+
+	== far ==
+
+  USED block at 29720016 of size 18
+  USED block at 29720028 of size 50
+  USED block at 2972005a of size 50
+  USED block at 2972008c of size 50
+  USED block at 297200be of size 50
+  USED block at 297200f0 of size 50
+  USED block at 29720122 of size 50
+  USED block at 29720154 of size 50
+  USED block at 29720186 of size 50
+  USED block at 297201b8 of size 50
+  USED block at 297201ea of size 50
+  USED block at 2972021c of size 50
+  USED block at 2972024e of size 50
+  USED block at 29720280 of size 50
+  USED block at 297202b2 of size 14
+  USED block at 297202c0 of size 20
+  USED block at 297202d4 of size 136
+  USED block at 2972035c of size 7328
+OK - end of heap
+
+Memory Type         Total      Used       Free
+----------------  --------   --------   --------
+Default		   8166		806	  7360
+Near		   5014		712	  4302
+Far		   8166		806	  7360
+----------------  --------   --------   --------
+coreleft = 4300
+farcoreleft = 27888
+GetFreeSize = 23610
+GetNearFreeSize = 4302
+GetFarFreeSize = 23610
+memavl = 4300
+stackavail = 31527
