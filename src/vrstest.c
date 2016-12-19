@@ -49,39 +49,10 @@ void main() {
 	uint32_t vrl_size;
 	int num_of_vrl;
 	struct vrl1_vgax_header huge *curr_vrl;
-	//word w=0;
+	word w=0;
 
-	gvar.mm.mmstarted=0;
-#ifdef __DEBUG_PM__
-	dbg_debugpm=1;
-#endif
-	// DOSLIB: check our environment
-	probe_dos();
+	Startup16(&gvar);
 
-	// DOSLIB: what CPU are we using?
-	// NTS: I can see from the makefile Sparky4 intends this to run on 8088 by the -0 switch in CFLAGS.
-	//      So this code by itself shouldn't care too much what CPU it's running on. Except that other
-	//      parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
-	//      the CPU to carry out tasks. --J.C.
-	cpu_probe();
-
-	// DOSLIB: check for VGA
-	if (!probe_vga()) {
-		printf("VGA probe failed\n");
-		return;
-	}
-	// hardware must be VGA or higher!
-	if (!(vga_state.vga_flags & VGA_IS_VGA)) {
-		printf("This program requires VGA or higher graphics hardware\n");
-		return;
-	}
-
-	//gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
-
-	MM_Startup(&gvar);
-	PM_Startup(&gvar);
-	PM_UnlockMainMem(&gvar);
-	CA_Startup(&gvar);
 	// What should be done by read_vrs:
 	//sega = (mm.bufferseg);
 	if(CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &gvar)) baka=1; else baka=0;
@@ -144,14 +115,14 @@ void main() {
 
 	t2 = (*clockw-start)/18.2;
 
-	modexLoadPalFile("data/spri/chikyuu.pal", &pal);
-	modexPalUpdate1(pal);
+	/*modexLoadPalFile("data/spri/chikyuu.pal", &pal);
+	modexPalUpdate1(pal);*/
 	for (i = 0; i < 5; i++){
 	spri.delay = 1; animate_spri(&spri); spri.x += 20; /*sleep(1);*/ }
 
-	while(!kbhit())
+	while(!IN_KeyDown(sc_Escape))
 	{
-		/*switch(w)
+		switch(w)
 		{
 			case 1024:
 				modexPalUpdate0(pal);
@@ -159,18 +130,17 @@ void main() {
 			default:
 				w++;
 			break;
-		}*/
+		}
 	}
 	VGAmodeX(0, 1, &gvar);
 	MM_ShowMemory(&gvar);
 	MM_DumpData(&gvar);
 	MM_Report_(&gvar);
+	Shutdown16(&gvar);
 	free(spri.sprite_vrl_cont);
+	free(vrl_line_offsets);
 	MM_FreePtr(&bigbuffer, &gvar);
 	//MM_FreePtr(&((void __based(sega)*)spri.spritesheet->buffer), &mm);
-	PM_Shutdown(&gvar);
-	CA_Shutdown(&gvar);
-	MM_Shutdown(&gvar);
 	//printf("CPU to VGA: %f\n", t1);
 	//printf("VGA to VGA: %f\n", t2);
 	heapdump(&gvar);

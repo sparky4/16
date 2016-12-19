@@ -289,7 +289,7 @@ void DebugMemory_(global_game_variables_t *gvar, boolean q)
 	printf("With purge:"); if(q) printf("	"); printf("%uk\n", MM_TotalFree(gvar)/1024);
 	if(q) printf("------------\n");
 #ifdef __WATCOMC__
-	IN_Ack ();
+	//IN_Ack ();
 #endif
 	if(q) MM_ShowMemory (gvar);
 }
