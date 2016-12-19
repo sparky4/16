@@ -49,7 +49,7 @@ void main() {
 	uint32_t vrl_size;
 	int num_of_vrl;
 	struct vrl1_vgax_header huge *curr_vrl;
-	word w=0;
+	//word w=0;
 
 	gvar.mm.mmstarted=0;
 #ifdef __DEBUG_PM__
@@ -144,12 +144,14 @@ void main() {
 
 	t2 = (*clockw-start)/18.2;
 
+	modexLoadPalFile("data/spri/chikyuu.pal", &pal);
+	modexPalUpdate1(pal);
 	for (i = 0; i < 5; i++){
 	spri.delay = 1; animate_spri(&spri); spri.x += 20; /*sleep(1);*/ }
 
 	while(!kbhit())
 	{
-		switch(w)
+		/*switch(w)
 		{
 			case 1024:
 				modexPalUpdate0(pal);
@@ -157,7 +159,7 @@ void main() {
 			default:
 				w++;
 			break;
-		}
+		}*/
 	}
 	VGAmodeX(0, 1, &gvar);
 	MM_ShowMemory(&gvar);
