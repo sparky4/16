@@ -20,7 +20,7 @@
  *
  */
 
-//#include "src/lib/16_head.h"
+#include "src/lib/16_head.h"
 #include "src/lib/16_vl.h"
 #include "src/lib/16_sprit.h"
 #include "src/lib/16_tail.h"
@@ -37,7 +37,7 @@ void main() {
 	int i;
 	word start;
 	float t1, t2;
-	boolean baka;
+	//boolean baka;
 	byte *pal=0;
 	int size=0;
 	struct sprite spri;
@@ -55,7 +55,8 @@ void main() {
 
 	// What should be done by read_vrs:
 	//sega = (mm.bufferseg);
-	if(CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &gvar)) baka=1; else baka=0;
+	//if(
+	CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &gvar);//) baka=1; else baka=0;
 
 	// Insert sanity cheks later
 	vrs.buffer = bigbuffer;
@@ -151,6 +152,6 @@ void main() {
 //0000	printf("gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
 //0000	printf("gvar.video.page[0].height: %u\n", gvar.video.page[0].height);
 	printf("Num %d", num_of_vrl);
-	if(baka) printf("\nyay!\n");
-	else printf("\npoo!\n");
+//	if(baka) printf("\nyay!\n");
+//	else printf("\npoo!\n");
 }
