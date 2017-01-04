@@ -1252,7 +1252,11 @@ boolean IN_KeyDown(byte code)
 #endif
 	return inpu.Keyboard[code];
 #ifdef __DEBUG_InputMgr__
-	else return kbhit();
+	else
+		if(dbg_notest && kbhit())
+			return 1;
+		else
+			return 0;
 #endif
 }
 
