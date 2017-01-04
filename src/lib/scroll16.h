@@ -33,7 +33,7 @@
 #include "src/lib/16render.h"
 //#include "src/lib/16_map.h"	//new map stuff
 #include "src/lib/16_timer.h"
-#include "src/lib/wcpu/wcpu.h"
+#include "src/lib/wcpu/16_wcpu.h"
 
 #include <hw/cpu/cpu.h>
 #include <hw/dos/dos.h>

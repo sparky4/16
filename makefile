@@ -63,21 +63,22 @@ BUILD_ROOT=$+$(%__CWD__)$-
 DATADIR=data$(DIRSEP)
 SPRI=$(DATADIR)/spri
 SRC=src
-SRCLIB=src/lib
-JSMNLIB=src/lib/jsmn
-NYANLIB=src/lib/nyan
-EXMMLIB=src/lib/exmm
-MODEXLIB16=src/lib/16_vl
-MODEXLIB=src/lib/modex
-VGMSNDLIB=src/lib/vgmsnd
-DOSLIB=src/lib/doslib
-WCPULIB=src/lib/wcpu
+UTIL=$(SRC)/util
+SRCLIB=$(SRC)/lib
+JSMNLIB=$(SRCLIB)/jsmn
+NYANLIB=$(SRCLIB)/nyan
+EXMMLIB=$(SRCLIB)/exmm
+MODEXLIB16=$(SRCLIB)/16_vl
+MODEXLIB=$(SRCLIB)/modex
+VGMSNDLIB=$(SRCLIB)/vgmsnd
+DOSLIB=$(SRCLIB)/doslib
+WCPULIB=$(SRCLIB)/wcpu
 
-DOSLIB_CPU=src/lib/doslib/hw/cpu
-DOSLIB_DOS=src/lib/doslib/hw/dos
-DOSLIB_VGA=src/lib/doslib/hw/vga
-DOSLIB_8250=src/lib/doslib/hw/8250
-DOSLIB_JOYSTICK=src/lib/doslib/hw/joystick
+DOSLIB_CPU=$(DOSLIB)/hw/cpu
+DOSLIB_DOS=$(DOSLIB)/hw/dos
+DOSLIB_VGA=$(DOSLIB)/hw/vga
+DOSLIB_8250=$(DOSLIB)/hw/8250
+DOSLIB_JOYSTICK=$(DOSLIB)/hw/joystick
 DOSLIB_MEMMODE=dos86$(MEMORYMODE)
 
 #
@@ -110,7 +111,7 @@ LIBFLAGS=$(WLIBQ) -b -n
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
 OLDLIBOBJS=bitmap.$(OBJ) 16render.$(OBJ)
 GFXLIBOBJS = 16_vl.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16_vrs.$(OBJ) 16_sprit.$(OBJ) $(OLDLIBOBJS)
-16LIBOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_in.$(OBJ) 16_head.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) wcpu.$(OBJ) 16_timer.$(OBJ) jsmn.$(OBJ) 16_map.$(OBJ) 16text.$(OBJ)
+16LIBOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_in.$(OBJ) 16_head.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_wcpu.$(OBJ) 16_timer.$(OBJ) jsmn.$(OBJ) 16_map.$(OBJ) 16text.$(OBJ)
 #16planar.$(OBJ) planar.$(OBJ) mapread.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 !ifeq DEBUGSERIAL 1
@@ -129,9 +130,9 @@ DOSLIBLIBS += $(DOSLIB_8250)/$(DOSLIB_MEMMODE)/8250.lib
 #
 #	Files locations
 #
-.c : $(SRC);$(SRCLIB);$(MODEXLIB16);$(JSMNLIB);$(NYANLIB);$(VGMSNDLIB);$(WCPULIB)
+.c : $(SRC);$(SRCLIB);$(MODEXLIB16);$(JSMNLIB);$(NYANLIB);$(VGMSNDLIB);$(WCPULIB);$(UTIL)
 
-.asm : $(MODEXLIB)
+.asm : $(MODEXLIB);$(UTIL)
 
 .lib : .;$(DOSLIB_CPU)/$(DOSLIB_MEMMODE);$(DOSLIB_DOS)/$(DOSLIB_MEMMODE);$(DOSLIB_VGA)/$(DOSLIB_MEMMODE);$(DOSLIB_8250)/$(DOSLIB_MEMMODE)
 
@@ -156,6 +157,10 @@ DOSLIBLIBS += $(DOSLIB_8250)/$(DOSLIB_MEMMODE)/8250.lib
 #
 # List of executables to build
 #
+EXTERNTESTEXEC = &
+	joytest.exe &
+	wcpu.exe &
+	db.exe
 TESTEXEC = &
 	tesuto.exe &
 	0.exe &
@@ -174,7 +179,7 @@ TESTEXEC2 = &
 	test0.exe &
 	pcxtest.exe &
 	pcxtest2.exe &
-	db.exe
+	$(EXTERNTESTEXEC)
 UTILEXEC = &
 	palettel.exe &
 	palettec.exe
@@ -184,8 +189,8 @@ EXEC = &
 	$(UTILEXEC) &
 	$(TESTEXEC)
 
-all: $(EXEC) joytest.exe
-testexec: $(EXEC) joytest.exe $(TESTEXEC2)
+all: $(EXEC) $(EXTERNTESTEXEC)
+testexec: $(EXEC) $(TESTEXEC2)
 
 #
 # game and bakapi executables
@@ -224,6 +229,7 @@ fmemtest.exe:	 fmemtest.$(OBJ)
 exmmtest.exe:	 exmmtest.$(OBJ) $(16LIB) $(DOSLIBLIBS)
 vgmtest.exe:	vgmtest.$(OBJ) vgmsnd.lib $(16LIB) $(DOSLIBLIBS)
 db.exe:		db.$(OBJ)
+wcpu.exe:		wcpu.$(OBJ) $(16LIB) $(DOSLIBLIBS)
 
 #
 # executable's objects
@@ -255,7 +261,7 @@ inputest.$(OBJ):$(SRC)/inputest.c
 #tsthimem.$(OBJ): $(SRC)/tsthimem.c
 exmmtest.$(OBJ):$(SRC)/exmmtest.c
 vgmtest.$(OBJ):$(SRC)/vgmtest.c
-db.$(OBJ):$(SRC)/util/db.c
+db.$(OBJ):		$(UTIL)/db.c
 
 #
 # non executable objects libraries
@@ -311,7 +317,7 @@ midi.$(OBJ):	$(SRCLIB)/midi.c $(SRCLIB)/midi.h
 jsmn.$(OBJ):	$(JSMNLIB)/jsmn.c $(JSMNLIB)/jsmn.h
 kitten.$(OBJ):	$(NYANLIB)/kitten.c $(NYANLIB)/kitten.h
 vgmSnd.$(OBJ):	$(VGMSNDLIB)/vgmSnd.c $(VGMSNDLIB)/vgmSnd.h
-wcpu.$(OBJ):	$(WCPULIB)/wcpu.c $(WCPULIB)/wcpu.h
+16_wcpu.$(OBJ):	$(WCPULIB)/16_wcpu.c $(WCPULIB)/16_wcpu.h
 #memory.$(OBJ):$(EXMMLIB)/memory.c $(EXMMLIB)/memory.h
 c_utils.$(OBJ):$(MODEXLIB)/c_utils.asm
 modex.$(OBJ):	 $(MODEXLIB)/modex.asm

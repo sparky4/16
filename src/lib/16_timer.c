@@ -33,7 +33,7 @@ clock_t start_timer(global_game_variables_t *gv)
 	//gv->kurokku.frames_per_second = 60;
 
     //turn this off if XT
-	switch(detectcpu())
+	switch(WCPU_detectcpu())
 	{
 		case 0:
 			gv->kurokku.fpscap=0;

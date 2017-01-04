@@ -20,15 +20,19 @@
  *
  */
 
-#ifndef __16_H_
-#define __16_H_
+#ifndef _WCPU_H_
+#define _WCPU_H_
+#include <stdio.h>
+#include "src/lib/16_t.h"
 
-#include "src/lib/16_head.h"
-#include "src/lib/16_tail.h"
-#include "src/lib/16_vl.h"
-#include "src/lib/wcpu/16_wcpu.h"
-#include "src/lib/scroll16.h"
-#include "src/lib/16_timer.h"
-#include "src/lib/16_dbg.h"
+#ifdef __WATCOMC__
+#include <hw/cpu/cpu.h>
+#endif
 
-#endif /*__16_H_*/
+byte WCPU_detectfpu(void);
+byte WCPU_detectcpu(void);
+const char *WCPU_cpudetectmesg();
+const char *WCPU_fpudetectmesg();
+void WCPU_cpufpumesg();
+
+#endif/*_WCPU_H_*/

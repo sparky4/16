@@ -27,6 +27,10 @@
 
 //#define TEST
 
-byte detectcpu(void);
+byte WCPU_detectfpu(void);
+byte WCPU_detectcpu(void);
+const char *WCPU_cpudetectmesg();
+const char *WCPU_fpudetectmesg();
+void WCPU_cpufpumesg();
 
 #endif/*_WCPU_H_*/

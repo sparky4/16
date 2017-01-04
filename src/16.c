@@ -23,7 +23,6 @@
 #include "src/16.h"
 
 engi_stat_t engi_stat;
-const char *cpus;
 byte *dpal, *gpal;
 player_t player[MaxPlayers];
 
@@ -53,17 +52,10 @@ main(int argc, char *argv[])
 		shinku(&gvar);
 		_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);
 	}
-	switch(detectcpu())
-	{
-		case 0: cpus = "8086/8088 or 186/88"; break;
-		case 1: cpus = "286"; break;
-		case 2: cpus = "386 or newer"; break;
-		default: cpus = "internal error"; break;
-	}
 	Shutdown16(&gvar);
 	VGAmodeX(0, 1, &gvar);
 	printf("Project 16 16.exe. This is supposed to be the actual finished game executable!\n");
 	printf("version %s\n", VERSION);
-	printf("detected CPU type: %s\n", cpus);
+	WCPU_cpufpumesg();
 	modexFadeOn(4, dpal);
 }

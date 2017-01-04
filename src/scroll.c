@@ -22,7 +22,6 @@
 
 #include "src/lib/scroll16.h"
 #include "src/lib/16_timer.h"
-#include "src/lib/wcpu/wcpu.h"
 #include "src/lib/16_dbg.h"
 
 //#define FADE
@@ -39,7 +38,6 @@ pan_t pan;
 boolean panswitch=0;//1
 //extern boolean pageflipflop=1;
 	unsigned int i;
-	const char *cpus;
 	//static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 
 	//map_view_db_t pgid[4];
@@ -287,14 +285,7 @@ void main(int argc, char *argv[])
 	printf("\nProject 16 scroll.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	SCROLLEXITMESG;
-	switch(detectcpu())
-	{
-		case 0: cpus = "8086/8088 or 186/88"; break;
-		case 1: cpus = "286"; break;
-		case 2: cpus = "386 or newer"; break;
-		default: cpus = "internal error"; break;
-	}
-	printf("detected CPU type: %s\n", cpus);
+	WCPU_cpufpumesg();
 #ifdef MODEX
 #ifdef FADE
 	modexFadeOn(4, dpal);
