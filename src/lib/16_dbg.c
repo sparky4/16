@@ -1,13 +1,11 @@
 #include "src/lib/16_dbg.h"
-//#include "src/16.h"
-
 
 #ifdef __DEBUG__
 #ifdef __DEBUG_PM__
 boolean dbg_debugpm=0;
 #endif
 #ifdef __DEBUG_InputMgr__
-boolean dbg_testkeyin=0,dbg_testcontrolnoisy=0;
+boolean dbg_testkeyin=0,dbg_testcontrolnoisy=0,dbg_notest=0;
 #endif
 #endif
 

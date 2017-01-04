@@ -66,7 +66,7 @@ int set_anim_by_id(struct sprite *spri, int id);
  * In:
  * + struct sprite *spri - sprite to animate
  */
-void animate_spri(struct sprite *spri);
+void animate_spri(struct sprite *spri, global_game_variables_t *gvar);
 
 void print_anim_ids(struct sprite *spri);
 

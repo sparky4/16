@@ -76,6 +76,9 @@ void Startup16(global_game_variables_t *gvar)
 	gvar->pm.PMStarted=0;
 	MM_Startup(gvar);
 #ifdef __WATCOMC__
+#ifdef __DEBUG_InputMgr__
+	if(!dbg_notest)
+#endif
 	IN_Startup(gvar);
 #endif
 	PM_Startup(gvar);
@@ -99,6 +102,9 @@ void Shutdown16(global_game_variables_t *gvar)
 {
 	PM_Shutdown(gvar);
 #ifdef __WATCOMC__
+#ifdef __DEBUG_InputMgr__
+	if(!dbg_notest)
+#endif
 	IN_Shutdown(gvar);
 #endif
 	CA_Shutdown(gvar);

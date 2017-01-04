@@ -25,9 +25,9 @@
 char* get_curr_anim_name(struct sprite *spri)
 {
 	// Retrive animation name list
-	struct vrs_header huge *vrs = spri->spritesheet->vrs_hdr;
-	uint32_t huge *anim_names_offsets = 	(uint32_t huge *)
-						((byte huge *)vrs +
+	struct vrs_header far *vrs = spri->spritesheet->vrs_hdr;
+	uint32_t far *anim_names_offsets = 	(uint32_t far *)
+						((byte far *)vrs +
 						 vrs->offset_table[VRS_HEADER_OFFSET_ANIMATION_NAME_LIST]);
 
 	return (char *)(vrs + anim_names_offsets[spri->curr_anim]);
@@ -35,12 +35,12 @@ char* get_curr_anim_name(struct sprite *spri)
 
 void init_anim(struct sprite *spri, int anim_index)
 {
-	struct vrs_header huge *vrs = spri->spritesheet->vrs_hdr;
-	uint32_t huge *anim_lists_offsets = 	(uint32_t huge *)
-						((byte huge *)vrs +
+	struct vrs_header far *vrs = spri->spritesheet->vrs_hdr;
+	uint32_t far *anim_lists_offsets = 	(uint32_t far *)
+						((byte far *)vrs +
 						 vrs->offset_table[VRS_HEADER_OFFSET_ANIMATION_LIST]);
-	struct vrs_animation_list_entry_t huge *anim_list =	(struct vrs_animation_list_entry_t huge *)
-								((byte huge *)vrs +
+	struct vrs_animation_list_entry_t far *anim_list =	(struct vrs_animation_list_entry_t far *)
+								((byte far *)vrs +
 								 anim_lists_offsets[anim_index]);
 
 	// Upon new animation, start from the first sprite in it
@@ -57,10 +57,10 @@ int set_anim_by_id(struct sprite *spri, int anim_id)
 {
 	int new_anim_index = 0;
 	int iter_id;
-	struct vrs_header huge *vrs = spri->spritesheet->vrs_hdr;
+	struct vrs_header far *vrs = spri->spritesheet->vrs_hdr;
 	// Retruve animation ids list
-        uint16_t huge *anim_ids =	(uint16_t huge *)
-					((byte huge *)vrs +
+        uint16_t far *anim_ids =	(uint16_t far *)
+					((byte far *)vrs +
 					 vrs->offset_table[VRS_HEADER_OFFSET_ANIMATION_ID_LIST]);
 
 	// Loop through animation id untill match or end of list
@@ -81,10 +81,10 @@ void print_anim_ids(struct sprite *spri)
 {
 	int new_anim_index = 0;
 	int iter_id;
-	struct vrs_header huge *vrs = spri->spritesheet->vrs_hdr;
+	struct vrs_header far *vrs = spri->spritesheet->vrs_hdr;
 	// Retruve animation ids list
-        uint16_t huge *anim_ids =	(uint16_t huge *)
-					((byte huge *)vrs +
+        uint16_t far *anim_ids =	(uint16_t far *)
+					((byte far *)vrs +
 					 vrs->offset_table[VRS_HEADER_OFFSET_ANIMATION_ID_LIST]);
 
 	if(!anim_ids[new_anim_index])
@@ -98,7 +98,7 @@ void print_anim_ids(struct sprite *spri)
 }
 
 
-void animate_spri(struct sprite *spri)
+void animate_spri(struct sprite *spri, global_game_variables_t *gvar)
 {
 	int i;
 	// Events go here
@@ -107,8 +107,7 @@ void animate_spri(struct sprite *spri)
 	i = get_vrl_by_id(spri->spritesheet, spri->curr_spri_id, spri->sprite_vrl_cont);
 	if(i < 0)
 	{
-		printf("Error retriving required sprite");
-		exit(-1);
+		Quit (gvar, "Error retriving required sprite");
 	}
 	draw_vrl1_vgax_modex(	spri->x, spri->y,
 				spri->sprite_vrl_cont->vrl_header, spri->sprite_vrl_cont->line_offsets,

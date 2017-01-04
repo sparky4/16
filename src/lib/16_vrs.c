@@ -25,13 +25,13 @@
 int read_vrs(global_game_variables_t *gvar, char *filename, struct vrs_container *vrs_cont){
 	int fd;
 	dword size;
-	byte huge *buffer;
+	byte far *buffer;
 	vrl1_vgax_offset_t **vrl_line_offsets;
-	uint32_t huge *vrl_headers_offsets;
-	uint16_t huge *vrl_id_iter;
+	uint32_t far *vrl_headers_offsets;
+	uint16_t far *vrl_id_iter;
 	uint32_t vrl_size;
 	int num_of_vrl=0, i;
-	struct vrl1_vgax_header huge *curr_vrl;
+	struct vrl1_vgax_header far *curr_vrl;
 	int success=1;
 
 	// Open filename, get size of file,
@@ -54,17 +54,17 @@ int read_vrs(global_game_variables_t *gvar, char *filename, struct vrs_container
 	// Calculate vrl offsets
 
 	// Count sprites
-	vrl_id_iter = (uint16_t huge *)(buffer + vrs_cont->vrs_hdr->offset_table[VRS_HEADER_OFFSET_SPRITE_ID_LIST]);
+	vrl_id_iter = (uint16_t far *)(buffer + vrs_cont->vrs_hdr->offset_table[VRS_HEADER_OFFSET_SPRITE_ID_LIST]);
 	while(vrl_id_iter[num_of_vrl]){
 		num_of_vrl++;
 	}
 	// Allocate memory for vrl line offsets table
 	vrl_line_offsets = malloc(sizeof(vrl1_vgax_offset_t *)*num_of_vrl);
 
-	vrl_headers_offsets = (uint32_t huge *)(buffer + vrs_cont->vrs_hdr->offset_table[VRS_HEADER_OFFSET_VRS_LIST]);
+	vrl_headers_offsets = (uint32_t far *)(buffer + vrs_cont->vrs_hdr->offset_table[VRS_HEADER_OFFSET_VRS_LIST]);
 	// Calculate line offsets for each vrl
 	for(i = 0; i < num_of_vrl; i++){
-		curr_vrl = (struct vrl1_vgax_header huge *)(buffer + vrl_headers_offsets[i]);
+		curr_vrl = (struct vrl1_vgax_header far *)(buffer + vrl_headers_offsets[i]);
 
 		// Calc. vrl size as (next_offset - curr_offset)
 		if (i != num_of_vrl - 1){
@@ -81,9 +81,9 @@ int read_vrs(global_game_variables_t *gvar, char *filename, struct vrs_container
 }
 
 // Seek and return a specified .vrl blob from .vrs blob in far memory
-int get_vrl_by_id(struct vrs_container /*huge*/ *vrs_cont, uint16_t id, struct vrl_container *vrl_cont){
-	uint16_t huge *ids;
-	uint32_t huge *vrl_offs_list;
+int get_vrl_by_id(struct vrs_container far *vrs_cont, uint16_t id, struct vrl_container *vrl_cont){
+	uint16_t far *ids;
+	uint32_t far *vrl_offs_list;
 	int counter = 0;
 
 	// If id is invalid, return -1
@@ -93,7 +93,7 @@ int get_vrl_by_id(struct vrs_container /*huge*/ *vrs_cont, uint16_t id, struct v
 	}
 
 	// Get id list from .vrs blob (base + offset)
-	ids = (uint16_t huge*)(vrs_cont->buffer +
+	ids = (uint16_t far*)(vrs_cont->buffer +
 		vrs_cont->vrs_hdr->offset_table[VRS_HEADER_OFFSET_SPRITE_ID_LIST]);
 
 	// Loop through the id list until we found the right one or hit the end of the list
@@ -108,12 +108,12 @@ int get_vrl_by_id(struct vrs_container /*huge*/ *vrs_cont, uint16_t id, struct v
 	}
 
 	// Get vrl offsets list from .vrs blob (base + offset)
-	vrl_offs_list = (uint32_t huge *)(vrs_cont->buffer +
+	vrl_offs_list = (uint32_t far *)(vrs_cont->buffer +
 					vrs_cont->vrs_hdr->offset_table[VRS_HEADER_OFFSET_VRS_LIST]);
 
 	// Get vrl_header from .vrs (base + offset from vrl_list)
 	// Counter is number of vrls to skip (ids and vrls are aligned according to the .vrs specification)
-	vrl_cont->vrl_header = (struct vrl1_vgax_header huge *)(vrs_cont->buffer + vrl_offs_list[counter]);
+	vrl_cont->vrl_header = (struct vrl1_vgax_header far *)(vrs_cont->buffer + vrl_offs_list[counter]);
 
 	// Get .vrl size by integer arithmetics (next vrl offset - current vrl offset)
 	if(ids[counter+1]){

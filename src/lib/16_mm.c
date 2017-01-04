@@ -563,7 +563,7 @@ void MML_ShutdownXMS(global_game_variables_t *gvar)
 
 /*void MML_UseSpace(word segstart, dword seglength, global_game_variables_t *gvar)
 {
-	//huge mmblocktype huge *scan,huge *last;
+	mmblocktype far *scan,far *last;
 	word		segm=1;
 	word	oldend;
 	dword		segmlen;
@@ -716,8 +716,7 @@ void MML_UseSpace(word segstart, dword seglength, global_game_variables_t *gvar)
 
 void MML_ClearBlock(global_game_variables_t *gvar)
 {
-	//huge mmblocktype huge *scan,huge *last;
-	mmblocktype __far *scan;//,far *last;
+	mmblocktype far *scan;//,far *last;
 
 	scan = gvar->mm.mmhead->next;
 
@@ -753,7 +752,6 @@ void MM_Startup(global_game_variables_t *gvar)
 	int i;
 	//dword length,seglength;
 	dword length; word seglength;
-	//huge void huge	*start;
 	void far	*start;
 	word	segstart;//,endfree;
 
@@ -789,12 +787,10 @@ void MM_Startup(global_game_variables_t *gvar)
 #ifdef __WATCOMC__
 	_nheapgrow();
 	length=(dword)_memavl();//(dword)GetFreeSize();
-	//huge start = (void huge *)(gvar->mm.nearheap = _nmalloc(length));
 	start = (void far *)(gvar->mm.nearheap = _nmalloc(length));
 #endif
 #ifdef __BORLANDC__
 	length=coreleft();
-	//huge start = (void huge *)(gvar->mm.nearheap = malloc(length));
 	start = (void far *)(gvar->mm.nearheap = malloc(length));
 #endif
 	length -= 16-(FP_OFF(start)&15);
@@ -930,7 +926,6 @@ void MM_Shutdown(global_game_variables_t *gvar)
 
 void MM_GetPtr (memptr *baseptr, dword size, global_game_variables_t *gvar)
 {
-	//huge mmblocktype huge *scan,huge *lastscan,huge *endscan,huge *purge,huge *next;
 	mmblocktype far *scan,far *lastscan,far *endscan,far *purge,far *next;
 	int			search;
 	unsigned	needed,startseg;
@@ -1049,7 +1044,6 @@ void MM_GetPtr (memptr *baseptr, dword size, global_game_variables_t *gvar)
 
 void MM_FreePtr(memptr *baseptr, global_game_variables_t *gvar)
 {
-	//huge mmblocktype huge *scan,huge *last;
 	mmblocktype far *scan,far *last;
 
 	last = gvar->mm.mmhead;
@@ -1089,7 +1083,6 @@ void MM_FreePtr(memptr *baseptr, global_game_variables_t *gvar)
 
 void MM_SetPurge(memptr *baseptr, int purge, global_game_variables_t *gvar)
 {
-	//huge mmblocktype huge *start;
 	mmblocktype far *start;
 
 	start = gvar->mm.mmrover;
@@ -1129,7 +1122,6 @@ void MM_SetPurge(memptr *baseptr, int purge, global_game_variables_t *gvar)
 
 void MM_SetLock(memptr *baseptr, boolean locked, global_game_variables_t *gvar)
 {
-	//huge mmblocktype huge *start;
 	mmblocktype far *start;
 
 	start = gvar->mm.mmrover;
@@ -1169,7 +1161,6 @@ void MM_SetLock(memptr *baseptr, boolean locked, global_game_variables_t *gvar)
 
 void MM_SortMem(global_game_variables_t *gvar)
 {
-	//huge mmblocktype huge *scan,huge *last,huge *next;
 	mmblocktype far *scan,far *last,far *next;
 	unsigned	start,length,source,dest;//++++,oldborder;
 	//++++int			playing;
@@ -1280,7 +1271,6 @@ void MM_SortMem(global_game_variables_t *gvar)
 
 void MM_ShowMemory(global_game_variables_t *gvar)
 {
-	//huge mmblocktype huge *scan;
 	mmblocktype far *scan;
 	//word temp;
 	sdword	end,owner;
@@ -1443,7 +1433,6 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 
 void MM_DumpData(global_game_variables_t *gvar)
 {
-	//huge mmblocktype huge *scan,huge *best;
 	mmblocktype far *scan,far *best;
 	long	lowest,oldlowest;
 	word	owner;
@@ -1518,7 +1507,6 @@ void MM_DumpData(global_game_variables_t *gvar)
 dword MM_UnusedMemory(global_game_variables_t *gvar)
 {
 	dword free;
-	//huge mmblocktype huge *scan;
 	mmblocktype far *scan;
 
 	free = 0;
@@ -1550,7 +1538,6 @@ dword MM_UnusedMemory(global_game_variables_t *gvar)
 dword MM_TotalFree(global_game_variables_t *gvar)
 {
 	dword free;
-	//huge mmblocktype huge *scan;
 	mmblocktype far *scan;
 
 	free = 0;

@@ -21,12 +21,14 @@
  */
 
 #include "src/lib/16_head.h"
+#include "src/lib/16_tail.h"
 #include "src/lib/16_vl.h"
 #include "src/lib/16_sprit.h"
-#include "src/lib/16_tail.h"
 #include "src/lib/16_pm.h"
-#include "src/lib/16_ca.h"
+//#include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
+
+extern boolean dbg_notest;
 
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 
@@ -44,12 +46,13 @@ void main() {
 	//vrl1_vgax_offset_t * off, *off1;
 	struct vrs_container vrs;
 	vrl1_vgax_offset_t **vrl_line_offsets;
-	uint32_t huge *vrl_headers_offsets;
-	uint16_t huge *vrl_id_iter;
+	uint32_t far *vrl_headers_offsets;
+	uint16_t far *vrl_id_iter;
 	uint32_t vrl_size;
 	int num_of_vrl;
-	struct vrl1_vgax_header huge *curr_vrl;
+	struct vrl1_vgax_header far *curr_vrl;
 	word w=0;
+	dbg_notest=1;
 
 	Startup16(&gvar);
 
@@ -62,7 +65,7 @@ void main() {
 	vrs.buffer = bigbuffer;
 	vrs.data_size = size - sizeof(struct vrl1_vgax_header);
 	num_of_vrl = 0;
-	vrl_id_iter = (uint16_t huge *)(vrs.buffer + vrs.vrs_hdr->offset_table[VRS_HEADER_OFFSET_SPRITE_ID_LIST]);
+	vrl_id_iter = (uint16_t far *)(vrs.buffer + vrs.vrs_hdr->offset_table[VRS_HEADER_OFFSET_SPRITE_ID_LIST]);
 	while(vrl_id_iter[num_of_vrl]){
 		num_of_vrl++;
 	}
@@ -70,10 +73,10 @@ void main() {
 	// Allocate memory for vrl line offsets table
 	vrl_line_offsets = malloc(sizeof(vrl1_vgax_offset_t *)*num_of_vrl);
 
-	vrl_headers_offsets = (uint32_t huge *)(vrs.buffer + vrs.vrs_hdr->offset_table[VRS_HEADER_OFFSET_VRS_LIST]);
+	vrl_headers_offsets = (uint32_t far *)(vrs.buffer + vrs.vrs_hdr->offset_table[VRS_HEADER_OFFSET_VRS_LIST]);
 	// Calculate line offsets for each vrl
 	for(i = 0; i < num_of_vrl; i++){
-		curr_vrl = (struct vrl1_vgax_header huge *)(vrs.buffer + vrl_headers_offsets[i]);
+		curr_vrl = (struct vrl1_vgax_header far *)(vrs.buffer + vrl_headers_offsets[i]);
 
 		// Calc. vrl size as (next_offset - curr_offset)
 		if (i != num_of_vrl - 1){
@@ -119,7 +122,7 @@ void main() {
 	/*modexLoadPalFile("data/spri/chikyuu.pal", &pal);
 	modexPalUpdate1(pal);*/
 	for (i = 0; i < 5; i++){
-	spri.delay = 1; animate_spri(&spri); spri.x += 20; /*sleep(1);*/ }
+	spri.delay = 1; animate_spri(&spri, &gvar); spri.x += 20; /*sleep(1);*/ }
 
 	while(!IN_KeyDown(sc_Escape))
 	{

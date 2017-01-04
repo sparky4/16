@@ -396,6 +396,7 @@ mkdl: .symbolic
 cldl: .symbolic
 	@cd $(DOSLIB:$(to_os_path))
 	@$(DOSLIBMAKEALL) $(DOSLIB_MEMMODE) clean
+	@$(REMOVECOMMAND) -rf ext/README
 	@cd $(BUILD_ROOT)
 
 uplibs: .symbolic
@@ -419,10 +420,8 @@ initlibs: .symbolic
 	@$(COPYCOMMAND) git_con.fig .git/config
 	@$(COPYCOMMAND) git_modu.les .gitmodules
 	@$(COPYCOMMAND) git_igno.re .gitignore
-	@cd $(SRCLIB:$(to_os_path))
-	@git clone https://github.com/joncampbell123/doslib.git
-	@git clone https://github.com/zserge/jsmn.git
-	@cd $(BUILD_ROOT)
+	@wmake -h cldl
+	@wmake -h jmdl
 	@cd 16
 	@git clone https://github.com/FlatRockSoft/CatacombApocalypse.git
 	@git clone https://github.com/id-Software/wolf3d.git
@@ -430,6 +429,16 @@ initlibs: .symbolic
 	@git clone https://github.com/FlatRockSoft/Catacomb3D.git
 	@cd $(BUILD_ROOT)
 	@$(COPYCOMMAND) $(DOSLIB)/make-lowercase .
+
+dlcl: .symbolic
+	@cd $(SRCLIB:$(to_os_path))
+	@git clone https://github.com/joncampbell123/doslib.git
+	@cd $(BUILD_ROOT)
+
+jmcl: .symbolic
+	@cd $(SRCLIB:$(to_os_path))
+	@git clone https://github.com/zserge/jsmn.git
+	@cd $(BUILD_ROOT)
 
 ##
 ##	experimental libs

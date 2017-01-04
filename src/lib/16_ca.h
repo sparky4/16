@@ -90,16 +90,16 @@ extern	void	(*finishcachebox)	(void);
 
 void CA_OpenDebug (global_game_variables_t *gvar);
 void CA_CloseDebug (global_game_variables_t *gvar);
-boolean CA_FarRead (int handle, byte huge *dest, dword length, global_game_variables_t *gvar);
-boolean CA_FarWrite (int handle, byte huge *source, dword length, global_game_variables_t *gvar);
+boolean CA_FarRead (int handle, byte far *dest, dword length, global_game_variables_t *gvar);
+boolean CA_FarWrite (int handle, byte far *source, dword length, global_game_variables_t *gvar);
 
 boolean CA_ReadFile (char *filename, memptr *ptr, global_game_variables_t *gvar);
 boolean CA_WriteFile (char *filename, void far *ptr, long length, global_game_variables_t *gvar);
 boolean CA_LoadFile (char *filename, memptr *ptr, global_game_variables_t *gvar);
 
-long CA_RLEWCompress (unsigned huge *source, long length, unsigned huge *dest,unsigned rlewtag);
+long CA_RLEWCompress (unsigned far *source, long length, unsigned far *dest,unsigned rlewtag);
 
-void CA_RLEWexpand (unsigned huge *source, unsigned huge *dest,long length,unsigned rlewtag);
+void CA_RLEWexpand (unsigned far *source, unsigned far *dest,long length,unsigned rlewtag);
 
 void CA_Startup (global_game_variables_t *gvar);
 void CA_Shutdown (global_game_variables_t *gvar);

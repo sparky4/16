@@ -16,7 +16,7 @@
 extern boolean dbg_debugpm;
 #endif
 #ifdef __DEBUG_InputMgr__
-extern boolean dbg_testkeyin,dbg_testcontrolnoisy;
+extern boolean dbg_testkeyin,dbg_testcontrolnoisy,dbg_notest;
 #endif
 #endif
 

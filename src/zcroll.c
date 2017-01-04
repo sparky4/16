@@ -30,7 +30,6 @@
 
 //bitmap_t p;
 static map_t map;
-player_t player[MaxPlayers];
 map_view_t mv[4];
 float t;
 sword bakapee;
@@ -55,12 +54,17 @@ memptr pal;
 void main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
+	static player_t player[MaxPlayers];
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
+
+	player[0].data = _fmalloc(72*128); //TODO use exmm
+	*player[0].data = bitmapLoadPcx("data/chikyuu.pcx", &gvar); // load sprite
 
 	Startup16(&gvar);
 
 	pan.pn=0;
+
 	// OK, this one takes hellova time and needs to be done in farmalloc or MM_...
 	//IN CA i think you use CAL_SetupGrFile but i do think we should work together on this part --sparky4
 	player[0].ent = malloc(sizeof(entity_t));
@@ -76,8 +80,8 @@ void main(int argc, char *argv[])
 
 	// data
 	read_vrs(&gvar, "data/spri/chikyuu.vrs", player[0].ent->spri->spritesheet);
-	player[0].data = malloc(72*128); //TODO use exmm
-	*player[0].data = bitmapLoadPcx("data/chikyuu.pcx", &gvar); // load sprite
+//	player[0].data = malloc(72*128); //TODO use exmm
+//	*player[0].data = bitmapLoadPcx("data/chikyuu.pcx", &gvar); // load sprite
 
 	//	input!
 	IN_Default(0, &player,ctrl_Keyboard1);
@@ -145,6 +149,7 @@ void main(int argc, char *argv[])
 #ifdef FADE
 	modexFadeOn(4, gpal);
 #endif
+	modexDrawSprite(mv[0].page, 16, 16, (player[0].data));
 	/*strcpy(global_temp_status_text, "press enter for the loop of zcroll\nescape to quit");
 	modexprint(&gvar.video.page[0], 144, 72, 1, 7, 0, global_temp_status_text);
 	while(!IN_KeyDown(sc_Enter)){ if(IN_KeyDown(sc_Escape)) goto quit; } IN_UserInput(1,1);*///wwww
@@ -226,7 +231,6 @@ void main(int argc, char *argv[])
 
 	/* fade back to text mode */
 	/* but 1st lets save the game palette~ */
-	//quit:
 #ifdef FADE
 	modexPalSave(gpal);
 	modexSavePalFile("data/g.pal", gpal);

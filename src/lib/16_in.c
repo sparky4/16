@@ -1247,7 +1247,13 @@ IN_UserInput(dword delay,boolean clear)
 
 boolean IN_KeyDown(byte code)
 {
+#ifdef __DEBUG_InputMgr__
+	if(!dbg_notest)
+#endif
 	return inpu.Keyboard[code];
+#ifdef __DEBUG_InputMgr__
+	else return kbhit();
+#endif
 }
 
 void IN_ClearKey(byte code)
@@ -1260,7 +1266,7 @@ void IN_ClearKey(byte code)
 boolean IN_qb(byte kee)
 {
 #ifdef __DEBUG_InputMgr__
-//	if(dbg_testkeyin > 0) printf("%u\n", inpu.Keyboard[kee]);
+	if(dbg_testkeyin) printf("%u\n", inpu.Keyboard[kee]);
 #endif
 	if(inpu.Keyboard[kee]==true) return 1;
 	else return 0;

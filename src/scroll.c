@@ -30,7 +30,6 @@
 
 //bitmap_t p;
 static map_t map;
-player_t player[MaxPlayers];
 map_view_t mv[4];
 //word pn=0; //i forgot ww
 float t;
@@ -56,6 +55,7 @@ boolean panswitch=0;//1
 void main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
+	static player_t player[MaxPlayers];
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
 
