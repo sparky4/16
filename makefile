@@ -402,7 +402,7 @@ mkdl: .symbolic
 cldl: .symbolic
 	@cd $(DOSLIB:$(to_os_path))
 	@$(DOSLIBMAKEALL) $(DOSLIB_MEMMODE) clean
-	@$(REMOVECOMMAND) -rf ext/README
+	@if exist ext/readme $(REMOVECOMMAND) -rf ext/readme
 	@cd $(BUILD_ROOT)
 
 uplibs: .symbolic
