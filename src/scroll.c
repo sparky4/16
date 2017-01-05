@@ -24,7 +24,7 @@
 #include "src/lib/16_timer.h"
 #include "src/lib/16_dbg.h"
 
-//#define FADE
+#define FADE
 #define MODEX	//this is for mode x initiating
 
 //bitmap_t p;
@@ -43,7 +43,7 @@ boolean panswitch=0;//1
 	//map_view_db_t pgid[4];
 	word pg;
 //#ifdef FADE
-	//static word paloffset=0;
+	static word paloffset=0;
 	byte *dpal;
 //#endif
 	byte *gpal;
@@ -215,14 +215,14 @@ void main(int argc, char *argv[])
 #ifdef MODEX
 #ifdef FADE
 	if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv[0].page); modexpdump(mv[1].page);  IN_UserInput(1,1); } //p
-	if(IN_KeyDown(22)){
+	/*if(IN_KeyDown(22)){
 	paloffset=0; modexPalBlack(); modexPalUpdate(player[0].data, &paloffset, 0, 0);
 	printf("1paloffset	=	%d\n", paloffset/3);
 	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	printf("2paloffset	=	%d\n", paloffset/3);
 	 modexpdump(mv[0].page); modexpdump(mv[1].page);
 		IN_UserInput(1,1);
-	}
+	}*/
 #endif
 #endif
 	//pan switch
