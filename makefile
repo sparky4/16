@@ -81,6 +81,12 @@ DOSLIB_8250=$(DOSLIB)/hw/8250
 DOSLIB_JOYSTICK=$(DOSLIB)/hw/joystick
 DOSLIB_MEMMODE=dos86$(MEMORYMODE)
 
+# remote host (for sparky4)
+HOSTUSER=sparky4
+HOSTADDR=138.47.241.110
+#ssh port
+HOSTPORT=22
+
 #
 # quiet flags
 #
@@ -379,13 +385,13 @@ www: .symbolic
 	@$(REMOVECOMMAND) /var/www/*.exe.zip*
 	@for %f in ($(EXEC)) do @if exist %f @$(COPYCOMMAND) %f /var/www/
 	@./src/util/z.sh $(EXEC) $(EXEC)
-	####@wmake -h wwwext
+	@wmake -h wwwext
 
 wwwext: .symbolic
-	@ssh -p 26 sparky4@4ch.mooo.com 'rm -f /var/www/16/*exe*'
-	@scp -r -P 26 *.exe 4ch.mooo.com:/var/www/16/
-	@scp -r -P 26 x4get.bat 4ch.mooo.com:/var/www/16/
-	@scp -r -P 26 /var/www/*.exe.zip.* 4ch.mooo.com:/var/www/16/
+	@ssh -p $(HOSTPORT) $(HOSTUSER)@$(HOSTADDR) 'rm -f /var/www/16/*exe*'
+	@scp -r -P $(HOSTPORT) *.exe $(HOSTADDR):/var/www/16/
+	@scp -r -P $(HOSTPORT) x4get.bat $(HOSTADDR):/var/www/16/
+	@scp -r -P $(HOSTPORT) /var/www/*.exe.zip.* $(HOSTADDR):/var/www/16/
 
 getwww: .symbolic
 	*x4get.bat $(EXEC)
