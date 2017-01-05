@@ -116,7 +116,6 @@ int main(int argc,char **argv) {
 		VGA_RAM_PTR omemptr;
 		int xdir=1,ydir=1;
 
-		//4	this dose the sprite? wwww
 		/* fill pattern offset with a distinctive pattern */
 		for (i=0;i < gvar.video.page[0].width;i++) {
 			o = (i >> 2) + (0x10000UL - (uint16_t)gvar.video.page[1].data);

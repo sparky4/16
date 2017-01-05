@@ -106,9 +106,12 @@ void main() {
 /*	sega = mm.bufferseg;
 	if(CA_LoadFile("data/spri/CHUBACW1.vrl", &bigbuffer, &mm, &mmi)) baka=1; else baka=0;*/
 
-	/* clear and draw one sprite and one bitmap */
 	VGAmodeX(1, 1, &gvar);
 	modexHiganbanaPageSetup(&gvar.video);
+
+	/* simulate scroll's zetup */
+	gvar.video.page[0].dx = gvar.video.page[0].dy = 16;
+	modexShowPage(&gvar.video.page[0]);
 
 	/* non sprite comparison */
 	start = *clockw;

@@ -138,7 +138,6 @@ void main(int argc, char *argv[])
 #ifdef FADE
 		modexFadeOn(4, dpal);
 #endif
-	exit(-4);
 	}
 	//animate_spri((player[0].ent->spri), &gvar);
 
