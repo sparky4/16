@@ -90,7 +90,7 @@ void main(int argc, char *argv[])
 	modexPalSave(dpal);
 	modexFadeOff(4, dpal);
 #endif
-	textInit();
+	//textInit();
 	VGAmodeX(bakapee, 1, &gvar);
 #ifdef MODEXZ
 #ifdef FADE
@@ -140,14 +140,13 @@ void main(int argc, char *argv[])
 #endif
 	exit(-4);
 	}
-	//++++animate_spri(&(player[0].ent->spri));
+	//animate_spri((player[0].ent->spri), &gvar);
 
 	modexShowPage(mv[0].page);//!(gvar.video.p)
 	shinku_fps_indicator_page = 0; // we're on page 1 now, shinku(). follow along please or it will not be visible.
 #ifdef FADE
 	modexFadeOn(4, gpal);
 #endif
-	modexDrawSprite(mv[0].page, 16, 16, (player[0].data));
 	/*strcpy(global_temp_status_text, "press enter for the loop of zcroll\nescape to quit");
 	modexprint(&gvar.video.page[0], 144, 72, 1, 7, 0, global_temp_status_text);
 	while(!IN_KeyDown(sc_Enter)){ if(IN_KeyDown(sc_Escape)) goto quit; } IN_UserInput(1,1);*///wwww
@@ -181,13 +180,9 @@ void main(int argc, char *argv[])
 		if(IN_KeyDown(25)){ modexpdump(mv[0].page);
 			 IN_UserInput(1,1);
 		}	//p
-#ifdef FADE
-		if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv[0].page); IN_UserInput(1,1); } //p
-		if(IN_KeyDown(22)){
-			printf("2paloffset	=	%d\n", paloffset/3);
-			IN_UserInput(1,1);
-		}
-#endif
+
+		if(IN_KeyDown(24)){ modexPalUpdate0(gpal); /*paloffset=0;*/ modexpdump(mv[0].page); IN_UserInput(1,1); } //o
+		if(IN_KeyDown(22)){ modexPalUpdate0(gpal); } //u
 
 		//pan switch
 		if(IN_KeyDown(88)){panswitch=!panswitch; IN_UserInput(1,1);}	//f12
@@ -208,7 +203,17 @@ void main(int argc, char *argv[])
 		if(IN_KeyDown(66))	//f8
 		{
 //			modexDrawSprite(mv[0].page, 16, 16, &p);
-			modexDrawSprite(mv[0].page, 32+72, 16, (player[0].data));
+//			modexDrawSprite(mv[0].page, 32+72, 16, (player[0].data));
+			switch(i)
+			{
+				case 11:
+					i=0;
+					player[0].ent->spri->x = 0;
+				default:
+					i++;
+					player[0].ent->spri->delay = 1; animate_spri((player[0].ent->spri), &gvar); player[0].ent->spri->x += 20;
+				break;
+			}
 		}
 		//TODO fmemtest into page
 		/*if(IN_KeyDown(4+1))	//4
