@@ -379,6 +379,9 @@ www: .symbolic
 	@$(REMOVECOMMAND) -f /var/www/*.exe.zip*
 	@$(COPYCOMMAND) ./$(EXEC) /var/www/
 	@./src/util/z.sh $(EXEC) $(EXEC)
+	####@wmake -h wwwext
+
+wwwext: .symbolic
 	@ssh -p 26 sparky4@4ch.mooo.com 'rm -f /var/www/16/*exe*'
 	@scp -r -P 26 *.exe 4ch.mooo.com:/var/www/16/
 	@scp -r -P 26 x4get.bat 4ch.mooo.com:/var/www/16/
