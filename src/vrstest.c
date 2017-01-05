@@ -110,7 +110,7 @@ void main() {
 	modexHiganbanaPageSetup(&gvar.video);
 
 	/* simulate scroll's zetup */
-	gvar.video.page[0].dx = gvar.video.page[0].dy = 16;
+	//gvar.video.page[0].dx = gvar.video.page[0].dy = 16;
 	modexShowPage(&gvar.video.page[0]);
 
 	/* non sprite comparison */
