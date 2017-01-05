@@ -31,7 +31,6 @@ int main(int argc,char **argv) {
 		fprintf(stderr,"drawvrl <VRL file> <palette file>\n");
 		bakapee1 = FILENAME_1;//"data/aconita.vrl";
 		bakapee2 = FILENAME_2;//"data/aconita.pal";
-		//return 1;
 	}else{
 		if(argv[1]) bakapee1 = argv[1];
 		if(argv[2]) bakapee2 = argv[2];
@@ -103,7 +102,6 @@ int main(int argc,char **argv) {
 		}
 	}
 
-	//while (getch() != 13);
 
 	/* make distinctive pattern offscreen, render sprite, copy onscreen.
 	 * this time, we render the distinctive pattern to another offscreen location and just copy.
