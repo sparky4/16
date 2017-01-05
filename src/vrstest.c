@@ -25,7 +25,7 @@
 #include "src/lib/16_vl.h"
 #include "src/lib/16_sprit.h"
 #include "src/lib/16_pm.h"
-//#include "src/lib/16_ca.h"
+#include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 
 extern boolean dbg_notest;
@@ -40,8 +40,6 @@ void main() {
 	word start;
 	float t1, t2;
 	//boolean baka;
-	byte *pal=0;
-	int size=0;
 	struct sprite spri;
 	//vrl1_vgax_offset_t * off, *off1;
 	struct vrs_container vrs;
@@ -51,6 +49,8 @@ void main() {
 	uint32_t vrl_size;
 	int num_of_vrl;
 	struct vrl1_vgax_header far *curr_vrl;
+	byte *pal=0;
+	int size=0;
 	word w=0;
 	dbg_notest=1;
 
