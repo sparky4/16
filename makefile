@@ -375,9 +375,9 @@ comq: .symbolic
 	@*upx -9 $(UPXQ) $(EXEC)
 
 www: .symbolic
-	@if exist /var/www/$(EXEC)* @$(REMOVECOMMAND) -f /var/www/$(EXEC)*
-	@$(REMOVECOMMAND) -f /var/www/*.exe.zip*
-	@$(COPYCOMMAND) ./$(EXEC) /var/www/
+	@for %f in (/var/www/$(EXEC)) do @if exist /var/www/%f $(REMOVECOMMAND) /var/www/%f
+	@$(REMOVECOMMAND) /var/www/*.exe.zip*
+	@for %f in ($(EXEC)) do @if exist %f @$(COPYCOMMAND) %f /var/www/
 	@./src/util/z.sh $(EXEC) $(EXEC)
 	####@wmake -h wwwext
 
