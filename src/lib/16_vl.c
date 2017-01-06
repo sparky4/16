@@ -292,6 +292,12 @@ void modexHiganbanaPageSetup(video_t *video)
 	modexCalcVmemRemain(video);
 	video->p=0;
 	video->r=1;
+
+	//setup the buffersize
+	video->page[0].dy=video->page[0].dx=
+		video->page[1].dx=video->page[1].dy=16;
+	video->page[2].dx=video->page[2].dy=
+		video->page[3].dx=video->page[3].dy=0;
 }
 
 void

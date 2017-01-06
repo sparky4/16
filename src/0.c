@@ -84,8 +84,6 @@ int main(int argc,char **argv) {
 
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
-	gvar.video.page[1].dx=gvar.video.page[0].dx=16;
-	gvar.video.page[1].dy=gvar.video.page[0].dy=16;
 	modexShowPage(&(gvar.video.page[0]));
 
 	#define VMEMHEIGHT gvar.video.page[0].height+gvar.video.page[1].height
@@ -123,8 +121,8 @@ int main(int argc,char **argv) {
 		}
 
 		/* starting coords. note: this technique is limited to x coordinates of multiple of 4 */
-		x = 0;
-		y = 0;
+		x = -(gvar.video.page[0].dx);
+		y = -(gvar.video.page[0].dy);
 
 		/* do it */
 		omemptr = vga_state.vga_graphics_ram; // save original mem ptr
