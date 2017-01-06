@@ -49,7 +49,7 @@ typedef struct {
 } bitmap_t;
 
 typedef struct {
-	byte huge **data;
+	byte far **data;
 	word ntiles;   /* the number of tiles */
 	word twidth;   /* width of the tiles */
 	word theight;  /* height of the tiles */
@@ -57,7 +57,7 @@ typedef struct {
 } tileset_t;
 
 typedef struct {
-	byte huge *plane[4];     /* 4 planes of image data */
+	byte far *plane[4];     /* 4 planes of image data */
 	word width;         /* width of the image (spread across 4 planes) */
 	word height;        /* height of the image (spread across 4 planes) */
 	word pwidth;        /* the number of bytes in each plane */
@@ -87,6 +87,7 @@ typedef struct {
 	sword delta;			// How much should we shift the page for smooth scrolling
 	//enum direction d;			// Direction we should shift the page
 } page_t;
+
 typedef struct
 {
 	//sprite ....
@@ -132,7 +133,7 @@ typedef struct
 	byte num_of_pages;	//number of actual pages
 	boolean __near p;			//render page number
 	boolean __near r;			//page flip if true
-	word pr[MAXPAGE][4];	//render sections of pages
+	word pr[MAXPAGE][4];	//render sections of pages (this is supposed to be set up to draw sections of the screen if updated)
 	//0000word startclk; float clk, tickclk;	//timer
 } video_t;
 
@@ -149,7 +150,6 @@ typedef struct mmblockstruct
 	word	blob;	//for data larger than 64k
 	unsigned	attributes;
 	memptr		*useptr;	// pointer to the segment start
-	//huge struct mmblockstruct huge *next;
 	struct mmblockstruct far *next;
 } mmblocktype;
 
@@ -163,7 +163,6 @@ typedef struct
 {
 	memptr bufferseg;
 	boolean		mmstarted, bombonerror, mmerror;
-	//huge void huge	*farheap;
 	void far	*farheap;
 #ifdef __BORLANDC__
 	void	*nearheap;
@@ -175,7 +174,6 @@ typedef struct
 	word numUMBs,UMBbase[MAXUMBS];
 	word			totalEMSpages, freeEMSpages, EMSpagesmapped, EMSHandle, EMSPageFrame;
 	//dword	numUMBs,UMBbase[MAXUMBS];
-	//huge mmblocktype	huge mmblocks[MAXBLOCKS],huge *mmhead,huge *mmfree,huge *mmrover,huge *mmnew;
 	mmblocktype	far mmblocks[MAXBLOCKS],far *mmhead,far *mmfree,far *mmrover,far *mmnew;
 } mminfo_t;
 
