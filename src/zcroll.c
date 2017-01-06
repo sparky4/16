@@ -214,7 +214,8 @@ void main(int argc, char *argv[])
 				break;
 			}
 		}
-		//TODO fmemtest into page
+		FUNCTIONKEYFUNCTIONS;
+		// fmemtest into page
 		/*if(IN_KeyDown(4+1))	//4
 		{
 			pg=1;

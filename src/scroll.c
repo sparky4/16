@@ -257,7 +257,8 @@ void main(int argc, char *argv[])
 //		modexDrawSprite(mv[0].page, 16, 16, &p);
 		modexDrawSprite(mv[0].page, 32+72, 16, (player[0].data));
 	}
-	//TODO fmemtest into page
+	FUNCTIONKEYFUNCTIONS;
+	// fmemtest into page
 	/*if(IN_KeyDown(4+1))	//4
 	{
 		pg=1;

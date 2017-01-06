@@ -52,7 +52,7 @@ void main() {
 	byte *pal=0;
 	int size=0;
 	word w=0;
-	dbg_notest=1;
+	dbg_notest=0;
 
 	Startup16(&gvar);
 
@@ -108,9 +108,7 @@ void main() {
 
 	VGAmodeX(1, 1, &gvar);
 	modexHiganbanaPageSetup(&gvar.video);
-
-	/* simulate scroll's zetup */
-	modexShowPage(&gvar.video.page[0]);
+	modexShowPage_(&gvar.video.page[0]);
 
 	/* non sprite comparison */
 	start = *clockw;
@@ -137,6 +135,7 @@ void main() {
 				w++;
 			break;
 		}
+FUNCTIONKEYFUNCTIONS;
 	}
 	VGAmodeX(0, 1, &gvar);
 	MM_ShowMemory(&gvar);
