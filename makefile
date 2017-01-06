@@ -187,8 +187,9 @@ TESTEXEC2 = &
 	test.exe &
 	test0.exe &
 	pcxtest.exe &
-	pcxtest2.exe &
 	$(EXTERNTESTEXEC)
+TESTEXEC3= &
+	pcxtest2.exe
 UTILEXEC = &
 	palettel.exe &
 	palettec.exe
@@ -233,7 +234,7 @@ palettec.exe:	 palettec.$(OBJ) gfx.lib $(DOSLIB)
 palettel.exe:	 palettel.$(OBJ) gfx.lib $(DOSLIB)
 pcxtest2.exe:	 pcxtest2.$(OBJ) gfx.lib $(DOSLIB)
 #planrpcx.exe:	planrpcx.$(OBJ) gfx.lib
-maptest.exe:	maptest.$(OBJ) 16_map.$(OBJ) 16_head.$(OBJ) gfx.lib $(DOSLIB)
+maptest.exe:	maptest.$(OBJ) 16_map.$(OBJ) 16_head.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
 fmemtest.exe:	 fmemtest.$(OBJ)
 exmmtest.exe:	 exmmtest.$(OBJ) $(16LIB) $(DOSLIB)
 vgmtest.exe:	vgmtest.$(OBJ) vgmsnd.lib $(16LIB) $(DOSLIB)

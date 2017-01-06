@@ -23,7 +23,7 @@
 #include "src/lib/16_head.h"
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
-#include "src/lib/types.h"
+#include "src/lib/16_t.h"
 
 void
 main(int argc, char *argv[])

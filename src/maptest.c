@@ -47,7 +47,7 @@ main(int argc, char *argv[])
 	if(map.width*map.height != 1200) exit(-3);
 	for(i=0; i<(map.width*map.height); i++)
 	{
-		fprintf(stdout, "%04d[%02d]", i, map.data[0][i]);
+		fprintf(stdout, "%04d[%02d]", i, map.data[i]);
 		if(i && !(i%map.width)) fprintf(stdout, "\n");
 	}
 	fprintf(stdout, "\n");

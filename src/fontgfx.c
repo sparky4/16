@@ -21,7 +21,7 @@
  */
 #include <stdio.h>
 #include <conio.h>
-#include "src/lib/types.h"
+#include "src/lib/16_t.h"
 //#include "lib/16text.h"
 #include "src/lib/16_vl.h"
 
