@@ -33,6 +33,9 @@
 #define FUNCTIONKEYFUNCTIONS \
 	if(IN_KeyDown(sc_F6)){ modexShowPage(&gvar.video.page[0]); IN_UserInput(1,1); } \
 	if(IN_KeyDown(sc_F7)){ modexShowPage_(&gvar.video.page[0]); IN_UserInput(1,1); }
+#define FUNCTIONKEYFUNCTIONS0EXE \
+	if(IN_KeyDown(sc_F6)){ modexShowPage(&gvar.video.page[pagenum]); IN_UserInput(1,1); } \
+	if(IN_KeyDown(sc_F7)){ modexShowPage_(&gvar.video.page[pagenum]); IN_UserInput(1,1); }
 
 void DebugMemory_(global_game_variables_t *gvar, boolean q);
 void Shutdown16(global_game_variables_t *gvar);

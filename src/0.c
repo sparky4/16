@@ -19,12 +19,13 @@ int main(int argc,char **argv) {
 	unsigned int bufsz;
 	int fd;
 	char *bakapee1,*bakapee2;
+	word pagenum=0;
 
 	bakapee1=malloc(64);
 	bakapee2=malloc(1024);
 
 	IN_Startup();
-	IN_Default(0,&player,ctrl_Joystick);
+	IN_Default(0,&player,ctrl_Keyboard1);
 	IN_initplayer(&player, 0);
 
 	if (argc < 3) {
@@ -84,7 +85,7 @@ int main(int argc,char **argv) {
 
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
-	modexShowPage(&(gvar.video.page[0]));
+	modexShowPage(&(gvar.video.page[pagenum]));
 
 	#define VMEMHEIGHT gvar.video.page[0].height+gvar.video.page[1].height
 
@@ -130,13 +131,14 @@ int main(int argc,char **argv) {
 		while(!IN_KeyDown(sc_Escape))
 		{
 			IN_ReadControl(0,&player);
-			if(IN_KeyDown(2)) modexShowPage(&(gvar.video.page[0]));
-			if(IN_KeyDown(3)) modexShowPage(&(gvar.video.page[1]));
+			if(IN_KeyDown(2)){ pagenum=0; modexShowPage(&(gvar.video.page[0])); }
+			if(IN_KeyDown(3)){ pagenum=1; modexShowPage(&(gvar.video.page[1])); }
 			if(IN_KeyDown(68))	//f10
 			{
 				//gvar.kurokku.fpscap=!gvar.kurokku.fpscap;
 				IN_UserInput(1,1);
 			}
+			FUNCTIONKEYFUNCTIONS0EXE;
 
 			/* render box bounds. y does not need modification, but x and width must be multiple of 4 */
 			if (x >= overdraw) rx = (x - overdraw) & (~3);
