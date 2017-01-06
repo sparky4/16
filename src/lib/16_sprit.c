@@ -98,7 +98,7 @@ void print_anim_ids(struct sprite *spri)
 }
 
 
-void animate_spri(struct sprite *spri, global_game_variables_t *gvar)
+void animate_spri(struct sprite *spri, global_game_variables_t *gv)
 {
 	int i;
 	// Events go here
@@ -107,9 +107,10 @@ void animate_spri(struct sprite *spri, global_game_variables_t *gvar)
 	i = get_vrl_by_id(spri->spritesheet, spri->curr_spri_id, spri->sprite_vrl_cont);
 	if(i < 0)
 	{
-		Quit (gvar, "Error retriving required sprite");
+		Quit (gv, "Error retriving required sprite");
 	}
-	draw_vrl1_vgax_modex(	spri->x, spri->y,
+	draw_vrl1_vgax_modex(	spri->x,// - spri->sprite_vrl_cont->vrl_header->width-28,
+					spri->y,// - spri->sprite_vrl_cont->vrl_header->height*2 -(gv->video.page[0].sh/2),
 				spri->sprite_vrl_cont->vrl_header, spri->sprite_vrl_cont->line_offsets,
 				spri->sprite_vrl_cont->buffer + sizeof(struct vrl1_vgax_header),
 				spri->sprite_vrl_cont->data_size);

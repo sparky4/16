@@ -70,11 +70,11 @@ void main(int argc, char *argv[])
 	player[0].ent->spri->spritesheet = malloc(sizeof(struct vrs_container));
 
 	// create the map
-	fprintf(stderr, "testing map load~	");
+//	fprintf(stderr, "testing map load~	");
 	loadmap("data/test.map", &map);
 	chkmap(&map, 0);
-	printf("chkmap ok	");
-	fprintf(stderr, "yay map loaded~~\n");
+//	printf("chkmap ok	");
+//	fprintf(stderr, "yay map loaded~~\n");
 
 	// data
 	read_vrs(&gvar, "data/spri/chikyuu.vrs", player[0].ent->spri->spritesheet);
@@ -114,7 +114,7 @@ void main(int argc, char *argv[])
 		mv[i].video = &gvar.video;
 		mv[i].pan	= &pan;
 	}
-	player[0].ent->spri->x = player[0].ent->spri->y = 20;
+	player[0].ent->spri->x = player[0].ent->spri->y = TILEWH;
 
 	// set up paging
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
@@ -139,7 +139,7 @@ void main(int argc, char *argv[])
 		modexFadeOn(4, dpal);
 #endif
 	}
-	//animate_spri((player[0].ent->spri), &gvar);
+	animate_spri((player[0].ent->spri), &gvar);
 
 	modexShowPage(mv[0].page);//!(gvar.video.p)
 	shinku_fps_indicator_page = 0; // we're on page 1 now, shinku(). follow along please or it will not be visible.
@@ -225,8 +225,9 @@ void main(int argc, char *argv[])
 		//9
 #ifdef FADE
 		if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate1(dpal); IN_UserInput(1,1); }
-		//if(IN_KeyDown(11)){ modexPalOverscan(15); }
 #endif
+		if(IN_KeyDown(sc_R)){ modexPalOverscan(rand()%56); } //r
+
 		if((player[0].q==1) && !(player[0].x%TILEWH==0 && player[0].y%TILEWH==0)) break;	//incase things go out of sync!
 		player[0].hp = 0;
 	}

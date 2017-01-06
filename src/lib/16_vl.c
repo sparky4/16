@@ -295,17 +295,18 @@ void modexHiganbanaPageSetup(video_t *video)
 
 	//setup the buffersize
 	video->page[0].dy=video->page[0].dx=
-		video->page[1].dx=video->page[1].dy=16;
+		video->page[1].dx=video->page[1].dy=TILEWH;	// 1 tile size buffer
 	video->page[2].dx=video->page[2].dy=
-		video->page[3].dx=video->page[3].dy=0;
+		video->page[3].dx=video->page[3].dy=0;		// cache pages are buffer wwww
 }
 
+//
+// move page to appropriate part and show it
+//
 void
 modexShowPage(page_t *page) {
-	word high_address;
-	word low_address;
-	word offset;
-	byte crtcOffset;
+	word high_address, low_address, offset;
+//	byte crtcOffset;
 
 	/* calculate offset */
 	offset = (word) page->data;
@@ -313,20 +314,20 @@ modexShowPage(page_t *page) {
 	offset += page->dx >> 2;
 
 	/* calculate crtcOffset according to virtual width */
-	crtcOffset = page->width >> 3;
+//	crtcOffset = page->width >> 3;
 
 	high_address = HIGH_ADDRESS | (offset & 0xff00);
 	low_address  = LOW_ADDRESS  | (offset << 8);
 
 	/* wait for appropriate timing and then program CRTC */
-	//while ((inp(INPUT_STATUS_1) & DISPLAY_ENABLE));
+//+=+=										while ((inp(INPUT_STATUS_1) & DISPLAY_ENABLE));
 	outpw(CRTC_INDEX, high_address);
 	outpw(CRTC_INDEX, low_address);
-	outp(CRTC_INDEX, 0x13);
-	outp(CRTC_DATA, crtcOffset);
+//	outp(CRTC_INDEX, 0x13);
+//	outp(CRTC_DATA, crtcOffset);
 
-	/*  wait for one retrace */
-	//while (!(inp(INPUT_STATUS_1) & VRETRACE));
+	/* wait for one retrace */
+//+=+=										while (!(inp(INPUT_STATUS_1) & VRETRACE));
 
 	/* do PEL panning here */
 	outp(AC_INDEX, 0x33);

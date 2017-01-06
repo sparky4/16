@@ -146,7 +146,7 @@ int main(int argc,char **argv) {
 			h = vrl_header->height + overdraw + y - ry;
 			w = (x + vrl_header->width + (overdraw*2) + 3/*round up*/ - rx) & (~3);
 			if ((rx+w) > gvar.video.page[0].width) w = gvar.video.page[0].width-rx;
-			if ((ry+h) > gvar.video.page[0].height) h = (gvar.video.page[0].height)-ry;
+			if ((ry+h) > gvar.video.page[0].height) h = gvar.video.page[0].height-ry;
 
 			/* block copy pattern to where we will draw the sprite */
 			vga_setup_wm1_block_copy();

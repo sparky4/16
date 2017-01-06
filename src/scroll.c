@@ -266,8 +266,11 @@ void main(int argc, char *argv[])
 	}*/
 
 	//9
-	if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate1(dpal); IN_UserInput(1,1); }
-	//if(IN_KeyDown(11)){ modexPalOverscan(15); }
+#ifdef FADE
+		if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate1(dpal); IN_UserInput(1,1); }
+#endif
+		if(IN_KeyDown(sc_R)){ modexPalOverscan(rand()%56); } //r
+
 	if((player[0].q==1) && !(player[0].x%TILEWH==0 && player[0].y%TILEWH==0)) break;	//incase things go out of sync!
 	}
 
