@@ -130,14 +130,16 @@ typedef struct
 typedef struct
 {
 	char old_mode;		//old video mode before game!
-	byte grneeded[NUMCHUNKS];
-	page_t page[MAXPAGE];		//pointer to root page[0]
+	page_t page[MAXPAGE];	//can be used as a pointer to root page[0]
 	word vmem_remain;	//remaining video memory
 	byte num_of_pages;	//number of actual pages
 	boolean __near p;			//render page number
 	boolean __near r;			//page flip if true
 	word pr[MAXPAGE][4];	//render sections of pages (this is supposed to be set up to draw sections of the screen if updated)
 	//0000word startclk; float clk, tickclk;	//timer
+//newer vars
+//TODO: find out how they are used
+	byte grneeded[NUMCHUNKS];
 } video_t;
 
 //from 16_mm
