@@ -82,8 +82,9 @@ DOSLIB_JOYSTICK=$(DOSLIBDIR)/hw/joystick
 DOSLIB_MEMMODE=dos86$(MEMORYMODE)
 
 # remote host (for sparky4)
-HOSTUSER=sparky4
-HOSTADDR=138.47.241.110
+HOSTUSER=wwc001
+HOSTADDR=beta.latech.edu
+HOSTDIR=~/public_html/
 #ssh port
 HOSTPORT=22
 
@@ -393,10 +394,10 @@ www: .symbolic
 	@wmake -h wwwext
 
 wwwext: .symbolic
-	@ssh -p $(HOSTPORT) $(HOSTUSER)@$(HOSTADDR) 'rm -f /var/www/16/*exe*'
-	@scp -r -P $(HOSTPORT) *.exe $(HOSTADDR):/var/www/16/
-	@scp -r -P $(HOSTPORT) x4get.bat $(HOSTADDR):/var/www/16/
-	@scp -r -P $(HOSTPORT) /var/www/*.exe.zip.* $(HOSTADDR):/var/www/16/
+	####----@ssh -p $(HOSTPORT) $(HOSTUSER)@$(HOSTADDR) 'rm -f $(HOSTDIR)/16/*exe*'
+	@scp -r -P $(HOSTPORT) *.exe $(HOSTUSER)@$(HOSTADDR):$(HOSTDIR)/16/
+	@scp -r -P $(HOSTPORT) *get.bat $(HOSTUSER)@$(HOSTADDR):$(HOSTDIR)/16/
+	@scp -r -P $(HOSTPORT) /var/www/*.exe.zip.* $(HOSTUSER)@$(HOSTADDR):$(HOSTDIR)/16/
 
 getwww: .symbolic
 	*x4get.bat $(EXEC)
