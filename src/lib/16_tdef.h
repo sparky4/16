@@ -67,33 +67,36 @@ typedef struct {
 typedef struct {
 	/*nibble*/word id;	/* the Identification number of the page~ For layering~ */
 	byte far* data;	/* the data for the page */
-	word dx;		/* col we are viewing on the virtual screen */
-	word dy;		/* row we are viewing on the virtual screen */
-	word sw;		/* screen width */
-	word sh;		/* screen heigth */
+	word dx;		/* col we are viewing on the virtual screen */	/* off screen buffer on the left size */
+	word dy;		/* row we are viewing on the virtual screen */	/* off screen buffer on the top size */
+	word sw;		/* screen width */	/* resolution */
+	word sh;		/* screen heigth */	/* resolution */
 	word tw;		/* screen width in tiles */
 	word th;		/* screen height in tiles */
 	word width;		/* virtual width of the page */
 	word height;	/* virtual height of the page */
 	word tilesw;		/* virtual screen width in tiles */
 	word tilesh;		/* virtual screen height in tiles */
-	sword tilemidposscreenx;	/* middle tile position */
-	sword tilemidposscreeny;	/* middle tile position */
-	sword tileplayerposscreenx;	/* player position on screen */
-	sword tileplayerposscreeny;	/* player position on screen */
-	word stridew;			/*width/4*/
+	sword tilemidposscreenx;	/* middle tile x position */	/* needed for scroll system to work accordingly */
+	sword tilemidposscreeny;	/* middle tile y position */	/* needed for scroll system to work accordingly */
+	sword tileplayerposscreenx;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
+	sword tileplayerposscreeny;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
+	word stridew;			/* width/4 */	/* VGA */
 	word pagesize;			/* page size */
-	word pi;				/* incremention page by this much to preserve location */
+	word pi;				/* increment page by this much to preserve location */
+//newer vars
+//TODO: find where they are used
 	sword delta;			// How much should we shift the page for smooth scrolling
-	//enum direction d;			// Direction we should shift the page
 } page_t;
 
+//TODO: MAKE THIS WWWW
 typedef struct
 {
 	//sprite ....
 	boolean wwww;
 } spri_t;
 
+//TODO: MAKE THIS TO WWWW
 typedef struct
 {
 	//vrs with sprite ....
@@ -102,7 +105,7 @@ typedef struct
 
 typedef struct
 {
-	int			profilehandle,debughandle,showmemhandle;
+	int profilehandle,debughandle,showmemhandle;
 	int heaphandle;
 } loghandle_t;
 
