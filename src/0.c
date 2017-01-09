@@ -10,9 +10,12 @@
 //#define FILENAME_2 "data/default.pal"
 
 //#define PATTERN
+#define INITTNUM 1
 #define DRAWCORNERBOXES \
-modexClearRegion(&gvar.video.page[0], 16, 16, 16, 16, 15); \
-modexClearRegion(&gvar.video.page[0], gvar.video.page[0].sw, gvar.video.page[0].sh, 16, 16, 15);
+DRAWOTHERCORNERBOX_TOPLEFT; \
+DRAWOTHERCORNERBOX_TOPRIGHT; \
+DRAWOTHERCORNERBOX_BOTTOMLEFT; \
+DRAWOTHERCORNERBOX_BOTTOMRIGHT; \
 
 static unsigned char palette[768];
 player_t player[MaxPlayers];
@@ -28,7 +31,7 @@ int main(int argc,char **argv)
 	unsigned int bufsz;
 	int fd, i;
 	char *bakapee1,*bakapee2;
-	boolean anim=1,noanim=1;
+	boolean anim=1,noanim=0;
 	pan.pn=0;
 
 	bakapee1=malloc(64);
@@ -96,17 +99,18 @@ int main(int argc,char **argv)
 
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
-player[0].tx = mv[0].tx + mv[0].page->tilemidposscreenx;
-	player[0].ty = mv[0].ty + mv[0].page->tilemidposscreeny;
 	modexShowPage(&(gvar.video.page[pan.pn]));
 	for(i=0;i<gvar.video.num_of_pages;i++)
 	{
 		mv[i].page = &gvar.video.page[i];
 		mv[i].video = &gvar.video;
 		mv[i].pan	= &pan;
-		mv[i].tx	= 0;
-		mv[i].ty	= 0;
+		mv[i].tx	= INITTNUM;
+		mv[i].ty	= INITTNUM;
 	}
+	//player[0].tx = INITTNUM; player[0].ty = INITTNUM;
+	//mapinitmapview(mv, player[0].tx, player[0].tx);
+
 
 	#define VMEMHEIGHT gvar.video.page[0].height+gvar.video.page[1].height
 
@@ -323,7 +327,7 @@ if(!noanim) {
 	bufsz = 0;
 	free(bakapee1);
 	free(bakapee2);
-	printf("mv 0\n	tx=%u	ty=%u\n\n", mv[0].tx, mv[0].tx);
-	printf("mv 1\n	tx=%u	ty=%u\n", mv[1].tx, mv[1].tx);
+	//printf("mv 0\n	tx=%d	ty=%d\n\n", mv[0].tx, mv[0].tx);
+	//printf("mv 1\n	tx=%d	ty=%d\n", mv[1].tx, mv[1].tx);
 	return 0;
 }

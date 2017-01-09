@@ -100,7 +100,7 @@ UPXQ=-qqq
 #
 S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768
 Z_FLAGS=-zk0 -zc -zp8 -zm
-O_FLAGS=-obmilr -oe=24 -outpack -ei -ohnl+				-zp4
+O_FLAGS=-opmilr -oe=24 -outback -ei -ohnl+				-zp4
 T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 -d1##-fo=.$(OBJ) -e=65536
 
 DBUGFLAGS=-fm=$^&.mah -fd=$^&
@@ -411,12 +411,12 @@ vomitchan: .symbolic
 ##
 #git submodule add <repo>
 mkdl: .symbolic
-	@cd $(DOSLIB:$(to_os_path))
+	@cd $(DOSLIBDIR:$(to_os_path))
 	@$(DOSLIBMAKEALL) $(DOSLIB_MEMMODE)
 	@cd $(BUILD_ROOT)
 
 cldl: .symbolic
-	@cd $(DOSLIB:$(to_os_path))
+	@cd $(DOSLIBDIR:$(to_os_path))
 	@$(DOSLIBMAKEALL) $(DOSLIB_MEMMODE) clean
 	@cd $(BUILD_ROOT)
 
