@@ -84,7 +84,7 @@ DOSLIB_MEMMODE=dos86$(MEMORYMODE)
 # remote host (for sparky4)
 HOSTUSER=sparky4#wwc001
 HOSTADDR=4ch.mooo.com#beta.latech.edu
-HOSTDIR=/var/www/16/#~/public_html/
+HOSTDIR=/var/www/#~/public_html/
 #ssh port
 HOSTPORT=26
 
