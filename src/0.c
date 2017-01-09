@@ -28,7 +28,7 @@ int main(int argc,char **argv)
 	int fd, i;
 	char *bakapee1,*bakapee2;
 
-	boolean anim=1,noanim=0;
+	boolean anim=1,noanim=1;
 
 	pan.pn=0;
 
@@ -173,15 +173,6 @@ int main(int argc,char **argv)
 				DRAWCORNERBOXES;
 				IN_UserInput(1,1);
 			}
-			if(IN_KeyDown(sc_A))	//a
-			{
-				//gvar.kurokku.fpscap=!gvar.kurokku.fpscap;
-				noanim=!noanim;
-				DRAWCORNERBOXES;
-				IN_UserInput(1,1);
-			}
-
-			FUNCTIONKEYFUNCTIONS0EXE;
 			if(IN_KeyDown(sc_R)){
 				gvar.video.page[0].dx=gvar.video.page[0].dy=gvar.video.page[1].dx=gvar.video.page[1].dy=16;
 				mv[0].tx = mv[0].ty = mv[1].tx = mv[1].ty = INITTNUM;
@@ -190,8 +181,9 @@ int main(int argc,char **argv)
 				x=y=0;
 				xdir=ydir=1;
 			} //R
+			FUNCTIONKEYFUNCTIONS0EXE;
 
-			if(anim && !noanim)
+			if(anim/* && !noanim*/)
 			{
 				/* render box bounds. y does not need modification, but x and width must be multiple of 4 */
 				if (x >= overdraw) rx = (x - overdraw) & (~3);
