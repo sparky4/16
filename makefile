@@ -82,11 +82,11 @@ DOSLIB_JOYSTICK=$(DOSLIBDIR)/hw/joystick
 DOSLIB_MEMMODE=dos86$(MEMORYMODE)
 
 # remote host (for sparky4)
-HOSTUSER=wwc001
-HOSTADDR=beta.latech.edu
-HOSTDIR=~/public_html/
+HOSTUSER=sparky4#wwc001
+HOSTADDR=4ch.mooo.com#beta.latech.edu
+HOSTDIR=/var/www/16/#~/public_html/
 #ssh port
-HOSTPORT=22
+HOSTPORT=26
 
 #
 # quiet flags
