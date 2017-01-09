@@ -10,8 +10,9 @@
 #include <hw/vga/vga.h>
 #include <hw/vga/vrl.h>
 
+//panPageManual(mv, player, 0);
 #define PANKEY0EXE \
-			panpagemanual(mv, player, 0); \
+			panVmemManual(mv, player, 0); \
 			if(IN_KeyDown(1+1)){ pan.pn=0; modexShowPage(&(gvar.video.page[pan.pn])); } \
 			if(IN_KeyDown(2+1)){ pan.pn=1; modexShowPage(&(gvar.video.page[pan.pn])); } \
 			if(IN_KeyDown(3+1)){ pan.pn=2; modexShowPage(&(gvar.video.page[pan.pn])); } \

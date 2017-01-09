@@ -10,7 +10,7 @@
 #define FILENAME_1 "data/spri/chikyuu.vrl"
 #define FILENAME_2 "data/spri/chikyuu.pal"
 
-//#define PATTERN
+#define PATTERN
 #define INITTNUM 1
 
 static unsigned char palette[768];
@@ -180,6 +180,8 @@ int main(int argc,char **argv)
 				player[0].q = 1; player[0].d = 2;
 				x=y=0;
 				xdir=ydir=1;
+				TESTBG;
+				DRAWCORNERBOXES;
 			} //R
 			FUNCTIONKEYFUNCTIONS0EXE;
 

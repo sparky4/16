@@ -188,7 +188,7 @@ void main(int argc, char *argv[])
 	if(!panswitch){
 		walk(mv, &player, 0);
 	}else{
-		panpagemanual(mv, &player, 0);
+		panPageManual(mv, &player, 0);
 		//printf("	player[0].q: %d", player[0].q);	printf("	player[0].d: %d\n", player[0].d);
 	}
 

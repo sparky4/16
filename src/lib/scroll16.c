@@ -214,7 +214,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 }
 
 //panning page
-void panpagemanual(map_view_t *pip, player_t *player, word pn)
+void panPageManual(map_view_t *pip, player_t *player, word pn)
 {
 	switch(player[pn].d)
 	{
@@ -265,6 +265,66 @@ void panpagemanual(map_view_t *pip, player_t *player, word pn)
 				{
 					pip[pip[0].pan->pn].page->dy-=4;
 					modexShowPage(pip[pip[0].pan->pn].page);
+					player[pn].q++;
+				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].ty--; }
+			}
+			break;
+	}
+	//if (player[pn].d!=2) printf("player[%u].d=%u player[%u].q=%u\n", pn, player[pn].d, pn, player[pn].q);
+}
+
+//panning vmem
+void panVmemManual(map_view_t *pip, player_t *player, word pn)
+{
+	switch(player[pn].d)
+	{
+		//right movement
+		case 3:
+			if(pip[pip[0].pan->pn].tx >= 0 && pip[pip[0].pan->pn].tx+pip[pip[0].pan->pn].page->tw < pip[pip[0].pan->pn].page->tilesw)
+			{
+				if(player[pn].q<=player[pn].spt)
+				{
+					pip[pip[0].pan->pn].page->dx+=4;
+					modexShowPageVsync(pip[pip[0].pan->pn].page);
+					player[pn].q++;
+				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].tx++; }
+			}
+		break;
+
+		//left movement
+		case 1:
+			if(pip[pip[0].pan->pn].tx > 0 && pip[pip[0].pan->pn].tx+pip[pip[0].pan->pn].page->tw <= pip[pip[0].pan->pn].page->tilesw)
+			{
+				if(player[pn].q<=player[pn].spt)
+				{
+					pip[pip[0].pan->pn].page->dx-=4;
+					modexShowPageVsync(pip[pip[0].pan->pn].page);
+					player[pn].q++;
+				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].tx--; }
+			}
+		break;
+
+		//down movement
+		case 4:
+			if(pip[pip[0].pan->pn].ty >= 0 && pip[pip[0].pan->pn].ty+pip[pip[0].pan->pn].page->th < pip[pip[0].pan->pn].page->tilesh+pip[pip[1].pan->pn].page->tilesh+pip[pip[2].pan->pn].page->tilesh+pip[pip[3].pan->pn].page->tilesh)
+			{
+				if(player[pn].q<=player[pn].spt)
+				{
+					pip[pip[0].pan->pn].page->dy+=4;
+					modexShowPageVsync(pip[pip[0].pan->pn].page);
+					player[pn].q++;
+				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].ty++; }
+			}
+		break;
+
+		//up movement
+		case 0:
+			if(pip[pip[0].pan->pn].ty > 0 && pip[pip[0].pan->pn].ty+pip[pip[0].pan->pn].page->th <= pip[pip[0].pan->pn].page->tilesh+pip[pip[1].pan->pn].page->tilesh+pip[pip[2].pan->pn].page->tilesh+pip[pip[3].pan->pn].page->tilesh)
+			{
+				if(player[pn].q<=player[pn].spt)
+				{
+					pip[pip[0].pan->pn].page->dy-=4;
+					modexShowPageVsync(pip[pip[0].pan->pn].page);
 					player[pn].q++;
 				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].ty--; }
 			}
