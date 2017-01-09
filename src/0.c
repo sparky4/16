@@ -28,7 +28,7 @@ int main(int argc,char **argv)
 	int fd, i;
 	char *bakapee1,*bakapee2;
 
-	boolean anim=1,noanim=1;
+	boolean anim=1,noanim=0;
 
 	pan.pn=0;
 
@@ -187,7 +187,7 @@ int main(int argc,char **argv)
 			} //R
 			FUNCTIONKEYFUNCTIONS0EXE;
 
-			if(anim/* && !noanim*/)
+			if(anim && !noanim)
 			{
 				/* render box bounds. y does not need modification, but x and width must be multiple of 4 */
 				if (x >= overdraw) rx = (x - overdraw) & (~3);
