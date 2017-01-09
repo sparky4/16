@@ -137,6 +137,7 @@ void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid);
 void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid);
 sword chkmap(map_t *map, word q);
 void mapGoTo(map_view_t *mv, int tx, int ty);
+void mapGoTo_(map_view_t *mv, int tx, int ty);
 void near mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
 void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *p, word poopoffset);
 void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *p, word poopoffset);

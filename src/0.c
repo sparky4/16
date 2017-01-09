@@ -7,31 +7,38 @@
 
 #define FILENAME_1 "data/aconita.vrl"
 #define FILENAME_2 "data/aconita.pal"
+//#define FILENAME_2 "data/default.pal"
+
+//#define PATTERN
+#define DRAWCORNERBOXES \
+modexClearRegion(&gvar.video.page[0], 16, 16, 16, 16, 15); \
+modexClearRegion(&gvar.video.page[0], gvar.video.page[0].sw, gvar.video.page[0].sh, 16, 16, 15);
 
 static unsigned char palette[768];
-global_game_variables_t gvar;
 player_t player[MaxPlayers];
+map_view_t mv[4];
+pan_t pan;
 
-int main(int argc,char **argv) {
+int main(int argc,char **argv)
+{
+	static global_game_variables_t gvar;
 	struct vrl1_vgax_header *vrl_header;
 	vrl1_vgax_offset_t *vrl_lineoffs;
 	unsigned char *buffer;
 	unsigned int bufsz;
-	int fd;
+	int fd, i;
 	char *bakapee1,*bakapee2;
-	word pagenum=0;
+	boolean anim=1,noanim=1;
+	pan.pn=0;
 
 	bakapee1=malloc(64);
 	bakapee2=malloc(1024);
 
-	IN_Startup();
-	IN_Default(0,&player,ctrl_Keyboard1);
-	IN_initplayer(&player, 0);
-
-	if (argc < 3) {
-		fprintf(stderr,"drawvrl <VRL file> <palette file>\n");
+	if (argc < 2) {
+		//fprintf(stderr,"drawvrl <VRL file> <palette file>\n palette file optional\n");
 		bakapee1 = FILENAME_1;//"data/aconita.vrl";
 		bakapee2 = FILENAME_2;//"data/aconita.pal";
+
 	}else{
 		if(argv[1]) bakapee1 = argv[1];
 		if(argv[2]) bakapee2 = argv[2];
@@ -83,13 +90,27 @@ int main(int argc,char **argv) {
 	vrl_lineoffs = vrl1_vgax_genlineoffsets(vrl_header,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
 	if (vrl_lineoffs == NULL) return 1;
 
+	IN_Startup();
+	IN_Default(0,&player,ctrl_Keyboard1);
+	IN_initplayer(&player, 0);
+
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
-	modexShowPage(&(gvar.video.page[pagenum]));
+player[0].tx = mv[0].tx + mv[0].page->tilemidposscreenx;
+	player[0].ty = mv[0].ty + mv[0].page->tilemidposscreeny;
+	modexShowPage(&(gvar.video.page[pan.pn]));
+	for(i=0;i<gvar.video.num_of_pages;i++)
+	{
+		mv[i].page = &gvar.video.page[i];
+		mv[i].video = &gvar.video;
+		mv[i].pan	= &pan;
+		mv[i].tx	= 0;
+		mv[i].ty	= 0;
+	}
 
 	#define VMEMHEIGHT gvar.video.page[0].height+gvar.video.page[1].height
 
-	//4	this dose the screen
+	//4	this draws that pattern on the screen
 	{
 		unsigned int i,j,o;
 		/* fill screen with a distinctive pattern */
@@ -101,18 +122,20 @@ int main(int argc,char **argv) {
 		}
 	}
 
+	DRAWCORNERBOXES;
 
 	/* make distinctive pattern offscreen, render sprite, copy onscreen.
 	 * this time, we render the distinctive pattern to another offscreen location and just copy.
 	 * note this version is much faster too! */
 	{
-		unsigned int i,j,o,o2;
+		unsigned int i,o,o2;
 		int x,y,rx,ry,w,h;
 		unsigned int overdraw = 1;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.
 						// if the sprite's edge pixels are clear anyway, you can set this to 0.
 		VGA_RAM_PTR omemptr;
 		int xdir=1,ydir=1;
 
+		int j;
 		/* fill pattern offset with a distinctive pattern */
 		for (i=0;i < gvar.video.page[0].width;i++) {
 			o = (i >> 2) + (0x10000UL - (uint16_t)gvar.video.page[1].data);
@@ -120,6 +143,8 @@ int main(int argc,char **argv) {
 			for (j=0;j < VMEMHEIGHT;j++,o += gvar.video.page[0].stridew)
 				vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
 		}
+
+		DRAWCORNERBOXES;
 
 		/* starting coords. note: this technique is limited to x coordinates of multiple of 4 */
 		x = -(gvar.video.page[0].dx);
@@ -131,74 +156,85 @@ int main(int argc,char **argv) {
 		while(!IN_KeyDown(sc_Escape))
 		{
 			IN_ReadControl(0,&player);
-			if(IN_KeyDown(2)){ pagenum=0; modexShowPage(&(gvar.video.page[0])); }
-			if(IN_KeyDown(3)){ pagenum=1; modexShowPage(&(gvar.video.page[1])); }
-			if(IN_KeyDown(68))	//f10
+			PANKEY0EXE;
+			if(IN_KeyDown(68) || IN_KeyDown(sc_Space))	//f10 and space
 			{
 				//gvar.kurokku.fpscap=!gvar.kurokku.fpscap;
+				anim=!anim;
 				IN_UserInput(1,1);
 			}
 			FUNCTIONKEYFUNCTIONS0EXE;
+			if(IN_KeyDown(sc_R)){
+				gvar.video.page[0].dx=gvar.video.page[0].dy=gvar.video.page[1].dx=gvar.video.page[1].dy=16;
+				modexShowPage(&(gvar.video.page[pan.pn]));
+				player[0].q = 1; player[0].d = 2;
+			} //R
 
-			/* render box bounds. y does not need modification, but x and width must be multiple of 4 */
-			if (x >= overdraw) rx = (x - overdraw) & (~3);
-			else rx = -(gvar.video.page[0].dx);
-			if (y >= overdraw) ry = (y - overdraw);
-			else ry = -(gvar.video.page[0].dy);
-			h = vrl_header->height + overdraw + y - ry;
-			w = (x + vrl_header->width + (overdraw*2) + 3/*round up*/ - rx) & (~3);
-			if ((rx+w) > gvar.video.page[0].width) w = gvar.video.page[0].width-rx;
-			if ((ry+h) > gvar.video.page[0].height) h = gvar.video.page[0].height-ry;
+			if(anim && !noanim)
+			{
+				/* render box bounds. y does not need modification, but x and width must be multiple of 4 */
+				if (x >= overdraw) rx = (x - overdraw) & (~3);
+				else rx = -(gvar.video.page[0].dx);
+				if (y >= overdraw) ry = (y - overdraw);
+				else ry = -(gvar.video.page[0].dy);
+				h = vrl_header->height + overdraw + y - ry;
+				w = (x + vrl_header->width + (overdraw*2) + 3/*round up*/ - rx) & (~3);
+				if ((rx+w) > gvar.video.page[0].width) w = gvar.video.page[0].width-rx;
+				if ((ry+h) > gvar.video.page[0].height) h = gvar.video.page[0].height-ry;
 
-			/* block copy pattern to where we will draw the sprite */
-			vga_setup_wm1_block_copy();
-			o2 = gvar.video.page[0].pagesize;
-			o = (0x10000UL - (uint16_t)gvar.video.page[1].data) + (ry * gvar.video.page[0].stridew) + (rx >> 2); // source offscreen
-			for (i=0;i < h;i++,o += gvar.video.page[0].stridew,o2 += (w >> 2)) vga_wm1_mem_block_copy(o2,o,w >> 2);
-			/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
-			vga_restore_rm0wm0();
+				/* block copy pattern to where we will draw the sprite */
+				vga_setup_wm1_block_copy();
+				o2 = gvar.video.page[0].pagesize;
+				o = (0x10000UL - (uint16_t)gvar.video.page[1].data) + (ry * gvar.video.page[0].stridew) + (rx >> 2); // source offscreen
+				for (i=0;i < h;i++,o += gvar.video.page[0].stridew,o2 += (w >> 2)) vga_wm1_mem_block_copy(o2,o,w >> 2);
+				/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
+				vga_restore_rm0wm0();
 
-			/* replace VGA stride with our own and mem ptr. then sprite rendering at this stage is just (0,0) */
-			vga_state.vga_draw_stride_limit = (gvar.video.page[0].width + 3/*round up*/ - x) >> 2;
-			vga_state.vga_draw_stride = w >> 2;
-			vga_state.vga_graphics_ram = omemptr + gvar.video.page[0].pagesize;
+				/* replace VGA stride with our own and mem ptr. then sprite rendering at this stage is just (0,0) */
+				vga_state.vga_draw_stride_limit = (gvar.video.page[0].width + 3/*round up*/ - x) >> 2;
+				vga_state.vga_draw_stride = w >> 2;
+				vga_state.vga_graphics_ram = omemptr + gvar.video.page[0].pagesize;
 
-			/* then the sprite. note modding ram ptr means we just draw to (x&3,0) */
-			draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
+				/* then the sprite. note modding ram ptr means we just draw to (x&3,0) */
+draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
 
-			/* restore ptr */
-			vga_state.vga_graphics_ram = omemptr;
+				/* restore ptr */
+				vga_state.vga_graphics_ram = omemptr;
 
-			/* block copy to visible RAM from offscreen */
-			vga_setup_wm1_block_copy();
-			o = gvar.video.page[0].pagesize; // source offscreen
-			o2 = (ry * gvar.video.page[0].stridew) + (rx >> 2); // dest visible (original stride)
-			for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += gvar.video.page[0].stridew) vga_wm1_mem_block_copy(o2,o,w >> 2);
-			/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
-			vga_restore_rm0wm0();
+				/* block copy to visible RAM from offscreen */
+				vga_setup_wm1_block_copy();
+				o = gvar.video.page[0].pagesize; // source offscreen
+				o2 = (ry * gvar.video.page[0].stridew) + (rx >> 2); // dest visible (original stride)
+				for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += gvar.video.page[0].stridew) vga_wm1_mem_block_copy(o2,o,w >> 2);
+				/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
+				vga_restore_rm0wm0();
 
-			/* restore stride */
-			vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = gvar.video.page[0].stridew;
+				/* restore stride */
+				vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = gvar.video.page[0].stridew;
 
-			/* step */
-			x += xdir; y += ydir;
-			if ((x + vrl_header->width) >= ((gvar.video.page[0].width + gvar.video.page[0].dx) - 1) || x == -(gvar.video.page[0].dx))
-				xdir = -xdir;
-			if ((y + vrl_header->height) >= ((gvar.video.page[0].height + gvar.video.page[0].dy) - 1) || y == -(gvar.video.page[0].dy))
-				ydir = -ydir;
-			//printf("[x%u y%u]	[rx%u ry%u]		[w%u h%u]\n", x, y, rx, ry, w, h);
+				/* step */
+				x += xdir; y += ydir;
+				if ((x + vrl_header->width) >= ((gvar.video.page[0].width + gvar.video.page[0].dx) - 1) || x == -(gvar.video.page[0].dx))
+					xdir = -xdir;
+				if ((y + vrl_header->height) >= ((gvar.video.page[0].height + gvar.video.page[0].dy) - 1) || y == -(gvar.video.page[0].dy))
+					ydir = -ydir;
+				//printf("[x%u y%u]	[rx%u ry%u]		[w%u h%u]\n", x, y, rx, ry, w, h);
+			}
 		}
 	}
 
 	IN_UserInput(1,1);
 
-	while(!IN_KeyDown(sc_Escape))
-	{
-		if(IN_KeyDown(2)) modexShowPage(&(gvar.video.page[0]));
-		if(IN_KeyDown(3)) modexShowPage(&(gvar.video.page[1]));
-	}
+// 	while(!IN_KeyDown(sc_Escape))
+// 	{
+// 		IN_ReadControl(0,&player);
+// 		PANKEY0EXE;
+// 	}
+
+//===========================================================================//
 
 	modexShowPage(&(gvar.video.page[0]));
+if(!noanim) {
 	/* another handy "demo" effect using VGA write mode 1.
 	 * we can take what's on screen and vertically squash it like an old analog TV set turning off. */
 	{
@@ -278,7 +314,7 @@ int main(int argc,char **argv) {
 			if (dh < 40) dh_step = 1;
 		}
 	}
-
+}
 	IN_Shutdown();
 	VGAmodeX(0, 1, &gvar);
 	free(vrl_lineoffs);
@@ -287,5 +323,7 @@ int main(int argc,char **argv) {
 	bufsz = 0;
 	free(bakapee1);
 	free(bakapee2);
+	printf("mv 0\n	tx=%u	ty=%u\n\n", mv[0].tx, mv[0].tx);
+	printf("mv 1\n	tx=%u	ty=%u\n", mv[1].tx, mv[1].tx);
 	return 0;
 }

@@ -629,6 +629,43 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 	modexCopyPageRegion(mv[3].page, mv[0].page, 0/**/, 0/**/, 0, 0, 24, 32);
 }
 
+void mapGoTo_(map_view_t *mv, int tx, int ty)
+{
+	int py;
+	unsigned int i;
+
+	/* set up the coordinates */
+	mv[0].tx = mv[1].tx = tx;
+	mv[0].ty = mv[1].ty = ty;
+	mv[0].page->dx = mv[1].page->dx = mv[2].page->dx = mv[3].page->dx = mv->map->tiles->tileWidth;
+	mv[0].page->dy = mv[1].page->dy = mv[2].page->dy = mv[3].page->dy = mv->map->tiles->tileHeight;
+
+	/* set up the thresholds */
+	mv[0].dxThresh = mv[1].dxThresh = mv[2].dxThresh = mv[3].dxThresh = mv->map->tiles->tileWidth * 2;
+	mv[0].dyThresh = mv[1].dyThresh = mv[2].dxThresh = mv[3].dxThresh = mv->map->tiles->tileHeight * 2;
+
+	/* draw the tiles */
+	modexClearRegion(mv[0].page, 0, 0, mv[0].page->width, mv[0].page->height, 0);
+	py=0;
+	i=mv[0].ty * mv[0].map->width + mv[0].tx;
+	for(ty=mv[0].ty-1; py < mv[0].page->sh+mv->dyThresh && ty < mv[0].map->height; ty++, py+=mv[0].map->tiles->tileHeight) {
+		mapDrawWRow(&mv[0], tx-1, ty, py);
+	i+=mv->map->width - tx;
+	}
+	if(!pageploop) modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
+// 	{
+// 		unsigned int k,j,o;
+// 		/* fill screen with a distinctive pattern */
+// 		for (k=0;k < vga_state.vga_width;k++) {
+// 			o = k >> 2;
+// 			vga_write_sequencer(0x02/*map mask*/,1 << (k&3));
+// 				for (j=0;j < (mv[0].page->height)+(mv[1].page->height)+(mv[2].page->height)+(mv[3].page->height);j++,o += vga_state.vga_stride)
+// 					vga_state.vga_graphics_ram[o] = (k^j)&15; // VRL samples put all colors in first 15!
+// 		}
+// 	}
+	modexCopyPageRegion(mv[3].page, mv[0].page, 0/**/, 0/**/, 0, 0, 24, 32);
+}
+
 void near
 mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 {
