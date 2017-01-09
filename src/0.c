@@ -5,17 +5,13 @@
 
 #include "src/tesuto.h"
 
-#define FILENAME_1 "data/aconita.vrl"
-#define FILENAME_2 "data/aconita.pal"
-//#define FILENAME_2 "data/default.pal"
+//#define FILENAME_1 "data/aconita.vrl"
+//#define FILENAME_2 "data/aconita.pal"
+#define FILENAME_1 "data/spri/chikyuu.vrl"
+#define FILENAME_2 "data/spri/chikyuu.pal"
 
 //#define PATTERN
 #define INITTNUM 1
-#define DRAWCORNERBOXES \
-DRAWOTHERCORNERBOX_TOPLEFT; \
-DRAWOTHERCORNERBOX_TOPRIGHT; \
-DRAWOTHERCORNERBOX_BOTTOMLEFT; \
-DRAWOTHERCORNERBOX_BOTTOMRIGHT; \
 
 static unsigned char palette[768];
 player_t player[MaxPlayers];
@@ -31,7 +27,9 @@ int main(int argc,char **argv)
 	unsigned int bufsz;
 	int fd, i;
 	char *bakapee1,*bakapee2;
+
 	boolean anim=1,noanim=0;
+
 	pan.pn=0;
 
 	bakapee1=malloc(64);
@@ -115,6 +113,7 @@ int main(int argc,char **argv)
 	#define VMEMHEIGHT gvar.video.page[0].height+gvar.video.page[1].height
 
 	//4	this draws that pattern on the screen
+#ifdef PATTERN
 	{
 		unsigned int i,j,o;
 		/* fill screen with a distinctive pattern */
@@ -125,6 +124,9 @@ int main(int argc,char **argv)
 				vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
 		}
 	}
+#else
+	TESTBG;
+#endif
 
 	DRAWCORNERBOXES;
 
@@ -139,6 +141,7 @@ int main(int argc,char **argv)
 		VGA_RAM_PTR omemptr;
 		int xdir=1,ydir=1;
 
+#ifdef PATTERN
 		int j;
 		/* fill pattern offset with a distinctive pattern */
 		for (i=0;i < gvar.video.page[0].width;i++) {
@@ -147,7 +150,9 @@ int main(int argc,char **argv)
 			for (j=0;j < VMEMHEIGHT;j++,o += gvar.video.page[0].stridew)
 				vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
 		}
-
+#else
+	TESTBG;
+#endif
 		DRAWCORNERBOXES;
 
 		/* starting coords. note: this technique is limited to x coordinates of multiple of 4 */
@@ -165,13 +170,25 @@ int main(int argc,char **argv)
 			{
 				//gvar.kurokku.fpscap=!gvar.kurokku.fpscap;
 				anim=!anim;
+				DRAWCORNERBOXES;
 				IN_UserInput(1,1);
 			}
+			if(IN_KeyDown(sc_A))	//a
+			{
+				//gvar.kurokku.fpscap=!gvar.kurokku.fpscap;
+				noanim=!noanim;
+				DRAWCORNERBOXES;
+				IN_UserInput(1,1);
+			}
+
 			FUNCTIONKEYFUNCTIONS0EXE;
 			if(IN_KeyDown(sc_R)){
 				gvar.video.page[0].dx=gvar.video.page[0].dy=gvar.video.page[1].dx=gvar.video.page[1].dy=16;
+				mv[0].tx = mv[0].ty = mv[1].tx = mv[1].ty = INITTNUM;
 				modexShowPage(&(gvar.video.page[pan.pn]));
 				player[0].q = 1; player[0].d = 2;
+				x=y=0;
+				xdir=ydir=1;
 			} //R
 
 			if(anim && !noanim)
