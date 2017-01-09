@@ -75,6 +75,8 @@ int main(int argc,char **argv)
 	}
 	VGAmodeX(1, 1, &gvar);
 
+	modexPalUpdate0(palette);
+
 	/* load color palette */
 	fd = open(bakapee2,O_RDONLY|O_BINARY);
 	if (fd >= 0) {
@@ -128,7 +130,7 @@ int main(int argc,char **argv)
 	TESTBG;
 #endif
 
-	DRAWCORNERBOXES;
+	//DRAWCORNERBOXES;
 
 	/* make distinctive pattern offscreen, render sprite, copy onscreen.
 	 * this time, we render the distinctive pattern to another offscreen location and just copy.
@@ -153,7 +155,7 @@ int main(int argc,char **argv)
 #else
 	TESTBG;
 #endif
-		DRAWCORNERBOXES;
+		//DRAWCORNERBOXES;
 
 		/* starting coords. note: this technique is limited to x coordinates of multiple of 4 */
 		x = -(gvar.video.page[0].dx);
@@ -180,7 +182,7 @@ int main(int argc,char **argv)
 				player[0].q = 1; player[0].d = 2;
 				x=y=0;
 				xdir=ydir=1;
-				TESTBG;
+				//TESTBG;
 				DRAWCORNERBOXES;
 			} //R
 			FUNCTIONKEYFUNCTIONS0EXE;

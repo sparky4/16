@@ -28,12 +28,12 @@
 
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 player_t player[MaxPlayers];
-map_view_t mv[4];
 pan_t pan;
 
 void main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
+	map_view_t mv[4];
 	int i, j;
 	word startclk, endclk;
 	word k;
@@ -125,18 +125,18 @@ void main(int argc, char *argv[])
 	modexClearRegion(&gvar.video.page[0], 32, 32, gvar.video.page[0].sw-32, gvar.video.page[0].sh-32, 42);
 	modexClearRegion(&gvar.video.page[0], 48, 48, gvar.video.page[0].sw-64, gvar.video.page[0].sh-64, 128);
 	modexCopyPageRegion(&gvar.video.page[1], &gvar.video.page[0], 0, 0, 0, 0, gvar.video.page[0].width, gvar.video.page[0].height);
-	modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 47);
-	modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 45);
+	//modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 47);
+	//modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 45);
 
 	/* fade in */
 	modexFadeOn(1, pal2);
 
-	i=0,k=0,j=0,pan.pn=1;
+	i=0,k=0,j=0,pan.pn=0;
 	startclk = *clockw;
 	while(!IN_KeyDown(sc_Escape))
 	{
 		IN_ReadControl(0,&player);
-		panpagemanual(mv, player, 0);
+		panPageManual(mv, player, 0);
 
 		/*if(i<5){
 		switch (k)

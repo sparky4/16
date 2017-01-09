@@ -306,7 +306,7 @@ void panVmemManual(map_view_t *pip, player_t *player, word pn)
 
 		//down movement
 		case 4:
-			if(pip[pip[0].pan->pn].ty >= 0 && pip[pip[0].pan->pn].ty+pip[pip[0].pan->pn].page->th < pip[pip[0].pan->pn].page->tilesh+pip[pip[1].pan->pn].page->tilesh+pip[pip[2].pan->pn].page->tilesh+pip[pip[3].pan->pn].page->tilesh)
+			if(pip[pip[0].pan->pn].ty >= 0 && pip[pip[0].pan->pn].ty+pip[pip[0].pan->pn].page->th < pip[pip[0].pan->pn].page->tilesh+pip[pip[1].pan->pn].page->tilesh)//+pip[pip[2].pan->pn].page->tilesh+pip[pip[3].pan->pn].page->tilesh)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
@@ -319,7 +319,7 @@ void panVmemManual(map_view_t *pip, player_t *player, word pn)
 
 		//up movement
 		case 0:
-			if(pip[pip[0].pan->pn].ty > 0 && pip[pip[0].pan->pn].ty+pip[pip[0].pan->pn].page->th <= pip[pip[0].pan->pn].page->tilesh+pip[pip[1].pan->pn].page->tilesh+pip[pip[2].pan->pn].page->tilesh+pip[pip[3].pan->pn].page->tilesh)
+			if(pip[pip[0].pan->pn].ty > 0 && pip[pip[0].pan->pn].ty+pip[pip[0].pan->pn].page->th <= pip[pip[0].pan->pn].page->tilesh+pip[pip[1].pan->pn].page->tilesh)//+pip[pip[2].pan->pn].page->tilesh+pip[pip[3].pan->pn].page->tilesh)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{

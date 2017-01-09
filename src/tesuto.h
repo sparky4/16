@@ -35,27 +35,27 @@
 
 #define DRAWOTHERCORNERBOX_TOPLEFT \
 DCBO,	0,	0,	16, 16, 0); \
-DCBO,	16,	16,	16, 16, 2); \
-DCBI,		0,	0,	16, 16, 0); \
-DCBI,		16,	16,	16, 16, 2);
+DCBO,	16,	16,	16, 16, 1); \
+DCBI,		0,	0,	16, 16, 8); \
+DCBI,		16,	16,	16, 16, 9);
 
 #define DRAWOTHERCORNERBOX_TOPRIGHT \
-DCBO,	OW,	0,	16, 16, 0); \
-DCBO,	OE,	16,	16, 16, 2); \
-DCBI,		IW,	0,	16, 16, 0); \
-DCBI,		IE,	16,	16, 16, 2);
+DCBO,	OW,	0,	16, 16, 2); \
+DCBO,	OE,	16,	16, 16, 3); \
+DCBI,		IW,	0,	16, 16, 10); \
+DCBI,		IE,	16,	16, 16, 11);
 
 #define DRAWOTHERCORNERBOX_BOTTOMLEFT \
-DCBO,	0,	OH,	16, 16, 0); \
-DCBO,	16,	OJ,	16, 16, 2); \
-DCBI,		0,	IH,	16, 16, 0); \
-DCBI,		16,	IJ,	16, 16, 2);
+DCBO,	0,	OH,	16, 16, 4); \
+DCBO,	16,	OJ,	16, 16, 5); \
+DCBI,		0,	IH,	16, 16, 12); \
+DCBI,		16,	IJ,	16, 16, 13);
 
 #define DRAWOTHERCORNERBOX_BOTTOMRIGHT \
-DCBO,	OE,	OJ,	16, 16, 2); \
-DCBO,	OW,	OH,	16, 16, 0); \
-DCBI,		IE,	IJ,	16, 16, 2);\
-DCBI,		IW,	IH,	16, 16, 0);
+DCBO,	OE,	OJ,	16, 16, 6); \
+DCBO,	OW,	OH,	16, 16, 7); \
+DCBI,		IE,	IJ,	16, 16, 14);\
+DCBI,		IW,	IH,	16, 16, 15);
 
 #define DRAWCORNERBOXES \
 DRAWOTHERCORNERBOX_TOPLEFT; \
