@@ -171,10 +171,10 @@ int main(int argc,char **argv)
 		while(!IN_KeyDown(sc_Escape))
 		{
 			IN_ReadControl(0,&player);
+			if(IN_KeyDown(68)){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap; IN_UserInput(1,1); } //f10
 			PANKEY0EXE;
-			if(IN_KeyDown(68) || IN_KeyDown(sc_Space))	//f10 and space
+			if(IN_KeyDown(sc_Space))	//space
 			{
-				//gvar.kurokku.fpscap=!gvar.kurokku.fpscap;
 				anim=!anim;
 				DRAWCORNERBOXES;
 				IN_UserInput(1,1);
@@ -284,6 +284,7 @@ if(!noanim) {
 			}
 
 			/* wait for vsync end */
+			if(gvar.kurokku.fpscap)
 			vga_wait_for_vsync_end();
 
 			/* what scalefactor to use for stretching? */
@@ -328,6 +329,7 @@ if(!noanim) {
 			vga_restore_rm0wm0();
 
 			/* wait for vsync */
+			if(gvar.kurokku.fpscap)
 			vga_wait_for_vsync();
 
 			/* make it shrink */
