@@ -285,7 +285,8 @@ void panVmemManual(map_view_t *pip, player_t *player, word pn)
 				if(player[pn].q<=player[pn].spt)
 				{
 					pip[pip[0].pan->pn].page->dx+=4;
-					modexShowPageVsync(pip[pip[0].pan->pn].page);
+					//modexShowPageVsync(pip[pip[0].pan->pn].page);
+					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
 				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].tx++; }
 			}
@@ -298,7 +299,8 @@ void panVmemManual(map_view_t *pip, player_t *player, word pn)
 				if(player[pn].q<=player[pn].spt)
 				{
 					pip[pip[0].pan->pn].page->dx-=4;
-					modexShowPageVsync(pip[pip[0].pan->pn].page);
+					//modexShowPageVsync(pip[pip[0].pan->pn].page);
+					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
 				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].tx--; }
 			}
@@ -311,7 +313,8 @@ void panVmemManual(map_view_t *pip, player_t *player, word pn)
 				if(player[pn].q<=player[pn].spt)
 				{
 					pip[pip[0].pan->pn].page->dy+=4;
-					modexShowPageVsync(pip[pip[0].pan->pn].page);
+					//modexShowPageVsync(pip[pip[0].pan->pn].page);
+					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
 				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].ty++; }
 			}
@@ -324,7 +327,8 @@ void panVmemManual(map_view_t *pip, player_t *player, word pn)
 				if(player[pn].q<=player[pn].spt)
 				{
 					pip[pip[0].pan->pn].page->dy-=4;
-					modexShowPageVsync(pip[pip[0].pan->pn].page);
+					//modexShowPageVsync(pip[pip[0].pan->pn].page);
+					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
 				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].ty--; }
 			}
