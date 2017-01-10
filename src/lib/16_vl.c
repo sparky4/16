@@ -213,8 +213,8 @@ modexNextPage(page_t *p) {
 	page_t result;
 
 	result.data = p->data + (p->pagesize);
-	result.dx = 0;
-	result.dy = 0;
+	result.dx = p->dx;	// not used anymore we use page[0].dx
+	result.dy = p->dy;	// not used anymore we use page[0].dy
 	result.sw = p->sw;
 	result.sh = p->sh;
 	result.width = p->width;
@@ -238,8 +238,8 @@ modexNextPageFlexibleSize(page_t *p, word x, word y)
 	page_t result;
 
 	result.data = p->data + (p->pagesize);  /* compute the offset */
-	result.dx = 0;
-	result.dy = 0;
+	result.dx = 0;	// not used anymore we use page[0].dx
+	result.dy = 0;	// not used anymore we use page[0].dy
 	result.sw = x;
 	result.sh = y;
 	result.width = x;
@@ -294,10 +294,10 @@ void modexHiganbanaPageSetup(video_t *video)
 	video->r=1;
 
 	//setup the buffersize
-	video->page[0].dy=video->page[0].dx=
-		video->page[1].dx=video->page[1].dy=TILEWH;	// 1 tile size buffer
+	video->page[0].dy=video->page[0].dx=TILEWH;
+	/*	video->page[1].dx=video->page[1].dy=TILEWH;	// 1 tile size buffer
 	video->page[2].dx=video->page[2].dy=
-		video->page[3].dx=video->page[3].dy=0;		// cache pages are buffer wwww
+		video->page[3].dx=video->page[3].dy=0;		*/// cache pages are buffer wwww
 }
 
 //
@@ -310,8 +310,8 @@ modexShowPage(page_t *page) {
 
 	/* calculate offset */
 	offset = (word) page->data;
-	offset += page->dy * (page->width >> 2 );
-	offset += page->dx >> 2;
+	offset += page[0].dy * (page->width >> 2 );
+	offset += page[0].dx >> 2;
 
 	/* calculate crtcOffset according to virtual width */
 	crtcOffset = page->width >> 3;
@@ -331,7 +331,7 @@ modexShowPage(page_t *page) {
 
 	/* do PEL panning here */
 	outp(AC_INDEX, 0x33);
-	outp(AC_INDEX, (page->dx & 0x03) << 1);
+	outp(AC_INDEX, (page[0].dx & 0x03) << 1);
 }
 
 //
@@ -345,8 +345,8 @@ modexShowPage_(page_t *page)
 
 	/* calculate offset */
 	offset = (word) page->data;
-	offset += page->dy * (page->width >> 2 );
-	offset += page->dx >> 2;
+	offset += page[0].dy * (page->width >> 2 );
+	offset += page[0].dx >> 2;
 
 	/* calculate crtcOffset according to virtual width */
 	crtcOffset = page->sw >> 3;
@@ -366,7 +366,7 @@ modexShowPage_(page_t *page)
 
 	/* do PEL panning here */
 	outp(AC_INDEX, 0x33);
-	outp(AC_INDEX, (page->dx & 0x03) << 1);
+	outp(AC_INDEX, (page[0].dx & 0x03) << 1);
 }
 
 void
@@ -376,8 +376,8 @@ modexShowPageVsync(page_t *page) {
 
 	/* calculate offset */
 	offset = (word) page->data;
-	offset += page->dy * (page->width >> 2 );
-	offset += page->dx >> 2;
+	offset += page[0].dy * (page->width >> 2 );
+	offset += page[0].dx >> 2;
 
 	/* calculate crtcOffset according to virtual width */
 	crtcOffset = page->width >> 3;
@@ -397,13 +397,13 @@ modexShowPageVsync(page_t *page) {
 
 	/* do PEL panning here */
 	outp(AC_INDEX, 0x33);
-	outp(AC_INDEX, (page->dx & 0x03) << 1);
+	outp(AC_INDEX, (page[0].dx & 0x03) << 1);
 }
 
 void
 modexPanPage(page_t *page, int dx, int dy) {
-	page->dx = dx;
-	page->dy = dy;
+	page[0].dx = dx;
+	page[0].dy = dy;
 }
 
 void

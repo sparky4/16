@@ -92,8 +92,8 @@ typedef struct {
 typedef struct {
 	/*nibble*/word id;	/* the Identification number of the page~ For layering~ */
 	byte far* data;	/* the data for the page */
-	word dx;		/* col we are viewing on the virtual screen */	/* off screen buffer on the left size */
-	word dy;		/* row we are viewing on the virtual screen */	/* off screen buffer on the top size */
+	word dx;		/* col we are viewing on virtual screen (on page[0]) */	/* off screen buffer on the left size */
+	word dy;		/* row we are viewing on virtual screen (on page[0]) */	/* off screen buffer on the top size */
 	word sw;		/* screen width */	/* resolution */
 	word sh;		/* screen heigth */	/* resolution */
 	word tw;		/* screen width in tiles */
