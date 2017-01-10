@@ -7,6 +7,10 @@ boolean dbg_debugpm=0;
 #ifdef __DEBUG_InputMgr__
 boolean dbg_testkeyin=0,dbg_testcontrolnoisy=0,dbg_notest=0;
 #endif
+#ifdef __DEBUG_MAP__
+boolean dbg_maptext=0;
+byte *dbg_mapdata;
+#endif
 #endif
 
 

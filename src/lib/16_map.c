@@ -108,7 +108,9 @@ word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, 
 			map->tiles->tileWidth = 16;
 			map->tiles->rows = 1;
 			map->tiles->cols = 1;
-			map->tiles->debug_text=false;
+#ifdef __DEBUG_MAP__
+			dbg_maptext=false;
+#endif
 			strcpy(js_sv, "data");//strdup(js+t->start);//, t->end - t->start);
 		}
 		else
@@ -295,7 +297,9 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 					map->layertile[k]->tileWidth = 16;
 					map->layertile[k]->rows = 1;
 					map->layertile[k]->cols = 1;
-					map->layertile[k]->debug_text=false;
+#ifdef __DEBUG_MAP__
+					dbg_maptext=false;
+#endif
 					//Fix to load tileset specified.
 					//And move to vrs, probably
 					//bp = bitmapLoadPcx("data/ed.pcx");

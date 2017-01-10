@@ -333,6 +333,27 @@ void panVmemManual(map_view_t *pip, player_t *player, word pn)
 	//if (player[pn].d!=2) printf("player[%u].d=%u player[%u].q=%u\n", pn, player[pn].d, pn, player[pn].q);
 }
 
+/*
+ * modex mv setup
+*/
+void modexMVSetup(map_view_t *mv, map_t *map, pan_t *pan, global_game_variables_t *gv)
+{
+	word i;
+	// 1st page
+	mv[0].page = &gv->video.page[0];
+	mv[0].map = map;
+	mv[0].video = &gv->video;
+	mv[0].pan	= pan;
+
+	for(i=1;i<gv->video.num_of_pages;i++)
+	{
+		mv[i].page	=	&gv->video.page[i];
+		mv[i].map	=	mv[0].map;
+		mv[i].video	=	mv[0].video;
+		mv[i].pan	=	mv[0].pan;
+	}
+}
+
 /*map_t
 allocMap(int w, int h) {
 	map_t result;
@@ -640,14 +661,20 @@ sword chkmap(map_t *map, word q)
 		//fix this to be far~
 //		bp = bitmapLoadPcx("data/ed.pcx");
 //		map->tiles->data = &bp;
-		map->tiles->debug_data = map->data;
+#ifdef __DEBUG_MAP__
+		dbg_mapdata = map->data;
+#endif
 		map->tiles->tileHeight = 16;
 		map->tiles->tileWidth = 16;
 		map->tiles->rows = 1;
 		map->tiles->cols = 1;
-		map->tiles->debug_text = true;
+#ifdef __DEBUG_MAP__
+		dbg_maptext = true;
+#endif
 	}
-	else map->tiles->debug_text = false;
+#ifdef __DEBUG_MAP__
+	else dbg_maptext = false;
+#endif
 	return 0;
 }
 
@@ -711,11 +738,13 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 		rx = (((i-1) % ((t->data->width)/t->tileWidth)) * t->tileWidth);
 		ry = (((i-1) / ((t->data->height)/t->tileHeight)) * t->tileHeight);
 ////0000printf("i=%d\n", i);
-		switch(t->debug_text)
+#ifdef __DEBUG_MAP__
+		switch(dbg_maptext)
 		{
 			case 0:
+#endif
 #ifndef TILERENDER
-				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, ((t->debug_data[i])+1));
+				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, ((dbg_mapdata[i])+1));
 				//modexprint(page, x, y, 1, 15, 0, (char const *)(t->debug_data[i]));
 #else
 				PBUFBFUN		(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
@@ -723,9 +752,10 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 				//draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
 				//modexDrawBmpRegion	(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
 #endif
+#ifdef __DEBUG_MAP__
 			break;
 			case 1:
-				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, (t->debug_data[i])+1);
+				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, (dbg_mapdata[i])+1);
 				//modexprintbig(page, x, y, 1, 15, 0, (t->debug_data));
 				/*for(texty=0; texty<2; texty++)
 				{
@@ -736,6 +766,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 				}*/
 			break;
 		}
+#endif
 	}
 }
 

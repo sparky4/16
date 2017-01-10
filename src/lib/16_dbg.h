@@ -7,6 +7,7 @@
 
 #define __DEBUG__
 #define __DEBUG_InputMgr__
+#define __DEBUG_MAP__
 //#define __DEBUG_PM__
 //#define __DEBUG_MM__
 
@@ -17,6 +18,10 @@ extern boolean dbg_debugpm;
 #endif
 #ifdef __DEBUG_InputMgr__
 extern boolean dbg_testkeyin,dbg_testcontrolnoisy,dbg_notest;
+#endif
+#ifdef __DEBUG_MAP__
+extern boolean dbg_maptext;
+extern byte *dbg_mapdata;
 #endif
 #endif
 

@@ -125,13 +125,7 @@ void main(int argc, char *argv[])
 
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
-	for(i=0;i<gvar.video.num_of_pages;i++)
-	{
-		mv[i].page = &gvar.video.page[i];
-		mv[i].map = &map;
-		mv[i].video = &gvar.video;
-		mv[i].pan	= &pan;
-	}
+	modexMVSetup(&mv, &map, &pan, &gvar);
 
 	/* set up paging */
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen

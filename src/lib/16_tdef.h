@@ -57,12 +57,37 @@ typedef struct {
 } tileset_t;
 
 typedef struct {
-	byte far *plane[4];     /* 4 planes of image data */
-	word width;         /* width of the image (spread across 4 planes) */
-	word height;        /* height of the image (spread across 4 planes) */
-	word pwidth;        /* the number of bytes in each plane */
+	byte far *plane[4];	// 4 planes of image data
+	word width;			// width of the image (spread across 4 planes)
+	word height;		// height of the image (spread across 4 planes)
+	word pwidth;		// the number of bytes in each plane
 	byte *palette;
 } planar_buf_t;
+
+//TODO: 16_mm and 16_ca must handle this
+typedef struct {
+	bitmap_t far *btdata;		//old
+	planar_buf_t far *data;	//old
+	word tileHeight, tileWidth;
+	unsigned int rows, cols;
+// 	#ifdef __DEBUG__
+// 	boolean debug_text;	//show the value of the tile! wwww
+// 	byte *debug_data;
+// 	#endif
+} tiles_t;
+
+//TODO: 16_mm and 16_ca must handle this
+//TODO: add variables from 16_ca
+typedef struct {
+	//long		planestart[3];
+	//unsigned	planelength[3];
+	byte *data;			//TODO: 16_mm and 16_ca must handle this
+	byte * far *layerdata;	//TODO: 16_mm and 16_ca must handle this
+	tiles_t *tiles;		//TODO: 16_mm and 16_ca must handle this
+	tiles_t * far *layertile;	//TODO: 16_mm and 16_ca must handle this
+	int width, height;		//this has to be signed!
+	char		name[16];
+} map_t;
 
 typedef struct {
 	/*nibble*/word id;	/* the Identification number of the page~ For layering~ */

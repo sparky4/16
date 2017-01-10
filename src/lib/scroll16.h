@@ -75,11 +75,6 @@ typedef struct {
  * 	should have a sprite too. Map is drawn left-to-right, top-to-bottom.
  */
 
-typedef struct
-{
-	map_view_t *mv;
-} map_view_db_t;
-
 //for null map!
 #define MAPW	40
 #define MAPH	30
@@ -128,6 +123,7 @@ extern char global_temp_status_text[512];
 void walk(map_view_t *pip, player_t *player, word pn);
 void panPageManual(map_view_t *pip,  player_t *player, word pn);
 void panVmemManual(map_view_t *pip, player_t *player, word pn);
+void modexMVSetup(map_view_t *mv, map_t *map, pan_t *pan, global_game_variables_t *gv);
 void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid);

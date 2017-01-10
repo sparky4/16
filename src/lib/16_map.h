@@ -24,42 +24,21 @@
 #define _16_MAP__H_
 
 #include "src/lib/16_head.h"
+#include "src/lib/16_tdef.h"
 #include "src/lib/jsmn/jsmn.h"
 //#include "stdio.h" included in 16_head.h
 //#include "stdlib.h" included in 16_head.h
 #include "src/lib/16_vl.h"
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
+#include "src/lib/16_pm.h"
 
 //#define DEBUG_MAPDATA
 //#define DEBUG_MAPVAR
 //#define DEBUG_DUMPVARS
 //#define DEBUG_JS
 
-//TODO: 16_mm and 16_ca must handle this
-typedef struct {
-	bitmap_t far *btdata;		//old
-	planar_buf_t far *data;	//old
-	word tileHeight, tileWidth;
-	unsigned int rows, cols;
-	#ifdef __DEBUG__
-	boolean debug_text;	//show the value of the tile! wwww
-	byte *debug_data;
-	#endif
-} tiles_t;
-
-//TODO: 16_mm and 16_ca must handle this
-//TODO: add variables from 16_ca
-typedef struct {
-	//long		planestart[3];
-	//unsigned	planelength[3];
-	byte *data;			//TODO: 16_mm and 16_ca must handle this
-	byte * far *layerdata;	//TODO: 16_mm and 16_ca must handle this
-	tiles_t *tiles;		//TODO: 16_mm and 16_ca must handle this
-	tiles_t * far *layertile;	//TODO: 16_mm and 16_ca must handle this
-	int width, height;		//this has to be signed!
-	char		name[16];
-} map_t;
+//typedefs moved to 16_tdef.h
 
 int jsoneq(const char *json, jsmntok_t *tok, const char *s);
 word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, map_t *map, dword q);

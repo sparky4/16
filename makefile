@@ -82,11 +82,17 @@ DOSLIB_JOYSTICK=$(DOSLIBDIR)/hw/joystick
 DOSLIB_MEMMODE=dos86$(MEMORYMODE)
 
 # remote host (for sparky4)
-HOSTUSER=sparky4#wwc001
-HOSTADDR=4ch.mooo.com#beta.latech.edu
-HOSTDIR=/var/www/#~/public_html/
+HOSTUSER=sparky4
+HOSTADDR=4ch.mooo.com
+HOSTDIR=/var/www/
 #ssh port
 HOSTPORT=26
+# 2nd remote host (for sparky4)
+HOST2USER=wwc001
+HOST2ADDR=beta.latech.edu
+HOST2DIR=~/public_html/
+#ssh port
+HOST2PORT=22
 
 #
 # quiet flags
@@ -396,9 +402,14 @@ www: .symbolic
 
 wwwext: .symbolic
 	####----@ssh -p $(HOSTPORT) $(HOSTUSER)@$(HOSTADDR) 'rm -f $(HOSTDIR)/16/*exe*'
+	#4ch.mooo.com
 	@scp -r -P $(HOSTPORT) *.exe $(HOSTUSER)@$(HOSTADDR):$(HOSTDIR)/16/
 	@scp -r -P $(HOSTPORT) *get.bat $(HOSTUSER)@$(HOSTADDR):$(HOSTDIR)/16/
 	@scp -r -P $(HOSTPORT) /var/www/*.exe.zip.* $(HOSTUSER)@$(HOSTADDR):$(HOSTDIR)/16/
+	#beta.latech.edu
+	@scp -r -P $(HOST2PORT) *.exe $(HOST2USER)@$(HOST2ADDR):$(HOST2DIR)/16/
+	@scp -r -P $(HOST2PORT) *get.bat $(HOST2USER)@$(HOST2ADDR):$(HOST2DIR)/16/
+	@scp -r -P $(HOST2PORT) /var/www/*.exe.zip.* $(HOST2USER)@$(HOST2ADDR):$(HOST2DIR)/16/
 
 getwww: .symbolic
 	*x4get.bat $(EXEC)
