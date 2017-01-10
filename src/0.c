@@ -28,6 +28,7 @@ int main(int argc,char **argv)
 	unsigned char *buffer;
 	unsigned int bufsz;
 	int fd;
+	//nibble i;
 	char *bakapee1,*bakapee2;
 
 	boolean anim=1,noanim=0;
@@ -103,6 +104,14 @@ int main(int argc,char **argv)
 	modexHiganbanaPageSetup(&gvar.video);
 	modexMVSetup(&mv, &map, &pan, &gvar);
 	modexShowPage(&(gvar.video.page[pan.pn]));
+// 	for(i=0;i<gvar.video.num_of_pages;i++)
+// 	{
+// 		mv[i].page = &gvar.video.page[i];
+// 		mv[i].video = &gvar.video;
+// 		mv[i].pan	= &pan;
+// 		mv[0].tx	= INITTNUM;
+// 		mv[0].ty	= INITTNUM;
+// 	}
 	//player[0].tx = INITTNUM; player[0].ty = INITTNUM;
 	//mapinitmapview(mv, player[0].tx, player[0].tx);
 

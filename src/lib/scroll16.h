@@ -60,6 +60,7 @@ typedef struct {
 	word dyThresh; //Threshold for physical tile switch
 	video_t *video;	//pointer to game variables of the video
 	pan_t *pan;		//pointer the the page panning debug system
+//newer vars!
 	int dx, dy, delta, d;
 } map_view_t;
 /* Map is presumed to:
@@ -123,7 +124,8 @@ extern char global_temp_status_text[512];
 void walk(map_view_t *pip, player_t *player, word pn);
 void panPageManual(map_view_t *pip,  player_t *player, word pn);
 void panVmemManual(map_view_t *pip, player_t *player, word pn);
-void modexMVSetup(map_view_t *mv, map_t *map, pan_t *pan, global_game_variables_t *gv);
+void modexMVSetup(map_view_t *pip, map_t *map, pan_t *pan, global_game_variables_t *gv);
+void modexMVInit(map_view_t *pip, int tx, int ty);
 void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid);

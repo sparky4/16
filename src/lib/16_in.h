@@ -232,6 +232,7 @@ typedef	struct
 	int persist_aniframe;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	CursorInfo	info;
 	ControlType	Controls;
+//newer vars
 	int dx, dy, delta;	//TODO: what is this? ^^
 } player_t;
 

@@ -336,22 +336,31 @@ void panVmemManual(map_view_t *pip, player_t *player, word pn)
 /*
  * modex mv setup
 */
-void modexMVSetup(map_view_t *mv, map_t *map, pan_t *pan, global_game_variables_t *gv)
+void modexMVSetup(map_view_t *pip, map_t *map, pan_t *pan, global_game_variables_t *gv)
 {
 	nibble i;
 	// 1st page
-	mv[0].page = &gv->video.page[0];
-	mv[0].map = map;
-	mv[0].video = &gv->video;
-	mv[0].pan	= pan;
+	pip[0].page = &gv->video.page[0];
+	pip[0].map = map;
+	pip[0].video = &gv->video;
+	pip[0].pan	= pan;
+	modexMVInit(pip, 1, 1);
 
 	for(i=1;i<gv->video.num_of_pages;i++)
 	{
-		mv[i].page	=	&gv->video.page[i];
-		mv[i].map	=	mv[0].map;
-		mv[i].video	=	mv[0].video;
-		mv[i].pan	=	mv[0].pan;
+		pip[i].page	=	&gv->video.page[i];
+		pip[i].map	=	pip[0].map;
+		pip[i].video	=	pip[0].video;
+		pip[i].pan	=	pip[0].pan;
+		pip[i].tx	=	1;
+		pip[i].ty	=	1;
 	}
+}
+
+void modexMVInit(map_view_t *pip, int tx, int ty)
+{
+	pip[0].tx = tx;
+	pip[0].ty = ty;
 }
 
 /*map_t
