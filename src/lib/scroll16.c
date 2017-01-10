@@ -46,7 +46,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 1);
 					ScrollRight(pip, player, 3, pn);
 					ScrollRight(pip, player, 2, pn);
-					mapScrollRight(pip, player, !(pip[0].video->p), pn);
+					//mapScrollRight(pip, player, !(pip[0].video->p), pn);
 					mapScrollRight(pip, player, (pip[0].video->p), pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
@@ -90,7 +90,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 1);
 					ScrollLeft(pip, player, 3, pn);
 					ScrollLeft(pip, player, 2, pn);
-					mapScrollLeft(pip, player, !(pip[0].video->p), pn);
+					//mapScrollLeft(pip, player, !(pip[0].video->p), pn);
 					mapScrollLeft(pip, player, (pip[0].video->p), pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
@@ -134,7 +134,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 1);
 					ScrollDown(pip, player, 3, pn);
 					ScrollDown(pip, player, 2, pn);
-					mapScrollDown(pip, player, !(pip[0].video->p), pn);
+					//mapScrollDown(pip, player, !(pip[0].video->p), pn);
 					mapScrollDown(pip, player, (pip[0].video->p), pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
@@ -178,7 +178,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 					animatePlayer(pip, player, pn, 1);
 					ScrollUp(pip, player, 3, pn);
 					ScrollUp(pip, player, 2, pn);
-					mapScrollUp(pip, player, !(pip[0].video->p), pn);
+					//mapScrollUp(pip, player, !(pip[0].video->p), pn);
 					mapScrollUp(pip, player, (pip[0].video->p), pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].q++;
@@ -224,7 +224,7 @@ void panPageManual(map_view_t *pip, player_t *player, word pn)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
-					pip[pip[0].pan->pn].page->dx+=4;
+					pip[pip[0].pan->pn].page[0].dx+=4;
 					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
 				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].tx++; }
@@ -237,7 +237,7 @@ void panPageManual(map_view_t *pip, player_t *player, word pn)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
-					pip[pip[0].pan->pn].page->dx-=4;
+					pip[pip[0].pan->pn].page[0].dx-=4;
 					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
 				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].tx--; }
@@ -250,7 +250,7 @@ void panPageManual(map_view_t *pip, player_t *player, word pn)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
-					pip[pip[0].pan->pn].page->dy+=4;
+					pip[pip[0].pan->pn].page[0].dy+=4;
 					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
 				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].ty++; }
@@ -263,7 +263,7 @@ void panPageManual(map_view_t *pip, player_t *player, word pn)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
-					pip[pip[0].pan->pn].page->dy-=4;
+					pip[pip[0].pan->pn].page[0].dy-=4;
 					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
 				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].ty--; }
@@ -284,7 +284,7 @@ void panVmemManual(map_view_t *pip, player_t *player, word pn)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
-					pip[pip[0].pan->pn].page->dx+=4;
+					pip[pip[0].pan->pn].page[0].dx+=4;
 					//modexShowPageVsync(pip[pip[0].pan->pn].page);
 					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
@@ -298,7 +298,7 @@ void panVmemManual(map_view_t *pip, player_t *player, word pn)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
-					pip[pip[0].pan->pn].page->dx-=4;
+					pip[pip[0].pan->pn].page[0].dx-=4;
 					//modexShowPageVsync(pip[pip[0].pan->pn].page);
 					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
@@ -312,7 +312,7 @@ void panVmemManual(map_view_t *pip, player_t *player, word pn)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
-					pip[pip[0].pan->pn].page->dy+=4;
+					pip[pip[0].pan->pn].page[0].dy+=4;
 					//modexShowPageVsync(pip[pip[0].pan->pn].page);
 					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
@@ -326,7 +326,7 @@ void panVmemManual(map_view_t *pip, player_t *player, word pn)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
-					pip[pip[0].pan->pn].page->dy-=4;
+					pip[pip[0].pan->pn].page[0].dy-=4;
 					//modexShowPageVsync(pip[pip[0].pan->pn].page);
 					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
@@ -459,24 +459,24 @@ void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 	word x;//, y;  /* coordinate for drawing */
 
 	/* increment the pixel position and update the page */
-	mv[id].page->dx += player[plid].speed;
+	mv[id].page[0].dx += player[plid].speed;
 
 	/* check to see if this changes the tile */
-	if(mv[id].page->dx >= mv[id].dxThresh )
+	if(mv[id].page[0].dx >= mv[id].dxThresh )
 	{
 	/* go forward one tile */
 	mv[id].tx++;
 	/* Snap the origin forward */
 	mv[id].page->data += 4;
 
-	mv[id].page->dx = mv[id].map->tiles->tileWidth;
+	mv[id].page[0].dx = mv[id].map->tiles->tileWidth;
 	}
 
 	/* draw the next column */
 	x= mv[0].page->sw + mv[id].map->tiles->tileWidth;
 	if(player[plid].q%4)
 		if(id==0)
-			mapDrawCol(&mv[0], mv[0].tx + mv[0].page->tw, mv[0].ty-1, x, player, mv->page->dx);
+			mapDrawCol(&mv[0], mv[0].tx + mv[0].page->tw, mv[0].ty-1, x, player, mv->page[0].dx);
 		else
 			if(!pageflipflop && !pageploop)
 				modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*(mv[0].page->th+2));
@@ -489,24 +489,24 @@ void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 	word x;//,y;  /* coordinate for drawing */
 
 	/* decrement the pixel position and update the page */
-	mv[id].page->dx -= player[plid].speed;
+	mv[id].page[0].dx -= player[plid].speed;
 
 	/* check to see if this changes the tile */
-	if(mv[id].page->dx == 0)
+	if(mv[id].page[0].dx == 0)
 	{
 	/* go backward one tile */
 	mv[id].tx--;
 	/* Snap the origin backward */
 	mv[id].page->data -= 4;
 
-	mv[id].page->dx = mv[id].map->tiles->tileWidth;
+	mv[id].page[0].dx = mv[id].map->tiles->tileWidth;
 	}
 
 	/* draw the next column */
 	x= 0;
 	if(player[plid].q%4)
 		if(id==0)
-			mapDrawCol(&mv[0], mv[0].tx - 1, mv[0].ty-1, x, player, mv->page->dx);
+			mapDrawCol(&mv[0], mv[0].tx - 1, mv[0].ty-1, x, player, mv->page[0].dx);
 		else
 			if(!pageflipflop && !pageploop)
 				modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*(mv[0].page->th+2));
@@ -519,24 +519,24 @@ void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 	word y;//x,  /* coordinate for drawing */
 
 	/* decrement the pixel position and update the page */
-	mv[id].page->dy -= player[plid].speed;
+	mv[id].page[0].dy -= player[plid].speed;
 
 	/* check to see if this changes the tile */
-	if(mv[id].page->dy == 0 )
+	if(mv[id].page[0].dy == 0 )
 	{
 	/* go down one tile */
 	mv[id].ty--;
 	/* Snap the origin downward */
 	mv[id].page->data -= mv[id].page->pi;
 
-	mv[id].page->dy = mv[id].map->tiles->tileHeight;
+	mv[id].page[0].dy = mv[id].map->tiles->tileHeight;
 	}
 
 	/* draw the next row */
 	y= 0;
 	if(player[plid].q%3)
 		if(id==0)
-			mapDrawRow(&mv[0], mv[0].tx - 1, mv[0].ty-1, y, player, mv->page->dy);
+			mapDrawRow(&mv[0], mv[0].tx - 1, mv[0].ty-1, y, player, mv->page[0].dy);
 		else
 			if(!pageflipflop && !pageploop)
 				modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*(mv[0].page->tw+2), mv[id].map->tiles->tileHeight);
@@ -548,24 +548,24 @@ void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 	word y;//x,  /* coordinate for drawing */
 
 	/* increment the pixel position and update the page */
-	mv[id].page->dy += player[plid].speed;
+	mv[id].page[0].dy += player[plid].speed;
 
 	/* check to see if this changes the tile */
-	if(mv[id].page->dy >= mv[id].dyThresh )
+	if(mv[id].page[0].dy >= mv[id].dyThresh )
 	{
 	/* go down one tile */
 	mv[id].ty++;
 	/* Snap the origin downward */
 	mv[id].page->data += mv[id].page->pi;
 
-	mv[id].page->dy = mv[id].map->tiles->tileHeight;
+	mv[id].page[0].dy = mv[id].map->tiles->tileHeight;
 	}
 
 	/* draw the next row */
 	y= mv[0].page->sh + mv[id].map->tiles->tileHeight;
 	if(player[plid].q%3)
 		if(id==0)
-			mapDrawRow(&mv[0], mv[0].tx - 1, mv[0].ty+mv[0].page->th, y, player, mv->page->dy);
+			mapDrawRow(&mv[0], mv[0].tx - 1, mv[0].ty+mv[0].page->th, y, player, mv->page[0].dy);
 		else
 			if(!pageflipflop && !pageploop)
 				modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*(mv[0].page->tw+2), mv[id].map->tiles->tileHeight);
