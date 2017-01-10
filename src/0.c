@@ -344,6 +344,8 @@ if(!noanim) {
 	bufsz = 0;
 	free(bakapee1);
 	free(bakapee2);
+	printf("\nProject 16 0.exe. This is just a test file!\n");
+	printf("version %s\n", VERSION);
 	//printf("mv 0\n	tx=%d	ty=%d\n\n", mv[0].tx, mv[0].tx);
 	//printf("mv 1\n	tx=%d	ty=%d\n", mv[1].tx, mv[1].tx);
 	return 0;
