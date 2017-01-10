@@ -33,8 +33,8 @@ void modexDrawPBufRegion	(page_t *page, int x, int y, int rx, int ry, int rw, in
 {
 	word plane;
 	int i;
-	const int px=x+page->dx;
-	const int py=y+page->dy;
+	const int px=x+page[0].dx;
+	const int py=y+page[0].dy;
 	const int prw = rw/4;
 	int prh;
 
@@ -72,8 +72,8 @@ modexDrawPBuf(page_t *page, int x, int y, planar_buf_t *p, boolean sprite)
 	sword plane;
 	int i;
 // 	byte near *buff;
-	const int px=x+page->dx;
-	const int py=y+page->dy;
+	const int px=x+page[0].dx;
+	const int py=y+page[0].dy;
 	x=px;
 	y=py;
 // 	buff = _nmalloc(p->pwidth+1);
@@ -100,7 +100,7 @@ modexDrawPBuf(page_t *page, int x, int y, planar_buf_t *p, boolean sprite)
 				//printf("%02X ", (int) p->plane[plane][i++]);
 //				_fmemcpy(buff, &(p->plane[plane][i+=p->pwidth]), p->pwidth);
 //				printf("buff %u==%s\n", y, *buff);
-//				_fmemcpy(page->data + (((page->width/4) * (y+page->dy)) + ((x+page->dx) / 4)), buff, p->pwidth);
+//				_fmemcpy(page->data + (((page->width/4) * (y+page[0].dy)) + ((x+page[0].dx) / 4)), buff, p->pwidth);
 				_fmemcpy(page->data + (((page->width/4) * y) + (x / 4)), &(p->plane[plane][i+=p->pwidth]), p->pwidth);
 			//}
 		}
