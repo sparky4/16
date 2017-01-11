@@ -213,6 +213,16 @@ void walk(map_view_t *pip, player_t *player, word pn)
 	}
 }
 
+
+/*
+src/lib/scroll16.c:	mv[0].video->r=1;
+src/lib/scroll16.c:	mv[0].video->r=1;
+src/lib/scroll16.c:	mv[0].video->r=1;
+src/lib/scroll16.c:	mv[0].video->r=1;
+src/lib/scroll16.c:	pip->video->r=1;
+src/lib/scroll16.c:	mv->video->r=1;
+ */
+
 //panning page
 void ZC_panPageManual(map_view_t *pip, player_t *player, word pn)
 {
@@ -239,7 +249,7 @@ void ZC_panPageManual(map_view_t *pip, player_t *player, word pn)
 				if(player[pn].q<=player[pn].spt)
 				{
 					pip[0].page->dx-=4;
-					SHOWMVFUN;
+					SHOWMVFUN_;
 					player[pn].q++;
 				} else { player[pn].q = 1; player[pn].d = 2; pip[0].tx--; }
 			}
