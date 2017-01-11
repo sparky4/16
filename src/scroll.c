@@ -132,10 +132,7 @@ void main(int argc, char *argv[])
 	mapGoTo(mv, 0, 0);
 	//_fmemcpy(mv[1].page->data, mv[0].page->data, mv[0].page->pagesize);
 
-	//TODO: put player in starting position of spot
-	//default player position on the viewable map
-	player[0].tx = mv[0].tx + mv[0].page->tilemidposscreenx;
-	player[0].ty = mv[0].ty + mv[0].page->tilemidposscreeny;
+	playerXYpos(0, 0, &player, &mv, 0);
 	IN_initplayer(&player, 0);
 
 #ifndef	SPRITE

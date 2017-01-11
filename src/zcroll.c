@@ -115,10 +115,7 @@ void main(int argc, char *argv[])
 	mapGoTo(mv, 0, 0);
 #endif
 
-	//TODO: put player in starting position of spot
-	//default player position on the viewable map
-	player[0].tx = mv[0].tx + mv[0].page->tilemidposscreenx;
-	player[0].ty = mv[0].ty + mv[0].page->tilemidposscreeny;
+	playerXYpos(0, 0, &player, &mv, 0);
 	IN_initplayer(&player, 0);
 
 	i = set_anim_by_id(player[0].ent->spri, 11);

@@ -89,6 +89,18 @@ typedef struct {
 	char		name[16];
 } map_t;
 
+// tile info
+typedef struct{
+	word tw;		/* screen width in tiles */
+	word th;		/* screen height in tiles */
+	word tilesw;		/* virtual screen width in tiles */
+	word tilesh;		/* virtual screen height in tiles */
+	sword tilemidposscreenx;	/* middle tile x position */	/* needed for scroll system to work accordingly */
+	sword tilemidposscreeny;	/* middle tile y position */	/* needed for scroll system to work accordingly */
+	sword tileplayerposscreenx;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
+	sword tileplayerposscreeny;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
+} ti_t;
+
 typedef struct {
 	nibble/*word*/ id;	/* the Identification number of the page~ For layering~ */
 	byte far* data;	/* the data for the page */

@@ -195,7 +195,7 @@ for(w=0;w<2;w++)
 	heapdump(&gvar);
 	segatesuto();
 #endif
-	printf("Project 16 emmtest.exe. This is just a test file!\n");
+	printf("Project 16 exmmtest.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	//printf("core left:			%lu\n", (dword)_coreleft());
 	//printf("far core left:			%lu\n", (dword)_farcoreleft());

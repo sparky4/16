@@ -10,13 +10,17 @@
 #include <hw/vga/vga.h>
 #include <hw/vga/vrl.h>
 
-//panPageManual(mv, player, 0);
+//panVmemManual(mv, player, 0);
+
+#define SHOWPAGEFUN VL_ShowPage(&(gvar.video.page[pan.pn]), 0, 0)
+//modexShowPage(&(gvar.video.page[pan.pn]))
+
 #define PANKEY0EXE \
-			panVmemManual(mv, player, 0); \
-			if(IN_KeyDown(1+1)){ pan.pn=0; modexShowPage(&(gvar.video.page[pan.pn])); } \
-			if(IN_KeyDown(2+1)){ pan.pn=1; modexShowPage(&(gvar.video.page[pan.pn])); } \
-			if(IN_KeyDown(3+1)){ pan.pn=2; modexShowPage(&(gvar.video.page[pan.pn])); } \
-			if(IN_KeyDown(4+1)){ pan.pn=3; modexShowPage(&(gvar.video.page[pan.pn])); } \
+			panPageManual(mv, player, 0); \
+			if(IN_KeyDown(1+1) || IN_KeyDown(sc_Z)){ pan.pn=0; SHOWPAGEFUN; } \
+			if(IN_KeyDown(2+1) || IN_KeyDown(sc_X)){ pan.pn=1; SHOWPAGEFUN; } \
+			if(IN_KeyDown(3+1) || IN_KeyDown(sc_C)){ pan.pn=2; SHOWPAGEFUN; if(IN_KeyDown(sc_C)) modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 47); } \
+			if(IN_KeyDown(4+1) || IN_KeyDown(sc_V)){ pan.pn=3; SHOWPAGEFUN; if(IN_KeyDown(sc_V)) modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 45); } \
 			if(IN_KeyDown(25)){ modexpdump(mv[1].page); modexShowPage(&(gvar.video.page[1])); IN_UserInput(1,1); }
 
 ////corner markers
@@ -64,6 +68,14 @@ DRAWOTHERCORNERBOX_BOTTOMLEFT; \
 DRAWOTHERCORNERBOX_BOTTOMRIGHT; \
 
 #define TESTBG \
+	modexClearRegion(&gvar.video.page[1], 0, 0, gvar.video.page[1].width, gvar.video.page[1].height, 15); \
+	modexClearRegion(&gvar.video.page[1], 16, 16, gvar.video.page[1].sw, gvar.video.page[1].sh, 128); \
+	modexClearRegion(&gvar.video.page[1], 32, 32, gvar.video.page[1].sw-32, gvar.video.page[1].sh-32, 42); \
+	modexClearRegion(&gvar.video.page[1], 48, 48, gvar.video.page[1].sw-64, gvar.video.page[1].sh-64, 128); \
+	modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 47); \
+	modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 45);
+
+#define TESTBGFULL \
 	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].width, gvar.video.page[0].height, 15); \
 	modexClearRegion(&gvar.video.page[0], 16, 16, gvar.video.page[0].sw, gvar.video.page[0].sh, 128); \
 	modexClearRegion(&gvar.video.page[0], 32, 32, gvar.video.page[0].sw-32, gvar.video.page[0].sh-32, 42); \

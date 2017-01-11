@@ -10,10 +10,9 @@
 #define FILENAME_1 "data/spri/chikyuu.vrl"
 #define FILENAME_2 "data/spri/chikyuu.pal"
 
-#define PATTERN
 #define INITTNUM 1
 
-static unsigned char palette[768];
+static byte palette[768];
 player_t player[MaxPlayers];
 map_view_t mv[4];
 pan_t pan;
@@ -81,16 +80,7 @@ int main(int argc,char **argv)
 	modexPalUpdate0(palette);
 
 	/* load color palette */
-	fd = open(bakapee2,O_RDONLY|O_BINARY);
-	if (fd >= 0) {
-		unsigned int i;
-
-		read(fd,palette,768);
-		close(fd);
-
-		vga_palette_lseek(0);
-		for (i=0;i < 256;i++) vga_palette_write(palette[(i*3)+0]>>2,palette[(i*3)+1]>>2,palette[(i*3)+2]>>2);
-	}
+	VL_LoadPalFile(bakapee2, &palette);
 
 	/* preprocess the sprite to generate line offsets */
 	vrl_lineoffs = vrl1_vgax_genlineoffsets(vrl_header,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
@@ -104,35 +94,6 @@ int main(int argc,char **argv)
 	modexHiganbanaPageSetup(&gvar.video);
 	modexMVSetup(&mv, &map, &pan, &gvar);
 	modexShowPage(&(gvar.video.page[pan.pn]));
-// 	for(i=0;i<gvar.video.num_of_pages;i++)
-// 	{
-// 		mv[i].page = &gvar.video.page[i];
-// 		mv[i].video = &gvar.video;
-// 		mv[i].pan	= &pan;
-// 		mv[0].tx	= INITTNUM;
-// 		mv[0].ty	= INITTNUM;
-// 	}
-	//player[0].tx = INITTNUM; player[0].ty = INITTNUM;
-	//mapinitmapview(mv, player[0].tx, player[0].tx);
-
-
-	#define VMEMHEIGHT gvar.video.page[0].height+gvar.video.page[1].height
-
-	//4	this draws that pattern on the screen
-#ifdef PATTERN
-	{
-		unsigned int i,j,o;
-		/* fill screen with a distinctive pattern */
-		for (i=0;i < gvar.video.page[0].width;i++) {
-			o = i >> 2;
-			vga_write_sequencer(0x02/*map mask*/,1 << (i&3));
-			for (j=0;j < VMEMHEIGHT;j++,o += gvar.video.page[0].stridew)
-				vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
-		}
-	}
-#else
-	TESTBG;
-#endif
 
 	//DRAWCORNERBOXES;
 
@@ -147,18 +108,15 @@ int main(int argc,char **argv)
 		VGA_RAM_PTR omemptr;
 		int xdir=1,ydir=1;
 
-#ifdef PATTERN
 		int j;
 		/* fill pattern offset with a distinctive pattern */
 		for (i=0;i < gvar.video.page[0].width;i++) {
-			o = (i >> 2) + (0x10000UL - (uint16_t)gvar.video.page[1].data);
+			o = (i >> 2) + (0x10000UL - (uint16_t)gvar.video.page[0].data);
 			vga_write_sequencer(0x02/*map mask*/,1 << (i&3));
-			for (j=0;j < VMEMHEIGHT;j++,o += gvar.video.page[0].stridew)
+			for (j=0;j < gvar.video.page[0].height;j++,o += gvar.video.page[0].stridew)
 				vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
 		}
-#else
-	TESTBG;
-#endif
+		TESTBG;
 		//DRAWCORNERBOXES;
 
 		/* starting coords. note: this technique is limited to x coordinates of multiple of 4 */
@@ -180,8 +138,8 @@ int main(int argc,char **argv)
 				IN_UserInput(1,1);
 			}
 			if(IN_KeyDown(sc_R)){
-				gvar.video.page[0].dx=gvar.video.page[0].dy=gvar.video.page[1].dx=gvar.video.page[1].dy=16;
-				mv[0].tx = mv[0].ty = mv[1].tx = mv[1].ty = INITTNUM;
+				gvar.video.page[0].dx=gvar.video.page[0].dy=16;//gvar.video.page[1].dx=gvar.video.page[1].dy=16;
+				mv[0].tx = mv[0].ty = INITTNUM;//mv[0].tx = mv[0].ty = mv[1].tx = mv[1].ty = INITTNUM;
 				modexShowPage(&(gvar.video.page[pan.pn]));
 				player[0].q = 1; player[0].d = 2;
 				x=y=0;
@@ -245,12 +203,6 @@ draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header
 	}
 
 	IN_UserInput(1,1);
-
-// 	while(!IN_KeyDown(sc_Escape))
-// 	{
-// 		IN_ReadControl(0,&player);
-// 		PANKEY0EXE;
-// 	}
 
 //===========================================================================//
 
@@ -348,7 +300,8 @@ if(!noanim) {
 	free(bakapee2);
 	printf("\nProject 16 0.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
-	//printf("mv 0\n	tx=%d	ty=%d\n\n", mv[0].tx, mv[0].tx);
-	//printf("mv 1\n	tx=%d	ty=%d\n", mv[1].tx, mv[1].tx);
+	//SCROLLEXITMESG;
+	printf("mv 0\n- tx=%d	ty=%d	dx=%d	dy=%d\n", mv[0].tx, mv[0].ty, gvar.video.page[0].dx, gvar.video.page[0].dy);
+	printf("mv 1\n- tx=%d	ty=%d	dx=%d	dy=%d\n", mv[1].tx, mv[1].ty, gvar.video.page[1].dx, gvar.video.page[1].dy);
 	return 0;
 }

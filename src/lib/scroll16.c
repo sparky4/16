@@ -267,71 +267,7 @@ void panPageManual(map_view_t *pip, player_t *player, word pn)
 					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
 				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].ty--; }
-			}
-			break;
-	}
-	//if (player[pn].d!=2) printf("player[%u].d=%u player[%u].q=%u\n", pn, player[pn].d, pn, player[pn].q);
-}
-
-//panning vmem
-void panVmemManual(map_view_t *pip, player_t *player, word pn)
-{
-	switch(player[pn].d)
-	{
-		//right movement
-		case 3:
-			if(pip[pip[0].pan->pn].tx >= 0 && pip[pip[0].pan->pn].tx+pip[pip[0].pan->pn].page->tw < pip[pip[0].pan->pn].page->tilesw)
-			{
-				if(player[pn].q<=player[pn].spt)
-				{
-					pip[pip[0].pan->pn].page[0].dx+=4;
-					//modexShowPageVsync(pip[pip[0].pan->pn].page);
-					modexShowPage(pip[pip[0].pan->pn].page);
-					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].tx++; }
-			}
-		break;
-
-		//left movement
-		case 1:
-			if(pip[pip[0].pan->pn].tx > 0 && pip[pip[0].pan->pn].tx+pip[pip[0].pan->pn].page->tw <= pip[pip[0].pan->pn].page->tilesw)
-			{
-				if(player[pn].q<=player[pn].spt)
-				{
-					pip[pip[0].pan->pn].page[0].dx-=4;
-					//modexShowPageVsync(pip[pip[0].pan->pn].page);
-					modexShowPage(pip[pip[0].pan->pn].page);
-					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].tx--; }
-			}
-		break;
-
-		//down movement
-		case 4:
-			if(pip[pip[0].pan->pn].ty >= 0 && pip[pip[0].pan->pn].ty+pip[pip[0].pan->pn].page->th < pip[pip[0].pan->pn].page->tilesh)
-			{
-				if(player[pn].q<=player[pn].spt)
-				{
-					pip[pip[0].pan->pn].page[0].dy+=4;
-					//modexShowPageVsync(pip[pip[0].pan->pn].page);
-					modexShowPage(pip[pip[0].pan->pn].page);
-					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].ty++; }
-			}
-		break;
-
-		//up movement
-		case 0:
-			if(pip[pip[0].pan->pn].ty > 0 && pip[pip[0].pan->pn].ty+pip[pip[0].pan->pn].page->th <= pip[pip[0].pan->pn].page->tilesh)
-			{
-				if(player[pn].q<=player[pn].spt)
-				{
-					pip[pip[0].pan->pn].page[0].dy-=4;
-					//modexShowPageVsync(pip[pip[0].pan->pn].page);
-					modexShowPage(pip[pip[0].pan->pn].page);
-					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].ty--; }
-			}
+			}//tx ty dx dy th tw
 			break;
 	}
 	//if (player[pn].d!=2) printf("player[%u].d=%u player[%u].q=%u\n", pn, player[pn].d, pn, player[pn].q);
@@ -356,15 +292,17 @@ void modexMVSetup(map_view_t *pip, map_t *map, pan_t *pan, global_game_variables
 		pip[i].map	=	pip[0].map;
 		pip[i].video	=	pip[0].video;
 		pip[i].pan	=	pip[0].pan;
-		pip[i].tx	=	1;
-		pip[i].ty	=	1;
+		//pip[i].tx	=	1;
+		//pip[i].ty	=	1;
 	}
 }
 
-void modexMVInit(map_view_t *pip, int tx, int ty)
+void modexMVInit(map_view_t *mv, int tx, int ty)
 {
-	pip[0].tx = tx;
-	pip[0].ty = ty;
+	mv[0].tx = tx;
+	mv[0].ty = ty;
+	//mv[0].tx = mv[1].tx = tx;
+	//mv[0].ty = mv[1].ty = ty;
 }
 
 /*map_t
@@ -641,6 +579,16 @@ void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 		mv[id].page->dy = mv[0].map->tiles->tileWidth;
 	}
 }
+
+//===========================================================================
+//TODO: put player in starting position of assigned spot on map
+//default player position on the viewable map
+void playerXYpos(int x, int y, player_t *player, map_view_t *pip, nibble pn)
+{
+	player[pn].tx = x + pip[0].tx + pip[0].page->tilemidposscreenx;
+	player[pn].ty = y + pip[0].ty + pip[0].page->tilemidposscreeny;
+}
+//===========================================================================
 
 sword chkmap(map_t *map, word q)
 {

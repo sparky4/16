@@ -369,8 +369,10 @@ modexShowPage_(page_t *page)
 	outp(AC_INDEX, (page[0].dx & 0x03) << 1);
 }
 
+//yet another variant
+//args: page, vertical sync switch, screen resolution switch,
 void
-modexShowPageVsync(page_t *page) {
+VL_ShowPage(page_t *page, boolean vsync, boolean sr) {
 	word high_address, low_address, offset;
 	byte crtcOffset;
 
@@ -380,25 +382,36 @@ modexShowPageVsync(page_t *page) {
 	offset += page[0].dx >> 2;
 
 	/* calculate crtcOffset according to virtual width */
-	crtcOffset = page->width >> 3;
+	switch(sr)
+	{
+		case 1:
+			crtcOffset = page->sw >> 3;
+		break;
+		default:
+		case 0:
+			crtcOffset = page->width >> 3;
+		break;
+	}
 
 	high_address = HIGH_ADDRESS | (offset & 0xff00);
 	low_address  = LOW_ADDRESS  | (offset << 8);
 
 	/* wait for appropriate timing and then program CRTC */
-	while ((inp(INPUT_STATUS_1) & DISPLAY_ENABLE));
+	if(vsync) while ((inp(INPUT_STATUS_1) & DISPLAY_ENABLE));
 	outpw(CRTC_INDEX, high_address);
 	outpw(CRTC_INDEX, low_address);
 	outp(CRTC_INDEX, 0x13);
 	outp(CRTC_DATA, crtcOffset);
 
 	/* wait for one retrace */
-	while (!(inp(INPUT_STATUS_1) & VRETRACE));
+	if(vsync) while (!(inp(INPUT_STATUS_1) & VRETRACE));
 
 	/* do PEL panning here */
 	outp(AC_INDEX, 0x33);
 	outp(AC_INDEX, (page[0].dx & 0x03) << 1);
 }
+
+//=============================================================================
 
 void
 modexPanPage(page_t *page, int dx, int dy) {
@@ -690,6 +703,23 @@ modexLoadPalFile(byte *filename, byte **palette) {
 	}
 
 	fclose(file);
+}
+
+
+void VL_LoadPalFile(const char *filename, byte *palette)
+{
+	int fd;
+
+	fd = open(filename,O_RDONLY|O_BINARY);
+	if (fd >= 0) {
+		word i;
+
+		read(fd,palette,768);
+		close(fd);
+
+		vga_palette_lseek(0);
+		for (i=0;i < 256;i++) vga_palette_write(palette[(i*3)+0]>>2,palette[(i*3)+1]>>2,palette[(i*3)+2]>>2);
+	}
 }
 
 

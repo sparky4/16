@@ -105,7 +105,7 @@ void modexCalcVmemRemain(video_t *video);
 void modexHiganbanaPageSetup(video_t *video);
 void modexShowPage(page_t *page);
 void modexShowPage_(page_t *page);
-void modexShowPageVsync(page_t *page);
+void VL_ShowPage(page_t *page, boolean vsync, boolean sr);
 void modexPanPage(page_t *page, int dx, int dy);
 void modexSelectPlane(byte plane);
 void modexClearRegion(page_t *page, int x, int y, int w, int h, byte color);
@@ -122,6 +122,7 @@ void modexFlashOff(word fade, byte *palette);
 void modexPalSave(byte *palette);
 byte *modexNewPal();
 void modexLoadPalFile(char *filename, byte **palette);
+void VL_LoadPalFile(const char *filename, byte *palette);
 void modexSavePalFile(char *filename, byte *palette);
 
 /* fixed palette functions */
