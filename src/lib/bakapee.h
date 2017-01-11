@@ -79,8 +79,10 @@ void ssd(page_t *page, bakapee_t *pee, word svq);
 void dingpp(page_t *page, bakapee_t *pee);
 void dingo(page_t *page, bakapee_t *pee);
 void dingas(bakapee_t *pee);
+void dingaso(bakapee_t *pee);
 void dingu(bakapee_t *pee);
 void dingq(bakapee_t *pee);
+void dingqo(bakapee_t *pee);
 void ding(page_t *page, bakapee_t *pee, word q);
 
 #endif /*__BAKAPEE_H_*/

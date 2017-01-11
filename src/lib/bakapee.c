@@ -134,6 +134,35 @@ void dingas(bakapee_t *pee)
 	}
 }
 
+void dingaso(bakapee_t *pee)
+{
+	if(pee->gq == BONK) dingu(pee);
+	if(!pee->bakax)
+	{
+		if(pee->tile)
+		pee->xx-=TILEWH;
+		else pee->xx--;
+	}
+	else
+	{
+		if(pee->tile)
+		pee->xx+=TILEWH;
+		else pee->xx++;
+	}
+	if(!pee->bakay)
+	{
+		if(pee->tile)
+		pee->yy-=TILEWH;
+		else pee->yy--;
+	}
+	else
+	{
+		if(pee->tile)
+		pee->yy+=TILEWH;
+		else pee->yy++;
+	}
+}
+
 void dingu(bakapee_t *pee)
 {
 	if(pee->coor < HGQ && pee->coor < LGQ) pee->coor = LGQ;
@@ -160,20 +189,45 @@ void dingq(bakapee_t *pee)
 	pee->bakax = rand()%3; pee->bakay = rand()%3;
 }
 
+void dingqo(bakapee_t *pee)
+{
+	if(pee->gq<BONK)
+	{
+		pee->gq++;
+		pee->bakax = rand()%3; pee->bakay = rand()%3;
+	}
+	else
+	{
+		dingu(pee);
+		pee->gq = 0;
+	}
+	//either one will do wwww --4
+	pee->bakax = rand()&0x1; pee->bakay = rand()&0x1;
+	//pee->bakax = rand()%2; pee->bakay = rand()%2;
+}
+
 /*-----------ding-------------*/
 void ding(page_t *page, bakapee_t *pee, word q)
 {
-	word d3y, tx=0,ty=0;
+	word tx=0,ty=0;//d3y,
 
 //++++  if(q <= 4 && q!=2 && gq == BONK-1) coor = rand()%HGQ;
 	switch(q)
 	{
-		case 1:
+		case 1:/*
 			dingq(pee);
 			if(pee->xx==page->sw){pee->bakax=0;}
 			if(pee->xx==0){pee->bakax=1;}
 			if(pee->yy==page->sh){pee->bakay=0;}
-			if(pee->yy==0){pee->bakay=1;}
+			if(pee->yy==0){pee->bakay=1;}*/
+			dingqo(pee);
+			dingaso(pee);
+			dingo(page, pee);
+			dingpp(page, pee);	//plot the pixel/tile
+			if(pee->tile)
+			modexClearRegion(page, (rand()*TILEWH)%page->width, (rand()*TILEWH)%(page->height), TILEWH, TILEWH, 0);
+			else
+			modexputPixel(page, rand()%page->width, rand()%page->height, 0);
 		break;
 		case 2:
 			dingq(pee);
@@ -186,7 +240,7 @@ void ding(page_t *page, bakapee_t *pee, word q)
 			modexputPixel(page, rand()%page->width, rand()%page->height, 0);
 		break;
 		case 3:
-			dingq(pee);
+			/*dingq(pee);
 			if(pee->xx!=page->sw||pee->yy!=page->sh)
 			{
 				if(pee->xx==0){pee->bakax=1;pee->bakay=-1;d3y=1;}
@@ -215,6 +269,10 @@ void ding(page_t *page, bakapee_t *pee, word q)
 			{
 				pee->xx++;
 			}
+			dingpp(page, pee);	//plot the pixel/tile*/
+			dingqo(pee);
+			dingaso(pee);
+			dingo(page, pee);
 			dingpp(page, pee);	//plot the pixel/tile
 		break;
 		case 4:
