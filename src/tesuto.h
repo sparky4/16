@@ -12,7 +12,7 @@
 
 //panVmemManual(mv, player, 0);
 
-#define SHOWPAGEFUN VL_ShowPage(&(gvar.video.page[pan.pn]), 0, 0)
+#define SHOWPAGEFUN VL_ShowPage(&(gvar.video.page[pan.pn]), 0, 0, 0)
 //modexShowPage(&(gvar.video.page[pan.pn]))
 
 #define PANKEY0EXE \

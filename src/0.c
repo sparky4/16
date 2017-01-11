@@ -138,8 +138,8 @@ int main(int argc,char **argv)
 				IN_UserInput(1,1);
 			}
 			if(IN_KeyDown(sc_R)){
-				gvar.video.page[0].dx=gvar.video.page[0].dy=16;//gvar.video.page[1].dx=gvar.video.page[1].dy=16;
-				mv[0].tx = mv[0].ty = INITTNUM;//mv[0].tx = mv[0].ty = mv[1].tx = mv[1].ty = INITTNUM;
+				gvar.video.page[0].dx=gvar.video.page[0].dy=16;gvar.video.page[1].dx=gvar.video.page[1].dy=16;
+				mv[0].tx = mv[0].ty = mv[1].tx = mv[1].ty = INITTNUM;
 				modexShowPage(&(gvar.video.page[pan.pn]));
 				player[0].q = 1; player[0].d = 2;
 				x=y=0;

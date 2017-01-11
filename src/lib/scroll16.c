@@ -267,7 +267,7 @@ void panPageManual(map_view_t *pip, player_t *player, word pn)
 					modexShowPage(pip[pip[0].pan->pn].page);
 					player[pn].q++;
 				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].ty--; }
-			}//tx ty dx dy th tw
+			}
 			break;
 	}
 	//if (player[pn].d!=2) printf("player[%u].d=%u player[%u].q=%u\n", pn, player[pn].d, pn, player[pn].q);
@@ -299,10 +299,10 @@ void modexMVSetup(map_view_t *pip, map_t *map, pan_t *pan, global_game_variables
 
 void modexMVInit(map_view_t *mv, int tx, int ty)
 {
-	mv[0].tx = tx;
-	mv[0].ty = ty;
-	//mv[0].tx = mv[1].tx = tx;
-	//mv[0].ty = mv[1].ty = ty;
+	//mv[0].tx = tx;
+	//mv[0].ty = ty;
+	mv[0].tx = mv[1].tx = tx;
+	mv[0].ty = mv[1].ty = ty;
 }
 
 /*map_t
