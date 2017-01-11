@@ -177,6 +177,7 @@ EXTERNTESTEXEC = &
 	wcpu.exe &
 	db.exe
 TESTEXEC = &
+	test.exe &
 	tesuto.exe &
 	0.exe &
 	exmmtest.exe &
@@ -190,7 +191,6 @@ TESTEXEC2 = &
 	fmemtest.exe &
 	fonttest.exe &
 	fontgfx.exe &
-	test.exe &
 	test0.exe &
 	pcxtest.exe &
 	$(EXTERNTESTEXEC)

@@ -12,11 +12,11 @@
 
 //panVmemManual(mv, player, 0);
 
-#define SHOWPAGEFUN VL_ShowPage(&(gvar.video.page[pan.pn]), 0, 0, 0)
+#define SHOWPAGEFUN VL_ShowPage(&(gvar.video.page[pan.pn]), 0, 0)
 //modexShowPage(&(gvar.video.page[pan.pn]))
 
 #define PANKEY0EXE \
-			panPageManual(mv, player, 0); \
+			panPageManual(&mv, &player, 0); \
 			if(IN_KeyDown(1+1) || IN_KeyDown(sc_Z)){ pan.pn=0; SHOWPAGEFUN; } \
 			if(IN_KeyDown(2+1) || IN_KeyDown(sc_X)){ pan.pn=1; SHOWPAGEFUN; } \
 			if(IN_KeyDown(3+1) || IN_KeyDown(sc_C)){ pan.pn=2; SHOWPAGEFUN; if(IN_KeyDown(sc_C)) modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 47); } \

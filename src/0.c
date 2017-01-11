@@ -92,8 +92,8 @@ int main(int argc,char **argv)
 
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
-	modexMVSetup(&mv, &map, &pan, &gvar);
-	modexShowPage(&(gvar.video.page[pan.pn]));
+	ZC_MVSetup(&mv, &map, &pan, &gvar);
+	VL_ShowPage(&(gvar.video.page[pan.pn]), 0, 0);
 
 	//DRAWCORNERBOXES;
 
@@ -138,7 +138,7 @@ int main(int argc,char **argv)
 				IN_UserInput(1,1);
 			}
 			if(IN_KeyDown(sc_R)){
-				gvar.video.page[0].dx=gvar.video.page[0].dy=16;gvar.video.page[1].dx=gvar.video.page[1].dy=16;
+				gvar.video.page[0].dx=gvar.video.page[0].dy=gvar.video.page[1].dx=gvar.video.page[1].dy=16;
 				mv[0].tx = mv[0].ty = mv[1].tx = mv[1].ty = INITTNUM;
 				modexShowPage(&(gvar.video.page[pan.pn]));
 				player[0].q = 1; player[0].d = 2;

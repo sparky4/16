@@ -37,17 +37,18 @@ void main(int argc, char *argv[])
 	int i, j;
 	word startclk, endclk;
 	word k;
-	byte *pal, *pal2;
+	//====byte *pal, *pal2;
 	sword bakapee;
 
-	word colo=LGQ;
+	//====word colo=LGQ;
+	pan.pn=0;
 
 	//argument
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
 
 	// DOSLIB: check our environment
-	probe_dos();
+	/*probe_dos();
 
 	// DOSLIB: what CPU are we using?
 	// NTS: I can see from the makefile Sparky4 intends this to run on 8088 by the -0 switch in CFLAGS.
@@ -73,24 +74,24 @@ void main(int argc, char *argv[])
 #endif
 	}
 	_DEBUG("Serial debug output started\n"); // NTS: All serial output must end messages with newline, or DOSBox-X will not emit text to log
-	_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);
+	_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);*/
+	Startup16(&gvar);
 
 	/* save the palette */
-	pal  = modexNewPal();
-	modexPalSave(pal);
-	modexFadeOff(1, pal);
-	modexPalBlack();
+	//====pal  = modexNewPal();
+	//====modexPalSave(pal);
+	//====modexFadeOff(1, pal);
+	//====modexPalBlack();
 
-	IN_Startup();
+	//IN_Startup();
 	IN_Default(0,&player,ctrl_Keyboard1);
 	IN_initplayer(&player, 0);
 
-	textInit();
 	VGAmodeX(bakapee, 1, &gvar);
-	modexPalBlack();
+	//====modexPalBlack();
 
 	/* load our palette */
-	modexLoadPalFile("data/default.pal", &pal2);
+	//====modexLoadPalFile("data/default.pal", &pal2);
 
 	/* overscan show */
 	//modexPalOverscan(44+1);
@@ -102,12 +103,9 @@ void main(int argc, char *argv[])
 		mv[i].page = &gvar.video.page[i];
 		mv[i].video = &gvar.video;
 		mv[i].pan	= &pan;
-		mv[i].tx	= 0;
-		mv[i].ty	= 0;
+		mv[i].tx	= 1;
+		mv[i].ty	= 1;
 	}
-//  	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
-//  	gvar.video.page[1] = modexNextPage(&gvar.video.page[0]);
-
 
 	/* fill the page with one color, but with a black border */
 	/*modexClearRegion(&gvar.video.page[1], 0, 0, gvar.video.page[1].width, gvar.video.page[1].height, 15);
@@ -120,23 +118,27 @@ void main(int argc, char *argv[])
 	modexClearRegion(&gvar.video.page[0], 32, 32, gvar.video.page[0].sw-32, gvar.video.page[0].sh-32, 42);
 	modexClearRegion(&gvar.video.page[0], 48, 48, gvar.video.page[0].sw-64, gvar.video.page[0].sh-64, 128);
 	modexShowPage(&gvar.video.page[0]);*/
+
+
 	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].width, gvar.video.page[0].height, 15);
 	modexClearRegion(&gvar.video.page[0], 16, 16, gvar.video.page[0].sw, gvar.video.page[0].sh, 128);
 	modexClearRegion(&gvar.video.page[0], 32, 32, gvar.video.page[0].sw-32, gvar.video.page[0].sh-32, 42);
 	modexClearRegion(&gvar.video.page[0], 48, 48, gvar.video.page[0].sw-64, gvar.video.page[0].sh-64, 128);
 	modexCopyPageRegion(&gvar.video.page[1], &gvar.video.page[0], 0, 0, 0, 0, gvar.video.page[0].width, gvar.video.page[0].height);
-	//modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 47);
-	//modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 45);
+	modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 47);
+	modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 45);
+
 
 	/* fade in */
-	modexFadeOn(1, pal2);
+	//====modexFadeOn(1, pal2);
 
-	i=0,k=0,j=0,pan.pn=0;
+	i=0,k=0,j=0;
 	startclk = *clockw;
 	while(!IN_KeyDown(sc_Escape))
 	{
 		IN_ReadControl(0,&player);
-		panPageManual(mv, player, 0);
+		ZC_panPageManual(&mv[pan.pn], &player, 0);
+		//ZC_MVSync(&mv);
 
 		/*if(i<5){
 		switch (k)
@@ -187,7 +189,7 @@ void main(int argc, char *argv[])
 		if(IN_KeyDown(4+1)){ pan.pn=3; }
 		if(IN_KeyDown(12)) modexClearRegion(&gvar.video.page[0], (gvar.video.page[0].width/2)-4, (gvar.video.page[0].height/2)-16, 24, 32, 15);
 		if(IN_KeyDown(13)) modexClearRegion(&gvar.video.page[1], (gvar.video.page[1].width/2)-4, (gvar.video.page[1].height/2)-16, 24, 32, 15);
-		if(IN_KeyDown(7)){
+/*====		if(IN_KeyDown(7)){
 			for(i=0;i<3;i++)
 			{
 				pal2[i] = rand()%64;
@@ -196,25 +198,23 @@ void main(int argc, char *argv[])
 				if(colo>HGQ) colo=LGQ;
 			}
 //			if(i>PAL_SIZE) i=0;
-		}//9
-		if(IN_KeyDown(25)){
-			modexpdump(&gvar.video.page[pan.pn]);
-			IN_UserInput(1,1);
-		}//p
-		modexShowPage(&gvar.video.page[pan.pn]);
+		}//9*/
+		if(IN_KeyDown(25)){ modexpdump(&gvar.video.page[pan.pn]); IN_UserInput(1,1); }//p
+		VL_ShowPage(&gvar.video.page[pan.pn], 0, 0);
 	}
 
 	endclk = *clockw;
 
 	/* fade back to text mode */
-	modexFadeOff(1, pal2);
-	modexPalBlack();
+	//====modexFadeOff(1, pal2);
+	//====modexPalBlack();
 	VGAmodeX(0, 1, &gvar);
+	Shutdown16(&gvar);
 	printf("Project 16 test.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	modexprintmeminfo(&gvar.video);
 	printf("tx=%d	", mv[pan.pn].tx); printf("ty=%d	", mv[pan.pn].ty); printf("player.d=%d\n", player[0].d);
-	IN_Shutdown();
-	modexPalBlack();
-	modexFadeOn(1, pal);
+	//IN_Shutdown();
+	//====modexPalBlack();
+	//====modexFadeOn(1, pal);
 }

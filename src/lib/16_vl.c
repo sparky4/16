@@ -294,11 +294,10 @@ void modexHiganbanaPageSetup(video_t *video)
 	video->r=1;
 
 	//setup the buffersize
-	video->page[0].dx=video->page[1].dx=TILEWH;
-	video->page[0].dy=video->page[1].dy=TILEWH;
-	/*	video->page[1].dx=video->page[1].dy=TILEWH;	// 1 tile size buffer
+	video->page[0].dx=video->page[0].dy=
+		video->page[1].dx=video->page[1].dy=TILEWH;	// 1 tile size buffer
 	video->page[2].dx=video->page[2].dy=
-		video->page[3].dx=video->page[3].dy=0;		*/// cache pages are buffer wwww
+		video->page[3].dx=video->page[3].dy=0;		// cache pages are buffer wwww
 }
 
 //
@@ -373,24 +372,15 @@ modexShowPage_(page_t *page)
 //yet another variant
 //args: page, vertical sync switch, screen resolution switch, page0 switch
 void
-VL_ShowPage(page_t *page, boolean vsync, boolean sr, boolean an) {
+VL_ShowPage(page_t *page, boolean vsync, boolean sr) {
 	word high_address, low_address, offset;
 	byte crtcOffset;
 
 	/* calculate offset */
 	offset = (word) page->data;
-	switch(an)
-	{
-		case 1:
-			offset += page[0].dy * (page->width >> 2 );
-			offset += page[0].dx >> 2;
-		break;
-		default:
-		case 0:
-			offset += page->dy * (page->width >> 2 );
-			offset += page->dx >> 2;
-		break;
-	}
+	offset += page[0].dy * (page->width >> 2 );
+	offset += page[0].dx >> 2;
+
 	/* calculate crtcOffset according to virtual width */
 	switch(sr)
 	{
@@ -418,16 +408,7 @@ VL_ShowPage(page_t *page, boolean vsync, boolean sr, boolean an) {
 
 	/* do PEL panning here */
 	outp(AC_INDEX, 0x33);
-	switch(an)
-	{
-		case 1:
-			outp(AC_INDEX, (page[0].dx & 0x03) << 1);
-		break;
-		default:
-		case 0:
-			outp(AC_INDEX, (page->dx & 0x03) << 1);
-		break;
-	}
+	outp(AC_INDEX, (page[0].dx & 0x03) << 1);
 }
 
 //=============================================================================

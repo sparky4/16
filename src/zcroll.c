@@ -107,7 +107,7 @@ void main(int argc, char *argv[])
 
 	// setup camera and screen~
 	modexHiganbanaPageSetup(&gvar.video);
-	modexMVSetup(&mv, &map, &pan, &gvar);
+	ZC_MVSetup(&mv, &map, &pan, &gvar);
 	player[0].ent->spri->x = player[0].ent->spri->y = TILEWH;
 
 	// set up paging
@@ -132,7 +132,7 @@ void main(int argc, char *argv[])
 	}
 	animate_spri((player[0].ent->spri), &gvar);
 
-	modexShowPage(mv[0].page);//!(gvar.video.p)
+	VL_ShowPage(mv[0].page, 0, 0);//modexShowPage(mv[0].page);//!(gvar.video.p)
 	shinku_fps_indicator_page = 0; // we're on page 1 now, shinku(). follow along please or it will not be visible.
 #ifdef FADE
 	modexFadeOn(4, gpal);

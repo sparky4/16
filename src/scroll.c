@@ -59,7 +59,7 @@ void main(int argc, char *argv[])
 
 	Startup16(&gvar);
 
-	pan.pn=1;
+	pan.pn=0;
 
 	/* create the map */
 	fprintf(stderr, "testing map load~	");
@@ -125,7 +125,7 @@ void main(int argc, char *argv[])
 
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
-	modexMVSetup(&mv, &map, &pan, &gvar);
+	ZC_MVSetup(&mv, &map, &pan, &gvar);
 
 	/* set up paging */
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
@@ -143,8 +143,8 @@ void main(int argc, char *argv[])
 	PBUFSFUN(mv[0].page, player[0].x, player[0].y-TILEWH, 16, 64, 16, 32,	player[0].data);
 #endif
 
-	if(!pageflipflop)	modexShowPage(mv[1].page);
-	else			modexShowPage(mv[0].page);//!(gvar.video.p)
+	if(!pageflipflop)	VL_ShowPage(mv[1].page, 0, 0);//modexShowPage(mv[1].page);
+	else			VL_ShowPage(mv[0].page, 0, 0);//modexShowPage(mv[0].page);//!(gvar.video.p)
 		shinku_fps_indicator_page = 0; // we're on page 1 now, shinku(). follow along please or it will not be visible.
 
 	/* buffer pages */
@@ -196,10 +196,10 @@ void main(int argc, char *argv[])
 	}
 	if(player[0].q == (TILEWH/(player[0].speed))+1 && player[0].info.dir != 2 && (player[0].triggerx == 5 && player[0].triggery == 5)){ player[0].hp--; }
 	//debugging binds!
-	if(IN_KeyDown(2)){ modexShowPage(mv[0].page); pan.pn=0; }
-	if(IN_KeyDown(3)){ modexShowPage(mv[1].page); pan.pn=1; }
-	if(IN_KeyDown(4)){ modexShowPage(mv[2].page); pan.pn=2; }
-	if(IN_KeyDown(4+1)){ modexShowPage(mv[3].page); pan.pn=3; }
+	if(IN_KeyDown(2)){ VL_ShowPage(mv[0].page, 0, 0); pan.pn=0; }
+	if(IN_KeyDown(3)){ VL_ShowPage(mv[1].page, 0, 0); pan.pn=1; }
+	if(IN_KeyDown(4)){ VL_ShowPage(mv[2].page, 0, 0); pan.pn=2; }
+	if(IN_KeyDown(4+1)){ VL_ShowPage(mv[3].page, 0, 0); pan.pn=3; }
 	if(IN_KeyDown(25)){ modexpdump(mv[0].page); modexpdump(mv[1].page);
 		 IN_UserInput(1,1);
 	}	//p
