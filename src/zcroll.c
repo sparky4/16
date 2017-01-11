@@ -175,7 +175,7 @@ void main(int argc, char *argv[])
 		if(IN_KeyDown(22)){ modexPalUpdate0(gpal); } //u
 
 		//pan switch
-		if(IN_KeyDown(88)){panswitch=!panswitch; IN_UserInput(1,1);}	//f12
+		//if(IN_KeyDown(88)){panswitch=!panswitch; IN_UserInput(1,1);}	//f12
 		if(IN_KeyDown(87))	//f11
 		{
 			pageflipflop=!pageflipflop;

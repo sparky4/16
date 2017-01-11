@@ -137,7 +137,8 @@ void main(int argc, char *argv[])
 	while(!IN_KeyDown(sc_Escape))
 	{
 		IN_ReadControl(0,&player);
-		ZC_panPageManual(&mv[pan.pn], &player, 0);
+		ZC_panPageManual(&mv, &player, 0);
+		//[pan.pn]
 		//ZC_MVSync(&mv);
 
 		/*if(i<5){
@@ -183,10 +184,7 @@ void main(int argc, char *argv[])
 // 				modexClearRegion(&gvar.video.page[1], 48, 48, gvar.video.page[1].sw-64, gvar.video.page[1].sh-64, 128);
 // 			}
 		//}
-		if(IN_KeyDown(1+1)){ pan.pn=0; }
-		if(IN_KeyDown(2+1)){ pan.pn=1; }
-		if(IN_KeyDown(3+1)){ pan.pn=2; }
-		if(IN_KeyDown(4+1)){ pan.pn=3; }
+		PANKEYFUN;
 		if(IN_KeyDown(12)) modexClearRegion(&gvar.video.page[0], (gvar.video.page[0].width/2)-4, (gvar.video.page[0].height/2)-16, 24, 32, 15);
 		if(IN_KeyDown(13)) modexClearRegion(&gvar.video.page[1], (gvar.video.page[1].width/2)-4, (gvar.video.page[1].height/2)-16, 24, 32, 15);
 /*====		if(IN_KeyDown(7)){
@@ -200,7 +198,8 @@ void main(int argc, char *argv[])
 //			if(i>PAL_SIZE) i=0;
 		}//9*/
 		if(IN_KeyDown(25)){ modexpdump(&gvar.video.page[pan.pn]); IN_UserInput(1,1); }//p
-		VL_ShowPage(&gvar.video.page[pan.pn], 0, 0);
+		//VL_ShowPage(&gvar.video.page[pan.pn], 0, 0);
+		ZC_ShowMV(&mv, 0, 0);
 	}
 
 	endclk = *clockw;

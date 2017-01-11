@@ -129,7 +129,7 @@ void main(int argc, char *argv[])
 
 	/* set up paging */
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
-	mapGoTo(mv, 0, 0);
+	mapGoTo(&mv, 0, 0);
 	//_fmemcpy(mv[1].page->data, mv[0].page->data, mv[0].page->pagesize);
 
 	playerXYpos(0, 0, &player, &mv, 0);
@@ -144,7 +144,7 @@ void main(int argc, char *argv[])
 #endif
 
 	if(!pageflipflop)	VL_ShowPage(mv[1].page, 0, 0);//modexShowPage(mv[1].page);
-	else			VL_ShowPage(mv[0].page, 0, 0);//modexShowPage(mv[0].page);//!(gvar.video.p)
+	else			ZC_ShowMV(&mv, 0, 0);//modexShowPage(mv[0].page);//!(gvar.video.p)
 		shinku_fps_indicator_page = 0; // we're on page 1 now, shinku(). follow along please or it will not be visible.
 
 	/* buffer pages */
@@ -177,9 +177,9 @@ void main(int argc, char *argv[])
 	//player movement
 		IN_ReadControl(0, &player);
 	if(!panswitch){
-		walk(mv, &player, 0);
+		walk(&mv, &player, 0);
 	}else{
-		panPageManual(mv, &player, 0);
+		PANKEYFUN;//panPageManual(&mv, &player, 0);
 		//printf("	player[0].q: %d", player[0].q);	printf("	player[0].d: %d\n", player[0].d);
 	}
 
@@ -196,13 +196,6 @@ void main(int argc, char *argv[])
 	}
 	if(player[0].q == (TILEWH/(player[0].speed))+1 && player[0].info.dir != 2 && (player[0].triggerx == 5 && player[0].triggery == 5)){ player[0].hp--; }
 	//debugging binds!
-	if(IN_KeyDown(2)){ VL_ShowPage(mv[0].page, 0, 0); pan.pn=0; }
-	if(IN_KeyDown(3)){ VL_ShowPage(mv[1].page, 0, 0); pan.pn=1; }
-	if(IN_KeyDown(4)){ VL_ShowPage(mv[2].page, 0, 0); pan.pn=2; }
-	if(IN_KeyDown(4+1)){ VL_ShowPage(mv[3].page, 0, 0); pan.pn=3; }
-	if(IN_KeyDown(25)){ modexpdump(mv[0].page); modexpdump(mv[1].page);
-		 IN_UserInput(1,1);
-	}	//p
 #ifdef MODEX
 #ifdef FADE
 	if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv[0].page); modexpdump(mv[1].page);  IN_UserInput(1,1); } //p

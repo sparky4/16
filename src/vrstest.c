@@ -109,7 +109,7 @@ void main()
 
 	VGAmodeX(1, 1, &gvar);
 	modexHiganbanaPageSetup(&gvar.video);
-	modexShowPage_(&gvar.video.page[0]);
+	VL_ShowPage(&gvar.video.page[0], 0, 1);
 
 	/* non sprite comparison */
 	start = *clockw;

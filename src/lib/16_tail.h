@@ -31,11 +31,11 @@
 #include "src/lib/16_in.h"
 
 #define FUNCTIONKEYFUNCTIONS \
-	if(IN_KeyDown(sc_F6)){ modexShowPage(&gvar.video.page[0]); IN_UserInput(1,1); } \
-	if(IN_KeyDown(sc_F7)){ modexShowPage_(&gvar.video.page[0]); IN_UserInput(1,1); }
+	if(IN_KeyDown(sc_F6)){ VL_ShowPage(&gvar.video.page[0], 0, 0); IN_UserInput(1,1); } \
+	if(IN_KeyDown(sc_F7)){ VL_ShowPage(&gvar.video.page[0], 0, 1); IN_UserInput(1,1); }
 #define FUNCTIONKEYFUNCTIONS0EXE \
-	if(IN_KeyDown(sc_F6)){ modexShowPage(&gvar.video.page[pan.pn]); IN_UserInput(1,1); } \
-	if(IN_KeyDown(sc_F7)){ modexShowPage_(&gvar.video.page[pan.pn]); IN_UserInput(1,1); }
+	if(IN_KeyDown(sc_F6)){ VL_ShowPage(&gvar.video.page[pan.pn], 0, 0); IN_UserInput(1,1); } \
+	if(IN_KeyDown(sc_F7)){ VL_ShowPage(&gvar.video.page[pan.pn], 0, 1); IN_UserInput(1,1); }
 
 void DebugMemory_(global_game_variables_t *gvar, boolean q);
 void Shutdown16(global_game_variables_t *gvar);

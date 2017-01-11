@@ -93,7 +93,8 @@ int main(int argc,char **argv)
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
 	ZC_MVSetup(&mv, &map, &pan, &gvar);
-	VL_ShowPage(&(gvar.video.page[pan.pn]), 0, 0);
+	//VL_ShowPage(&(gvar.video.page[pan.pn]), 0, 0);
+	ZC_ShowMV(&mv, 0, 0);
 
 	//DRAWCORNERBOXES;
 
@@ -130,7 +131,7 @@ int main(int argc,char **argv)
 		{
 			IN_ReadControl(0,&player);
 			if(IN_KeyDown(68)){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap; IN_UserInput(1,1); } //f10
-			PANKEY0EXE;
+			PANKEYFUN;
 			if(IN_KeyDown(sc_Space))	//space
 			{
 				anim=!anim;
@@ -206,7 +207,8 @@ draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header
 
 //===========================================================================//
 
-	modexShowPage(&(gvar.video.page[0]));
+	//modexShowPage(&(gvar.video.page[0]));
+	ZC_ShowMV(&mv, 0, 0);
 if(!noanim) {
 	/* another handy "demo" effect using VGA write mode 1.
 	 * we can take what's on screen and vertically squash it like an old analog TV set turning off. */

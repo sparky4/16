@@ -214,64 +214,63 @@ void walk(map_view_t *pip, player_t *player, word pn)
 }
 
 //panning page
-void panPageManual(map_view_t *pip, player_t *player, word pn)
+void ZC_panPageManual(map_view_t *pip, player_t *player, word pn)
 {
+#define SHOWMVFUN_ ZC_ShowMV(pip, 0, 0);
 	switch(player[pn].d)
 	{
 		//right movement
 		case 3:
-			if(pip[pip[0].pan->pn].tx >= 0 && pip[pip[0].pan->pn].tx+pip[pip[0].pan->pn].page->tw < pip[pip[0].pan->pn].page->tilesw)
+			if(pip[0].tx >= 0 && pip[0].tx+pip[0].page->tw < pip[0].page->tilesw)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
-					pip[pip[0].pan->pn].page[0].dx+=4;
-					modexShowPage(pip[pip[0].pan->pn].page);
+					pip[0].page->dx+=4;
+					SHOWMVFUN_;
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].tx++; }
+				} else { player[pn].q = 1; player[pn].d = 2; pip[0].tx++; }
 			}
 		break;
 
 		//left movement
 		case 1:
-			if(pip[pip[0].pan->pn].tx > 0 && pip[pip[0].pan->pn].tx+pip[pip[0].pan->pn].page->tw <= pip[pip[0].pan->pn].page->tilesw)
+			if(pip[0].tx > 0 && pip[0].tx+pip[0].page->tw <= pip[0].page->tilesw)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
-					pip[pip[0].pan->pn].page[0].dx-=4;
-					modexShowPage(pip[pip[0].pan->pn].page);
+					pip[0].page->dx-=4;
+					SHOWMVFUN;
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].tx--; }
+				} else { player[pn].q = 1; player[pn].d = 2; pip[0].tx--; }
 			}
 		break;
 
 		//down movement
 		case 4:
-			if(pip[pip[0].pan->pn].ty >= 0 && pip[pip[0].pan->pn].ty+pip[pip[0].pan->pn].page->th < pip[pip[0].pan->pn].page->tilesh)
+			if(pip[0].ty >= 0 && pip[0].ty+pip[0].page->th < pip[0].page->tilesh)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
-					pip[pip[0].pan->pn].page[0].dy+=4;
-					modexShowPage(pip[pip[0].pan->pn].page);
+					pip[0].page->dy+=4;
+					SHOWMVFUN_;
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].ty++; }
+				} else { player[pn].q = 1; player[pn].d = 2; pip[0].ty++; }
 			}
 		break;
 
 		//up movement
 		case 0:
-			if(pip[pip[0].pan->pn].ty > 0 && pip[pip[0].pan->pn].ty+pip[pip[0].pan->pn].page->th <= pip[pip[0].pan->pn].page->tilesh)
+			if(pip[0].ty > 0 && pip[0].ty+pip[0].page->th <= pip[0].page->tilesh)
 			{
 				if(player[pn].q<=player[pn].spt)
 				{
-					pip[pip[0].pan->pn].page[0].dy-=4;
-					modexShowPage(pip[pip[0].pan->pn].page);
+					pip[0].page->dy-=4;
+					SHOWMVFUN_;
 					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; pip[pip[0].pan->pn].ty--; }
+				} else { player[pn].q = 1; player[pn].d = 2; pip[0].ty--; }
 			}
 		break;
 	}
-	//ZC_MVSync(pip);//&(pip[pip[0].pan->pn]));
-	//if (player[pn].d!=2) printf("player[%u].d=%u player[%u].q=%u\n", pn, player[pn].d, pn, player[pn].q);
 }
 
 /*
@@ -309,75 +308,44 @@ void ZC_MVInit(map_view_t *pip, int tx, int ty)
 	//pip[0].ty = pip[1].ty = ty;
 }
 
-void
-ZC_MVSync(map_view_t *pip)
+void ZC_ShowMV(map_view_t *moo, boolean vsync, boolean sr)
 {
-	//printf("0 dx=%d %d	dy=%d %d\n", pip->dx, pip[!pip[0].pan->pn].dx, pip->dy, pip[!pip[0].pan->pn].dy);
-	//printf("1 dx=%d %d	dy=%d %d\n", pip[1].dx, pip[pip[0].pan->pn].dx, pip[1].dy, pip[pip[0].pan->pn].dy);
-	pip[!pip[0].pan->pn].dx = pip[pip[0].pan->pn].dx;// =	pip[pip[0].pan->pn].tx*TILEWH;
-	pip[!pip[0].pan->pn].dy = pip[pip[0].pan->pn].dy;// =	pip[pip[0].pan->pn].ty*TILEWH;
-}
+	word high_address, low_address, offset;
+	byte crtcOffset;
 
-void ZC_panPageManual(map_view_t *pip, player_t *player, word pn)
-{
-	switch(player[pn].d)
+	/* calculate offset */
+	offset = (word) moo[moo[0].pan->pn].page->data;
+	offset += moo[0].page->dy * (moo[0].page->width >> 2 );
+	offset += moo[0].page->dx >> 2;
+
+	/* calculate crtcOffset according to virtual width */
+	switch(sr)
 	{
-		//right movement
-		case 3:
-			if(pip[0].tx >= 0 && pip[0].tx+pip[0].page->tw < pip[0].page->tilesw)
-			{
-				if(player[pn].q<=player[pn].spt)
-				{
-					pip[0].page->dx+=4;
-					//modexShowPage(pip[0].page);
-					VL_ShowPage(&(pip->video->page[pip[0].pan->pn]), 0, 0);
-					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; pip[0].tx++; }
-			}
-		break;
-
-		//left movement
 		case 1:
-			if(pip[0].tx > 0 && pip[0].tx+pip[0].page->tw <= pip[0].page->tilesw)
-			{
-				if(player[pn].q<=player[pn].spt)
-				{
-					pip[0].page->dx-=4;
-					//modexShowPage(pip[0].page);
-					VL_ShowPage(&(pip->video->page[pip[0].pan->pn]), 0, 0);
-					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; pip[0].tx--; }
-			}
+			crtcOffset = moo[0].page->sw >> 3;
 		break;
-
-		//down movement
-		case 4:
-			if(pip[0].ty >= 0 && pip[0].ty+pip[0].page->th < pip[0].page->tilesh)
-			{
-				if(player[pn].q<=player[pn].spt)
-				{
-					pip[0].page->dy+=4;
-					//modexShowPage(pip[0].page);
-					VL_ShowPage(&(pip->video->page[pip[0].pan->pn]), 0, 0);
-					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; pip[0].ty++; }
-			}
-		break;
-
-		//up movement
+		default:
 		case 0:
-			if(pip[0].ty > 0 && pip[0].ty+pip[0].page->th <= pip[0].page->tilesh)
-			{
-				if(player[pn].q<=player[pn].spt)
-				{
-					pip[0].page->dy-=4;
-					//modexShowPage(pip[0].page);
-					VL_ShowPage(&(pip->video->page[pip[0].pan->pn]), 0, 0);
-					player[pn].q++;
-				} else { player[pn].q = 1; player[pn].d = 2; pip[0].ty--; }
-			}
+			crtcOffset = moo[0].page->width >> 3;
 		break;
 	}
+
+	high_address = HIGH_ADDRESS | (offset & 0xff00);
+	low_address  = LOW_ADDRESS  | (offset << 8);
+
+	/* wait for appropriate timing and then program CRTC */
+	if(vsync) while ((inp(INPUT_STATUS_1) & DISPLAY_ENABLE));
+	outpw(CRTC_INDEX, high_address);
+	outpw(CRTC_INDEX, low_address);
+	outp(CRTC_INDEX, 0x13);
+	outp(CRTC_DATA, crtcOffset);
+
+	/* wait for one retrace */
+	if(vsync) while (!(inp(INPUT_STATUS_1) & VRETRACE));
+
+	/* do PEL panning here */
+	outp(AC_INDEX, 0x33);
+	outp(AC_INDEX, (moo[0].page->dx & 0x03) << 1);
 }
 
 /*map_t

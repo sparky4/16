@@ -10,19 +10,6 @@
 #include <hw/vga/vga.h>
 #include <hw/vga/vrl.h>
 
-//panVmemManual(mv, player, 0);
-
-#define SHOWPAGEFUN VL_ShowPage(&(gvar.video.page[pan.pn]), 0, 0)
-//modexShowPage(&(gvar.video.page[pan.pn]))
-
-#define PANKEY0EXE \
-			panPageManual(&mv, &player, 0); \
-			if(IN_KeyDown(1+1) || IN_KeyDown(sc_Z)){ pan.pn=0; SHOWPAGEFUN; } \
-			if(IN_KeyDown(2+1) || IN_KeyDown(sc_X)){ pan.pn=1; SHOWPAGEFUN; } \
-			if(IN_KeyDown(3+1) || IN_KeyDown(sc_C)){ pan.pn=2; SHOWPAGEFUN; if(IN_KeyDown(sc_C)) modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 47); } \
-			if(IN_KeyDown(4+1) || IN_KeyDown(sc_V)){ pan.pn=3; SHOWPAGEFUN; if(IN_KeyDown(sc_V)) modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 45); } \
-			if(IN_KeyDown(25)){ modexpdump(mv[1].page); modexShowPage(&(gvar.video.page[1])); IN_UserInput(1,1); }
-
 ////corner markers
 #define GVPO gvar.video.page[0]
 #define GVPI gvar.video.page[1]

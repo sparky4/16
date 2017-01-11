@@ -334,42 +334,7 @@ modexShowPage(page_t *page) {
 	outp(AC_INDEX, (page[0].dx & 0x03) << 1);
 }
 
-//
-// testing version of void modexShowPage()
-//
-void
-modexShowPage_(page_t *page)
-{
-	word high_address, low_address, offset;
-	byte crtcOffset;
-
-	/* calculate offset */
-	offset = (word) page->data;
-	offset += page[0].dy * (page->width >> 2 );
-	offset += page[0].dx >> 2;
-
-	/* calculate crtcOffset according to virtual width */
-	crtcOffset = page->sw >> 3;
-
-	high_address = HIGH_ADDRESS | (offset & 0xff00);
-	low_address  = LOW_ADDRESS  | (offset << 8);
-
-	/* wait for appropriate timing and then program CRTC */
-//+=+=										while ((inp(INPUT_STATUS_1) & DISPLAY_ENABLE));
-	outpw(CRTC_INDEX, high_address);
-	outpw(CRTC_INDEX, low_address);
-	outp(CRTC_INDEX, 0x13);
-	outp(CRTC_DATA, crtcOffset);
-
-	/* wait for one retrace */
-//+=+=										while (!(inp(INPUT_STATUS_1) & VRETRACE));
-
-	/* do PEL panning here */
-	outp(AC_INDEX, 0x33);
-	outp(AC_INDEX, (page[0].dx & 0x03) << 1);
-}
-
-//yet another variant
+//another variant
 //args: page, vertical sync switch, screen resolution switch, page0 switch
 void
 VL_ShowPage(page_t *page, boolean vsync, boolean sr) {

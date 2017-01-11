@@ -114,6 +114,15 @@ typedef struct {
 	printf("pageflipflop=%u\n", pageflipflop);\
 	printf("\n");
 
+#define SHOWMVFUN ZC_ShowMV(&mv, 0, 0);
+#define PANKEYFUN \
+			ZC_panPageManual(&mv, &player, 0); \
+			if(IN_KeyDown(1+1) || IN_KeyDown(sc_Z)){ pan.pn=0; SHOWMVFUN; } \
+			if(IN_KeyDown(2+1) || IN_KeyDown(sc_X)){ pan.pn=1; SHOWMVFUN; } \
+			if(IN_KeyDown(3+1) || IN_KeyDown(sc_C)){ pan.pn=2; SHOWMVFUN; if(IN_KeyDown(sc_C)) modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 47); } \
+			if(IN_KeyDown(4+1) || IN_KeyDown(sc_V)){ pan.pn=3; SHOWMVFUN; if(IN_KeyDown(sc_V)) modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 45); } \
+			if(IN_KeyDown(25)){ modexpdump(mv[1].page); modexShowPage(&(gvar.video.page[1])); IN_UserInput(1,1); }
+
 extern boolean pageflipflop, pageploop;
 extern unsigned char shinku_fps_indicator_page;
 
@@ -122,11 +131,10 @@ extern char global_temp_status_text[512];
 //map_t allocMap(int w, int h);
 //void initMap(map_t *map);
 void walk(map_view_t *pip, player_t *player, word pn);
-void panPageManual(map_view_t *pip,  player_t *player, word pn);
+void ZC_panPageManual(map_view_t *pip, player_t *player, word pn);
 void ZC_MVSetup(map_view_t *pip, map_t *map, pan_t *pan, global_game_variables_t *gv);
 void ZC_MVInit(map_view_t *pip, int tx, int ty);
-void ZC_MVSync(map_view_t *pip);
-void ZC_panPageManual(map_view_t *pip, player_t *player, word pn);
+void ZC_ShowMV(map_view_t *moo, boolean vsync, boolean sr);
 void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid);
