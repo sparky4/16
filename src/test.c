@@ -44,14 +44,9 @@ void main(int argc, char *argv[])
 	word startclk, endclk;
 	word k;
 	//====byte *pal, *pal2;
-	sword bakapee;
 
 	//====word colo=LGQ;
 	gvar.video.panp=0;
-
-	//argument
-	if(argv[1]) bakapee = atoi(argv[1]);
-	else bakapee = 1;
 
 	// DOSLIB: check our environment
 	/*probe_dos();
@@ -94,7 +89,7 @@ void main(int argc, char *argv[])
 	IN_Default(0,&player,ctrl_Keyboard1);
 	IN_initplayer(&player, 0);
 
-	VGAmodeX(bakapee, 1, &gvar);
+	VGAmodeX(1, 1, &gvar);
 	//====modexPalBlack();
 
 	/* load our palette */
@@ -198,6 +193,7 @@ void main(int argc, char *argv[])
 //			if(i>PAL_SIZE) i=0;
 		}//9*/
 		if(IN_KeyDown(25)){ modexpdump(&gvar.video.page[gvar.video.panp]); IN_UserInput(1,1); }//p
+		if(IN_KeyDown(sc_F8)){ modexDrawSprite(&gvar.video.page[0], 160, 120, PCXBMPPTR); IN_UserInput(1,1); }//f8
 		//VL_ShowPage(&gvar.video.page[gvar.video.panp], 0, 0);
 		ZC_ShowMV(&mv, 0, 0);
 	}

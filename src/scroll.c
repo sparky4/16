@@ -129,7 +129,6 @@ void main(int argc, char *argv[])
 	if(!pageflipflop)	VL_ShowPage(mv[1].page, 0, 0);//modexShowPage(mv[1].page);
 	else			ZC_ShowMV(&mv, 0, 0);//modexShowPage(mv[0].page);//!(gvar.video.p)
 
-
 	modexDrawBmp(&gvar.video.page[0], 16, 16, PCXBMPPTR);
 	/* buffer pages */
 // 	modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 47);

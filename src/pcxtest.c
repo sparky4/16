@@ -77,12 +77,12 @@ void main() {
 	modexPalUpdate1(&PCXBMP->palette);
 
 	/* clear and draw one sprite and one bitmap */
-	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].sw, gvar.video.page[0].sh, 1);
+	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].width, gvar.video.page[0].height, 1);
 
 	/* non sprite comparison */
-	start = *clockw;
+	/*start = *clockw;
 	//for(i=0; i<100 ;i++) {
-		oldDrawBmp(VGA, 20, 20, PCXBMPPTR, 0);
+		oldDrawBmp(VGA, 0, 0, PCXBMPPTR, 0);
 	//}
 
 	start = *clockw;
@@ -97,20 +97,23 @@ void main() {
 //0000		modexCopyPageRegion(&gvar.video.page[0], &gvar.video.page[0], 20, 20, 128, 20, 64, 64);
 		modexCopyPageRegion(&gvar.video.page[0], &gvar.video.page[0], 0, 0, 0, 0, 320, 240);
 	//}
-	t2 = (*clockw-start)/18.2;
+	t2 = (*clockw-start)/18.2;*/
 
 
 	start = *clockw;
 	//for(i=0; i<100 ;i++) {
-		oldDrawBmp(VGA, 20, 20, PCXBMPPTR, 1);
+		oldDrawBmp(VGA, 0, 0, PCXBMPPTR, 1);
 	//}
+	t1 = (*clockw-start) /18.2;
 
 
 	start = *clockw;
 	//for(i=0; i<100 ;i++) {
 //0000		modexDrawSprite(&gvar.video.page[0], 20, 20, PCXBMPPTR);
-		modexDrawSprite(&gvar.video.page[0], 160, 120, PCXBMPPTR);
+		modexDrawSprite(&(gvar.video.page[0]), 160, 120, PCXBMPPTR);
+		modexDrawBmp(&gvar.video.page[0], 0, 128, PCXBMPPTR);
 	//}
+	t2 = (*clockw-start)/18.2;
 	//_fmemset(MK_FP(0xA000, 0), (int)p->plane, gvar.video.page[0].sw*(gvar.video.page[0].sh*2));
 	//modexDrawBmp(&gvar.video.page[0], 0, 0, PCXBMPPTR);
 	while(!kbhit())

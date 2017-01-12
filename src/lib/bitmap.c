@@ -184,7 +184,7 @@ bitmapLoadPcxTiles(char *filename, word twidth, word theight) {
 	ts.palette = result.palette;
 
 	/* allocate the pixel storage for the tiles */
-	ts.data = malloc(sizeof(byte*) * ts.ntiles);
+	ts.data = _fmalloc(sizeof(byte*) * ts.ntiles);
 	//ts.data[0] = malloc(sizeof(byte) * ts.ntiles * twidth * theight);
 	for(i=1; i < ts.ntiles; i++) {
 		ts.data[i] = ts.data[i-1] + twidth * theight;

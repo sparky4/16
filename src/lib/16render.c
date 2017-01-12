@@ -142,7 +142,7 @@ modexDrawBmp(page_t *page, int x, int y, bitmap_t *bmp) {
 void
 modexDrawBmpRegion(page_t *page, int x, int y,
 		   int rx, int ry, int rw, int rh, bitmap_t *bmp) {
-	word poffset = (word) page->data  + y*(page->width/4) + x/4;
+	word poffset = (word)page->data + y*(page->width/4) + x/4;
 	byte *data = bmp->data;//+bmp->offset;
 	word bmpOffset = (word) data + ry * bmp->width + rx;
 	word width = rw;
