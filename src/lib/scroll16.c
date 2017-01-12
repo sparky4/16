@@ -1095,7 +1095,7 @@ void shinku(global_game_variables_t *gv)
 	}
 }
 
-void /*near*/ animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch)
+void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch)
 {
 	sword x = player[pn].x;
 	sword y = player[pn].y;

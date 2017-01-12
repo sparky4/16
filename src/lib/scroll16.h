@@ -161,7 +161,7 @@ void mapDrawWRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 //void qclean();
 void shinku(global_game_variables_t *gv);
-void /*near*/ animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch);
+void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch);
 
 // Move an entity around. Should actually be in 16_entity
 boolean ZC_walk2(entity_t *ent, map_view_t *map_v);
