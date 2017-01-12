@@ -228,6 +228,7 @@ typedef	struct
 	entity_t		*ent;
 #endif
 	bitmap_t	*data;		//supposively the sprite sheet data//old format
+	bitmap_t	bmp;
 	sword hp; //hitpoints of the player
 	int persist_aniframe;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	CursorInfo	info;

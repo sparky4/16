@@ -26,14 +26,20 @@
 #include "src/lib/scroll16.h"
 #include "src/lib/bakapee.h"
 
+#define PCXBMPVAR		player[0].data
+#define PCXBMP			*PCXBMPVAR
+#define PCXBMPPTR		PCXBMPVAR
+
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
-player_t player[MaxPlayers];
-pan_t pan;
 
 void main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
+	static player_t player[MaxPlayers];
+
+	map_t map;
 	map_view_t mv[4];
+
 	int i, j;
 	word startclk, endclk;
 	word k;
@@ -41,7 +47,7 @@ void main(int argc, char *argv[])
 	sword bakapee;
 
 	//====word colo=LGQ;
-	pan.pn=0;
+	gvar.video.panp=0;
 
 	//argument
 	if(argv[1]) bakapee = atoi(argv[1]);
@@ -76,6 +82,7 @@ void main(int argc, char *argv[])
 	_DEBUG("Serial debug output started\n"); // NTS: All serial output must end messages with newline, or DOSBox-X will not emit text to log
 	_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);*/
 	Startup16(&gvar);
+	PCXBMP = bitmapLoadPcx("data/chikyuu.pcx", &gvar); // load sprite
 
 	/* save the palette */
 	//====pal  = modexNewPal();
@@ -98,14 +105,7 @@ void main(int argc, char *argv[])
 
 	/* set up the page, but with 16 pixels on all borders in offscreen mem */
 	modexHiganbanaPageSetup(&gvar.video);
-	for(i=0;i<gvar.video.num_of_pages;i++)
-	{
-		mv[i].page = &gvar.video.page[i];
-		mv[i].video = &gvar.video;
-		mv[i].pan	= &pan;
-		mv[i].tx	= 1;
-		mv[i].ty	= 1;
-	}
+	ZC_MVSetup(&mv, &map, &gvar);
 
 	/* fill the page with one color, but with a black border */
 	/*modexClearRegion(&gvar.video.page[1], 0, 0, gvar.video.page[1].width, gvar.video.page[1].height, 15);
@@ -138,7 +138,7 @@ void main(int argc, char *argv[])
 	{
 		IN_ReadControl(0,&player);
 		ZC_panPageManual(&mv, &player, 0);
-		//[pan.pn]
+		//[gvar.video.panp]
 		//ZC_MVSync(&mv);
 
 		/*if(i<5){
@@ -147,23 +147,23 @@ void main(int argc, char *argv[])
 			case 0:
 				pee:
 				// go right
-				gvar.video.page[pan.pn].dx++;
+				gvar.video.page[gvar.video.panp].dx++;
 				if(i==5){ if(j>=31){ i++; j=0; goto baka; }else j++; }else
 				if(j>=32){ k++; j=0; }else j++;
 			break;
 			case 1:
 				// go left
-				gvar.video.page[pan.pn].dx--;
+				gvar.video.page[gvar.video.panp].dx--;
 				if(j>=32){ k++; j=0; }else j++;
 			break;
 			case 2:
 				// go up
-				gvar.video.page[pan.pn].dy++;
+				gvar.video.page[gvar.video.panp].dy++;
 				if(j>=32){ k++; j=0; }else j++;
 			break;
 			case 3:
 				// go down
-				gvar.video.page[pan.pn].dy--;
+				gvar.video.page[gvar.video.panp].dy--;
 				if(j>=32){ k=0; j=0; i++; }else j++;
 			break;
 			default:
@@ -197,8 +197,8 @@ void main(int argc, char *argv[])
 			}
 //			if(i>PAL_SIZE) i=0;
 		}//9*/
-		if(IN_KeyDown(25)){ modexpdump(&gvar.video.page[pan.pn]); IN_UserInput(1,1); }//p
-		//VL_ShowPage(&gvar.video.page[pan.pn], 0, 0);
+		if(IN_KeyDown(25)){ modexpdump(&gvar.video.page[gvar.video.panp]); IN_UserInput(1,1); }//p
+		//VL_ShowPage(&gvar.video.page[gvar.video.panp], 0, 0);
 		ZC_ShowMV(&mv, 0, 0);
 	}
 
@@ -212,7 +212,7 @@ void main(int argc, char *argv[])
 	printf("Project 16 test.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	modexprintmeminfo(&gvar.video);
-	printf("tx=%d	", mv[pan.pn].tx); printf("ty=%d	", mv[pan.pn].ty); printf("player.d=%d\n", player[0].d);
+	printf("tx=%d	", mv[gvar.video.panp].tx); printf("ty=%d	", mv[gvar.video.panp].ty); printf("player.d=%d\n", player[0].d);
 	//IN_Shutdown();
 	//====modexPalBlack();
 	//====modexFadeOn(1, pal);

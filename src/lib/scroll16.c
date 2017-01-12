@@ -68,7 +68,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			{
 				if(!pageflipflop) modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x, player[pn].y-TILEWH, player[pn].x, player[pn].y-TILEWH, 24, 32);
 #ifdef SPRITE
-				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 24, 32, PLAYERBMPDATA);
+				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 24, 32, PLAYERBMPDATAPTR);
 #else
 				modexClearRegion(pip[1].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 14);
 #endif
@@ -112,7 +112,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			{
 				if(!pageflipflop) modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x, player[pn].y-TILEWH, player[pn].x, player[pn].y-TILEWH, 24, 32);
 #ifdef SPRITE
-				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 96, 24, 32, PLAYERBMPDATA);
+				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 96, 24, 32, PLAYERBMPDATAPTR);
 #else
 				modexClearRegion(pip[1].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 10);
 #endif
@@ -156,7 +156,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			{
 				if(!pageflipflop) modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x, player[pn].y-TILEWH, player[pn].x, player[pn].y-TILEWH, 24, 32);
 #ifdef SPRITE
-				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 64, 24, 32, PLAYERBMPDATA);
+				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 64, 24, 32, PLAYERBMPDATAPTR);
 #else
 				modexClearRegion(pip[1].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 9);
 #endif
@@ -200,7 +200,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			{
 				if(!pageflipflop) modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x, player[pn].y-TILEWH, player[pn].x, player[pn].y-TILEWH, 24, 32);
 #ifdef SPRITE
-				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 0, 24, 32, PLAYERBMPDATA);
+				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 0, 24, 32, PLAYERBMPDATAPTR);
 #else
 				modexClearRegion(pip[1].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 12);
 #endif
@@ -222,6 +222,170 @@ src/lib/scroll16.c:	mv[0].video->r=1;
 src/lib/scroll16.c:	pip->video->r=1;
 src/lib/scroll16.c:	mv->video->r=1;
  */
+
+void ZC_walk(map_view_t *pip, player_t *player, word pn)
+{
+	#define INC_PER_FRAME if(player[pn].q&1) player[pn].persist_aniframe++; if(player[pn].persist_aniframe>4) player[pn].persist_aniframe = 1;
+	switch(player[pn].d)
+	{
+		//no direction
+		case 2:
+			//0000pip[0].video->startclk = (*clockw);
+		break;
+		//right movement
+		case 3:
+			if(pip[0].tx >= 0 && pip[0].tx+pip[0].page->tw < pip[0].map->width && player[pn].tx == pip[0].tx+pip[0].page->tilemidposscreenx &&
+			!(pip[0].map->data[(player[pn].tx)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx+1 == TRIGGX && player[pn].ty == TRIGGY))	//collision detection!
+			{
+				if(player[pn].q<=player[pn].spt)
+				{
+					INC_PER_FRAME;
+					animatePlayer(pip, player, pn, 1);
+					ScrollRight(pip, player, 3, pn);
+					ScrollRight(pip, player, 2, pn);
+					mapScrollRight(pip, player, (pip[0].video->p), pn);
+					player[pn].q++;
+					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
+				} else { player[pn].q = 1; player[pn].d = 2; player[pn].tx++; }
+			}
+			else if(player[pn].tx < pip[0].map->width && !(pip[0].map->data[(player[pn].tx)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx+1 == TRIGGX && player[pn].ty == TRIGGY))
+			{
+				if(player[pn].q<=player[pn].spt)
+				{
+					INC_PER_FRAME;
+					player[pn].x+=(player[pn].speed);
+					animatePlayer(pip, player, pn, 0);
+					player[pn].q++;
+				} else { player[pn].q = 1; player[pn].d = 2; player[pn].tx++; }
+			}
+			else
+			{
+#ifdef SPRITE
+				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 24, 32, PLAYERBMPDATAPTR);
+#else
+				modexClearRegion(pip[1].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 14);
+#endif
+				player[pn].d = 2;
+			}
+			player[pn].triggerx = player[pn].tx+1;
+			player[pn].triggery = player[pn].ty;
+		break;
+		//left movement
+		case 1:
+			if(pip[0].tx > 0 && pip[0].tx+pip[0].page->tw <= pip[0].map->width && player[pn].tx == pip[0].tx+pip[0].page->tilemidposscreenx &&
+			!(pip[0].map->data[(player[pn].tx-2)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx-1 == TRIGGX && player[pn].ty == TRIGGY))	//collision detection!
+			{
+				if(player[pn].q<=player[pn].spt)
+				{
+					INC_PER_FRAME;
+					animatePlayer(pip, player, pn, 1);
+					ScrollLeft(pip, player, 3, pn);
+					ScrollLeft(pip, player, 2, pn);
+					mapScrollLeft(pip, player, (pip[0].video->p), pn);
+					player[pn].q++;
+					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
+				} else { player[pn].q = 1; player[pn].d = 2; player[pn].tx--; }
+			}
+			else if(player[pn].tx > 1 && !(pip[0].map->data[(player[pn].tx-2)+(pip[0].map->width*(player[pn].ty-1))] == 0))//!(player[pn].tx-1 == TRIGGX && player[pn].ty == TRIGGY))
+			{
+				if(player[pn].q<=player[pn].spt)
+				{
+					INC_PER_FRAME;
+					player[pn].x-=(player[pn].speed);
+					animatePlayer(pip, player, pn, 0);
+					player[pn].q++;
+				} else { player[pn].q = 1; player[pn].d = 2; player[pn].tx--; }
+			}
+			else
+			{
+#ifdef SPRITE
+				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 96, 24, 32, PLAYERBMPDATAPTR);
+#else
+				modexClearRegion(pip[1].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 10);
+#endif
+				player[pn].d = 2;
+			}
+			player[pn].triggerx = player[pn].tx-1;
+			player[pn].triggery = player[pn].ty;
+		break;
+		//down movement
+		case 4:
+			if(pip[0].ty >= 0 && pip[0].ty+pip[0].page->th < pip[0].map->height && player[pn].ty == pip[0].ty+pip[0].page->tilemidposscreeny &&
+			!(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty))] == 0))//!(player[pn].tx == TRIGGX && player[pn].ty+1 == TRIGGY))	//collision detection!
+			{
+				if(player[pn].q<=player[pn].spt)
+				{
+					INC_PER_FRAME;
+					animatePlayer(pip, player, pn, 1);
+					ScrollDown(pip, player, 3, pn);
+					ScrollDown(pip, player, 2, pn);
+					mapScrollDown(pip, player, (pip[0].video->p), pn);
+					player[pn].q++;
+					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
+				} else { player[pn].q = 1; player[pn].d = 2; player[pn].ty++; }
+			}
+			else if(player[pn].ty < pip[0].map->height && !(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty))] == 0))//!(player[pn].tx == TRIGGX && player[pn].ty+1 == TRIGGY))
+			{
+				if(player[pn].q<=player[pn].spt)
+				{
+					INC_PER_FRAME;
+					player[pn].y+=(player[pn].speed);
+					animatePlayer(pip, player, pn, 0);
+					player[pn].q++;
+				} else { player[pn].q = 1; player[pn].d = 2; player[pn].ty++; }
+			}
+			else
+			{
+#ifdef SPRITE
+				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 64, 24, 32, PLAYERBMPDATAPTR);
+#else
+				modexClearRegion(pip[1].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 9);
+#endif
+				player[pn].d = 2;
+			}
+			player[pn].triggerx = player[pn].tx;
+			player[pn].triggery = player[pn].ty+1;
+		break;
+		//up movement
+		case 0:
+			if(pip[0].ty > 0 && pip[0].ty+pip[0].page->th <= pip[0].map->height && player[pn].ty == pip[0].ty+pip[0].page->tilemidposscreeny &&
+			!(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty-2))] == 0))//!(player[pn].tx == TRIGGX && player[pn].ty-1 == TRIGGY))	//collision detection!
+			{
+				if(player[pn].q<=player[pn].spt)
+				{
+					INC_PER_FRAME;
+					animatePlayer(pip, player, pn, 1);
+					ScrollUp(pip, player, 3, pn);
+					ScrollUp(pip, player, 2, pn);
+					mapScrollUp(pip, player, (pip[0].video->p), pn);
+					player[pn].q++;
+					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
+				} else { player[pn].q = 1; player[pn].d = 2; player[pn].ty--; }
+			}
+			else if(player[pn].ty > 1 && !(pip[0].map->data[(player[pn].tx-1)+(pip[0].map->width*(player[pn].ty-2))] == 0))//!(player[pn].tx == TRIGGX &&  player[pn].ty-1 == TRIGGY))
+			{
+				if(player[pn].q<=player[pn].spt)
+				{
+					INC_PER_FRAME;
+					player[pn].y-=(player[pn].speed);
+					animatePlayer(pip, player, 0, pn);
+					player[pn].q++;
+				} else { player[pn].q = 1; player[pn].d = 2; player[pn].ty--; }
+			}
+			else
+			{
+#ifdef SPRITE
+				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 0, 24, 32, PLAYERBMPDATAPTR);
+#else
+				modexClearRegion(pip[1].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 12);
+#endif
+				player[pn].d = 2;
+			}
+			player[pn].triggerx = player[pn].tx;
+			player[pn].triggery = player[pn].ty-1;
+		break;
+	}
+}
 
 //panning page
 void ZC_panPageManual(map_view_t *pip, player_t *player, word pn)
@@ -286,7 +450,7 @@ void ZC_panPageManual(map_view_t *pip, player_t *player, word pn)
 /*
  * modex mv setup
 */
-void ZC_MVSetup(map_view_t *pip, map_t *map, pan_t *pan, global_game_variables_t *gv)
+void ZC_MVSetup(map_view_t *pip, map_t *map, global_game_variables_t *gv)
 {
 #define ZC_MVI 1
 	nibble i;
@@ -294,7 +458,7 @@ void ZC_MVSetup(map_view_t *pip, map_t *map, pan_t *pan, global_game_variables_t
 	pip[0].page = &gv->video.page[0];
 	pip[0].map = map;
 	pip[0].video = &gv->video;
-	pip[0].pan	= pan;
+	pip[0].panp	= &gv->video.panp;
 	ZC_MVInit(pip, 1, 1);
 
 	for(i=ZC_MVI;i<gv->video.num_of_pages;i++)
@@ -302,7 +466,7 @@ void ZC_MVSetup(map_view_t *pip, map_t *map, pan_t *pan, global_game_variables_t
 		pip[i].page	=	&gv->video.page[i];
 		pip[i].map	=	pip[0].map;
 		pip[i].video	=	pip[0].video;
-		pip[i].pan	=	pip[0].pan;
+		pip[i].panp	=	pip[0].panp;
 //		if(i>ZC_MVI) {
 		pip[i].tx =	1;
 		pip[i].ty =	1;
@@ -324,7 +488,7 @@ void ZC_ShowMV(map_view_t *moo, boolean vsync, boolean sr)
 	byte crtcOffset;
 
 	/* calculate offset */
-	offset = (word) moo[moo[0].pan->pn].page->data;
+	offset = (word) moo[moo[0].video->panp].page->data;
 	offset += moo[0].page->dy * (moo[0].page->width >> 2 );
 	offset += moo[0].page->dx >> 2;
 
@@ -861,7 +1025,6 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 	//setkb(0);
 }*/
 
-unsigned char shinku_fps_indicator_page = 2;
 boolean pageflipflop = 1;
 boolean pageploop = 1;
 
@@ -875,9 +1038,9 @@ void shinku(global_game_variables_t *gv)
 	//modexCopyPageRegion(pip[1].page, pip[2].page, 16, 16, 16, 16, (14*8)+4, 8+4);
 	/* block copy to visible RAM from offscreen */
 //	vga_setup_wm1_block_copy();
-//	modexCopyPageRegion(&(gv->video.page[shinku_fps_indicator_page]), &(gv->video.page[!shinku_fps_indicator_page]), x, y, x+w, 0, w, h);
+//	modexCopyPageRegion(&(gv->video.page[gv->video->sfip]), &(gv->video.page[!gv->video->sfip]), x, y, x+w, 0, w, h);
 // 	o =	*(gv->video.page[2].data); // source offscreen
-// 	o2 =	*(gv->video.page[shinku_fps_indicator_page].data)+(y * vga_state.vga_stride) + (x >> 2); // dest visible (original stride)
+// 	o2 =	*(gv->video.page[gv->video->sfip].data)+(y * vga_state.vga_stride) + (x >> 2); // dest visible (original stride)
 // 	for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += vga_state.vga_stride) vga_wm1_mem_block_copy(o2,o,w >> 2);
 	/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
 //	vga_restore_rm0wm0();
@@ -891,15 +1054,15 @@ void shinku(global_game_variables_t *gv)
         //
         //      This fixes *** Null pointer assignment detected error message in ZCROLL.EXE on exit.
 		sprintf(global_temp_status_text, "%.0f fps", (double)gv->kurokku.tiku/ticktock(gv));
-		//modexClearRegion(&(gv->video.page[shinku_fps_indicator_page]), x, y, w, h, 45);
+		//modexClearRegion(&(gv->video.page[gv->video->sfip]), x, y, w, h, 45);
 		modexprint(&(gv->video.page[/*!*/(gv->video.p)]), x, y, type, col, bgcol, global_temp_status_text);
 		gv->kurokku.tiku=0;
 		/* block copy to visible RAM from offscreen */
 //		vga_setup_wm1_block_copy();
-// 		o =	*(gv->video.page[shinku_fps_indicator_page].data); // source offscreen
+// 		o =	*(gv->video.page[gv->video->sfip].data); // source offscreen
 // 		o2 =	*(gv->video.page[2].data)+(y * vga_state.vga_stride) + (x >> 2); // dest visible (original stride)
 // 		for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += vga_state.vga_stride) vga_wm1_mem_block_copy(o2,o,w >> 2);
-//		modexCopyPageRegion(&(gv->video.page[shinku_fps_indicator_page]), &(gv->video.page[!shinku_fps_indicator_page]), x, y, x, 0, w, h);
+//		modexCopyPageRegion(&(gv->video.page[gv->video->sfip]), &(gv->video.page[!gv->video->sfip]), x, y, x, 0, w, h);
 		/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
 //		vga_restore_rm0wm0();
 	}else //copy dat sheet
@@ -908,7 +1071,7 @@ void shinku(global_game_variables_t *gv)
 	switch(gv->kurokku.fpscap)
 	{
 		case 0:
-			//modexprint(&(gv->video.page[shinku_fps_indicator_page]), x, y+8, type, col, bgcol, "sanic!");
+			//modexprint(&(gv->video.page[gv->video->sfip]), x, y+8, type, col, bgcol, "sanic!");
 			gv->kurokku.frames_per_second=1;
 		break;
 		case 1:
@@ -932,7 +1095,7 @@ void shinku(global_game_variables_t *gv)
 	}
 }
 
-void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch)
+void /*near*/ animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch)
 {
 	sword x = player[pn].x;
 	sword y = player[pn].y;
@@ -984,10 +1147,10 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 	}
 
 #ifdef SPRITE
-#define FRAME1 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 48, dire, 24, 32,	PLAYERBMPDATA);
-#define FRAME2 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATA);
-#define FRAME3 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 0, dire, 24, 32,	PLAYERBMPDATA);
-#define FRAME4 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATA);
+#define FRAME1 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 48, dire, 24, 32,	PLAYERBMPDATAPTR);
+#define FRAME2 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATAPTR);
+#define FRAME3 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 0, dire, 24, 32,	PLAYERBMPDATAPTR);
+#define FRAME4 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATAPTR);
 #else
 #define FRAME1 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, 2+dire);
 #define FRAME2 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, 1+dire);
@@ -1046,7 +1209,7 @@ boolean coll_check(int x, int y, int dx, int dy, map_view_t *map_v)
 	return dx && 1;//crossable_tile(x + dx, map_v) || dy && crossable_tile(y + dy, map_v);
 }
 
-boolean ZC_walk(entity_t *ent, map_view_t *map_v)
+boolean ZC_walk2(entity_t *ent, map_view_t *map_v)
 {
 	//return 1;
 	int dx = 1;
@@ -1080,7 +1243,7 @@ boolean ZC_walk(entity_t *ent, map_view_t *map_v)
 
 void player_walk(player_t *player, map_view_t *map_v){
 	int dx=16, dy=16;
-	if(ZC_walk(player->ent, map_v) && boundary_check(map_v->tx, map_v->ty, dx, dy, map_v->map->width - 2*map_v->page->tilesw, map_v->map->height - 2*map_v->page->tilesh))
+	if(ZC_walk2(player->ent, map_v) && boundary_check(map_v->tx, map_v->ty, dx, dy, map_v->map->width - 2*map_v->page->tilesw, map_v->map->height - 2*map_v->page->tilesh))
 	{
 		mapScroll(map_v, player);
 		// (Un)load stuff?

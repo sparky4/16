@@ -26,12 +26,19 @@
 #include "src/lib/16_vl.h"
 #include "src/lib/bitmap.h"
 #include "src/lib/16render.h"
+#include "src/lib/16_in.h"
+
+#include "src/lib/16_tail.h"
 
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 
+#define PCXBMPVAR		player[0].data
+#define PCXBMP			*PCXBMPVAR
+#define PCXBMPPTR		PCXBMPVAR
+
 void main() {
 	static global_game_variables_t gvar;
-	bitmap_t bmp;
+	static player_t player[MaxPlayers];
 //----	planar_buf_t *p;
 	word start;
 	float t1, t2;
@@ -57,16 +64,17 @@ void main() {
 		return;
 	}
 
-//0000	bmp = bitmapLoadPcx("data/koishi~~.pcx");
-	bmp = bitmapLoadPcx("data/chikyuu.pcx", &gvar);
-//	bmp = bitmapLoadPcx("data/koishi^^.pcx");
-//	bmp = bitmapLoadPcx("16/PCX_LIB/chikyuu.pcx");
-//----	p = planar_buf_from_bitmap(&bmp);
+//0000	PCXBMP = bitmapLoadPcx("data/koishi~~.pcx");
+	PCXBMP = bitmapLoadPcx("data/chikyuu.pcx", &gvar);
+//	PCXBMP = bitmapLoadPcx("data/koishi^^.pcx");
+//	PCXBMP = bitmapLoadPcx("16/PCX_LIB/chikyuu.pcx");
+//----	p = planar_buf_from_bitmap(PCXBMPPTR);
+
 	VGAmodeX(1, 1, &gvar);
 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 
 	/* fix up the palette and everything */
-	modexPalUpdate1(bmp.palette);
+	modexPalUpdate1(&PCXBMP->palette);
 
 	/* clear and draw one sprite and one bitmap */
 	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].sw, gvar.video.page[0].sh, 1);
@@ -74,13 +82,13 @@ void main() {
 	/* non sprite comparison */
 	start = *clockw;
 	//for(i=0; i<100 ;i++) {
-		oldDrawBmp(VGA, 20, 20, &bmp, 0);
+		oldDrawBmp(VGA, 20, 20, PCXBMPPTR, 0);
 	//}
 
 	start = *clockw;
 	//for(i=0; i<100 ;i++) {
-//0000		modexDrawBmp(&gvar.video.page[0], 20, 20, &bmp);
-		modexDrawBmp(&gvar.video.page[0], 160, 120, &bmp);
+//0000		modexDrawBmp(&gvar.video.page[0], 20, 20, PCXBMPPTR);
+		modexDrawBmp(&gvar.video.page[0], 160, 120, PCXBMPPTR);
 	//}
 	t1 = (*clockw-start) /18.2;
 
@@ -94,34 +102,34 @@ void main() {
 
 	start = *clockw;
 	//for(i=0; i<100 ;i++) {
-		oldDrawBmp(VGA, 20, 20, &bmp, 1);
+		oldDrawBmp(VGA, 20, 20, PCXBMPPTR, 1);
 	//}
 
 
 	start = *clockw;
 	//for(i=0; i<100 ;i++) {
-//0000		modexDrawSprite(&gvar.video.page[0], 20, 20, &bmp);
-		modexDrawSprite(&gvar.video.page[0], 160, 120, &bmp);
+//0000		modexDrawSprite(&gvar.video.page[0], 20, 20, PCXBMPPTR);
+		modexDrawSprite(&gvar.video.page[0], 160, 120, PCXBMPPTR);
 	//}
 	//_fmemset(MK_FP(0xA000, 0), (int)p->plane, gvar.video.page[0].sw*(gvar.video.page[0].sh*2));
-	//modexDrawBmp(&gvar.video.page[0], 0, 0, &bmp);
+	//modexDrawBmp(&gvar.video.page[0], 0, 0, PCXBMPPTR);
 	while(!kbhit())
 	{
 		//DrawPBuf(&gvar.video.page[0], 0, 0, p, 0);
 	}
 	VGAmodeX(0, 1, &gvar);
 	/*printf("\nmain=%Fp\n\n", &i);
-	printf("bmp.data=%Fp\n", bmp.data);
-	printf("*bmp.data=%Fp\n", *(bmp.data));
-	printf("&bmp.data=%Fp\n", &(bmp.data));
+	printf("PCXBMP.data=%Fp\n", PCXBMP.data);
+	printf("*PCXBMP.data=%Fp\n", *(PCXBMP.data));
+	printf("PCXBMPPTR.data=%Fp\n", &(PCXBMP.data));
 
 	printf("\n%d\n", sizeof(p->plane));
-	printf("%d\n", sizeof(bmp));*/
+	printf("%d\n", sizeof(PCXBMP));*/
 
 	/*for(i=0; i<(320*240); i++)
 	{
-		fprintf(stdout, "%d", bmp.data[i]);
-		if(i%bmp.width==0) fprintf(stdout, "\n");
+		fprintf(stdout, "%d", PCXBMP.data[i]);
+		if(i%PCXBMP.width==0) fprintf(stdout, "\n");
 	}*/
 	printf("CPU to VGA: %f\n", t1);
 	printf("VGA to VGA: %f\n", t2);

@@ -15,7 +15,6 @@
 static byte palette[768];
 player_t player[MaxPlayers];
 map_view_t mv[4];
-pan_t pan;
 
 map_t map;//junk var
 
@@ -32,7 +31,7 @@ int main(int argc,char **argv)
 
 	boolean anim=1,noanim=0;
 
-	pan.pn=0;
+	gvar.video.panp=0;
 
 	bakapee1=malloc(64);
 	bakapee2=malloc(1024);
@@ -92,8 +91,8 @@ int main(int argc,char **argv)
 
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
-	ZC_MVSetup(&mv, &map, &pan, &gvar);
-	//VL_ShowPage(&(gvar.video.page[pan.pn]), 0, 0);
+	ZC_MVSetup(&mv, &map, &gvar);
+	//VL_ShowPage(&(gvar.video.page[gvar.video.panp]), 0, 0);
 	ZC_ShowMV(&mv, 0, 0);
 
 	//DRAWCORNERBOXES;
@@ -141,7 +140,7 @@ int main(int argc,char **argv)
 			if(IN_KeyDown(sc_R)){
 				gvar.video.page[0].dx=gvar.video.page[0].dy=gvar.video.page[1].dx=gvar.video.page[1].dy=16;
 				mv[0].tx = mv[0].ty = mv[1].tx = mv[1].ty = INITTNUM;
-				modexShowPage(&(gvar.video.page[pan.pn]));
+				modexShowPage(&(gvar.video.page[gvar.video.panp]));
 				player[0].q = 1; player[0].d = 2;
 				x=y=0;
 				xdir=ydir=1;

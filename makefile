@@ -185,6 +185,7 @@ TESTEXEC = &
 	scroll.exe &
 	zcroll.exe &
 	inputest.exe &
+	pcxtest.exe &
 	vrstest.exe
 TESTEXEC2 = &
 	maptest.exe &
@@ -192,13 +193,21 @@ TESTEXEC2 = &
 	fonttest.exe &
 	fontgfx.exe &
 	test0.exe &
-	pcxtest.exe &
 	$(EXTERNTESTEXEC)
 TESTEXEC3= &
 	pcxtest2.exe
 UTILEXEC = &
 	palettel.exe &
 	palettec.exe
+!ifdef __LINUX__
+SPRIUTILEXEC = &
+	pcx2vrl &
+	pcxsscut &
+	vrl2vrs &
+	vrsdump
+#UTILEXEC += $(SPRIUTILEXEC)
+!endif
+
 EXEC = &
 	16.exe &
 	bakapi.exe &
@@ -487,12 +496,12 @@ mx_: .symbolic
 	@wmake -h -f makefile all
 	@cd $(BUILD_ROOT)
 
+!ifdef __LINUX__
 vrs: .symbolic
+$(SPRIUTILEXEC):
 	@cd $(DOSLIB_VGA:$(to_os_path))
 	#@make clean
 	@make all
-	@mv pcx2vrl $(BUILD_ROOT)$(DIRSEP)
-	@mv pcxsscut $(BUILD_ROOT)$(DIRSEP)
-	@mv vrl2vrs $(BUILD_ROOT)$(DIRSEP)
-	@mv vrsdump $(BUILD_ROOT)$(DIRSEP)
+	@for %f in ($(SPRIUTILEXEC)) do @if exist %f $(COPYCOMMAND) %f $(BUILD_ROOT)#$(DIRSEP)
 	@cd $(BUILD_ROOT)
+!endif

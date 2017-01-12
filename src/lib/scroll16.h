@@ -49,7 +49,14 @@ extern void modexDrawSpriteRegion(page_t *page, int x, int y, int rx, int ry, in
 //modexDrawBmpPBufRegion
 #define PBUFSFUN		modexDrawSpriteRegion
 #define PBUFBFUN		modexDrawBmpRegion
-#define PLAYERBMPDATA	player[pn].data
+
+#define PLAYERBMPDATAVAR	player[pn].data
+#define PLAYERBMPDATA		*PLAYERBMPDATAVAR
+#define PLAYERBMPDATAPTR	PLAYERBMPDATAVAR
+
+#define PCXBMPVAR	player[0].data
+#define PCXBMP		*PCXBMPVAR
+#define PCXBMPPTR	PCXBMPVAR
 
 typedef struct {
 	map_t *map;
@@ -59,7 +66,7 @@ typedef struct {
 	word dxThresh; //Threshold for physical tile switch
 	word dyThresh; //Threshold for physical tile switch
 	video_t *video;	//pointer to game variables of the video
-	pan_t *pan;		//pointer the the page panning debug system
+	nibble *panp;	// pointer to video's pan page num
 //newer vars!
 	int dx, dy, delta, d;
 } map_view_t;
@@ -87,7 +94,7 @@ typedef struct {
 //++++	printf("Total free: %zu\n", GetFreeSize());
 //not used now	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
 //not used now	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
-//printf("mv[%u].tx: %d", pan.pn, mv[pan.pn].tx); printf("	mv[%u].ty: %d	", pan.pn, mv[pan.pn].ty);
+//printf("mv[%u].tx: %d", gvar.video.panp, mv[gvar.video.panp].tx); printf("	mv[%u].ty: %d	", gvar.video.panp, mv[gvar.video.panp].ty);
 //printf("gvar.kurokku:	"); printf("%.0f ", clock());	printf("tiku=%lu ", gvar.kurokku.tiku);	printf("t=%.0f ", gvar.kurokku.t);	printf("ticktock()=%f ", ticktock(&gvar));	printf("%.0f fps", (double)gvar.kurokku.tiku/ticktock(&gvar));
 //printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[0].map->width, mv[0].map->height, mv[0].map->data[0]);
 //printf("&global_temp_status_text = %Fp\n", &global_temp_status_text);
@@ -117,22 +124,22 @@ typedef struct {
 #define SHOWMVFUN ZC_ShowMV(&mv, 0, 0);
 #define PANKEYFUN \
 			ZC_panPageManual(&mv, &player, 0); \
-			if(IN_KeyDown(1+1) || IN_KeyDown(sc_Z)){ pan.pn=0; SHOWMVFUN; } \
-			if(IN_KeyDown(2+1) || IN_KeyDown(sc_X)){ pan.pn=1; SHOWMVFUN; } \
-			if(IN_KeyDown(3+1) || IN_KeyDown(sc_C)){ pan.pn=2; SHOWMVFUN; if(IN_KeyDown(sc_C)) modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 47); } \
-			if(IN_KeyDown(4+1) || IN_KeyDown(sc_V)){ pan.pn=3; SHOWMVFUN; if(IN_KeyDown(sc_V)) modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 45); } \
+			if(IN_KeyDown(1+1) || IN_KeyDown(sc_Z)){ gvar.video.panp=0; SHOWMVFUN; } \
+			if(IN_KeyDown(2+1) || IN_KeyDown(sc_X)){ gvar.video.panp=1; SHOWMVFUN; } \
+			if(IN_KeyDown(3+1) || IN_KeyDown(sc_C)){ gvar.video.panp=2; SHOWMVFUN; if(IN_KeyDown(sc_C)) modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 47); } \
+			if(IN_KeyDown(4+1) || IN_KeyDown(sc_V)){ gvar.video.panp=3; SHOWMVFUN; if(IN_KeyDown(sc_V)) modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 45); } \
 			if(IN_KeyDown(25)){ modexpdump(mv[1].page); modexShowPage(&(gvar.video.page[1])); IN_UserInput(1,1); }
 
 extern boolean pageflipflop, pageploop;
-extern unsigned char shinku_fps_indicator_page;
 
 extern char global_temp_status_text[512];
 
 //map_t allocMap(int w, int h);
 //void initMap(map_t *map);
 void walk(map_view_t *pip, player_t *player, word pn);
+void ZC_walk(map_view_t *pip, player_t *player, word pn);
 void ZC_panPageManual(map_view_t *pip, player_t *player, word pn);
-void ZC_MVSetup(map_view_t *pip, map_t *map, pan_t *pan, global_game_variables_t *gv);
+void ZC_MVSetup(map_view_t *pip, map_t *map, global_game_variables_t *gv);
 void ZC_MVInit(map_view_t *pip, int tx, int ty);
 void ZC_ShowMV(map_view_t *moo, boolean vsync, boolean sr);
 void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid);
@@ -154,10 +161,10 @@ void mapDrawWRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 //void qclean();
 void shinku(global_game_variables_t *gv);
-void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch);
+void /*near*/ animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch);
 
 // Move an entity around. Should actually be in 16_entity
-boolean ZC_walk(entity_t *ent, map_view_t *map_v);
+boolean ZC_walk2(entity_t *ent, map_view_t *map_v);
 
 // Move player around and call map scrolling if required/possible
 void walk_player(player_t *player, map_view_t *map_v);

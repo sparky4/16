@@ -25,22 +25,16 @@
 #include "src/lib/16render.h"
 #include "src/lib/16_dbg.h"
 
-#define MODEXZ
-
 //bitmap_t p;
 static map_t map;
 map_view_t mv[4];
 float t;
 sword bakapee;
-pan_t pan;
 //debugswitches
 boolean panswitch=0,baka=0;
 //extern boolean pageflipflop=1;
 unsigned int i;
-//static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 
-//map_view_db_t pgid[4];
-word pg;
 #ifdef FADE
 static word paloffset=0;
 byte *dpal;
@@ -56,12 +50,9 @@ void main(int argc, char *argv[])
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
 
-	player[0].data = _fmalloc(72*128); //TODO use exmm
-	*player[0].data = bitmapLoadPcx("data/chikyuu.pcx", &gvar); // load sprite
-
 	Startup16(&gvar);
 
-	pan.pn=0;
+	gvar.video.panp=0;
 
 	// OK, this one takes hellova time and needs to be done in farmalloc or MM_...
 	//IN CA i think you use CAL_SetupGrFile but i do think we should work together on this part --sparky4
@@ -78,10 +69,9 @@ void main(int argc, char *argv[])
 
 	// data
 	read_vrs(&gvar, "data/spri/chikyuu.vrs", player[0].ent->spri->spritesheet);
-//	player[0].data = malloc(72*128); //TODO use exmm
-//	*player[0].data = bitmapLoadPcx("data/chikyuu.pcx", &gvar); // load sprite
+	PCXBMP = bitmapLoadPcx("data/chikyuu.pcx", &gvar); // load sprite
 
-	//	input!
+	// input!
 	IN_Default(0, &player,ctrl_Keyboard1);
 
 	// save the palette
@@ -90,14 +80,16 @@ void main(int argc, char *argv[])
 	modexPalSave(dpal);
 	modexFadeOff(4, dpal);
 #endif
-	//textInit();
+
 	VGAmodeX(bakapee, 1, &gvar);
-#ifdef MODEXZ
+
+	/* fix up the palette and everything */
 #ifdef FADE
 	modexPalBlack();	//reset the palette~
 #endif
-	CA_LoadFile("data/spri/chikyuu.pal", &pal, &gvar);
-	modexPalUpdate1(pal);
+	modexPalUpdate1(&PCXBMP->palette);
+// 	CA_LoadFile("data/spri/chikyuu.pal", &pal, &gvar);
+// 	modexPalUpdate1(pal);
 #ifdef FADE
 	gpal = modexNewPal();
 	modexPalSave(gpal);
@@ -107,13 +99,12 @@ void main(int argc, char *argv[])
 
 	// setup camera and screen~
 	modexHiganbanaPageSetup(&gvar.video);
-	ZC_MVSetup(&mv, &map, &pan, &gvar);
+	ZC_MVSetup(&mv, &map, &gvar);
 	player[0].ent->spri->x = player[0].ent->spri->y = TILEWH;
 
 	// set up paging
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
-	mapGoTo(mv, 0, 0);
-#endif
+	mapGoTo(&mv, 0, 0);
 
 	playerXYpos(0, 0, &player, &mv, 0);
 	IN_initplayer(&player, 0);
@@ -133,7 +124,6 @@ void main(int argc, char *argv[])
 	animate_spri((player[0].ent->spri), &gvar);
 
 	VL_ShowPage(mv[0].page, 0, 0);//modexShowPage(mv[0].page);//!(gvar.video.p)
-	shinku_fps_indicator_page = 0; // we're on page 1 now, shinku(). follow along please or it will not be visible.
 #ifdef FADE
 	modexFadeOn(4, gpal);
 #endif
@@ -150,8 +140,8 @@ void main(int argc, char *argv[])
 		//player movement
 		IN_ReadControl(0, &player);
 		if(!panswitch){
-			//ZC_walk(player[0].ent, mv);
-			walk(mv, &player, 0);
+			//ZC_walk2(player[0].ent, mv);
+			ZC_walk(&mv, &player, 0);
 		}
 
 		//the scripting stuff....
@@ -166,7 +156,7 @@ void main(int argc, char *argv[])
 		}
 		if(player[0].q == (TILEWH/(player[0].speed))+1 && player[0].info.dir != 2 && (player[0].triggerx == 5 && player[0].triggery == 5)){ player[0].hp--; }
 */		//debugging binds!
-		if(IN_KeyDown(2)){ modexShowPage(mv[0].page); pan.pn=0; }
+		if(IN_KeyDown(2)){ modexShowPage(mv[0].page); gvar.video.panp=0; }
 		if(IN_KeyDown(25)){ modexpdump(mv[0].page);
 			 IN_UserInput(1,1);
 		}	//p
@@ -206,13 +196,6 @@ void main(int argc, char *argv[])
 			}
 		}
 		FUNCTIONKEYFUNCTIONS;
-		// fmemtest into page
-		/*if(IN_KeyDown(4+1))	//4
-		{
-			pg=1;
-			SELECT_ALL_PLANES();
-			_fmemset(((mv[pg].page->data+4)+(16*(mv[pg].page->width/4))), 15, 4);
-		}*/
 
 		//9
 #ifdef FADE

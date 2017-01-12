@@ -27,27 +27,20 @@
 #define FADE
 #define MODEX	//this is for mode x initiating
 
-//bitmap_t p;
 static map_t map;
 map_view_t mv[4];
-//word pn=0; //i forgot ww
 float t;
 sword bakapee;
-pan_t pan;
 //debugswitches
 boolean panswitch=0;//1
 //extern boolean pageflipflop=1;
-	unsigned int i;
-	//static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
-
-	//map_view_db_t pgid[4];
-	word pg;
+unsigned int i;
 //#ifdef FADE
 	static word paloffset=0;
 	byte *dpal;
 //#endif
 	byte *gpal;
-	byte *ptr;
+//	byte *ptr;
 	byte *mappalptr;
 
 void main(int argc, char *argv[])
@@ -59,33 +52,26 @@ void main(int argc, char *argv[])
 
 	Startup16(&gvar);
 
-	pan.pn=0;
+	gvar.video.panp=0;
 
 	/* create the map */
-	fprintf(stderr, "testing map load~	");
+//	fprintf(stderr, "testing map load~	");
 	loadmap("data/test.map", &map);
 	chkmap(&map, 0);
-	printf("chkmap ok	");
-	fprintf(stderr, "yay map loaded~~\n");
+//	printf("chkmap ok	");
+//	fprintf(stderr, "yay map loaded~~\n");
 
 	/* draw the tiles */
 #ifdef MODEX
-	ptr = map.data;
-	//mappalptr = map.tiles->btdata->palette;
+//	ptr = map.data;
+//	mappalptr = map.tiles->btdata->palette;
 
 	/* data */
-	player[0].data = malloc(72*128); //TODO use exmm
-	*player[0].data = bitmapLoadPcx("data/chikyuu.pcx", &gvar); // load sprite
-
-	/* create the planar buffer */
-////++++	(player[0].data) = *planar_buf_from_bitmap(&p);
-	/*++++printf("load pee!!	");
-	pp = planar_buf_from_bitmap(&p);
-	printf("done!\n");*/
+	PCXBMP = bitmapLoadPcx("data/chikyuu.pcx", &gvar); // load sprite
 
 #endif
 	/*	input!	*/
-	IN_Default(0,&player,ctrl_Keyboard1);
+	IN_Default(0, &player,ctrl_Keyboard1);
 
 	/* save the palette */
 #ifdef MODEX
@@ -95,17 +81,16 @@ void main(int argc, char *argv[])
 	modexFadeOff(4, dpal);
 #endif
 
-	textInit();
 	VGAmodeX(bakapee, 1, &gvar);
-//	printf("%dx%d\n", gvar.video.page[0].sw, gvar.video.page[0].sh);
+
+	/* fix up the palette and everything */
 #ifdef FADE
 	modexPalBlack();	//reset the palette~
 #endif
 #endif
-//	printf("Total used @ before palette initiation:		%zu\n", oldfreemem-GetFreeSize());
-//++++	player[0].data.offset=(paloffset/3);
-//++++	modexPalUpdate1(&player[0].data, &paloffset, 0, 0);
-		modexPalUpdate1(player[0].data->palette);
+//++++	PCXBMPVAR.offset=(paloffset/3);
+//++++	modexPalUpdate1(&PCXBMPVAR, &paloffset, 0, 0);
+	modexPalUpdate1(&PCXBMP->palette);
 //++++0000		modexPalUpdate1(map.tiles->btdata->palette);
 	//printf("	%d\n", sizeof(ptmp->data));
 	//printf("1:	%d\n", paloffset);
@@ -125,28 +110,27 @@ void main(int argc, char *argv[])
 
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
-	ZC_MVSetup(&mv, &map, &pan, &gvar);
+	ZC_MVSetup(&mv, &map, &gvar);
+
 
 	/* set up paging */
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(&mv, 0, 0);
-	//_fmemcpy(mv[1].page->data, mv[0].page->data, mv[0].page->pagesize);
 
 	playerXYpos(0, 0, &player, &mv, 0);
 	IN_initplayer(&player, 0);
 
 #ifndef	SPRITE
 	modexClearRegion(mv[0].page, player[0].x, player[0].y-TILEWH, 16, 32, 15);
-	//modexClearRegion(mv[1].page, player[0].x, player[0].y-TILEWH, 16, 32, 15);
 #else
-	//PBUFSFUN(mv[1].page, player[0].x, player[0].y-TILEWH, 16, 64, 24, 32,	PLAYERBMPDATA);
-	PBUFSFUN(mv[0].page, player[0].x, player[0].y-TILEWH, 16, 64, 16, 32,	player[0].data);
+	PBUFSFUN(&gvar.video.page[0], player[0].x, player[0].y-TILEWH, 16, 64, 16, 32,	PCXBMPPTR);
 #endif
 
 	if(!pageflipflop)	VL_ShowPage(mv[1].page, 0, 0);//modexShowPage(mv[1].page);
 	else			ZC_ShowMV(&mv, 0, 0);//modexShowPage(mv[0].page);//!(gvar.video.p)
-		shinku_fps_indicator_page = 0; // we're on page 1 now, shinku(). follow along please or it will not be visible.
 
+
+	modexDrawBmp(&gvar.video.page[0], 16, 16, PCXBMPPTR);
 	/* buffer pages */
 // 	modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 47);
 // 	modexClearRegion(mv[3].page, 0, 0, mv[3].page->width, mv[3].page->height, 45);
@@ -177,7 +161,7 @@ void main(int argc, char *argv[])
 	//player movement
 		IN_ReadControl(0, &player);
 	if(!panswitch){
-		walk(&mv, &player, 0);
+		ZC_walk(&mv, &player, 0);
 	}else{
 		PANKEYFUN;//panPageManual(&mv, &player, 0);
 		//printf("	player[0].q: %d", player[0].q);	printf("	player[0].d: %d\n", player[0].d);
@@ -200,7 +184,7 @@ void main(int argc, char *argv[])
 #ifdef FADE
 	if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv[0].page); modexpdump(mv[1].page);  IN_UserInput(1,1); } //p
 	/*if(IN_KeyDown(22)){
-	paloffset=0; modexPalBlack(); modexPalUpdate(player[0].data, &paloffset, 0, 0);
+	paloffset=0; modexPalBlack(); modexPalUpdate(PCXBMPVAR, &paloffset, 0, 0);
 	printf("1paloffset	=	%d\n", paloffset/3);
 	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	printf("2paloffset	=	%d\n", paloffset/3);
@@ -239,16 +223,9 @@ void main(int argc, char *argv[])
 	if(IN_KeyDown(66))	//f8
 	{
 //		modexDrawSprite(mv[0].page, 16, 16, &p);
-		modexDrawSprite(mv[0].page, 32+72, 16, (player[0].data));
+		modexDrawSprite(mv[0].page, 32+72, 16, (PCXBMPVAR));
 	}
 	FUNCTIONKEYFUNCTIONS;
-	// fmemtest into page
-	/*if(IN_KeyDown(4+1))	//4
-	{
-		pg=1;
-		SELECT_ALL_PLANES();
-		_fmemset(((mv[pg].page->data+4)+(16*(mv[pg].page->width/4))), 15, 4);
-	}*/
 
 	//9
 #ifdef FADE

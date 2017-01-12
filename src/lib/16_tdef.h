@@ -156,11 +156,6 @@ typedef struct
 	boolean fpscap;	//cap the fps var
 } kurokku_t;
 
-typedef struct
-{
-	word	pn;
-} pan_t;
-
 //video
 #define NUMCHUNKS	416	//keen
 
@@ -170,9 +165,12 @@ typedef struct
 	page_t page[MAXPAGE];	//can be used as a pointer to root page[0]
 	word vmem_remain;	//remaining video memory
 	byte num_of_pages;	//number of actual pages
-	boolean __near p;			//render page number
+boolean __near p;			//render page number //BLEH
 	boolean __near r;			//page flip if true
 	word pr[MAXPAGE][4];	//render sections of pages (this is supposed to be set up to draw sections of the screen if updated)
+
+	nibble sfip;//shinku_fps_indicator_page; // we're on page 1 now, shinku(). follow along please or it will not be visible.
+	nibble panp;		//pan_t replacement
 	//0000word startclk; float clk, tickclk;	//timer
 //newer vars
 //TODO: find out how they are used

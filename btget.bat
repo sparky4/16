@@ -3,7 +3,7 @@ iff exist %* then
 	del %*
 endiff
 setlocal
-set url="beta.latech.edu/~wwc001/16"
+set url="http://beta.latech.edu/~wwc001/16/"
 rem for %@eval[%#+1] in (%*) do (
 rem for %# in (1,1,%*) do (
 :loop

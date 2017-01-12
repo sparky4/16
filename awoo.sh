@@ -14,4 +14,4 @@ fi
 git add .
 . ./boop.sh "$pee"
 . ./wbuild.sh
-##. ./builq.sh slow compile ww
+##. ./mkdld.sh# slow compile ww
