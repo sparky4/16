@@ -103,25 +103,28 @@ void animate_spri(struct sprite *spri, global_game_variables_t *gv)
 	int i;
 	// Events go here
 
+
+	/* replace VGA stride with our own and mem ptr. then sprite rendering at this stage is just (0,0) */
+	vga_state.vga_draw_stride_limit = (gv->video.page[0].width + 3/*round up*/ - spri->x) >> 2;
+
 	// Draw sprite
 	i = get_vrl_by_id(spri->spritesheet, spri->curr_spri_id, spri->sprite_vrl_cont);
 	if(i < 0)
 	{
 		Quit (gv, "Error retriving required sprite");
 	}
-//	draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
+
 	draw_vrl1_vgax_modex(
-		spri->x,// - spri->sprite_vrl_cont->vrl_header->width-28,
-		spri->y,// - spri->sprite_vrl_cont->vrl_header->height*2 -(gv->video.page[0].sh/2),
-		//vrl_header,
+		spri->x-gv->video.page[0].dx,
+		spri->y-gv->video.page[0].dy,
 		spri->sprite_vrl_cont->vrl_header,
-		//vrl_lineoffs,
 		spri->sprite_vrl_cont->line_offsets,
-		//buffer+sizeof(*vrl_header),
 		spri->sprite_vrl_cont->buffer + sizeof(struct vrl1_vgax_header),
-		//bufsz-sizeof(*vrl_header));
 		spri->sprite_vrl_cont->data_size
 	);
+
+	/* restore stride */
+	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = gv->video.page[0].stridew;
 
 	// Depending on delay, update indices
 	switch(spri->delay){

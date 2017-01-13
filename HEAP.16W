@@ -1,57 +1,57 @@
 
 	== default ==
 
-  USED block at 27d70016 of size 136
-  FREE block at 27d7009e of size 68
-  USED block at 27d700e2 of size 50
-  USED block at 27d70114 of size 50
-  USED block at 27d70146 of size 50
-  USED block at 27d70178 of size 50
-  USED block at 27d701aa of size 50
-  USED block at 27d701dc of size 50
-  USED block at 27d7020e of size 50
-  USED block at 27d70240 of size 50
-  USED block at 27d70272 of size 50
-  USED block at 27d702a4 of size 50
-  USED block at 27d702d6 of size 50
-  USED block at 27d70308 of size 50
-  FREE block at 27d7033a of size 14
-  USED block at 27d70348 of size 20
-  FREE block at 27d7035c of size 7328
+  USED block at 27db0016 of size 136
+  FREE block at 27db009e of size 68
+  USED block at 27db00e2 of size 50
+  USED block at 27db0114 of size 50
+  USED block at 27db0146 of size 50
+  USED block at 27db0178 of size 50
+  USED block at 27db01aa of size 50
+  USED block at 27db01dc of size 50
+  USED block at 27db020e of size 50
+  USED block at 27db0240 of size 50
+  USED block at 27db0272 of size 50
+  USED block at 27db02a4 of size 50
+  USED block at 27db02d6 of size 50
+  USED block at 27db0308 of size 50
+  FREE block at 27db033a of size 14
+  USED block at 27db0348 of size 20
+  FREE block at 27db035c of size 7328
 OK - end of heap
 
 	== near ==
 
-  USED block at 17d6ef76 of size 12
-  USED block at 17d6ef82 of size 330
-  USED block at 17d6f0cc of size 52
-  USED block at 17d6f100 of size 20
-  USED block at 17d6f114 of size 20
-  USED block at 17d6f128 of size 20
-  USED block at 17d6f13c of size 20
-  USED block at 17d6f150 of size 20
-  USED block at 17d6f164 of size 3736
+  USED block at 17daef76 of size 12
+  USED block at 17daef82 of size 330
+  USED block at 17daf0cc of size 52
+  USED block at 17daf100 of size 20
+  USED block at 17daf114 of size 20
+  USED block at 17daf128 of size 20
+  USED block at 17daf13c of size 20
+  USED block at 17daf150 of size 20
+  USED block at 17daf164 of size 3736
 OK - end of heap
 
 	== far ==
 
-  USED block at 27d70016 of size 136
-  USED block at 27d7009e of size 68
-  USED block at 27d700e2 of size 50
-  USED block at 27d70114 of size 50
-  USED block at 27d70146 of size 50
-  USED block at 27d70178 of size 50
-  USED block at 27d701aa of size 50
-  USED block at 27d701dc of size 50
-  USED block at 27d7020e of size 50
-  USED block at 27d70240 of size 50
-  USED block at 27d70272 of size 50
-  USED block at 27d702a4 of size 50
-  USED block at 27d702d6 of size 50
-  USED block at 27d70308 of size 50
-  USED block at 27d7033a of size 14
-  USED block at 27d70348 of size 20
-  USED block at 27d7035c of size 7328
+  USED block at 27db0016 of size 136
+  USED block at 27db009e of size 68
+  USED block at 27db00e2 of size 50
+  USED block at 27db0114 of size 50
+  USED block at 27db0146 of size 50
+  USED block at 27db0178 of size 50
+  USED block at 27db01aa of size 50
+  USED block at 27db01dc of size 50
+  USED block at 27db020e of size 50
+  USED block at 27db0240 of size 50
+  USED block at 27db0272 of size 50
+  USED block at 27db02a4 of size 50
+  USED block at 27db02d6 of size 50
+  USED block at 27db0308 of size 50
+  USED block at 27db033a of size 14
+  USED block at 27db0348 of size 20
+  USED block at 27db035c of size 7328
 OK - end of heap
 
 Memory Type         Total      Used       Free

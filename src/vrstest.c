@@ -97,8 +97,8 @@ void main()
 	{
 		return;
 	}
-	spri.x = 16;
-	spri.y = 100;
+	spri.x = 160;
+	spri.y = 120;
 
 //	Uncomment to see broken sprites
 /*	sega = mm.bufferseg;
@@ -106,7 +106,7 @@ void main()
 
 	VGAmodeX(1, 1, &gvar);
 	modexHiganbanaPageSetup(&gvar.video);
-	VL_ShowPage(&gvar.video.page[0], 0, 1);
+	VL_ShowPage(&gvar.video.page[0], 0, 0);
 
 	/* non sprite comparison */
 	start = *clockw;
@@ -120,7 +120,7 @@ void main()
 	/*modexLoadPalFile("data/spri/chikyuu.pal", &pal);
 	modexPalUpdate1(pal);*/
 	for (i = 0; i < 5; i++){
-	spri.delay = 1; animate_spri(&spri, &gvar); spri.x += 20; /*sleep(1);*/ }
+	spri.delay = 1; animate_spri(&spri, &gvar); spri.x += 16; /*sleep(1);*/ }
 	VL_LoadPalFile("data/spri/chikyuu.pal", &palette);
 
 	while(!IN_KeyDown(sc_Escape))
