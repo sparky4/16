@@ -26,10 +26,6 @@
 #include "src/lib/scroll16.h"
 #include "src/lib/bakapee.h"
 
-#define PCXBMPVAR		player[0].data
-#define PCXBMP			*PCXBMPVAR
-#define PCXBMPPTR		PCXBMPVAR
-
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 
 void main(int argc, char *argv[])
@@ -193,7 +189,6 @@ void main(int argc, char *argv[])
 //			if(i>PAL_SIZE) i=0;
 		}//9*/
 		if(IN_KeyDown(25)){ modexpdump(&gvar.video.page[gvar.video.panp]); IN_UserInput(1,1); }//p
-		if(IN_KeyDown(sc_F8)){ modexDrawSprite(&gvar.video.page[0], 160, 120, PCXBMPPTR); IN_UserInput(1,1); }//f8
 		//VL_ShowPage(&gvar.video.page[gvar.video.panp], 0, 0);
 		ZC_ShowMV(&mv, 0, 0);
 	}

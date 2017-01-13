@@ -123,13 +123,13 @@ void main(int argc, char *argv[])
 #ifndef	SPRITE
 	modexClearRegion(mv[0].page, player[0].x, player[0].y-TILEWH, 16, 32, 15);
 #else
-	PBUFSFUN(&gvar.video.page[0], player[0].x, player[0].y-TILEWH, 16, 64, 16, 32,	PCXBMPPTR);
+	modexDrawSpriteRegion(&gvar.video.page[0], player[0].x, player[0].y-TILEWH, 16, 64, 16, 32,	PCXBMPPTR);
 #endif
 
 	if(!pageflipflop)	VL_ShowPage(mv[1].page, 0, 0);//modexShowPage(mv[1].page);
 	else			ZC_ShowMV(&mv, 0, 0);//modexShowPage(mv[0].page);//!(gvar.video.p)
 
-	modexDrawBmp(&gvar.video.page[0], 16, 16, PCXBMPPTR);
+	//modexDrawBmp(&gvar.video.page[0], 16, 16, PCXBMPPTR);
 	/* buffer pages */
 // 	modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 47);
 // 	modexClearRegion(mv[3].page, 0, 0, mv[3].page->width, mv[3].page->height, 45);
@@ -219,11 +219,13 @@ void main(int argc, char *argv[])
 		modexClearRegion(mv[3].page, 0, 0, 20, 36, 15);
 		//IN_UserInput(1,1);
 	}
+#ifdef SPRITE
 	if(IN_KeyDown(66))	//f8
 	{
 //		modexDrawSprite(mv[0].page, 16, 16, &p);
 		modexDrawSprite(mv[0].page, 32+72, 16, (PCXBMPVAR));
 	}
+#endif
 	FUNCTIONKEYFUNCTIONS;
 
 	//9

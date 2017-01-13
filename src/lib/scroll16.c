@@ -68,7 +68,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			{
 				if(!pageflipflop) modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x, player[pn].y-TILEWH, player[pn].x, player[pn].y-TILEWH, 24, 32);
 #ifdef SPRITE
-				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 24, 32, PLAYERBMPDATAPTR);
+				modexDrawSpriteRegion(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 24, 32, PLAYERBMPDATAPTR);
 #else
 				modexClearRegion(pip[1].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 14);
 #endif
@@ -112,7 +112,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			{
 				if(!pageflipflop) modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x, player[pn].y-TILEWH, player[pn].x, player[pn].y-TILEWH, 24, 32);
 #ifdef SPRITE
-				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 96, 24, 32, PLAYERBMPDATAPTR);
+				modexDrawSpriteRegion(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 96, 24, 32, PLAYERBMPDATAPTR);
 #else
 				modexClearRegion(pip[1].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 10);
 #endif
@@ -156,7 +156,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			{
 				if(!pageflipflop) modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x, player[pn].y-TILEWH, player[pn].x, player[pn].y-TILEWH, 24, 32);
 #ifdef SPRITE
-				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 64, 24, 32, PLAYERBMPDATAPTR);
+				modexDrawSpriteRegion(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 64, 24, 32, PLAYERBMPDATAPTR);
 #else
 				modexClearRegion(pip[1].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 9);
 #endif
@@ -200,7 +200,7 @@ void walk(map_view_t *pip, player_t *player, word pn)
 			{
 				if(!pageflipflop) modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].x, player[pn].y-TILEWH, player[pn].x, player[pn].y-TILEWH, 24, 32);
 #ifdef SPRITE
-				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 0, 24, 32, PLAYERBMPDATAPTR);
+				modexDrawSpriteRegion(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 0, 24, 32, PLAYERBMPDATAPTR);
 #else
 				modexClearRegion(pip[1].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 12);
 #endif
@@ -261,7 +261,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			else
 			{
 #ifdef SPRITE
-				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 24, 32, PLAYERBMPDATAPTR);
+				modexDrawSpriteRegion(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 24, 32, PLAYERBMPDATAPTR);
 #else
 				modexClearRegion(pip[1].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 14);
 #endif
@@ -299,7 +299,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			else
 			{
 #ifdef SPRITE
-				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 96, 24, 32, PLAYERBMPDATAPTR);
+				modexDrawSpriteRegion(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 96, 24, 32, PLAYERBMPDATAPTR);
 #else
 				modexClearRegion(pip[1].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 10);
 #endif
@@ -337,7 +337,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			else
 			{
 #ifdef SPRITE
-				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 64, 24, 32, PLAYERBMPDATAPTR);
+				modexDrawSpriteRegion(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 64, 24, 32, PLAYERBMPDATAPTR);
 #else
 				modexClearRegion(pip[1].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 9);
 #endif
@@ -375,7 +375,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			else
 			{
 #ifdef SPRITE
-				PBUFSFUN(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 0, 24, 32, PLAYERBMPDATAPTR);
+				modexDrawSpriteRegion(pip[0].page, player[pn].x, player[pn].y-TILEWH, 24, 0, 24, 32, PLAYERBMPDATAPTR);
 #else
 				modexClearRegion(pip[1].page, player[pn].x, player[pn].y-TILEWH, 24, 32, 12);
 #endif
@@ -925,7 +925,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, ((dbg_mapdata[i])+1));
 				//modexprint(page, x, y, 1, 15, 0, (char const *)(t->debug_data[i]));
 #else
-				PBUFBFUN		(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
+				modexDrawBmpRegion		(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
 				/* then the sprite. note modding ram ptr means we just draw to (x&3,0) */
 				//draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
 				//modexDrawBmpRegion	(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
@@ -1147,10 +1147,10 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 	}
 
 #ifdef SPRITE
-#define FRAME1 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 48, dire, 24, 32,	PLAYERBMPDATAPTR);
-#define FRAME2 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATAPTR);
-#define FRAME3 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 0, dire, 24, 32,	PLAYERBMPDATAPTR);
-#define FRAME4 PBUFSFUN(pip[/*!*/(pip->video->p)].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATAPTR);
+#define FRAME1 modexDrawSpriteRegion(pip[/*!*/(pip->video->p)].page, x, y, 48, dire, 24, 32,	PLAYERBMPDATAPTR);
+#define FRAME2 modexDrawSpriteRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATAPTR);
+#define FRAME3 modexDrawSpriteRegion(pip[/*!*/(pip->video->p)].page, x, y, 0, dire, 24, 32,	PLAYERBMPDATAPTR);
+#define FRAME4 modexDrawSpriteRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATAPTR);
 #else
 #define FRAME1 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, 2+dire);
 #define FRAME2 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, 1+dire);

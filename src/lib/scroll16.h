@@ -40,15 +40,15 @@
 #include <hw/vga/vga.h>
 #include <hw/vga/vrl.h>
 
-#define SPRITE
+//#define SPRITE
 //#define TILERENDER
 
-extern void modexDrawSpriteRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp);
+//extern void modexDrawSpriteRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp);
 
 //modexDrawSpritePBufRegion
 //modexDrawBmpPBufRegion
-#define PBUFSFUN		modexDrawSpriteRegion
-#define PBUFBFUN		modexDrawBmpRegion
+//#define PBUFSFUN		modexDrawSpriteRegion
+//#define PBUFBFUN		modexDrawBmpRegion
 
 #define PLAYERBMPDATAVAR	player[pn].data
 #define PLAYERBMPDATA		*PLAYERBMPDATAVAR
