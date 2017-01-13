@@ -1,0 +1,210 @@
+[0mSeg:0	Size:9962	Owner:0x0
+[41;31m+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++[0m[42;32m0000
+[0m[0mSeg:27b3	Size:44	Owner:0x0
+[41;31m+[0m[42;32m
+[0m[0mSeg:27df	Size:256	Owner:0x1954
+[44;34m++++[0m[42;32m
+[0m[0mSeg:28df	Size:256	Owner:0x1746
+[45;35m++++[0m[42;32m
+[0m[0mSeg:29df	Size:256	Owner:0x1748
+[45;35m+++++[0m[42;32m
+[0m[0mSeg:2adf	Size:256	Owner:0x174a
+[45;35m++++[0m[42;32m
+[0m[0mSeg:2bdf	Size:256	Owner:0x174c
+[45;35m++++[0m[42;32m
+[0m[0mSeg:2cdf	Size:256	Owner:0x174e
+[45;35m++++[0m[42;32m
+[0m[0mSeg:2ddf	Size:256	Owner:0x1750
+[45;35m++++[0m[42;32m
+[0m[0mSeg:2edf	Size:256	Owner:0x1752
+[45;35m+++++[0m[42;32m
+[0m[0mSeg:2fdf	Size:256	Owner:0x1754
+[45;35m++++[0m[42;32m
+[0m[0mSeg:30df	Size:256	Owner:0x1756
+[45;35m++++[0m[42;32m
+[0m[0mSeg:31df	Size:256	Owner:0x1758
+[45;35m++++[0m[42;32m
+[0m[0mSeg:32df	Size:256	Owner:0x175a
+[45;35m++++[0m[42;32m
+[0m[0mSeg:33df	Size:256	Owner:0x175c
+[45;35m+++++[0m[42;32m
+[0m[0mSeg:34df	Size:256	Owner:0x175e
+[45;35m++++[0m[42;32m
+[0m[0mSeg:35df	Size:256	Owner:0x1760
+[45;35m++++[0m[42;32m
+[0m[0mSeg:36df	Size:256	Owner:0x1762
+[45;35m++++[0m[42;32m
+[0m[0mSeg:37df	Size:256	Owner:0x1764
+[45;35m++++[0m[42;32m
+[0m[0mSeg:38df	Size:256	Owner:0x1766
+[45;35m+++++[0m[42;32m
+[0m[0mSeg:39df	Size:256	Owner:0x1768
+[45;35m++++[0m[42;32m
+[0m[0mSeg:3adf	Size:256	Owner:0x176a
+[45;35m++++[0m[42;32m
+[0m[0mSeg:3bdf	Size:256	Owner:0x176c
+[45;35m++++[0m[42;32m
+[0m[0mSeg:3cdf	Size:256	Owner:0x176e
+[45;35m++++[0m[42;32m
+[0m[0mSeg:3ddf	Size:256	Owner:0x1770
+[45;35m+++++[0m[42;32m
+[0m[0mSeg:3edf	Size:256	Owner:0x1772
+[45;35m++++[0m[42;32m
+[0m[0mSeg:3fdf	Size:256	Owner:0x1774
+[45;35m++++[0m[42;32m
+[0m[0mSeg:40df	Size:256	Owner:0x1776
+[45;35m++++[0m[42;32m
+[0m[0mSeg:41df	Size:256	Owner:0x1778
+[45;35m++++[0m[42;32m
+[0m[0mSeg:42df	Size:256	Owner:0x177a
+[45;35m+++++[0m[42;32m
+[0m[0mSeg:43df	Size:256	Owner:0x177c
+[45;35m++++[0m[42;32m
+[0m[0mSeg:44df	Size:256	Owner:0x177e
+[45;35m++++[0m[42;32m
+[0m[0mSeg:45df	Size:256	Owner:0x1780
+[45;35m++++[0m[42;32m
+[0m[0mSeg:46df	Size:256	Owner:0x1782
+[45;35m++++[0m[42;32m
+[0m[0mSeg:47df	Size:256	Owner:0x1784
+[45;35m+++++[0m[42;32m
+[0m[0mSeg:48df	Size:256	Owner:0x1786
+[45;35m++++[0m[42;32m
+[0m[0mSeg:49df	Size:256	Owner:0x1788
+[45;35m++++[0m[42;32m
+[0m[0mSeg:4adf	Size:256	Owner:0x178a
+[45;35m++++[0m[42;32m
+[0m[0mSeg:4bdf	Size:256	Owner:0x178c
+[45;35m++++[0m[42;32m
+[0m[0mSeg:4cdf	Size:256	Owner:0x178e
+[45;35m+++++[0m[42;32m
+[0m[0mSeg:4ddf	Size:256	Owner:0x1790
+[45;35m++++[0m[42;32m
+[0m[0mSeg:4edf	Size:256	Owner:0x1792
+[45;35m++++[0m[42;32m
+[0m[0mSeg:4fdf	Size:256	Owner:0x1794
+[45;35m++++[0m[42;32m
+[0m[0mSeg:50df	Size:256	Owner:0x1796
+[45;35m++++[0m[42;32m
+[0m[0mSeg:51df	Size:256	Owner:0x1798
+[45;35m+++++[0m[42;32m
+[0m[0mSeg:52df	Size:256	Owner:0x179a
+[45;35m++++[0m[42;32m
+[0m[0mSeg:53df	Size:256	Owner:0x179c
+[45;35m++++[0m[42;32m
+[0m[0mSeg:54df	Size:256	Owner:0x179e
+[45;35m++++[0m[42;32m
+[0m[0mSeg:55df	Size:256	Owner:0x17a0
+[45;35m++++[0m[42;32m
+[0m[0mSeg:56df	Size:256	Owner:0x17a2
+[45;35m+++++[0m[42;32m
+[0m[0mSeg:57df	Size:256	Owner:0x17a4
+[45;35m++++[0m[42;32m
+[0m[0mSeg:58df	Size:256	Owner:0x17a6
+[45;35m++++[0m[42;32m
+[0m[0mSeg:59df	Size:256	Owner:0x17a8
+[45;35m++++[0m[42;32m
+[0m[0mSeg:5adf	Size:256	Owner:0x17aa
+[45;35m++++[0m[42;32m
+[0m[0mSeg:5bdf	Size:256	Owner:0x17ac
+[45;35m+++++[0m[42;32m
+[0m[0mSeg:5cdf	Size:256	Owner:0x17ae
+[45;35m++++[0m[42;32m
+[0m[0mSeg:5ddf	Size:256	Owner:0x17b0
+[45;35m++++[0m[42;32m
+[0m[0mSeg:5edf	Size:256	Owner:0x17b2
+[45;35m++++[0m[42;32m
+[0m[0mSeg:5fdf	Size:256	Owner:0x17b4
+[45;35m++++[0m[42;32m
+[0m[0mSeg:60df	Size:256	Owner:0x17b6
+[45;35m+++++[0m[42;32m
+[0m[0mSeg:61df	Size:256	Owner:0x17b8
+[45;35m++++[0m[42;32m
+[0m[0mSeg:62df	Size:256	Owner:0x17ba
+[45;35m++++[0m[42;32m
+[0m[0mSeg:63df	Size:256	Owner:0x17bc
+[45;35m++++[0m[42;32m
+[0m[0mSeg:64df	Size:256	Owner:0x17be
+[45;35m++++[0m[42;32m
+[0m[0mSeg:65df	Size:256	Owner:0x17c0
+[45;35m+++++[0m[42;32m
+[0m[0mSeg:66df	Size:256	Owner:0x17c2
+[45;35m++++[0m[42;32m
+[0m[0mSeg:67df	Size:256	Owner:0x17c4
+[45;35m++++[0m[42;32m
+[0m[0mSeg:68df	Size:256	Owner:0x17c6
+[45;35m++++[0m[42;32m
+[0m[0mSeg:69df	Size:256	Owner:0x17c8
+[45;35m++++[0m[42;32m
+[0m[0mSeg:6adf	Size:256	Owner:0x17ca
+[45;35m+++++[0m[42;32m
+[0m[0mSeg:6bdf	Size:256	Owner:0x17cc
+[45;35m++++[0m[42;32m
+[0m[0mSeg:6cdf	Size:256	Owner:0x17ce
+[45;35m++++[0m[42;32m
+[0m[0mSeg:6ddf	Size:256	Owner:0x17d0
+[45;35m++++[0m[42;32m
+[0m[0mSeg:6edf	Size:256	Owner:0x17d2
+[45;35m++++[0m[42;32m
+[0m[0mSeg:6fdf	Size:256	Owner:0x17d4
+[45;35m+++++[0m[42;32m
+[0m[0mSeg:70df	Size:256	Owner:0x17d6
+[45;35m++++[0m[42;32m
+[0m[0mSeg:71df	Size:256	Owner:0x17d8
+[45;35m++++[0m[42;32m
+[0m[0mSeg:72df	Size:256	Owner:0x17da
+[45;35m++++[0m[42;32m
+[0m[0mSeg:73df	Size:256	Owner:0x17dc
+[45;35m++++[0m[42;32m
+[0m[0mSeg:74df	Size:256	Owner:0x17de
+[45;35m+++++[0m[42;32m
+[0m[0mSeg:75df	Size:256	Owner:0x17e0
+[45;35m++++[0m[42;32m
+[0m[0mSeg:76df	Size:256	Owner:0x17e2
+[45;35m++++[0m[42;32m
+[0m[0mSeg:77df	Size:256	Owner:0x17e4
+[45;35m++++[0m[42;32m
+[0m[0mSeg:78df	Size:256	Owner:0x17e6
+[45;35m++++[0m[42;32m
+[0m[0mSeg:79df	Size:256	Owner:0x17e8
+[45;35m+++++[0m[42;32m
+[0m[0mSeg:7adf	Size:256	Owner:0x17ea
+[45;35m++++[0m[42;32m
+[0m[0mSeg:7bdf	Size:256	Owner:0x17ec
+[45;35m++++[0m[42;32m
+[0m[0mSeg:7cdf	Size:256	Owner:0x17ee
+[45;35m++++[0m[42;32m
+[0m[0mSeg:7ddf	Size:256	Owner:0x17f0
+[45;35m++++[0m[42;32m
+[0m[0mSeg:7edf	Size:256	Owner:0x17f2
+[45;35m+++++[0m[42;32m
+[0m[0mSeg:7fdf	Size:256	Owner:0x17f4
+[45;35m++++[0m[42;32m
+[0m[0mSeg:80df	Size:256	Owner:0x17f6
+[45;35m++++[0m[42;32m
+[0m[0mSeg:81df	Size:256	Owner:0x17f8
+[45;35m++++[0m[42;32m
+[0m[0mSeg:82df	Size:256	Owner:0x17fa
+[45;35m++++[0m[42;32m
+[0m[0mSeg:83df	Size:256	Owner:0x17fc
+[45;35m+++++[0m[42;32m
+[0m[0mSeg:84df	Size:256	Owner:0x17fe
+[45;35m++++[0m[42;32m
+[0m[0mSeg:85df	Size:256	Owner:0x1800
+[45;35m++++[0m[42;32m
+[0m[0mSeg:86df	Size:256	Owner:0x1802
+[45;35m++++[0m[42;32m
+[0m[0mSeg:87df	Size:256	Owner:0x1804
+[45;35m++++[0m[42;32m
+[0m[0mSeg:88df	Size:256	Owner:0x1806
+[45;35m+++++[0m[42;32m
+[0m[0mSeg:89df	Size:256	Owner:0x1808
+[45;35m++++[0m[42;32m
+[0m[0mSeg:8adf	Size:256	Owner:0x180a
+[45;35m++++[0m[42;32m
+[0m[0mSeg:8bdf	Size:256	Owner:0x180c
+[45;35m++++[0m[42;32m
+[0m[0mSeg:8cdf	Size:401	Owner:0xef22
+[44;34m++++++[0m[42;32m
+[0m[0mSeg:b7df	Size:18464	Owner:0x0
+[41;31m++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++[0m

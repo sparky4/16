@@ -89,7 +89,7 @@ typedef struct {
 	char		name[16];
 } map_t;
 
-// tile info
+//TODO USE THIS tile info
 typedef struct{
 	word tw;		/* screen width in tiles */
 	word th;		/* screen height in tiles */
@@ -126,6 +126,26 @@ typedef struct {
 	sword delta;			// How much should we shift the page for smooth scrolling
 } page_t;
 
+//new structs
+typedef	struct
+{
+	int x; //entity exact position on the viewable map
+	int y; //entity exact position on the viewable map
+	int tx; //entity tile position on the viewable map
+	int ty; //entity tile position on the viewable map
+	int triggerx; //entity's trigger box tile position on the viewable map
+	int triggery; //entity's trigger box tile position on the viewable map
+	int sheetsetx; //NOT USED YET! entity sprite sheet set on the image x
+	int sheetsety; //NOT USED YET! entity sprite sheet set on the image y
+	byte d;		//direction to render sprite!! wwww
+	byte q;		//loop variable for anumation and locking the playing to compleate the animation cycle to prevent issues with misalignment www
+	word speed;		//entity speed!
+	word spt;		//speed per tile
+	struct sprite *spri; // sprite used by entity
+	sword hp; //hitpoints of the entity
+	int persist_aniframe;    /* gonna be increased to 1 before being used, so 0 is ok for default */
+} entity_t;
+
 //TODO: MAKE THIS WWWW
 typedef struct
 {
@@ -139,6 +159,81 @@ typedef struct
 	//vrs with sprite ....
 	spri_t *spri;
 } vrs_t;
+
+//from 16_in
+//==========================================================================
+typedef	byte		ScanCode;
+
+typedef	enum		{
+						//ctrl_None,				// MDM (GAMERS EDGE) - added
+						ctrl_Keyboard,
+							ctrl_Keyboard1 = ctrl_Keyboard,ctrl_Keyboard2,
+						ctrl_Joystick,
+							ctrl_Joystick1 = ctrl_Joystick,ctrl_Joystick2,
+						ctrl_Mouse,
+					} ControlType;
+typedef	enum		{
+						motion_Left = -1,motion_Up = -1,
+						motion_None = 0,
+						motion_Right = 1,motion_Down = 1
+					} Motion;
+typedef	enum		{
+						dir_North,//dir_NorthEast,
+						dir_West,//dir_Nortinest,
+						dir_None,
+						dir_East,//,dir_SouthEast,
+						dir_South,//dir_Soutinest,
+					} Direction;
+typedef	struct		{
+						boolean	near	button0,button1,button2,button3;
+						int	near		x,y;
+						Motion	near	xaxis,yaxis;
+						Direction near	dir;
+					} CursorInfo;
+
+typedef	struct		{
+						ScanCode near	button0,button1,
+									//upleft,
+									up,
+									down,
+									left,
+									right
+									//upright,
+									//downleft,
+									//,downright
+									;
+					} KeyboardDef;
+typedef	struct		{
+						word	near	joyMinX,joyMinY,
+									threshMinX,threshMinY,
+									threshMaxX,threshMaxY,
+									joyMaxX,joyMaxY,
+									joyMultXL,joyMultYL,
+									joyMultXH,joyMultYH;
+					} JoystickDef;
+
+//==========================================================================
+
+typedef	struct
+{
+	entity_t near	enti;
+	entity_t *ent;
+#ifdef	__WATCOMC__
+	//struct sprite	*spri;	//supposively the sprite sheet data
+	memptr		gr;
+#endif
+	bitmap_t	*data;		//supposively the sprite sheet data//old format
+	bitmap_t	bmp;
+
+	//input
+	byte near		pdir;	//previous direction~ used in IN_16 in IN_ReadControl()
+	CursorInfo		info;
+	ControlType	Controls;
+//newer vars
+	int dx, dy, delta;	//TODO: what is this? ^^
+} player_t;
+
+//===========================================//
 
 typedef struct
 {

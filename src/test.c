@@ -73,7 +73,6 @@ void main(int argc, char *argv[])
 	_DEBUG("Serial debug output started\n"); // NTS: All serial output must end messages with newline, or DOSBox-X will not emit text to log
 	_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);*/
 	Startup16(&gvar);
-	PCXBMP = bitmapLoadPcx("data/chikyuu.pcx", &gvar); // load sprite
 
 	/* save the palette */
 	//====pal  = modexNewPal();
@@ -203,7 +202,7 @@ void main(int argc, char *argv[])
 	printf("Project 16 test.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	modexprintmeminfo(&gvar.video);
-	printf("tx=%d	", mv[gvar.video.panp].tx); printf("ty=%d	", mv[gvar.video.panp].ty); printf("player.d=%d\n", player[0].d);
+	printf("tx=%d	", mv[gvar.video.panp].tx); printf("ty=%d	", mv[gvar.video.panp].ty); printf("player.d=%d\n", player[0].enti.d);
 	//IN_Shutdown();
 	//====modexPalBlack();
 	//====modexFadeOn(1, pal);

@@ -41,10 +41,10 @@ main(int argc, char *argv[])
 	IN_Default(0,&player,ctrl_Keyboard1);
 	IN_SetControlType(0,&player,ctrl_Keyboard1);
 
-	player[0].q=1;
-	player[0].d=2;
-	player[0].persist_aniframe=0;
-	player[0].speed=4;
+	player[0].enti.q=1;
+	player[0].enti.d=2;
+	player[0].enti.persist_aniframe=0;
+	player[0].enti.speed=4;
 
 //0000	nibbletest();
 //0000	booleantest();
@@ -53,43 +53,43 @@ main(int argc, char *argv[])
 	{
 //0000		shinkutxt(&gvar);
 		IN_ReadControl(0, &player);
-		#define INC_PER_FRAME if(player[0].q&1) player[0].persist_aniframe++; if(player[0].persist_aniframe>4) player[0].persist_aniframe = 1;
-		switch(player[0].d)
+		#define INC_PER_FRAME if(player[0].enti.q&1) player[0].enti.persist_aniframe++; if(player[0].enti.persist_aniframe>4) player[0].enti.persist_aniframe = 1;
+		switch(player[0].enti.d)
 		{
 		//right movement
 		case 3:
-			if(player[0].q<=(TILEWH/(player[0].speed)))
+			if(player[0].enti.q<=(TILEWH/(player[0].enti.speed)))
 			{
 				INC_PER_FRAME;
-				player[0].q++;
-			} else { player[0].q = 1; player[0].d = 2; }
+				player[0].enti.q++;
+			} else { player[0].enti.q = 1; player[0].enti.d = 2; }
 		break;
 
 		//left movement
 		case 1:
-			if(player[0].q<=(TILEWH/(player[0].speed)))
+			if(player[0].enti.q<=(TILEWH/(player[0].enti.speed)))
 			{
 				INC_PER_FRAME;
-				player[0].q++;
-			} else { player[0].q = 1; player[0].d = 2; }
+				player[0].enti.q++;
+			} else { player[0].enti.q = 1; player[0].enti.d = 2; }
 		break;
 
 		//down movement
 		case 4:
-			if(player[0].q<=(TILEWH/(player[0].speed)))
+			if(player[0].enti.q<=(TILEWH/(player[0].enti.speed)))
 			{
 				INC_PER_FRAME;
-				player[0].q++;
-			} else { player[0].q = 1; player[0].d = 2; }
+				player[0].enti.q++;
+			} else { player[0].enti.q = 1; player[0].enti.d = 2; }
 		break;
 
 		//up movement
 		case 0:
-			if(player[0].q<=(TILEWH/(player[0].speed)))
+			if(player[0].enti.q<=(TILEWH/(player[0].enti.speed)))
 			{
 				INC_PER_FRAME;
-				player[0].q++;
-			} else { player[0].q = 1; player[0].d = 2; }
+				player[0].enti.q++;
+			} else { player[0].enti.q = 1; player[0].enti.d = 2; }
 		break;
 	}
 		//printf("%u\n", IN_KeyDown(sc_Escape));

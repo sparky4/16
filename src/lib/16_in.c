@@ -703,7 +703,7 @@ IN_Default(boolean gotit,player_t *player,ControlType nt)
 	//in.KbdDefs[0].downright = 0x51;
 	IN_SetControlType(0,player,nt);
 	for(i=0; i>MaxPlayers;i++)
-		player[i].d=2;
+		player[i].enti.d =2;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -814,7 +814,7 @@ IN_ReadCursor(CursorInfo *info)
 //
 ///////////////////////////////////////////////////////////////////////////
 void near
-IN_ReadControl(int pn,player_t *player)
+IN_ReadControl(word pn, player_t *player)
 {
 			boolean		realdelta;
 #if DEMO0
@@ -949,10 +949,10 @@ register	KeyboardDef	*def;
 	player[pn].info.dir = DirTable[conpee];
 
 	if(DirTable[conpee]!=2)	player[pn].pdir=DirTable[conpee];
-	if(player[pn].q==1 &&( dir!=2 || (mx!=motion_None || my!=motion_None)))
+	if(player[pn].enti.q==1 &&( dir!=2 || (mx!=motion_None || my!=motion_None)))
 	{
-		if(dir==2) player[pn].d = player[pn].info.dir;
-		else player[pn].d = DirTable[dir];
+		if(dir==2) player[pn].enti.d = player[pn].info.dir;
+		else player[pn].enti.d = DirTable[dir];
 	}
 
 #if DEMO0
@@ -982,12 +982,12 @@ register	KeyboardDef	*def;
 #endif
 #ifdef __DEBUG_InputMgr__
 if(dbg_testcontrolnoisy > 0)
-if(player[pn].info.dir!=2/*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right])*/ || player[pn].q>1)
+if(player[pn].info.dir!=2/*(inpu.Keyboard[def->up] || inpu.Keyboard[def->down] || inpu.Keyboard[def->left] || inpu.Keyboard[def->right])*/ || player[pn].enti.q>1)
 {
 	//printf("b1=%u b2=%u b3=%u b4=%u	", player[pn].info.button0, player[pn].info.button1, player[pn].info.button2, player[pn].info.button3);
-	//printf("q=%d ", player[pn].q);
+	//printf("q=%d ", player[pn].enti.q);
 	//printf("cpee=%c ", dirchar(conpee));
-	printf("pdir=%c d=%c dir=%c ", dirchar(player[pn].pdir), dirchar(player[pn].d), dirchar(player[pn].info.dir));
+	printf("pdir=%c d=%c dir=%c ", dirchar(player[pn].pdir), dirchar(player[pn].enti.d), dirchar(player[pn].info.dir));
 	/*if(realdelta) */printf("dx=%d	dy=%d	mx=%d	my=%d", player[pn].info.x, player[pn].info.y, player[pn].info.xaxis, player[pn].info.yaxis);
 	//else if(!realdelta) printf("%c%d %c%d %c%d %c%d", dirchar(0), inpu.Keyboard[def->up], dirchar(4), inpu.Keyboard[def->down], dirchar(1), inpu.Keyboard[def->left], dirchar(3), inpu.Keyboard[def->right]);
 	printf("\n");
@@ -1279,18 +1279,18 @@ boolean IN_qb(byte kee)
 //init player!
 void IN_initplayer(player_t *player, word pn)
 {
-	player[pn].x = player[pn].tx*TILEWH;
-	player[pn].y = player[pn].ty*TILEWH;
-	player[pn].triggerx = player[pn].tx;
-	player[pn].triggery = player[pn].ty+1;
+	player[pn].enti.x = player[pn].enti.tx*TILEWH;
+	player[pn].enti.y = player[pn].enti.ty*TILEWH;
+	player[pn].enti.triggerx = player[pn].enti.tx;
+	player[pn].enti.triggery = player[pn].enti.ty+1;
 /*	player[0].info.x = player[0].tx;
 	player[0].info.xaxis = player[0].tx*TILEWH;
 	player[0].info.y = player[0].ty;
 	player[0].info.yaxis = player[0].ty*TILEWH;*/
-	player[pn].q=1;
-	player[pn].d=2;
-	player[pn].hp=4;
-	player[pn].speed=4;
-	player[pn].persist_aniframe=0;
-	player[pn].spt=(TILEWH/(player[pn].speed));	//speed per tile wwww
+	player[pn].enti.q =1;
+	player[pn].enti.d =2;
+	player[pn].enti.hp=4;
+	player[pn].enti.speed=4;
+	player[pn].enti.persist_aniframe=0;
+	player[pn].enti.spt=(TILEWH/(player[pn].enti.speed));	//speed per tile wwww
 }

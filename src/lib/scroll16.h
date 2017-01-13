@@ -87,8 +87,8 @@ typedef struct {
 #define MAPW	40
 #define MAPH	30
 
-	//if(player[0].hp==0) printf("%d wwww\n", player[0].y+8);
-	//else printf("\nplayer[0].y: %d\n", player[0].y);
+	//if(player[0].enti.hp==0) printf("%d wwww\n", player[0].enti.y+8);
+	//else printf("\nplayer[0].enti.y: %d\n", player[0].enti.y);
 //	printf("palette offset:	%d\n", paloffset/3);
 //++++	printf("Total used: %zu\n", oldfreemem-GetFreeSize());
 //++++	printf("Total free: %zu\n", GetFreeSize());
@@ -102,13 +102,13 @@ typedef struct {
 	printf("ty: %d\n", mv[0].ty);\
 	printf("\n");\
 	printf("player vars:\n");\
-	printf("	x: %d", player[0].x); printf("	y: %d\n", player[0].y);\
+	printf("	x: %d", player[0].enti.x); printf("	y: %d\n", player[0].enti.y);\
 	\
-	printf("	tx: %d", player[0].tx); printf("	ty: %d\n", player[0].ty);\
-	printf("	triggx: %d", player[0].triggerx); printf("	triggy: %d\n", player[0].triggery);\
-	printf("	hp: %d", (player[0].hp));	printf("	q: %d", player[0].q);	printf("	player.info.dir: %d", player[0].info.dir);	printf("	player.d: %d ", player[0].d);\
+	printf("	tx: %d", player[0].enti.tx); printf("	ty: %d\n", player[0].enti.ty);\
+	printf("	triggx: %d", player[0].enti.triggerx); printf("	triggy: %d\n", player[0].enti.triggery);\
+	printf("	hp: %d", (player[0].enti.hp));	printf("	q: %d", player[0].enti.q);	printf("	player.info.dir: %d", player[0].info.dir);	printf("	player.d: %d ", player[0].enti.d);\
 		printf("	pdir=%d\n", player[0].pdir);\
-	printf("	tile data value at player trigger position: %d\n\n", mv[0].map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))]);\
+	printf("	tile data value at player trigger position: %d\n\n", mv[0].map->data[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))]);\
 \
 	printf("Virtual Screen: %dx", gvar.video.page[0].width);	printf("%d	", gvar.video.page[0].height);\
 	printf("Screen: %dx", gvar.video.page[0].sw);	printf("%d\n", gvar.video.page[0].sh);\
@@ -155,13 +155,14 @@ sword chkmap(map_t *map, word q);
 void mapGoTo(map_view_t *mv, int tx, int ty);
 void mapinitmapview(map_view_t *mv, int tx, int ty);
 void near mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
-void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *p, word poopoffset);
-void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *p, word poopoffset);
+void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, word poopoffset);
+void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, word poopoffset);
 void mapDrawWRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 //void qclean();
 void shinku(global_game_variables_t *gv);
-void near animatePlayer(map_view_t *pip, player_t *player, word playnum, sword scrollswitch);
+void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch);
+void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch);
 
 // Move an entity around. Should actually be in 16_entity
 boolean ZC_walk2(entity_t *ent, map_view_t *map_v);

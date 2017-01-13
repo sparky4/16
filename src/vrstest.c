@@ -31,6 +31,7 @@
 extern boolean dbg_notest;
 
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
+static byte palette[768];
 
 void main()
 {
@@ -58,8 +59,7 @@ void main()
 	Startup16(&gvar);
 
 	// What should be done by read_vrs:
-	//sega = (mm.bufferseg);
-	//if(
+	VL_LoadPalFile("data/spri/chikyuu.pal", &palette);
 	CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &gvar);//) baka=1; else baka=0;
 
 	// Insert sanity cheks later
@@ -127,7 +127,7 @@ void main()
 
 	while(!IN_KeyDown(sc_Escape))
 	{
-		switch(w)
+		/*switch(w)
 		{
 			case 1024:
 				modexPalUpdate0(pal);
@@ -135,7 +135,7 @@ void main()
 			default:
 				w++;
 			break;
-		}
+		}*/
 FUNCTIONKEYFUNCTIONS;
 	}
 	VGAmodeX(0, 1, &gvar);

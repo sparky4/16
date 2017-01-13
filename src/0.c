@@ -141,7 +141,7 @@ int main(int argc,char **argv)
 				gvar.video.page[0].dx=gvar.video.page[0].dy=gvar.video.page[1].dx=gvar.video.page[1].dy=16;
 				mv[0].tx = mv[0].ty = mv[1].tx = mv[1].ty = INITTNUM;
 				modexShowPage(&(gvar.video.page[gvar.video.panp]));
-				player[0].q = 1; player[0].d = 2;
+				player[0].enti.q = 1; player[0].enti.d = 2;
 				x=y=0;
 				xdir=ydir=1;
 				//TESTBG;

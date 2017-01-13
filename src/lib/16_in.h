@@ -56,7 +56,7 @@
 #define	MaxPads		2
 #define	NumCodes	128
 
-typedef	byte		ScanCode;
+//typedef	byte		ScanCode;
 #define	sc_None			0
 #define	sc_Bad			0xff
 #define	sc_Return		0x1c
@@ -155,7 +155,8 @@ typedef	enum		{
 						demo_Off,demo_Record,demo_Playback,demo_PlayDone
 					} Demo;
 #endif
-typedef	enum		{
+//moved to 16_tdef.h
+/*typedef	enum		{
 						//ctrl_None,				// MDM (GAMERS EDGE) - added
 						ctrl_Keyboard,
 							ctrl_Keyboard1 = ctrl_Keyboard,ctrl_Keyboard2,
@@ -216,12 +217,8 @@ typedef	struct
 	byte d;		//direction to render sprite!! wwww
 	byte q;		//loop variable for anumation and locking the playing to compleate the animation cycle to prevent issues with misalignment www
 	byte near pdir;	//previous direction~
-	//byte near kd[2];	//array of arrow key pressed
 	word speed;		//player speed!
 	word spt;		//speed per tile
-//0000	planar_buf_t huge *data; //supposively the sprite sheet data
-//	planar_buf_t data; //supposively the sprite sheet data
-////0000----
 #ifdef	__WATCOMC__
 	struct sprite	*spri;	//supposively the sprite sheet data
 	memptr		gr;
@@ -230,12 +227,12 @@ typedef	struct
 	bitmap_t	*data;		//supposively the sprite sheet data//old format
 	bitmap_t	bmp;
 	sword hp; //hitpoints of the player
-	int persist_aniframe;    /* gonna be increased to 1 before being used, so 0 is ok for default */
+	int persist_aniframe;    // gonna be increased to 1 before being used, so 0 is ok for default
 	CursorInfo	info;
 	ControlType	Controls;
 //newer vars
 	int dx, dy, delta;	//TODO: what is this? ^^
-} player_t;
+} player_t;*/
 
 /*
 =============================================================================
@@ -287,7 +284,7 @@ extern void IN_SetKeyHook(void (*hook)());
 extern void IN_ClearKeysDown();
 //static void INL_AdjustCursor(CursorInfo *info,word buttons,int dx,int dy);
 extern void IN_ReadCursor(CursorInfo *info);
-extern void near IN_ReadControl(int pn,player_t *player);
+extern void near IN_ReadControl(word pn, player_t *player);
 extern void IN_SetControlType(word pn,player_t *player,ControlType type);
 #if DEMO0
 extern boolean IN_StartDemoRecord(word bufsize);

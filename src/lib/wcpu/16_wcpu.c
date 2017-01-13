@@ -131,9 +131,9 @@ const char *WCPU_cpudetectmesg()
 	cput = WCPU_detectcpu();
 	switch(cput)
 	{
-		case 0: cpus = "8086/8088 or 186/88"; break;
-		case 1: cpus = "286"; break;
-		case 2: cpus = "386 or newer"; break;
+		case 0: cpus = "8086/8088 or 80186/80188"; break;
+		case 1: cpus = "80286"; break;
+		case 2: cpus = "80386 or newer"; break;
 		default: cpus = "internal error"; break;
 	}
 	return cpus;
@@ -141,14 +141,23 @@ const char *WCPU_cpudetectmesg()
 
 const char *WCPU_fpudetectmesg()
 {
-	const char *fpus;
+	char *fpus;
 	unsigned char fput;
+	word cput;
 
 	fput = WCPU_detectfpu();
+	cput = WCPU_detectcpu();
+	switch(cput)
+	{
+		case 0: cput=80; break;
+		case 1: cput=802; break;
+		case 2: cput=803; break;
+		default: cput=0; break;
+	}
 	switch(fput)
 	{
 		case 0: fpus = "none"; break;
-		case 1: fpus = "8087"; break;
+		case 1: sprintf(fpus, "%d87", cput); break;
 		default: fpus = "internal error"; break;
 	}
 	return fpus;
