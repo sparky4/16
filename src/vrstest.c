@@ -28,7 +28,7 @@
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 
-extern boolean dbg_notest;
+extern boolean dbg_nointest;
 
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 static byte palette[768];
@@ -51,15 +51,12 @@ void main()
 	uint32_t vrl_size;
 	int num_of_vrl;
 	struct vrl1_vgax_header far *curr_vrl;
-	byte *pal=0;
 	int size=0;
-	word w=0;
-	dbg_notest=0;
+	dbg_nointest=0;
 
 	Startup16(&gvar);
 
 	// What should be done by read_vrs:
-	VL_LoadPalFile("data/spri/chikyuu.pal", &palette);
 	CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &gvar);//) baka=1; else baka=0;
 
 	// Insert sanity cheks later
@@ -124,6 +121,7 @@ void main()
 	modexPalUpdate1(pal);*/
 	for (i = 0; i < 5; i++){
 	spri.delay = 1; animate_spri(&spri, &gvar); spri.x += 20; /*sleep(1);*/ }
+	VL_LoadPalFile("data/spri/chikyuu.pal", &palette);
 
 	while(!IN_KeyDown(sc_Escape))
 	{
@@ -136,6 +134,7 @@ void main()
 				w++;
 			break;
 		}*/
+		if(IN_KeyDown(24)){ modexpdump(&gvar.video.page[0]);  IN_UserInput(1,1); } //p
 FUNCTIONKEYFUNCTIONS;
 	}
 	VGAmodeX(0, 1, &gvar);

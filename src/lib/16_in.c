@@ -1248,12 +1248,12 @@ IN_UserInput(dword delay,boolean clear)
 boolean IN_KeyDown(byte code)
 {
 #ifdef __DEBUG_InputMgr__
-	if(!dbg_notest)
+	if(!dbg_nointest)
 #endif
 	return inpu.Keyboard[code];
 #ifdef __DEBUG_InputMgr__
 	else
-		if(dbg_notest && kbhit())
+		if(dbg_nointest && kbhit())
 			return 1;
 		else
 			return 0;
