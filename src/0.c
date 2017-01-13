@@ -176,6 +176,7 @@ int main(int argc,char **argv)
 
 				/* then the sprite. note modding ram ptr means we just draw to (x&3,0) */
 draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
+//printf("x=%d	y=%d	rx=%d	ry=%d\n", x, y, rx, ry);
 
 				/* restore ptr */
 				vga_state.vga_graphics_ram = omemptr;

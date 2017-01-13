@@ -97,7 +97,7 @@ void main()
 	{
 		return;
 	}
-	spri.x = 5;
+	spri.x = 16;
 	spri.y = 100;
 
 //	Uncomment to see broken sprites
@@ -134,7 +134,7 @@ void main()
 				w++;
 			break;
 		}*/
-		if(IN_KeyDown(24)){ modexpdump(&gvar.video.page[0]);  IN_UserInput(1,1); } //p
+		if(IN_KeyDown(25)){ modexpdump(&gvar.video.page[0]);  IN_UserInput(1,1); } //p
 FUNCTIONKEYFUNCTIONS;
 	}
 	VGAmodeX(0, 1, &gvar);
