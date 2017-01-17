@@ -152,8 +152,9 @@ void animate_spri(struct sprite *spri, global_game_variables_t *gv)
 */
 void animate_spri(struct sprite *spri, global_game_variables_t *gv)
 {
-#define VMEMPAGESIZE2	gv->video.page[0].pagesize+gv->video.page[1].pagesize
-#define VMEMPAGEDATA2	gv->video.page[2].data
+#define GVARVIDEO gv->video
+#define VMEMPAGESIZE2	GVARVIDEO.page[0].pagesize+GVARVIDEO.page[1].pagesize
+#define VMEMPAGEDATA2	GVARVIDEO.page[2].data
 	unsigned int i,o,o2; int j;
 	int x,y,rx,ry,w,h;
 	int overdraw = 1;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.
@@ -176,25 +177,25 @@ void animate_spri(struct sprite *spri, global_game_variables_t *gv)
 
 	// render box bounds. y does not need modification, but x and width must be multiple of 4
 	if (x >= overdraw) rx = (x - overdraw) & (~3);
-		else rx = -(gv->video.page[0].dx);
+		else rx = -(GVARVIDEO.page[0].dx);
 	if (y >= overdraw) ry = (y - overdraw);
-		else ry = -(gv->video.page[0].dy);
+		else ry = -(GVARVIDEO.page[0].dy);
 	h = spri->sprite_vrl_cont->vrl_header->height + overdraw + y - ry;
 	w = (x + spri->sprite_vrl_cont->vrl_header->width + (overdraw*2) + 3 - rx) & (~3);//round up
-	if ((rx+w) > gv->video.page[0].width) w = gv->video.page[0].width-rx;
-	if ((ry+h) > gv->video.page[0].height) h = gv->video.page[0].height-ry;
+	if ((rx+w) > GVARVIDEO.page[0].width) w = GVARVIDEO.page[0].width-rx;
+	if ((ry+h) > GVARVIDEO.page[0].height) h = GVARVIDEO.page[0].height-ry;
 
 	// block copy pattern to where we will draw the sprite
 	vga_setup_wm1_block_copy();
 	o2 = VMEMPAGESIZE2;
-	o = (0x10000UL - (uint16_t)VMEMPAGEDATA2) + (ry * gv->video.page[0].stridew) + (rx >> 2); // source offscreen
-	for (i=0;i < h;i++,o += gv->video.page[0].stridew,o2 += (w >> 2)) vga_wm1_mem_block_copy(o2,o,w >> 2);
+	o = (0x10000UL - (uint16_t)VMEMPAGEDATA2) + (ry * GVARVIDEO.page[0].stridew) + (rx >> 2); // source offscreen
+	for (i=0;i < h;i++,o += GVARVIDEO.page[0].stridew,o2 += (w >> 2)) vga_wm1_mem_block_copy(o2,o,w >> 2);
 
 	// must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally
 	vga_restore_rm0wm0();
 
 	// replace VGA stride with our own and mem ptr. then sprite rendering at this stage is just (0,0)
-	vga_state.vga_draw_stride_limit = (gv->video.page[0].width + 3 - x) >> 2;//round up
+	vga_state.vga_draw_stride_limit = (GVARVIDEO.page[0].width + 3 - x) >> 2;//round up
 	vga_state.vga_draw_stride = w >> 2;
 	vga_state.vga_graphics_ram = omemptr + VMEMPAGESIZE2;
 
@@ -214,13 +215,13 @@ void animate_spri(struct sprite *spri, global_game_variables_t *gv)
 	// block copy to visible RAM from offscreen
 	vga_setup_wm1_block_copy();
 	o = VMEMPAGESIZE2; // source offscreen
-	o2 = (ry * gv->video.page[0].stridew) + (rx >> 2); // dest visible (original stride)
-	for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += gv->video.page[0].stridew) vga_wm1_mem_block_copy(o2,o,w >> 2);
+	o2 = (ry * GVARVIDEO.page[0].stridew) + (rx >> 2); // dest visible (original stride)
+	for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += GVARVIDEO.page[0].stridew) vga_wm1_mem_block_copy(o2,o,w >> 2);
 	// must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally
 	vga_restore_rm0wm0();
 
 	// restore stride
-	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = gv->video.page[0].stridew;
+	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = GVARVIDEO.page[0].stridew;
 
 	// Depending on delay, update indices
 	switch(spri->delay){
