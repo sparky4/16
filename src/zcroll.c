@@ -188,10 +188,10 @@ void main(int argc, char *argv[])
 			{
 				case 11:
 					i=0;
-					player[0].ent->spri->x = 0;
+					player[0].ent->spri->x = TILEWH;
 				default:
 					i++;
-					player[0].ent->spri->delay = 1; animate_spri((player[0].ent->spri), &gvar); player[0].ent->spri->x += 20;
+					player[0].ent->spri->delay = 1; animate_spri((player[0].ent->spri), &gvar);// player[0].ent->spri->x += 16;
 				break;
 			}
 		}

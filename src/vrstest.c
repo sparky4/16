@@ -97,8 +97,8 @@ void main()
 	{
 		return;
 	}
-	spri.x = 160;
-	spri.y = 120;
+	spri.x = TILEWH;
+	spri.y = TILEWH;
 
 //	Uncomment to see broken sprites
 /*	sega = mm.bufferseg;
@@ -119,9 +119,11 @@ void main()
 
 	/*modexLoadPalFile("data/spri/chikyuu.pal", &pal);
 	modexPalUpdate1(pal);*/
-	for (i = 0; i < 5; i++){
-	spri.delay = 1; animate_spri(&spri, &gvar); spri.x += 16; /*sleep(1);*/ }
 	VL_LoadPalFile("data/spri/chikyuu.pal", &palette);
+	for (i = 0; i < 5; i++){
+		spri.delay = 1; animate_spri(&spri, &gvar);// spri.x += 16;
+		sleep(1);
+	}
 
 	while(!IN_KeyDown(sc_Escape))
 	{
