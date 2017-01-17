@@ -1196,7 +1196,6 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 }
 
 /*
-void animate_spri(struct sprite *spri, global_game_variables_t *gv)
 {
 #define VMEMPAGESIZE2	gv->video.page[0].pagesize+gv->video.page[1].pagesize
 #define VMEMPAGEDATA2	gv->video.page[2].data
@@ -1292,7 +1291,8 @@ void animate_spri(struct sprite *spri, global_game_variables_t *gv)
 	}
 }
 */
-void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch)
+//void animate_spri(struct sprite *spri, global_game_variables_t *gv)
+void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch, global_game_variables_t *gv)
 {
 	sword x = player[pn].enti.x;
 	sword y = player[pn].enti.y;
