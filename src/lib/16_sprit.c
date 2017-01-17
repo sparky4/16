@@ -155,7 +155,7 @@ void animate_spri(struct sprite *spri, global_game_variables_t *gv)
 #define VMEMPAGESIZE2	gv->video.page[0].pagesize+gv->video.page[1].pagesize
 #define VMEMPAGEDATA2	gv->video.page[2].data
 	unsigned int i,o,o2; int j;
-	int x,rx,ry,w,h;
+	int x,y,rx,ry,w,h;
 	int overdraw = 1;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.
 						// if the sprite's edge pixels are clear anyway, you can set this to 0.
 	VGA_RAM_PTR omemptr;
@@ -165,6 +165,7 @@ void animate_spri(struct sprite *spri, global_game_variables_t *gv)
 
 	omemptr = vga_state.vga_graphics_ram; // save original mem ptr
 	x=spri->x-4;
+	y=spri->y;
 
 	// Draw sprite
 	j = get_vrl_by_id(spri->spritesheet, spri->curr_spri_id, spri->sprite_vrl_cont);
@@ -176,9 +177,9 @@ void animate_spri(struct sprite *spri, global_game_variables_t *gv)
 	// render box bounds. y does not need modification, but x and width must be multiple of 4
 	if (x >= overdraw) rx = (x - overdraw) & (~3);
 		else rx = -(gv->video.page[0].dx);
-	if (spri->y >= overdraw) ry = (spri->y - overdraw);
+	if (y >= overdraw) ry = (y - overdraw);
 		else ry = -(gv->video.page[0].dy);
-	h = spri->sprite_vrl_cont->vrl_header->height + overdraw + spri->y - ry;
+	h = spri->sprite_vrl_cont->vrl_header->height + overdraw + y - ry;
 	w = (x + spri->sprite_vrl_cont->vrl_header->width + (overdraw*2) + 3 - rx) & (~3);//round up
 	if ((rx+w) > gv->video.page[0].width) w = gv->video.page[0].width-rx;
 	if ((ry+h) > gv->video.page[0].height) h = gv->video.page[0].height-ry;
@@ -200,7 +201,7 @@ void animate_spri(struct sprite *spri, global_game_variables_t *gv)
 	// then the sprite. note modding ram ptr means we just draw to (x&3,0)
 	draw_vrl1_vgax_modex(
 		x-rx,
-		spri->y-ry,
+		y-ry,
 		spri->sprite_vrl_cont->vrl_header,
 		spri->sprite_vrl_cont->line_offsets,
 		spri->sprite_vrl_cont->buffer + sizeof(struct vrl1_vgax_header),

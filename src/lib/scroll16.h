@@ -34,6 +34,7 @@
 //#include "src/lib/16_map.h"	//new map stuff
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/16_wcpu.h"
+#include "src/lib/16_sprit.h"
 
 #include <hw/cpu/cpu.h>
 #include <hw/dos/dos.h>
