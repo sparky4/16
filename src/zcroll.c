@@ -100,7 +100,7 @@ void main(int argc, char *argv[])
 	// setup camera and screen~
 	modexHiganbanaPageSetup(&gvar.video);
 	ZC_MVSetup(&mv, &map, &gvar);
-	player[0].ent->spri->x = player[0].ent->spri->y = TILEWH;
+	//player[0].ent->spri->x = player[0].ent->spri->y = TILEWH;
 
 	// set up paging
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
@@ -108,8 +108,10 @@ void main(int argc, char *argv[])
 
 	playerXYpos(0, 0, &player, &mv, 0);
 	IN_initplayer(&player, 0);
+	player[0].ent->spri->x = player[0].enti.x;
+	player[0].ent->spri->y = player[0].enti.y;
 
-	i = set_anim_by_id(player[0].ent->spri, 11);
+	i = set_anim_by_id(player[0].ent->spri, 31);
 	print_anim_ids(player[0].ent->spri);
 	if (i == -1)
 	{
@@ -121,7 +123,7 @@ void main(int argc, char *argv[])
 		modexFadeOn(4, dpal);
 #endif
 	}
-	animate_spri((player[0].ent->spri), &gvar);
+	animate_spri((player[0].ent->spri), &gvar.video);
 
 	VL_ShowPage(mv[0].page, 0, 0);//modexShowPage(mv[0].page);//!(gvar.video.p)
 #ifdef FADE
@@ -191,7 +193,7 @@ void main(int argc, char *argv[])
 					player[0].ent->spri->x = TILEWH;
 				default:
 					i++;
-					player[0].ent->spri->delay = 1; animate_spri((player[0].ent->spri), &gvar);// player[0].ent->spri->x += 16;
+					player[0].ent->spri->delay = 1; animate_spri((player[0].ent->spri), &gvar.video);// player[0].ent->spri->x += 16;
 				break;
 			}
 		}

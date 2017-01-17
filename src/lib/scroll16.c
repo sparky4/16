@@ -24,6 +24,8 @@
 */
 #include "src/lib/scroll16.h"
 
+#define ANIMATESPRIFUN ZC_animatePlayer
+
 void oldwalk(map_view_t *pip, player_t *player, word pn)
 {
 	#define INC_PER_FRAME if(player[pn].enti.q&1) player[pn].enti.persist_aniframe++; if(player[pn].enti.persist_aniframe>4) player[pn].enti.persist_aniframe = 1;
@@ -43,7 +45,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
 					INC_PER_FRAME;
-					animatePlayer(pip, player, pn, 1);
+					ANIMATESPRIFUN(pip, player, pn, 1);
 					ScrollRight(pip, player, 3, pn);
 					ScrollRight(pip, player, 2, pn);
 					//mapScrollRight(pip, player, !(pip[0].video->p), pn);
@@ -59,7 +61,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					player[pn].enti.x+=(player[pn].enti.speed);
-					animatePlayer(pip, player, pn, 0);
+					ANIMATESPRIFUN(pip, player, pn, 0);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].enti.q++;
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
@@ -87,7 +89,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
 					INC_PER_FRAME;
-					animatePlayer(pip, player, pn, 1);
+					ANIMATESPRIFUN(pip, player, pn, 1);
 					ScrollLeft(pip, player, 3, pn);
 					ScrollLeft(pip, player, 2, pn);
 					//mapScrollLeft(pip, player, !(pip[0].video->p), pn);
@@ -103,7 +105,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					player[pn].enti.x-=(player[pn].enti.speed);
-					animatePlayer(pip, player, pn, 0);
+					ANIMATESPRIFUN(pip, player, pn, 0);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].enti.q++;
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
@@ -131,7 +133,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
 					INC_PER_FRAME;
-					animatePlayer(pip, player, pn, 1);
+					ANIMATESPRIFUN(pip, player, pn, 1);
 					ScrollDown(pip, player, 3, pn);
 					ScrollDown(pip, player, 2, pn);
 					//mapScrollDown(pip, player, !(pip[0].video->p), pn);
@@ -147,7 +149,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					player[pn].enti.y+=(player[pn].enti.speed);
-					animatePlayer(pip, player, pn, 0);
+					ANIMATESPRIFUN(pip, player, pn, 0);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].enti.q++;
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
@@ -175,7 +177,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
 					INC_PER_FRAME;
-					animatePlayer(pip, player, pn, 1);
+					ANIMATESPRIFUN(pip, player, pn, 1);
 					ScrollUp(pip, player, 3, pn);
 					ScrollUp(pip, player, 2, pn);
 					//mapScrollUp(pip, player, !(pip[0].video->p), pn);
@@ -191,7 +193,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					player[pn].enti.y-=(player[pn].enti.speed);
-					animatePlayer(pip, player, 0, pn);
+					ANIMATESPRIFUN(pip, player, 0, pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].enti.q++;
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
@@ -240,7 +242,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
 					INC_PER_FRAME;
-					animatePlayer(pip, player, pn, 1);
+					ANIMATESPRIFUN(pip, player, pn, 1);
 					ScrollRight(pip, player, 3, pn);
 					ScrollRight(pip, player, 2, pn);
 					mapScrollRight(pip, player, (pip[0].video->p), pn);
@@ -254,7 +256,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					player[pn].enti.x+=(player[pn].enti.speed);
-					animatePlayer(pip, player, pn, 0);
+					ANIMATESPRIFUN(pip, player, pn, 0);
 					player[pn].enti.q++;
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
 			}
@@ -278,7 +280,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
 					INC_PER_FRAME;
-					animatePlayer(pip, player, pn, 1);
+					ANIMATESPRIFUN(pip, player, pn, 1);
 					ScrollLeft(pip, player, 3, pn);
 					ScrollLeft(pip, player, 2, pn);
 					mapScrollLeft(pip, player, (pip[0].video->p), pn);
@@ -292,7 +294,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					player[pn].enti.x-=(player[pn].enti.speed);
-					animatePlayer(pip, player, pn, 0);
+					ANIMATESPRIFUN(pip, player, pn, 0);
 					player[pn].enti.q++;
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
 			}
@@ -316,7 +318,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
 					INC_PER_FRAME;
-					animatePlayer(pip, player, pn, 1);
+					ANIMATESPRIFUN(pip, player, pn, 1);
 					ScrollDown(pip, player, 3, pn);
 					ScrollDown(pip, player, 2, pn);
 					mapScrollDown(pip, player, (pip[0].video->p), pn);
@@ -330,7 +332,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					player[pn].enti.y+=(player[pn].enti.speed);
-					animatePlayer(pip, player, pn, 0);
+					ANIMATESPRIFUN(pip, player, pn, 0);
 					player[pn].enti.q++;
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
 			}
@@ -354,7 +356,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
 					INC_PER_FRAME;
-					animatePlayer(pip, player, pn, 1);
+					ANIMATESPRIFUN(pip, player, pn, 1);
 					ScrollUp(pip, player, 3, pn);
 					ScrollUp(pip, player, 2, pn);
 					mapScrollUp(pip, player, (pip[0].video->p), pn);
@@ -368,7 +370,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				{
 					INC_PER_FRAME;
 					player[pn].enti.y-=(player[pn].enti.speed);
-					animatePlayer(pip, player, 0, pn);
+					ANIMATESPRIFUN(pip, player, 0, pn);
 					player[pn].enti.q++;
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
 			}
@@ -1296,15 +1298,12 @@ void animate_spri(struct sprite *spri, global_game_variables_t *gv)
 //void animate_spri(struct sprite *spri, global_game_variables_t *gv)
 void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch)
 {
-	struct sprite *spri = player[pn].ent->spri;
 	sword x = player[pn].enti.x;
 	sword y = player[pn].enti.y;
-	word dire=32; //direction
+	word dire=10; //direction
+	sword i;
 	sword qq; //scroll offset
 	word ls = player[pn].enti.persist_aniframe;
-
-	spri->x=x;
-	spri->y=y;
 
 	switch(scrollswitch)
 	{
@@ -1321,36 +1320,41 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 	{
 		case 0:
 			//up
-			dire*=player[pn].enti.d;
+			dire*=(player[pn].enti.d+1);// dire++;
 			y-=qq;
 		break;
 		case 3:
 			// right
-			dire*=(player[pn].enti.d-2);
+			dire*=(player[pn].enti.d-1);// dire++;
 			x+=qq;
 		break;
 		case 2:
 		break;
 		case 4:
 			//down
-			dire*=(player[pn].enti.d-2);
+			dire*=(player[pn].enti.d-1);// dire++;
 			y+=qq;
 		break;
 		case 1:
 			//left
-			dire*=(player[pn].enti.d+2);
+			dire*=(player[pn].enti.d+3);// dire++;
 			x-=qq;
 		break;
 	}
+
+	//setting xy position
+	player[pn].ent->spri->x = x;
+	player[pn].ent->spri->y = y;
 
 //#define FRAME1 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, 2+dire);
 //#define FRAME2 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, 1+dire);
 //#define FRAME3 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, dire);
 //#define FRAME4 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, 1+dire);
-#define NFRAME1
-#define NFRAME2
-#define NFRAME3
-#define NFRAME4
+#define DRAWFRAME if (i == -1) return; animate_spri(player[pn].ent->spri, pip->video)
+#define NFRAME1 i = set_anim_by_id(player[pn].ent->spri, 2+dire);	DRAWFRAME;
+#define NFRAME2 i = set_anim_by_id(player[pn].ent->spri, 1+dire);	DRAWFRAME;
+#define NFRAME3 i = set_anim_by_id(player[pn].ent->spri, dire);	DRAWFRAME;
+#define NFRAME4 i = set_anim_by_id(player[pn].ent->spri, 2+dire);	DRAWFRAME;
 
 	switch(ls)
 	{
@@ -1358,7 +1362,7 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 			NFRAME1
 		break;
 		case 2:
-			NFRAME2
+			NFRAME2;
 		break;
 		case 3:
 			NFRAME3

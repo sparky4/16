@@ -121,7 +121,7 @@ void main()
 	modexPalUpdate1(pal);*/
 	VL_LoadPalFile("data/spri/chikyuu.pal", &palette);
 	for (i = 0; i < 5; i++){
-		spri.delay = 1; animate_spri(&spri, &gvar);// spri.x += 16;
+		spri.delay = 1; animate_spri(&spri, &gvar.video);// spri.x += 16;
 		sleep(1);
 	}
 
