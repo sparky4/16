@@ -164,7 +164,7 @@ void animate_spri(struct sprite *spri, video_t *video)
 	// Events go here
 
 
-	omemptr = vga_state.vga_graphics_ram; // save original mem ptr
+	omemptr = (VGA_RAM_PTR)video->page[0].data;//vga_state.vga_graphics_ram; // save original mem ptr
 	x=spri->x;//-4;
 	y=spri->y;
 
