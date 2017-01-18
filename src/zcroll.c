@@ -113,7 +113,7 @@ void main(int argc, char *argv[])
 	player[0].ent->spri->delay = 0;
 
 	i = set_anim_by_id(player[0].ent->spri, 31);
-	//print_anim_ids(player[0].ent->spri);
+	print_anim_ids(player[0].ent->spri);
 	if (i == -1)
 	{
 #ifdef FADE
