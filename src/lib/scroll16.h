@@ -42,6 +42,7 @@
 #include <hw/vga/vrl.h>
 
 //#define SPRITE
+#define SPRITO
 //#define TILERENDER
 
 //extern void modexDrawSpriteRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp);

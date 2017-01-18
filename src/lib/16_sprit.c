@@ -117,6 +117,9 @@ void oldanimate_spri(struct sprite *spri, video_t *video)
 	// replace VGA stride with our own and mem ptr. then sprite rendering at this stage is just (0,0)
 	vga_state.vga_draw_stride_limit = (video->page[0].width + 3 - spri->x) >> 2;
 
+#ifndef SPRITE
+	modexClearRegion(&video->page[0], spri->x, spri->y, 16, 32, 1);
+#else
 	draw_vrl1_vgax_modex(
 		spri->x,//-video->page[0].dx,
 		spri->y,//-video->page[0].dy,
@@ -125,6 +128,7 @@ void oldanimate_spri(struct sprite *spri, video_t *video)
 		spri->sprite_vrl_cont->buffer + sizeof(struct vrl1_vgax_header),
 		spri->sprite_vrl_cont->data_size
 	);
+#endif
 
 	// restore stride
 	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = video->page[0].stridew;
