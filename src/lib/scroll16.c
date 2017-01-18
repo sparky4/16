@@ -26,9 +26,187 @@
 
 #define ANIMATESPRIFUN ZC_animatePlayer
 
+#define INC_PER_FRAME if(player[pn].enti.q&1) player[pn].enti.persist_aniframe++; if(player[pn].enti.persist_aniframe>4) player[pn].enti.persist_aniframe = 1;
+
+void ZC_walk(map_view_t *pip, player_t *player, word pn)
+{
+	switch(player[pn].enti.d)
+	{
+		//no direction
+		case 2:
+			//0000pip[0].video->startclk = (*clockw);
+		break;
+		//right movement
+		case 3:
+			if(pip[0].tx >= 0 && pip[0].tx+pip[0].page->tw < pip[0].map->width && player[pn].enti.tx == pip[0].tx+pip[0].page->tilemidposscreenx &&
+			!(pip[0].map->data[(player[pn].enti.tx)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))	//collision detection!
+			{
+				if(player[pn].enti.q<=player[pn].enti.spt)
+				{
+					INC_PER_FRAME;
+					ANIMATESPRIFUN(pip, player, pn, 1);
+					ScrollRight(pip, player, 3, pn);
+					ScrollRight(pip, player, 2, pn);
+					mapScrollRight(pip, player, (pip[0].video->p), pn);
+					player[pn].enti.q++;
+					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
+			}
+			else if(player[pn].enti.tx < pip[0].map->width && !(pip[0].map->data[(player[pn].enti.tx)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))
+			{
+				if(player[pn].enti.q<=player[pn].enti.spt)
+				{
+					INC_PER_FRAME;
+					player[pn].enti.x+=(player[pn].enti.speed);
+					ANIMATESPRIFUN(pip, player, pn, 0);
+					player[pn].enti.q++;
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
+			}
+			else
+			{
+//#ifdef SPRITE
+//modexDrawSpriteRegion(pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 24, 32, PLAYERBMPDATAPTR);
+				ANIMATESPRIFUN(pip, player, pn, 0);
+//#else
+//				modexClearRegion(pip[1].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 14);
+//#endif
+				player[pn].enti.d = 2;
+			}
+			player[pn].enti.triggerx = player[pn].enti.tx+1;
+			player[pn].enti.triggery = player[pn].enti.ty;
+		break;
+		//left movement
+		case 1:
+			if(pip[0].tx > 0 && pip[0].tx+pip[0].page->tw <= pip[0].map->width && player[pn].enti.tx == pip[0].tx+pip[0].page->tilemidposscreenx &&
+			!(pip[0].map->data[(player[pn].enti.tx-2)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx-1 == TRIGGX && player[pn].enti.ty == TRIGGY))	//collision detection!
+			{
+				if(player[pn].enti.q<=player[pn].enti.spt)
+				{
+					INC_PER_FRAME;
+					ANIMATESPRIFUN(pip, player, pn, 1);
+					ScrollLeft(pip, player, 3, pn);
+					ScrollLeft(pip, player, 2, pn);
+					mapScrollLeft(pip, player, (pip[0].video->p), pn);
+					player[pn].enti.q++;
+					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
+			}
+			else if(player[pn].enti.tx > 1 && !(pip[0].map->data[(player[pn].enti.tx-2)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx-1 == TRIGGX && player[pn].enti.ty == TRIGGY))
+			{
+				if(player[pn].enti.q<=player[pn].enti.spt)
+				{
+					INC_PER_FRAME;
+					player[pn].enti.x-=(player[pn].enti.speed);
+					ANIMATESPRIFUN(pip, player, pn, 0);
+					player[pn].enti.q++;
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
+			}
+			else
+			{
+//#ifdef SPRITE
+//modexDrawSpriteRegion(pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 96, 24, 32, PLAYERBMPDATAPTR);
+				ANIMATESPRIFUN(pip, player, pn, 0);
+//#else
+//				modexClearRegion(pip[1].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 10);
+//#endif
+				player[pn].enti.d = 2;
+			}
+			player[pn].enti.triggerx = player[pn].enti.tx-1;
+			player[pn].enti.triggery = player[pn].enti.ty;
+		break;
+		//down movement
+		case 4:
+			if(pip[0].ty >= 0 && pip[0].ty+pip[0].page->th < pip[0].map->height && player[pn].enti.ty == pip[0].ty+pip[0].page->tilemidposscreeny &&
+			!(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty+1 == TRIGGY))	//collision detection!
+			{
+				if(player[pn].enti.q<=player[pn].enti.spt)
+				{
+					INC_PER_FRAME;
+					ANIMATESPRIFUN(pip, player, pn, 1);
+					ScrollDown(pip, player, 3, pn);
+					ScrollDown(pip, player, 2, pn);
+					mapScrollDown(pip, player, (pip[0].video->p), pn);
+					player[pn].enti.q++;
+					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
+			}
+			else if(player[pn].enti.ty < pip[0].map->height && !(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty+1 == TRIGGY))
+			{
+				if(player[pn].enti.q<=player[pn].enti.spt)
+				{
+					INC_PER_FRAME;
+					player[pn].enti.y+=(player[pn].enti.speed);
+					ANIMATESPRIFUN(pip, player, pn, 0);
+					player[pn].enti.q++;
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
+			}
+			else
+			{
+//#ifdef SPRITE
+//modexDrawSpriteRegion(pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 64, 24, 32, PLAYERBMPDATAPTR);
+				ANIMATESPRIFUN(pip, player, pn, 0);
+//#else
+//				modexClearRegion(pip[1].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 9);
+//#endif
+				player[pn].enti.d = 2;
+			}
+			player[pn].enti.triggerx = player[pn].enti.tx;
+			player[pn].enti.triggery = player[pn].enti.ty+1;
+		break;
+		//up movement
+		case 0:
+			if(pip[0].ty > 0 && pip[0].ty+pip[0].page->th <= pip[0].map->height && player[pn].enti.ty == pip[0].ty+pip[0].page->tilemidposscreeny &&
+			!(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty-2))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty-1 == TRIGGY))	//collision detection!
+			{
+				if(player[pn].enti.q<=player[pn].enti.spt)
+				{
+					INC_PER_FRAME;
+					ANIMATESPRIFUN(pip, player, pn, 1);
+					ScrollUp(pip, player, 3, pn);
+					ScrollUp(pip, player, 2, pn);
+					mapScrollUp(pip, player, (pip[0].video->p), pn);
+					player[pn].enti.q++;
+					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
+			}
+			else if(player[pn].enti.ty > 1 && !(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty-2))] == 0))//!(player[pn].enti.tx == TRIGGX &&  player[pn].enti.ty-1 == TRIGGY))
+			{
+				if(player[pn].enti.q<=player[pn].enti.spt)
+				{
+					INC_PER_FRAME;
+					player[pn].enti.y-=(player[pn].enti.speed);
+					ANIMATESPRIFUN(pip, player, 0, pn);
+					player[pn].enti.q++;
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
+			}
+			else
+			{
+//#ifdef SPRITE
+//modexDrawSpriteRegion(pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 0, 24, 32, PLAYERBMPDATAPTR);
+				ANIMATESPRIFUN(pip, player, pn, 0);
+//#else
+//				modexClearRegion(pip[1].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 12);
+//#endif
+				player[pn].enti.d = 2;
+			}
+			player[pn].enti.triggerx = player[pn].enti.tx;
+			player[pn].enti.triggery = player[pn].enti.ty-1;
+		break;
+	}
+}
+
+
+/*
+src/lib/scroll16.c:	mv[0].video->r=1;
+src/lib/scroll16.c:	mv[0].video->r=1;
+src/lib/scroll16.c:	mv[0].video->r=1;
+src/lib/scroll16.c:	mv[0].video->r=1;
+src/lib/scroll16.c:	pip->video->r=1;
+src/lib/scroll16.c:	mv->video->r=1;
+ */
+
 void oldwalk(map_view_t *pip, player_t *player, word pn)
 {
-	#define INC_PER_FRAME if(player[pn].enti.q&1) player[pn].enti.persist_aniframe++; if(player[pn].enti.persist_aniframe>4) player[pn].enti.persist_aniframe = 1;
 	//printf("player[%d].d=%d\n", pn, player[pn].enti.d);
 	switch(player[pn].enti.d)
 	{
@@ -207,180 +385,6 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 				modexClearRegion(pip[1].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 12);
 #endif
 				if(!pageflipflop) modexShowPage(pip[1].page);
-				player[pn].enti.d = 2;
-			}
-			player[pn].enti.triggerx = player[pn].enti.tx;
-			player[pn].enti.triggery = player[pn].enti.ty-1;
-		break;
-	}
-}
-
-
-/*
-src/lib/scroll16.c:	mv[0].video->r=1;
-src/lib/scroll16.c:	mv[0].video->r=1;
-src/lib/scroll16.c:	mv[0].video->r=1;
-src/lib/scroll16.c:	mv[0].video->r=1;
-src/lib/scroll16.c:	pip->video->r=1;
-src/lib/scroll16.c:	mv->video->r=1;
- */
-
-void ZC_walk(map_view_t *pip, player_t *player, word pn)
-{
-	#define INC_PER_FRAME if(player[pn].enti.q&1) player[pn].enti.persist_aniframe++; if(player[pn].enti.persist_aniframe>4) player[pn].enti.persist_aniframe = 1;
-	switch(player[pn].enti.d)
-	{
-		//no direction
-		case 2:
-			//0000pip[0].video->startclk = (*clockw);
-		break;
-		//right movement
-		case 3:
-			if(pip[0].tx >= 0 && pip[0].tx+pip[0].page->tw < pip[0].map->width && player[pn].enti.tx == pip[0].tx+pip[0].page->tilemidposscreenx &&
-			!(pip[0].map->data[(player[pn].enti.tx)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))	//collision detection!
-			{
-				if(player[pn].enti.q<=player[pn].enti.spt)
-				{
-					INC_PER_FRAME;
-					ANIMATESPRIFUN(pip, player, pn, 1);
-					ScrollRight(pip, player, 3, pn);
-					ScrollRight(pip, player, 2, pn);
-					mapScrollRight(pip, player, (pip[0].video->p), pn);
-					player[pn].enti.q++;
-					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
-			}
-			else if(player[pn].enti.tx < pip[0].map->width && !(pip[0].map->data[(player[pn].enti.tx)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))
-			{
-				if(player[pn].enti.q<=player[pn].enti.spt)
-				{
-					INC_PER_FRAME;
-					player[pn].enti.x+=(player[pn].enti.speed);
-					ANIMATESPRIFUN(pip, player, pn, 0);
-					player[pn].enti.q++;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
-			}
-			else
-			{
-#ifdef SPRITE
-				modexDrawSpriteRegion(pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 24, 32, PLAYERBMPDATAPTR);
-#else
-				modexClearRegion(pip[1].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 14);
-#endif
-				player[pn].enti.d = 2;
-			}
-			player[pn].enti.triggerx = player[pn].enti.tx+1;
-			player[pn].enti.triggery = player[pn].enti.ty;
-		break;
-		//left movement
-		case 1:
-			if(pip[0].tx > 0 && pip[0].tx+pip[0].page->tw <= pip[0].map->width && player[pn].enti.tx == pip[0].tx+pip[0].page->tilemidposscreenx &&
-			!(pip[0].map->data[(player[pn].enti.tx-2)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx-1 == TRIGGX && player[pn].enti.ty == TRIGGY))	//collision detection!
-			{
-				if(player[pn].enti.q<=player[pn].enti.spt)
-				{
-					INC_PER_FRAME;
-					ANIMATESPRIFUN(pip, player, pn, 1);
-					ScrollLeft(pip, player, 3, pn);
-					ScrollLeft(pip, player, 2, pn);
-					mapScrollLeft(pip, player, (pip[0].video->p), pn);
-					player[pn].enti.q++;
-					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
-			}
-			else if(player[pn].enti.tx > 1 && !(pip[0].map->data[(player[pn].enti.tx-2)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx-1 == TRIGGX && player[pn].enti.ty == TRIGGY))
-			{
-				if(player[pn].enti.q<=player[pn].enti.spt)
-				{
-					INC_PER_FRAME;
-					player[pn].enti.x-=(player[pn].enti.speed);
-					ANIMATESPRIFUN(pip, player, pn, 0);
-					player[pn].enti.q++;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
-			}
-			else
-			{
-#ifdef SPRITE
-				modexDrawSpriteRegion(pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 96, 24, 32, PLAYERBMPDATAPTR);
-#else
-				modexClearRegion(pip[1].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 10);
-#endif
-				player[pn].enti.d = 2;
-			}
-			player[pn].enti.triggerx = player[pn].enti.tx-1;
-			player[pn].enti.triggery = player[pn].enti.ty;
-		break;
-		//down movement
-		case 4:
-			if(pip[0].ty >= 0 && pip[0].ty+pip[0].page->th < pip[0].map->height && player[pn].enti.ty == pip[0].ty+pip[0].page->tilemidposscreeny &&
-			!(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty+1 == TRIGGY))	//collision detection!
-			{
-				if(player[pn].enti.q<=player[pn].enti.spt)
-				{
-					INC_PER_FRAME;
-					ANIMATESPRIFUN(pip, player, pn, 1);
-					ScrollDown(pip, player, 3, pn);
-					ScrollDown(pip, player, 2, pn);
-					mapScrollDown(pip, player, (pip[0].video->p), pn);
-					player[pn].enti.q++;
-					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
-			}
-			else if(player[pn].enti.ty < pip[0].map->height && !(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty+1 == TRIGGY))
-			{
-				if(player[pn].enti.q<=player[pn].enti.spt)
-				{
-					INC_PER_FRAME;
-					player[pn].enti.y+=(player[pn].enti.speed);
-					ANIMATESPRIFUN(pip, player, pn, 0);
-					player[pn].enti.q++;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
-			}
-			else
-			{
-#ifdef SPRITE
-				modexDrawSpriteRegion(pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 64, 24, 32, PLAYERBMPDATAPTR);
-#else
-				modexClearRegion(pip[1].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 9);
-#endif
-				player[pn].enti.d = 2;
-			}
-			player[pn].enti.triggerx = player[pn].enti.tx;
-			player[pn].enti.triggery = player[pn].enti.ty+1;
-		break;
-		//up movement
-		case 0:
-			if(pip[0].ty > 0 && pip[0].ty+pip[0].page->th <= pip[0].map->height && player[pn].enti.ty == pip[0].ty+pip[0].page->tilemidposscreeny &&
-			!(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty-2))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty-1 == TRIGGY))	//collision detection!
-			{
-				if(player[pn].enti.q<=player[pn].enti.spt)
-				{
-					INC_PER_FRAME;
-					ANIMATESPRIFUN(pip, player, pn, 1);
-					ScrollUp(pip, player, 3, pn);
-					ScrollUp(pip, player, 2, pn);
-					mapScrollUp(pip, player, (pip[0].video->p), pn);
-					player[pn].enti.q++;
-					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
-			}
-			else if(player[pn].enti.ty > 1 && !(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty-2))] == 0))//!(player[pn].enti.tx == TRIGGX &&  player[pn].enti.ty-1 == TRIGGY))
-			{
-				if(player[pn].enti.q<=player[pn].enti.spt)
-				{
-					INC_PER_FRAME;
-					player[pn].enti.y-=(player[pn].enti.speed);
-					ANIMATESPRIFUN(pip, player, 0, pn);
-					player[pn].enti.q++;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
-			}
-			else
-			{
-#ifdef SPRITE
-				modexDrawSpriteRegion(pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 0, 24, 32, PLAYERBMPDATAPTR);
-#else
-				modexClearRegion(pip[1].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 12);
-#endif
 				player[pn].enti.d = 2;
 			}
 			player[pn].enti.triggerx = player[pn].enti.tx;
@@ -1103,10 +1107,10 @@ void shinku(global_game_variables_t *gv)
 #define FRAME3 modexDrawSpriteRegion(pip[/*!*/(pip->video->p)].page, x, y, 0, dire, 24, 32,	PLAYERBMPDATAPTR);
 #define FRAME4 modexDrawSpriteRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATAPTR);
 #else
-#define FRAME1 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, 2+dire);
-#define FRAME2 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, 1+dire);
-#define FRAME3 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, dire);
-#define FRAME4 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, 1+dire);
+#define FRAME1 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 2+dire);
+#define FRAME2 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 1+dire);
+#define FRAME3 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, dire);
+#define FRAME4 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 1+dire);
 #endif
 
 void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch)
@@ -1197,114 +1201,17 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 	pip->video->r=1;
 }
 
-/*
-void animate_spri(struct sprite *spri, global_game_variables_t *gv)
-{
-#define GVARVIDEO gv->video
-#define VMEMPAGESIZE2	GVARVIDEO.page[0].pagesize+GVARVIDEO.page[1].pagesize
-#define VMEMPAGEDATA2	GVARVIDEO.page[2].data
-	unsigned int i,o,o2; int j;
-	int x,y,rx,ry,w,h;
-	int overdraw = 1;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.
-						// if the sprite's edge pixels are clear anyway, you can set this to 0.
-	VGA_RAM_PTR omemptr;
 
-	// Events go here
-
-
-	omemptr = vga_state.vga_graphics_ram; // save original mem ptr
-	x=spri->x-4;
-	y=spri->y;
-
-	// Draw sprite
-	j = get_vrl_by_id(spri->spritesheet, spri->curr_spri_id, spri->sprite_vrl_cont);
-	if(j < 0)
-	{
-		Quit (gv, "Error retriving required sprite");
-	}
-
-	// render box bounds. y does not need modification, but x and width must be multiple of 4
-	if (x >= overdraw) rx = (x - overdraw) & (~3);
-		else rx = -(GVARVIDEO.page[0].dx);
-	if (y >= overdraw) ry = (y - overdraw);
-		else ry = -(GVARVIDEO.page[0].dy);
-	h = spri->sprite_vrl_cont->vrl_header->height + overdraw + y - ry;
-	w = (x + spri->sprite_vrl_cont->vrl_header->width + (overdraw*2) + 3 - rx) & (~3);//round up
-	if ((rx+w) > GVARVIDEO.page[0].width) w = GVARVIDEO.page[0].width-rx;
-	if ((ry+h) > GVARVIDEO.page[0].height) h = GVARVIDEO.page[0].height-ry;
-
-	// block copy pattern to where we will draw the sprite
-	vga_setup_wm1_block_copy();
-	o2 = VMEMPAGESIZE2;
-	o = (0x10000UL - (uint16_t)VMEMPAGEDATA2) + (ry * GVARVIDEO.page[0].stridew) + (rx >> 2); // source offscreen
-	for (i=0;i < h;i++,o += GVARVIDEO.page[0].stridew,o2 += (w >> 2)) vga_wm1_mem_block_copy(o2,o,w >> 2);
-
-	// must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally
-	vga_restore_rm0wm0();
-
-	// replace VGA stride with our own and mem ptr. then sprite rendering at this stage is just (0,0)
-	vga_state.vga_draw_stride_limit = (GVARVIDEO.page[0].width + 3 - x) >> 2;//round up
-	vga_state.vga_draw_stride = w >> 2;
-	vga_state.vga_graphics_ram = omemptr + VMEMPAGESIZE2;
-
-	// then the sprite. note modding ram ptr means we just draw to (x&3,0)
-	draw_vrl1_vgax_modex(
-		x-rx,
-		y-ry,
-		spri->sprite_vrl_cont->vrl_header,
-		spri->sprite_vrl_cont->line_offsets,
-		spri->sprite_vrl_cont->buffer + sizeof(struct vrl1_vgax_header),
-		spri->sprite_vrl_cont->data_size
-	);
-
-	// restore ptr
-	vga_state.vga_graphics_ram = omemptr;
-
-	// block copy to visible RAM from offscreen
-	vga_setup_wm1_block_copy();
-	o = VMEMPAGESIZE2; // source offscreen
-	o2 = (ry * GVARVIDEO.page[0].stridew) + (rx >> 2); // dest visible (original stride)
-	for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += GVARVIDEO.page[0].stridew) vga_wm1_mem_block_copy(o2,o,w >> 2);
-	// must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally
-	vga_restore_rm0wm0();
-
-	// restore stride
-	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = GVARVIDEO.page[0].stridew;
-
-	// Depending on delay, update indices
-	switch(spri->delay){
-		// Delay = 0 means that sprite should loop. Nothing to change here
-		case 0:
-			break;
-
-		// Delay = 1 means that on next time unit sprite should be changed
-		case 1:
-			spri->curr_anim_spri++;
-
-			// If we hit the end of an animation sequence, restart it
-			if(!(spri->curr_spri_id = spri->curr_anim_list[spri->curr_anim_spri].sprite_id)){
-				spri->curr_anim_spri = 0;
-				spri->curr_spri_id = spri->curr_anim_list[spri->curr_anim_spri].sprite_id;
-			}
-			spri->delay = spri->curr_anim_list[spri->curr_anim_spri].delay;
-
-		// Delay > 1 means that we should not change sprite yet. Decrease delay
-		default:
-			spri->delay--;
-			break;
-	}
-}
-*/
-//void animate_spri(struct sprite *spri, global_game_variables_t *gv)
 void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch)
 {
 	sword x = player[pn].enti.x;
 	sword y = player[pn].enti.y;
 	word dire=10; //direction
-	sword i;
 	sword qq; //scroll offset
 	word ls = player[pn].enti.persist_aniframe;
-
+#ifdef SPRITE
+	int i=0;
+#endif
 	switch(scrollswitch)
 	{
 		case 0:
@@ -1314,30 +1221,32 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 			qq = ((player[pn].enti.q)*(player[pn].enti.speed));
 		break;
 	}
-	//x-=4;
+#ifdef SPRITE
+	x-=4;
+#endif
 	y-=pip[0].map->tiles->tileHeight;
 	switch (player[pn].enti.d)
 	{
 		case 0:
 			//up
-			dire*=(player[pn].enti.d+1);// dire++;
+			dire*=player[pn].enti.d+1;
 			y-=qq;
 		break;
 		case 3:
 			// right
-			dire*=(player[pn].enti.d-1);// dire++;
+			dire*=(player[pn].enti.d-1);
 			x+=qq;
 		break;
 		case 2:
 		break;
 		case 4:
 			//down
-			dire*=(player[pn].enti.d-1);// dire++;
+			dire*=(player[pn].enti.d-1);
 			y+=qq;
 		break;
 		case 1:
 			//left
-			dire*=(player[pn].enti.d+3);// dire++;
+			dire*=(player[pn].enti.d+3);
 			x-=qq;
 		break;
 	}
@@ -1350,11 +1259,19 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 //#define FRAME2 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, 1+dire);
 //#define FRAME3 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, dire);
 //#define FRAME4 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, 1+dire);
+#ifdef SPRITE
+//#define DRAWFRAME if (i == -1) return; oldanimate_spri(player[pn].ent->spri, pip->video)
 #define DRAWFRAME if (i == -1) return; animate_spri(player[pn].ent->spri, pip->video)
 #define NFRAME1 i = set_anim_by_id(player[pn].ent->spri, 2+dire);	DRAWFRAME;
 #define NFRAME2 i = set_anim_by_id(player[pn].ent->spri, 1+dire);	DRAWFRAME;
 #define NFRAME3 i = set_anim_by_id(player[pn].ent->spri, dire);	DRAWFRAME;
 #define NFRAME4 i = set_anim_by_id(player[pn].ent->spri, 2+dire);	DRAWFRAME;
+#else
+#define NFRAME1 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 2+dire);
+#define NFRAME2 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 1+dire);
+#define NFRAME3 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, dire);
+#define NFRAME4 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 1+dire);
+#endif
 
 	switch(ls)
 	{
@@ -1362,7 +1279,7 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 			NFRAME1
 		break;
 		case 2:
-			NFRAME2;
+			NFRAME2
 		break;
 		case 3:
 			NFRAME3

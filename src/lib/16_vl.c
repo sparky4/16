@@ -374,6 +374,7 @@ VL_ShowPage(page_t *page, boolean vsync, boolean sr) {
 	/* do PEL panning here */
 	outp(AC_INDEX, 0x33);
 	outp(AC_INDEX, (page[0].dx & 0x03) << 1);
+	vga_state.vga_graphics_ram = (VGA_RAM_PTR)page[0].data;
 }
 
 //=============================================================================

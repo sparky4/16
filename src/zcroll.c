@@ -108,11 +108,12 @@ void main(int argc, char *argv[])
 
 	playerXYpos(0, 0, &player, &mv, 0);
 	IN_initplayer(&player, 0);
-	player[0].ent->spri->x = player[0].enti.x;
-	player[0].ent->spri->y = player[0].enti.y;
+	player[0].ent->spri->x = player[0].enti.x-4;
+	player[0].ent->spri->y = player[0].enti.y-16;
+	player[0].ent->spri->delay = 0;
 
 	i = set_anim_by_id(player[0].ent->spri, 31);
-	print_anim_ids(player[0].ent->spri);
+	//print_anim_ids(player[0].ent->spri);
 	if (i == -1)
 	{
 #ifdef FADE
@@ -193,7 +194,7 @@ void main(int argc, char *argv[])
 					player[0].ent->spri->x = TILEWH;
 				default:
 					i++;
-					player[0].ent->spri->delay = 1; animate_spri((player[0].ent->spri), &gvar.video);// player[0].ent->spri->x += 16;
+					player[0].ent->spri->delay = 0; animate_spri((player[0].ent->spri), &gvar.video);// player[0].ent->spri->x += 16;
 				break;
 			}
 		}

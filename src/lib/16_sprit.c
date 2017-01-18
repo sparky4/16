@@ -97,26 +97,29 @@ void print_anim_ids(struct sprite *spri)
 	}
 }
 
-/*
-void animate_spri(struct sprite *spri, global_game_variables_t *gv)
+void oldanimate_spri(struct sprite *spri, video_t *video)
 {
 	int i;
 	// Events go here
+
+
+	vga_state.vga_graphics_ram = (VGA_RAM_PTR)video->page[0].data;//vga_state.vga_graphics_ram; // save original mem ptr
 
 
 	// Draw sprite
 	i = get_vrl_by_id(spri->spritesheet, spri->curr_spri_id, spri->sprite_vrl_cont);
 	if(i < 0)
 	{
-		Quit (gv, "Error retriving required sprite");
+		//Quit (gv, "Error retriving required sprite");
+		return;
 	}
 
 	// replace VGA stride with our own and mem ptr. then sprite rendering at this stage is just (0,0)
-	vga_state.vga_draw_stride_limit = (gv->video.page[0].width + 3 - spri->x) >> 2;
+	vga_state.vga_draw_stride_limit = (video->page[0].width + 3 - spri->x) >> 2;
 
 	draw_vrl1_vgax_modex(
-		spri->x-gv->video.page[0].dx,
-		spri->y-gv->video.page[0].dy,
+		spri->x,//-video->page[0].dx,
+		spri->y,//-video->page[0].dy,
 		spri->sprite_vrl_cont->vrl_header,
 		spri->sprite_vrl_cont->line_offsets,
 		spri->sprite_vrl_cont->buffer + sizeof(struct vrl1_vgax_header),
@@ -124,7 +127,7 @@ void animate_spri(struct sprite *spri, global_game_variables_t *gv)
 	);
 
 	// restore stride
-	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = gv->video.page[0].stridew;
+	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = video->page[0].stridew;
 
 	// Depending on delay, update indices
 	switch(spri->delay){
@@ -149,7 +152,8 @@ void animate_spri(struct sprite *spri, global_game_variables_t *gv)
 			break;
 	}
 }
-*/
+
+
 void animate_spri(struct sprite *spri, video_t *video)
 {
 #define GVARVIDEO video
@@ -157,7 +161,7 @@ void animate_spri(struct sprite *spri, video_t *video)
 #define VMEMPAGEDATA2	GVARVIDEO->page[2].data
 	unsigned int i,o,o2; int j;
 	int x,y,rx,ry,w,h;
-	int overdraw = 1;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.
+	int overdraw = 0;//16;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.
 						// if the sprite's edge pixels are clear anyway, you can set this to 0.
 	VGA_RAM_PTR omemptr;
 
@@ -165,7 +169,7 @@ void animate_spri(struct sprite *spri, video_t *video)
 
 
 	omemptr = (VGA_RAM_PTR)video->page[0].data;//vga_state.vga_graphics_ram; // save original mem ptr
-	x=spri->x;//-4;
+	x=spri->x;
 	y=spri->y;
 
 	// Draw sprite
@@ -201,6 +205,9 @@ void animate_spri(struct sprite *spri, video_t *video)
 	vga_state.vga_graphics_ram = omemptr + VMEMPAGESIZE2;
 
 	// then the sprite. note modding ram ptr means we just draw to (x&3,0)
+#ifndef SPRITE
+	modexClearRegion(&GVARVIDEO->page[0], x, y, 16, 32, 1);
+#else
 	draw_vrl1_vgax_modex(
 		x-rx,
 		y-ry,
@@ -209,7 +216,7 @@ void animate_spri(struct sprite *spri, video_t *video)
 		spri->sprite_vrl_cont->buffer + sizeof(struct vrl1_vgax_header),
 		spri->sprite_vrl_cont->data_size
 	);
-
+#endif
 	// restore ptr
 	vga_state.vga_graphics_ram = omemptr;
 

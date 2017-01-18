@@ -23,6 +23,7 @@
 #define __16_SPRI__
 
 #include "src/lib/16_vrs.h"
+#include "src/lib/scroll16.h"
 
 struct sprite
 {
@@ -66,6 +67,7 @@ int set_anim_by_id(struct sprite *spri, int id);
  * In:
  * + struct sprite *spri - sprite to animate
  */
+void oldanimate_spri(struct sprite *spri, video_t *video);
 void animate_spri(struct sprite *spri, video_t *video);
 
 void print_anim_ids(struct sprite *spri);

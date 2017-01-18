@@ -108,7 +108,7 @@ typedef struct {
 	printf("	tx: %d", player[0].enti.tx); printf("	ty: %d\n", player[0].enti.ty);\
 	printf("	triggx: %d", player[0].enti.triggerx); printf("	triggy: %d\n", player[0].enti.triggery);\
 	printf("	hp: %d", (player[0].enti.hp));	printf("	q: %d", player[0].enti.q);	printf("	player.info.dir: %d", player[0].info.dir);	printf("	player.d: %d ", player[0].enti.d);\
-		printf("	pdir=%d\n", player[0].pdir);\
+		printf("	pdir=%d\n", player[0].pdir); printf("	aniframe=%u", player[0].enti.persist_aniframe);\
 	printf("	tile data value at player trigger position: %d\n\n", mv[0].map->data[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))]);\
 \
 	printf("Virtual Screen: %dx", gvar.video.page[0].width);	printf("%d	", gvar.video.page[0].height);\
@@ -137,8 +137,8 @@ extern char global_temp_status_text[512];
 
 //map_t allocMap(int w, int h);
 //void initMap(map_t *map);
-void walk(map_view_t *pip, player_t *player, word pn);
 void ZC_walk(map_view_t *pip, player_t *player, word pn);
+void oldwalk(map_view_t *pip, player_t *player, word pn);
 void ZC_panPageManual(map_view_t *pip, player_t *player, word pn);
 void ZC_MVSetup(map_view_t *pip, map_t *map, global_game_variables_t *gv);
 void ZC_MVInit(map_view_t *pip, int tx, int ty);
