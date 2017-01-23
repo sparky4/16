@@ -123,7 +123,7 @@ void main(int argc, char *argv[])
 	IN_initplayer(&player, 0);
 	player[0].ent->spri->x = player[0].enti.x-4;
 	player[0].ent->spri->y = player[0].enti.y-16;
-	player[0].ent->spri->delay = 0;
+	player[0].ent->spri->delay = 1;
 
 #ifndef	SPRITE
 	modexClearRegion(mv[0].page, player[0].enti.x, player[0].enti.y-TILEWH, 16, 32, 15);
@@ -232,6 +232,7 @@ void main(int argc, char *argv[])
 	}
 #endif
 	FUNCTIONKEYFUNCTIONS;
+	if(IN_KeyDown(sc_L)){ modexClearRegion(&gvar.video.page[0], player[0].enti.x, player[0].enti.y, 16, 16, 1); }
 
 	//9
 #ifdef FADE

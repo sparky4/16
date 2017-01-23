@@ -60,7 +60,7 @@ char* get_curr_anim_name(struct sprite *spri);
  * Out:
  * int - 0 on success, -1 on error
  */
-int set_anim_by_id(struct sprite *spri, int id);
+int set_anim_by_id(struct sprite *spri, int anim_id);
 
 /* Animate sprite, triggering any events and changing indices if necessary
  * NB: if you want to change animation sequence after a specific sprite is shown, you should call animate_spri first

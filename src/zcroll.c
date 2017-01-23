@@ -115,9 +115,10 @@ void main(int argc, char *argv[])
 	player[0].ent->spri->y = player[0].enti.y-16;
 	player[0].ent->spri->delay = 0;
 
-	i = set_anim_by_id(player[0].ent->spri, 31);
-	print_anim_ids(player[0].ent->spri);
-	if (i == -1)
+	player[0].enti.dire=31;
+	gvar.video.sprifilei = set_anim_by_id(player[0].ent->spri, player[0].enti.dire);
+	//print_anim_ids(player[0].ent->spri);
+	if (gvar.video.sprifilei == -1)
 	{
 #ifdef FADE
 		modexFadeOff(4, gpal);
@@ -202,6 +203,7 @@ void main(int argc, char *argv[])
 			}
 		}
 		FUNCTIONKEYFUNCTIONS;
+		if(IN_KeyDown(sc_L)){ modexClearRegion(&gvar.video.page[0], player[0].enti.x, player[0].enti.y, 16, 16, 1); }
 
 		//9
 #ifdef FADE

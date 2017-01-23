@@ -27,11 +27,13 @@
 #define INC_PER_FRAME_PRINT 	sprintf(global_temp_status_text, "%u", player[pn].enti.persist_aniframe);\
 modexprint(&(pip->video->page[0]), player[pn].enti.x-(8*player[pn].enti.persist_aniframe), player[pn].enti.y-TILEWH-(8*player[pn].enti.persist_aniframe), 1, 20, 1, global_temp_status_text);
 
-#define WALKTYPE_FRAM_PRINT	walktypeinfo(player, pn);\
-modexprint(&(pip->video->page[0]), player[pn].enti.x-(8*player[pn].enti.persist_aniframe)+8, player[pn].enti.y-TILEWH-(8*player[pn].enti.persist_aniframe), 1, 20, 1, global_temp_status_text);\
-INC_PER_FRAME_PRINT
+#define WALKTYPE_FRAM_PRINT INC_PER_FRAME_PRINT
+//walktypeinfo(player, pn);
+//modexprint(&(pip->video->page[0]), player[pn].enti.x-(8*player[pn].enti.persist_aniframe)+8, player[pn].enti.y-TILEWH-(8*player[pn].enti.persist_aniframe), 1, 20, 1, global_temp_status_text);
 
-#define INC_PER_FRAME if(player[pn].enti.q&1) player[pn].enti.persist_aniframe++; if(player[pn].enti.persist_aniframe>4) player[pn].enti.persist_aniframe = 1;
+#define PERSIST_ANIFRAME_INIT 1
+#define Q_INIT PERSIST_ANIFRAME_INIT
+#define INC_PER_FRAME if(player[pn].enti.q&1) player[pn].enti.persist_aniframe++; if(player[pn].enti.persist_aniframe>4) player[pn].enti.persist_aniframe = PERSIST_ANIFRAME_INIT;
 
 void ZC_walk(map_view_t *pip, player_t *player, word pn)
 {
@@ -56,7 +58,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					mapScrollRight(pip, player, (pip[0].video->p), pn);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
+				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.tx++; }
 			}
 			else if(player[pn].enti.tx < pip[0].map->width && !(pip[0].map->data[(player[pn].enti.tx)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))
 			{
@@ -67,7 +69,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					player[pn].enti.x+=(player[pn].enti.speed);
 					ANIMATESPRIFUN(pip, player, pn, 0);
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
+				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.tx++; }
 			}
 			else
 			{
@@ -82,7 +84,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			}
 			player[pn].enti.triggerx = player[pn].enti.tx+1;
 			player[pn].enti.triggery = player[pn].enti.ty;
-			WALKTYPE_FRAM_PRINT
+			//WALKTYPE_FRAM_PRINT
 		break;
 		//left movement
 		case 1:
@@ -99,7 +101,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					mapScrollLeft(pip, player, (pip[0].video->p), pn);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
+				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.tx--; }
 			}
 			else if(player[pn].enti.tx > 1 && !(pip[0].map->data[(player[pn].enti.tx-2)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx-1 == TRIGGX && player[pn].enti.ty == TRIGGY))
 			{
@@ -110,7 +112,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					player[pn].enti.x-=(player[pn].enti.speed);
 					ANIMATESPRIFUN(pip, player, pn, 0);
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
+				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.tx--; }
 			}
 			else
 			{
@@ -125,7 +127,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			}
 			player[pn].enti.triggerx = player[pn].enti.tx-1;
 			player[pn].enti.triggery = player[pn].enti.ty;
-			WALKTYPE_FRAM_PRINT
+			//WALKTYPE_FRAM_PRINT
 		break;
 		//down movement
 		case 4:
@@ -142,7 +144,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					mapScrollDown(pip, player, (pip[0].video->p), pn);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
+				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.ty++; }
 			}
 			else if(player[pn].enti.ty < pip[0].map->height && !(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty+1 == TRIGGY))
 			{
@@ -153,7 +155,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					player[pn].enti.y+=(player[pn].enti.speed);
 					ANIMATESPRIFUN(pip, player, pn, 0);
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
+				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.ty++; }
 			}
 			else
 			{
@@ -168,7 +170,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			}
 			player[pn].enti.triggerx = player[pn].enti.tx;
 			player[pn].enti.triggery = player[pn].enti.ty+1;
-			WALKTYPE_FRAM_PRINT
+			//WALKTYPE_FRAM_PRINT
 		break;
 		//up movement
 		case 0:
@@ -185,7 +187,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					mapScrollUp(pip, player, (pip[0].video->p), pn);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
+				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.ty--; }
 			}
 			else if(player[pn].enti.ty > 1 && !(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty-2))] == 0))//!(player[pn].enti.tx == TRIGGX &&  player[pn].enti.ty-1 == TRIGGY))
 			{
@@ -196,7 +198,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					player[pn].enti.y-=(player[pn].enti.speed);
 					ANIMATESPRIFUN(pip, player, 0, pn);
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
+				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.ty--; }
 			}
 			else
 			{
@@ -211,14 +213,11 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			}
 			player[pn].enti.triggerx = player[pn].enti.tx;
 			player[pn].enti.triggery = player[pn].enti.ty-1;
-			WALKTYPE_FRAM_PRINT
+			//WALKTYPE_FRAM_PRINT
 		break;
 	}
-	if(player[pn].enti.d!=2 && pip[0].video->rs)
-	{
-		IN_UserInput(1,1);
-		delay(500);
-	}
+	//if(player[pn].enti.d!=2 && pip[0].video->rs) IN_UserInput(1,1);
+	//else if(!pip[0].video->rs) delay(500);
 }
 
 
@@ -257,7 +256,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
+				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.tx++; }
 			}
 			else if(player[pn].enti.tx < pip[0].map->width && !(pip[0].map->data[(player[pn].enti.tx)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))
 			{
@@ -268,7 +267,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 					ANIMATESPRIFUN(pip, player, pn, 0);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
+				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.tx++; }
 			}
 			else
 			{
@@ -301,7 +300,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
+				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.tx--; }
 			}
 			else if(player[pn].enti.tx > 1 && !(pip[0].map->data[(player[pn].enti.tx-2)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx-1 == TRIGGX && player[pn].enti.ty == TRIGGY))
 			{
@@ -312,7 +311,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 					ANIMATESPRIFUN(pip, player, pn, 0);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
+				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.tx--; }
 			}
 			else
 			{
@@ -345,7 +344,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
+				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.ty++; }
 			}
 			else if(player[pn].enti.ty < pip[0].map->height && !(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty+1 == TRIGGY))
 			{
@@ -356,7 +355,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 					ANIMATESPRIFUN(pip, player, pn, 0);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
+				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.ty++; }
 			}
 			else
 			{
@@ -389,7 +388,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
+				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.ty--; }
 			}
 			else if(player[pn].enti.ty > 1 && !(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty-2))] == 0))//!(player[pn].enti.tx == TRIGGX &&  player[pn].enti.ty-1 == TRIGGY))
 			{
@@ -400,7 +399,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 					ANIMATESPRIFUN(pip, player, 0, pn);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
+				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.ty--; }
 			}
 			else
 			{
@@ -434,7 +433,7 @@ void ZC_panPageManual(map_view_t *pip, player_t *player, word pn)
 					pip[0].page->dx+=4;
 					SHOWMVFUN_;
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; pip[0].tx++; }
+				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; pip[0].tx++; }
 			}
 		break;
 
@@ -447,7 +446,7 @@ void ZC_panPageManual(map_view_t *pip, player_t *player, word pn)
 					pip[0].page->dx-=4;
 					SHOWMVFUN_;
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; pip[0].tx--; }
+				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; pip[0].tx--; }
 			}
 		break;
 
@@ -460,7 +459,7 @@ void ZC_panPageManual(map_view_t *pip, player_t *player, word pn)
 					pip[0].page->dy+=4;
 					SHOWMVFUN_;
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; pip[0].ty++; }
+				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; pip[0].ty++; }
 			}
 		break;
 
@@ -473,7 +472,7 @@ void ZC_panPageManual(map_view_t *pip, player_t *player, word pn)
 					pip[0].page->dy-=4;
 					SHOWMVFUN_;
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; pip[0].ty--; }
+				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; pip[0].ty--; }
 			}
 		break;
 	}
@@ -1127,57 +1126,32 @@ void shinku(global_game_variables_t *gv)
 	}
 }
 
-void near ZC_drawframe(map_view_t *pip, player_t *player, word pn, sword x, sword y, word dire, word sw)
+void near ZC_drawframe(map_view_t *pip, player_t *player, word pn, sword x, sword y, word sw)
 {
-	pip->video->sprifilei=0;
-
-	switch(sw)
-	{
-		case 1:
-			dire+=2;
-		break;
-		case 2:
-			dire+=1;
-		break;
-// 		case 3:
-// 			dire=dire;
-// 		break;
-		case 4:
-			dire+=2;
-		break;
-	}
-
 	switch(pip[0].video->rs)
 	{
 		case 0:
-			pip->video->sprifilei = set_anim_by_id(player[pn].ent->spri, dire);	if(pip->video->sprifilei == -1) return;
 			animate_spri(player[pn].ent->spri, pip->video);
 		break;
 		case 1:
-			pip->video->sprifilei = set_anim_by_id(player[pn].ent->spri, dire);	if(pip->video->sprifilei == -1) return;
 			oldanimate_spri(player[pn].ent->spri, pip->video);
 		break;
 		case 2:
-			modexClearRegion(&(pip[0].page[0]), x, y, 16, 32, dire);
+			modexClearRegion(&(pip[0].page[0]), x, y, 16, 32, player[pn].enti.dire);
 		break;
 	}
 }
 
-/*void ZC_odrawframe()
-{
-
-}*/
-
 #ifdef SPRITE
-#define FRAME1 modexDrawSpriteRegion(pip[/*!*/(pip->video->p)].page, x, y, 48, dire, 24, 32,	PLAYERBMPDATAPTR);
-#define FRAME2 modexDrawSpriteRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATAPTR);
-#define FRAME3 modexDrawSpriteRegion(pip[/*!*/(pip->video->p)].page, x, y, 0, dire, 24, 32,	PLAYERBMPDATAPTR);
-#define FRAME4 modexDrawSpriteRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATAPTR);
+#define FRAME1 modexDrawSpriteRegion(pip[/*!*/(pip->video->p)].page, x, y, 48, player[pn].enti.dire, 24, 32,	PLAYERBMPDATAPTR);
+#define FRAME2 modexDrawSpriteRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, player[pn].enti.dire, 24, 32,	PLAYERBMPDATAPTR);
+#define FRAME3 modexDrawSpriteRegion(pip[/*!*/(pip->video->p)].page, x, y, 0, player[pn].enti.dire, 24, 32,	PLAYERBMPDATAPTR);
+#define FRAME4 modexDrawSpriteRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, player[pn].enti.dire, 24, 32,	PLAYERBMPDATAPTR);
 #else
-#define FRAME1 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 2+dire);
-#define FRAME2 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 1+dire);
-#define FRAME3 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, dire);
-#define FRAME4 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 1+dire);
+#define FRAME1 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 2+player[pn].enti.dire);
+#define FRAME2 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 1+player[pn].enti.dire);
+#define FRAME3 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, player[pn].enti.dire);
+#define FRAME4 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 1+player[pn].enti.dire);
 #endif
 
 void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch)
@@ -1186,9 +1160,9 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 	sword y = player[pn].enti.y;
 	sword bx = x+16;	//buffer's x
 	sword by = y+16;	//buffer's y
-	word dire=32; //direction
 	sword qq; //scroll offset
 	word ls = player[pn].enti.persist_aniframe;
+	player[pn].enti.dire=32; //direction
 
 	switch(scrollswitch)
 	{
@@ -1205,13 +1179,13 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 	{
 		case 0:
 			//up
-			dire*=player[pn].enti.d;
+			player[pn].enti.dire*=player[pn].enti.d;
 			y-=qq;
 			by-=4;
 		break;
 		case 3:
 			// right
-			dire*=(player[pn].enti.d-2);
+			player[pn].enti.dire*=(player[pn].enti.d-2);
 			x+=qq;
 			bx+=4;
 		break;
@@ -1219,13 +1193,13 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 		break;
 		case 4:
 			//down
-			dire*=(player[pn].enti.d-2);
+			player[pn].enti.dire*=(player[pn].enti.d-2);
 			y+=qq;
 			by+=4;
 		break;
 		case 1:
 			//left
-			dire*=(player[pn].enti.d+2);
+			player[pn].enti.dire*=(player[pn].enti.d+2);
 			x-=qq;
 			bx-=4;
 		break;
@@ -1272,9 +1246,9 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 {
 	sword x = player[pn].enti.x;
 	sword y = player[pn].enti.y;
-	word dire=10; //direction
 	sword qq; //scroll offset
 	word ls = player[pn].enti.persist_aniframe;
+	player[pn].enti.dire=10; //direction
 
 	switch(scrollswitch)
 	{
@@ -1292,27 +1266,31 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 	{
 		case 0:
 			//up
-			dire*=player[pn].enti.d+1;
+			player[pn].enti.dire*=player[pn].enti.d+1;
 			y-=qq;
 		break;
 		case 3:
 			// right
-			dire*=(player[pn].enti.d-1);
+			player[pn].enti.dire*=(player[pn].enti.d-1);
 			x+=qq;
 		break;
 		case 2:
 		break;
 		case 4:
 			//down
-			dire*=(player[pn].enti.d-1);
+			player[pn].enti.dire*=(player[pn].enti.d-1);
 			y+=qq;
 		break;
 		case 1:
 			//left
-			dire*=(player[pn].enti.d+3);
+			player[pn].enti.dire*=(player[pn].enti.d+3);
 			x-=qq;
 		break;
 	}
+	player[pn].enti.dire++;
+
+	player[pn].ent->spri->delay=1;
+	//pip->video->sprifilei = set_anim_by_id(player[pn].ent->spri, player[pn].enti.dire);	if(pip->video->sprifilei == -1){ printf("ERROR!	%u\n", player[pn].enti.dire); return; }
 
 	//setting xy position
 	player[pn].ent->spri->x = x;
@@ -1321,19 +1299,22 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 	switch(ls)
 	{
 		case 1:
-			ZC_drawframe(pip, player, pn, x, y, dire, ls);
+			ZC_drawframe(pip, player, pn, x, y, ls);
 		break;
 		case 2:
-			ZC_drawframe(pip, player, pn, x, y, dire, ls);
+			ZC_drawframe(pip, player, pn, x, y, ls);
 		break;
 		case 3:
-			ZC_drawframe(pip, player, pn, x, y, dire, ls);
+			ZC_drawframe(pip, player, pn, x, y, ls);
 		break;
 		case 4:
-			ZC_drawframe(pip, player, pn, x, y, dire, ls);
+			ZC_drawframe(pip, player, pn, x, y, ls);
 		break;
 	}
 	pip->video->r=1;
+	WALKTYPE_FRAM_PRINT;
+	sprintf(global_temp_status_text, " %u", player[pn].enti.dire);
+	modexprint(&(pip->video->page[0]), player[pn].enti.x-(8*player[pn].enti.persist_aniframe)+8, player[pn].enti.y-TILEWH-(8*player[pn].enti.persist_aniframe), 1, 20, 1, global_temp_status_text);\
 }
 
 /*

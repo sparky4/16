@@ -386,7 +386,6 @@ void walktypeinfo(player_t *player, word pn)
 			sprintf(global_temp_status_text, "%s", "s");
 		break;
 	}
-
 }
 
 const char *nibble_to_binary(nibble x)

@@ -92,12 +92,12 @@ void main()
 	//read_vrs(&gvar, "data/spri/chikyuu.vrs", &vrs);
 	spri.spritesheet = &vrs;
 	spri.sprite_vrl_cont = malloc(sizeof(struct vrl_container));
-	i = set_anim_by_id(&spri, 11);
+	i = set_anim_by_id(&spri, 31);
 	if (i == -1)
 	{
 		return;
 	}
-	spri.x = TILEWH;
+	spri.x = TILEWH-4;
 	spri.y = TILEWH;
 
 //	Uncomment to see broken sprites
@@ -121,7 +121,8 @@ void main()
 	modexPalUpdate1(pal);*/
 	VL_LoadPalFile("data/spri/chikyuu.pal", &palette);
 	for (i = 0; i < 5; i++){
-		spri.delay = 1; animate_spri(&spri, &gvar.video);// spri.x += 16;
+		spri.delay = 1;
+		animate_spri(&spri, &gvar.video);// spri.x += 16;
 		delay(500);
 	}
 

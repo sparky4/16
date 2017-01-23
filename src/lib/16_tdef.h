@@ -108,16 +108,16 @@ typedef struct {
 	word dy;		/* row we are viewing on virtual screen (on page[0]) */	/* off screen buffer on the top size */
 	word sw;		/* screen width */	/* resolution */
 	word sh;		/* screen heigth */	/* resolution */
-	word tw;		/* screen width in tiles */
-	word th;		/* screen height in tiles */
+		word tw;		/* screen width in tiles */
+		word th;		/* screen height in tiles */
 	word width;		/* virtual width of the page */
 	word height;	/* virtual height of the page */
-	word tilesw;		/* virtual screen width in tiles */
-	word tilesh;		/* virtual screen height in tiles */
-	sword tilemidposscreenx;	/* middle tile x position */	/* needed for scroll system to work accordingly */
-	sword tilemidposscreeny;	/* middle tile y position */	/* needed for scroll system to work accordingly */
-	sword tileplayerposscreenx;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
-	sword tileplayerposscreeny;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
+		word tilesw;		/* virtual screen width in tiles */
+		word tilesh;		/* virtual screen height in tiles */
+		sword tilemidposscreenx;	/* middle tile x position */	/* needed for scroll system to work accordingly */
+		sword tilemidposscreeny;	/* middle tile y position */	/* needed for scroll system to work accordingly */
+		sword tileplayerposscreenx;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
+		sword tileplayerposscreeny;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
 	word stridew;			/* width/4 */	/* VGA */
 	word pagesize;			/* page size */
 	word pi;				/* increment page by this much to preserve location */
@@ -138,6 +138,7 @@ typedef	struct
 	int sheetsetx; //NOT USED YET! entity sprite sheet set on the image x
 	int sheetsety; //NOT USED YET! entity sprite sheet set on the image y
 	byte d;		//direction to render sprite!! wwww
+	word dire;		//sprite in use
 	byte q;		//loop variable for anumation and locking the playing to compleate the animation cycle to prevent issues with misalignment www
 	word speed;		//entity speed!
 	word spt;		//speed per tile
@@ -267,7 +268,7 @@ typedef struct
 	byte vga_draw_stride_limit;		// further X clipping
 //
 	word __near rs;			//render switch
-	int __near sprifilei;		//player file's i
+	sword __near sprifilei;		//player file's i
 	boolean __near p;			//render page number //BLEH
 	boolean __near r;			//page flip if true
 	word pr[MAXPAGE][4];	//render sections of pages (this is supposed to be set up to draw sections of the screen if updated)

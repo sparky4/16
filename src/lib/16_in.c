@@ -1287,10 +1287,10 @@ void IN_initplayer(player_t *player, word pn)
 	player[0].info.xaxis = player[0].tx*TILEWH;
 	player[0].info.y = player[0].ty;
 	player[0].info.yaxis = player[0].ty*TILEWH;*/
-	player[pn].enti.q =1;
+	player[pn].enti.q =				1;
 	player[pn].enti.d =2;
 	player[pn].enti.hp=4;
 	player[pn].enti.speed=4;
-	player[pn].enti.persist_aniframe=0;
+	player[pn].enti.persist_aniframe=	1;
 	player[pn].enti.spt=(TILEWH/(player[pn].enti.speed));	//speed per tile wwww
 }
