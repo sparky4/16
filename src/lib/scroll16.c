@@ -1105,7 +1105,7 @@ void shinku(global_game_variables_t *gv)
 
 void near ZC_drawframe(map_view_t *pip, player_t *player, word pn, sword x, sword y, word dire, word sw)
 {
-	int i=0;
+	pip->video->playerfilei=0;
 
 	switch(sw)
 	{
@@ -1122,18 +1122,15 @@ void near ZC_drawframe(map_view_t *pip, player_t *player, word pn, sword x, swor
 			dire+=2;
 		break;
 	}
-	if(pip[0].video->rs<2)
-	{
-		i = set_anim_by_id(player[pn].ent->spri, dire);	if (i == -1) return;
-		//printf("RS<2\n");
-	}
 
 	switch(pip[0].video->rs)
 	{
 		case 0:
+			pip->video->playerfilei = set_anim_by_id(player[pn].ent->spri, dire);	if(pip->video->playerfilei == -1) return;
 			animate_spri(player[pn].ent->spri, pip->video);
 		break;
 		case 1:
+			pip->video->playerfilei = set_anim_by_id(player[pn].ent->spri, dire);	if(pip->video->playerfilei == -1) return;
 			oldanimate_spri(player[pn].ent->spri, pip->video);
 		break;
 		case 2:

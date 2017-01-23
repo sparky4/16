@@ -162,6 +162,7 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 void shinku(global_game_variables_t *gv);
 void near ZC_drawframe(map_view_t *pip, player_t *player, word pn, sword x, sword y, word dire, word sw);
 void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch);
+void near ZC_animatePlayer_(map_view_t *pip, player_t *player, word pn, sword scrollswitch);
 void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch);
 
 // Move an entity around. Should actually be in 16_entity
