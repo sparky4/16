@@ -372,6 +372,23 @@ void Quit (global_game_variables_t *gvar, char *error)
 
 //===========================================================================
 
+void walktypeinfo(player_t *player, word pn)
+{
+	switch(player[pn].walktype)
+	{
+		case 0:	//bump
+			sprintf(global_temp_status_text, "%s", "b");
+		break;
+		case 1:	//walk no scroll
+			sprintf(global_temp_status_text, "%s", "w");
+		break;
+		case 2:	//scrolling walk
+			sprintf(global_temp_status_text, "%s", "s");
+		break;
+	}
+
+}
+
 const char *nibble_to_binary(nibble x)
 {
 	static char b[9];

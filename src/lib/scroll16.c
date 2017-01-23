@@ -27,7 +27,11 @@
 #define INC_PER_FRAME_PRINT 	sprintf(global_temp_status_text, "%u", player[pn].enti.persist_aniframe);\
 modexprint(&(pip->video->page[0]), player[pn].enti.x-(8*player[pn].enti.persist_aniframe), player[pn].enti.y-TILEWH-(8*player[pn].enti.persist_aniframe), 1, 20, 1, global_temp_status_text);
 
-#define INC_PER_FRAME if(player[pn].enti.q&1) player[pn].enti.persist_aniframe++; if(player[pn].enti.persist_aniframe>4) player[pn].enti.persist_aniframe = 1; INC_PER_FRAME_PRINT
+#define WALKTYPE_FRAM_PRINT	walktypeinfo(player, pn);\
+modexprint(&(pip->video->page[0]), player[pn].enti.x-(8*player[pn].enti.persist_aniframe)+8, player[pn].enti.y-TILEWH-(8*player[pn].enti.persist_aniframe), 1, 20, 1, global_temp_status_text);\
+INC_PER_FRAME_PRINT
+
+#define INC_PER_FRAME if(player[pn].enti.q&1) player[pn].enti.persist_aniframe++; if(player[pn].enti.persist_aniframe>4) player[pn].enti.persist_aniframe = 1;
 
 void ZC_walk(map_view_t *pip, player_t *player, word pn)
 {
@@ -42,6 +46,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			if(pip[0].tx >= 0 && pip[0].tx+pip[0].page->tw < pip[0].map->width && player[pn].enti.tx == pip[0].tx+pip[0].page->tilemidposscreenx &&
 			!(pip[0].map->data[(player[pn].enti.tx)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))	//collision detection!
 			{
+				player[pn].walktype=2;
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
 					INC_PER_FRAME;
@@ -55,6 +60,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			}
 			else if(player[pn].enti.tx < pip[0].map->width && !(pip[0].map->data[(player[pn].enti.tx)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))
 			{
+				player[pn].walktype=1;
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
 					INC_PER_FRAME;
@@ -65,6 +71,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			}
 			else
 			{
+				player[pn].walktype=0;
 //#ifdef SPRITE
 //modexDrawSpriteRegion(pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 24, 32, PLAYERBMPDATAPTR);
 				ANIMATESPRIFUN(pip, player, pn, 0);
@@ -75,12 +82,14 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			}
 			player[pn].enti.triggerx = player[pn].enti.tx+1;
 			player[pn].enti.triggery = player[pn].enti.ty;
+			WALKTYPE_FRAM_PRINT
 		break;
 		//left movement
 		case 1:
 			if(pip[0].tx > 0 && pip[0].tx+pip[0].page->tw <= pip[0].map->width && player[pn].enti.tx == pip[0].tx+pip[0].page->tilemidposscreenx &&
 			!(pip[0].map->data[(player[pn].enti.tx-2)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx-1 == TRIGGX && player[pn].enti.ty == TRIGGY))	//collision detection!
 			{
+				player[pn].walktype=2;
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
 					INC_PER_FRAME;
@@ -94,6 +103,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			}
 			else if(player[pn].enti.tx > 1 && !(pip[0].map->data[(player[pn].enti.tx-2)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx-1 == TRIGGX && player[pn].enti.ty == TRIGGY))
 			{
+				player[pn].walktype=1;
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
 					INC_PER_FRAME;
@@ -104,6 +114,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			}
 			else
 			{
+				player[pn].walktype=0;
 //#ifdef SPRITE
 //modexDrawSpriteRegion(pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 96, 24, 32, PLAYERBMPDATAPTR);
 				ANIMATESPRIFUN(pip, player, pn, 0);
@@ -114,12 +125,14 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			}
 			player[pn].enti.triggerx = player[pn].enti.tx-1;
 			player[pn].enti.triggery = player[pn].enti.ty;
+			WALKTYPE_FRAM_PRINT
 		break;
 		//down movement
 		case 4:
 			if(pip[0].ty >= 0 && pip[0].ty+pip[0].page->th < pip[0].map->height && player[pn].enti.ty == pip[0].ty+pip[0].page->tilemidposscreeny &&
 			!(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty+1 == TRIGGY))	//collision detection!
 			{
+				player[pn].walktype=2;
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
 					INC_PER_FRAME;
@@ -133,6 +146,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			}
 			else if(player[pn].enti.ty < pip[0].map->height && !(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty+1 == TRIGGY))
 			{
+				player[pn].walktype=1;
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
 					INC_PER_FRAME;
@@ -143,6 +157,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			}
 			else
 			{
+				player[pn].walktype=0;
 //#ifdef SPRITE
 //modexDrawSpriteRegion(pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 64, 24, 32, PLAYERBMPDATAPTR);
 				ANIMATESPRIFUN(pip, player, pn, 0);
@@ -153,12 +168,14 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			}
 			player[pn].enti.triggerx = player[pn].enti.tx;
 			player[pn].enti.triggery = player[pn].enti.ty+1;
+			WALKTYPE_FRAM_PRINT
 		break;
 		//up movement
 		case 0:
 			if(pip[0].ty > 0 && pip[0].ty+pip[0].page->th <= pip[0].map->height && player[pn].enti.ty == pip[0].ty+pip[0].page->tilemidposscreeny &&
 			!(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty-2))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty-1 == TRIGGY))	//collision detection!
 			{
+				player[pn].walktype=2;
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
 					INC_PER_FRAME;
@@ -172,6 +189,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			}
 			else if(player[pn].enti.ty > 1 && !(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty-2))] == 0))//!(player[pn].enti.tx == TRIGGX &&  player[pn].enti.ty-1 == TRIGGY))
 			{
+				player[pn].walktype=1;
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
 					INC_PER_FRAME;
@@ -182,6 +200,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			}
 			else
 			{
+				player[pn].walktype=0;
 //#ifdef SPRITE
 //modexDrawSpriteRegion(pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 0, 24, 32, PLAYERBMPDATAPTR);
 				ANIMATESPRIFUN(pip, player, pn, 0);
@@ -192,9 +211,14 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			}
 			player[pn].enti.triggerx = player[pn].enti.tx;
 			player[pn].enti.triggery = player[pn].enti.ty-1;
+			WALKTYPE_FRAM_PRINT
 		break;
 	}
-	if(player[pn].enti.d!=2 && pip[0].video->rs) delay(500);
+	if(player[pn].enti.d!=2 && pip[0].video->rs)
+	{
+		IN_UserInput(1,1);
+		delay(500);
+	}
 }
 
 

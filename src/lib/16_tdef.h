@@ -229,6 +229,7 @@ typedef	struct
 	byte near		pdir;	//previous direction~ used in IN_16 in IN_ReadControl()
 	CursorInfo		info;
 	ControlType	Controls;
+	word walktype;
 //newer vars
 	int dx, dy, delta;	//TODO: what is this? ^^
 } player_t;

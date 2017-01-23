@@ -52,6 +52,7 @@ void Shutdown16(global_game_variables_t *gvar);
 void Startup16(global_game_variables_t *gvar);
 void ClearMemory (global_game_variables_t *gvar);
 void Quit (global_game_variables_t *gvar, char *error);
+void walktypeinfo(player_t *player, word pn);
 void nibbletest();
 void booleantest();
 
