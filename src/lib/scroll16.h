@@ -44,10 +44,7 @@
 #define SPRITE
 //#define TILERENDER
 
-//modexDrawSpritePBufRegion
-//modexDrawBmpPBufRegion
-//#define PBUFSFUN		modexDrawSpriteRegion
-//#define PBUFBFUN		modexDrawBmpRegion
+#define ANIMATESPRIFUN ZC_animatePlayer
 
 #define PLAYERBMPDATAVAR	player[pn].data
 #define PLAYERBMPDATA		*PLAYERBMPDATAVAR
@@ -261,3 +258,8 @@ void near mapScroll(map_view_t *mv, player_t *player);
 	}
 	pip->video->r=1;
 }*/
+
+//modexDrawSpritePBufRegion
+//modexDrawBmpPBufRegion
+//#define PBUFSFUN		modexDrawSpriteRegion
+//#define PBUFBFUN		modexDrawBmpRegion

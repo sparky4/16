@@ -24,7 +24,6 @@
 */
 #include "src/lib/scroll16.h"
 
-#define ANIMATESPRIFUN ZC_animatePlayer
 #define INC_PER_FRAME_PRINT 	sprintf(global_temp_status_text, "%u", player[pn].enti.persist_aniframe);\
 modexprint(&(pip->video->page[0]), player[pn].enti.x-(8*player[pn].enti.persist_aniframe), player[pn].enti.y-TILEWH-(8*player[pn].enti.persist_aniframe), 1, 20, 1, global_temp_status_text);
 
@@ -195,6 +194,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			player[pn].enti.triggery = player[pn].enti.ty-1;
 		break;
 	}
+	if(player[pn].enti.d!=2 && pip[0].video->rs) delay(500);
 }
 
 
@@ -1105,7 +1105,7 @@ void shinku(global_game_variables_t *gv)
 
 void near ZC_drawframe(map_view_t *pip, player_t *player, word pn, sword x, sword y, word dire, word sw)
 {
-	pip->video->playerfilei=0;
+	pip->video->sprifilei=0;
 
 	switch(sw)
 	{
@@ -1126,11 +1126,11 @@ void near ZC_drawframe(map_view_t *pip, player_t *player, word pn, sword x, swor
 	switch(pip[0].video->rs)
 	{
 		case 0:
-			pip->video->playerfilei = set_anim_by_id(player[pn].ent->spri, dire);	if(pip->video->playerfilei == -1) return;
+			pip->video->sprifilei = set_anim_by_id(player[pn].ent->spri, dire);	if(pip->video->sprifilei == -1) return;
 			animate_spri(player[pn].ent->spri, pip->video);
 		break;
 		case 1:
-			pip->video->playerfilei = set_anim_by_id(player[pn].ent->spri, dire);	if(pip->video->playerfilei == -1) return;
+			pip->video->sprifilei = set_anim_by_id(player[pn].ent->spri, dire);	if(pip->video->sprifilei == -1) return;
 			oldanimate_spri(player[pn].ent->spri, pip->video);
 		break;
 		case 2:
@@ -1293,11 +1293,6 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 	//setting xy position
 	player[pn].ent->spri->x = x;
 	player[pn].ent->spri->y = y;
-
-//#define FRAME1 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, 2+dire);
-//#define FRAME2 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, 1+dire);
-//#define FRAME3 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, dire);
-//#define FRAME4 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, 1+dire);
 
 	switch(ls)
 	{

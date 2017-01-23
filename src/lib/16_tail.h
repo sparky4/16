@@ -41,7 +41,7 @@
 			break;\
 			case 2:\
 				gvar.video.rs=0;\
-			break; }\
+			break;}\
 			IN_UserInput(1,1); }
 #define FUNCTIONKEYFUNCTIONS0EXE \
 	if(IN_KeyDown(sc_F6)){ VL_ShowPage(&gvar.video.page[gvar.video.panp], 0, 0); IN_UserInput(1,1); } \

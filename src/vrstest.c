@@ -122,7 +122,7 @@ void main()
 	VL_LoadPalFile("data/spri/chikyuu.pal", &palette);
 	for (i = 0; i < 5; i++){
 		spri.delay = 1; animate_spri(&spri, &gvar.video);// spri.x += 16;
-		sleep(1);
+		delay(500);
 	}
 
 	while(!IN_KeyDown(sc_Escape))

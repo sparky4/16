@@ -102,7 +102,7 @@ void main(int argc, char *argv[])
 	ZC_MVSetup(&mv, &map, &gvar);
 
 	//renderswitch
-	gvar.video.rs=0;
+	gvar.video.rs=1;
 	//player[0].ent->spri->x = player[0].ent->spri->y = TILEWH;
 
 	// set up paging
