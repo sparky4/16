@@ -265,7 +265,8 @@ typedef struct
 	byte vga_draw_stride;
 	byte vga_draw_stride_limit;		// further X clipping
 //
-boolean __near p;			//render page number //BLEH
+	word __near rs;			//render switch
+	boolean __near p;			//render page number //BLEH
 	boolean __near r;			//page flip if true
 	word pr[MAXPAGE][4];	//render sections of pages (this is supposed to be set up to draw sections of the screen if updated)
 

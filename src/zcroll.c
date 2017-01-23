@@ -100,6 +100,9 @@ void main(int argc, char *argv[])
 	// setup camera and screen~
 	modexHiganbanaPageSetup(&gvar.video);
 	ZC_MVSetup(&mv, &map, &gvar);
+
+	//renderswitch
+	gvar.video.rs=0;
 	//player[0].ent->spri->x = player[0].ent->spri->y = TILEWH;
 
 	// set up paging

@@ -112,6 +112,8 @@ void main(int argc, char *argv[])
 	modexHiganbanaPageSetup(&gvar.video);
 	ZC_MVSetup(&mv, &map, &gvar);
 
+	//renderswitch
+	gvar.video.rs=2;
 
 	/* set up paging */
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
@@ -119,6 +121,9 @@ void main(int argc, char *argv[])
 
 	playerXYpos(0, 0, &player, &mv, 0);
 	IN_initplayer(&player, 0);
+	player[0].ent->spri->x = player[0].enti.x-4;
+	player[0].ent->spri->y = player[0].enti.y-16;
+	player[0].ent->spri->delay = 0;
 
 #ifndef	SPRITE
 	modexClearRegion(mv[0].page, player[0].enti.x, player[0].enti.y-TILEWH, 16, 32, 15);

@@ -297,6 +297,8 @@ void modexHiganbanaPageSetup(video_t *video)
 	video->vga_draw_stride=	vga_state.vga_draw_stride;
 	video->vga_draw_stride_limit=	vga_state.vga_draw_stride_limit;
 
+	video->rs=0;
+
 	//setup the buffersize
 	video->page[0].dx=video->page[0].dy=
 		video->page[1].dx=video->page[1].dy=TILEWH;	// 1 tile size buffer

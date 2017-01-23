@@ -42,7 +42,6 @@
 #include <hw/vga/vrl.h>
 
 #define SPRITE
-//#define SPRITO
 //#define TILERENDER
 
 //modexDrawSpritePBufRegion
@@ -161,6 +160,7 @@ void mapDrawWRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 //void qclean();
 void shinku(global_game_variables_t *gv);
+void near ZC_drawframe(map_view_t *pip, player_t *player, word pn, sword x, sword y, word dire, word sw);
 void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch);
 void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch);
 
@@ -174,3 +174,89 @@ void walk_player(player_t *player, map_view_t *map_v);
 void near mapScroll(map_view_t *mv, player_t *player);
 
 #endif /*__SCROLL16_H_*/
+//older zc_animate
+//#define SPRITO
+/*void near ZC_animatePlayer_(map_view_t *pip, player_t *player, word pn, sword scrollswitch)
+{
+	sword x = player[pn].enti.x;
+	sword y = player[pn].enti.y;
+	word dire=10; //direction
+	sword qq; //scroll offset
+	word ls = player[pn].enti.persist_aniframe;
+#ifndef SPRITO
+	int i=0;
+#endif
+	switch(scrollswitch)
+	{
+		case 0:
+			qq = 0;
+		break;
+		default:
+			qq = ((player[pn].enti.q)*(player[pn].enti.speed));
+		break;
+	}
+#ifdef SPRITE
+	x-=4;
+#endif
+	y-=pip[0].map->tiles->tileHeight;
+	switch (player[pn].enti.d)
+	{
+		case 0:
+			//up
+			dire*=player[pn].enti.d+1;
+			y-=qq;
+		break;
+		case 3:
+			// right
+			dire*=(player[pn].enti.d-1);
+			x+=qq;
+		break;
+		case 2:
+		break;
+		case 4:
+			//down
+			dire*=(player[pn].enti.d-1);
+			y+=qq;
+		break;
+		case 1:
+			//left
+			dire*=(player[pn].enti.d+3);
+			x-=qq;
+		break;
+	}
+
+	//setting xy position
+	player[pn].ent->spri->x = x;
+	player[pn].ent->spri->y = y;
+
+#ifndef SPRITO
+//#define DRAWFRAME if (i == -1) return; oldanimate_spri(player[pn].ent->spri, pip->video)
+#define DRAWFRAME if (i == -1) return; animate_spri(player[pn].ent->spri, pip->video)
+#define NFRAME1 i = set_anim_by_id(player[pn].ent->spri, 2+dire);	DRAWFRAME;
+#define NFRAME2 i = set_anim_by_id(player[pn].ent->spri, 1+dire);	DRAWFRAME;
+#define NFRAME3 i = set_anim_by_id(player[pn].ent->spri, dire);	DRAWFRAME;
+#define NFRAME4 i = set_anim_by_id(player[pn].ent->spri, 2+dire);	DRAWFRAME;
+#else
+#define NFRAME1 modexClearRegion(pip[(pip->video->p)].page, x, y, 16, 32, 2+dire);
+#define NFRAME2 modexClearRegion(pip[(pip->video->p)].page, x, y, 16, 32, 1+dire);
+#define NFRAME3 modexClearRegion(pip[(pip->video->p)].page, x, y, 16, 32, dire);
+#define NFRAME4 modexClearRegion(pip[(pip->video->p)].page, x, y, 16, 32, 1+dire);
+#endif
+
+	switch(ls)
+	{
+		case 1:
+			NFRAME1
+		break;
+		case 2:
+			NFRAME2
+		break;
+		case 3:
+			NFRAME3
+		break;
+		case 4:
+			NFRAME4
+		break;
+	}
+	pip->video->r=1;
+}*/

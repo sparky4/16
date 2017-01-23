@@ -25,8 +25,10 @@
 #include "src/lib/scroll16.h"
 
 #define ANIMATESPRIFUN ZC_animatePlayer
+#define INC_PER_FRAME_PRINT 	sprintf(global_temp_status_text, "%u", player[pn].enti.persist_aniframe);\
+modexprint(&(pip->video->page[0]), player[pn].enti.x-(8*player[pn].enti.persist_aniframe), player[pn].enti.y-TILEWH-(8*player[pn].enti.persist_aniframe), 1, 20, 1, global_temp_status_text);
 
-#define INC_PER_FRAME if(player[pn].enti.q&1) player[pn].enti.persist_aniframe++; if(player[pn].enti.persist_aniframe>4) player[pn].enti.persist_aniframe = 1;
+#define INC_PER_FRAME if(player[pn].enti.q&1) player[pn].enti.persist_aniframe++; if(player[pn].enti.persist_aniframe>4) player[pn].enti.persist_aniframe = 1; INC_PER_FRAME_PRINT
 
 void ZC_walk(map_view_t *pip, player_t *player, word pn)
 {
@@ -50,9 +52,6 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					mapScrollRight(pip, player, (pip[0].video->p), pn);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-					sprintf(global_temp_status_text, "%u", player[pn].enti.persist_aniframe);
-					modexprint(&(pip[0].video->page[0]), player[pn].enti.x+(8*player[pn].enti.persist_aniframe), player[pn].enti.y-TILEWH-8, 1, 8, 1, global_temp_status_text);
-					sleep(1);
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
 			}
 			else if(player[pn].enti.tx < pip[0].map->width && !(pip[0].map->data[(player[pn].enti.tx)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))
@@ -63,7 +62,6 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					player[pn].enti.x+=(player[pn].enti.speed);
 					ANIMATESPRIFUN(pip, player, pn, 0);
 					player[pn].enti.q++;
-					sleep(1);
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
 			}
 			else
@@ -1105,6 +1103,50 @@ void shinku(global_game_variables_t *gv)
 	}
 }
 
+void near ZC_drawframe(map_view_t *pip, player_t *player, word pn, sword x, sword y, word dire, word sw)
+{
+	int i=0;
+
+	switch(sw)
+	{
+		case 1:
+			dire+=2;
+		break;
+		case 2:
+			dire+=1;
+		break;
+// 		case 3:
+// 			dire=dire;
+// 		break;
+		case 4:
+			dire+=2;
+		break;
+	}
+	if(pip[0].video->rs<2)
+	{
+		i = set_anim_by_id(player[pn].ent->spri, dire);	if (i == -1) return;
+		//printf("RS<2\n");
+	}
+
+	switch(pip[0].video->rs)
+	{
+		case 0:
+			animate_spri(player[pn].ent->spri, pip->video);
+		break;
+		case 1:
+			oldanimate_spri(player[pn].ent->spri, pip->video);
+		break;
+		case 2:
+			modexClearRegion(&(pip[0].page[0]), x, y, 16, 32, dire);
+		break;
+	}
+}
+
+/*void ZC_odrawframe()
+{
+
+}*/
+
 #ifdef SPRITE
 #define FRAME1 modexDrawSpriteRegion(pip[/*!*/(pip->video->p)].page, x, y, 48, dire, 24, 32,	PLAYERBMPDATAPTR);
 #define FRAME2 modexDrawSpriteRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, dire, 24, 32,	PLAYERBMPDATAPTR);
@@ -1205,7 +1247,6 @@ void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scroll
 	pip->video->r=1;
 }
 
-
 void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch)
 {
 	sword x = player[pn].enti.x;
@@ -1213,9 +1254,7 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 	word dire=10; //direction
 	sword qq; //scroll offset
 	word ls = player[pn].enti.persist_aniframe;
-#ifndef SPRITO
-	int i=0;
-#endif
+
 	switch(scrollswitch)
 	{
 		case 0:
@@ -1225,9 +1264,8 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 			qq = ((player[pn].enti.q)*(player[pn].enti.speed));
 		break;
 	}
-#ifdef SPRITE
-	x-=4;
-#endif
+	if(pip[0].video->rs<2)
+		x-=4;
 	y-=pip[0].map->tiles->tileHeight;
 	switch (player[pn].enti.d)
 	{
@@ -1263,33 +1301,20 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 //#define FRAME2 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, 1+dire);
 //#define FRAME3 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, dire);
 //#define FRAME4 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, 1+dire);
-#ifndef SPRITO
-//#define DRAWFRAME if (i == -1) return; oldanimate_spri(player[pn].ent->spri, pip->video)
-#define DRAWFRAME if (i == -1) return; animate_spri(player[pn].ent->spri, pip->video)
-#define NFRAME1 i = set_anim_by_id(player[pn].ent->spri, 2+dire);	DRAWFRAME;
-#define NFRAME2 i = set_anim_by_id(player[pn].ent->spri, 1+dire);	DRAWFRAME;
-#define NFRAME3 i = set_anim_by_id(player[pn].ent->spri, dire);	DRAWFRAME;
-#define NFRAME4 i = set_anim_by_id(player[pn].ent->spri, 2+dire);	DRAWFRAME;
-#else
-#define NFRAME1 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 2+dire);
-#define NFRAME2 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 1+dire);
-#define NFRAME3 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, dire);
-#define NFRAME4 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 1+dire);
-#endif
 
 	switch(ls)
 	{
 		case 1:
-			NFRAME1
+			ZC_drawframe(pip, player, pn, x, y, dire, ls);
 		break;
 		case 2:
-			NFRAME2
+			ZC_drawframe(pip, player, pn, x, y, dire, ls);
 		break;
 		case 3:
-			NFRAME3
+			ZC_drawframe(pip, player, pn, x, y, dire, ls);
 		break;
 		case 4:
-			NFRAME4
+			ZC_drawframe(pip, player, pn, x, y, dire, ls);
 		break;
 	}
 	pip->video->r=1;
