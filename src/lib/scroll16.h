@@ -115,6 +115,7 @@ typedef struct {
 \
 	printf("gvar.video.p=%u ", gvar.video.p); printf("gvar.video.r=%u ", gvar.video.r);\
 	printf("pageflipflop=%u\n", pageflipflop);\
+	print_anim_ids(player[0].ent->spri);\
 	printf("\n");
 
 #define SHOWMVFUN ZC_ShowMV(&mv, 0, 0);

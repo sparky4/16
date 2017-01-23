@@ -1288,8 +1288,8 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 		break;
 	}
 	player[pn].enti.dire++;
-
 	player[pn].ent->spri->delay=1;
+	//TODO this needs to work!
 	//pip->video->sprifilei = set_anim_by_id(player[pn].ent->spri, player[pn].enti.dire);	if(pip->video->sprifilei == -1){ printf("ERROR!	%u\n", player[pn].enti.dire); return; }
 
 	//setting xy position
