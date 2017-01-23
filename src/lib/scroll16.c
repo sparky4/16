@@ -50,6 +50,9 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					mapScrollRight(pip, player, (pip[0].video->p), pn);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
+					sprintf(global_temp_status_text, "%u", player[pn].enti.persist_aniframe);
+					modexprint(&(pip[0].video->page[0]), player[pn].enti.x+(8*player[pn].enti.persist_aniframe), player[pn].enti.y-TILEWH-8, 1, 8, 1, global_temp_status_text);
+					sleep(1);
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
 			}
 			else if(player[pn].enti.tx < pip[0].map->width && !(pip[0].map->data[(player[pn].enti.tx)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))
@@ -60,6 +63,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					player[pn].enti.x+=(player[pn].enti.speed);
 					ANIMATESPRIFUN(pip, player, pn, 0);
 					player[pn].enti.q++;
+					sleep(1);
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
 			}
 			else
