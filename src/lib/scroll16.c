@@ -1289,8 +1289,9 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 	}
 	player[pn].enti.dire++;
 	player[pn].ent->spri->delay=1;
-	//TODO this needs to work!
-	//pip->video->sprifilei = set_anim_by_id(player[pn].ent->spri, player[pn].enti.dire);	if(pip->video->sprifilei == -1){ printf("ERROR!	%u\n", player[pn].enti.dire); return; }
+	if(player[pn].enti.q==1)
+		set_anim_by_id(player[pn].ent->spri, player[pn].enti.dire);
+		//pip->video->sprifilei = set_anim_by_id(player[pn].ent->spri, player[pn].enti.dire);	if(pip->video->sprifilei == -1){ printf("ERROR!	%u\n", player[pn].enti.dire); return; }
 
 	//setting xy position
 	player[pn].ent->spri->x = x;
@@ -1312,7 +1313,7 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 		break;
 	}
 	pip->video->r=1;
-	WALKTYPE_FRAM_PRINT;
+	//WALKTYPE_FRAM_PRINT;
 	//sprintf(global_temp_status_text, " %u", player[pn].enti.dire);
 	//modexprint(&(pip->video->page[0]), player[pn].enti.x-(8*player[pn].enti.persist_aniframe)+8, player[pn].enti.y-TILEWH-(8*player[pn].enti.persist_aniframe), 1, 20, 1, global_temp_status_text);
 }
