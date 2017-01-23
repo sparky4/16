@@ -1313,8 +1313,8 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 	}
 	pip->video->r=1;
 	WALKTYPE_FRAM_PRINT;
-	sprintf(global_temp_status_text, " %u", player[pn].enti.dire);
-	modexprint(&(pip->video->page[0]), player[pn].enti.x-(8*player[pn].enti.persist_aniframe)+8, player[pn].enti.y-TILEWH-(8*player[pn].enti.persist_aniframe), 1, 20, 1, global_temp_status_text);\
+	//sprintf(global_temp_status_text, " %u", player[pn].enti.dire);
+	//modexprint(&(pip->video->page[0]), player[pn].enti.x-(8*player[pn].enti.persist_aniframe)+8, player[pn].enti.y-TILEWH-(8*player[pn].enti.persist_aniframe), 1, 20, 1, global_temp_status_text);
 }
 
 /*
