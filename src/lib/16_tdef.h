@@ -260,6 +260,11 @@ typedef struct
 	page_t page[MAXPAGE];	//can be used as a pointer to root page[0]
 	word vmem_remain;	//remaining video memory
 	byte num_of_pages;	//number of actual pages
+	//doslib origi vars
+	byte far * omemptr;
+	byte vga_draw_stride;
+	byte vga_draw_stride_limit;		// further X clipping
+//
 boolean __near p;			//render page number //BLEH
 	boolean __near r;			//page flip if true
 	word pr[MAXPAGE][4];	//render sections of pages (this is supposed to be set up to draw sections of the screen if updated)

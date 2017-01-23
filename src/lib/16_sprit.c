@@ -172,6 +172,7 @@ void animate_spri(struct sprite *spri, video_t *video)
 	// Events go here
 
 
+	//omemptr = vga_state.vga_graphics_ram; // save original mem ptr
 	omemptr = (VGA_RAM_PTR)video->page[0].data;//vga_state.vga_graphics_ram; // save original mem ptr
 	x=spri->x;
 	y=spri->y;
@@ -222,6 +223,7 @@ void animate_spri(struct sprite *spri, video_t *video)
 	);
 #endif
 	// restore ptr
+	//vga_state.vga_graphics_ram = video->omemptr;
 	vga_state.vga_graphics_ram = omemptr;
 
 	// block copy to visible RAM from offscreen
@@ -233,6 +235,7 @@ void animate_spri(struct sprite *spri, video_t *video)
 	vga_restore_rm0wm0();
 
 	// restore stride
+	//vga_state.vga_draw_stride_limit=	video->vga_draw_stride_limit; vga_state.vga_draw_stride=		video->vga_draw_stride;
 	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = GVARVIDEO->page[0].stridew;
 
 	// Depending on delay, update indices

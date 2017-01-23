@@ -292,6 +292,10 @@ void modexHiganbanaPageSetup(video_t *video)
 	modexCalcVmemRemain(video);
 	video->p=0;
 	video->r=1;
+	//doslib origi var
+	video->omemptr=			vga_state.vga_graphics_ram;
+	video->vga_draw_stride=	vga_state.vga_draw_stride;
+	video->vga_draw_stride_limit=	vga_state.vga_draw_stride_limit;
 
 	//setup the buffersize
 	video->page[0].dx=video->page[0].dy=

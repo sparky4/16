@@ -1260,8 +1260,8 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 //#define FRAME3 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, dire);
 //#define FRAME4 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 24, 32, 1+dire);
 #ifndef SPRITO
-#define DRAWFRAME if (i == -1) return; oldanimate_spri(player[pn].ent->spri, pip->video)
-//#define DRAWFRAME if (i == -1) return; animate_spri(player[pn].ent->spri, pip->video)
+//#define DRAWFRAME if (i == -1) return; oldanimate_spri(player[pn].ent->spri, pip->video)
+#define DRAWFRAME if (i == -1) return; animate_spri(player[pn].ent->spri, pip->video)
 #define NFRAME1 i = set_anim_by_id(player[pn].ent->spri, 2+dire);	DRAWFRAME;
 #define NFRAME2 i = set_anim_by_id(player[pn].ent->spri, 1+dire);	DRAWFRAME;
 #define NFRAME3 i = set_anim_by_id(player[pn].ent->spri, dire);	DRAWFRAME;
