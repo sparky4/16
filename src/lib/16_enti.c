@@ -35,7 +35,7 @@ void EN_initentity(entity_t *enti)
 	enti->speed=4;
 	enti->persist_aniframe=	enti->q;
 	enti->spt=(TILEWH/(enti->speed));	//speed per tile wwww
-	enti->spri->delay=1;
+	//enti->spri->delay=1;
 	enti->invq=1;
 	enti->pred = enti->d;
 }

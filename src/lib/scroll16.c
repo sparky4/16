@@ -1267,7 +1267,6 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 		break;
 	}
 	player[pn].enti.dire+=dd;
-
 	if((player[pn].enti.q==1 && player[pn].enti.pred != player[pn].enti.d) || !dd)
 	{
 		set_anim_by_id(player[pn].enti.spri, player[pn].enti.dire); //pip->video->sprifilei = set_anim_by_id(player[pn].enti.spri, player[pn].enti.dire);	if(pip->video->sprifilei == -1){ printf("ERROR!	%u\n", player[pn].enti.dire); return; }
@@ -1280,7 +1279,7 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 
 	//draw sprite
 	ZC_drawframe(pip, &player[pn].enti, x, y);
-
+//if(player[pn].enti.q<4) delay(500);
 	pip->video->r=1;
 	//WALKTYPE_FRAM_PRINT;
 }
