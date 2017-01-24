@@ -103,8 +103,7 @@ void animate_spri(entity_t *enti, video_t *video)
 #define VMEMPAGEDATA2	GVARVIDEO->page[2].data
 	unsigned int i,o,o2; int j;
 	int x,y,rx,ry,w,h;
-	int overdraww = 0, overdrawh = 4;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.
-						// if the sprite's edge pixels are clear anyway, you can set this to 0.
+
 	VGA_RAM_PTR omemptr;
 
 	// Depending on delay, update indices
@@ -159,12 +158,12 @@ void animate_spri(entity_t *enti, video_t *video)
 
 	// render box bounds. y does not need modification, but x and width must be multiple of 4
 	if(!GVARVIDEO->rss){
-	if (x >= overdraww) rx = (x - overdraww) & (~3);
+	if (x >= enti->overdraww) rx = (x - enti->overdraww) & (~3);
 		else rx = -(GVARVIDEO->page[0].dx);
-	if (y >= overdrawh) ry = (y - overdrawh);
+	if (y >= enti->overdrawh) ry = (y - enti->overdrawh);
 		else ry = -(GVARVIDEO->page[0].dy);
-	h = enti->spri->sprite_vrl_cont->vrl_header->height + overdrawh + y - ry;
-	w = (x + enti->spri->sprite_vrl_cont->vrl_header->width + (overdraww*2) + 3 - rx) & (~3) - overdraww;//round up
+	h = enti->spri->sprite_vrl_cont->vrl_header->height + enti->overdrawh + y - ry;
+	w = (x + enti->spri->sprite_vrl_cont->vrl_header->width + (enti->overdraww*2) + 3 - rx) & (~3) - enti->overdraww;//round up
 	if ((rx+w) > GVARVIDEO->page[0].width) w = GVARVIDEO->page[0].width-rx;
 	if ((ry+h) > GVARVIDEO->page[0].height) h = GVARVIDEO->page[0].height-ry;
 

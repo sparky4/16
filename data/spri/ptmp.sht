@@ -71,3 +71,83 @@ wh=24,32
 +PRSBACW2@42
 xy=48,96
 wh=24,32
+
+# begin animation list section. must come after sprite sheet
+*animation
+
+# Chikyuu, forward, standing and walking animation cycles
++PRSBFCW_STANDING@10
+sprite=PRSBFCW1
+
++PRSBFCW_WALKING@11
+sprite=PRSBFCW0
+delay=3
+-newframe
+sprite=PRSBFCW1
+delay=3
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+-newframe
+sprite=PRSBFCW2
+delay=3
+-newframe
+sprite=PRSBFCW1
+delay=3
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+
+# Chikyuu, left, standing and walking animation cycles
++PRSBLCW_STANDING@20
+sprite=PRSBLCW1
+
++PRSBLCW_WALKING@21
+sprite=PRSBLCW0
+delay=3
+-newframe
+sprite=PRSBLCW1
+delay=3
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+-newframe
+sprite=PRSBLCW2
+delay=3
+-newframe
+sprite=PRSBLCW1
+delay=3
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+
+# Chikyuu, right, standing and walking animation cycles
++PRSBRCW_STANDING@30
+sprite=PRSBRCW1
+
++PRSBRCW_WALKING@31
+sprite=PRSBRCW0
+delay=3
+-newframe
+sprite=PRSBRCW1
+delay=3
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+-newframe
+sprite=PRSBRCW2
+delay=3
+-newframe
+sprite=PRSBRCW1
+delay=3
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+
+# Chikyuu, away, standing and walking animation cycles
++PRSBACW_STANDING@40
+sprite=PRSBACW1
+
++PRSBACW_WALKING@41
+sprite=PRSBACW0
+delay=3
+-newframe
+sprite=PRSBACW1
+delay=3
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+-newframe
+sprite=PRSBACW2
+delay=3
+-newframe
+sprite=PRSBACW1
+delay=3
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+

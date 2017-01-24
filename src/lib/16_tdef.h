@@ -146,6 +146,8 @@ typedef	struct
 	word spt;		//speed per tile
 	struct sprite *spri; // sprite used by entity
 	sword hp; //hitpoints of the entity
+	nibble overdraww, overdrawh;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.
+						// if the sprite's edge pixels are clear anyway, you can set this to 0.
 	int persist_aniframe;    // gonna be increased to 1 before being used, so 0 is ok for default
 } entity_t;
 

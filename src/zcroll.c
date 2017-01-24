@@ -43,6 +43,8 @@ byte *gpal;
 byte *ptr;
 memptr pal;
 
+bitmap_t	*ptmpdata;
+
 void main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
@@ -202,6 +204,8 @@ void main(int argc, char *argv[])
 		}
 		FUNCTIONKEYFUNCTIONS;
 		if(IN_KeyDown(sc_L)){ modexClearRegion(&gvar.video.page[0], player[0].enti.x, player[0].enti.y, 16, 16, 1); }
+		if(IN_KeyDown(sc_J)){ read_vrs(&gvar, "data/spri/ptmp.vrs", player[0].enti.spri->spritesheet);	*ptmpdata = bitmapLoadPcx("data/ptmp.pcx", &gvar);	modexPalUpdate1(ptmpdata->palette); }
+		if(IN_KeyDown(sc_K)){ read_vrs(&gvar, "data/spri/chikyuu.vrs", player[0].enti.spri->spritesheet);	PCXBMP = bitmapLoadPcx("data/chikyuu.pcx", &gvar);	modexPalUpdate1(&PCXBMP->palette); }
 
 		//9
 #ifdef FADE
