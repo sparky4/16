@@ -81,17 +81,17 @@ sprite=CHUBFCW1
 
 +CHUBFCW_WALKING@11
 sprite=CHUBFCW0
-delay=3
+delay=2
 -newframe
 sprite=CHUBFCW1
-delay=3
+delay=2
 event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
 -newframe
 sprite=CHUBFCW2
-delay=3
+delay=2
 -newframe
 sprite=CHUBFCW1
-delay=3
+delay=2
 event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
 
 # Chikyuu, left, standing and walking animation cycles
@@ -100,17 +100,17 @@ sprite=CHUBLCW1
 
 +CHUBLCW_WALKING@21
 sprite=CHUBLCW0
-delay=3
+delay=2
 -newframe
 sprite=CHUBLCW1
-delay=3
+delay=2
 event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
 -newframe
 sprite=CHUBLCW2
-delay=3
+delay=2
 -newframe
 sprite=CHUBLCW1
-delay=3
+delay=2
 event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
 
 # Chikyuu, right, standing and walking animation cycles
@@ -119,17 +119,17 @@ sprite=CHUBRCW1
 
 +CHUBRCW_WALKING@31
 sprite=CHUBRCW0
-delay=3
+delay=2
 -newframe
 sprite=CHUBRCW1
-delay=3
+delay=2
 event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
 -newframe
 sprite=CHUBRCW2
-delay=3
+delay=2
 -newframe
 sprite=CHUBRCW1
-delay=3
+delay=2
 event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
 
 # Chikyuu, away, standing and walking animation cycles
@@ -138,16 +138,16 @@ sprite=CHUBACW1
 
 +CHUBACW_WALKING@41
 sprite=CHUBACW0
-delay=3
+delay=2
 -newframe
 sprite=CHUBACW1
-delay=3
+delay=2
 event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
 -newframe
 sprite=CHUBACW2
-delay=3
+delay=2
 -newframe
 sprite=CHUBACW1
-delay=3
+delay=2
 event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
 
