@@ -165,7 +165,7 @@ void animate_spri(struct sprite *spri, video_t *video)
 #define VMEMPAGEDATA2	GVARVIDEO->page[2].data
 	unsigned int i,o,o2; int j;
 	int x,y,rx,ry,w,h;
-	int overdraw = 4;//16;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.
+	int overdraw = 0;//16;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.
 						// if the sprite's edge pixels are clear anyway, you can set this to 0.
 	VGA_RAM_PTR omemptr;
 
