@@ -74,17 +74,11 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			else
 			{
 				player[pn].walktype=0;
-//#ifdef SPRITE
-//modexDrawSpriteRegion(pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 24, 32, PLAYERBMPDATAPTR);
 				ANIMATESPRIFUN(pip, player, pn, 0);
-//#else
-//				modexClearRegion(pip[1].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 14);
-//#endif
 				player[pn].enti.d = 2;
 			}
 			player[pn].enti.triggerx = player[pn].enti.tx+1;
 			player[pn].enti.triggery = player[pn].enti.ty;
-			//WALKTYPE_FRAM_PRINT
 		break;
 		//left movement
 		case 1:
@@ -117,17 +111,11 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			else
 			{
 				player[pn].walktype=0;
-//#ifdef SPRITE
-//modexDrawSpriteRegion(pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 96, 24, 32, PLAYERBMPDATAPTR);
 				ANIMATESPRIFUN(pip, player, pn, 0);
-//#else
-//				modexClearRegion(pip[1].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 10);
-//#endif
 				player[pn].enti.d = 2;
 			}
 			player[pn].enti.triggerx = player[pn].enti.tx-1;
 			player[pn].enti.triggery = player[pn].enti.ty;
-			//WALKTYPE_FRAM_PRINT
 		break;
 		//down movement
 		case 4:
@@ -160,17 +148,11 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			else
 			{
 				player[pn].walktype=0;
-//#ifdef SPRITE
-//modexDrawSpriteRegion(pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 64, 24, 32, PLAYERBMPDATAPTR);
 				ANIMATESPRIFUN(pip, player, pn, 0);
-//#else
-//				modexClearRegion(pip[1].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 9);
-//#endif
 				player[pn].enti.d = 2;
 			}
 			player[pn].enti.triggerx = player[pn].enti.tx;
 			player[pn].enti.triggery = player[pn].enti.ty+1;
-			//WALKTYPE_FRAM_PRINT
 		break;
 		//up movement
 		case 0:
@@ -203,21 +185,13 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 			else
 			{
 				player[pn].walktype=0;
-//#ifdef SPRITE
-//modexDrawSpriteRegion(pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 0, 24, 32, PLAYERBMPDATAPTR);
 				ANIMATESPRIFUN(pip, player, pn, 0);
-//#else
-//				modexClearRegion(pip[1].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 12);
-//#endif
 				player[pn].enti.d = 2;
 			}
 			player[pn].enti.triggerx = player[pn].enti.tx;
 			player[pn].enti.triggery = player[pn].enti.ty-1;
-			//WALKTYPE_FRAM_PRINT
 		break;
 	}
-	//if(player[pn].enti.d!=2 && pip[0].video->rs) IN_UserInput(1,1);
-	//else if(!pip[0].video->rs) delay(500);
 }
 
 
@@ -903,7 +877,8 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 		mapDrawWRow(&mv[0], tx-1, ty, py);
 	i+=mv->map->width - tx;
 	}
-	if(!pageploop) modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
+	//if(!pageploop)
+		modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
 // 	{
 // 		unsigned int k,j,o;
 // 		/* fill screen with a distinctive pattern */
@@ -1319,6 +1294,12 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 		break;
 	}
 	pip->video->r=1;
+	if(player[pn].enti.persist_aniframe!=player[pn].enti.q)
+	{
+		sprintf(global_temp_status_text, "[%u]%u", player[pn].enti.persist_aniframe, player[pn].enti.q);
+		modexprint(&(pip->video->page[0]), player[pn].enti.x-(8*player[pn].enti.persist_aniframe), player[pn].enti.y-TILEWH-(8*player[pn].enti.persist_aniframe), 1, 20, 1, global_temp_status_text);
+		delay(500);
+	}
 	//WALKTYPE_FRAM_PRINT;
 	//sprintf(global_temp_status_text, " %u", player[pn].enti.dire);
 	//modexprint(&(pip->video->page[0]), player[pn].enti.x-(8*player[pn].enti.persist_aniframe)+8, player[pn].enti.y-TILEWH-(8*player[pn].enti.persist_aniframe), 1, 20, 1, global_temp_status_text);

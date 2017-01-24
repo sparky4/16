@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
+ * Copyright (C) 2012-2017 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -107,7 +107,12 @@ main(int argc, char *argvar[])
 	bakapee.bakax=0;
 	bakapee.bakay=0;
 	bakapee.coor=0;
+
+	//once where #defines
 	bakapee.tile=0;
+	bakapee.bonk=400;
+	bakapee.lgq=32;
+	bakapee.hgq=55;
 
 	/* setup camera and screen~ */
 	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
@@ -220,6 +225,7 @@ main(int argc, char *argvar[])
 					printf("on.\n");
 				break;
 			}
+			printf("Incrementation of color happens at every %uth plot.\n", bakapee.bonk);
 			printf("Enter 1, 2, 3, 4, 5, 6, 8, or 9 to run a screensaver, or enter 0 to quit.\n");
 pee:
 			c = getch();
@@ -268,6 +274,15 @@ pee:
 		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
 					modexShowPage(&gvar.video.page[0]);
 					break;
+				case '-':
+					if(bakapee.bonk>0)
+						bakapee.bonk-=100;
+				break;
+				case '=':
+				case '+':
+					if(bakapee.bonk<1000)
+						bakapee.bonk+=100;
+				break;
 				default:
 					key=0;
 					break;

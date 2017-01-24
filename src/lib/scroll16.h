@@ -94,6 +94,7 @@ typedef struct {
 //printf("gvar.kurokku:	"); printf("%.0f ", clock());	printf("tiku=%lu ", gvar.kurokku.tiku);	printf("t=%.0f ", gvar.kurokku.t);	printf("ticktock()=%f ", ticktock(&gvar));	printf("%.0f fps", (double)gvar.kurokku.tiku/ticktock(&gvar));
 //printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[0].map->width, mv[0].map->height, mv[0].map->data[0]);
 //printf("&global_temp_status_text = %Fp\n", &global_temp_status_text);
+//print_anim_ids(player[0].ent->spri);
 #define SCROLLEXITMESG 	printf("tx: %d	", mv[0].tx);\
 	printf("ty: %d\n", mv[0].ty);\
 	printf("\n");\
@@ -115,7 +116,6 @@ typedef struct {
 \
 	printf("gvar.video.p=%u ", gvar.video.p); printf("gvar.video.r=%u ", gvar.video.r);\
 	printf("pageflipflop=%u\n", pageflipflop);\
-	print_anim_ids(player[0].ent->spri);\
 	printf("\n");
 
 #define SHOWMVFUN ZC_ShowMV(&mv, 0, 0);
@@ -160,7 +160,6 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 void shinku(global_game_variables_t *gv);
 void near ZC_drawframe(map_view_t *pip, player_t *player, word pn, sword x, sword y, word sw);
 void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch);
-void near ZC_animatePlayer_(map_view_t *pip, player_t *player, word pn, sword scrollswitch);
 void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch);
 
 // Move an entity around. Should actually be in 16_entity

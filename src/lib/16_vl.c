@@ -296,7 +296,7 @@ void modexHiganbanaPageSetup(video_t *video)
 	video->omemptr=			vga_state.vga_graphics_ram;
 	video->vga_draw_stride=	vga_state.vga_draw_stride;
 	video->vga_draw_stride_limit=	vga_state.vga_draw_stride_limit;
-
+	//sprite render switch
 	video->rs=0;
 
 	//setup the buffersize

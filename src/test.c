@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
+ * Copyright (C) 2012-2017 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -24,7 +24,9 @@
 #include "src/lib/16_vl.h"
 #include "src/lib/16_in.h"
 #include "src/lib/scroll16.h"
-#include "src/lib/bakapee.h"
+
+#define LGQ 32
+#define HGQ 55
 
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 

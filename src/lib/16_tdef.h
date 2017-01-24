@@ -137,9 +137,9 @@ typedef	struct
 	int triggery; //entity's trigger box tile position on the viewable map
 	int sheetsetx; //NOT USED YET! entity sprite sheet set on the image x
 	int sheetsety; //NOT USED YET! entity sprite sheet set on the image y
-	byte d;		//direction to render sprite!! wwww
+	nibble d;		//direction to render sprite!! wwww
 	word dire;		//sprite in use
-	byte q;		//loop variable for anumation and locking the playing to compleate the animation cycle to prevent issues with misalignment www
+	nibble q,preq;	//loop variable for anumation and locking the playing to compleate the animation cycle to prevent issues with misalignment www
 	word speed;		//entity speed!
 	word spt;		//speed per tile
 	struct sprite *spri; // sprite used by entity

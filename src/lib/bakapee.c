@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
+ * Copyright (C) 2012-2017 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -42,11 +42,11 @@ void colortest(page_t *page, bakapee_t *pee)
 //color ‚Ä‚·‚Æ
 void colorz(page_t *page, bakapee_t *pee)
 {
-	if(pee->coor <= HGQ)
+	if(pee->coor <= pee->hgq)
 	{
 		modexcls(page, pee->coor, VGA);
 		pee->coor++;
-	}else pee->coor = LGQ;
+	}else pee->coor = pee->lgq;
 }
 
 //slow spectrum down
@@ -75,12 +75,7 @@ void dingpp(page_t *page, bakapee_t *pee)
 {
 	if(pee->tile)
 	{
-#ifndef MXLIB
-	//fill_block(pee->xx, pee->yy, pee->xx+TILEWH, pee->yy+TILEWH, pee->coor);
-		mxFillBox(pee->xx, pee->yy, TILEWH, TILEWH, pee->coor, OP_SET);
-#else
 		modexClearRegion(page, pee->xx, pee->yy, TILEWH, TILEWH, pee->coor);
-#endif
 	}
 	else
 		modexputPixel(page, pee->xx, pee->yy, pee->coor);
@@ -107,7 +102,7 @@ void dingo(page_t *page, bakapee_t *pee)
 //assigning values from randomizer
 void dingas(bakapee_t *pee)
 {
-	if(pee->gq == BONK) dingu(pee);
+	if(pee->gq == pee->bonk) dingu(pee);
 	if(!pee->bakax)
 	{
 		if(pee->tile)
@@ -136,7 +131,7 @@ void dingas(bakapee_t *pee)
 
 void dingaso(bakapee_t *pee)
 {
-	if(pee->gq == BONK) dingu(pee);
+	if(pee->gq == pee->bonk) dingu(pee);
 	if(!pee->bakax)
 	{
 		if(pee->tile)
@@ -165,19 +160,19 @@ void dingaso(bakapee_t *pee)
 
 void dingu(bakapee_t *pee)
 {
-	if(pee->coor < HGQ && pee->coor < LGQ) pee->coor = LGQ;
-	if(pee->coor < HGQ)
+	if(pee->coor < pee->hgq && pee->coor < pee->lgq) pee->coor = pee->lgq;
+	if(pee->coor < pee->hgq)
 	{
 		pee->coor++;
 	}else{
-		pee->coor = LGQ;
+		pee->coor = pee->lgq;
 	}
 }
 
 //randomizer
 void dingq(bakapee_t *pee)
 {
-	if(pee->gq<BONK)
+	if(pee->gq<pee->bonk)
 	{
 		pee->gq++;
 	}
@@ -191,7 +186,7 @@ void dingq(bakapee_t *pee)
 
 void dingqo(bakapee_t *pee)
 {
-	if(pee->gq<BONK)
+	if(pee->gq<pee->bonk)
 	{
 		pee->gq++;
 		pee->bakax = rand()%3; pee->bakay = rand()%3;
@@ -211,7 +206,7 @@ void ding(page_t *page, bakapee_t *pee, word q)
 {
 	word tx=0,ty=0;//d3y,
 
-//++++  if(q <= 4 && q!=2 && gq == BONK-1) coor = rand()%HGQ;
+//++++  if(q <= 4 && q!=2 && gq == pee->bonk-1) coor = rand()%pee->hgq;
 	switch(q)
 	{
 		case 1:/*
@@ -289,22 +284,22 @@ void ding(page_t *page, bakapee_t *pee, word q)
 			modexcls(page, pee->coor, VGA);
 		break;
 		case 7:
-			if(pee->coor <= HGQ)
+			if(pee->coor <= pee->hgq)
 			{
 				ssd(page, pee, q);
 				pee->coor++;
-			}else pee->coor = LGQ;
+			}else pee->coor = pee->lgq;
 		break;
 		case 8:
 			colorz(page, pee);
 			modexprint(page, page->sw/2, page->sh/2, 1, 47, 0, "bakapi");
 		break;
 		case 9:
-			if(pee->coor <= HGQ)
+			if(pee->coor <= pee->hgq)
 			{
 				ssd(page, pee, q);
 				pee->coor++;
-			}else pee->coor = LGQ;
+			}else pee->coor = pee->lgq;
 		break;
 		case 10:
 			ssd(page, pee, q); /*printf("%d\n", pee->coor);*/
