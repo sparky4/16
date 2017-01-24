@@ -43,7 +43,6 @@ main(int argc, char *argv[])
 
 	player[0].enti.q=1;
 	player[0].enti.d=2;
-	player[0].enti.persist_aniframe=0;
 	player[0].enti.speed=4;
 
 //0000	nibbletest();
@@ -53,14 +52,12 @@ main(int argc, char *argv[])
 	{
 //0000		shinkutxt(&gvar);
 		IN_ReadControl(0, &player);
-		#define INC_PER_FRAME if(player[0].enti.q&1) player[0].enti.persist_aniframe++; if(player[0].enti.persist_aniframe>4) player[0].enti.persist_aniframe = 1;
 		switch(player[0].enti.d)
 		{
 		//right movement
 		case 3:
 			if(player[0].enti.q<=(TILEWH/(player[0].enti.speed)))
 			{
-				INC_PER_FRAME;
 				player[0].enti.q++;
 			} else { player[0].enti.q = 1; player[0].enti.d = 2; }
 		break;
@@ -69,7 +66,6 @@ main(int argc, char *argv[])
 		case 1:
 			if(player[0].enti.q<=(TILEWH/(player[0].enti.speed)))
 			{
-				INC_PER_FRAME;
 				player[0].enti.q++;
 			} else { player[0].enti.q = 1; player[0].enti.d = 2; }
 		break;
@@ -78,7 +74,6 @@ main(int argc, char *argv[])
 		case 4:
 			if(player[0].enti.q<=(TILEWH/(player[0].enti.speed)))
 			{
-				INC_PER_FRAME;
 				player[0].enti.q++;
 			} else { player[0].enti.q = 1; player[0].enti.d = 2; }
 		break;
@@ -87,7 +82,6 @@ main(int argc, char *argv[])
 		case 0:
 			if(player[0].enti.q<=(TILEWH/(player[0].enti.speed)))
 			{
-				INC_PER_FRAME;
 				player[0].enti.q++;
 			} else { player[0].enti.q = 1; player[0].enti.d = 2; }
 		break;

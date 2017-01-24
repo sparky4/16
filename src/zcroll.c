@@ -135,7 +135,7 @@ void main(int argc, char *argv[])
 	/*strcpy(global_temp_status_text, "press enter for the loop of zcroll\nescape to quit");
 	modexprint(&gvar.video.page[0], 144, 72, 1, 7, 0, global_temp_status_text);
 	while(!IN_KeyDown(sc_Enter)){ if(IN_KeyDown(sc_Escape)) goto quit; } IN_UserInput(1,1);*///wwww
-	while(!IN_KeyDown(sc_Escape))// && player[0].enti.hp>0)
+	while(!IN_KeyDown(sc_Escape) && player[0].enti.hp>0)
 	{
 		shinku(&gvar);
 		//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
@@ -210,7 +210,6 @@ void main(int argc, char *argv[])
 		if(IN_KeyDown(sc_R)){ modexPalOverscan(rand()%56); } //r
 
 		if((player[0].enti.q==1) && !(player[0].enti.x%TILEWH==0 && player[0].enti.y%TILEWH==0)) break;	//incase things go out of sync!
-		player[0].enti.hp = 0;
 	}
 
 	/* fade back to text mode */

@@ -146,7 +146,7 @@ typedef	struct
 	word spt;		//speed per tile
 	struct sprite *spri; // sprite used by entity
 	sword hp; //hitpoints of the entity
-	int persist_aniframe;    /* gonna be increased to 1 before being used, so 0 is ok for default */
+	int persist_aniframe;    // gonna be increased to 1 before being used, so 0 is ok for default
 } entity_t;
 
 //TODO: MAKE THIS WWWW

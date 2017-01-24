@@ -24,16 +24,7 @@
 */
 #include "src/lib/scroll16.h"
 
-#define INC_PER_FRAME_PRINT 	sprintf(global_temp_status_text, "%u", player[pn].enti.persist_aniframe);\
-modexprint(&(pip->video->page[0]), player[pn].enti.x-(8*player[pn].enti.persist_aniframe), player[pn].enti.y-TILEWH-(8*player[pn].enti.persist_aniframe), 1, 20, 1, global_temp_status_text);
-
-//#define WALKTYPE_FRAM_PRINT INC_PER_FRAME_PRINT
-//walktypeinfo(player, pn);
-//modexprint(&(pip->video->page[0]), player[pn].enti.x-(8*player[pn].enti.persist_aniframe)+8, player[pn].enti.y-TILEWH-(8*player[pn].enti.persist_aniframe), 1, 20, 1, global_temp_status_text);
-
-#define PERSIST_ANIFRAME_INIT 1
-#define Q_INIT PERSIST_ANIFRAME_INIT
-#define INC_PER_FRAME if(player[pn].enti.q&1) player[pn].enti.persist_aniframe++; if(player[pn].enti.persist_aniframe>4) player[pn].enti.persist_aniframe = PERSIST_ANIFRAME_INIT;
+#define INC_PER_FRAME if(player[pn].enti.q&1) player[pn].enti.persist_aniframe++; if(player[pn].enti.persist_aniframe>4) player[pn].enti.persist_aniframe = 1;
 
 void ZC_walk(map_view_t *pip, player_t *player, word pn)
 {
@@ -58,7 +49,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					mapScrollRight(pip, player, (pip[0].video->p), pn);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.tx++; }
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
 			}
 			else if(player[pn].enti.tx < pip[0].map->width && !(pip[0].map->data[(player[pn].enti.tx)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))
 			{
@@ -69,7 +60,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					player[pn].enti.x+=(player[pn].enti.speed);
 					ANIMATESPRIFUN(pip, player, pn, 1);
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.tx++; }
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
 			}
 			else
 			{
@@ -95,7 +86,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					mapScrollLeft(pip, player, (pip[0].video->p), pn);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.tx--; }
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
 			}
 			else if(player[pn].enti.tx > 1 && !(pip[0].map->data[(player[pn].enti.tx-2)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx-1 == TRIGGX && player[pn].enti.ty == TRIGGY))
 			{
@@ -106,7 +97,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					player[pn].enti.x-=(player[pn].enti.speed);
 					ANIMATESPRIFUN(pip, player, pn, 1);
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.tx--; }
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
 			}
 			else
 			{
@@ -132,7 +123,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					mapScrollDown(pip, player, (pip[0].video->p), pn);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.ty++; }
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
 			}
 			else if(player[pn].enti.ty < pip[0].map->height && !(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty+1 == TRIGGY))
 			{
@@ -143,7 +134,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					player[pn].enti.y+=(player[pn].enti.speed);
 					ANIMATESPRIFUN(pip, player, pn, 1);
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.ty++; }
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
 			}
 			else
 			{
@@ -169,7 +160,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					mapScrollUp(pip, player, (pip[0].video->p), pn);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.ty--; }
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
 			}
 			else if(player[pn].enti.ty > 1 && !(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty-2))] == 0))//!(player[pn].enti.tx == TRIGGX &&  player[pn].enti.ty-1 == TRIGGY))
 			{
@@ -180,7 +171,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					player[pn].enti.y-=(player[pn].enti.speed);
 					ANIMATESPRIFUN(pip, player, pn, 1);
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.ty--; }
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
 			}
 			else
 			{
@@ -230,7 +221,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.tx++; }
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
 			}
 			else if(player[pn].enti.tx < pip[0].map->width && !(pip[0].map->data[(player[pn].enti.tx)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))
 			{
@@ -241,7 +232,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 					ANIMATESPRIFUN(pip, player, pn, 0);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.tx++; }
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
 			}
 			else
 			{
@@ -274,7 +265,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.tx--; }
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
 			}
 			else if(player[pn].enti.tx > 1 && !(pip[0].map->data[(player[pn].enti.tx-2)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx-1 == TRIGGX && player[pn].enti.ty == TRIGGY))
 			{
@@ -285,7 +276,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 					ANIMATESPRIFUN(pip, player, pn, 0);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.tx--; }
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
 			}
 			else
 			{
@@ -318,7 +309,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.ty++; }
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
 			}
 			else if(player[pn].enti.ty < pip[0].map->height && !(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty+1 == TRIGGY))
 			{
@@ -329,7 +320,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 					ANIMATESPRIFUN(pip, player, pn, 0);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.ty++; }
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
 			}
 			else
 			{
@@ -362,7 +353,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.ty--; }
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
 			}
 			else if(player[pn].enti.ty > 1 && !(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty-2))] == 0))//!(player[pn].enti.tx == TRIGGX &&  player[pn].enti.ty-1 == TRIGGY))
 			{
@@ -373,7 +364,7 @@ void oldwalk(map_view_t *pip, player_t *player, word pn)
 					ANIMATESPRIFUN(pip, player, pn, 0);
 					if(!pageflipflop) modexShowPage(pip[1].page);
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; player[pn].enti.ty--; }
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
 			}
 			else
 			{
@@ -407,7 +398,7 @@ void ZC_panPageManual(map_view_t *pip, player_t *player, word pn)
 					pip[0].page->dx+=4;
 					SHOWMVFUN_;
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; pip[0].tx++; }
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; pip[0].tx++; }
 			}
 		break;
 
@@ -420,7 +411,7 @@ void ZC_panPageManual(map_view_t *pip, player_t *player, word pn)
 					pip[0].page->dx-=4;
 					SHOWMVFUN_;
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; pip[0].tx--; }
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; pip[0].tx--; }
 			}
 		break;
 
@@ -433,7 +424,7 @@ void ZC_panPageManual(map_view_t *pip, player_t *player, word pn)
 					pip[0].page->dy+=4;
 					SHOWMVFUN_;
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; pip[0].ty++; }
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; pip[0].ty++; }
 			}
 		break;
 
@@ -446,7 +437,7 @@ void ZC_panPageManual(map_view_t *pip, player_t *player, word pn)
 					pip[0].page->dy-=4;
 					SHOWMVFUN_;
 					player[pn].enti.q++;
-				} else { player[pn].enti.q = Q_INIT; player[pn].enti.d = 2; pip[0].ty--; }
+				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; pip[0].ty--; }
 			}
 		break;
 	}
@@ -1129,14 +1120,14 @@ void near ZC_drawframe(map_view_t *pip, entity_t *enti, sword x, sword y)
 #define FRAME4 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 1+player[pn].enti.dire);
 #endif
 
-void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch)
+void /*near*/ animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch)
 {
 	sword x = player[pn].enti.x;
 	sword y = player[pn].enti.y;
 	sword bx = x+16;	//buffer's x
 	sword by = y+16;	//buffer's y
 	sword qq; //scroll offset
-	word ls = player[pn].enti.persist_aniframe;
+	word ls = 0;//player[pn].enti.persist_aniframe;
 	player[pn].enti.dire=32; //direction
 
 	switch(scrollswitch)
@@ -1281,7 +1272,6 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 	ZC_drawframe(pip, &player[pn].enti, x, y);
 //if(player[pn].enti.q<4) delay(500);
 	pip->video->r=1;
-	//WALKTYPE_FRAM_PRINT;
 }
 
 /*
@@ -1340,7 +1330,7 @@ void player_walk(player_t *player, map_view_t *map_v){
 	}
 }
 
-void near mapScroll(map_view_t *mv, player_t *player)
+void /*near*/ mapScroll(map_view_t *mv, player_t *player)
 {
 	//word x, y;  /* coordinate for drawing */
 	int c = 1;
