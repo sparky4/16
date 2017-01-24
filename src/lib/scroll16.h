@@ -95,7 +95,6 @@ typedef struct {
 //printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[0].map->width, mv[0].map->height, mv[0].map->data[0]);
 //printf("&global_temp_status_text = %Fp\n", &global_temp_status_text);
 //print_anim_ids(player[0].ent->spri);
-//printf("	tile data value at player trigger position: %d\n\n", mv[0].map->data[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))]);
 #define SCROLLEXITMESG 	printf("tx: %d	", mv[0].tx);\
 	printf("ty: %d\n", mv[0].ty);\
 	printf("\n");\
@@ -103,7 +102,7 @@ typedef struct {
 	printf("	x: %d", player[0].enti.x); printf("	y: %d\n", player[0].enti.y);\
 	\
 	printf("	tx: %d", player[0].enti.tx); printf("	ty: %d\n", player[0].enti.ty);\
-	printf("	triggx: %d", player[0].enti.triggerx); printf("	triggy: %d\n", player[0].enti.triggery);\
+	printf("	triggx: %d", player[0].enti.triggerx); printf("	triggy: %d", player[0].enti.triggery); printf("	value: %d\n", mv[0].map->data[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))]);\
 	printf("	hp: %d", (player[0].enti.hp));	printf("	q: %d", player[0].enti.q);	printf("	player.info.dir: %d", player[0].info.dir);	printf("	player.d: %d ", player[0].enti.d);\
 		printf("	pdir=%d\n", player[0].pdir); printf("	aniframe=%u", player[0].enti.persist_aniframe); printf("	delay=%u", player[0].enti.spri->delay);\
 printf("\n\n");\
