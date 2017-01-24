@@ -96,69 +96,7 @@ void print_anim_ids(struct sprite *spri)
 	}
 }
 
-void oldanimate_spri(struct sprite *spri, video_t *video)
-{
-	int i;
-	// Events go here
-
-
-	vga_state.vga_graphics_ram = (VGA_RAM_PTR)video->page[0].data;//vga_state.vga_graphics_ram; // save original mem ptr
-
-
-	// Draw sprite
-	i = get_vrl_by_id(spri->spritesheet, spri->curr_spri_id, spri->sprite_vrl_cont);
-	if(i < 0)
-	{
-		//Quit (gv, "Error retriving required sprite");
-		return;
-	}
-
-	// replace VGA stride with our own and mem ptr. then sprite rendering at this stage is just (0,0)
-	vga_state.vga_draw_stride_limit = (video->page[0].width + 3 - spri->x) >> 2;
-
-#ifndef SPRITE
-	modexClearRegion(&video->page[0], spri->x, spri->y, 16, 32, 1);
-#else
-	draw_vrl1_vgax_modex(
-		spri->x,//-video->page[0].dx,
-		spri->y,//-video->page[0].dy,
-		spri->sprite_vrl_cont->vrl_header,
-		spri->sprite_vrl_cont->line_offsets,
-		spri->sprite_vrl_cont->buffer + sizeof(struct vrl1_vgax_header),
-		spri->sprite_vrl_cont->data_size
-	);
-#endif
-
-	// restore stride
-	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = video->page[0].stridew;
-
-	// Depending on delay, update indices
-	switch(spri->delay){
-		// Delay = 0 means that sprite should loop. Nothing to change here
-		case 0:
-			break;
-
-		// Delay = 1 means that on next time unit sprite should be changed
-		case 1:
-			spri->curr_anim_spri++;
-
-			// If we hit the end of an animation sequence, restart it
-			if(!(spri->curr_spri_id = spri->curr_anim_list[spri->curr_anim_spri].sprite_id)){
-				spri->curr_anim_spri = 0;
-				spri->curr_spri_id = spri->curr_anim_list[spri->curr_anim_spri].sprite_id;
-			}
-			spri->delay = spri->curr_anim_list[spri->curr_anim_spri].delay;
-
-		// Delay > 1 means that we should not change sprite yet. Decrease delay
-		default:
-			spri->delay--;
-			break;
-	}
-	vga_state.vga_graphics_ram = video->omemptr;
-}
-
-
-void animate_spri(struct sprite *spri, video_t *video)
+void animate_spri(entity_t *enti, video_t *video)
 {
 #define GVARVIDEO video
 #define VMEMPAGESIZE2	GVARVIDEO->page[0].pagesize+GVARVIDEO->page[1].pagesize
@@ -172,12 +110,12 @@ void animate_spri(struct sprite *spri, video_t *video)
 	// Events go here
 
 
-	omemptr = (VGA_RAM_PTR)video->page[0].data;//vga_state.vga_graphics_ram; // save original mem ptr
-	x=spri->x;
-	y=spri->y;
+	omemptr = (VGA_RAM_PTR)video->page[0].data;// save original mem ptr
+	x=enti->spri->x;
+	y=enti->spri->y;
 
 	// Draw sprite
-	j = get_vrl_by_id(spri->spritesheet, spri->curr_spri_id, spri->sprite_vrl_cont);
+	j = get_vrl_by_id(enti->spri->spritesheet, enti->spri->curr_spri_id, enti->spri->sprite_vrl_cont);
 	if(j < 0)
 	{
 		//Quit (gv, "Error retriving required sprite");
@@ -185,12 +123,13 @@ void animate_spri(struct sprite *spri, video_t *video)
 	}
 
 	// render box bounds. y does not need modification, but x and width must be multiple of 4
+	if(!GVARVIDEO->rss){
 	if (x >= overdraw) rx = (x - overdraw) & (~3);
 		else rx = -(GVARVIDEO->page[0].dx);
 	if (y >= overdraw) ry = (y - overdraw);
 		else ry = -(GVARVIDEO->page[0].dy);
-	h = spri->sprite_vrl_cont->vrl_header->height + overdraw + y - ry;
-	w = (x + spri->sprite_vrl_cont->vrl_header->width + (overdraw*2) + 3 - rx) & (~3);//round up
+	h = enti->spri->sprite_vrl_cont->vrl_header->height + overdraw + y - ry;
+	w = (x + enti->spri->sprite_vrl_cont->vrl_header->width + (overdraw*2) + 3 - rx) & (~3);//round up
 	if ((rx+w) > GVARVIDEO->page[0].width) w = GVARVIDEO->page[0].width-rx;
 	if ((ry+h) > GVARVIDEO->page[0].height) h = GVARVIDEO->page[0].height-ry;
 
@@ -204,9 +143,10 @@ void animate_spri(struct sprite *spri, video_t *video)
 	vga_restore_rm0wm0();
 
 	// replace VGA stride with our own and mem ptr. then sprite rendering at this stage is just (0,0)
-	vga_state.vga_draw_stride_limit = (GVARVIDEO->page[0].width + 3 - x) >> 2;//round up
 	vga_state.vga_draw_stride = w >> 2;
 	vga_state.vga_graphics_ram = omemptr + VMEMPAGESIZE2;
+	}else{ rx=ry=w=h=0; vga_state.vga_graphics_ram = (VGA_RAM_PTR)video->page[0].data; }
+	vga_state.vga_draw_stride_limit = (GVARVIDEO->page[0].width + 3 - x) >> 2;//round up
 
 	// then the sprite. note modding ram ptr means we just draw to (x&3,0)
 #ifndef SPRITE
@@ -215,12 +155,13 @@ void animate_spri(struct sprite *spri, video_t *video)
 	draw_vrl1_vgax_modex(
 		x-rx,
 		y-ry,
-		spri->sprite_vrl_cont->vrl_header,
-		spri->sprite_vrl_cont->line_offsets,
-		spri->sprite_vrl_cont->buffer + sizeof(struct vrl1_vgax_header),
-		spri->sprite_vrl_cont->data_size
+		enti->spri->sprite_vrl_cont->vrl_header,
+		enti->spri->sprite_vrl_cont->line_offsets,
+		enti->spri->sprite_vrl_cont->buffer + sizeof(struct vrl1_vgax_header),
+		enti->spri->sprite_vrl_cont->data_size
 	);
 #endif
+	if(!GVARVIDEO->rss){
 	// restore ptr
 	vga_state.vga_graphics_ram = omemptr;
 
@@ -231,31 +172,38 @@ void animate_spri(struct sprite *spri, video_t *video)
 	for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += GVARVIDEO->page[0].stridew) vga_wm1_mem_block_copy(o2,o,w >> 2);
 	// must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally
 	vga_restore_rm0wm0();
-
+	}
 	// restore stride
 	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = GVARVIDEO->page[0].stridew;
 
 	// Depending on delay, update indices
-	switch(spri->delay){
+//#define FRAME1 modexDrawSpriteRegion(pip[(pip->video->p)].page, x, y, 48, player[pn].enti.dire, 24, 32,	PLAYERBMPDATAPTR);
+//#define FRAME2 modexDrawSpriteRegion(pip[(pip->video->p)].page, x, y, 24, player[pn].enti.dire, 24, 32,	PLAYERBMPDATAPTR); stand
+//#define FRAME3 modexDrawSpriteRegion(pip[(pip->video->p)].page, x, y, 0, player[pn].enti.dire, 24, 32,	PLAYERBMPDATAPTR);
+//#define FRAME4 modexDrawSpriteRegion(pip[(pip->video->p)].page, x, y, 24, player[pn].enti.dire, 24, 32,	PLAYERBMPDATAPTR); stand
+	switch(enti->spri->delay)
+{
 		// Delay = 0 means that sprite should loop. Nothing to change here
 		case 0:
-			break;
+		break;
 
 		// Delay = 1 means that on next time unit sprite should be changed
 		case 1:
-			spri->curr_anim_spri++;
+			if(enti->invq)	enti->spri->curr_anim_spri++;
+			else			enti->spri->curr_anim_spri--;
 
 			// If we hit the end of an animation sequence, restart it
-			if(!(spri->curr_spri_id = spri->curr_anim_list[spri->curr_anim_spri].sprite_id)){
-				spri->curr_anim_spri = 0;
-				spri->curr_spri_id = spri->curr_anim_list[spri->curr_anim_spri].sprite_id;
+			if(!(	enti->spri->curr_spri_id = enti->spri->curr_anim_list[enti->spri->curr_anim_spri].sprite_id)){
+				enti->spri->curr_anim_spri = 1;
+				enti->spri->curr_spri_id = enti->spri->curr_anim_list[enti->spri->curr_anim_spri].sprite_id;
+				enti->invq=!enti->invq;
 			}
-			spri->delay = spri->curr_anim_list[spri->curr_anim_spri].delay;
+			enti->spri->delay = enti->spri->curr_anim_list[enti->spri->curr_anim_spri].delay;
 
 		// Delay > 1 means that we should not change sprite yet. Decrease delay
 		default:
-			spri->delay--;
-			break;
+			enti->spri->delay--;
+		break;
 	}
 	vga_state.vga_graphics_ram = video->omemptr;
 }

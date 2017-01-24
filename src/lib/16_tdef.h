@@ -138,8 +138,10 @@ typedef	struct
 	int sheetsetx; //NOT USED YET! entity sprite sheet set on the image x
 	int sheetsety; //NOT USED YET! entity sprite sheet set on the image y
 	nibble d;		//direction to render sprite!! wwww
+	nibble pred;	//prev. direction for animation changing
 	word dire;		//sprite in use
-	nibble q,preq;	//loop variable for anumation and locking the playing to compleate the animation cycle to prevent issues with misalignment www
+	nibble q;		//loop variable for anumation and locking the playing to compleate the animation cycle to prevent issues with misalignment www
+	boolean invq;	//animation inversing
 	word speed;		//entity speed!
 	word spt;		//speed per tile
 	struct sprite *spri; // sprite used by entity
@@ -218,7 +220,6 @@ typedef	struct		{
 typedef	struct
 {
 	entity_t near	enti;
-	entity_t *ent;
 #ifdef	__WATCOMC__
 	//struct sprite	*spri;	//supposively the sprite sheet data
 	memptr		gr;
@@ -267,7 +268,7 @@ typedef struct
 	byte vga_draw_stride;
 	byte vga_draw_stride_limit;		// further X clipping
 //
-	word __near rs;			//render switch
+	boolean __near rss;			//render sprite switch
 	sword __near sprifilei;		//player file's i
 	boolean __near p;			//render page number //BLEH
 	boolean __near r;			//page flip if true

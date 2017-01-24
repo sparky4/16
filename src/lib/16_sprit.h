@@ -67,8 +67,7 @@ int set_anim_by_id(struct sprite *spri, int anim_id);
  * In:
  * + struct sprite *spri - sprite to animate
  */
-void oldanimate_spri(struct sprite *spri, video_t *video);
-void animate_spri(struct sprite *spri, video_t *video);
+void animate_spri(entity_t *enti, video_t *video);
 
 void print_anim_ids(struct sprite *spri);
 

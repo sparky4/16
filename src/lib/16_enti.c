@@ -20,3 +20,32 @@
  *
  */
 
+#include "src/lib/16_enti.h"
+
+void EN_initentity(entity_t *enti)
+{
+	//tx and ty inited by map
+	enti->x = enti->tx*TILEWH;
+	enti->y = enti->ty*TILEWH;
+	enti->triggerx = enti->tx;
+	enti->triggery = enti->ty+1;
+	enti->q = 1;
+	enti->d =2;
+	enti->hp=4;
+	enti->speed=4;
+	enti->persist_aniframe=	enti->q;
+	enti->spt=(TILEWH/(enti->speed));	//speed per tile wwww
+	enti->spri->delay=1;
+	enti->invq=1;
+	enti->pred = enti->d;
+}
+
+//init player!
+void EN_initplayer(player_t *player, word pn)
+{
+	EN_initentity(&player[pn].enti);
+/*	player[0].info.x = player[0].tx;
+	player[0].info.xaxis = player[0].tx*TILEWH;
+	player[0].info.y = player[0].ty;
+	player[0].info.yaxis = player[0].ty*TILEWH;*/
+}

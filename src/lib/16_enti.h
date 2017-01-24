@@ -44,4 +44,7 @@
 // 	word spt;		// speed per tile
 // } entity_t;
 
+void EN_initentity(entity_t *enti);
+void EN_initplayer(player_t *player, word pn);
+
 #endif

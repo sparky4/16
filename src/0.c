@@ -87,7 +87,7 @@ int main(int argc,char **argv)
 
 	IN_Startup();
 	IN_Default(0,&player,ctrl_Keyboard1);
-	IN_initplayer(&player, 0);
+	EN_initplayer(&player, 0);
 
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);

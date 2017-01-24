@@ -1101,19 +1101,19 @@ void shinku(global_game_variables_t *gv)
 	}
 }
 
-void near ZC_drawframe(map_view_t *pip, player_t *player, word pn, sword x, sword y, word sw)
+void near ZC_drawframe(map_view_t *pip, entity_t *enti, sword x, sword y)
 {
-	switch(pip[0].video->rs)
+	switch(pip[0].video->rss)
 	{
 		case 0:
-			animate_spri(player[pn].ent->spri, pip->video);
+			animate_spri(enti, pip->video);
 		break;
 		case 1:
-			oldanimate_spri(player[pn].ent->spri, pip->video);
+			animate_spri(enti, pip->video);
 		break;
-		case 2:
-			modexClearRegion(&(pip[0].page[0]), x, y, 16, 32, player[pn].enti.dire);
-		break;
+// 		case 2:
+// 			modexClearRegion(&(pip[0].page[0]), x, y, 16, 32, player[pn].enti.dire);
+// 		break;
 	}
 }
 
@@ -1222,7 +1222,6 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 	sword x = player[pn].enti.x;
 	sword y = player[pn].enti.y;
 	sword qq,dd; //scroll offset
-	word ls = player[pn].enti.persist_aniframe;
 	player[pn].enti.dire=10; //direction
 
 	switch(scrollswitch)
@@ -1240,8 +1239,7 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 			qq = ((player[pn].enti.q)*(player[pn].enti.speed));
 		break;
 	}
-	if(pip[0].video->rs<2)
-		x-=4;
+	x-=4;
 	y-=pip[0].map->tiles->tileHeight;
 	switch (player[pn].enti.d)
 	{
@@ -1269,40 +1267,22 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 		break;
 	}
 	player[pn].enti.dire+=dd;
-	player[pn].ent->spri->delay=1;
-	if(player[pn].enti.q==1)
-		set_anim_by_id(player[pn].ent->spri, player[pn].enti.dire);
-		//pip->video->sprifilei = set_anim_by_id(player[pn].ent->spri, player[pn].enti.dire);	if(pip->video->sprifilei == -1){ printf("ERROR!	%u\n", player[pn].enti.dire); return; }
+
+	if((player[pn].enti.q==1 && player[pn].enti.pred != player[pn].enti.d) || !dd)
+	{
+		set_anim_by_id(player[pn].enti.spri, player[pn].enti.dire); //pip->video->sprifilei = set_anim_by_id(player[pn].enti.spri, player[pn].enti.dire);	if(pip->video->sprifilei == -1){ printf("ERROR!	%u\n", player[pn].enti.dire); return; }
+		player[pn].enti.pred = player[pn].enti.d;
+	}
 
 	//setting xy position
-	player[pn].ent->spri->x = x;
-	player[pn].ent->spri->y = y;
+	player[pn].enti.spri->x = x;
+	player[pn].enti.spri->y = y;
 
-	switch(ls)
-	{
-		case 1:
-			ZC_drawframe(pip, player, pn, x, y, ls);
-		break;
-		case 2:
-			ZC_drawframe(pip, player, pn, x, y, ls);
-		break;
-		case 3:
-			ZC_drawframe(pip, player, pn, x, y, ls);
-		break;
-		case 4:
-			ZC_drawframe(pip, player, pn, x, y, ls);
-		break;
-	}
+	//draw sprite
+	ZC_drawframe(pip, &player[pn].enti, x, y);
+
 	pip->video->r=1;
-	if(player[pn].enti.persist_aniframe!=player[pn].enti.q)
-	{
-		sprintf(global_temp_status_text, "[%u]%u", player[pn].enti.persist_aniframe, player[pn].enti.q);
-		modexprint(&(pip->video->page[0]), player[pn].enti.x-(8*player[pn].enti.persist_aniframe), player[pn].enti.y-TILEWH-(8*player[pn].enti.persist_aniframe), 1, 20, 1, global_temp_status_text);
-		delay(500);
-	}
 	//WALKTYPE_FRAM_PRINT;
-	//sprintf(global_temp_status_text, " %u", player[pn].enti.dire);
-	//modexprint(&(pip->video->page[0]), player[pn].enti.x-(8*player[pn].enti.persist_aniframe)+8, player[pn].enti.y-TILEWH-(8*player[pn].enti.persist_aniframe), 1, 20, 1, global_temp_status_text);
 }
 
 /*
@@ -1320,12 +1300,12 @@ boolean coll_check(int x, int y, int dx, int dy, map_view_t *map_v)
 	return dx && 1;//crossable_tile(x + dx, map_v) || dy && crossable_tile(y + dy, map_v);
 }
 
-boolean ZC_walk2(entity_t *ent, map_view_t *map_v)
+boolean ZC_walk2(entity_t *enti, map_view_t *map_v)
 {
 	//return 1;
 	int dx = 1;
 	int dy = 1;
-	switch(ent->d)
+	switch(enti->d)
 	{
 		case 2:
 			return 0;
@@ -1340,7 +1320,7 @@ boolean ZC_walk2(entity_t *ent, map_view_t *map_v)
 			dx = 0;
 			break;
 	}
-	if(coll_check(ent->x, ent->y, dx, dy,  map_v))
+	if(coll_check(enti->x, enti->y, dx, dy,  map_v))
 	{
 		// Allow movement
 		// Set speed

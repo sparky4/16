@@ -302,6 +302,5 @@ extern boolean IN_UserInput(dword delay,boolean clear);
 extern boolean IN_KeyDown(byte code);
 extern void IN_ClearKey(byte code);
 extern boolean IN_qb(byte kee);
-void IN_initplayer(player_t *player, word pn);
 
 #endif

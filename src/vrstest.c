@@ -42,7 +42,7 @@ void main()
 	word start;
 	float t1, t2;
 	//boolean baka;
-	struct sprite spri;
+	entity_t enti;
 	//vrl1_vgax_offset_t * off, *off1;
 	struct vrs_container vrs;
 	vrl1_vgax_offset_t **vrl_line_offsets;
@@ -90,15 +90,15 @@ void main()
 
 
 	//read_vrs(&gvar, "data/spri/chikyuu.vrs", &vrs);
-	spri.spritesheet = &vrs;
-	spri.sprite_vrl_cont = malloc(sizeof(struct vrl_container));
-	i = set_anim_by_id(&spri, 31);
+	enti.spri->spritesheet = &vrs;
+	enti.spri->sprite_vrl_cont = malloc(sizeof(struct vrl_container));
+	i = set_anim_by_id((enti.spri), 31);
 	if (i == -1)
 	{
 		return;
 	}
-	spri.x = TILEWH-4;
-	spri.y = TILEWH;
+	enti.spri->x = TILEWH-4;
+	enti.spri->y = TILEWH;
 
 //	Uncomment to see broken sprites
 /*	sega = mm.bufferseg;
@@ -121,13 +121,11 @@ void main()
 	modexPalUpdate1(pal);*/
 	VL_LoadPalFile("data/spri/chikyuu.pal", &palette);
 	for (i = 0; i < 10; i++){
-		spri.delay = 1;
+		enti.spri->delay = 1;
 
-		if(i==5) set_anim_by_id(&spri, 21);
-		//else if(i>=10) set_anim_by_id(&spri, 31);
-		//else if(i<=15) set_anim_by_id(&spri, 41);
+		if(i==5) set_anim_by_id(enti.spri, 21);
 
-		animate_spri(&spri, &gvar.video);// spri.x += 16;
+		animate_spri(&enti, &gvar.video);// enti.spri->x += 16;
 		delay(500);
 	}
 
@@ -150,10 +148,10 @@ FUNCTIONKEYFUNCTIONS;
 	MM_DumpData(&gvar);
 	MM_Report_(&gvar);
 	Shutdown16(&gvar);
-	free(spri.sprite_vrl_cont);
+	free(enti.spri->sprite_vrl_cont);
 	free(vrl_line_offsets);
 	MM_FreePtr(&bigbuffer, &gvar);
-	//MM_FreePtr(&((void __based(sega)*)spri.spritesheet->buffer), &mm);
+	//MM_FreePtr(&((void __based(sega)*)enti.spri->spritesheet->buffer), &mm);
 	//printf("CPU to VGA: %f\n", t1);
 	//printf("VGA to VGA: %f\n", t2);
 	heapdump(&gvar);

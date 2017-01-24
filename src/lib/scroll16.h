@@ -95,6 +95,7 @@ typedef struct {
 //printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[0].map->width, mv[0].map->height, mv[0].map->data[0]);
 //printf("&global_temp_status_text = %Fp\n", &global_temp_status_text);
 //print_anim_ids(player[0].ent->spri);
+//printf("	tile data value at player trigger position: %d\n\n", mv[0].map->data[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))]);
 #define SCROLLEXITMESG 	printf("tx: %d	", mv[0].tx);\
 	printf("ty: %d\n", mv[0].ty);\
 	printf("\n");\
@@ -104,9 +105,8 @@ typedef struct {
 	printf("	tx: %d", player[0].enti.tx); printf("	ty: %d\n", player[0].enti.ty);\
 	printf("	triggx: %d", player[0].enti.triggerx); printf("	triggy: %d\n", player[0].enti.triggery);\
 	printf("	hp: %d", (player[0].enti.hp));	printf("	q: %d", player[0].enti.q);	printf("	player.info.dir: %d", player[0].info.dir);	printf("	player.d: %d ", player[0].enti.d);\
-		printf("	pdir=%d\n", player[0].pdir); printf("	aniframe=%u", player[0].enti.persist_aniframe);\
-	printf("	tile data value at player trigger position: %d\n\n", mv[0].map->data[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))]);\
-\
+		printf("	pdir=%d\n", player[0].pdir); printf("	aniframe=%u", player[0].enti.persist_aniframe); printf("	delay=%u", player[0].enti.spri->delay);\
+printf("\n\n");\
 	printf("Virtual Screen: %dx", gvar.video.page[0].width);	printf("%d	", gvar.video.page[0].height);\
 	printf("Screen: %dx", gvar.video.page[0].sw);	printf("%d\n", gvar.video.page[0].sh);\
 	printf("virtual tile resolution: %dx", gvar.video.page[0].tilesw);	printf("%d	", gvar.video.page[0].tilesh);\
@@ -158,7 +158,7 @@ void mapDrawWRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 //void qclean();
 void shinku(global_game_variables_t *gv);
-void near ZC_drawframe(map_view_t *pip, player_t *player, word pn, sword x, sword y, word sw);
+void near ZC_drawframe(map_view_t *pip, entity_t *enti, sword x, sword y);
 void near animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch);
 void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch);
 

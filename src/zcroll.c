@@ -56,9 +56,9 @@ void main(int argc, char *argv[])
 
 	// OK, this one takes hellova time and needs to be done in farmalloc or MM_...
 	//IN CA i think you use CAL_SetupGrFile but i do think we should work together on this part --sparky4
-	player[0].ent = malloc(sizeof(entity_t));
-	player[0].ent->spri = malloc(sizeof(struct sprite));
-	player[0].ent->spri->spritesheet = malloc(sizeof(struct vrs_container));
+	//player[0].ent = malloc(sizeof(entity_t));
+	player[0].enti.spri = malloc(sizeof(struct sprite));
+	player[0].enti.spri->spritesheet = malloc(sizeof(struct vrs_container));
 
 	// create the map
 //	fprintf(stderr, "testing map load~	");
@@ -68,7 +68,7 @@ void main(int argc, char *argv[])
 //	fprintf(stderr, "yay map loaded~~\n");
 
 	// data
-	read_vrs(&gvar, "data/spri/chikyuu.vrs", player[0].ent->spri->spritesheet);
+	read_vrs(&gvar, "data/spri/chikyuu.vrs", player[0].enti.spri->spritesheet);
 	PCXBMP = bitmapLoadPcx("data/chikyuu.pcx", &gvar); // load sprite
 
 	// input!
@@ -102,22 +102,20 @@ void main(int argc, char *argv[])
 	ZC_MVSetup(&mv, &map, &gvar);
 
 	//renderswitch
-	gvar.video.rs=0;
-	//player[0].ent->spri->x = player[0].ent->spri->y = TILEWH;
+	gvar.video.rss=0;
 
 	// set up paging
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(&mv, 0, 0);
 
 	playerXYpos(0, 0, &player, &mv, 0);
-	IN_initplayer(&player, 0);
-	player[0].ent->spri->x = player[0].enti.x-4;
-	player[0].ent->spri->y = player[0].enti.y-16;
-	player[0].ent->spri->delay = 0;
+	EN_initplayer(&player, 0);
+	player[0].enti.spri->x = player[0].enti.x-4;
+	player[0].enti.spri->y = player[0].enti.y-16;
 
 	player[0].enti.dire=31;
-	gvar.video.sprifilei = set_anim_by_id(player[0].ent->spri, player[0].enti.dire);
-	//print_anim_ids(player[0].ent->spri);
+	gvar.video.sprifilei = set_anim_by_id(player[0].enti.spri, player[0].enti.dire);
+	//print_anim_ids(player[0].enti.spri);
 	if (gvar.video.sprifilei == -1)
 	{
 #ifdef FADE
@@ -128,7 +126,7 @@ void main(int argc, char *argv[])
 		modexFadeOn(4, dpal);
 #endif
 	}
-	animate_spri((player[0].ent->spri), &gvar.video);
+	animate_spri(&(player[0].enti), &gvar.video);
 
 	VL_ShowPage(mv[0].page, 0, 0);//modexShowPage(mv[0].page);//!(gvar.video.p)
 #ifdef FADE
@@ -195,10 +193,10 @@ void main(int argc, char *argv[])
 			{
 				case 11:
 					i=0;
-					player[0].ent->spri->x = TILEWH;
+					player[0].enti.spri->x = TILEWH;
 				default:
 					i++;
-					player[0].ent->spri->delay = 0; animate_spri((player[0].ent->spri), &gvar.video);// player[0].ent->spri->x += 16;
+					animate_spri(&(player[0].enti), &gvar.video);// player[0].enti.spri->x += 16;
 				break;
 			}
 		}

@@ -1275,22 +1275,3 @@ boolean IN_qb(byte kee)
 	if(inpu.Keyboard[kee]==true) return 1;
 	else return 0;
 }
-
-//init player!
-void IN_initplayer(player_t *player, word pn)
-{
-	player[pn].enti.x = player[pn].enti.tx*TILEWH;
-	player[pn].enti.y = player[pn].enti.ty*TILEWH;
-	player[pn].enti.triggerx = player[pn].enti.tx;
-	player[pn].enti.triggery = player[pn].enti.ty+1;
-/*	player[0].info.x = player[0].tx;
-	player[0].info.xaxis = player[0].tx*TILEWH;
-	player[0].info.y = player[0].ty;
-	player[0].info.yaxis = player[0].ty*TILEWH;*/
-	player[pn].enti.q =				1;
-	player[pn].enti.d =2;
-	player[pn].enti.hp=4;
-	player[pn].enti.speed=4;
-	player[pn].enti.persist_aniframe=	1;
-	player[pn].enti.spt=(TILEWH/(player[pn].enti.speed));	//speed per tile wwww
-}

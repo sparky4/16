@@ -1,0 +1,25 @@
+WARNING: Failed to initialize DEBUG output
+
+Project 16 zcroll.exe. This is just a test file!
+version Jan 24 2017 12:37:40
+tx: 0	ty: 0
+
+player vars:
+	x: 160	y: 128
+	tx: 10	ty: 8
+	triggx: 10	triggy: 9
+	hp: 0	q: 1	player.info.dir: 2	player.d: 2 	pdir=0
+	aniframe=1	delay=1
+
+Virtual Screen: 352x272	Screen: 320x240
+virtual tile resolution: 22x17	tile resolution: 20x15
+middle tile position: 10x8
+video memory remaining: 9215
+page 	[0]=(a000:0000) size=23936	w=352  h=272 sw=320  sh=240 pi=1408
+	[1]=(a000:5d80) size=23936	w=352  h=272 sw=320  sh=240 pi=1408
+	[2]=(a000:bb00) size=5120	w=64  h=64 sw=64  sh=64 pi=1408
+	[3]=(a000:cf00) size=3328	w=320  h=208 sw=320  sh=208 pi=1408
+gvar.video.p=0 gvar.video.r=0 pageflipflop=1
+
+detected CPU type: 80386 or newer
+detected FPU type: 80387

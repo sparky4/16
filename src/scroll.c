@@ -113,17 +113,16 @@ void main(int argc, char *argv[])
 	ZC_MVSetup(&mv, &map, &gvar);
 
 	//renderswitch
-	gvar.video.rs=2;
+	gvar.video.rss=1;
 
 	/* set up paging */
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(&mv, 0, 0);
 
 	playerXYpos(0, 0, &player, &mv, 0);
-	IN_initplayer(&player, 0);
-	player[0].ent->spri->x = player[0].enti.x-4;
-	player[0].ent->spri->y = player[0].enti.y-16;
-	player[0].ent->spri->delay = 1;
+	EN_initplayer(&player, 0);
+	player[0].enti.spri->x = player[0].enti.x-4;
+	player[0].enti.spri->y = player[0].enti.y-16;
 
 #ifndef	SPRITE
 	modexClearRegion(mv[0].page, player[0].enti.x, player[0].enti.y-TILEWH, 16, 32, 15);

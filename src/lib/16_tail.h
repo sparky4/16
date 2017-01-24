@@ -33,16 +33,7 @@
 #define FUNCTIONKEYFUNCTIONS \
 	if(IN_KeyDown(sc_F6)){ VL_ShowPage(&gvar.video.page[0], 0, 0); IN_UserInput(1,1); } \
 	if(IN_KeyDown(sc_F7)){ VL_ShowPage(&gvar.video.page[0], 0, 1); IN_UserInput(1,1); } \
-	if(IN_KeyDown(sc_T)){ \
-		switch(gvar.video.rs){\
-			case 0:\
-			case 1:\
-				gvar.video.rs++;\
-			break;\
-			case 2:\
-				gvar.video.rs=0;\
-			break;}\
-			IN_UserInput(1,1); }
+	if(IN_KeyDown(sc_T)){ gvar.video.rss=!gvar.video.rss; IN_UserInput(1,1); }
 #define FUNCTIONKEYFUNCTIONS0EXE \
 	if(IN_KeyDown(sc_F6)){ VL_ShowPage(&gvar.video.page[gvar.video.panp], 0, 0); IN_UserInput(1,1); } \
 	if(IN_KeyDown(sc_F7)){ VL_ShowPage(&gvar.video.page[gvar.video.panp], 0, 1); IN_UserInput(1,1); }
