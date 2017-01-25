@@ -98,6 +98,8 @@ void print_anim_ids(struct sprite *spri)
 
 void animate_spri(entity_t *enti, video_t *video)
 {
+#define INC_PER_FRAME if(enti->q&1) enti->persist_aniframe++; if(enti->persist_aniframe>4) enti->persist_aniframe = 1;
+
 #define GVARVIDEO video
 #define VMEMPAGESIZE2	GVARVIDEO->page[0].pagesize+GVARVIDEO->page[1].pagesize
 #define VMEMPAGEDATA2	GVARVIDEO->page[2].data
@@ -112,31 +114,25 @@ void animate_spri(entity_t *enti, video_t *video)
 //#define FRAME3 modexDrawSpriteRegion(pip[(pip->video->p)].page, x, y, 0, player[pn].enti.dire, 24, 32,	PLAYERBMPDATAPTR);
 //#define FRAME4 modexDrawSpriteRegion(pip[(pip->video->p)].page, x, y, 24, player[pn].enti.dire, 24, 32,	PLAYERBMPDATAPTR); stand
 	switch(enti->spri->delay)
-{
+	{
 		// Delay = 0 means that sprite should loop. Nothing to change here
 		case 0:
 		break;
 
 		// Delay = 1 means that on next time unit sprite should be changed
 		case 1:
-			if(enti->invq)	enti->spri->curr_anim_spri++;
-			else			enti->spri->curr_anim_spri--;
-//printf("1[%u]	%u", enti->invq, enti->spri->curr_anim_spri);
+			INC_PER_FRAME
+			enti->spri->curr_anim_spri++;
+
 			// If we hit the end of an animation sequence, restart it
 			if(!(	enti->spri->curr_spri_id = enti->spri->curr_anim_list[enti->spri->curr_anim_spri].sprite_id)){
-				//enti->spri->curr_anim_spri = 1;
-				enti->invq=!enti->invq;
-				if(enti->invq)				enti->spri->curr_anim_spri+=2;
-				else if(enti->spri->curr_anim_spri)	enti->spri->curr_anim_spri-=2;
+				enti->spri->curr_anim_spri = 0;
 				enti->spri->curr_spri_id = enti->spri->curr_anim_list[enti->spri->curr_anim_spri].sprite_id;
-//printf("	enti->spri->curr_anim_spri=%u	", enti->spri->curr_anim_spri);
 			}
 			enti->spri->delay = enti->spri->curr_anim_list[enti->spri->curr_anim_spri].delay;
-//printf("\n");
-//break;
+
 		// Delay > 1 means that we should not change sprite yet. Decrease delay
 		default:
-//printf("2[%u]	%u\n", enti->invq, enti->spri->curr_anim_spri);
 			enti->spri->delay--;
 		break;
 	}

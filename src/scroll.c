@@ -34,6 +34,7 @@ sword bakapee;
 //debugswitches
 boolean panswitch=0;//1
 //extern boolean pageflipflop=1;
+boolean pagenorendermap = 1;
 unsigned int i;
 //#ifdef FADE
 	static word paloffset=0;
@@ -166,7 +167,7 @@ void main(int argc, char *argv[])
 	if(!panswitch){
 		ZC_walk(&mv, &player, 0);
 	}else{
-		PANKEYFUN;//panPageManual(&mv, &player, 0);
+		PANKEYFUNZC;//panPageManual(&mv, &player, 0);
 		//printf("	player[0].enti.q: %d", player[0].enti.q);	printf("	player[0].d: %d\n", player[0].d);
 	}
 
@@ -197,25 +198,7 @@ void main(int argc, char *argv[])
 #endif
 #endif
 	//pan switch
-	if(IN_KeyDown(88)){panswitch=!panswitch; IN_UserInput(1,1);}	//f12
-	if(IN_KeyDown(87))	//f11
-	{
-		pageflipflop=!pageflipflop;
-		IN_UserInput(1,1);
-// 		VGAmodeX(0, 0, &gvar);
-// 		IN_Shutdown();
-// 		__asm
-// 		{
-// 			mov ah,31h
-// 			int 21h
-// 		}
-	}
-	if(IN_KeyDown(68))	//f10
-	{
-		gvar.kurokku.fpscap=!gvar.kurokku.fpscap;
-		IN_UserInput(1,1);
-	}
-	if(IN_KeyDown(67))	//f9
+	if(IN_KeyDown(62))	//f3
 	{
 		modexClearRegion(mv[1].page, 0, 0, mv[1].page->width, mv[1].page->height, 2);
 		modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 3);
@@ -230,7 +213,8 @@ void main(int argc, char *argv[])
 		modexDrawSprite(mv[0].page, 32+72, 16, (PCXBMPVAR));
 	}
 #endif
-	FUNCTIONKEYFUNCTIONS;
+	FUNCTIONKEYFUNCTIONS
+	FUNCTIONKEYDRAWJUNK
 	if(IN_KeyDown(sc_L)){ modexClearRegion(&gvar.video.page[0], player[0].enti.x, player[0].enti.y, 16, 16, 1); }
 
 	//9

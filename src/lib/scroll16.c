@@ -24,7 +24,7 @@
 */
 #include "src/lib/scroll16.h"
 
-#define INC_PER_FRAME if(player[pn].enti.q&1) player[pn].enti.persist_aniframe++; if(player[pn].enti.persist_aniframe>4) player[pn].enti.persist_aniframe = 1;
+//#define INC_PER_FRAME if(player[pn].enti.q&1) player[pn].enti.persist_aniframe++; if(player[pn].enti.persist_aniframe>4) player[pn].enti.persist_aniframe = 1;
 
 void ZC_walk(map_view_t *pip, player_t *player, word pn)
 {
@@ -42,7 +42,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				player[pn].walktype=2;
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
-					INC_PER_FRAME;
+					//INC_PER_FRAME;
 					ANIMATESPRIFUN(pip, player, pn, 2);
 					ScrollRight(pip, player, 3, pn);
 					ScrollRight(pip, player, 2, pn);
@@ -56,7 +56,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				player[pn].walktype=1;
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
-					INC_PER_FRAME;
+					//INC_PER_FRAME;
 					player[pn].enti.x+=(player[pn].enti.speed);
 					ANIMATESPRIFUN(pip, player, pn, 1);
 					player[pn].enti.q++;
@@ -79,7 +79,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				player[pn].walktype=2;
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
-					INC_PER_FRAME;
+					//INC_PER_FRAME;
 					ANIMATESPRIFUN(pip, player, pn, 2);
 					ScrollLeft(pip, player, 3, pn);
 					ScrollLeft(pip, player, 2, pn);
@@ -93,7 +93,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				player[pn].walktype=1;
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
-					INC_PER_FRAME;
+					//INC_PER_FRAME;
 					player[pn].enti.x-=(player[pn].enti.speed);
 					ANIMATESPRIFUN(pip, player, pn, 1);
 					player[pn].enti.q++;
@@ -116,7 +116,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				player[pn].walktype=2;
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
-					INC_PER_FRAME;
+					//INC_PER_FRAME;
 					ANIMATESPRIFUN(pip, player, pn, 2);
 					ScrollDown(pip, player, 3, pn);
 					ScrollDown(pip, player, 2, pn);
@@ -130,7 +130,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				player[pn].walktype=1;
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
-					INC_PER_FRAME;
+					//INC_PER_FRAME;
 					player[pn].enti.y+=(player[pn].enti.speed);
 					ANIMATESPRIFUN(pip, player, pn, 1);
 					player[pn].enti.q++;
@@ -153,7 +153,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				player[pn].walktype=2;
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
-					INC_PER_FRAME;
+					//INC_PER_FRAME;
 					ANIMATESPRIFUN(pip, player, pn, 2);
 					ScrollUp(pip, player, 3, pn);
 					ScrollUp(pip, player, 2, pn);
@@ -167,7 +167,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				player[pn].walktype=1;
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
-					INC_PER_FRAME;
+					//INC_PER_FRAME;
 					player[pn].enti.y-=(player[pn].enti.speed);
 					ANIMATESPRIFUN(pip, player, pn, 1);
 					player[pn].enti.q++;
@@ -185,203 +185,6 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 	}
 }
 
-
-/*
-src/lib/scroll16.c:	mv[0].video->r=1;
-src/lib/scroll16.c:	mv[0].video->r=1;
-src/lib/scroll16.c:	mv[0].video->r=1;
-src/lib/scroll16.c:	mv[0].video->r=1;
-src/lib/scroll16.c:	pip->video->r=1;
-src/lib/scroll16.c:	mv->video->r=1;
- */
-
-void oldwalk(map_view_t *pip, player_t *player, word pn)
-{
-	//printf("player[%d].d=%d\n", pn, player[pn].enti.d);
-	switch(player[pn].enti.d)
-	{
-		//no direction
-		case 2:
-			//0000pip[0].video->startclk = (*clockw);
-		break;
-		//right movement
-		case 3:
-			//printf("pip[0].page->tilesw=%d	", pip[0].page->tilesw); printf("pip[0].page->tw=%d\n", pip[0].page->tw);
-			if(pip[0].tx >= 0 && pip[0].tx+pip[0].page->tw < pip[0].map->width && player[pn].enti.tx == pip[0].tx+pip[0].page->tilemidposscreenx &&
-			!(pip[0].map->data[(player[pn].enti.tx)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))	//collision detection!
-			{
-				if(player[pn].enti.q<=player[pn].enti.spt)
-				{
-					INC_PER_FRAME;
-					ANIMATESPRIFUN(pip, player, pn, 1);
-					ScrollRight(pip, player, 3, pn);
-					ScrollRight(pip, player, 2, pn);
-					//mapScrollRight(pip, player, !(pip[0].video->p), pn);
-					mapScrollRight(pip, player, (pip[0].video->p), pn);
-					if(!pageflipflop) modexShowPage(pip[1].page);
-					player[pn].enti.q++;
-					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
-			}
-			else if(player[pn].enti.tx < pip[0].map->width && !(pip[0].map->data[(player[pn].enti.tx)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))
-			{
-				if(player[pn].enti.q<=player[pn].enti.spt)
-				{
-					INC_PER_FRAME;
-					player[pn].enti.x+=(player[pn].enti.speed);
-					ANIMATESPRIFUN(pip, player, pn, 0);
-					if(!pageflipflop) modexShowPage(pip[1].page);
-					player[pn].enti.q++;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
-			}
-			else
-			{
-				if(!pageflipflop) modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32);
-#ifdef SPRITE
-				modexDrawSpriteRegion(pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 24, 32, PLAYERBMPDATAPTR);
-#else
-				modexClearRegion(pip[1].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 14);
-#endif
-				if(!pageflipflop) modexShowPage(pip[1].page);
-				player[pn].enti.d = 2;
-			}
-			player[pn].enti.triggerx = player[pn].enti.tx+1;
-			player[pn].enti.triggery = player[pn].enti.ty;
-		break;
-
-		//left movement
-		case 1:
-			if(pip[0].tx > 0 && pip[0].tx+pip[0].page->tw <= pip[0].map->width && player[pn].enti.tx == pip[0].tx+pip[0].page->tilemidposscreenx &&
-			!(pip[0].map->data[(player[pn].enti.tx-2)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx-1 == TRIGGX && player[pn].enti.ty == TRIGGY))	//collision detection!
-			{
-				if(player[pn].enti.q<=player[pn].enti.spt)
-				{
-					INC_PER_FRAME;
-					ANIMATESPRIFUN(pip, player, pn, 1);
-					ScrollLeft(pip, player, 3, pn);
-					ScrollLeft(pip, player, 2, pn);
-					//mapScrollLeft(pip, player, !(pip[0].video->p), pn);
-					mapScrollLeft(pip, player, (pip[0].video->p), pn);
-					if(!pageflipflop) modexShowPage(pip[1].page);
-					player[pn].enti.q++;
-					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
-			}
-			else if(player[pn].enti.tx > 1 && !(pip[0].map->data[(player[pn].enti.tx-2)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx-1 == TRIGGX && player[pn].enti.ty == TRIGGY))
-			{
-				if(player[pn].enti.q<=player[pn].enti.spt)
-				{
-					INC_PER_FRAME;
-					player[pn].enti.x-=(player[pn].enti.speed);
-					ANIMATESPRIFUN(pip, player, pn, 0);
-					if(!pageflipflop) modexShowPage(pip[1].page);
-					player[pn].enti.q++;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
-			}
-			else
-			{
-				if(!pageflipflop) modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32);
-#ifdef SPRITE
-				modexDrawSpriteRegion(pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 96, 24, 32, PLAYERBMPDATAPTR);
-#else
-				modexClearRegion(pip[1].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 10);
-#endif
-				if(!pageflipflop) modexShowPage(pip[1].page);
-				player[pn].enti.d = 2;
-			}
-			player[pn].enti.triggerx = player[pn].enti.tx-1;
-			player[pn].enti.triggery = player[pn].enti.ty;
-		break;
-
-		//down movement
-		case 4:
-			if(pip[0].ty >= 0 && pip[0].ty+pip[0].page->th < pip[0].map->height && player[pn].enti.ty == pip[0].ty+pip[0].page->tilemidposscreeny &&
-			!(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty+1 == TRIGGY))	//collision detection!
-			{
-				if(player[pn].enti.q<=player[pn].enti.spt)
-				{
-					INC_PER_FRAME;
-					ANIMATESPRIFUN(pip, player, pn, 1);
-					ScrollDown(pip, player, 3, pn);
-					ScrollDown(pip, player, 2, pn);
-					//mapScrollDown(pip, player, !(pip[0].video->p), pn);
-					mapScrollDown(pip, player, (pip[0].video->p), pn);
-					if(!pageflipflop) modexShowPage(pip[1].page);
-					player[pn].enti.q++;
-					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
-			}
-			else if(player[pn].enti.ty < pip[0].map->height && !(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty+1 == TRIGGY))
-			{
-				if(player[pn].enti.q<=player[pn].enti.spt)
-				{
-					INC_PER_FRAME;
-					player[pn].enti.y+=(player[pn].enti.speed);
-					ANIMATESPRIFUN(pip, player, pn, 0);
-					if(!pageflipflop) modexShowPage(pip[1].page);
-					player[pn].enti.q++;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
-			}
-			else
-			{
-				if(!pageflipflop) modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32);
-#ifdef SPRITE
-				modexDrawSpriteRegion(pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 64, 24, 32, PLAYERBMPDATAPTR);
-#else
-				modexClearRegion(pip[1].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 9);
-#endif
-				if(!pageflipflop) modexShowPage(pip[1].page);
-				player[pn].enti.d = 2;
-			}
-			player[pn].enti.triggerx = player[pn].enti.tx;
-			player[pn].enti.triggery = player[pn].enti.ty+1;
-		break;
-
-		//up movement
-		case 0:
-			if(pip[0].ty > 0 && pip[0].ty+pip[0].page->th <= pip[0].map->height && player[pn].enti.ty == pip[0].ty+pip[0].page->tilemidposscreeny &&
-			!(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty-2))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty-1 == TRIGGY))	//collision detection!
-			{
-				if(player[pn].enti.q<=player[pn].enti.spt)
-				{
-					INC_PER_FRAME;
-					ANIMATESPRIFUN(pip, player, pn, 1);
-					ScrollUp(pip, player, 3, pn);
-					ScrollUp(pip, player, 2, pn);
-					//mapScrollUp(pip, player, !(pip[0].video->p), pn);
-					mapScrollUp(pip, player, (pip[0].video->p), pn);
-					if(!pageflipflop) modexShowPage(pip[1].page);
-					player[pn].enti.q++;
-					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
-			}
-			else if(player[pn].enti.ty > 1 && !(pip[0].map->data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty-2))] == 0))//!(player[pn].enti.tx == TRIGGX &&  player[pn].enti.ty-1 == TRIGGY))
-			{
-				if(player[pn].enti.q<=player[pn].enti.spt)
-				{
-					INC_PER_FRAME;
-					player[pn].enti.y-=(player[pn].enti.speed);
-					ANIMATESPRIFUN(pip, player, pn, 0);
-					if(!pageflipflop) modexShowPage(pip[1].page);
-					player[pn].enti.q++;
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
-			}
-			else
-			{
-				if(!pageflipflop) modexCopyPageRegion(pip[1].page, pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32);
-#ifdef SPRITE
-				modexDrawSpriteRegion(pip[0].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 0, 24, 32, PLAYERBMPDATAPTR);
-#else
-				modexClearRegion(pip[1].page, player[pn].enti.x, player[pn].enti.y-TILEWH, 24, 32, 12);
-#endif
-				if(!pageflipflop) modexShowPage(pip[1].page);
-				player[pn].enti.d = 2;
-			}
-			player[pn].enti.triggerx = player[pn].enti.tx;
-			player[pn].enti.triggery = player[pn].enti.ty-1;
-		break;
-	}
-}
 
 //panning page
 void ZC_panPageManual(map_view_t *pip, player_t *player, word pn)
@@ -868,7 +671,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 		mapDrawWRow(&mv[0], tx-1, ty, py);
 	i+=mv->map->width - tx;
 	}
-	//if(!pageploop)
+	if(!pageploop)
 		modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
 // 	{
 // 		unsigned int k,j,o;
@@ -906,7 +709,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 	if(i==0)
 	{
 		//wwww
-		modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, 0); //currently the over scan color!
+		modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, 1); //currently the over scan color!
 	}
 	else
 	{
@@ -919,7 +722,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 			case 0:
 #endif
 #ifndef TILERENDER
-				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, ((dbg_mapdata[i])+1));
+				if(!pagenorendermap) modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, ((dbg_mapdata[i])+1));
 				//modexprint(page, x, y, 1, 15, 0, (char const *)(t->debug_data[i]));
 #else
 				modexDrawBmpRegion		(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
@@ -1024,13 +827,14 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 
 boolean pageflipflop = 1;
 boolean pageploop = 1;
+boolean pagenorendermap = 0;
 
 /*	sync	*/
 void shinku(global_game_variables_t *gv)
 {
 	word x = (0) + gv->video.page[/*!*/(gv->video.p)].dx; // follow the screen
 	word y = (0) + gv->video.page[/*!*/(gv->video.p)].dy; // follow the screen
-	word col = 7, bgcol = 0, type = 1;//w = 64, h = 8,
+	word col = 2, bgcol = 1, type = 1;//w = 64, h = 8, //col7bgcol0
 	//byte o,o2,i;
 	//modexCopyPageRegion(pip[1].page, pip[2].page, 16, 16, 16, 16, (14*8)+4, 8+4);
 	/* block copy to visible RAM from offscreen */
@@ -1044,9 +848,9 @@ void shinku(global_game_variables_t *gv)
 	if(elapsed_timer(gv) >= (1.0 / gv->kurokku.frames_per_second))
 	{
         // NTS: For some bizarre reason, gv->pee is not initialized, but the pointer is not NULL even
-        //      though it should be. Instead it's NULL as a near pointer but contains a non-null
+        //      though it should be. Instead it's NULL as a neAr pointer but contains a non-null
         //      segment value, so testing against NULL doesn't work. It is initialized properly if
-        //      you call start_timer() though which uses near malloc. Rather than fight with that,
+        //      you call start_timer() though which uses neAr malloc. Rather than fight with that,
         //      I decided it would be better to declare a temp buffer statically and sprintf to that.
         //
         //      This fixes *** Null pointer assignment detected error message in ZCROLL.EXE on exit.
@@ -1074,19 +878,20 @@ void shinku(global_game_variables_t *gv)
 		case 1:
 			//turn this off if XT
 			//modexWaitBorder();
-			vga_wait_for_vsync();
+			//vga_wait_for_vsync();
 			gv->kurokku.frames_per_second=60;
 		break;
 	}
+	//render!!
 	if(pageflipflop){
-	if(gv->video.r){
+	if(gv->video.r ){//r=1
 		//vga_setup_wm1_block_copy();
 		//_fmemcpy((gv->video.page[(gv->video.p)]).data, (gv->video.page[(!gv->video.p)]).data, gv->video.page[(!gv->video.p)].pagesize);
 		//vga_restore_rm0wm0();
 		if(!pageploop) modexCopyPageRegion(&(gv->video.page[(gv->video.p)]), &(gv->video.page[(!gv->video.p)]), 0, 0, 0, 0, gv->video.page[gv->video.p].width, gv->video.page[!gv->video.p].height);
-		modexShowPage(&(gv->video.page[gv->video.p]));
+		VL_ShowPage(&(gv->video.page[gv->video.panp]), gv->kurokku.fpscap, 0);//VL_ShowPage(&(gv->video.page[gv->video.p]), gv->kurokku.fpscap, 0);
 		if(!pageploop) gv->video.p=!gv->video.p;
-		gv->video.r=!gv->video.r;
+		gv->video.r =!gv->video.r ;
 		//0000gv->video.tickclk = ((*clockw)-gv->video.startclk)/18.2;
 	}
 	}
@@ -1120,7 +925,7 @@ void near ZC_drawframe(map_view_t *pip, entity_t *enti, sword x, sword y)
 #define FRAME4 modexClearRegion(pip[/*!*/(pip->video->p)].page, x, y, 16, 32, 1+player[pn].enti.dire);
 #endif
 
-void /*near*/ animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch)
+void animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch)
 {
 	sword x = player[pn].enti.x;
 	sword y = player[pn].enti.y;
@@ -1270,7 +1075,7 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 
 	//draw sprite
 	ZC_drawframe(pip, &player[pn].enti, x, y);
-//if(player[pn].enti.q<4) delay(500);
+//0000if(player[pn].enti.q<2) delay(200);
 	pip->video->r=1;
 }
 
@@ -1330,7 +1135,7 @@ void player_walk(player_t *player, map_view_t *map_v){
 	}
 }
 
-void /*near*/ mapScroll(map_view_t *mv, player_t *player)
+void mapScroll(map_view_t *mv, player_t *player)
 {
 	//word x, y;  /* coordinate for drawing */
 	int c = 1;

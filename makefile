@@ -107,7 +107,7 @@ UPXQ=-qqq
 S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768
 Z_FLAGS=-zk0 -zc -zp8 -zm
 O_FLAGS=-opmilr -oe=24 -outback -ei -ohnl+				-zp4
-T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 -d1##-fo=.$(OBJ) -e=65536
+T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 -d1 -e28#65536##-fo=.$(OBJ)
 
 DBUGFLAGS=-fm=$^&.mah -fd=$^&
 CPPFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1
@@ -185,14 +185,14 @@ TESTEXEC = &
 	scroll.exe &
 	zcroll.exe &
 	inputest.exe &
-	pcxtest.exe &
-	vrstest.exe
+	pcxtest.exe
 TESTEXEC2 = &
 	maptest.exe &
 	fmemtest.exe &
 	fonttest.exe &
 	fontgfx.exe &
 	test0.exe &
+	vrstest.exe &
 	$(EXTERNTESTEXEC)
 TESTEXEC3= &
 	pcxtest2.exe
@@ -335,9 +335,10 @@ mapread.$(OBJ):$(SRCLIB)/mapread.c $(SRCLIB)/mapread.h
 16_map.$(OBJ):$(SRCLIB)/16_map.c $(SRCLIB)/16_map.h
 16_timer.$(OBJ):$(SRCLIB)/16_timer.c $(SRCLIB)/16_timer.h
 16_in.$(OBJ):	 $(SRCLIB)/16_in.c $(SRCLIB)/16_in.h
-16_mm.$(OBJ):	 $(SRCLIB)/16_mm.c $(SRCLIB)/16_mm.h
-16_pm.$(OBJ):	 $(SRCLIB)/16_pm.c $(SRCLIB)/16_pm.h
-16_ca.$(OBJ):	 $(SRCLIB)/16_ca.c $(SRCLIB)/16_ca.h
+16_rf.$(OBJ):	 $(SRCLIB)/16_rf.c	$(SRCLIB)/16_rf.h
+16_mm.$(OBJ):	 $(SRCLIB)/16_mm.c	$(SRCLIB)/16_mm.h
+16_pm.$(OBJ):	 $(SRCLIB)/16_pm.c	$(SRCLIB)/16_pm.h
+16_ca.$(OBJ):	 $(SRCLIB)/16_ca.c	$(SRCLIB)/16_ca.h
 16_dbg.$(OBJ):	$(SRCLIB)/16_dbg.c $(SRCLIB)/16_dbg.h
 midi.$(OBJ):	$(SRCLIB)/midi.c $(SRCLIB)/midi.h
 16_head.$(OBJ):$(SRCLIB)/16_head.c $(SRCLIB)/16_head.h

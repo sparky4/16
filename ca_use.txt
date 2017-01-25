@@ -1,5 +1,3 @@
-16/16/16_mm.c:CA_OpenDebug ();
-16/16/16_mm.c:CA_CloseDebug ();
 16/CatacombApocalypse/C6_DEBUG.C:				CA_CacheGrChunk(LEVEL1TEXT+mapon);
 16/CatacombApocalypse/C6_DEBUG.C:		CA_CacheGrChunk(LEVEL1TEXT+mapon);
 16/CatacombApocalypse/C6_GAME.C:	CA_CacheGrChunk(LEVEL1TEXT+mapon);
@@ -69,85 +67,6 @@
 16/CatacombApocalypse/GELIB.C:							CA_MarkGrChunk(pi_shape_table[loop].shapenum);
 16/CatacombApocalypse/GELIB.C:							CA_MarkGrChunk(shapenum+loop);
 16/CatacombApocalypse/GELIB.C:	CA_CacheMarks(NULL);
-16/CatacombApocalypse/ID_CA.C:= CA_OpenDebug / CA_CloseDebug
-16/CatacombApocalypse/ID_CA.C:void CA_OpenDebug (void)
-16/CatacombApocalypse/ID_CA.C:void CA_CloseDebug (void)
-16/CatacombApocalypse/ID_CA.C:= CA_FarRead
-16/CatacombApocalypse/ID_CA.C:boolean CA_FarRead (int handle, byte far *dest, long length)
-16/CatacombApocalypse/ID_CA.C:		Quit ("CA_FarRead doesn't support 64K reads yet!");
-16/CatacombApocalypse/ID_CA.C:= CA_SegWrite
-16/CatacombApocalypse/ID_CA.C:boolean CA_FarWrite (int handle, byte far *source, long length)
-16/CatacombApocalypse/ID_CA.C:		Quit ("CA_FarWrite doesn't support 64K reads yet!");
-16/CatacombApocalypse/ID_CA.C:= CA_ReadFile
-16/CatacombApocalypse/ID_CA.C:boolean CA_ReadFile (char *filename, memptr *ptr)
-16/CatacombApocalypse/ID_CA.C:	if (!CA_FarRead (handle,*ptr,size))
-16/CatacombApocalypse/ID_CA.C:= CA_LoadFile
-16/CatacombApocalypse/ID_CA.C:boolean CA_LoadFile (char *filename, memptr *ptr)
-16/CatacombApocalypse/ID_CA.C:	if (!CA_FarRead (handle,*ptr,size))
-16/CatacombApocalypse/ID_CA.C:= CA_RLEWcompress
-16/CatacombApocalypse/ID_CA.C:long CA_RLEWCompress (unsigned huge *source, long length, unsigned huge *dest,
-16/CatacombApocalypse/ID_CA.C:= CA_RLEWexpand
-16/CatacombApocalypse/ID_CA.C:void CA_RLEWexpand (unsigned huge *source, unsigned huge *dest,long length,
-16/CatacombApocalypse/ID_CA.C:	CA_FarRead(handle, (memptr)grstarts, (NUMCHUNKS+1)*FILEPOSSIZE);
-16/CatacombApocalypse/ID_CA.C:	CA_FarRead (grhandle,compseg,chunkcomplen);
-16/CatacombApocalypse/ID_CA.C:	CA_FarRead (grhandle,compseg,chunkcomplen);
-16/CatacombApocalypse/ID_CA.C:	CA_FarRead (grhandle,compseg,chunkcomplen);
-16/CatacombApocalypse/ID_CA.C:	CA_FarRead(handle, tinf, length);
-16/CatacombApocalypse/ID_CA.C:	CA_FarRead(handle, (byte far *)audiostarts, length);
-16/CatacombApocalypse/ID_CA.C:= CA_Startup
-16/CatacombApocalypse/ID_CA.C:void CA_Startup (void)
-16/CatacombApocalypse/ID_CA.C:		Quit("CA_Startup(): Can't find audio files.");
-16/CatacombApocalypse/ID_CA.C:		Quit("CA_Startup(): Can't find level files.");
-16/CatacombApocalypse/ID_CA.C:		Quit("CA_Startup(): Can't find graphics files.");
-16/CatacombApocalypse/ID_CA.C:= CA_Shutdown
-16/CatacombApocalypse/ID_CA.C:void CA_Shutdown (void)
-16/CatacombApocalypse/ID_CA.C:= CA_CacheAudioChunk
-16/CatacombApocalypse/ID_CA.C:void CA_CacheAudioChunk (int chunk)
-16/CatacombApocalypse/ID_CA.C:		Quit("CA_CacheAudioChunk(): Can't find audio files.");
-16/CatacombApocalypse/ID_CA.C:	CA_FarRead(audiohandle,audiosegs[chunk],compressed);
-16/CatacombApocalypse/ID_CA.C:		CA_FarRead(audiohandle,bufferseg,compressed);
-16/CatacombApocalypse/ID_CA.C:		CA_FarRead(audiohandle,bigbufferseg,compressed);
-16/CatacombApocalypse/ID_CA.C:= CA_LoadAllSounds
-16/CatacombApocalypse/ID_CA.C:void CA_LoadAllSounds (void)
-16/CatacombApocalypse/ID_CA.C:		CA_CacheAudioChunk (start);
-16/CatacombApocalypse/ID_CA.C:		CA_FarRead(grhandle,bufferseg,compressed);
-16/CatacombApocalypse/ID_CA.C:		CA_FarRead(grhandle,bigbufferseg,compressed);
-16/CatacombApocalypse/ID_CA.C:= CA_CacheGrChunk
-16/CatacombApocalypse/ID_CA.C:void CA_CacheGrChunk (int chunk)
-16/CatacombApocalypse/ID_CA.C:		Quit("CA_CacheGrChunk(): Can't find graphics files.");
-16/CatacombApocalypse/ID_CA.C:		CA_FarRead(grhandle,bufferseg,compressed);
-16/CatacombApocalypse/ID_CA.C:		CA_FarRead(grhandle,bigbufferseg,compressed);
-16/CatacombApocalypse/ID_CA.C:= CA_CacheMap
-16/CatacombApocalypse/ID_CA.C:void CA_CacheMap (int mapnum)
-16/CatacombApocalypse/ID_CA.C:		Quit("CA_CacheMap(): Can't find level files.");
-16/CatacombApocalypse/ID_CA.C:		  Quit ("CA_CacheMap: Tried to load a non existent map!");
-16/CatacombApocalypse/ID_CA.C:		CA_FarRead (maphandle,(memptr)mapheaderseg[mapnum],sizeof(maptype));
-16/CatacombApocalypse/ID_CA.C:		CA_FarRead(maphandle,(byte far *)source,compressed);
-16/CatacombApocalypse/ID_CA.C:		CA_RLEWexpand (((unsigned far *)buffer2seg)+1,*dest,size,
-16/CatacombApocalypse/ID_CA.C:		CA_RLEWexpand (source+1, *dest,size,
-16/CatacombApocalypse/ID_CA.C:= CA_UpLevel
-16/CatacombApocalypse/ID_CA.C:void CA_UpLevel (void)
-16/CatacombApocalypse/ID_CA.C:		Quit ("CA_UpLevel: Up past level 7!");
-16/CatacombApocalypse/ID_CA.C:= CA_DownLevel
-16/CatacombApocalypse/ID_CA.C:void CA_DownLevel (void)
-16/CatacombApocalypse/ID_CA.C:		Quit ("CA_DownLevel: Down past level 0!");
-16/CatacombApocalypse/ID_CA.C:	CA_CacheMarks(NULL);
-16/CatacombApocalypse/ID_CA.C:= CA_ClearMarks
-16/CatacombApocalypse/ID_CA.C:void CA_ClearMarks (void)
-16/CatacombApocalypse/ID_CA.C:= CA_ClearAllMarks
-16/CatacombApocalypse/ID_CA.C:void CA_ClearAllMarks (void)
-16/CatacombApocalypse/ID_CA.C:= CA_FreeGraphics
-16/CatacombApocalypse/ID_CA.C:void CA_FreeGraphics (void)
-16/CatacombApocalypse/ID_CA.C:= CA_SetAllPurge
-16/CatacombApocalypse/ID_CA.C:void CA_SetAllPurge (void)
-16/CatacombApocalypse/ID_CA.C:	CA_ClearMarks ();
-16/CatacombApocalypse/ID_CA.C:	CA_FreeGraphics ();
-16/CatacombApocalypse/ID_CA.C:void CA_SetGrPurge (void)
-16/CatacombApocalypse/ID_CA.C:= CA_CacheMarks
-16/CatacombApocalypse/ID_CA.C:void CA_CacheMarks (char *title)
-16/CatacombApocalypse/ID_CA.C:		Quit("CA_CacheMarks(): Can't find graphics files.");
-16/CatacombApocalypse/ID_CA.C:					CA_FarRead(grhandle,bufferseg,endpos-pos);
-16/CatacombApocalypse/ID_CA.C:				CA_FarRead(grhandle,bigbufferseg,compressed);
 16/CatacombApocalypse/ID_MM.C://CA_OpenDebug ();
 16/CatacombApocalypse/ID_MM.C://CA_CloseDebug ();
 16/CatacombApocalypse/ID_RF.C:			CA_MarkGrChunk(STARTTILE16+tile);
@@ -178,68 +97,8 @@
 16/CatacombApocalypse/SOFT.C:			CA_LoadFile(SourceFile,&SrcPtr);
 16/CatacombApocalypse/SOFT.C:		CA_LoadFile(SourceFile,DstPtr);
 16/CatacombApocalypse/SOFT.C:				if (!CA_FarRead(handle,MK_FP(*MemPtr,0),ChunkLen))
-16/ID_MM.C://CA_OpenDebug ();
-16/ID_MM.C://CA_CloseDebug ();
-16/keen/id_ca.c:= CA_FarRead
-16/keen/id_ca.c:boolean CA_FarRead (int handle, byte far *dest, long length)
-16/keen/id_ca.c:		Quit ("CA_FarRead doesn't support 64K reads yet!");
-16/keen/id_ca.c:= CA_SegWrite
-16/keen/id_ca.c:boolean CA_FarWrite (int handle, byte far *source, long length)
-16/keen/id_ca.c:		Quit ("CA_FarWrite doesn't support 64K reads yet!");
-16/keen/id_ca.c:= CA_LoadFile
-16/keen/id_ca.c:boolean CA_LoadFile (char *filename, memptr *ptr)
-16/keen/id_ca.c:	if (!CA_FarRead (handle,*ptr,size))
-16/keen/id_ca.c:= CA_RLEWcompress
-16/keen/id_ca.c:long CA_RLEWCompress (unsigned huge *source, long length, unsigned huge *dest,
-16/keen/id_ca.c:= CA_RLEWexpand
-16/keen/id_ca.c:void CA_RLEWexpand (unsigned huge *source, unsigned huge *dest,long length,
-16/keen/id_ca.c:	CA_FarRead(handle, (memptr)grstarts, (NUMCHUNKS+1)*4);
-16/keen/id_ca.c:	CA_FarRead (grhandle,compseg,chunkcomplen);
-16/keen/id_ca.c:	CA_FarRead (grhandle,compseg,chunkcomplen);
-16/keen/id_ca.c:	CA_FarRead (grhandle,compseg,chunkcomplen);
-16/keen/id_ca.c:	CA_FarRead(handle, tinf, length);
-16/keen/id_ca.c:	CA_FarRead(handle, (byte far *)audiostarts, length);
-16/keen/id_ca.c:= CA_Startup
-16/keen/id_ca.c:void CA_Startup (void)
-16/keen/id_ca.c:= CA_Shutdown
-16/keen/id_ca.c:void CA_Shutdown (void)
-16/keen/id_ca.c:= CA_CacheAudioChunk
-16/keen/id_ca.c:void CA_CacheAudioChunk (int chunk)
-16/keen/id_ca.c:	CA_FarRead(audiohandle,audiosegs[chunk],compressed);
-16/keen/id_ca.c:		CA_FarRead(audiohandle,bufferseg,compressed);
-16/keen/id_ca.c:		CA_FarRead(audiohandle,bigbufferseg,compressed);
-16/keen/id_ca.c:= CA_LoadAllSounds
-16/keen/id_ca.c:void CA_LoadAllSounds (void)
-16/keen/id_ca.c:		CA_CacheAudioChunk (start);
-16/keen/id_ca.c:		CA_FarRead(grhandle,bufferseg,compressed);
-16/keen/id_ca.c:		CA_FarRead(grhandle,bigbufferseg,compressed);
-16/keen/id_ca.c:= CA_CacheGrChunk
-16/keen/id_ca.c:void CA_CacheGrChunk (int chunk)
-16/keen/id_ca.c:		CA_FarRead(grhandle,bufferseg,compressed);
-16/keen/id_ca.c:		CA_FarRead(grhandle,bigbufferseg,compressed);
-16/keen/id_ca.c:= CA_CacheMap
-16/keen/id_ca.c:void CA_CacheMap (int mapnum)
-16/keen/id_ca.c:		  Quit ("CA_CacheMap: Tried to load a non existant map!");
-16/keen/id_ca.c:		CA_FarRead (maphandle,bufferseg,((mapfiletype	_seg *)tinf)->headersize[mapnum]);
-16/keen/id_ca.c:		CA_FarRead (maphandle,(memptr)mapheaderseg[mapnum],sizeof(maptype));
-16/keen/id_ca.c:		CA_FarRead(maphandle,(byte far *)source,compressed);
-16/keen/id_ca.c:		CA_RLEWexpand (((unsigned far *)buffer2seg)+1,*dest,size,
-16/keen/id_ca.c:		CA_RLEWexpand (source+1, *dest,size,
-16/keen/id_ca.c:= CA_UpLevel
-16/keen/id_ca.c:void CA_UpLevel (void)
-16/keen/id_ca.c:		Quit ("CA_UpLevel: Up past level 7!");
-16/keen/id_ca.c:= CA_DownLevel
-16/keen/id_ca.c:void CA_DownLevel (void)
-16/keen/id_ca.c:		Quit ("CA_DownLevel: Down past level 0!");
-16/keen/id_ca.c:	CA_CacheMarks(titleptr[ca_levelnum], 1);
-16/keen/id_ca.c:= CA_ClearMarks
-16/keen/id_ca.c:void CA_ClearMarks (void)
-16/keen/id_ca.c:= CA_ClearAllMarks
-16/keen/id_ca.c:void CA_ClearAllMarks (void)
-16/keen/id_ca.c:= CA_CacheMarks
-16/keen/id_ca.c:void CA_CacheMarks (char *title, boolean cachedownlevel)
-16/keen/id_ca.c:					CA_FarRead(grhandle,bufferseg,endpos-pos);
-16/keen/id_ca.c:				CA_FarRead(grhandle,bigbufferseg,compressed);
+
+
 16/keen/id_rf.c:			CA_MarkGrChunk(STARTTILE16+tile);
 16/keen/id_rf.c:					CA_MarkGrChunk(STARTTILE16+next);
 16/keen/id_rf.c:			CA_MarkGrChunk(STARTTILE16M+tile);
@@ -281,95 +140,14 @@
 16/keen/soft.c:			CA_LoadFile(SourceFile,&SrcPtr);
 16/keen/soft.c:		CA_LoadFile(SourceFile,DstPtr);
 16/keen/soft.c:				if (!CA_FarRead(handle,MK_FP(*MemPtr,0),ChunkLen))
-16/wf3d8086/id_ca.c:void CA_CannotOpen(char *string);
-16/wf3d8086/id_ca.c:= CA_OpenDebug / CA_CloseDebug
-16/wf3d8086/id_ca.c:void CA_OpenDebug (void)
-16/wf3d8086/id_ca.c:void CA_CloseDebug (void)
-16/wf3d8086/id_ca.c:= CA_FarRead
-16/wf3d8086/id_ca.c:boolean CA_FarRead (int handle, byte far *dest, long length)
-16/wf3d8086/id_ca.c:		Quit ("CA_FarRead doesn't support 64K reads yet!");
-16/wf3d8086/id_ca.c:= CA_SegWrite
-16/wf3d8086/id_ca.c:boolean CA_FarWrite (int handle, byte far *source, long length)
-16/wf3d8086/id_ca.c:		Quit ("CA_FarWrite doesn't support 64K reads yet!");
-16/wf3d8086/id_ca.c:= CA_ReadFile
-16/wf3d8086/id_ca.c:boolean CA_ReadFile (char *filename, memptr *ptr)
-16/wf3d8086/id_ca.c:	if (!CA_FarRead (handle,*ptr,size))
-16/wf3d8086/id_ca.c:= CA_WriteFile
-16/wf3d8086/id_ca.c:boolean CA_WriteFile (char *filename, void far *ptr, long length)
-16/wf3d8086/id_ca.c:	if (!CA_FarWrite (handle,ptr,length))
-16/wf3d8086/id_ca.c:= CA_LoadFile
-16/wf3d8086/id_ca.c:boolean CA_LoadFile (char *filename, memptr *ptr)
-16/wf3d8086/id_ca.c:	if (!CA_FarRead (handle,*ptr,size))
-16/wf3d8086/id_ca.c:= CA_RLEWcompress
-16/wf3d8086/id_ca.c:long CA_RLEWCompress (unsigned huge *source, long length, unsigned huge *dest,
-16/wf3d8086/id_ca.c:= CA_RLEWexpand
-16/wf3d8086/id_ca.c:void CA_RLEWexpand (unsigned huge *source, unsigned huge *dest,long length,
-16/wf3d8086/id_ca.c:		CA_CannotOpen(fname);
-16/wf3d8086/id_ca.c:		CA_CannotOpen(fname);
-16/wf3d8086/id_ca.c:	CA_FarRead(handle, (memptr)grstarts, (NUMCHUNKS+1)*FILEPOSSIZE);
-16/wf3d8086/id_ca.c:		CA_CannotOpen(fname);
-16/wf3d8086/id_ca.c:	CA_FarRead (grhandle,compseg,chunkcomplen);
-16/wf3d8086/id_ca.c:		CA_CannotOpen(fname);
-16/wf3d8086/id_ca.c:	CA_FarRead(handle, tinf, length);
-16/wf3d8086/id_ca.c:		CA_CannotOpen(fname);
-16/wf3d8086/id_ca.c:		CA_CannotOpen(fname);
-16/wf3d8086/id_ca.c:		CA_FarRead (maphandle,(memptr)mapheaderseg[i],sizeof(maptype));
-16/wf3d8086/id_ca.c:		CA_CannotOpen(fname);
-16/wf3d8086/id_ca.c:	CA_FarRead(handle, (byte far *)audiostarts, length);
-16/wf3d8086/id_ca.c:		CA_CannotOpen(fname);
-16/wf3d8086/id_ca.c:= CA_Startup
-16/wf3d8086/id_ca.c:void CA_Startup (void)
-16/wf3d8086/id_ca.c:= CA_Shutdown
-16/wf3d8086/id_ca.c:void CA_Shutdown (void)
-16/wf3d8086/id_ca.c:= CA_CacheAudioChunk
-16/wf3d8086/id_ca.c:void CA_CacheAudioChunk (int chunk)
-16/wf3d8086/id_ca.c:	CA_FarRead(audiohandle,audiosegs[chunk],compressed);
-16/wf3d8086/id_ca.c:		CA_FarRead(audiohandle,bufferseg,compressed);
-16/wf3d8086/id_ca.c:		CA_FarRead(audiohandle,bigbufferseg,compressed);
-16/wf3d8086/id_ca.c:= CA_LoadAllSounds
-16/wf3d8086/id_ca.c:void CA_LoadAllSounds (void)
-16/wf3d8086/id_ca.c:		CA_CacheAudioChunk (start);
-16/wf3d8086/id_ca.c:= CA_CacheGrChunk
-16/wf3d8086/id_ca.c:void CA_CacheGrChunk (int chunk)
-16/wf3d8086/id_ca.c:		CA_FarRead(grhandle,bufferseg,compressed);
-16/wf3d8086/id_ca.c:		CA_FarRead(grhandle,bigbufferseg,compressed);
-16/wf3d8086/id_ca.c:= CA_CacheScreen
-16/wf3d8086/id_ca.c:void CA_CacheScreen (int chunk)
-16/wf3d8086/id_ca.c:	CA_FarRead(grhandle,bigbufferseg,compressed);
-16/wf3d8086/id_ca.c:= CA_CacheMap
-16/wf3d8086/id_ca.c:void CA_CacheMap (int mapnum)
-16/wf3d8086/id_ca.c:		CA_FarRead(maphandle,(byte far *)source,compressed);
-16/wf3d8086/id_ca.c:		CA_RLEWexpand (((unsigned far *)buffer2seg)+1,*dest,size,
-16/wf3d8086/id_ca.c:		CA_RLEWexpand (source+1, *dest,size,
-16/wf3d8086/id_ca.c:= CA_UpLevel
-16/wf3d8086/id_ca.c:void CA_UpLevel (void)
-16/wf3d8086/id_ca.c:		Quit ("CA_UpLevel: Up past level 7!");
-16/wf3d8086/id_ca.c:= CA_DownLevel
-16/wf3d8086/id_ca.c:void CA_DownLevel (void)
-16/wf3d8086/id_ca.c:		Quit ("CA_DownLevel: Down past level 0!");
-16/wf3d8086/id_ca.c:	CA_CacheMarks();
-16/wf3d8086/id_ca.c:= CA_ClearMarks
-16/wf3d8086/id_ca.c:void CA_ClearMarks (void)
-16/wf3d8086/id_ca.c:= CA_ClearAllMarks
-16/wf3d8086/id_ca.c:void CA_ClearAllMarks (void)
-16/wf3d8086/id_ca.c:= CA_FreeGraphics
-16/wf3d8086/id_ca.c:void CA_SetGrPurge (void)
-16/wf3d8086/id_ca.c:	CA_ClearMarks ();
-16/wf3d8086/id_ca.c:= CA_SetAllPurge
-16/wf3d8086/id_ca.c:void CA_SetAllPurge (void)
-16/wf3d8086/id_ca.c:	CA_SetGrPurge ();
-16/wf3d8086/id_ca.c:= CA_CacheMarks
-16/wf3d8086/id_ca.c:void CA_CacheMarks (void)
-16/wf3d8086/id_ca.c:					CA_FarRead(grhandle,bufferseg,endpos-pos);
-16/wf3d8086/id_ca.c:				CA_FarRead(grhandle,bigbufferseg,compressed);
-16/wf3d8086/id_ca.c:void CA_CannotOpen(char *string)
+
+
 16/wf3d8086/id_pm.c:	if (!CA_FarRead(PageFile,buf,length))
 16/wf3d8086/id_pm.c:	if (!CA_FarRead(PageFile,(byte far *)buf,size))
 16/wf3d8086/id_pm.c:	if (!CA_FarRead(PageFile,(byte far *)buf,size))
 16/wf3d8086/id_vh.c:	CA_CacheGrChunk (STARTTILE8);
 16/wf3d8086/id_vh.c:		CA_CacheGrChunk (STARTTILE16+i);
 16/wf3d8086/id_vh.c:		CA_CacheGrChunk (i);
-16/wf3d8086/obj/wolf3d.map: 1710:000B 1752 C=CODE   S=ID_CA_TEXT     G=(none)  M=ID_CA.C    ACBP=28
 16/wf3d8086/wl_act2.c:	CA_UpLevel ();
 16/wf3d8086/wl_act2.c:	CA_CacheScreen(C_LETSSEEPIC);
 16/wf3d8086/wl_act2.c:	CA_DownLevel ();
@@ -528,89 +306,8 @@
 16/wf3d8086/wl_text.c:	CA_CacheGrChunk (artnum);
 16/wf3d8086/wl_text.c:	CA_LoadFile (endfilename,&layout);
 16/wf3d8086/wl_text.c:	CA_DownLevel ();
-16/wf3d8086/wolf3d.map: 160F:0008 16B9 C=CODE   S=ID_CA_TEXT     G=(none)  M=ID_CA.C    ACBP=28
-16/wolf3d/WOLFSRC/ID_CA.C:void CA_CannotOpen(char *string);
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_OpenDebug / CA_CloseDebug
-16/wolf3d/WOLFSRC/ID_CA.C:void CA_OpenDebug (void)
-16/wolf3d/WOLFSRC/ID_CA.C:void CA_CloseDebug (void)
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_FarRead
-16/wolf3d/WOLFSRC/ID_CA.C:boolean CA_FarRead (int handle, byte far *dest, long length)
-16/wolf3d/WOLFSRC/ID_CA.C:		Quit ("CA_FarRead doesn't support 64K reads yet!");
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_SegWrite
-16/wolf3d/WOLFSRC/ID_CA.C:boolean CA_FarWrite (int handle, byte far *source, long length)
-16/wolf3d/WOLFSRC/ID_CA.C:		Quit ("CA_FarWrite doesn't support 64K reads yet!");
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_ReadFile
-16/wolf3d/WOLFSRC/ID_CA.C:boolean CA_ReadFile (char *filename, memptr *ptr)
-16/wolf3d/WOLFSRC/ID_CA.C:	if (!CA_FarRead (handle,*ptr,size))
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_WriteFile
-16/wolf3d/WOLFSRC/ID_CA.C:boolean CA_WriteFile (char *filename, void far *ptr, long length)
-16/wolf3d/WOLFSRC/ID_CA.C:	if (!CA_FarWrite (handle,ptr,length))
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_LoadFile
-16/wolf3d/WOLFSRC/ID_CA.C:boolean CA_LoadFile (char *filename, memptr *ptr)
-16/wolf3d/WOLFSRC/ID_CA.C:	if (!CA_FarRead (handle,*ptr,size))
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_RLEWcompress
-16/wolf3d/WOLFSRC/ID_CA.C:long CA_RLEWCompress (unsigned huge *source, long length, unsigned huge *dest,
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_RLEWexpand
-16/wolf3d/WOLFSRC/ID_CA.C:void CA_RLEWexpand (unsigned huge *source, unsigned huge *dest,long length,
-16/wolf3d/WOLFSRC/ID_CA.C:		CA_CannotOpen(fname);
-16/wolf3d/WOLFSRC/ID_CA.C:		CA_CannotOpen(fname);
-16/wolf3d/WOLFSRC/ID_CA.C:	CA_FarRead(handle, (memptr)grstarts, (NUMCHUNKS+1)*FILEPOSSIZE);
-16/wolf3d/WOLFSRC/ID_CA.C:		CA_CannotOpen(fname);
-16/wolf3d/WOLFSRC/ID_CA.C:	CA_FarRead (grhandle,compseg,chunkcomplen);
-16/wolf3d/WOLFSRC/ID_CA.C:		CA_CannotOpen(fname);
-16/wolf3d/WOLFSRC/ID_CA.C:	CA_FarRead(handle, tinf, length);
-16/wolf3d/WOLFSRC/ID_CA.C:		CA_CannotOpen(fname);
-16/wolf3d/WOLFSRC/ID_CA.C:		CA_CannotOpen(fname);
-16/wolf3d/WOLFSRC/ID_CA.C:		CA_FarRead (maphandle,(memptr)mapheaderseg[i],sizeof(maptype));
-16/wolf3d/WOLFSRC/ID_CA.C:		CA_CannotOpen(fname);
-16/wolf3d/WOLFSRC/ID_CA.C:	CA_FarRead(handle, (byte far *)audiostarts, length);
-16/wolf3d/WOLFSRC/ID_CA.C:		CA_CannotOpen(fname);
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_Startup
-16/wolf3d/WOLFSRC/ID_CA.C:void CA_Startup (void)
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_Shutdown
-16/wolf3d/WOLFSRC/ID_CA.C:void CA_Shutdown (void)
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_CacheAudioChunk
-16/wolf3d/WOLFSRC/ID_CA.C:void CA_CacheAudioChunk (int chunk)
-16/wolf3d/WOLFSRC/ID_CA.C:	CA_FarRead(audiohandle,audiosegs[chunk],compressed);
-16/wolf3d/WOLFSRC/ID_CA.C:		CA_FarRead(audiohandle,bufferseg,compressed);
-16/wolf3d/WOLFSRC/ID_CA.C:		CA_FarRead(audiohandle,bigbufferseg,compressed);
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_LoadAllSounds
-16/wolf3d/WOLFSRC/ID_CA.C:void CA_LoadAllSounds (void)
-16/wolf3d/WOLFSRC/ID_CA.C:		CA_CacheAudioChunk (start);
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_CacheGrChunk
-16/wolf3d/WOLFSRC/ID_CA.C:void CA_CacheGrChunk (int chunk)
-16/wolf3d/WOLFSRC/ID_CA.C:		CA_FarRead(grhandle,bufferseg,compressed);
-16/wolf3d/WOLFSRC/ID_CA.C:		CA_FarRead(grhandle,bigbufferseg,compressed);
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_CacheScreen
-16/wolf3d/WOLFSRC/ID_CA.C:void CA_CacheScreen (int chunk)
-16/wolf3d/WOLFSRC/ID_CA.C:	CA_FarRead(grhandle,bigbufferseg,compressed);
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_CacheMap
-16/wolf3d/WOLFSRC/ID_CA.C:void CA_CacheMap (int mapnum)
-16/wolf3d/WOLFSRC/ID_CA.C:		CA_FarRead(maphandle,(byte far *)source,compressed);
-16/wolf3d/WOLFSRC/ID_CA.C:		CA_RLEWexpand (((unsigned far *)buffer2seg)+1,*dest,size,
-16/wolf3d/WOLFSRC/ID_CA.C:		CA_RLEWexpand (source+1, *dest,size,
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_UpLevel
-16/wolf3d/WOLFSRC/ID_CA.C:void CA_UpLevel (void)
-16/wolf3d/WOLFSRC/ID_CA.C:		Quit ("CA_UpLevel: Up past level 7!");
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_DownLevel
-16/wolf3d/WOLFSRC/ID_CA.C:void CA_DownLevel (void)
-16/wolf3d/WOLFSRC/ID_CA.C:		Quit ("CA_DownLevel: Down past level 0!");
-16/wolf3d/WOLFSRC/ID_CA.C:	CA_CacheMarks();
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_ClearMarks
-16/wolf3d/WOLFSRC/ID_CA.C:void CA_ClearMarks (void)
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_ClearAllMarks
-16/wolf3d/WOLFSRC/ID_CA.C:void CA_ClearAllMarks (void)
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_FreeGraphics
-16/wolf3d/WOLFSRC/ID_CA.C:void CA_SetGrPurge (void)
-16/wolf3d/WOLFSRC/ID_CA.C:	CA_ClearMarks ();
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_SetAllPurge
-16/wolf3d/WOLFSRC/ID_CA.C:void CA_SetAllPurge (void)
-16/wolf3d/WOLFSRC/ID_CA.C:	CA_SetGrPurge ();
-16/wolf3d/WOLFSRC/ID_CA.C:= CA_CacheMarks
-16/wolf3d/WOLFSRC/ID_CA.C:void CA_CacheMarks (void)
-16/wolf3d/WOLFSRC/ID_CA.C:					CA_FarRead(grhandle,bufferseg,endpos-pos);
-16/wolf3d/WOLFSRC/ID_CA.C:				CA_FarRead(grhandle,bigbufferseg,compressed);
-16/wolf3d/WOLFSRC/ID_CA.C:void CA_CannotOpen(char *string)
+
+
 16/wolf3d/WOLFSRC/ID_PM.C:	if (!CA_FarRead(PageFile,buf,length))
 16/wolf3d/WOLFSRC/ID_PM.C:	if (!CA_FarRead(PageFile,(byte far *)buf,size))
 16/wolf3d/WOLFSRC/ID_PM.C:	if (!CA_FarRead(PageFile,(byte far *)buf,size))
@@ -775,4 +472,3 @@
 16/wolf3d/WOLFSRC/WL_TEXT.C:	CA_CacheGrChunk (artnum);
 16/wolf3d/WOLFSRC/WL_TEXT.C:	CA_LoadFile (endfilename,&layout);
 16/wolf3d/WOLFSRC/WL_TEXT.C:	CA_DownLevel ();
-16/wolf3d/WOLFSRC/WOLF3D.MAP: 160F:0008 16B9 C=CODE   S=ID_CA_TEXT     G=(none)  M=ID_CA.C    ACBP=28

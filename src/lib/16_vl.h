@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
+ * Copyright (C) 2012-2017 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -103,7 +103,7 @@ page_t modexNextPage(page_t *p);
 page_t modexNextPageFlexibleSize(page_t *p, word x, word y);
 void modexCalcVmemRemain(video_t *video);
 void modexHiganbanaPageSetup(video_t *video);
-void modexShowPage(page_t *page);
+//void modexShowPage(page_t *page);
 void VL_ShowPage(page_t *page, boolean vsync, boolean sr);
 void modexPanPage(page_t *page, int dx, int dy);
 void modexSelectPlane(byte plane);
@@ -168,6 +168,7 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
 void modexpdump(page_t *pee);
 void modexcls(page_t *page, byte color, byte *Where);
+void VL_PatternDraw(video_t *video, word pn, boolean sw, boolean allsw);
 void modexWaitBorder();
 void modexprintmeminfo(video_t *v);
 

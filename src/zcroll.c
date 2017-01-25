@@ -25,14 +25,14 @@
 #include "src/lib/16render.h"
 #include "src/lib/16_dbg.h"
 
-//bitmap_t p;
 static map_t map;
 map_view_t mv[4];
 float t;
-sword bakapee;
+
 //debugswitches
 boolean panswitch=0,baka=0;
 //extern boolean pageflipflop=1;
+boolean pagenorendermap = 1;	//default: 0
 unsigned int i;
 
 #ifdef FADE
@@ -43,18 +43,38 @@ byte *gpal;
 byte *ptr;
 memptr pal;
 
-bitmap_t	*ptmpdata;
+//bitmap_t	*ptmpdata;
+
+#define FILENAME_1	"data/spri/chikyuu.vrs"
+#define FILENAME_1P	"data/spri/chikyuu.pal"
+#define FILENAME_2	"data/spri/ptmp.vrs"
+#define FILENAME_2P	"data/spri/ptmp.pal"
 
 void main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
 	static player_t player[MaxPlayers];
-	if(argv[1]) bakapee = atoi(argv[1]);
-	else bakapee = 1;
+	char *bakapee1,*bakapee1p;
+//	sword bakapee;
+// 	if(argv[1]) bakapee = atoi(argv[1]);
+// 	else bakapee = 1;
 
 	Startup16(&gvar);
 
 	gvar.video.panp=0;
+
+	bakapee1=malloc(64);
+	bakapee1p=malloc(64);
+
+	if (argc < 2) {
+		//fprintf(stderr,"drawvrl <VRL file> <palette file>\n palette file optional\n");
+		bakapee1 =		FILENAME_2;
+		bakapee1p =	FILENAME_2P;
+
+	}else{
+		if(argv[1]) bakapee1 = argv[1];
+		if(argv[2]) bakapee1p = argv[2];
+	}
 
 	// OK, this one takes hellova time and needs to be done in farmalloc or MM_...
 	//IN CA i think you use CAL_SetupGrFile but i do think we should work together on this part --sparky4
@@ -70,8 +90,7 @@ void main(int argc, char *argv[])
 //	fprintf(stderr, "yay map loaded~~\n");
 
 	// data
-	read_vrs(&gvar, "data/spri/chikyuu.vrs", player[0].enti.spri->spritesheet);
-	PCXBMP = bitmapLoadPcx("data/chikyuu.pcx", &gvar); // load sprite
+	read_vrs(&gvar, bakapee1, player[0].enti.spri->spritesheet);
 
 	// input!
 	IN_Default(0, &player,ctrl_Keyboard1);
@@ -83,14 +102,16 @@ void main(int argc, char *argv[])
 	modexFadeOff(4, dpal);
 #endif
 
-	VGAmodeX(bakapee, 1, &gvar);
+	VGAmodeX(1/*bakapee*/, 1, &gvar);
 
 	/* fix up the palette and everything */
 #ifdef FADE
 	modexPalBlack();	//reset the palette~
 #endif
-	modexPalUpdate1(&PCXBMP->palette);
-// 	CA_LoadFile("data/spri/chikyuu.pal", &pal, &gvar);
+
+	/* load color palette */
+	VL_LoadPalFile(bakapee1p, &gvar.video.palette);
+// 	CA_LoadFile("data/spri/"BAKAPEEFILE1".pal", &pal, &gvar);
 // 	modexPalUpdate1(pal);
 #ifdef FADE
 	gpal = modexNewPal();
@@ -149,10 +170,14 @@ void main(int argc, char *argv[])
 		if(!panswitch){
 			//ZC_walk2(player[0].ent, mv);
 			ZC_walk(&mv, &player, 0);
+		}else{
+			PANKEYFUNZC;
+			//printf("	player[0].enti.q: %d", player[0].enti.q);	printf("	player[0].d: %d\n", player[0].d);
 		}
 
 		//the scripting stuff....
-/*		if(((mv[0].map->data[(player[0].triggerx-1)+(map.width*(player[0].triggery-1))] == 0) && IN_KeyDown(0x1C))||(player[0].tx == 5 && player[0].ty == 5))
+		//if(((player[0].enti.triggerx == TRIGGX && player[0].enti.triggery == TRIGGY) && IN_KeyDown(0x1C))||(player[0].enti.tx == 5 && player[0].enti.ty == 5))
+		if(((mv[0].map->data[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))] == 0) && IN_KeyDown(0x1C))||(player[0].enti.tx == 5 && player[0].enti.ty == 5))
 		{
 			short i;
 			for(i=800; i>=400; i--)
@@ -161,32 +186,13 @@ void main(int argc, char *argv[])
 			}
 			nosound();
 		}
-		if(player[0].enti.q == (TILEWH/(player[0].speed))+1 && player[0].info.dir != 2 && (player[0].triggerx == 5 && player[0].triggery == 5)){ player[0].enti.hp--; }
-*/		//debugging binds!
-		if(IN_KeyDown(2)){ modexShowPage(mv[0].page); gvar.video.panp=0; }
-		if(IN_KeyDown(25)){ modexpdump(mv[0].page);
-			 IN_UserInput(1,1);
-		}	//p
+		if(player[0].enti.q == (TILEWH/(player[0].enti.speed))+1 && player[0].info.dir != 2 && (player[0].enti.triggerx == 5 && player[0].enti.triggery == 5)){ player[0].enti.hp--; }
+		//debugging binds!
 
 		if(IN_KeyDown(24)){ modexPalUpdate0(gpal); /*paloffset=0;*/ modexpdump(mv[0].page); IN_UserInput(1,1); } //o
 		if(IN_KeyDown(22)){ modexPalUpdate0(gpal); } //u
 
 		//pan switch
-		//if(IN_KeyDown(88)){panswitch=!panswitch; IN_UserInput(1,1);}	//f12
-		if(IN_KeyDown(87))	//f11
-		{
-			pageflipflop=!pageflipflop;
-			IN_UserInput(1,1);
-		}
-		if(IN_KeyDown(68))	//f10
-		{
-			gvar.kurokku.fpscap=!gvar.kurokku.fpscap;
-			IN_UserInput(1,1);
-		}
-		if(IN_KeyDown(67))	//f9
-		{
-			modexClearRegion(mv[0].page, 0, 0, mv[0].page->width, mv[0].page->height, 2);
-		}
 		if(IN_KeyDown(66))	//f8
 		{
 //			modexDrawSprite(mv[0].page, 16, 16, &p);
@@ -202,12 +208,24 @@ void main(int argc, char *argv[])
 				break;
 			}
 		}
-		FUNCTIONKEYFUNCTIONS;
+		FUNCTIONKEYFUNCTIONS
+		FUNCTIONKEYDRAWJUNK
 		if(IN_KeyDown(sc_L)){ modexClearRegion(&gvar.video.page[0], player[0].enti.x, player[0].enti.y, 16, 16, 1); }
-		if(IN_KeyDown(sc_J)){ read_vrs(&gvar, "data/spri/ptmp.vrs", player[0].enti.spri->spritesheet);	*ptmpdata = bitmapLoadPcx("data/ptmp.pcx", &gvar);	modexPalUpdate1(ptmpdata->palette); }
-		if(IN_KeyDown(sc_K)){ read_vrs(&gvar, "data/spri/chikyuu.vrs", player[0].enti.spri->spritesheet);	PCXBMP = bitmapLoadPcx("data/chikyuu.pcx", &gvar);	modexPalUpdate1(&PCXBMP->palette); }
-
-		//9
+		if(IN_KeyDown(sc_J) || IN_KeyDown(sc_K))
+		{
+			if(IN_KeyDown(sc_J))
+			{
+				bakapee1=FILENAME_1;
+				bakapee1p=FILENAME_1P;
+			}
+			if(IN_KeyDown(sc_K))
+			{
+				bakapee1=FILENAME_2;
+				bakapee1p=FILENAME_2P;
+			}
+			read_vrs(&gvar, bakapee1, player[0].enti.spri->spritesheet);
+			VL_LoadPalFile(bakapee1p, &gvar.video.palette);
+		}//JK
 #ifdef FADE
 		if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate1(dpal); IN_UserInput(1,1); }
 #endif

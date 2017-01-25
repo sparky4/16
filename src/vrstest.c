@@ -29,6 +29,7 @@
 #include "src/lib/16_mm.h"
 
 extern boolean dbg_nointest;
+boolean panswitch;
 
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 static byte palette[768];
@@ -95,7 +96,7 @@ void main()
 	i = set_anim_by_id((enti.spri), 31);
 	if (i == -1)
 	{
-		return;
+		printf("glitch!\n");
 	}
 	enti.spri->x = TILEWH-4;
 	enti.spri->y = TILEWH;
@@ -141,7 +142,7 @@ void main()
 			break;
 		}*/
 		if(IN_KeyDown(25)){ modexpdump(&gvar.video.page[0]);  IN_UserInput(1,1); } //p
-FUNCTIONKEYFUNCTIONS;
+//FUNCTIONKEYFUNCTIONS;
 	}
 	VGAmodeX(0, 1, &gvar);
 	MM_ShowMemory(&gvar);

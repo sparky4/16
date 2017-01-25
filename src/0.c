@@ -12,7 +12,6 @@
 
 #define INITTNUM 1
 
-static byte palette[768];
 player_t player[MaxPlayers];
 map_view_t mv[4];
 
@@ -29,7 +28,7 @@ int main(int argc,char **argv)
 	//nibble i;
 	char *bakapee1,*bakapee2;
 
-	boolean anim=1,noanim=0;
+	boolean anim=1,noanim=0,zerostoppause=1;
 
 	gvar.video.panp=0;
 
@@ -75,11 +74,10 @@ int main(int argc,char **argv)
 		return 1;
 	}
 	VGAmodeX(1, 1, &gvar);
-
-	modexPalUpdate0(palette);
+	modexPalUpdate0(gvar.video.palette);
 
 	/* load color palette */
-	VL_LoadPalFile(bakapee2, &palette);
+	VL_LoadPalFile(bakapee2, &gvar.video.palette);
 
 	/* preprocess the sprite to generate line offsets */
 	vrl_lineoffs = vrl1_vgax_genlineoffsets(vrl_header,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
@@ -92,10 +90,12 @@ int main(int argc,char **argv)
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
 	ZC_MVSetup(&mv, &map, &gvar);
-	//VL_ShowPage(&(gvar.video.page[gvar.video.panp]), 0, 0);
-	ZC_ShowMV(&mv, 0, 0);
+	ZC_ShowMV(&mv, gvar.video.panp, 0);
 
-	//DRAWCORNERBOXES;
+//	VL_PatternDraw(video_t *video, word pn, boolean sw, boolean allsw);
+	VL_PatternDraw(&gvar.video, 0/*gvar.video.panp*/, 0, 1);
+	TESTBG34
+	DRAWCORNERBOXES
 
 	/* make distinctive pattern offscreen, render sprite, copy onscreen.
 	 * this time, we render the distinctive pattern to another offscreen location and just copy.
@@ -108,16 +108,10 @@ int main(int argc,char **argv)
 		VGA_RAM_PTR omemptr;
 		int xdir=1,ydir=1;
 
-		int j;
-		/* fill pattern offset with a distinctive pattern */
-		for (i=0;i < gvar.video.page[0].width;i++) {
-			o = (i >> 2) + (0x10000UL - (uint16_t)gvar.video.page[0].data);
-			vga_write_sequencer(0x02/*map mask*/,1 << (i&3));
-			for (j=0;j < gvar.video.page[0].height;j++,o += gvar.video.page[0].stridew)
-				vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
-		}
-		TESTBG;
-		//DRAWCORNERBOXES;
+//		VL_PatternDraw(video_t *video, word pn, boolean sw, boolean allsw);
+//		VL_PatternDraw(&gvar.video, 0, 1, 1);
+//		TESTBG;
+//		DRAWCORNERBOXES;
 
 		/* starting coords. note: this technique is limited to x coordinates of multiple of 4 */
 		x = -(gvar.video.page[0].dx);
@@ -131,21 +125,19 @@ int main(int argc,char **argv)
 			IN_ReadControl(0,&player);
 			if(IN_KeyDown(68)){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap; IN_UserInput(1,1); } //f10
 			PANKEYFUN;
-			if(IN_KeyDown(sc_Space))	//space
+			if(IN_KeyDown(sc_Space) || zerostoppause)	//space
 			{
 				anim=!anim;
 				DRAWCORNERBOXES;
-				IN_UserInput(1,1);
+				if(!zerostoppause) IN_UserInput(1,1); else zerostoppause=0;
 			}
 			if(IN_KeyDown(sc_R)){
 				gvar.video.page[0].dx=gvar.video.page[0].dy=gvar.video.page[1].dx=gvar.video.page[1].dy=16;
 				mv[0].tx = mv[0].ty = mv[1].tx = mv[1].ty = INITTNUM;
-				modexShowPage(&(gvar.video.page[gvar.video.panp]));
+
 				player[0].enti.q = 1; player[0].enti.d = 2;
 				x=y=0;
 				xdir=ydir=1;
-				//TESTBG;
-				DRAWCORNERBOXES;
 			} //R
 			FUNCTIONKEYFUNCTIONS0EXE;
 
@@ -207,7 +199,6 @@ draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header
 
 //===========================================================================//
 
-	//modexShowPage(&(gvar.video.page[0]));
 	ZC_ShowMV(&mv, 0, 0);
 if(!noanim) {
 	/* another handy "demo" effect using VGA write mode 1.

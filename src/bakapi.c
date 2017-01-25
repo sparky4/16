@@ -122,7 +122,7 @@ main(int argc, char *argvar[])
 	//modexDrawBmp(VGA, 0, 0, &bmp, 0); //____
 	//getch(); //____
 
-	modexShowPage(&gvar.video.page[0]);
+	VL_ShowPage(&gvar.video.page[0], 0, 0);
 
 // screen savers
 #ifdef BOINK
@@ -150,7 +150,7 @@ main(int argc, char *argvar[])
 					if(panq<=(TILEWH/(4)))
 					{
 						gvar.video.page[0].dx++;
-						modexShowPage(&gvar.video.page[0]);
+						VL_ShowPage(&gvar.video.page[0], 0, 0);
 						panq++;
 					} else { panq = 1; pand = 0; }
 				}
@@ -161,7 +161,7 @@ main(int argc, char *argvar[])
 					if(panq<=(TILEWH/(4)))
 					{
 						gvar.video.page[0].dx--;
-						modexShowPage(&gvar.video.page[0]);
+						VL_ShowPage(&gvar.video.page[0], 0, 0);
 						panq++;
 					} else { panq = 1; pand = 0; }
 				}
@@ -172,7 +172,7 @@ main(int argc, char *argvar[])
 					if(panq<=(TILEWH/(4)))
 					{
 						gvar.video.page[0].dy++;
-						modexShowPage(&gvar.video.page[0]);
+						VL_ShowPage(&gvar.video.page[0], 0, 0);
 						panq++;
 					} else { panq = 1; pand = 0; }
 				}
@@ -183,7 +183,7 @@ main(int argc, char *argvar[])
 					if(panq<=(TILEWH/(4)))
 					{
 						gvar.video.page[0].dy--;
-						modexShowPage(&gvar.video.page[0]);
+						VL_ShowPage(&gvar.video.page[0], 0, 0);
 						panq++;
 					} else { panq = 1; pand = 0; }
 				}
@@ -272,7 +272,7 @@ pee:
 					gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
 		// this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
 		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
-					modexShowPage(&gvar.video.page[0]);
+					VL_ShowPage(&gvar.video.page[0], 0, 0);
 					break;
 				case '-':
 					if(bakapee.bonk>0)

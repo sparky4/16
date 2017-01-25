@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
+ * Copyright (C) 2012-2017 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -292,6 +292,7 @@ void modexHiganbanaPageSetup(video_t *video)
 	modexCalcVmemRemain(video);
 	video->p=0;
 	video->r=1;
+	video->vh=video->page[0].height+video->page[1].height+video->page[2].height+video->page[3].height;
 	//doslib origi var
 	video->omemptr=			vga_state.vga_graphics_ram;
 	video->vga_draw_stride=	vga_state.vga_draw_stride;
@@ -339,8 +340,6 @@ modexShowPage(page_t *page) {
 	outp(AC_INDEX, 0x33);
 	outp(AC_INDEX, (page[0].dx & 0x03) << 1);
 }
-
-//another variant
 //args: page, vertical sync switch, screen resolution switch, page0 switch
 void
 VL_ShowPage(page_t *page, boolean vsync, boolean sr) {
@@ -1258,6 +1257,56 @@ void modexcls(page_t *page, byte color, byte *Where)
 	outpw(SC_INDEX, 0xff02);
 	//_fmemset(VGA, color, 16000);
 	_fmemset(Where, color, page->width*(page->height)/4);
+}
+
+//
+// pattern filler from joncampbell123's code
+//
+void VL_PatternDraw(video_t *video, word pn, boolean sw, boolean allsw)
+{
+	unsigned int i,j,o,	d,h,s;
+	word w;
+
+	switch(sw)
+	{
+		case 0:
+			w=vga_state.vga_width;
+			d=0;
+			s=vga_state.vga_stride;
+			switch(allsw)
+			{
+				case 0:
+					h=vga_state.vga_height;
+				break;
+				case 1:
+					h=video->vh;
+				break;
+			}
+		break;
+		default:
+			w=video->page[pn].width;
+			d=(0x10000UL - (uint16_t)video->page[pn].data);
+			s=video->page[pn].stridew;
+			switch(allsw)
+			{
+				case 0:
+					h=video->page[pn].height;
+				break;
+				case 1:
+					if(!pn) h=video->vh;
+					else h=video->page[pn].height;
+				break;
+			}
+		break;
+	}
+
+	/* fill screen/pattern with a distinctive pattern */
+	for (i=0;i < w;i++) {
+		o = (i >> 2) + d;
+		vga_write_sequencer(0x02/*map mask*/,1 << (i&3));
+		for (j=0;j < h;j++,o += s)
+			vga_state.vga_graphics_ram[o] = (i^j)&15; // VRL samples put all colors in first 15!
+	}
 }
 
 void

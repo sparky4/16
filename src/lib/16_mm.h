@@ -18,8 +18,8 @@
 
 // ID_MM.H
 
-#ifndef __16_EXMM__
-#define __16_EXMM__
+#ifndef __16_MM__
+#define __16_MM__
 
 #include <string.h>
 #include <malloc.h>

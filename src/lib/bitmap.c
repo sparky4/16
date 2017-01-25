@@ -105,7 +105,7 @@ bitmapLoadPcx(char *filename, global_game_variables_t *gv) {
 	file = fopen(filename, "rb");
 	if(!file) {
 		printf("Could not open %s for reading.\n", filename);
-		exit(-2);
+		//exit(-2);
 	}
 
 	/* load the first part of the pcx file */
@@ -129,7 +129,7 @@ bitmapLoadPcx(char *filename, global_game_variables_t *gv) {
 	if(!result.data) {
 		fprintf(stderr, "Could not allocate memory for bitmap data.");
 		fclose(file);
-		exit(-1);
+		//exit(-1);
 	}
 
 	/*  read the buffer in */

@@ -29,14 +29,45 @@
 #include "src/lib/16_mm.h"
 #include "src/lib/16_ca.h"
 #include "src/lib/16_in.h"
+#include "src/lib/testpatt.h"
+
+//VL_ShowPage(&gvar.video.page[gvar.video.panp], 0, 1);
+//VL_ShowPage(&gvar.video.page[gvar.video.panp], 0, 0);
 
 #define FUNCTIONKEYFUNCTIONS \
-	if(IN_KeyDown(sc_F6)){ VL_ShowPage(&gvar.video.page[0], 0, 0); IN_UserInput(1,1); } \
-	if(IN_KeyDown(sc_F7)){ VL_ShowPage(&gvar.video.page[0], 0, 1); IN_UserInput(1,1); } \
-	if(IN_KeyDown(sc_T)){ gvar.video.rss=!gvar.video.rss; IN_UserInput(1,1); }
+	if(IN_KeyDown(88)){ panswitch=!panswitch;							IN_UserInput(1,1); } \
+	FUNCTIONKEYFUNCTIONS0EXE
+
 #define FUNCTIONKEYFUNCTIONS0EXE \
-	if(IN_KeyDown(sc_F6)){ VL_ShowPage(&gvar.video.page[gvar.video.panp], 0, 0); IN_UserInput(1,1); } \
-	if(IN_KeyDown(sc_F7)){ VL_ShowPage(&gvar.video.page[gvar.video.panp], 0, 1); IN_UserInput(1,1); }
+	if(IN_KeyDown(87/*sc_F11*/)){ pageflipflop=!pageflipflop;					IN_UserInput(1,1); } \
+	if(IN_KeyDown(68/*sc_F10*/)){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap;		IN_UserInput(1,1); } \
+	if(IN_KeyDown(sc_F9)){ pagenorendermap=!pagenorendermap;				IN_UserInput(1,1); } \
+	if(IN_KeyDown(sc_F7)){ ZC_ShowMV(&mv, 0, 1);							IN_UserInput(1,1); } \
+	if(IN_KeyDown(sc_F6)){ ZC_ShowMV(&mv, 0, 0);							IN_UserInput(1,1); } \
+	if(IN_KeyDown(sc_T)){ gvar.video.rss=!gvar.video.rss;						IN_UserInput(1,1); } \
+	if(IN_KeyDown(sc_P)){ modexpdump(&gvar.video.page[0]);					IN_UserInput(1,1); }
+
+//VL_ShowPage(page_t *page, boolean vsync, boolean sr)
+#define PANKEYFUN \
+	PANKEYFUNZC \
+	FUNCTIONKEYDRAWJUNK
+
+#define PANKEYFUNZC \
+	ZC_panPageManual(&mv, &player, 0);
+
+#define FUNCTIONKEYDRAWJUNK \
+	if(IN_KeyDown(1+1)){ gvar.video.panp=0; ZC_ShowMV(&mv, 0, 0); } \
+	if(IN_KeyDown(2+1)){ gvar.video.panp=1; ZC_ShowMV(&mv, 0, 0); } \
+	if(IN_KeyDown(3+1)){ gvar.video.panp=2; ZC_ShowMV(&mv, 0, 1); } \
+	if(IN_KeyDown(4+1)){ gvar.video.panp=3; ZC_ShowMV(&mv, 0, 1); } \
+\
+	if(IN_KeyDown(sc_A)) modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 3); \
+	if(IN_KeyDown(sc_S)) modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 4); \
+\
+	if(IN_KeyDown(sc_Z)){ DRAWCORNERBOXES } \
+	if(IN_KeyDown(sc_X)){ TESTBG12 } \
+	if(IN_KeyDown(sc_C)){ TESTBG34 } \
+	if(IN_KeyDown(sc_V)) VL_PatternDraw(&gvar.video, 0, 1, 1);
 
 void DebugMemory_(global_game_variables_t *gvar, boolean q);
 void Shutdown16(global_game_variables_t *gvar);

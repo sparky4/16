@@ -141,14 +141,13 @@ typedef	struct
 	nibble pred;	//prev. direction for animation changing
 	word dire;		//sprite in use
 	nibble q;		//loop variable for anumation and locking the playing to compleate the animation cycle to prevent issues with misalignment www
-	boolean invq;	//animation inversing
 	word speed;		//entity speed!
 	word spt;		//speed per tile
 	struct sprite *spri; // sprite used by entity
 	sword hp; //hitpoints of the entity
 	nibble overdraww, overdrawh;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.
 						// if the sprite's edge pixels are clear anyway, you can set this to 0.
-	int persist_aniframe;    // gonna be increased to 1 before being used, so 0 is ok for default
+	nibble /*int*/ persist_aniframe;    // gonna be increased to 1 before being used, so 0 is ok for default
 } entity_t;
 
 //TODO: MAKE THIS WWWW
@@ -262,6 +261,7 @@ typedef struct
 typedef struct
 {
 	char old_mode;		//old video mode before game!
+	byte palette[768];		//palette array
 	page_t page[MAXPAGE];	//can be used as a pointer to root page[0]
 	word vmem_remain;	//remaining video memory
 	byte num_of_pages;	//number of actual pages
@@ -269,15 +269,16 @@ typedef struct
 	byte far * omemptr;
 	byte vga_draw_stride;
 	byte vga_draw_stride_limit;		// further X clipping
-//
+	//end of doslib origi vars
 	boolean __near rss;			//render sprite switch
 	sword __near sprifilei;		//player file's i
 	boolean __near p;			//render page number //BLEH
-	boolean __near r;			//page flip if true
+	boolean __near r;			//page flip, showpage, or render	if true
 	word pr[MAXPAGE][4];	//render sections of pages (this is supposed to be set up to draw sections of the screen if updated)
 
-	nibble sfip;//shinku_fps_indicator_page; // we're on page 1 now, shinku(). follow along please or it will not be visible.
+	nibble sfip;		//shinku_fps_indicator_page; // we're on page 1 now, shinku(). follow along please or it will not be visible.
 	nibble panp;		//pan_t replacement
+	word	vh;		//video combined height
 	//0000word startclk; float clk, tickclk;	//timer
 //newer vars
 //TODO: find out how they are used

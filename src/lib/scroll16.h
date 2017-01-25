@@ -118,23 +118,14 @@ printf("\n\n");\
 	printf("pageflipflop=%u\n", pageflipflop);\
 	printf("\n");
 
-#define SHOWMVFUN ZC_ShowMV(&mv, 0, 0);
-#define PANKEYFUN \
-			ZC_panPageManual(&mv, &player, 0); \
-			if(IN_KeyDown(1+1) || IN_KeyDown(sc_Z)){ gvar.video.panp=0; SHOWMVFUN; } \
-			if(IN_KeyDown(2+1) || IN_KeyDown(sc_X)){ gvar.video.panp=1; SHOWMVFUN; } \
-			if(IN_KeyDown(3+1) || IN_KeyDown(sc_C)){ gvar.video.panp=2; SHOWMVFUN; if(IN_KeyDown(sc_C)) modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 47); } \
-			if(IN_KeyDown(4+1) || IN_KeyDown(sc_V)){ gvar.video.panp=3; SHOWMVFUN; if(IN_KeyDown(sc_V)) modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 45); } \
-			if(IN_KeyDown(25)){ modexpdump(mv[1].page); modexShowPage(&(gvar.video.page[1])); IN_UserInput(1,1); }
-
-extern boolean pageflipflop, pageploop;
+extern boolean pageflipflop, pageploop, pagenorendermap;
 
 extern char global_temp_status_text[512];
 
 //map_t allocMap(int w, int h);
 //void initMap(map_t *map);
 void ZC_walk(map_view_t *pip, player_t *player, word pn);
-void oldwalk(map_view_t *pip, player_t *player, word pn);
+//void oldwalk(map_view_t *pip, player_t *player, word pn);
 void ZC_panPageManual(map_view_t *pip, player_t *player, word pn);
 void ZC_MVSetup(map_view_t *pip, map_t *map, global_game_variables_t *gv);
 void ZC_MVInit(map_view_t *pip, int tx, int ty);
@@ -159,7 +150,7 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 //void qclean();
 void shinku(global_game_variables_t *gv);
 void near ZC_drawframe(map_view_t *pip, entity_t *enti, sword x, sword y);
-void /*near*/ animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch);
+void animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch);
 void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch);
 
 // Move an entity around. Should actually be in 16_entity
@@ -169,97 +160,6 @@ boolean ZC_walk2(entity_t *ent, map_view_t *map_v);
 void walk_player(player_t *player, map_view_t *map_v);
 
 // Scroll map in one direction (assumed from player's movement)
-void /*near*/ mapScroll(map_view_t *mv, player_t *player);
+void mapScroll(map_view_t *mv, player_t *player);
 
 #endif /*__SCROLL16_H_*/
-//older zc_animate
-//#define SPRITO
-/*void near ZC_animatePlayer_(map_view_t *pip, player_t *player, word pn, sword scrollswitch)
-{
-	sword x = player[pn].enti.x;
-	sword y = player[pn].enti.y;
-	word dire=10; //direction
-	sword qq; //scroll offset
-	word ls = player[pn].enti.persist_aniframe;
-#ifndef SPRITO
-	int i=0;
-#endif
-	switch(scrollswitch)
-	{
-		case 0:
-			qq = 0;
-		break;
-		default:
-			qq = ((player[pn].enti.q)*(player[pn].enti.speed));
-		break;
-	}
-#ifdef SPRITE
-	x-=4;
-#endif
-	y-=pip[0].map->tiles->tileHeight;
-	switch (player[pn].enti.d)
-	{
-		case 0:
-			//up
-			dire*=player[pn].enti.d+1;
-			y-=qq;
-		break;
-		case 3:
-			// right
-			dire*=(player[pn].enti.d-1);
-			x+=qq;
-		break;
-		case 2:
-		break;
-		case 4:
-			//down
-			dire*=(player[pn].enti.d-1);
-			y+=qq;
-		break;
-		case 1:
-			//left
-			dire*=(player[pn].enti.d+3);
-			x-=qq;
-		break;
-	}
-
-	//setting xy position
-	player[pn].ent->spri->x = x;
-	player[pn].ent->spri->y = y;
-
-#ifndef SPRITO
-//#define DRAWFRAME if (i == -1) return; oldanimate_spri(player[pn].ent->spri, pip->video)
-#define DRAWFRAME if (i == -1) return; animate_spri(player[pn].ent->spri, pip->video)
-#define NFRAME1 i = set_anim_by_id(player[pn].ent->spri, 2+dire);	DRAWFRAME;
-#define NFRAME2 i = set_anim_by_id(player[pn].ent->spri, 1+dire);	DRAWFRAME;
-#define NFRAME3 i = set_anim_by_id(player[pn].ent->spri, dire);	DRAWFRAME;
-#define NFRAME4 i = set_anim_by_id(player[pn].ent->spri, 2+dire);	DRAWFRAME;
-#else
-#define NFRAME1 modexClearRegion(pip[(pip->video->p)].page, x, y, 16, 32, 2+dire);
-#define NFRAME2 modexClearRegion(pip[(pip->video->p)].page, x, y, 16, 32, 1+dire);
-#define NFRAME3 modexClearRegion(pip[(pip->video->p)].page, x, y, 16, 32, dire);
-#define NFRAME4 modexClearRegion(pip[(pip->video->p)].page, x, y, 16, 32, 1+dire);
-#endif
-
-	switch(ls)
-	{
-		case 1:
-			NFRAME1
-		break;
-		case 2:
-			NFRAME2
-		break;
-		case 3:
-			NFRAME3
-		break;
-		case 4:
-			NFRAME4
-		break;
-	}
-	pip->video->r=1;
-}*/
-
-//modexDrawSpritePBufRegion
-//modexDrawBmpPBufRegion
-//#define PBUFSFUN		modexDrawSpriteRegion
-//#define PBUFBFUN		modexDrawBmpRegion
