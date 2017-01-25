@@ -203,7 +203,7 @@ void main(int argc, char *argv[])
 	Shutdown16(&gvar);
 	printf("Project 16 test.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
-	modexprintmeminfo(&gvar.video);
+	VL_PrintmodexmemInfo(&gvar.video);
 	printf("tx=%d	", mv[gvar.video.panp].tx); printf("ty=%d	", mv[gvar.video.panp].ty); printf("player.d=%d\n", player[0].enti.d);
 	//IN_Shutdown();
 	//====modexPalBlack();

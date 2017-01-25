@@ -170,6 +170,6 @@ void modexpdump(page_t *pee);
 void modexcls(page_t *page, byte color, byte *Where);
 void VL_PatternDraw(video_t *video, word pn, boolean sw, boolean allsw);
 void modexWaitBorder();
-void modexprintmeminfo(video_t *v);
+void VL_PrintmodexmemInfo(video_t *v);
 
 #endif

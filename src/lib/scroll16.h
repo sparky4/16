@@ -94,6 +94,9 @@ typedef struct {
 //printf("gvar.kurokku:	"); printf("%.0f ", clock());	printf("tiku=%lu ", gvar.kurokku.tiku);	printf("t=%.0f ", gvar.kurokku.t);	printf("ticktock()=%f ", ticktock(&gvar));	printf("%.0f fps", (double)gvar.kurokku.tiku/ticktock(&gvar));
 //printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[0].map->width, mv[0].map->height, mv[0].map->data[0]);
 //printf("&global_temp_status_text = %Fp\n", &global_temp_status_text);
+//printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);
+//printf("Virtual Screen: %dx", gvar.video.page[0].width);	printf("%d	", gvar.video.page[0].height);		printf("Tile: %dx", gvar.video.page[0].tilesw);		printf("%d", gvar.video.page[0].tilesh);	printf("=((Virtual Screen)/16)\n");
+//printf("	Screen: %dx", gvar.video.page[0].sw);	printf("%d	", gvar.video.page[0].sh);		printf("Tile: %dx", gvar.video.page[0].tw);			printf("%d", gvar.video.page[0].th);		printf("=((Screen)/16)\n");
 //print_anim_ids(player[0].ent->spri);
 //printf("	aniframe=%u", player[0].enti.persist_aniframe);
 #define SCROLLEXITMESG 	printf("tx: %d	", mv[0].tx);\
@@ -107,12 +110,7 @@ typedef struct {
 	printf("	hp: %d", (player[0].enti.hp));	printf("	q: %d", player[0].enti.q);	printf("	player.info.dir: %d", player[0].info.dir);	printf("	player.d: %d ", player[0].enti.d);\
 		printf("	pdir=%d\n", player[0].pdir); printf("	delay=%u", player[0].enti.spri->delay);\
 printf("\n\n");\
-	printf("Virtual Screen: %dx", gvar.video.page[0].width);	printf("%d	", gvar.video.page[0].height);\
-	printf("Screen: %dx", gvar.video.page[0].sw);	printf("%d\n", gvar.video.page[0].sh);\
-	printf("virtual tile resolution: %dx", gvar.video.page[0].tilesw);	printf("%d	", gvar.video.page[0].tilesh);\
-	printf("tile resolution: %dx", gvar.video.page[0].tw);	printf("%d\n", gvar.video.page[0].th);\
-	printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);\
-	modexprintmeminfo(&gvar.video);\
+	VL_PrintmodexmemInfo(&gvar.video);\
 \
 	printf("gvar.video.p=%u ", gvar.video.p); printf("gvar.video.r=%u ", gvar.video.r);\
 	printf("pageflipflop=%u\n", pageflipflop);\

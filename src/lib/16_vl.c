@@ -1320,18 +1320,28 @@ modexWaitBorder() {
 	}
 }
 
-void modexprintmeminfo(video_t *v)
+//
+// printings of video memory information
+//
+void VL_PrintmodexmemInfo(video_t *v)
 {
 	byte i;
-	printf("video memory remaining: %u\n", v->vmem_remain);
-	printf("page ");
+
+//	printf("========================================\n");
+	printf("VL_PrintmodexmemInfo:\n");
+//	printf("========================================\n");
+	printf("  Virtual Screen: %dx", v->page[0].width);	printf("%d	", v->page[0].height);	printf("Tile: %dx", v->page[0].tilesw);		printf("%d", v->page[0].tilesh);	printf("=((Virtual Screen)/16)\n");
+	printf("  	Screen: %dx", v->page[0].sw);		printf("%d	", v->page[0].sh);		printf("Tile: %dx", v->page[0].tw);			printf("%d", v->page[0].th);		printf("=((Screen)/16)\n");
+
+	printf("  Free Video Memory: %u\n", v->vmem_remain);
+	printf("  page");
 	for(i=0; i<v->num_of_pages;i++)
 	{
 		printf("	[%u]=", i);
 		printf("(%Fp)", (v->page[i].data));
 		printf(" size=%u	", v->page[i].pagesize);
-		printf("w=%lu  h=%lu ", (unsigned long)v->page[i].width, (unsigned long)v->page[i].height);
-		printf("sw=%lu  sh=%lu ", (unsigned long)v->page[i].sw, (unsigned long)v->page[i].sh);
+		printf("w=%-3lu  h=%-3lu ", (unsigned long)v->page[i].width, (unsigned long)v->page[i].height);
+		printf("sw=%-3lu  sh=%-3lu ", (unsigned long)v->page[i].sw, (unsigned long)v->page[i].sh);
 		printf("pi=%u", v->page[i].pi);
 		printf("\n");
 	}
