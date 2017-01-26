@@ -153,8 +153,8 @@ int main(int argc,char **argv)
 
 				/* block copy pattern to where we will draw the sprite */
 				vga_setup_wm1_block_copy();
-				o2 = gvar.video.page[0].pagesize;
-				o = (0x10000UL - (uint16_t)gvar.video.page[1].data) + (ry * gvar.video.page[0].stridew) + (rx >> 2); // source offscreen
+				o2 = gvar.video.page[0].pagesize+gvar.video.page[1].pagesize;
+				o = ((uint16_t)gvar.video.page[2].data) + (ry * gvar.video.page[0].stridew) + (rx >> 2); // source offscreen		0x10000UL -
 				for (i=0;i < h;i++,o += gvar.video.page[0].stridew,o2 += (w >> 2)) vga_wm1_mem_block_copy(o2,o,w >> 2);
 				/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */
 				vga_restore_rm0wm0();
@@ -162,7 +162,7 @@ int main(int argc,char **argv)
 				/* replace VGA stride with our own and mem ptr. then sprite rendering at this stage is just (0,0) */
 				vga_state.vga_draw_stride_limit = (gvar.video.page[0].width + 3/*round up*/ - x) >> 2;
 				vga_state.vga_draw_stride = w >> 2;
-				vga_state.vga_graphics_ram = omemptr + gvar.video.page[0].pagesize;
+				vga_state.vga_graphics_ram = omemptr + gvar.video.page[0].pagesize + gvar.video.page[1].pagesize;
 
 				/* then the sprite. note modding ram ptr means we just draw to (x&3,0) */
 draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
@@ -173,7 +173,7 @@ draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header
 
 				/* block copy to visible RAM from offscreen */
 				vga_setup_wm1_block_copy();
-				o = gvar.video.page[0].pagesize; // source offscreen
+				o = gvar.video.page[0].pagesize+gvar.video.page[1].pagesize; // source offscreen
 				o2 = (ry * gvar.video.page[0].stridew) + (rx >> 2); // dest visible (original stride)
 				for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += gvar.video.page[0].stridew) vga_wm1_mem_block_copy(o2,o,w >> 2);
 				/* must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally */

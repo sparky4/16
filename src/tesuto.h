@@ -6,6 +6,7 @@
 #include "src/lib/16_vl.h"
 #include "src/lib/16_in.h"
 #include "src/lib/scroll16.h"
+#include "src/lib/16_sprit.h"
 #include <hw/cpu/cpu.h>
 #include <hw/dos/dos.h>
 #include <hw/vga/vga.h>

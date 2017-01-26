@@ -25,6 +25,9 @@
 #include "src/lib/16_vrs.h"
 #include "src/lib/scroll16.h"
 
+#define VMEMPAGESIZE2	video->page[0].pagesize+video->page[1].pagesize
+#define VMEMPAGEDATA2	video->page[2].data
+
 struct sprite
 {
 	// VRS container from which we will extract animation and image data
