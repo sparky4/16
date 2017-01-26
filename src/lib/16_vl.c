@@ -292,7 +292,7 @@ void modexHiganbanaPageSetup(video_t *video)
 	modexCalcVmemRemain(video);
 	video->p=0;
 	video->r=1;
-	video->vh=video->page[0].height+video->page[1].height+video->page[2].height+video->page[3].height;
+	video->vh=video->page[0].height+video->page[1].height+video->page[3].height-8;//+video->page[2].height
 	//doslib origi var
 	video->omemptr=			vga_state.vga_graphics_ram;
 	video->vga_draw_stride=	vga_state.vga_draw_stride;
