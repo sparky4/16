@@ -99,7 +99,8 @@ void print_anim_ids(struct sprite *spri)
 void animate_spri(entity_t *enti, video_t *video)
 {
 #define INC_PER_FRAME if(enti->q&1) enti->persist_aniframe++; if(enti->persist_aniframe>4) enti->persist_aniframe = 1;
-
+	const unsigned int offscreen_ofs = video->page[0].pagesize+video->page[1].pagesize;//(vga_state.vga_stride * vga_state.vga_height);
+	const unsigned int pattern_ofs = 0x10000UL - (uint16_t)video->page[2].data;//(vga_state.vga_stride * vga_state.vga_height);
 	unsigned int i,o,o2; int j;
 	int x,y,rx,ry,w,h;
 
@@ -162,8 +163,8 @@ void animate_spri(entity_t *enti, video_t *video)
 
 	// block copy pattern to where we will draw the sprite
 	vga_setup_wm1_block_copy();
-	o2 = VMEMPAGESIZE2;
-	o = ((uint16_t)VMEMPAGEDATA2) + (ry * video->page[0].stridew) + (rx >> 2); // source offscreen		0x10000UL -
+	o2 = offscreen_ofs;
+	o = pattern_ofs + (ry * video->page[0].stridew) + (rx >> 2); // source offscreen		0x10000UL -
 	for (i=0;i < h;i++,o += video->page[0].stridew,o2 += (w >> 2)) vga_wm1_mem_block_copy(o2,o,w >> 2);
 
 	// must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally
@@ -171,7 +172,7 @@ void animate_spri(entity_t *enti, video_t *video)
 
 	// replace VGA stride with our own and mem ptr. then sprite rendering at this stage is just (0,0)
 	vga_state.vga_draw_stride = w >> 2;
-	vga_state.vga_graphics_ram = omemptr + VMEMPAGESIZE2;
+	vga_state.vga_graphics_ram = omemptr + offscreen_ofs;
 	}else{ rx=ry=w=h=0; vga_state.vga_graphics_ram = (VGA_RAM_PTR)video->page[0].data; }
 	vga_state.vga_draw_stride_limit = (video->page[0].width + 3 - x) >> 2;//round up
 
@@ -194,7 +195,7 @@ void animate_spri(entity_t *enti, video_t *video)
 
 	// block copy to visible RAM from offscreen
 	vga_setup_wm1_block_copy();
-	o = VMEMPAGESIZE2; // source offscreen
+	o = offscreen_ofs; // source offscreen
 	o2 = (ry * video->page[0].stridew) + (rx >> 2); // dest visible (original stride)
 	for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += video->page[0].stridew) vga_wm1_mem_block_copy(o2,o,w >> 2);
 	// must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally
