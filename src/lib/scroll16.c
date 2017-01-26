@@ -762,11 +762,10 @@ char global_temp_status_textC[512];
 void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, word poopoffset)
 {
 	int x, i;
-#ifdef SHOWDRAWRCREND
-	if(!y)	y+=TILEWH*2;
-	else	y-=TILEWH*2;
-//	printf("y: %d\n", y);
-#endif
+if(pagedelayrendermap)
+	if(!y)	y+=TILEWH;
+	else	y-=TILEWH;
+
 	poopoffset%=player[0].enti.speed;
 //	printf("y: %d\n", poopoffset);
 //	sprintf(global_temp_status_textR, "y:%u", poopoffset); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28, 1, 2, 1, global_temp_status_textR);
@@ -774,7 +773,7 @@ void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, w
 	i=ty * mv->map->width + tx;
 	for(x=poopoffset; x<(mv->page->sw+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width; x+=mv->map->tiles->tileWidth, tx++) {
 		if(i>=0) {
-			if(pagedelayrendermap) delay(400);
+			if(pagedelayrendermap) delay(20);
 			/* we are in the map, so copy! */
 			mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
 		}
@@ -785,11 +784,10 @@ void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, w
 void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, word poopoffset)
 {
 	int y, i;
-#ifdef SHOWDRAWRCREND
-	if(!x)	x+=TILEWH*2;
-	else	x-=TILEWH*2;
-//	printf("x: %d\n", x);
-#endif
+if(pagedelayrendermap)
+	if(!x)	x+=TILEWH;
+	else	x-=TILEWH;
+
 	poopoffset%=player[0].enti.speed;
 //printf("x: %d\n", poopoffset);
 //	sprintf(global_temp_status_textR, "x:%u", poopoffset); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28, 1, 2, 1, global_temp_status_textR);
@@ -800,7 +798,7 @@ void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, w
 	   i + 1 row above and one below */
 	for(y=poopoffset; y<(mv->page->sh+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
 		if(i>=0) {
-			if(pagedelayrendermap) delay(400);
+			if(pagedelayrendermap) delay(20);
 			/* we are in the map, so copy away! */
 			mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
 		}
