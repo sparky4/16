@@ -64,7 +64,7 @@ void Startup16(global_game_variables_t *gvar)
 
 	if (_DEBUG_INIT() == 0) {
 #ifdef DEBUGSERIAL
-		printf("WARNING: Failed to initialize DEBUG output\n");
+		//printf("WARNING: Failed to initialize DEBUG output\n");
 #endif
 	}
 	_DEBUG("Serial debug output started\n"); // NTS: All serial output must end messages with newline, or DOSBox-X will not emit text to log

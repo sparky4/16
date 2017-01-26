@@ -68,8 +68,8 @@ void main(int argc, char *argv[])
 
 	if (argc < 2) {
 		//fprintf(stderr,"drawvrl <VRL file> <palette file>\n palette file optional\n");
-		bakapee1 =		FILENAME_2;
-		bakapee1p =	FILENAME_2P;
+		bakapee1 =		FILENAME_1;
+		bakapee1p =	FILENAME_1P;
 
 	}else{
 		if(argv[1]) bakapee1 = argv[1];
