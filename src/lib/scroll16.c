@@ -258,6 +258,7 @@ void ZC_MVSetup(map_view_t *pip, map_t *map, global_game_variables_t *gv)
 	pip[0].map = map;
 	pip[0].video = &gv->video;
 	pip[0].p	= &gv->video.p;
+	pip[0].sp	= &gv->video.sp;
 	ZC_MVInit(pip, 1, 1);
 
 	for(i=ZC_MVI;i<gv->video.num_of_pages;i++)
@@ -266,6 +267,7 @@ void ZC_MVSetup(map_view_t *pip, map_t *map, global_game_variables_t *gv)
 		pip[i].map	=	pip[0].map;
 		pip[i].video	=	pip[0].video;
 		pip[i].p	=	pip[0].p;
+		pip[i].sp	=	pip[0].sp;
 //		if(i>ZC_MVI) {
 		pip[i].tx =	1;
 		pip[i].ty =	1;
@@ -287,7 +289,7 @@ void ZC_ShowMV(map_view_t *moo, boolean vsync, boolean sr)
 	byte crtcOffset;
 
 	/* calculate offset */
-	offset = (word) moo[moo[0].video->p].page->data;
+	offset = (word) moo[moo[0].video->sp].page->data;
 	offset += moo[0].page->dy * (moo[0].page->width >> 2 );
 	offset += moo[0].page->dx >> 2;
 
@@ -295,7 +297,7 @@ void ZC_ShowMV(map_view_t *moo, boolean vsync, boolean sr)
 	switch(sr)
 	{
 		case 1:
-			crtcOffset = moo[moo[0].video->p].page->sw >> 3;
+			crtcOffset = moo[moo[0].video->sp].page->sw >> 3;
 		break;
 		default:
 		case 0:
@@ -889,7 +891,7 @@ void shinku(global_game_variables_t *gv)
 		//_fmemcpy((gv->video.page[(gv->video.p)]).data, (gv->video.page[(!gv->video.p)]).data, gv->video.page[(!gv->video.p)].pagesize);
 		//vga_restore_rm0wm0();
 // 		if(!pageploop) modexCopyPageRegion(&(gv->video.page[(gv->video.p)]), &(gv->video.page[(!gv->video.p)]), 0, 0, 0, 0, gv->video.page[gv->video.p].width, gv->video.page[!gv->video.p].height);
-		VL_ShowPage(&(gv->video.page[gv->video.p]), gv->kurokku.fpscap, 0);//VL_ShowPage(&(gv->video.page[gv->video.p]), gv->kurokku.fpscap, 0);
+		VL_ShowPage(&(gv->video.page[gv->video.sp]), gv->kurokku.fpscap, 0);
 // 		if(!pageploop) gv->video.p=!gv->video.p;
 		gv->video.r =!gv->video.r ;
 		//0000gv->video.tickclk = ((*clockw)-gv->video.startclk)/18.2;

@@ -249,9 +249,9 @@ modexNextPageFlexibleSize(page_t *p, word x, word y)
 	result.tilesw=result.width/TILEWH;
 	result.tilesh=result.height/TILEWH;
 	result.id = p->id+1;
-	result.stridew=p->sw/4;//result.width/4;
+	result.stridew=result.width/4;//p->sw/4;
 	result.pagesize = (word)(result.stridew)*result.height;
-	switch(result.id)
+/*	switch(result.id)
 	{
 		case 2:
 			result.pi=p->width*4;
@@ -259,7 +259,8 @@ modexNextPageFlexibleSize(page_t *p, word x, word y)
 		case 3:
 			result.pi=p->pi;
 		break;
-	}
+	}*/
+	result.pi=result.width*4;
 
 	return result;
 }
@@ -289,7 +290,7 @@ void modexHiganbanaPageSetup(video_t *video)
  	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), video->page[0].width, 96);	video->num_of_pages++;
  	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), video->page[0].width, 96);	video->num_of_pages++;
 	modexCalcVmemRemain(video);
-	video->p=0;
+	video->sp=video->p=0;
 	video->r=1;
 	video->vh=video->page[0].height+video->page[1].height+video->page[3].height-8;//+video->page[2].height
 	//doslib origi var

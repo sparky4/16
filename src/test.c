@@ -129,7 +129,7 @@ void main(int argc, char *argv[])
 	{
 		IN_ReadControl(0,&player);
 		ZC_panPageManual(&mv, &player, 0);
-		//[gvar.video.p]
+		//[gvar.video.sp]
 		//ZC_MVSync(&mv);
 
 		/*if(i<5){
@@ -138,23 +138,23 @@ void main(int argc, char *argv[])
 			case 0:
 				pee:
 				// go right
-				gvar.video.page[gvar.video.p].dx++;
+				gvar.video.page[gvar.video.sp].dx++;
 				if(i==5){ if(j>=31){ i++; j=0; goto baka; }else j++; }else
 				if(j>=32){ k++; j=0; }else j++;
 			break;
 			case 1:
 				// go left
-				gvar.video.page[gvar.video.p].dx--;
+				gvar.video.page[gvar.video.sp].dx--;
 				if(j>=32){ k++; j=0; }else j++;
 			break;
 			case 2:
 				// go up
-				gvar.video.page[gvar.video.p].dy++;
+				gvar.video.page[gvar.video.sp].dy++;
 				if(j>=32){ k++; j=0; }else j++;
 			break;
 			case 3:
 				// go down
-				gvar.video.page[gvar.video.p].dy--;
+				gvar.video.page[gvar.video.sp].dy--;
 				if(j>=32){ k=0; j=0; i++; }else j++;
 			break;
 			default:
@@ -188,8 +188,8 @@ void main(int argc, char *argv[])
 			}
 //			if(i>PAL_SIZE) i=0;
 		}//9*/
-		if(IN_KeyDown(25)){ modexpdump(&gvar.video.page[gvar.video.p]); IN_UserInput(1,1); }//p
-		//VL_ShowPage(&gvar.video.page[gvar.video.p], 0, 0);
+		if(IN_KeyDown(25)){ modexpdump(&gvar.video.page[gvar.video.sp]); IN_UserInput(1,1); }//p
+		//VL_ShowPage(&gvar.video.page[gvar.video.sp], 0, 0);
 		ZC_ShowMV(&mv, 0, 0);
 	}
 
@@ -203,7 +203,7 @@ void main(int argc, char *argv[])
 	printf("Project 16 test.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	VL_PrintmodexmemInfo(&gvar.video);
-	printf("tx=%d	", mv[gvar.video.p].tx); printf("ty=%d	", mv[gvar.video.p].ty); printf("player.d=%d\n", player[0].enti.d);
+	printf("tx=%d	", mv[gvar.video.sp].tx); printf("ty=%d	", mv[gvar.video.sp].ty); printf("player.d=%d\n", player[0].enti.d);
 	//IN_Shutdown();
 	//====modexPalBlack();
 	//====modexFadeOn(1, pal);

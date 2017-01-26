@@ -31,9 +31,6 @@
 #include "src/lib/16_in.h"
 #include "src/lib/testpatt.h"
 
-//VL_ShowPage(&gvar.video.page[gvar.video.p], 0, 1);
-//VL_ShowPage(&gvar.video.page[gvar.video.p], 0, 0);
-
 #define FUNCTIONKEYFUNCTIONS \
 	if(IN_KeyDown(88)){ panswitch=!panswitch;							IN_UserInput(1,1); } \
 	FUNCTIONKEYFUNCTIONS0EXE
@@ -57,10 +54,10 @@
 	ZC_panPageManual(&mv, &player, 0);
 
 #define FUNCTIONKEYDRAWJUNK \
-	if(IN_KeyDown(1+1)){ gvar.video.p=0; ZC_ShowMV(&mv, 0, 0); } \
-	if(IN_KeyDown(2+1)){ gvar.video.p=1; ZC_ShowMV(&mv, 0, 0); } \
-	if(IN_KeyDown(3+1)){ gvar.video.p=2; ZC_ShowMV(&mv, 0, 1); } \
-	if(IN_KeyDown(4+1)){ gvar.video.p=3; ZC_ShowMV(&mv, 0, 1); } \
+	if(IN_KeyDown(1+1)){ gvar.video.sp=0; ZC_ShowMV(&mv, 0, 0); } \
+	if(IN_KeyDown(2+1)){ gvar.video.sp=1; ZC_ShowMV(&mv, 0, 0); } \
+	if(IN_KeyDown(3+1)){ gvar.video.sp=2; ZC_ShowMV(&mv, 0, 1); } \
+	if(IN_KeyDown(4+1)){ gvar.video.sp=3; ZC_ShowMV(&mv, 0, 1); } \
 	FUNCTIONKEYDRAWJUNKNOMV
 
 #define FUNCTIONKEYDRAWJUNKNOMV \
