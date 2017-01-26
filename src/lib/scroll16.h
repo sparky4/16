@@ -70,6 +70,7 @@ typedef struct {
 	word dyThresh; //Threshold for physical tile switch
 	video_t *video;	//pointer to game variables of the video
 	nibble __near *p;	// pointer to video's render page num
+	nibble __near *sp;	// pointer to video's show page num
 	int dx, dy;	// draw row and col var
 //newer vars!
 	int delta, d;

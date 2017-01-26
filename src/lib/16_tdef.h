@@ -272,7 +272,8 @@ typedef struct
 	//end of doslib origi vars
 	boolean __near rss;			//render sprite switch
 	sword __near sprifilei;		//player file's i
-	nibble __near p,sp;			//render page number	//show page number(for showpage)
+	nibble __near p;			//render page number
+	nibble __near sp;			//show page number(for showpage)
 	boolean __near r;			//page flip, showpage, or render	if true
 	word pr[MAXPAGE][4];	//render sections of pages (this is supposed to be set up to draw sections of the screen if updated)
 
