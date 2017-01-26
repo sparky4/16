@@ -61,8 +61,6 @@ void main(int argc, char *argv[])
 
 	Startup16(&gvar);
 
-	gvar.video.panp=0;
-
 	bakapee1=malloc(64);
 	bakapee1p=malloc(64);
 

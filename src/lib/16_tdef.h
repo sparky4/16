@@ -272,12 +272,11 @@ typedef struct
 	//end of doslib origi vars
 	boolean __near rss;			//render sprite switch
 	sword __near sprifilei;		//player file's i
-	boolean __near p;			//render page number //BLEH
+	nibble __near p;			//render page number //BLEH
 	boolean __near r;			//page flip, showpage, or render	if true
 	word pr[MAXPAGE][4];	//render sections of pages (this is supposed to be set up to draw sections of the screen if updated)
 
 	nibble sfip;		//shinku_fps_indicator_page; // we're on page 1 now, shinku(). follow along please or it will not be visible.
-	nibble panp;		//pan_t replacement
 	word	vh;		//video combined height
 	//0000word startclk; float clk, tickclk;	//timer
 //newer vars

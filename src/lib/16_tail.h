@@ -31,8 +31,8 @@
 #include "src/lib/16_in.h"
 #include "src/lib/testpatt.h"
 
-//VL_ShowPage(&gvar.video.page[gvar.video.panp], 0, 1);
-//VL_ShowPage(&gvar.video.page[gvar.video.panp], 0, 0);
+//VL_ShowPage(&gvar.video.page[gvar.video.p], 0, 1);
+//VL_ShowPage(&gvar.video.page[gvar.video.p], 0, 0);
 
 #define FUNCTIONKEYFUNCTIONS \
 	if(IN_KeyDown(88)){ panswitch=!panswitch;							IN_UserInput(1,1); } \
@@ -40,12 +40,11 @@
 
 #define FUNCTIONKEYFUNCTIONS0EXE \
 	if(IN_KeyDown(sc_F4)){ turboXT(12);									IN_UserInput(1,1); } \
-	if(IN_KeyDown(87/*sc_F11*/)){ pageflipflop=!pageflipflop;					IN_UserInput(1,1); } \
+	if(IN_KeyDown(87/*sc_F11*/)){ pagedelayrendermap=!pagedelayrendermap;		IN_UserInput(1,1); } \
 	if(IN_KeyDown(68/*sc_F10*/)){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap;		IN_UserInput(1,1); } \
 	if(IN_KeyDown(sc_F9)){ pagenorendermap=!pagenorendermap;				IN_UserInput(1,1); } \
 	if(IN_KeyDown(sc_F7)){ ZC_ShowMV(&mv, 0, 1);							IN_UserInput(1,1); } \
 	if(IN_KeyDown(sc_F6)){ ZC_ShowMV(&mv, 0, 0);							IN_UserInput(1,1); } \
-	if(IN_KeyDown(sc_F5)){ pagedelayrendermap=!pagedelayrendermap;			IN_UserInput(1,1); } \
 	if(IN_KeyDown(sc_T)){ gvar.video.rss=!gvar.video.rss;						IN_UserInput(1,1); } \
 	if(IN_KeyDown(sc_P)){ modexpdump(&gvar.video.page[0]);					IN_UserInput(1,1); }
 
@@ -58,10 +57,10 @@
 	ZC_panPageManual(&mv, &player, 0);
 
 #define FUNCTIONKEYDRAWJUNK \
-	if(IN_KeyDown(1+1)){ gvar.video.panp=0; ZC_ShowMV(&mv, 0, 0); } \
-	if(IN_KeyDown(2+1)){ gvar.video.panp=1; ZC_ShowMV(&mv, 0, 0); } \
-	if(IN_KeyDown(3+1)){ gvar.video.panp=2; ZC_ShowMV(&mv, 0, 1); } \
-	if(IN_KeyDown(4+1)){ gvar.video.panp=3; ZC_ShowMV(&mv, 0, 1); } \
+	if(IN_KeyDown(1+1)){ gvar.video.p=0; ZC_ShowMV(&mv, 0, 0); } \
+	if(IN_KeyDown(2+1)){ gvar.video.p=1; ZC_ShowMV(&mv, 0, 0); } \
+	if(IN_KeyDown(3+1)){ gvar.video.p=2; ZC_ShowMV(&mv, 0, 1); } \
+	if(IN_KeyDown(4+1)){ gvar.video.p=3; ZC_ShowMV(&mv, 0, 1); } \
 	FUNCTIONKEYDRAWJUNKNOMV
 
 #define FUNCTIONKEYDRAWJUNKNOMV \

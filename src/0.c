@@ -30,8 +30,6 @@ int main(int argc,char **argv)
 
 	boolean anim=1,noanim=0,zerostoppause=1;
 
-	gvar.video.panp=0;
-
 	bakapee1=malloc(64);
 	bakapee2=malloc(1024);
 
@@ -90,10 +88,10 @@ int main(int argc,char **argv)
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
 	ZC_MVSetup(&mv, &map, &gvar);
-	ZC_ShowMV(&mv, gvar.video.panp, 0);
+	ZC_ShowMV(&mv, gvar.video.p, 0);
 
 //	VL_PatternDraw(video_t *video, word pn, boolean sw, boolean allsw);
-	VL_PatternDraw(&gvar.video, 0/*gvar.video.panp*/, 0, 1);
+	VL_PatternDraw(&gvar.video, 0/*gvar.video.p*/, 0, 1);
 	TESTBG34
 	DRAWCORNERBOXES
 
@@ -134,7 +132,7 @@ int main(int argc,char **argv)
 			if(IN_KeyDown(sc_R)){
 				gvar.video.page[0].dx=gvar.video.page[0].dy=gvar.video.page[1].dx=gvar.video.page[1].dy=16;
 				mv[0].tx = mv[0].ty = mv[1].tx = mv[1].ty = INITTNUM;
-				VL_ShowPage(&gvar.video.page[gvar.video.panp], 1, 0);
+				VL_ShowPage(&gvar.video.page[gvar.video.p], 1, 0);
 				player[0].enti.q = 1; player[0].enti.d = 2;
 				x=y=0;
 				xdir=ydir=1;

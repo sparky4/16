@@ -53,8 +53,6 @@ void main(int argc, char *argv[])
 
 	Startup16(&gvar);
 
-	gvar.video.panp=0;
-
 	/* create the map */
 //	fprintf(stderr, "testing map load~	");
 	loadmap("data/test.map", &map);
@@ -131,8 +129,9 @@ void main(int argc, char *argv[])
 	modexDrawSpriteRegion(&gvar.video.page[0], player[0].enti.x, player[0].enti.y-TILEWH, 16, 64, 16, 32,	PCXBMPPTR);
 #endif
 
-	if(!pageflipflop)	VL_ShowPage(mv[1].page, 0, 0);//modexShowPage(mv[1].page);
-	else			ZC_ShowMV(&mv, 0, 0);//modexShowPage(mv[0].page);//!(gvar.video.p)
+	//if(!pageflipflop)
+		VL_ShowPage(mv[1].page, 0, 0);//modexShowPage(mv[1].page);
+	//else			ZC_ShowMV(&mv, 0, 0);//modexShowPage(mv[0].page);//!(gvar.video.p)
 
 	//modexDrawBmp(&gvar.video.page[0], 16, 16, PCXBMPPTR);
 	/* buffer pages */
