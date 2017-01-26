@@ -388,6 +388,11 @@ void walktypeinfo(player_t *player, word pn)
 	}
 }
 
+//
+// for mary4 (XT)
+// this is from my XT's BIOS
+// http://www.phatcode.net/downloads.php?id=101
+//
 void turboXT(byte bakapee)
 {
 	//byte bakapee = 12;
