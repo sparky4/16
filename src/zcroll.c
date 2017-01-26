@@ -90,7 +90,8 @@ void main(int argc, char *argv[])
 //	fprintf(stderr, "yay map loaded~~\n");
 
 	// data
-	read_vrs(&gvar, bakapee1, player[0].enti.spri->spritesheet);
+	//read_vrs(&gvar, , .spri->spritesheet);
+	VRS_LoadVRS(bakapee1, &player[0].enti, &gvar);
 
 	// input!
 	IN_Default(0, &player,ctrl_Keyboard1);
@@ -223,7 +224,8 @@ void main(int argc, char *argv[])
 				bakapee1=FILENAME_2;
 				bakapee1p=FILENAME_2P;
 			}
-			read_vrs(&gvar, bakapee1, player[0].enti.spri->spritesheet);
+			//read_vrs(&gvar, bakapee1, player[0].enti.spri->spritesheet);
+			VRS_ReadVRS(bakapee1, &player[0].enti, &gvar);
 			VL_LoadPalFile(bakapee1p, &gvar.video.palette);
 		}//JK
 #ifdef FADE

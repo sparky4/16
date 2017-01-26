@@ -471,6 +471,9 @@ typedef struct
 	__SEGA	*grsegs[NUMCHUNKS];
 	byte		far	grneeded[NUMCHUNKS];
 	huffnode huffnode;
+
+	//TODO: extend! and learn from keen/wolf/catacomb's code wwww
+	memptr	spribuff;
 } ca_t;
 
 //==========================================================================

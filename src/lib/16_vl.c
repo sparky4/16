@@ -284,11 +284,10 @@ void modexHiganbanaPageSetup(video_t *video)
 	(video->page[1]) = modexNextPage(&(video->page[0]));	video->num_of_pages++;
 //0000	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), (video->page[0]).width, TILEWH*4);		video->num_of_pages++;
 //0000	(video->page[3]) = (video->page[2]);		video->num_of_pages++;
-	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), TILEWH*4, TILEWH*4);		video->num_of_pages++;
-//	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), video->page[0].width, 176);	video->num_of_pages++;
-	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), video->page[0].sw, 208);	video->num_of_pages++;
-// 	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), video->page[0].width, 172);	video->num_of_pages++;
-// 	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), 72, 128);		video->num_of_pages++;
+////	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), TILEWH*4, TILEWH*4);		video->num_of_pages++;
+////	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), video->page[0].sw, 208);	video->num_of_pages++;
+ 	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), video->page[0].width, 96);	video->num_of_pages++;
+ 	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), video->page[0].width, video->page[2].height);	video->num_of_pages++;
 	modexCalcVmemRemain(video);
 	video->p=0;
 	video->r=1;

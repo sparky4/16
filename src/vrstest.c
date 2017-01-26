@@ -44,20 +44,19 @@ void main()
 	//boolean baka;
 	entity_t enti;
 	//vrl1_vgax_offset_t * off, *off1;
-	struct vrs_container vrs;
-	vrl1_vgax_offset_t **vrl_line_offsets;
+/*	struct vrs_container vrs; vrl1_vgax_offset_t **vrl_line_offsets;
 	uint32_t far *vrl_headers_offsets;
 	uint16_t far *vrl_id_iter;
 	uint32_t vrl_size;
 	int num_of_vrl;
 	struct vrl1_vgax_header far *curr_vrl;
 	int size=0;
-	dbg_nointest=0;
+*/
 
+	dbg_nointest=0;
 	Startup16(&gvar);
 
-	// What should be done by read_vrs:
-	CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &gvar);
+/*	CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &gvar);
 
 	// Insert sanity cheks later
 	vrs.buffer = bigbuffer;
@@ -93,7 +92,8 @@ void main()
 
 
 	enti.spri->spritesheet = &vrs;
-	enti.spri->sprite_vrl_cont = malloc(sizeof(struct vrl_container));
+	enti.spri->sprite_vrl_cont = malloc(sizeof(struct vrl_container));*/
+	VRS_LoadVRS("data/spri/chikyuu.vrs", &enti, &gvar);
 	i = set_anim_by_id((enti.spri), 31);
 	if (i == -1)
 	{
@@ -155,7 +155,7 @@ void main()
 	MM_Report_(&gvar);
 	Shutdown16(&gvar);
 	free(enti.spri->sprite_vrl_cont);
-	free(vrl_line_offsets);
+	free(enti.spri->spritesheet->vrl_line_offsets);
 	MM_FreePtr(&bigbuffer, &gvar);
 	//MM_FreePtr(&((void __based(sega)*)enti.spri->spritesheet->buffer), &mm);
 	//printf("CPU to VGA: %f\n", t1);
@@ -167,7 +167,7 @@ void main()
 	printf("t2: %f\n", t2);
 //0000	printf("gvar.video.page[0].width: %u\n", gvar.video.page[0].width);
 //0000	printf("gvar.video.page[0].height: %u\n", gvar.video.page[0].height);
-	printf("Num %d", num_of_vrl);
+//	printf("Num %d", num_of_vrl);
 //	if(baka) printf("\nyay!\n");
 //	else printf("\npoo!\n");
 }

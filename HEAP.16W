@@ -1,0 +1,69 @@
+
+	== default ==
+
+  FREE block at 27dc0016 of size 68
+  USED block at 27dc005a of size 50
+  USED block at 27dc008c of size 50
+  USED block at 27dc00be of size 50
+  USED block at 27dc00f0 of size 50
+  USED block at 27dc0122 of size 50
+  USED block at 27dc0154 of size 50
+  USED block at 27dc0186 of size 50
+  USED block at 27dc01b8 of size 50
+  USED block at 27dc01ea of size 50
+  USED block at 27dc021c of size 50
+  USED block at 27dc024e of size 50
+  USED block at 27dc0280 of size 50
+  FREE block at 27dc02b2 of size 14
+  USED block at 27dc02c0 of size 20
+  USED block at 27dc02d4 of size 136
+  FREE block at 27dc035c of size 7328
+OK - end of heap
+
+	== near ==
+
+  USED block at 17dbefa6 of size 12
+  USED block at 17dbefb2 of size 330
+  USED block at 17dbf0fc of size 52
+  USED block at 17dbf130 of size 20
+  USED block at 17dbf144 of size 20
+  USED block at 17dbf158 of size 20
+  USED block at 17dbf16c of size 20
+  USED block at 17dbf180 of size 20
+  USED block at 17dbf194 of size 3688
+OK - end of heap
+
+	== far ==
+
+  USED block at 27dc0016 of size 68
+  USED block at 27dc005a of size 50
+  USED block at 27dc008c of size 50
+  USED block at 27dc00be of size 50
+  USED block at 27dc00f0 of size 50
+  USED block at 27dc0122 of size 50
+  USED block at 27dc0154 of size 50
+  USED block at 27dc0186 of size 50
+  USED block at 27dc01b8 of size 50
+  USED block at 27dc01ea of size 50
+  USED block at 27dc021c of size 50
+  USED block at 27dc024e of size 50
+  USED block at 27dc0280 of size 50
+  USED block at 27dc02b2 of size 14
+  USED block at 27dc02c0 of size 20
+  USED block at 27dc02d4 of size 136
+  USED block at 27dc035c of size 7328
+OK - end of heap
+
+Memory Type         Total      Used       Free
+----------------  --------   --------   --------
+Default		   8166		756	  7410
+Near		   4182		494	  3688
+Far		   8166		756	  7410
+----------------  --------   --------   --------
+coreleft = 3686
+farcoreleft = 35502
+GetFreeSize = 31836
+GetNearFreeSize = 3688
+GetFarFreeSize = 31836
+memavl = 3686
+stackavail = 31557
