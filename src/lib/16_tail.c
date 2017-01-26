@@ -388,6 +388,44 @@ void walktypeinfo(player_t *player, word pn)
 	}
 }
 
+void turboXT(byte bakapee)
+{
+	//byte bakapee = 12;
+	__asm {
+	push	ax
+	push	bx
+	push	cx
+	in	al, 61h 			; Read equipment flags
+	xor	al, bakapee			;   toggle speed
+	out	61h, al 			; Write new flags back
+
+	mov	bx, 0F89h			; low pitch blip
+	and	al, 4				; Is turbo mode set?
+	jz	@@do_beep
+	mov	bx, 52Eh			; high pitch blip
+
+@@do_beep:
+	mov	al, 10110110b		; Timer IC 8253 square waves
+	out	43h, al 			;   channel 2, speaker
+	mov	ax, bx
+	out	42h, al 			;   send low order
+	mov	al, ah				;   load high order
+	out	42h, al 			;   send high order
+	in	al, 61h 			; Read IC 8255 machine status
+	push	ax
+	or	al, 00000011b
+	out	61h, al 			; Turn speaker on
+	mov	cx, 2000h
+@@delay:
+	loop    @@delay
+	pop	ax
+	out	61h, al 			; Turn speaker off
+	pop	cx
+	pop	bx
+	pop	ax
+	}
+}
+
 const char *nibble_to_binary(nibble x)
 {
 	static char b[9];

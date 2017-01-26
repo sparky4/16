@@ -39,6 +39,7 @@
 	FUNCTIONKEYFUNCTIONS0EXE
 
 #define FUNCTIONKEYFUNCTIONS0EXE \
+	if(IN_KeyDown(sc_F4)){ turboXT(12);									IN_UserInput(1,1); } \
 	if(IN_KeyDown(87/*sc_F11*/)){ pageflipflop=!pageflipflop;					IN_UserInput(1,1); } \
 	if(IN_KeyDown(68/*sc_F10*/)){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap;		IN_UserInput(1,1); } \
 	if(IN_KeyDown(sc_F9)){ pagenorendermap=!pagenorendermap;				IN_UserInput(1,1); } \
@@ -77,6 +78,7 @@ void Shutdown16(global_game_variables_t *gvar);
 void Startup16(global_game_variables_t *gvar);
 void ClearMemory (global_game_variables_t *gvar);
 void Quit (global_game_variables_t *gvar, char *error);
+void turboXT(byte bakapee);
 void walktypeinfo(player_t *player, word pn);
 void nibbletest();
 void booleantest();
