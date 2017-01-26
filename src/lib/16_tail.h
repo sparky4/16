@@ -60,7 +60,9 @@
 	if(IN_KeyDown(2+1)){ gvar.video.panp=1; ZC_ShowMV(&mv, 0, 0); } \
 	if(IN_KeyDown(3+1)){ gvar.video.panp=2; ZC_ShowMV(&mv, 0, 1); } \
 	if(IN_KeyDown(4+1)){ gvar.video.panp=3; ZC_ShowMV(&mv, 0, 1); } \
-\
+	FUNCTIONKEYDRAWJUNKNOMV
+
+#define FUNCTIONKEYDRAWJUNKNOMV \
 	if(IN_KeyDown(sc_A)) modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 3); \
 	if(IN_KeyDown(sc_S)) modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 4); \
 \

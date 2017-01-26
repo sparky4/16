@@ -32,7 +32,6 @@ extern boolean dbg_nointest;
 boolean panswitch;
 
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
-static byte palette[768];
 
 void main()
 {
@@ -40,7 +39,7 @@ void main()
 	//__segment sega;
 	memptr bigbuffer;
 	int i;
-	word start;
+	word start,w;
 	float t1, t2;
 	//boolean baka;
 	entity_t enti;
@@ -58,7 +57,7 @@ void main()
 	Startup16(&gvar);
 
 	// What should be done by read_vrs:
-	CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &gvar);//) baka=1; else baka=0;
+	CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &gvar);
 
 	// Insert sanity cheks later
 	vrs.buffer = bigbuffer;
@@ -90,13 +89,15 @@ void main()
 	vrs.vrl_line_offsets = vrl_line_offsets;
 
 
-	//read_vrs(&gvar, "data/spri/chikyuu.vrs", &vrs);
+//	read_vrs(&gvar, "data/spri/chikyuu.vrs", &vrs);
+
+
 	enti.spri->spritesheet = &vrs;
 	enti.spri->sprite_vrl_cont = malloc(sizeof(struct vrl_container));
 	i = set_anim_by_id((enti.spri), 31);
 	if (i == -1)
 	{
-		printf("glitch!\n");
+		//Quit(&gvar, "ERROR!! glitch IN FILE!\n");
 	}
 	enti.spri->x = TILEWH-4;
 	enti.spri->y = TILEWH;
@@ -107,11 +108,11 @@ void main()
 
 	VGAmodeX(1, 1, &gvar);
 	modexHiganbanaPageSetup(&gvar.video);
-	VL_ShowPage(&gvar.video.page[0], 0, 0);
+	VL_ShowPage(&gvar.video.page[0], 1, 0);
 
 	/* non sprite comparison */
 	start = *clockw;
-	modexCopyPageRegion(&gvar.video.page[0], &gvar.video.page[0], 0, 0, 0, 0, 320, 240);
+	//modexCopyPageRegion(&gvar.video.page[0], &gvar.video.page[0], 0, 0, 0, 0, 320, 240);
 	t1 = (*clockw-start) /18.2;
 
 	start = *clockw;
@@ -120,7 +121,8 @@ void main()
 
 	/*modexLoadPalFile("data/spri/chikyuu.pal", &pal);
 	modexPalUpdate1(pal);*/
-	VL_LoadPalFile("data/spri/chikyuu.pal", &palette);
+	//modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].width, gvar.video.page[0].height, 2);
+	VL_LoadPalFile("data/spri/chikyuu.pal", &gvar.video.palette);
 	for (i = 0; i < 10; i++){
 		enti.spri->delay = 1;
 
@@ -132,17 +134,20 @@ void main()
 
 	while(!IN_KeyDown(sc_Escape))
 	{
-		/*switch(w)
+		switch(w)
 		{
-			case 1024:
-				modexPalUpdate0(pal);
+			case 768:
+//				modexPalUpdate0(pal);
 				w=0;
 			default:
 				w++;
+//				gvar.video.palette[w]=rand();
 			break;
-		}*/
+		}
+		FUNCTIONKEYDRAWJUNKNOMV
+		if(IN_KeyDown(sc_F7)){ VL_ShowPage(&gvar.video.page[0], 1, 1);							IN_UserInput(1,1); }
+		if(IN_KeyDown(sc_F6)){ VL_ShowPage(&gvar.video.page[0], 1, 0);							IN_UserInput(1,1); }
 		if(IN_KeyDown(25)){ modexpdump(&gvar.video.page[0]);  IN_UserInput(1,1); } //p
-//FUNCTIONKEYFUNCTIONS;
 	}
 	VGAmodeX(0, 1, &gvar);
 	MM_ShowMemory(&gvar);

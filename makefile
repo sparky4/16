@@ -107,7 +107,7 @@ UPXQ=-qqq
 S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768
 Z_FLAGS=-zk0 -zc -zp8 -zm
 O_FLAGS=-opmilr -oe=24 -outback -ei -ohnl+				-zp4
-T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 -d1 -e28#65536##-fo=.$(OBJ)
+T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 -d1##-fo=.$(OBJ) -e=65536
 
 DBUGFLAGS=-fm=$^&.mah -fd=$^&
 CPPFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1
@@ -185,14 +185,14 @@ TESTEXEC = &
 	scroll.exe &
 	zcroll.exe &
 	inputest.exe &
-	pcxtest.exe
+	pcxtest.exe &
+	vrstest.exe
 TESTEXEC2 = &
 	maptest.exe &
 	fmemtest.exe &
 	fonttest.exe &
 	fontgfx.exe &
 	test0.exe &
-	vrstest.exe &
 	$(EXTERNTESTEXEC)
 TESTEXEC3= &
 	pcxtest2.exe
