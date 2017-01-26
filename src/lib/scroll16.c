@@ -748,20 +748,26 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 	}
 }
 
+char global_temp_status_textR[512];
+char global_temp_status_textC[512];
+
 void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, word poopoffset)
 {
 	word x;
 	int i;
 	poopoffset%=player[0].enti.speed;
-//printf("y: %d\n", poopoffset);
+//	printf("y: %d\n", poopoffset);
+//	sprintf(global_temp_status_textR, "y:%u", poopoffset); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28, 1, 2, 1, global_temp_status_textR);
 	/* the position within the map array */
 	i=ty * mv->map->width + tx;
-	for(x=poopoffset; x<(mv->page->sw+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width; x+=mv->map->tiles->tileWidth, tx++) {
-	if(i>=0) {
-		/* we are in the map, so copy! */
-		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
-	}
-	i++; /* next! */
+	for(x=poopoffset;
+		x<(mv->page->sw+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width;
+	x+=mv->map->tiles->tileWidth, tx++) {
+		if(i>=0) {
+			/* we are in the map, so copy! */
+			mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
+		}
+		i++; /* next! */
 	}
 }
 
@@ -771,17 +777,20 @@ void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, w
 	int i;
 	poopoffset%=player[0].enti.speed;
 //printf("x: %d\n", poopoffset);
+//	sprintf(global_temp_status_textR, "x:%u", poopoffset); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28, 1, 2, 1, global_temp_status_textR);
 	/* location in the map array */
 	i=ty * mv->map->width + tx;
 
 	/* We'll copy all of the columns in the screen,
 	   i + 1 row above and one below */
-	for(y=poopoffset; y<(mv->page->sh+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
-	if(i>=0) {
-		/* we are in the map, so copy away! */
-		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
-	}
-	i += mv->map->width;
+	for(y=poopoffset;
+		y<(mv->page->sh+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height;
+	y+=mv->map->tiles->tileHeight, ty++) {
+		if(i>=0) {
+			/* we are in the map, so copy away! */
+			mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
+		}
+		i += mv->map->width;
 	}
 }
 

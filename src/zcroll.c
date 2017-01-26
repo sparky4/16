@@ -32,7 +32,7 @@ float t;
 //debugswitches
 boolean panswitch=0,baka=0;
 //extern boolean pageflipflop=1;
-boolean pagenorendermap = 1;	//default: 0
+boolean pagenorendermap = 0;	//default: 0
 unsigned int i;
 
 #ifdef FADE
