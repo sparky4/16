@@ -70,9 +70,9 @@ typedef struct {
 	word dyThresh; //Threshold for physical tile switch
 	video_t *video;	//pointer to game variables of the video
 	nibble *panp;	// pointer to video's pan page num
-	int drawx, drawy;	// draw row and col var
+	int dx, dy;	// draw row and col var
 //newer vars!
-	int dx, dy, delta, d;
+	int delta, d;
 } map_view_t;
 /* Map is presumed to:
  * 1. Have all the required layers and tilesets within itself

@@ -771,14 +771,12 @@ void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, w
 if(pagedelayrendermap)		if(!y)	y+=TILEWH;	else	y-=TILEWH;
 	poopoffset%=player[0].enti.speed;
 //printf("y: %d\n", poopoffset);
-if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->drawx); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 2, 1, global_temp_status_text); }
+if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dx); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 2, 1, global_temp_status_text); }
 	/* the position within the map array */
 	i=ty * mv->map->width + tx;
-	for(	mv->drawx=poopoffset;
-		mv->drawx<(mv->page->sw+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width;
-		mv->drawx+=mv->map->tiles->tileWidth, tx++) {
+	for(	mv->dx=poopoffset;	mv->dx<(mv->page->sw+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width;	mv->dx+=mv->map->tiles->tileWidth, tx++) {
 		if(i>=0)	/* we are in the map, so copy away! */
-			mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, mv->drawx, y);
+			mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, mv->dx, y);
 		i++; /* next! */
 	}
 //if(pagedelayrendermap) delay(200);
@@ -790,16 +788,14 @@ void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, w
 if(pagedelayrendermap)		if(!x)	x+=TILEWH;		else	x-=TILEWH;
 	poopoffset%=player[0].enti.speed;
 //printf("x: %d\n", poopoffset);
-if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->drawy); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 2, 1, global_temp_status_text); }
+if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dy); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 2, 1, global_temp_status_text); }
 	/* location in the map array */
 	i=ty * mv->map->width + tx;
 	/* We'll copy all of the columns in the screen,
 	   i + 1 row above and one below */
-	for(	mv->drawy=poopoffset;
-		mv->drawy<(mv->page->sh+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height;
-		mv->drawy+=mv->map->tiles->tileHeight, ty++) {
+	for(	mv->dy=poopoffset;	mv->dy<(mv->page->sh+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height;	mv->dy+=mv->map->tiles->tileHeight, ty++) {
 		if(i>=0)	/* we are in the map, so copy away! */
-			mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, mv->drawy);
+			mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, mv->dy);
 		i += mv->map->width;
 	}
 //if(pagedelayrendermap) delay(200);
@@ -807,23 +803,19 @@ if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->drawy); mod
 
 void mapDrawWRow(map_view_t *mv, int tx, int ty, word y)
 {
-	word x;
 	int i;
 
 	/* the position within the map array */
 	i=ty * mv->map->width + tx;
-	for(x=0; x<mv->page->sw+mv->dxThresh && tx < mv->map->width; x+=mv->map->tiles->tileWidth, tx++) {
-	if(i>=0) {
-		/* we are in the map, so copy! */
-		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
-	}
-	i++; /* next! */
+	for(mv->dx=0; mv->dx<mv->page->sw+mv->dxThresh && tx < mv->map->width; mv->dx+=mv->map->tiles->tileWidth, tx++) {
+		if(i>=0)	/* we are in the map, so copy! */
+			mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, mv->dx, y);
+		i++; /* next! */
 	}
 }
 
 void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 {
-	int y;
 	int i;
 
 	/* location in the map array */
@@ -831,12 +823,10 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 
 	/* We'll copy all of the columns in the screen,
 	   i + 1 row above and one below */
-	for(y=0; y<mv->page->sh+mv->dyThresh && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
-	if(i>=0) {
-		/* we are in the map, so copy away! */
-		mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
-	}
-	i += mv->map->width;
+	for(mv->dy=0; mv->dy<mv->page->sh+mv->dyThresh && ty < mv->map->height; mv->dy+=mv->map->tiles->tileHeight, ty++) {
+		if(i>=0)	/* we are in the map, so copy away! */
+			mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, mv->dy);
+		i += mv->map->width;
 	}
 }
 
