@@ -395,7 +395,6 @@ void walktypeinfo(player_t *player, word pn)
 //
 void turboXT(byte bakapee)
 {
-	//byte bakapee = 12;
 	__asm {
 	push	ax
 	push	bx

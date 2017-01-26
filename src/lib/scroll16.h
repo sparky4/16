@@ -107,16 +107,12 @@ typedef struct {
 //printf("	Screen: %dx", gvar.video.page[0].sw);	printf("%d	", gvar.video.page[0].sh);		printf("Tile: %dx", gvar.video.page[0].tw);			printf("%d", gvar.video.page[0].th);		printf("=((Screen)/16)\n");
 //print_anim_ids(player[0].ent->spri);
 //printf("	aniframe=%u", player[0].enti.persist_aniframe);
-#define SCROLLEXITMESG 	printf("tx: %d	", mv[0].tx);\
-	printf("ty: %d\n", mv[0].ty);\
+#define SCROLLEXITMESG 	printf("txy: %dx%d\n", mv[0].tx, mv[0].ty);\
 	printf("\n");\
 	printf("player vars:\n");\
-	printf("	x: %d", player[0].enti.x); printf("	y: %d\n", player[0].enti.y);\
-	\
-	printf("	tx: %d", player[0].enti.tx); printf("	ty: %d\n", player[0].enti.ty);\
-	printf("	triggx: %d", player[0].enti.triggerx); printf("	triggy: %d", player[0].enti.triggery); printf("	value: %d\n", mv[0].map->data[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))]);\
+	printf("	xy: %dx%d", player[0].enti.x, player[0].enti.y); printf("	txy: %dx%d", player[0].enti.tx, player[0].enti.ty); printf("	triggxy: %dx%d", player[0].enti.triggerx, player[0].enti.triggery); printf("	value: %d\n", mv[0].map->data[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))]);\
 	printf("	hp: %d", (player[0].enti.hp));	printf("	q: %d", player[0].enti.q);	printf("	player.info.dir: %d", player[0].info.dir);	printf("	player.d: %d ", player[0].enti.d);\
-		printf("	pdir=%d\n", player[0].pdir); printf("	delay=%u", player[0].enti.spri->delay);\
+		printf("	pdir: %d\n", player[0].pdir); printf("	delay=%u", player[0].enti.spri->delay);\
 printf("\n\n");\
 	VL_PrintmodexmemInfo(&gvar.video);\
 \
