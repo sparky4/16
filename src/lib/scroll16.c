@@ -772,10 +772,9 @@ void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, w
 //	sprintf(global_temp_status_textR, "y:%u", poopoffset); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28, 1, 2, 1, global_temp_status_textR);
 	/* the position within the map array */
 	i=ty * mv->map->width + tx;
-	for(x=poopoffset;
-		x<(mv->page->sw+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width;
-	x+=mv->map->tiles->tileWidth, tx++) {
+	for(x=poopoffset; x<(mv->page->sw+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width; x+=mv->map->tiles->tileWidth, tx++) {
 		if(i>=0) {
+			if(pagedelayrendermap) delay(400);
 			/* we are in the map, so copy! */
 			mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
 		}
@@ -799,10 +798,9 @@ void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, w
 
 	/* We'll copy all of the columns in the screen,
 	   i + 1 row above and one below */
-	for(y=poopoffset;
-		y<(mv->page->sh+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height;
-	y+=mv->map->tiles->tileHeight, ty++) {
+	for(y=poopoffset; y<(mv->page->sh+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
 		if(i>=0) {
+			if(pagedelayrendermap) delay(400);
 			/* we are in the map, so copy away! */
 			mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
 		}
@@ -853,6 +851,7 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 boolean pageflipflop = 1;
 boolean pageploop = 1;
 boolean pagenorendermap = 0;
+boolean pagedelayrendermap = 0;
 
 /*	sync	*/
 void shinku(global_game_variables_t *gv)

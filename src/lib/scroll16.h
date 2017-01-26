@@ -122,7 +122,7 @@ printf("\n\n");\
 	printf("pageflipflop=%u\n", pageflipflop);\
 	printf("\n");
 
-extern boolean pageflipflop, pageploop, pagenorendermap;
+extern boolean pageflipflop, pageploop, pagenorendermap, pagedelayrendermap;
 
 extern char global_temp_status_text[512];
 
