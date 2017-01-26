@@ -428,8 +428,10 @@ void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 
 	/* draw the next column */
 	x= mv[0].page->sw + mv[id].map->tiles->tileWidth;
-#ifdef FULLRCREND
+#ifndef FULLRCREND
 	if(player[plid].enti.q%4)
+#else
+	if(player[plid].enti.q==4)
 #endif
 		if(id==0)
 			mapDrawCol(&mv[0], mv[0].tx + mv[0].page->tw, mv[0].ty-1, x, player, DRAWCOLNUM);
@@ -460,8 +462,10 @@ void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 
 	/* draw the next column */
 	x= 0;
-#ifdef FULLRCREND
+#ifndef FULLRCREND
 	if(player[plid].enti.q%4)
+#else
+	if(player[plid].enti.q==4)
 #endif
 		if(id==0)
 			mapDrawCol(&mv[0], mv[0].tx - 1, mv[0].ty-1, x, player, DRAWCOLNUM);
@@ -482,9 +486,9 @@ void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 	/* check to see if this changes the tile */
 	if(mv[id].page[0].dy == 0 )
 	{
-	/* go down one tile */
+	/* go up one tile */
 	mv[id].ty--;
-	/* Snap the origin downward */
+	/* Snap the origin upward */
 	mv[id].page->data -= mv[id].page->pi;
 
 	mv[id].page[0].dy = mv[id].map->tiles->tileHeight;
@@ -492,8 +496,10 @@ void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 
 	/* draw the next row */
 	y= 0;
-#ifdef FULLRCREND
+#ifndef FULLRCREND
 	if(player[plid].enti.q%3)
+#else
+	if(player[plid].enti.q==4)
 #endif
 		if(id==0)
 			mapDrawRow(&mv[0], mv[0].tx - 1, mv[0].ty-1, y, player, DRAWCOLNUM);
@@ -502,6 +508,7 @@ void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 				modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*(mv[0].page->tw+2), mv[id].map->tiles->tileHeight);
 	mv[0].video->r=1;
 }
+
 
 void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 {
@@ -523,8 +530,10 @@ void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 
 	/* draw the next row */
 	y= mv[0].page->sh + mv[id].map->tiles->tileHeight;
-#ifdef FULLRCREND
+#ifndef FULLRCREND
 	if(player[plid].enti.q%3)
+#else
+	if(player[plid].enti.q==4)
 #endif
 		if(id==0)
 			mapDrawRow(&mv[0], mv[0].tx - 1, mv[0].ty+mv[0].page->th, y, player, DRAWCOLNUM);
@@ -756,61 +765,44 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 	}
 }
 
-char global_temp_status_textR[512];
-char global_temp_status_textC[512];
-
 void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, word poopoffset)
 {
-	int x, i;
-if(pagedelayrendermap)
-	if(!y)	y+=TILEWH;
-	else	y-=TILEWH;
-
-	poopoffset%=player[0].enti.speed; poopoffset++;
+	int i;
+if(pagedelayrendermap)		if(!y)	y+=TILEWH;	else	y-=TILEWH;
+	poopoffset%=player[0].enti.speed;
 //printf("y: %d\n", poopoffset);
-	sprintf(global_temp_status_textR, "y:%u", poopoffset); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8), 1, 2, 1, global_temp_status_textR);
+if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->drawx); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 2, 1, global_temp_status_text); }
 	/* the position within the map array */
 	i=ty * mv->map->width + tx;
-
-
-
-	for(	x=poopoffset*mv->map->tiles->tileWidth;
-		x<(mv->page->sw+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width;
-		x+=mv->map->tiles->tileWidth, tx++) {
-		if(i>=0) {
-			if(pagedelayrendermap) delay(20);
-			/* we are in the map, so copy! */
-			mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
-		}
+	for(	mv->drawx=poopoffset;
+		mv->drawx<(mv->page->sw+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width;
+		mv->drawx+=mv->map->tiles->tileWidth, tx++) {
+		if(i>=0)	/* we are in the map, so copy away! */
+			mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, mv->drawx, y);
 		i++; /* next! */
 	}
+//if(pagedelayrendermap) delay(200);
 }
 
 void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, word poopoffset)
 {
-	int y, i;
-if(pagedelayrendermap)
-	if(!x)	x+=TILEWH;
-	else	x-=TILEWH;
-
-	poopoffset%=player[0].enti.speed; poopoffset++;
+	int i;
+if(pagedelayrendermap)		if(!x)	x+=TILEWH;		else	x-=TILEWH;
+	poopoffset%=player[0].enti.speed;
 //printf("x: %d\n", poopoffset);
-	sprintf(global_temp_status_textR, "x:%u", poopoffset); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8), 1, 2, 1, global_temp_status_textR);
+if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->drawy); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 2, 1, global_temp_status_text); }
 	/* location in the map array */
 	i=ty * mv->map->width + tx;
-
 	/* We'll copy all of the columns in the screen,
 	   i + 1 row above and one below */
-	for(	y=poopoffset*mv->map->tiles->tileHeight;
-		y<(mv->page->sh+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height;
-		y+=mv->map->tiles->tileHeight, ty++) {
-		if(i>=0) {
-			if(pagedelayrendermap) delay(20);
-			/* we are in the map, so copy away! */
-			mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, y);
-		}
+	for(	mv->drawy=poopoffset;
+		mv->drawy<(mv->page->sh+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height;
+		mv->drawy+=mv->map->tiles->tileHeight, ty++) {
+		if(i>=0)	/* we are in the map, so copy away! */
+			mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, mv->drawy);
 		i += mv->map->width;
 	}
+//if(pagedelayrendermap) delay(200);
 }
 
 void mapDrawWRow(map_view_t *mv, int tx, int ty, word y)

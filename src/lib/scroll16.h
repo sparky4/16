@@ -55,11 +55,11 @@
 #define PCXBMPPTR	PCXBMPVAR
 
 //row and colum drawing routines
-//#define FULLRCREND
-//#define DRAWCOLNUM mv->page[0].dx
-//#define DRAWROLNUM mv->page[0].dy
-#define DRAWCOLNUM player[plid].enti.q
-#define DRAWROLNUM player[plid].enti.q
+#define FULLRCREND
+#define DRAWCOLNUM mv->page[0].dx
+#define DRAWROLNUM mv->page[0].dy
+//#define DRAWCOLNUM player[plid].enti.q
+//#define DRAWROLNUM player[plid].enti.q
 
 typedef struct {
 	map_t *map;
