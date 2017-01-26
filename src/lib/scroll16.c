@@ -428,9 +428,11 @@ void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 
 	/* draw the next column */
 	x= mv[0].page->sw + mv[id].map->tiles->tileWidth;
+#ifdef FULLRCREND
 	if(player[plid].enti.q%4)
+#endif
 		if(id==0)
-			mapDrawCol(&mv[0], mv[0].tx + mv[0].page->tw, mv[0].ty-1, x, player, mv->page[0].dx);
+			mapDrawCol(&mv[0], mv[0].tx + mv[0].page->tw, mv[0].ty-1, x, player, DRAWCOLNUM);
 		else
 			if(!pageflipflop && !pageploop)
 				modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*(mv[0].page->th+2));
@@ -458,9 +460,11 @@ void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 
 	/* draw the next column */
 	x= 0;
+#ifdef FULLRCREND
 	if(player[plid].enti.q%4)
+#endif
 		if(id==0)
-			mapDrawCol(&mv[0], mv[0].tx - 1, mv[0].ty-1, x, player, mv->page[0].dx);
+			mapDrawCol(&mv[0], mv[0].tx - 1, mv[0].ty-1, x, player, DRAWCOLNUM);
 		else
 			if(!pageflipflop && !pageploop)
 				modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[id].map->tiles->tileWidth, mv[id].map->tiles->tileHeight*(mv[0].page->th+2));
@@ -488,9 +492,11 @@ void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 
 	/* draw the next row */
 	y= 0;
+#ifdef FULLRCREND
 	if(player[plid].enti.q%3)
+#endif
 		if(id==0)
-			mapDrawRow(&mv[0], mv[0].tx - 1, mv[0].ty-1, y, player, mv->page[0].dy);
+			mapDrawRow(&mv[0], mv[0].tx - 1, mv[0].ty-1, y, player, DRAWCOLNUM);
 		else
 			if(!pageflipflop && !pageploop)
 				modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*(mv[0].page->tw+2), mv[id].map->tiles->tileHeight);
@@ -517,9 +523,11 @@ void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 
 	/* draw the next row */
 	y= mv[0].page->sh + mv[id].map->tiles->tileHeight;
+#ifdef FULLRCREND
 	if(player[plid].enti.q%3)
+#endif
 		if(id==0)
-			mapDrawRow(&mv[0], mv[0].tx - 1, mv[0].ty+mv[0].page->th, y, player, mv->page[0].dy);
+			mapDrawRow(&mv[0], mv[0].tx - 1, mv[0].ty+mv[0].page->th, y, player, DRAWCOLNUM);
 		else
 			if(!pageflipflop && !pageploop)
 				modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[id].map->tiles->tileWidth*(mv[0].page->tw+2), mv[id].map->tiles->tileHeight);
@@ -753,8 +761,12 @@ char global_temp_status_textC[512];
 
 void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, word poopoffset)
 {
-	word x;
-	int i;
+	int x, i;
+#ifdef SHOWDRAWRCREND
+	if(!y)	y+=TILEWH*2;
+	else	y-=TILEWH*2;
+//	printf("y: %d\n", y);
+#endif
 	poopoffset%=player[0].enti.speed;
 //	printf("y: %d\n", poopoffset);
 //	sprintf(global_temp_status_textR, "y:%u", poopoffset); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28, 1, 2, 1, global_temp_status_textR);
@@ -773,8 +785,12 @@ void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, w
 
 void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, word poopoffset)
 {
-	int y;
-	int i;
+	int y, i;
+#ifdef SHOWDRAWRCREND
+	if(!x)	x+=TILEWH*2;
+	else	x-=TILEWH*2;
+//	printf("x: %d\n", x);
+#endif
 	poopoffset%=player[0].enti.speed;
 //printf("x: %d\n", poopoffset);
 //	sprintf(global_temp_status_textR, "x:%u", poopoffset); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28, 1, 2, 1, global_temp_status_textR);
