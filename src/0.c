@@ -134,7 +134,7 @@ int main(int argc,char **argv)
 			if(IN_KeyDown(sc_R)){
 				gvar.video.page[0].dx=gvar.video.page[0].dy=gvar.video.page[1].dx=gvar.video.page[1].dy=16;
 				mv[0].tx = mv[0].ty = mv[1].tx = mv[1].ty = INITTNUM;
-
+				VL_ShowPage(&gvar.video.page[gvar.video.panp], 1, 0);
 				player[0].enti.q = 1; player[0].enti.d = 2;
 				x=y=0;
 				xdir=ydir=1;
