@@ -766,12 +766,17 @@ if(pagedelayrendermap)
 	if(!y)	y+=TILEWH;
 	else	y-=TILEWH;
 
-	poopoffset%=player[0].enti.speed;
-//	printf("y: %d\n", poopoffset);
-//	sprintf(global_temp_status_textR, "y:%u", poopoffset); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28, 1, 2, 1, global_temp_status_textR);
+	poopoffset%=player[0].enti.speed; poopoffset++;
+//printf("y: %d\n", poopoffset);
+	sprintf(global_temp_status_textR, "y:%u", poopoffset); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8), 1, 2, 1, global_temp_status_textR);
 	/* the position within the map array */
 	i=ty * mv->map->width + tx;
-	for(x=poopoffset; x<(mv->page->sw+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width; x+=mv->map->tiles->tileWidth, tx++) {
+
+
+
+	for(	x=poopoffset*mv->map->tiles->tileWidth;
+		x<(mv->page->sw+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width;
+		x+=mv->map->tiles->tileWidth, tx++) {
 		if(i>=0) {
 			if(pagedelayrendermap) delay(20);
 			/* we are in the map, so copy! */
@@ -788,15 +793,17 @@ if(pagedelayrendermap)
 	if(!x)	x+=TILEWH;
 	else	x-=TILEWH;
 
-	poopoffset%=player[0].enti.speed;
+	poopoffset%=player[0].enti.speed; poopoffset++;
 //printf("x: %d\n", poopoffset);
-//	sprintf(global_temp_status_textR, "x:%u", poopoffset); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28, 1, 2, 1, global_temp_status_textR);
+	sprintf(global_temp_status_textR, "x:%u", poopoffset); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8), 1, 2, 1, global_temp_status_textR);
 	/* location in the map array */
 	i=ty * mv->map->width + tx;
 
 	/* We'll copy all of the columns in the screen,
 	   i + 1 row above and one below */
-	for(y=poopoffset; y<(mv->page->sh+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height; y+=mv->map->tiles->tileHeight, ty++) {
+	for(	y=poopoffset*mv->map->tiles->tileHeight;
+		y<(mv->page->sh+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height;
+		y+=mv->map->tiles->tileHeight, ty++) {
 		if(i>=0) {
 			if(pagedelayrendermap) delay(20);
 			/* we are in the map, so copy away! */

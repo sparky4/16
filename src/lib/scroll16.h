@@ -55,11 +55,11 @@
 #define PCXBMPPTR	PCXBMPVAR
 
 //row and colum drawing routines
-#define FULLRCREND
-#define DRAWCOLNUM mv->page[0].dx
-#define DRAWROLNUM mv->page[0].dy
-//#define DRAWCOLNUM player[plid].enti.q
-//#define DRAWROLNUM player[plid].enti.q
+//#define FULLRCREND
+//#define DRAWCOLNUM mv->page[0].dx
+//#define DRAWROLNUM mv->page[0].dy
+#define DRAWCOLNUM player[plid].enti.q
+#define DRAWROLNUM player[plid].enti.q
 
 typedef struct {
 	map_t *map;
@@ -70,6 +70,7 @@ typedef struct {
 	word dyThresh; //Threshold for physical tile switch
 	video_t *video;	//pointer to game variables of the video
 	nibble *panp;	// pointer to video's pan page num
+	int drawx, drawy;	// draw row and col var
 //newer vars!
 	int dx, dy, delta, d;
 } map_view_t;
