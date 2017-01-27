@@ -31,7 +31,7 @@ int main(int argc,char **argv)
 	boolean anim=1,noanim=0,zerostoppause=1;
 
 	bakapee1=malloc(64);
-	bakapee2=malloc(1024);
+	bakapee2=malloc(64);
 
 	if (argc < 2) {
 		//fprintf(stderr,"drawvrl <VRL file> <palette file>\n palette file optional\n");

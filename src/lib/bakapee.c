@@ -280,8 +280,10 @@ void ding(page_t *page, bakapee_t *pee, word q)
 			colortest(page, pee);
 		break;
 		case 6:
-			pee->coor = rand()%256;
-			modexcls(page, pee->coor, VGA);
+// 			pee->coor = rand()%256;
+// 			modexcls(page, pee->coor, VGA);
+			colorz(page, pee);
+			modexprint(page, page->sw/2, page->sh/2, 1, 47, 0, "bakapi");
 		break;
 		case 7:
 			if(pee->coor <= pee->hgq)

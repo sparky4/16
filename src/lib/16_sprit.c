@@ -99,18 +99,29 @@ void print_anim_ids(struct sprite *spri)
 void animate_spri(entity_t *enti, video_t *video)
 {
 #define INC_PER_FRAME if(enti->q&1) enti->persist_aniframe++; if(enti->persist_aniframe>4) enti->persist_aniframe = 1;
-	const unsigned int offscreen_ofs = video->page[0].pagesize+video->page[1].pagesize;//(vga_state.vga_stride * vga_state.vga_height);
-	const unsigned int pattern_ofs = 0x10000UL - (uint16_t)video->page[2].data;//(vga_state.vga_stride * vga_state.vga_height);
+	const unsigned int offscreen_ofs =	video->page[0].pagesize+video->page[1].pagesize;//(vga_state.vga_stride * vga_state.vga_height);
+	const unsigned int pattern_ofs =	0x10000UL - (uint16_t)video->page[2].data;//(vga_state.vga_stride * vga_state.vga_height);
+	unsigned int copy_ofs =			offscreen_ofs;
+	unsigned int display_ofs =		0x0000;
 	unsigned int i,o,o2; int j;
 	int x,y,rx,ry,w,h;
 
-	VGA_RAM_PTR omemptr;
+	VGA_RAM_PTR omemptr = (VGA_RAM_PTR)video->page[0].data;// save original mem ptr
+	x=enti->spri->x;
+	y=enti->spri->y;
 
 	// Depending on delay, update indices
 //#define FRAME1 modexDrawSpriteRegion(pip[(pip->video->p)].page, x, y, 48, player[pn].enti.dire, 24, 32,	PLAYERBMPDATAPTR);
 //#define FRAME2 modexDrawSpriteRegion(pip[(pip->video->p)].page, x, y, 24, player[pn].enti.dire, 24, 32,	PLAYERBMPDATAPTR); stand
 //#define FRAME3 modexDrawSpriteRegion(pip[(pip->video->p)].page, x, y, 0, player[pn].enti.dire, 24, 32,	PLAYERBMPDATAPTR);
 //#define FRAME4 modexDrawSpriteRegion(pip[(pip->video->p)].page, x, y, 24, player[pn].enti.dire, 24, 32,	PLAYERBMPDATAPTR); stand
+
+	/* copy active display (0) to offscreen buffer (0x4000) */
+	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = vga_state.vga_stride;
+	vga_setup_wm1_block_copy();
+	vga_wm1_mem_block_copy(copy_ofs,	display_ofs,	vga_state.vga_stride * vga_state.vga_height);
+	vga_restore_rm0wm0();
+
 	switch(enti->spri->delay)
 	{
 		// Delay = 0 means that sprite should loop. Nothing to change here
@@ -138,9 +149,6 @@ void animate_spri(entity_t *enti, video_t *video)
 	// Events go here
 
 
-	omemptr = (VGA_RAM_PTR)video->page[0].data;// save original mem ptr
-	x=enti->spri->x;
-	y=enti->spri->y;
 
 	// Draw sprite
 	j = get_vrl_by_id(enti->spri->spritesheet, enti->spri->curr_spri_id, enti->spri->sprite_vrl_cont);

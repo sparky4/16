@@ -162,12 +162,12 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 		break;
 	}
 
-//	gv->video.page[0].tw = gv->video.page[0].sw/TILEWH;
-//	gv->video.page[0].th = gv->video.page[0].sh/TILEWH;
+//	gv->video.page[0].ti.tw = gv->video.page[0].sw/TILEWH;
+//	gv->video.page[0].ti.th = gv->video.page[0].sh/TILEWH;
 
 	//TODO MAKE FLEXIBLE~
-//	gv->video.page[0].tilemidposscreenx = gv->video.page[0].tilesw;
-//	gv->video.page[0].tilemidposscreeny = (gv->video.page[0].tilesh/2)+1;
+//	gv->video.page[0].ti.tilemidposscreenx = gv->video.page[0].ti.tilesw;
+//	gv->video.page[0].ti.tilemidposscreeny = (gv->video.page[0].ti.tilesh/2)+1;
 }
 
 void
@@ -191,12 +191,12 @@ modexDefaultPage(page_t *p)
 	page.sh = p->sh;
 	page.width = p->sw+TILEWHD;
 	page.height = p->sh+TILEWHD;
-	page.tw = page.sw/TILEWH;
-	page.th = page.sh/TILEWH;
-	page.tilesw=page.width/TILEWH;
-	page.tilesh=page.height/TILEWH;
-	page.tilemidposscreenx = page.tw/2;
-	page.tilemidposscreeny = (page.th/2)+1;
+	page.ti.tw = page.sw/TILEWH;
+	page.ti.th = page.sh/TILEWH;
+	page.ti.tilesw=page.width/TILEWH;
+	page.ti.tilesh=page.height/TILEWH;
+	page.ti.tilemidposscreenx = page.ti.tw/2;
+	page.ti.tilemidposscreeny = (page.ti.th/2)+1;
 	page.stridew=page.width/4;
 	page.pagesize = (word)(page.stridew)*page.height;
 	page.pi=page.width*4;
@@ -219,10 +219,10 @@ modexNextPage(page_t *p) {
 	result.sh = p->sh;
 	result.width = p->width;
 	result.height = p->height;
-	result.tw = p->tw;
-	result.th = p->th;
-	result.tilesw = p->tilesw;
-	result.tilesh = p->tilesh;
+	result.ti.tw = p->ti.tw;
+	result.ti.th = p->ti.th;
+	result.ti.tilesw = p->ti.tilesw;
+	result.ti.tilesh = p->ti.tilesh;
 	result.stridew=p->stridew;
 	result.pagesize = p->pagesize;
 	result.pi=result.width*4;
@@ -244,10 +244,10 @@ modexNextPageFlexibleSize(page_t *p, word x, word y)
 	result.sh = y;
 	result.width = x;
 	result.height = y;
-	result.tw = result.sw/TILEWH;
-	result.th = result.sh/TILEWH;
-	result.tilesw=result.width/TILEWH;
-	result.tilesh=result.height/TILEWH;
+	result.ti.tw = result.sw/TILEWH;
+	result.ti.th = result.sh/TILEWH;
+	result.ti.tilesw=result.width/TILEWH;
+	result.ti.tilesh=result.height/TILEWH;
 	result.id = p->id+1;
 	result.stridew=result.width/4;//p->sw/4;
 	result.pagesize = (word)(result.stridew)*result.height;
@@ -1256,7 +1256,7 @@ void modexcls(page_t *page, byte color, byte *Where)
 	/* set map mask to all 4 planes */
 	outpw(SC_INDEX, 0xff02);
 	//_fmemset(VGA, color, 16000);
-	_fmemset(Where, color, page->width*(page->height)/4);
+	_fmemset(Where, color, page->stridew*page->height);
 }
 
 //
@@ -1330,8 +1330,8 @@ void VL_PrintmodexmemInfo(video_t *v)
 //	printf("========================================\n");
 	printf("VL_PrintmodexmemInfo:\n");
 //	printf("========================================\n");
-	printf("  Virtual Screen: %dx", v->page[0].width);	printf("%d	", v->page[0].height);	printf("Tile: %dx", v->page[0].tilesw);		printf("%d", v->page[0].tilesh);	printf("=((Virtual Screen)/16)\n");
-	printf("  	Screen: %dx", v->page[0].sw);		printf("%d	", v->page[0].sh);		printf("Tile: %dx", v->page[0].tw);			printf("%d", v->page[0].th);		printf("=((Screen)/16)\n");
+	printf("  Virtual Screen: %dx", v->page[0].width);	printf("%d	", v->page[0].height);	printf("Tile: %dx", v->page[0].ti.tilesw);		printf("%d", v->page[0].ti.tilesh);	printf("=((Virtual Screen)/16)\n");
+	printf("  	Screen: %dx", v->page[0].sw);		printf("%d	", v->page[0].sh);		printf("Tile: %dx", v->page[0].ti.tw);			printf("%d", v->page[0].ti.th);		printf("=((Screen)/16)\n");
 
 	printf("  Free Video Memory: %u\n", v->vmem_remain);
 	printf("  page");

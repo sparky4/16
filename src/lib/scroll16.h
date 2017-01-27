@@ -61,33 +61,6 @@
 //#define DRAWCOLNUM player[plid].enti.q
 //#define DRAWROLNUM player[plid].enti.q
 
-typedef struct {
-	map_t *map;
-	page_t *page;
-	int tx; //appears to be the top left tile position on the viewable screen map
-	int ty; //appears to be the top left tile position on the viewable screen map
-	word dxThresh; //Threshold for physical tile switch
-	word dyThresh; //Threshold for physical tile switch
-	video_t *video;	//pointer to game variables of the video
-	nibble __near *p;	// pointer to video's render page num
-	nibble __near *sp;	// pointer to video's show page num
-	int dx, dy;	// draw row and col var
-//newer vars!
-	int delta, d;
-} map_view_t;
-/* Map is presumed to:
- * 1. Have all the required layers and tilesets within itself
- * 2. Have a 'fence' around accessible blocks to simplify boundary logic
- * 3. Have a persistent map and tile size among the layers
- * Map view is presumed to:
- * 1. Calculate, store and update a panning info, which includes, but not limited to:
- * 	combined layer information, actual map representation (reflecting real state of the game),
- * 	pixel shift for smooth tile scrolling.
- * 2. Provide ways to draw a visible part of map. For simplicity with smooth scrolling,
- * 	additional row/column is always drawn at the each side of the map. This implies that 'fence'
- * 	should have a sprite too. Map is drawn left-to-right, top-to-bottom.
- */
-
 //for null map!
 #define MAPW	40
 #define MAPH	30
