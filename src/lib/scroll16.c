@@ -348,12 +348,12 @@ allocMap(int w, int h) {
 	return result;
 }*/
 
-/*void
+void
 initMap(map_t *map) {
 	// just a place holder to fill out an alternating pattern
-	int x, y, xx, yy;
-	int i, q;
-//	int tile = 1;
+	int x, y;//, xx, yy;
+	int i;//, q;
+	int tile = 1;
 	//if(!isEMS() || !checkEMS())
 //		map->tiles = malloc(sizeof(tiles_t));
 	//else
@@ -375,7 +375,7 @@ initMap(map_t *map) {
 //	map->tiles->rows = 1;
 //	map->tiles->cols = 1;//2;
 
-	q=0;
+/*	q=0;
 	//for(y=0; y<map->height; y++) {
 	//for(x=0; x<map->width; x++) {
 	i=0;
@@ -393,7 +393,7 @@ initMap(map_t *map) {
 //	printf("\n");
 	}
 //	printf("[%d]", map->data[q]);
-	q++;
+	q++;*/
 //	}
 	//printf("\n\n");
 //	}
@@ -401,14 +401,14 @@ initMap(map_t *map) {
 	i=0;
 	for(y=0; y<map->height; y++) {
 		for(x=0; x<map->width; x++) {
-//			map->data[i]=255;
-			printf("[%d]", map->data[i]);
-			//tile = tile ? 0 : 1;
+			map->data[i]=255;
+//			printf("[%d]", map->data[i]);
+			tile = tile ? 0 : 1;
 			i++;
 		}
-		//tile = tile ? 0 : 1;
+		tile = tile ? 0 : 1;
 	}
-}*/
+}
 
 void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 {

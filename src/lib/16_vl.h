@@ -102,6 +102,7 @@ page_t modexDefaultPage(page_t *p);
 page_t modexNextPage(page_t *p);
 page_t modexNextPageFlexibleSize(page_t *p, word x, word y);
 void modexCalcVmemRemain(video_t *video);
+void VL_Initofs(video_t *video);
 void modexHiganbanaPageSetup(video_t *video);
 //void modexShowPage(page_t *page);
 void VL_ShowPage(page_t *page, boolean vsync, boolean sr);

@@ -249,6 +249,11 @@ typedef struct
 } kurokku_t;
 
 //video
+typedef struct
+{
+	unsigned int offscreen_ofs;
+	unsigned int pattern_ofs;
+} ofs_t;
 #define NUMCHUNKS	416	//keen
 
 typedef struct
@@ -271,6 +276,7 @@ typedef struct
 	word pr[MAXPAGE][4];	//render sections of pages (this is supposed to be set up to draw sections of the screen if updated)
 
 	nibble sfip;		//shinku_fps_indicator_page; // we're on page 1 now, shinku(). follow along please or it will not be visible.
+	ofs_t	ofs;		//offset vars used for doslib
 	word	vh;		//video combined height
 	//0000word startclk; float clk, tickclk;	//timer
 //newer vars

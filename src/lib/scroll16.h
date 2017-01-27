@@ -95,7 +95,7 @@ extern boolean pagenorendermap, pagedelayrendermap;
 extern char global_temp_status_text[512];
 
 //map_t allocMap(int w, int h);
-//void initMap(map_t *map);
+void initMap(map_t *map);
 void ZC_walk(map_view_t *pip, player_t *player, word pn);
 //void oldwalk(map_view_t *pip, player_t *player, word pn);
 void ZC_panPageManual(map_view_t *pip, player_t *player, word pn);

@@ -22,13 +22,15 @@
 
 #include "src/lib/16_enti.h"
 
-void EN_initentity(entity_t *enti)
+void EN_initentity(entity_t *enti, video_t *video)
 {
+	unsigned int i,o,o2,w,h;
 	//tx and ty inited by map
 	enti->x = enti->tx*TILEWH;
 	enti->y = enti->ty*TILEWH;
 	enti->triggerx = enti->tx;
-	enti->triggery = enti->ty+1;
+	enti->triggery = enti->ty+1;	//south
+
 	enti->q = 1;
 	enti->d =2;
 	enti->hp=4;
@@ -38,12 +40,31 @@ void EN_initentity(entity_t *enti)
 	enti->pred = enti->d;
 	enti->overdraww=0;
 	enti->overdrawh=4;
+
+// 	VL_Initofs(video);
+
+// 	modexClearRegion(&video->page[0], enti->x, enti->y, 16, 16, 2);
+// 	modexClearRegion(&video->page[2], 0, 0, video->page[2].sw, video->page[2].sh, 45);
+// 	modexClearRegion(&video->page[3], 0, 0, video->page[3].sw, video->page[3].sh, 47);
+
+	video->ofs.pattern_ofs=(uint16_t)video->page[0].data;
+	video->ofs.offscreen_ofs=(uint16_t)video->page[3].data;
+	w = (enti->x + 24) & (~3);
+	h = enti->y + 32;
+
+	// block copy pattern to where we will draw the sprite
+	vga_setup_wm1_block_copy();
+	o2 = video->ofs.offscreen_ofs;										//dest
+	o = video->ofs.pattern_ofs + (enti->y * video->page[0].stridew) + (enti->x >> 2);	// source
+	for (i=0;i < h;i++,o += video->page[0].stridew,o2 += (w >> 2)) vga_wm1_mem_block_copy(o2,o,w >> 2);
+	// must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally
+	vga_restore_rm0wm0();
 }
 
 //init player!
-void EN_initplayer(player_t *player, word pn)
+void EN_initplayer(player_t *player, word pn, video_t *video)
 {
-	EN_initentity(&player[pn].enti);
+	EN_initentity(&player[pn].enti, video);
 /*	player[0].info.x = player[0].tx;
 	player[0].info.xaxis = player[0].tx*TILEWH;
 	player[0].info.y = player[0].ty;

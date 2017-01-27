@@ -53,11 +53,14 @@
 #define PANKEYFUNZC \
 	ZC_panPageManual(&mv, &player, 0);
 
-#define FUNCTIONKEYDRAWJUNK \
+#define FUNCTIONKEYSHOWMV \
 	if(IN_KeyDown(1+1)){ gvar.video.sp=0; ZC_ShowMV(&mv, 0, 0); } \
 	if(IN_KeyDown(2+1)){ gvar.video.sp=1; ZC_ShowMV(&mv, 0, 0); } \
 	if(IN_KeyDown(3+1)){ gvar.video.sp=2; ZC_ShowMV(&mv, 0, 1); } \
 	if(IN_KeyDown(4+1)){ gvar.video.sp=3; ZC_ShowMV(&mv, 0, 1); } \
+
+#define FUNCTIONKEYDRAWJUNK \
+	FUNCTIONKEYSHOWMV \
 	FUNCTIONKEYDRAWJUNKNOMV
 
 #define FUNCTIONKEYDRAWJUNKNOMV \

@@ -277,6 +277,12 @@ void modexCalcVmemRemain(video_t *video)
 	}
 }
 
+void VL_Initofs(video_t *video)
+{
+	video->ofs.offscreen_ofs =	video->page[0].pagesize+video->page[1].pagesize;//(vga_state.vga_stride * vga_state.vga_height);
+	video->ofs.pattern_ofs =	(uint16_t)video->page[2].data;
+}
+
 void modexHiganbanaPageSetup(video_t *video)
 {
 	video->vmem_remain=65535U;
@@ -290,9 +296,12 @@ void modexHiganbanaPageSetup(video_t *video)
  	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), video->page[0].width, 96);	video->num_of_pages++;
  	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), video->page[0].width, 96);	video->num_of_pages++;
 	modexCalcVmemRemain(video);
+
 	video->sp=video->p=0;
 	video->r=1;
 	video->vh=video->page[0].height+video->page[1].height+video->page[3].height-8;//+video->page[2].height
+
+	VL_Initofs(video);
 	//doslib origi var
 	video->omemptr=			vga_state.vga_graphics_ram;
 	video->vga_draw_stride=	vga_state.vga_draw_stride;

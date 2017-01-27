@@ -84,6 +84,7 @@ void main(int argc, char *argv[])
 //	fprintf(stderr, "testing map load~	");
 	loadmap("data/test.map", &map);
 	chkmap(&map, 0);
+//	initMap(&map);
 //	printf("chkmap ok	");
 //	fprintf(stderr, "yay map loaded~~\n");
 
@@ -131,7 +132,7 @@ void main(int argc, char *argv[])
 	mapGoTo(&mv, 0, 0);
 
 	playerXYpos(0, 0, &player, &mv, 0);
-	EN_initplayer(&player, 0);
+	EN_initplayer(&player, 0, &gvar.video);
 	player[0].enti.spri->x = player[0].enti.x-4;
 	player[0].enti.spri->y = player[0].enti.y-16;
 
@@ -148,9 +149,10 @@ void main(int argc, char *argv[])
 		modexFadeOn(4, dpal);
 #endif
 	}
-	animate_spri(&(player[0].enti), &gvar.video);
 
+//	while(!IN_KeyDown(sc_Escape) && !IN_KeyDown(sc_Space) && !IN_KeyDown(sc_Enter)){ FUNCTIONKEYSHOWMV }
 	VL_ShowPage(mv[0].page, 0, 0);//modexShowPage(mv[0].page);//!(gvar.video.p)
+	animate_spri(&(player[0].enti), &gvar.video);
 #ifdef FADE
 	modexFadeOn(4, gpal);
 #endif
