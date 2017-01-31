@@ -285,8 +285,8 @@ void ZC_MVInit(map_view_t *pip, int tx, int ty)
 
 void ZC_ShowMV(map_view_t *moo, boolean vsync, boolean sr)
 {
-	VL_ShowPage(moo[moo[0].video->sp].page, vsync, sr);
-	/*word high_address, low_address, offset;
+	//VL_ShowPage(moo[moo[0].video->sp].page, vsync, sr);
+	word high_address, low_address, offset;
 	byte crtcOffset;
 
 	// calculate offset
@@ -321,7 +321,7 @@ void ZC_ShowMV(map_view_t *moo, boolean vsync, boolean sr)
 
 	// do PEL panning here
 	outp(AC_INDEX, 0x33);
-	outp(AC_INDEX, (moo[0].page->dx & 0x03) << 1);*/
+	outp(AC_INDEX, (moo[0].page->dx & 0x03) << 1);
 }
 
 /*map_t
