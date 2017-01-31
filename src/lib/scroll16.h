@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
+ * Copyright (C) 2012-2017 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -81,7 +81,7 @@
 	printf("\n");\
 	printf("player vars:\n");\
 	printf("	xy: %dx%d", player[0].enti.x, player[0].enti.y); printf("	txy: %dx%d", player[0].enti.tx, player[0].enti.ty); printf("	triggxy: %dx%d", player[0].enti.triggerx, player[0].enti.triggery); printf("	value: %d\n", mv[0].map->data[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))]);\
-	printf("	hp: %d", (player[0].enti.hp));	printf("	q: %d", player[0].enti.q);	printf("	player.info.dir: %d", player[0].info.dir);	printf("	player.d: %d ", player[0].enti.d);\
+	printf("	hp: %d", (player[0].enti.hp));	printf("	q: %d", player[0].enti.q);	printf("	info.dir: %d", player[0].info.dir);	printf("	d: %d ", player[0].enti.d);\
 		printf("	pdir: %d\n", player[0].pdir); printf("	delay=%u", player[0].enti.spri->delay);\
 printf("\n\n");\
 	VL_PrintmodexmemInfo(&gvar.video);\
@@ -106,11 +106,75 @@ void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid);
-void near ScrollRight(map_view_t *mv, player_t *player, word id, word plid);
-void near ScrollLeft(map_view_t *mv, player_t *player, word id, word plid);
-void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid);
-void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid);
-void playerXYpos(int x, int y, player_t *player, map_view_t *pip, nibble pn);
+inline void near ScrollRight(map_view_t *mv, player_t *player, word id, word plid)
+{
+	/* increment the pixel position and update the page */
+	mv[id].page->dx += player[plid].enti.speed;
+
+	/* check to see if this changes the tile */
+	if(mv[id].page->dx >= mv[id].dxThresh )
+	{
+		/* go forward one tile */
+		if(id==0) mv[id].tx++;
+		/* Snap the origin forward */
+		mv[id].page->data += 4;
+
+		mv[id].page->dx = mv[id].map->tiles->tileWidth;
+	}
+}
+
+inline void near ScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
+{
+	/* decrement the pixel position and update the page */
+	mv[id].page->dx -= player[plid].enti.speed;
+
+	/* check to see if this changes the tile */
+	if(mv[id].page->dx == 0)
+	{
+		/* go backward one tile */
+		if(id==0) mv[id].tx--;
+		/* Snap the origin backward */
+		mv[id].page->data -= 4;
+
+		mv[id].page->dx = mv[id].map->tiles->tileWidth;
+	}
+}
+
+inline void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid)
+{
+	/* decrement the pixel position and update the page */
+	mv[id].page->dy -= player[plid].enti.speed;
+
+	/* check to see if this changes the tile */
+	if(mv[id].page->dy == 0 )
+	{
+		/* go up one tile */
+		if(id==0) mv[id].ty--;
+		/* Snap the origin upward */
+		mv[id].page->data -= mv[id].page->pi;
+
+		mv[id].page->dy = mv[id].map->tiles->tileHeight;
+	}
+}
+
+inline void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid)
+{
+	/* increment the pixel position and update the page */
+	mv[id].page->dy += player[plid].enti.speed;
+
+	/* check to see if this changes the tile */
+	if(mv[id].page->dy >= mv[id].dyThresh )
+	{
+		/* go down one tile */
+		if(id==0) mv[id].ty++;
+		/* Snap the origin downward */
+		mv[id].page->data += mv[id].page->pi;
+
+		mv[id].page->dy = mv[id].map->tiles->tileHeight;
+	}
+}
+
+void ZC_playerXYpos(int x, int y, player_t *player, map_view_t *pip, nibble pn);
 sword chkmap(map_t *map, word q);
 void mapGoTo(map_view_t *mv, int tx, int ty);
 void mapinitmapview(map_view_t *mv, int tx, int ty);

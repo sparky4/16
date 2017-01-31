@@ -1340,7 +1340,7 @@ void VL_PrintmodexmemInfo(video_t *v)
 	printf("VL_PrintmodexmemInfo:\n");
 //	printf("========================================\n");
 	printf("  Virtual Screen: %dx", v->page[0].width);	printf("%d	", v->page[0].height);	printf("Tile: %dx", v->page[0].ti.tilesw);		printf("%d", v->page[0].ti.tilesh);	printf("=((Virtual Screen)/16)\n");
-	printf("  	Screen: %dx", v->page[0].sw);		printf("%d	", v->page[0].sh);		printf("Tile: %dx", v->page[0].ti.tw);			printf("%d", v->page[0].ti.th);		printf("=((Screen)/16)\n");
+	printf("  	  Screen: %dx", v->page[0].sw);		printf("%d	", v->page[0].sh);		printf("Tile: %dx", v->page[0].ti.tw);			printf("%d", v->page[0].ti.th);		printf("=((Screen)/16)\n");
 
 	printf("  Free Video Memory: %u\n", v->vmem_remain);
 	printf("  page");

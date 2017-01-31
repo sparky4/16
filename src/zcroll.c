@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
+ * Copyright (C) 2012-2017 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -25,6 +25,8 @@
 #include "src/lib/16render.h"
 #include "src/lib/16_dbg.h"
 
+#define FADE
+
 static map_t map;
 map_view_t mv[4];
 float t;
@@ -36,14 +38,12 @@ boolean pagenorendermap = 0;	//default: 0
 unsigned int i;
 
 #ifdef FADE
-static word paloffset=0;
+//static word paloffset=0;
 byte *dpal;
 #endif
 byte *gpal;
 byte *ptr;
 memptr pal;
-
-//bitmap_t	*ptmpdata;
 
 #define FILENAME_1	"data/spri/chikyuu.vrs"
 #define FILENAME_1P	"data/spri/chikyuu.pal"
@@ -89,7 +89,6 @@ void main(int argc, char *argv[])
 //	fprintf(stderr, "yay map loaded~~\n");
 
 	// data
-	//read_vrs(&gvar, , .spri->spritesheet);
 	VRS_LoadVRS(bakapee1, &player[0].enti, &gvar);
 
 	// input!
@@ -124,14 +123,11 @@ void main(int argc, char *argv[])
 	modexHiganbanaPageSetup(&gvar.video);
 	ZC_MVSetup(&mv, &map, &gvar);
 
-	//renderswitch
-	gvar.video.rss=0;
-
 	// set up paging
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(&mv, 0, 0);
 
-	playerXYpos(0, 0, &player, &mv, 0);
+	ZC_playerXYpos(0, 0, &player, &mv, 0);
 	EN_initplayer(&player, 0, &gvar.video);
 	player[0].enti.spri->x = player[0].enti.x-4;
 	player[0].enti.spri->y = player[0].enti.y-16;
@@ -151,14 +147,11 @@ void main(int argc, char *argv[])
 	}
 
 //	while(!IN_KeyDown(sc_Escape) && !IN_KeyDown(sc_Space) && !IN_KeyDown(sc_Enter)){ FUNCTIONKEYSHOWMV }
-	VL_ShowPage(mv[0].page, 0, 0);//modexShowPage(mv[0].page);//!(gvar.video.p)
+	VL_ShowPage(mv[0].page, 0, 0);
 	animate_spri(&(player[0].enti), &gvar.video);
 #ifdef FADE
 	modexFadeOn(4, gpal);
 #endif
-	/*strcpy(global_temp_status_text, "press enter for the loop of zcroll\nescape to quit");
-	modexprint(&gvar.video.page[0], 144, 72, 1, 7, 0, global_temp_status_text);
-	while(!IN_KeyDown(sc_Enter)){ if(IN_KeyDown(sc_Escape)) goto quit; } IN_UserInput(1,1);*///wwww
 	while(!IN_KeyDown(sc_Escape) && player[0].enti.hp>0)
 	{
 		shinku(&gvar);

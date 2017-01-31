@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
+ * Copyright (C) 2012-2017 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -285,15 +285,16 @@ void ZC_MVInit(map_view_t *pip, int tx, int ty)
 
 void ZC_ShowMV(map_view_t *moo, boolean vsync, boolean sr)
 {
-	word high_address, low_address, offset;
+	VL_ShowPage(moo[moo[0].video->sp].page, vsync, sr);
+	/*word high_address, low_address, offset;
 	byte crtcOffset;
 
-	/* calculate offset */
+	// calculate offset
 	offset = (word) moo[moo[0].video->sp].page->data;
 	offset += moo[0].page->dy * (moo[0].page->width >> 2 );
 	offset += moo[0].page->dx >> 2;
 
-	/* calculate crtcOffset according to virtual width */
+	// calculate crtcOffset according to virtual width
 	switch(sr)
 	{
 		case 1:
@@ -308,19 +309,19 @@ void ZC_ShowMV(map_view_t *moo, boolean vsync, boolean sr)
 	high_address = HIGH_ADDRESS | (offset & 0xff00);
 	low_address  = LOW_ADDRESS  | (offset << 8);
 
-	/* wait for appropriate timing and then program CRTC */
+	// wait for appropriate timing and then program CRTC
 	if(vsync) while ((inp(INPUT_STATUS_1) & DISPLAY_ENABLE));
 	outpw(CRTC_INDEX, high_address);
 	outpw(CRTC_INDEX, low_address);
 	outp(CRTC_INDEX, 0x13);
 	outp(CRTC_DATA, crtcOffset);
 
-	/* wait for one retrace */
+	// wait for one retrace
 	if(vsync) while (!(inp(INPUT_STATUS_1) & VRETRACE));
 
-	/* do PEL panning here */
+	// do PEL panning here
 	outp(AC_INDEX, 0x33);
-	outp(AC_INDEX, (moo[0].page->dx & 0x03) << 1);
+	outp(AC_INDEX, (moo[0].page->dx & 0x03) << 1);*/
 }
 
 /*map_t
@@ -410,23 +411,12 @@ initMap(map_t *map) {
 	}
 }
 
+
 void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 {
 	word x;//, y;  /* coordinate for drawing */
 
-	/* increment the pixel position and update the page */
-	mv[id].page[0].dx += player[plid].enti.speed;
-
-	/* check to see if this changes the tile */
-	if(mv[id].page[0].dx >= mv[id].dxThresh )
-	{
-	/* go forward one tile */
-	mv[id].tx++;
-	/* Snap the origin forward */
-	mv[id].page->data += 4;
-
-	mv[id].page[0].dx = mv[id].map->tiles->tileWidth;
-	}
+	ScrollRight(mv, player, id, plid);
 
 	/* draw the next column */
 	x= mv[0].page->sw + mv[id].map->tiles->tileWidth;
@@ -448,19 +438,7 @@ void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 {
 	word x;//,y;  /* coordinate for drawing */
 
-	/* decrement the pixel position and update the page */
-	mv[id].page[0].dx -= player[plid].enti.speed;
-
-	/* check to see if this changes the tile */
-	if(mv[id].page[0].dx == 0)
-	{
-	/* go backward one tile */
-	mv[id].tx--;
-	/* Snap the origin backward */
-	mv[id].page->data -= 4;
-
-	mv[id].page[0].dx = mv[id].map->tiles->tileWidth;
-	}
+	ScrollLeft(mv, player, id, plid);
 
 	/* draw the next column */
 	x= 0;
@@ -482,19 +460,7 @@ void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 {
 	word y;//x,  /* coordinate for drawing */
 
-	/* decrement the pixel position and update the page */
-	mv[id].page[0].dy -= player[plid].enti.speed;
-
-	/* check to see if this changes the tile */
-	if(mv[id].page[0].dy == 0 )
-	{
-	/* go up one tile */
-	mv[id].ty--;
-	/* Snap the origin upward */
-	mv[id].page->data -= mv[id].page->pi;
-
-	mv[id].page[0].dy = mv[id].map->tiles->tileHeight;
-	}
+	ScrollUp(mv, player, id, plid);
 
 	/* draw the next row */
 	y= 0;
@@ -516,19 +482,7 @@ void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 {
 	word y;//x,  /* coordinate for drawing */
 
-	/* increment the pixel position and update the page */
-	mv[id].page[0].dy += player[plid].enti.speed;
-
-	/* check to see if this changes the tile */
-	if(mv[id].page[0].dy >= mv[id].dyThresh )
-	{
-	/* go down one tile */
-	mv[id].ty++;
-	/* Snap the origin downward */
-	mv[id].page->data += mv[id].page->pi;
-
-	mv[id].page[0].dy = mv[id].map->tiles->tileHeight;
-	}
+	ScrollDown(mv, player, id, plid);
 
 	/* draw the next row */
 	y= mv[0].page->sh + mv[id].map->tiles->tileHeight;
@@ -546,79 +500,11 @@ void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 }
 
 
-//TODO finish this wwww
-void near ScrollRight(map_view_t *mv, player_t *player, word id, word plid)
-{
-	/* increment the pixel position and update the page */
-	mv[id].page->dx += player[plid].enti.speed;
-
-	/* check to see if this changes the tile */
-	if(mv[id].page->dx >= mv[0].dxThresh )
-	{
-// 		vga_setup_wm1_block_copy();
-// 		_fmemmove(mv[id].page->data+4, mv[id].page->data, mv[id].page->pagesize);
-// 		vga_restore_rm0wm0();
-		/* Snap the origin forward */
-		mv[id].page->data += 4;
-		mv[id].page->dx = mv[0].map->tiles->tileWidth;
-	}
-}
-
-void near ScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
-{
-	/* decrement the pixel position and update the page */
-	mv[id].page->dx -= player[plid].enti.speed;
-
-	/* check to see if this changes the tile */
-	if(mv[id].page->dx == 0)
-	{
-// 		vga_setup_wm1_block_copy();
-// 		_fmemmove(mv[id].page->data-4, mv[id].page->data, mv[id].page->pagesize);
-// 		vga_restore_rm0wm0();
-		/* Snap the origin backward */
-		mv[id].page->data -= 4;
-		mv[id].page->dx = mv[0].map->tiles->tileWidth;
-	}
-}
-
-void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid)
-{
-	/* decrement the pixel position and update the page */
-	mv[id].page->dy -= player[plid].enti.speed;
-
-	/* check to see if this changes the tile */
-	if(mv[id].page->dy == 0)
-	{
-// 		vga_setup_wm1_block_copy();
-// 		_fmemmove(mv[id].page->data-mv[id].page->pi, mv[id].page->data, mv[id].page->pagesize);
-// 		vga_restore_rm0wm0();
-		/* Snap the origin backward */
-		mv[id].page->data -= mv[id].page->pi;
-		mv[id].page->dy = mv[0].map->tiles->tileWidth;
-	}
-}
-
-void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid)
-{
-	/* increment the pixel position and update the page */
-	mv[id].page->dy += player[plid].enti.speed;
-
-	/* check to see if this changes the tile */
-	if(mv[id].page->dy >= mv[0].dxThresh )
-	{
-// 		vga_setup_wm1_block_copy();
-// 		_fmemmove(mv[id].page->data+mv[id].page->pi, mv[id].page->data, mv[id].page->pagesize);
-// 		vga_restore_rm0wm0();
-		/* Snap the origin forward */
-		mv[id].page->data += mv[id].page->pi;
-		mv[id].page->dy = mv[0].map->tiles->tileWidth;
-	}
-}
 
 //===========================================================================
 //TODO: put player in starting position of assigned spot on map
 //default player position on the viewable map
-void playerXYpos(int x, int y, player_t *player, map_view_t *pip, nibble pn)
+void ZC_playerXYpos(int x, int y, player_t *player, map_view_t *pip, nibble pn)
 {
 	player[pn].enti.tx = x + pip[0].tx + pip[0].page->ti.tilemidposscreenx;
 	player[pn].enti.ty = y + pip[0].ty + pip[0].page->ti.tilemidposscreeny;
@@ -704,7 +590,7 @@ void mapinitmapview(map_view_t *mv, int tx, int ty)
 
 	/* set up the thresholds */
 	mv[0].dxThresh = mv[1].dxThresh = mv[2].dxThresh = mv[3].dxThresh = mv->map->tiles->tileWidth * 2;
-	mv[0].dyThresh = mv[1].dyThresh = mv[2].dxThresh = mv[3].dxThresh = mv->map->tiles->tileHeight * 2;
+	mv[0].dyThresh = mv[1].dyThresh = mv[2].dyThresh = mv[3].dyThresh = mv->map->tiles->tileHeight * 2;
 }
 
 void near

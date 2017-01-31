@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
+ * Copyright (C) 2012-2017 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -119,6 +119,29 @@ typedef struct {
 	sword delta;			// How much should we shift the page for smooth scrolling
 } page_t;
 
+//from 16_sprit.h
+#ifdef	__WATCOMC__
+typedef struct sprite
+{
+	// VRS container from which we will extract animation and image data
+	struct vrs_container *spritesheet;
+	// Container for a vrl sprite
+	struct vrl_container *sprite_vrl_cont;
+	// Current sprite id
+	int curr_spri_id;
+	// Index of a current sprite in an animation sequence
+	int curr_anim_spri;
+	// Current animation sequence
+	struct vrs_animation_list_entry_t *curr_anim_list;
+	// Index of current animation in relevant VRS offsets table
+	int curr_anim;
+	// Delay in time units untill we should change sprite
+	int delay;
+	// Position of sprite on screen
+	int x, y;
+} sprite_t;
+#endif
+
 //newer structs
 typedef	struct
 {
@@ -128,34 +151,22 @@ typedef	struct
 	int ty; //entity tile position on the viewable map
 	int triggerx; //entity's trigger box tile position on the viewable map
 	int triggery; //entity's trigger box tile position on the viewable map
-	int sheetsetx; //NOT USED YET! entity sprite sheet set on the image x
-	int sheetsety; //NOT USED YET! entity sprite sheet set on the image y
+// 	int sheetsetx; //NOT USED YET! entity sprite sheet set on the image x
+// 	int sheetsety; //NOT USED YET! entity sprite sheet set on the image y
 	nibble d;		//direction to render sprite!! wwww
 	nibble pred;	//prev. direction for animation changing
 	word dire;		//sprite in use
 	nibble q;		//loop variable for anumation and locking the playing to compleate the animation cycle to prevent issues with misalignment www
 	word speed;		//entity speed!
 	word spt;		//speed per tile
-	struct sprite *spri; // sprite used by entity
+#ifdef	__WATCOMC__
+	sprite_t *spri; // sprite used by entity
+#endif
 	sword hp; //hitpoints of the entity
 	nibble overdraww, overdrawh;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.
 						// if the sprite's edge pixels are clear anyway, you can set this to 0.
 	nibble /*int*/ persist_aniframe;    // gonna be increased to 1 before being used, so 0 is ok for default
 } entity_t;
-
-//TODO: MAKE THIS WWWW
-typedef struct
-{
-	//sprite ....
-	boolean wwww;
-} spri_t;
-
-//TODO: MAKE THIS TO WWWW
-typedef struct
-{
-	//vrs with sprite ....
-	spri_t *spri;
-} vrs_t;
 
 //from 16_in
 //==========================================================================
@@ -526,8 +537,8 @@ typedef struct
 	mminfo_t mm; mminfotype mmi;
 } global_game_variables_t;
 
-extern char global_temp_status_text[512];
 #ifdef __WATCOMC__
+extern char global_temp_status_text[512];
 #define EINVFMT EMFILE
 #endif
 #endif /* _TYPEDEFSTRUCT_H_ */

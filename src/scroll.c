@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
+ * Copyright (C) 2012-2017 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -118,7 +118,7 @@ void main(int argc, char *argv[])
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(&mv, 0, 0);
 
-	playerXYpos(0, 0, &player, &mv, 0);
+	ZC_playerXYpos(0, 0, &player, &mv, 0);
 	EN_initplayer(&player, 0, &gvar.video);
 	player[0].enti.spri->x = player[0].enti.x-4;
 	player[0].enti.spri->y = player[0].enti.y-16;

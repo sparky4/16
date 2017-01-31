@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2016 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
+ * Copyright (C) 2012-2017 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -78,7 +78,6 @@ void Startup16(global_game_variables_t *gvar);
 void ClearMemory (global_game_variables_t *gvar);
 void Quit (global_game_variables_t *gvar, char *error);
 void turboXT(byte bakapee);
-void walktypeinfo(player_t *player, word pn);
 void nibbletest();
 void booleantest();
 
