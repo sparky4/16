@@ -379,6 +379,7 @@ clean: .symbolic
 	@if exist *.mah $(REMOVECOMMAND) *.mah
 	@if exist *.MAH $(REMOVECOMMAND) *.MAH
 	@if exist *.err $(REMOVECOMMAND) *.err
+	@if exist TC*.SWP $(REMOVECOMMAND) TC*.SWP
 #	@if exist *.16W $(REMOVECOMMAND) *.16W
 #	@if exist *.16B $(REMOVECOMMAND) *.16B
 
