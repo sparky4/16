@@ -52,6 +52,8 @@
 #define TILEWHD	TILEWH*2
 #define QUADWH			TILEWH/2
 
+//#define OLDBGPRESERVE
+
 /* -========================== Types & Macros ==========================- */
 #define PAGE_OFFSET(x,y) (((y)<<6)+((y)<<4)+((x)>>2))
 #define PLANE(x) (1 << ((x) & 3))

@@ -705,6 +705,10 @@ void shinku(global_game_variables_t *gv)
 	//render!!
 //	if(pageflipflop){
 	if(gv->video.r ){//r=1
+#ifndef OLDBGPRESERVE
+#else
+		//modexCopyPageRegion(&video->page[0], &video->page[1], enti->x, enti->y, 0, 0, 24, 32);
+#endif
 		//vga_setup_wm1_block_copy();
 		//_fmemcpy((gv->video.page[(gv->video.p)]).data, (gv->video.page[(!gv->video.p)]).data, gv->video.page[(!gv->video.p)].pagesize);
 		//vga_restore_rm0wm0();
