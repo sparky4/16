@@ -248,7 +248,7 @@ vrstest.exe:	vrstest.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 #vgacamm.exe:	vgacamm.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 palettec.exe:	palettec.$(OBJ) gfx.lib $(DOSLIB)
 palettel.exe:	 	palettel.$(OBJ) gfx.lib $(DOSLIB)
-palllist.exe:	 	palllist.$(OBJ) gfx.lib $(DOSLIB)
+palllist.exe:	 	palllist.$(OBJ) gfx.lib $(DOSLIB) ll.$(OBJ)
 pcxtest2.exe:	 pcxtest2.$(OBJ) gfx.lib $(DOSLIB)
 #planrpcx.exe:	planrpcx.$(OBJ) gfx.lib
 maptest.exe:	maptest.$(OBJ) 16_map.$(OBJ) 16_head.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
@@ -352,6 +352,7 @@ vgmSnd.$(OBJ):	$(VGMSNDLIB)/vgmSnd.c $(VGMSNDLIB)/vgmSnd.h
 #memory.$(OBJ):$(EXMMLIB)/memory.c $(EXMMLIB)/memory.h
 c_utils.$(OBJ):$(MODEXLIB)/c_utils.asm
 modex.$(OBJ):	 $(MODEXLIB)/modex.asm
+ll.$(OBJ):		$(SRCLIB)/ll.c	$(SRCLIB)/ll.h
 
 #
 #other~

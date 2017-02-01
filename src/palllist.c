@@ -57,10 +57,41 @@
  * i am going to work on a really big area of code it will be on the refresh system, the walking/scrolling system, things that use showpage, adding disableing 8087 functions if no 8087 detected, and a bunch of other things i cannot remember off the top of my head because i am BURNT. I need a small break~ -- -- -- -- update! i am working on this i made ZC_WALK and i am going to move to VRL/VRS soon! .
  * ==== PRE SHOWPAGE TO SHOWMV CONVERSION ==== i am going to work on a really big area of code it will be on the refresh system, the walking/scrolling system, things that use showpage, adding disableing 8087 functions if no 8087 detected, and a bunch of other things i cannot remember off the top of my head because i am BURNT. I need a small break~ -- -- -- -- update! i am working on this i made ZC_WALK and i am going to move to VRL/VRS soon!
  */
-#include <stdio.h>
+#include "src/lib/ll.h"
 
 void
 main(int argc, char *argv[])
 {
-//TOO TIREDWWWW
+	int i;
+	node_t * head = NULL;		node_t * heao = NULL;
+	node_t * nx = NULL;
+	head = malloc(sizeof(node_t));	heao = malloc(sizeof(node_t));
+	head->val = 0;			heao->val = 9;
+	head->next=NULL;		heao->next=NULL;
+
+	nx = head;
+	for(i=1; i<
+		//PAL_SIZE
+		5
+		; i++)
+	{
+		printf("	i=%d\n", i);
+		pushe(nx, i);
+		nx = nx->next;
+	}
+	nx->next = NULL;
+
+	nx = heao;
+	for(i=8; i>0; i--)
+	{
+		printf("	i=%d\n", i);
+		pushe(nx, i);
+		nx = nx->next;
+	}
+	nx->next = NULL;
+	print_list(head);
+	printf("\n");
+	print_list(heao);
+	free(head);
+	free(heao);
 }
