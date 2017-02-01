@@ -64,31 +64,29 @@ main(int argc, char *argv[])
 {
 	int i;
 	node_t * head = NULL;		node_t * heao = NULL;
-	node_t * nx = NULL;
 	head = malloc(sizeof(node_t));	heao = malloc(sizeof(node_t));
 	head->val = 0;			heao->val = 9;
 	head->next=NULL;		heao->next=NULL;
+	head->id=0;				heao->id=0;
 
-	nx = head;
 	for(i=1; i<
 		//PAL_SIZE
-		5
+		7
 		; i++)
 	{
-		printf("	i=%d\n", i);
-		pushe(nx, i);
-		nx = nx->next;
+		if(!(i%3)) printf("\n	");
+		printf("%d,", i);
+		pushe(head, i);
 	}
-	nx->next = NULL;
 
-	nx = heao;
+	printf("\n");
+
 	for(i=8; i>0; i--)
 	{
-		printf("	i=%d\n", i);
-		pushe(nx, i);
-		nx = nx->next;
+		if(!(i%3)) printf("\n	");
+		printf("%d,", i);
+		pushe(heao, i);
 	}
-	nx->next = NULL;
 	print_list(head);
 	printf("\n");
 	print_list(heao);

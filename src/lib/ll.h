@@ -9,6 +9,7 @@ typedef struct node
 	rgb_t	d;
 	int val;
 	struct node	*next;
+	word	id;
 } node_t;
 
 void print_list(node_t * head);

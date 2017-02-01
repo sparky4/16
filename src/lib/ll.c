@@ -6,7 +6,7 @@ void print_list(node_t * head)
 
 	while (current != NULL)
 	{
-		printf("%d\n", current->val);
+		printf("[%u]	%d\n", current->id, current->val);
 		current = current->next;
 	}
 }
@@ -14,15 +14,21 @@ void print_list(node_t * head)
 void pushe(node_t * head, int val)
 {
 	node_t * current = head;
+	current->id = head->id;
+	current->next->id = current->id+1;
+
 	while (current->next != NULL)
 	{
+		current->next->id = current->id;
 		current = current->next;
+		current->id++;
 	}
 
 	// now we can add a new variable
 	current->next = malloc(sizeof(node_t));
 	current->next->val = val;
 	current->next->next = NULL;
+	current->next->id++;
 }
 
 void pushs(node_t ** head, int val)
