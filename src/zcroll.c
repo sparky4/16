@@ -211,13 +211,13 @@ void main(int argc, char *argv[])
 			{
 				bakapee1=FILENAME_1;
 				bakapee1p=FILENAME_1P;
-				enti->overdraww=0;
+				player[0].enti.overdraww=0;
 			}
 			if(IN_KeyDown(sc_K))
 			{
 				bakapee1=FILENAME_2;
 				bakapee1p=FILENAME_2P;
-				enti->overdraww=2;
+				player[0].enti.overdraww=2;
 			}
 			//read_vrs(&gvar, bakapee1, player[0].enti.spri->spritesheet);
 			VRS_ReadVRS(bakapee1, &player[0].enti, &gvar);
