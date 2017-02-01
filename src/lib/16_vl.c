@@ -349,18 +349,19 @@ modexShowPage(page_t *page) {
 	outp(AC_INDEX, 0x33);
 	outp(AC_INDEX, (page[0].dx & 0x03) << 1);
 }
+
 //args: page, vertical sync switch, screen resolution switch, page0 switch
 void
 VL_ShowPage(page_t *page, boolean vsync, boolean sr) {
 	word high_address, low_address, offset;
 	byte crtcOffset;
 
-	/* calculate offset */
+	// calculate offset
 	offset = (word) page->data;
-	offset += page[0].dy * (page->width >> 2 );
-	offset += page[0].dx >> 2;
+	offset += page->dy * (page->width >> 2 );
+	offset += page->dx >> 2;
 
-	/* calculate crtcOffset according to virtual width */
+	// calculate crtcOffset according to virtual width
 	switch(sr)
 	{
 		case 1:
@@ -375,20 +376,20 @@ VL_ShowPage(page_t *page, boolean vsync, boolean sr) {
 	high_address = HIGH_ADDRESS | (offset & 0xff00);
 	low_address  = LOW_ADDRESS  | (offset << 8);
 
-	/* wait for appropriate timing and then program CRTC */
+	// wait for appropriate timing and then program CRTC
 	if(vsync) while ((inp(INPUT_STATUS_1) & DISPLAY_ENABLE));
 	outpw(CRTC_INDEX, high_address);
 	outpw(CRTC_INDEX, low_address);
 	outp(CRTC_INDEX, 0x13);
 	outp(CRTC_DATA, crtcOffset);
 
-	/* wait for one retrace */
+	// wait for one retrace
 	if(vsync) while (!(inp(INPUT_STATUS_1) & VRETRACE));
 
-	/* do PEL panning here */
+	// do PEL panning here
 	outp(AC_INDEX, 0x33);
-	outp(AC_INDEX, (page[0].dx & 0x03) << 1);
-	vga_state.vga_graphics_ram = (VGA_RAM_PTR)page[0].data;
+	outp(AC_INDEX, (page->dx & 0x03) << 1);
+	vga_state.vga_graphics_ram = (VGA_RAM_PTR)page->data;
 }
 
 //=============================================================================
