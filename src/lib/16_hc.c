@@ -301,7 +301,7 @@ size_t _basedcoreleft(void)
 	if( segu == _NULLSEG ) {
 		printf( "Unable to allocate based heap\n" );
 		return 0;
-		//exit( 1 );
+		
 	}
 	else
 

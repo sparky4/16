@@ -324,80 +324,12 @@ void ZC_ShowMV(map_view_t *moo, boolean vsync, boolean sr)
 	outp(AC_INDEX, (moo[0].page->dx & 0x03) << 1);
 }
 
-/*map_t
-allocMap(int w, int h) {
-	map_t result;
-
-	result.width =w;
-	result.height=h;
-	result.data = malloc(sizeof(byte) * w * h);
-	//result.data = (byte *)alloc_emem(((int)sizeof(byte) * w * h)/1024);
-	if(isEMS() || checkEMS())
-	{
-		XMOVE mm;
-		//emmhandle = mallocEMS(coretotalEMS());//alloc_emem((int)sizeof(map))
-		mm.length=sizeof(result);
-		mm.sourceH=0;
-		mm.sourceOff=ptr2long(&result);
-		mm.destH=emmhandle;
-		mm.destOff=0;
-		ist = move_emem(&mm);
-		if(!ist){ dealloc_emem(emmhandle); exit(5); }
-		printf("%d\n", coretotalEMS());
-	}
-
-	return result;
-}*/
-
 void
 initMap(map_t *map) {
 	// just a place holder to fill out an alternating pattern
-	int x, y;//, xx, yy;
-	int i;//, q;
+	int x, y;
+	int i;
 	int tile = 1;
-	//if(!isEMS() || !checkEMS())
-//		map->tiles = malloc(sizeof(tiles_t));
-	//else
-	//	map->tiles = (tiles_t *)alloc_emem(sizeof(tiles_t));
-
-	 //create the tile set
-	//if(!isEMS() || !checkEMS())
-//		map->tiles->data = malloc(sizeof(bitmap_t));
-	//else
-	//	map->tiles->data = (bitmap_t *)alloc_emem(sizeof(bitmap_t));
-//	map->tiles->data->width = (TILEWH);
-//	map->tiles->data->height= TILEWH;
-	//if(!isEMS() || !checkEMS())
-//		map->tiles->data->data = malloc((TILEWH*2)*TILEWH);
-	//else
-	//	map->tiles->data->data = (byte *)alloc_emem((TILEWH*2)*TILEWH);
-//	map->tiles->tileHeight = TILEWH;
-//	map->tiles->tileWidth =TILEWH;
-//	map->tiles->rows = 1;
-//	map->tiles->cols = 1;//2;
-
-/*	q=0;
-	//for(y=0; y<map->height; y++) {
-	//for(x=0; x<map->width; x++) {
-	i=0;
-	for(yy=0; yy<TILEWH; yy++) {
-	for(xx=0; xx<(TILEWH); xx++) {
-		//if(x<TILEWH){
-		  map->tiles->data->data[i+1] = map->data[q];//28;//0x24;
-//		  printf("[%d]", map->tiles->data->data[i]);
-		//}else{
-		  //map->tiles->data->data[i] = map->data[q];//0;//0x34;
-		  //printf("]%d[==[%d]", i, map->tiles->data->data[i]);
-		//}
-		i++;
-	}
-//	printf("\n");
-	}
-//	printf("[%d]", map->data[q]);
-	q++;*/
-//	}
-	//printf("\n\n");
-//	}
 
 	i=0;
 	for(y=0; y<map->height; y++) {

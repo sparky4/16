@@ -943,7 +943,7 @@ void MM_GetPtr (memptr *baseptr, dword size, global_game_variables_t *gvar)
 		printf("	*baseptr=%Fp	", *baseptr); printf("*useptr=%Fp\n", *(gvar->mm.mmnew->useptr));
 		printf("	&baseptr=%Fp	", &baseptr); printf("&useptr=%Fp\n", &(gvar->mm.mmnew->useptr));
 #endif
-	//exit(-5); }
+	//Quit(gvar, "gvar->mm.mmnew->useptr==NULL"); }
 	gvar->mm.mmnew->attributes = BASEATTRIBUTES;
 
 //tryagain:
@@ -1022,9 +1022,7 @@ void MM_GetPtr (memptr *baseptr, dword size, global_game_variables_t *gvar)
 		//heapdump();
 #endif
 		printf(OUT_OF_MEM_MSG,(size-gvar->mmi.nearheap));
-		printf("for stability reasons the program will shut down! wwww\n");
-		MM_Shutdown(gvar);
-		exit(-1);
+		Quit(gvar, "for stability reasons the program will shut down! wwww\n");
 	}
 	else
 		gvar->mm.mmerror = true;

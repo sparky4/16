@@ -51,6 +51,7 @@ static unsigned int musical_scale[18] = {
 
 void main(int argc, char near *argv[])
 {
+	static global_game_variables_t gvar;
 	word i;
 //	static FMInstrument testInst =
 //{
@@ -67,8 +68,7 @@ void main(int argc, char near *argv[])
 	//FMSetVoice(0, &testInst);
 	if(!init_adlib())
 	{
-		printf("Cannot init library\n");
-		exit(-5);
+		Quit(gvar, "Cannot init library");
 	}
 
 	if (adlib_fm_voices > 9)

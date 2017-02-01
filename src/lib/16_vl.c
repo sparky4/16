@@ -649,8 +649,7 @@ modexNewPal() {
 
 	/* handle errors */
 	if(!ptr) {
-	printf("Could not allocate palette.\n");
-	exit(-1);
+		printf("Could not allocate palette.\n");
 	}
 
 	return ptr;
@@ -674,7 +673,6 @@ modexLoadPalFile(byte *filename, byte **palette) {
 	file = fopen(filename, "rb");
 	if(!file) {
 	printf("Could not open palette file: %s\n", filename);
-	exit(-2);
 	}
 
 	/* read the file */
@@ -713,7 +711,6 @@ modexSavePalFile(char *filename, byte *pal) {
 	file = fopen(filename, "wb");
 	if(!file) {
 	printf("Could not open %s for writing\n", filename);
-	exit(-2);
 	}
 
 	/* write the data to the file */

@@ -102,8 +102,7 @@ int read_vrs(global_game_variables_t *gvar, char *filename, struct vrs_container
 	close(fd);
 	if(!success)
 	{
-		fprintf(stderr, "Unable to load file");
-		exit(3);
+		Quit (gvar, "Unable to load file");
 	}
 	vrs_cont->data_size = size - sizeof(struct vrs_header);
 	vrs_cont->buffer = buffer;
