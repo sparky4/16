@@ -693,7 +693,7 @@ void VL_LoadPalFile(const char *filename, byte *palette)
 	if (fd >= 0) {
 		word i;
 
-		read(fd,palette,768);
+		read(fd,palette,	PAL_SIZE);
 		close(fd);
 
 		vga_palette_lseek(0);
