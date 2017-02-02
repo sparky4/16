@@ -56,8 +56,8 @@
 
 //row and colum drawing routines
 #define FULLRCREND
-#define DRAWCOLNUM mv->page[0].dx
-#define DRAWROLNUM mv->page[0].dy
+#define DRAWCOLNUM mv->page[id].dx
+#define DRAWROLNUM mv->page[id].dy
 //#define DRAWCOLNUM player[plid].enti.q
 //#define DRAWROLNUM player[plid].enti.q
 
@@ -77,8 +77,8 @@
 //printf("&global_temp_status_text = %Fp\n", &global_temp_status_text);
 //printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);
 //printf("	aniframe=%u", player[0].enti.persist_aniframe);
-#define SCROLLEXITMESG 	printf("txy: %dx%d\n", mv[0].tx, mv[0].ty);\
-	printf("\n");\
+#define SCROLLEXITMESG 	printf("[0]txy: %dx%d	", mv[0].tx, mv[0].ty); printf("[1]txy: %dx%d", mv[1].tx, mv[1].ty);\
+	printf("\n\n");\
 	printf("player vars:\n");\
 	printf("	xy: %dx%d", player[0].enti.x, player[0].enti.y); printf("	txy: %dx%d", player[0].enti.tx, player[0].enti.ty); printf("	triggxy: %dx%d", player[0].enti.triggerx, player[0].enti.triggery); printf("	value: %d\n", mv[0].map->data[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))]);\
 	printf("	hp: %d", (player[0].enti.hp));	printf("	q: %d", player[0].enti.q);	printf("	info.dir: %d", player[0].info.dir);	printf("	d: %d ", player[0].enti.d);\
@@ -87,6 +87,7 @@ printf("\n\n");\
 	VL_PrintmodexmemInfo(&gvar.video);\
 \
 	printf("gvar.video.r=%u ", gvar.video.r);\
+	printf("gvar.video.bgps=%u ", gvar.video.bgps);\
 printf("\n\n");
 
 extern boolean pagenorendermap, pagedelayrendermap;

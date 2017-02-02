@@ -158,17 +158,16 @@ void animate_spri(entity_t *enti, video_t *video)
 	// render box bounds. y does not need modification, but x and width must be multiple of 4
 	if(!video->rss)
 	{
-		if(!video->bgps)
-		{
-			if (x >= enti->overdraww) rx = (x - enti->overdraww) & (~3);
-				else rx = -(video->page[0].dx);
-			if (y >= enti->overdrawh) ry = (y - enti->overdrawh);
-				else ry = -(video->page[0].dy);
-			h = enti->spri->sprite_vrl_cont->vrl_header->height + enti->overdrawh + y - ry;
-			w = (x + enti->spri->sprite_vrl_cont->vrl_header->width + (enti->overdraww*2) + 3 - rx) & (~3) - enti->overdraww;//round up
-			if ((rx+w) > video->page[0].width) w = video->page[0].width-rx;
-			if ((ry+h) > video->page[0].height) h = video->page[0].height-ry;
+		if (x >= enti->overdraww) rx = (x - enti->overdraww) & (~3);
+			else rx = -(video->page[0].dx);
+		if (y >= enti->overdrawh) ry = (y - enti->overdrawh);
+			else ry = -(video->page[0].dy);
+		h = enti->spri->sprite_vrl_cont->vrl_header->height + enti->overdrawh + y - ry;
+		w = (x + enti->spri->sprite_vrl_cont->vrl_header->width + (enti->overdraww*2) + 3 - rx) & (~3) - enti->overdraww;//round up
+		if ((rx+w) > video->page[0].width) w = video->page[0].width-rx;
+		if ((ry+h) > video->page[0].height) h = video->page[0].height-ry;
 
+		if(!video->bgps){
 			// block copy pattern to where we will draw the sprite
 			vga_setup_wm1_block_copy();
 			o2 = video->ofs.offscreen_ofs;
@@ -177,14 +176,10 @@ void animate_spri(entity_t *enti, video_t *video)
 
 			// must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally
 			vga_restore_rm0wm0();
-
-			// replace VGA stride with our own and mem ptr. then sprite rendering at this stage is just (0,0)
-			vga_state.vga_draw_stride = w >> 2;
-			vga_state.vga_graphics_ram = omemptr + video->ofs.offscreen_ofs;
-		}else{
-			w=h=i=o=o2=0;
-			modexCopyPageRegion(&video->page[2], &video->page[0], enti->x, enti->y, 0, 0, 24, 32);
 		}
+		// replace VGA stride with our own and mem ptr. then sprite rendering at this stage is just (0,0)
+		vga_state.vga_draw_stride = w >> 2;
+		vga_state.vga_graphics_ram = omemptr + video->ofs.offscreen_ofs;
 	}else{ rx=ry=w=h=0; vga_state.vga_graphics_ram = (VGA_RAM_PTR)video->page[0].data; }
 	vga_state.vga_draw_stride_limit = (video->page[0].width + 3 - x) >> 2;//round up
 
@@ -203,11 +198,10 @@ void animate_spri(entity_t *enti, video_t *video)
 #endif
 	if(!video->rss)
 	{
-		if(!video->bgps)
-		{
-			// restore ptr
-			vga_state.vga_graphics_ram = omemptr;
+		// restore ptr
+		vga_state.vga_graphics_ram = omemptr;
 
+		if(!video->bgps){
 			// block copy to visible RAM from offscreen
 			vga_setup_wm1_block_copy();
 			o = video->ofs.offscreen_ofs; // source offscreen
@@ -215,8 +209,6 @@ void animate_spri(entity_t *enti, video_t *video)
 			for (i=0;i < h;i++,o += vga_state.vga_draw_stride,o2 += video->page[0].stridew) vga_wm1_mem_block_copy(o2,o,w >> 2);
 			// must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally
 			vga_restore_rm0wm0();
-		}else{
-			//modexCopyPageRegion(&video->page[0], &video->page[2], 0, 0, enti->x, enti->y, 24, 32);
 		}
 	}
 	// restore stride
