@@ -89,7 +89,6 @@ printf("\n\n");\
 	printf("gvar.video.r=%u ", gvar.video.r);\
 printf("\n\n");
 
-//pageflipflop, pageploop,
 extern boolean pagenorendermap, pagedelayrendermap;
 
 extern char global_temp_status_text[512];
@@ -177,7 +176,7 @@ inline void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid
 void ZC_playerXYpos(int x, int y, player_t *player, map_view_t *pip, nibble pn);
 sword chkmap(map_t *map, word q);
 void mapGoTo(map_view_t *mv, int tx, int ty);
-void mapinitmapview(map_view_t *mv, int tx, int ty);
+void ZC_mapinitMV(map_view_t *mv, int tx, int ty);
 void near mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
 void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, word poopoffset);
 void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, word poopoffset);

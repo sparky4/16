@@ -41,28 +41,29 @@ void EN_initentity(entity_t *enti, video_t *video)
 	enti->overdraww=0;
 	enti->overdrawh=4;
 
-// 	VL_Initofs(video);
+	VL_Initofs(video);
 
 // 	modexClearRegion(&video->page[0], enti->x, enti->y, 16, 16, 2);
 // 	modexClearRegion(&video->page[2], 0, 0, video->page[2].sw, video->page[2].sh, 45);
 // 	modexClearRegion(&video->page[3], 0, 0, video->page[3].sw, video->page[3].sh, 47);
-#ifndef OLDBGPRESERVE
-	video->ofs.pattern_ofs=(uint16_t)video->page[0].data;
-	video->ofs.offscreen_ofs=(uint16_t)video->page[3].data;
-	w = (enti->x + 24) & (~3);
-	h = enti->y + 32;
+	if(!video->bgps)
+	{
+		//video->ofs.pattern_ofs=(uint16_t)video->page[0].data;
+		//video->ofs.offscreen_ofs=(uint16_t)video->page[3].data;
+		w = (enti->x + 24) & (~3);
+		h = enti->y + 32;
 
-	// block copy pattern to where we will draw the sprite
-	vga_setup_wm1_block_copy();
-	o2 = video->ofs.offscreen_ofs;										//dest
-	o = video->ofs.pattern_ofs + (enti->y * video->page[0].stridew) + (enti->x >> 2);	// source
-	for (i=0;i < h;i++,o += video->page[0].stridew,o2 += (w >> 2)) vga_wm1_mem_block_copy(o2,o,w >> 2);
-	// must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally
-	vga_restore_rm0wm0();
-#else
-	w=h=o=i=o2=0;
-	modexCopyPageRegion(&video->page[2], &video->page[0], enti->x, enti->y, 0, 0, 24, 32);
-#endif
+		// block copy pattern to where we will draw the sprite
+		vga_setup_wm1_block_copy();
+		o2 = video->ofs.offscreen_ofs;										//dest
+		o = video->ofs.pattern_ofs + (enti->y * video->page[0].stridew) + (enti->x >> 2);	// source
+		for (i=0;i < h;i++,o += video->page[0].stridew,o2 += (w >> 2)) vga_wm1_mem_block_copy(o2,o,w >> 2);
+		// must restore Write Mode 0/Read Mode 0 for this code to continue drawing normally
+		vga_restore_rm0wm0();
+	}else{
+		w=h=o=i=o2=0;
+		modexCopyPageRegion(&video->page[2], &video->page[0], enti->x, enti->y, 0, 0, 24, 32);
+	}
 }
 
 //init player!

@@ -280,7 +280,7 @@ void modexCalcVmemRemain(video_t *video)
 void VL_Initofs(video_t *video)
 {
 	video->ofs.offscreen_ofs =	video->page[0].pagesize+video->page[1].pagesize;//(vga_state.vga_stride * vga_state.vga_height);
-	video->ofs.pattern_ofs =	(uint16_t)video->page[2].data;
+	video->ofs.pattern_ofs =	(uint16_t)video->page[3].data;
 }
 
 void modexHiganbanaPageSetup(video_t *video)
@@ -297,9 +297,9 @@ void modexHiganbanaPageSetup(video_t *video)
  	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), video->page[0].width, 96);	video->num_of_pages++;
 	modexCalcVmemRemain(video);
 
-	video->sp=video->p=0;
-	video->r=1;
-	video->vh=video->page[0].height+video->page[1].height+video->page[3].height-8;//+video->page[2].height
+	video->sp=video->p=0;	//showpage
+	video->r=1;			//render
+	video->vh=video->page[0].height+video->page[1].height+video->page[2].height+video->page[3].height;
 
 	VL_Initofs(video);
 	//doslib origi var
@@ -307,7 +307,8 @@ void modexHiganbanaPageSetup(video_t *video)
 	video->vga_draw_stride=	vga_state.vga_draw_stride;
 	video->vga_draw_stride_limit=	vga_state.vga_draw_stride_limit;
 	//sprite render switch
-	video->rss=0;
+	video->rss=		0;	//set to new
+	video->bgps=	0;	//set to new
 
 	//setup the buffersize
 	video->page[0].dx=video->page[0].dy=

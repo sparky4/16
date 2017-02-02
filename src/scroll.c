@@ -205,13 +205,7 @@ void main(int argc, char *argv[])
 		modexClearRegion(mv[3].page, 0, 0, 20, 36, 15);
 		//IN_UserInput(1,1);
 	}
-#ifdef SPRITE
-	if(IN_KeyDown(66))	//f8
-	{
-//		modexDrawSprite(mv[0].page, 16, 16, &p);
-		modexDrawSprite(mv[0].page, 32+72, 16, (PCXBMPVAR));
-	}
-#endif
+
 	FUNCTIONKEYFUNCTIONS
 	FUNCTIONKEYDRAWJUNK
 	if(IN_KeyDown(sc_L)){ modexClearRegion(&gvar.video.page[0], player[0].enti.x, player[0].enti.y, 16, 16, 1); }

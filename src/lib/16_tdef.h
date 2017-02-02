@@ -89,7 +89,6 @@ typedef struct {
 	char		name[16];
 } map_t;
 
-//TODO USE THIS tile info
 typedef struct{
 	word tw;		/* screen width in tiles */
 	word th;		/* screen height in tiles */
@@ -279,7 +278,8 @@ typedef struct
 	byte vga_draw_stride;
 	byte vga_draw_stride_limit;		// further X clipping
 	//end of doslib origi vars
-	boolean __near rss;			//render sprite switch
+	boolean __near rss;		//render sprite switch
+	boolean __near bgps;		//bg preservation render switch between old and new
 	sword __near sprifilei;		//player file's i
 	nibble __near p;			//render page number
 	nibble __near sp;			//show page number(for showpage)

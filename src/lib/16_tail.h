@@ -40,6 +40,7 @@
 	if(IN_KeyDown(87/*sc_F11*/)){ pagedelayrendermap=!pagedelayrendermap;		IN_UserInput(1,1); } \
 	if(IN_KeyDown(68/*sc_F10*/)){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap;		IN_UserInput(1,1); } \
 	if(IN_KeyDown(sc_F9)){ pagenorendermap=!pagenorendermap;				IN_UserInput(1,1); } \
+	if(IN_KeyDown(sc_F8)){ gvar.video.bgps=!gvar.video.bgps;					IN_UserInput(1,1); } \
 	if(IN_KeyDown(sc_F7)){ ZC_ShowMV(&mv, 0, 1);							IN_UserInput(1,1); } \
 	if(IN_KeyDown(sc_F6)){ ZC_ShowMV(&mv, 0, 0);							IN_UserInput(1,1); } \
 	if(IN_KeyDown(sc_T)){ gvar.video.rss=!gvar.video.rss;						IN_UserInput(1,1); } \

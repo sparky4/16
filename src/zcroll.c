@@ -186,22 +186,6 @@ void main(int argc, char *argv[])
 		if(IN_KeyDown(24)){ modexPalUpdate0(gpal); /*paloffset=0;*/ modexpdump(mv[0].page); IN_UserInput(1,1); } //o
 		if(IN_KeyDown(22)){ modexPalUpdate0(gpal); } //u
 
-		//pan switch
-		if(IN_KeyDown(66))	//f8
-		{
-//			modexDrawSprite(mv[0].page, 16, 16, &p);
-//			modexDrawSprite(mv[0].page, 32+72, 16, (player[0].data));
-			switch(i)
-			{
-				case 11:
-					i=0;
-					player[0].enti.spri->x = TILEWH;
-				default:
-					i++;
-					animate_spri(&(player[0].enti), &gvar.video);// player[0].enti.spri->x += 16;
-				break;
-			}
-		}
 		FUNCTIONKEYFUNCTIONS
 		FUNCTIONKEYDRAWJUNK
 		if(IN_KeyDown(sc_L)){ modexClearRegion(&gvar.video.page[0], player[0].enti.x, player[0].enti.y, 16, 16, 1); }
