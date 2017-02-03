@@ -38,6 +38,7 @@
 #define FILEREAD
 //#define EXMMVERBOSE
 
+void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv){}
 #define PRINTBB { printf("&main()=	%Fp\n", argv[0]);printf("bigbuffer=	%Fp\n", bigbuffer);printf("&bigbuffer=	%Fp\n", &bigbuffer);printf("bigbuffer=	%04x\n", bigbuffer);printf("&bigbuffer=	%04x\n", &bigbuffer); }
 
 #ifdef __WATCOMC__

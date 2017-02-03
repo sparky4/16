@@ -212,7 +212,7 @@ void main(int argc, char *argv[])
 #endif
 		if(IN_KeyDown(sc_R)){ modexPalOverscan(rand()%56); } //r
 
-		if((player[0].enti.q==1) && !(player[0].enti.x%TILEWH==0 && player[0].enti.y%TILEWH==0)) break;	//incase things go out of sync!
+		if((player[0].enti.q==1) && !(player[0].enti.x%TILEWH==0 && player[0].enti.y%TILEWH==0)) Quit(&gvar, "PLAYER OFF THE RAILS!");//break;	//incase things go out of sync!
 	}
 
 	/* fade back to text mode */
@@ -222,7 +222,6 @@ void main(int argc, char *argv[])
 	modexSavePalFile("data/g.pal", gpal);
 	modexFadeOff(4, gpal);
 #endif
-	VGAmodeX(0, 1, &gvar);
 	Shutdown16(&gvar);
 	printf("\nProject 16 zcroll.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);

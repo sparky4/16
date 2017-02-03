@@ -109,6 +109,7 @@ void Shutdown16(global_game_variables_t *gvar)
 #endif
 	CA_Shutdown(gvar);
 	MM_Shutdown(gvar);
+	VGAmodeX(0, 1, gvar);
 }
 
 
@@ -346,7 +347,7 @@ void Quit (global_game_variables_t *gvar, char *error)
 
 	if (error && *error)
 	{
-		movedata((unsigned)screen,7,0xb800,0,7*160);
+		//movedata((unsigned)screen,7,0xb800,0,7*160);
 		gotoxy (10,4);
 		fprintf(stderr, "%s\n", error);
 		gotoxy (1,8);

@@ -1334,6 +1334,15 @@ modexWaitBorder() {
 	}
 }
 
+void
+modexWaitBorder_start()
+{
+	while(inp(INPUT_STATUS_1)  & 8)  {
+	// spin
+	}
+
+}
+
 //
 // printings of video memory information
 //

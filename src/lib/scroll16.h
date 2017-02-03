@@ -44,8 +44,6 @@
 #define SPRITE
 //#define TILERENDER
 
-#define ANIMATESPRIFUN ZC_animatePlayer
-
 #define PLAYERBMPDATAVAR	player[pn].data
 #define PLAYERBMPDATA		*PLAYERBMPDATAVAR
 #define PLAYERBMPDATAPTR	PLAYERBMPDATAVAR
@@ -57,7 +55,7 @@
 //row and colum drawing routines
 #define FULLRCREND
 #define DRAWCOLNUM mv->page[id].dx
-#define DRAWROLNUM mv->page[id].dy
+#define DRAWROWNUM mv->page[id].dy
 //#define DRAWCOLNUM player[plid].enti.q
 //#define DRAWROLNUM player[plid].enti.q
 
@@ -72,15 +70,15 @@
 //not used now	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
 //printf("mv[%u].tx: %d", gvar.video.panp, mv[gvar.video.panp].tx); printf("	mv[%u].ty: %d	", gvar.video.panp, mv[gvar.video.panp].ty);
 //printf("gvar.kurokku:	"); printf("%.0f ", clock());	printf("tiku=%lu ", gvar.kurokku.tiku);	printf("t=%.0f ", gvar.kurokku.t);	printf("ticktock()=%f ", ticktock(&gvar));	printf("%.0f fps", (double)gvar.kurokku.tiku/ticktock(&gvar));
-//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[0].map->width, mv[0].map->height, mv[0].map->data[0]);
+//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[1].map->width, mv[1].map->height, mv[1].map->data[0]);
 //printf("pageflipflop=%u", pageflipflop);
 //printf("&global_temp_status_text = %Fp\n", &global_temp_status_text);
 //printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);
 //printf("	aniframe=%u", player[0].enti.persist_aniframe);
-#define SCROLLEXITMESG 	printf("[0]txy: %dx%d	", mv[0].tx, mv[0].ty); printf("[1]txy: %dx%d", mv[1].tx, mv[1].ty);\
+#define SCROLLEXITMESG 	printf("[0]txy: %dx%d	", mv[1].tx, mv[1].ty); printf("[1]txy: %dx%d", mv[1].tx, mv[1].ty);\
 	printf("\n\n");\
 	printf("player vars:\n");\
-	printf("	xy: %dx%d", player[0].enti.x, player[0].enti.y); printf("	txy: %dx%d", player[0].enti.tx, player[0].enti.ty); printf("	triggxy: %dx%d", player[0].enti.triggerx, player[0].enti.triggery); printf("	value: %d\n", mv[0].map->data[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))]);\
+	printf("	xy: %dx%d", player[0].enti.x, player[0].enti.y); printf("	txy: %dx%d", player[0].enti.tx, player[0].enti.ty); printf("	triggxy: %dx%d", player[0].enti.triggerx, player[0].enti.triggery); printf("	value: %d\n", mv[1].map->data[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))]);\
 	printf("	hp: %d", (player[0].enti.hp));	printf("	q: %d", player[0].enti.q);	printf("	info.dir: %d", player[0].info.dir);	printf("	d: %d ", player[0].enti.d);\
 		printf("	pdir: %d\n", player[0].pdir); printf("	delay=%u", player[0].enti.spri->delay);\
 printf("\n\n");\
@@ -97,7 +95,6 @@ extern char global_temp_status_text[512];
 //map_t allocMap(int w, int h);
 void initMap(map_t *map);
 void ZC_walk(map_view_t *pip, player_t *player, word pn);
-//void oldwalk(map_view_t *pip, player_t *player, word pn);
 void ZC_panPageManual(map_view_t *pip, player_t *player, word pn);
 void ZC_MVSetup(map_view_t *pip, map_t *map, global_game_variables_t *gv);
 void ZC_MVInit(map_view_t *pip, int tx, int ty);
@@ -106,6 +103,16 @@ void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid);
+void ZC_mapScroll(map_view_t *mv, player_t *player, word pn);
+void ZC_playerXYpos(int x, int y, player_t *player, map_view_t *pip, nibble pn);
+sword chkmap(map_t *map, word q);
+void mapGoTo(map_view_t *mv, int tx, int ty);
+void ZC_mapinitMV(map_view_t *mv, int tx, int ty);
+void near mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
+void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, word poopoffset);
+void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, word poopoffset);
+void mapDrawWRow(map_view_t *mv, int tx, int ty, word y);
+void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 inline void near ScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 {
 	/* increment the pixel position and update the page */
@@ -174,19 +181,10 @@ inline void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid
 	}
 }
 
-void ZC_playerXYpos(int x, int y, player_t *player, map_view_t *pip, nibble pn);
-sword chkmap(map_t *map, word q);
-void mapGoTo(map_view_t *mv, int tx, int ty);
-void ZC_mapinitMV(map_view_t *mv, int tx, int ty);
-void near mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
-void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, word poopoffset);
-void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, word poopoffset);
-void mapDrawWRow(map_view_t *mv, int tx, int ty, word y);
-void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 //void qclean();
+//sync
 void shinku(global_game_variables_t *gv);
-void near ZC_drawframe(map_view_t *pip, entity_t *enti, sword x, sword y);
-void animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch);
+//animate the sprite
 void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch);
 
 // Move an entity around. Should actually be in 16_entity
