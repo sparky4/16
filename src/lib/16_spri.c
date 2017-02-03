@@ -215,4 +215,5 @@ void animate_spri(entity_t *enti, video_t *video)
 	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = video->page[0].stridew;
 
 	vga_state.vga_graphics_ram = video->omemptr;
+	video->dorender=1;
 }

@@ -174,6 +174,7 @@ void modexcls(page_t *page, byte color, byte *Where);
 void VL_PatternDraw(video_t *video, word pn, boolean sw, boolean allsw);
 void modexWaitBorder();
 void modexWaitBorder_start();
+void modexWaitBorder_end();
 void VL_PrintmodexmemInfo(video_t *v);
 
 #endif

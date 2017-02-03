@@ -1118,7 +1118,7 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 	word s, o, w;
 	word x_draw = x;
 	//word addr = (word) romFontsData.l;
-	word addrq = (page->width/4) * y + (x / 4) + ((word)page->data);
+	word addrq = (page->stridew) * y + (x / 4) + ((word)page->data);
 	word addrr = addrq;
 	byte c;
 
@@ -1134,7 +1134,7 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 	{
 		x = x_draw;
 		romFontsData.chw = 0;
-		addrq += (page->width / 4) * 8;
+		addrq += (page->stridew) * 8;
 		addrr = addrq;
 		y += 8;
 		continue;
@@ -1338,6 +1338,15 @@ void
 modexWaitBorder_start()
 {
 	while(inp(INPUT_STATUS_1)  & 8)  {
+	// spin
+	}
+
+}
+
+void
+modexWaitBorder_end()
+{
+	while(!(inp(INPUT_STATUS_1)  & 8))  {
 	// spin
 	}
 

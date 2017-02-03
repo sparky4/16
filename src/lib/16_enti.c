@@ -73,7 +73,7 @@ void EN_initplayer(player_t *player, word pn, video_t *video)
 	player[pn].enti.spri->y = player[0].enti.y-16;
 	player[pn].walktype=0;
 	player[pn].enti.dire=30;
-	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = video->page[0].stridew;
+	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = video->page[0].stridew;//skewing bug
 
 	video->sprifilei =	set_anim_by_id(player[pn].enti.spri, player[pn].enti.dire);
 	animate_spri(&player[pn].enti, video);

@@ -47,7 +47,6 @@
 	if(IN_KeyDown(sc_T)){ gvar.video.rss=!gvar.video.rss;						IN_UserInput(1,1); } \
 	if(IN_KeyDown(sc_P)){ modexpdump(&gvar.video.page[0]);					IN_UserInput(1,1); }
 
-//VL_ShowPage(page_t *page, boolean vsync, boolean sr)
 #define PANKEYFUN \
 	PANKEYFUNZC \
 	FUNCTIONKEYDRAWJUNK

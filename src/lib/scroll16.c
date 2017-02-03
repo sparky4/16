@@ -348,7 +348,7 @@ void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 //		else
 //			if(mv[0].video->bgps)
 //				modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[0].map->tiles->tileWidth, mv[0].page->height);
-	mv[0].video->dorender=1;
+	//mv[0].video->dorender=1;//ScrollRight
 }
 
 
@@ -370,7 +370,7 @@ void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 //		else
 //			if(mv[0].video->bgps)
 //				modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[0].map->tiles->tileWidth, mv[0].page->height);
-	mv[0].video->dorender=1;
+	//mv[0].video->dorender=1;//ScrollLeft
 }
 
 
@@ -392,7 +392,7 @@ void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 //		else
 //			if(mv[0].video->bgps)
 //				modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[0].page->width, mv[0].map->tiles->tileHeight);
-	mv[0].video->dorender=1;
+	//mv[0].video->dorender=1;//ScrollUp
 }
 
 
@@ -414,7 +414,7 @@ void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 //		else
 //			if(mv[0].video->bgps)
 //				modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[0].page->width, mv[0].map->tiles->tileHeight);
-	mv[0].video->dorender=1;
+	//mv[0].video->dorender=1;//ScrollDown
 }
 
 void ZC_mapScroll(map_view_t *mv, player_t *player, word pn)
@@ -449,7 +449,7 @@ void ZC_mapScroll(map_view_t *mv, player_t *player, word pn)
 			if(b)	mapScrollUp(mv, player, (1), pn);
 		break;
 	}
-	mv[0].video->dorender=1;
+	//mv[0].video->dorender=1;//ZC_mapScroll
 }
 
 //===========================================================================
@@ -699,20 +699,22 @@ void shinku(global_game_variables_t *gv)
         //      This fixes *** Null pointer assignment detected error message in ZCROLL.EXE on exit.
 		sprintf(global_temp_status_text, "%.0f fps", (double)gv->kurokku.tiku/ticktock(gv));
 		modexprint(&(gv->video.page[/*!*/(gv->video.p)]), x, y, type, col, bgcol, global_temp_status_text);
+//0000printf("dx=%u	dy=%u\n", gv->video.page[/*!*/(gv->video.p)].dx, gv->video.page[/*!*/(gv->video.p)].dy);
 		gv->kurokku.tiku=0;
 	}else //copy dat sheet
 	gv->kurokku.tiku++;
 
 	switch(gv->kurokku.fpscap)
 	{
-		case 0:
+		case 0: //turn this off if XT
 			//modexprint(&(gv->video.page[0]), x, y+8, type, col, bgcol, "sanic!");
 			gv->kurokku.frames_per_second=1;
 		break;
 		case 1:
-			//turn this off if XT
-			modexWaitBorder_start();
+			//modexWaitBorder();
+			//modexWaitBorder_start();
 			//vga_wait_for_vsync();
+			vga_wait_for_vsync_end();
 			gv->kurokku.frames_per_second=60;
 		break;
 	}
@@ -781,23 +783,30 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn)
 		break;
 	}
 	player[pn].enti.dire+=dd;
-	if((player[pn].enti.q==1 && player[pn].enti.pred != player[pn].enti.d) || !dd)
-	{
-		//0000printf("	q=%u	pred=%u	d=%u	dd=%u\n", player[pn].enti.q, player[pn].enti.pred, player[pn].enti.d, dd);
-		set_anim_by_id(player[pn].enti.spri, player[pn].enti.dire); //pip->video->sprifilei = set_anim_by_id(player[pn].enti.spri, player[pn].enti.dire);	if(pip->video->sprifilei == -1){ printf("ERROR!	%u\n", player[pn].enti.dire); return; }
-		player[pn].enti.pred = player[pn].enti.d;
-	}
-
 	//setting xy position
 	player[pn].enti.spri->x = x;
 	player[pn].enti.spri->y = y;
 
-	if(pip[0].video->bgps)
+	if((player[pn].enti.q==1 && player[pn].enti.pred != player[pn].enti.d) || !dd)//when dir changed OR when player change face direction
+	{
+		//0000printf("	q=%u	pred=%u	d=%u	dd=%u\n", player[pn].enti.q, player[pn].enti.pred, player[pn].enti.d, dd);
+		set_anim_by_id(player[pn].enti.spri, player[pn].enti.dire); //pip->video->sprifilei = set_anim_by_id(player[pn].enti.spri, player[pn].enti.dire);	if(pip->video->sprifilei == -1){ printf("ERROR!	%u\n", player[pn].enti.dire); return; }
+		player[pn].enti.pred = player[pn].enti.d;
+		if(!dd)//changed direction while NOT moving!
+		{
+			modexCopyPageRegion(pip[0].page, pip[1].page, x-4, y-4, x-4, y-4, 28, 40);
+			animate_spri(&player[pn].enti, pip[0].video);
+		}
+	}
+
+	if(pip[0].video->bgps && dd)//if moving wwww
+	{
 		modexCopyPageRegion(pip[0].page, pip[1].page, x-4, y-4, x-4, y-4, 28, 40);
-	//draw sprite
-	animate_spri(&player[pn].enti, pip[0].video);
+
+		//draw sprite
+		animate_spri(&player[pn].enti, pip[0].video);
+	}
 //0000if(player[pn].enti.q<4) delay(200);
-	pip[0].video->dorender = 1;
 }
 
 /*
