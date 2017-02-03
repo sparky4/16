@@ -3,7 +3,7 @@
 #if [ -f "*.exe" ]
 #	then
 #fi
-#++++wmake -h www
+wmake -h www
 wmake -h clean
 if [ -z "$*" ]; then
 		pee="wwww"
