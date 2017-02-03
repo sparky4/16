@@ -34,7 +34,7 @@ sword bakapee;
 //debugswitches
 boolean panswitch=0;//1
 //extern boolean pageflipflop=1;
-boolean pagenorendermap = 1;
+extern boolean pagenorendermap;
 unsigned int i;
 //#ifdef FADE
 	static word paloffset=0;
