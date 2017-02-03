@@ -20,7 +20,7 @@
  *
  */
 
-#include "src/lib/16_sprit.h"
+#include "src/lib/16_spri.h"
 
 char* get_curr_anim_name(struct sprite *spri)
 {

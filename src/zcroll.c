@@ -127,14 +127,8 @@ void main(int argc, char *argv[])
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(&mv, 0, 0);
 
-	ZC_playerXYpos(0, 0, &player, &mv, 0);
+	ZC_playerXYpos(0, 0, &player, &mv, 0, 1);
 	EN_initplayer(&player, 0, &gvar.video);
-	player[0].enti.spri->x = player[0].enti.x-4;
-	player[0].enti.spri->y = player[0].enti.y-16;
-
-	player[0].enti.dire=31;
-	gvar.video.sprifilei = set_anim_by_id(player[0].enti.spri, player[0].enti.dire);
-	//print_anim_ids(player[0].enti.spri);
 	if (gvar.video.sprifilei == -1)
 	{
 #ifdef FADE
@@ -147,8 +141,8 @@ void main(int argc, char *argv[])
 	}
 
 //	while(!IN_KeyDown(sc_Escape) && !IN_KeyDown(sc_Space) && !IN_KeyDown(sc_Enter)){ FUNCTIONKEYSHOWMV }
-	VL_ShowPage(mv[0].page, 0, 0);
-	animate_spri(&(player[0].enti), &gvar.video);
+//	VL_ShowPage(mv[0].page, gvar.kurokku.fpscap, 0);
+	ZC_ShowMV(&mv, gvar.kurokku.fpscap, 0);
 #ifdef FADE
 	modexFadeOn(4, gpal);
 #endif

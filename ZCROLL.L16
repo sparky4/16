@@ -1,22 +1,23 @@
 
 Project 16 zcroll.exe. This is just a test file!
-version Feb  3 2017 10:20:45
+version Feb  3 2017 13:00:59
 [0]txy: 0x0	[1]txy: 0x0
 
 player vars:
-	xy: 160x128	txy: 20x8	triggxy: 21x8	value: 1
-	hp: 4	q: 1	info.dir: 2	d: 2 	pdir: 3
-	delay=1
+	xy: 160x128	txy: 10x8	triggxy: 10x9	value: 0
+	hp: 4	q: 1	info.dir: 2	d: 2	dire: 30	pdir: 0
+	delay=0
 
 VL_PrintmodexmemInfo:
   Virtual Screen: 352x272	Tile: 22x17=((Virtual Screen)/16)
   	  Screen: 320x240	Tile: 20x15=((Screen)/16)
   Free Video Memory: 767
-  page	[0]=(a000:0028) size=23936	w=352  h=272 sw=320  sh=240 pi=1408
-	[1]=(a000:5da8) size=23936	w=352  h=272 sw=320  sh=240 pi=1408
-	[2]=(a000:bb28) size=8448	w=352  h=96  sw=352  sh=96  pi=1408
-	[3]=(a000:dc28) size=8448	w=352  h=96  sw=352  sh=96  pi=1408
-gvar.video.r=0 gvar.video.bgps=1 
+  page	[0]=(a000:0000) size=23936	w=352  h=272 sw=320  sh=240 pi=1408
+	[1]=(a000:5d80) size=23936	w=352  h=272 sw=320  sh=240 pi=1408
+	[2]=(a000:bb00) size=8448	w=352  h=96  sw=352  sh=96  pi=1408
+	[3]=(a000:dc00) size=8448	w=352  h=96  sw=352  sh=96  pi=1408
+gvar.video:
+ r=0 bgps=1 
 
 detected CPU type: 80386 or newer
 detected FPU type: 80387

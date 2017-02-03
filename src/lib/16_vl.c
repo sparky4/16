@@ -303,8 +303,8 @@ void modexHiganbanaPageSetup(video_t *video)
  	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), video->page[0].width, 96);	video->num_of_pages++;
 	modexCalcVmemRemain(video);
 
-	video->sp=video->p=0;	//showpage
-	video->r=1;			//render
+	video->sp=video->p =	0;	//showpage
+	video->dorender =	1;			//render
 	video->vh=video->page[0].height+video->page[1].height+video->page[2].height+video->page[3].height;
 
 	VL_Initofs(video);

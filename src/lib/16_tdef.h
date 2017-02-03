@@ -283,7 +283,7 @@ typedef struct
 	sword __near sprifilei;		//player file's i
 	nibble __near p;			//render page number
 	nibble __near sp;			//show page number(for showpage)
-	boolean __near r;			//page flip, showpage, or render	if true
+	boolean __near dorender;	//page flip, showpage, or render	if true
 	word pr[MAXPAGE][4];	//render sections of pages (this is supposed to be set up to draw sections of the screen if updated)
 
 	nibble sfip;		//shinku_fps_indicator_page; // we're on page 1 now, shinku(). follow along please or it will not be visible.

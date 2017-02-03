@@ -118,10 +118,18 @@ void main(int argc, char *argv[])
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(&mv, 0, 0);
 
-	ZC_playerXYpos(0, 0, &player, &mv, 0);
+	ZC_playerXYpos(0, 0, &player, &mv, 0, 1);
 	EN_initplayer(&player, 0, &gvar.video);
-	player[0].enti.spri->x = player[0].enti.x-4;
-	player[0].enti.spri->y = player[0].enti.y-16;
+	if (gvar.video.sprifilei == -1)
+	{
+#ifdef FADE
+		modexFadeOff(4, gpal);
+#endif
+		Quit(&gvar, "Wrong");
+#ifdef FADE
+		modexFadeOn(4, dpal);
+#endif
+	}
 
 #ifndef	SPRITE
 	modexClearRegion(mv[0].page, player[0].enti.x, player[0].enti.y-TILEWH, 16, 32, 15);

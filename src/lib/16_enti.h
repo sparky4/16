@@ -23,8 +23,8 @@
 #ifndef __16_NPC__
 #define __16_NPC__
 
-#include "src/lib/16_sprit.h"
 #include "src/lib/16_head.h"
+#include "src/lib/16_spri.h"
 #include "src/lib/16_in.h"
 
 //moved to 16_tdef.h

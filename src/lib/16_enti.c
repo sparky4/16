@@ -31,15 +31,15 @@ void EN_initentity(entity_t *enti, video_t *video)
 	enti->triggerx = enti->tx;
 	enti->triggery = enti->ty+1;	//south
 
-	enti->q = 1;
-	enti->d =2;
-	enti->hp=4;
-	enti->speed=4;
+	enti->q =		1;//loop var
+	enti->d =		2;//dir var
+	enti->hp =		4;//hit points
+	enti->speed =	4;//walkspeed
 	enti->persist_aniframe = enti->q;
 	enti->spt=(TILEWH/(enti->speed));	//speed per tile wwww
-	enti->pred = enti->d;
-	enti->overdraww=0;
-	enti->overdrawh=4;
+	enti->pred=enti->d;//previous dir
+	enti->overdraww =	0;
+	enti->overdrawh =	4;
 
 	VL_Initofs(video);
 
@@ -69,6 +69,21 @@ void EN_initentity(entity_t *enti, video_t *video)
 void EN_initplayer(player_t *player, word pn, video_t *video)
 {
 	EN_initentity(&player[pn].enti, video);
+	player[pn].enti.spri->x = player[0].enti.x-4;
+	player[pn].enti.spri->y = player[0].enti.y-16;
+	player[pn].walktype=0;
+	player[pn].enti.dire=30;
+
+	video->sprifilei =	set_anim_by_id(player[pn].enti.spri, player[pn].enti.dire);
+	animate_spri(&player[pn].enti, video);
+
+	//run to fully init sprite
+	//modexCopyPageRegion(&video->page[0], &video->page[1], 0, player[pn].enti.y, 0, player[pn].enti.y, video->page[0].width, 40);
+	modexCopyPageRegion(&video->page[0], &video->page[1], 0, 0, 0, 0, video->page[0].width, video->page[0].height);
+	animate_spri(&player[pn].enti, video);
+	//
+
+	//print_anim_ids(player[0].enti.spri);
 /*	player[0].info.x = player[0].tx;
 	player[0].info.xaxis = player[0].tx*TILEWH;
 	player[0].info.y = player[0].ty;

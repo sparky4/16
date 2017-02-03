@@ -25,22 +25,6 @@
 #include "src/lib/scroll16.h"
 
 //#define INC_PER_FRAME if(player[pn].enti.q&1) player[pn].enti.persist_aniframe++; if(player[pn].enti.persist_aniframe>4) player[pn].enti.persist_aniframe = 1;
-#define ZC_WALKR	ScrollRight(pip, player, 3, pn); \
-				ScrollRight(pip, player, 2, pn); \
-				mapScrollRight(pip, player, (0), pn); \
-if(pip[0].video->bgps)	mapScrollRight(pip, player, (1), pn);
-#define ZC_WALKL	ScrollLeft(pip, player, 3, pn); \
-				ScrollLeft(pip, player, 2, pn); \
-				mapScrollLeft(pip, player, (0), pn); \
-if(pip[0].video->bgps)	mapScrollLeft(pip, player, (1), pn);
-#define ZC_WALKD	ScrollDown(pip, player, 3, pn); \
-				ScrollDown(pip, player, 2, pn); \
-				mapScrollDown(pip, player, (0), pn); \
-if(pip[0].video->bgps)	mapScrollDown(pip, player, (1), pn);
-#define ZC_WALKU	ScrollUp(pip, player, 3, pn); \
-				ScrollUp(pip, player, 2, pn); \
-				mapScrollUp(pip, player, (0), pn); \
-if(pip[0].video->bgps)	mapScrollUp(pip, player, (1), pn);
 
 void ZC_walk(map_view_t *pip, player_t *player, word pn)
 {
@@ -58,8 +42,8 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				player[pn].walktype=2;
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
-					ZC_animatePlayer(pip, player, pn, 2);
-					ZC_WALKR
+					ZC_animatePlayer(pip, player, pn);
+					ZC_mapScroll(pip, player, pn);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
@@ -70,14 +54,14 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
 					player[pn].enti.x+=(player[pn].enti.speed);
-					ZC_animatePlayer(pip, player, pn, 1);
+					ZC_animatePlayer(pip, player, pn);
 					player[pn].enti.q++;
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
 			}
 			else
 			{
 				player[pn].walktype=0;
-				ZC_animatePlayer(pip, player, pn, 0);
+				ZC_animatePlayer(pip, player, pn);
 				player[pn].enti.d = 2;
 			}
 			player[pn].enti.triggerx = player[pn].enti.tx+1;
@@ -91,8 +75,8 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				player[pn].walktype=2;
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
-					ZC_animatePlayer(pip, player, pn, 2);
-					ZC_WALKL
+					ZC_animatePlayer(pip, player, pn);
+					ZC_mapScroll(pip, player, pn);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
@@ -103,14 +87,14 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
 					player[pn].enti.x-=(player[pn].enti.speed);
-					ZC_animatePlayer(pip, player, pn, 1);
+					ZC_animatePlayer(pip, player, pn);
 					player[pn].enti.q++;
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
 			}
 			else
 			{
 				player[pn].walktype=0;
-				ZC_animatePlayer(pip, player, pn, 0);
+				ZC_animatePlayer(pip, player, pn);
 				player[pn].enti.d = 2;
 			}
 			player[pn].enti.triggerx = player[pn].enti.tx-1;
@@ -124,8 +108,8 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				player[pn].walktype=2;
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
-					ZC_animatePlayer(pip, player, pn, 2);
-					ZC_WALKD
+					ZC_animatePlayer(pip, player, pn);
+					ZC_mapScroll(pip, player, pn);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
@@ -136,14 +120,14 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
 					player[pn].enti.y+=(player[pn].enti.speed);
-					ZC_animatePlayer(pip, player, pn, 1);
+					ZC_animatePlayer(pip, player, pn);
 					player[pn].enti.q++;
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
 			}
 			else
 			{
 				player[pn].walktype=0;
-				ZC_animatePlayer(pip, player, pn, 0);
+				ZC_animatePlayer(pip, player, pn);
 				player[pn].enti.d = 2;
 			}
 			player[pn].enti.triggerx = player[pn].enti.tx;
@@ -157,8 +141,8 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				player[pn].walktype=2;
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
-					ZC_animatePlayer(pip, player, pn, 2);
-					ZC_WALKU
+					ZC_animatePlayer(pip, player, pn);
+					ZC_mapScroll(pip, player, pn);
 					player[pn].enti.q++;
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
@@ -169,14 +153,14 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
 					player[pn].enti.y-=(player[pn].enti.speed);
-					ZC_animatePlayer(pip, player, pn, 1);
+					ZC_animatePlayer(pip, player, pn);
 					player[pn].enti.q++;
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
 			}
 			else
 			{
 				player[pn].walktype=0;
-				ZC_animatePlayer(pip, player, pn, 0);
+				ZC_animatePlayer(pip, player, pn);
 				player[pn].enti.d = 2;
 			}
 			player[pn].enti.triggerx = player[pn].enti.tx;
@@ -285,7 +269,6 @@ void ZC_MVInit(map_view_t *pip, int tx, int ty)
 
 void ZC_ShowMV(map_view_t *moo, boolean vsync, boolean sr)
 {
-	//VL_ShowPage(moo[moo[0].video->sp].page, vsync, sr);
 	word high_address, low_address, offset;
 	byte crtcOffset;
 
@@ -364,7 +347,7 @@ void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 //		else
 //			if(mv[0].video->bgps)
 //				modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[0].map->tiles->tileWidth, mv[0].page->height);
-	mv[0].video->r=1;
+	mv[0].video->dorender=1;
 }
 
 
@@ -386,7 +369,7 @@ void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 //		else
 //			if(mv[0].video->bgps)
 //				modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[0].map->tiles->tileWidth, mv[0].page->height);
-	mv[0].video->r=1;
+	mv[0].video->dorender=1;
 }
 
 
@@ -408,7 +391,7 @@ void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 //		else
 //			if(mv[0].video->bgps)
 //				modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[0].page->width, mv[0].map->tiles->tileHeight);
-	mv[0].video->r=1;
+	mv[0].video->dorender=1;
 }
 
 
@@ -430,7 +413,7 @@ void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 //		else
 //			if(mv[0].video->bgps)
 //				modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[0].page->width, mv[0].map->tiles->tileHeight);
-	mv[0].video->r=1;
+	mv[0].video->dorender=1;
 }
 
 void ZC_mapScroll(map_view_t *mv, player_t *player, word pn)
@@ -446,13 +429,13 @@ void ZC_mapScroll(map_view_t *mv, player_t *player, word pn)
 				mapScrollRight(mv, player, (0), pn);
 			if(b)	mapScrollRight(mv, player, (1), pn);
 		break;
-		case 4://left
+		case 1://left
 				ScrollLeft(mv, player, 3, pn);
 				ScrollLeft(mv, player, 2, pn);
 				mapScrollLeft(mv, player, (0), pn);
 			if(b)	mapScrollLeft(mv, player, (1), pn);
 		break;
-		case 1://down
+		case 4://down
 				ScrollDown(mv, player, 3, pn);
 				ScrollDown(mv, player, 2, pn);
 				mapScrollDown(mv, player, (0), pn);
@@ -465,17 +448,26 @@ void ZC_mapScroll(map_view_t *mv, player_t *player, word pn)
 			if(b)	mapScrollUp(mv, player, (1), pn);
 		break;
 	}
-	printf("player[pn].enti.d=%u\n", player[pn].enti.d);
-	mv->video->r=1;
+	mv[0].video->dorender=1;
 }
 
 //===========================================================================
 //TODO: put player in starting position of assigned spot on map
 //default player position on the viewable map
-void ZC_playerXYpos(int x, int y, player_t *player, map_view_t *pip, nibble pn)
+void ZC_playerXYpos(int x, int y, player_t *player, map_view_t *pip, nibble pn, boolean defaultsw)
 {
-	player[pn].enti.tx = x + pip[0].tx + pip[0].page->ti.tilemidposscreenx;
-	player[pn].enti.ty = y + pip[0].ty + pip[0].page->ti.tilemidposscreeny;
+	player[pn].enti.tx = x + pip[0].tx;
+	player[pn].enti.ty = y + pip[0].ty;
+
+	switch(defaultsw)
+	{
+		case 1:
+			player[pn].enti.tx += pip[0].page->ti.tilemidposscreenx;
+			player[pn].enti.ty += pip[0].page->ti.tilemidposscreeny;
+		break;
+		case 0:
+		break;
+	}
 }
 //===========================================================================
 
@@ -542,14 +534,15 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 	i=mv[0].ty * mv[0].map->width + mv[0].tx;
 	for(ty=mv[0].ty-1; py < mv[0].page->sh+mv->dyThresh && ty < mv[0].map->height; ty++, py+=mv[0].map->tiles->tileHeight) {
 		mapDrawWRow(&mv[0], tx-1, ty, py);
-		i+=mv->map->width - tx;
-	}
-	py=0;
-	i=mv[1].ty * mv[1].map->width + mv[1].tx;
-	for(ty=mv[1].ty-1; py < mv[1].page->sh+mv->dyThresh && ty < mv[1].map->height; ty++, py+=mv[1].map->tiles->tileHeight) {
 		mapDrawWRow(&mv[1], tx-1, ty, py);
 		i+=mv->map->width - tx;
 	}
+// 	py=0;
+// 	i=mv[1].ty * mv[1].map->width + mv[1].tx;
+// 	for(ty=mv[1].ty-1; py < mv[1].page->sh+mv->dyThresh && ty < mv[1].map->height; ty++, py+=mv[1].map->tiles->tileHeight) {
+// 		mapDrawWRow(&mv[1], tx-1, ty, py);
+// 		i+=mv->map->width - tx;
+// 	}
 	//if(mv[0].video->bgps) modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
 }
 
@@ -712,7 +705,7 @@ void shinku(global_game_variables_t *gv)
 	switch(gv->kurokku.fpscap)
 	{
 		case 0:
-			modexprint(&(gv->video.page[0]), x, y+8, type, col, bgcol, "sanic!");
+			//modexprint(&(gv->video.page[0]), x, y+8, type, col, bgcol, "sanic!");
 			gv->kurokku.frames_per_second=1;
 		break;
 		case 1:
@@ -723,7 +716,7 @@ void shinku(global_game_variables_t *gv)
 		break;
 	}
 	//render!!
-	if(gv->video.r )
+	if(gv->video.dorender )
 	{//r=1
 		/*if(video->bgp s)
 		{
@@ -732,20 +725,19 @@ void shinku(global_game_variables_t *gv)
 			//modexCopyPageRegion(&video->page[0], &video->page[1], enti->x, enti->y, 0, 0, 24, 32);
 		}*/
 		VL_ShowPage(&(gv->video.page[gv->video.sp]), gv->kurokku.fpscap, 0);
-		gv->video.r =!gv->video.r ;
+		gv->video.dorender =!gv->video.dorender ;
 		//0000gv->video.tickclk = ((*clockw)-gv->video.startclk)/18.2;
-//	}
 	}
 }
 
-void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scrollswitch)
+void near ZC_animatePlayer(map_view_t *pip, player_t *player, nibble pn)
 {
 	sword x = player[pn].enti.x;
 	sword y = player[pn].enti.y;
 	sword qq,dd; //scroll offset
 	player[pn].enti.dire=10; //direction
 
-	switch(scrollswitch)
+	switch(player[pn].walktype)
 	{
 		case 0:
 			dd = 0;
@@ -757,7 +749,7 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 		break;
 		case 2:
 			dd = 1;
-			qq = ((player[pn].enti.q)*(player[pn].enti.speed));
+			qq = player[pn].enti.q*player[pn].enti.speed;
 		break;
 	}
 	x-=4;
@@ -790,6 +782,7 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 	player[pn].enti.dire+=dd;
 	if((player[pn].enti.q==1 && player[pn].enti.pred != player[pn].enti.d) || !dd)
 	{
+		//0000printf("	q=%u	pred=%u	d=%u	dd=%u\n", player[pn].enti.q, player[pn].enti.pred, player[pn].enti.d, dd);
 		set_anim_by_id(player[pn].enti.spri, player[pn].enti.dire); //pip->video->sprifilei = set_anim_by_id(player[pn].enti.spri, player[pn].enti.dire);	if(pip->video->sprifilei == -1){ printf("ERROR!	%u\n", player[pn].enti.dire); return; }
 		player[pn].enti.pred = player[pn].enti.d;
 	}
@@ -801,9 +794,9 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn, sword scr
 	if(pip[0].video->bgps)
 		modexCopyPageRegion(pip[0].page, pip[1].page, x-4, y-4, x-4, y-4, 28, 40);
 	//draw sprite
-	animate_spri(&player[pn].enti, pip->video);
-//0000if(player[pn].enti.q<2) delay(200);
-	pip->video->r=1;
+	animate_spri(&player[pn].enti, pip[0].video);
+//0000if(player[pn].enti.q<4) delay(200);
+	pip[0].video->dorender = 1;
 }
 
 /*

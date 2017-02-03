@@ -32,7 +32,7 @@
 #include "src/lib/16_timer.h"
 #ifdef __WATCOMC__	//borland C BCEXMM.EXE
 #include "src/lib/16_dbg.h"
-#include "src/lib/16_sprit.h"
+#include "src/lib/16_spri.h"
 #include "src/lib/16_enti.h"
 //#include "src/lib/bitmap.h"	//old format
 #endif

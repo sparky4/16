@@ -23,7 +23,7 @@
 #include "src/lib/16_head.h"
 #include "src/lib/16_tail.h"
 #include "src/lib/16_vl.h"
-#include "src/lib/16_sprit.h"
+#include "src/lib/16_spri.h"
 #include "src/lib/16_pm.h"
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
