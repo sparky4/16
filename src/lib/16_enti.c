@@ -33,11 +33,11 @@ void EN_initentity(entity_t *enti, video_t *video)
 
 	enti->q =		1;//loop var
 	enti->d =		2;//dir var
+	enti->pred =	4;//previous dir
 	enti->hp =		4;//hit points
 	enti->speed =	4;//walkspeed
 	enti->persist_aniframe = enti->q;
 	enti->spt=(TILEWH/(enti->speed));	//speed per tile wwww
-	enti->pred=enti->d;//previous dir
 	enti->overdraww =	0;
 	enti->overdrawh =	4;
 
@@ -73,15 +73,10 @@ void EN_initplayer(player_t *player, word pn, video_t *video)
 	player[pn].enti.spri->y = player[0].enti.y-16;
 	player[pn].walktype=0;
 	player[pn].enti.dire=30;
+	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = video->page[0].stridew;
 
 	video->sprifilei =	set_anim_by_id(player[pn].enti.spri, player[pn].enti.dire);
 	animate_spri(&player[pn].enti, video);
-
-	//run to fully init sprite
-	//modexCopyPageRegion(&video->page[0], &video->page[1], 0, player[pn].enti.y, 0, player[pn].enti.y, video->page[0].width, 40);
-	modexCopyPageRegion(&video->page[0], &video->page[1], 0, 0, 0, 0, video->page[0].width, video->page[0].height);
-	animate_spri(&player[pn].enti, video);
-	//
 
 	//print_anim_ids(player[0].enti.spri);
 /*	player[0].info.x = player[0].tx;

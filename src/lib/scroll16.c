@@ -305,6 +305,7 @@ void ZC_ShowMV(map_view_t *moo, boolean vsync, boolean sr)
 	// do PEL panning here
 	outp(AC_INDEX, 0x33);
 	outp(AC_INDEX, (moo[0].page->dx & 0x03) << 1);
+	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = moo[0].page->stridew;
 }
 
 void
@@ -523,26 +524,12 @@ sword chkmap(map_t *map, word q)
 //TODO: player position here
 void mapGoTo(map_view_t *mv, int tx, int ty)
 {
-	int py;//px,
-	unsigned int i;
-
 	ZC_mapinitMV(mv, tx, ty);
 
 	/* draw the tiles */
 	modexClearRegion(mv[0].page, 0, 0, mv[0].page->width, mv[0].page->height, 0);
-	py=0;
-	i=mv[0].ty * mv[0].map->width + mv[0].tx;
-	for(ty=mv[0].ty-1; py < mv[0].page->sh+mv->dyThresh && ty < mv[0].map->height; ty++, py+=mv[0].map->tiles->tileHeight) {
-		mapDrawWRow(&mv[0], tx-1, ty, py);
-		mapDrawWRow(&mv[1], tx-1, ty, py);
-		i+=mv->map->width - tx;
-	}
-// 	py=0;
-// 	i=mv[1].ty * mv[1].map->width + mv[1].tx;
-// 	for(ty=mv[1].ty-1; py < mv[1].page->sh+mv->dyThresh && ty < mv[1].map->height; ty++, py+=mv[1].map->tiles->tileHeight) {
-// 		mapDrawWRow(&mv[1], tx-1, ty, py);
-// 		i+=mv->map->width - tx;
-// 	}
+	ZC_mapredraw(mv, tx, ty);
+
 	//if(mv[0].video->bgps) modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
 }
 
@@ -557,6 +544,20 @@ void ZC_mapinitMV(map_view_t *mv, int tx, int ty)
 	/* set up the thresholds */
 	mv[0].dxThresh = mv[1].dxThresh = mv[2].dxThresh = mv[3].dxThresh = mv->map->tiles->tileWidth * 2;
 	mv[0].dyThresh = mv[1].dyThresh = mv[2].dyThresh = mv[3].dyThresh = mv->map->tiles->tileHeight * 2;
+}
+
+void ZC_mapredraw(map_view_t *mv, int tx, int ty)
+{
+	int py;//px,
+	unsigned int i;
+
+	py=0;
+	i=mv[0].ty * mv[0].map->width + mv[0].tx;
+	for(ty=mv[0].ty-1; py < mv[0].page->sh+mv->dyThresh && ty < mv[0].map->height; ty++, py+=mv[0].map->tiles->tileHeight) {
+		mapDrawWRow(&mv[0], tx-1, ty, py);
+		mapDrawWRow(&mv[1], tx-1, ty, py);
+		i+=mv->map->width - tx;
+	}
 }
 
 void near
@@ -730,7 +731,7 @@ void shinku(global_game_variables_t *gv)
 	}
 }
 
-void near ZC_animatePlayer(map_view_t *pip, player_t *player, nibble pn)
+void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn)
 {
 	sword x = player[pn].enti.x;
 	sword y = player[pn].enti.y;

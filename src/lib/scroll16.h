@@ -111,6 +111,7 @@ void ZC_playerXYpos(int x, int y, player_t *player, map_view_t *pip, nibble pn, 
 sword chkmap(map_t *map, word q);
 void mapGoTo(map_view_t *mv, int tx, int ty);
 void ZC_mapinitMV(map_view_t *mv, int tx, int ty);
+void ZC_mapredraw(map_view_t *mv, int tx, int ty);
 void near mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
 void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, word poopoffset);
 void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, word poopoffset);
@@ -188,7 +189,7 @@ inline void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid
 //sync
 void shinku(global_game_variables_t *gv);
 //animate the sprite
-void near ZC_animatePlayer(map_view_t *pip, player_t *player, nibble pn);
+void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn);
 
 // Move an entity around. Should actually be in 16_entity
 boolean ZC_walk2(entity_t *ent, map_view_t *map_v);

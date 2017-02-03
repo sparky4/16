@@ -129,20 +129,20 @@ void main(int argc, char *argv[])
 
 	ZC_playerXYpos(0, 0, &player, &mv, 0, 1);
 	EN_initplayer(&player, 0, &gvar.video);
+	//print_anim_ids(player[0].enti.spri);
 	if (gvar.video.sprifilei == -1)
 	{
 #ifdef FADE
 		modexFadeOff(4, gpal);
 #endif
-		Quit(&gvar, "Wrong");
+		Quit(&gvar, "Wrong ID for sprite");
 #ifdef FADE
 		modexFadeOn(4, dpal);
 #endif
 	}
 
 //	while(!IN_KeyDown(sc_Escape) && !IN_KeyDown(sc_Space) && !IN_KeyDown(sc_Enter)){ FUNCTIONKEYSHOWMV }
-//	VL_ShowPage(mv[0].page, gvar.kurokku.fpscap, 0);
-	ZC_ShowMV(&mv, gvar.kurokku.fpscap, 0);
+	shinku(&gvar);
 #ifdef FADE
 	modexFadeOn(4, gpal);
 #endif
