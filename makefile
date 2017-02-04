@@ -124,7 +124,7 @@ LIBFLAGS=$(WLIBQ) -b -n
 #
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
 OLDLIBOBJS=bitmap.$(OBJ) 16render.$(OBJ)
-GFXLIBOBJS = 16_vl.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16_vrs.$(OBJ) 16_spri.$(OBJ) $(OLDLIBOBJS)
+GFXLIBOBJS = 16_vl.$(OBJ) 16_vlpal.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16_vrs.$(OBJ) 16_spri.$(OBJ) $(OLDLIBOBJS)
 16LIBOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_in.$(OBJ) 16_head.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_wcpu.$(OBJ) 16_timer.$(OBJ) jsmn.$(OBJ) 16_map.$(OBJ) 16text.$(OBJ) 16_enti.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 !ifeq DEBUGSERIAL 1
@@ -320,7 +320,8 @@ joytest.exe:
 	cd $(DOSLIB_JOYSTICK:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
 	$(COPYCOMMAND) $(DOSLIB_JOYSTICK:$(to_os_path))$(DIRSEP)$(DOSLIB_MEMMODE)$(DIRSEP)test.exe joytest.exe
 
-16_vl.$(OBJ):$(SRCLIB)/16_vl.c $(SRCLIB)/16_vl.h
+16_vl.$(OBJ):	$(SRCLIB)/16_vl.c $(SRCLIB)/16_vl.h
+16_vlpal.$(OBJ):	$(SRCLIB)/16_vlpal.c $(SRCLIB)/16_vlpal.h
 bakapee.$(OBJ):$(SRCLIB)/bakapee.c $(SRCLIB)/bakapee.h
 16render.$(OBJ):$(SRCLIB)/16render.c $(SRCLIB)/16render.h
 16planar.$(OBJ):$(MODEXLIB16)/16planar.c $(MODEXLIB16)/16planar.h

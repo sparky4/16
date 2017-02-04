@@ -182,7 +182,7 @@ void main(int argc, char *argv[])
 			for(i=0;i<3;i++)
 			{
 				pal2[i] = rand()%64;
-				modexPalUpdate1(pal2);
+				modexPalUpdate(pal2);
 				colo++;
 				if(colo>HGQ) colo=LGQ;
 			}

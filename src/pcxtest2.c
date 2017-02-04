@@ -95,7 +95,7 @@ void main() {
 	gvar.video.page[0].sh+=32;
 
 	/* fix up the palette and everything */
-	modexPalUpdate1(bmp.palette);
+	modexPalUpdate(bmp.palette);
 
 	/* clear and draw one sprite and one bitmap */
 	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].sw, gvar.video.page[0].sh, 1);

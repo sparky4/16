@@ -110,8 +110,7 @@ void main(int argc, char *argv[])
 
 	/* load color palette */
 	VL_LoadPalFile(bakapee1p, &gvar.video.palette);
-// 	CA_LoadFile("data/spri/"BAKAPEEFILE1".pal", &pal, &gvar);
-// 	modexPalUpdate1(pal);
+
 #ifdef FADE
 	gpal = modexNewPal();
 	modexPalSave(gpal);
@@ -202,7 +201,7 @@ void main(int argc, char *argv[])
 			VL_LoadPalFile(bakapee1p, &gvar.video.palette);
 		}//JK
 #ifdef FADE
-		if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate1(dpal); IN_UserInput(1,1); }
+		if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate(dpal); IN_UserInput(1,1); }
 #endif
 		if(IN_KeyDown(sc_R)){ modexPalOverscan(rand()%56); } //r
 

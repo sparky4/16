@@ -43,12 +43,12 @@ main(int argc, char *argv[])
 	modexPalBlack();
 
 	modexLoadPalFile(bakapee, &pal);
-	modexPalUpdate1(pal);
+	modexPalUpdate(pal);
 	modexFadeOn(1, pal);
 	modexpdump(&gvar.video.page[0]);
 	getch();
 	VGAmodeX(0, 0, &gvar);
-	modexPalUpdate1(pal);
+	modexPalUpdate(pal);
 	/*for(i=0;i<768;i++)
 	{
 		printf("%02X ", pal[i]);

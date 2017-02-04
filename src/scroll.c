@@ -88,9 +88,9 @@ void main(int argc, char *argv[])
 #endif
 #endif
 //++++	PCXBMPVAR.offset=(paloffset/3);
-//++++	modexPalUpdate1(&PCXBMPVAR, &paloffset, 0, 0);
-	modexPalUpdate1(&PCXBMP->palette);
-//++++0000		modexPalUpdate1(map.tiles->btdata->palette);
+//++++	modexPalUpdate(&PCXBMPVAR, &paloffset, 0, 0);
+	modexPalUpdate(&PCXBMP->palette);
+//++++0000		modexPalUpdate(map.tiles->btdata->palette);
 	//printf("	%d\n", sizeof(ptmp->data));
 	//printf("1:	%d\n", paloffset);
 //++++	map.tiles->data->offset=(paloffset/3);
@@ -220,7 +220,7 @@ void main(int argc, char *argv[])
 
 	//9
 #ifdef FADE
-		if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate1(dpal); IN_UserInput(1,1); }
+		if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate(dpal); IN_UserInput(1,1); }
 #endif
 		if(IN_KeyDown(sc_R)){ modexPalOverscan(rand()%56); } //r
 

@@ -74,7 +74,7 @@ void main() {
 	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 
 	/* fix up the palette and everything */
-	modexPalUpdate1(&PCXBMP->palette);
+	modexPalUpdate(&PCXBMP->palette);
 
 	/* clear and draw one sprite and one bitmap */
 	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].width, gvar.video.page[0].height, 1);

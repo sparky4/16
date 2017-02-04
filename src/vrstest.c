@@ -120,7 +120,7 @@ void main()
 	t2 = (*clockw-start)/18.2;
 
 	/*modexLoadPalFile("data/spri/chikyuu.pal", &pal);
-	modexPalUpdate1(pal);*/
+	modexPalUpdate(pal);*/
 	//modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].width, gvar.video.page[0].height, 2);
 	VL_LoadPalFile("data/spri/chikyuu.pal", &gvar.video.palette);
 	for (i = 0; i < 10; i++){
