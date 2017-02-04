@@ -77,7 +77,8 @@
 //printf("&global_temp_status_text = %Fp\n", &global_temp_status_text);
 //printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);
 //printf("	aniframe=%u", player[0].enti.persist_aniframe);
-#define SCROLLEXITMESG 	printf("[0]txy: %dx%d	", mv[0].tx, mv[0].ty); printf("[1]txy: %dx%d", mv[1].tx, mv[1].ty);\
+//printf("mv[0]txy: %dx%d	", mv[0].tx, mv[0].ty); printf("mv[1]txy: %dx%d", mv[1].tx, mv[1].ty);
+#define SCROLLEXITMESG 	printf("page[0]dxy: %dx%d", gvar.video.page[0].dx, gvar.video.page[0].dy);\
 	printf("\n\n");\
 	printf("player vars:\n");\
 	printf("	xy: %dx%d", player[0].enti.x, player[0].enti.y); printf("	txy: %dx%d", player[0].enti.tx, player[0].enti.ty); printf("	triggxy: %dx%d", player[0].enti.triggerx, player[0].enti.triggery); printf("	value: %d\n", mv[1].map->data[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))]);\
