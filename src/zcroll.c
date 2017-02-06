@@ -141,12 +141,16 @@ void main(int argc, char *argv[])
 	}
 
 //	while(!IN_KeyDown(sc_Escape) && !IN_KeyDown(sc_Space) && !IN_KeyDown(sc_Enter)){ FUNCTIONKEYSHOWMV }
+	gvar.video.page[0].tlx=mv[0].tx*TILEWH;
+	gvar.video.page[0].tly=mv[0].ty*TILEWH;
 	shinku(&gvar);
 #ifdef FADE
 	modexFadeOn(4, gpal);
 #endif
 	while(!IN_KeyDown(sc_Escape) && player[0].enti.hp>0)
 	{
+		gvar.video.page[0].tlx=mv[0].tx*TILEWH;
+		gvar.video.page[0].tly=mv[0].ty*TILEWH;
 		shinku(&gvar);
 		//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 		//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction

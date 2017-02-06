@@ -685,8 +685,8 @@ boolean pagedelayrendermap = 0;
 /*	sync	*/
 void shinku(global_game_variables_t *gv)
 {
-	word x = (0) + gv->video.page[/*!*/(gv->video.p)].dx; // follow the screen
-	word y = (0) + gv->video.page[/*!*/(gv->video.p)].dy; // follow the screen
+	word x = gv->video.page[/*!*/(gv->video.p)].dx - (gv->video.page[(gv->video.p)].tlx); // follow the screen
+	word y = gv->video.page[/*!*/(gv->video.p)].dy - (gv->video.page[(gv->video.p)].tly); // follow the screen
 	word col = 2, bgcol = 1, type = 1;//w = 64, h = 8,
 	if(elapsed_timer(gv) >= (1.0 / gv->kurokku.frames_per_second))
 	{

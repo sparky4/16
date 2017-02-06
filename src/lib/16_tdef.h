@@ -113,6 +113,7 @@ typedef struct {
 	word stridew;			/* width/4 */	/* VGA */
 	word pagesize;			/* page size */
 	word pi;				/* increment page by this much to preserve location */
+	int tlx,tly;
 //newer vars
 //TODO: find where they are used
 	sword delta;			// How much should we shift the page for smooth scrolling
