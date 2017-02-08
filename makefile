@@ -186,9 +186,9 @@ TESTEXEC = &
 	zcroll.exe &
 	inputest.exe &
 	pcxtest.exe &
-	vrstest.exe
+	vrstest.exe &
+	maptest.exe
 TESTEXEC2 = &
-	maptest.exe &
 	fmemtest.exe &
 	fonttest.exe &
 	fontgfx.exe &
