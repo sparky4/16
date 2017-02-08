@@ -584,7 +584,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 #endif
 #ifndef TILERENDER
 				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, i);
-				if(/*!*/pagenorendermap)
+				if(!pagenorendermap)
 				{
 					sprintf(global_temp_status_text2, "%d", i);
 					modexprint(page, x, y, 1, 1, 2, global_temp_status_text2);
