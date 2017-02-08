@@ -418,12 +418,18 @@ www: .symbolic
 	@wmake -h wwwext
 
 wwwext: .symbolic
+	@wmake -h wwwext1
+	@wmake -h wwwext2
+
+wwwext1: .symbolic
 	####----@ssh -p $(HOSTPORT) $(HOSTUSER)@$(HOSTADDR) 'rm -f $(HOSTDIR)/16/*exe*'
 	#4ch.mooo.com
 	@scp -r -P $(HOSTPORT) *.exe $(HOSTUSER)@$(HOSTADDR):$(HOSTDIR)/16/
 	@scp -r -P $(HOSTPORT) *get.bat $(HOSTUSER)@$(HOSTADDR):$(HOSTDIR)/16/
 	@scp -r -P $(HOSTPORT) /var/www/*.exe.zip.* $(HOSTUSER)@$(HOSTADDR):$(HOSTDIR)/16/
 	@scp -r -P $(HOSTPORT) $(DATADIR)spri.zip $(HOSTUSER)@$(HOSTADDR):$(HOSTDIR)/16/
+
+wwwext2: .symbolic
 	#beta.latech.edu
 	@scp -r -P $(HOST2PORT) *.exe $(HOST2USER)@$(HOST2ADDR):$(HOST2DIR)/16/
 	@scp -r -P $(HOST2PORT) *get.bat $(HOST2USER)@$(HOST2ADDR):$(HOST2DIR)/16/
