@@ -400,18 +400,6 @@ int CA_loadmap(char *mn, map_t *map, global_game_variables_t *gvar)
 	jsmn_init(&p);
 
 	file_s = filesize(fh);
-	/*js = malloc(file_s);
-	if(js == NULL) {
-		fprintf(stderr, "malloc(): errno = %d", 2);
-		fclose(fh);
-		return 3;
-	}
-	if(fread(js, 1, file_s, fh) != file_s) {
-		fprintf(stderr, "Map read error");
-		free(js);
-		fclose(fh);
-		return 1;
-	}*/
 	CA_LoadFile(mn, &MAPBUFINLM, gvar);
 	tokcount = jsmn_parse(&p, MAPBUFINLM, file_s, NULL, 0);
 	tok = malloc(tokcount*sizeof(jsmntok_t));
@@ -424,9 +412,7 @@ int CA_loadmap(char *mn, map_t *map, global_game_variables_t *gvar)
 	}
 	else if(status != tokcount) { printf("Warning: used %d tok\n", status);}
 	extract_map(MAPBUFINLM, tok, tokcount, map);
-	//CA_mapdump(MAPBUFINLM, tok, p.toknext, map, 0, gvar);
 
-	//free(js);
 	free(tok);
 	fclose(fh);
 
