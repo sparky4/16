@@ -374,6 +374,7 @@ void Quit (global_game_variables_t *gvar, char *error)
 //===========================================================================
 #ifndef __WATCOMC__
 char global_temp_status_text[512];
+char global_temp_status_text2[512];
 #else
 //
 // for mary4 (XT)

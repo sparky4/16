@@ -148,7 +148,7 @@ word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, 
 	return 0;
 }
 
-int loadmap(char *mn, map_t *map)
+int loadmap(char *mn, map_t *map, global_game_variables_t *gvar)
 {
 	int r;
 	static word incr=0;
@@ -250,8 +250,8 @@ again:
 
 void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 	int i, j, k, indent=0, inner_end;
-	bitmap_t bp;
-	//char *s;
+	//bitmap_t bp;
+
 	i = 0;
 	while(i<count) {
 		if(jsoneq(js, &(t[i]), "layers") == 0) {
@@ -260,25 +260,30 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 			inner_end = t[i].end;
 			k = 0;
 			while(t[i].start < inner_end) {
-				printf("%d, %d\n", t[i].start, inner_end);
+#ifdef DEBUG_DUMPVARS
+				printf("t[%d].start=%d, %d\n", i, t[i].start, inner_end);
+#endif
 				if(jsoneq(js, &(t[i]), "data") == 0) {
-					#ifdef DEBUG_MAPVAR
-					printf("Layer %d data: [", k);
-					#endif
+#ifdef DEBUG_MAPDATA
+					printf("Layer %d data: [\n", k);
+#endif
 					map->layerdata[k] = malloc(sizeof(byte) * t[i+1].size);
+					map->data = map->layerdata[k];
 					for(j = 0; j < t[i+1].size; j++) {
 						map->layerdata[k][j] = (byte)atoi(js + t[i+2+j].start);
-						#ifdef DEBUG_MAPVAR
-						printf("%d, ", map->layerdata[k][j]);
-						#endif
+						//for backwards compatibility for rest of code
+//						map->data[j] = map->layerdata[k][j];//(byte)atoi(js + t[i+2+j].start);//(byte)atoi(js+t->start);
+#ifdef DEBUG_MAPDATA
+						//printf("[%d,%d]%d", k, j, map->layerdata[k][j]);
+						fprintf(stdout, "%c", map->data[j]+44);
+#endif
 					}
 					i += j + 2;
 					k++;
-					#ifdef DEBUG_MAPVAR
-					puts("]");
-					#endif
-				}
-				else{
+#ifdef DEBUG_MAPDATA
+					puts("\n]");
+#endif
+				}else{
 					i++;
 				}
 			}
@@ -290,8 +295,11 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 			k = 0;
 			while(t[i].start < inner_end) {
 				if(jsoneq(js, &(t[i]), "image") == 0) {
-					//fix this to be far~
 					map->layertile[k] = malloc(sizeof(tiles_t));
+					//Fix to load tileset specified.
+					//And move to vrs, probably
+//					bp = bitmapLoadPcx("data/ed.pcx");
+//					map->layertile[k]->btdata = &bp;
 					map->layertile[k]->btdata = malloc(sizeof(bitmap_t));
 					map->layertile[k]->tileHeight = 16;
 					map->layertile[k]->tileWidth = 16;
@@ -300,10 +308,11 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 #ifdef __DEBUG_MAP__
 					dbg_maptext=false;
 #endif
-					//Fix to load tileset specified.
-					//And move to vrs, probably
-					//bp = bitmapLoadPcx("data/ed.pcx");
-					map->layertile[k]->btdata = &bp;
+					map->tiles->btdata = map->layertile[k]->btdata;
+					map->tiles->tileHeight = 16;
+					map->tiles->tileWidth = 16;
+					map->tiles->rows = 1;
+					map->tiles->cols = 1;
 					k++;
 				}
 				i++;
@@ -312,16 +321,16 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 
 		if (jsoneq(js, &(t[i]), "height") == 0 && indent<=1) {
 			map->height = atoi(js + t[i+1].start);
-			#ifdef DEBUG_MAPVAR
+#ifdef DEBUG_MAPVAR
 			printf("Height: %d\n", map->height);
-			#endif
+#endif
 			i++;
 		}
 		else if(jsoneq(js, &(t[i]), "width") == 0 && indent<=1) {
 			map->width = atoi(js + t[i+1].start);
-			#ifdef DEBUG_MAPVAR
+#ifdef DEBUG_MAPVAR
 			printf("Width: %d\n", map->width);
-			#endif
+#endif
 			i++;
 		}
 		i++;
@@ -367,6 +376,57 @@ int newloadmap(char *mn, map_t *map) {
 	extract_map(js, tok, tokcount, map);
 
 	free(js);
+	free(tok);
+	fclose(fh);
+
+	return 0;
+}
+
+
+//======
+
+
+#define MAPBUFINLM (gvar->ca.camap.mapsegs)
+int CA_loadmap(char *mn, map_t *map, global_game_variables_t *gvar)
+{
+	jsmn_parser p;
+	jsmntok_t *tok = NULL;
+	size_t tokcount, file_s;
+
+	FILE *fh = fopen(mn, "r");
+	int status;
+
+	/* Prepare parser */
+	jsmn_init(&p);
+
+	file_s = filesize(fh);
+	/*js = malloc(file_s);
+	if(js == NULL) {
+		fprintf(stderr, "malloc(): errno = %d", 2);
+		fclose(fh);
+		return 3;
+	}
+	if(fread(js, 1, file_s, fh) != file_s) {
+		fprintf(stderr, "Map read error");
+		free(js);
+		fclose(fh);
+		return 1;
+	}*/
+	CA_LoadFile(mn, &MAPBUFINLM, gvar);
+	tokcount = jsmn_parse(&p, MAPBUFINLM, file_s, NULL, 0);
+	tok = malloc(tokcount*sizeof(jsmntok_t));
+//	printf("Allocated %d tokens", tokcount);
+	jsmn_init(&p);
+	if((status = jsmn_parse(&p, MAPBUFINLM, file_s, tok, tokcount)) < 0)
+	{
+		printf("Error: %d\n", status);
+		return status;
+	}
+	else if(status != tokcount) { printf("Warning: used %d tok\n", status);}
+	extract_map(MAPBUFINLM, tok, tokcount, map);
+	//CA_mapdump(MAPBUFINLM, tok, p.toknext, map, 0, gvar);
+
+	//free(js);
 	free(tok);
 	fclose(fh);
 

@@ -494,9 +494,10 @@ typedef struct
 typedef struct
 {
 	int		mapon, mapnum;
-	__SEGA	*mapsegs[4];
-	__SEGA	*mapheaderseg[NUMMAPS];
-	__SEGA	*tinf;
+	//__SEGA	*mapsegs[4];
+	//__SEGA	*mapheaderseg[NUMMAPS];
+	//__SEGA	*tinf;
+	memptr	mapsegs;
 } ca_mapinfo_t;
 
 typedef struct
@@ -540,6 +541,7 @@ typedef struct
 
 #ifdef __WATCOMC__
 extern char global_temp_status_text[512];
+extern char global_temp_status_text2[512];
 #define EINVFMT EMFILE
 #endif
 #endif /* _TYPEDEFSTRUCT_H_ */

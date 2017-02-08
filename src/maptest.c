@@ -29,9 +29,10 @@ main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
 	map_t map;
-	static memptr	mapbuf;
+#ifdef DUMP
 #ifdef DUMP_MAP
 	short i;
+#endif
 #endif
 	char *fmt = "Memory available = %u\n";
 	char *fmt0 = "Largest Contiguous Block of Memory available = %u\n";
@@ -45,13 +46,13 @@ main(int argc, char *argv[])
 
 	fprintf(stderr, fmt, _memavl());
 	fprintf(stderr, fmt0, _memmax());
-	fprintf(stderr, "Size of map var = %u\n", _msize(&mapbuf));
+	fprintf(stderr, "Size of map var = %u\n", _msize(&(gvar.ca.camap.mapsegs)));
 	//fprintf(stderr, "program always crashes for some reason....\n");
 	getch();
 
-	loadmap("data/test.map", &map);
-	CA_LoadFile("data/test.map", &mapbuf, &gvar);
-	//map=(map_t *)mapbuf;
+	//loadmap("data/test.map", &map);
+	//newloadmap("data/test.map", &map);
+	CA_loadmap("data/test.map", &map, &gvar);
 	#ifdef DUMP
 	fprintf(stdout, "map.width=	%d\n", map.width);
 	fprintf(stdout, "map.height=	%d\n", map.height);
@@ -60,14 +61,14 @@ main(int argc, char *argv[])
 	for(i=0; i<(map.width*map.height); i++)
 	{
 		//fprintf(stdout, "%04d[%02d]", i, map.data[i]);
-		fprintf(stdout, "%c", map.data[i]+44);
+		fprintf(stdout, "%c", map.layerdata[0][i]+44);
 		if(!((i+1)%map.width)){
 			//fprintf(stdout, "[%d]", i);
 			fprintf(stdout, "\n"); }
 	}
 	fprintf(stdout, "\n");
 	#else
-	fprintf(stderr, "contents of the buffer\n[\n%s\n]\n", mapbuf);
+	//fprintf(stderr, "contents of the buffer\n[\n%s\n]\n", (gvar.ca.camap.mapsegs));
 	#endif
 	/*fprintf(stdout, "&main()=%Fp\n", *argv[0]);
 	fprintf(stdout, "&map==%Fp\n", &map);
@@ -77,7 +78,7 @@ main(int argc, char *argv[])
 	fprintf(stdout, "&map.data==%Fp\n", map.data);*/
 	#endif
 	fprintf(stdout, "okies~\n");
-	MM_FreePtr(&mapbuf, &gvar);
+	MM_FreePtr(&(gvar.ca.camap.mapsegs), &gvar);
 	PM_Shutdown(&gvar);
 	CA_Shutdown(&gvar);
 	MM_Shutdown(&gvar);

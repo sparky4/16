@@ -55,7 +55,7 @@ void main(int argc, char *argv[])
 
 	/* create the map */
 //	fprintf(stderr, "testing map load~	");
-	loadmap("data/test.map", &map);
+	loadmap("data/test.map", &map, &gvar);
 	chkmap(&map, 0);
 //	printf("chkmap ok	");
 //	fprintf(stderr, "yay map loaded~~\n");

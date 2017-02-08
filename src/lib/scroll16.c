@@ -504,9 +504,6 @@ sword chkmap(map_t *map, word q)
 		//fix this to be far~
 //		bp = bitmapLoadPcx("data/ed.pcx");
 //		map->tiles->data = &bp;
-#ifdef __DEBUG_MAP__
-		dbg_mapdata = map->data;
-#endif
 		map->tiles->tileHeight = 16;
 		map->tiles->tileWidth = 16;
 		map->tiles->rows = 1;
@@ -516,7 +513,10 @@ sword chkmap(map_t *map, word q)
 #endif
 	}
 #ifdef __DEBUG_MAP__
-	else dbg_maptext = false;
+	else
+	{
+		dbg_maptext = false;
+	}
 #endif
 	return 0;
 }
@@ -583,10 +583,11 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 			case 0:
 #endif
 #ifndef TILERENDER
-				if(!pagenorendermap) modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, ((dbg_mapdata[i])+1));
-				//modexprint(page, x, y, 1, 15, 0, (char const *)(t->debug_data[i]));
+				if(!pagenorendermap) modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, i);
+				sprintf(global_temp_status_text2, "%d", i);
+				modexprint(page, x, y, 1, 1, 2, global_temp_status_text2);
 #else
-				modexDrawBmpRegion		(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
+				modexDrawBmpRegion		(page, x, y, rx, ry, t->tileWidth, t->tileHeight, i);
 				/* then the sprite. note modding ram ptr means we just draw to (x&3,0) */
 				//draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
 				//modexDrawBmpRegion	(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
@@ -594,7 +595,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 #ifdef __DEBUG_MAP__
 			break;
 			case 1:
-				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, (dbg_mapdata[i])+1);
+				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, i);
 				//modexprintbig(page, x, y, 1, 15, 0, (t->debug_data));
 				/*for(texty=0; texty<2; texty++)
 				{

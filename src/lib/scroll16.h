@@ -72,7 +72,7 @@
 //not used now	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
 //printf("mv[%u].tx: %d", gvar.video.panp, mv[gvar.video.panp].tx); printf("	mv[%u].ty: %d	", gvar.video.panp, mv[gvar.video.panp].ty);
 //printf("gvar.kurokku:	"); printf("%.0f ", clock());	printf("tiku=%lu ", gvar.kurokku.tiku);	printf("t=%.0f ", gvar.kurokku.t);	printf("ticktock()=%f ", ticktock(&gvar));	printf("%.0f fps", (double)gvar.kurokku.tiku/ticktock(&gvar));
-//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[1].map->width, mv[1].map->height, mv[1].map->data[0]);
+//printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[1].map->width, mv[1].map->height, mv[1].map->layerdata[0][0]);
 //printf("pageflipflop=%u", pageflipflop);
 //printf("&global_temp_status_text = %Fp\n", &global_temp_status_text);
 //printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);
@@ -81,7 +81,7 @@
 #define SCROLLEXITMESG 	printf("page[0]dxy: %dx%d", gvar.video.page[0].dx, gvar.video.page[0].dy);\
 	printf("\n\n");\
 	printf("player vars:\n");\
-	printf("	xy: %dx%d", player[0].enti.x, player[0].enti.y); printf("	txy: %dx%d", player[0].enti.tx, player[0].enti.ty); printf("	triggxy: %dx%d", player[0].enti.triggerx, player[0].enti.triggery); printf("	value: %d\n", mv[1].map->data[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))]);\
+	printf("	xy: %dx%d", player[0].enti.x, player[0].enti.y); printf("	txy: %dx%d", player[0].enti.tx, player[0].enti.ty); printf("	triggxy: %dx%d", player[0].enti.triggerx, player[0].enti.triggery); printf("	value: %d\n", mv[1].map->layerdata[0][(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))]);\
 	printf("	hp: %d", (player[0].enti.hp));	printf("	q: %u", player[0].enti.q);	printf("	info.dir: %u", player[0].info.dir);	printf("	d: %u", player[0].enti.d);	printf("	dire: %u", player[0].enti.dire);\
 		printf("	pdir: %u\n", player[0].pdir); printf("	delay=%u", player[0].enti.spri->delay);\
 printf("\n\n");\
@@ -95,6 +95,7 @@ printf("\n\n");
 extern boolean pagenorendermap, pagedelayrendermap;
 
 extern char global_temp_status_text[512];
+extern char global_temp_status_text2[512];
 
 //map_t allocMap(int w, int h);
 void initMap(map_t *map);

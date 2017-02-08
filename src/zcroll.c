@@ -82,7 +82,7 @@ void main(int argc, char *argv[])
 
 	// create the map
 //	fprintf(stderr, "testing map load~	");
-	loadmap("data/test.map", &map);
+	CA_loadmap("data/test.map", &map, &gvar);
 	chkmap(&map, 0);
 //	initMap(&map);
 //	printf("chkmap ok	");
