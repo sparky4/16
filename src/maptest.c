@@ -19,7 +19,6 @@
  * Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-//TODO: ADD MEMORY MANAGER! WWWW
 #include "src/lib/16_map.h"
 
 #define DUMP
@@ -28,36 +27,56 @@
 void
 main(int argc, char *argv[])
 {
+	static global_game_variables_t gvar;
 	map_t map;
+	static memptr	mapbuf;
+#ifdef DUMP_MAP
 	short i;
+#endif
 	char *fmt = "Memory available = %u\n";
 	char *fmt0 = "Largest Contiguous Block of Memory available = %u\n";
 
+	MM_Startup(&gvar);
+	PM_Startup(&gvar);
+	//printf("pmstarted ok\n");
+	//PM_CheckMainMem(&gvar);
+	PM_UnlockMainMem(&gvar);
+	CA_Startup(&gvar);
+
 	fprintf(stderr, fmt, _memavl());
 	fprintf(stderr, fmt0, _memmax());
-	fprintf(stderr, "Size of map var = %u\n", _msize(&map));
+	fprintf(stderr, "Size of map var = %u\n", _msize(&mapbuf));
 	//fprintf(stderr, "program always crashes for some reason....\n");
 	getch();
 
 	loadmap("data/test.map", &map);
+	CA_LoadFile("data/test.map", &mapbuf, &gvar);
+	//map=(map_t *)mapbuf;
 	#ifdef DUMP
 	fprintf(stdout, "map.width=	%d\n", map.width);
 	fprintf(stdout, "map.height=	%d\n", map.height);
 	#ifdef DUMP_MAP
-	if(map.width*map.height != 1200) exit(-3);
+	//if(map.width*map.height != 1200)
 	for(i=0; i<(map.width*map.height); i++)
 	{
-		fprintf(stdout, "%04d[%02d]", i, map.data[i]);
-		if(i && !(i%map.width)) fprintf(stdout, "\n");
+		//fprintf(stdout, "%04d[%02d]", i, map.data[i]);
+		fprintf(stdout, "%c", map.data[i]+44);
+		if(!((i+1)%map.width)){ fprintf(stdout, "[%d]", i); fprintf(stdout, "\n"); }
 	}
 	fprintf(stdout, "\n");
+	#else
+	fprintf(stderr, "contents of the buffer\n[\n%s\n]\n", mapbuf);
 	#endif
-	fprintf(stdout, "&main()=%Fp\n", *argv[0]);
+	/*fprintf(stdout, "&main()=%Fp\n", *argv[0]);
 	fprintf(stdout, "&map==%Fp\n", &map);
 	fprintf(stdout, "&map.tiles==%Fp\n", map.tiles);
 	fprintf(stdout, "&map.width==%Fp\n", map.width);
 	fprintf(stdout, "&map.height==%Fp\n", map.height);
-	fprintf(stdout, "&map.data==%Fp\n", map.data);
+	fprintf(stdout, "&map.data==%Fp\n", map.data);*/
 	#endif
 	fprintf(stdout, "okies~\n");
+	MM_FreePtr(&mapbuf, &gvar);
+	PM_Shutdown(&gvar);
+	CA_Shutdown(&gvar);
+	MM_Shutdown(&gvar);
 }
