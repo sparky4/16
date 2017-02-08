@@ -583,12 +583,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 			case 0:
 #endif
 #ifndef TILERENDER
-				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, i);
-				if(!pagenorendermap)
-				{
-					sprintf(global_temp_status_text2, "%d", i);
-					modexprint(page, x, y, 1, 1, 2, global_temp_status_text2);
-				}
+				if(!pagenorendermap) modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, i);
 #else
 				modexDrawBmpRegion		(page, x, y, rx, ry, t->tileWidth, t->tileHeight, i);
 				/* then the sprite. note modding ram ptr means we just draw to (x&3,0) */
@@ -598,15 +593,9 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 #ifdef __DEBUG_MAP__
 			break;
 			case 1:
-				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, i);
-				//modexprintbig(page, x, y, 1, 15, 0, (t->debug_data));
-				/*for(texty=0; texty<2; texty++)
-				{
-					for(textx=0; textx<2; textx++)
-					{*/
-//						modexprint(page, x+(textx*8), y+(texty*8), 1, (word)(t->debug_data), 0, (t->debug_data));
-/*					}
-				}*/
+				if(!pagenorendermap) modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, i);
+				sprintf(global_temp_status_text2, "%d", i);
+				modexprint(page, x, y, 1, 1, 2, global_temp_status_text2);
 			break;
 		}
 #endif
