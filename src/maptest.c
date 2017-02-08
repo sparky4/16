@@ -61,7 +61,9 @@ main(int argc, char *argv[])
 	{
 		//fprintf(stdout, "%04d[%02d]", i, map.data[i]);
 		fprintf(stdout, "%c", map.data[i]+44);
-		if(!((i+1)%map.width)){ fprintf(stdout, "[%d]", i); fprintf(stdout, "\n"); }
+		if(!((i+1)%map.width)){
+			//fprintf(stdout, "[%d]", i);
+			fprintf(stdout, "\n"); }
 	}
 	fprintf(stdout, "\n");
 	#else
