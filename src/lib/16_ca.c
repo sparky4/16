@@ -1102,25 +1102,25 @@ dinorm:
 
 void CAL_SetupMapFile (global_game_variables_t *gvar)
 {
-// 	int handle;
-// 	long length;
+/*	int handle;
+	long length;
 
 //
 // load maphead.ext (offsets and tileinfo for map file)
 //
-// #ifndef MAPHEADERLINKED
-// 	if ((handle = open("MAPHEAD."EXT,
-// 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-// 		printf("Can't open MAPHEAD."EXT"!");
-// 	length = filelength(handle);
-// 	MM_GetPtr (&(memptr)tinf,length);
-// 	CA_FarRead(handle, tinf, length);
-// 	close(handle);
-// //#else
-//
-// 	tinf = (byte _seg *)FP_SEG(&maphead);
-//
-// #endif
+#ifndef MAPHEADERLINKED
+	if ((handle = open("MAPHEAD."EXT,
+		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
+		printf("Can't open MAPHEAD."EXT"!");
+	length = filelength(handle);
+	MM_GetPtr (&(memptr)tinf,length);
+	CA_FarRead(handle, tinf, length);
+	close(handle);
+//#else
+
+	tinf = (byte _seg *)FP_SEG(&maphead);
+
+#endif*/
 
 //
 // open the data file
@@ -1856,32 +1856,33 @@ void CA_CacheMap (global_game_variables_t *gvar)
 //
 // free up memory from last map
 //
-	if (gvar->ca.map.mapon>-1 && gvar->ca.map.mapheaderseg[gvar->ca.map.mapon])
-		MM_SetPurge (&((memptr)gvar->ca.map.mapheaderseg[(gvar->ca.map.mapon)]), 3, &(gvar->mm));
+	if (gvar->ca.camap.mapon>-1 && gvar->ca.camap.mapheaderseg[gvar->ca.camap.mapon])
+		MM_SetPurge (((memptr)gvar->ca.camap.mapheaderseg[(gvar->ca.camap.mapon)]), 3, gvar);
 	for (plane=0;plane<MAPPLANES;plane++)
-		if (gvar->ca.map.mapsegs[plane])
-			MM_FreePtr (&(memptr)gvar->ca.map.mapsegs[plane], &(gvar->mm));
+		if (gvar->ca.camap.mapsegs[plane])
+			MM_FreePtr ((memptr)gvar->ca.camap.mapsegs[plane], gvar);
 
-	gvar->ca.map.mapon = gvar->ca.map.mapnum;
+	gvar->ca.camap.mapon = gvar->ca.camap.mapnum;
 
 
 //
 // load map header
 // The header will be cached if it is still around
 //
-	if (!gvar->ca.map.mapheaderseg[gvar->ca.map.mapnum])
-	{
-		//pos = ((mapfiletype	_seg *)tinf)->headeroffsets[mapnum];
-		pos = ((_seg *)gvar->ca.map.tinf)->headeroffsets[gvar->ca.map.mapnum];
-		if (pos<0)						// $FFFFFFFF start is a sparse map
-		  printf("CA_CacheMap: Tried to load a non existent map!");
+//	if (!gvar->ca.camap.mapheaderseg[gvar->ca.camap.mapnum])
+//	{
+//		//pos = ((mapfiletype	_seg *)tinf)->headeroffsets[mapnum];
+//		//pos = ((_seg *)gvar->ca.camap.tinf)->headeroffsets[gvar->ca.camap.mapnum];
+//		pos = ((memptr)gvar->ca.camap.tinf)->headeroffsets[gvar->ca.camap.mapnum];
+//		if (pos<0)						// $FFFFFFFF start is a sparse map
+//		  printf("CA_CacheMap: Tried to load a non existent map!");
 
-		MM_GetPtr(&(memptr)gvar->ca.mapheaderseg[mapnum],sizeof(maptype));
-		lseek(maphandle,pos,SEEK_SET);
-		CA_FarRead (maphandle,(memptr)mapheaderseg[mapnum],sizeof(maptype));
-	}
-	else
-		MM_SetPurge (&(memptr)mapheaderseg[mapnum], 0, &(gvar->mm));
+//		MM_GetPtr(&(memptr)gvar->ca.camapheaderseg[mapnum],sizeof(maptype));
+//		lseek(maphandle,pos,SEEK_SET);
+//		CA_FarRead (maphandle,(memptr)mapheaderseg[mapnum],sizeof(maptype));
+//	}
+//	else
+//		MM_SetPurge (&(memptr)mapheaderseg[mapnum], 0, &(gvar->mm));
 
 //
 // load the planes in
@@ -1893,8 +1894,8 @@ void CA_CacheMap (global_game_variables_t *gvar)
 
 	for (plane = 0; plane<MAPPLANES; plane++)
 	{
-		pos = mapheaderseg[mapnum]->planestart[plane];
-		compressed = mapheaderseg[mapnum]->planelength[plane];
+		//pos = mapheaderseg[mapnum]->planestart[plane];
+		//compressed = mapheaderseg[mapnum]->planelength[plane];
 
 		if (!compressed)
 			continue;		// the plane is not used in this game

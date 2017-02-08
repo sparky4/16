@@ -103,11 +103,6 @@ void main(int argc, char *argv[])
 
 	VGAmodeX(1/*bakapee*/, 1, &gvar);
 
-	/* fix up the palette and everything */
-#ifdef FADE
-	modexPalBlack();	//reset the palette~
-#endif
-
 	/* load color palette */
 	VL_LoadPalFile(bakapee1p, &gvar.video.palette);
 
