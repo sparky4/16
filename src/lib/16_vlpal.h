@@ -5,6 +5,9 @@
 
 #define BEVERBOSEPALCHECK
 
+#ifdef BEVERBOSEPALCHECK
+#endif
+
 typedef struct
 {
 	word width;
