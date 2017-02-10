@@ -792,7 +792,7 @@ p[]=740  qp=765   p[]-qp=1505
 qqqqqqqq
 
 Project 16 test.exe. This is just a test file!
-version Feb 10 2017 09:25:47
+version Feb 10 2017 09:28:45
 VL_PrintmodexmemInfo:
   Virtual Screen: 352x272	Tile: 22x17=((Virtual Screen)/16)
   	  Screen: 320x240	Tile: 20x15=((Screen)/16)
@@ -801,7 +801,7 @@ VL_PrintmodexmemInfo:
 	[1]=(a000:5d80) size=23936	w=352  h=272 sw=320  sh=240 pi=1408
 	[2]=(a000:bb00) size=8448	w=352  h=96  sw=352  sh=96  pi=1408
 	[3]=(a000:dc00) size=8448	w=352  h=96  sw=352  sh=96  pi=1408
-tx=1	ty=1	player.d=2
+tx=1	ty=1	player.d=3
 
 ====
 0	paloffset=	255

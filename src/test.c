@@ -30,7 +30,7 @@
 #define HGQ 55
 
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
-static byte palette[PAL_SIZE];
+static byte *palette;//[PAL_SIZE];
 
 void main(int argc, char *argv[])
 {
@@ -84,7 +84,7 @@ void main(int argc, char *argv[])
 	Startup16(&gvar);
 
 	/* save the palette */
-	//====pal  = modexNewPal();
+	palette = modexNewPal();
 	//====modexPalSave(pal);
 	//====modexFadeOff(1, pal);
 	//====modexPalBlack();
@@ -94,16 +94,17 @@ void main(int argc, char *argv[])
 	EN_initplayer(&player, 0, &gvar.video);
 
 	VGAmodeX(1, 1, &gvar);
-	//====modexPalBlack();
+	modexPalBlack();
 
 	/* load our palette */
 	VL_LoadPalFile("data/16.pal", &gvar.video.palette);
 	bmp1.offset=(paloffset/3);
 	VL_palette(&bmp1, &gvar.video.palette, &paloffset, 0, 0);
 
-	VL_LoadPalFile("data/default.pal", &palette);
+	//VL_LoadPalFilewithoffset("data/default.pal", &palette, paloffset);
+	modexLoadPalFile("data/16t.pal", &palette);
 	bmp2.offset=(paloffset/3);
-	VL_palette(&bmp2, &palette, &paloffset, 0, 0);
+	VL_palette(&bmp2, palette, &paloffset, 0, 0);
 	//====modexLoadPalFile("data/default.pal", &pal2);
 
 	/* overscan show */

@@ -125,6 +125,7 @@ void modexPalSave(byte *palette);
 byte *modexNewPal();
 void modexLoadPalFile(char *filename, byte **palette);
 void VL_LoadPalFile(const char *filename, byte *palette);
+void VL_LoadPalFilewithoffset(const char *filename, byte *palette, word o);
 void modexSavePalFile(char *filename, byte *palette);
 
 /* fixed palette functions */

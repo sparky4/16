@@ -703,6 +703,22 @@ void VL_LoadPalFile(const char *filename, byte *palette)
 	}
 }
 
+void VL_LoadPalFilewithoffset(const char *filename, byte *palette, word o)
+{
+	int fd;
+
+	fd = open(filename,O_RDONLY|O_BINARY);
+	if (fd >= 0) {
+		word i;
+
+		read(fd,palette,	PAL_SIZE);
+		close(fd);
+
+		vga_palette_lseek(o);
+		for (i=o;i < 256-o;i++) vga_palette_write(palette[(i*3)+0]>>2,palette[(i*3)+1]>>2,palette[(i*3)+2]>>2);
+	}
+}
+
 
 void
 modexSavePalFile(char *filename, byte *pal) {
