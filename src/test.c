@@ -30,6 +30,7 @@
 #define HGQ 55
 
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
+static byte palette[PAL_SIZE];
 
 void main(int argc, char *argv[])
 {
@@ -45,9 +46,10 @@ void main(int argc, char *argv[])
 	word k;
 
 	imgtestpal_t bmp1, bmp2;
+
+
 	bmp1.width=bmp2.width=	40;
 	bmp1.width=bmp2.height=	30;
-	//====byte *pal, *pal2;
 
 	//====word colo=LGQ;
 
@@ -98,6 +100,10 @@ void main(int argc, char *argv[])
 	VL_LoadPalFile("data/16.pal", &gvar.video.palette);
 	bmp1.offset=(paloffset/3);
 	VL_palette(&bmp1, &gvar.video.palette, &paloffset, 0, 0);
+
+	VL_LoadPalFile("data/default.pal", &palette);
+	bmp2.offset=(paloffset/3);
+	VL_palette(&bmp2, &palette, &paloffset, 0, 0);
 	//====modexLoadPalFile("data/default.pal", &pal2);
 
 	/* overscan show */
