@@ -40,7 +40,7 @@ void modexchkcolor(imgtestpal_t *bmp, word *q, word *a, word *aa, word *z, word 
 		printf("wwwwwwwwwwwwwwww\n");
 #endif
 		//check palette for dups
-		for(; (*z)<PAL_SIZE; (*z)+=3)
+		for(; (*z)<PAL_SIZE/24; (*z)+=3)
 		{
 #ifdef BEVERBOSEPALCHECK
 			printf("\n		z: %d\n", (*z));//
@@ -167,7 +167,7 @@ VL_palette(imgtestpal_t *bmp, byte *p, word *i, word qp, word aqoffset)
 	}
 	if((*i)<PAL_SIZE && w==0)
 	{
-		for(; (*i)<PAL_SIZE; (*i)++)
+		for(; (*i)<PAL_SIZE/24; (*i)++)
 		{
 			//if(i%3==0 && (p[i+5]==p[i+4] && p[i+4]==p[i+3] && p[i+3]==p[i+2] && p[i+2]==p[i+1] && p[i+1]==p[i] && p[i+5]==p[i]))
 //____		  if((qp>0)&&((*i)-q)%3==0 && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5])) outp(PAL_DATA_REG, p[(*i)-q]); else
