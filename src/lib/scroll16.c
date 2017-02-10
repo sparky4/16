@@ -612,11 +612,11 @@ if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dx); modexp
 	/* the position within the map array */
 	i=ty * mv->map->width + tx;
 	for(	mv->dx=poopoffset;	mv->dx<(mv->page->sw+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width;	mv->dx+=mv->map->tiles->tileWidth, tx++) {
-		if(i>=0)	/* we are in the map, so copy away! */
+		if(i>=0)
 			mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, mv->dx, y);
 		i++; /* next! */
 	}
-//if(pagedelayrendermap) delay(200);
+if(pagedelayrendermap) delay(200);
 }
 
 void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, word poopoffset)
@@ -631,11 +631,11 @@ if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dy); modexp
 	/* We'll copy all of the columns in the screen,
 	   i + 1 row above and one below */
 	for(	mv->dy=poopoffset;	mv->dy<(mv->page->sh+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height;	mv->dy+=mv->map->tiles->tileHeight, ty++) {
-		if(i>=0)	/* we are in the map, so copy away! */
+		if(i>=0)
 			mapDrawTile(mv->map->tiles, mv->map->data[i], mv->page, x, mv->dy);
 		i += mv->map->width;
 	}
-//if(pagedelayrendermap) delay(200);
+if(pagedelayrendermap) delay(200);
 }
 
 void mapDrawWRow(map_view_t *mv, int tx, int ty, word y)

@@ -1,0 +1,19 @@
+
+qqqqqqqq
+
+Project 16 test.exe. This is just a test file!
+version Feb 10 2017 09:14:32
+VL_PrintmodexmemInfo:
+  Virtual Screen: 352x272	Tile: 22x17=((Virtual Screen)/16)
+  	  Screen: 320x240	Tile: 20x15=((Screen)/16)
+  Free Video Memory: 767
+  page	[0]=(a000:0000) size=23936	w=352  h=272 sw=320  sh=240 pi=1408
+	[1]=(a000:5d80) size=23936	w=352  h=272 sw=320  sh=240 pi=1408
+	[2]=(a000:bb00) size=8448	w=352  h=96  sw=352  sh=96  pi=1408
+	[3]=(a000:dc00) size=8448	w=352  h=96  sw=352  sh=96  pi=1408
+tx=1	ty=1	player.d=2
+
+====
+0	paloffset=	8
+====
+

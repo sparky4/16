@@ -22,6 +22,7 @@
 
 #include <stdio.h>
 #include "src/lib/16_vl.h"
+#include "src/lib/16_vlpal.h"
 #include "src/lib/16_in.h"
 #include "src/lib/scroll16.h"
 
@@ -32,6 +33,7 @@ static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 
 void main(int argc, char *argv[])
 {
+	static word paloffset=0;
 	static global_game_variables_t gvar;
 	static player_t player[MaxPlayers];
 
@@ -41,6 +43,10 @@ void main(int argc, char *argv[])
 	int i, j;
 	word startclk, endclk;
 	word k;
+
+	imgtestpal_t bmp1, bmp2;
+	bmp1.width=bmp2.width=	40;
+	bmp1.width=bmp2.height=	30;
 	//====byte *pal, *pal2;
 
 	//====word colo=LGQ;
@@ -89,6 +95,9 @@ void main(int argc, char *argv[])
 	//====modexPalBlack();
 
 	/* load our palette */
+	VL_LoadPalFile("data/16.pal", &gvar.video.palette);
+	bmp1.offset=(paloffset/3);
+	VL_palette(&bmp1, &gvar.video.palette, &paloffset, 0, 0);
 	//====modexLoadPalFile("data/default.pal", &pal2);
 
 	/* overscan show */
@@ -111,13 +120,13 @@ void main(int argc, char *argv[])
 	modexShowPage(&gvar.video.page[0]);*/
 
 
-	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].width, gvar.video.page[0].height, 15);
-	modexClearRegion(&gvar.video.page[0], 16, 16, gvar.video.page[0].sw, gvar.video.page[0].sh, 128);
-	modexClearRegion(&gvar.video.page[0], 32, 32, gvar.video.page[0].sw-32, gvar.video.page[0].sh-32, 42);
-	modexClearRegion(&gvar.video.page[0], 48, 48, gvar.video.page[0].sw-64, gvar.video.page[0].sh-64, 128);
+	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].width, gvar.video.page[0].height, 1);
+	modexClearRegion(&gvar.video.page[0], 16, 16, gvar.video.page[0].sw, gvar.video.page[0].sh, 2);
+	modexClearRegion(&gvar.video.page[0], 32, 32, gvar.video.page[0].sw-32, gvar.video.page[0].sh-32, 3);
+	modexClearRegion(&gvar.video.page[0], 48, 48, gvar.video.page[0].sw-64, gvar.video.page[0].sh-64, 2);
 	modexCopyPageRegion(&gvar.video.page[1], &gvar.video.page[0], 0, 0, 0, 0, gvar.video.page[0].width, gvar.video.page[0].height);
-	modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 47);
-	modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 45);
+	modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 4);
+	modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 6);
 
 
 	/* fade in */
@@ -204,6 +213,9 @@ void main(int argc, char *argv[])
 	printf("version %s\n", VERSION);
 	VL_PrintmodexmemInfo(&gvar.video);
 	printf("tx=%d	", mv[gvar.video.sp].tx); printf("ty=%d	", mv[gvar.video.sp].ty); printf("player.d=%d\n", player[0].enti.d);
+	printf("\n====\n");
+	printf("0	paloffset=	%d\n", paloffset/3);
+	printf("====\n\n");
 	//IN_Shutdown();
 	//====modexPalBlack();
 	//====modexFadeOn(1, pal);

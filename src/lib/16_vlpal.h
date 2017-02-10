@@ -3,6 +3,15 @@
 
 #include "src/lib/16_vl.h"
 
-void VL_palette(bitmap_t *bmp, word *i, word qp, word aqoffset);
+#define BEVERBOSEPALCHECK
+
+typedef struct
+{
+	word width;
+	word height;
+	word offset;
+} imgtestpal_t;
+
+void VL_palette(imgtestpal_t *bmp, byte *p, word *i, word qp, word aqoffset);
 
 #endif //__16_VLPAL_H__
