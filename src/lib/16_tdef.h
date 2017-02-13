@@ -66,8 +66,8 @@ typedef struct {
 
 //TODO: 16_mm and 16_ca must handle this
 typedef struct {
-	bitmap_t far *btdata;		//old
-	planar_buf_t far *data;	//old
+	bitmap_t far *data;		//old
+	//planar_buf_t far *data;	//old
 	word tileHeight, tileWidth;
 	unsigned int rows, cols;
 // 	#ifdef __DEBUG__

@@ -687,18 +687,17 @@ void shinku(global_game_variables_t *gv)
         //      This fixes *** Null pointer assignment detected error message in ZCROLL.EXE on exit.
 		sprintf(global_temp_status_text, "%.0f fps", (double)gv->kurokku.tiku/ticktock(gv));
 		//modexprint(&(gv->video.page[/*!*/(gv->video.p)]), x, y, type, col, bgcol, global_temp_status_text);
+		modexCopyPageRegion(&gv->video.page[0], &gv->video.page[1],
+			gv->video.page[/*!*/(gv->video.p)].dx,
+			gv->video.page[/*!*/(gv->video.p)].dy,
+			gv->video.page[/*!*/(gv->video.p)].dx,
+			gv->video.page[/*!*/(gv->video.p)].dy,
+			96, 16);
+		modexprint(&(gv->video.page[/*!*/(gv->video.p)]), x, y, type, col, bgcol, global_temp_status_text);
 //0000printf("dx=%u	dy=%u\n", gv->video.page[/*!*/(gv->video.p)].dx, gv->video.page[/*!*/(gv->video.p)].dy);
 		gv->kurokku.tiku=0;
 	}else //copy dat sheet
 	gv->kurokku.tiku++;
-
-	modexCopyPageRegion(&gv->video.page[0], &gv->video.page[1],
-		gv->video.page[/*!*/(gv->video.p)].dx,
-		gv->video.page[/*!*/(gv->video.p)].dy,
-		gv->video.page[/*!*/(gv->video.p)].dx,
-		gv->video.page[/*!*/(gv->video.p)].dy,
-		96, 16);
-	modexprint(&(gv->video.page[/*!*/(gv->video.p)]), x, y, type, col, bgcol, global_temp_status_text);
 
 	switch(gv->kurokku.fpscap)
 	{
