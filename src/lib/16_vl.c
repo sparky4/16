@@ -907,7 +907,7 @@ void modexprint(page_t *page, sword x, sword y, word t, word col, word bgcol, co
 		x_draw += 8; /* track X for edge of screen */
 		addrr += 2; /* move 8 pixels over (2 x 4 planar pixels per byte) */
 	}
-	printf("print xy:%dx%d	tlxy:%dx%d\n", x, y, page->tlx, page->tly);
+	//printf("print xy:%dx%d	tlxy:%dx%d\n", x, y, page->tlx, page->tly);
 }
 
 void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str)
