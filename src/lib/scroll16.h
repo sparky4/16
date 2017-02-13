@@ -81,7 +81,7 @@
 #define SCROLLEXITMESG 	printf("page[0]dxy: %dx%d", gvar.video.page[0].dx, gvar.video.page[0].dy);\
 	printf("\n\n");\
 	printf("player vars:\n");\
-	printf("	xy: %dx%d", player[0].enti.x, player[0].enti.y); printf("	txy: %dx%d", player[0].enti.tx, player[0].enti.ty); printf("	triggxy: %dx%d", player[0].enti.triggerx, player[0].enti.triggery); printf("	value: %d\n", mv[1].map->layerdata[0][(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))]);\
+	printf("	xy: %dx%d", player[0].enti.x, player[0].enti.y); printf("	txy: %dx%d", player[0].enti.tx, player[0].enti.ty); printf("	triggxy: %dx%d", player[0].enti.triggerx, player[0].enti.triggery); printf("	value: %d\n", mv[1].map->MAPDATAPTR[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))]);\
 	printf("	hp: %d", (player[0].enti.hp));	printf("	q: %u", player[0].enti.q);	printf("	info.dir: %u", player[0].info.dir);	printf("	d: %u", player[0].enti.d);	printf("	dire: %u", player[0].enti.dire);\
 		printf("	pdir: %u\n", player[0].pdir); printf("	delay=%u", player[0].enti.spri->delay);\
 printf("\n\n");\
@@ -132,7 +132,7 @@ inline void near ScrollRight(map_view_t *mv, player_t *player, word id, word pli
 		/* Snap the origin forward */
 		mv[id].page->data += 4;
 
-		mv[id].page->dx = mv[id].map->layertile[0]->tileWidth;
+		mv[id].page->dx = mv[id].map->MAPTILESPTR->tileWidth;
 	}
 }
 
@@ -149,7 +149,7 @@ inline void near ScrollLeft(map_view_t *mv, player_t *player, word id, word plid
 		/* Snap the origin backward */
 		mv[id].page->data -= 4;
 
-		mv[id].page->dx = mv[id].map->layertile[0]->tileWidth;
+		mv[id].page->dx = mv[id].map->MAPTILESPTR->tileWidth;
 	}
 }
 
@@ -166,7 +166,7 @@ inline void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 		/* Snap the origin upward */
 		mv[id].page->data -= mv[id].page->pi;
 
-		mv[id].page->dy = mv[id].map->layertile[0]->tileHeight;
+		mv[id].page->dy = mv[id].map->MAPTILESPTR->tileHeight;
 	}
 }
 
@@ -183,7 +183,7 @@ inline void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid
 		/* Snap the origin downward */
 		mv[id].page->data += mv[id].page->pi;
 
-		mv[id].page->dy = mv[id].map->layertile[0]->tileHeight;
+		mv[id].page->dy = mv[id].map->MAPTILESPTR->tileHeight;
 	}
 }
 

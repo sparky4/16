@@ -257,7 +257,7 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 	while(i<count) {
 		if(jsoneq(js, &(t[i]), "layers") == 0) {
 			i++;
-			map->layerdata = malloc(sizeof(byte*) * t[i].size);
+			//map->layerdata = malloc(sizeof(byte*) * t[i].size);
 			inner_end = t[i].end;
 			k = 0;
 			while(t[i].start < inner_end) {
@@ -268,14 +268,13 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 #ifdef DEBUG_MAPDATA
 					printf("Layer %d data: [\n", k);
 #endif
-					map->layerdata[k] = malloc(sizeof(byte) * t[i+1].size);
-					map->data = map->layerdata[k];
+					map->MAPDATAPTK = malloc(sizeof(byte) * t[i+1].size);
+					//for backwards compatibility for rest of code
+//					map->data = map->MAPDATAPTK;
 					for(j = 0; j < t[i+1].size; j++) {
-						map->layerdata[k][j] = (byte)atoi(js + t[i+2+j].start);
-						//for backwards compatibility for rest of code
-//						map->data[j] = map->layerdata[k][j];//(byte)atoi(js + t[i+2+j].start);//(byte)atoi(js+t->start);
+						map->MAPDATAPTK[j] = (byte)atoi(js + t[i+2+j].start);
 #ifdef DEBUG_MAPDATA
-						//printf("[%d,%d]%d", k, j, map->layerdata[k][j]);
+						//printf("[%d,%d]%d", k, j, map->MAPDATAPTK[j]);
 						fprintf(stdout, "%c", map->data[j]+44);
 #endif
 					}
@@ -295,24 +294,24 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 			k = 0;
 			while(t[i].start < inner_end) {
 				if(jsoneq(js, &(t[i]), "image") == 0) {
-					map->layertile[k] = malloc(sizeof(tiles_t));
+					map->MAPTILESPTK = malloc(sizeof(tiles_t));
 					s = remove_ext((char *)js+t[i+1].start, '.', '/');
-					strcpy(map->layertile[k]->imgname, s);
+					strcpy(map->MAPTILESPTK->imgname, s);
 					//And move to vrs, probably
 //					bp = bitmapLoadPcx("data/ed.pcx");
-//					map->layertile[k]->btdata = &bp;
-					//map->layertile[k]->btdata = malloc(sizeof(bitmap_t));
-					map->layertile[k]->rows = 1;
-					map->layertile[k]->cols = 1;
+//					map->MAPTILESPTK->btdata = &bp;
+					//map->MAPTILESPTK->btdata = malloc(sizeof(bitmap_t));
+					map->MAPTILESPTK->rows = 1;
+					map->MAPTILESPTK->cols = 1;
 #ifdef __DEBUG_MAP__
 					dbg_maptext=false;
 #endif
 					i++;
 				}else if(jsoneq(js, &(t[i]), "tileheight") == 0) {
-					map->layertile[k]->tileHeight = atoi(js + t[i+1].start);
+					map->MAPTILESPTK->tileHeight = atoi(js + t[i+1].start);
 					i++;
 				}else if(jsoneq(js, &(t[i]), "tilewidth") == 0) {
-					map->layertile[k]->tileWidth = atoi(js + t[i+1].start);
+					map->MAPTILESPTK->tileWidth = atoi(js + t[i+1].start);
 					i++;
 				}
 				i++;

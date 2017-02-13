@@ -61,7 +61,7 @@ main(int argc, char *argv[])
 	for(i=0; i<(map.width*map.height); i++)
 	{
 		//fprintf(stdout, "%04d[%02d]", i, map.data[i]);
-		fprintf(stdout, "%c", map.layerdata[0][i]+44);
+		fprintf(stdout, "%c", map.MAPDATAPTR[i]+44);
 		if(!((i+1)%map.width)){
 			//fprintf(stdout, "[%d]", i);
 			fprintf(stdout, "\n"); }

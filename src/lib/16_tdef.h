@@ -79,14 +79,30 @@ typedef struct {
 
 //TODO: 16_mm and 16_ca must handle this
 //TODO: add variables from 16_ca
-#define MAPLAYERS 2
+//#define __NEWMAPTILEDATAVARS__
+
+#ifdef __NEWMAPTILEDATAVARS__
+#define MAPLAYERS 4
+#define MAPTILESPTR		layertile[0]
+#define MAPTILESPTK		layertile[k]
+#define MAPDATAPTR		layerdata[0]
+#define MAPDATAPTK		layerdata[k]
+#else
+#define MAPTILESPTR		tiles//layertile[0]
+#define MAPTILESPTK		tiles//layertile[k]
+#define MAPDATAPTR		data//layerdata[0]
+#define MAPDATAPTK		data//layerdata[k]
+#endif
 typedef struct {
 	//long		planestart[3];
 	//unsigned	planelength[3];
+#ifndef __NEWMAPTILEDATAVARS__
 	byte *data;			//TODO: 16_mm and 16_ca must handle this
+	tiles_t *tiles;		//TODO: 16_mm and 16_ca must handle this
+#else
 	byte * far *layerdata;	//TODO: 16_mm and 16_ca must handle this
-	//tiles_t *tiles;		//TODO: 16_mm and 16_ca must handle this
 	tiles_t far *layertile[MAPLAYERS];	//TODO: 16_mm and 16_ca must handle this
+#endif
 	int width, height;		//this has to be signed!
 	byte name[16];
 } map_t;
