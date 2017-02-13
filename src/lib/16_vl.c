@@ -867,15 +867,20 @@ void modexDrawChar(page_t *page, int x/*for planar selection only*/, word t, wor
 	}
 }
 
-void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str)
+void modexprint(page_t *page, sword x, sword y, word t, word col, word bgcol, const byte *str)
 {
 	word s, o, w;
-	word x_draw = x;
+	sword x_draw;
 	//word addr = (word) romFontsData.l;
-	word addrq = (page->stridew) * y + (x / 4) + ((word)page->data);
-	word addrr = addrq;
+	word addrq;
+	word addrr;
 	byte c;
 
+	x-=page->tlx; y-=page->tly;
+	x_draw = x/4;
+	addrq = (page->stridew) * y + (x_draw) +
+		((word)page->data);
+	addrr = addrq;
 	s=romFonts[t].seg;
 	o=romFonts[t].off;
 	w=romFonts[t].charSize;
@@ -883,16 +888,16 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 
 	for(; *str != '\0'; str++)
 	{
-	c = (*str);
-	if(c=='\n')
-	{
-		x = x_draw;
-		romFontsData.chw = 0;
-		addrq += (page->stridew) * 8;
-		addrr = addrq;
-		y += 8;
-		continue;
-	}
+		c = (*str);
+		if(c=='\n')
+		{
+			x = x_draw;
+			romFontsData.chw = 0;
+			addrq += (page->stridew) * 8;
+			addrr = addrq;
+			y += 8;
+			continue;
+		}
 
 	// load the character into romFontsData.l
 	// no need for inline assembly!
@@ -902,6 +907,7 @@ void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, cons
 		x_draw += 8; /* track X for edge of screen */
 		addrr += 2; /* move 8 pixels over (2 x 4 planar pixels per byte) */
 	}
+	printf("print xy:%dx%d	tlxy:%dx%d\n", x, y, page->tlx, page->tly);
 }
 
 void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str)

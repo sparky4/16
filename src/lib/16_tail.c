@@ -46,9 +46,9 @@ void Startup16(global_game_variables_t *gvar)
 
 	// DOSLIB: what CPU are we using?
 	// NTS: I can see from the makefile Sparky4 intends this to run on 8088 by the -0 switch in CFLAGS.
-	//      So this code by itself shouldn't care too much what CPU it's running on. Except that other
-	//      parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
-	//      the CPU to carry out tasks. --J.C.
+	//	  So this code by itself shouldn't care too much what CPU it's running on. Except that other
+	//	  parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
+	//	  the CPU to carry out tasks. --J.C.
 	cpu_probe();
 
 	// DOSLIB: check for VGA
@@ -125,10 +125,10 @@ void Shutdown16(global_game_variables_t *gvar)
 
 /*void ReadConfig(void)
 {
-	int                     file;
-	SDMode          sd;
-	SMMode          sm;
-	SDSMode         sds;
+	int					 file;
+	SDMode		  sd;
+	SMMode		  sm;
+	SDSMode		 sds;
 
 
 	if ( (file = open(configname,O_BINARY | O_RDONLY)) != -1)
@@ -227,7 +227,7 @@ void Shutdown16(global_game_variables_t *gvar)
 
 /*void WriteConfig(void)
 {
-	int                     file;
+	int					 file;
 
 	file = open(configname,O_CREAT | O_BINARY | O_WRONLY,
 				S_IREAD | S_IWRITE | S_IFREG);
@@ -275,9 +275,9 @@ void DebugMemory_(global_game_variables_t *gvar, boolean q)
 
 	US_CPrint ("Memory Usage");
 	US_CPrint ("------------");
-	US_Print ("Total     :");
+	US_Print ("Total	 :");
 	US_PrintUnsigned (mminfo.mainmem/1024);
-	US_Print ("k\nFree      :");
+	US_Print ("k\nFree	  :");
 	US_PrintUnsigned (MM_UnusedMemory()/1024);
 	US_Print ("k\nWith purge:");
 	US_PrintUnsigned (MM_TotalFree()/1024);
@@ -326,7 +326,7 @@ void ClearMemory (global_game_variables_t *gvar)
 
 void Quit (global_game_variables_t *gvar, char *error)
 {
-	//unsigned        finscreen;
+	//unsigned		finscreen;
 	memptr	screen=0;
 
 	ClearMemory (gvar);
@@ -372,6 +372,57 @@ void Quit (global_game_variables_t *gvar, char *error)
 }
 
 //===========================================================================
+//from http://stackoverflow.com/questions/2736753/how-to-remove-extension-from-file-name
+
+// remove_ext: removes the "extension" from a file spec.
+//   mystr is the string to process.
+//   dot is the extension separator.
+//   sep is the path separator (0 means to ignore).
+// Returns an allocated string identical to the original but
+//   with the extension removed. It must be freed when you're
+//   finished with it.
+// If you pass in NULL or the new string can't be allocated,
+//   it returns NULL.
+
+char *remove_ext (char* mystr, char dot, char sep) {
+	char *retstr, *lastdot, *lastsep;
+
+	// Error checks and allocate string.
+
+	if (mystr == NULL)
+		return NULL;
+	if ((retstr = malloc (strlen (mystr) + 1)) == NULL)
+		return NULL;
+
+	// Make a copy and find the relevant characters.
+
+	strcpy (retstr, mystr);
+	lastdot = strrchr (retstr, dot);
+	lastsep = (sep == 0) ? NULL : strrchr (retstr, sep);
+
+	// If it has an extension separator.
+
+	if (lastdot != NULL) {
+		// and it's before the extenstion separator.
+
+		if (lastsep != NULL) {
+			if (lastsep < lastdot) {
+				// then remove it.
+
+				*lastdot = '\0';
+			}
+		} else {
+			// Has extension separator with no path separator.
+
+			*lastdot = '\0';
+		}
+	}
+
+	// Return the modified string.
+
+	return retstr;
+}
+
 #ifndef __WATCOMC__
 char global_temp_status_text[512];
 char global_temp_status_text2[512];
@@ -409,7 +460,7 @@ void turboXT(byte bakapee)
 	out	61h, al 			//; Turn speaker on
 	mov	cx, 2000h
 @@delay:
-	loop    @@delay
+	loop	@@delay
 	pop	ax
 	out	61h, al 			//; Turn speaker off
 	pop	cx

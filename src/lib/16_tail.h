@@ -78,6 +78,7 @@ void Shutdown16(global_game_variables_t *gvar);
 void Startup16(global_game_variables_t *gvar);
 void ClearMemory (global_game_variables_t *gvar);
 void Quit (global_game_variables_t *gvar, char *error);
+char *remove_ext(char* mystr, char dot, char sep);
 void turboXT(byte bakapee);
 void nibbletest();
 void booleantest();

@@ -132,7 +132,7 @@ inline void near ScrollRight(map_view_t *mv, player_t *player, word id, word pli
 		/* Snap the origin forward */
 		mv[id].page->data += 4;
 
-		mv[id].page->dx = mv[id].map->tiles->tileWidth;
+		mv[id].page->dx = mv[id].map->layertile[0]->tileWidth;
 	}
 }
 
@@ -149,7 +149,7 @@ inline void near ScrollLeft(map_view_t *mv, player_t *player, word id, word plid
 		/* Snap the origin backward */
 		mv[id].page->data -= 4;
 
-		mv[id].page->dx = mv[id].map->tiles->tileWidth;
+		mv[id].page->dx = mv[id].map->layertile[0]->tileWidth;
 	}
 }
 
@@ -166,7 +166,7 @@ inline void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 		/* Snap the origin upward */
 		mv[id].page->data -= mv[id].page->pi;
 
-		mv[id].page->dy = mv[id].map->tiles->tileHeight;
+		mv[id].page->dy = mv[id].map->layertile[0]->tileHeight;
 	}
 }
 
@@ -183,7 +183,7 @@ inline void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid
 		/* Snap the origin downward */
 		mv[id].page->data += mv[id].page->pi;
 
-		mv[id].page->dy = mv[id].map->tiles->tileHeight;
+		mv[id].page->dy = mv[id].map->layertile[0]->tileHeight;
 	}
 }
 

@@ -104,6 +104,13 @@ void main(int argc, char *argv[])
 	VGAmodeX(1/*bakapee*/, 1, &gvar);
 
 	/* load color palette */
+	/*ptmp.offset=(paloffset/3);
+	modexPalUpdate(&ptmp, &paloffset, 0, 0);
+	//modexClearRegion(bg->page, 0, 0, 320, 240, 255);
+	//printf("	%d\n", sizeof(ptmp.data));
+	//printf("1:	%d\n", paloffset);
+	map.tiles->data->offset=(paloffset/3);
+	modexPalUpdate(map.tiles->data, &paloffset, 0, 0);*/
 	VL_LoadPalFile(bakapee1p, &gvar.video.palette);
 
 #ifdef FADE
