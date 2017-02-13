@@ -67,7 +67,11 @@ typedef struct {
 //TODO: 16_mm and 16_ca must handle this
 typedef struct {
 	bitmap_t far *data;		//old
+<<<<<<< HEAD
 	//planar_buf_t far *data;	//old
+=======
+	//planar_buf_t far *pbdata;	//old
+>>>>>>> ee3674e42a19f516ea9a48df2c9f3593409141c6
 	word tileHeight, tileWidth;
 	unsigned int rows, cols;
 // 	#ifdef __DEBUG__
@@ -79,13 +83,14 @@ typedef struct {
 
 //TODO: 16_mm and 16_ca must handle this
 //TODO: add variables from 16_ca
+#define MAPLAYERS 4
 typedef struct {
 	//long		planestart[3];
 	//unsigned	planelength[3];
 	byte *data;			//TODO: 16_mm and 16_ca must handle this
 	byte * far *layerdata;	//TODO: 16_mm and 16_ca must handle this
 	//tiles_t *tiles;		//TODO: 16_mm and 16_ca must handle this
-	tiles_t *layertile[2];	//TODO: 16_mm and 16_ca must handle this
+	tiles_t far *layertile[MAPLAYERS];	//TODO: 16_mm and 16_ca must handle this
 	int width, height;		//this has to be signed!
 	byte name[16];
 } map_t;
