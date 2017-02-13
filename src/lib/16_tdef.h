@@ -79,13 +79,14 @@ typedef struct {
 
 //TODO: 16_mm and 16_ca must handle this
 //TODO: add variables from 16_ca
+#define MAPLAYERS 2
 typedef struct {
 	//long		planestart[3];
 	//unsigned	planelength[3];
 	byte *data;			//TODO: 16_mm and 16_ca must handle this
 	byte * far *layerdata;	//TODO: 16_mm and 16_ca must handle this
 	//tiles_t *tiles;		//TODO: 16_mm and 16_ca must handle this
-	tiles_t *layertile[2];	//TODO: 16_mm and 16_ca must handle this
+	tiles_t far *layertile[MAPLAYERS];	//TODO: 16_mm and 16_ca must handle this
 	int width, height;		//this has to be signed!
 	byte name[16];
 } map_t;
