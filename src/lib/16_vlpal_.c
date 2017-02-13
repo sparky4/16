@@ -1,4 +1,4 @@
-#include <d/* Project 16 Source Code~
+/* Project 16 Source Code~
  * Copyright (C) 2012-2017 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
