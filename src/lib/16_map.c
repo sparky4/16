@@ -257,7 +257,7 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 	while(i<count) {
 		if(jsoneq(js, &(t[i]), "layers") == 0) {
 			i++;
-			//map->layerdata = malloc(sizeof(byte*) * t[i].size);
+//			map->layerdata = malloc(sizeof(byte*) * t[i].size);
 			inner_end = t[i].end;
 			k = 0;
 			while(t[i].start < inner_end) {
@@ -268,11 +268,11 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 #ifdef DEBUG_MAPDATA
 					printf("Layer %d data: [\n", k);
 #endif
-					map->MAPDATAPTK = malloc(sizeof(byte) * t[i+1].size);
+					map->layerdata[k] = malloc(sizeof(byte) * t[i+1].size);
 					//for backwards compatibility for rest of code
-//					map->data = map->MAPDATAPTK;
+					map->data = map->layerdata[k];
 					for(j = 0; j < t[i+1].size; j++) {
-						map->MAPDATAPTK[j] = (byte)atoi(js + t[i+2+j].start);
+						map->layerdata[k][j] = (byte)atoi(js + t[i+2+j].start);
 #ifdef DEBUG_MAPDATA
 						//printf("[%d,%d]%d", k, j, map->MAPDATAPTK[j]);
 						fprintf(stdout, "%c", map->data[j]+44);

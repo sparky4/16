@@ -93,11 +93,11 @@ typedef struct {
 typedef struct {
 	//long		planestart[3];
 	//unsigned	planelength[3];
-#ifndef __NEWMAPTILEDATAVARS__
 	byte *data;			//TODO: 16_mm and 16_ca must handle this
+	byte far *layerdata[MAPLAYERS];	// mapdata for multilayer (map index values for rendering which image on the tile)
+#ifndef __NEWMAPTILEDATAVARS__
 	tiles_t *tiles;		//TODO: 16_mm and 16_ca must handle this
 #else
-	byte far *layerdata[MAPLAYERS];	// mapdata for multilayer (map index values for rendering which image on the tile)
 	tiles_t far *layertile[MAPLAYERS];	// tilesets for layers (currently ony 4 can be loaded wwww)
 #endif
 	int width, height;		//this has to be signed!

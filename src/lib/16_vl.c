@@ -862,7 +862,7 @@ void modexDrawChar(page_t *page, int x/*for planar selection only*/, word t, wor
 void modexprint(page_t *page, sword x, sword y, word t, word col, word bgcol, const byte *str)
 {
 	word s, o, w;
-	sword x_draw;
+	word x_draw;
 	//word addr = (word) romFontsData.l;
 	word addrq;
 	word addrr;
@@ -870,7 +870,7 @@ void modexprint(page_t *page, sword x, sword y, word t, word col, word bgcol, co
 
 	x-=page->tlx; y-=page->tly;
 	x_draw = x/4;
-	addrq = (page->stridew) * y + (x_draw) +
+	addrq = (page->stridew) * y + (word)(x_draw) +
 		((word)page->data);
 	addrr = addrq;
 	s=romFonts[t].seg;
