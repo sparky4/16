@@ -566,6 +566,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 	word rx, ry;
 	//word textx=0, texty=0;
 	//if(i==0) i=2;
+//	printf("%02d ", i); if(x >= page->width - t->tileWidth) printf("\n");
 	switch(i)
 	{
 		case 0:
@@ -575,10 +576,8 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 		default:
 			rx = (((i-1) % ((t->pcximg->width)/t->tileWidth)) * t->tileWidth);
 			ry = (((i-1) / ((t->pcximg->height)/t->tileHeight)) * t->tileHeight);
-////0000	printf("i=%d\n", i);
 #ifndef TILERENDER
 			if(!pagenorendermap) modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, i+1);
-			//sprintf(global_temp_status_text2, "%c", i); modexprint(page, x+3, y-1, 1, 1, 2, global_temp_status_text2);
 #else
 			modexDrawBmpRegion		(page, x, y, rx, ry, t->tileWidth, t->tileHeight, i);
 			//draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
@@ -596,6 +595,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 #endif*/
 		break;
 	}
+	//sprintf(global_temp_status_text2, "%d", i); modexprint(page, x+3, y-1, 1, 1, 2, global_temp_status_text2);
 }
 
 void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, word poopoffset)
