@@ -109,7 +109,7 @@
 </data>
  </layer>
  <objectgroup name="ob" width="40" height="30">
-  <object x="128" y="32" width="32" height="16"/>
-  <object x="144" y="128" width="16" height="16"/>
+  <object name="trunk" type="nonc" x="128" y="32" width="32" height="16"/>
+  <object name="stump" type="nonc" x="144" y="128" width="16" height="16"/>
  </objectgroup>
 </map>

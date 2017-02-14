@@ -1002,7 +1002,7 @@ void modexpdump(page_t *pee)
 	int palq=(mult)*TILEWH;
 	int palcol=0;
 	int palx, paly;
-	for(paly=0; paly<palq; paly+=mult){
+	for(paly=TILEWH*8; paly<palq+TILEWH*8; paly+=mult){
 		for(palx=TILEWH*12; palx<palq+TILEWH*12; palx+=mult){
 				modexClearRegion(pee, palx+TILEWH, paly+TILEWH, mult, mult, palcol);
 			palcol++;

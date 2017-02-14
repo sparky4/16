@@ -71,22 +71,19 @@
 	if(IN_KeyDown(sc_Z)){ DRAWCORNERBOXES } \
 	if(IN_KeyDown(sc_X)){ TESTBG12 } \
 	if(IN_KeyDown(sc_C)){ TESTBG34 } \
-	if(IN_KeyDown(sc_V)) VL_PatternDraw(&gvar.video, 0, 1, 1); \
-	if(IN_KeyDown(sc_PgUp)){ \
+	if(IN_KeyDown(sc_V)) VL_PatternDraw(&gvar.video, 0, 1, 1);
+/*	if(IN_KeyDown(sc_PgDn)){ \
 		rotateR(gvar.video.palette, sizeof(gvar.video.palette)/sizeof(gvar.video.palette[0])); \
-		VL_UpdatePaletteWrite(&gvar.video.palette, 0); } \
-	if(IN_KeyDown(sc_PgDn)){ \
+		VL_UpdatePaletteWrite(&gvar.video.palette, 0);		IN_UserInput(1,1); } \
+	if(IN_KeyDown(sc_PgUp)){ \
 		rotateL(gvar.video.palette, sizeof(gvar.video.palette)/sizeof(gvar.video.palette[0])); \
-		VL_UpdatePaletteWrite(&gvar.video.palette, 0); }
+		VL_UpdatePaletteWrite(&gvar.video.palette, 0);		IN_UserInput(1,1); }*/
 
 void DebugMemory_(global_game_variables_t *gvar, boolean q);
 void Shutdown16(global_game_variables_t *gvar);
 void Startup16(global_game_variables_t *gvar);
 void ClearMemory (global_game_variables_t *gvar);
 void Quit (global_game_variables_t *gvar, char *error);
-char *remove_ext(char* mystr, char dot, char sep);
-void rotateR(byte arr[], byte n);
-void rotateL(byte arr[], byte n);
 void turboXT(byte bakapee);
 void nibbletest();
 void booleantest();

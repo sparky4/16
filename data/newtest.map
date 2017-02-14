@@ -40,12 +40,12 @@
          "objects":[
                 {
                  "height":16,
-                 "name":"",
+                 "name":"trunk",
                  "properties":
                     {
 
                     },
-                 "type":"",
+                 "type":"nonc",
                  "visible":true,
                  "width":32,
                  "x":128,
@@ -53,12 +53,12 @@
                 }, 
                 {
                  "height":16,
-                 "name":"",
+                 "name":"stump",
                  "properties":
                     {
 
                     },
-                 "type":"",
+                 "type":"nonc",
                  "visible":true,
                  "width":16,
                  "x":144,

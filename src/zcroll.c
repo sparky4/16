@@ -112,6 +112,7 @@ void main(int argc, char *argv[])
 	map.tiles->data->offset=(paloffset/3);
 	modexPalUpdate(map.tiles->data, &paloffset, 0, 0);*/
 	VL_LoadPalFile(bakapee1p, &gvar.video.palette);
+	VL_LoadPalFile("data/default.pal", &gvar.video.palette);
 
 #ifdef FADE
 	gpal = modexNewPal();

@@ -80,9 +80,8 @@ typedef struct {
 //TODO: 16_mm and 16_ca must handle this
 //TODO: add variables from 16_ca
 //#define __NEWMAPTILEDATAVARS__
-
-#ifdef __NEWMAPTILEDATAVARS__
 #define MAPLAYERS 4
+#ifdef __NEWMAPTILEDATAVARS__
 #define MAPTILESPTR		layertile[0]
 #define MAPTILESPTK		layertile[k]
 #define MAPDATAPTR		layerdata[0]
@@ -100,8 +99,8 @@ typedef struct {
 	byte *data;			//TODO: 16_mm and 16_ca must handle this
 	tiles_t *tiles;		//TODO: 16_mm and 16_ca must handle this
 #else
-	byte * far *layerdata;	//TODO: 16_mm and 16_ca must handle this
-	tiles_t far *layertile[MAPLAYERS];	//TODO: 16_mm and 16_ca must handle this
+	byte * far *layerdata;
+	tiles_t far *layertile[MAPLAYERS];
 #endif
 	int width, height;		//this has to be signed!
 	byte name[16];

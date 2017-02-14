@@ -32,6 +32,9 @@ main(int argc, char *argv[])
 #ifdef DUMP
 #ifdef DUMP_MAP
 	short i;
+#ifdef __NEWMAPTILEDATAVARS__
+	word k;
+#endif
 #endif
 #endif
 	char *fmt = "Memory available = %u\n";
@@ -58,15 +61,24 @@ main(int argc, char *argv[])
 	fprintf(stdout, "map.height=	%d\n", map.height);
 	#ifdef DUMP_MAP
 	//if(map.width*map.height != 1200)
-	for(i=0; i<(map.width*map.height); i++)
+#ifdef __NEWMAPTILEDATAVARS__
+	for(k=0;k<MAPLAYERS;k++)
 	{
-		//fprintf(stdout, "%04d[%02d]", i, map.data[i]);
-		fprintf(stdout, "%c", map.MAPDATAPTR[i]+44);
-		if(!((i+1)%map.width)){
-			//fprintf(stdout, "[%d]", i);
-			fprintf(stdout, "\n"); }
+		printf("maplayer: %u\n", k);
+#endif
+		for(i=0; i<(map.width*map.height); i++)
+		{
+			//fprintf(stdout, "%04d[%02d]", i, map.data[i]);
+			fprintf(stdout, "%c", map.MAPDATAPTK[i]+44);
+			if(!((i+1)%map.width)){
+				//fprintf(stdout, "[%d]", i);
+				fprintf(stdout, "\n"); }
+		}
+		//fprintf(stdout, "\n");
+#ifdef __NEWMAPTILEDATAVARS__
+		getch();
 	}
-	fprintf(stdout, "\n");
+#endif
 	#else
 	//fprintf(stderr, "contents of the buffer\n[\n%s\n]\n", (gvar.ca.camap.mapsegs));
 	#endif
@@ -77,7 +89,7 @@ main(int argc, char *argv[])
 	fprintf(stdout, "&map.height==%Fp\n", map.height);
 	fprintf(stdout, "&map.data==%Fp\n", map.data);*/
 	#endif
-	fprintf(stdout, "okies~\n");
+	//fprintf(stdout, "okies~\n");
 	MM_FreePtr(&(gvar.ca.camap.mapsegs), &gvar);
 	PM_Shutdown(&gvar);
 	CA_Shutdown(&gvar);
