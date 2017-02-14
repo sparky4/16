@@ -30,10 +30,10 @@ clock_t start_timer(global_game_variables_t *gv)
 	gv->kurokku.tiku = 0; gv->video.sfip = 0;
 	gv->kurokku.clock_start = *clockw;
 	gv->kurokku.clock = clockw;
-	//gv->kurokku.frames_per_second = 60;
+	gv->kurokku.wcpu = WCPU_detectcpu();
 
-    //turn this off if XT
-	switch(WCPU_detectcpu())
+	//turn this off if XT
+	switch(gv->kurokku.wcpu)
 	{
 		case 0:
 			gv->kurokku.fpscap=0;

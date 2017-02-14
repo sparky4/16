@@ -99,6 +99,7 @@ void main(int argc, char *argv[])
 	dpal = modexNewPal();
 	modexPalSave(dpal);
 	modexFadeOff(4, dpal);
+	modexPalBlack();
 #endif
 
 	VGAmodeX(1/*bakapee*/, 1, &gvar);

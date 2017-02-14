@@ -1,0 +1,61 @@
+src/lib/16_timer.c:	gv->kurokku.t = clock();
+src/lib/16_timer.c:	gv->kurokku.tiku = 0; gv->video.sfip = 0;
+src/lib/16_timer.c:	gv->kurokku.clock_start = *clockw;
+src/lib/16_timer.c:	gv->kurokku.clock = clockw;
+src/lib/16_timer.c:	gv->kurokku.wcpu = WCPU_detectcpu();
+src/lib/16_timer.c:	switch(gv->kurokku.wcpu)
+src/lib/16_timer.c:			gv->kurokku.fpscap=0;
+src/lib/16_timer.c:			gv->kurokku.frames_per_second=1;
+src/lib/16_timer.c:			gv->kurokku.fpscap=1;
+src/lib/16_timer.c:			gv->kurokku.frames_per_second=60;
+src/lib/16_timer.c:	return gv->kurokku.t;
+src/lib/16_timer.c:	return (clock() - gv->kurokku.t) / CLOCKS_PER_SEC;
+src/lib/16_timer.c:	clocku = (clock() - gv->kurokku.t) / CLOCKS_PER_SEC;
+src/lib/16_timer.c:	gv->kurokku.t = clock();
+src/lib/16_timer.c:	return (gv->kurokku.t) / CLOCKS_PER_SEC;
+src/lib/16_timer.c:	if(elapsed_timer(gv) >= (1.0 / gv->kurokku.frames_per_second))
+src/lib/16_timer.c:		//t=(((*(gv->clock))-gv->clock_start) /18.2);
+src/lib/16_timer.c:		sprintf(global_temp_status_text, "%.0f fps", (double)gv->kurokku.tiku/ticktock(gv));
+src/lib/16_timer.c:		//(gv->clock_start)=*(gv->clock);
+src/lib/16_timer.c:		gv->kurokku.tiku=0;
+src/lib/16_timer.c:	gv->kurokku.tiku++;
+src/lib/16_timer.c:// 	switch(gv->kurokku.fpscap)
+src/lib/16_timer.c:// 			gv->kurokku.frames_per_second=1;
+src/lib/16_timer.c:// 			gv->kurokku.frames_per_second=60;
+src/lib/16_vl.c:			in.h.al = gv->video.old_mode;
+src/lib/16_vl.c:			gv->video.old_mode = vgaGetMode();//out.h.al;
+src/lib/16_vl.c:			gv->video.page[0].sw = vga_state.vga_width = 320; // VGA lib currently does not update this
+src/lib/16_vl.c:			gv->video.page[0].sh = vga_state.vga_height = 240; // VGA lib currently does not update this
+src/lib/16_vl.c:			gv->video.page[0].height = gv->video.page[0].sh;
+src/lib/16_vl.c:			gv->video.page[0].width = gv->video.page[0].sw;
+src/lib/scroll16.c:	pip[0].page = &gv->video.page[0];
+src/lib/scroll16.c:	pip[0].video = &gv->video;
+src/lib/scroll16.c:	pip[0].p	= &gv->video.p;
+src/lib/scroll16.c:	pip[0].sp	= &gv->video.sp;
+src/lib/scroll16.c:	for(i=ZC_MVI;i<gv->video.num_of_pages;i++)
+src/lib/scroll16.c:		pip[i].page	=	&gv->video.page[i];
+src/lib/scroll16.c:	word x = gv->video.page[/*!*/(gv->video.p)].dx;	//(gv->video.page[(gv->video.p)].tlx) - // follow the screen
+src/lib/scroll16.c:	word y = gv->video.page[/*!*/(gv->video.p)].dy;	//(gv->video.page[(gv->video.p)].tly) - // follow the screen
+src/lib/scroll16.c:	if(elapsed_timer(gv) >= (1.0 / gv->kurokku.frames_per_second))
+src/lib/scroll16.c:        // NTS: For some bizarre reason, gv->pee is not initialized, but the pointer is not NULL even
+src/lib/scroll16.c:		sprintf(global_temp_status_text, "%.0f fps", (double)gv->kurokku.tiku/ticktock(gv));
+src/lib/scroll16.c:		//modexprint(&(gv->video.page[/*!*/(gv->video.p)]), x, y, type, 1, col, bgcol, global_temp_status_text);
+src/lib/scroll16.c:		if(gv->kurokku.wcpu)
+src/lib/scroll16.c:			modexCopyPageRegion(&gv->video.page[0], &gv->video.page[1],
+src/lib/scroll16.c:				gv->video.page[/*!*/(gv->video.p)].dx,
+src/lib/scroll16.c:				gv->video.page[/*!*/(gv->video.p)].dy,
+src/lib/scroll16.c:				gv->video.page[/*!*/(gv->video.p)].dx,
+src/lib/scroll16.c:				gv->video.page[/*!*/(gv->video.p)].dy,
+src/lib/scroll16.c:			modexprint(&(gv->video.page[/*!*/(gv->video.p)]), x, y, type, 1, col, bgcol, global_temp_status_text);
+src/lib/scroll16.c://0000printf("dx=%u	dy=%u\n", gv->video.page[/*!*/(gv->video.p)].dx, gv->video.page[/*!*/(gv->video.p)].dy);
+src/lib/scroll16.c:		gv->kurokku.tiku=0;
+src/lib/scroll16.c:	gv->kurokku.tiku++;
+src/lib/scroll16.c:	switch(gv->kurokku.fpscap)
+src/lib/scroll16.c:			//modexprint(&(gv->video.page[0]), x, y+8, type, 1, col, bgcol, "sanic!");
+src/lib/scroll16.c:			gv->kurokku.frames_per_second=1;
+src/lib/scroll16.c:			gv->kurokku.frames_per_second=60;
+src/lib/scroll16.c:	if(gv->video.dorender )
+src/lib/scroll16.c:			modexCopyPageRegion(&(gv->video.page[ ]), &(gv->video.page[ ]), 0, 0, 0, 0, gv->video.page[ ].width, gv->video.page[ ].height);
+src/lib/scroll16.c:		VL_ShowPage(&(gv->video.page[gv->video.sp]), gv->kurokku.fpscap, 0);
+src/lib/scroll16.c:		gv->video.dorender =!gv->video.dorender ;
+src/lib/scroll16.c:		//0000gv->video.tickclk = ((*clockw)-gv->video.startclk)/18.2;

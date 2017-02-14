@@ -274,6 +274,7 @@ typedef struct
 	word clock_start;	//timer start
 	word *clock;	//current time on clock
 	boolean fpscap;	//cap the fps var
+	nibble wcpu;	//stored value of cpu type
 } kurokku_t;
 
 //video
