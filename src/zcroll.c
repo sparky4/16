@@ -182,8 +182,8 @@ void main(int argc, char *argv[])
 		if(player[0].enti.q == (TILEWH/(player[0].enti.speed))+1 && player[0].info.dir != 2 && (player[0].enti.triggerx == 5 && player[0].enti.triggery == 5)){ player[0].enti.hp--; }
 		//debugging binds!
 
-		if(IN_KeyDown(24)){ modexPalUpdate0(gpal); /*paloffset=0;*/ modexpdump(mv[0].page); IN_UserInput(1,1); } //o
-		if(IN_KeyDown(22)){ modexPalUpdate0(gpal); } //u
+		if(IN_KeyDown(24)){ modexPalUpdate0(&gvar.video.palette); /*paloffset=0;*/ modexpdump(mv[0].page); IN_UserInput(1,1); } //o
+		if(IN_KeyDown(22)){ modexPalUpdate0(&gvar.video.palette); } //u
 
 		FUNCTIONKEYFUNCTIONS
 		FUNCTIONKEYDRAWJUNK

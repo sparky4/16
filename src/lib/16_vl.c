@@ -698,16 +698,19 @@ void VL_LoadPalFilewithoffset(const char *filename, byte *palette, word o)
 
 	fd = open(filename,O_RDONLY|O_BINARY);
 	if (fd >= 0) {
-		word i;
-
 		read(fd,palette,	PAL_SIZE);
 		close(fd);
 
-		vga_palette_lseek(1+o);
-		for (i=o;i < 255-o;i++) vga_palette_write(palette[(i*3)+0]>>2,palette[(i*3)+1]>>2,palette[(i*3)+2]>>2);
+		VL_UpdatePaletteWrite(palette, o);
 	}
 }
 
+void VL_UpdatePaletteWrite(byte *palette, word o)
+{
+	word i;
+	vga_palette_lseek(/*1+*/o);
+	for (i=o;i < 256-o;i++) vga_palette_write(palette[(i*3)+0]>>2,palette[(i*3)+1]>>2,palette[(i*3)+2]>>2);
+}
 
 void
 modexSavePalFile(char *filename, byte *pal) {
@@ -1000,7 +1003,7 @@ void modexpdump(page_t *pee)
 	int palcol=0;
 	int palx, paly;
 	for(paly=0; paly<palq; paly+=mult){
-		for(palx=0; palx<palq; palx+=mult){
+		for(palx=TILEWH*12; palx<palq+TILEWH*12; palx+=mult){
 				modexClearRegion(pee, palx+TILEWH, paly+TILEWH, mult, mult, palcol);
 			palcol++;
 		}

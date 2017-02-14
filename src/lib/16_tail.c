@@ -423,6 +423,23 @@ char *remove_ext (char* mystr, char dot, char sep) {
 	return retstr;
 }
 
+//from http://quiz.geeksforgeeks.org/c-program-cyclically-rotate-array-one/
+void rotateR(byte arr[], byte n)
+{
+	byte x = arr[n-1], i;
+	for (i = n-1; i > 0; i--)
+		arr[i] = arr[i-1];
+	arr[0] = x;
+}
+
+void rotateL(byte arr[], byte n)
+{
+	byte x = arr[n+1], i;
+	for (i = n+1; i > 0; i++)
+		arr[i] = arr[i+1];
+	arr[0] = x;
+}
+
 #ifndef __WATCOMC__
 char global_temp_status_text[512];
 char global_temp_status_text2[512];
