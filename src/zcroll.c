@@ -112,7 +112,7 @@ void main(int argc, char *argv[])
 	map.tiles->data->offset=(paloffset/3);
 	modexPalUpdate(map.tiles->data, &paloffset, 0, 0);*/
 	VL_LoadPalFile(bakapee1p, &gvar.video.palette);
-	VL_LoadPalFile("data/default.pal", &gvar.video.palette);
+	//VL_LoadPalFile("data/default.pal", &gvar.video.palette);
 
 #ifdef FADE
 	gpal = modexNewPal();
@@ -147,6 +147,7 @@ void main(int argc, char *argv[])
 	gvar.video.page[0].tlx=mv[0].tx*TILEWH;
 	gvar.video.page[0].tly=mv[0].ty*TILEWH;
 	shinku(&gvar);
+	modexpdump(mv[0].page);
 #ifdef FADE
 	modexFadeOn(4, gpal);
 #endif

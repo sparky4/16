@@ -574,8 +574,8 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 	}
 	else
 	{
-		rx = (((i-1) % ((t->data->width)/t->tileWidth)) * t->tileWidth);
-		ry = (((i-1) / ((t->data->height)/t->tileHeight)) * t->tileHeight);
+		rx = (((i-1) % ((t->pcximg->width)/t->tileWidth)) * t->tileWidth);
+		ry = (((i-1) / ((t->pcximg->height)/t->tileHeight)) * t->tileHeight);
 ////0000printf("i=%d\n", i);
 #ifdef __DEBUG_MAP__
 		switch(dbg_maptext)

@@ -50,10 +50,10 @@ typedef struct {
 
 typedef struct {
 	byte far **data;
-	word ntiles;   /* the number of tiles */
-	word twidth;   /* width of the tiles */
-	word theight;  /* height of the tiles */
-	byte *palette; /* palette for the tile set */
+	word ntiles;		// the number of tiles
+	word twidth;	// width of the tiles
+	word theight;	// height of the tiles
+	byte *palette;	// palette for the tile set
 } tileset_t;
 
 typedef struct {
@@ -66,9 +66,9 @@ typedef struct {
 
 //TODO: 16_mm and 16_ca must handle this
 typedef struct {
-	bitmap_t far *data;		//old
+	bitmap_t far *pcximg;		//old
 	//planar_buf_t far *data;	//old
-	word tileHeight, tileWidth;
+	word tileHeight, tileWidth;	//defined by mapfile
 	unsigned int rows, cols;
 // 	#ifdef __DEBUG__
 // 	boolean debug_text;	//show the value of the tile! wwww
@@ -115,12 +115,12 @@ typedef struct{
 	sword tilemidposscreeny;	/* middle tile y position */	/* needed for scroll system to work accordingly */
 	sword tileplayerposscreenx;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
 	sword tileplayerposscreeny;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
-} tileinfo_t;
+} pagetileinfo_t;
 
 typedef struct {
 	nibble/*word*/ id;	/* the Identification number of the page~ For layering~ */
 	byte far* data;	/* the data for the page */
-	tileinfo_t	ti;
+	pagetileinfo_t	ti;
 	word dx;		/* col we are viewing on virtual screen (on page[0]) */	/* off screen buffer on the left size */
 	word dy;		/* row we are viewing on virtual screen (on page[0]) */	/* off screen buffer on the top size */
 	word sw;		/* screen width */	/* resolution */
