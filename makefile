@@ -321,7 +321,7 @@ joytest.exe:
 	$(COPYCOMMAND) $(DOSLIB_JOYSTICK:$(to_os_path))$(DIRSEP)$(DOSLIB_MEMMODE)$(DIRSEP)test.exe joytest.exe
 
 16_vl.$(OBJ):	$(SRCLIB)/16_vl.c $(SRCLIB)/16_vl.h
-16_vlpal.$(OBJ):	$(SRCLIB)/16_vlpal.c $(SRCLIB)/16_vlpal.h
+16_vlpal.$(OBJ):	$(SRCLIB)/16_vlpa_.c	$(SRCLIB)/16_vlpal.c $(SRCLIB)/16_vlpal.h
 bakapee.$(OBJ):$(SRCLIB)/bakapee.c $(SRCLIB)/bakapee.h
 16render.$(OBJ):$(SRCLIB)/16render.c $(SRCLIB)/16render.h
 16planar.$(OBJ):$(MODEXLIB16)/16planar.c $(MODEXLIB16)/16planar.h

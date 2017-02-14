@@ -126,6 +126,7 @@ byte *modexNewPal();
 void modexLoadPalFile(char *filename, byte **palette);
 void VL_LoadPalFile(const char *filename, byte *palette);
 void VL_LoadPalFilewithoffset(const char *filename, byte *palette, word o);
+void VL_UpdatePaletteWrite(byte *palette, word o);
 void modexSavePalFile(char *filename, byte *palette);
 
 /* fixed palette functions */
@@ -166,7 +167,7 @@ static inline byte modexreadPixel(page_t *page, int x, int y, word addr)
 #endif
 
 void modexDrawChar(page_t *page, int x/*for planar selection only*/, word t, word col, word bgcol, word addr);
-void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
+void modexprint(page_t *page, sword x, sword y, word t, boolean tlsw, word col, word bgcol, const byte *str);
 void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
 void modexpdump(page_t *pee);
 void modexcls(page_t *page, byte color, byte *Where);

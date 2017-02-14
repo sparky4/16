@@ -50,10 +50,10 @@ typedef struct {
 
 typedef struct {
 	byte far **data;
-	word ntiles;   /* the number of tiles */
-	word twidth;   /* width of the tiles */
-	word theight;  /* height of the tiles */
-	byte *palette; /* palette for the tile set */
+	word ntiles;		// the number of tiles
+	word twidth;	// width of the tiles
+	word theight;	// height of the tiles
+	byte *palette;	// palette for the tile set
 } tileset_t;
 
 typedef struct {
@@ -64,30 +64,47 @@ typedef struct {
 	byte *palette;
 } planar_buf_t;
 
+//===========================================================================//
+
 //TODO: 16_mm and 16_ca must handle this
 typedef struct {
-	bitmap_t far *btdata;		//old
-	planar_buf_t far *data;	//old
-	word tileHeight, tileWidth;
+	bitmap_t far *pcximg;		//I will probibaly use this --sparky4
+	//planar_buf_t far *pbdata;	//old
+	word tileHeight, tileWidth;	//defined by mapfile
 	unsigned int rows, cols;
-// 	#ifdef __DEBUG__
-// 	boolean debug_text;	//show the value of the tile! wwww
-// 	byte *debug_data;
-// 	#endif
-} tiles_t;
+	byte	imgname[8];		//image file of tileset (set to 8 because DOS ^^;)
+} tiles_t;	//seems to be the tileset properties
 
 //TODO: 16_mm and 16_ca must handle this
 //TODO: add variables from 16_ca
+//#define __NEWMAPTILEDATAVARS__
+#define MAPLAYERS 4
+#ifdef __NEWMAPTILEDATAVARS__
+#define MAPTILESPTR		layertile[0]
+#define MAPTILESPTK		layertile[k]
+#define MAPDATAPTR		layerdata[0]
+#define MAPDATAPTK		layerdata[k]
+#else
+#define MAPTILESPTR		tiles//layertile[0]
+#define MAPTILESPTK		tiles//layertile[k]
+#define MAPDATAPTR		data//layerdata[0]
+#define MAPDATAPTK		data//layerdata[k]
+#endif
 typedef struct {
 	//long		planestart[3];
 	//unsigned	planelength[3];
 	byte *data;			//TODO: 16_mm and 16_ca must handle this
-	byte * far *layerdata;	//TODO: 16_mm and 16_ca must handle this
+	byte far *layerdata[MAPLAYERS];	// mapdata for multilayer (map index values for rendering which image on the tile)
+#ifndef __NEWMAPTILEDATAVARS__
 	tiles_t *tiles;		//TODO: 16_mm and 16_ca must handle this
-	tiles_t * far *layertile;	//TODO: 16_mm and 16_ca must handle this
+#else
+	tiles_t far *layertile[MAPLAYERS];	// tilesets for layers (currently ony 4 can be loaded wwww)
+#endif
 	int width, height;		//this has to be signed!
-	char		name[16];
+	byte name[16];
 } map_t;
+
+//===================================//
 
 typedef struct{
 	word tw;		/* screen width in tiles */
@@ -98,12 +115,12 @@ typedef struct{
 	sword tilemidposscreeny;	/* middle tile y position */	/* needed for scroll system to work accordingly */
 	sword tileplayerposscreenx;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
 	sword tileplayerposscreeny;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
-} tileinfo_t;
+} pagetileinfo_t;
 
 typedef struct {
 	nibble/*word*/ id;	/* the Identification number of the page~ For layering~ */
 	byte far* data;	/* the data for the page */
-	tileinfo_t	ti;
+	pagetileinfo_t	ti;
 	word dx;		/* col we are viewing on virtual screen (on page[0]) */	/* off screen buffer on the left size */
 	word dy;		/* row we are viewing on virtual screen (on page[0]) */	/* off screen buffer on the top size */
 	word sw;		/* screen width */	/* resolution */

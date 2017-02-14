@@ -104,7 +104,15 @@ void main(int argc, char *argv[])
 	VGAmodeX(1/*bakapee*/, 1, &gvar);
 
 	/* load color palette */
+	/*ptmp.offset=(paloffset/3);
+	modexPalUpdate(&ptmp, &paloffset, 0, 0);
+	//modexClearRegion(bg->page, 0, 0, 320, 240, 255);
+	//printf("	%d\n", sizeof(ptmp.data));
+	//printf("1:	%d\n", paloffset);
+	map.tiles->data->offset=(paloffset/3);
+	modexPalUpdate(map.tiles->data, &paloffset, 0, 0);*/
 	VL_LoadPalFile(bakapee1p, &gvar.video.palette);
+	//VL_LoadPalFile("data/default.pal", &gvar.video.palette);
 
 #ifdef FADE
 	gpal = modexNewPal();
@@ -139,6 +147,7 @@ void main(int argc, char *argv[])
 	gvar.video.page[0].tlx=mv[0].tx*TILEWH;
 	gvar.video.page[0].tly=mv[0].ty*TILEWH;
 	shinku(&gvar);
+//modexpdump(mv[0].page);
 #ifdef FADE
 	modexFadeOn(4, gpal);
 #endif
@@ -163,7 +172,7 @@ void main(int argc, char *argv[])
 
 		//the scripting stuff....
 		//if(((player[0].enti.triggerx == TRIGGX && player[0].enti.triggery == TRIGGY) && IN_KeyDown(0x1C))||(player[0].enti.tx == 5 && player[0].enti.ty == 5))
-		if(((mv[0].map->data[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))] == 0) && IN_KeyDown(0x1C))||(player[0].enti.tx == 5 && player[0].enti.ty == 5))
+		if(((mv[0].map->MAPDATAPTR[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))] == 0) && IN_KeyDown(0x1C))||(player[0].enti.tx == 5 && player[0].enti.ty == 5))
 		{
 			short i;
 			for(i=800; i>=400; i--)
@@ -175,8 +184,8 @@ void main(int argc, char *argv[])
 		if(player[0].enti.q == (TILEWH/(player[0].enti.speed))+1 && player[0].info.dir != 2 && (player[0].enti.triggerx == 5 && player[0].enti.triggery == 5)){ player[0].enti.hp--; }
 		//debugging binds!
 
-		if(IN_KeyDown(24)){ modexPalUpdate0(gpal); /*paloffset=0;*/ modexpdump(mv[0].page); IN_UserInput(1,1); } //o
-		if(IN_KeyDown(22)){ modexPalUpdate0(gpal); } //u
+		if(IN_KeyDown(24)){ modexPalUpdate0(&gvar.video.palette); /*paloffset=0;*/ modexpdump(mv[0].page); IN_UserInput(1,1); } //o
+		if(IN_KeyDown(22)){ modexPalUpdate0(&gvar.video.palette); } //u
 
 		FUNCTIONKEYFUNCTIONS
 		FUNCTIONKEYDRAWJUNK

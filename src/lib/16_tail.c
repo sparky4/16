@@ -46,9 +46,9 @@ void Startup16(global_game_variables_t *gvar)
 
 	// DOSLIB: what CPU are we using?
 	// NTS: I can see from the makefile Sparky4 intends this to run on 8088 by the -0 switch in CFLAGS.
-	//      So this code by itself shouldn't care too much what CPU it's running on. Except that other
-	//      parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
-	//      the CPU to carry out tasks. --J.C.
+	//	  So this code by itself shouldn't care too much what CPU it's running on. Except that other
+	//	  parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
+	//	  the CPU to carry out tasks. --J.C.
 	cpu_probe();
 
 	// DOSLIB: check for VGA
@@ -125,10 +125,10 @@ void Shutdown16(global_game_variables_t *gvar)
 
 /*void ReadConfig(void)
 {
-	int                     file;
-	SDMode          sd;
-	SMMode          sm;
-	SDSMode         sds;
+	int					 file;
+	SDMode		  sd;
+	SMMode		  sm;
+	SDSMode		 sds;
 
 
 	if ( (file = open(configname,O_BINARY | O_RDONLY)) != -1)
@@ -227,7 +227,7 @@ void Shutdown16(global_game_variables_t *gvar)
 
 /*void WriteConfig(void)
 {
-	int                     file;
+	int					 file;
 
 	file = open(configname,O_CREAT | O_BINARY | O_WRONLY,
 				S_IREAD | S_IWRITE | S_IFREG);
@@ -275,9 +275,9 @@ void DebugMemory_(global_game_variables_t *gvar, boolean q)
 
 	US_CPrint ("Memory Usage");
 	US_CPrint ("------------");
-	US_Print ("Total     :");
+	US_Print ("Total	 :");
 	US_PrintUnsigned (mminfo.mainmem/1024);
-	US_Print ("k\nFree      :");
+	US_Print ("k\nFree	  :");
 	US_PrintUnsigned (MM_UnusedMemory()/1024);
 	US_Print ("k\nWith purge:");
 	US_PrintUnsigned (MM_TotalFree()/1024);
@@ -326,7 +326,7 @@ void ClearMemory (global_game_variables_t *gvar)
 
 void Quit (global_game_variables_t *gvar, char *error)
 {
-	//unsigned        finscreen;
+	//unsigned		finscreen;
 	memptr	screen=0;
 
 	ClearMemory (gvar);
@@ -372,6 +372,7 @@ void Quit (global_game_variables_t *gvar, char *error)
 }
 
 //===========================================================================
+
 #ifndef __WATCOMC__
 char global_temp_status_text[512];
 char global_temp_status_text2[512];
@@ -409,7 +410,7 @@ void turboXT(byte bakapee)
 	out	61h, al 			//; Turn speaker on
 	mov	cx, 2000h
 @@delay:
-	loop    @@delay
+	loop	@@delay
 	pop	ax
 	out	61h, al 			//; Turn speaker off
 	pop	cx
