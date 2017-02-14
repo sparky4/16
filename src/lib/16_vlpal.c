@@ -30,35 +30,61 @@ void modexchkcolor(imgtestpal_t *bmp, word *q, word *a, word *aa, word *z, word 
 		word zz=0;
 		pal = modexNewPal();
 		modexPalSave(pal);
-		CHKCOLDBGOUT1
+#ifdef BEVERBOSEPALCHECK
+		printf("q: %02d\n", (*q));//
+
+		printf("chkcolor start~\n");
+		printf("1				   (*z): %d\n", (*z)/3);
+		printf("1				   (*i): %d\n", (*i)/3);
+		printf("1 offset of color in palette	(*q): %d\n", (*q)/3);//
+		printf("wwwwwwwwwwwwwwww\n");
+#endif
 		//check palette for dups
-		for(; (*z)<PAL_SIZE; (*z)+=3)
+		for(; (*z)<PAL_SIZE/24; (*z)+=3)
 		{
-			CHKCOLDBGOUT2
+#ifdef BEVERBOSEPALCHECK
+			printf("\n		z: %d\n", (*z));//
+			printf("		  q: %d\n", (*q));//
+			printf("		  z+q: %d\n\n", ((*z)+(*q)));//
+#endif
 			//if((*z)%3==0)
 			//{
 //----			  if(pal[(*z)]==pal[(*z)+3] && pal[(*z)+1]==pal[(*z)+4] && pal[(*z)+2]==pal[(*z)+5])
 				if((*z)==(*i))
 				{
-					CHKCOLDBGOUT3
+#ifdef BEVERBOSEPALCHECK
+					  printf("\n%d	[%02d][%02d][%02d]\n", (*z), pal[(*z)], pal[(*z)+1], pal[(*z)+2]);//
+					  printf("%d	  [%02d][%02d][%02d]\n\n", (*z)+3, pal[(*z)+3], pal[(*z)+4], pal[(*z)+5]);//
+#endif
 //0000				  (*z)-=3;
 					break;
 				}
 				else for(zz=0; zz<(*q); zz+=3)
 				{
-					CHKCOLDBGOUT4
+#ifdef BEVERBOSEPALCHECK
+					printf("zz: %02d\n", zz/3);//
+#endif
 					if(zz%3==0)
 					{
 						if(pal[((*z)+(*q))]==pal[((*z)+(*q))+3] && pal[((*z)+(*q))+1]==pal[((*z)+(*q))+4] && pal[((*z)+(*q))+2]==pal[((*z)+(*q))+5])	//break if duplicate colors found in palette because it have reached the end of the current data of the palette
 						{
 //							  (*z)-=3;
 //							  (*i)-=3;
-							CHKCOLDBGOUT5
+#ifdef BEVERBOSEPALCHECK
+							  printf("\nzq1:%d[%02d][%02d][%02d]\n", (zz+*q), pal[(zz+*q)], pal[(zz+*q)+1], pal[(zz+*q)+2]);//
+							  printf("zq2:%d[%02d][%02d][%02d]\n\n", (zz+*q)+3, pal[(zz+*q)+3], pal[(zz+*q)+4], pal[(zz+*q)+5]);//
+#endif
 							break;
 						}
 						else if(pal[zz]==pal[((*z)+(*q))] && pal[zz+1]==pal[((*z)+(*q))+1] && pal[zz+2]==pal[((*z)+(*q))+2])
 						{
-							CHKCOLDBGOUT6
+#ifdef BEVERBOSEPALCHECK
+							  printf("\n\nwwwwwwwwwwwwwwww\n");//
+							  printf("	zq: %d  [%02d][%02d][%02d] value that is needing to be changed~\n", ((*z)+(*q))/3, pal[((*z)+(*q))], pal[((*z)+(*q))+1], pal[((*z)+(*q))+2]);//
+							  printf("	zz: %d  [%02d][%02d][%02d] value that the previous value is going to change to~\n", (zz)/3, pal[zz], pal[zz+1], pal[zz+2]);//
+							  //printf("	  zv: %d  [%02d][%02d][%02d] wwww\n", (zz-z+q)/3, pal[(zz-z+q)], pal[(zz-z+q)+1], pal[(zz-z+q)+2]);//
+							  printf("	z : %d  [%02d][%02d][%02d] offset value~\n", (*z)/3, pal[(*z)], pal[(*z)+1], pal[(*z)+2]);//
+#endif
 //++++						  (*i)--;
 //							  (*z)--;
 							//expand dong here
@@ -70,11 +96,18 @@ no... wait.... no wwww
 */
 							//for(zzii=0; zzii<3; zzii++)
 							//{
-								CHKCOLDBGOUT7
+#ifdef BEVERBOSEPALCHECK
+								printf("z+q: %d\n\n", ((*z)+(*q)));
+#endif
 								a[(((*z)+(*q)))]=zz;
 							//}
 							(*aa)=(((*z)+(*q)));
-							CHKCOLDBGOUT8
+#ifdef BEVERBOSEPALCHECK
+							printf("!!					  a[%02d]: %d\n", (((*z)+(*q))/3), zz/3);
+							  printf("\n		  aa: %d\n\n", (*aa));//
+							  printf("	a[%02d]=(%02d) offset array i think the palette should be updated again~\n", ((*z)+(*q))/3, a[((*z)+(*q))/3]);//
+							  printf("wwwwwwwwwwwwwwww\n\n");//
+#endif
 						}
 						/*else
 						{
@@ -84,11 +117,19 @@ no... wait.... no wwww
 							printf("z : %d  [%02d][%02d][%02d]\n", (*z)/3, pal[(*z)], pal[(*z)+1], pal[(*z)+2]);
 							printf("================\n");
 						}*/
-						CHKCOLDBGOUT9
+#ifdef BEVERBOSEPALCHECK
+						printf("[%d]", (zz+*q));//
+#endif
 					}
 				}
 		}
-		CHKCOLDBGOUT10
+#ifdef BEVERBOSEPALCHECK
+		printf("wwwwwwwwwwwwwwww\n");
+		printf("2				   (*z): %d\n", (*z)/3);
+		printf("2				   (*i): %d\n", (*i)/3);
+		printf("2 offset of color in palette	(*q): %d\n", (*q)/3);//
+		printf("chkcolor end~\n");
+#endif
 		//free(pal);
 }
 
@@ -126,7 +167,7 @@ VL_palette(imgtestpal_t *bmp, byte *p, word *i, word qp, word aqoffset)
 	}
 	if((*i)<PAL_SIZE && w==0)
 	{
-		for(; (*i)<PAL_SIZE; (*i)++)
+		for(; (*i)<PAL_SIZE/24; (*i)++)
 		{
 			//if(i%3==0 && (p[i+5]==p[i+4] && p[i+4]==p[i+3] && p[i+3]==p[i+2] && p[i+2]==p[i+1] && p[i+1]==p[i] && p[i+5]==p[i]))
 //____		  if((qp>0)&&((*i)-q)%3==0 && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5])) outp(PAL_DATA_REG, p[(*i)-q]); else

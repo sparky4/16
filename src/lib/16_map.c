@@ -32,7 +32,7 @@ int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 	return -1;
 }
 
-/*//this function is quite messy ^^; sorry! it is a quick and dirty fix~
+//this function is quite messy ^^; sorry! it is a quick and dirty fix~
 word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, map_t *map, dword q) {
 	dword i;
 	word j;//, k;
@@ -53,18 +53,18 @@ word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, 
 	if (count == 0) {
 		return 0;
 	}
-	// We may want to do strtol() here to get numeric value
+	/* We may want to do strtol() here to get numeric value */
 //0000fprintf(stderr, "t->type=%d\n", t->type);
 	if (t->type == JSMN_PRIMITIVE) {
 		if(strstr(js_sv, "data"))
 		{
-			//
-			//	here we should recursivly call dump again here to skip over the array until we get the width of the map.
-			//	so we can initiate the map which allocates the facking map->tiles ->data->data properly and THEN we can return
-			//	here to read the data.... That is my design for this... wwww
+			/*
+				here we should recursivly call dump again here to skip over the array until we get the facking width of the map.
+				so we can initiate the map which allocates the facking map->tiles->data->data properly and THEN we can return
+				here to read the data.... That is my design for this... wwww
 
-			//	well i am stuck.... wwww
-			//
+				FUCK well i am stuck.... wwww
+			*/
 			map->data[q] = (byte)atoi(js+t->start);
 			#ifdef DEBUG_MAPDATA
 				fprintf(stdout, "%d[%d]", q, map->data[q]);
@@ -87,7 +87,7 @@ word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, 
 			#endif
 		}
 		return 1;
-		// We may use strndup() to fetch string value
+		/* We may use strndup() to fetch string value */
 	} else if (t->type == JSMN_STRING) {
 		if(jsoneq(js, t, "data") == 0)
 		{
@@ -101,8 +101,8 @@ word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, 
 //			bp = bitmapLoadPcx("data/koishi^^.pcx");
 			map->tiles->btdata = &bp;
 //----			map->tiles->data = planar_buf_from_bitmap(&bp);
-			//map->tiles->data->data = malloc((16)*16);
-			//map->tiles->data->width = (16/);
+			//map->tiles->data->data = malloc((16/**2*/)*16);
+			//map->tiles->data->width = (16/**2*/);
 			//map->tiles->data->height= 16;
 			map->tiles->tileHeight = 16;
 			map->tiles->tileWidth = 16;
@@ -164,10 +164,10 @@ int loadmap(char *mn, map_t *map, global_game_variables_t *gvar)
 
 	FILE *fh = fopen(mn, "r");
 
-	// Prepare parser
+	/* Prepare parser */
 	jsmn_init(&p);
 
-	// Allocate some tokens as a start
+	/* Allocate some tokens as a start */
 //0000fprintf(stderr, "tok malloc\n");
 	tok = malloc(sizeof(*tok) * tokcount);
 	if (tok == NULL) {
@@ -176,7 +176,7 @@ int loadmap(char *mn, map_t *map, global_game_variables_t *gvar)
 	}
 
 	for (;;) {
-		// Read another chunk
+		/* Read another chunk */
 //0000fprintf(stderr, "read\n");
 		r = fread(buf, 1, sizeof(buf), fh);
 		if (r < 0) {
@@ -205,9 +205,9 @@ int loadmap(char *mn, map_t *map, global_game_variables_t *gvar)
 again:
 //0000fprintf(stdout, "	parse~ tok=%zu	jslen=%zu	r=%d	_memavl()=%u	BUFSIZ=%d~\n", tokcount, jslen, r, _memavl(), BUFSIZ);
 //0000fprintf(stdout, "p=[%u]	[%u]	[%d]\n", p.pos, p.toknext, p.toksuper);
-//
-//		I think it crashes on the line below when it tries to parse the data of huge maps... wwww this is a jsmn problem wwww
-//
+/*
+		I think it crashes on the line below when it tries to parse the data of huge maps... wwww this is a jsmn problem wwww
+*/
 		r = jsmn_parse(&p, js, jslen, tok, tokcount);
 //0000fprintf(stdout, "r=	[%d]\n", r);
 		if (r < 0) {
@@ -246,18 +246,17 @@ again:
 	//fclose(fh);
 
 	return 0;
-}*/
+}
 
 void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 	int i, j, k, indent=0, inner_end;
-	char *s;
 	//bitmap_t bp;
 
 	i = 0;
 	while(i<count) {
 		if(jsoneq(js, &(t[i]), "layers") == 0) {
 			i++;
-//			map->layerdata = malloc(sizeof(byte*) * t[i].size);
+			map->layerdata = malloc(sizeof(byte*) * t[i].size);
 			inner_end = t[i].end;
 			k = 0;
 			while(t[i].start < inner_end) {
@@ -269,12 +268,13 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 					printf("Layer %d data: [\n", k);
 #endif
 					map->layerdata[k] = malloc(sizeof(byte) * t[i+1].size);
-					//for backwards compatibility for rest of code
 					map->data = map->layerdata[k];
 					for(j = 0; j < t[i+1].size; j++) {
 						map->layerdata[k][j] = (byte)atoi(js + t[i+2+j].start);
+						//for backwards compatibility for rest of code
+//						map->data[j] = map->layerdata[k][j];//(byte)atoi(js + t[i+2+j].start);//(byte)atoi(js+t->start);
 #ifdef DEBUG_MAPDATA
-						//printf("[%d,%d]%d", k, j, map->MAPDATAPTK[j]);
+						//printf("[%d,%d]%d", k, j, map->layerdata[k][j]);
 						fprintf(stdout, "%c", map->data[j]+44);
 #endif
 					}
@@ -290,32 +290,32 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 		}
 		if(jsoneq(js, &(t[i]), "tilesets") == 0) {
 			i++;
+			map->tiles = malloc(sizeof(tiles_t*) * t[i].size);
 			inner_end = t[i].end;
 			k = 0;
 			while(t[i].start < inner_end) {
 				if(jsoneq(js, &(t[i]), "image") == 0) {
-					map->MAPTILESPTK = malloc(sizeof(tiles_t));
-					s = remove_ext((char *)js+t[i+1].start, '.', '/');
-					strcpy(map->MAPTILESPTK->imgname, s);
+					map->layertile[k] = malloc(sizeof(tiles_t));
+					//Fix to load tileset specified.
 					//And move to vrs, probably
 //					bp = bitmapLoadPcx("data/ed.pcx");
-//					map->MAPTILESPTK->btdata = &bp;
-					//map->MAPTILESPTK->btdata = malloc(sizeof(bitmap_t));
-					map->MAPTILESPTK->rows = 1;
-					map->MAPTILESPTK->cols = 1;
+//					map->layertile[k]->btdata = &bp;
+					map->layertile[k]->btdata = malloc(sizeof(bitmap_t));
+					map->layertile[k]->tileHeight = 16;
+					map->layertile[k]->tileWidth = 16;
+					map->layertile[k]->rows = 1;
+					map->layertile[k]->cols = 1;
 #ifdef __DEBUG_MAP__
 					dbg_maptext=false;
 #endif
-					i++;
-				}else if(jsoneq(js, &(t[i]), "tileheight") == 0) {
-					map->MAPTILESPTK->tileHeight = atoi(js + t[i+1].start);
-					i++;
-				}else if(jsoneq(js, &(t[i]), "tilewidth") == 0) {
-					map->MAPTILESPTK->tileWidth = atoi(js + t[i+1].start);
-					i++;
+					map->tiles->btdata = map->layertile[k]->btdata;
+					map->tiles->tileHeight = 16;
+					map->tiles->tileWidth = 16;
+					map->tiles->rows = 1;
+					map->tiles->cols = 1;
+					k++;
 				}
 				i++;
-				k++;
 			}
 		}
 

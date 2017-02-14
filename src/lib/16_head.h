@@ -198,9 +198,6 @@ typedef union REGPACK	regs_t;
 
 /* local function */
 long int filesize(FILE *fp);
-char *remove_ext(char* mystr, char dot, char sep);
-void rotateR(byte arr[], byte n);
-void rotateL(byte arr[], byte n);
 void printmeminfoline(byte *strc, const byte *pee, size_t h_total, size_t h_used, size_t h_free);
 int US_CheckParm(char *parm,char **strings);
 byte dirchar(byte in);

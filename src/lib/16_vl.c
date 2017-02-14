@@ -689,7 +689,18 @@ modexLoadPalFile(byte *filename, byte **palette) {
 
 void VL_LoadPalFile(const char *filename, byte *palette)
 {
-	VL_LoadPalFilewithoffset(filename, palette, 0);
+	int fd;
+
+	fd = open(filename,O_RDONLY|O_BINARY);
+	if (fd >= 0) {
+		word i;
+
+		read(fd,palette,	PAL_SIZE);
+		close(fd);
+
+		vga_palette_lseek(0);
+		for (i=0;i < 256;i++) vga_palette_write(palette[(i*3)+0]>>2,palette[(i*3)+1]>>2,palette[(i*3)+2]>>2);
+	}
 }
 
 void VL_LoadPalFilewithoffset(const char *filename, byte *palette, word o)
@@ -698,19 +709,16 @@ void VL_LoadPalFilewithoffset(const char *filename, byte *palette, word o)
 
 	fd = open(filename,O_RDONLY|O_BINARY);
 	if (fd >= 0) {
+		word i;
+
 		read(fd,palette,	PAL_SIZE);
 		close(fd);
 
-		VL_UpdatePaletteWrite(palette, o);
+		vga_palette_lseek(o);
+		for (i=o;i < 256-o;i++) vga_palette_write(palette[(i*3)+0]>>2,palette[(i*3)+1]>>2,palette[(i*3)+2]>>2);
 	}
 }
 
-void VL_UpdatePaletteWrite(byte *palette, word o)
-{
-	word i;
-	vga_palette_lseek(/*1+*/o);
-	for (i=o;i < 256-o;i++) vga_palette_write(palette[(i*3)+0]>>2,palette[(i*3)+1]>>2,palette[(i*3)+2]>>2);
-}
 
 void
 modexSavePalFile(char *filename, byte *pal) {
@@ -859,20 +867,15 @@ void modexDrawChar(page_t *page, int x/*for planar selection only*/, word t, wor
 	}
 }
 
-void modexprint(page_t *page, sword x, sword y, word t, word col, word bgcol, const byte *str)
+void modexprint(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str)
 {
 	word s, o, w;
-	word x_draw;
+	word x_draw = x;
 	//word addr = (word) romFontsData.l;
-	word addrq;
-	word addrr;
+	word addrq = (page->stridew) * y + (x / 4) + ((word)page->data);
+	word addrr = addrq;
 	byte c;
 
-	x-=page->tlx; y-=page->tly;
-	x_draw = x/4;
-	addrq = (page->stridew) * y + (word)(x_draw) +
-		((word)page->data);
-	addrr = addrq;
 	s=romFonts[t].seg;
 	o=romFonts[t].off;
 	w=romFonts[t].charSize;
@@ -880,16 +883,16 @@ void modexprint(page_t *page, sword x, sword y, word t, word col, word bgcol, co
 
 	for(; *str != '\0'; str++)
 	{
-		c = (*str);
-		if(c=='\n')
-		{
-			x = x_draw;
-			romFontsData.chw = 0;
-			addrq += (page->stridew) * 8;
-			addrr = addrq;
-			y += 8;
-			continue;
-		}
+	c = (*str);
+	if(c=='\n')
+	{
+		x = x_draw;
+		romFontsData.chw = 0;
+		addrq += (page->stridew) * 8;
+		addrr = addrq;
+		y += 8;
+		continue;
+	}
 
 	// load the character into romFontsData.l
 	// no need for inline assembly!
@@ -899,7 +902,6 @@ void modexprint(page_t *page, sword x, sword y, word t, word col, word bgcol, co
 		x_draw += 8; /* track X for edge of screen */
 		addrr += 2; /* move 8 pixels over (2 x 4 planar pixels per byte) */
 	}
-	//printf("print xy:%dx%d	tlxy:%dx%d\n", x, y, page->tlx, page->tly);
 }
 
 void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str)
@@ -1002,8 +1004,8 @@ void modexpdump(page_t *pee)
 	int palq=(mult)*TILEWH;
 	int palcol=0;
 	int palx, paly;
-	for(paly=TILEWH*8; paly<palq+TILEWH*8; paly+=mult){
-		for(palx=TILEWH*12; palx<palq+TILEWH*12; palx+=mult){
+	for(paly=0; paly<palq; paly+=mult){
+		for(palx=0; palx<palq; palx+=mult){
 				modexClearRegion(pee, palx+TILEWH, paly+TILEWH, mult, mult, palcol);
 			palcol++;
 		}
