@@ -567,38 +567,34 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 	word ry;
 	//word textx=0, texty=0;
 	//if(i==0) i=2;
-	if(i==0)
+	switch(i)
 	{
-		//wwww
-		modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, 1); //currently the over scan color!
-	}
-	else
-	{
-		rx = (((i-1) % ((t->pcximg->width)/t->tileWidth)) * t->tileWidth);
-		ry = (((i-1) / ((t->pcximg->height)/t->tileHeight)) * t->tileHeight);
+		case 0:
+			//wwww
+			modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, 1); //currently the over scan color!
+		break;
+		default:
+			rx = (((i-1) % ((t->pcximg->width)/t->tileWidth)) * t->tileWidth);
+			ry = (((i-1) / ((t->pcximg->height)/t->tileHeight)) * t->tileHeight);
 ////0000printf("i=%d\n", i);
-#ifdef __DEBUG_MAP__
-		switch(dbg_maptext)
-		{
-			case 0:
-#endif
 #ifndef TILERENDER
-				if(!pagenorendermap) modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, i+1);
+			if(!pagenorendermap) modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, i+1);
 #else
-				modexDrawBmpRegion		(page, x, y, rx, ry, t->tileWidth, t->tileHeight, i);
-				/* then the sprite. note modding ram ptr means we just draw to (x&3,0) */
-				//draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
-				//modexDrawBmpRegion	(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
+			modexDrawBmpRegion		(page, x, y, rx, ry, t->tileWidth, t->tileHeight, i);
+			//draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
+			//modexDrawBmpRegion	(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
 #endif
-#ifdef __DEBUG_MAP__
-			break;
-			case 1:
-				if(!pagenorendermap) modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, i);
-				sprintf(global_temp_status_text2, "%d", i);
-				modexprint(page, x, y, 1, 1, 2, global_temp_status_text2);
-			break;
-		}
-#endif
+/*#ifdef __DEBUG_MAP__
+			switch(dbg_maptext)
+			{
+				case 0:
+				break;
+				case 1:
+					sprintf(global_temp_status_text2, "%u", i); modexprint(page, x, y, 1, 1, 2, global_temp_status_text2);
+				break;
+			}
+#endif*/
+		break;
 	}
 }
 

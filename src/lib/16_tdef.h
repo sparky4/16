@@ -64,18 +64,16 @@ typedef struct {
 	byte *palette;
 } planar_buf_t;
 
+//===========================================================================//
+
 //TODO: 16_mm and 16_ca must handle this
 typedef struct {
-	bitmap_t far *pcximg;		//old
-	//planar_buf_t far *data;	//old
+	bitmap_t far *pcximg;		//I will probibaly use this --sparky4
+	//planar_buf_t far *pbdata;	//old
 	word tileHeight, tileWidth;	//defined by mapfile
 	unsigned int rows, cols;
-// 	#ifdef __DEBUG__
-// 	boolean debug_text;	//show the value of the tile! wwww
-// 	byte *debug_data;
-// 	#endif
-	byte	imgname[8];		//image file of tileset
-} tiles_t;
+	byte	imgname[8];		//image file of tileset (set to 8 because DOS ^^;)
+} tiles_t;	//seems to be the tileset properties
 
 //TODO: 16_mm and 16_ca must handle this
 //TODO: add variables from 16_ca
@@ -99,12 +97,14 @@ typedef struct {
 	byte *data;			//TODO: 16_mm and 16_ca must handle this
 	tiles_t *tiles;		//TODO: 16_mm and 16_ca must handle this
 #else
-	byte * far *layerdata;
-	tiles_t far *layertile[MAPLAYERS];
+	byte far *layerdata[MAPLAYERS];	// mapdata for multilayer (map index values for rendering which image on the tile)
+	tiles_t far *layertile[MAPLAYERS];	// tilesets for layers (currently ony 4 can be loaded wwww)
 #endif
 	int width, height;		//this has to be signed!
 	byte name[16];
 } map_t;
+
+//===================================//
 
 typedef struct{
 	word tw;		/* screen width in tiles */

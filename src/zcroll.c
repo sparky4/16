@@ -147,7 +147,7 @@ void main(int argc, char *argv[])
 	gvar.video.page[0].tlx=mv[0].tx*TILEWH;
 	gvar.video.page[0].tly=mv[0].ty*TILEWH;
 	shinku(&gvar);
-	modexpdump(mv[0].page);
+//modexpdump(mv[0].page);
 #ifdef FADE
 	modexFadeOn(4, gpal);
 #endif
