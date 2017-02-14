@@ -160,7 +160,6 @@ bitmapLoadPcx(char *filename, global_game_variables_t *gv) {
 }
 
 //TODO: update!!
-/*
 tileset_t
 bitmapLoadPcxTiles(char *filename, word twidth, word theight) {
 	tileset_t ts;
@@ -168,33 +167,33 @@ bitmapLoadPcxTiles(char *filename, word twidth, word theight) {
 	bitmap_t result;
 	int i;
 
-	// open the PCX file for reading
+	/* open the PCX file for reading */
 	file = fopen(filename, "rb");
 	if(!file) {
 		printf("Could not open %s for reading.\n", filename);
 		exit(-2);
 	}
 
-	// load the first part of the pcx file
+	/* load the first part of the pcx file */
 	loadPcxStage1(file, &result);
 
-	// get the number of tiles and set up the result structure
+	/* get the number of tiles and set up the result structure */
 	ts.twidth = twidth;
 	ts.theight = theight;
 	ts.ntiles = (result.width/twidth) * (result.height/theight);
 	ts.palette = result.palette;
 
-	// allocate the pixel storage for the tiles
+	/* allocate the pixel storage for the tiles */
 	ts.data = _fmalloc(sizeof(byte*) * ts.ntiles);
 	//ts.data[0] = malloc(sizeof(byte) * ts.ntiles * twidth * theight);
 	for(i=1; i < ts.ntiles; i++) {
 		ts.data[i] = ts.data[i-1] + twidth * theight;
 	}
 
-	// finish off the file
+	/* finish off the file */
 	loadPcxPalette(file, &result);
 
 	fclose(file);
 
 	return ts;
-}*/
+}

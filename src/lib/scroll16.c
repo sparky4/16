@@ -563,43 +563,42 @@ void ZC_mapredraw(map_view_t *mv, int tx, int ty)
 void near
 mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 {
-	word rx, ry;
+	word rx;
+	word ry;
 	//word textx=0, texty=0;
 	//if(i==0) i=2;
-	switch(i)
+	if(i==0)
 	{
-		case 0:
 		//wwww
-			modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, 0); //currently the over scan color!
-		break;
-		case 1:
-			rx = (((i-1) % ((t->tileset.data->width)/t->tileWidth)) * t->tileWidth);
-			ry = (((i-1) / ((t->tileset.data->height)/t->tileHeight)) * t->tileHeight);
-//			rx = (((i-1) % ((t->spri->sprite_vrl_cont->vrl_header->width)/t->tileWidth)) * t->tileWidth);
-//			ry = (((i-1) / ((t->spri->sprite_vrl_cont->vrl_header->height)/t->tileHeight)) * t->tileHeight);
+		modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, 1); //currently the over scan color!
+	}
+	else
+	{
+		rx = (((i-1) % ((t->data->width)/t->tileWidth)) * t->tileWidth);
+		ry = (((i-1) / ((t->data->height)/t->tileHeight)) * t->tileHeight);
 ////0000printf("i=%d\n", i);
-#ifndef TILERENDER
-			if(!pagenorendermap) modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, i+1);
-#else
-			//modexDrawBmpRegion		(page, x, y, rx, ry, t->tileWidth, t->tileHeight, i);
-			/* then the sprite. note modding ram ptr means we just draw to (x&3,0) */
-			//draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
-			//modexDrawBmpRegion	(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
-			//drawmap here
-#endif
 #ifdef __DEBUG_MAP__
 		switch(dbg_maptext)
 		{
 			case 0:
-
+#endif
+#ifndef TILERENDER
+				if(!pagenorendermap) modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, i+1);
+#else
+				modexDrawBmpRegion		(page, x, y, rx, ry, t->tileWidth, t->tileHeight, i);
+				/* then the sprite. note modding ram ptr means we just draw to (x&3,0) */
+				//draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
+				//modexDrawBmpRegion	(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
+#endif
+#ifdef __DEBUG_MAP__
 			break;
 			case 1:
+				if(!pagenorendermap) modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, i);
 				sprintf(global_temp_status_text2, "%d", i);
-				modexprint(page, x+8, y+8, 1, 1, 2, global_temp_status_text2);
+				modexprint(page, x, y, 1, 1, 2, global_temp_status_text2);
 			break;
 		}
 #endif
-		break;
 	}
 }
 

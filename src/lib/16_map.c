@@ -296,7 +296,7 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 				if(jsoneq(js, &(t[i]), "image") == 0) {
 					map->MAPTILESPTK = malloc(sizeof(tiles_t));
 					s = remove_ext((char *)js+t[i+1].start, '.', '/');
-					strcpy(map->MAPTILESPTK->tileset.imgname, s);
+					strcpy(map->MAPTILESPTK->imgname, s);
 					//And move to vrs, probably
 //					bp = bitmapLoadPcx("data/ed.pcx");
 //					map->MAPTILESPTK->btdata = &bp;

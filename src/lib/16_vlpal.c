@@ -32,7 +32,7 @@ void modexchkcolor(imgtestpal_t *bmp, word *q, word *a, word *aa, word *z, word 
 		modexPalSave(pal);
 		CHKCOLDBGOUT1
 		//check palette for dups
-		for(; (*z)<PAL_SIZE-3; (*z)+=3)
+		for(; (*z)<PAL_SIZE; (*z)+=3)
 		{
 			CHKCOLDBGOUT2
 			//if((*z)%3==0)
@@ -99,7 +99,7 @@ VL_palette(imgtestpal_t *bmp, byte *p, word *i, word qp, word aqoffset)
 	word w=0;
 	word q=0;
 	word qq=0;
-	static word a[PAL_SIZE-3];	//palette array of change values!
+	static word a[PAL_SIZE];	//palette array of change values!
 	word z=0, aq=0, aa=0, pp=0;
 
 	//modexWaitBorder();
@@ -107,7 +107,7 @@ VL_palette(imgtestpal_t *bmp, byte *p, word *i, word qp, word aqoffset)
 	if((*i)==0)
 	{
 		memset(a, -1, sizeof(a));
-		outp(PAL_WRITE_REG, 1);  /* start at the beginning of palette */
+		outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
 	}
 	else if(qp==0)
 	{
@@ -124,9 +124,9 @@ VL_palette(imgtestpal_t *bmp, byte *p, word *i, word qp, word aqoffset)
 #endif
 		outp(PAL_WRITE_REG, qq);  /* start at the beginning of palette */
 	}
-	if((*i)<PAL_SIZE-3 && w==0)
+	if((*i)<PAL_SIZE && w==0)
 	{
-		for(; (*i)<PAL_SIZE-3; (*i)++)
+		for(; (*i)<PAL_SIZE; (*i)++)
 		{
 			//if(i%3==0 && (p[i+5]==p[i+4] && p[i+4]==p[i+3] && p[i+3]==p[i+2] && p[i+2]==p[i+1] && p[i+1]==p[i] && p[i+5]==p[i]))
 //____		  if((qp>0)&&((*i)-q)%3==0 && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5])) outp(PAL_DATA_REG, p[(*i)-q]); else
