@@ -31,7 +31,7 @@ main(int argc, char *argv[])
 	map_t map;
 #ifdef DUMP
 #ifdef DUMP_MAP
-	short i;
+	short i,k;
 #endif
 #endif
 	char *fmt = "Memory available = %u\n";
@@ -58,15 +58,19 @@ main(int argc, char *argv[])
 	fprintf(stdout, "map.height=	%d\n", map.height);
 	#ifdef DUMP_MAP
 	//if(map.width*map.height != 1200)
-	for(i=0; i<(map.width*map.height); i++)
+	for(k=0;k<MAPLAYERS;k++)
 	{
-		//fprintf(stdout, "%04d[%02d]", i, map.data[i]);
-		fprintf(stdout, "%c", map.MAPDATAPTR[i]+44);
-		if(!((i+1)%map.width)){
-			//fprintf(stdout, "[%d]", i);
-			fprintf(stdout, "\n"); }
+		for(i=0; i<(map.width*map.height); i++)
+		{
+			//fprintf(stdout, "%04d[%02d]", i, map.data[i]);
+			fprintf(stdout, "%c", map.MAPDATAPTR[i]+44);
+			if(!((i+1)%map.width)){
+				//fprintf(stdout, "[%d]", i);
+				fprintf(stdout, "\n"); }
+		}
+		fprintf(stdout, "\n");
+		getch();
 	}
-	fprintf(stdout, "\n");
 	#else
 	//fprintf(stderr, "contents of the buffer\n[\n%s\n]\n", (gvar.ca.camap.mapsegs));
 	#endif

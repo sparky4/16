@@ -48,95 +48,6 @@ typedef struct {
 	word offset;
 } bitmap_t;
 
-typedef struct {
-	byte far **data;
-	word ntiles;   /* the number of tiles */
-	word twidth;   /* width of the tiles */
-	word theight;  /* height of the tiles */
-	byte *palette; /* palette for the tile set */
-} tileset_t;
-
-typedef struct {
-	byte far *plane[4];	// 4 planes of image data
-	word width;			// width of the image (spread across 4 planes)
-	word height;		// height of the image (spread across 4 planes)
-	word pwidth;		// the number of bytes in each plane
-	byte *palette;
-} planar_buf_t;
-
-//TODO: 16_mm and 16_ca must handle this
-typedef struct {
-	bitmap_t far *data;		//old
-	//planar_buf_t far *data;	//old
-	word tileHeight, tileWidth;
-	unsigned int rows, cols;
-// 	#ifdef __DEBUG__
-// 	boolean debug_text;	//show the value of the tile! wwww
-// 	byte *debug_data;
-// 	#endif
-	byte	imgname[8];		//image file of tileset
-} tiles_t;
-
-//TODO: 16_mm and 16_ca must handle this
-//TODO: add variables from 16_ca
-//#define __NEWMAPTILEDATAVARS__
-
-#ifdef __NEWMAPTILEDATAVARS__
-#define MAPLAYERS 4
-#define MAPTILESPTR		layertile[0]
-#define MAPTILESPTK		layertile[k]
-#define MAPDATAPTR		layerdata[0]
-#define MAPDATAPTK		layerdata[k]
-#else
-#define MAPTILESPTR		tiles//layertile[0]
-#define MAPTILESPTK		tiles//layertile[k]
-#define MAPDATAPTR		data//layerdata[0]
-#define MAPDATAPTK		data//layerdata[k]
-#endif
-typedef struct {
-	//long		planestart[3];
-	//unsigned	planelength[3];
-#ifndef __NEWMAPTILEDATAVARS__
-	byte *data;			//TODO: 16_mm and 16_ca must handle this
-	tiles_t *tiles;		//TODO: 16_mm and 16_ca must handle this
-#else
-	byte * far *layerdata;	//TODO: 16_mm and 16_ca must handle this
-	tiles_t far *layertile[MAPLAYERS];	//TODO: 16_mm and 16_ca must handle this
-#endif
-	int width, height;		//this has to be signed!
-	byte name[16];
-} map_t;
-
-typedef struct{
-	word tw;		/* screen width in tiles */
-	word th;		/* screen height in tiles */
-	word tilesw;		/* virtual screen width in tiles */
-	word tilesh;		/* virtual screen height in tiles */
-	sword tilemidposscreenx;	/* middle tile x position */	/* needed for scroll system to work accordingly */
-	sword tilemidposscreeny;	/* middle tile y position */	/* needed for scroll system to work accordingly */
-	sword tileplayerposscreenx;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
-	sword tileplayerposscreeny;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
-} tileinfo_t;
-
-typedef struct {
-	nibble/*word*/ id;	/* the Identification number of the page~ For layering~ */
-	byte far* data;	/* the data for the page */
-	tileinfo_t	ti;
-	word dx;		/* col we are viewing on virtual screen (on page[0]) */	/* off screen buffer on the left size */
-	word dy;		/* row we are viewing on virtual screen (on page[0]) */	/* off screen buffer on the top size */
-	word sw;		/* screen width */	/* resolution */
-	word sh;		/* screen heigth */	/* resolution */
-	word width;		/* virtual width of the page */
-	word height;	/* virtual height of the page */
-	word stridew;			/* width/4 */	/* VGA */
-	word pagesize;			/* page size */
-	word pi;				/* increment page by this much to preserve location */
-	int tlx,tly;
-//newer vars
-//TODO: find where they are used
-	sword delta;			// How much should we shift the page for smooth scrolling
-} page_t;
-
 //from 16_sprit.h
 #ifdef	__WATCOMC__
 typedef struct sprite
@@ -159,6 +70,97 @@ typedef struct sprite
 	int x, y;
 } sprite_t;
 #endif
+
+typedef struct {
+	//byte far **data;
+//#ifdef	__WATCOMC__
+	//sprite_t *spri;
+//#endif
+	bitmap_t far *data;	// actual tileset info
+//in the bitmap_t
+//	byte *palette;		// palette for the tile set
+	word ntiles;			// the number of tiles
+	word twidth;		// width of the tiles
+	word theight;		// height of the tiles
+	byte	imgname[8];		// image filename of tileset
+} tileset_t;
+
+//not currently using
+typedef struct {
+	byte far *plane[4];	// 4 planes of image data
+	word width;			// width of the image (spread across 4 planes)
+	word height;		// height of the image (spread across 4 planes)
+	word pwidth;		// the number of bytes in each plane
+	byte *palette;
+} planar_buf_t;
+
+//tile properties
+typedef struct {
+	//bitmap_t far *btdata;		//old
+	tileset_t	tileset;			//new
+	word tileHeight, tileWidth;
+	word rows, cols;
+} tiles_t;
+
+//TODO: 16_mm and 16_ca must handle this
+//TODO: add variables from 16_ca
+#define MAPLAYERS 4
+//#define __NEWMAPTILEDATAVARS__
+
+#ifdef __NEWMAPTILEDATAVARS__
+#define MAPTILESPTR		layertile[0]
+#define MAPTILESPTK		layertile[k]
+#define MAPDATAPTR		layerdata[0]
+#define MAPDATAPTK		layerdata[k]
+#else
+#define MAPTILESPTR		tiles//layertile[0]
+#define MAPTILESPTK		tiles//layertile[k]
+#define MAPDATAPTR		data//layerdata[0]
+#define MAPDATAPTK		data//layerdata[k]
+#endif
+typedef struct {
+	//long		planestart[3];
+	//unsigned	planelength[3];
+#ifndef __NEWMAPTILEDATAVARS__
+	byte		*data;			//TODO: 16_mm and 16_ca must handle this
+	tiles_t		*tiles;		//TODO: 16_mm and 16_ca must handle this
+#else
+	byte far	*layerdata[MAPLAYERS];	//mapindex for specific layer
+	tiles_t far	*layertile[MAPLAYERS];
+#endif
+	int width, height;		//this has to be signed!
+	byte name[16];		//mapname/maptitle
+} map_t;
+
+typedef struct{
+	word tw;		/* screen width in tiles */
+	word th;		/* screen height in tiles */
+	word tilesw;		/* virtual screen width in tiles */
+	word tilesh;		/* virtual screen height in tiles */
+	sword tilemidposscreenx;	/* middle tile x position */	/* needed for scroll system to work accordingly */
+	sword tilemidposscreeny;	/* middle tile y position */	/* needed for scroll system to work accordingly */
+	sword tileplayerposscreenx;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
+	sword tileplayerposscreeny;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
+} pagetileinfo_t;
+
+typedef struct {
+	nibble/*word*/ id;	/* the Identification number of the page~ For layering~ */
+	byte far* data;	/* the data for the page */
+	pagetileinfo_t	ti;
+	word dx;		/* col we are viewing on virtual screen (on page[0]) */	/* off screen buffer on the left size */
+	word dy;		/* row we are viewing on virtual screen (on page[0]) */	/* off screen buffer on the top size */
+	word sw;		/* screen width */	/* resolution */
+	word sh;		/* screen heigth */	/* resolution */
+	word width;		/* virtual width of the page */
+	word height;	/* virtual height of the page */
+	word stridew;			/* width/4 */	/* VGA */
+	word pagesize;			/* page size */
+	word pi;				/* increment page by this much to preserve location */
+	int tlx,tly;
+//newer vars
+//TODO: find where they are used
+	sword delta;			// How much should we shift the page for smooth scrolling
+} page_t;
 
 //newer structs
 typedef	struct
