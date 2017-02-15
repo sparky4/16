@@ -320,7 +320,6 @@ typedef struct
 	nibble __near *p;	// pointer to video's render page num
 	nibble __near *sp;	// pointer to video's show page num
 	int dx, dy;	// draw row and col var
-	word dxt,dyt;
 //newer vars!
 	int delta, d;
 } map_view_t;

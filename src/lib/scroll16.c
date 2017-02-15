@@ -604,7 +604,7 @@ if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv[id].dx); mod
 			mapDrawTile(mv[id].map->MAPTILESPTR, mv[id].map->layerdata[0].data[i], mv[id].page, mv[id].dx, y);
 			for(z=1;z<=2;z++){
 				if(mv[id].map->layerdata[z].data[i]){
-					sprintf(global_temp_status_text2, "%u", mv[id].map->layerdata[z].data[i]); modexprint(mv[id].page, mv[id].dx, y, 1, 0, PALMAPDRAWW, z+2, global_temp_status_text2);
+					sprintf(global_temp_status_text2, "%u", mv[id].map->layerdata[z].data[i]); modexprint(mv[id].page, mv[id].dx, (y+((z-1)*4))>>2, 1, 0, PALMAPDRAWW, z+2, global_temp_status_text2);
 					//mapDrawTile(mv[id].map->MAPTILESPTR, mv[id].map->layerdata[z].data[i], mv[id].page, mv[id].dx, y);
 				}
 			}
@@ -630,7 +630,7 @@ if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv[id].dy); mod
 			mapDrawTile(mv[id].map->MAPTILESPTR, mv[id].map->layerdata[0].data[i], mv[id].page, x, mv[id].dy);
 			for(z=1;z<=2;z++){
 				if(mv[id].map->layerdata[z].data[i]){
-					sprintf(global_temp_status_text2, "%u", mv[id].map->layerdata[z].data[i]); modexprint(mv[id].page, x, mv[id].dy, 1, 0, PALMAPDRAWW, z+2, global_temp_status_text2);
+					sprintf(global_temp_status_text2, "%u", mv[id].map->layerdata[z].data[i]); modexprint(mv[id].page, (x+((z-1)*4))>>2, mv[id].dy, 1, 0, PALMAPDRAWW, z+2, global_temp_status_text2);
 					//mapDrawTile(mv[id].map->MAPTILESPTR, mv[id].map->layerdata[z].data[i], mv[id].page, x, mv[id].dy);
 				}
 			}
