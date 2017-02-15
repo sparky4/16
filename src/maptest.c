@@ -28,13 +28,11 @@ void
 main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
-	map_t map;
+	static map_t map;
 #ifdef DUMP
 #ifdef DUMP_MAP
 	short i;
-#ifdef __NEWMAPTILEDATAVARS__
 	word k;
-#endif
 #endif
 #endif
 	char *fmt = "Memory available = %u\n";
@@ -51,48 +49,43 @@ main(int argc, char *argv[])
 	fprintf(stderr, fmt0, _memmax());
 	fprintf(stderr, "Size of map var = %u\n", _msize(&(gvar.ca.camap.mapsegs)));
 	//fprintf(stderr, "program always crashes for some reason....\n");
-	//getch();
+	getch();
 
 	//loadmap("data/test.map", &map);
 	//newloadmap("data/test.map", &map);
-#ifndef __NEWMAPTILEDATAVARS__
-	CA_loadmap("data/test.map", &map, &gvar);
-#else
+//	CA_loadmap("data/test.map", &map, &gvar);
 	CA_loadmap("data/newtest.map", &map, &gvar);
-#endif
-	#ifdef DUMP
+#ifdef DUMP
 	fprintf(stdout, "map.width=	%d\n", map.width);
 	fprintf(stdout, "map.height=	%d\n", map.height);
-	#ifdef DUMP_MAP
+	getch();
+#ifdef DUMP_MAP
 	//if(map.width*map.height != 1200)
-#ifdef __NEWMAPTILEDATAVARS__
 	for(k=0;k<MAPLAYERS;k++)
 	{
 		printf("maplayer: %u\n[\n", k);
-#endif
 		for(i=0; i<(map.width*map.height); i++)
 		{
 			//fprintf(stdout, "%04d[%02d]", i, map.data[i]);
-			fprintf(stdout, "%c", map.MAPDATAPTK[i]+44);
+			//fprintf(stdout, "%c", map.MAPDATAPTK[i]+44);
+			fprintf(stdout, "%c", map.layerdata[k].data[i]+44);
 			if(!((i+1)%map.width)){
 				//fprintf(stdout, "[%d]", i);
 				fprintf(stdout, "\n"); }
 		}
-		fprintf(stdout, "\n]\n");
-#ifdef __NEWMAPTILEDATAVARS__
-		//getch();
+		fprintf(stdout, "]\n");
+		getch();
 	}
-#endif
-	#else
+#else
 	//fprintf(stderr, "contents of the buffer\n[\n%s\n]\n", (gvar.ca.camap.mapsegs));
-	#endif
+#endif
 	/*fprintf(stdout, "&main()=%Fp\n", *argv[0]);
 	fprintf(stdout, "&map==%Fp\n", &map);
 	fprintf(stdout, "&map.tiles==%Fp\n", map.tiles);
 	fprintf(stdout, "&map.width==%Fp\n", map.width);
 	fprintf(stdout, "&map.height==%Fp\n", map.height);
 	fprintf(stdout, "&map.data==%Fp\n", map.data);*/
-	#endif
+#endif
 	//fprintf(stdout, "okies~\n");
 	MM_FreePtr(&(gvar.ca.camap.mapsegs), &gvar);
 	PM_Shutdown(&gvar);

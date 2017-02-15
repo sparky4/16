@@ -64,11 +64,37 @@ typedef struct {
 	byte *palette;
 } planar_buf_t;
 
+//from 16_sprit.h
+#ifdef	__WATCOMC__
+typedef struct sprite
+{
+	// VRS container from which we will extract animation and image data
+	struct vrs_container *spritesheet;
+	// Container for a vrl sprite
+	struct vrl_container *sprite_vrl_cont;
+	// Current sprite id
+	int curr_spri_id;
+	// Index of a current sprite in an animation sequence
+	int curr_anim_spri;
+	// Current animation sequence
+	struct vrs_animation_list_entry_t *curr_anim_list;
+	// Index of current animation in relevant VRS offsets table
+	int curr_anim;
+	// Delay in time units untill we should change sprite
+	int delay;
+	// Position of sprite on screen
+	int x, y;
+} sprite_t;
+#endif
+
 //===========================================================================//
 
 //TODO: 16_mm and 16_ca must handle this
 typedef struct {
-	bitmap_t far *pcximg;		//I will probibaly use this --sparky4
+	bitmap_t far *pcximg;		// old
+#ifdef	__WATCOMC__
+	sprite_t *spri;			// I will probibaly use this --sparky4
+#endif
 	//planar_buf_t far *pbdata;	//old
 	word tileHeight, tileWidth;	//defined by mapfile
 	unsigned int rows, cols;
@@ -77,29 +103,21 @@ typedef struct {
 
 //TODO: 16_mm and 16_ca must handle this
 //TODO: add variables from 16_ca
-//#define __NEWMAPTILEDATAVARS__
+typedef struct {
+	byte	*data;			//TODO: 16_mm and 16_ca must handle this
+} mapl_t;	//map layer array type def
+
 #define MAPLAYERS 4
-#ifdef __NEWMAPTILEDATAVARS__
-#define MAPTILESPTR		layertile[0]
-#define MAPTILESPTK		layertile[k]
-#define MAPDATAPTR		layerdata[0]
-#define MAPDATAPTK		layerdata[k]
-#else
+
+#define MAPDATAPTR		layerdata[0].data
+#define MAPDATAPTK		layerdata[k].data
 #define MAPTILESPTR		tiles//layertile[0]
 #define MAPTILESPTK		tiles//layertile[k]
-#define MAPDATAPTR		data//layerdata[0]
-#define MAPDATAPTK		data//layerdata[k]
-#endif
 typedef struct {
 	//long		planestart[3];
 	//unsigned	planelength[3];
-	byte *data;			//TODO: 16_mm and 16_ca must handle this
-	byte far *layerdata[MAPLAYERS];	// mapdata for multilayer (map index values for rendering which image on the tile)
-#ifndef __NEWMAPTILEDATAVARS__
-	tiles_t *tiles;		//TODO: 16_mm and 16_ca must handle this
-#else
-	tiles_t far *layertile[MAPLAYERS];	// tilesets for layers (currently ony 4 can be loaded wwww)
-#endif
+	mapl_t layerdata[MAPLAYERS];	// mapdata for multilayer (map index values for rendering which image on the tile)
+	tiles_t *tiles;		//TODO: 16_mm and 16_ca must handle this	// tilesets for layers (currently ony 4 can be loaded wwww)
 	int width, height;		//this has to be signed!
 	byte name[16];
 } map_t;
@@ -135,29 +153,6 @@ typedef struct {
 //TODO: find where they are used
 	sword delta;			// How much should we shift the page for smooth scrolling
 } page_t;
-
-//from 16_sprit.h
-#ifdef	__WATCOMC__
-typedef struct sprite
-{
-	// VRS container from which we will extract animation and image data
-	struct vrs_container *spritesheet;
-	// Container for a vrl sprite
-	struct vrl_container *sprite_vrl_cont;
-	// Current sprite id
-	int curr_spri_id;
-	// Index of a current sprite in an animation sequence
-	int curr_anim_spri;
-	// Current animation sequence
-	struct vrs_animation_list_entry_t *curr_anim_list;
-	// Index of current animation in relevant VRS offsets table
-	int curr_anim;
-	// Delay in time units untill we should change sprite
-	int delay;
-	// Position of sprite on screen
-	int x, y;
-} sprite_t;
-#endif
 
 //newer structs
 typedef	struct

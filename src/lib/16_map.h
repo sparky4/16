@@ -33,7 +33,7 @@
 #include "src/lib/16_mm.h"
 #include "src/lib/16_pm.h"
 
-#define DEBUG_MAPDATA
+//#define DEBUG_MAPDATA
 //#define DEBUG_MAPVAR
 //#define DEBUG_DUMPVARS
 //#define DEBUG_JS
