@@ -251,9 +251,11 @@ again:
 void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 	int i, j, k, indent=0, inner_end;
 	char *s;
+	boolean objlay=0;
 	//bitmap_t bp;
 
 	i = 0;
+#define MAPLNAMESIZE t[i+1].end - t[i+1].start
 	while(i<count) {
 		if(jsoneq(js, &(t[i]), "layers") == 0) {
 			i++;
@@ -264,9 +266,10 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 #ifdef DEBUG_DUMPVARS
 				printf("t[%d].start=%d, %d\n", i, t[i].start, inner_end);
 #endif
+				if(!objlay){
 				if(jsoneq(js, &(t[i]), "data") == 0) {
 #ifdef DEBUG_MAPDATA
-					printf("Layer %d data: [\n", k);
+					printf("Layer %d data: (size is %d)[\n", k, t[i+1].size);
 #endif
 					map->layerdata[k].data = malloc(sizeof(byte) * t[i+1].size);
 //					map->data = (map->layerdata[k].data); //for backwards compatibility for rest of code
@@ -280,15 +283,44 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 #endif
 					}
 					i += j + 2;
-					k++;
 #ifdef DEBUG_MAPDATA
 					puts("\n]");
 #endif
-				}else{
-					i++;
+				}else if(jsoneq(js, &(t[i]), "name") == 0) {
+#ifdef DEBUG_MAPDATA
+					printf("Layer %d's name: (size is %d)[\n", k, MAPLNAMESIZE);
+#endif
+					map->layerdata[k].layername = malloc(sizeof(byte) * MAPLNAMESIZE);
+					strncpy(map->layerdata[k].layername, js+t[i+1].start, MAPLNAMESIZE);
+					if(map->layerdata[k].layername[MAPLNAMESIZE]!=0) map->layerdata[k].layername[MAPLNAMESIZE]='\0';
+					if(strstr(map->layerdata[k].layername, "ob")) objlay=1;
+#ifdef DEBUG_MAPDATA
+					printf("%s", map->layerdata[k].layername);
+					printf("\n]\n");
+#endif
+					k++;
 				}
+				}else{ //objlay
+				if(jsoneq(js, &(t[i]), "objects") == 0) {
+#ifdef DEBUG_MAPDATA
+					printf("objects detected\n");
+#endif
+//					map->layerdata[k].layername = malloc(sizeof(byte) * MAPLNAMESIZE);
+//					strncpy(map->layerdata[k].layername, js+t[i+1].start, MAPLNAMESIZE);
+//					if(map->layerdata[k].layername[MAPLNAMESIZE]!=0) map->layerdata[k].layername[MAPLNAMESIZE]='\0';
+				}else if(jsoneq(js, &(t[i]), "name") == 0) {
+#ifdef DEBUG_MAPDATA
+					printf("Object %d's name: (size is %d)[\n", k, MAPLNAMESIZE);
+					printf("'%.*s'", t[i+1].end - t[i+1].start, js+t[i+1].start);
+					printf("\n]\n");
+#endif
+					}
+				}
+				i++;
 			}
 		}
+
+
 		if(jsoneq(js, &(t[i]), "tilesets") == 0) {
 			i++;
 			inner_end = t[i].end;

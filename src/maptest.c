@@ -49,12 +49,11 @@ main(int argc, char *argv[])
 	fprintf(stderr, fmt0, _memmax());
 	fprintf(stderr, "Size of map var = %u\n", _msize(&(gvar.ca.camap.mapsegs)));
 	//fprintf(stderr, "program always crashes for some reason....\n");
-	getch();
+	//getch();
 
 	//loadmap("data/test.map", &map);
 	//newloadmap("data/test.map", &map);
-//	CA_loadmap("data/test.map", &map, &gvar);
-	CA_loadmap("data/newtest.map", &map, &gvar);
+	CA_loadmap("data/test.map", &map, &gvar);
 #ifdef DUMP
 	fprintf(stdout, "map.width=	%d\n", map.width);
 	fprintf(stdout, "map.height=	%d\n", map.height);
