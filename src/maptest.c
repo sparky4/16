@@ -37,6 +37,7 @@ main(int argc, char *argv[])
 #endif
 	char *fmt = "Memory available = %u\n";
 	char *fmt0 = "Largest Contiguous Block of Memory available = %u\n";
+	byte *datboi = "oh shit waddup!\n";
 
 	MM_Startup(&gvar);
 	PM_Startup(&gvar);
@@ -85,7 +86,9 @@ main(int argc, char *argv[])
 	fprintf(stdout, "&map.height==%Fp\n", map.height);
 	fprintf(stdout, "&map.data==%Fp\n", map.data);*/
 #endif
-	//fprintf(stdout, "okies~\n");
+	fprintf(stderr, "here comes dat boi!\n");
+	getch();
+	fprintf(stderr, "%s", datboi);
 	MM_FreePtr(&(gvar.ca.camap.mapsegs), &gvar);
 	PM_Shutdown(&gvar);
 	CA_Shutdown(&gvar);
