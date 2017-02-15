@@ -420,6 +420,19 @@ void turboXT(byte bakapee)
 }
 #endif
 
+const char *word_to_binary(word x)
+{
+	static char b[17];
+	int z;
+
+	b[0] = '\0';
+	for (z = 16; z > 0; z >>= 1)
+	{
+		strcat(b, ((x & z) == z) ? "1" : "0");
+	}
+	return b;
+}
+
 const char *nibble_to_binary(nibble x)
 {
 	static char b[9];

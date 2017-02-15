@@ -55,7 +55,11 @@ main(int argc, char *argv[])
 
 	//loadmap("data/test.map", &map);
 	//newloadmap("data/test.map", &map);
+#ifdef __NEWMAPTILEDATAVARS__
 	CA_loadmap("data/test.map", &map, &gvar);
+#else
+	CA_loadmap("data/newtest.map", &map, &gvar);
+#endif
 	#ifdef DUMP
 	fprintf(stdout, "map.width=	%d\n", map.width);
 	fprintf(stdout, "map.height=	%d\n", map.height);
