@@ -51,11 +51,11 @@ main(int argc, char *argv[])
 	fprintf(stderr, fmt0, _memmax());
 	fprintf(stderr, "Size of map var = %u\n", _msize(&(gvar.ca.camap.mapsegs)));
 	//fprintf(stderr, "program always crashes for some reason....\n");
-	getch();
+	//getch();
 
 	//loadmap("data/test.map", &map);
 	//newloadmap("data/test.map", &map);
-#ifdef __NEWMAPTILEDATAVARS__
+#ifndef __NEWMAPTILEDATAVARS__
 	CA_loadmap("data/test.map", &map, &gvar);
 #else
 	CA_loadmap("data/newtest.map", &map, &gvar);
@@ -68,7 +68,7 @@ main(int argc, char *argv[])
 #ifdef __NEWMAPTILEDATAVARS__
 	for(k=0;k<MAPLAYERS;k++)
 	{
-		printf("maplayer: %u\n", k);
+		printf("maplayer: %u\n[\n", k);
 #endif
 		for(i=0; i<(map.width*map.height); i++)
 		{
@@ -78,9 +78,9 @@ main(int argc, char *argv[])
 				//fprintf(stdout, "[%d]", i);
 				fprintf(stdout, "\n"); }
 		}
-		//fprintf(stdout, "\n");
+		fprintf(stdout, "\n]\n");
 #ifdef __NEWMAPTILEDATAVARS__
-		getch();
+		//getch();
 	}
 #endif
 	#else

@@ -275,7 +275,7 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 						map->layerdata[k][j] = (byte)atoi(js + t[i+2+j].start);
 #ifdef DEBUG_MAPDATA
 						//printf("[%d,%d]%d", k, j, map->MAPDATAPTK[j]);
-						printf("%c",  map->layerdata[k][j]+44);
+						printf("%c",  map->MAPDATAPTK[j]+44);
 						//fprintf(stdout, "%c", map->data[j]+44);
 #endif
 					}
