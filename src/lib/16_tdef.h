@@ -110,8 +110,6 @@ typedef struct {
 
 #define MAPLAYERS 3
 
-#define MAPDATAPTR		layerdata[0].data
-#define MAPDATAPTK		layerdata[k].data
 #define MAPTILESPTR		tiles//layertile[0]
 #define MAPTILESPTK		tiles//layertile[k]
 typedef struct {

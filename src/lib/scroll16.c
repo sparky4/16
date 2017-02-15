@@ -37,7 +37,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 		//right movement
 		case 3:
 			if(pip[0].tx >= 0 && pip[0].tx+pip[0].page->ti.tw < pip[0].map->width && player[pn].enti.tx == pip[0].tx+pip[0].page->ti.tilemidposscreenx &&
-			!(pip[0].map->MAPDATAPTR[(player[pn].enti.tx)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))	//collision detection!
+			!(pip[0].map->layerdata[0].data[(player[pn].enti.tx)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))	//collision detection!
 			{
 				player[pn].walktype=2;
 				if(player[pn].enti.q<=player[pn].enti.spt)
@@ -48,7 +48,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
 			}
-			else if(player[pn].enti.tx < pip[0].map->width && !(pip[0].map->MAPDATAPTR[(player[pn].enti.tx)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))
+			else if(player[pn].enti.tx < pip[0].map->width && !(pip[0].map->layerdata[0].data[(player[pn].enti.tx)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))
 			{
 				player[pn].walktype=1;
 				if(player[pn].enti.q<=player[pn].enti.spt)
@@ -70,7 +70,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 		//left movement
 		case 1:
 			if(pip[0].tx > 0 && pip[0].tx+pip[0].page->ti.tw <= pip[0].map->width && player[pn].enti.tx == pip[0].tx+pip[0].page->ti.tilemidposscreenx &&
-			!(pip[0].map->MAPDATAPTR[(player[pn].enti.tx-2)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx-1 == TRIGGX && player[pn].enti.ty == TRIGGY))	//collision detection!
+			!(pip[0].map->layerdata[0].data[(player[pn].enti.tx-2)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx-1 == TRIGGX && player[pn].enti.ty == TRIGGY))	//collision detection!
 			{
 				player[pn].walktype=2;
 				if(player[pn].enti.q<=player[pn].enti.spt)
@@ -81,7 +81,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
 			}
-			else if(player[pn].enti.tx > 1 && !(pip[0].map->MAPDATAPTR[(player[pn].enti.tx-2)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx-1 == TRIGGX && player[pn].enti.ty == TRIGGY))
+			else if(player[pn].enti.tx > 1 && !(pip[0].map->layerdata[0].data[(player[pn].enti.tx-2)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx-1 == TRIGGX && player[pn].enti.ty == TRIGGY))
 			{
 				player[pn].walktype=1;
 				if(player[pn].enti.q<=player[pn].enti.spt)
@@ -103,7 +103,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 		//down movement
 		case 4:
 			if(pip[0].ty >= 0 && pip[0].ty+pip[0].page->ti.th < pip[0].map->height && player[pn].enti.ty == pip[0].ty+pip[0].page->ti.tilemidposscreeny &&
-			!(pip[0].map->MAPDATAPTR[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty+1 == TRIGGY))	//collision detection!
+			!(pip[0].map->layerdata[0].data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty+1 == TRIGGY))	//collision detection!
 			{
 				player[pn].walktype=2;
 				if(player[pn].enti.q<=player[pn].enti.spt)
@@ -114,7 +114,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
 			}
-			else if(player[pn].enti.ty < pip[0].map->height && !(pip[0].map->MAPDATAPTR[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty+1 == TRIGGY))
+			else if(player[pn].enti.ty < pip[0].map->height && !(pip[0].map->layerdata[0].data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty+1 == TRIGGY))
 			{
 				player[pn].walktype=1;
 				if(player[pn].enti.q<=player[pn].enti.spt)
@@ -136,7 +136,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 		//up movement
 		case 0:
 			if(pip[0].ty > 0 && pip[0].ty+pip[0].page->ti.th <= pip[0].map->height && player[pn].enti.ty == pip[0].ty+pip[0].page->ti.tilemidposscreeny &&
-			!(pip[0].map->MAPDATAPTR[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty-2))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty-1 == TRIGGY))	//collision detection!
+			!(pip[0].map->layerdata[0].data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty-2))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty-1 == TRIGGY))	//collision detection!
 			{
 				player[pn].walktype=2;
 				if(player[pn].enti.q<=player[pn].enti.spt)
@@ -147,7 +147,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
 				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
 			}
-			else if(player[pn].enti.ty > 1 && !(pip[0].map->MAPDATAPTR[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty-2))] == 0))//!(player[pn].enti.tx == TRIGGX &&  player[pn].enti.ty-1 == TRIGGY))
+			else if(player[pn].enti.ty > 1 && !(pip[0].map->layerdata[0].data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty-2))] == 0))//!(player[pn].enti.tx == TRIGGX &&  player[pn].enti.ty-1 == TRIGGY))
 			{
 				player[pn].walktype=1;
 				if(player[pn].enti.q<=player[pn].enti.spt)
@@ -318,8 +318,8 @@ initMap(map_t *map) {
 	i=0;
 	for(y=0; y<map->height; y++) {
 		for(x=0; x<map->width; x++) {
-			map->MAPDATAPTR[i]=255;
-//			printf("[%d]", map->MAPDATAPTR[i]);
+			map->layerdata[0].data[i]=255;
+//			printf("[%d]", map->layerdata[0].data[i]);
 			tile = tile ? 0 : 1;
 			i++;
 		}
@@ -344,7 +344,7 @@ void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 	if(player[plid].enti.q==4)
 #endif
 //		if(id==0)
-			mapDrawCol(&mv[id], mv[0].tx + mv[0].page->ti.tw, mv[0].ty-1, x, player, DRAWCOLNUM);
+			mapDrawCol(mv, id, mv[0].tx + mv[0].page->ti.tw, mv[0].ty-1, x, player, DRAWCOLNUM);
 //		else
 //			if(mv[0].video->bgps)
 //				modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[0].map->MAPTILESPTR->tileWidth, mv[0].page->height);
@@ -366,7 +366,7 @@ void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 	if(player[plid].enti.q==4)
 #endif
 //		if(id==0)
-			mapDrawCol(&mv[id], mv[0].tx - 1, mv[0].ty-1, x, player, DRAWCOLNUM);
+			mapDrawCol(mv, id, mv[0].tx - 1, mv[0].ty-1, x, player, DRAWCOLNUM);
 //		else
 //			if(mv[0].video->bgps)
 //				modexCopyPageRegion(mv[id].page, mv[0].page, x, 0, x, 0, mv[0].map->MAPTILESPTR->tileWidth, mv[0].page->height);
@@ -388,7 +388,7 @@ void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 	if(player[plid].enti.q==4)
 #endif
 //		if(id==0)
-			mapDrawRow(&mv[id], mv[0].tx - 1, mv[0].ty-1, y, player, DRAWROWNUM);
+			mapDrawRow(mv, id, mv[0].tx - 1, mv[0].ty-1, y, player, DRAWROWNUM);
 //		else
 //			if(mv[0].video->bgps)
 //				modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[0].page->width, mv[0].map->MAPTILESPTR->tileHeight);
@@ -410,7 +410,7 @@ void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 	if(player[plid].enti.q==4)
 #endif
 //		if(id==0)
-			mapDrawRow(&mv[id], mv[0].tx - 1, mv[0].ty+mv[0].page->ti.th, y, player, DRAWROWNUM);
+			mapDrawRow(mv, id, mv[0].tx - 1, mv[0].ty+mv[0].page->ti.th, y, player, DRAWROWNUM);
 //		else
 //			if(mv[0].video->bgps)
 //				modexCopyPageRegion(mv[id].page, mv[0].page, 0, y, 0, y, mv[0].page->width, mv[0].map->MAPTILESPTR->tileHeight);
@@ -498,8 +498,8 @@ sword chkmap(map_t *map, word q)
 		//initiate a null map!
 		map->width=MAPW;///2;
 		map->height=MAPH;///2;
-//		map->MAPDATAPTR = malloc(((map->width*map->height)+1)*sizeof(byte));
-		map->MAPDATAPTR = &x;
+//		map->layerdata[0].data = malloc(((map->width*map->height)+1)*sizeof(byte));
+		map->layerdata[0].data = &x;
 		map->MAPTILESPTR = malloc(sizeof(tiles_t));
 		//fix this to be far~
 //		bp = bitmapLoadPcx("data/ed.pcx");
@@ -589,59 +589,80 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 		break;
 	}
 }
-
-void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, word poopoffset)
+#define PALMAPDRAWW 13
+void near mapDrawRow(map_view_t *mv, nibble id, int tx, int ty, word y, player_t *player, word poopoffset)
 {
-	int i;
+	int i; nibble z;
 if(pagedelayrendermap)		if(!y)	y+=TILEWH;	else	y-=TILEWH;
 	poopoffset%=player[0].enti.speed;
 //printf("y: %d\n", poopoffset);
-if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dx); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 1, 2, 1, global_temp_status_text); }
+if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv[id].dx); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 1, 2, 1, global_temp_status_text); }
 	/* the position within the map array */
-	i=ty * mv->map->width + tx;
-	for(	mv->dx=poopoffset;	mv->dx<(mv->page->sw+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width;	mv->dx+=mv->map->MAPTILESPTR->tileWidth, tx++) {
-		if(i>=0)
-			mapDrawTile(mv->map->MAPTILESPTR, mv->map->MAPDATAPTR[i], mv->page, mv->dx, y);
+	i=ty * mv[id].map->width + tx;
+	for(	mv[id].dx=poopoffset;	mv[id].dx<(mv[id].page->sw+mv[id].dxThresh)/(poopoffset+1) && tx < mv[id].map->width;	mv[id].dx+=mv[id].map->MAPTILESPTR->tileWidth, tx++) {
+		if(i>=0){
+			mapDrawTile(mv[id].map->MAPTILESPTR, mv[id].map->layerdata[0].data[i], mv[id].page, mv[id].dx, y);
+			for(z=1;z<=2;z++){
+				if(mv[id].map->layerdata[z].data[i]){
+					sprintf(global_temp_status_text2, "%u", mv[id].map->layerdata[z].data[i]); modexprint(mv[id].page, mv[id].dx, (y+((z-1)*4))>>2, 1, 0, PALMAPDRAWW, z+2, global_temp_status_text2);
+					//mapDrawTile(mv[id].map->MAPTILESPTR, mv[id].map->layerdata[z].data[i], mv[id].page, mv[id].dx, y);
+				}
+			}
+		}
 		i++; /* next! */
 	}
 if(pagedelayrendermap) delay(200);
 }
 
-void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, word poopoffset)
+void near mapDrawCol(map_view_t *mv, nibble id, int tx, int ty, word x, player_t *player, word poopoffset)
 {
-	int i;
+	int i; nibble z;
 if(pagedelayrendermap)		if(!x)	x+=TILEWH;		else	x-=TILEWH;
 	poopoffset%=player[0].enti.speed;
 //printf("x: %d\n", poopoffset);
-if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dy); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 1, 2, 1, global_temp_status_text); }
+if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv[id].dy); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 1, 2, 1, global_temp_status_text); }
 	/* location in the map array */
-	i=ty * mv->map->width + tx;
+	i=ty * mv[id].map->width + tx;
 	/* We'll copy all of the columns in the screen,
 	   i + 1 row above and one below */
-	for(	mv->dy=poopoffset;	mv->dy<(mv->page->sh+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height;	mv->dy+=mv->map->MAPTILESPTR->tileHeight, ty++) {
-		if(i>=0)
-			mapDrawTile(mv->map->MAPTILESPTR, mv->map->MAPDATAPTR[i], mv->page, x, mv->dy);
-		i += mv->map->width;
+	for(	mv[id].dy=poopoffset;	mv[id].dy<(mv[id].page->sh+mv[id].dyThresh)/(poopoffset+1) && ty < mv[id].map->height;	mv[id].dy+=mv[id].map->MAPTILESPTR->tileHeight, ty++) {
+		if(i>=0){
+			mapDrawTile(mv[id].map->MAPTILESPTR, mv[id].map->layerdata[0].data[i], mv[id].page, x, mv[id].dy);
+			for(z=1;z<=2;z++){
+				if(mv[id].map->layerdata[z].data[i]){
+					sprintf(global_temp_status_text2, "%u", mv[id].map->layerdata[z].data[i]); modexprint(mv[id].page, (x+((z-1)*4))>>2, mv[id].dy, 1, 0, PALMAPDRAWW, z+2, global_temp_status_text2);
+					//mapDrawTile(mv[id].map->MAPTILESPTR, mv[id].map->layerdata[z].data[i], mv[id].page, x, mv[id].dy);
+				}
+			}
+		}
+		i += mv[id].map->width;
 	}
 if(pagedelayrendermap) delay(200);
 }
 
 void mapDrawWRow(map_view_t *mv, int tx, int ty, word y)
 {
-	int i;
+	int i; nibble z;
 
 	/* the position within the map array */
 	i=ty * mv->map->width + tx;
 	for(mv->dx=0; mv->dx<mv->page->sw+mv->dxThresh && tx < mv->map->width; mv->dx+=mv->map->MAPTILESPTR->tileWidth, tx++) {
-		if(i>=0)	/* we are in the map, so copy! */
-			mapDrawTile(mv->map->MAPTILESPTR, mv->map->MAPDATAPTR[i], mv->page, mv->dx, y);
+		if(i>=0){	/* we are in the map, so copy! */
+			mapDrawTile(mv->map->MAPTILESPTR, mv->map->layerdata[0].data[i], mv->page, mv->dx, y);
+			for(z=1;z<=2;z++){
+				if(mv->map->layerdata[z].data[i]){
+					sprintf(global_temp_status_text2, "%u", mv->map->layerdata[z].data[i]); modexprint(mv->page, mv->dx, y, 1, 0, PALMAPDRAWW, z+2, global_temp_status_text2);
+					//mapDrawTile(mv->map->MAPTILESPTR, mv->map->layerdata[z].data[i], mv->page, mv->dx, y);
+				}
+			}
+		}
 		i++; /* next! */
 	}
 }
 
 void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 {
-	int i;
+	int i; nibble z;
 
 	/* location in the map array */
 	i=ty * mv->map->width + tx;
@@ -649,8 +670,15 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 	/* We'll copy all of the columns in the screen,
 	   i + 1 row above and one below */
 	for(mv->dy=0; mv->dy<mv->page->sh+mv->dyThresh && ty < mv->map->height; mv->dy+=mv->map->MAPTILESPTR->tileHeight, ty++) {
-		if(i>=0)	/* we are in the map, so copy away! */
-			mapDrawTile(mv->map->MAPTILESPTR, mv->map->MAPDATAPTR[i], mv->page, x, mv->dy);
+		if(i>=0){	/* we are in the map, so copy away! */
+			mapDrawTile(mv->map->MAPTILESPTR, mv->map->layerdata[0].data[i], mv->page, x, mv->dy);
+			for(z=1;z<=2;z++){
+				if(mv->map->layerdata[z].data[i]){
+					sprintf(global_temp_status_text2, "%u", mv->map->layerdata[z].data[i]); modexprint(mv->page, x, mv->dy, 1, 0, PALMAPDRAWW, z+2, global_temp_status_text2);
+					//mapDrawTile(mv->map->MAPTILESPTR, mv->map->layerdata[z].data[i], mv->page, x, mv->dy);
+				}
+			}
+		}
 		i += mv->map->width;
 	}
 }
