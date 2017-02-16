@@ -327,29 +327,29 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 			k = 0;
 			while(t[i].start < inner_end) {
 				if(jsoneq(js, &(t[i]), "image") == 0) {
-					map->MAPTILESPTK = malloc(sizeof(tiles_t));
+					map->tiles = malloc(sizeof(tiles_t));
 					s = remove_ext((char *)js+t[i+1].start, '.', '/');
-					strcpy(map->MAPTILESPTK->imgname, s);
+					strcpy(map->tiles->imgname, s);
 					//And move to vrs, probably
 //					bp = bitmapLoadPcx("data/ed.pcx");
-//					map->MAPTILESPTK->btdata = &bp;
-					//map->MAPTILESPTK->btdata = malloc(sizeof(bitmap_t));
-					map->MAPTILESPTK->rows = 1;
-					map->MAPTILESPTK->cols = 1;
+//					map->tiles->btdata = &bp;
+					//map->tiles->btdata = malloc(sizeof(bitmap_t));
+					map->tiles->rows = 1;
+					map->tiles->cols = 1;
 #ifdef __DEBUG_MAP__
 					dbg_maptext=false;
 #endif
 					i++;
 				}else if(jsoneq(js, &(t[i]), "tileheight") == 0) {
-					map->MAPTILESPTK->tileHeight = atoi(js + t[i+1].start);
+					map->tiles->tileHeight = atoi(js + t[i+1].start);
 #ifdef DEBUG_MAPVAR
-					printf("Tile Height: %d\n", map->MAPTILESPTK->tileHeight);
+					printf("Tile Height: %d\n", map->tiles->tileHeight);
 #endif
 					i++;
 				}else if(jsoneq(js, &(t[i]), "tilewidth") == 0) {
-					map->MAPTILESPTK->tileWidth = atoi(js + t[i+1].start);
+					map->tiles->tileWidth = atoi(js + t[i+1].start);
 #ifdef DEBUG_MAPVAR
-					printf("Tile Width: %d\n", map->MAPTILESPTK->tileWidth);
+					printf("Tile Width: %d\n", map->tiles->tileWidth);
 #endif
 					i++;
 				}

@@ -109,9 +109,6 @@ typedef struct {
 } mapl_t;	//map layer array type def
 
 #define MAPLAYERS 3
-
-#define MAPTILESPTR		tiles//layertile[0]
-#define MAPTILESPTK		tiles//layertile[k]
 typedef struct {
 	//long		planestart[3];
 	//unsigned	planelength[3];

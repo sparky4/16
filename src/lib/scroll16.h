@@ -115,8 +115,8 @@ void mapGoTo(map_view_t *mv, int tx, int ty);
 void ZC_mapinitMV(map_view_t *mv, int tx, int ty);
 void ZC_mapredraw(map_view_t *mv, int tx, int ty);
 void near mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
-void near mapDrawRow(map_view_t *mv, nibble id, int tx, int ty, word y, player_t *player, word poopoffset);
-void near mapDrawCol(map_view_t *mv, nibble id, int tx, int ty, word x, player_t *player, word poopoffset);
+void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, word poopoffset);
+void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, word poopoffset);
 void mapDrawWRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 inline void near ScrollRight(map_view_t *mv, player_t *player, word id, word plid)
@@ -132,7 +132,7 @@ inline void near ScrollRight(map_view_t *mv, player_t *player, word id, word pli
 		/* Snap the origin forward */
 		mv[id].page->data += 4;
 
-		mv[id].page->dx = mv[id].map->MAPTILESPTR->tileWidth;
+		mv[id].page->dx = mv[id].map->tiles->tileWidth;
 	}
 }
 
@@ -149,7 +149,7 @@ inline void near ScrollLeft(map_view_t *mv, player_t *player, word id, word plid
 		/* Snap the origin backward */
 		mv[id].page->data -= 4;
 
-		mv[id].page->dx = mv[id].map->MAPTILESPTR->tileWidth;
+		mv[id].page->dx = mv[id].map->tiles->tileWidth;
 	}
 }
 
@@ -166,7 +166,7 @@ inline void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 		/* Snap the origin upward */
 		mv[id].page->data -= mv[id].page->pi;
 
-		mv[id].page->dy = mv[id].map->MAPTILESPTR->tileHeight;
+		mv[id].page->dy = mv[id].map->tiles->tileHeight;
 	}
 }
 
@@ -183,7 +183,7 @@ inline void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid
 		/* Snap the origin downward */
 		mv[id].page->data += mv[id].page->pi;
 
-		mv[id].page->dy = mv[id].map->MAPTILESPTR->tileHeight;
+		mv[id].page->dy = mv[id].map->tiles->tileHeight;
 	}
 }
 
