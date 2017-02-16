@@ -36,7 +36,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 		break;
 		//right movement
 		case 3:
-			if(pip[0].tx >= 0 && pip[0].tx+pip[0].page->ti.tw < pip[0].map->width && player[pn].enti.tx == pip[0].tx+pip[0].page->ti.tilemidposscreenx &&
+			if(ZC_mapEdgeChk(pip, player[pn].enti.d, 0) && player[pn].enti.tx == pip[0].tx+pip[0].page->ti.tilemidposscreenx &&
 			!(pip[0].map->layerdata[0].data[(player[pn].enti.tx)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))	//collision detection!
 			{
 				player[pn].walktype=2;
@@ -69,7 +69,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 		break;
 		//left movement
 		case 1:
-			if(pip[0].tx > 0 && pip[0].tx+pip[0].page->ti.tw <= pip[0].map->width && player[pn].enti.tx == pip[0].tx+pip[0].page->ti.tilemidposscreenx &&
+			if(ZC_mapEdgeChk(pip, player[pn].enti.d, 0) && player[pn].enti.tx == pip[0].tx+pip[0].page->ti.tilemidposscreenx &&
 			!(pip[0].map->layerdata[0].data[(player[pn].enti.tx-2)+(pip[0].map->width*(player[pn].enti.ty-1))] == 0))//!(player[pn].enti.tx-1 == TRIGGX && player[pn].enti.ty == TRIGGY))	//collision detection!
 			{
 				player[pn].walktype=2;
@@ -102,7 +102,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 		break;
 		//down movement
 		case 4:
-			if(pip[0].ty >= 0 && pip[0].ty+pip[0].page->ti.th < pip[0].map->height && player[pn].enti.ty == pip[0].ty+pip[0].page->ti.tilemidposscreeny &&
+			if(ZC_mapEdgeChk(pip, player[pn].enti.d, 0) && player[pn].enti.ty == pip[0].ty+pip[0].page->ti.tilemidposscreeny &&
 			!(pip[0].map->layerdata[0].data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty+1 == TRIGGY))	//collision detection!
 			{
 				player[pn].walktype=2;
@@ -135,7 +135,7 @@ void ZC_walk(map_view_t *pip, player_t *player, word pn)
 		break;
 		//up movement
 		case 0:
-			if(pip[0].ty > 0 && pip[0].ty+pip[0].page->ti.th <= pip[0].map->height && player[pn].enti.ty == pip[0].ty+pip[0].page->ti.tilemidposscreeny &&
+			if(ZC_mapEdgeChk(pip, player[pn].enti.d, 0) && player[pn].enti.ty == pip[0].ty+pip[0].page->ti.tilemidposscreeny &&
 			!(pip[0].map->layerdata[0].data[(player[pn].enti.tx-1)+(pip[0].map->width*(player[pn].enti.ty-2))] == 0))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty-1 == TRIGGY))	//collision detection!
 			{
 				player[pn].walktype=2;
@@ -178,7 +178,7 @@ void ZC_panPageManual(map_view_t *pip, player_t *player, word pn)
 	{
 		//right movement
 		case 3:
-			if(pip[0].tx >= 0 && pip[0].tx+pip[0].page->ti.tw < pip[0].page->ti.tilesw)
+			if(ZC_mapEdgeChk(pip, player[pn].enti.d, 1))
 			{
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
@@ -191,7 +191,7 @@ void ZC_panPageManual(map_view_t *pip, player_t *player, word pn)
 
 		//left movement
 		case 1:
-			if(pip[0].tx > 0 && pip[0].tx+pip[0].page->ti.tw <= pip[0].page->ti.tilesw)
+			if(ZC_mapEdgeChk(pip, player[pn].enti.d, 1))
 			{
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
@@ -204,7 +204,7 @@ void ZC_panPageManual(map_view_t *pip, player_t *player, word pn)
 
 		//down movement
 		case 4:
-			if(pip[0].ty >= 0 && pip[0].ty+pip[0].page->ti.th < pip[0].page->ti.tilesh)
+			if(ZC_mapEdgeChk(pip, player[pn].enti.d, 1))
 			{
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
@@ -217,7 +217,7 @@ void ZC_panPageManual(map_view_t *pip, player_t *player, word pn)
 
 		//up movement
 		case 0:
-			if(pip[0].ty > 0 && pip[0].ty+pip[0].page->ti.th <= pip[0].page->ti.tilesh)
+			if(ZC_mapEdgeChk(pip, player[pn].enti.d, 1))
 			{
 				if(player[pn].enti.q<=player[pn].enti.spt)
 				{
@@ -338,7 +338,7 @@ void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 
 	/* draw the next column */
 	x= mv[0].page->sw + mv[0].map->tiles->tileWidth;
-	if(mv[0].tx >= 0 && mv[0].tx+mv[0].page->ti.tw < mv[0].map->width)
+	if(ZC_mapEdgeChk(mv, player[plid].enti.d, 0))
 #ifndef FULLRCREND
 	if(player[plid].enti.q%4)
 #else
@@ -361,7 +361,7 @@ void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 
 	/* draw the next column */
 	x= 0;
-	if(mv[0].tx > 0 && mv[0].tx+mv[0].page->ti.tw <= mv[0].map->width)
+	if(ZC_mapEdgeChk(mv, player[plid].enti.d, 0))
 #ifndef FULLRCREND
 	if(player[plid].enti.q%4)
 #else
@@ -384,7 +384,7 @@ void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 
 	/* draw the next row */
 	y= 0;
-	if(mv[0].ty > 0 && mv[0].ty+mv[0].page->ti.th <= mv[0].map->height)
+	if(ZC_mapEdgeChk(mv, player[plid].enti.d, 0))
 #ifndef FULLRCREND
 	if(player[plid].enti.q%3)
 #else
@@ -407,7 +407,7 @@ void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 
 	/* draw the next row */
 	y= mv[0].page->sh + mv[0].map->tiles->tileHeight;
-	if(mv[0].ty >= 0 && mv[0].ty+mv[0].page->ti.th < mv[0].map->height)
+	if(ZC_mapEdgeChk(mv, player[plid].enti.d, 0))
 #ifndef FULLRCREND
 	if(player[plid].enti.q%3)
 #else
@@ -876,6 +876,10 @@ void player_walk(player_t *player, map_view_t *map_v){
 		// (Un)load stuff?
 	}
 }
+
+/*
+ *	end
+ */
 
 void mapScroll(map_view_t *mv, player_t *player)
 {
