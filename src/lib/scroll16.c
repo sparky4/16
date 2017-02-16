@@ -502,9 +502,9 @@ sword chkmap(map_t *map, word q)
 		//initiate a null map!
 		map->width=MAPW;///2;
 		map->height=MAPH;///2;
-//		map->layerdata[0].data = malloc(((map->width*map->height)+1)*sizeof(byte));
+//		map->layerdata[0].data = fmfaflflfofcf(((map->width*map->height)+1)*sizeof(byte));
 		map->layerdata[0].data = &x;
-		map->tiles = malloc(sizeof(tiles_t));
+		//map->tiles = fmfafflflfofc(sizeof(tiles_t));
 		//fix this to be far~
 //		bp = bitmapLoadPcx("data/ed.pcx");
 //		map->tiles->data = &bp;
