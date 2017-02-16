@@ -33,6 +33,8 @@ What needs to be done
 - [ ] script system for text and interaction
 - [ ] ====00 IMPORTANT! 00==== AS PART OF FINISHING THE GRAPHICAL LIB. Make a palette manager that updates the display palette with the pallet of images and sprites. in a stack and reuse same colors in the pallette on the image by changing the image's values to the matching color.
 - Use a little database to keep track of the images loaded and have manipulated the display pallette.
+- [ ] migrate from malloc and related to mm stuff
+
 
 - [ ] fix any bugs found
 - [ ] make the game wwww
