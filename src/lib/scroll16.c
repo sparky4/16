@@ -338,6 +338,7 @@ void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 
 	/* draw the next column */
 	x= mv[0].page->sw + mv[0].map->tiles->tileWidth;
+	if(mv[0].tx >= 0 && mv[0].tx+mv[0].page->ti.tw < mv[0].map->width)
 #ifndef FULLRCREND
 	if(player[plid].enti.q%4)
 #else
@@ -360,6 +361,7 @@ void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 
 	/* draw the next column */
 	x= 0;
+	if(mv[0].tx > 0 && mv[0].tx+mv[0].page->ti.tw <= mv[0].map->width)
 #ifndef FULLRCREND
 	if(player[plid].enti.q%4)
 #else
@@ -382,6 +384,7 @@ void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 
 	/* draw the next row */
 	y= 0;
+	if(mv[0].ty > 0 && mv[0].ty+mv[0].page->ti.th <= mv[0].map->height)
 #ifndef FULLRCREND
 	if(player[plid].enti.q%3)
 #else
@@ -404,6 +407,7 @@ void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 
 	/* draw the next row */
 	y= mv[0].page->sh + mv[0].map->tiles->tileHeight;
+	if(mv[0].ty >= 0 && mv[0].ty+mv[0].page->ti.th < mv[0].map->height)
 #ifndef FULLRCREND
 	if(player[plid].enti.q%3)
 #else
@@ -602,16 +606,14 @@ if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dx); modexp
 	for(	mv->dx=poopoffset;	mv->dx<(mv->page->sw+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width;	mv->dx+=mv->map->tiles->tileWidth, tx++) {
 		if(i>=0){
 			mapDrawTile(mv->map->tiles, mv->map->layerdata[0].data[i], mv->page, mv->dx, y);
-			for(z=1;z<=2;z++){
+			for(z=1;z<=2;z++)
 				if(mv->map->layerdata[z].data[i]){
 					sprintf(global_temp_status_text2, "%u", mv->map->layerdata[z].data[i]); modexprint(mv->page, mv->dx, y, 1, 0, PALMAPDRAWW, z+2, global_temp_status_text2);
 					//mapDrawTile(mv->map->tiles, mv->map->layerdata[z].data[i], mv->page, mv->dx, y);
 				}
-			}
 		}
 		i++; /* next! */
-	}
-if(pagedelayrendermap) delay(200);
+	} if(pagedelayrendermap) delay(200);
 }
 
 void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, word poopoffset)
@@ -628,16 +630,14 @@ if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dy); modexp
 	for(	mv->dy=poopoffset;	mv->dy<(mv->page->sh+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height;	mv->dy+=mv->map->tiles->tileHeight, ty++) {
 		if(i>=0){
 			mapDrawTile(mv->map->tiles, mv->map->layerdata[0].data[i], mv->page, x, mv->dy);
-			for(z=1;z<=2;z++){
+			for(z=1;z<=2;z++)
 				if(mv->map->layerdata[z].data[i]){
 					sprintf(global_temp_status_text2, "%u", mv->map->layerdata[z].data[i]); modexprint(mv->page, x, mv->dy, 1, 0, PALMAPDRAWW, z+2, global_temp_status_text2);
 					//mapDrawTile(mv->map->tiles, mv->map->layerdata[z].data[i], mv->page, x, mv->dy);
 				}
-			}
 		}
 		i += mv->map->width;
-	}
-if(pagedelayrendermap) delay(200);
+	} if(pagedelayrendermap) delay(200);
 }
 
 void mapDrawWRow(map_view_t *mv, int tx, int ty, word y)
@@ -649,12 +649,11 @@ void mapDrawWRow(map_view_t *mv, int tx, int ty, word y)
 	for(mv->dx=0; mv->dx<mv->page->sw+mv->dxThresh && tx < mv->map->width; mv->dx+=mv->map->tiles->tileWidth, tx++) {
 		if(i>=0){	/* we are in the map, so copy! */
 			mapDrawTile(mv->map->tiles, mv->map->layerdata[0].data[i], mv->page, mv->dx, y);
-			for(z=1;z<=2;z++){
+			for(z=1;z<=2;z++)
 				if(mv->map->layerdata[z].data[i]){
 					sprintf(global_temp_status_text2, "%u", mv->map->layerdata[z].data[i]); modexprint(mv->page, mv->dx, y, 1, 0, PALMAPDRAWW, z+2, global_temp_status_text2);
 					//mapDrawTile(mv->map->tiles, mv->map->layerdata[z].data[i], mv->page, mv->dx, y);
 				}
-			}
 		}
 		i++; /* next! */
 	}
@@ -672,12 +671,11 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 	for(mv->dy=0; mv->dy<mv->page->sh+mv->dyThresh && ty < mv->map->height; mv->dy+=mv->map->tiles->tileHeight, ty++) {
 		if(i>=0){	/* we are in the map, so copy away! */
 			mapDrawTile(mv->map->tiles, mv->map->layerdata[0].data[i], mv->page, x, mv->dy);
-			for(z=1;z<=2;z++){
+			for(z=1;z<=2;z++)
 				if(mv->map->layerdata[z].data[i]){
 					sprintf(global_temp_status_text2, "%u", mv->map->layerdata[z].data[i]); modexprint(mv->page, x, mv->dy, 1, 0, PALMAPDRAWW, z+2, global_temp_status_text2);
 					//mapDrawTile(mv->map->tiles, mv->map->layerdata[z].data[i], mv->page, x, mv->dy);
 				}
-			}
 		}
 		i += mv->map->width;
 	}
