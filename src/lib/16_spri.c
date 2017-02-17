@@ -103,8 +103,8 @@ void animate_spri(entity_t *enti, video_t *video)
 	int x,y,rx,ry,w,h;
 	VGA_RAM_PTR omemptr = (VGA_RAM_PTR)video->page[0].data;// save original mem ptr
 
-	x=enti->spri->x;
-	y=enti->spri->y;
+	x=enti->spri.x;
+	y=enti->spri.y;
 	VL_Initofs(video);
 
 	// Depending on delay, update indices
@@ -119,7 +119,7 @@ void animate_spri(entity_t *enti, video_t *video)
 	vga_wm1_mem_block_copy(copy_ofs,	display_ofs,	vga_state.vga_stride * vga_state.vga_height);
 	vga_restore_rm0wm0();*/
 
-	switch(enti->spri->delay)
+	switch(enti->spri.delay)
 	{
 		// Delay = 0 means that sprite should loop. Nothing to change here
 		case 0:
@@ -128,18 +128,18 @@ void animate_spri(entity_t *enti, video_t *video)
 		// Delay = 1 means that on next time unit sprite should be changed
 		case 1:
 			INC_PER_FRAME
-			enti->spri->curr_anim_spri++;
+			enti->spri.curr_anim_spri++;
 
 			// If we hit the end of an animation sequence, restart it
-			if(!(	enti->spri->curr_spri_id = enti->spri->curr_anim_list[enti->spri->curr_anim_spri].sprite_id)){
-				enti->spri->curr_anim_spri = 0;
-				enti->spri->curr_spri_id = enti->spri->curr_anim_list[enti->spri->curr_anim_spri].sprite_id;
+			if(!(	enti->spri.curr_spri_id = enti->spri.curr_anim_list[enti->spri.curr_anim_spri].sprite_id)){
+				enti->spri.curr_anim_spri = 0;
+				enti->spri.curr_spri_id = enti->spri.curr_anim_list[enti->spri.curr_anim_spri].sprite_id;
 			}
-			enti->spri->delay = enti->spri->curr_anim_list[enti->spri->curr_anim_spri].delay;
+			enti->spri.delay = enti->spri.curr_anim_list[enti->spri.curr_anim_spri].delay;
 
 		// Delay > 1 means that we should not change sprite yet. Decrease delay
 		default:
-			enti->spri->delay--;
+			enti->spri.delay--;
 		break;
 	}
 
@@ -148,7 +148,7 @@ void animate_spri(entity_t *enti, video_t *video)
 
 
 	// Draw sprite
-	j = get_vrl_by_id(enti->spri->spritesheet, enti->spri->curr_spri_id, enti->spri->sprite_vrl_cont);
+	j = get_vrl_by_id(enti->spri.spritesheet, enti->spri.curr_spri_id, enti->spri.sprite_vrl_cont);
 	if(j < 0)
 	{
 		//Quit (gv, "Error retriving required sprite");
@@ -162,8 +162,8 @@ void animate_spri(entity_t *enti, video_t *video)
 			else rx = -(video->page[0].dx);
 		if (y >= enti->overdrawh) ry = (y - enti->overdrawh);
 			else ry = -(video->page[0].dy);
-		h = enti->spri->sprite_vrl_cont->vrl_header->height + enti->overdrawh + y - ry;
-		w = (x + enti->spri->sprite_vrl_cont->vrl_header->width + (enti->overdraww*2) + 3 - rx) & (~3) - enti->overdraww;//round up
+		h = enti->spri.sprite_vrl_cont->vrl_header->height + enti->overdrawh + y - ry;
+		w = (x + enti->spri.sprite_vrl_cont->vrl_header->width + (enti->overdraww*2) + 3 - rx) & (~3) - enti->overdraww;//round up
 		if ((rx+w) > video->page[0].width) w = video->page[0].width-rx;
 		if ((ry+h) > video->page[0].height) h = video->page[0].height-ry;
 
@@ -190,10 +190,10 @@ void animate_spri(entity_t *enti, video_t *video)
 	draw_vrl1_vgax_modex(
 		x-rx,
 		y-ry,
-		enti->spri->sprite_vrl_cont->vrl_header,
-		enti->spri->sprite_vrl_cont->line_offsets,
-		enti->spri->sprite_vrl_cont->buffer + sizeof(struct vrl1_vgax_header),
-		enti->spri->sprite_vrl_cont->data_size
+		enti->spri.sprite_vrl_cont->vrl_header,
+		enti->spri.sprite_vrl_cont->line_offsets,
+		enti->spri.sprite_vrl_cont->buffer + sizeof(struct vrl1_vgax_header),
+		enti->spri.sprite_vrl_cont->data_size
 	);
 #endif
 	if(!video->rss)

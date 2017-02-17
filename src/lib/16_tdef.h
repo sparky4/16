@@ -108,11 +108,11 @@ typedef struct {
 	byte	*data;			//TODO: 16_mm and 16_ca must handle this
 } mapl_t;	//map layer array type def
 
-#define MAPLAYERS 3
+#define MAP_LAYERS 3
 typedef struct {
 	//long		planestart[3];
 	//unsigned	planelength[3];
-	mapl_t layerdata[MAPLAYERS];	// mapdata for multilayer (map index values for rendering which image on the tile)
+	mapl_t layerdata[MAP_LAYERS];	// mapdata for multilayer (map index values for rendering which image on the tile)
 	tiles_t *tiles;		//TODO: 16_mm and 16_ca must handle this	// tilesets for layers (currently ony 4 can be loaded wwww)
 	int width, height;		//this has to be signed!
 	byte name[16];
@@ -168,7 +168,7 @@ typedef	struct
 	word speed;		//entity speed!
 	word spt;		//speed per tile
 #ifdef	__WATCOMC__
-	sprite_t *spri; // sprite used by entity
+	sprite_t spri; // sprite used by entity
 #endif
 	sword hp; //hitpoints of the entity
 	nibble overdraww, overdrawh;	// how many pixels to "overdraw" so that moving sprites with edge pixels don't leave streaks.

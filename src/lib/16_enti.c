@@ -69,13 +69,13 @@ void EN_initentity(entity_t *enti, video_t *video)
 void EN_initplayer(player_t *player, word pn, video_t *video)
 {
 	EN_initentity(&player[pn].enti, video);
-	player[pn].enti.spri->x = player[0].enti.x-4;
-	player[pn].enti.spri->y = player[0].enti.y-16;
+	player[pn].enti.spri.x = player[0].enti.x-4;
+	player[pn].enti.spri.y = player[0].enti.y-16;
 	player[pn].walktype=0;
 	player[pn].enti.dire=30;
 	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = video->page[0].stridew;//skewing bug
 
-	video->sprifilei =	set_anim_by_id(player[pn].enti.spri, player[pn].enti.dire);
+	video->sprifilei =	set_anim_by_id(&player[pn].enti.spri, player[pn].enti.dire);
 	animate_spri(&player[pn].enti, video);
 
 	//print_anim_ids(player[0].enti.spri);

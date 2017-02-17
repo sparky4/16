@@ -693,7 +693,7 @@ void shinku(global_game_variables_t *gv)
         // NTS: For some bizarre reason, gv->pee is not initialized, but the pointer is not NULL even
         //      though it should be. Instead it's NULL as a neAr pointer but contains a non-null
         //      segment value, so testing against NULL doesn't work. It is initialized properly if
-        //      you call start_timer() though which uses neAr malloc. Rather than fight with that,
+        //      you call start_timer() though which uses neAr mAlloc. Rather than fight with that,
         //      I decided it would be better to declare a temp buffer statically and sprintf to that.
         //
         //      This fixes *** Null pointer assignment detected error message in ZCROLL.EXE on exit.
@@ -794,13 +794,13 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn)
 	}
 	player[pn].enti.dire+=dd;
 	//setting xy position
-	player[pn].enti.spri->x = x;
-	player[pn].enti.spri->y = y;
+	player[pn].enti.spri.x = x;
+	player[pn].enti.spri.y = y;
 
 	if((player[pn].enti.q==1 && player[pn].enti.pred != player[pn].enti.d) || !dd)//when dir changed OR when player change face direction
 	{
 		//0000printf("	q=%u	pred=%u	d=%u	dd=%u\n", player[pn].enti.q, player[pn].enti.pred, player[pn].enti.d, dd);
-		set_anim_by_id(player[pn].enti.spri, player[pn].enti.dire); //pip->video->sprifilei = set_anim_by_id(player[pn].enti.spri, player[pn].enti.dire);	if(pip->video->sprifilei == -1){ printf("ERROR!	%u\n", player[pn].enti.dire); return; }
+		set_anim_by_id(&player[pn].enti.spri, player[pn].enti.dire); //pip->video->sprifilei = set_anim_by_id(player[pn].enti.spri, player[pn].enti.dire);	if(pip->video->sprifilei == -1){ printf("ERROR!	%u\n", player[pn].enti.dire); return; }
 		player[pn].enti.pred = player[pn].enti.d;
 		if(!dd)//changed direction while NOT moving!
 		{

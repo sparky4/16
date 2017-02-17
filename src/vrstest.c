@@ -91,16 +91,16 @@ void main()
 //	read_vrs(&gvar, "data/spri/chikyuu.vrs", &vrs);
 
 
-	enti.spri->spritesheet = &vrs;
-	enti.spri->sprite_vrl_cont = malloc(sizeof(struct vrl_container));*/
+	enti.spri.spritesheet = &vrs;
+	enti.spri.sprite_vrl_cont = malloc(sizeof(struct vrl_container));*/
 	VRS_LoadVRS("data/spri/chikyuu.vrs", &enti, &gvar);
-	i = set_anim_by_id((enti.spri), 31);
+	i = set_anim_by_id(&(enti.spri), 31);
 	if (i == -1)
 	{
 		//Quit(&gvar, "ERROR!! glitch IN FILE!\n");
 	}
-	enti.spri->x = TILEWH-4;
-	enti.spri->y = TILEWH;
+	enti.spri.x = TILEWH-4;
+	enti.spri.y = TILEWH;
 
 //	Uncomment to see broken sprites
 /*	sega = mm.bufferseg;
@@ -124,11 +124,11 @@ void main()
 	//modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].width, gvar.video.page[0].height, 2);
 	VL_LoadPalFile("data/spri/chikyuu.pal", &gvar.video.palette);
 	for (i = 0; i < 10; i++){
-		enti.spri->delay = 1;
+		enti.spri.delay = 1;
 
-		if(i==5) set_anim_by_id(enti.spri, 21);
+		if(i==5) set_anim_by_id(&enti.spri, 21);
 
-		animate_spri(&enti, &gvar.video);// enti.spri->x += 16;
+		animate_spri(&enti, &gvar.video);// enti.spri.x += 16;
 		delay(500);
 	}
 
@@ -154,10 +154,10 @@ void main()
 	MM_DumpData(&gvar);
 	MM_Report_(&gvar);
 	Shutdown16(&gvar);
-	free(enti.spri->sprite_vrl_cont);
-	free(enti.spri->spritesheet->vrl_line_offsets);
+	free(enti.spri.sprite_vrl_cont);
+	free(enti.spri.spritesheet->vrl_line_offsets);
 	MM_FreePtr(&bigbuffer, &gvar);
-	//MM_FreePtr(&((void __based(sega)*)enti.spri->spritesheet->buffer), &mm);
+	//MM_FreePtr(&((void __based(sega)*)enti.spri.spritesheet->buffer), &mm);
 	//printf("CPU to VGA: %f\n", t1);
 	//printf("VGA to VGA: %f\n", t2);
 	heapdump(&gvar);

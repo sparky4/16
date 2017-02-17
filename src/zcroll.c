@@ -74,9 +74,8 @@ void main(int argc, char *argv[])
 
 	// OK, this one takes hellova time and needs to be done in farmalloc or MM_...
 	//IN CA i think you use CAL_SetupGrFile but i do think we should work together on this part --sparky4
-	//player[0].ent = malloc(sizeof(entity_t));
-	player[0].enti.spri = malloc(sizeof(struct sprite));
-	player[0].enti.spri->spritesheet = malloc(sizeof(struct vrs_container));
+	//player[0].enti.spri = malloc(sizeof(struct sprite));
+	player[0].enti.spri.spritesheet = malloc(sizeof(struct vrs_container));
 
 	// create the map
 //	fprintf(stderr, "testing map load~	");

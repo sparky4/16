@@ -88,7 +88,7 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 #ifdef DEBUG_MAPDATA
 					printf("objects detected\n");
 #endif
-//					map->layerdata[k].layername = malloc(sizeof(byte) * MAPLNAMESIZE);//TODO: USE MM_ CA_ AND PM_
+//					map->layerdata[k].layername = mAlloc(sizeof(byte) * MAPLNAMESIZE);//TODO: USE MM_ CA_ AND PM_
 //					strncpy(map->layerdata[k].layername, js+t[i+1].start, MAPLNAMESIZE);//TODO: USE MM_ CA_ AND PM_
 //					if(map->layerdata[k].layername[MAPLNAMESIZE]!=0) map->layerdata[k].layername[MAPLNAMESIZE]='\0';
 				}else if(jsoneq(js, &(t[i]), "name") == 0) {

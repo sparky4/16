@@ -74,8 +74,8 @@ void VRS_OpenVRS(char *filename, entity_t *enti, boolean rlsw, global_game_varia
 	}
 	vrs.vrl_line_offsets = vrl_line_offsets;
 
-	enti->spri->spritesheet = &vrs;
-	enti->spri->sprite_vrl_cont = malloc(sizeof(struct vrl_container));
+	enti->spri.spritesheet = &vrs;
+	enti->spri.sprite_vrl_cont = malloc(sizeof(struct vrl_container));
 }
 
 // Read .vrs file into far memory

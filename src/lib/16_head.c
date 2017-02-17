@@ -52,7 +52,7 @@ char *remove_ext (char* mystr, char dot, char sep) {
 
 	if (mystr == NULL)
 		return NULL;
-	if ((retstr = malloc (strlen (mystr) + 1)) == NULL)
+	if ((retstr = malloc(strlen (mystr) + 1)) == NULL)
 		return NULL;
 
 	// Make a copy and find the relevant characters.
@@ -80,7 +80,7 @@ char *remove_ext (char* mystr, char dot, char sep) {
 	}
 
 	// Return the modified string.
-
+	free(mystr);
 	return retstr;
 }
 

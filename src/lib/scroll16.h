@@ -28,7 +28,6 @@
 #include "src/lib/bakapee.h"
 #include "src/lib/16_vl.h"
 #include "src/lib/16_in.h"
-#include "src/lib/bitmap.h"
 #include "src/lib/16_map.h" //map is loaded here www
 #include "src/lib/16render.h"
 //#include "src/lib/16_map.h"	//new map stuff
@@ -83,7 +82,7 @@
 	printf("player vars:\n");\
 	printf("	xy: %dx%d", player[0].enti.x, player[0].enti.y); printf("	txy: %dx%d", player[0].enti.tx, player[0].enti.ty); printf("	triggxy: %dx%d", player[0].enti.triggerx, player[0].enti.triggery); printf("	value: %d\n", mv[1].map->layerdata[0].data[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))]);\
 	printf("	hp: %d", (player[0].enti.hp));	printf("	q: %u", player[0].enti.q);	printf("	info.dir: %u", player[0].info.dir);	printf("	d: %u", player[0].enti.d);	printf("	dire: %u", player[0].enti.dire);\
-		printf("	pdir: %u\n", player[0].pdir); printf("	delay=%u", player[0].enti.spri->delay);\
+		printf("	pdir: %u\n", player[0].pdir); printf("	delay=%u", player[0].enti.spri.delay);\
 printf("\n\n");\
 	VL_PrintmodexmemInfo(&gvar.video);\
 \
