@@ -91,7 +91,7 @@ typedef struct sprite
 
 //TODO: 16_mm and 16_ca must handle this
 typedef struct {
-	bitmap_t far *pcximg;		// old
+//	bitmap_t far *pcximg;		// old
 #ifdef	__WATCOMC__
 	sprite_t *spri;			// I will probibaly use this --sparky4
 #endif
@@ -141,9 +141,9 @@ typedef struct {
 	word sh;		/* screen heigth */	/* resolution */
 	word width;		/* virtual width of the page */
 	word height;	/* virtual height of the page */
-	word stridew;			/* width/4 */	/* VGA */
-	word pagesize;			/* page size */
-	word pi;				/* increment page by this much to preserve location */
+	word stridew;	/* width/4 */	/* VGA */
+	word pagesize;	/* page size */
+	word pi;		/* increment page by this much to preserve location */
 	int tlx,tly;
 //newer vars
 //TODO: find where they are used
@@ -237,8 +237,8 @@ typedef	struct
 	//struct sprite	*spri;	//supposively the sprite sheet data
 	memptr		gr;
 #endif
-	bitmap_t	*data;		//supposively the sprite sheet data//old format
-	bitmap_t	bmp;
+//	bitmap_t	*data;		//supposively the sprite sheet data//old format
+//	bitmap_t	bmp;
 
 	//input
 	byte near		pdir;	//previous direction~ used in IN_16 in IN_ReadControl()
@@ -268,18 +268,20 @@ typedef struct
 	nibble wcpu;	//stored value of cpu type
 } kurokku_t;
 
+//===================================//
+#define     PALSIZE            768
+#define NUMCHUNKS	416	//keen
 //video
 typedef struct
 {
 	unsigned int offscreen_ofs;
 	unsigned int pattern_ofs;
-} ofs_t;
-#define NUMCHUNKS	416	//keen
+} ofs_t;	//unfinished
 
 typedef struct
 {
 	char old_mode;		//old video mode before game!
-	byte palette[768];		//palette array
+	byte palette[PALSIZE], dpal[PALSIZE];	//palette array
 	page_t page[MAXPAGE];	//can be used as a pointer to root page[0]
 	word vmem_remain;	//remaining video memory
 	byte num_of_pages;	//number of actual pages

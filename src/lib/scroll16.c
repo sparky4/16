@@ -568,8 +568,6 @@ void near
 mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 {
 	word rx, ry;
-	//word textx=0, texty=0;
-	//if(i==0) i=2;
 //	printf("%02d ", i); if(x >= page->width - t->tileWidth) printf("\n");
 	switch(i)
 	{
@@ -578,8 +576,8 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 			modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, 1); //currently the over scan color!
 		break;
 		default:
-			rx = (((i-1) % ((t->pcximg->width)/t->tileWidth)) * t->tileWidth);
-			ry = (((i-1) / ((t->pcximg->height)/t->tileHeight)) * t->tileHeight);
+			rx = (((i-1) % ((t->spri->sprite_vrl_cont->vrl_header->width)/t->tileWidth)) * t->tileWidth);
+			ry = (((i-1) / ((t->spri->sprite_vrl_cont->vrl_header->height)/t->tileHeight)) * t->tileHeight);
 #ifndef TILERENDER
 			if(!pagenorendermap) modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, i+1);
 #else

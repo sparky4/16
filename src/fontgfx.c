@@ -128,8 +128,6 @@ IIIIIII  BBBBBBBBB    MMMM    M    MMMM\n\
 //	modexprint(0, 0, 1, 0, colpee, ROSE);
 //++++	getch();
 	VGAmodeX(0, 1, &gvar);
-//	rosa=malloc(sizeof(ROSE));
-//	(*rosa)=(byte)ROSE;
 	printf("\n%s\n", rose);
 	//printf("\nh=%d\n", '8');
 //	printf("\n%c\n", e);

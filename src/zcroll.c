@@ -39,9 +39,7 @@ unsigned int i;
 
 #ifdef FADE
 //static word paloffset=0;
-byte *dpal;
 #endif
-byte *gpal;
 byte *ptr;
 memptr pal;
 
@@ -96,9 +94,8 @@ void main(int argc, char *argv[])
 
 	// save the palette
 #ifdef FADE
-	dpal = modexNewPal();
-	modexPalSave(dpal);
-	modexFadeOff(4, dpal);
+	modexPalSave(&gvar.video.dpal);
+	modexFadeOff(4, &gvar.video.dpal);
 	modexPalBlack();
 #endif
 
@@ -116,9 +113,8 @@ void main(int argc, char *argv[])
 	//VL_LoadPalFile("data/default.pal", &gvar.video.palette);
 
 #ifdef FADE
-	gpal = modexNewPal();
-	modexPalSave(gpal);
-	modexSavePalFile("data/g.pal", gpal);
+	modexPalSave(&gvar.video.palette);
+	modexSavePalFile("data/g.pal", &gvar.video.palette);
 	modexPalBlack();	//so player will not see loadings~
 #endif
 
@@ -136,11 +132,11 @@ void main(int argc, char *argv[])
 	if (gvar.video.sprifilei == -1)
 	{
 #ifdef FADE
-		modexFadeOff(4, gpal);
+		modexFadeOff(4, &gvar.video.palette);
 #endif
 		Quit(&gvar, "Wrong ID for sprite");
 #ifdef FADE
-		modexFadeOn(4, dpal);
+		modexFadeOn(4, &gvar.video.dpal);
 #endif
 	}
 
@@ -150,7 +146,7 @@ void main(int argc, char *argv[])
 	shinku(&gvar);
 //modexpdump(mv[0].page);
 #ifdef FADE
-	modexFadeOn(4, gpal);
+	modexFadeOn(4, &gvar.video.palette);
 #endif
 	while(!IN_KeyDown(sc_Escape) && player[0].enti.hp>0)
 	{
@@ -210,7 +206,7 @@ void main(int argc, char *argv[])
 			VL_LoadPalFile(bakapee1p, &gvar.video.palette);
 		}//JK
 #ifdef FADE
-		if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate(dpal); IN_UserInput(1,1); }
+		if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate(gvar.video.dpal); IN_UserInput(1,1); }
 #endif
 		if(IN_KeyDown(sc_R)){ modexPalOverscan(rand()%56); } //r
 
@@ -220,9 +216,9 @@ void main(int argc, char *argv[])
 	/* fade back to text mode */
 	/* but 1st lets save the game palette~ */
 #ifdef FADE
-	modexPalSave(gpal);
-	modexSavePalFile("data/g.pal", gpal);
-	modexFadeOff(4, gpal);
+	modexPalSave(&gvar.video.palette);
+	modexSavePalFile("data/g.pal", &gvar.video.palette);
+	modexFadeOff(4, &gvar.video.palette);
 #endif
 	Shutdown16(&gvar);
 	printf("\nProject 16 zcroll.exe. This is just a test file!\n");
@@ -230,6 +226,6 @@ void main(int argc, char *argv[])
 	SCROLLEXITMESG;
 	WCPU_cpufpumesg();
 #ifdef FADE
-	modexFadeOn(4, dpal);
+	modexFadeOn(4, gvar.video.dpal);
 #endif
 }

@@ -23,7 +23,6 @@
 #include "src/16.h"
 
 engi_stat_t engi_stat;
-byte *dpal, *gpal;
 player_t player[MaxPlayers];
 
 void
@@ -35,12 +34,10 @@ main(int argc, char *argv[])
 	engi_stat = ENGI_RUN;
 
 	/* save the palette */
-	dpal = modexNewPal();
-	modexPalSave(dpal);
-	modexFadeOff(4, dpal);
-	gpal = modexNewPal();
-	modexPalSave(gpal);
-	modexSavePalFile("data/g.pal", gpal);
+	modexPalSave(gvar.video.dpal);
+	modexFadeOff(4, gvar.video.dpal);
+	modexPalSave(gvar.video.palette);
+	modexSavePalFile("data/g.pal", gvar.video.palette);
 	VGAmodeX(1, 1, &gvar);
 //	modexPalBlack();	//so player will not see loadings~
 	IN_Default(0,&player,ctrl_Joystick);
@@ -57,5 +54,5 @@ main(int argc, char *argv[])
 	printf("Project 16 16.exe. This is supposed to be the actual finished game executable!\n");
 	printf("version %s\n", VERSION);
 	WCPU_cpufpumesg();
-	modexFadeOn(4, dpal);
+	modexFadeOn(4, gvar.video.dpal);
 }

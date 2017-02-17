@@ -223,7 +223,7 @@ int CA_loadmap(char *mn, map_t *map, global_game_variables_t *gvar)
 	file_s = filesize(fh);
 	CA_LoadFile(mn, &MAPBUFINLM, gvar);
 	tokcount = jsmn_parse(&p, MAPBUFINLM, file_s, NULL, 0);
-	tok = malloc(tokcount*sizeof(jsmntok_t));//TODO: USE MM_ CA_ AND PM_
+	tok = malloc(tokcount*sizeof(jsmntok_t));
 //	printf("Allocated %d tokens", tokcount);
 	jsmn_init(&p);
 	if((status = jsmn_parse(&p, MAPBUFINLM, file_s, tok, tokcount)) < 0)

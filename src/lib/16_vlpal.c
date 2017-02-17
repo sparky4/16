@@ -24,12 +24,12 @@
 
 //color checker~
 //i want to make another vesion that checks the palette when the palette is being appened~
-void modexchkcolor(imgtestpal_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, word *offset*/)
+void modexchkcolor(imgtestpal_t *bmp, word *q, word *a, word *aa, word *z, word *i/*, word *offset*/, global_game_variables_t *gv)
 {
-		byte *pal;
+		byte *pal=&(gv->video.palette);
 		word zz=0;
-		pal = modexNewPal();
-		modexPalSave(pal);
+		//pal = modexNewPal();
+//		modexPalSave(pal);
 		CHKCOLDBGOUT1
 		//check palette for dups
 		for(; (*z)<PAL_SIZE; (*z)+=3)
@@ -93,7 +93,7 @@ no... wait.... no wwww
 }
 
 void
-VL_palette(imgtestpal_t *bmp, byte *p, word *i, word qp, word aqoffset)
+VL_palette(imgtestpal_t *bmp, byte *p, word *i, word qp, word aqoffset, global_game_variables_t *gv)
 {
 	//byte *p = bmp->palette;
 	word w=0;
@@ -179,7 +179,7 @@ VL_palette(imgtestpal_t *bmp, byte *p, word *i, word qp, word aqoffset)
 		printf("1(*i)=%02d\n", (*i)/3);//
 		printf("1z=%02d\n", z/3);//
 #endif
-		modexchkcolor(bmp, &q, &a, &aa, &z, i);
+		modexchkcolor(bmp, &q, &a, &aa, &z, i, gv);
 #ifdef BEVERBOSEPALCHECK
 		printf("2(*i)=%02d\n", (*i)/3);
 		printf("2z=%02d\n", z/3);
@@ -253,7 +253,7 @@ printf("		  aq=%02d\n", aq);//
 printf("		  aa=%02d\n", aa);//
 #endif
 	//update the palette~
-	VL_palette(bmp, p, &pp, aq, aqoffset);
+	VL_palette(bmp, p, &pp, aq, aqoffset, gv);
 	(*i)=pp;
 
 	if(aq<aa){ pp=q; aq++; goto aqpee; }

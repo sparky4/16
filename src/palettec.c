@@ -26,8 +26,7 @@ void
 main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
-	byte *pal;
-	byte *bakapee;
+	char *bakapee;
 
 	bakapee = malloc(64);
 	if(argv[1]) bakapee = argv[1];
@@ -35,11 +34,11 @@ main(int argc, char *argv[])
 
 	VGAmodeX(1, 1, &gvar);
 
-	pal = modexNewPal();
-	modexPalSave(pal);
+	modexPalSave(&(gvar.video.palette));
 
-	modexSavePalFile(bakapee, pal);
+	modexSavePalFile(bakapee, &(gvar.video.palette));
 
 	VGAmodeX(0, 1, &gvar);
+	free(bakapee);
 
 }

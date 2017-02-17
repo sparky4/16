@@ -644,41 +644,39 @@ modexPalSave(byte *palette) {
 }
 
 
-byte *
+/*byte *
 modexNewPal() {
 	byte *ptr;
-	ptr = malloc(PAL_SIZE);
+	ptr = m a l l o c(PAL_SIZE);
 
-	/* handle errors */
+	// handle errors
 	if(!ptr) {
 		printf("Could not allocate palette.\n");
 	}
 
 	return ptr;
-}
+}*/
 
 
 void
-modexLoadPalFile(byte *filename, byte **palette) {
+modexLoadPalFile(byte *filename, byte *palette) {
 	FILE *file;
 	byte *ptr;
 
-	/* free the palette if it exists */
-	if(*palette) {
-	free(*palette);
-	}
+	// free the palette if it exists
+	//if(*palette) { free(*palette); }
 
-	/* allocate the new palette */
-	*palette = modexNewPal();
+	// allocate the new palette
+	//*palette = modexNewPal();
 
-	/* open the file */
+	// open the file
 	file = fopen(filename, "rb");
 	if(!file) {
-	printf("Could not open palette file: %s\n", filename);
+		printf("Could not open palette file: %s\n", filename);
 	}
 
 	/* read the file */
-	ptr = *palette;
+	ptr = palette;
 	while(!feof(file)) {
 	*ptr++ = fgetc(file);
 	}

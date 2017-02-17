@@ -38,9 +38,8 @@ extern boolean pagenorendermap;
 unsigned int i;
 //#ifdef FADE
 	static word paloffset=0;
-	byte *dpal;
+	byte *gvar.video.dpal;
 //#endif
-	byte *gpal;
 //	byte *ptr;
 	byte *mappalptr;
 
@@ -75,9 +74,9 @@ void main(int argc, char *argv[])
 	/* save the palette */
 #ifdef MODEX
 #ifdef FADE
-	dpal = modexNewPal();
-	modexPalSave(dpal);
-	modexFadeOff(4, dpal);
+	gvar.video.dpal = modexNewPal();
+	modexPalSave(gvar.video.dpal);
+	modexFadeOff(4, gvar.video.dpal);
 #endif
 
 	VGAmodeX(bakapee, 1, &gvar);
@@ -100,9 +99,9 @@ void main(int argc, char *argv[])
 //	printf("====\n\n");
 #ifdef MODEX
 #ifdef FADE
-	gpal = modexNewPal();
-	modexPalSave(gpal);
-	modexSavePalFile("data/g.pal", gpal);
+	&gvar.video.palette = modexNewPal();
+	modexPalSave(&gvar.video.palette);
+	modexSavePalFile("data/g.pal", &gvar.video.palette);
 	modexPalBlack();	//so player will not see loadings~
 #endif
 #endif
@@ -123,11 +122,11 @@ void main(int argc, char *argv[])
 	if (gvar.video.sprifilei == -1)
 	{
 #ifdef FADE
-		modexFadeOff(4, gpal);
+		modexFadeOff(4, &gvar.video.palette);
 #endif
 		Quit(&gvar, "Wrong");
 #ifdef FADE
-		modexFadeOn(4, dpal);
+		modexFadeOn(4, gvar.video.dpal);
 #endif
 	}
 
@@ -159,7 +158,7 @@ void main(int argc, char *argv[])
 
 #ifdef MODEX
 #ifdef FADE
-	modexFadeOn(4, gpal);
+	modexFadeOn(4, &gvar.video.palette);
 #endif
 #endif
 	while(!IN_KeyDown(sc_Escape) && player[0].enti.hp>0)
@@ -193,7 +192,7 @@ void main(int argc, char *argv[])
 	//debugging binds!
 #ifdef MODEX
 #ifdef FADE
-	if(IN_KeyDown(24)){ modexPalUpdate0(gpal); paloffset=0; modexpdump(mv[0].page); modexpdump(mv[1].page);  IN_UserInput(1,1); } //p
+	if(IN_KeyDown(24)){ modexPalUpdate0(&gvar.video.palette); paloffset=0; modexpdump(mv[0].page); modexpdump(mv[1].page);  IN_UserInput(1,1); } //p
 	/*if(IN_KeyDown(22)){
 	paloffset=0; modexPalBlack(); modexPalUpdate(PCXBMPVAR, &paloffset, 0, 0);
 	printf("1paloffset	=	%d\n", paloffset/3);
@@ -220,7 +219,7 @@ void main(int argc, char *argv[])
 
 	//9
 #ifdef FADE
-		if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate(dpal); IN_UserInput(1,1); }
+		if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate(gvar.video.dpal); IN_UserInput(1,1); }
 #endif
 		if(IN_KeyDown(sc_R)){ modexPalOverscan(rand()%56); } //r
 
@@ -231,9 +230,9 @@ void main(int argc, char *argv[])
 	/* but 1st lets save the game palette~ */
 #ifdef MODEX
 #ifdef FADE
-	modexPalSave(gpal);
-	modexSavePalFile("data/g.pal", gpal);
-	modexFadeOff(4, gpal);
+	modexPalSave(&gvar.video.palette);
+	modexSavePalFile("data/g.pal", &gvar.video.palette);
+	modexFadeOff(4, &gvar.video.palette);
 #endif
 	VGAmodeX(0, 1, &gvar);
 #endif
@@ -244,7 +243,7 @@ void main(int argc, char *argv[])
 	WCPU_cpufpumesg();
 #ifdef MODEX
 #ifdef FADE
-	modexFadeOn(4, dpal);
+	modexFadeOn(4, gvar.video.dpal);
 #endif
 #endif
 }

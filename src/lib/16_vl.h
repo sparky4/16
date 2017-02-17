@@ -58,7 +58,6 @@
 #define PAGE_OFFSET(x,y) (((y)<<6)+((y)<<4)+((x)>>2))
 #define PLANE(x) (1 << ((x) & 3))
 #define SELECT_ALL_PLANES() outpw(0x03c4, 0xff02)
-#define     PALSIZE            768
 
 typedef union
 {
@@ -122,8 +121,8 @@ void modexFlashOff(word fade, byte *palette);
 
 /* palette loading and saving */
 void modexPalSave(byte *palette);
-byte *modexNewPal();
-void modexLoadPalFile(char *filename, byte **palette);
+//byte *modexNewPal();
+void modexLoadPalFile(char *filename, byte *palette);
 void VL_LoadPalFile(const char *filename, byte *palette);
 void VL_LoadPalFilewithoffset(const char *filename, byte *palette, word o);
 void VL_UpdatePaletteWrite(byte *palette, word o);
