@@ -22,7 +22,7 @@
 #include "src/lib/16_map.h"
 
 #define DUMP
-#define DUMP_MAP
+//#define DUMP_MAP
 
 void
 main(int argc, char *argv[])
@@ -37,23 +37,20 @@ main(int argc, char *argv[])
 #endif
 	char *fmt = "Memory available = %u\n";
 	char *fmt0 = "Largest Contiguous Block of Memory available = %u\n";
-	byte *datboi = "oh shit waddup!\n";
+	//byte *datboi = "oh shit waddup!\n";
 
 	MM_Startup(&gvar);
 	PM_Startup(&gvar);
 	//printf("pmstarted ok\n");
-	//PM_CheckMainMem(&gvar);
+	PM_CheckMainMem(&gvar);
 	PM_UnlockMainMem(&gvar);
 	CA_Startup(&gvar);
 
 	fprintf(stderr, fmt, _memavl());
 	fprintf(stderr, fmt0, _memmax());
 	fprintf(stderr, "Size of map var = %u\n", _msize(&(gvar.ca.camap.mapsegs)));
-	//fprintf(stderr, "program always crashes for some reason....\n");
 	//getch();
 
-	//loadmap("data/test.map", &map);
-	//newloadmap("data/test.map", &map);
 	CA_loadmap("data/test.map", &map, &gvar);
 #ifdef DUMP
 	fprintf(stdout, "map.width=	%d\n", map.width);
@@ -86,9 +83,7 @@ main(int argc, char *argv[])
 	fprintf(stdout, "&map.height==%Fp\n", map.height);
 	fprintf(stdout, "&map.data==%Fp\n", map.data);*/
 #endif
-	fprintf(stderr, "here comes dat boi!\n");
-	getch();
-	fprintf(stderr, "%s", datboi);
+	//fprintf(stderr, "here comes dat boi!\n"); getch(); fprintf(stderr, "%s", datboi);
 	MM_FreePtr(&(gvar.ca.camap.mapsegs), &gvar);
 	PM_Shutdown(&gvar);
 	CA_Shutdown(&gvar);

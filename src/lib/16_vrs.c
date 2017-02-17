@@ -78,64 +78,6 @@ void VRS_OpenVRS(char *filename, entity_t *enti, boolean rlsw, global_game_varia
 	enti->spri.sprite_vrl_cont = malloc(sizeof(struct vrl_container));
 }
 
-// Read .vrs file into far memory
-int read_vrs(global_game_variables_t *gvar, char *filename, struct vrs_container *vrs_cont){
-	int fd;
-	dword size;
-	byte far *buffer;
-	vrl1_vgax_offset_t **vrl_line_offsets;
-	uint32_t far *vrl_headers_offsets;
-	uint16_t far *vrl_id_iter;
-	uint32_t vrl_size;
-	int num_of_vrl=0, i;
-	struct vrl1_vgax_header far *curr_vrl;
-	int success=1;
-
-	// Open filename, get size of file,
-	// populate the vrs_container if all tests pass
-	fd = open(filename, O_RDONLY|O_BINARY);
-	// Insert sanity cheks later
-	size = lseek(fd, 0, SEEK_END);
-	buffer = malloc(size);
-	lseek(fd, 0, SEEK_SET);
-	read(fd, buffer, size);
-	close(fd);
-	if(!success)
-	{
-		Quit (gvar, "Unable to load file");
-	}
-	vrs_cont->data_size = size - sizeof(struct vrs_header);
-	vrs_cont->buffer = buffer;
-
-	// Calculate vrl offsets
-
-	// Count sprites
-	vrl_id_iter = (uint16_t far *)(buffer + vrs_cont->vrs_hdr->offset_table[VRS_HEADER_OFFSET_SPRITE_ID_LIST]);
-	while(vrl_id_iter[num_of_vrl]){
-		num_of_vrl++;
-	}
-	// Allocate memory for vrl line offsets table
-	vrl_line_offsets = malloc(sizeof(vrl1_vgax_offset_t *)*num_of_vrl);
-
-	vrl_headers_offsets = (uint32_t far *)(buffer + vrs_cont->vrs_hdr->offset_table[VRS_HEADER_OFFSET_VRS_LIST]);
-	// Calculate line offsets for each vrl
-	for(i = 0; i < num_of_vrl; i++){
-		curr_vrl = (struct vrl1_vgax_header far *)(buffer + vrl_headers_offsets[i]);
-
-		// Calc. vrl size as (next_offset - curr_offset)
-		if (i != num_of_vrl - 1){
-			vrl_size = vrl_headers_offsets[i+1] - vrl_headers_offsets[i] - sizeof(struct vrl1_vgax_header);
-		}
-		// If it's the last vrl, size is (next_vrs_struct_offset - curr_offset)
-		else{
-			vrl_size = vrs_cont->vrs_hdr->offset_table[VRS_HEADER_OFFSET_SPRITE_ID_LIST] - vrl_headers_offsets[i] - sizeof(struct vrl1_vgax_header);
-		}
-		vrl_line_offsets[i] = vrl1_vgax_genlineoffsets(curr_vrl, (byte *)curr_vrl + sizeof(struct vrl1_vgax_header), vrl_size);
-	}
-	vrs_cont->vrl_line_offsets = vrl_line_offsets;
-	return 0;
-}
-
 // Seek and return a specified .vrl blob from .vrs blob in far memory
 int get_vrl_by_id(struct vrs_container far *vrs_cont, uint16_t id, struct vrl_container *vrl_cont){
 	uint16_t far *ids;

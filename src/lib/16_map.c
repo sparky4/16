@@ -46,23 +46,20 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 			inner_end = t[i].end;
 			k = 0;
 			while(t[i].start < inner_end) {
-#ifdef DEBUG_DUMPVARS
-				printf("t[%d].start=%d, %d\n", i, t[i].start, inner_end);
-#endif
+//#define DEBUG_DUMPVARS
+//#ifdef DEBUG_DUMPVARS
+//				printf("t[%d].start=%d, %d\n", i, t[i].start, inner_end);
+//#endif
 				if(!objlay){
 				if(jsoneq(js, &(t[i]), "data") == 0) {
 #ifdef DEBUG_MAPDATA
 					printf("Layer %d data: (size is %d)[\n", k, t[i+1].size);
 #endif
 					map->layerdata[k].data = malloc(sizeof(byte) * t[i+1].size);//TODO: USE MM_ CA_ AND PM_
-//					map->data = (map->layerdata[k].data); //for backwards compatibility for rest of code
 					for(j = 0; j < t[i+1].size; j++) {
-						//map->layerdata[k][j] = (byte)atoi(js + t[i+2+j].start);
 						map->layerdata[k].data[j] = (byte)atoi(js + t[i+2+j].start);
 #ifdef DEBUG_MAPDATA
-						//printf("[%d,%d]%d", k, j, map->MAPDATAPTK[j]);
-						printf("%c",  map->MAPDATAPTK[j]+44);
-						//fprintf(stdout, "%c", map->data[j]+44);
+						printf("%c",  map->layerdata[k].data[j]+44);
 #endif
 					}
 					i += j + 2;
@@ -70,13 +67,13 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 					puts("\n]");
 #endif
 				}else if(jsoneq(js, &(t[i]), "name") == 0) {
-#ifdef DEBUG_MAPDATA
+#ifdef DEBUG_MAPVARS
 					printf("Layer %d's name: (size is %d)[\n", k, MAPLNAMESIZE);
 #endif
-					map->layerdata[k].layername = malloc(sizeof(byte) * MAPLNAMESIZE);//TODO: USE MM_ CA_ AND PM_
-					strncpy(map->layerdata[k].layername, js+t[i+1].start, MAPLNAMESIZE);
-					if(map->layerdata[k].layername[MAPLNAMESIZE]!=0) map->layerdata[k].layername[MAPLNAMESIZE]='\0';
-					if(strstr(map->layerdata[k].layername, "ob")) objlay=1;
+					//map->layerdata[k].layername = malloc(sizeof(byte) * MAPLNAMESIZE);//TODO: USE MM_ CA_ AND PM_
+					strncpy(&(map->layerdata[k].layername), js+t[i+1].start, MAPLNAMESIZE);
+					if((map->layerdata[k].layername[MAPLNAMESIZE])!=0) map->layerdata[k].layername[MAPLNAMESIZE]='\0';
+					if(strstr(&map->layerdata[k].layername, "ob")) objlay=1;
 #ifdef DEBUG_MAPDATA
 					printf("%s", map->layerdata[k].layername);
 					printf("\n]\n");
@@ -84,24 +81,33 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 					k++;
 				}
 				}else{ //objlay
-				if(jsoneq(js, &(t[i]), "objects") == 0) {
-#ifdef DEBUG_MAPDATA
-					printf("objects detected\n");
+					if(jsoneq(js, &(t[i]), "objects") == 0) {
+#ifdef DEBUG_OBVARS
+						printf("objects detected\n");
 #endif
-//					map->layerdata[k].layername = mAlloc(sizeof(byte) * MAPLNAMESIZE);//TODO: USE MM_ CA_ AND PM_
-//					strncpy(map->layerdata[k].layername, js+t[i+1].start, MAPLNAMESIZE);//TODO: USE MM_ CA_ AND PM_
-//					if(map->layerdata[k].layername[MAPLNAMESIZE]!=0) map->layerdata[k].layername[MAPLNAMESIZE]='\0';
-				}else if(jsoneq(js, &(t[i]), "name") == 0) {
-#ifdef DEBUG_MAPDATA
-					printf("Object %d's name: (size is %d)[\n", k, MAPLNAMESIZE);
-					printf("'%.*s'", t[i+1].end - t[i+1].start, js+t[i+1].start);
-					printf("\n]\n");
+#ifdef DEBUG_OBVARS
+
 #endif
+//						map->layerdata[k].layername = mAlloc(sizeof(byte) * MAPLNAMESIZE);//TODO: USE MM_ CA_ AND PM_
+//						strncpy(map->layerdata[k].layername, js+t[i+1].start, MAPLNAMESIZE);//TODO: USE MM_ CA_ AND PM_
+//						if(map->layerdata[k].layername[MAPLNAMESIZE]!=0) map->layerdata[k].layername[MAPLNAMESIZE]='\0';
+					}else if(jsoneq(js, &(t[i]), "name") == 0) {
+#ifdef DEBUG_OBVARS
+						printf("Object %d's name: ", k);//, MAPLNAMESIZE
+						printf("'%.*s'\n", t[i+1].end - t[i+1].start, js+t[i+1].start);
+#endif
+					}else if(jsoneq(js, &(t[i]), "properties") == 0) {
+#ifdef DEBUG_OBVARS
+						printf("	properties: %.*s\n", t[i+1].end - t[i+1].start, js+t[i+1].start);
+#endif
+					}else if(jsoneq(js, &(t[i]), "walkable") == 0) {
+							printf("		walkable: %d\n", atoi(js + t[i+1].start));
 					}
-				}
-				i++;
-			}
-		}
+
+				}//end objlay
+				i++;//next token
+			}//tokens
+		}//layers
 
 
 		if(jsoneq(js, &(t[i]), "tilesets") == 0) {
@@ -124,13 +130,13 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 					i++;
 				}else if(jsoneq(js, &(t[i]), "tileheight") == 0) {
 					map->tiles->tileHeight = atoi(js + t[i+1].start);
-#ifdef DEBUG_MAPVAR
+#ifdef DEBUG_MAPVARS
 					printf("Tile Height: %d\n", map->tiles->tileHeight);
 #endif
 					i++;
 				}else if(jsoneq(js, &(t[i]), "tilewidth") == 0) {
 					map->tiles->tileWidth = atoi(js + t[i+1].start);
-#ifdef DEBUG_MAPVAR
+#ifdef DEBUG_MAPVARS
 					printf("Tile Width: %d\n", map->tiles->tileWidth);
 #endif
 					i++;
@@ -142,14 +148,14 @@ void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 
 		if (jsoneq(js, &(t[i]), "height") == 0 && indent<=1) {
 			map->height = atoi(js + t[i+1].start);
-#ifdef DEBUG_MAPVAR
+#ifdef DEBUG_MAPVARS
 			printf("Height: %d\n", map->height);
 #endif
 			i++;
 		}
 		else if(jsoneq(js, &(t[i]), "width") == 0 && indent<=1) {
 			map->width = atoi(js + t[i+1].start);
-#ifdef DEBUG_MAPVAR
+#ifdef DEBUG_MAPVARS
 			printf("Width: %d\n", map->width);
 #endif
 			i++;

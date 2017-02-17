@@ -34,8 +34,8 @@
 #include "src/lib/16_pm.h"
 
 //#define DEBUG_MAPDATA
-//#define DEBUG_MAPVAR
-//#define DEBUG_DUMPVARS
+//#define DEBUG_MAPVARS
+#define DEBUG_OBVARS
 //#define DEBUG_JS
 
 //typedefs moved to 16_tdef.h

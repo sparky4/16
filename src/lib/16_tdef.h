@@ -104,7 +104,7 @@ typedef struct {
 //TODO: 16_mm and 16_ca must handle this
 //TODO: add variables from 16_ca
 typedef struct {
-	byte	*layername;
+	byte	layername[8];
 	byte	*data;			//TODO: 16_mm and 16_ca must handle this
 } mapl_t;	//map layer array type def
 

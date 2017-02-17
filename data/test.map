@@ -43,7 +43,7 @@
                  "name":"trunk",
                  "properties":
                     {
-
+                     "walkable":"0"
                     },
                  "type":"nonc",
                  "visible":true,
@@ -56,7 +56,7 @@
                  "name":"stump",
                  "properties":
                     {
-
+                     "walkable":"0"
                     },
                  "type":"nonc",
                  "visible":true,
