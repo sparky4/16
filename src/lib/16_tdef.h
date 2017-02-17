@@ -87,69 +87,6 @@ typedef struct sprite
 } sprite_t;
 #endif
 
-//===========================================================================//
-
-//TODO: 16_mm and 16_ca must handle this
-typedef struct {
-//	bitmap_t far *pcximg;		// old
-#ifdef	__WATCOMC__
-	sprite_t *spri;			// I will probibaly use this --sparky4
-#endif
-	//planar_buf_t far *pbdata;	//old
-	word tileHeight, tileWidth;	//defined by mapfile
-	unsigned int rows, cols;
-	byte	imgname[8];		//image file of tileset (set to 8 because DOS ^^;)
-} tiles_t;	//seems to be the tileset properties
-
-//TODO: 16_mm and 16_ca must handle this
-//TODO: add variables from 16_ca
-typedef struct {
-	byte	layername[8];
-	byte	*data;			//TODO: 16_mm and 16_ca must handle this
-} mapl_t;	//map layer array type def
-
-#define MAP_LAYERS 3
-typedef struct {
-	//long		planestart[3];
-	//unsigned	planelength[3];
-	mapl_t layerdata[MAP_LAYERS];	// mapdata for multilayer (map index values for rendering which image on the tile)
-	tiles_t *tiles;		//TODO: 16_mm and 16_ca must handle this	// tilesets for layers (currently ony 4 can be loaded wwww)
-	int width, height;		//this has to be signed!
-	byte name[16];
-} map_t;
-
-//===================================//
-
-typedef struct{
-	word tw;		/* screen width in tiles */
-	word th;		/* screen height in tiles */
-	word tilesw;		/* virtual screen width in tiles */
-	word tilesh;		/* virtual screen height in tiles */
-	sword tilemidposscreenx;	/* middle tile x position */	/* needed for scroll system to work accordingly */
-	sword tilemidposscreeny;	/* middle tile y position */	/* needed for scroll system to work accordingly */
-	sword tileplayerposscreenx;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
-	sword tileplayerposscreeny;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
-} pagetileinfo_t;
-
-typedef struct {
-	nibble/*word*/ id;	/* the Identification number of the page~ For layering~ */
-	byte far* data;	/* the data for the page */
-	pagetileinfo_t	ti;
-	word dx;		/* col we are viewing on virtual screen (on page[0]) */	/* off screen buffer on the left size */
-	word dy;		/* row we are viewing on virtual screen (on page[0]) */	/* off screen buffer on the top size */
-	word sw;		/* screen width */	/* resolution */
-	word sh;		/* screen heigth */	/* resolution */
-	word width;		/* virtual width of the page */
-	word height;	/* virtual height of the page */
-	word stridew;	/* width/4 */	/* VGA */
-	word pagesize;	/* page size */
-	word pi;		/* increment page by this much to preserve location */
-	int tlx,tly;
-//newer vars
-//TODO: find where they are used
-	sword delta;			// How much should we shift the page for smooth scrolling
-} page_t;
-
 //newer structs
 typedef	struct
 {
@@ -175,6 +112,80 @@ typedef	struct
 						// if the sprite's edge pixels are clear anyway, you can set this to 0.
 	nibble /*int*/ persist_aniframe;    // gonna be increased to 1 before being used, so 0 is ok for default
 } entity_t;
+
+typedef	struct
+{
+	int x; //entity exact position on the viewable map
+	int y; //entity exact position on the viewable map
+	int tx; //entity tile position on the viewable map
+	int ty; //entity tile position on the viewable map
+
+#ifdef	__WATCOMC__
+	sprite_t spri; // sprite used by entity
+#endif
+	sword hp; //hitpoints of the entity
+} static_map_entity_t;
+
+//===========================================================================//
+
+//TODO: 16_mm and 16_ca must handle this
+typedef struct {
+#ifdef	__WATCOMC__
+	sprite_t *spri;			// I will probibaly use this --sparky4
+#endif
+	word tileHeight, tileWidth;	//defined by mapfile
+	unsigned int rows, cols;
+	byte	imgname[8];		//image file of tileset (set to 8 because DOS ^^;)
+} tiles_t;	//seems to be the tileset properties
+
+//TODO: 16_mm and 16_ca must handle this
+//TODO: add variables from 16_ca
+typedef struct {
+	byte	layername[8];
+	byte	*data;			//TODO: 16_mm and 16_ca must handle this
+} mapl_t;	//map layer array type def
+
+#define MAP_LAYERS 3
+typedef struct {
+	//long		planestart[3];
+	//unsigned	planelength[3];
+	mapl_t layerdata[MAP_LAYERS];	// mapdata for multilayer (map index values for rendering which image on the tile)
+	tiles_t *tiles;		//TODO: 16_mm and 16_ca must handle this	// tilesets for layers (currently ony 4 can be loaded wwww)
+	int width, height;		//this has to be signed!
+	byte name[16];
+} map_t;
+
+//===================================//
+
+typedef struct{
+	word tw;				/* screen width in tiles */
+	word th;				/* screen height in tiles */
+	word tilesw;				/* virtual screen width in tiles */
+	word tilesh;				/* virtual screen height in tiles */
+	sword tilemidposscreenx;	/* middle tile x position */	/* needed for scroll system to work accordingly */
+	sword tilemidposscreeny;	/* middle tile y position */	/* needed for scroll system to work accordingly */
+	sword tileplayerposscreenx;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
+	sword tileplayerposscreeny;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
+} pagetileinfo_t;
+
+typedef struct {
+	nibble/*word*/ id;	/* the Identification number of the page~ For layering~ */
+	byte far* data;	/* the data for the page */
+	pagetileinfo_t ti;	// the tile information of the page
+	word dx;		/* col we are viewing on virtual screen (on page[0]) */	/* off screen buffer on the left size */
+	word dy;		/* row we are viewing on virtual screen (on page[0]) */	/* off screen buffer on the top size */
+	word sw;		/* screen width */	/* resolution */
+	word sh;		/* screen heigth */	/* resolution */
+	word width;		/* virtual width of the page */
+	word height;	/* virtual height of the page */
+	word stridew;	/* width/4 */	/* VGA */
+	word pagesize;	/* page size */
+	word pi;		/* increment page by this much to preserve location */
+	int tlx,tly;
+//newer vars
+//TODO: find where they are used
+	sword delta;			// How much should we shift the page for smooth scrolling
+} page_t;
 
 //from 16_in
 //==========================================================================
@@ -235,7 +246,7 @@ typedef	struct
 	entity_t near	enti;
 #ifdef	__WATCOMC__
 	//struct sprite	*spri;	//supposively the sprite sheet data
-	memptr		gr;
+	//memptr		gr;
 #endif
 //	bitmap_t	*data;		//supposively the sprite sheet data//old format
 //	bitmap_t	bmp;
