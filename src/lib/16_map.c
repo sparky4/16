@@ -21,6 +21,7 @@
  */
 
 #include "src/lib/16_map.h"
+#include <malloc.h>
 
 // Ideally, preprocess json during compilation and read serialized data
 

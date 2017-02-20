@@ -20,6 +20,7 @@
  *
  */
 #include "src/lib/16_map.h"
+#include <malloc.h>
 
 #define DUMP
 //#define DUMP_MAP

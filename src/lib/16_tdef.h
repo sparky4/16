@@ -527,7 +527,7 @@ typedef struct
 	int			audiohandle[4];	// handle to AUDIOT / AUDIO
 } ca_handle_t;
 
-typedef struct
+typedef struct	//TODO: USE THIS!!!!
 {
 	byte	ca_levelbit,ca_levelnum;
 	ca_handle_t		file;		//files to open

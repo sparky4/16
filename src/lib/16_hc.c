@@ -24,6 +24,7 @@
 */
 
 #include "src/lib/16_hc.h"
+#include <malloc.h>
 
 #ifdef __BORLANDC__
 void * LargestFreeBlock(size_t* Size)
@@ -301,7 +302,7 @@ size_t _basedcoreleft(void)
 	if( segu == _NULLSEG ) {
 		printf( "Unable to allocate based heap\n" );
 		return 0;
-		
+
 	}
 	else
 
