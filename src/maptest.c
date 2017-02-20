@@ -48,7 +48,7 @@ main(int argc, char *argv[])
 
 	fprintf(stderr, fmt, _memavl());
 	fprintf(stderr, fmt0, _memmax());
-	fprintf(stderr, "Size of map var = %u\n", _msize(&(gvar.ca.camap.mapsegs)));
+	fprintf(stderr, "Size of map var = %u\n", _msize(&(gvar.ca.mapsegs)));
 	//getch();
 
 	CA_loadmap("data/test.map", &map, &gvar);
@@ -74,7 +74,7 @@ main(int argc, char *argv[])
 		getch();
 	}
 #else
-	//fprintf(stderr, "contents of the buffer\n[\n%s\n]\n", (gvar.ca.camap.mapsegs));
+	//fprintf(stderr, "contents of the buffer\n[\n%s\n]\n", (gvar.ca.mapsegs));
 #endif
 	/*fprintf(stdout, "&main()=%Fp\n", *argv[0]);
 	fprintf(stdout, "&map==%Fp\n", &map);
@@ -84,7 +84,7 @@ main(int argc, char *argv[])
 	fprintf(stdout, "&map.data==%Fp\n", map.data);*/
 #endif
 	//fprintf(stderr, "here comes dat boi!\n"); getch(); fprintf(stderr, "%s", datboi);
-	MM_FreePtr(&(gvar.ca.camap.mapsegs), &gvar);
+	MM_FreePtr(&(gvar.ca.mapsegs), &gvar);
 	PM_Shutdown(&gvar);
 	CA_Shutdown(&gvar);
 	MM_Shutdown(&gvar);

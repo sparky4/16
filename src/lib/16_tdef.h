@@ -507,6 +507,7 @@ typedef struct
 
 #define NUMMAPS		4//39
 #define MAPPLANES		3
+#define NUMSNDCHUNKS		84
 
 typedef struct
 {
@@ -516,24 +517,27 @@ typedef struct
 typedef struct
 {
 	int		mapon, mapnum;
-	//__SEGA	*mapsegs[4];
 	//__SEGA	*mapheaderseg[NUMMAPS];
-	//__SEGA	*tinf;
-	memptr	mapsegs;
 } ca_mapinfo_t;
 
 typedef struct
 {
 	int			maphandle[4];		// handle to MAPTEMP / GAMEMAPS
+	int			grhandle[4];		// handle to EGAGRAPH
+	int			audiohandle[4];	// handle to AUDIOT / AUDIO
 } ca_handle_t;
 
 typedef struct
 {
-	byte		ca_levelbit,ca_levelnum;
-	ca_handle_t	file;		//files to open
+	byte	ca_levelbit,ca_levelnum;
+	ca_handle_t		file;		//files to open
 	ca_mapinfo_t	camap;
-	__SEGA	*grsegs[NUMCHUNKS];
-	byte		far	grneeded[NUMCHUNKS];
+
+	memptr/*__SEGA*/	mapsegs[MAP_LAYERS];
+	memptr/*__SEGA*/	*grsegs[NUMCHUNKS];
+	byte		far		grneeded[NUMCHUNKS];
+	memptr/*byte _seg*/	*audiosegs[NUMSNDCHUNKS];
+
 	huffnode huffnode;
 
 	//TODO: extend! and learn from keen/wolf/catacomb's code wwww

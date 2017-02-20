@@ -108,10 +108,10 @@ void CA_Shutdown (global_game_variables_t *gvar);
 //void CA_LoadAllSounds (void);
 
 /*void CA_UpLevel (void);
-void CA_DownLevel (void);
+void CA_DownLevel (void);*/
 
-void CA_SetGrPurge (void);
-void CA_SetAllPurge (void);*/
+void CA_SetGrPurge (global_game_variables_t *gvar);
+void CA_SetAllPurge (global_game_variables_t *gvar);
 
 void CA_ClearMarks (global_game_variables_t *gvar);
 void CA_ClearAllMarks (global_game_variables_t *gvar);

@@ -2034,21 +2034,21 @@ void CA_ClearAllMarks (global_game_variables_t *gvar)
 =
 ======================
 */
-/*++++
-void CA_SetGrPurge (void)
+
+void CA_SetGrPurge (global_game_variables_t *gvar)
 {
 	int i;
 
 //
 // free graphics
 //
-	CA_ClearMarks ();
+	CA_ClearMarks (gvar);
 
 	for (i=0;i<NUMCHUNKS;i++)
-		if (grsegs[i])
-			MM_SetPurge (&(memptr)grsegs[i],3);
+		if (gvar->ca.grsegs[i])
+			MM_SetPurge (gvar->ca.grsegs[i],3, gvar);
 }
-*/
+
 
 /*
 ======================
@@ -2059,12 +2059,12 @@ void CA_SetGrPurge (void)
 =
 ======================
 */
-/*++++++++
-void CA_SetAllPurge (void)
+
+void CA_SetAllPurge (global_game_variables_t *gvar)
 {
 	int i;
 
-	CA_ClearMarks ();
+	CA_ClearMarks (gvar);
 
 //
 // free cursor sprite and background save
@@ -2074,26 +2074,26 @@ void CA_SetAllPurge (void)
 //
 // free map headers and map planes
 //
-	for (i=0;i<NUMMAPS;i++)
-		if (mapheaderseg[i])
-			MM_SetPurge (&(memptr)mapheaderseg[i],3);
+//	for (i=0;i<NUMMAPS;i++)
+//		if (gvar->ca.camap.mapheaderseg[i])
+//			MM_SetPurge (gvar->ca.camap.mapheaderseg[i],3, gvar);
 
 	for (i=0;i<3;i++)
-		if (mapsegs[i])
-			MM_FreePtr (&(memptr)mapsegs[i]);
+		if (gvar->ca.mapsegs[i])
+			MM_FreePtr (gvar->ca.mapsegs[i], gvar);
 
 //
 // free sounds
 //
 	for (i=0;i<NUMSNDCHUNKS;i++)
-		if (audiosegs[i])
-			MM_SetPurge (&(memptr)audiosegs[i],3);
+		if (gvar->ca.audiosegs[i])
+			MM_SetPurge (gvar->ca.audiosegs[i],3, gvar);
 
 //
 // free graphics
 //
-	CA_SetGrPurge ();
-}*/
+	CA_SetGrPurge (gvar);
+}
 
 
 //===========================================================================
