@@ -24,7 +24,9 @@
 */
 #include "src/lib/16_head.h"
 #include "src/lib/16_tail.h"
+//#ifdef __WATCOMC__
 #include "src/lib/16_pm.h"
+//#endif
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 #include "src/lib/16_hc.h"
@@ -88,9 +90,11 @@ main(int argc, char *argv[])
 	bakapee2 = malloc(64);
 	//file name //
 
+//#ifdef __WATCOMC__
 #ifdef __DEBUG_PM__
 	dbg_debugpm=1;	//debug pm
 #endif
+//#endif
 
 	//PRINTBB
 	if(argv[1]){ bakapee1 = argv[1];
@@ -146,7 +150,7 @@ for(w=0;w<2;w++)
 	//printf("medium blue = non purgable\n");
 	//printf("red = locked\n");
 //	printf("press any key to continue!\n");
-//	DebugMemory_(&gvar, 1);
+	DebugMemory_(&gvar, 1);
 	if(baka) printf("\nyay!\n");
 	else printf("\npoo!\n");
 	printf("press any key to continue!\n");
@@ -194,6 +198,7 @@ for(w=0;w<2;w++)
 #endif
 	printf("Project 16 exmmtest.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
+	//printf("\n");
 	//printf("core left:			%lu\n", (dword)_coreleft());
 	//printf("far core left:			%lu\n", (dword)_farcoreleft());
 	//printf("based core left:			%lu\n", (dword)_basedcoreleft());
