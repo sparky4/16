@@ -788,11 +788,11 @@ void MM_Startup(global_game_variables_t *gvar)
 #ifdef __WATCOMC__
 	_nheapgrow();
 	length=(dword)_memavl();//(dword)GetFreeSize();
-	start = (void __near *)(gvar->mm.nearheap = _nmalloc(length));
+	start = (void __far *)(gvar->mm.nearheap = _nmalloc(length));
 #endif
 #ifdef __BORLANDC__
-	length=coreleft();
-	start = (void near *)(gvar->mm.nearheap = malloc(length));
+	length=(word)coreleft();
+	start = (void far *)(gvar->mm.nearheap = malloc(length));
 #endif
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;
@@ -800,7 +800,7 @@ void MM_Startup(global_game_variables_t *gvar)
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
 	MML_UseSpace(segstart,seglength, gvar);
 	gvar->mmi.nearheap = length;
-	//printf("start=%Fp	segstart=%x	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
+	//0000printf("near:	start=%Fp	segstart=%x	seglen=%lu	len=%lu\n", start, segstart, (dword)seglength, length);
 
 //
 // get all available far conventional memory segments
@@ -811,8 +811,8 @@ void MM_Startup(global_game_variables_t *gvar)
 	length=_FCORELEFT;//_fcoreleft();//(dword)GetFarFreeSize();//0xffffUL*4UL;
 #endif
 #ifdef __BORLANDC__
-	printf("farcoreleft()				%lu\n", farcoreleft());
-	printf("(farcoreleft()+32)-_FCORELEFT	%d\n", (sword)((farcoreleft()+32)-_FCORELEFT));
+//0000	printf("farcoreleft()				%lu\n", farcoreleft());
+//0000	printf("(farcoreleft()+32)-_FCORELEFT	%d\n", (sword)((farcoreleft()+32)-_FCORELEFT));
 	length=farcoreleft();//_fcoreleft();//(dword)GetFarFreeSize();//0xffffUL*4UL;
 #endif
 	start = gvar->mm.farheap = _fmalloc(length);
@@ -823,7 +823,7 @@ void MM_Startup(global_game_variables_t *gvar)
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
 	MML_UseSpace(segstart,seglength, gvar);
 	gvar->mmi.farheap = length;
-	//printf("start=%Fp	segstart=%x	seglen=%lu	len=%lu\n", start, segstart, seglength, length);
+	//0000printf("far:	start=%Fp	segstart=%x	seglen=%lu	len=%lu\n", start, segstart, (dword)seglength, length);
 
 	gvar->mmi.mainmem = gvar->mmi.nearheap + gvar->mmi.farheap;
 

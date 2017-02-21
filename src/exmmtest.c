@@ -150,7 +150,7 @@ for(w=0;w<2;w++)
 	//printf("medium blue = non purgable\n");
 	//printf("red = locked\n");
 //	printf("press any key to continue!\n");
-	DebugMemory_(&gvar, 1);
+//	DebugMemory_(&gvar, 1);
 	if(baka) printf("\nyay!\n");
 	else printf("\npoo!\n");
 	printf("press any key to continue!\n");
