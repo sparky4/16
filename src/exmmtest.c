@@ -38,8 +38,11 @@
 #define FILEREAD
 //#define EXMMVERBOSE
 
-void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv){}
-#define PRINTBB { printf("&main()=	%Fp\n", argv[0]);printf("bigbuffer=	%Fp\n", bigbuffer);printf("&bigbuffer=	%Fp\n", &bigbuffer);printf("bigbuffer=	%04x\n", bigbuffer);printf("&bigbuffer=	%04x\n", &bigbuffer); }
+void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
+{
+	printf("VGAmodeX dummy:\n	%Fp	%Fp	%Fp\n", &vq, &cmem, gv);
+}
+#define PRINTBB { printf("&main()=	%Fp\n", argv[0]);printf("gvar.ca.tinf[0]=	%Fp\n", gvar.ca.tinf[0]);printf("&gvar.ca.tinf[0]=	%Fp\n", &gvar.ca.tinf[0]);printf("gvar.ca.tinf[0]=	%04x\n", gvar.ca.tinf[0]);printf("&gvar.ca.tinf[0]=	%04x\n", &gvar.ca.tinf[0]); }
 
 #ifdef __WATCOMC__
 void segatesuto()
@@ -73,8 +76,6 @@ main(int argc, char *argv[])
 //#ifdef __WATCOMC__
 //	__segment sega;
 //#endif
-	memptr bigbuffer;
-
 	//static byte bakapee[64];
 	char *bakapee1, *bakapee2;
 	word baka;
@@ -86,8 +87,6 @@ main(int argc, char *argv[])
 	bakapee1 = malloc(64);
 	bakapee2 = malloc(64);
 	//file name //
-
-	gvar.mm.mmstarted=0;
 
 #ifdef __DEBUG_PM__
 	dbg_debugpm=1;	//debug pm
@@ -109,10 +108,7 @@ main(int argc, char *argv[])
 	if(dbg_debugpm>0)
 	{
 #endif
-		PM_Startup(&gvar);
-		//printf("pmstarted ok\n");
-		//PM_CheckMainMem(&gvar);
-		PM_UnlockMainMem(&gvar);
+		PM_Startup(&gvar); PM_CheckMainMem(&gvar); PM_UnlockMainMem(&gvar);
 #ifdef __DEBUG_PM__
 	}
 #endif
@@ -126,26 +122,26 @@ main(int argc, char *argv[])
 for(w=0;w<2;w++)
 {
 //	bakapeehandle = open(bakapee,O_RDONLY | O_BINARY, S_IREAD);
-//	printf("size of big buffer~=%u\n", _bmsize(segu, bigbuffer));
-//	if(CA_FarRead(bakapeehandle,(void far *)&bigbuffer,sizeof(bigbuffer),&gvar.mm))
+//	printf("size of big buffer~=%u\n", _bmsize(segu, gvar.ca.tinf[0]));
+//	if(CA_FarRead(bakapeehandle,(void far *)&gvar.ca.tinf[0],sizeof(gvar.ca.tinf[0]),&gvar.mm))
 	if(w>0)
 	{
 		printf("		read\n");
-		if(CA_ReadFile(bakapee2, &bigbuffer, &gvar)) baka=1; else baka=0;
+		if(CA_ReadFile(bakapee2, &gvar.ca.tinf[0], &gvar)) baka=1; else baka=0;
 	}
 #endif
 	if(w==0)
 	{
-	printf("		load\n");
-	if(CA_LoadFile(bakapee1, &bigbuffer, &gvar)) baka=1; else baka=0;
+		printf("		load\n");
+		if(CA_LoadFile(bakapee1, &gvar.ca.tinf[0], &gvar)) baka=1; else baka=0;
 	}
 //	close(bakapeehandle);
 	//hmm functions in cache system use the buffered stuff
 //#ifdef __WATCOMC__
-//	printf("\nsize of big buffer~=%u\n", _bmsize(sega, bigbuffer));
+//	printf("\nsize of big buffer~=%u\n", _bmsize(sega, gvar.ca.tinf[0]));
 //#endif
 
-	printf("contents of the buffer\n[\n%s\n]\n", bigbuffer);
+	printf("contents of the buffer\n[\n%s\n]\n", gvar.ca.tinf[0]);
 	//printf("dark purple = purgable\n");
 	//printf("medium blue = non purgable\n");
 	//printf("red = locked\n");
@@ -163,7 +159,7 @@ for(w=0;w<2;w++)
 	MM_Report_(&gvar);
 	//printf("bakapee1=%s\n", bakapee1);
 	//printf("bakapee2=%s\n", bakapee2);
-	MM_FreePtr(&bigbuffer, &gvar);
+	MM_FreePtr(&gvar.ca.tinf[0], &gvar);
 //#ifdef __WATCOMC__
 #ifdef __DEBUG_PM__
 	if(dbg_debugpm>0)
@@ -181,11 +177,11 @@ for(w=0;w<2;w++)
 	printf("&far=	%Fp", &(gvar.mm.farheap));
 	printf("\n");
 #ifdef EXMMVERBOSE
-	printf("bigb=	%Fp ", bigbuffer);
-	//printf("bigbr=	%04x", bigbuffer);
+	printf("bigb=	%Fp ", gvar.ca.tinf[0]);
+	//printf("bigbr=	%04x", gvar.ca.tinf[0]);
 	//printf("\n");
-	printf("&bigb=%Fp ", &bigbuffer);
-	//printf("&bigb=%04x", &bigbuffer);
+	printf("&bigb=%Fp ", &gvar.ca.tinf[0]);
+	//printf("&bigb=%04x", &gvar.ca.tinf[0]);
 	printf("\n");
 	printf("========================================\n");
 #endif

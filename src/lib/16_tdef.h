@@ -538,6 +538,9 @@ typedef struct	//TODO: USE THIS!!!!
 	byte		far		grneeded[NUMCHUNKS];
 	memptr/*byte _seg*/	*audiosegs[NUMSNDCHUNKS];
 
+	//misc memptr
+	memptr tinf[4];
+
 	huffnode huffnode;
 
 	//TODO: extend! and learn from keen/wolf/catacomb's code wwww
