@@ -1,35 +1,35 @@
 
 	== default ==
 
-  USED block at 24230016 of size 66
-  USED block at 24230058 of size 66
-  FREE block at 2423009a of size 18
-  USED block at 242300ac of size 136
-  USED block at 24230134 of size 20
-  FREE block at 24230148 of size 7860
+  USED block at 242a0016 of size 66
+  USED block at 242a0058 of size 66
+  FREE block at 242a009a of size 18
+  USED block at 242a00ac of size 136
+  USED block at 242a0134 of size 20
+  FREE block at 242a0148 of size 7860
 OK - end of heap
 
 	== near ==
 
-  USED block at 1422ecd6 of size 12
-  USED block at 1422ece2 of size 332
-  USED block at 1422ee2e of size 52
-  USED block at 1422ee62 of size 20
-  USED block at 1422ee76 of size 20
-  USED block at 1422ee8a of size 20
-  USED block at 1422ee9e of size 20
-  USED block at 1422eeb2 of size 20
-  USED block at 1422eec6 of size 4406
+  USED block at 1429ecd6 of size 12
+  USED block at 1429ece2 of size 332
+  USED block at 1429ee2e of size 52
+  USED block at 1429ee62 of size 20
+  USED block at 1429ee76 of size 20
+  USED block at 1429ee8a of size 20
+  USED block at 1429ee9e of size 20
+  USED block at 1429eeb2 of size 20
+  USED block at 1429eec6 of size 4406
 OK - end of heap
 
 	== far ==
 
-  USED block at 24230016 of size 66
-  USED block at 24230058 of size 66
-  USED block at 2423009a of size 18
-  USED block at 242300ac of size 136
-  USED block at 24230134 of size 20
-  USED block at 24230148 of size 7860
+  USED block at 242a0016 of size 66
+  USED block at 242a0058 of size 66
+  USED block at 242a009a of size 18
+  USED block at 242a00ac of size 136
+  USED block at 242a0134 of size 20
+  USED block at 242a0148 of size 7860
 OK - end of heap
 
 Memory Type         Total      Used       Free
@@ -44,4 +44,4 @@ GetFreeSize = 40512
 GetNearFreeSize = 4406
 GetFarFreeSize = 40512
 memavl = 4404
-stackavail = 31604
+stackavail = 31602

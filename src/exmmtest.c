@@ -41,17 +41,19 @@
 #define BUFFDUMP
 //#endif
 
+#define BBUF bigbuffer//gvar.ca.tinf[0]
+
 void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
 {
 	printf("VGAmodeX dummy:\n	%Fp	%Fp	%Fp\n", &vq, &cmem, gv);
 }
 #define PRINTBB {\
 	printf("&main()=	%Fp\n", argv[0]);\
-	printf("gvar.ca.tinf[0]:\n");\
-	printf("	%Fp\t", gvar.ca.tinf[0]);\
-	printf("&%Fp\n", &gvar.ca.tinf[0]);\
-	printf("	     %04x\t", gvar.ca.tinf[0]);\
-	printf("&     %04x\n", &gvar.ca.tinf[0]);\
+	printf("BBUF:\n");\
+	printf("	%Fp\t", BBUF);\
+	printf("&%Fp\n", &BBUF);\
+	printf("	     %04x\t", BBUF);\
+	printf("&     %04x\n", &BBUF);\
 }
 	//printf("&main()=	%Fp\n", *argv[0]);
 	//printf("bigbuffer=	%Fp\n", bigbuffer);
@@ -80,13 +82,13 @@ void segatesuto()
 //	getch();
 }
 #endif
-//static global_game_variables_t gvar;
 
 void
 main(int argc, char *argv[])
 {
 	byte w=1;
 	static global_game_variables_t gvar;
+	memptr BBUF;
 //#ifdef __WATCOMC__
 //	__segment sega;
 //#endif
@@ -131,28 +133,28 @@ main(int argc, char *argv[])
 #endif
 	CA_Startup(&gvar);
 //	printf("		done!\n");
-	//0000PRINTBB;
-//	printf("press any key to continue!\n");	getch();
+	//0000
+	PRINTBB; printf("press any key to continue!\n"); getch();
 #ifdef FILEREAD
 for(w=0;w<2;w++)
 {
-//	printf("size of big buffer~=%u\n", _bmsize(segu, gvar.ca.tinf[0]));
+//	printf("size of big buffer~=%u\n", _bmsize(segu, BBUF));
 	if(w>0)
 	{
 		printf("		read\n");
-		if(CA_ReadFile(bakapee2, &gvar.ca.tinf[0], &gvar)) baka=1; else baka=0;
+		if(CA_ReadFile(bakapee2, &BBUF, &gvar)) baka=1; else baka=0;
 	}
 #endif
 	if(w==0)
 	{
 		printf("		load\n");
-		if(CA_LoadFile(bakapee1, &gvar.ca.tinf[0], &gvar)) baka=1; else baka=0;
+		if(CA_LoadFile(bakapee1, &BBUF, &gvar)) baka=1; else baka=0;
 	}
 //#ifdef __WATCOMC__
-//	printf("\nsize of big buffer~=%u\n", _bmsize(sega, gvar.ca.tinf[0]));
+//	printf("\nsize of big buffer~=%u\n", _bmsize(sega, BBUF));
 //#endif
 #ifdef BUFFDUMP
-	printf("contents of the buffer\n[\n%s\n]\n", (gvar.ca.tinf[0]));
+	printf("contents of the buffer\n[\n%s\n]\n", (BBUF));
 #endif// #else
 	PRINTBB;
 // #endif
@@ -173,7 +175,7 @@ for(w=0;w<2;w++)
 	MM_Report_(&gvar);
 	//printf("bakapee1=%s\n", bakapee1);
 	//printf("bakapee2=%s\n", bakapee2);
-	MM_FreePtr(&gvar.ca.tinf[0], &gvar);
+	MM_FreePtr(&BBUF, &gvar);
 #ifdef __16_PM__
 #ifdef __DEBUG_PM__
 	if(dbg_debugpm>0)
@@ -191,11 +193,11 @@ for(w=0;w<2;w++)
 	printf("&far=	%Fp", &(gvar.mm.farheap));
 	printf("\n");
 #ifdef EXMMVERBOSE
-	printf("bigb=	%Fp ", gvar.ca.tinf[0]);
-	//printf("bigbr=	%04x", gvar.ca.tinf[0]);
+	printf("bigb=	%Fp ", BBUF);
+	//printf("bigbr=	%04x", BBUF);
 	//printf("\n");
-	printf("&bigb=%Fp ", &gvar.ca.tinf[0]);
-	//printf("&bigb=%04x", &gvar.ca.tinf[0]);
+	printf("&bigb=%Fp ", &BBUF);
+	//printf("&bigb=%04x", &BBUF);
 	printf("\n");
 	printf("========================================\n");
 #endif
