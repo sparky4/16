@@ -787,11 +787,14 @@ void MM_Startup(global_game_variables_t *gvar)
 //
 #ifdef __WATCOMC__
 	_nheapgrow();
-	length=(dword)_memavl();//(dword)GetFreeSize();
+#endif
+
+	length=(word)_memavl();//(word)coreleft();//(dword)GetFreeSize();
+
+#ifdef __WATCOMC__
 	start = (void __far *)(gvar->mm.nearheap = _nmalloc(length));
 #endif
 #ifdef __BORLANDC__
-	length=(word)coreleft();
 	start = (void far *)(gvar->mm.nearheap = malloc(length));
 #endif
 	length -= 16-(FP_OFF(start)&15);

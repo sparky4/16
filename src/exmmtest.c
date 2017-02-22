@@ -36,7 +36,7 @@
 
 //file load or read definition
 #define FILEREAD
-//#define EXMMVERBOSE
+#define EXMMVERBOSE
 //#ifdef __BORLANDC__
 #define BUFFDUMP
 //#endif
@@ -202,18 +202,19 @@ for(w=0;w<2;w++)
 	printf("========================================\n");
 #endif
 	printf("\n");
+	printf("HC_coreleft():			%u\n", HC_coreleft());
 #ifdef __WATCOMC__
-//this is far	printf("Total free:			%lu\n", (dword)(GetFreeSize()));
-	printf("Total near free:		%lub\n", (dword)(GetNearFreeSize()));
-	printf("Total far free:			%lub\n", (dword)(GetFarFreeSize()));
-	heapdump(&gvar);
+//this is far	printf("Total free:			%lu\n", (dword)(HC_GetFreeSize()));
+	printf("HC_GetNearFreeSize():		%u\n", HC_GetNearFreeSize());
+	printf("HC_GetFarFreeSize():			%lub\n", (dword)HC_GetFarFreeSize());
+	HC_heapdump(&gvar);
 //	segatesuto();
 #endif
 #ifdef __BORLANDC__
-	//printf("core left:			%lu\n", (dword)_coreleft());
-	//printf("far core left:			%lu\n", (dword)_farcoreleft());
-	printf("core left:			%lu\n", (dword)coreleft());
-	printf("far core left:			%lu\n", (dword)farcoreleft());
+	//printf("core left:			%lu\n", (dword)HC_coreleft());
+	//printf("far core left:			%lu\n", (dword)HC_farcoreleft());
+	printf("coreleft():			%u\n", coreleft());
+	printf("farcoreleft():			%lu\n", (dword)farcoreleft());
 #endif
 	printf("Project 16 exmmtest.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);

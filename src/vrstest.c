@@ -160,7 +160,7 @@ void main()
 	//MM_FreePtr(&((void __based(sega)*)enti.spri.spritesheet->buffer), &mm);
 	//printf("CPU to VGA: %f\n", t1);
 	//printf("VGA to VGA: %f\n", t2);
-	heapdump(&gvar);
+	//HC_heapdump(&gvar);
 	printf("Project 16 vrstest.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	printf("t1: %f\n", t1);

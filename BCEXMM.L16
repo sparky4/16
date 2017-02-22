@@ -1,67 +1,0 @@
-farcoreleft()				524272
-(farcoreleft()+32)-_FCORELEFT	0
-		load
-contents of the buffer
-[
-öëŒ^üÇFúbŒ^øÇFös¸hPšj‹ƒÄ¸hPšc0ƒÄ¸hPšV0ƒÄ¸hP¸
-]
-========================================
-		DebugMemory_
-========================================
-Memory Usage
-------------
-Total:		1075k
-Free:		667k
-With purge:	1067k
-------------
-
-yay!
-press any key to continue!
-		read
-contents of the buffer
-[
-öëŒ^üÇFúbŒ^øÇFös¸hPšj‹ƒÄ¸hPšc0ƒÄ¸hPšV0ƒÄ¸hP¸
-]
-========================================
-		DebugMemory_
-========================================
-Memory Usage
-------------
-Total:		1075k
-Free:		667k
-With purge:	1067k
-------------
-
-yay!
-press any key to continue!
-========================================
-		DebugMemory_
-========================================
-Memory Usage
-------------
-Total:		1075k
-Free:		667k
-With purge:	1067k
-------------
-MMDUMP.16 created.
-========================================
-		MM_Report_
-========================================
-	ÉLIMEMS	1
-	ÇÄEMM v4.0 available
-	ÇÄtotalEMSpages:	4032	freeEMSpages:	3939
-	ÇÄEMSPageFrame:	e000
-	ÓÄEMSmem:	64536576
-	ÉXMS	1
-	ÇÄXMS v3.0 available
-	ÇÄXMSDriver:	C83F:0010
-	ÇÄXMSHandle:	0800
-	ÓÄXMSmem:	2097152
-	ÉConv.	1
-	ÓÄTotal:	1075k	Free:	667k	With purge:1067k
-nearheap:	576996		farheap:	524260
-========================================
-near=	12FF:0004 far=	1FFF:0004
-&near=	0A90:2CC3 &far=	0A90:2CBF
-Project 16 exmmtest.exe. This is just a test file!
-version Feb 21 2017 14:02:19

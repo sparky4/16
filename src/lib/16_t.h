@@ -63,7 +63,9 @@ MK_FP(segment value, 0)*/
 #endif
 
 typedef void _seg * memptr;//typedef void __based( void ) * memptr;	////old //----typedef void __based(__self) * memptr;
-
+#ifdef __BORLANDC__
+#define _memavl()               coreleft()
+#endif
 #ifdef __WATCOMC__
 #define _argv __argv
 #define _argc __argc

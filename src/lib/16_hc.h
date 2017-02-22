@@ -29,24 +29,32 @@
 #include "src/lib/16_head.h"
 
 #ifdef __BORLANDC__
-void * LargestFreeBlock(size_t* Size);
+#define CHIKAKU			near
+#define _nmalloc(size)          malloc(size)
+#define _nfree(block)           free(block)
+#define _nrealloc(block,size)   realloc(block,size)
+#define _ncalloc(num,size)      calloc(num,size)
+#define _nheapmin()             0
 #endif
 #ifdef __WATCOMC__
-void __near* LargestFreeBlock(size_t* Size);
+//#define SETTOUJ I_CHIKAKU	_n
+#define CHIKAKU			__near
 #endif
-size_t _coreleft(void);
-void far* LargestFarFreeBlock(size_t* Size);
-size_t _farcoreleft(void);
-void huge* LargestHugeFreeBlock(size_t* Size);
-size_t _hugecoreleft(void);
+
+void CHIKAKU* HC_LargestFreeBlock(size_t* Size);
+size_t HC_coreleft(void);
+void far* HC_LargestFarFreeBlock(size_t* Size);
+size_t HC_farcoreleft(void);
+//void huge* HC_LargestHugeFreeBlock(size_t* Size);
+//size_t HC_hugecoreleft(void);
 //void __based(__self)* LargestBasedFreeBlock(size_t* Size);
 //size_t _basedcoreleft(void);
-size_t GetFreeSize(void);
-size_t GetFarFreeSize(void);
-size_t GetNearFreeSize(void);
-void heapdump(global_game_variables_t *gvar);
-void heapstat(global_game_variables_t *gvar, int heap_status, byte *str);
-void heapstat0(int heap_status);
+size_t HC_GetFreeSize(void);
+size_t HC_GetFarFreeSize(void);
+size_t HC_GetNearFreeSize(void);
+void HC_heapdump(global_game_variables_t *gvar);
+void HC_heapstat(global_game_variables_t *gvar, int heap_status, byte *str);
+void HC_heapstat0(int heap_status);
 
 void HC_OpenDebug(global_game_variables_t *gvar);
 void HC_CloseDebug(global_game_variables_t *gvar);
