@@ -45,8 +45,19 @@ void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
 {
 	printf("VGAmodeX dummy:\n	%Fp	%Fp	%Fp\n", &vq, &cmem, gv);
 }
-#define PRINTBB { printf("&main()=	%Fp\n", argv[0]);printf("gvar.ca.tinf[0]=	%Fp\n", gvar.ca.tinf[0]);printf("&gvar.ca.tinf[0]=	%Fp\n", &gvar.ca.tinf[0]);printf("gvar.ca.tinf[0]=	%04x\n", gvar.ca.tinf[0]);printf("&gvar.ca.tinf[0]=	%04x\n", &gvar.ca.tinf[0]); }
-
+#define PRINTBB {\
+	printf("&main()=	%Fp\n", argv[0]);\
+	printf("gvar.ca.tinf[0]:\n");\
+	printf("	%Fp\t", gvar.ca.tinf[0]);\
+	printf("&%Fp\n", &gvar.ca.tinf[0]);\
+	printf("	     %04x\t", gvar.ca.tinf[0]);\
+	printf("&     %04x\n", &gvar.ca.tinf[0]);\
+}
+	//printf("&main()=	%Fp\n", *argv[0]);
+	//printf("bigbuffer=	%Fp\n", bigbuffer);
+	//printf("&bigbuffer=	%Fp\n", &bigbuffer);
+	//printf("bigbuffer=	%04x\n", bigbuffer);
+	//printf("&bigbuffer=	%04x\n", &bigbuffer);
 #ifdef __WATCOMC__
 void segatesuto()
 {
@@ -142,9 +153,9 @@ for(w=0;w<2;w++)
 //#endif
 #ifdef BUFFDUMP
 	printf("contents of the buffer\n[\n%s\n]\n", (gvar.ca.tinf[0]));
-#else
+#endif// #else
 	PRINTBB;
-#endif
+// #endif
 	//printf("dark purple = purgable\n");
 	//printf("medium blue = non purgable\n");
 	//printf("red = locked\n");
