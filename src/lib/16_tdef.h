@@ -376,7 +376,7 @@ typedef struct
 	boolean		mmstarted, bombonerror, mmerror;
 	void far	*farheap;
 #ifdef __BORLANDC__
-	void	*nearheap;
+	void far	*nearheap;
 #endif
 #ifdef __WATCOMC__
 	void __near	*nearheap;

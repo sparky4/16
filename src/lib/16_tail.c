@@ -81,8 +81,11 @@ void Startup16(global_game_variables_t *gvar)
 #endif
 	IN_Startup(gvar);
 #endif
+#ifdef __16_PM__
 	PM_Startup(gvar);
+	PM_CheckMainMem(gvar);
 	PM_UnlockMainMem(gvar);
+#endif
 	CA_Startup(gvar);
 }
 
@@ -100,7 +103,9 @@ void Startup16(global_game_variables_t *gvar)
 
 void Shutdown16(global_game_variables_t *gvar)
 {
+#ifdef __16_PM__
 	PM_Shutdown(gvar);
+#endif
 #ifdef __WATCOMC__
 #ifdef __DEBUG_InputMgr__
 	if(!dbg_nointest)
@@ -109,7 +114,9 @@ void Shutdown16(global_game_variables_t *gvar)
 #endif
 	CA_Shutdown(gvar);
 	MM_Shutdown(gvar);
+#ifdef __WATCOMC__
 	VGAmodeX(0, 1, gvar);
+#endif
 }
 
 
@@ -311,7 +318,9 @@ void DebugMemory_(global_game_variables_t *gvar, boolean q)
 
 void ClearMemory (global_game_variables_t *gvar)
 {
+#ifdef __16_PM__
 	PM_UnlockMainMem(gvar);
+#endif
 	//snd
 	MM_SortMem (gvar);
 }

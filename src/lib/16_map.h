@@ -31,7 +31,9 @@
 #include "src/lib/16_vl.h"
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
+#ifdef __WATCOMC__
 #include "src/lib/16_pm.h"
+#endif
 
 //#define DEBUG_MAPDATA
 //#define DEBUG_MAPVARS

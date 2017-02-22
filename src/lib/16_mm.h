@@ -27,6 +27,7 @@
 #include "src/lib/16_tail.h"
 //++++mh	#include "src/lib/16_in.h"
 
+
 #ifdef __DEBUG__		// 1 == Debug/Dev  ;  0 == Production/final
 #define OUT_OF_MEM_MSG	"MM_GetPtr: Out of memory!\nYou were short :%lu bytes\n"
 #else
@@ -39,7 +40,7 @@
 #define FREEBLOCK(x) {*x->useptr=NULL;x->next=gvar->mm.mmfree;gvar->mm.mmfree=x;}
 
 #define SAVENEARHEAP	0x200		// space to leave in data segment
-#define SAVEFARHEAP	0//x400			// space to leave in far heap
+#define SAVEFARHEAP	0x400			// space to leave in far heap
 
 #define	BUFFERSIZE		0x1000		// miscelanious, allways available buffer
 

@@ -827,7 +827,7 @@ void MM_Startup(global_game_variables_t *gvar)
 
 	gvar->mmi.mainmem = gvar->mmi.nearheap + gvar->mmi.farheap;
 
-#ifndef __16_PM__
+#if !defined(__16_PM__)// && defined(__WATCOMC__)
 	if(!dbg_debugpm) {
 //
 // detect EMS and allocate up to 64K at page frame

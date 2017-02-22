@@ -24,9 +24,7 @@
 */
 #include "src/lib/16_head.h"
 #include "src/lib/16_tail.h"
-//#ifdef __WATCOMC__
 #include "src/lib/16_pm.h"
-//#endif
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 #include "src/lib/16_hc.h"
@@ -39,6 +37,9 @@
 //file load or read definition
 #define FILEREAD
 //#define EXMMVERBOSE
+//#ifdef __BORLANDC__
+#define BUFFDUMP
+//#endif
 
 void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
 {
@@ -90,11 +91,11 @@ main(int argc, char *argv[])
 	bakapee2 = malloc(64);
 	//file name //
 
-//#ifdef __WATCOMC__
+#ifdef __16_PM__
 #ifdef __DEBUG_PM__
 	dbg_debugpm=1;	//debug pm
 #endif
-//#endif
+#endif
 
 	//PRINTBB
 	if(argv[1]){ bakapee1 = argv[1];
@@ -107,7 +108,7 @@ main(int argc, char *argv[])
 	//printf("main()=%Fp	start MM\n", *argv[0]);
 	MM_Startup(&gvar);
 	//printf("ok\n");
-//#ifdef __WATCOMC__
+#ifdef __16_PM__
 #ifdef __DEBUG_PM__
 	if(dbg_debugpm>0)
 	{
@@ -116,18 +117,15 @@ main(int argc, char *argv[])
 #ifdef __DEBUG_PM__
 	}
 #endif
-//#endif
+#endif
 	CA_Startup(&gvar);
 //	printf("		done!\n");
 	//0000PRINTBB;
-//	printf("press any key to continue!\n");
-//	getch();
+//	printf("press any key to continue!\n");	getch();
 #ifdef FILEREAD
 for(w=0;w<2;w++)
 {
-//	bakapeehandle = open(bakapee,O_RDONLY | O_BINARY, S_IREAD);
 //	printf("size of big buffer~=%u\n", _bmsize(segu, gvar.ca.tinf[0]));
-//	if(CA_FarRead(bakapeehandle,(void far *)&gvar.ca.tinf[0],sizeof(gvar.ca.tinf[0]),&gvar.mm))
 	if(w>0)
 	{
 		printf("		read\n");
@@ -139,13 +137,14 @@ for(w=0;w<2;w++)
 		printf("		load\n");
 		if(CA_LoadFile(bakapee1, &gvar.ca.tinf[0], &gvar)) baka=1; else baka=0;
 	}
-//	close(bakapeehandle);
-	//hmm functions in cache system use the buffered stuff
 //#ifdef __WATCOMC__
 //	printf("\nsize of big buffer~=%u\n", _bmsize(sega, gvar.ca.tinf[0]));
 //#endif
-
-	printf("contents of the buffer\n[\n%s\n]\n", gvar.ca.tinf[0]);
+#ifdef BUFFDUMP
+	printf("contents of the buffer\n[\n%s\n]\n", (gvar.ca.tinf[0]));
+#else
+	PRINTBB;
+#endif
 	//printf("dark purple = purgable\n");
 	//printf("medium blue = non purgable\n");
 	//printf("red = locked\n");
@@ -164,12 +163,12 @@ for(w=0;w<2;w++)
 	//printf("bakapee1=%s\n", bakapee1);
 	//printf("bakapee2=%s\n", bakapee2);
 	MM_FreePtr(&gvar.ca.tinf[0], &gvar);
-//#ifdef __WATCOMC__
+#ifdef __16_PM__
 #ifdef __DEBUG_PM__
 	if(dbg_debugpm>0)
 #endif
 		PM_Shutdown(&gvar);
-//#endif
+#endif
 	CA_Shutdown(&gvar);
 	MM_Shutdown(&gvar);
 	free(bakapee1); free(bakapee2);
@@ -189,18 +188,24 @@ for(w=0;w<2;w++)
 	printf("\n");
 	printf("========================================\n");
 #endif
+	printf("\n");
 #ifdef __WATCOMC__
 //this is far	printf("Total free:			%lu\n", (dword)(GetFreeSize()));
 	printf("Total near free:		%lub\n", (dword)(GetNearFreeSize()));
 	printf("Total far free:			%lub\n", (dword)(GetFarFreeSize()));
 	heapdump(&gvar);
-	segatesuto();
+//	segatesuto();
+#endif
+#ifdef __BORLANDC__
+	//printf("core left:			%lu\n", (dword)_coreleft());
+	//printf("far core left:			%lu\n", (dword)_farcoreleft());
+	printf("core left:			%lu\n", (dword)coreleft());
+	printf("far core left:			%lu\n", (dword)farcoreleft());
 #endif
 	printf("Project 16 exmmtest.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	//printf("\n");
-	//printf("core left:			%lu\n", (dword)_coreleft());
-	//printf("far core left:			%lu\n", (dword)_farcoreleft());
+
 	//printf("based core left:			%lu\n", (dword)_basedcoreleft());
 	//printf("huge core left:			%lu\n", (dword)_hugecoreleft());
 }
