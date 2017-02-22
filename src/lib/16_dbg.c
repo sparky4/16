@@ -1,8 +1,14 @@
 #include "src/lib/16_dbg.h"
 
 #ifdef __DEBUG__
+#ifdef __DEBUG_MM__
+boolean dbg_debugmm=0;
+#endif
 #ifdef __DEBUG_PM__
 boolean dbg_debugpm=0;
+#endif
+#ifdef __DEBUG_CA__
+boolean dbg_debugca=0;
 #endif
 #ifdef __DEBUG_InputMgr__
 boolean dbg_testkeyin=0,dbg_testcontrolnoisy=0,dbg_nointest=0;
@@ -13,7 +19,7 @@ byte *dbg_mapdata;
 #endif
 #endif
 
-
+#ifdef __WATCOMC__
 // TODO: Could we also provide a build mode to emit debug to the "Bochs E9 hack?"
 #ifdef DEBUGSERIAL
 # include <stdarg.h>
@@ -85,5 +91,5 @@ void _DEBUGF(const char *fmt,...) {
 	_DEBUG(_DEBUGF_TMP);
 	va_end(va);
 }
+#endif	//watcomc
 #endif
-

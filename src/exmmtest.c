@@ -22,6 +22,7 @@
 /*
 	exmm test
 */
+#include <malloc.h>		// for _memavl()
 #include "src/lib/16_head.h"
 #include "src/lib/16_tail.h"
 #include "src/lib/16_pm.h"
@@ -29,31 +30,52 @@
 #include "src/lib/16_mm.h"
 #include "src/lib/16_hc.h"
 //#include "src/lib/16_vl.h"
+#include "src/lib/16_dbg.h"
+
 #pragma hdrstop
 
 #pragma warn -pro
 #pragma warn -use
 
 //file load or read definition
+#define FILEREADLOAD
 #define FILEREAD
-#define EXMMVERBOSE
-//#ifdef __BORLANDC__
+//#define EXMMVERBOSE
+//#define BUFFDUMPPAUSE
+//#define EXMMVERBOSE__
+//	#define PRINTBBDUMP
 #define BUFFDUMP
-//#endif
 
-#define BBUF bigbuffer//gvar.ca.tinf[0]
+#define BBUFNAME gvar.ca.tinf[0]//bigbuffer
+//#define INITBBUF static memptr BBUFNAME;
+#define BBUFPTR	&BBUFNAME
+
+#ifdef __BORLANDC__
+#define BBUF		(memptr *)BBUFPTR//
+#define BBUFSTRING	(memptr *)BBUFNAME
+#endif
+#ifdef __WATCOMC__
+#define BBUF		BBUFNAME
+#define BBUFSTRING	BBUF
+#endif
+
 
 void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
 {
 	printf("VGAmodeX dummy:\n	%Fp	%Fp	%Fp\n", &vq, &cmem, gv);
 }
+
+//printf("*	%Fp\t", *BBUF);
+//printf("*	     %04x\t", *BBUF);
 #define PRINTBB {\
+	printf("-------------------------------------------------------------------------------\n");\
 	printf("&main()=	%Fp\n", argv[0]);\
-	printf("BBUF:\n");\
+	printf("buffer:\n");\
 	printf("	%Fp\t", BBUF);\
-	printf("&%Fp\n", &BBUF);\
+	printf("&%Fp\n", BBUFPTR);\
 	printf("	     %04x\t", BBUF);\
-	printf("&     %04x\n", &BBUF);\
+	printf("&     %04x\n", BBUFPTR);\
+	printf("-------------------------------------------------------------------------------\n");\
 }
 	//printf("&main()=	%Fp\n", *argv[0]);
 	//printf("bigbuffer=	%Fp\n", bigbuffer);
@@ -86,9 +108,11 @@ void segatesuto()
 void
 main(int argc, char *argv[])
 {
-	byte w=1;
+	byte w;
 	static global_game_variables_t gvar;
-	memptr BBUF;
+#ifdef INITBBUF
+	INITBBUF
+#endif
 //#ifdef __WATCOMC__
 //	__segment sega;
 //#endif
@@ -100,8 +124,8 @@ main(int argc, char *argv[])
 	argc=argc;
 #endif
 	//file name //
-	bakapee1 = malloc(64);
-	bakapee2 = malloc(64);
+	bakapee1 = malloc(24);
+	bakapee2 = malloc(24);
 	//file name //
 
 #ifdef __16_PM__
@@ -110,7 +134,12 @@ main(int argc, char *argv[])
 #endif
 #endif
 
-	//PRINTBB
+#ifdef __DEBUG_CA__
+	dbg_debugca=1;
+#endif
+#ifdef PRINTBBDUMP
+//0000PRINTBB; printf("press any key to continue!\n"); getch();
+#endif
 	if(argv[1]){ bakapee1 = argv[1];
 	if(argv[2]) bakapee2 = argv[2]; }
 	else{
@@ -119,63 +148,85 @@ main(int argc, char *argv[])
 		bakapee2 = "data/test.map";
 	}
 	//printf("main()=%Fp	start MM\n", *argv[0]);
-	MM_Startup(&gvar);
-	//printf("ok\n");
+	MM_Startup(&gvar); //printf("ok\n");
 #ifdef __16_PM__
 #ifdef __DEBUG_PM__
 	if(dbg_debugpm>0)
 	{
 #endif
 		PM_Startup(&gvar); PM_CheckMainMem(&gvar); PM_UnlockMainMem(&gvar);
+//0000		printf("PM Started\n"); printf("press any key to continue!\n"); getch();
 #ifdef __DEBUG_PM__
 	}
 #endif
 #endif
+
+#ifdef __DEBUG_MM__
+	dbg_debugmm=0;
+#endif
 	CA_Startup(&gvar);
 //	printf("		done!\n");
-	//0000
-	PRINTBB; printf("press any key to continue!\n"); getch();
-#ifdef FILEREAD
-for(w=0;w<2;w++)
-{
-//	printf("size of big buffer~=%u\n", _bmsize(segu, BBUF));
-	if(w>0)
-	{
-		printf("		read\n");
-		if(CA_ReadFile(bakapee2, &BBUF, &gvar)) baka=1; else baka=0;
-	}
+#ifdef PRINTBBDUMP
+//0000
+PRINTBB; printf("\n\npress any key to continue!\n"); getch();
 #endif
-	if(w==0)
+#ifdef __DEBUG_MM__
+	dbg_debugmm=1;
+#endif
+
+	w=0;
+#ifdef FILEREADLOAD
+#ifdef FILEREAD
+	for(;w<2;w++)
 	{
-		printf("		load\n");
-		if(CA_LoadFile(bakapee1, &BBUF, &gvar)) baka=1; else baka=0;
-	}
+	//	printf("size of big buffer~=%u\n", _bmsize(segu, BBUF));
+		if(w>0)
+		{
+			printf("======================================read=====================================\n");
+			if(CA_ReadFile(bakapee2, BBUFPTR, &gvar)) baka=1; else baka=0;
+			printf("====================================read end===================================\n");
+		}
+#endif
+		if(w==0)
+		{
+			printf("======================================load=====================================\n");
+			if(CA_LoadFile(bakapee1, BBUFPTR, &gvar)) baka=1; else baka=0;
+			printf("====================================load end===================================\n");
+		}
 //#ifdef __WATCOMC__
 //	printf("\nsize of big buffer~=%u\n", _bmsize(sega, BBUF));
 //#endif
 #ifdef BUFFDUMP
-	printf("contents of the buffer\n[\n%s\n]\n", (BBUF));
+		printf("contents of the buffer\n[\n%s\n]\n", BBUFSTRING);
 #endif// #else
-	PRINTBB;
-// #endif
-	//printf("dark purple = purgable\n");
-	//printf("medium blue = non purgable\n");
-	//printf("red = locked\n");
-//	printf("press any key to continue!\n");
-//	DebugMemory_(&gvar, 1);
-	if(baka) printf("\nyay!\n");
-	else printf("\npoo!\n");
-	printf("press any key to continue!\n");
-	getch();
-#ifdef FILEREAD
-}
+#ifdef PRINTBBDUMP
+		PRINTBB;
 #endif
+//endif // BUFFDUMP
+
+		//printf("dark purple = purgable\n");
+		//printf("medium blue = non purgable\n");
+		//printf("red = locked\n");
+	//	printf("press any key to continue!\n");
+	//	DebugMemory_(&gvar, 1);
+		if(baka) printf("\nyay!\n");
+		else printf("\npoo!\n");
+#ifdef BUFFDUMPPAUSE
+		printf("press any key to continue!\n"); getch();
+#endif
+#ifdef FILEREAD
+	}
+#endif
+#ifndef BUFFDUMPPAUSE
+	printf("press any key to continue!\n"); getch();
+#endif
+#endif	//filereadload
 	DebugMemory_(&gvar, 1);
 	MM_DumpData(&gvar);
 	MM_Report_(&gvar);
 	//printf("bakapee1=%s\n", bakapee1);
 	//printf("bakapee2=%s\n", bakapee2);
-	MM_FreePtr(&BBUF, &gvar);
+	MM_FreePtr(BBUFPTR, &gvar);
 #ifdef __16_PM__
 #ifdef __DEBUG_PM__
 	if(dbg_debugpm>0)
@@ -196,30 +247,48 @@ for(w=0;w<2;w++)
 	printf("bigb=	%Fp ", BBUF);
 	//printf("bigbr=	%04x", BBUF);
 	//printf("\n");
-	printf("&bigb=%Fp ", &BBUF);
-	//printf("&bigb=%04x", &BBUF);
+	printf("&bigb=%Fp ", BBUFPTR);
+	//printf("&bigb=%04x", BBUFPTR);
 	printf("\n");
-	printf("========================================\n");
 #endif
-	printf("\n");
-	printf("HC_coreleft():			%u\n", HC_coreleft());
+	printf("========================================\n");
+
+#ifdef EXMMVERBOSE__
+	printf("coreleft():			%u\n", _memavl());
+	printf("farcoreleft():			%lu\n", (dword)HC_farcoreleft());
+#endif
 #ifdef __WATCOMC__
 //this is far	printf("Total free:			%lu\n", (dword)(HC_GetFreeSize()));
-	printf("HC_GetNearFreeSize():		%u\n", HC_GetNearFreeSize());
-	printf("HC_GetFarFreeSize():			%lub\n", (dword)HC_GetFarFreeSize());
+//super buggy	printf("HC_coreleft():			%u\n", HC_coreleft());
+//	printf("HC_farcoreleft():			%lu\n", (dword)HC_farcoreleft());
+	//printf("HC_GetNearFreeSize():		%u\n", HC_GetNearFreeSize());
+	//printf("HC_GetFarFreeSize():			%lu\n", (dword)HC_GetFarFreeSize());
 	HC_heapdump(&gvar);
 //	segatesuto();
 #endif
-#ifdef __BORLANDC__
+/*#ifdef __BORLANDC__
 	//printf("core left:			%lu\n", (dword)HC_coreleft());
 	//printf("far core left:			%lu\n", (dword)HC_farcoreleft());
-	printf("coreleft():			%u\n", coreleft());
-	printf("farcoreleft():			%lu\n", (dword)farcoreleft());
+//	printf("\nfarcoreleft():			%lu\n", farcoreleft());
+#endif*/
+	printf("Project 16 ");
+#ifdef __WATCOMC__
+	printf("exmmtest");
 #endif
-	printf("Project 16 exmmtest.exe. This is just a test file!\n");
+#ifdef __BORLANDC__
+	printf("bcexmm");
+#endif
+	printf(".exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
-	//printf("\n");
-
+#if defined(__DEBUG__) && ( defined(__DEBUG_PM__) || defined(__DEBUG_MM__) )
+#ifdef __DEBUG_MM__
+	printf("debugmm: %u\t", dbg_debugmm);
+#endif
+#ifdef __DEBUG_PM__
+	printf("debugpm: %u", dbg_ddebugpm);
+#endif
+	printf("\n");
+#endif
 	//printf("based core left:			%lu\n", (dword)_basedcoreleft());
 	//printf("huge core left:			%lu\n", (dword)_hugecoreleft());
 }

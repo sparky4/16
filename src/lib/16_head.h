@@ -49,7 +49,6 @@
 #include <unistd.h>
 #include <alloca.h>
 #include <stdint.h> //16_vrs.h
-#include "src/lib/16_dbg.h"
 #endif
 #ifdef __BORLANDC__
 #include <values.h>
@@ -59,6 +58,7 @@
 #include "src/lib/16_t.h"
 #include "src/lib/16_tdef.h"
 #include "src/lib/nyan/kitten.h"
+#include "src/lib/16_dbg.h"
 
 #define VERSION __DATE__ " " __TIME__
 
@@ -161,11 +161,13 @@ extern	int			profilehandle,debughandle;	//make it into game global
 
 #define	nil	((void *)0)
 #ifdef __BORLANDC__
-#define _FCORELEFT 0x90000UL-16UL
+//#define _FCORELEFT 0x90000UL-16UL
+#define _FCORELEFT HC_farcoreleft()
 #define sprite
 #endif
 #ifdef __WATCOMC__
-#define _FCORELEFT 0x90000UL+16UL
+//#define _FCORELEFT 0x90000UL+16UL
+#define _FCORELEFT HC_farcoreleft()
 /*static union REGS CPURegs;
 
 #define _AX CPURegs.x.ax

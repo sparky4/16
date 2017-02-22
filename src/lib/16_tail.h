@@ -29,6 +29,7 @@
 #include "src/lib/16_mm.h"
 #include "src/lib/16_ca.h"
 #include "src/lib/16_in.h"
+#include "src/lib/16_dbg.h"
 #include "src/lib/16_vl.h"
 #include "src/lib/testpatt.h"
 

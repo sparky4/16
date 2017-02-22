@@ -376,7 +376,7 @@ typedef struct
 	boolean		mmstarted, bombonerror, mmerror;
 	void far	*farheap;
 #ifdef __BORLANDC__
-	void far	*nearheap;
+	void		*nearheap;
 #endif
 #ifdef __WATCOMC__
 	void __near	*nearheap;
@@ -493,7 +493,7 @@ typedef struct
 					PMNumBlocks;
 	long			PMFrameCount;
 	PageListStruct	far *PMPages;
-	__SEGA *PMSegPages;
+	memptr/*__SEGA*/ *PMSegPages;
 	pm_mmi_t	mm;
 	pm_emmi_t	emm;
 	pm_xmmi_t	xmm;

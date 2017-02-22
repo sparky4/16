@@ -305,7 +305,7 @@ boolean CA_FarWrite(int handle, byte far *source, dword length, global_game_vari
 		//segm=(length%0xfffflu)-1;
 		//fat=segm*0xfffflu;
 		//length-=fat;
-		printf("CA_FarRead doesn't support 64K reads yet!\n");
+		printf("CA_FarWrite doesn't support 64K reads yet!\n");
 		return 0;
 	}
 
@@ -377,10 +377,10 @@ boolean CA_ReadFile(char *filename, memptr *ptr, global_game_variables_t *gvar)
 	size = filelength(handle);
 	if(!CA_FarRead(handle,*ptr,size, gvar))
 	{
-		close (handle);
+		close(handle);
 		return false;
 	}
-	close (handle);
+	close(handle);
 	return true;
 }
 
@@ -438,7 +438,28 @@ boolean CA_LoadFile(char *filename, memptr *ptr, global_game_variables_t *gvar)
 		return false;
 
 	size = filelength(handle);
+#ifdef __DEBUG_CA__
+	if(dbg_debugca>0){
+		printf("===============================================================================\n");
+		printf("		CA_LoadFile\n");
+		printf("===============================================================================\n");
+		//%04x
+		printf("	ptr=%Fp\n", ptr);
+		printf("	*ptr=%Fp\n", *ptr);
+		printf("	&ptr=%Fp\n", &ptr);
+	}
+#endif
 	MM_GetPtr(ptr,size, gvar);
+#ifdef __DEBUG_CA__
+	if(dbg_debugca>0){
+		//%04x
+		printf("---------------------------------------\n");
+		printf("	ptr=%Fp\n", ptr);
+		printf("	*ptr=%Fp\n", *ptr);
+		printf("	&ptr=%Fp\n", &ptr);
+		printf("-------------------------------------------------------------------------------\n");
+	}
+#endif
 	if(!CA_FarRead(handle,*ptr,size, gvar))
 	{
 		close(handle);

@@ -28,27 +28,20 @@
 
 #include "src/lib/16_head.h"
 
+long HC_farcoreleft();
 #ifdef __BORLANDC__
-#define CHIKAKU			near
-#define _nmalloc(size)          malloc(size)
-#define _nfree(block)           free(block)
-#define _nrealloc(block,size)   realloc(block,size)
-#define _ncalloc(num,size)      calloc(num,size)
-#define _nheapmin()             0
+void * HC_LargestFreeBlock(size_t* Size);
 #endif
 #ifdef __WATCOMC__
-//#define SETTOUJ I_CHIKAKU	_n
-#define CHIKAKU			__near
+void __near* HC_LargestFreeBlock(size_t* Size);
 #endif
-
-void CHIKAKU* HC_LargestFreeBlock(size_t* Size);
 size_t HC_coreleft(void);
 void far* HC_LargestFarFreeBlock(size_t* Size);
-size_t HC_farcoreleft(void);
-//void huge* HC_LargestHugeFreeBlock(size_t* Size);
-//size_t HC_hugecoreleft(void);
-//void __based(__self)* LargestBasedFreeBlock(size_t* Size);
-//size_t _basedcoreleft(void);
+size_t HC_farcoreleft_(void);
+/*void huge* LargestHugeFreeBlock(size_t* Size);
+size_t _hugecoreleft(void);
+void __based(__self)* LargestBasedFreeBlock(size_t* Size);
+size_t _basedcoreleft(void);*/
 size_t HC_GetFreeSize(void);
 size_t HC_GetFarFreeSize(void);
 size_t HC_GetNearFreeSize(void);

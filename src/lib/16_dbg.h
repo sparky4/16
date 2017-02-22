@@ -8,13 +8,20 @@
 #define __DEBUG__
 #define __DEBUG_InputMgr__
 #define __DEBUG_MAP__
+//#define __DEBUG_CA__
 //#define __DEBUG_PM__
 //#define __DEBUG_MM__
 
 
 #ifdef __DEBUG__
+#ifdef __DEBUG_MM__
+extern boolean dbg_debugmm;
+#endif
 #ifdef __DEBUG_PM__
 extern boolean dbg_debugpm;
+#endif
+#ifdef __DEBUG_CA__
+extern boolean dbg_debugca;
 #endif
 #ifdef __DEBUG_InputMgr__
 extern boolean dbg_testkeyin,dbg_testcontrolnoisy,dbg_nointest;
@@ -25,6 +32,7 @@ extern byte *dbg_mapdata;
 #endif
 #endif
 
+#ifdef __WATCOMC__
 # ifdef DEBUGSERIAL
 #  include <hw/8250/8250.h>
 
@@ -44,5 +52,5 @@ static inline int _DEBUG_INIT() {
 	return -1;
 }
 # endif
+#endif //watcomc
 #endif // _SRC_LIB_16_DBG
-

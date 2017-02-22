@@ -562,30 +562,7 @@ void MML_ShutdownXMS(global_game_variables_t *gvar)
 ======================
 */
 
-/*void MML_UseSpace(word segstart, dword seglength, global_game_variables_t *gvar)
-{
-	mmblocktype far *scan,far *last;
-	word		segm=1;
-	word	oldend;
-	dword		segmlen;
-	dword		extra;
-
-	scan = last = gvar->mm.mmhead;
-	gvar->mm.mmrover = gvar->mm.mmhead;		// reset rover to start of memory
-
-//
-// search for the block that contains the range of segments
-//
-	while(scan->start+scan->length < segstart)
-	{
-		last = scan;
-		scan = scan->next;
-	}
-
-//
-// take the given range out of the block
-//
-	oldend = scan->start + scan->length;
+/*
 	extra = oldend - (segstart+seglength);
 
 	segmlen=extra;
@@ -610,28 +587,7 @@ void MML_ShutdownXMS(global_game_variables_t *gvar)
 	printf("segmlen=%lu\n", segmlen);
 	}
 //++++todo: linked list of segment!
-	if(segstart == scan->start)
-	{
-		last->next = scan->next;			// unlink block
-		FREEBLOCK(scan);
-		scan = last;
-	}
-	else
-		scan->length = segstart-scan->start;	// shorten block
-
-	if(extra > 0)
-	{
-		GETNEWBLOCK;
-		gvar->mm.mmnew->useptr = NULL;
-
-		gvar->mm.mmnew->next = scan->next;
-		scan->next = gvar->mm.mmnew;
-		gvar->mm.mmnew->start = segstart+seglength;
-		gvar->mm.mmnew->length = extra;
-		gvar->mm.mmnew->attributes = LOCKBIT;
-	}//else if(segm>0) goto segu;
-
-}*/
+*/
 void MML_UseSpace(word segstart, dword seglength, global_game_variables_t *gvar)
 {
 	mmblocktype far *scan,far *last;
@@ -699,7 +655,7 @@ void MML_UseSpace(word segstart, dword seglength, global_game_variables_t *gvar)
 		gvar->mm.mmnew->start = segstart+seglength;
 		gvar->mm.mmnew->length = extra;
 		gvar->mm.mmnew->attributes = LOCKBIT;
-	}
+	}//else if(segm>0) goto segu;
 
 }
 
@@ -788,15 +744,15 @@ void MM_Startup(global_game_variables_t *gvar)
 #ifdef __WATCOMC__
 	_nheapgrow();
 #endif
-
-	length=(word)_memavl();//(word)coreleft();//(dword)GetFreeSize();
-
+	length=(word)_memavl();//(word)coreleft();
+	//start = gvar->mm.nearheap = _fmalloc(length);
 #ifdef __WATCOMC__
 	start = (void __far *)(gvar->mm.nearheap = _nmalloc(length));
 #endif
 #ifdef __BORLANDC__
 	start = (void far *)(gvar->mm.nearheap = malloc(length));
 #endif
+
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;
 	seglength = length / 16;			// now in paragraphs
@@ -808,18 +764,16 @@ void MM_Startup(global_game_variables_t *gvar)
 //
 // get all available far conventional memory segments
 //
-	//printf("_FARCORELEFT				%lu\n", _FCORELEFT);
 #ifdef __WATCOMC__
 	_fheapgrow();
-	length=_FCORELEFT;//_fcoreleft();//(dword)GetFarFreeSize();//0xffffUL*4UL;
 #endif
 #ifdef __BORLANDC__
-//0000	printf("farcoreleft()				%lu\n", farcoreleft());
-//0000	printf("(farcoreleft()+32)-_FCORELEFT	%d\n", (sword)((farcoreleft()+32)-_FCORELEFT));
-	length=farcoreleft();//_fcoreleft();//(dword)GetFarFreeSize();//0xffffUL*4UL;
+//	printf("farcoreleft()				%lu\n", farcoreleft());
+//	printf("(farcoreleft()+32)-_FCORELEFT	%d\n", (sword)((farcoreleft()+32)-_FCORELEFT));
 #endif
-	start = gvar->mm.farheap = _fmalloc(length);
-	//start = gvar->mm.farheap = halloc(length, 1);
+	length=_FCORELEFT;
+	start = gvar->mm.farheap = _fmalloc(length);//start = gvar->mm.farheap = halloc(length, 1);
+
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVEFARHEAP;
 	seglength = length / 16;			// now in paragraphs
@@ -941,11 +895,13 @@ void MM_GetPtr (memptr *baseptr, dword size, global_game_variables_t *gvar)
 	gvar->mm.mmnew->useptr = baseptr;
 	//if(gvar->mm.mmnew->useptr==NULL){
 #ifdef __DEBUG_MM__
+	if(dbg_debugmm>0){
 		printf("MM_GetPtr\n");
 		//%04x
 		printf("	baseptr=%Fp	", baseptr); printf("useptr=%Fp\n", gvar->mm.mmnew->useptr);
 		printf("	*baseptr=%Fp	", *baseptr); printf("*useptr=%Fp\n", *(gvar->mm.mmnew->useptr));
 		printf("	&baseptr=%Fp	", &baseptr); printf("&useptr=%Fp\n", &(gvar->mm.mmnew->useptr));
+	}
 #endif
 	//Quit(gvar, "gvar->mm.mmnew->useptr==NULL"); }
 	gvar->mm.mmnew->attributes = BASEATTRIBUTES;
@@ -1062,8 +1018,8 @@ void MM_FreePtr(memptr *baseptr, global_game_variables_t *gvar)
 
 	if(!scan)
 	{
-		printf("MM_FreePtr: Block not found!\n");
-		return;
+		Quit(gvar, "MM_FreePtr: Block not found!\n");
+		//printf("MM_FreePtr: Block not found!\n"); return;
 	}
 
 	last->next = scan->next;
@@ -1441,7 +1397,12 @@ void MM_DumpData(global_game_variables_t *gvar)
 	byte	lock,purge;
 	FILE	*dumpfile;
 
+#ifdef __WATCOMC__
+	_nfree(gvar->mm.nearheap);
+#endif
+#ifdef __BORLANDC__
 	free(gvar->mm.nearheap);
+#endif
 #ifdef __BORLANDC__
 		dumpfile = fopen ("mmdump.16b","w");
 #endif
