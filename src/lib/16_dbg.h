@@ -33,8 +33,6 @@ extern byte *dbg_mapdata;
 #endif
 #endif
 
-void ShapeTest (global_game_variables_t *gvar);
-
 #ifdef __WATCOMC__
 # ifdef DEBUGSERIAL
 #  include <hw/8250/8250.h>
@@ -56,4 +54,7 @@ static inline int _DEBUG_INIT() {
 }
 # endif
 #endif //watcomc
+
+void ShapeTest (global_game_variables_t *gvar);
+
 #endif // _SRC_LIB_16_DBG

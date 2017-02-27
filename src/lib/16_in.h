@@ -302,5 +302,7 @@ extern boolean IN_UserInput(dword delay,boolean clear);
 extern boolean IN_KeyDown(byte code);
 extern void IN_ClearKey(byte code);
 extern boolean IN_qb(byte kee);
+extern ScanCode IN_GetLastScan();
+extern ScanCode IN_GetCurCode();
 
 #endif

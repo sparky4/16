@@ -1275,3 +1275,13 @@ boolean IN_qb(byte kee)
 	if(inpu.Keyboard[kee]==true) return 1;
 	else return 0;
 }
+
+ScanCode IN_GetLastScan()
+{
+	return inpu.LastScan;
+}
+
+ScanCode IN_GetCurCode()
+{
+	return inst.CurCode;
+}
