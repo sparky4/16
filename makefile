@@ -241,7 +241,7 @@ test0.exe:		test0.$(OBJ)
 fonttest.exe:	 fonttest.$(OBJ) gfx.lib
 #fonttes0.exe:	fonttes0.$(OBJ) $(16LIB)
 fontgfx.exe:	fontgfx.$(OBJ) gfx.lib $(DOSLIB)
-inputest.exe:	 inputest.$(OBJ) $(16LIB) $(DOSLIB)
+inputest.exe:	 inputest.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
 #sountest.exe:	sountest.$(OBJ) $(16LIB)
 pcxtest.exe:	pcxtest.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
 vrstest.exe:	vrstest.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
@@ -254,7 +254,7 @@ pcxtest2.exe:	 pcxtest2.$(OBJ) gfx.lib $(DOSLIB)
 maptest.exe:	maptest.$(OBJ) 16_map.$(OBJ) 16_head.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
 fmemtest.exe:	 fmemtest.$(OBJ)
 exmmtest.exe:	 exmmtest.$(OBJ) $(16LIB) $(DOSLIB)
-vgmtest.exe:	vgmtest.$(OBJ) vgmsnd.lib $(16LIB) $(DOSLIB)
+vgmtest.exe:	vgmtest.$(OBJ) vgmsnd.lib $(16LIB) $(DOSLIB) gfx.lib
 db.exe:		db.$(OBJ)
 wcpu.exe:		wcpu.$(OBJ) $(16LIB) $(DOSLIB)
 

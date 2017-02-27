@@ -221,6 +221,8 @@ PRINTBB; printf("\n\npress any key to continue!\n"); getch();
 	printf("press any key to continue!\n"); getch();
 #endif
 #endif	//filereadload
+	//getch(); ShapeTest (&gvar);
+
 	DebugMemory_(&gvar, 1);
 	MM_DumpData(&gvar);
 	MM_Report_(&gvar);

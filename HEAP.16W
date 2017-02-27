@@ -1,35 +1,35 @@
 
 	== default ==
 
-  USED block at 24200016 of size 26
-  USED block at 24200030 of size 26
-  FREE block at 2420004a of size 38914
-  USED block at 2420984c of size 136
-  USED block at 242098d4 of size 20
-  FREE block at 242098e8 of size 7972
+  USED block at 24430016 of size 26
+  USED block at 24430030 of size 26
+  FREE block at 2443004a of size 38914
+  USED block at 2443984c of size 136
+  USED block at 244398d4 of size 20
+  FREE block at 244398e8 of size 7972
 OK - end of heap
 
 	== near ==
 
-  USED block at 141fece6 of size 12
-  USED block at 141fecf2 of size 332
-  USED block at 141fee3e of size 52
-  USED block at 141fee72 of size 20
-  USED block at 141fee86 of size 20
-  USED block at 141fee9a of size 20
-  USED block at 141feeae of size 20
-  USED block at 141feec2 of size 20
-  USED block at 141feed6 of size 4390
+  USED block at 1442ece6 of size 12
+  USED block at 1442ecf2 of size 332
+  USED block at 1442ee3e of size 52
+  USED block at 1442ee72 of size 20
+  USED block at 1442ee86 of size 20
+  USED block at 1442ee9a of size 20
+  USED block at 1442eeae of size 20
+  USED block at 1442eec2 of size 20
+  USED block at 1442eed6 of size 4390
 OK - end of heap
 
 	== far ==
 
-  USED block at 24200016 of size 26
-  USED block at 24200030 of size 26
-  USED block at 2420004a of size 38914
-  USED block at 2420984c of size 136
-  USED block at 242098d4 of size 20
-  USED block at 242098e8 of size 7972
+  USED block at 24430016 of size 26
+  USED block at 24430030 of size 26
+  USED block at 2443004a of size 38914
+  USED block at 2443984c of size 136
+  USED block at 244398d4 of size 20
+  USED block at 244398e8 of size 7972
 OK - end of heap
 
 Memory Type         Total      Used       Free

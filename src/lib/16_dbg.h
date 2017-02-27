@@ -3,6 +3,7 @@
 #define _SRC_LIB_16_DBG
 
 #include "src/lib/16_head.h"
+#include "src/lib/16_pm.h"
 #include "src/lib/16_tdef.h"
 
 #define __DEBUG__
@@ -31,6 +32,8 @@ extern boolean dbg_maptext;
 extern byte *dbg_mapdata;
 #endif
 #endif
+
+void ShapeTest (global_game_variables_t *gvar);
 
 #ifdef __WATCOMC__
 # ifdef DEBUGSERIAL
