@@ -501,11 +501,17 @@ IN_GetJoyButtonsDB(word joy)
 static void
 INL_StartKbd()
 {
+	byte far *lock_key;
 	INL_KeyHook = 0;	// Clear key hook
 
 	IN_ClearKeysDown();
 
 	OldKeyVect = _dos_getvect(KeyInt);
+
+	// turn off num-lock via BIOS
+	lock_key = MK_FP(0x040, 0x017); // Pointing to the address of the bios shift state keys
+	*lock_key&=(~(16 | 32 | 64)); // toggle off the locks by changing the values of the 4th, 5th, and 6th bits of the address byte of 0040:0017
+	OldKeyVect();	// call BIOS keyhandler to change keyboard lights
 	_dos_setvect(KeyInt,INL_KeyService);
 }
 
