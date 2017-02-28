@@ -1,47 +1,45 @@
 
 	== default ==
 
-  USED block at 25c30016 of size 26
-  USED block at 25c30030 of size 26
-  FREE block at 25c3004a of size 20482
-  USED block at 25c3504c of size 136
-  USED block at 25c350d4 of size 20
-  FREE block at 25c350e8 of size 7972
+  USED block at 25230016 of size 26
+  FREE block at 25230030 of size 34844
+  USED block at 2523884c of size 136
+  USED block at 252388d4 of size 20
+  FREE block at 252388e8 of size 7972
 OK - end of heap
 
 	== near ==
 
-  USED block at 15c2ecf6 of size 12
-  USED block at 15c2ed02 of size 630
-  USED block at 15c2ef78 of size 116
-  USED block at 15c2efec of size 20
-  USED block at 15c2f000 of size 20
-  USED block at 15c2f014 of size 20
-  USED block at 15c2f028 of size 20
-  USED block at 15c2f03c of size 20
-  USED block at 15c2f050 of size 4012
+  USED block at 1522ecf6 of size 16
+  USED block at 1522ed06 of size 566
+  USED block at 1522ef3c of size 72
+  USED block at 1522ef84 of size 20
+  USED block at 1522ef98 of size 20
+  USED block at 1522efac of size 20
+  USED block at 1522efc0 of size 20
+  USED block at 1522efd4 of size 20
+  USED block at 1522efe8 of size 4116
 OK - end of heap
 
 	== far ==
 
-  USED block at 25c30016 of size 26
-  USED block at 25c30030 of size 26
-  USED block at 25c3004a of size 20482
-  USED block at 25c3504c of size 136
-  USED block at 25c350d4 of size 20
-  USED block at 25c350e8 of size 7972
+  USED block at 25230016 of size 26
+  USED block at 25230030 of size 34844
+  USED block at 2523884c of size 136
+  USED block at 252388d4 of size 20
+  USED block at 252388e8 of size 7972
 OK - end of heap
 
 Memory Type         Total      Used       Free
 ----------------  --------   --------   --------
-Default		   28662	208	  28454
-Near		   4870		858	  4012
-Far		   28662	208	  28454
+Default		   42998	182	  42816
+Near		   4870		738	  4132
+Far		   42998	182	  42816
 ----------------  --------   --------   --------
-HC_coreleft = 4010
+HC_coreleft = 4128
 HC_farcoreleft = 458752
-HC_GetFreeSize = 28454
-HC_GetNearFreeSize = 4012
-HC_GetFarFreeSize = 28454
-memavl = 4010
-stackavail = 31606
+HC_GetFreeSize = 42816
+HC_GetNearFreeSize = 4132
+HC_GetFarFreeSize = 42816
+memavl = 4128
+stackavail = 31605

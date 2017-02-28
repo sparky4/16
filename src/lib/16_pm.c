@@ -158,7 +158,7 @@ boolean
 PML_StartupEMS(global_game_variables_t *gvar)
 {
 	int		i;
-	//long	size;
+	long	size;
 	byte	err=0, str[64];
 
 	boolean errorflag=false;
@@ -244,7 +244,7 @@ End1:
 #ifdef __WATCOMC__
 	}
 #endif
-/*
+//*
 	if(errorflag==false)
 	{
 		// Don't hog all available EMS
@@ -255,7 +255,7 @@ End1:
 			gvar->pm.emm.EMSAvail = size / EMSPageSize;
 		}
 	}
-*/
+//*/
 	__asm {
 		mov	ah,EMS_ALLOCPAGES
 		mov	bx,[EMSAvail];
