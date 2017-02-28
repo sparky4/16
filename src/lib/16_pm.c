@@ -158,13 +158,16 @@ boolean
 PML_StartupEMS(global_game_variables_t *gvar)
 {
 	int		i;
-	long	size;
+	//long	size;
 	byte	err=0, str[64];
 
 	boolean errorflag=false;
 	static char	emmname[] = "EMMXXXX0";	//fix by andrius4669
 	unsigned int EMSVer = 0;
 	unsigned	totalEMSpages,freeEMSpages,EMSPageFrame,EMSHandle=0,EMSAvail=0;
+#ifdef __DEBUG_PM__
+	word e=0;
+#endif
 	totalEMSpages = freeEMSpages = EMSPageFrame = 0;
 	gvar->pm.emm.EMSPresent = false;			// Assume that we'll fail
 	gvar->pm.emm.EMSAvail = 0;
@@ -175,27 +178,37 @@ PML_StartupEMS(global_game_variables_t *gvar)
 		mov	ax,0x3d00
 		int	EMM_INT		// try to open EMMXXXX0 device
 		jc	error1
-
+#ifdef __DEBUG_PM__
+		add	e,1
+#endif
 		mov	bx,ax
 		mov	ax,0x4400
 
 		int	EMM_INT		// get device info
 		jc	error1
-
+#ifdef __DEBUG_PM__
+		add	e,1
+#endif
 		and	dx,0x80
 		jz	error1
-
+#ifdef __DEBUG_PM__
+		add	e,1
+#endif
 		mov	ax,0x4407
 
 		int	EMM_INT		// get status
 		jc	error1
 		or	al,al
 		jz	error1
-
+#ifdef __DEBUG_PM__
+		add	e,1
+#endif
 		mov	ah,0x3e
 		int	EMM_INT		// close handle
 		jc	error1
-
+#ifdef __DEBUG_PM__
+		add	e,1
+#endif
 		mov	ah,EMS_STATUS
 		int	EMS_INT
 		jc	error1			// make sure EMS hardware is present
@@ -233,6 +246,9 @@ PML_StartupEMS(global_game_variables_t *gvar)
 #ifdef __BORLANDC__
 	__asm {
 #endif
+#ifdef __DEBUG_PM__
+		mov	e,1
+#endif
 		mov	err,ah
 		mov	errorflag,1
 		jmp End1
@@ -244,7 +260,7 @@ End1:
 #ifdef __WATCOMC__
 	}
 #endif
-//*
+/*
 	if(errorflag==false)
 	{
 		// Don't hog all available EMS
@@ -255,7 +271,7 @@ End1:
 			gvar->pm.emm.EMSAvail = size / EMSPageSize;
 		}
 	}
-//*/
+*/
 	__asm {
 		mov	ah,EMS_ALLOCPAGES
 		mov	bx,[EMSAvail];
@@ -270,6 +286,9 @@ End1:
 	error2:
 #ifdef __BORLANDC__
 	__asm {
+#endif
+#ifdef __DEBUG_PM__
+		mov	e,1
 #endif
 		mov	err,ah
 		mov	errorflag,1
@@ -296,6 +315,10 @@ End2:
 		strcpy(str,"PML_StartupEMS: EMS error ");
 		MM_EMSerr(str, err);
 		printf("%s\n",str);
+#ifdef __DEBUG_PM__
+		printf("e=%u\n", e);
+		getch();
+#endif
 		return(gvar->pm.emm.EMSPresent);
 	}
 

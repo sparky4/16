@@ -294,7 +294,7 @@ PRINTBB; printf("\n\npress any key to continue!\n"); getch();
 	printf("debugmm: %u\t", dbg_debugmm);
 #endif
 #ifdef __DEBUG_PM__
-	printf("debugpm: %u", dbg_ddebugpm);
+	printf("debugpm: %u", dbg_debugpm);
 #endif
 	printf("\n");
 #endif
