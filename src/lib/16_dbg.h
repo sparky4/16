@@ -3,6 +3,7 @@
 #define _SRC_LIB_16_DBG
 
 #include "src/lib/16_head.h"
+#include "src/lib/16_pm.h"
 #include "src/lib/16_tdef.h"
 
 #define __DEBUG__
@@ -53,4 +54,7 @@ static inline int _DEBUG_INIT() {
 }
 # endif
 #endif //watcomc
+
+void ShapeTest (global_game_variables_t *gvar);
+
 #endif // _SRC_LIB_16_DBG
