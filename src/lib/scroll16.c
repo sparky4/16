@@ -741,7 +741,7 @@ void shinku(global_game_variables_t *gv)
 		gv->video.dorender =!gv->video.dorender ;
 		//0000gv->video.tickclk = ((*clockw)-gv->video.startclk)/18.2;
 	}
-	PM_NextFrame(gv);
+//++++	PM_NextFrame(gv);
 }
 
 void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn)
