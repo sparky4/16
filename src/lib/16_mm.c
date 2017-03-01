@@ -88,7 +88,8 @@ static	char *ParmStringsexmm[] = {"noems","noxms",""};
 
 boolean MML_CheckForEMS(void)
 {
-	boolean emmcfems=0;
+	boolean	emmcfems = false;
+	word		EMSPageFrame = 0;
 	static char	emmname[] = "EMMXXXX0";	//fix by andrius4669
 	__asm {
 		mov	dx,OFFSET emmname	//fix by andrius4669
@@ -115,11 +116,21 @@ boolean MML_CheckForEMS(void)
 		mov	ah,0x3e
 		int	0x21		// close handle
 		jc	error
+
+		//
+		// pageframe check
+		//
+		mov	ah,EMS_GETFRAME
+		int	EMS_INT			// find the page frame address
+		or	ah,ah
+		jnz	error
+		mov	[EMSPageFrame],bx
+
 		//
 		// EMS is good
 		//
-		mov     emmcfems,1
-		jmp End
+		mov	emmcfems,1
+		jmp	End
 #ifdef __BORLANDC__
 	}
 #endif
@@ -130,7 +141,7 @@ boolean MML_CheckForEMS(void)
 		//
 		// EMS is bad
 		//
-		mov     emmcfems,0
+		mov	emmcfems,0
 #ifdef __BORLANDC__
 	}
 #endif
@@ -138,6 +149,17 @@ boolean MML_CheckForEMS(void)
 #ifdef __WATCOMC__
 	}
 #endif
+
+	//
+	// Pageframe switch to determine if there is one!
+	//
+	if(!EMSPageFrame)
+	{
+		emmcfems = false;
+#if defined(__DEBUG_PM__) || defined(__DEBUG_MM__)
+		printf("MML_CheckForEMS: EMS error No Pageframe!\nAddress detected to be %04x\n", EMSPageFrame);
+#endif
+	}
 	return(emmcfems);
 }
 

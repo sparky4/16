@@ -158,57 +158,45 @@ boolean
 PML_StartupEMS(global_game_variables_t *gvar)
 {
 	int		i;
-	//long	size;
+#ifdef __PM__NOHOGEMS__
+	long	size;
+#endif
 	byte	err=0, str[64];
 
 	boolean errorflag=false;
 	static char	emmname[] = "EMMXXXX0";	//fix by andrius4669
-	unsigned int EMSVer = 0;
-	unsigned	totalEMSpages,freeEMSpages,EMSPageFrame,EMSHandle=0,EMSAvail=0;
-#ifdef __DEBUG_PM__
-	word e=0;
-#endif
-	totalEMSpages = freeEMSpages = EMSPageFrame = 0;
+	unsigned	EMSVer;
+	unsigned	totalEMSpages,freeEMSpages,EMSPageFrame,EMSHandle,EMSAvail;
+	totalEMSpages = freeEMSpages = EMSPageFrame = EMSHandle = EMSAvail = EMSVer = 0;	// set all to 0~
 	gvar->pm.emm.EMSPresent = false;			// Assume that we'll fail
-	gvar->pm.emm.EMSAvail = 0;
-	gvar->mmi.EMSmem = 0;
+	gvar->pm.emm.EMSAvail = gvar->mmi.EMSmem = 0;
 
 	__asm {
 		mov	dx,OFFSET emmname	//fix by andrius4669
 		mov	ax,0x3d00
 		int	EMM_INT		// try to open EMMXXXX0 device
 		jc	error1
-#ifdef __DEBUG_PM__
-		add	e,1
-#endif
+
 		mov	bx,ax
 		mov	ax,0x4400
 
 		int	EMM_INT		// get device info
 		jc	error1
-#ifdef __DEBUG_PM__
-		add	e,1
-#endif
+
 		and	dx,0x80
 		jz	error1
-#ifdef __DEBUG_PM__
-		add	e,1
-#endif
+
 		mov	ax,0x4407
 
 		int	EMM_INT		// get status
 		jc	error1
 		or	al,al
 		jz	error1
-#ifdef __DEBUG_PM__
-		add	e,1
-#endif
+
 		mov	ah,0x3e
 		int	EMM_INT		// close handle
 		jc	error1
-#ifdef __DEBUG_PM__
-		add	e,1
-#endif
+
 		mov	ah,EMS_STATUS
 		int	EMS_INT
 		jc	error1			// make sure EMS hardware is present
@@ -217,7 +205,7 @@ PML_StartupEMS(global_game_variables_t *gvar)
 		int	EMS_INT			// only work on EMS 3.2 or greater (silly, but...)
 		or	ah,ah
 		jnz	error1
-		mov	[EMSVer],ax		//	set EMSVer
+		mov	[EMSVer],ax		// set EMSVer
 		cmp	al,0x32			// only work on ems 3.2 or greater
 		jb	error1
 
@@ -238,7 +226,7 @@ PML_StartupEMS(global_game_variables_t *gvar)
 		mov	[totalEMSpages],dx
 		mov	[freeEMSpages],bx
 		mov	[EMSAvail],bx
-		jmp End1
+		jmp	End1
 #ifdef __BORLANDC__
 	}
 #endif
@@ -246,12 +234,9 @@ PML_StartupEMS(global_game_variables_t *gvar)
 #ifdef __BORLANDC__
 	__asm {
 #endif
-#ifdef __DEBUG_PM__
-		mov	e,1
-#endif
 		mov	err,ah
 		mov	errorflag,1
-		jmp End1
+		jmp	End1
 #ifdef __BORLANDC__
 	}
 #endif
@@ -260,7 +245,7 @@ End1:
 #ifdef __WATCOMC__
 	}
 #endif
-/*
+#ifdef __PM__NOHOGEMS__
 	if(errorflag==false)
 	{
 		// Don't hog all available EMS
@@ -271,7 +256,7 @@ End1:
 			gvar->pm.emm.EMSAvail = size / EMSPageSize;
 		}
 	}
-*/
+#endif
 	__asm {
 		mov	ah,EMS_ALLOCPAGES
 		mov	bx,[EMSAvail];
@@ -287,40 +272,28 @@ End1:
 #ifdef __BORLANDC__
 	__asm {
 #endif
-#ifdef __DEBUG_PM__
-		mov	e,1
-#endif
 		mov	err,ah
 		mov	errorflag,1
-		jmp End2
+		jmp	End2
 #ifdef __BORLANDC__
-	}
+	}//end of assembly
 #endif
 End2:
 #ifdef __WATCOMC__
-	}
+	}//end of assembly
 #endif
-
-	if(errorflag==false)
+	if(errorflag==true)
 	{
+		strcpy(str,"PML_StartupEMS: EMS error ");
+		MM_EMSerr(str, err);
+		printf("%s\n",str);
+		return(gvar->pm.emm.EMSPresent);
+	}
 	gvar->mmi.EMSmem = EMSAvail * (dword)EMSPageSize;
 
 	// Initialize EMS mapping cache
 	for (i = 0;i < EMSFrameCount;i++)
 		gvar->pm.emm.EMSList[i].baseEMSPage = -1;
-
-	}
-	else
-	{
-		strcpy(str,"PML_StartupEMS: EMS error ");
-		MM_EMSerr(str, err);
-		printf("%s\n",str);
-#ifdef __DEBUG_PM__
-		printf("e=%u\n", e);
-		getch();
-#endif
-		return(gvar->pm.emm.EMSPresent);
-	}
 
 	gvar->pm.emm.EMSPresent = true;			// We have EMS
 	gvar->pm.emm.EMSPageFrame = EMSPageFrame;

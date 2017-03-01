@@ -34,6 +34,7 @@
 #include "src/lib/16_ca.h"
 #include <dos.h>
 
+//#define __PM__NOHOGEMS__
 /*//	NOTE! PMPageSize must be an even divisor of EMSPageSize, and >= 1024
 #define	EMSPageSize		16384
 #define	EMSPageSizeSeg	(EMSPageSize >> 4)
