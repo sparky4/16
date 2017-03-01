@@ -90,17 +90,18 @@ boolean MML_CheckForEMS(void)
 {
 	boolean	emmcfems = false;
 	word		EMSPageFrame = 0;
+	byte	err=0, str[64];
 	static char	emmname[] = "EMMXXXX0";	//fix by andrius4669
 	__asm {
 		mov	dx,OFFSET emmname	//fix by andrius4669
 		mov	ax,0x3d00
-		int	0x21		// try to open EMMXXXX0 device
+		int	EMM_INT		// try to open EMMXXXX0 device
 		jc	error
 
 		mov	bx,ax
 		mov	ax,0x4400
 
-		int	0x21		// get device info
+		int	EMM_INT		// get device info
 		jc	error
 
 		and	dx,0x80
@@ -108,13 +109,13 @@ boolean MML_CheckForEMS(void)
 
 		mov	ax,0x4407
 
-		int	0x21		// get status
+		int	EMM_INT		// get status
 		jc	error
 		or	al,al
 		jz	error
 
 		mov	ah,0x3e
-		int	0x21		// close handle
+		int	EMM_INT		// close handle
 		jc	error
 
 		//
@@ -141,6 +142,7 @@ boolean MML_CheckForEMS(void)
 		//
 		// EMS is bad
 		//
+		mov	err,ah
 		mov	emmcfems,0
 #ifdef __BORLANDC__
 	}
@@ -159,7 +161,13 @@ boolean MML_CheckForEMS(void)
 #if defined(__DEBUG_PM__) || defined(__DEBUG_MM__)
 		printf("MML_CheckForEMS: EMS error No Pageframe!\nAddress detected to be %04x\n", EMSPageFrame);
 #endif
+	}else 	if(!emmcfems)// if there is an error and page frame is not 0000
+	{
+		strcpy(str,"MML_CheckForEMS: EMS error ");
+		MM_EMSerr(str, err);
+		printf("%s\n",str);
 	}
+
 	return(emmcfems);
 }
 

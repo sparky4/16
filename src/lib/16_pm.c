@@ -153,6 +153,9 @@ PML_MapEMS(word logical, byte physical, global_game_variables_t *gvar)
 //		If there's more than our minimum (2 pages) available, allocate it (up
 //			to the maximum we need)
 //
+//	Please call MML_CheckForEMS() before calling this function.
+//	MML_CheckForEMS is not local despite the name wwww.
+//
 
 boolean
 PML_StartupEMS(global_game_variables_t *gvar)
@@ -164,7 +167,6 @@ PML_StartupEMS(global_game_variables_t *gvar)
 	byte	err=0, str[64];
 
 	boolean errorflag=false;
-	static char	emmname[] = "EMMXXXX0";	//fix by andrius4669
 	unsigned	EMSVer;
 	unsigned	totalEMSpages,freeEMSpages,EMSPageFrame,EMSHandle,EMSAvail;
 	totalEMSpages = freeEMSpages = EMSPageFrame = EMSHandle = EMSAvail = EMSVer = 0;	// set all to 0~
@@ -172,31 +174,7 @@ PML_StartupEMS(global_game_variables_t *gvar)
 	gvar->pm.emm.EMSAvail = gvar->mmi.EMSmem = 0;
 
 	__asm {
-		mov	dx,OFFSET emmname	//fix by andrius4669
-		mov	ax,0x3d00
-		int	EMM_INT		// try to open EMMXXXX0 device
-		jc	error1
-
-		mov	bx,ax
-		mov	ax,0x4400
-
-		int	EMM_INT		// get device info
-		jc	error1
-
-		and	dx,0x80
-		jz	error1
-
-		mov	ax,0x4407
-
-		int	EMM_INT		// get status
-		jc	error1
-		or	al,al
-		jz	error1
-
-		mov	ah,0x3e
-		int	EMM_INT		// close handle
-		jc	error1
-
+		//MML_CheckForEMS() takes care of what the code did here
 		mov	ah,EMS_STATUS
 		int	EMS_INT
 		jc	error1			// make sure EMS hardware is present
