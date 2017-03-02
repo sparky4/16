@@ -132,17 +132,17 @@ void	CAL_DialogFinish (void);*/
 //void	CAL_CarmackExpand (unsigned far *source, unsigned far *dest,unsigned length);
 
 
-/*++++#ifdef THREEBYTEGRSTARTS
+#ifdef THREEBYTEGRSTARTS
 #define FILEPOSSIZE	3
 //#define	GRFILEPOS(c) (*(long far *)(((byte far *)grstarts)+(c)*3)&0xffffff)
-long GRFILEPOS(int c)
+long GRFILEPOS(int c, global_game_variables_t *gvar)
 {
 	long value;
 	int	offset;
 
 	offset = c*3;
 
-	value = *(long far *)(((byte far *)grstarts)+offset);
+	value = *(long far *)(((byte far *)gvar->ca.grstarts)+offset);
 
 	value &= 0x00ffffffl;
 
@@ -153,8 +153,8 @@ long GRFILEPOS(int c)
 };
 #else
 #define FILEPOSSIZE	4
-#define	GRFILEPOS(c) (grstarts[c])
-#endif*/
+#define	GRFILEPOS(c) (gvar->ca.grstarts[c])
+#endif
 
 /*
 =============================================================================
@@ -2239,10 +2239,10 @@ void	CAL_DialogFinish (void)
 = CA_CacheMarks
 =
 ======================
-*//*
+*//*++++
 #define MAXEMPTYREAD	1024
 
-void CA_CacheMarks (char *title)
+void CAL_CacheMarks (char *title, global_game_variables_t *gvar)
 {
 	boolean dialog;
 	int 	i,next,numcache;
@@ -2258,17 +2258,17 @@ void CA_CacheMarks (char *title)
 // go through and make everything not needed purgable
 //
 	for (i=0;i<NUMCHUNKS;i++)
-		if (gvar->video.grneeded[i]&ca_levelbit)
+		if (gvar->ca.grneeded[i]&(gvar->ca.ca_levelbit))//if (grneeded[i]&ca_levelbit)
 		{
-			if (grsegs[i])					// its allready in memory, make
-				MM_SetPurge(&grsegs[i],0);	// sure it stays there!
+			if (gvar->ca.grsegs[i])					// its allready in memory, make
+				MM_SetPurge(gvar->ca.grsegs[i],0,gvar);	// sure it stays there!
 			else
 				numcache++;
 		}
 		else
 		{
-			if (grsegs[i])					// not needed, so make it purgeable
-				MM_SetPurge(&grsegs[i],3);
+			if (gvar->ca.grsegs[i])					// not needed, so make it purgeable
+				MM_SetPurge(gvar->ca.grsegs[i],3,gvar);
 		}
 
 	if (!numcache)			// nothing to cache!
@@ -2276,8 +2276,8 @@ void CA_CacheMarks (char *title)
 
 // MDM begin - (GAMERS EDGE)
 //
-	if (!FindFile("EGAGRAPH."EXT,NULL,2))
-		Quit (gvar, "CA_CacheMarks(): Can't find graphics files.");
+//	if (!FindFile("EGAGRAPH."EXT,NULL,2))
+//		Quit (gvar, "CA_CacheMarks(): Can't find graphics files.");
 //
 // MDM end
 
@@ -2297,7 +2297,7 @@ void CA_CacheMarks (char *title)
 	bufferstart = bufferend = 0;		// nothing good in buffer now
 
 	for (i=0;i<NUMCHUNKS;i++)
-		if ( (gvar->video.grneeded[i]&ca_levelbit) && !grsegs[i])
+		if ( (gvar->ca.grneeded[i]&(gvar->ca.ca_levelbit)) && !gvar->ca.grsegs[i])
 		{
 //
 // update thermometer
@@ -2348,7 +2348,7 @@ void CA_CacheMarks (char *title)
 					}
 
 					lseek(grhandle,pos,SEEK_SET);
-					CA_FarRead(grhandle,bufferseg,endpos-pos);
+					CA_FarRead(grhandle,(gvar->mm.bufferseg),endpos-pos,gvar);
 					bufferstart = pos;
 					bufferend = endpos;
 					source = bufferseg;
@@ -2357,12 +2357,12 @@ void CA_CacheMarks (char *title)
 			else
 			{
 			// big chunk, allocate temporary buffer
-				MM_GetPtr(&bigbufferseg,compressed);
+				MM_GetPtr(&bigbufferseg,compressed,gvar);
 				if (mmerror)
 					return;
 				MM_SetLock (&bigbufferseg,true);
 				lseek(grhandle,pos,SEEK_SET);
-				CA_FarRead(grhandle,bigbufferseg,compressed);
+				CA_FarRead(grhandle,bigbufferseg,compressed,gvar);
 				source = bigbufferseg;
 			}
 

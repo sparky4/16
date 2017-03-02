@@ -538,6 +538,9 @@ typedef struct	//TODO: USE THIS!!!!
 	byte		far		grneeded[NUMCHUNKS];
 	memptr/*byte _seg*/	*audiosegs[NUMSNDCHUNKS];
 
+	long		_seg *grstarts;	// array of offsets in egagraph, -1 for sparse
+	long		_seg *audiostarts;	// array of offsets in audio / audiot
+
 	//misc memptr
 	memptr tinf[4];
 

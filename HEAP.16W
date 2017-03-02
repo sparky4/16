@@ -34,8 +34,10 @@ OK - end of heap
 
 Memory Type         Total      Used       Free
 ----------------  --------   --------   --------
-Default		   47094Near		   4886	496	  4390
-Far		   47094----------------  --------   --------   --------
+Default		   47094	208	  46886
+Near		   4886		496	  4390
+Far		   47094	208	  46886
+----------------  --------   --------   --------
 HC_coreleft = 4388
 HC_farcoreleft = 458752
 HC_GetFreeSize = 46886
