@@ -1251,6 +1251,48 @@ IN_UserInput(dword delay,boolean clear)
 	return(false);
 }
 
+//===========================================================================
+
+/*
+===================
+=
+= IN_MouseButtons
+=
+===================
+*/
+
+byte	IN_MouseButtons (void)
+{
+	union REGS CPURegs;
+	if (inpu.MousePresent)
+	{
+		Mouse(MButtons);
+		return CPURegs.x.bx;
+	}
+	else
+		return 0;
+}
+
+
+/*
+===================
+=
+= IN_JoyButtons
+=
+===================
+*/
+
+byte	IN_JoyButtons (void)
+{
+	byte joybits;
+
+	joybits = inp(0x201);	// Get all the joystick buttons
+	joybits >>= 4;				// only the high bits are useful
+	joybits ^= 15;				// return with 1=pressed
+
+	return joybits;
+}
+
 boolean IN_KeyDown(byte code)
 {
 #ifdef __DEBUG_InputMgr__
