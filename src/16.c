@@ -23,7 +23,6 @@
 #include "src/16.h"
 
 engi_stat_t engi_stat;
-player_t player[MaxPlayers];
 
 void
 main(int argc, char *argv[])
@@ -40,11 +39,11 @@ main(int argc, char *argv[])
 	modexSavePalFile("data/g.pal", gvar.video.palette);
 	VGAmodeX(1, 1, &gvar);
 //	modexPalBlack();	//so player will not see loadings~
-	IN_Default(0,&player,ctrl_Joystick);
+	IN_Default(0,&gvar.player,ctrl_Joystick);
 	//modexprint(&screen, 32, 32, 1, 2, 0, "a", 1);
 	while(ENGI_EXIT != engi_stat)
 	{
-		IN_ReadControl(0,&player);
+		IN_ReadControl(0,&gvar.player);
 		if(IN_KeyDown(sc_Escape)) engi_stat = ENGI_EXIT;
 		shinku(&gvar);
 		_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);

@@ -32,13 +32,12 @@
 
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 
-#define PCXBMPVAR		player[0].data
+#define PCXBMPVAR		gvar.player[0].data
 #define PCXBMP			*PCXBMPVAR
 #define PCXBMPPTR		PCXBMPVAR
 
 void main() {
 	static global_game_variables_t gvar;
-	static player_t player[MaxPlayers];
 //----	planar_buf_t *p;
 	word start;
 	float t1, t2;

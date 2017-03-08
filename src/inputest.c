@@ -29,61 +29,60 @@ void
 main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
-	player_t player[MaxPlayers];
 	//extern struct inconfig inpu;
 	dbg_testkeyin=0;
 	dbg_testcontrolnoisy=1;
 	start_timer(&gvar);
 	//Startup16(&gvar);
 	IN_Startup();
-	//IN_Default(0,&player,ctrl_Joystick1);
-	//IN_SetControlType(0,&player,ctrl_Joystick1);
-	IN_Default(0,&player,ctrl_Keyboard1);
-	IN_SetControlType(0,&player,ctrl_Keyboard1);
+	//IN_Default(0,&gvar.player,ctrl_Joystick1);
+	//IN_SetControlType(0,&gvar.player,ctrl_Joystick1);
+	IN_Default(0,&gvar.player,ctrl_Keyboard1);
+	IN_SetControlType(0,&gvar.player,ctrl_Keyboard1);
 
-	player[0].enti.q=1;
-	player[0].enti.d=2;
-	player[0].enti.speed=4;
+	gvar.player[0].enti.q=1;
+	gvar.player[0].enti.d=2;
+	gvar.player[0].enti.speed=4;
 
 //0000	nibbletest();
 //0000	booleantest();
-	//printf("dbg_testkeyin=%u	dbg_testcontrolnoisy=%u	dbg_noplayerinpu=%u\nloop if this is not responsive then please KILL or reset machine sorry!!\n", dbg_testkeyin, dbg_testcontrolnoisy, dbg_noplayerinpu);
+	//printf("dbg_testkeyin=%u	dbg_testcontrolnoisy=%u	dbg_nogvar.playerinpu=%u\nloop if this is not responsive then please KILL or reset machine sorry!!\n", dbg_testkeyin, dbg_testcontrolnoisy, dbg_nogvar.playerinpu);
 	while(!IN_KeyDown(sc_Escape))
 	{
 //0000		shinkutxt(&gvar);
-		IN_ReadControl(0, &player);
-		switch(player[0].enti.d)
+		IN_ReadControl(0, &gvar.player);
+		switch(gvar.player[0].enti.d)
 		{
 		//right movement
 		case 3:
-			if(player[0].enti.q<=(TILEWH/(player[0].enti.speed)))
+			if(gvar.player[0].enti.q<=(TILEWH/(gvar.player[0].enti.speed)))
 			{
-				player[0].enti.q++;
-			} else { player[0].enti.q = 1; player[0].enti.d = 2; }
+				gvar.player[0].enti.q++;
+			} else { gvar.player[0].enti.q = 1; gvar.player[0].enti.d = 2; }
 		break;
 
 		//left movement
 		case 1:
-			if(player[0].enti.q<=(TILEWH/(player[0].enti.speed)))
+			if(gvar.player[0].enti.q<=(TILEWH/(gvar.player[0].enti.speed)))
 			{
-				player[0].enti.q++;
-			} else { player[0].enti.q = 1; player[0].enti.d = 2; }
+				gvar.player[0].enti.q++;
+			} else { gvar.player[0].enti.q = 1; gvar.player[0].enti.d = 2; }
 		break;
 
 		//down movement
 		case 4:
-			if(player[0].enti.q<=(TILEWH/(player[0].enti.speed)))
+			if(gvar.player[0].enti.q<=(TILEWH/(gvar.player[0].enti.speed)))
 			{
-				player[0].enti.q++;
-			} else { player[0].enti.q = 1; player[0].enti.d = 2; }
+				gvar.player[0].enti.q++;
+			} else { gvar.player[0].enti.q = 1; gvar.player[0].enti.d = 2; }
 		break;
 
 		//up movement
 		case 0:
-			if(player[0].enti.q<=(TILEWH/(player[0].enti.speed)))
+			if(gvar.player[0].enti.q<=(TILEWH/(gvar.player[0].enti.speed)))
 			{
-				player[0].enti.q++;
-			} else { player[0].enti.q = 1; player[0].enti.d = 2; }
+				gvar.player[0].enti.q++;
+			} else { gvar.player[0].enti.q = 1; gvar.player[0].enti.d = 2; }
 		break;
 	}
 		//printf("%u\n", IN_KeyDown(sc_Escape));

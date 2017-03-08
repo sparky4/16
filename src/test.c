@@ -35,7 +35,6 @@ void main(int argc, char *argv[])
 {
 	static word paloffset=0;
 	static global_game_variables_t gvar;
-	static player_t player[MaxPlayers];
 
 	map_t map;
 	map_view_t mv[4];
@@ -88,8 +87,8 @@ void main(int argc, char *argv[])
 	//====modexPalBlack();
 
 	//IN_Startup();
-	IN_Default(0,&player,ctrl_Keyboard1);
-	EN_initplayer(&player, 0, &gvar.video);
+	IN_Default(0,&gvar.player,ctrl_Keyboard1);
+	EN_initPlayer(&gvar.player, 0, &gvar.video);
 
 	VGAmodeX(1, 1, &gvar);
 	modexPalBlack();
@@ -141,8 +140,8 @@ void main(int argc, char *argv[])
 	startclk = *clockw;
 	while(!IN_KeyDown(sc_Escape))
 	{
-		IN_ReadControl(0,&player);
-		ZC_panPageManual(&mv, &player, 0);
+		IN_ReadControl(0,&gvar.player);
+		ZC_panPageManual(&mv, &gvar.player, 0);
 		//[gvar.video.sp]
 		//ZC_MVSync(&mv);
 
@@ -189,7 +188,7 @@ void main(int argc, char *argv[])
 // 				modexClearRegion(&gvar.video.page[1], 48, 48, gvar.video.page[1].sw-64, gvar.video.page[1].sh-64, 128);
 // 			}
 		//}
-		PANKEYFUN;
+		TAIL_PANKEYFUN;
 		if(IN_KeyDown(12)) modexClearRegion(&gvar.video.page[0], (gvar.video.page[0].width/2)-4, (gvar.video.page[0].height/2)-16, 24, 32, 15);
 		if(IN_KeyDown(13)) modexClearRegion(&gvar.video.page[1], (gvar.video.page[1].width/2)-4, (gvar.video.page[1].height/2)-16, 24, 32, 15);
 /*====		if(IN_KeyDown(7)){
@@ -217,7 +216,7 @@ void main(int argc, char *argv[])
 	printf("Project 16 test.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	VL_PrintmodexmemInfo(&gvar.video);
-	printf("tx=%d	", mv[gvar.video.sp].tx); printf("ty=%d	", mv[gvar.video.sp].ty); printf("player.d=%d\n", player[0].enti.d);
+	printf("tx=%d	", mv[gvar.video.sp].tx); printf("ty=%d	", mv[gvar.video.sp].ty); printf("gvar.player.d=%d\n", gvar.player[0].enti.d);
 	printf("\n====\n");
 	printf("0	paloffset=	%d\n", paloffset/3);
 	printf("====\n\n");

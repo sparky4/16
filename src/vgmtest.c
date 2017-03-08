@@ -48,22 +48,21 @@ UINT8 OPL2_ReadStatus(void)
 void
 main(int argc, char *argv[])
 {
-	//++++global_game_variables_t gvar;
+//	static global_game_variables_t gvar;
 	VGM_FILE pee[9];
-	player_t player[MaxPlayers];
 	char *bakapee;
 
 	bakapee = malloc(64);
 	if(argv[1]) bakapee = argv[1];
 	else bakapee = "data/adlib.vgm";
 	printf("%x\n", OpenVGMFile(bakapee, &pee[0]));
-	//IN_Startup(); IN_Default(0,&player,ctrl_Keyboard1);
+//	IN_Startup(); IN_Default(0,&gvar.player,ctrl_Keyboard1);
 	InitEngine();
 	PlayMusic(&pee[0]);
-	//while(!IN_KeyDown(sc_Escape))
+//	while(!IN_KeyDown(sc_Escape))
 	while(!kbhit())
 	{
-		IN_ReadControl(0,&player);
+//		IN_ReadControl(0,&gvar.player);
 		UpdateSoundEngine();
 	}
 	StopMusic();

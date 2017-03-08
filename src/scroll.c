@@ -46,7 +46,6 @@ unsigned int i;
 void main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
-	static player_t player[MaxPlayers];
 	if(argv[1]) bakapee = atoi(argv[1]);
 	else bakapee = 1;
 
@@ -69,7 +68,7 @@ void main(int argc, char *argv[])
 
 #endif
 	/*	input!	*/
-	IN_Default(0, &player,ctrl_Keyboard1);
+	IN_Default(0, &gvar.gvar.player,ctrl_Keyboard1);
 
 	/* save the palette */
 #ifdef MODEX
@@ -102,7 +101,7 @@ void main(int argc, char *argv[])
 	&gvar.video.palette = modexNewPal();
 	modexPalSave(&gvar.video.palette);
 	modexSavePalFile("data/g.pal", &gvar.video.palette);
-	modexPalBlack();	//so player will not see loadings~
+	modexPalBlack();	//so gvar.player will not see loadings~
 #endif
 #endif
 
@@ -117,8 +116,8 @@ void main(int argc, char *argv[])
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(&mv, 0, 0);
 
-	ZC_playerXYpos(0, 0, &player, &mv, 0, 1);
-	EN_initplayer(&player, 0, &gvar.video);
+	ZC_gvar.playerXYpos(0, 0, &gvar.player, &mv, 0, 1);
+	EN_initgvar.player(&gvar.player, 0, &gvar.video);
 	if (gvar.video.sprifilei == -1)
 	{
 #ifdef FADE
@@ -131,9 +130,9 @@ void main(int argc, char *argv[])
 	}
 
 #ifndef	SPRITE
-	modexClearRegion(mv[0].page, player[0].enti.x, player[0].enti.y-TILEWH, 16, 32, 15);
+	modexClearRegion(mv[0].page, gvar.player[0].enti.x, gvar.player[0].enti.y-TILEWH, 16, 32, 15);
 #else
-	modexDrawSpriteRegion(&gvar.video.page[0], player[0].enti.x, player[0].enti.y-TILEWH, 16, 64, 16, 32,	PCXBMPPTR);
+	modexDrawSpriteRegion(&gvar.video.page[0], gvar.player[0].enti.x, gvar.player[0].enti.y-TILEWH, 16, 64, 16, 32,	PCXBMPPTR);
 #endif
 
 	//if(!pageflipflop)
@@ -161,25 +160,25 @@ void main(int argc, char *argv[])
 	modexFadeOn(4, &gvar.video.palette);
 #endif
 #endif
-	while(!IN_KeyDown(sc_Escape) && player[0].enti.hp>0)
+	while(!IN_KeyDown(sc_Escape) && gvar.player[0].enti.hp>0)
 	{
 		shinku(&gvar);
 	//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
-	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
-	//when player[0].enti.tx or player[0].enti.ty == 0 or player[0].enti.tx == 20 or player[0].enti.ty == 15 then stop because that is edge of map and you do not want to walk of the map
+	//to stop scrolling and have the gvar.player position data move to the edge of the screen with respect to the direction
+	//when gvar.player[0].enti.tx or gvar.player[0].enti.ty == 0 or gvar.player[0].enti.tx == 20 or gvar.player[0].enti.ty == 15 then stop because that is edge of map and you do not want to walk of the map
 
-	//player movement
-		IN_ReadControl(0, &player);
+	//gvar.player movement
+		IN_ReadControl(0, &gvar.player);
 	if(!panswitch){
-		ZC_walk(&mv, &player, 0);
+		ZC_walk(&mv, &gvar.player, 0);
 	}else{
-		PANKEYFUNZC;//panPageManual(&mv, &player, 0);
-		//printf("	player[0].enti.q: %d", player[0].enti.q);	printf("	player[0].d: %d\n", player[0].d);
+		PANKEYFUNZC;//panPageManual(&mv, &gvar.player, 0);
+		//printf("	gvar.player[0].enti.q: %d", gvar.player[0].enti.q);	printf("	gvar.player[0].d: %d\n", gvar.player[0].d);
 	}
 
 	//the scripting stuff....
-	//if(((player[0].enti.triggerx == TRIGGX && player[0].enti.triggery == TRIGGY) && IN_KeyDown(0x1C))||(player[0].enti.tx == 5 && player[0].enti.ty == 5))
-	if(((mv[0].map->layerdata[0].data[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))] == 0) && IN_KeyDown(0x1C))||(player[0].enti.tx == 5 && player[0].enti.ty == 5))
+	//if(((gvar.player[0].enti.triggerx == TRIGGX && gvar.player[0].enti.triggery == TRIGGY) && IN_KeyDown(0x1C))||(gvar.player[0].enti.tx == 5 && gvar.player[0].enti.ty == 5))
+	if(((mv[0].map->layerdata[0].data[(gvar.player[0].enti.triggerx-1)+(map.width*(gvar.player[0].enti.triggery-1))] == 0) && IN_KeyDown(0x1C))||(gvar.player[0].enti.tx == 5 && gvar.player[0].enti.ty == 5))
 	{
 		short i;
 		for(i=800; i>=400; i--)
@@ -188,7 +187,7 @@ void main(int argc, char *argv[])
 		}
 		nosound();
 	}
-	if(player[0].enti.q == (TILEWH/(player[0].enti.speed))+1 && player[0].info.dir != 2 && (player[0].enti.triggerx == 5 && player[0].enti.triggery == 5)){ player[0].enti.hp--; }
+	if(gvar.player[0].enti.q == (TILEWH/(gvar.player[0].enti.speed))+1 && gvar.player[0].info.dir != 2 && (gvar.player[0].enti.triggerx == 5 && gvar.player[0].enti.triggery == 5)){ gvar.player[0].enti.hp--; }
 	//debugging binds!
 #ifdef MODEX
 #ifdef FADE
@@ -215,7 +214,7 @@ void main(int argc, char *argv[])
 
 	FUNCTIONKEYFUNCTIONS
 	FUNCTIONKEYDRAWJUNK
-	if(IN_KeyDown(sc_L)){ modexClearRegion(&gvar.video.page[0], player[0].enti.x, player[0].enti.y, 16, 16, 1); }
+	if(IN_KeyDown(sc_L)){ modexClearRegion(&gvar.video.page[0], gvar.player[0].enti.x, gvar.player[0].enti.y, 16, 16, 1); }
 
 	//9
 #ifdef FADE
@@ -223,7 +222,7 @@ void main(int argc, char *argv[])
 #endif
 		if(IN_KeyDown(sc_R)){ modexPalOverscan(rand()%56); } //r
 
-	if((player[0].enti.q==1) && !(player[0].enti.x%TILEWH==0 && player[0].enti.y%TILEWH==0)) break;	//incase things go out of sync!
+	if((gvar.player[0].enti.q==1) && !(gvar.player[0].enti.x%TILEWH==0 && gvar.player[0].enti.y%TILEWH==0)) break;	//incase things go out of sync!
 	}
 
 	/* fade back to text mode */

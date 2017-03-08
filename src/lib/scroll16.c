@@ -459,7 +459,7 @@ void ZC_mapScroll(map_view_t *mv, player_t *player, word pn)
 //===========================================================================
 //TODO: put player in starting position of assigned spot on map
 //default player position on the viewable map
-void ZC_playerXYpos(int x, int y, player_t *player, map_view_t *pip, nibble pn, boolean defaultsw)
+void ZC_PlayerXYpos(int x, int y, player_t *player, map_view_t *pip, nibble pn, boolean defaultsw)
 {
 	player[pn].enti.tx = x + pip[0].tx;
 	player[pn].enti.ty = y + pip[0].ty;

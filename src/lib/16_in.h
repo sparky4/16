@@ -50,7 +50,7 @@
 #define	JoyScaleShift	8
 #define	MaxJoyValue		5000
 
-#define	MaxPlayers		2//futre plans for multiple playable charaters and being able to alternate
+//#define	MaxPlayers		2//future plans for multiple playable charaters and being able to alternate
 #define	MaxKbds		2
 #define	MaxJoys		2
 #define	MaxPads		2

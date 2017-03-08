@@ -144,7 +144,7 @@ void main()
 //				gvar.video.palette[w]=rand();
 			break;
 		}
-		FUNCTIONKEYDRAWJUNKNOMV
+		TAIL_FUNCTIONKEYDRAWJUNKNOMV
 		if(IN_KeyDown(sc_F7)){ VL_ShowPage(&gvar.video.page[0], 1, 1);							IN_UserInput(1,1); }
 		if(IN_KeyDown(sc_F6)){ VL_ShowPage(&gvar.video.page[0], 1, 0);							IN_UserInput(1,1); }
 		if(IN_KeyDown(25)){ modexpdump(&gvar.video.page[0]);  IN_UserInput(1,1); } //p

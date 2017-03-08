@@ -43,11 +43,11 @@
 #define SPRITE
 //#define TILERENDER
 
-#define PLAYERBMPDATAVAR	player[pn].data
+#define PLAYERBMPDATAVAR	gvar.player[pn].data
 #define PLAYERBMPDATA		*PLAYERBMPDATAVAR
 #define PLAYERBMPDATAPTR	PLAYERBMPDATAVAR
 
-#define PCXBMPVAR	player[0].data
+#define PCXBMPVAR	gvar.player[0].data
 #define PCXBMP		*PCXBMPVAR
 #define PCXBMPPTR	PCXBMPVAR
 
@@ -55,8 +55,8 @@
 #define FULLRCREND
 #define DRAWCOLNUM mv->page[id].dx
 #define DRAWROWNUM mv->page[id].dy
-//#define DRAWCOLNUM player[plid].enti.q
-//#define DRAWROLNUM player[plid].enti.q
+//#define DRAWCOLNUM pl[plid].enti.q
+//#define DRAWROLNUM pl[plid].enti.q
 
 //for null map!
 #define MAPW	40
@@ -64,25 +64,25 @@
 
 //===========================================================================//
 
-	//if(player[0].enti.hp==0) printf("%d wwww\n", player[0].enti.y+8);
-	//else printf("\nplayer[0].enti.y: %d\n", player[0].enti.y);
+	//if(gvar.player[0].enti.hp==0) printf("%d wwww\n", gvar.player[0].enti.y+8);
+	//else printf("\ngvar.player[0].enti.y: %d\n", gvar.player[0].enti.y);
 //printf("gvar.video.p=%u ", gvar.video.p);
-//not used now	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
-//not used now	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
+//not used now	printf("temporary gvar.player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
+//not used now	printf("temporary gvar.player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
 //printf("mv[%u].tx: %d", gvar.video.panp, mv[gvar.video.panp].tx); printf("	mv[%u].ty: %d	", gvar.video.panp, mv[gvar.video.panp].ty);
 //printf("gvar.kurokku:	"); printf("%.0f ", clock());	printf("tiku=%lu ", gvar.kurokku.tiku);	printf("t=%.0f ", gvar.kurokku.t);	printf("ticktock()=%f ", ticktock(&gvar));	printf("%.0f fps", (double)gvar.kurokku.tiku/ticktock(&gvar));
 //printf("map.width=%d	map.height=%d	map.data[0]=%d\n", mv[1].map->width, mv[1].map->height, mv[1].map->layerdata[0][0]);
 //printf("pageflipflop=%u", pageflipflop);
 //printf("&global_temp_status_text = %Fp\n", &global_temp_status_text);
 //printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);
-//printf("	aniframe=%u", player[0].enti.persist_aniframe);
+//printf("	aniframe=%u", gvar.player[0].enti.persist_aniframe);
 //printf("mv[0]txy: %dx%d	", mv[0].tx, mv[0].ty); printf("mv[1]txy: %dx%d", mv[1].tx, mv[1].ty);
 #define SCROLLEXITMESG 	printf("page[0]dxy: %dx%d", gvar.video.page[0].dx, gvar.video.page[0].dy);\
 	printf("\n\n");\
-	printf("player vars:\n");\
-	printf("	xy: %dx%d", player[0].enti.x, player[0].enti.y); printf("	txy: %dx%d", player[0].enti.tx, player[0].enti.ty); printf("	triggxy: %dx%d", player[0].enti.triggerx, player[0].enti.triggery); printf("	value: %d\n", mv[1].map->layerdata[0].data[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))]);\
-	printf("	hp: %d", (player[0].enti.hp));	printf("	q: %u", player[0].enti.q);	printf("	info.dir: %u", player[0].info.dir);	printf("	d: %u", player[0].enti.d);	printf("	dire: %u", player[0].enti.dire);\
-		printf("	pdir: %u\n", player[0].pdir); printf("	delay=%u", player[0].enti.spri.delay);\
+	printf("gvar.player vars:\n");\
+	printf("	xy: %dx%d", gvar.player[0].enti.x, gvar.player[0].enti.y); printf("	txy: %dx%d", gvar.player[0].enti.tx, gvar.player[0].enti.ty); printf("	triggxy: %dx%d", gvar.player[0].enti.triggerx, gvar.player[0].enti.triggery); printf("	value: %d\n", mv[1].map->layerdata[0].data[(gvar.player[0].enti.triggerx-1)+(map.width*(gvar.player[0].enti.triggery-1))]);\
+	printf("	hp: %d", (gvar.player[0].enti.hp));	printf("	q: %u", gvar.player[0].enti.q);	printf("	info.dir: %u", gvar.player[0].info.dir);	printf("	d: %u", gvar.player[0].enti.d);	printf("	dire: %u", gvar.player[0].enti.dire);\
+		printf("	pdir: %u\n", gvar.player[0].pdir); printf("	delay=%u", gvar.player[0].enti.spri.delay);\
 printf("\n\n");\
 	VL_PrintmodexmemInfo(&gvar.video);\
 \
@@ -107,7 +107,7 @@ void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid);
 void ZC_mapScroll(map_view_t *mv, player_t *player, word pn);
-void ZC_playerXYpos(int x, int y, player_t *player, map_view_t *pip, nibble pn, boolean defaultsw);
+void ZC_PlayerXYpos(int x, int y, player_t *player, map_view_t *pip, nibble pn, boolean defaultsw);
 sword chkmap(map_t *map, word q);
 void mapGoTo(map_view_t *mv, int tx, int ty);
 void ZC_mapinitMV(map_view_t *mv, int tx, int ty);
@@ -117,10 +117,10 @@ void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, w
 void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, word poopoffset);
 void mapDrawWRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
-inline void near ScrollRight(map_view_t *mv, player_t *player, word id, word plid)
+inline void near ScrollRight(map_view_t *mv, player_t *pl, word id, word plid)
 {
 	/* increment the pixel position and update the page */
-	mv[id].page->dx += player[plid].enti.speed;
+	mv[id].page->dx += pl[plid].enti.speed;
 
 	/* check to see if this changes the tile */
 	if(mv[id].page->dx >= mv[id].dxThresh )
@@ -134,10 +134,10 @@ inline void near ScrollRight(map_view_t *mv, player_t *player, word id, word pli
 	}
 }
 
-inline void near ScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
+inline void near ScrollLeft(map_view_t *mv, player_t *pl, word id, word plid)
 {
 	/* decrement the pixel position and update the page */
-	mv[id].page->dx -= player[plid].enti.speed;
+	mv[id].page->dx -= pl[plid].enti.speed;
 
 	/* check to see if this changes the tile */
 	if(mv[id].page->dx == 0)
@@ -151,10 +151,10 @@ inline void near ScrollLeft(map_view_t *mv, player_t *player, word id, word plid
 	}
 }
 
-inline void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid)
+inline void near ScrollUp(map_view_t *mv, player_t *pl, word id, word plid)
 {
 	/* decrement the pixel position and update the page */
-	mv[id].page->dy -= player[plid].enti.speed;
+	mv[id].page->dy -= pl[plid].enti.speed;
 
 	/* check to see if this changes the tile */
 	if(mv[id].page->dy == 0 )
@@ -168,10 +168,10 @@ inline void near ScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 	}
 }
 
-inline void near ScrollDown(map_view_t *mv, player_t *player, word id, word plid)
+inline void near ScrollDown(map_view_t *mv, player_t *pl, word id, word plid)
 {
 	/* increment the pixel position and update the page */
-	mv[id].page->dy += player[plid].enti.speed;
+	mv[id].page->dy += pl[plid].enti.speed;
 
 	/* check to see if this changes the tile */
 	if(mv[id].page->dy >= mv[id].dyThresh )
@@ -194,7 +194,7 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn);
 // Move an entity around. Should actually be in 16_entity
 boolean ZC_walk2(entity_t *ent, map_view_t *map_v);
 
-// Move player around and call map scrolling if required/possible
+// Move gvar.player around and call map scrolling if required/possible
 void walk_player(player_t *player, map_view_t *map_v);
 
 //check map edge
@@ -242,7 +242,7 @@ inline boolean ZC_mapEdgeChk(map_view_t *map_v, nibble dir, boolean pansw)
 	return false;
 }
 
-// Scroll map in one direction (assumed from player's movement)
+// Scroll map in one direction (assumed from gvar.player's movement)
 void mapScroll(map_view_t *mv, player_t *player);
 
 #endif /*__SCROLL16_H_*/

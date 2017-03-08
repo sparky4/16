@@ -34,7 +34,6 @@
 
 #define INITTNUM 1
 
-player_t player[MaxPlayers];
 map_view_t mv[4];
 
 map_t map;//junk var
@@ -104,8 +103,8 @@ int main(int argc,char **argv)
 	if (vrl_lineoffs == NULL) return 1;
 
 	IN_Startup();
-	IN_Default(0,&player,ctrl_Keyboard1);
-	EN_initplayer(&player, 0, &gvar.video);
+	IN_Default(0,&gvar.player,ctrl_Keyboard1);
+	EN_initPlayer(&gvar.player, 0, &gvar.video);
 
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
@@ -142,9 +141,9 @@ int main(int argc,char **argv)
 
 		while(!IN_KeyDown(sc_Escape))
 		{
-			IN_ReadControl(0,&player);
+			IN_ReadControl(0,&gvar.player);
 			if(IN_KeyDown(68)){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap; IN_UserInput(1,1); } //f10
-			PANKEYFUN;
+			TAIL_PANKEYFUN;
 			if(IN_KeyDown(sc_Space) || zerostoppause)	//space
 			{
 				anim=!anim;
@@ -155,11 +154,11 @@ int main(int argc,char **argv)
 				gvar.video.page[0].dx=gvar.video.page[0].dy=gvar.video.page[1].dx=gvar.video.page[1].dy=16;
 				mv[0].tx = mv[0].ty = mv[1].tx = mv[1].ty = INITTNUM;
 				VL_ShowPage(&gvar.video.page[gvar.video.sp], 1, 0);
-				player[0].enti.q = 1; player[0].enti.d = 2;
+				gvar.player[0].enti.q = 1; gvar.player[0].enti.d = 2;
 				x=y=0;
 				xdir=ydir=1;
 			} //R
-			FUNCTIONKEYFUNCTIONS0EXE;
+			TAIL_FUNCTIONKEYFUNCTIONS0EXE;
 
 			if(anim && !noanim)
 			{

@@ -45,6 +45,6 @@
 // } entity_t;
 
 void EN_initentity(entity_t *enti, video_t *video);
-void EN_initplayer(player_t *player, word pn, video_t *video);
+void EN_initPlayer(player_t *player, word pn, video_t *video);
 
 #endif

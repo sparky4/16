@@ -33,11 +33,11 @@
 #include "src/lib/16_vl.h"
 #include "src/lib/testpatt.h"
 
-#define FUNCTIONKEYFUNCTIONS \
+#define TAIL_FUNCTIONKEYFUNCTIONS \
 	if(IN_KeyDown(88)){ panswitch=!panswitch;							IN_UserInput(1,1); } \
-	FUNCTIONKEYFUNCTIONS0EXE
+	TAIL_FUNCTIONKEYFUNCTIONS0EXE
 
-#define FUNCTIONKEYFUNCTIONS0EXE \
+#define TAIL_FUNCTIONKEYFUNCTIONS0EXE \
 	if(IN_KeyDown(sc_F4)){ turboXT(12);									IN_UserInput(1,1); } \
 	if(IN_KeyDown(87/*sc_F11*/)){ pagedelayrendermap=!pagedelayrendermap;		IN_UserInput(1,1); } \
 	if(IN_KeyDown(68/*sc_F10*/)){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap;		IN_UserInput(1,1); } \
@@ -48,24 +48,24 @@
 	if(IN_KeyDown(sc_T)){ gvar.video.rss=!gvar.video.rss;						IN_UserInput(1,1); } \
 	if(IN_KeyDown(sc_P)){ modexpdump(&gvar.video.page[0]);					IN_UserInput(1,1); }
 
-#define PANKEYFUN \
-	PANKEYFUNZC \
-	FUNCTIONKEYDRAWJUNK
+#define TAIL_PANKEYFUN \
+	TAIL_PANKEYFUNZC \
+	TAIL_FUNCTIONKEYDRAWJUNK
 
-#define PANKEYFUNZC \
-	ZC_panPageManual(&mv, &player, 0);
+#define TAIL_PANKEYFUNZC \
+	ZC_panPageManual(&mv, &gvar.player, 0);
 
-#define FUNCTIONKEYSHOWMV \
+#define TAIL_FUNCTIONKEYSHOWMV \
 	if(IN_KeyDown(1+1)){ gvar.video.sp=0; ZC_ShowMV(&mv, 0, 0); } \
 	if(IN_KeyDown(2+1)){ gvar.video.sp=1; ZC_ShowMV(&mv, 0, 0); } \
 	if(IN_KeyDown(3+1)){ gvar.video.sp=2; ZC_ShowMV(&mv, 0, 1); } \
-	if(IN_KeyDown(4+1)){ gvar.video.sp=3; ZC_ShowMV(&mv, 0, 1); } \
+	if(IN_KeyDown(4+1)){ gvar.video.sp=3; ZC_ShowMV(&mv, 0, 1); }
 
-#define FUNCTIONKEYDRAWJUNK \
-	FUNCTIONKEYSHOWMV \
-	FUNCTIONKEYDRAWJUNKNOMV
+#define TAIL_FUNCTIONKEYDRAWJUNK \
+	TAIL_FUNCTIONKEYSHOWMV \
+	TAIL_FUNCTIONKEYDRAWJUNKNOMV
 
-#define FUNCTIONKEYDRAWJUNKNOMV \
+#define TAIL_FUNCTIONKEYDRAWJUNKNOMV \
 	if(IN_KeyDown(sc_A)) modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 3); \
 	if(IN_KeyDown(sc_S)) modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 4); \
 \

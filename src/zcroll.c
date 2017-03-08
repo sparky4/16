@@ -51,7 +51,6 @@ memptr pal;
 void main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
-	static player_t player[MaxPlayers];
 	char *bakapee1,*bakapee1p;
 //	sword bakapee;
 // 	if(argv[1]) bakapee = atoi(argv[1]);
@@ -74,8 +73,8 @@ void main(int argc, char *argv[])
 
 	// OK, this one takes hellova time and needs to be done in farmalloc or MM_...
 	//IN CA i think you use CAL_SetupGrFile but i do think we should work together on this part --sparky4
-	//player[0].enti.spri = malloc(sizeof(struct sprite));
-	player[0].enti.spri.spritesheet = malloc(sizeof(struct vrs_container));
+	//gvar.player[0].enti.spri = malloc(sizeof(struct sprite));
+	gvar.player[0].enti.spri.spritesheet = malloc(sizeof(struct vrs_container));
 
 	// create the map
 //	fprintf(stderr, "testing map load~	");
@@ -86,10 +85,10 @@ void main(int argc, char *argv[])
 //	fprintf(stderr, "yay map loaded~~\n");
 
 	// data
-	VRS_LoadVRS(bakapee1, &player[0].enti, &gvar);
+	VRS_LoadVRS(bakapee1, &gvar.player[0].enti, &gvar);
 
 	// input!
-	IN_Default(0, &player,ctrl_Keyboard1);
+	IN_Default(0, &gvar.player,ctrl_Keyboard1);
 
 	// save the palette
 #ifdef FADE
@@ -114,7 +113,7 @@ void main(int argc, char *argv[])
 #ifdef FADE
 	modexPalSave(&gvar.video.palette);
 	modexSavePalFile("data/g.pal", &gvar.video.palette);
-	modexPalBlack();	//so player will not see loadings~
+	modexPalBlack();	//so gvar.player will not see loadings~
 #endif
 
 	// setup camera and screen~
@@ -125,9 +124,9 @@ void main(int argc, char *argv[])
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(&mv, 0, 0);
 
-	ZC_playerXYpos(0, 0, &player, &mv, 0, 1);
-	EN_initplayer(&player, 0, &gvar.video);
-	//print_anim_ids(player[0].enti.spri);
+	ZC_PlayerXYpos(0, 0, &gvar.player, &mv, 0, 1);
+	EN_initPlayer(&gvar.player, 0, &gvar.video);
+	//print_anim_ids(gvar.player[0].enti.spri);
 	if (gvar.video.sprifilei == -1)
 	{
 #ifdef FADE
@@ -147,28 +146,28 @@ void main(int argc, char *argv[])
 #ifdef FADE
 	modexFadeOn(4, &gvar.video.palette);
 #endif
-	while(!IN_KeyDown(sc_Escape) && player[0].enti.hp>0)
+	while(!IN_KeyDown(sc_Escape) && gvar.player[0].enti.hp>0)
 	{
 		gvar.video.page[0].tlx=mv[0].tx*TILEWH;
 		gvar.video.page[0].tly=mv[0].ty*TILEWH;
 		shinku(&gvar);
 		//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
-		//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
-		//when player[0].tx or player[0].ty == 0 or player[0].tx == 20 or player[0].ty == 15 then stop because that is edge of map and you do not want to walk of the map
+		//to stop scrolling and have the gvar.player position data move to the edge of the screen with respect to the direction
+		//when gvar.player[0].tx or gvar.player[0].ty == 0 or gvar.player[0].tx == 20 or gvar.player[0].ty == 15 then stop because that is edge of map and you do not want to walk of the map
 
-		//player movement
-		IN_ReadControl(0, &player);
+		//gvar.player movement
+		IN_ReadControl(0, &gvar.player);
 		if(!panswitch){
-			//ZC_walk2(player[0].ent, mv);
-			ZC_walk(&mv, &player, 0);
+			//ZC_walk2(gvar.player[0].ent, mv);
+			ZC_walk(&mv, &gvar.player, 0);
 		}else{
-			PANKEYFUNZC;
-			//printf("	player[0].enti.q: %d", player[0].enti.q);	printf("	player[0].d: %d\n", player[0].d);
+			TAIL_PANKEYFUNZC;
+			//printf("	gvar.player[0].enti.q: %d", gvar.player[0].enti.q);	printf("	gvar.player[0].d: %d\n", gvar.player[0].d);
 		}
 
 		//the scripting stuff....
-		//if(((player[0].enti.triggerx == TRIGGX && player[0].enti.triggery == TRIGGY) && IN_KeyDown(0x1C))||(player[0].enti.tx == 5 && player[0].enti.ty == 5))
-		if(((mv[0].map->layerdata[0].data[(player[0].enti.triggerx-1)+(map.width*(player[0].enti.triggery-1))] == 0) && IN_KeyDown(0x1C))||(player[0].enti.tx == 5 && player[0].enti.ty == 5))
+		//if(((gvar.player[0].enti.triggerx == TRIGGX && gvar.player[0].enti.triggery == TRIGGY) && IN_KeyDown(0x1C))||(gvar.player[0].enti.tx == 5 && gvar.player[0].enti.ty == 5))
+		if(((mv[0].map->layerdata[0].data[(gvar.player[0].enti.triggerx-1)+(map.width*(gvar.player[0].enti.triggery-1))] == 0) && IN_KeyDown(0x1C))||(gvar.player[0].enti.tx == 5 && gvar.player[0].enti.ty == 5))
 		{
 			short i;
 			for(i=800; i>=400; i--)
@@ -177,31 +176,31 @@ void main(int argc, char *argv[])
 			}
 			nosound();
 		}
-		if(player[0].enti.q == (TILEWH/(player[0].enti.speed))+1 && player[0].info.dir != 2 && (player[0].enti.triggerx == 5 && player[0].enti.triggery == 5)){ player[0].enti.hp--; }
+		if(gvar.player[0].enti.q == (TILEWH/(gvar.player[0].enti.speed))+1 && gvar.player[0].info.dir != 2 && (gvar.player[0].enti.triggerx == 5 && gvar.player[0].enti.triggery == 5)){ gvar.player[0].enti.hp--; }
 		//debugging binds!
 
 		if(IN_KeyDown(24)){ modexPalUpdate0(&gvar.video.palette); /*paloffset=0;*/ modexpdump(mv[0].page); IN_UserInput(1,1); } //o
 		if(IN_KeyDown(22)){ modexPalUpdate0(&gvar.video.palette); } //u
 
-		FUNCTIONKEYFUNCTIONS
-		FUNCTIONKEYDRAWJUNK
-		if(IN_KeyDown(sc_L)){ modexClearRegion(&gvar.video.page[0], player[0].enti.x, player[0].enti.y, 16, 16, 1); }
+		TAIL_FUNCTIONKEYFUNCTIONS
+		TAIL_FUNCTIONKEYDRAWJUNK
+		if(IN_KeyDown(sc_L)){ modexClearRegion(&gvar.video.page[0], gvar.player[0].enti.x, gvar.player[0].enti.y, 16, 16, 1); }
 		if(IN_KeyDown(sc_J) || IN_KeyDown(sc_K))
 		{
 			if(IN_KeyDown(sc_J))
 			{
 				bakapee1=FILENAME_1;
 				bakapee1p=FILENAME_1P;
-				player[0].enti.overdraww=0;
+				gvar.player[0].enti.overdraww=0;
 			}
 			if(IN_KeyDown(sc_K))
 			{
 				bakapee1=FILENAME_2;
 				bakapee1p=FILENAME_2P;
-				player[0].enti.overdraww=2;
+				gvar.player[0].enti.overdraww=2;
 			}
-			//read_vrs(&gvar, bakapee1, player[0].enti.spri->spritesheet);
-			VRS_ReadVRS(bakapee1, &player[0].enti, &gvar);
+			//read_vrs(&gvar, bakapee1, gvar.player[0].enti.spri->spritesheet);
+			VRS_ReadVRS(bakapee1, &gvar.player[0].enti, &gvar);
 			VL_LoadPalFile(bakapee1p, &gvar.video.palette);
 		}//JK
 #ifdef FADE
@@ -209,7 +208,7 @@ void main(int argc, char *argv[])
 #endif
 		if(IN_KeyDown(sc_R)){ modexPalOverscan(rand()%56); } //r
 
-		if((player[0].enti.q==1) && !(player[0].enti.x%TILEWH==0 && player[0].enti.y%TILEWH==0)) Quit(&gvar, "PLAYER OFF THE RAILS!");//break;	//incase things go out of sync!
+		if((gvar.player[0].enti.q==1) && !(gvar.player[0].enti.x%TILEWH==0 && gvar.player[0].enti.y%TILEWH==0)) Quit(&gvar, "PLAYER OFF THE RAILS!");//break;	//incase things go out of sync!
 	}
 
 	/* fade back to text mode */

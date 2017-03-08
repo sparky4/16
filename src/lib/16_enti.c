@@ -66,7 +66,7 @@ void EN_initentity(entity_t *enti, video_t *video)
 }
 
 //init player!
-void EN_initplayer(player_t *player, word pn, video_t *video)
+void EN_initPlayer(player_t *player, word pn, video_t *video)
 {
 	EN_initentity(&player[pn].enti, video);
 	player[pn].enti.spri.x = player[0].enti.x-4;

@@ -189,6 +189,8 @@ typedef struct {
 
 //from 16_in
 //==========================================================================
+#define	MaxPlayers		2//future plans for multiple playable charaters and being able to alternate
+
 typedef	byte		ScanCode;
 
 typedef	enum		{
@@ -566,9 +568,10 @@ typedef struct
 	video_t	video;	// video settings variable
 	ca_t		ca;	// ca stuff
 	pm_t		pm;	// pm stuff
-	loghandle_t handle;	//handles for file logging
-	kurokku_t kurokku;	//clock struct
-	mminfo_t mm; mminfotype mmi;
+	loghandle_t	handle;	//handles for file logging
+	kurokku_t	kurokku;	//clock struct
+	mminfo_t	mm; mminfotype	mmi;	// mm stuff
+	player_t	player[MaxPlayers];	// player vars
 } global_game_variables_t;
 
 #ifdef __WATCOMC__
