@@ -40,7 +40,7 @@ to_os_path=\=/
 REMOVECOMMAND=rm -f
 COPYCOMMAND=cp -f
 DIRSEP=/
-OBJ=o
+OBJ=obj
 DUMP=cat
 DOSLIBMAKE=./make.sh build all
 DOSLIBMAKEALL=./buildall.sh build all
@@ -107,7 +107,7 @@ UPXQ=-qqq
 S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768
 Z_FLAGS=-zk0 -zc -zp8 -zm
 O_FLAGS=-opmilr -oe=24 -outback -ei -ohnl+				-zp4
-T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 -d1##-fo=.$(OBJ) -e=65536
+T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 -d1 -fo=.$(OBJ) ##-e=65536
 
 DBUGFLAGS=-fm=$^&.mah -fd=$^&
 CPPFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1
@@ -362,9 +362,9 @@ clean: .symbolic
 	@if not exist $(DOSLIBDIR)/buildall.sh wmake -h initlibs
 	@for %f in ($(EXEC)) do @if exist %f $(REMOVECOMMAND) %f
 !ifdef __LINUX__
-	@rm *.LIB
+	@if exist *.LIB $(REMOVECOMMAND) *.LIB
 	@. src/util/bcexmm.sh
-	@rm *.EXE
+	@if exist *.EXE $(REMOVECOMMAND) *.EXE
 	@if exist *.OBJ $(REMOVECOMMAND) *.OBJ
 !else
 	@if exist *.o $(REMOVECOMMAND) *.o
