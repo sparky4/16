@@ -261,16 +261,11 @@ typedef	struct		{
 									joyMultXH,joyMultYH;
 					} JoystickDef;
 
-typedef struct// instat
+/*typedef struct// inconfig
 {
 	boolean		IN_Started;
 	boolean		CapsLock;
 	ScanCode	CurCode,LastCode;
-} in_status_t;
-
-typedef struct// inconfig
-{
-	in_status_t instat;
 //
 // configuration variables
 //
@@ -286,8 +281,7 @@ typedef struct// inconfig
 
 	KeyboardDef	KbdDefs[MaxKbds];
 	JoystickDef	JoyDefs[MaxJoys];
-} in_info_t;
-#define ININFO_			gvar->in.
+} in_info_t;*/
 
 //==========================================================================
 
@@ -619,7 +613,7 @@ typedef struct
 	loghandle_t	handle;	//handles for file logging
 	kurokku_t	kurokku;	//clock struct
 	mminfo_t	mm; mminfotype	mmi;	// mm stuff
-	in_info_t	in;		// 16_in info
+//++++	in_info_t	in;		// 16_in info
 	player_t	player[MaxPlayers];	// player vars
 //====	word far*	clockw;		/* 18.2hz clock */
 } global_game_variables_t;

@@ -125,8 +125,8 @@ LIBFLAGS=$(WLIBQ) -b -n
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
 #OLDLIBOBJS=bitmap.$(OBJ) 16render.$(OBJ)
 GFXLIBOBJS = 16_vl.$(OBJ) 16_vlpal.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16_vrs.$(OBJ) 16_spri.$(OBJ) $(OLDLIBOBJS)
-16LIBNOINOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_head.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_wcpu.$(OBJ) 16_timer.$(OBJ) jsmn.$(OBJ) 16_map.$(OBJ) 16text.$(OBJ) 16_enti.$(OBJ)
-16LIBOBJS = $(16LIBNOINOBJS) 16_in.$(OBJ)
+16LIBNOINOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_head.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_wcpu.$(OBJ) 16_timer.$(OBJ) jsmn.$(OBJ) 16_map.$(OBJ) 16text.$(OBJ)
+16LIBOBJS = $(16LIBNOINOBJS) 16_in.$(OBJ) 16_enti.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 !ifeq DEBUGSERIAL 1
 DOSLIBOBJ += 8250.$(OBJ)
@@ -243,7 +243,7 @@ fonttest.exe:	 fonttest.$(OBJ) gfx.lib
 #fonttes0.exe:	fonttes0.$(OBJ) $(16LIB)
 fontgfx.exe:	fontgfx.$(OBJ) gfx.lib $(DOSLIB)
 inputest.exe:	 inputest.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
-inntest.exe:	 inntest.$(OBJ) $(DOSLIB) $(16LIBNOINOBJS) 16_in_.$(OBJ)
+inntest.exe:	 inntest.$(OBJ) $(16LIBNOINOBJS) 16_in__.$(OBJ)
 #sountest.exe:	sountest.$(OBJ) $(16LIB)
 pcxtest.exe:	pcxtest.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
 vrstest.exe:	vrstest.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
@@ -339,7 +339,7 @@ mapread.$(OBJ):$(SRCLIB)/mapread.c $(SRCLIB)/mapread.h
 16_map.$(OBJ):$(SRCLIB)/16_map.c $(SRCLIB)/16_map.h
 16_timer.$(OBJ):$(SRCLIB)/16_timer.c $(SRCLIB)/16_timer.h
 16_in.$(OBJ):	 $(SRCLIB)/16_in.c $(SRCLIB)/16_in.h
-16_in_.$(OBJ):	 $(SRCLIB)/16_in_.c $(SRCLIB)/16_in.h
+16_in__.$(OBJ):	 $(SRCLIB)/16_in__.c $(SRCLIB)/16_in.h
 16_rf.$(OBJ):	 $(SRCLIB)/16_rf.c	$(SRCLIB)/16_rf.h
 16_mm.$(OBJ):	 $(SRCLIB)/16_mm.c	$(SRCLIB)/16_mm.h
 16_pm.$(OBJ):	 $(SRCLIB)/16_pm.c	$(SRCLIB)/16_pm.h

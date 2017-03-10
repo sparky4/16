@@ -61,7 +61,6 @@ struct inconfig
 	JoystickDef	JoyDefs[MaxJoys];
 } inpu;
 
-//extern inconfig inpu;
 //inpu.KbdDefs = {0x1d,0x38,/*0x47,*/0x48,/*0x49,*/0x4b,0x4d,/*0x4f,*/0x50/*,0x51*/};
 
 /*
@@ -150,15 +149,9 @@ static	byte        far ASCIINames[] =		// Unshifted ASCII for scan codes
 
 static	Direction	DirTable[] =		// Quick lookup for total direction
 					{
-						//dir_Nortinest,
-						dir_North,
-						dir_West,
-						dir_None,
-						dir_East,
-						dir_South
-						//dir_NorthEast,
-						//dir_Soutinest,
-						//,dir_SouthEast
+						/*dir_NorthWest,	*/dir_North,/*	dir_NorthEast,*/
+						dir_West,		dir_None,	dir_East,
+						/*dir_SouthWest,	*/dir_South/*,	dir_SouthEast*/
 					};
 #ifdef __cplusplus
 }
@@ -175,8 +168,8 @@ void interrupt
 INL_KeyService()
 {
 static	boolean	special;
-		byte	k,c;
-		register byte temp;
+		byte	k,c,
+				temp;
 
 	k = inp(0x60);	// Get the scan code
 

@@ -22,8 +22,12 @@
 /*
 	input test
 */
-#include "src/lib/16_in.h"
-#include "src/lib/16_tail.h"
+#include "src/lib/16_in_.h"
+
+void probe_dos(){}
+void cpu_probe(){}
+int probe_vga(){ return 0; }
+void VGAmodeX(){}
 
 void
 main(int argc, char *argv[])
@@ -34,23 +38,23 @@ main(int argc, char *argv[])
 	dbg_testcontrolnoisy=1;
 	start_timer(&gvar);
 	//Startup16(&gvar);
-	IN_Startup();
+	IN_Startup(&gvar);
 	//IN_Default(0,&gvar.player,ctrl_Joystick1);
 	//IN_SetControlType(0,&gvar.player,ctrl_Joystick1);
-	IN_Default(0,&gvar.player,ctrl_Keyboard1);
+	IN_Default(0,&gvar.player,ctrl_Keyboard1, &gvar);
 	IN_SetControlType(0,&gvar.player,ctrl_Keyboard1);
 
 	gvar.player[0].enti.q=1;
 	gvar.player[0].enti.d=2;
 	gvar.player[0].enti.speed=4;
 
-//0000	nibbletest();
-//0000	booleantest();
+//0000	nibbletest(){}
+//0000	booleantest(){}
 	//printf("dbg_testkeyin=%u	dbg_testcontrolnoisy=%u	dbg_nogvar.playerinpu=%u\nloop if this is not responsive then please KILL or reset machine sorry!!\n", dbg_testkeyin, dbg_testcontrolnoisy, dbg_nogvar.playerinpu);
-	while(!IN_KeyDown(sc_Escape))
+	while(!IN_KeyDown(sc_Escape, &gvar))
 	{
 //0000		shinkutxt(&gvar);
-		IN_ReadControl(0, &gvar.player);
+		IN_ReadControl(0, &gvar.player, &gvar);
 		switch(gvar.player[0].enti.d)
 		{
 		//right movement
@@ -87,8 +91,8 @@ main(int argc, char *argv[])
 	}
 		//printf("%u\n", IN_KeyDown(sc_Escape));
 		//if(
-		IN_qb(sc_9);//>0) printf("IN_qb(sc_9)=%u\n", IN_qb(sc_9));
-		if(IN_KeyDown(88))	//speed
+		IN_qb(sc_9, &gvar);//>0) printf("IN_qb(sc_9)=%u\n", IN_qb(sc_9));
+		if(IN_KeyDown(88, &gvar))	//speed
 		{
 			switch(gvar.kurokku.fpscap)
 			{
@@ -99,10 +103,10 @@ main(int argc, char *argv[])
 					gvar.kurokku.fpscap=0;
 				break;
 			}
-			//IN_Ack();
+			//IN_Ack(){}
 		}
 	}
-	IN_Shutdown();
+	IN_Shutdown(&gvar);
 		//Shutdown16(&gvar);
 	//printf("%u\n", in.Keyboard[sc_Escape]);
 	printf("inputest.exe ");

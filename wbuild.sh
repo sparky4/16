@@ -12,3 +12,4 @@ wmake -h comp
 #then
 #	rm *.o
 #fi
+####wmake -h inntest.exe

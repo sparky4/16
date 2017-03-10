@@ -102,7 +102,7 @@ int main(int argc,char **argv)
 	vrl_lineoffs = vrl1_vgax_genlineoffsets(vrl_header,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
 	if (vrl_lineoffs == NULL) return 1;
 
-	IN_Startup();
+	IN_Startup(&gvar);
 	IN_Default(0,&gvar.player,ctrl_Keyboard1);
 	EN_initPlayer(&gvar.player, 0, &gvar.video);
 
@@ -302,7 +302,7 @@ if(!noanim) {
 		}
 	}
 }
-	IN_Shutdown();
+	IN_Shutdown(&gvar);
 	VGAmodeX(0, 1, &gvar);
 	free(vrl_lineoffs);
 	buffer = NULL;

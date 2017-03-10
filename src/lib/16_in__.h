@@ -1,21 +1,3 @@
-/* Catacomb Apocalypse Source Code
- * Copyright (C) 1993-2014 Flat Rock Software
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- */
-
 //
 //	ID Engine
 //	ID_IN.h - Header file for Input Manager
@@ -26,37 +8,18 @@
 
 #ifndef	__16_IN__
 #define	__16_IN__
-
-#include <string.h>
 #include "src/lib/16_head.h"
-#include "src/lib/16_timer.h"
-#ifdef __WATCOMC__	//borland C BCEXMM.EXE
-#include "src/lib/16_dbg.h"
-#include "src/lib/16_spri.h"
-#include "src/lib/16_enti.h"
-//#include "src/lib/bitmap.h"	//old format
+
+#ifdef	__DEBUG__
+#define	__DEBUG_InputMgr__
 #endif
 
-//if else for gfxtesting and direction
-//player[pn].d == 2 ||
-//player[pn].d != 2 ||
-#define DIRECTIONIFELSE	(player[pn].info.dir == 2)
-//#define NDIRECTIONIFELSE	(player[pn].info.dir != 2)
-
-#define	KeyInt	9	// The keyboard ISR number
-
-// Stuff for the joystick
-#define	JoyScaleMax		32768
-#define	JoyScaleShift	8
-#define	MaxJoyValue		5000
-
-//#define	MaxPlayers		2//future plans for multiple playable charaters and being able to alternate
+#define	MaxPlayers	4
 #define	MaxKbds		2
 #define	MaxJoys		2
-#define	MaxPads		2
 #define	NumCodes	128
 
-//typedef	byte		ScanCode;
+typedef	byte		ScanCode;
 #define	sc_None			0
 #define	sc_Bad			0xff
 #define	sc_Return		0x1c
@@ -140,16 +103,14 @@
 #define	key_Tab			0x09
 #define	key_Delete		0x7f
 
-#define	key_LSuper			0x5b
-#define	key_RSuper			0x5c
-#define	key_Menu			0x5d
-
 // 	Stuff for the mouse
 #define	MReset		0
 #define	MButtons	3
 #define	MDelta		11
 
 #define	MouseInt	0x33
+#define	Mouse(x)	_AX = x,geninterrupt(MouseInt)
+
 #ifdef DEMO0
 typedef	enum		{
 						demo_Off,demo_Record,demo_Playback,demo_PlayDone
@@ -217,49 +178,36 @@ typedef	struct		{
 		static word		DemoOffset,DemoSize;
 #endif
 
-//	Internal routines
-void interrupt INL_KeyService();
-void Mouse(int x);
-//static void INL_GetMouseDelta(int *x,int *y);
-//static word INL_GetMouseButtons(void);
-void IN_GetJoyAbs(word joy,word *xp,word *yp);
-//static void INL_GetJoyDelta(word joy,int *dx,int *dy,boolean adaptive);
-//static word INL_GetJoyButtons(word joy);
-word IN_GetJoyButtonsDB(word joy);
-//static void INL_StartKbd(void);
-//static void INL_ShutKbd(void);
-//static boolean INL_StartMouse(void);
-//static void INL_ShutMouse(void);
-//static void INL_SetJoyScale(word joy);
-void IN_SetupJoy(word joy,word minx,word maxx,word miny,word maxy);
-//static boolean INL_StartJoy(word joy);
-//static void INL_ShutJoy(word joy);
-void IN_Startup();
-void IN_Default(boolean gotit,player_t *player,ControlType nt);
-void IN_Shutdown();
-void IN_SetKeyHook(void (*hook)());
-void IN_ClearKeysDown();
-//static void INL_AdjustCursor(CursorInfo *info,word buttons,int dx,int dy);
-void IN_ReadCursor(CursorInfo *info);
-void near IN_ReadControl(word pn, player_t *player);
-void IN_SetControlType(word pn,player_t *player,ControlType type);
-#if DEMO0
-boolean IN_StartDemoRecord(word bufsize);
-void IN_StartDemoPlayback(byte /*__segment*/ *buffer,word bufsize);
-void IN_StopDemo(void);
-void IN_FreeDemoBuffer(void);
-#endif
-byte *IN_GetScanName(ScanCode scan);
-ScanCode IN_WaitForKey();
-char IN_WaitForASCII();
-void IN_AckBack();
-void IN_Ack();
-boolean IN_IsUserInput();
-boolean IN_UserInput(dword delay,boolean clear);
-boolean IN_KeyDown(byte code);
-void IN_ClearKey(byte code);
-boolean IN_qb(byte kee);
-ScanCode IN_GetLastScan();
-ScanCode IN_GetCurCode();
+// Function prototypes
+#define	IN_KeyDown(code)	(Keyboard[(code)])
+#define	IN_ClearKey(code)	{Keyboard[code] = false;\
+							if (code == LastScan) LastScan = sc_None;}
+
+// DEBUG - put names in prototypes
+extern	void		IN_Startup(void),IN_Shutdown(void),
+					IN_Default(boolean gotit,ControlType in),
+					IN_SetKeyHook(void (*)()),
+					IN_ClearKeysDown(void),
+					IN_ReadCursor(CursorInfo *),
+					IN_ReadControl(int,CursorInfo *),
+					IN_SetControlType(int,ControlType),
+					IN_GetJoyAbs(word joy,word *xp,word *yp),
+					IN_SetupJoy(word joy,word minx,word maxx,
+								word miny,word maxy),
+					IN_StopDemo(void),IN_FreeDemoBuffer(void),
+					IN_Ack(void),IN_AckBack(void);
+extern	boolean		IN_UserInput(dword delay);
+extern	char		IN_WaitForASCII(void);
+extern	ScanCode	IN_WaitForKey(void);
+extern	word		IN_GetJoyButtonsDB(word joy);
+extern	byte		*IN_GetScanName(ScanCode);
+
+
+byte	IN_MouseButtons (void);
+byte	IN_JoyButtons (void);
+
+void INL_GetJoyDelta(word joy,int *dx,int *dy);
+void IN_StartAck(void);
+boolean IN_CheckAck (void);
 
 #endif
