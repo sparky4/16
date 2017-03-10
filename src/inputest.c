@@ -34,7 +34,7 @@ main(int argc, char *argv[])
 	dbg_testcontrolnoisy=1;
 	start_timer(&gvar);
 	//Startup16(&gvar);
-	IN_Startup(&gvar);
+	IN_Startup();
 	//IN_Default(0,&gvar.player,ctrl_Joystick1);
 	//IN_SetControlType(0,&gvar.player,ctrl_Joystick1);
 	IN_Default(0,&gvar.player,ctrl_Keyboard1);
@@ -102,7 +102,7 @@ main(int argc, char *argv[])
 			//IN_Ack();
 		}
 	}
-	IN_Shutdown(&gvar);
+	IN_Shutdown();
 		//Shutdown16(&gvar);
 	//printf("%u\n", in.Keyboard[sc_Escape]);
 	printf("inputest.exe ");
