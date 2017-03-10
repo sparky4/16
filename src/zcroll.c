@@ -45,8 +45,8 @@ memptr pal;
 
 #define FILENAME_1	"data/spri/chikyuu.vrs"
 #define FILENAME_1P	"data/spri/chikyuu.pal"
-#define FILENAME_2	"data/spri/ptmp.vrs"
-#define FILENAME_2P	"data/spri/ptmp.pal"
+#define FILENAME_2	"data/spri/me.vrs"
+#define FILENAME_2P	"data/spri/me.pal"
 
 void main(int argc, char *argv[])
 {
