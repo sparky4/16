@@ -287,6 +287,7 @@ typedef struct// inconfig
 	KeyboardDef	KbdDefs[MaxKbds];
 	JoystickDef	JoyDefs[MaxJoys];
 } in_info_t;
+#define ININFO_			gvar->in.
 
 //==========================================================================
 
@@ -618,7 +619,7 @@ typedef struct
 	loghandle_t	handle;	//handles for file logging
 	kurokku_t	kurokku;	//clock struct
 	mminfo_t	mm; mminfotype	mmi;	// mm stuff
-//++++	in_info_t	in;		// 16_in info
+	in_info_t	in;		// 16_in info
 	player_t	player[MaxPlayers];	// player vars
 //====	word far*	clockw;		/* 18.2hz clock */
 } global_game_variables_t;

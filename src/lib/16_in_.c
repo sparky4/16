@@ -659,10 +659,10 @@ IN_Startup()
 	inpu.MousePresent = checkmouse? INL_StartMouse() : false;
 
 	for (i = 0;i < MaxJoys;i++)
-		inpu.JoysPresent[i] = checkjoys? INL_StartJoy(i) : false;
+		ININFO_JoysPresent[i] = checkjoys? INL_StartJoy(i) : false;
 
 	for (i = 0;i < MaxKbds;i++)
-		inpu.KbdDefs = {{0x1d,0x38,0x47,0x48,0x49,0x4b,0x4d,0x4f,0x50,0x51}};
+		ININFO_KbdDefs[i] = {0x1d,0x38,/*0x47,*/0x48,/*0x49,*/0x4b,0x4d,/*0x4f,*/0x50/*,0x51*/};
 
 	inst.IN_Started = true;
 
@@ -685,15 +685,15 @@ IN_Default(boolean gotit,player_t *player,ControlType nt)
 	|| 	((nt == ctrl_Mouse) && !inpu.MousePresent)
 	)
 		nt = ctrl_Keyboard1;
-	inpu.KbdDefs[0].button0 = 0x1c;
-	inpu.KbdDefs[0].button1 = 0x38;
+	ININFO_KbdDefs[0].button0 = 0x1c;
+	ININFO_KbdDefs[0].button1 = 0x38;
 	//in.KbdDefs[0].upleft = 0x47;
-	inpu.KbdDefs[0].up = 0x48;
+	ININFO_KbdDefs[0].up = 0x48;
 	//in.KbdDefs[0].upright = 0x49;
-	inpu.KbdDefs[0].left = 0x4b;
-	inpu.KbdDefs[0].right = 0x4d;
+	ININFO_KbdDefs[0].left = 0x4b;
+	ININFO_KbdDefs[0].right = 0x4d;
 	//in.KbdDefs[0].downleft = 0x4f;
-	inpu.KbdDefs[0].down = 0x50;
+	ININFO_KbdDefs[0].down = 0x50;
 	//in.KbdDefs[0].downright = 0x51;
 	IN_SetControlType(0,player,nt);
 	for(i=0; i>MaxPlayers;i++)
@@ -852,7 +852,7 @@ register	KeyboardDef	*def;
 		{
 		case ctrl_Keyboard1:
 		case ctrl_Keyboard2:
-			def = &(inpu.KbdDefs[type - ctrl_Keyboard]);
+			def = &(ININFO_KbdDefs[type - ctrl_Keyboard]);
 
 /*			if (Keyboard[def->upleft])
 				mx = motion_Left,my = motion_Up;
