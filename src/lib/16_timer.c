@@ -22,14 +22,14 @@
 
 #include "src/lib/16_timer.h"
 
-static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
+//static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 
 clock_t start_timer(global_game_variables_t *gv)
 {
 	gv->kurokku.t = clock();
 	gv->kurokku.tiku = 0; gv->video.sfip = 0;
-	gv->kurokku.clock_start = *clockw;
-	gv->kurokku.clock = clockw;
+	gv->kurokku.clock_start = 0x046C; /* 18.2hz clock */
+	gv->kurokku.clock = (word far*) 0x046C; /* 18.2hz clock */
 	gv->kurokku.wcpu = WCPU_detectcpu();
 
 	//turn this off if XT

@@ -1,0 +1,153 @@
+# MEKYUU.PCX demo sprite sheet compiler script
+# (C) 2016 Jonathan Campbell
+
+# *spritesheet declares the section used by the sprite sheet cutting tool
+#
+# Sprites are declared by name (which becomes the .VRL file) at the + in the form:
+# +NAME@ID
+#
+# Sprite names are meant for temporary use when compiling the sprite sheet into VRLs.
+# At some point a longer name might be provided for use in your code.
+# This will fill the CURRENT WORKING DIRECTORY with .VRL files as directed when you
+# run PCXSSCUT, make sure your makefile does this in a temporary directory when
+# you integrate into your build and that your cleanup commands delete these files,
+# and that your .gitignore does not attempt to commit these files.
+
+# this format is a bit crap, but we'll improve it as needed. be patient.
+
+# begin spritesheet section
+*spritesheet
+
+# ---------------- player, walking, blue shirt with white cross. Frame 2/3 could be used for standing still
+
+# player, forward, frame 1/3
++MEBFCW0@10
+xy=0,0
+wh=24,32
+# player, forward, frame 2/3
++MEBFCW1@11
+xy=24,0
+wh=24,32
+# player, forward, frame 3/3
++MEBFCW2@12
+xy=48,0
+wh=24,32
+
+# player, left, frame 1/3
++MEBLCW0@20
+xy=0,32
+wh=24,32
+# player, left, frame 2/3
++MEBLCW1@21
+xy=24,32
+wh=24,32
+# player, left, frame 3/3
++MEBLCW2@22
+xy=48,32
+wh=24,32
+
+# player, right, frame 1/3
++MEBRCW0@30
+xy=0,64
+wh=24,32
+# player, right, frame 2/3
++MEBRCW1@31
+xy=24,64
+wh=24,32
+# player, right, frame 3/3
++MEBRCW2@32
+xy=48,64
+wh=24,32
+
+# player, away, frame 1/3
++MEBACW0@40
+xy=0,96
+wh=24,32
+# player, away, frame 2/3
++MEBACW1@41
+xy=24,96
+wh=24,32
+# player, away, frame 3/3
++MEBACW2@42
+xy=48,96
+wh=24,32
+
+# begin animation list section. must come after sprite sheet
+*animation
+
+# Me-tan, forward, standing and walking animation cycles
++MEBFCW_STANDING@10
+sprite=MEBFCW1
+
++MEBFCW_WALKING@11
+sprite=MEBFCW0
+delay=3
+-newframe
+sprite=MEBFCW1
+delay=3
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+-newframe
+sprite=MEBFCW2
+delay=3
+-newframe
+sprite=MEBFCW1
+delay=3
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+
+# Me-tan, left, standing and walking animation cycles
++MEBLCW_STANDING@20
+sprite=MEBLCW1
+
++MEBLCW_WALKING@21
+sprite=MEBLCW0
+delay=3
+-newframe
+sprite=MEBLCW1
+delay=3
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+-newframe
+sprite=MEBLCW2
+delay=3
+-newframe
+sprite=MEBLCW1
+delay=3
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+
+# Me-tan, right, standing and walking animation cycles
++MEBRCW_STANDING@30
+sprite=MEBRCW1
+
++MEBRCW_WALKING@31
+sprite=MEBRCW0
+delay=3
+-newframe
+sprite=MEBRCW1
+delay=3
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+-newframe
+sprite=MEBRCW2
+delay=3
+-newframe
+sprite=MEBRCW1
+delay=3
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+
+# Me-tan, away, standing and walking animation cycles
++MEBACW_STANDING@40
+sprite=MEBACW1
+
++MEBACW_WALKING@41
+sprite=MEBACW0
+delay=3
+-newframe
+sprite=MEBACW1
+delay=3
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+-newframe
+sprite=MEBACW2
+delay=3
+-newframe
+sprite=MEBACW1
+delay=3
+event=@100         # in this example, signal the game engine the frame is one that can immediately transition to "standing"
+

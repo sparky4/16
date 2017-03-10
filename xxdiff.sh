@@ -1,2 +1,2 @@
 #!/bin/bash
-xxdiff -wB "$1" "$2"
+screen xxdiff -wB "$1" "$2"

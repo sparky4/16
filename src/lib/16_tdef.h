@@ -189,7 +189,29 @@ typedef struct {
 
 //from 16_in
 //==========================================================================
-#define	MaxPlayers		2//future plans for multiple playable charaters and being able to alternate
+#define	KeyInt		9	// The keyboard ISR number
+
+//
+// mouse constants
+//
+#define	MReset		0
+#define	MButtons	3
+#define	MDelta		11
+
+#define	MouseInt	0x33
+//#define	Mouse(x)	_AX = x,geninterrupt(MouseInt)
+
+//
+// joystick constants
+//
+#define	JoyScaleMax		32768
+#define	JoyScaleShift	8
+#define	MaxJoyValue		5000
+
+#define	MaxPlayers	4
+#define	MaxKbds		2
+#define	MaxJoys		2
+#define	NumCodes	128
 
 typedef	byte		ScanCode;
 
@@ -240,6 +262,33 @@ typedef	struct		{
 									joyMultXL,joyMultYL,
 									joyMultXH,joyMultYH;
 					} JoystickDef;
+
+typedef struct// instat
+{
+	boolean		IN_Started;
+	boolean		CapsLock;
+	ScanCode	CurCode,LastCode;
+} in_status_t;
+
+typedef struct// inconfig
+{
+	in_status_t instat;
+//
+// configuration variables
+//
+	boolean		Keyboard[NumCodes],
+					JoysPresent[MaxJoys],
+					MousePresent,
+					JoyPadPresent;
+
+// 	Global variables
+	boolean		Paused;
+	char		LastASCII;
+	ScanCode	LastScan;
+
+	KeyboardDef	KbdDefs[MaxKbds];
+	JoystickDef	JoyDefs[MaxJoys];
+} in_info_t;
 
 //==========================================================================
 
@@ -571,7 +620,9 @@ typedef struct
 	loghandle_t	handle;	//handles for file logging
 	kurokku_t	kurokku;	//clock struct
 	mminfo_t	mm; mminfotype	mmi;	// mm stuff
+//++++	in_info_t	in;		// 16_in info
 	player_t	player[MaxPlayers];	// player vars
+//====	word far*	clockw;		/* 18.2hz clock */
 } global_game_variables_t;
 
 #ifdef __WATCOMC__
