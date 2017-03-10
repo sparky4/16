@@ -204,36 +204,6 @@ typedef	struct		{
 									joyMultXH,joyMultYH;
 					} JoystickDef;
 
-typedef	struct
-{
-	int x; //player exact position on the viewable map
-	int y; //player exact position on the viewable map
-	int tx; //player tile position on the viewable map
-	int ty; //player tile position on the viewable map
-	int triggerx; //player's trigger box tile position on the viewable map
-	int triggery; //player's trigger box tile position on the viewable map
-	int sheetsetx; //NOT USED YET! player sprite sheet set on the image x
-	int sheetsety; //NOT USED YET! player sprite sheet set on the image y
-	byte d;		//direction to render sprite!! wwww
-	byte q;		//loop variable for anumation and locking the playing to compleate the animation cycle to prevent issues with misalignment www
-	byte near pdir;	//previous direction~
-	word speed;		//player speed!
-	word spt;		//speed per tile
-#ifdef	__WATCOMC__
-	struct sprite	*spri;	//supposively the sprite sheet data
-	memptr		gr;
-	entity_t		*ent;
-#endif
-	bitmap_t	*data;		//supposively the sprite sheet data//old format
-	bitmap_t	bmp;
-	sword hp; //hitpoints of the player
-	int persist_aniframe;    // gonna be increased to 1 before being used, so 0 is ok for default
-	CursorInfo	info;
-	ControlType	Controls;
-//newer vars
-	int dx, dy, delta;	//TODO: what is this? ^^
-} player_t;*/
-
 /*
 =============================================================================
 
@@ -241,19 +211,6 @@ typedef	struct
 
 =============================================================================
 */
-/*extern struct inconfig
-{
-	boolean			MousePresent;
-	boolean			JoysPresent[MaxJoys];
-	boolean		Keyboard[NumCodes];
-	boolean		Paused;
-	char		LastASCII;
-	ScanCode	LastScan;
-
-	KeyboardDef	KbdDefs[MaxKbds];
-	JoystickDef	JoyDefs[MaxJoys];
-} inpu;*/
-
 #ifdef DEMO0
 		static Demo		DemoMode = demo_Off;
 		static byte /*_seg*/	*DemoBuffer;

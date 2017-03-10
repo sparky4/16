@@ -228,12 +228,10 @@ typedef	enum		{
 						motion_None = 0,
 						motion_Right = 1,motion_Down = 1
 					} Motion;
-typedef	enum		{
-						dir_North,//dir_NorthEast,
-						dir_West,//dir_Nortinest,
-						dir_None,
-						dir_East,//,dir_SouthEast,
-						dir_South,//dir_Soutinest,
+typedef	enum		{		// Quick lookup for total direction
+						/*dir_NorthWest,	*/dir_North,/*	dir_NorthEast,*/
+						dir_West,		dir_None,	dir_East,
+						/*dir_SouthWest,	*/dir_South/*,	dir_SouthEast*/
 					} Direction;
 typedef	struct		{
 						boolean	near	button0,button1,button2,button3;

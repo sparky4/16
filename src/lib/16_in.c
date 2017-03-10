@@ -37,6 +37,7 @@
 //
 
 #include "src/lib/16_in.h"
+#pragma	hdrstop
 
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 
