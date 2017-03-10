@@ -106,7 +106,7 @@ UPXQ=-qqq
 #
 S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768
 Z_FLAGS=-zk0 -zc -zp8 -zm
-O_FLAGS=-opmilr -oe=24 -outback -ei -ohnl+				-zp4
+O_FLAGS=-opnr -oe=24 -oil+ -outback -ohm				-zp4##-ei
 T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 -d1 -fo=.$(OBJ) ##-e=65536
 
 DBUGFLAGS=-fm=$^&.mah -fd=$^&
@@ -157,10 +157,10 @@ DOSLIB=doslib.lib
 #	Default make rules
 #
 .c.$(OBJ):
-	*wcl $(CFLAGS) $(extra_$^&_obj_opts)		$(CPPFLAGS) -c $[@
+	*wcl $(CFLAGS)   $(extra_$^&_obj_opts)		$(CPPFLAGS) -c $[@
 
 .asm.$(OBJ):
-	*wcl $(AFLAGS) $(extra_$^&_obj_opts)		-c $[@
+	*wcl $(AFLAGS)   $(extra_$^&_obj_opts)		-c $[@
 
 #CFLAGS is neccessary here
 .$(OBJ).exe :
