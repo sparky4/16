@@ -57,10 +57,10 @@ void Startup16(global_game_variables_t *gvar)
 		return;
 	}
 	// hardware must be VGA or higher!
-//	if (!(vga_state.vga_flags & VGA_IS_VGA)) {
-//		printf("This program requires VGA or higher graphics hardware\n");
-//		return;
-//	}
+	if (!(vga_state.vga_flags & VGA_IS_VGA)) {
+		printf("This program requires VGA or higher graphics hardware\n");
+		return;
+	}
 
 	if (_DEBUG_INIT() == 0) {
 #ifdef DEBUGSERIAL
