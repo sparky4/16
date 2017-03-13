@@ -27,7 +27,6 @@
 
 #define FADE
 
-//map_view_t mv[4];
 static map_t map;
 float t;
 
@@ -73,8 +72,7 @@ void main(int argc, char *argv[])
 
 	// OK, this one takes hellova time and needs to be done in farmalloc or MM_...
 	//IN CA i think you use CAL_SetupGrFile but i do think we should work together on this part --sparky4
-	//gvar.player[0].enti.spri = malloc(sizeof(struct sprite));
-	gvar.player[0].enti.spri.spritesheet = malloc(sizeof(struct vrs_container));
+//	gvar.player[0].enti.spri.spritesheet = malloc(sizeof(struct vrs_container));
 
 	// create the map
 //	fprintf(stderr, "testing map load~	");
