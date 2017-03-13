@@ -35,10 +35,12 @@ main(int argc, char *argv[])
 	start_timer(&gvar);
 	//Startup16(&gvar);
 	IN_Startup();
-	//IN_Default(0,&gvar.player,ctrl_Joystick1);
-	//IN_SetControlType(0,&gvar.player,ctrl_Joystick1);
-	IN_Default(0,&gvar.player,ctrl_Keyboard1);
-	IN_SetControlType(0,&gvar.player,ctrl_Keyboard1);
+	IN_Default(0,&gvar.player[0],
+ctrl_Keyboard1);
+//ctrl_Joystick1);
+	IN_SetControlType(&gvar.player[0],
+ctrl_Keyboard1);
+//ctrl_Joystick1);
 
 	gvar.player[0].enti.q=1;
 	gvar.player[0].enti.d=2;
@@ -50,7 +52,7 @@ main(int argc, char *argv[])
 	while(!IN_KeyDown(sc_Escape))
 	{
 //0000		shinkutxt(&gvar);
-		IN_ReadControl(0, &gvar.player);
+		IN_ReadControl(&gvar.player[0]);
 		switch(gvar.player[0].enti.d)
 		{
 		//right movement

@@ -65,9 +65,24 @@ MK_FP(segment value, 0)*/
 
 typedef void _seg * memptr;
 
-#ifdef __WATCOMC__
+#ifdef __WATCOMC__	//functions found in borland c but not watcom c
 #define _argv __argv
 #define _argc __argc
+#define geninterrupt(n) int86(n,&CPURegs,&CPURegs);
+
+#define peekb(segm,ofs) (*(byte far*)MK_FP((segm),(ofs)))
+#define peek(segm,ofs) (*(word far*)MK_FP((segm),(ofs)))
+#define pokeb(segm,ofs,value) (peekb((segm),(ofs)) = (byte)(value))
+#define poke(segm,ofs,value) (peek((segm),(ofs)) = (word)(value))
+
+#define inportb(port)         inp(port)
+#define inport(port)         inpw(port)
+#define outportb(port, val)   outp(port, val)
+#define outport(port, val)   outpw(port, val)
+
+//#define asm __asm
+#define getvect _dos_getvect
+#define setvect _dos_setvect
 
 //from http://www.verycomputer.com/3_65d875cc818b54ec_1.htm
 void clrscr(void);

@@ -87,7 +87,7 @@ void main(int argc, char *argv[])
 	//====modexPalBlack();
 
 	//IN_Startup();
-	IN_Default(0,&gvar.player,ctrl_Keyboard1);
+	IN_Default(0,&gvar.player[0],ctrl_Keyboard1);
 	EN_initPlayer(&gvar.player, 0, &gvar.video);
 
 	VGAmodeX(1, 1, &gvar);
@@ -140,7 +140,7 @@ void main(int argc, char *argv[])
 	startclk = *clockw;
 	while(!IN_KeyDown(sc_Escape))
 	{
-		IN_ReadControl(0,&gvar.player);
+		IN_ReadControl(&gvar.player[0]);
 		ZC_panPageManual(&mv, &gvar.player, 0);
 		//[gvar.video.sp]
 		//ZC_MVSync(&mv);
@@ -201,7 +201,7 @@ void main(int argc, char *argv[])
 			}
 //			if(i>PAL_SIZE) i=0;
 		}//9*/
-		if(IN_KeyDown(25)){ modexpdump(&gvar.video.page[gvar.video.sp]); IN_UserInput(1,1); }//p
+		if(IN_KeyDown(25)){ modexpdump(&gvar.video.page[gvar.video.sp]); IN_UserInput(1); }//p
 		//VL_ShowPage(&gvar.video.page[gvar.video.sp], 0, 0);
 		ZC_ShowMV(&mv, 0, 0);
 	}

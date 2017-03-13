@@ -17,8 +17,8 @@ makefile~
 README~
 TODO~
 LICENCE~
-*.mah
-*.MAH
+*.meh
+*.MEH
 __wcl__.lnk
 !bcexmm.map
 !makefile

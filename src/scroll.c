@@ -68,7 +68,7 @@ void main(int argc, char *argv[])
 
 #endif
 	/*	input!	*/
-	IN_Default(0, &gvar.gvar.player,ctrl_Keyboard1);
+	IN_Default(0, &gvar.gvar.player[0],ctrl_Keyboard1);
 
 	/* save the palette */
 #ifdef MODEX
@@ -191,14 +191,14 @@ void main(int argc, char *argv[])
 	//debugging binds!
 #ifdef MODEX
 #ifdef FADE
-	if(IN_KeyDown(24)){ modexPalUpdate0(&gvar.video.palette); paloffset=0; modexpdump(mv[0].page); modexpdump(mv[1].page);  IN_UserInput(1,1); } //p
+	if(IN_KeyDown(24)){ modexPalUpdate0(&gvar.video.palette); paloffset=0; modexpdump(mv[0].page); modexpdump(mv[1].page);  IN_UserInput(1); } //p
 	/*if(IN_KeyDown(22)){
 	paloffset=0; modexPalBlack(); modexPalUpdate(PCXBMPVAR, &paloffset, 0, 0);
 	printf("1paloffset	=	%d\n", paloffset/3);
 	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	printf("2paloffset	=	%d\n", paloffset/3);
 	 modexpdump(mv[0].page); modexpdump(mv[1].page);
-		IN_UserInput(1,1);
+		IN_UserInput(1);
 	}*/
 #endif
 #endif
@@ -209,7 +209,7 @@ void main(int argc, char *argv[])
 		modexClearRegion(mv[2].page, 0, 0, mv[2].page->width, mv[2].page->height, 3);
 		modexClearRegion(mv[3].page, 0, 0, mv[3].page->width, mv[3].page->height, 4);
 		modexClearRegion(mv[3].page, 0, 0, 20, 36, 15);
-		//IN_UserInput(1,1);
+		//IN_UserInput(1);
 	}
 
 	FUNCTIONKEYFUNCTIONS
@@ -218,7 +218,7 @@ void main(int argc, char *argv[])
 
 	//9
 #ifdef FADE
-		if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate(gvar.video.dpal); IN_UserInput(1,1); }
+		if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate(gvar.video.dpal); IN_UserInput(1); }
 #endif
 		if(IN_KeyDown(sc_R)){ modexPalOverscan(rand()%56); } //r
 

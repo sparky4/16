@@ -56,7 +56,7 @@ main(int argc, char *argv[])
 	if(argv[1]) bakapee = argv[1];
 	else bakapee = "data/adlib.vgm";
 	printf("%x\n", OpenVGMFile(bakapee, &pee[0]));
-//	IN_Startup(); IN_Default(0,&gvar.player,ctrl_Keyboard1);
+//	IN_Startup(); IN_Default(0,&gvar.player[0],ctrl_Keyboard1);
 	InitEngine();
 	PlayMusic(&pee[0]);
 //	while(!IN_KeyDown(sc_Escape))
