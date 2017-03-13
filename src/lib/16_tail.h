@@ -70,7 +70,7 @@
 	if(IN_KeyDown(sc_S)) modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 4); \
 \
 	if(IN_KeyDown(sc_Z)){ DRAWCORNERBOXES } \
-	if(IN_KeyDown(sc_X)){ TESTBG12 }\
+	if(IN_KeyDown(sc_X)){ TESTBG12 } \
 	if(IN_KeyDown(sc_C)){ TESTBG34 } \
 	if(IN_KeyDown(sc_V)) VL_PatternDraw(&gvar.video, 0, 1, 1); \
 	if(IN_KeyDown(sc_I)){ dbg_maptext=!dbg_maptext; IN_UserInput(1); }

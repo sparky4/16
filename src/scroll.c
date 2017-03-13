@@ -106,16 +106,16 @@ void main(int argc, char *argv[])
 
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
-	ZC_MVSetup(&MVVAR, &map, &gvar);
+	ZC_MVSetup(&gvar.mv, &map, &gvar);
 
 	//renderswitch
 	gvar.video.rss=1;
 
 	/* set up paging */
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
-	mapGoTo(&MVVAR, 0, 0);
+	mapGoTo(&gvar.mv, 0, 0);
 
-	ZC_gvar.playerXYpos(0, 0, &gvar.player, &MVVAR, 0, 1);
+	ZC_gvar.playerXYpos(0, 0, &gvar.player, &gvar.mv, 0, 1);
 	EN_initgvar.player(&gvar.player, 0, &gvar.video);
 	if (gvar.video.sprifilei == -1)
 	{
@@ -129,19 +129,19 @@ void main(int argc, char *argv[])
 	}
 
 #ifndef	SPRITE
-	modexClearRegion(MVVAR[0].page, gvar.player[0].enti.x, gvar.player[0].enti.y-TILEWH, 16, 32, 15);
+	modexClearRegion(gvar.mv[0].page, gvar.player[0].enti.x, gvar.player[0].enti.y-TILEWH, 16, 32, 15);
 #else
 	modexDrawSpriteRegion(&gvar.video.page[0], gvar.player[0].enti.x, gvar.player[0].enti.y-TILEWH, 16, 64, 16, 32,	PCXBMPPTR);
 #endif
 
 	//if(!pageflipflop)
-		VL_ShowPage(MVVAR[1].page, 0, 0);//modexShowPage(MVVAR[1].page);
-	//else			ZC_ShowMV(&MVVAR, 0, 0);//modexShowPage(MVVAR[0].page);//!(gvar.video.p)
+		VL_ShowPage(gvar.mv[1].page, 0, 0);//modexShowPage(gvar.mv[1].page);
+	//else			ZC_ShowMV(&gvar.mv, 0, 0);//modexShowPage(gvar.mv[0].page);//!(gvar.video.p)
 
 	//modexDrawBmp(&gvar.video.page[0], 16, 16, PCXBMPPTR);
 	/* buffer pages */
-// 	modexClearRegion(MVVAR[2].page, 0, 0, MVVAR[2].page->width, MVVAR[2].page->height, 47);
-// 	modexClearRegion(MVVAR[3].page, 0, 0, MVVAR[3].page->width, MVVAR[3].page->height, 45);
+// 	modexClearRegion(gvar.mv[2].page, 0, 0, gvar.mv[2].page->width, gvar.mv[2].page->height, 47);
+// 	modexClearRegion(gvar.mv[3].page, 0, 0, gvar.mv[3].page->width, gvar.mv[3].page->height, 45);
 // 	{
 // 		unsigned int k,j,o;
 // 		/* fill screen with a distinctive pattern */
@@ -152,7 +152,7 @@ void main(int argc, char *argv[])
 // 					vga_state.vga_graphics_ram[o] = (k^j)&15; // VRL samples put all colors in first 15!
 // 		}
 // 	}
-	modexClearRegion(MVVAR[3].page, 0, 128, 24, 36, 15);
+	modexClearRegion(gvar.mv[3].page, 0, 128, 24, 36, 15);
 
 #ifdef MODEX
 #ifdef FADE
@@ -169,15 +169,15 @@ void main(int argc, char *argv[])
 	//gvar.player movement
 		IN_ReadControl(0, &gvar.player);
 	if(!panswitch){
-		ZC_walk(&MVVAR, &gvar.player, 0);
+		ZC_walk(&gvar.mv, &gvar.player, 0);
 	}else{
-		PANKEYFUNZC;//panPageManual(&MVVAR, &gvar.player, 0);
+		PANKEYFUNZC;//panPageManual(&gvar.mv, &gvar.player, 0);
 		//printf("	gvar.player[0].enti.q: %d", gvar.player[0].enti.q);	printf("	gvar.player[0].d: %d\n", gvar.player[0].d);
 	}
 
 	//the scripting stuff....
 	//if(((gvar.player[0].enti.triggerx == TRIGGX && gvar.player[0].enti.triggery == TRIGGY) && IN_KeyDown(0x1C))||(gvar.player[0].enti.tx == 5 && gvar.player[0].enti.ty == 5))
-	if(((MVVAR[0].map->layerdata[0].data[(gvar.player[0].enti.triggerx-1)+(map.width*(gvar.player[0].enti.triggery-1))] == 0) && IN_KeyDown(0x1C))||(gvar.player[0].enti.tx == 5 && gvar.player[0].enti.ty == 5))
+	if(((gvar.mv[0].map->layerdata[0].data[(gvar.player[0].enti.triggerx-1)+(map.width*(gvar.player[0].enti.triggery-1))] == 0) && IN_KeyDown(0x1C))||(gvar.player[0].enti.tx == 5 && gvar.player[0].enti.ty == 5))
 	{
 		short i;
 		for(i=800; i>=400; i--)
@@ -190,13 +190,13 @@ void main(int argc, char *argv[])
 	//debugging binds!
 #ifdef MODEX
 #ifdef FADE
-	if(IN_KeyDown(24)){ modexPalUpdate0(&gvar.video.palette); paloffset=0; modexpdump(MVVAR[0].page); modexpdump(MVVAR[1].page);  IN_UserInput(1); } //p
+	if(IN_KeyDown(24)){ modexPalUpdate0(&gvar.video.palette); paloffset=0; modexpdump(gvar.mv[0].page); modexpdump(gvar.mv[1].page);  IN_UserInput(1); } //p
 	/*if(IN_KeyDown(22)){
 	paloffset=0; modexPalBlack(); modexPalUpdate(PCXBMPVAR, &paloffset, 0, 0);
 	printf("1paloffset	=	%d\n", paloffset/3);
 	 modexPalUpdate(map.tiles->data, &paloffset, 0, 0);
 	printf("2paloffset	=	%d\n", paloffset/3);
-	 modexpdump(MVVAR[0].page); modexpdump(MVVAR[1].page);
+	 modexpdump(gvar.mv[0].page); modexpdump(gvar.mv[1].page);
 		IN_UserInput(1);
 	}*/
 #endif
@@ -204,10 +204,10 @@ void main(int argc, char *argv[])
 	//pan switch
 	if(IN_KeyDown(62))	//f3
 	{
-		modexClearRegion(MVVAR[1].page, 0, 0, MVVAR[1].page->width, MVVAR[1].page->height, 2);
-		modexClearRegion(MVVAR[2].page, 0, 0, MVVAR[2].page->width, MVVAR[2].page->height, 3);
-		modexClearRegion(MVVAR[3].page, 0, 0, MVVAR[3].page->width, MVVAR[3].page->height, 4);
-		modexClearRegion(MVVAR[3].page, 0, 0, 20, 36, 15);
+		modexClearRegion(gvar.mv[1].page, 0, 0, gvar.mv[1].page->width, gvar.mv[1].page->height, 2);
+		modexClearRegion(gvar.mv[2].page, 0, 0, gvar.mv[2].page->width, gvar.mv[2].page->height, 3);
+		modexClearRegion(gvar.mv[3].page, 0, 0, gvar.mv[3].page->width, gvar.mv[3].page->height, 4);
+		modexClearRegion(gvar.mv[3].page, 0, 0, 20, 36, 15);
 		//IN_UserInput(1);
 	}
 

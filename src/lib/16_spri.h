@@ -25,6 +25,27 @@
 #include "src/lib/16_vrs.h"
 #include "src/lib/scroll16.h"
 
+//moved to 16_tdef.h
+// struct sprite
+// {
+// 	// VRS container from which we will extract animation and image data
+// 	struct vrs_container *spritesheet;
+// 	// Container for a vrl sprite
+// 	struct vrl_container *sprite_vrl_cont;
+// 	// Current sprite id
+// 	int curr_spri_id;
+// 	// Index of a current sprite in an animation sequence
+// 	int curr_anim_spri;
+// 	// Current animation sequence
+// 	struct vrs_animation_list_entry_t *curr_anim_list;
+// 	// Index of current animation in relevant VRS offsets table
+// 	int curr_anim;
+// 	// Delay in time units untill we should change sprite
+// 	int delay;
+// 	// Position of sprite on screen
+// 	int x, y;
+// };
+
 /* Retrive current animation name of sprite
 * In:
 * + struct sprite *spri - sprite to retrive current animation sequence name from
