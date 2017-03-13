@@ -80,7 +80,7 @@
 #define SCROLLEXITMESG 	printf("page[0]dxy: %dx%d", gvar.video.page[0].dx, gvar.video.page[0].dy);\
 	printf("\n\n");\
 	printf("gvar.player vars:\n");\
-	printf("	xy: %dx%d", gvar.player[0].enti.x, gvar.player[0].enti.y); printf("	txy: %dx%d", gvar.player[0].enti.tx, gvar.player[0].enti.ty); printf("	triggxy: %dx%d", gvar.player[0].enti.triggerx, gvar.player[0].enti.triggery); printf("	value: %d\n", mv[1].map->layerdata[0].data[(gvar.player[0].enti.triggerx-1)+(map.width*(gvar.player[0].enti.triggery-1))]);\
+	printf("	xy: %dx%d", gvar.player[0].enti.x, gvar.player[0].enti.y); printf("	txy: %dx%d", gvar.player[0].enti.tx, gvar.player[0].enti.ty); printf("	triggxy: %dx%d", gvar.player[0].enti.triggerx, gvar.player[0].enti.triggery); printf("	value: %d\n", gvar.mv[1].map->layerdata[0].data[(gvar.player[0].enti.triggerx-1)+(map.width*(gvar.player[0].enti.triggery-1))]);\
 	printf("	hp: %d", (gvar.player[0].enti.hp));	printf("	q: %u", gvar.player[0].enti.q);	printf("	info.dir: %u", gvar.player[0].info.dir);	printf("	d: %u", gvar.player[0].enti.d);	printf("	dire: %u", gvar.player[0].enti.dire);\
 		printf("	pdir: %u\n", gvar.player[0].pdir); printf("	delay=%u", gvar.player[0].enti.spri.delay);\
 printf("\n\n");\

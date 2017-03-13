@@ -9,7 +9,6 @@
 # -oe - expand user functions inline (-oe=20 is default, adds lots of code)
 # -oh	Enable repeated optimizations
 # -oi	generate certain lib funcs inline
-# -oi	+Set max inline depth (C++ only, use -oi for C)
 # -ok	Flowing of register save into function flow graph
 # -ol	loop optimizations
 # -ol+	loop optimizations plus unrolling
@@ -107,7 +106,7 @@ UPXQ=-qqq
 #
 S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768
 Z_FLAGS=-zk0 -zc -zp8 -zm
-O_FLAGS=-opnr -oe=24 -oil+ -outback -ohm				-zp4##-ei
+O_FLAGS=-opn -oe=24 -oil+ -outback -ohm				-zp4##-ei -or
 T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 -d1 -fo=.$(OBJ) ##-e=65536
 
 DBUGFLAGS=-fm=$^&.meh -fd=$^&
@@ -207,16 +206,25 @@ SPRIUTILEXEC = &
 	pcxsscut &
 	vrl2vrs &
 	vrsdump
-#UTILEXEC += $(SPRIUTILEXEC)
+UTILEXEC += $(SPRIUTILEXEC)
 !endif
 
 EXEC = &
 	16.exe &
 	bakapi.exe &
-	$(UTILEXEC) &
 	$(TESTEXEC)
 
-all: $(EXEC) $(EXTERNTESTEXEC)
+!ifdef __LINUX__
+EXEC += $(SPRIUTILEXEC)
+!endif
+
+ALLEXEC = &
+	$(EXEC) &
+	$(UTILEXEC) &
+	$(TESTEXEC2) &
+	$(TESTEXEC3)
+
+all: $(EXEC)
 testexec: $(EXEC) $(TESTEXEC2)
 
 #
@@ -361,12 +369,13 @@ ll.$(OBJ):		$(SRCLIB)/ll.c	$(SRCLIB)/ll.h
 #
 clean: .symbolic
 	@if not exist $(DOSLIBDIR)/buildall.sh wmake -h initlibs
-	@for %f in ($(EXEC)) do @if exist %f $(REMOVECOMMAND) %f
+	@for %f in ($(ALLEXEC)) do @if exist %f $(REMOVECOMMAND) %f
 !ifdef __LINUX__
 	@if exist *.LIB $(REMOVECOMMAND) *.LIB
 	@. src/util/bcexmm.sh
 	@if exist *.EXE $(REMOVECOMMAND) *.EXE
 	@if exist *.OBJ $(REMOVECOMMAND) *.OBJ
+	@for %f in ($(SPRIUTILEXEC)) do @if exist %f $(REMOVECOMMAND) %f
 !else
 	@if exist *.o $(REMOVECOMMAND) *.o
 !endif

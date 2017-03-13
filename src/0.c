@@ -34,8 +34,6 @@
 
 #define INITTNUM 1
 
-map_view_t mv[4];
-
 map_t map;//junk var
 
 int main(int argc,char **argv)
@@ -104,12 +102,12 @@ int main(int argc,char **argv)
 
 	IN_Startup();
 	IN_Default(0,&gvar.player[0],ctrl_Keyboard1);
-	EN_initPlayer(&gvar.player, 0, &gvar.video);
+	EN_initPlayer(&gvar.player[0], &gvar.video);
 
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
-	ZC_MVSetup(&mv, &map, &gvar);
-	ZC_ShowMV(&mv, gvar.video.sp, 0);
+	ZC_MVSetup(&gvar.mv, &map, &gvar);
+	ZC_ShowMV(&gvar.mv, gvar.video.sp, 0);
 
 //	VL_PatternDraw(video_t *video, word pn, boolean sw, boolean allsw);
 	VL_PatternDraw(&gvar.video, 0/*gvar.video.sp*/, 0, 1);
@@ -152,7 +150,7 @@ int main(int argc,char **argv)
 			}
 			if(IN_KeyDown(sc_R)){
 				gvar.video.page[0].dx=gvar.video.page[0].dy=gvar.video.page[1].dx=gvar.video.page[1].dy=16;
-				mv[0].tx = mv[0].ty = mv[1].tx = mv[1].ty = INITTNUM;
+				gvar.mv[0].tx = gvar.mv[0].ty = gvar.mv[1].tx = gvar.mv[1].ty = INITTNUM;
 				VL_ShowPage(&gvar.video.page[gvar.video.sp], 1, 0);
 				gvar.player[0].enti.q = 1; gvar.player[0].enti.d = 2;
 				x=y=0;
@@ -218,7 +216,7 @@ draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header
 
 //===========================================================================//
 
-	ZC_ShowMV(&mv, 0, 0);
+	ZC_ShowMV(&gvar.mv, 0, 0);
 if(!noanim) {
 	/* another handy "demo" effect using VGA write mode 1.
 	 * we can take what's on screen and vertically squash it like an old analog TV set turning off. */
@@ -313,7 +311,7 @@ if(!noanim) {
 	printf("\nProject 16 0.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	//SCROLLEXITMESG;
-	printf("mv 0\n- tx=%d	ty=%d	dx=%d	dy=%d\n", mv[0].tx, mv[0].ty, gvar.video.page[0].dx, gvar.video.page[0].dy);
-	printf("mv 1\n- tx=%d	ty=%d	dx=%d	dy=%d\n", mv[1].tx, mv[1].ty, gvar.video.page[1].dx, gvar.video.page[1].dy);
+	printf("mv 0\n- tx=%d	ty=%d	dx=%d	dy=%d\n", gvar.mv[0].tx, gvar.mv[0].ty, gvar.video.page[0].dx, gvar.video.page[0].dy);
+	printf("mv 1\n- tx=%d	ty=%d	dx=%d	dy=%d\n", gvar.mv[1].tx, gvar.mv[1].ty, gvar.video.page[1].dx, gvar.video.page[1].dy);
 	return 0;
 }

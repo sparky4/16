@@ -28,7 +28,6 @@
 #define MODEX	//this is for mode x initiating
 
 static map_t map;
-map_view_t mv[4];
 float t;
 sword bakapee;
 //debugswitches
@@ -107,16 +106,16 @@ void main(int argc, char *argv[])
 
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar.video);
-	ZC_MVSetup(&mv, &map, &gvar);
+	ZC_MVSetup(&gvar.mv, &map, &gvar);
 
 	//renderswitch
 	gvar.video.rss=1;
 
 	/* set up paging */
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
-	mapGoTo(&mv, 0, 0);
+	mapGoTo(&gvar.mv, 0, 0);
 
-	ZC_gvar.playerXYpos(0, 0, &gvar.player, &mv, 0, 1);
+	ZC_gvar.playerXYpos(0, 0, &gvar.player, &gvar.mv, 0, 1);
 	EN_initgvar.player(&gvar.player, 0, &gvar.video);
 	if (gvar.video.sprifilei == -1)
 	{
@@ -137,7 +136,7 @@ void main(int argc, char *argv[])
 
 	//if(!pageflipflop)
 		VL_ShowPage(mv[1].page, 0, 0);//modexShowPage(mv[1].page);
-	//else			ZC_ShowMV(&mv, 0, 0);//modexShowPage(mv[0].page);//!(gvar.video.p)
+	//else			ZC_ShowMV(&gvar.mv, 0, 0);//modexShowPage(mv[0].page);//!(gvar.video.p)
 
 	//modexDrawBmp(&gvar.video.page[0], 16, 16, PCXBMPPTR);
 	/* buffer pages */
@@ -170,9 +169,9 @@ void main(int argc, char *argv[])
 	//gvar.player movement
 		IN_ReadControl(0, &gvar.player);
 	if(!panswitch){
-		ZC_walk(&mv, &gvar.player, 0);
+		ZC_walk(&gvar.mv, &gvar.player, 0);
 	}else{
-		PANKEYFUNZC;//panPageManual(&mv, &gvar.player, 0);
+		PANKEYFUNZC;//panPageManual(&gvar.mv, &gvar.player, 0);
 		//printf("	gvar.player[0].enti.q: %d", gvar.player[0].enti.q);	printf("	gvar.player[0].d: %d\n", gvar.player[0].d);
 	}
 

@@ -598,15 +598,16 @@ typedef struct	//TODO: USE THIS!!!!
 
 //actual global game varables!
 typedef enum {
-	ENGI_EXIT,
 	ENGI_QUIT,
 	ENGI_RUN,
-	ENGI_INPUT,
+	ENGI_MENU,
 	ENGI_PAUSE
 } engi_stat_t;
+//ENGI_INPUT,
 
 typedef struct
 {
+	engi_stat_t	engi_stat;
 	video_t	video;	// video settings variable
 	ca_t		ca;	// ca stuff
 	pm_t		pm;	// pm stuff
@@ -615,7 +616,7 @@ typedef struct
 	mminfo_t	mm; mminfotype	mmi;	// mm stuff
 //++++	in_info_t	in;		// 16_in info
 	player_t	player[MaxPlayers];	// player vars
-//====	word far*	clockw;		/* 18.2hz clock */
+	map_view_t	mv[4];
 } global_game_variables_t;
 
 #ifdef __WATCOMC__

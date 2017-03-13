@@ -43,8 +43,8 @@
 	if(IN_KeyDown(68/*sc_F10*/)){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap;		IN_UserInput(1); } \
 	if(IN_KeyDown(sc_F9)){ pagenorendermap=!pagenorendermap;				IN_UserInput(1); } \
 	if(IN_KeyDown(sc_F8)){ gvar.video.bgps=!gvar.video.bgps;					IN_UserInput(1); } \
-	if(IN_KeyDown(sc_F7)){ ZC_ShowMV(&mv, 0, 1);							IN_UserInput(1); } \
-	if(IN_KeyDown(sc_F6)){ ZC_ShowMV(&mv, 0, 0);							IN_UserInput(1); } \
+	if(IN_KeyDown(sc_F7)){ ZC_ShowMV(&gvar.mv, 0, 1);						IN_UserInput(1); } \
+	if(IN_KeyDown(sc_F6)){ ZC_ShowMV(&gvar.mv, 0, 0);						IN_UserInput(1); } \
 	if(IN_KeyDown(sc_T)){ gvar.video.rss=!gvar.video.rss;						IN_UserInput(1); } \
 	if(IN_KeyDown(sc_P)){ modexpdump(&gvar.video.page[0]);					IN_UserInput(1); }
 
@@ -53,13 +53,13 @@
 	TAIL_FUNCTIONKEYDRAWJUNK
 
 #define TAIL_PANKEYFUNZC \
-	ZC_panPageManual(&mv, &gvar.player, 0);
+	ZC_panPageManual(&gvar.mv, &gvar.player, 0);
 
 #define TAIL_FUNCTIONKEYSHOWMV \
-	if(IN_KeyDown(1+1)){ gvar.video.sp=0; ZC_ShowMV(&mv, 0, 0); } \
-	if(IN_KeyDown(2+1)){ gvar.video.sp=1; ZC_ShowMV(&mv, 0, 0); } \
-	if(IN_KeyDown(3+1)){ gvar.video.sp=2; ZC_ShowMV(&mv, 0, 1); } \
-	if(IN_KeyDown(4+1)){ gvar.video.sp=3; ZC_ShowMV(&mv, 0, 1); }
+	if(IN_KeyDown(1+1)){ gvar.video.sp=0; ZC_ShowMV(&gvar.mv, 0, 0); } \
+	if(IN_KeyDown(2+1)){ gvar.video.sp=1; ZC_ShowMV(&gvar.mv, 0, 0); } \
+	if(IN_KeyDown(3+1)){ gvar.video.sp=2; ZC_ShowMV(&gvar.mv, 0, 1); } \
+	if(IN_KeyDown(4+1)){ gvar.video.sp=3; ZC_ShowMV(&gvar.mv, 0, 1); }
 
 #define TAIL_FUNCTIONKEYDRAWJUNK \
 	TAIL_FUNCTIONKEYSHOWMV \

@@ -409,20 +409,21 @@ modexSelectPlane(byte plane) {
 }
 
 void
-modexClearRegion(page_t *page, int x, int y, int w, int h, byte  color) {
+modexClearRegion(page_t *page, int x, int y, int w, int h, byte color)
+{
 	word pageOff = (word) page->data;
-	word xoff=x/4;	   /* xoffset that begins each row */
-	word scanCount=w/4;  /* number of iterations per row (excluding right clip)*/
-	word poffset = pageOff + y*(page->stridew) + xoff; /* starting offset */
-	word nextRow = page->stridew-scanCount-1;  /* loc of next row */
-	byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08};  /* clips for rectangles not on 4s */
+	word xoff=(x>>2);							// xoffset that begins each row
+	word poffset = pageOff + y*(page->stridew) + xoff;	// starting offset
+	word scanCount=w>>2;						// number of iterations per row (excluding right clip)
+	word nextRow = page->stridew-scanCount-1;		// loc of next row
+	byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08};			// clips for rectangles not on 4s
 	byte rclip[] = {0x00, 0x01, 0x03, 0x07};
 	byte left = lclip[x&0x03];
 	byte right = rclip[(x+w)&0x03];
 
-	/* handle the case which requires an extra group */
+	// handle the case which requires an extra group
 	if((x & 0x03) && !((x+w) & 0x03)) {
-	  right=0x0f;
+		right=0x0f;
 	}
 
 	//printf("modexClearRegion(x=%u, y=%u, w=%u, h=%u, left=%u, right=%u)\n", x, y, w, h, left, right);
@@ -492,17 +493,17 @@ modexCopyPageRegion(page_t *dest, page_t *src,
 			word dx, word dy,
 			word width, word height)
 {
-	word doffset = (word)dest->data + dy*(dest->stridew) + dx/4;
-	word soffset = (word)src->data + sy*(src->stridew) + sx/4;
-	word scans   = vga_state.vga_stride;				//++++0000 the quick and dirty fix of the major issue with p16 video display wwww
+	word doffset = (word)dest->data + dy*(dest->stridew) + (dx>>2);
+	word soffset = (word)src->data + sy*(src->stridew) + (sx>>2);
+	word scans	= vga_state.vga_stride+8;				//++++0000 the quick and dirty fix of the major issue with p16 video display wwww
 	word nextSrcRow = src->stridew - scans - 1;
 	word nextDestRow = dest->stridew - scans - 1;
-	byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08};  /* clips for rectangles not on 4s */
+	byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08};			// clips for rectangles not on 4s
 	byte rclip[] = {0x00, 0x01, 0x03, 0x07};
 	byte left = lclip[sx&0x03];
 	byte right = rclip[(sx+width)&0x03];
 
-	/* handle the case which requires an extra group */
+	// handle the case which requires an extra group
 	if((sx & 0x03) && !((sx+width) & 0x03)) {
 		right=0x0f;
 	}

@@ -31,13 +31,25 @@
 
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 
+void drawboxesmodex(page_t *pg)
+{
+	modexClearRegion(pg, 0, 0, pg->width, pg->height, 1);
+	modexClearRegion(pg, 16, 16, pg->sw, pg->sh, 2);
+	modexClearRegion(pg, 32, 32, pg->sw-32, pg->sh-32, 3);
+	modexClearRegion(pg, 48, 48, pg->sw-64, pg->sh-64, 2);
+}
+
+void copyboxesmodex(page_t *page, boolean pn)
+{
+	modexCopyPageRegion(&page[pn], &page[!pn], 0, 0, 0, 0, page[pn].width, page[pn].height);
+}
+
 void main(int argc, char *argv[])
 {
 	static word paloffset=0;
 	static global_game_variables_t gvar;
 
 	map_t map;
-	map_view_t mv[4];
 
 	int i, j;
 	word startclk, endclk;
@@ -88,7 +100,7 @@ void main(int argc, char *argv[])
 
 	//IN_Startup();
 	IN_Default(0,&gvar.player[0],ctrl_Keyboard1);
-	EN_initPlayer(&gvar.player, 0, &gvar.video);
+	EN_initPlayer(&gvar.player[0], &gvar.video);
 
 	VGAmodeX(1, 1, &gvar);
 	modexPalBlack();
@@ -109,7 +121,7 @@ void main(int argc, char *argv[])
 
 	/* set up the page, but with 16 pixels on all borders in offscreen mem */
 	modexHiganbanaPageSetup(&gvar.video);
-	ZC_MVSetup(&mv, &map, &gvar);
+	ZC_MVSetup(&gvar.mv, &map, &gvar);
 
 	/* fill the page with one color, but with a black border */
 	/*modexClearRegion(&gvar.video.page[1], 0, 0, gvar.video.page[1].width, gvar.video.page[1].height, 15);
@@ -123,12 +135,8 @@ void main(int argc, char *argv[])
 	modexClearRegion(&gvar.video.page[0], 48, 48, gvar.video.page[0].sw-64, gvar.video.page[0].sh-64, 128);
 	modexShowPage(&gvar.video.page[0]);*/
 
-
-	modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].width, gvar.video.page[0].height, 1);
-	modexClearRegion(&gvar.video.page[0], 16, 16, gvar.video.page[0].sw, gvar.video.page[0].sh, 2);
-	modexClearRegion(&gvar.video.page[0], 32, 32, gvar.video.page[0].sw-32, gvar.video.page[0].sh-32, 3);
-	modexClearRegion(&gvar.video.page[0], 48, 48, gvar.video.page[0].sw-64, gvar.video.page[0].sh-64, 2);
-	modexCopyPageRegion(&gvar.video.page[1], &gvar.video.page[0], 0, 0, 0, 0, gvar.video.page[0].width, gvar.video.page[0].height);
+	drawboxesmodex(&gvar.video.page[0]);
+	copyboxesmodex(&gvar.video.page, 1);
 	modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 4);
 	modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 6);
 
@@ -141,53 +149,13 @@ void main(int argc, char *argv[])
 	while(!IN_KeyDown(sc_Escape))
 	{
 		IN_ReadControl(&gvar.player[0]);
-		ZC_panPageManual(&mv, &gvar.player, 0);
-		//[gvar.video.sp]
-		//ZC_MVSync(&mv);
-
-		/*if(i<5){
-		switch (k)
-		{
-			case 0:
-				pee:
-				// go right
-				gvar.video.page[gvar.video.sp].dx++;
-				if(i==5){ if(j>=31){ i++; j=0; goto baka; }else j++; }else
-				if(j>=32){ k++; j=0; }else j++;
-			break;
-			case 1:
-				// go left
-				gvar.video.page[gvar.video.sp].dx--;
-				if(j>=32){ k++; j=0; }else j++;
-			break;
-			case 2:
-				// go up
-				gvar.video.page[gvar.video.sp].dy++;
-				if(j>=32){ k++; j=0; }else j++;
-			break;
-			case 3:
-				// go down
-				gvar.video.page[gvar.video.sp].dy--;
-				if(j>=32){ k=0; j=0; i++; }else j++;
-			break;
-			default:
-
-			break;
-		}}else{
-			if(i==5) goto pee;
-			baka:
-			i++;
-			modexClearRegion(&gvar.video.page[1], 0, gvar.video.page[0].height/2, gvar.video.page[0].width-32, 16, 45);*/
-// 			if(IN_KeyDown(6))
-// 			{
-// 				modexClearRegion(&gvar.video.page[1],  gvar.video.page[1].sw, 16, 8, 4, 45);
-// 			}
-// 			if(IN_KeyDown(4+1)){
+		ZC_panPageManual(&gvar.mv, &gvar.player, 0);
+//			if(IN_KeyDown(sc_5)){ modexClearRegion(&gvar.video.page[1],  gvar.video.page[1].sw, 16, 8, 4, 45); }
+// 			if(IN_KeyDown(sc_4)){
 // 				modexClearRegion(&gvar.video.page[1], 16, 16, gvar.video.page[1].sw, gvar.video.page[1].sh, 128);
 // 				modexClearRegion(&gvar.video.page[1], 32, 32, gvar.video.page[1].sw-32, gvar.video.page[1].sh-32, 42);
 // 				modexClearRegion(&gvar.video.page[1], 48, 48, gvar.video.page[1].sw-64, gvar.video.page[1].sh-64, 128);
 // 			}
-		//}
 		TAIL_PANKEYFUN;
 		if(IN_KeyDown(12)) modexClearRegion(&gvar.video.page[0], (gvar.video.page[0].width/2)-4, (gvar.video.page[0].height/2)-16, 24, 32, 15);
 		if(IN_KeyDown(13)) modexClearRegion(&gvar.video.page[1], (gvar.video.page[1].width/2)-4, (gvar.video.page[1].height/2)-16, 24, 32, 15);
@@ -202,8 +170,10 @@ void main(int argc, char *argv[])
 //			if(i>PAL_SIZE) i=0;
 		}//9*/
 		if(IN_KeyDown(25)){ modexpdump(&gvar.video.page[gvar.video.sp]); IN_UserInput(1); }//p
+		if(IN_KeyDown(sc_I)){ drawboxesmodex(&gvar.video.page[gvar.video.sp]); IN_UserInput(1); }//i
+		if(IN_KeyDown(sc_O)){ copyboxesmodex(&gvar.video.page, !gvar.video.sp); IN_UserInput(1); }//o
 		//VL_ShowPage(&gvar.video.page[gvar.video.sp], 0, 0);
-		ZC_ShowMV(&mv, 0, 0);
+		ZC_ShowMV(&gvar.mv, 0, 0);
 	}
 
 	endclk = *clockw;
@@ -216,7 +186,7 @@ void main(int argc, char *argv[])
 	printf("Project 16 test.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	VL_PrintmodexmemInfo(&gvar.video);
-	printf("tx=%d	", mv[gvar.video.sp].tx); printf("ty=%d	", mv[gvar.video.sp].ty); printf("gvar.player.d=%d\n", gvar.player[0].enti.d);
+	printf("tx=%d	", gvar.mv[gvar.video.sp].tx); printf("ty=%d	", gvar.mv[gvar.video.sp].ty); printf("gvar.player.d=%d\n", gvar.player[0].enti.d);
 	printf("\n====\n");
 	printf("0	paloffset=	%d\n", paloffset/3);
 	printf("====\n\n");

@@ -22,15 +22,13 @@
 
 #include "src/16.h"
 
-engi_stat_t engi_stat;
-
 void
 main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
 	Startup16(&gvar);
 
-	engi_stat = ENGI_RUN;
+	gvar.engi_stat = ENGI_RUN;
 
 	/* save the palette */
 	modexPalSave(gvar.video.dpal);
@@ -41,10 +39,10 @@ main(int argc, char *argv[])
 //	modexPalBlack();	//so player will not see loadings~
 	IN_Default(0,&gvar.player[0],ctrl_Joystick);
 	//modexprint(&screen, 32, 32, 1, 2, 0, "a", 1);
-	while(ENGI_EXIT != engi_stat)
+	while(ENGI_QUIT != gvar.engi_stat)
 	{
 		IN_ReadControl(&gvar.player[0]);
-		if(IN_KeyDown(sc_Escape)) engi_stat = ENGI_EXIT;
+		if(IN_KeyDown(sc_Escape)) gvar.engi_stat = ENGI_QUIT;
 		shinku(&gvar);
 		_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);
 	}
