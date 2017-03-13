@@ -49,6 +49,7 @@ void main(int argc, char *argv[])
 	static word paloffset=0;
 	static global_game_variables_t gvar;
 
+//	map_view_t mv[4];
 	map_t map;
 
 	int i, j;

@@ -31,6 +31,8 @@
 # serial output is plain text ASCII.
 DEBUGSERIAL=1
 
+DELLOGFILE=1
+
 #192x144
 #wwww will add these
 !ifdef __LINUX__
@@ -106,7 +108,7 @@ UPXQ=-qqq
 #
 S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768
 Z_FLAGS=-zk0 -zc -zp8 -zm
-O_FLAGS=-opn -oe=24 -oil+ -outback -ohm				-zp4##-ei -or
+O_FLAGS=-opnr -oe=24 -oil+ -outback -ohm				-zp4##-ei
 T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 -d1 -fo=.$(OBJ) ##-e=65536
 
 DBUGFLAGS=-fm=$^&.meh -fd=$^&
@@ -388,13 +390,15 @@ clean: .symbolic
 	@if exist *.smp $(REMOVECOMMAND) *.smp
 	@if exist *.SMP $(REMOVECOMMAND) *.SMP
 	@if exist *.hed $(REMOVECOMMAND) *.hed
-	@if exist *.mah $(REMOVECOMMAND) *.mah
-	@if exist *.MAH $(REMOVECOMMAND) *.MAH
+	@if exist *.meh $(REMOVECOMMAND) *.meh
+	@if exist *.MEH $(REMOVECOMMAND) *.MEH
 	@if exist *.err $(REMOVECOMMAND) *.err
 	@if exist TC*.SWP $(REMOVECOMMAND) TC*.SWP
-#	@if exist *.16W $(REMOVECOMMAND) *.16W
-#	@if exist *.16B $(REMOVECOMMAND) *.16B
-
+!ifeq DELLOGFILE 1
+	@if exist *.16W $(REMOVECOMMAND) *.16W
+	@if exist *.16B $(REMOVECOMMAND) *.16B
+	@if exist *.L16 $(REMOVECOMMAND) *.L16
+!endif
 #	@$(COPYCOMMAND) $(SRC)exmmtest.c $(EXMMTESTDIR)$(SRC)
 #	@$(COPYCOMMAND) $(SRCLIB)16_mm.* $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(SRCLIB)16_head.* $(EXMMTESTDIR)$(SRCLIB)

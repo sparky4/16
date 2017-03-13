@@ -34,6 +34,7 @@
 
 #define INITTNUM 1
 
+map_view_t mv[4];
 map_t map;//junk var
 
 int main(int argc,char **argv)
