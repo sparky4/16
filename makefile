@@ -426,7 +426,7 @@ comq: .symbolic
 
 www: .symbolic
 	@for %f in (/var/www/$(EXEC)) do @if exist /var/www/%f $(REMOVECOMMAND) /var/www/%f
-	@$(REMOVECOMMAND) /var/www/*.exe.zip*
+	@$(REMOVECOMMAND) /var/www/*.exe.zi*
 	@for %f in ($(EXEC)) do @if exist %f @$(COPYCOMMAND) %f /var/www/
 	@./src/util/z.sh $(EXEC) $(EXEC)
 	@./src/util/z.sh data data
@@ -441,18 +441,18 @@ wwwext1: .symbolic
 	#4ch.mooo.com
 	@scp -r -P $(HOSTPORT) *.exe $(HOSTUSER)@$(HOSTADDR):$(HOSTDIR)/16/
 	@scp -r -P $(HOSTPORT) *get.bat $(HOSTUSER)@$(HOSTADDR):$(HOSTDIR)/16/
-	@scp -r -P $(HOSTPORT) /var/www/*.exe.zip.* $(HOSTUSER)@$(HOSTADDR):$(HOSTDIR)/16/
+	@scp -r -P $(HOSTPORT) /var/www/*.exe.zi.* $(HOSTUSER)@$(HOSTADDR):$(HOSTDIR)/16/
 	#@scp -r -P $(HOSTPORT) $(DATADIR)spri.zip $(HOSTUSER)@$(HOSTADDR):$(HOSTDIR)/16/
-	@scp -r -P $(HOSTPORT) /var/www/data.zip.* $(HOSTUSER)@$(HOSTADDR):$(HOSTDIR)/16/
+	@scp -r -P $(HOSTPORT) /var/www/data.zi.* $(HOSTUSER)@$(HOSTADDR):$(HOSTDIR)/16/
 
 
 wwwext2: .symbolic
 	#beta.latech.edu
 	@scp -r -P $(HOST2PORT) *.exe $(HOST2USER)@$(HOST2ADDR):$(HOST2DIR)/16/
 	@scp -r -P $(HOST2PORT) *get.bat $(HOST2USER)@$(HOST2ADDR):$(HOST2DIR)/16/
-	@scp -r -P $(HOST2PORT) /var/www/*.exe.zip.* $(HOST2USER)@$(HOST2ADDR):$(HOST2DIR)/16/
+	@scp -r -P $(HOST2PORT) /var/www/*.exe.zi.* $(HOST2USER)@$(HOST2ADDR):$(HOST2DIR)/16/
 	#@scp -r -P $(HOST2PORT) $(DATADIR)spri.zip $(HOST2USER)@$(HOST2ADDR):$(HOST2DIR)/16/
-	@scp -r -P $(HOST2PORT) /var/www/data.zip.* $(HOST2USER)@$(HOST2ADDR):$(HOST2DIR)/16/
+	@scp -r -P $(HOST2PORT) /var/www/data.zi.* $(HOST2USER)@$(HOST2ADDR):$(HOST2DIR)/16/
 
 getwww: .symbolic
 	*x4get.bat $(EXEC)

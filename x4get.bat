@@ -25,18 +25,18 @@ rem	 echo y=%y
 		set z=%o
 	) endif
 
-	htget http://%url/%1.zip.%z > %y
+	htget http://%url/%1.zi.%z > %y
 rem  	pause
 	iff NOT "%@FILESIZE[%y,b]" == "0" then
-		type %y >> %w.zip
+		type %y >> %w.zi
 		iff "%@FILESIZE[%y,b]" == "65536" then
 rem  				echo o=%o
 			goto oooo
 		endiff
 		iff NOT "%#" == "0" then
 			shift /1
-			iff exist %w.zip then
-				unzip %w.zip
+			iff exist %w.zi then
+				unzi %w.zi
 				del %w.z*
 			endiff
 			goto loop
