@@ -55,14 +55,14 @@
 #define TAIL_PANKEYFUNZC \
 	ZC_panPageManual(&gvar.mv, &gvar.player, 0);
 
-#define TAIL_FUNCTIONKEYSHOWMV \
+#define FUNCTIONKEYSHOWMV \
 	if(IN_KeyDown(1+1)){ gvar.video.sp=0; ZC_ShowMV(&gvar.mv, 0, 0); } \
 	if(IN_KeyDown(2+1)){ gvar.video.sp=1; ZC_ShowMV(&gvar.mv, 0, 0); } \
 	if(IN_KeyDown(3+1)){ gvar.video.sp=2; ZC_ShowMV(&gvar.mv, 0, 1); } \
 	if(IN_KeyDown(4+1)){ gvar.video.sp=3; ZC_ShowMV(&gvar.mv, 0, 1); }
 
 #define TAIL_FUNCTIONKEYDRAWJUNK \
-	TAIL_FUNCTIONKEYSHOWMV \
+	FUNCTIONKEYSHOWMV \
 	TAIL_FUNCTIONKEYDRAWJUNKNOMV
 
 #define TAIL_FUNCTIONKEYDRAWJUNKNOMV \
@@ -70,7 +70,7 @@
 	if(IN_KeyDown(sc_S)) modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 4); \
 \
 	if(IN_KeyDown(sc_Z)){ DRAWCORNERBOXES } \
-	if(IN_KeyDown(sc_X)){ TESTBG12 } \
+	if(IN_KeyDown(sc_X)){ TESTBG12 }\
 	if(IN_KeyDown(sc_C)){ TESTBG34 } \
 	if(IN_KeyDown(sc_V)) VL_PatternDraw(&gvar.video, 0, 1, 1); \
 	if(IN_KeyDown(sc_I)){ dbg_maptext=!dbg_maptext; IN_UserInput(1); }
