@@ -8,7 +8,6 @@
 *.[O]
 *.BCO
 *.*~
-FUCK
 *.err
 *.ERR
 *.lib
@@ -30,3 +29,5 @@ img
 #!foo.html
 # Ignore objects and archives.
 *.[oa]
+#*.16W
+#*.16B
