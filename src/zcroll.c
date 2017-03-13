@@ -27,6 +27,7 @@
 
 #define FADE
 
+//map_view_t mv[4];
 static map_t map;
 float t;
 
@@ -73,7 +74,7 @@ void main(int argc, char *argv[])
 	// OK, this one takes hellova time and needs to be done in farmalloc or MM_...
 	//IN CA i think you use CAL_SetupGrFile but i do think we should work together on this part --sparky4
 	//gvar.player[0].enti.spri = malloc(sizeof(struct sprite));
-	gvar.player[0].enti.spri.spritesheet = malloc(sizeof(struct vrs_container));
+	//gvar.player[0].enti.spri.spritesheet = malloc(sizeof(struct vrs_container));
 
 	// create the map
 //	fprintf(stderr, "testing map load~	");
@@ -117,13 +118,13 @@ void main(int argc, char *argv[])
 
 	// setup camera and screen~
 	modexHiganbanaPageSetup(&gvar.video);
-	ZC_MVSetup(&gvar.mv, &map, &gvar);
+	ZC_MVSetup(&MVVAR, &map, &gvar);
 
 	// set up paging
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
-	mapGoTo(&gvar.mv, 0, 0);
+	mapGoTo(&MVVAR, 0, 0);
 
-	ZC_PlayerXYpos(0, 0, &gvar.player, &gvar.mv, 0, 1);
+	ZC_PlayerXYpos(0, 0, &gvar.player, &MVVAR, 0, 1);
 	EN_initPlayer(&gvar.player[0], &gvar.video);
 	//print_anim_ids(gvar.player[0].enti.spri);
 	if (gvar.video.sprifilei == -1)
@@ -138,17 +139,17 @@ void main(int argc, char *argv[])
 	}
 
 //	while(!IN_KeyDown(sc_Escape) && !IN_KeyDown(sc_Space) && !IN_KeyDown(sc_Enter)){ FUNCTIONKEYSHOWMV }
-	gvar.video.page[0].tlx=gvar.mv[0].tx*TILEWH;
-	gvar.video.page[0].tly=gvar.mv[0].ty*TILEWH;
+	gvar.video.page[0].tlx=MVVAR[0].tx*TILEWH;
+	gvar.video.page[0].tly=MVVAR[0].ty*TILEWH;
 	shinku(&gvar);
-//modexpdump(gvar.mv[0].page);
+//modexpdump(MVVAR[0].page);
 #ifdef FADE
 	modexFadeOn(4, &gvar.video.palette);
 #endif
 	while(!IN_KeyDown(sc_Escape) && gvar.player[0].enti.hp>0)
 	{
-		gvar.video.page[0].tlx=gvar.mv[0].tx*TILEWH;
-		gvar.video.page[0].tly=gvar.mv[0].ty*TILEWH;
+		gvar.video.page[0].tlx=MVVAR[0].tx*TILEWH;
+		gvar.video.page[0].tly=MVVAR[0].ty*TILEWH;
 		shinku(&gvar);
 		//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 		//to stop scrolling and have the gvar.player position data move to the edge of the screen with respect to the direction
@@ -158,7 +159,7 @@ void main(int argc, char *argv[])
 		IN_ReadControl(&gvar.player[0]);
 		if(!panswitch){
 			//ZC_walk2(gvar.player[0].ent, mv);
-			ZC_walk(&gvar.mv, &gvar.player, 0);
+			ZC_walk(&MVVAR, &gvar.player, 0);
 		}else{
 			TAIL_PANKEYFUNZC;
 			//printf("	gvar.player[0].enti.q: %d", gvar.player[0].enti.q);	printf("	gvar.player[0].d: %d\n", gvar.player[0].d);
@@ -166,7 +167,7 @@ void main(int argc, char *argv[])
 
 		//the scripting stuff....
 		//if(((gvar.player[0].enti.triggerx == TRIGGX && gvar.player[0].enti.triggery == TRIGGY) && IN_KeyDown(0x1C))||(gvar.player[0].enti.tx == 5 && gvar.player[0].enti.ty == 5))
-		if(((gvar.mv[0].map->layerdata[0].data[(gvar.player[0].enti.triggerx-1)+(map.width*(gvar.player[0].enti.triggery-1))] == 0) && IN_KeyDown(0x1C))||(gvar.player[0].enti.tx == 5 && gvar.player[0].enti.ty == 5))
+		if(((MVVAR[0].map->layerdata[0].data[(gvar.player[0].enti.triggerx-1)+(map.width*(gvar.player[0].enti.triggery-1))] == 0) && IN_KeyDown(0x1C))||(gvar.player[0].enti.tx == 5 && gvar.player[0].enti.ty == 5))
 		{
 			short i;
 			for(i=800; i>=400; i--)
@@ -178,7 +179,7 @@ void main(int argc, char *argv[])
 		if(gvar.player[0].enti.q == (TILEWH/(gvar.player[0].enti.speed))+1 && gvar.player[0].info.dir != 2 && (gvar.player[0].enti.triggerx == 5 && gvar.player[0].enti.triggery == 5)){ gvar.player[0].enti.hp--; }
 		//debugging binds!
 
-		if(IN_KeyDown(24)){ modexPalUpdate0(&gvar.video.palette); /*paloffset=0;*/ modexpdump(gvar.mv[0].page); IN_UserInput(1); } //o
+		if(IN_KeyDown(24)){ modexPalUpdate0(&gvar.video.palette); /*paloffset=0;*/ modexpdump(MVVAR[0].page); IN_UserInput(1); } //o
 		if(IN_KeyDown(22)){ modexPalUpdate0(&gvar.video.palette); } //u
 
 		TAIL_FUNCTIONKEYFUNCTIONS
