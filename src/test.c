@@ -122,7 +122,7 @@ void main(int argc, char *argv[])
 
 	/* set up the page, but with 16 pixels on all borders in offscreen mem */
 	modexHiganbanaPageSetup(&gvar.video);
-	ZC_MVSetup(&MVVAR, &map, &gvar);
+	ZC_MVSetup(&gvar.mv, &map, &gvar);
 
 	/* fill the page with one color, but with a black border */
 	/*modexClearRegion(&gvar.video.page[1], 0, 0, gvar.video.page[1].width, gvar.video.page[1].height, 15);
@@ -150,7 +150,7 @@ void main(int argc, char *argv[])
 	while(!IN_KeyDown(sc_Escape))
 	{
 		IN_ReadControl(&gvar.player[0]);
-		ZC_panPageManual(&MVVAR, &gvar.player, 0);
+		ZC_panPageManual(&gvar.mv, &gvar.player, 0);
 //			if(IN_KeyDown(sc_5)){ modexClearRegion(&gvar.video.page[1],  gvar.video.page[1].sw, 16, 8, 4, 45); }
 // 			if(IN_KeyDown(sc_4)){
 // 				modexClearRegion(&gvar.video.page[1], 16, 16, gvar.video.page[1].sw, gvar.video.page[1].sh, 128);
@@ -174,7 +174,7 @@ void main(int argc, char *argv[])
 		if(IN_KeyDown(sc_I)){ drawboxesmodex(&gvar.video.page[gvar.video.sp]); IN_UserInput(1); }//i
 		if(IN_KeyDown(sc_O)){ copyboxesmodex(&gvar.video.page, !gvar.video.sp); IN_UserInput(1); }//o
 		//VL_ShowPage(&gvar.video.page[gvar.video.sp], 0, 0);
-		ZC_ShowMV(&MVVAR, 0, 0);
+		ZC_ShowMV(&gvar.mv, 0, 0);
 	}
 
 	endclk = *clockw;
@@ -187,7 +187,7 @@ void main(int argc, char *argv[])
 	printf("Project 16 test.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	VL_PrintmodexmemInfo(&gvar.video);
-	printf("tx=%d	", MVVAR[gvar.video.sp].tx); printf("ty=%d	", MVVAR[gvar.video.sp].ty); printf("gvar.player.d=%d\n", gvar.player[0].enti.d);
+	printf("tx=%d	", gvar.mv[gvar.video.sp].tx); printf("ty=%d	", gvar.mv[gvar.video.sp].ty); printf("gvar.player.d=%d\n", gvar.player[0].enti.d);
 	printf("\n====\n");
 	printf("0	paloffset=	%d\n", paloffset/3);
 	printf("====\n\n");
