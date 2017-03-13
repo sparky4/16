@@ -203,9 +203,9 @@ int newloadmap(char *mn, map_t *map) {
 	else if(status != tokcount) { printf("Warning: used %d tok\n", status);}
 	extract_map(js, tok, tokcount, map);
 
-	free(js);
-	free(tok);
-	fclose(fh);
+	free(js);	//TODO: USE MM_ CA_ AND PM_
+	free(tok);	//TODO: USE MM_ CA_ AND PM_
+	fclose(fh);	//TODO: USE MM_ CA_ AND PM_
 
 	return 0;
 }
@@ -230,7 +230,7 @@ int CA_loadmap(char *mn, map_t *map, global_game_variables_t *gvar)
 	file_s = filesize(fh);
 	CA_LoadFile(mn, &MAPBUFINLM, gvar);
 	tokcount = jsmn_parse(&p, MAPBUFINLM, file_s, NULL, 0);
-	tok = malloc(tokcount*sizeof(jsmntok_t));
+	tok = malloc(tokcount*sizeof(jsmntok_t));//TODO: USE MM_ CA_ AND PM_
 //	printf("Allocated %d tokens", tokcount);
 	jsmn_init(&p);
 	if((status = jsmn_parse(&p, MAPBUFINLM, file_s, tok, tokcount)) < 0)
@@ -241,8 +241,8 @@ int CA_loadmap(char *mn, map_t *map, global_game_variables_t *gvar)
 	else if(status != tokcount) { printf("Warning: used %d tok\n", status);}
 	extract_map(MAPBUFINLM, tok, tokcount, map);
 
-	free(tok);
-	fclose(fh);
+	free(tok);	//TODO: USE MM_ CA_ AND PM_
+	fclose(fh);	//TODO: USE MM_ CA_ AND PM_
 
 	return 0;
 }

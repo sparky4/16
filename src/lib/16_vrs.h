@@ -28,7 +28,7 @@
 //#include <hw/dos/dos.h>
 #include <hw/vga/vrl.h>
 #include "src/lib/16_ca.h"
-
+/*
 struct vrs_container{
 	// Size of a .vrs lob in memory
 	// minus header
@@ -40,7 +40,7 @@ struct vrs_container{
 	// Array of corresponding vrl line offsets
 	vrl1_vgax_offset_t **vrl_line_offsets;
 };
-
+*//*
 struct vrl_container{
 	// Size of a .vrl blob in memory
 	// minus header
@@ -52,7 +52,7 @@ struct vrl_container{
 	// Pointer to a corresponding vrl line offsets struct
 	vrl1_vgax_offset_t *line_offsets;
 };
-
+*/
 /* Read .vrs file into memory
 * In:
 * + char *filename - name of the file to load

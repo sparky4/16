@@ -66,12 +66,38 @@ typedef struct {
 
 //from 16_sprit.h
 #ifdef	__WATCOMC__
+#include <hw/vga/vrl.h>
+
+typedef struct vrs_container{
+	// Size of a .vrs blob in memory
+	// minus header
+	dword data_size;
+	union{
+		byte far *buffer;
+		struct vrs_header far *vrs_hdr;
+	};
+	// Array of corresponding vrl line offsets
+	vrl1_vgax_offset_t **vrl_line_offsets;
+} vrs_container_t;
+
+typedef struct vrl_container{
+	// Size of a .vrl blob in memory
+	// minus header
+	dword data_size;
+	union{
+		byte far *buffer;
+		struct vrl1_vgax_header far *vrl_header;
+	};
+	// Pointer to a corresponding vrl line offsets struct
+	vrl1_vgax_offset_t *line_offsets;
+} vrl_container_t;
+
 typedef struct sprite
 {
 	// VRS container from which we will extract animation and image data
-	struct vrs_container *spritesheet;
+	vrs_container_t	spritesheet;
 	// Container for a vrl sprite
-	struct vrl_container *sprite_vrl_cont;
+	vrl_container_t	sprite_vrl_cont;
 	// Current sprite id
 	int curr_spri_id;
 	// Index of a current sprite in an animation sequence
