@@ -432,9 +432,7 @@ www: .symbolic
 	@$(REMOVECOMMAND) /var/www/*.zip.zi*
 	@for %f in ($(EXEC)) do @if exist %f @$(COPYCOMMAND) %f /var/www/
 	@./src/util/z.sh $(EXEC) $(EXEC)
-	@7z a -r data.zip data
-	@./src/util/z.sh data.zip data
-	@$(REMOVECOMMAND) data.zip
+	@./src/util/z2.sh data.zip data
 	@wmake -h wwwext
 
 wwwext: .symbolic
