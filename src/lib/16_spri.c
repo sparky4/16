@@ -25,11 +25,7 @@
 char* get_curr_anim_name(struct sprite *spri)
 {
 	// Retrive animation name list
-#ifndef VRSVRLNONPTR
-	struct vrs_header far *vrs = spri->spritesheet->vrs_hdr;
-#else
 	struct vrs_header far *vrs = spri->spritesheet.vrs_hdr;
-#endif
 	uint32_t far *anim_names_offsets = 	(uint32_t far *)
 						((byte far *)vrs +
 						 vrs->offset_table[VRS_HEADER_OFFSET_ANIMATION_NAME_LIST]);
@@ -39,11 +35,7 @@ char* get_curr_anim_name(struct sprite *spri)
 
 void init_anim(struct sprite *spri, int anim_index)
 {
-#ifndef VRSVRLNONPTR
-	struct vrs_header far *vrs = spri->spritesheet->vrs_hdr;
-#else
 	struct vrs_header far *vrs = spri->spritesheet.vrs_hdr;
-#endif
 	uint32_t far *anim_lists_offsets = 	(uint32_t far *)
 						((byte far *)vrs +
 						 vrs->offset_table[VRS_HEADER_OFFSET_ANIMATION_LIST]);
@@ -64,11 +56,7 @@ int set_anim_by_id(struct sprite *spri, int anim_id)
 {
 	int new_anim_index = 0;
 	int iter_id;
-#ifndef VRSVRLNONPTR
-	struct vrs_header far *vrs = spri->spritesheet->vrs_hdr;
-#else
 	struct vrs_header far *vrs = spri->spritesheet.vrs_hdr;
-#endif
 	// Retruve animation ids list
         uint16_t far *anim_ids =	(uint16_t far *)
 					((byte far *)vrs +
@@ -92,11 +80,7 @@ void print_anim_ids(struct sprite *spri)
 {
 	int new_anim_index = 0;
 	int iter_id;
-#ifndef VRSVRLNONPTR
-	struct vrs_header far *vrs = spri->spritesheet->vrs_hdr;
-#else
 	struct vrs_header far *vrs = spri->spritesheet.vrs_hdr;
-#endif
 	// Retruve animation ids list
         uint16_t far *anim_ids =	(uint16_t far *)
 					((byte far *)vrs +
@@ -164,11 +148,7 @@ void animate_spri(entity_t *enti, video_t *video)
 
 
 	// Draw sprite
-#ifndef VRSVRLNONPTR
-	j = get_vrl_by_id(enti->spri.spritesheet, enti->spri.curr_spri_id, enti->spri.sprite_vrl_cont);
-#else
 	j = get_vrl_by_id(&enti->spri.spritesheet, enti->spri.curr_spri_id, &enti->spri.sprite_vrl_cont);
-#endif
 	if(j < 0)
 	{
 		//Quit (gv, "Error retriving required sprite");
@@ -182,13 +162,8 @@ void animate_spri(entity_t *enti, video_t *video)
 			else rx = -(video->page[0].dx);
 		if (y >= enti->overdrawh) ry = (y - enti->overdrawh);
 			else ry = -(video->page[0].dy);
-#ifndef VRSVRLNONPTR
-		h = enti->spri.sprite_vrl_cont->vrl_header->height + enti->overdrawh + y - ry;
-		w = (x + enti->spri.sprite_vrl_cont->vrl_header->width + (enti->overdraww*2) + 3 - rx) & (~3) - enti->overdraww;//round up
-#else
 		h = enti->spri.sprite_vrl_cont.vrl_header->height + enti->overdrawh + y - ry;
 		w = (x + enti->spri.sprite_vrl_cont.vrl_header->width + (enti->overdraww*2) + 3 - rx) & (~3) - enti->overdraww;//round up
-#endif
 		if ((rx+w) > video->page[0].width) w = video->page[0].width-rx;
 		if ((ry+h) > video->page[0].height) h = video->page[0].height-ry;
 
@@ -215,17 +190,10 @@ void animate_spri(entity_t *enti, video_t *video)
 	draw_vrl1_vgax_modex(
 		x-rx,
 		y-ry,
-#ifndef VRSVRLNONPTR
-		enti->spri.sprite_vrl_cont->vrl_header,
-		enti->spri.sprite_vrl_cont->line_offsets,
-		enti->spri.sprite_vrl_cont->buffer + sizeof(struct vrl1_vgax_header),
-		enti->spri.sprite_vrl_cont->data_size
-#else
 		enti->spri.sprite_vrl_cont.vrl_header,
 		enti->spri.sprite_vrl_cont.line_offsets,
 		enti->spri.sprite_vrl_cont.buffer + sizeof(struct vrl1_vgax_header),
 		enti->spri.sprite_vrl_cont.data_size
-#endif
 	);
 #endif
 	if(!video->rss)

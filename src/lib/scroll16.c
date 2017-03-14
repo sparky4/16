@@ -576,13 +576,8 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 			modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, 1); //currently the over scan color!
 		break;
 		default:
-#ifndef VRSVRLNONPTR
-			rx = (((i-1) % ((t->spri->sprite_vrl_cont->vrl_header->width)/t->tileWidth)) * t->tileWidth);
-			ry = (((i-1) / ((t->spri->sprite_vrl_cont->vrl_header->height)/t->tileHeight)) * t->tileHeight);
-#else
 			rx = (((i-1) % ((t->spri->sprite_vrl_cont.vrl_header->width)/t->tileWidth)) * t->tileWidth);
 			ry = (((i-1) / ((t->spri->sprite_vrl_cont.vrl_header->height)/t->tileHeight)) * t->tileHeight);
-#endif
 #ifndef TILERENDER
 			if(!pagenorendermap) modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, i+1);
 #else

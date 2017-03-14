@@ -67,7 +67,6 @@ typedef struct {
 //from 16_sprit.h
 #ifdef	__WATCOMC__
 #include <hw/vga/vrl.h>
-#define VRSVRLNONPTR
 
 typedef struct vrs_container{
 	// Size of a .vrs blob in memory
@@ -96,17 +95,9 @@ typedef struct vrl_container{
 typedef struct sprite
 {
 	// VRS container from which we will extract animation and image data
-#ifndef VRSVRLNONPTR
-	vrs_container_t	*spritesheet;
-#else
 	vrs_container_t	spritesheet;
-#endif
 	// Container for a vrl sprite
-#ifndef VRSVRLNONPTR
-	vrl_container_t	*sprite_vrl_cont;
-#else
 	vrl_container_t	sprite_vrl_cont;
-#endif
 	// Current sprite id
 	int curr_spri_id;
 	// Index of a current sprite in an animation sequence

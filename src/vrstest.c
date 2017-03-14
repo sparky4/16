@@ -154,10 +154,6 @@ void main()
 	MM_DumpData(&gvar);
 	MM_Report_(&gvar);
 	Shutdown16(&gvar);
-#ifndef VRSVRLNONPTR
-	free(enti.spri.sprite_vrl_cont);
-	free(enti.spri.spritesheet->vrl_line_offsets);
-#endif
 	MM_FreePtr(&bigbuffer, &gvar);
 	//MM_FreePtr(&((void __based(sega)*)enti.spri.spritesheet->buffer), &mm);
 	//printf("CPU to VGA: %f\n", t1);
