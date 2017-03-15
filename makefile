@@ -24,6 +24,11 @@
 # -zk0u	translate kanji to unicode... wwww
 # -zk0	kanji support~
 # -zkl		current codepage
+# -zd{f,p} DS floats vs DS pegged to DGROUP
+# -zu SS != DGROUP
+# -zp{1,2,4,8,16} struct packing align.
+# -ei force enums to be type int
+# -wo diagnose problems in overlaid code
 
 # this enables debug output to the serial port.
 # comment this out on game release.
@@ -109,9 +114,9 @@ UPXQ=-qqq
 # compile flags
 #
 S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k24576#32768
-Z_FLAGS=-zk0 -zc -zp8 -zm
-O_FLAGS=-opnr -oe=24 -oil+ -outback -ohm				-zp4##-ei
-T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 -d1 -fo=.$(OBJ) ##-e=65536
+Z_FLAGS=-zk0 -zc -zm#### -zp4 -ei
+O_FLAGS=-opnr -oe=24 -oil+ -outback -ohm
+T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 -d1 -fo=.$(OBJ)##-e=65536
 
 DBUGFLAGS=-fm=$^&.meh -fd=$^&
 CPPFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1
