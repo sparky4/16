@@ -56,11 +56,11 @@ MK_FP(segment value, 0)*/
 //typedef void __based( void ) * memptr;	////old //----typedef void __based(__self) * memptr;
 //typedef unsigned short _seg; // it will contains segment value (as Borland _seg)
 #define _seg __based( void )
-#define __SEGA __segment
+// #define __SEGA __segment
 #endif
 #ifdef __BORLANDC__
 #define _memavl()               coreleft()
-#define __SEGA _seg
+// #define __SEGA _seg
 #endif
 
 typedef void _seg * memptr;

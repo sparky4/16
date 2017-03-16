@@ -2090,7 +2090,7 @@ void CA_SetAllPurge (global_game_variables_t *gvar)
 //
 // free cursor sprite and background save
 //
-	//VW_FreeCursor ();
+	//____VW_FreeCursor ();
 
 //
 // free map headers and map planes
@@ -2101,14 +2101,14 @@ void CA_SetAllPurge (global_game_variables_t *gvar)
 
 	for (i=0;i<3;i++)
 		if (gvar->ca.mapsegs[i])
-			MM_FreePtr (gvar->ca.mapsegs[i], gvar);
+			MM_FreePtr ((memptr *)&gvar->ca.mapsegs[i], gvar);
 
 //
 // free sounds
 //
 	for (i=0;i<NUMSNDCHUNKS;i++)
 		if (gvar->ca.audiosegs[i])
-			MM_SetPurge (gvar->ca.audiosegs[i],3, gvar);
+			MM_SetPurge ((memptr *)&gvar->ca.audiosegs[i],3, gvar);
 
 //
 // free graphics

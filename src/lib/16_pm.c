@@ -803,8 +803,7 @@ PML_OpenPageFile(global_game_variables_t *gvar)
 {
 	int				i;
 	long			size;
-				//__SEGA buf;
-	memptr		buf;
+	void			_seg *buf;
 	dword		far *offsetptr;
 	word			far *lengthptr;
 	PageListStruct	far *page;
@@ -823,14 +822,14 @@ PML_OpenPageFile(global_game_variables_t *gvar)
 
 	// Allocate and clear the page list
 	gvar->pm.PMNumBlocks = gvar->pm.fi.ChunksInFile;
-	MM_GetPtr((memptr *)gvar->pm.PMSegPages, sizeof(PageListStruct) * (gvar->pm.PMNumBlocks), gvar);
-	MM_SetLock((memptr *)gvar->pm.PMSegPages,true, gvar);
+	MM_GetPtr((memptr *)&gvar->pm.PMSegPages, sizeof(PageListStruct) * (gvar->pm.PMNumBlocks), gvar);
+	MM_SetLock((memptr *)&gvar->pm.PMSegPages,true, gvar);
 	gvar->pm.PMPages = (PageListStruct far *)gvar->pm.PMSegPages;
 	_fmemset(gvar->pm.PMPages,0,sizeof(PageListStruct) * gvar->pm.PMNumBlocks);
 
 	// Read in the chunk offsets
 	size = sizeof(dword) * gvar->pm.fi.ChunksInFile;
-	MM_GetPtr(&buf, size, gvar);
+	MM_GetPtr((memptr *)&buf, size, gvar);
 	if (!CA_FarRead(gvar->pm.fi.PageFile,(byte far *)buf,size, gvar))
 	{
 		Quit (gvar, "PML_OpenPageFile: Offset read failed");
@@ -839,7 +838,7 @@ PML_OpenPageFile(global_game_variables_t *gvar)
 	offsetptr = (dword far *)buf;
 	for (i = 0,page = gvar->pm.PMPages;i < gvar->pm.fi.ChunksInFile;i++,page++)
 		page->offset = *offsetptr++;
-	MM_FreePtr(&buf, gvar);
+	MM_FreePtr((memptr *)&buf, gvar);
 
 	// Read in the chunk lengths
 	size = sizeof(word) * gvar->pm.fi.ChunksInFile;
@@ -852,7 +851,7 @@ PML_OpenPageFile(global_game_variables_t *gvar)
 	lengthptr = (word far *)buf;
 	for (i = 0,page = gvar->pm.PMPages;i < gvar->pm.fi.ChunksInFile;i++,page++)
 		page->length = *lengthptr++;
-	MM_FreePtr(&buf, gvar);
+	MM_FreePtr((memptr *)&buf, gvar);
 }
 
 //
@@ -865,8 +864,8 @@ PML_ClosePageFile(global_game_variables_t *gvar)
 		close(gvar->pm.fi.PageFile);
 	if (gvar->pm.PMSegPages)
 	{
-		MM_SetLock((memptr)gvar->pm.PMSegPages,false, gvar);
-		MM_FreePtr((memptr)gvar->pm.PMSegPages, gvar);
+		MM_SetLock((memptr *)&gvar->pm.PMSegPages,false, gvar);
+		MM_FreePtr((void _seg *)&gvar->pm.PMSegPages, gvar);
 	}
 }
 
@@ -1531,7 +1530,7 @@ PM_Shutdown(global_game_variables_t *gvar)
 	if (!gvar->pm.PMStarted)
 		return;
 
-	//PML_ClosePageFile(gvar);
+	//0000+=+=PML_ClosePageFile(gvar);
 
 	PML_ShutdownMainMem(gvar);
 }

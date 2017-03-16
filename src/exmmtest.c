@@ -48,7 +48,7 @@
 
 #define BBUFNAME gvar.ca.tinf[0]//bigbuffer
 //#define INITBBUF static memptr BBUFNAME;
-#define BBUFPTR	&BBUFNAME
+#define BBUFPTR	(memptr *)&BBUFNAME
 
 #ifdef __BORLANDC__
 #define BBUF		(memptr *)BBUFPTR//
@@ -59,6 +59,7 @@
 #define BBUFSTRING	BBUF
 #endif
 
+////////////////////////////////////////////////////////////////////////////
 
 void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
 {

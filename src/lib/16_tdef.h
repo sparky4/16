@@ -562,8 +562,8 @@ typedef struct
 					MainPagesUsed,
 					PMNumBlocks;
 	long			PMFrameCount;
-	PageListStruct	far *PMPages;
-	memptr/*__SEGA*/ *PMSegPages;
+	PageListStruct	far *PMPages,
+					_seg *PMSegPages;
 	pm_mmi_t	mm;
 	pm_emmi_t	emm;
 	pm_xmmi_t	xmm;
@@ -587,7 +587,7 @@ typedef struct
 typedef struct
 {
 	int		mapon, mapnum;
-	//__SEGA	*mapheaderseg[NUMMAPS];
+	//maptype		_seg	*mapheaderseg[NUMMAPS];
 } ca_mapinfo_t;
 
 typedef struct
@@ -596,23 +596,37 @@ typedef struct
 	int			grhandle[4];		// handle to EGAGRAPH
 	int			audiohandle[4];	// handle to AUDIOT / AUDIO
 } ca_handle_t;
-
+/*
+ 16/wf3d8086/id_ca.c:byte 		_seg	*tinf;
+16/wf3d8086/id_ca.c:unsigned	_seg	*mapsegs[MAPPLANES];
+16/wf3d8086/id_ca.c:maptype		_seg	*mapheaderseg[NUMMAPS];
+16/wf3d8086/id_ca.c:byte		_seg	*audiosegs[NUMSNDCHUNKS];
+16/wf3d8086/id_ca.c:void		_seg	*grsegs[NUMCHUNKS];
+16/wf3d8086/id_ca.c:long		_seg *grstarts;	// array of offsets in egagraph, -1 for sparse
+16/wf3d8086/id_ca.c:long		_seg *audiostarts;	// array of offsets in audio / audiot
+16/wf3d8086/id_ca.c:	grstarts = (long _seg *)FP_SEG(&EGAhead);
+16/wf3d8086/id_ca.c:	tinf = (byte _seg *)FP_SEG(&maphead);
+16/wf3d8086/id_ca.c:		pos = ((mapfiletype	_seg *)tinf)->headeroffsets[i];
+16/wf3d8086/id_ca.c:	audiostarts = (long _seg *)FP_SEG(&audiohead);
+16/wf3d8086/id_ca.c:		((mapfiletype _seg *)tinf)->RLEWtag);
+16/wf3d8086/id_ca.c:		((mapfiletype _seg *)tinf)->RLEWtag);
+16/wf3d8086/id_ca.c:					source = (byte _seg *)bufferseg+(pos-bufferstart);*/
 typedef struct	//TODO: USE THIS!!!!
 {
 	byte	ca_levelbit,ca_levelnum;
 	ca_handle_t		file;		//files to open
 	ca_mapinfo_t	camap;
 
-	memptr/*__SEGA*/	mapsegs[MAP_LAYERS];
-	memptr/*__SEGA*/	*grsegs[NUMCHUNKS];
+	unsigned	_seg	*mapsegs[MAP_LAYERS];
+	void		_seg	*grsegs[NUMCHUNKS];
 	byte		far		grneeded[NUMCHUNKS];
-	memptr/*byte _seg*/	*audiosegs[NUMSNDCHUNKS];
+	word		_seg *audiosegs[NUMSNDCHUNKS];//long
 
-	long		_seg *grstarts;	// array of offsets in egagraph, -1 for sparse
-	long		_seg *audiostarts;	// array of offsets in audio / audiot
+	word		_seg	*grstarts;	// array of offsets in egagraph, -1 for sparse//long
+	word		_seg	*audiostarts;	// array of offsets in audio / audiot//long
 
 	//misc memptr
-	memptr tinf[4];
+	byte		_seg	*tinf[4];
 
 	huffnode huffnode;
 

@@ -85,7 +85,7 @@ main(int argc, char *argv[])
 	fprintf(stdout, "&map.data==%Fp\n", map.data);*/
 #endif
 	//fprintf(stderr, "here comes dat boi!\n"); getch(); fprintf(stderr, "%s", datboi);
-	MM_FreePtr(&(gvar.ca.mapsegs), &gvar);
+	MM_FreePtr((memptr *)&(gvar.ca.mapsegs), &gvar);
 	PM_Shutdown(&gvar);
 	CA_Shutdown(&gvar);
 	MM_Shutdown(&gvar);

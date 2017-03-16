@@ -1168,7 +1168,7 @@ void MM_SortMem(global_game_variables_t *gvar)
 			playing += STARTADLIBSOUNDS;
 			break;
 		}
-		MM_SetLock(&(memptr)audiosegs[playing],true);
+		MM_SetLock((memptr *)&audiosegs[playing],true);
 	}
 
 
@@ -1244,7 +1244,7 @@ void MM_SortMem(global_game_variables_t *gvar)
 //	VW_ColorBorder (oldborder);
 
 /*++++	if(playing)
-		MM_SetLock(&(memptr)audiosegs[playing],false);*/
+		MM_SetLock((memptr *)&audiosegs[playing],false);*/
 }
 
 //==========================================================================
