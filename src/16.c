@@ -52,4 +52,10 @@ main(int argc, char *argv[])
 	printf("version %s\n", VERSION);
 	WCPU_cpufpumesg();
 	modexFadeOn(4, gvar.video.dpal);
+//	InitGame ();
+
+//	DemoLoop();
+
+//	Quit("Demo loop exited???");
+
 }
