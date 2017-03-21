@@ -215,7 +215,7 @@ SPRIUTILEXEC = &
 	pcxsscut &
 	vrl2vrs &
 	vrsdump
-UTILEXEC += $(SPRIUTILEXEC)
+#UTILEXEC += $(SPRIUTILEXEC)
 !endif
 
 EXEC = &
@@ -223,9 +223,9 @@ EXEC = &
 	bakapi.exe &
 	$(TESTEXEC)
 
-!ifdef __LINUX__
-EXEC += $(SPRIUTILEXEC)
-!endif
+#!ifdef __LINUX__
+#EXEC += $(SPRIUTILEXEC)
+#!endif
 
 ALLEXEC = &
 	$(EXEC) &
@@ -384,7 +384,8 @@ clean: .symbolic
 	@. src/util/bcexmm.sh
 	@if exist *.EXE $(REMOVECOMMAND) *.EXE
 	@if exist *.OBJ $(REMOVECOMMAND) *.OBJ
-	@for %f in ($(SPRIUTILEXEC)) do @if exist %f $(REMOVECOMMAND) %f
+	#@for %f in ($(SPRIUTILEXEC)) do @if exist %f $(REMOVECOMMAND) %f
+	@if not exist vrl2vrs wmake -h vrs
 !else
 	@if exist *.o $(REMOVECOMMAND) *.o
 !endif
