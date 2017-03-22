@@ -8,6 +8,7 @@
 *.[O]
 *.BCO
 *.*~
+FUCK
 *.err
 *.ERR
 *.lib
@@ -25,13 +26,7 @@ __wcl__.lnk
 img
 !.git/config
 !.gitmodules
-pcx2vrl
-pcxsscut
-vrl2vrs
-vrsdump
 # except foo.html which is maintained by hand.
 #!foo.html
 # Ignore objects and archives.
 *.[oa]
-#*.16W
-#*.16B

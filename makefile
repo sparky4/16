@@ -73,6 +73,7 @@ SPRI=$(DATADIR)/spri
 SRC=src
 UTIL=$(SRC)/util
 GITCONFIGDIR=$(UTIL)/git
+SCRIPTBATDIR=$(UTIL)/shbat
 SRCLIB=$(SRC)/lib
 JSMNLIB=$(SRCLIB)/jsmn
 NYANLIB=$(SRCLIB)/nyan
@@ -417,14 +418,36 @@ clean: .symbolic
 
 nuke: .symbolic
 	@wmake clean
+	@wmake backupscript
 	@wmake cldl
 	@wmake all
 	@wmake comp
 
 backupconfig: .symbolic
-	@$(COPYCOMMAND) .git$(DIRSEP)config $(GITCONFIGDIR)git_con.fig
-	@$(COPYCOMMAND) .gitmodules $(GITCONFIGDIR)git_modu.les
-	@$(COPYCOMMAND) .gitignore $(GITCONFIGDIR)git_igno.re
+	@$(COPYCOMMAND) .git$(DIRSEP)config $(GITCONFIGDIR)/git_con.fig
+	@$(COPYCOMMAND) .gitmodules $(GITCONFIGDIR)/git_modu.les
+	@$(COPYCOMMAND) .gitignore $(GITCONFIGDIR)/git_igno.re
+
+initconfig:
+	@$(COPYCOMMAND) $(GITCONFIGDIR)/git_con.fig .git/config
+	@$(COPYCOMMAND) $(GITCONFIGDIR)/git_modu.les .gitmodules
+	@$(COPYCOMMAND) $(GITCONFIGDIR)/git_igno.re .gitignore
+
+
+backupscript: .symbolic
+	@if exist *.bat $(MOVECOMMAND) *.bat $(SCRIPTBATDIR)/
+	@if exist *.sh $(MOVECOMMAND) *.sh $(SCRIPTBATDIR)/
+!ifdef __LINUX__
+	@if exist *.BAT $(MOVECOMMAND) *.BAT $(SCRIPTBATDIR)/
+!endif
+
+initscript: .symbolic
+	@if not exist *.bat $(COPYCOMMAND) $(SCRIPTBATDIR)/*.bat ./
+	@if not exist *.sh $(COPYCOMMAND) $(SCRIPTBATDIR)/*.sh ./
+!ifdef __LINUX__
+	@if not exist *.BAT $(COPYCOMMAND) $(SCRIPTBATDIR)/*.BAT ./
+!endif
+
 
 comp: .symbolic
 	@*upx -9 $(EXEC)
@@ -501,9 +524,7 @@ reinitlibs: .symbolic
 	@wmake -h initlibs
 
 initlibs: .symbolic
-	@$(COPYCOMMAND) $(GITCONFIGDIR)git_con.fig .git/config
-	@$(COPYCOMMAND) $(GITCONFIGDIR)git_modu.les .gitmodules
-	@$(COPYCOMMAND) $(GITCONFIGDIR)git_igno.re .gitignore
+	@wmake -h initconfig
 	@wmake -h getlib
 	@cd 16
 	@git clone https://github.com/FlatRockSoft/CatacombApocalypse.git

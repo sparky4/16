@@ -5,6 +5,7 @@
 #fi
 wmake -h www
 wmake -h clean
+wmake -h backupscript
 if [ -z "$*" ]; then
 		pee="wwww"
 	else
@@ -12,6 +13,7 @@ if [ -z "$*" ]; then
 fi
 ##echo "$pee"
 git add .
-. ./boop.sh "$pee"
+. src/util/shbat/boop.sh "$pee"
+wmake -h initscript
 . ./wbuild.sh
 ##. ./mkdld.sh# slow compile ww
