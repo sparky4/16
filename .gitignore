@@ -20,9 +20,12 @@ LICENCE~
 *.meh
 *.MEH
 __wcl__.lnk
-!bcexmm.map
+#!bcexmm.map
 !makefile
 !modex.lib
+!wbuild.sh
+!WBUILD.BAT
+!ud.sh
 img
 !.git/config
 !.gitmodules

@@ -379,6 +379,7 @@ ll.$(OBJ):		$(SRCLIB)/ll.c	$(SRCLIB)/ll.h
 #
 clean: .symbolic
 	@if not exist $(DOSLIBDIR)/buildall.sh wmake -h initlibs
+	@wmake -h initscript
 	@for %f in ($(ALLEXEC)) do @if exist %f $(REMOVECOMMAND) %f
 !ifdef __LINUX__
 	@if exist *.LIB $(REMOVECOMMAND) *.LIB
@@ -439,13 +440,16 @@ backupscript: .symbolic
 	@if exist *.sh $(MOVECOMMAND) *.sh $(SCRIPTBATDIR)/
 !ifdef __LINUX__
 	@if exist *.BAT $(MOVECOMMAND) *.BAT $(SCRIPTBATDIR)/
+	@if not exist ud.sh $(COPYCOMMAND) $(SCRIPTBATDIR)/ud.sh ./
 !endif
+	@if not exist wbuild.sh $(COPYCOMMAND) $(SCRIPTBATDIR)/wbuild.sh ./
+	@if not exist WBUILD.BAT $(COPYCOMMAND) $(SCRIPTBATDIR)/WBUILD.BAT ./
 
 initscript: .symbolic
-	@if not exist *.bat $(COPYCOMMAND) $(SCRIPTBATDIR)/*.bat ./
-	@if not exist *.sh $(COPYCOMMAND) $(SCRIPTBATDIR)/*.sh ./
+	@$(COPYCOMMAND) $(SCRIPTBATDIR)/*.bat ./
+	@$(COPYCOMMAND) $(SCRIPTBATDIR)/*.sh ./
 !ifdef __LINUX__
-	@if not exist *.BAT $(COPYCOMMAND) $(SCRIPTBATDIR)/*.BAT ./
+	@$(COPYCOMMAND) $(SCRIPTBATDIR)/*.BAT ./
 !endif
 
 
