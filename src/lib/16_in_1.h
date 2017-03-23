@@ -34,11 +34,11 @@
 #include "src/lib/16_head.h"
 #include "src/lib/16_timer.h"
 #include "src/lib/16_dbg.h"
-/*#ifdef __WATCOMC__	//borland C BCEXMM.EXE
+#ifdef __WATCOMC__	//borland C BCEXMM.EXE
 #include "src/lib/16_spri.h"
 #include "src/lib/16_enti.h"
-#endif*/
-#define	__DEBUG_InputMgr2__
+#endif
+
 #define	KeyInt	9	// The keyboard ISR number
 
 // Stuff for the joystick
@@ -216,7 +216,7 @@ typedef	struct		{
 extern	void		IN_Startup(global_game_variables_t *gvar),IN_Shutdown(global_game_variables_t *gvar),
 					IN_Default(boolean gotit,player_t *player,ControlType nt, global_game_variables_t *gvar),
 					IN_SetKeyHook(void (*)()),
-					IN_ClearKeysDown(global_game_variables_t *gvar),
+					IN_ClearKeysDown(void),
 					IN_ReadCursor(CursorInfo *, global_game_variables_t *gvar),
 					IN_ReadControl(player_t *player, global_game_variables_t *gvar),
 					IN_SetControlType(player_t *player,ControlType type),
@@ -228,8 +228,8 @@ extern	void		IN_Startup(global_game_variables_t *gvar),IN_Shutdown(global_game_v
 #endif
 					IN_Ack(global_game_variables_t *gvar),IN_AckBack(void);
 extern	boolean		IN_UserInput(word delay, global_game_variables_t *gvar);
-extern	char		IN_WaitForASCII(global_game_variables_t *gvar);
-extern	ScanCode	IN_WaitForKey(global_game_variables_t *gvar);
+extern	char		IN_WaitForASCII(void);
+extern	ScanCode	IN_WaitForKey(void);
 extern	word		IN_GetJoyButtonsDB(word joy);
 extern	byte		*IN_GetScanName(ScanCode);
 
@@ -250,9 +250,9 @@ void IN_StopDemo(void);
 void IN_FreeDemoBuffer(void);
 #endif
 
-boolean	IN_KeyDown(byte code, global_game_variables_t *gvar),
-		IN_qb(byte kee, global_game_variables_t *gvar);
-void		IN_ClearKey(byte code, global_game_variables_t *gvar),
+boolean	IN_KeyDown(byte code),
+		IN_qb(byte kee);
+void		IN_ClearKey(byte code),
 		IN_KbdLED();
 ScanCode	IN_GetLastScan(),
 		IN_GetCurCode();

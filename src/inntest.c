@@ -52,7 +52,7 @@ main(int argc, char *argv[])
 //0000	booleantest(){}
 	//printf("dbg_testkeyin=%u	dbg_testcontrolnoisy=%u	dbg_nogvar.playerinpu=%u\nloop if this is not responsive then please KILL or reset machine sorry!!\n", dbg_testkeyin, dbg_testcontrolnoisy, dbg_nogvar.playerinpu);
 	printf("\nloop\n");
-	while(!IN_KeyDown(sc_Escape, &gvar))
+	while(!IN_KeyDown(sc_Escape))
 	{
 //0000		shinkutxt(&gvar);
 		IN_ReadControl(&gvar.player[0], &gvar);
@@ -92,9 +92,9 @@ main(int argc, char *argv[])
 	}*/
 		//printf("%u\n", IN_KeyDown(sc_Escape, &gvar));
 		//if(gvar.in.Keyboard[sc_Escape])
-			printf("gvar.in.Keyboard[sc_Escape]=%u\n", gvar.in.Keyboard[sc_Escape]);
+//			printf("gvar.in.Keyboard[sc_Escape]=%u\n", gvar.in.Keyboard[sc_Escape]);
 		//IN_qb(sc_Enter, &gvar);//>0) printf("IN_qb(sc_9)=%u\n", IN_qb(sc_9));
-		if(IN_KeyDown(88, &gvar))	//speed
+		if(IN_KeyDown(88))	//speed
 		{
 			switch(gvar.kurokku.fpscap)
 			{

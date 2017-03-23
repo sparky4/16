@@ -290,23 +290,24 @@ typedef	struct		{
 typedef struct// inconfig
 {
 	boolean		IN_Started;
-	boolean		CapsLock;
-	ScanCode	CurCode,LastCode;
+//	boolean		CapsLock;
+//	ScanCode	CurCode,LastCode;
 //
 // configuration variables
 //
-	boolean		Keyboard[NumCodes],
-					JoysPresent[MaxJoys],
+//	boolean		Keyboard[NumCodes],
+	boolean		JoysPresent[MaxJoys],
 					MousePresent,
 					JoyPadPresent;
 
 // 	Global variables
-	boolean		Paused;
-	char		LastASCII;
-	ScanCode	LastScan;
+//	boolean		Paused;
+//	char		LastASCII;
+//	ScanCode	LastScan;
 
 	KeyboardDef	KbdDefs[MaxKbds];
 	JoystickDef	JoyDefs[MaxJoys];
+	struct	instat	*inst;
 } in_info_t;
 
 //==========================================================================
