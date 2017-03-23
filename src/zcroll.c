@@ -87,7 +87,7 @@ void main(int argc, char *argv[])
 	VRS_LoadVRS(bakapee1, &gvar.player[0].enti, &gvar);
 
 	// input!
-	IN_Default(0, &gvar.player[0],ctrl_Keyboard1);
+	IN_Default(0, &gvar.player[0],ctrl_Keyboard1, &gvar);
 
 	// save the palette
 #ifdef FADE
@@ -155,7 +155,7 @@ void main(int argc, char *argv[])
 		//when gvar.player[0].tx or gvar.player[0].ty == 0 or gvar.player[0].tx == 20 or gvar.player[0].ty == 15 then stop because that is edge of map and you do not want to walk of the map
 
 		//gvar.player movement
-		IN_ReadControl(&gvar.player[0]);
+		IN_ReadControl(&gvar.player[0], &gvar);
 		if(!panswitch){
 			//ZC_walk2(gvar.player[0].ent, mv);
 			ZC_walk(&gvar.mv, &gvar.player, 0);
@@ -178,7 +178,7 @@ void main(int argc, char *argv[])
 		if(gvar.player[0].enti.q == (TILEWH/(gvar.player[0].enti.speed))+1 && gvar.player[0].info.dir != 2 && (gvar.player[0].enti.triggerx == 5 && gvar.player[0].enti.triggery == 5)){ gvar.player[0].enti.hp--; }
 		//debugging binds!
 
-		if(IN_KeyDown(24)){ modexPalUpdate0(&gvar.video.palette); /*paloffset=0;*/ modexpdump(gvar.mv[0].page); IN_UserInput(1); } //o
+		if(IN_KeyDown(24)){ modexPalUpdate0(&gvar.video.palette); /*paloffset=0;*/ modexpdump(gvar.mv[0].page); IN_UserInput(1, &gvar); } //o
 		if(IN_KeyDown(22)){ modexPalUpdate0(&gvar.video.palette); } //u
 
 		TAIL_FUNCTIONKEYFUNCTIONS
@@ -203,7 +203,7 @@ void main(int argc, char *argv[])
 			VL_LoadPalFile(bakapee1p, &gvar.video.palette);
 		}//JK
 #ifdef FADE
-		if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate(gvar.video.dpal); IN_UserInput(1); }
+		if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate(gvar.video.dpal); IN_UserInput(1, &gvar); }
 #endif
 		if(IN_KeyDown(sc_R)){ modexPalOverscan(rand()%56); } //r
 

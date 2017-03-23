@@ -34,19 +34,19 @@
 #include "src/lib/testpatt.h"
 
 #define TAIL_FUNCTIONKEYFUNCTIONS \
-	if(IN_KeyDown(88)){ panswitch=!panswitch;							IN_UserInput(1); } \
+	if(IN_KeyDown(88)){ panswitch=!panswitch;							IN_UserInput(1, &gvar); } \
 	TAIL_FUNCTIONKEYFUNCTIONS0EXE
 
 #define TAIL_FUNCTIONKEYFUNCTIONS0EXE \
-	if(IN_KeyDown(sc_F4)){ turboXT(12);									IN_UserInput(1); } \
-	if(IN_KeyDown(87/*sc_F11*/)){ pagedelayrendermap=!pagedelayrendermap;		IN_UserInput(1); } \
-	if(IN_KeyDown(68/*sc_F10*/)){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap;		IN_UserInput(1); } \
-	if(IN_KeyDown(sc_F9)){ pagenorendermap=!pagenorendermap;				IN_UserInput(1); } \
-	if(IN_KeyDown(sc_F8)){ gvar.video.bgps=!gvar.video.bgps;					IN_UserInput(1); } \
-	if(IN_KeyDown(sc_F7)){ ZC_ShowMV(&gvar.mv, 0, 1);						IN_UserInput(1); } \
-	if(IN_KeyDown(sc_F6)){ ZC_ShowMV(&gvar.mv, 0, 0);						IN_UserInput(1); } \
-	if(IN_KeyDown(sc_T)){ gvar.video.rss=!gvar.video.rss;						IN_UserInput(1); } \
-	if(IN_KeyDown(sc_P)){ modexpdump(&gvar.video.page[0]);					IN_UserInput(1); }
+	if(IN_KeyDown(sc_F4)){ turboXT(12);									IN_UserInput(1, &gvar); } \
+	if(IN_KeyDown(87/*sc_F11*/)){ pagedelayrendermap=!pagedelayrendermap;		IN_UserInput(1, &gvar); } \
+	if(IN_KeyDown(68/*sc_F10*/)){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap;		IN_UserInput(1, &gvar); } \
+	if(IN_KeyDown(sc_F9)){ pagenorendermap=!pagenorendermap;				IN_UserInput(1, &gvar); } \
+	if(IN_KeyDown(sc_F8)){ gvar.video.bgps=!gvar.video.bgps;					IN_UserInput(1, &gvar); } \
+	if(IN_KeyDown(sc_F7)){ ZC_ShowMV(&gvar.mv, 0, 1);						IN_UserInput(1, &gvar); } \
+	if(IN_KeyDown(sc_F6)){ ZC_ShowMV(&gvar.mv, 0, 0);						IN_UserInput(1, &gvar); } \
+	if(IN_KeyDown(sc_T)){ gvar.video.rss=!gvar.video.rss;						IN_UserInput(1, &gvar); } \
+	if(IN_KeyDown(sc_P)){ modexpdump(&gvar.video.page[0]);					IN_UserInput(1, &gvar); }
 
 #define TAIL_PANKEYFUN \
 	TAIL_PANKEYFUNZC \
@@ -73,13 +73,13 @@
 	if(IN_KeyDown(sc_X)){ TESTBG12 } \
 	if(IN_KeyDown(sc_C)){ TESTBG34 } \
 	if(IN_KeyDown(sc_V)) VL_PatternDraw(&gvar.video, 0, 1, 1); \
-	if(IN_KeyDown(sc_I)){ dbg_maptext=!dbg_maptext; IN_UserInput(1); }
+	if(IN_KeyDown(sc_I)){ dbg_maptext=!dbg_maptext; IN_UserInput(1, &gvar); }
 /*	if(IN_KeyDown(sc_PgDn)){ \
 		rotateR(gvar.video.palette, sizeof(gvar.video.palette)/sizeof(gvar.video.palette[0])); \
-		VL_UpdatePaletteWrite(&gvar.video.palette, 0);		IN_UserInput(1); } \
+		VL_UpdatePaletteWrite(&gvar.video.palette, 0);		IN_UserInput(1, &gvar); } \
 	if(IN_KeyDown(sc_PgUp)){ \
 		rotateL(gvar.video.palette, sizeof(gvar.video.palette)/sizeof(gvar.video.palette[0])); \
-		VL_UpdatePaletteWrite(&gvar.video.palette, 0);		IN_UserInput(1); }*/
+		VL_UpdatePaletteWrite(&gvar.video.palette, 0);		IN_UserInput(1, &gvar); }*/
 
 void DebugMemory_(global_game_variables_t *gvar, boolean q);
 void Shutdown16(global_game_variables_t *gvar);

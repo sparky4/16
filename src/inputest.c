@@ -34,9 +34,9 @@ main(int argc, char *argv[])
 	dbg_testcontrolnoisy=1;
 	start_timer(&gvar);
 	//Startup16(&gvar);
-	IN_Startup();
+	IN_Startup(&gvar);
 	IN_Default(0,&gvar.player[0],
-ctrl_Keyboard1);
+ctrl_Keyboard1, &gvar);
 //ctrl_Joystick1);
 	IN_SetControlType(&gvar.player[0],
 ctrl_Keyboard1);
@@ -52,7 +52,7 @@ ctrl_Keyboard1);
 	while(!IN_KeyDown(sc_Escape))
 	{
 //0000		shinkutxt(&gvar);
-		IN_ReadControl(&gvar.player[0]);
+		IN_ReadControl(&gvar.player[0], &gvar);
 		switch(gvar.player[0].enti.d)
 		{
 		//right movement
@@ -104,7 +104,7 @@ ctrl_Keyboard1);
 			//IN_Ack();
 		}
 	}
-	IN_Shutdown();
+	IN_Shutdown(&gvar);
 		//Shutdown16(&gvar);
 	//printf("%u\n", in.Keyboard[sc_Escape]);
 	printf("inputest.exe ");

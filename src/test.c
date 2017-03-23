@@ -100,7 +100,7 @@ void main(int argc, char *argv[])
 	//====modexPalBlack();
 
 	//IN_Startup();
-	IN_Default(0,&gvar.player[0],ctrl_Keyboard1);
+	IN_Default(0,&gvar.player[0],ctrl_Keyboard1, &gvar);
 	EN_initPlayer(&gvar.player[0], &gvar.video);
 
 	VGAmodeX(1, 1, &gvar);
@@ -149,7 +149,7 @@ void main(int argc, char *argv[])
 	startclk = *clockw;
 	while(!IN_KeyDown(sc_Escape))
 	{
-		IN_ReadControl(&gvar.player[0]);
+		IN_ReadControl(&gvar.player[0], &gvar);
 		ZC_panPageManual(&gvar.mv, &gvar.player, 0);
 //			if(IN_KeyDown(sc_5)){ modexClearRegion(&gvar.video.page[1],  gvar.video.page[1].sw, 16, 8, 4, 45); }
 // 			if(IN_KeyDown(sc_4)){
@@ -170,9 +170,9 @@ void main(int argc, char *argv[])
 			}
 //			if(i>PAL_SIZE) i=0;
 		}//9*/
-		if(IN_KeyDown(25)){ modexpdump(&gvar.video.page[gvar.video.sp]); IN_UserInput(1); }//p
-		if(IN_KeyDown(sc_I)){ drawboxesmodex(&gvar.video.page[gvar.video.sp]); IN_UserInput(1); }//i
-		if(IN_KeyDown(sc_O)){ copyboxesmodex(&gvar.video.page, !gvar.video.sp); IN_UserInput(1); }//o
+		if(IN_KeyDown(25)){ modexpdump(&gvar.video.page[gvar.video.sp]); IN_UserInput(1, &gvar); }//p
+		if(IN_KeyDown(sc_I)){ drawboxesmodex(&gvar.video.page[gvar.video.sp]); IN_UserInput(1, &gvar); }//i
+		if(IN_KeyDown(sc_O)){ copyboxesmodex(&gvar.video.page, !gvar.video.sp); IN_UserInput(1, &gvar); }//o
 		//VL_ShowPage(&gvar.video.page[gvar.video.sp], 0, 0);
 		ZC_ShowMV(&gvar.mv, 0, 0);
 	}

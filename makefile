@@ -196,8 +196,7 @@ TESTEXEC = &
 	zcroll.exe &
 	inputest.exe &
 	vrstest.exe &
-	maptest.exe &
-	inntest.exe
+	maptest.exe
 TESTEXEC2 = &
 	pcxtest.exe &
 	scroll.exe &

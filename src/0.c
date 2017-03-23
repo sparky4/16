@@ -101,8 +101,8 @@ int main(int argc,char **argv)
 	vrl_lineoffs = vrl1_vgax_genlineoffsets(vrl_header,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
 	if (vrl_lineoffs == NULL) return 1;
 
-	IN_Startup();
-	IN_Default(0,&gvar.player[0],ctrl_Keyboard1);
+	IN_Startup(&gvar);
+	IN_Default(0,&gvar.player[0],ctrl_Keyboard1, &gvar);
 	EN_initPlayer(&gvar.player[0], &gvar.video);
 
 	/* setup camera and screen~ */
@@ -140,14 +140,14 @@ int main(int argc,char **argv)
 
 		while(!IN_KeyDown(sc_Escape))
 		{
-			IN_ReadControl(&gvar.player[0]);
-			if(IN_KeyDown(68)){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap; IN_UserInput(1); } //f10
+			IN_ReadControl(&gvar.player[0], &gvar);
+			if(IN_KeyDown(68)){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap; IN_UserInput(1, &gvar); } //f10
 			TAIL_PANKEYFUN;
 			if(IN_KeyDown(sc_Space) || zerostoppause)	//space
 			{
 				anim=!anim;
 				DRAWCORNERBOXES;
-				if(!zerostoppause) IN_UserInput(1); else zerostoppause=0;
+				if(!zerostoppause) IN_UserInput(1, &gvar); else zerostoppause=0;
 			}
 			if(IN_KeyDown(sc_R)){
 				gvar.video.page[0].dx=gvar.video.page[0].dy=gvar.video.page[1].dx=gvar.video.page[1].dy=16;
@@ -213,7 +213,7 @@ draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header
 		}
 	}
 
-	IN_UserInput(1);
+	IN_UserInput(1, &gvar);
 
 //===========================================================================//
 
@@ -301,7 +301,7 @@ if(!noanim) {
 		}
 	}
 }
-	IN_Shutdown();
+	IN_Shutdown(&gvar);
 	VGAmodeX(0, 1, &gvar);
 	free(vrl_lineoffs);
 	buffer = NULL;

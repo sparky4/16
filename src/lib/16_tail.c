@@ -79,7 +79,7 @@ void Startup16(global_game_variables_t *gvar)
 #ifdef __DEBUG_InputMgr__
 	if(!dbg_nointest)
 #endif
-	IN_Startup();
+	IN_Startup(gvar);
 #endif
 #ifdef __16_PM__
 	PM_Startup(gvar);
@@ -110,7 +110,7 @@ void Shutdown16(global_game_variables_t *gvar)
 #ifdef __DEBUG_InputMgr__
 	if(!dbg_nointest)
 #endif
-	IN_Shutdown();
+	IN_Shutdown(gvar);
 #endif
 	CA_Shutdown(gvar);
 	MM_Shutdown(gvar);

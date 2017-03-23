@@ -37,11 +37,11 @@ main(int argc, char *argv[])
 	modexSavePalFile("data/g.pal", gvar.video.palette);
 	VGAmodeX(1, 1, &gvar);
 //	modexPalBlack();	//so player will not see loadings~
-	IN_Default(0,&gvar.player[0],ctrl_Joystick);
+	IN_Default(0,&gvar.player[0],ctrl_Joystick, &gvar);
 	//modexprint(&screen, 32, 32, 1, 2, 0, "a", 1);
 	while(ENGI_QUIT != gvar.engi_stat)
 	{
-		IN_ReadControl(&gvar.player[0]);
+		IN_ReadControl(&gvar.player[0], &gvar);
 		if(IN_KeyDown(sc_Escape)) gvar.engi_stat = ENGI_QUIT;
 		shinku(&gvar);
 		_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);
