@@ -287,7 +287,7 @@ typedef	struct		{
 									joyMultXH,joyMultYH;
 					} JoystickDef;
 
-/*typedef struct// inconfig
+typedef struct// inconfig
 {
 	boolean		IN_Started;
 	boolean		CapsLock;
@@ -307,7 +307,7 @@ typedef	struct		{
 
 	KeyboardDef	KbdDefs[MaxKbds];
 	JoystickDef	JoyDefs[MaxJoys];
-} in_info_t;*/
+} in_info_t;
 
 //==========================================================================
 
@@ -654,7 +654,7 @@ typedef struct
 	loghandle_t	handle;	//handles for file logging
 	kurokku_t	kurokku;	//clock struct
 	mminfo_t	mm; mminfotype	mmi;	// mm stuff
-//++++	in_info_t	in;		// 16_in info
+	in_info_t	in;		// 16_in info
 	player_t	player[MaxPlayers];	// player vars
 	map_view_t	mv[4];
 } global_game_variables_t;

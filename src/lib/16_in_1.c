@@ -51,7 +51,7 @@ static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 
 =============================================================================
 */
-struct inconfig
+/*struct inconfig
 {
 	boolean		MousePresent;
 	boolean		JoysPresent[MaxJoys];
@@ -62,7 +62,7 @@ struct inconfig
 
 	KeyboardDef	KbdDefs[MaxKbds];
 	JoystickDef	JoyDefs[MaxJoys];
-} inpu;
+} inpu;*/
 
 //inpu.KbdDefs = {0x1d,0x38,/*0x47,*/0x48,/*0x49,*/0x4b,0x4d,/*0x4f,*/0x50/*,0x51*/};
 
@@ -78,11 +78,11 @@ struct inconfig
 extern "C" {
 #endif
 
-static struct instat {
+/*static struct instat {
 	boolean		IN_Started;
 	boolean		CapsLock;
 	ScanCode	CurCode,LastCode;
-} inst;
+} inst;*/
 
 static	byte        far ASCIINames[] =		// Unshifted ASCII for scan codes
 					{
@@ -168,7 +168,7 @@ static	char			*ParmStringsIN[] = {"nojoys","nomouse",nil};
 //
 ///////////////////////////////////////////////////////////////////////////
 /*static */void interrupt
-INL_KeyService(void)
+INL_KeyService(void)//!
 {
 static	boolean	special;
 		byte	k,c,
@@ -376,7 +376,7 @@ done:
 //		joystick (from +/-127)
 //
 ///////////////////////////////////////////////////////////////////////////
-void INL_GetJoyDelta(word joy,int *dx,int *dy/*,boolean adaptive*/)
+void INL_GetJoyDelta(word joy,int *dx,int *dy/*,boolean adaptive*/)//!
 {
 	word		x,y;
 	word TimeCount = *clockw;
@@ -578,7 +578,7 @@ INL_SetJoyScale(word joy)
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-IN_SetupJoy(word joy,word minx,word maxx,word miny,word maxy)
+IN_SetupJoy(word joy,word minx,word maxx,word miny,word maxy)//!
 {
 	word		d,r;
 	JoystickDef	*def;
@@ -634,7 +634,7 @@ INL_StartJoy(word joy)
 //
 ///////////////////////////////////////////////////////////////////////////
 static void
-INL_ShutJoy(word joy)
+INL_ShutJoy(word joy)//!
 {
 	inpu.JoysPresent[joy] = false;
 }
@@ -647,7 +647,7 @@ INL_ShutJoy(word joy)
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-IN_Startup()
+IN_Startup()//!
 {
 	boolean	checkjoys,checkmouse;
 	word	i;
@@ -686,7 +686,7 @@ IN_Startup()
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-IN_Default(boolean gotit,player_t *player,ControlType nt)
+IN_Default(boolean gotit,player_t *player,ControlType nt)//!
 {
 	int i;
 	if
@@ -718,7 +718,7 @@ IN_Default(boolean gotit,player_t *player,ControlType nt)
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-IN_Shutdown(void)
+IN_Shutdown(void)//!
 {
 	word	i;
 
@@ -751,7 +751,7 @@ IN_SetKeyHook(void (*hook)())
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-IN_ClearKeysDown(void)
+IN_ClearKeysDown(void)//!
 {
 	//int	i;
 
@@ -784,7 +784,7 @@ INL_AdjustCursor(CursorInfo *info,word buttons,int dx,int dy)
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-IN_ReadCursor(CursorInfo *info)
+IN_ReadCursor(CursorInfo *info)//!
 {
 	word	i,
 			buttons;
@@ -824,7 +824,7 @@ IN_ReadCursor(CursorInfo *info)
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-IN_ReadControl(player_t *player)
+IN_ReadControl(player_t *player)//!
 {
 			boolean		realdelta;
 #if DEMO0
@@ -1108,7 +1108,7 @@ IN_GetScanName(ScanCode scan)
 //
 ///////////////////////////////////////////////////////////////////////////
 ScanCode
-IN_WaitForKey(void)
+IN_WaitForKey(void)//!
 {
 	ScanCode	result;
 
@@ -1125,7 +1125,7 @@ IN_WaitForKey(void)
 //
 ///////////////////////////////////////////////////////////////////////////
 char
-IN_WaitForASCII(void)
+IN_WaitForASCII(void)//!
 {
 	char		result;
 
@@ -1144,7 +1144,7 @@ IN_WaitForASCII(void)
 
 boolean	btnstate[8];
 
-void IN_StartAck(void)
+void IN_StartAck(void)//!
 {
 	unsigned	i,buttons;
 
@@ -1164,7 +1164,7 @@ void IN_StartAck(void)
 }
 
 
-boolean IN_CheckAck (void)
+boolean IN_CheckAck (void)//!
 {
 	unsigned	i,buttons;
 
@@ -1206,7 +1206,7 @@ void IN_Ack (void)
 //
 ///////////////////////////////////////////////////////////////////////////
 boolean
-IN_IsUserInput()
+IN_IsUserInput()//!
 {
 	boolean	result;
 	word	i;
@@ -1258,7 +1258,7 @@ boolean IN_UserInput(word delay)
 ===================
 */
 
-byte	IN_MouseButtons (void)
+byte	IN_MouseButtons (void)//!
 {
 	union REGS CPURegs;
 	if (inpu.MousePresent)
@@ -1290,7 +1290,7 @@ byte	IN_JoyButtons (void)
 	return joybits;
 }
 
-boolean IN_KeyDown(byte code)
+boolean IN_KeyDown(byte code)//!
 {
 #ifdef __DEBUG_InputMgr__
 	if(!dbg_nointest)
@@ -1305,14 +1305,14 @@ boolean IN_KeyDown(byte code)
 #endif
 }
 
-void IN_ClearKey(byte code)
+void IN_ClearKey(byte code)//!
 {
 	inpu.Keyboard[code] = false;
 	if(code == inpu.LastScan)
 		inpu.LastScan = sc_None;
 	}
 
-boolean IN_qb(byte kee)
+boolean IN_qb(byte kee)//!
 {
 #ifdef __DEBUG_InputMgr__
 	if(dbg_testkeyin) printf("%u\n", inpu.Keyboard[kee]);
@@ -1321,12 +1321,12 @@ boolean IN_qb(byte kee)
 	else return 0;
 }
 
-ScanCode IN_GetLastScan()
+ScanCode IN_GetLastScan()//!
 {
 	return inpu.LastScan;
 }
 
-ScanCode IN_GetCurCode()
+ScanCode IN_GetCurCode()//!
 {
 	return inst.CurCode;
 }

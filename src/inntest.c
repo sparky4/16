@@ -22,7 +22,7 @@
 /*
 	input test
 */
-#include "src/lib/16_in_.h"
+#include "src/lib/16_in_1.h"
 
 void probe_dos(){}
 void cpu_probe(){}
@@ -41,8 +41,8 @@ main(int argc, char *argv[])
 	IN_Startup(&gvar);
 	//IN_Default(0,&gvar.player,ctrl_Joystick1);
 	//IN_SetControlType(0,&gvar.player,ctrl_Joystick1);
-	IN_Default(0,&gvar.player,ctrl_Keyboard1, &gvar);
-	IN_SetControlType(0,&gvar.player,ctrl_Keyboard1);
+	IN_Default(0,&gvar.player[0],ctrl_Keyboard1, &gvar);
+	IN_SetControlType(&gvar.player[0],ctrl_Keyboard1);
 
 	gvar.player[0].enti.q=1;
 	gvar.player[0].enti.d=2;
@@ -54,7 +54,7 @@ main(int argc, char *argv[])
 	while(!IN_KeyDown(sc_Escape, &gvar))
 	{
 //0000		shinkutxt(&gvar);
-		IN_ReadControl(0, &gvar.player, &gvar);
+		IN_ReadControl(&gvar.player[0], &gvar);
 		switch(gvar.player[0].enti.d)
 		{
 		//right movement
