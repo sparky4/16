@@ -359,6 +359,7 @@ mapread.$(OBJ):$(SRCLIB)/mapread.c $(SRCLIB)/mapread.h
 16_mm.$(OBJ):	 $(SRCLIB)/16_mm.c	$(SRCLIB)/16_mm.h
 16_pm.$(OBJ):	 $(SRCLIB)/16_pm.c	$(SRCLIB)/16_pm.h
 16_ca.$(OBJ):	 $(SRCLIB)/16_ca.c	$(SRCLIB)/16_ca.h
+16_us.$(OBJ):	 $(SRCLIB)/16_us.c
 16_dbg.$(OBJ):	$(SRCLIB)/16_dbg.c $(SRCLIB)/16_dbg.h
 midi.$(OBJ):	$(SRCLIB)/midi.c $(SRCLIB)/midi.h
 16_head.$(OBJ):$(SRCLIB)/16_head.c $(SRCLIB)/16_head.h
@@ -429,7 +430,7 @@ backupconfig: .symbolic
 	@$(COPYCOMMAND) .gitmodules $(GITCONFIGDIR)/git_modu.les
 	@$(COPYCOMMAND) .gitignore $(GITCONFIGDIR)/git_igno.re
 
-initconfig:
+initconfig: .symbolic
 	@$(COPYCOMMAND) $(GITCONFIGDIR)/git_con.fig .git/config
 	@$(COPYCOMMAND) $(GITCONFIGDIR)/git_modu.les .gitmodules
 	@$(COPYCOMMAND) $(GITCONFIGDIR)/git_igno.re .gitignore

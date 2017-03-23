@@ -1,4 +1,11 @@
-#if 0
+/*#include "src/lib/16_in.h"
+static word far* clockw= (word far*) 0x046C; // 18.2hz clock
+
+#define CtlPanelSX	1
+#define CtlPanelSY	1
+#define CtlPanelEX	1
+#define CtlPanelEY	1
+#define TickBase		1
 
 #define PaddleMinX      (CtlPanelSX + 3)
 #define PaddleMaxX      (CtlPanelEX - 15)
@@ -11,18 +18,18 @@
 void
 USL_DrawPongScore(word k,word c)
 {
-	fontcolor = HiliteColor;
-	PrintY = py = CtlPanelSY + 4;
-	px = CtlPanelSX + 6;
-	VWB_Bar(px,py,42,6,BackColor);
-	USL_DrawString("YOU:");
-	PrintX = px;
-	US_PrintUnsigned(k);
-	px = CtlPanelSX + 108;
-	VWB_Bar(px,py,50,6,BackColor);
-	USL_DrawString("COMP:");
-	PrintX = px;
-	US_PrintUnsigned(c);
+	//++++fontcolor = HiliteColor;
+	//++++PrintY = py = CtlPanelSY + 4;
+	//++++px = CtlPanelSX + 6;
+	//++++VWB_Bar(px,py,42,6,BackColor);
+	//++++USL_DrawString("YOU:");
+	//++++PrintX = px;
+	//++++US_PrintUnsigned(k);
+	//++++px = CtlPanelSX + 108;
+	//++++VWB_Bar(px,py,50,6,BackColor);
+	//++++USL_DrawString("COMP:");
+	//++++PrintX = px;
+	//++++US_PrintUnsigned(c);
 }
 
 void
@@ -37,8 +44,9 @@ USL_PlayPong(void)
 				kscore,cscore,
 				speedup;
 	int                     bdx,bdy;
-	longword        balltime,waittime;
+	word        balltime,waittime;
 	CursorInfo      cursorinfo;
+	word TimeCount = *clockw;
 
 	kx = cx = PaddleMinX + ((PaddleMaxX - PaddleMinX) / 2);
 	bx = by = bdx = bdy = 0;
@@ -79,11 +87,11 @@ USL_PlayPong(void)
 				cx -= 1;
 		}
 
-		VWB_Bar(BallMinX,BallMinY - 1,
-				BallMaxX - BallMinX + 5,BallMaxY - BallMinY + 7,
-				BackColor);
-		VWB_DrawSprite(cx,CPaddleY,PADDLESPR);
-		VWB_DrawSprite(kx,KPaddleY,PADDLESPR);
+		//++++VWB_Bar(BallMinX,BallMinY - 1,
+		//		BallMaxX - BallMinX + 5,BallMaxY - BallMinY + 7,
+		//		BackColor);
+		//++++VWB_DrawSprite(cx,CPaddleY,PADDLESPR);
+		//++++VWB_DrawSprite(kx,KPaddleY,PADDLESPR);
 		if (ball)
 		{
 			if
@@ -92,7 +100,7 @@ USL_PlayPong(void)
 			||      (((bx + bdx) >> 2) < BallMinX)
 			)
 			{
-				SD_PlaySound(BALLBOUNCESND);
+				//++++SD__PlaySound(BALLBOUNCESND);
 				bdx = -bdx;
 			}
 			bx += bdx;
@@ -102,7 +110,7 @@ USL_PlayPong(void)
 				killball = true;
 				lastscore = false;
 				cscore++;
-				SD_PlaySound(COMPSCOREDSND);
+				//++++SD__PlaySound(COMPSCOREDSND);
 				USL_DrawPongScore(kscore,cscore);
 				if (cscore == 21)
 				{
@@ -116,7 +124,7 @@ USL_PlayPong(void)
 				killball = true;
 				lastscore = true;
 				kscore++;
-				SD_PlaySound(KEENSCOREDSND);
+				//++++SD__PlaySound(KEENSCOREDSND);
 				USL_DrawPongScore(kscore,cscore);
 				if (kscore == 21)
 				{
@@ -140,7 +148,7 @@ USL_PlayPong(void)
 				{
 					rx = cx;
 					revdir = true;
-					SD_PlaySound(COMPPADDLESND);
+					//++++SD__PlaySound(COMPPADDLESND);
 				}
 				else if
 				(
@@ -156,7 +164,7 @@ USL_PlayPong(void)
 					}
 					rx = kx;
 					revdir = true;
-					SD_PlaySound(KEENPADDLESND);
+					//++++SD__PlaySound(KEENPADDLESND);
 				}
 				if (revdir)
 				{
@@ -167,7 +175,7 @@ USL_PlayPong(void)
 					revdir = false;
 				}
 			}
-			VWB_DrawSprite(x,y,(x & 1)? BALL1PIXELTOTHERIGHTSPR : BALLSPR);
+			//++++VWB_DrawSprite(x,y,(x & 1)? BALL1PIXELTOTHERIGHTSPR : BALLSPR);
 		}
 		else if (TimeCount >= balltime)
 		{
@@ -179,10 +187,10 @@ USL_PlayPong(void)
 			bx = (BallMinX + ((BallMaxX - BallMinX) / 2)) << 2;
 			by = (BallMinY + ((BallMaxY - BallMinY) / 2)) << 2;
 		}
-		VW_UpdateScreen();
+		//++++VW_UpdateScreen();
 		while (waittime == TimeCount)
 			;       // DEBUG - do adaptiveness
-	} while ((LastScan != sc_Escape) && !done);
+	} while ((inpu.LastScan != sc_Escape) && !done);
 	IN_ClearKeysDown();
 }
 
@@ -193,13 +201,12 @@ USL_PongCustom(UserCall call,struct UserItem far *item)
 	if (call != uic_SetupCard)
 		return(false);
 
-	VWB_DrawPic(0,0,CP_MENUSCREENPIC);
-	VWB_DrawPic(CtlPanelSX + 56,CtlPanelSY,CP_PADDLEWARPIC);
-	VWB_Hlin(CtlPanelSX + 3,CtlPanelEX - 3,CtlPanelSY + 12,HiliteColor ^ BackColor);
-	VWB_Hlin(CtlPanelSX + 3,CtlPanelEX - 3,CtlPanelEY - 7,HiliteColor ^ BackColor);
+	//++++VWB_DrawPic(0,0,CP_MENUSCREENPIC);
+	//++++VWB_DrawPic(CtlPanelSX + 56,CtlPanelSY,CP_PADDLEWARPIC);
+	//++++VWB_Hlin(CtlPanelSX + 3,CtlPanelEX - 3,CtlPanelSY + 12,HiliteColor ^ BackColor);
+	//++++VWB_Hlin(CtlPanelSX + 3,CtlPanelEX - 3,CtlPanelEY - 7,HiliteColor ^ BackColor);
 	USL_PlayPong();
 
 	return(true);
 }
-
-#endif
+*/
