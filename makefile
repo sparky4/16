@@ -34,7 +34,7 @@
 # comment this out on game release.
 # serial output goes to COM1 at 9600 baud 1 stop bit odd parity.
 # serial output is plain text ASCII.
-DEBUGSERIAL=1
+DEBUGSERIAL=0
 
 DELLOGFILE=1
 
@@ -263,7 +263,7 @@ fonttest.exe:	 fonttest.$(OBJ) gfx.lib
 #fonttes0.exe:	fonttes0.$(OBJ) $(16LIB)
 fontgfx.exe:	fontgfx.$(OBJ) gfx.lib $(DOSLIB)
 inputest.exe:	 inputest.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
-inntest.exe:	 	inntest.$(OBJ)	$(16LIBNOINOBJS) 16_in_1.$(OBJ)
+inntest.exe:	 	inntest.$(OBJ)	$(16LIBNOINOBJS) 16_in_1.$(OBJ) $(DOSLIB) gfx.lib
 #sountest.exe:	sountest.$(OBJ) $(16LIB)
 pcxtest.exe:	pcxtest.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
 vrstest.exe:	vrstest.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)

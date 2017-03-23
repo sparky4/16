@@ -26,23 +26,23 @@
 
 void probe_dos(){}
 void cpu_probe(){}
-int probe_vga(){ return 0; }
-void VGAmodeX(){}
+//int probe_vga(){ return 0; }
+//void VGAmodeX(){}
 
 void
 main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
-	//extern struct inconfig inpu;
-	dbg_testkeyin=0;
-	dbg_testcontrolnoisy=1;
-	start_timer(&gvar);
+	dbg_nointest=0;
+	dbg_testkeyin=1;
+	dbg_testcontrolnoisy=0;
+	start_timer(&gvar);	printf(".");
 	//Startup16(&gvar);
-	IN_Startup(&gvar);
+	IN_Startup(&gvar);	printf(".");
 	//IN_Default(0,&gvar.player,ctrl_Joystick1);
 	//IN_SetControlType(0,&gvar.player,ctrl_Joystick1);
-	IN_Default(0,&gvar.player[0],ctrl_Keyboard1, &gvar);
-	IN_SetControlType(&gvar.player[0],ctrl_Keyboard1);
+	IN_Default(0,&gvar.player[0],ctrl_Keyboard1, &gvar);	printf(".");
+	IN_SetControlType(&gvar.player[0],ctrl_Keyboard1);	printf(".");
 
 	gvar.player[0].enti.q=1;
 	gvar.player[0].enti.d=2;
@@ -51,11 +51,12 @@ main(int argc, char *argv[])
 //0000	nibbletest(){}
 //0000	booleantest(){}
 	//printf("dbg_testkeyin=%u	dbg_testcontrolnoisy=%u	dbg_nogvar.playerinpu=%u\nloop if this is not responsive then please KILL or reset machine sorry!!\n", dbg_testkeyin, dbg_testcontrolnoisy, dbg_nogvar.playerinpu);
+	printf("\nloop\n");
 	while(!IN_KeyDown(sc_Escape, &gvar))
 	{
 //0000		shinkutxt(&gvar);
 		IN_ReadControl(&gvar.player[0], &gvar);
-		switch(gvar.player[0].enti.d)
+/*		switch(gvar.player[0].enti.d)
 		{
 		//right movement
 		case 3:
@@ -88,10 +89,11 @@ main(int argc, char *argv[])
 				gvar.player[0].enti.q++;
 			} else { gvar.player[0].enti.q = 1; gvar.player[0].enti.d = 2; }
 		break;
-	}
-		//printf("%u\n", IN_KeyDown(sc_Escape));
-		//if(
-		IN_qb(sc_9, &gvar);//>0) printf("IN_qb(sc_9)=%u\n", IN_qb(sc_9));
+	}*/
+		//printf("%u\n", IN_KeyDown(sc_Escape, &gvar));
+		//if(gvar.in.Keyboard[sc_Escape])
+			printf("gvar.in.Keyboard[sc_Escape]=%u\n", gvar.in.Keyboard[sc_Escape]);
+		//IN_qb(sc_Enter, &gvar);//>0) printf("IN_qb(sc_9)=%u\n", IN_qb(sc_9));
 		if(IN_KeyDown(88, &gvar))	//speed
 		{
 			switch(gvar.kurokku.fpscap)

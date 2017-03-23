@@ -38,7 +38,7 @@
 #include "src/lib/16_spri.h"
 #include "src/lib/16_enti.h"
 #endif*/
-
+#define	__DEBUG_InputMgr2__
 #define	KeyInt	9	// The keyboard ISR number
 
 // Stuff for the joystick
@@ -216,31 +216,31 @@ typedef	struct		{
 extern	void		IN_Startup(global_game_variables_t *gvar),IN_Shutdown(global_game_variables_t *gvar),
 					IN_Default(boolean gotit,player_t *player,ControlType nt, global_game_variables_t *gvar),
 					IN_SetKeyHook(void (*)()),
-					IN_ClearKeysDown(void),
-					IN_ReadCursor(CursorInfo *),
+					IN_ClearKeysDown(global_game_variables_t *gvar),
+					IN_ReadCursor(CursorInfo *, global_game_variables_t *gvar),
 					IN_ReadControl(player_t *player, global_game_variables_t *gvar),
 					IN_SetControlType(player_t *player,ControlType type),
 					IN_GetJoyAbs(word joy,word *xp,word *yp),
 					IN_SetupJoy(word joy,word minx,word maxx,
-								word miny,word maxy),
+								word miny,word maxy, global_game_variables_t *gvar),
 #if DEMO0
 					IN_StopDemo(void),IN_FreeDemoBuffer(void),
 #endif
-					IN_Ack(void),IN_AckBack(void);
-extern	boolean		IN_UserInput(word delay);
-extern	char		IN_WaitForASCII(void);
-extern	ScanCode	IN_WaitForKey(void);
+					IN_Ack(global_game_variables_t *gvar),IN_AckBack(void);
+extern	boolean		IN_UserInput(word delay, global_game_variables_t *gvar);
+extern	char		IN_WaitForASCII(global_game_variables_t *gvar);
+extern	ScanCode	IN_WaitForKey(global_game_variables_t *gvar);
 extern	word		IN_GetJoyButtonsDB(word joy);
 extern	byte		*IN_GetScanName(ScanCode);
 
 
-byte	IN_MouseButtons (void);
+byte	IN_MouseButtons (global_game_variables_t *gvar);
 byte	IN_JoyButtons (void);
 
-void INL_GetJoyDelta(word joy,int *dx,int *dy/*,boolean adaptive*/);
-void IN_StartAck(void);
-boolean IN_CheckAck (void);
-boolean IN_IsUserInput();
+void INL_GetJoyDelta(word joy,int *dx,int *dy/*,boolean adaptive*/, global_game_variables_t *gvar);
+void IN_StartAck(global_game_variables_t *gvar);
+boolean IN_CheckAck (global_game_variables_t *gvar);
+boolean IN_IsUserInput(global_game_variables_t *gvar);
 #define Mouse(x)         INL_Mouse(x)
 //void IN_SetKeyHook(void (*hook)());
 #if DEMO0
@@ -252,7 +252,7 @@ void IN_FreeDemoBuffer(void);
 
 boolean	IN_KeyDown(byte code, global_game_variables_t *gvar),
 		IN_qb(byte kee, global_game_variables_t *gvar);
-void		IN_ClearKey(byte code),
+void		IN_ClearKey(byte code, global_game_variables_t *gvar),
 		IN_KbdLED();
 ScanCode	IN_GetLastScan(),
 		IN_GetCurCode();
