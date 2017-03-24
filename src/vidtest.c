@@ -184,7 +184,7 @@ void main(int argc, char *argv[])
 	//====modexPalBlack();
 	VGAmodeX(0, 1, &gvar);
 	Shutdown16(&gvar);
-	printf("Project 16 test.exe. This is just a test file!\n");
+	printf("Project 16 vidtest.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	VL_PrintmodexmemInfo(&gvar.video);
 	printf("tx=%d	", gvar.mv[gvar.video.sp].tx); printf("ty=%d	", gvar.mv[gvar.video.sp].ty); printf("gvar.player.d=%d\n", gvar.player[0].enti.d);

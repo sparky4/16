@@ -135,8 +135,7 @@ LIBFLAGS=$(WLIBQ) -b -n
 VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
 #OLDLIBOBJS=bitmap.$(OBJ) 16render.$(OBJ)
 GFXLIBOBJS = 16_vl.$(OBJ) 16_vlpal.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16_vrs.$(OBJ) 16_spri.$(OBJ) $(OLDLIBOBJS)
-16LIBNOINOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_head.$(OBJ) 16_enti.$(OBJ) 16_dbg.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_wcpu.$(OBJ) 16_timer.$(OBJ) jsmn.$(OBJ) 16_map.$(OBJ) 16text.$(OBJ)
-16LIBOBJS = $(16LIBNOINOBJS) 16_in.$(OBJ)
+16LIBOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_head.$(OBJ) 16_enti.$(OBJ) 16_dbg.$(OBJ) 16_in.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_wcpu.$(OBJ) 16_timer.$(OBJ) jsmn.$(OBJ) 16_map.$(OBJ) 16text.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 !ifeq DEBUGSERIAL 1
 DOSLIBOBJ += 8250.$(OBJ)
@@ -188,7 +187,7 @@ EXTERNTESTEXEC = &
 	wcpu.exe &
 	db.exe
 TESTEXEC = &
-	test.exe &
+	vidtest.exe &
 	tesuto.exe &
 	0.exe &
 	exmmtest.exe &
@@ -255,14 +254,14 @@ tesuto.exe:	tesuto.$(OBJ) 16_head.$(OBJ) gfx.lib $(DOSLIB)
 tesuto.$(OBJ):	$(SRC)/tesuto.c
 0.exe:			0.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 0.$(OBJ):		 $(SRC)/0.c
-test.exe:		 test.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
+vidtest.exe:		 vidtest.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 #test2.exe:	test2.$(OBJ) gfx.lib $(DOSLIB)
 test0.exe:		test0.$(OBJ)
 fonttest.exe:	 fonttest.$(OBJ) gfx.lib
 #fonttes0.exe:	fonttes0.$(OBJ) $(16LIB)
 fontgfx.exe:	fontgfx.$(OBJ) gfx.lib $(DOSLIB)
 inputest.exe:	 inputest.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
-inntest.exe:	 	inntest.$(OBJ)	$(16LIBNOINOBJS) 16_in_1.$(OBJ) $(DOSLIB) gfx.lib
+#inntest.exe:	 	inntest.$(OBJ)	$(16LIBNOINOBJS) 16_in_1.$(OBJ) $(DOSLIB) gfx.lib
 #sountest.exe:	sountest.$(OBJ) $(16LIB)
 pcxtest.exe:	pcxtest.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
 vrstest.exe:	vrstest.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
@@ -284,7 +283,7 @@ wcpu.exe:		wcpu.$(OBJ) $(16LIB) $(DOSLIB)
 #
 16.$(OBJ):		$(SRC)/16.c $(SRC)/16.h
 bakapi.$(OBJ):	$(SRC)/bakapi.c $(SRC)/bakapi.h
-test.$(OBJ):	$(SRC)/test.c $(SRCLIB)/16_vl.h
+vidtest.$(OBJ):	$(SRC)/vidtest.c $(SRCLIB)/16_vl.h
 #test2.$(OBJ):	$(SRC)/test2.c $(SRCLIB)/16_vl.h
 test0.$(OBJ):	 $(SRC)/test0.c
 pcxtest.$(OBJ):$(SRC)/pcxtest.c $(SRCLIB)/16_vl.h
@@ -303,7 +302,7 @@ fonttest.$(OBJ):$(SRC)/fonttest.c
 #fonttes0.$(OBJ): $(SRC)/fonttes0.c
 fontgfx.$(OBJ):$(SRC)/fontgfx.c
 inputest.$(OBJ):$(SRC)/inputest.c
-inntest.$(OBJ):$(SRC)/inntest.c
+#inntest.$(OBJ):$(SRC)/inntest.c
 #sountest.$(OBJ): $(SRC)/sountest.c
 #miditest.$(OBJ): $(SRC)/miditest.c
 #testemm.$(OBJ):$(SRC)/testemm.c
