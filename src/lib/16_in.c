@@ -78,15 +78,21 @@ static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 extern "C" {
 #endif
 
-static struct instat {
-	boolean		CapsLock;
+/*static struct instat {
+ 	boolean		CapsLock;
 	ScanCode	CurCode,LastCode;
 
 	boolean		Keyboard[NumCodes];
 	boolean		Paused;
 	char		LastASCII;
 	ScanCode	LastScan;
-} inst;
+} inst;*/
+
+//the def stuff is need fix warnings
+#ifndef INSTDEFED
+#define INSTDEFED
+static inst_t inst;
+#endif
 
 static	byte        far ASCIINames[] =		// Unshifted ASCII for scan codes
 					{

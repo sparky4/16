@@ -126,9 +126,9 @@ static	char	buf[10];
 //		US_Print(" Page #");
 //		US_PrintUnsigned(i);
 		printf(" Page #%u", i);
-		if (i < (gvar->pm.fi.PMSpriteStart))
+//++		if (i < (gvar->pm.fi.PMSpriteStart))
 //			US_Print(" (Wall)");
-			printf(" (Wall)");
+//++			printf(" (Wall)");
 /*		else if (i < (gvar->pm.fi.PMSoundStart))
 //			US_Print(" (Sprite)");
 			printf(" (Sprite)");
@@ -256,9 +256,13 @@ static	char	buf[10];
 
 //		VW_UpdateScreen();
 
-//		while (!(scan = IN_GetLastScan()))
-			scan = *IN_GetScanName(scan);
+		while (!(scan = gvar->in.inst->LastScan))
+		{
+		}
+//			scan = *IN_GetScanName(scan);
 //			SD_Poll();
+
+if(IN_KeyDown(sc_Escape)) break;
 
 		IN_ClearKey(scan);
 		switch (scan)

@@ -287,27 +287,31 @@ typedef	struct		{
 									joyMultXH,joyMultYH;
 					} JoystickDef;
 
+typedef struct instat {
+	boolean		CapsLock;
+	ScanCode	CurCode,LastCode;
+
+	boolean		Keyboard[NumCodes];
+	boolean		Paused;
+	char		LastASCII;
+	ScanCode	LastScan;
+} inst_t;
+
 typedef struct// inconfig
 {
 	boolean		IN_Started;
-//	boolean		CapsLock;
-//	ScanCode	CurCode,LastCode;
 //
 // configuration variables
 //
-//	boolean		Keyboard[NumCodes],
 	boolean		JoysPresent[MaxJoys],
 					MousePresent,
 					JoyPadPresent;
 
 // 	Global variables
-//	boolean		Paused;
-//	char		LastASCII;
-//	ScanCode	LastScan;
-
 	KeyboardDef	KbdDefs[MaxKbds];
 	JoystickDef	JoyDefs[MaxJoys];
-	struct	instat	*inst;
+	//struct	instat	*inst;
+	inst_t	*inst;
 } in_info_t;
 
 //==========================================================================
