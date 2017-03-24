@@ -391,7 +391,7 @@ clean: .symbolic
 	@if exist *.EXE $(REMOVECOMMAND) *.EXE
 	@if exist *.OBJ $(REMOVECOMMAND) *.OBJ
 	#@for %f in ($(SPRIUTILEXEC)) do @if exist %f $(REMOVECOMMAND) %f
-	@if not exist vrl2vrs wmake -h vrs
+	@if not exist vrl2vrs wmake -h pcx2vrl
 !else
 	@if exist *.o $(REMOVECOMMAND) *.o
 !endif
