@@ -31,7 +31,11 @@
 16/wf3d8086/wl_game.c:		PM_CheckMainMem ();
 16/wf3d8086/wl_game.c:			PM_CheckMainMem ();
 
-16/wf3d8086/wl_inter.c:	PM_Preload (PreloadUpdate);
+
+
+	16/wf3d8086/wl_inter.c:	PM_Preload (PreloadUpdate);	//related to chunksinfile
+
+
 
 16/wf3d8086/wl_main.c:	PM_Shutdown ();
 16/wf3d8086/wl_main.c:	PM_Startup ();

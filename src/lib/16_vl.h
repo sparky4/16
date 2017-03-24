@@ -84,6 +84,9 @@ extern byte far*  VGA;  /* The VGA Memory */
 #define LOW_ADDRESS		0x0D
 #define VRETRACE		0x08
 //#define INPUT_STATUS_1		0x03da	defined in 16_head
+#define STATUS_REGISTER_1	INPUT_STATUS_1
+#define ATR_INDEX			AC_INDEX
+#define ATR_OVERSCAN		17
 #define DISPLAY_ENABLE		0x01
 #define MAP_MASK		0x02
 #define PAL_READ_REG			0x03C7   /* Color register, read address */

@@ -34,7 +34,7 @@
 # comment this out on game release.
 # serial output goes to COM1 at 9600 baud 1 stop bit odd parity.
 # serial output is plain text ASCII.
-DEBUGSERIAL=0
+DEBUGSERIAL=1
 
 DELLOGFILE=1
 
@@ -357,7 +357,7 @@ mapread.$(OBJ):$(SRCLIB)/mapread.c $(SRCLIB)/mapread.h
 16_map.$(OBJ):$(SRCLIB)/16_map.c $(SRCLIB)/16_map.h
 16_timer.$(OBJ):$(SRCLIB)/16_timer.c $(SRCLIB)/16_timer.h
 16_in.$(OBJ):	 $(SRCLIB)/16_in.c $(SRCLIB)/16_in.h
-16_in_1.$(OBJ):	 $(SRCLIB)/16_in_1.c $(SRCLIB)/16_in_1.h
+#16_in_1.$(OBJ):	 $(SRCLIB)/16_in_1.c $(SRCLIB)/16_in_1.h
 16_rf.$(OBJ):	 $(SRCLIB)/16_rf.c	$(SRCLIB)/16_rf.h
 16_mm.$(OBJ):	 $(SRCLIB)/16_mm.c	$(SRCLIB)/16_mm.h
 16_pm.$(OBJ):	 $(SRCLIB)/16_pm.c	$(SRCLIB)/16_pm.h

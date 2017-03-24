@@ -9,6 +9,7 @@
 #define __DEBUG__
 #define __DEBUG_InputMgr__
 #define __DEBUG_MAP__
+//#define __DEBUG_2__
 //#define __DEBUG_CA__
 //#define __DEBUG_PM__
 //#define __DEBUG_MM__

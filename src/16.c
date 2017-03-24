@@ -28,8 +28,6 @@ main(int argc, char *argv[])
 	static global_game_variables_t gvar;
 	Startup16(&gvar);
 
-	gvar.engi_stat = ENGI_RUN;
-
 	/* save the palette */
 	modexPalSave(gvar.video.dpal);
 	modexFadeOff(4, gvar.video.dpal);
@@ -39,10 +37,10 @@ main(int argc, char *argv[])
 //	modexPalBlack();	//so player will not see loadings~
 	IN_Default(0,&gvar.player[0],ctrl_Joystick, &gvar);
 	//modexprint(&screen, 32, 32, 1, 2, 0, "a", 1);
-	while(ENGI_QUIT != gvar.engi_stat)
+	while(1)
 	{
 		IN_ReadControl(&gvar.player[0], &gvar);
-		if(IN_KeyDown(sc_Escape)) gvar.engi_stat = ENGI_QUIT;
+		if(IN_KeyDown(sc_Escape)) break;
 		shinku(&gvar);
 		_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);
 	}

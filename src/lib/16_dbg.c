@@ -257,12 +257,10 @@ static	char	buf[10];
 //		VW_UpdateScreen();
 
 		while (!(scan = gvar->in.inst->LastScan))
-		{
-		}
-//			scan = *IN_GetScanName(scan);
+		{}
 //			SD_Poll();
 
-if(IN_KeyDown(sc_Escape)) break;
+//if(IN_KeyDown(sc_Escape)) break;
 
 		IN_ClearKey(scan);
 		switch (scan)

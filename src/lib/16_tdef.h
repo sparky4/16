@@ -642,17 +642,17 @@ typedef struct	//TODO: USE THIS!!!!
 //==========================================================================
 
 //actual global game varables!
-typedef enum {
+/*typedef enum {
 	ENGI_QUIT,
 	ENGI_RUN,
 	ENGI_MENU,
 	ENGI_PAUSE
-} engi_stat_t;
+} engi_stat_t;*/
 //ENGI_INPUT,
 
 typedef struct
 {
-	engi_stat_t	engi_stat;
+//----	engi_stat_t	engi_stat;
 	video_t	video;	// video settings variable
 	ca_t		ca;	// ca stuff
 	pm_t		pm;	// pm stuff
