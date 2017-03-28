@@ -579,7 +579,10 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 			rx = (((i-1) % ((t->spri->sprite_vrl_cont.vrl_header->width)/t->tileWidth)) * t->tileWidth);
 			ry = (((i-1) / ((t->spri->sprite_vrl_cont.vrl_header->height)/t->tileHeight)) * t->tileHeight);
 #ifndef TILERENDER
-			if(!pagenorendermap) modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, i+1);
+#ifdef __DEBUG_RF__
+			if(!dbg_pagenorendermap)
+#endif
+				modexClearRegion(page, x, y, t->tileWidth, t->tileHeight, i+1);
 #else
 			modexDrawBmpRegion		(page, x, y, rx, ry, t->tileWidth, t->tileHeight, i);
 			//draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
@@ -595,10 +598,14 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, word poopoffset)
 {
 	int i; nibble z;
-if(pagedelayrendermap)		if(!y)	y+=TILEWH;	else	y-=TILEWH;
+#ifdef __DEBUG_RF__
+if(dbg_pagedelayrendermap)		if(!y)	y+=TILEWH;	else	y-=TILEWH;
+#endif
 	poopoffset%=player[0].enti.speed;
 //printf("y: %d\n", poopoffset);
-if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dx); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 0, PALMAPDRAWW, 1, global_temp_status_text); }
+#ifdef __DEBUG_RF__
+if(dbg_pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dx); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 0, PALMAPDRAWW, 1, global_temp_status_text); }
+#endif
 	/* the position within the map array */
 	i=ty * mv->map->width + tx;
 	for(	mv->dx=poopoffset;	mv->dx<(mv->page->sw+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width;	mv->dx+=mv->map->tiles->tileWidth, tx++) {
@@ -611,16 +618,23 @@ if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dx); modexp
 				}
 		}
 		i++; /* next! */
-	} if(pagedelayrendermap) delay(200);
+	}
+#ifdef __DEBUG_RF__
+if(dbg_pagedelayrendermap) delay(200);
+#endif
 }
 
 void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, word poopoffset)
 {
 	int i; nibble z;
-if(pagedelayrendermap)		if(!x)	x+=TILEWH;		else	x-=TILEWH;
+#ifdef __DEBUG_RF__
+if(dbg_pagedelayrendermap)		if(!x)	x+=TILEWH;		else	x-=TILEWH;
+#endif
 	poopoffset%=player[0].enti.speed;
 //printf("x: %d\n", poopoffset);
-if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dy); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 0, PALMAPDRAWW, 1, global_temp_status_text); }
+#ifdef __DEBUG_RF__
+if(dbg_pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dy); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 0, PALMAPDRAWW, 1, global_temp_status_text); }
+#endif
 	/* location in the map array */
 	i=ty * mv->map->width + tx;
 	/* We'll copy all of the columns in the screen,
@@ -635,7 +649,10 @@ if(pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dy); modexp
 				}
 		}
 		i += mv->map->width;
-	} if(pagedelayrendermap) delay(200);
+	}
+#ifdef __DEBUG_RF__
+if(dbg_pagedelayrendermap) delay(200);
+#endif
 }
 
 void mapDrawWRow(map_view_t *mv, int tx, int ty, word y)
@@ -679,8 +696,6 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 	}
 }
 
-boolean pagenorendermap = 0;
-boolean pagedelayrendermap = 0;
 
 /*	sync	*/
 void shinku(global_game_variables_t *gv)

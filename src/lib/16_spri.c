@@ -196,6 +196,9 @@ void animate_spri(entity_t *enti, video_t *video)
 		enti->spri.sprite_vrl_cont.data_size
 	);
 #endif
+#ifdef __DEBUG_SPRI__
+	if(dbg_delayanimation) delay(250);//{ while(!IN_KeyDown(sc_Space)/* && !IN_KeyDown(sc_Escape)*/){} delay(250); }
+#endif
 	if(!video->rss)
 	{
 		// restore ptr

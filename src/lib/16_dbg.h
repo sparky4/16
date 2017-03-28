@@ -13,6 +13,8 @@
 //#define __DEBUG_CA__
 //#define __DEBUG_PM__
 //#define __DEBUG_MM__
+//#define __DEBUG_RF__
+#define __DEBUG_SPRI__
 
 
 #ifdef __DEBUG__
@@ -31,6 +33,12 @@ extern boolean dbg_testkeyin,dbg_testcontrolnoisy,dbg_nointest;
 #ifdef __DEBUG_MAP__
 extern boolean dbg_maptext;
 extern byte *dbg_mapdata;
+#endif
+#ifdef __DEBUG_RF__
+extern boolean dbg_pagenorendermap,dbg_pagedelayrendermap;
+#endif
+#ifdef __DEBUG_SPRI__
+extern boolean dbg_delayanimation;
 #endif
 #endif
 

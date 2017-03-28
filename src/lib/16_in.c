@@ -1305,8 +1305,8 @@ byte	IN_JoyButtons (void)
 boolean IN_KeyDown(byte code)
 {
 #ifdef __DEBUG_InputMgr__
-	if(inst.Keyboard[code])
-		printf("IN_KeyDown(%c):	%u\n", code, inst.Keyboard[code]);
+//	if(inst.Keyboard[code])
+//		printf("IN_KeyDown(%c):	%u\n", code, inst.Keyboard[code]);
 	if(!dbg_nointest)
 #endif
 	return inst.Keyboard[code];

@@ -17,6 +17,12 @@ boolean dbg_testkeyin=0,dbg_testcontrolnoisy=0,dbg_nointest=0;
 boolean dbg_maptext=0;
 byte *dbg_mapdata;
 #endif
+#ifdef __DEBUG_RF__
+boolean dbg_pagenorendermap=0,dbg_pagedelayrendermap=0;
+#endif
+#ifdef __DEBUG_SPRI__
+boolean dbg_delayanimation=0;
+#endif
 #endif	//debug
 
 #ifdef __WATCOMC__

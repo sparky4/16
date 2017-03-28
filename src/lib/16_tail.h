@@ -37,16 +37,32 @@
 	if(IN_KeyDown(88)){ panswitch=!panswitch;							IN_UserInput(1, &gvar); } \
 	TAIL_FUNCTIONKEYFUNCTIONS0EXE
 
+#define RFDEBUGFUNCTIONS
+#ifdef __DEBUG_RF__
+#undef RFDEBUGFUNCTIONS
+#define RFDEBUGFUNCTIONS \
+	if(IN_KeyDown(sc_F11)){ dbg_pagedelayrendermap=!dbg_pagedelayrendermap;		IN_UserInput(1, &gvar); } \
+	if(IN_KeyDown(sc_F9)){ dbg_pagenorendermap=!dbg_pagenorendermap;			IN_UserInput(1, &gvar); }
+#endif
+
+/*#define SPRIDEBUGFUNCTIONS
+#ifdef __DEBUG_SPRI__
+#undef SPRIDEBUGFUNCTIONS
+#define SPRIDEBUGFUNCTIONS \
+	if(IN_KeyDown(sc_Y)){ dbg_delayanimation=!dbg_delayanimation;				IN_UserInput(1, &gvar); }
+//	if(IN_KeyDown(sc_F9)){ dbg_pagenorendermap=!dbg_pagenorendermap;			IN_UserInput(1, &gvar); }
+#endif*/
+
 #define TAIL_FUNCTIONKEYFUNCTIONS0EXE \
 	if(IN_KeyDown(sc_F4)){ turboXT(12);									IN_UserInput(1, &gvar); } \
-	if(IN_KeyDown(87/*sc_F11*/)){ pagedelayrendermap=!pagedelayrendermap;		IN_UserInput(1, &gvar); } \
 	if(IN_KeyDown(68/*sc_F10*/)){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap;		IN_UserInput(1, &gvar); } \
-	if(IN_KeyDown(sc_F9)){ pagenorendermap=!pagenorendermap;				IN_UserInput(1, &gvar); } \
 	if(IN_KeyDown(sc_F8)){ gvar.video.bgps=!gvar.video.bgps;					IN_UserInput(1, &gvar); } \
 	if(IN_KeyDown(sc_F7)){ ZC_ShowMV(&gvar.mv, 0, 1);						IN_UserInput(1, &gvar); } \
 	if(IN_KeyDown(sc_F6)){ ZC_ShowMV(&gvar.mv, 0, 0);						IN_UserInput(1, &gvar); } \
 	if(IN_KeyDown(sc_T)){ gvar.video.rss=!gvar.video.rss;						IN_UserInput(1, &gvar); } \
-	if(IN_KeyDown(sc_P)){ modexpdump(&gvar.video.page[0]);					IN_UserInput(1, &gvar); }
+	if(IN_KeyDown(sc_P)){ modexpdump(&gvar.video.page[0]);					IN_UserInput(1, &gvar); } \
+	if(IN_KeyDown(sc_Y)){ dbg_delayanimation=!dbg_delayanimation;				IN_UserInput(1, &gvar); } \
+	RFDEBUGFUNCTIONS
 
 #define TAIL_PANKEYFUN \
 	TAIL_PANKEYFUNZC \
