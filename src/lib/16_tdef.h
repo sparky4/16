@@ -365,18 +365,23 @@ typedef struct
 
 typedef struct
 {
+//doslib origi vars
+	byte far * omemptr;
+	byte vga_draw_stride;
+	byte vga_draw_stride_limit;		// further X clipping
+//end of doslib origi vars
+	boolean __near rss;		//render sprite switch
+	boolean __near bgps;		//bg preservation render switch between old and new
+} vga_state_t;
+
+typedef struct
+{
 	char old_mode;		//old video mode before game!
 	byte palette[PALSIZE], dpal[PALSIZE];	//palette array
 	page_t page[MAXPAGE];	//can be used as a pointer to root page[0]
 	word vmem_remain;	//remaining video memory
 	byte num_of_pages;	//number of actual pages
-	//doslib origi vars
-	byte far * omemptr;
-	byte vga_draw_stride;
-	byte vga_draw_stride_limit;		// further X clipping
-	//end of doslib origi vars
-	boolean __near rss;		//render sprite switch
-	boolean __near bgps;		//bg preservation render switch between old and new
+	vga_state_t	vga_state;
 	sword __near sprifilei;		//player file's i
 	nibble __near p;			//render page number
 	nibble __near sp;			//show page number(for showpage)
@@ -387,9 +392,6 @@ typedef struct
 	ofs_t	ofs;		//offset vars used for doslib
 	word	vh;		//video combined height
 	//0000word startclk; float clk, tickclk;	//timer
-//newer vars
-//TODO: find out how they are used
-//	byte grneeded[NUMCHUNKS];
 } video_t;
 
 //from scroll16

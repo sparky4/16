@@ -56,10 +56,10 @@
 #define TAIL_FUNCTIONKEYFUNCTIONS0EXE \
 	if(gvar.in.inst->Keyboard[sc_F4]){ turboXT(12);									IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[68/*sc_F10*/]){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap;		IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[sc_F8]){ gvar.video.bgps=!gvar.video.bgps;					IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_F8]){ gvar.video.vga_state.bgps=!gvar.video.vga_state.bgps;					IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_F7]){ ZC_ShowMV(&gvar.mv, 0, 1);						IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_F6]){ ZC_ShowMV(&gvar.mv, 0, 0);						IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[sc_T]){ gvar.video.rss=!gvar.video.rss;						IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_T]){ gvar.video.vga_state.rss=!gvar.video.vga_state.rss;						IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_P]){ modexpdump(&gvar.video.page[0]);					IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_Y]){ dbg_delayanimation=!dbg_delayanimation;				IN_UserInput(1, &gvar); } \
 	RFDEBUGFUNCTIONS

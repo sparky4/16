@@ -274,7 +274,7 @@ void modexCalcVmemRemain(video_t *video)
 
 void VL_Initofs(video_t *video)
 {
-	if(!video->bgps)
+	if(!video->vga_state.bgps)
 	{
 		video->ofs.offscreen_ofs =	video->page[0].pagesize+video->page[1].pagesize;//(vga_state.vga_stride * vga_state.vga_height);
 		video->ofs.pattern_ofs =	(uint16_t)video->page[2].data;
@@ -304,12 +304,12 @@ void modexHiganbanaPageSetup(video_t *video)
 
 	VL_Initofs(video);
 	//doslib origi var
-	video->omemptr=			vga_state.vga_graphics_ram;
-	video->vga_draw_stride=	vga_state.vga_draw_stride;
-	video->vga_draw_stride_limit=	vga_state.vga_draw_stride_limit;
+	video->vga_state.omemptr=			vga_state.vga_graphics_ram;
+	video->vga_state.vga_draw_stride=	vga_state.vga_draw_stride;
+	video->vga_state.vga_draw_stride_limit=	vga_state.vga_draw_stride_limit;
 	//sprite render switch and bgpreservation switch
-	video->rss=		1;
-	video->bgps=	1;
+	video->vga_state.rss=		1;
+	video->vga_state.bgps=	1;
 
 	//setup the buffersize
 	video->page[0].dx=video->page[0].dy=

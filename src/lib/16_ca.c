@@ -1123,8 +1123,10 @@ dinorm:
 
 void CAL_SetupMapFile (global_game_variables_t *gvar)
 {
+#ifndef MAPHEADERLINKED
 	int handle;
 	long length;
+#endif
 
 //
 // load maphead.ext (offsets and tileinfo for map file)
@@ -1137,9 +1139,9 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 	MM_GetPtr (MEMPTR gvar->ca.tinf,length,gvar);
 	CA_FarRead(handle, gvar->ca.tinf, length,gvar);
 	close(handle);
-#else
+//#else
 
-	tinf = (byte _seg *)FP_SEG(&maphead);
+	gvar->ca.tinf = (byte _seg *)FP_SEG(&maphead);
 
 #endif
 
@@ -1805,7 +1807,7 @@ void CA_CacheGrChunk (int chunk)
 	byte	far *source;
 	int		next;
 
-	gvar->video.grneeded[chunk] |= ca_levelbit;		// make sure it doesn't get removed
+	gvar->ca.grneeded[chunk] |= ca_levelbit;		// make sure it doesn't get removed
 	if (grsegs[chunk])
 	{
 		MM_SetPurge (&grsegs[chunk],0);

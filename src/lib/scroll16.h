@@ -88,7 +88,7 @@ printf("\n\n");\
 \
 	printf("gvar.video:\n");\
 	printf(" r=%u ", gvar.video.dorender);\
-	printf("bgps=%u ", gvar.video.bgps);\
+	printf("bgps=%u ", gvar.video.vga_state.bgps);\
 	printf("dbg_delayanimation=%u ", dbg_delayanimation);\
 printf("\n\n");
 
@@ -96,11 +96,9 @@ printf("\n\n");
 	if(IN_KeyDown(sc_F11)){ pagedelayrendermap=!pagedelayrendermap;		IN_UserInput(1, &gvar); }
 	if(IN_KeyDown(sc_F10)){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap;		IN_UserInput(1, &gvar); }
 	if(IN_KeyDown(sc_F9)){ pagenorendermap=!pagenorendermap;				IN_UserInput(1, &gvar); }
-	if(IN_KeyDown(sc_F8)){ gvar.video.bgps=!gvar.video.bgps;					IN_UserInput(1, &gvar); }
-	if(IN_KeyDown(sc_T)){ gvar.video.rss=!gvar.video.rss;						IN_UserInput(1, &gvar); }
+	if(IN_KeyDown(sc_F8)){ gvar.video.vga_state.bgps=!gvar.video.vga_state.bgps;					IN_UserInput(1, &gvar); }
+	if(IN_KeyDown(sc_T)){ gvar.video.vga_state.rss=!gvar.video.vga_state.rss;						IN_UserInput(1, &gvar); }
 */
-
-extern boolean pagenorendermap, pagedelayrendermap;
 
 extern char global_temp_status_text[512];
 extern char global_temp_status_text2[512];

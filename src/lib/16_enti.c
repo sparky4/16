@@ -46,7 +46,7 @@ void EN_initentity(entity_t *enti, video_t *video)
 // 	modexClearRegion(&video->page[0], enti->x, enti->y, 16, 16, 2);
 // 	modexClearRegion(&video->page[2], 0, 0, video->page[2].sw, video->page[2].sh, 45);
 // 	modexClearRegion(&video->page[3], 0, 0, video->page[3].sw, video->page[3].sh, 47);
-	if(!video->bgps){
+	if(!video->vga_state.bgps){
 		//video->ofs.pattern_ofs=(uint16_t)video->page[0].data;
 		//video->ofs.offscreen_ofs=(uint16_t)video->page[3].data;
 		w = (enti->x + 24) & (~3);

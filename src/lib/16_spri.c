@@ -156,7 +156,7 @@ void animate_spri(entity_t *enti, video_t *video)
 	}
 
 	// render box bounds. y does not need modification, but x and width must be multiple of 4
-	if(!video->rss)
+	if(!video->vga_state.rss)
 	{
 		if (x >= enti->overdraww) rx = (x - enti->overdraww) & (~3);
 			else rx = -(video->page[0].dx);
@@ -167,7 +167,7 @@ void animate_spri(entity_t *enti, video_t *video)
 		if ((rx+w) > video->page[0].width) w = video->page[0].width-rx;
 		if ((ry+h) > video->page[0].height) h = video->page[0].height-ry;
 
-		if(!video->bgps){
+		if(!video->vga_state.bgps){
 			// block copy pattern to where we will draw the sprite
 			vga_setup_wm1_block_copy();
 			o2 = video->ofs.offscreen_ofs;
@@ -199,12 +199,12 @@ void animate_spri(entity_t *enti, video_t *video)
 #ifdef __DEBUG_SPRI__
 	if(dbg_delayanimation) delay(250);//{ while(!IN_KeyDown(sc_Space)/* && !IN_KeyDown(sc_Escape)*/){} delay(250); }
 #endif
-	if(!video->rss)
+	if(!video->vga_state.rss)
 	{
 		// restore ptr
 		vga_state.vga_graphics_ram = omemptr;
 
-		if(!video->bgps){
+		if(!video->vga_state.bgps){
 			// block copy to visible RAM from offscreen
 			vga_setup_wm1_block_copy();
 			o = video->ofs.offscreen_ofs; // source offscreen
@@ -217,6 +217,6 @@ void animate_spri(entity_t *enti, video_t *video)
 	// restore stride
 	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = video->page[0].stridew;
 
-	vga_state.vga_graphics_ram = video->omemptr;
+	vga_state.vga_graphics_ram = video->vga_state.omemptr;
 	video->dorender=1;
 }

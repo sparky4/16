@@ -347,7 +347,7 @@ void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 //		if(id==0)
 			mapDrawCol(&mv[id], mv[0].tx + mv[0].page->ti.tw, mv[0].ty-1, x, player, DRAWCOLNUM);
 //		else
-//			if(mv[0].video->bgps)
+//			if(mv[0].video->vga_state.bgps)
 //				modexCopyPageRegion(mv->page, mv[0].page, x, 0, x, 0, mv[0].map->tiles->tileWidth, mv[0].page->height);
 	//mv[0].video->dorender=1;//ScrollRight
 }
@@ -370,7 +370,7 @@ void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 //		if(id==0)
 			mapDrawCol(&mv[id], mv[0].tx - 1, mv[0].ty-1, x, player, DRAWCOLNUM);
 //		else
-//			if(mv[0].video->bgps)
+//			if(mv[0].video->vga_state.bgps)
 //				modexCopyPageRegion(mv->page, mv[0].page, x, 0, x, 0, mv[0].map->tiles->tileWidth, mv[0].page->height);
 	//mv[0].video->dorender=1;//ScrollLeft
 }
@@ -393,7 +393,7 @@ void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 //		if(id==0)
 			mapDrawRow(&mv[id], mv[0].tx - 1, mv[0].ty-1, y, player, DRAWROWNUM);
 //		else
-//			if(mv[0].video->bgps)
+//			if(mv[0].video->vga_state.bgps)
 //				modexCopyPageRegion(mv->page, mv[0].page, 0, y, 0, y, mv[0].page->width, mv[0].map->tiles->tileHeight);
 	//mv[0].video->dorender=1;//ScrollUp
 }
@@ -416,14 +416,14 @@ void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 //		if(id==0)
 			mapDrawRow(&mv[id], mv[0].tx - 1, mv[0].ty+mv[0].page->ti.th, y, player, DRAWROWNUM);
 //		else
-//			if(mv[0].video->bgps)
+//			if(mv[0].video->vga_state.bgps)
 //				modexCopyPageRegion(mv->page, mv[0].page, 0, y, 0, y, mv[0].page->width, mv[0].map->tiles->tileHeight);
 	//mv[0].video->dorender=1;//ScrollDown
 }
 
 void ZC_mapScroll(map_view_t *mv, player_t *player, word pn)
 {
-	word b = mv[0].video->bgps;
+	word b = mv[0].video->vga_state.bgps;
 	switch(player[pn].enti.d)
 	{
 		case 2://none
@@ -534,7 +534,7 @@ void mapGoTo(map_view_t *mv, int tx, int ty)
 	modexClearRegion(mv[0].page, 0, 0, mv[0].page->width, mv[0].page->height, 0);
 	ZC_mapredraw(mv, tx, ty);
 
-	//if(mv[0].video->bgps) modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
+	//if(mv[0].video->vga_state.bgps) modexCopyPageRegion(mv[1].page, mv[0].page, 0, 0, 0, 0, mv[0].page->width, mv[0].page->height);
 }
 
 void ZC_mapinitMV(map_view_t *mv, int tx, int ty)
@@ -825,7 +825,7 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn)
 		}
 	}
 
-	if(pip[0].video->bgps && dd)//if moving wwww
+	if(pip[0].video->vga_state.bgps && dd)//if moving wwww
 	{
 		modexCopyPageRegion(pip[0].page, pip[1].page, x-4, y-4, x-4, y-4, 28, 40);
 
