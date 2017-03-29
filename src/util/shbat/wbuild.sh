@@ -1,15 +1,15 @@
 #! /bin/bash
-wmake -h clean
-wmake -h
-wmake -h comp
+wmake -s -h clean
+wmake -s -h
+wmake -s -h comp
 #if [[ -f *.err ]]
 #then
 #	echo dumping *.err
 	#cat *.err
-	wmake -h vomitchan
+	wmake -s -h vomitchan
 #fi
 #if [ -f 16_head.o ]
 #then
 #	rm *.o
 #fi
-####wmake -h inntest.exe
+####wmake -s -h inntest.exe

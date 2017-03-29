@@ -3,9 +3,9 @@
 #if [ -f "*.exe" ]
 #	then
 #fi
-wmake -h www
-wmake -h clean
-wmake -h backupscript
+wmake -s -h www
+wmake -s -h clean
+wmake -s -h backupscript
 if [ -z "$*" ]; then
 		pee="wwww"
 	else
@@ -14,6 +14,6 @@ fi
 ##echo "$pee"
 git add .
 . src/util/shbat/boop.sh "$pee"
-wmake -h initscript
+wmake -s -h initscript
 . ./wbuild.sh
 ##. ./mkdld.sh# slow compile ww
