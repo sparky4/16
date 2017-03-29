@@ -623,7 +623,7 @@ typedef struct	//TODO: USE THIS!!!!
 	ca_handle_t		file;		//files to open
 	ca_mapinfo_t	camap;
 
-	byte 		_seg	*tinf[4];//?? where in the id engine is this used and what is it? --sparky4
+	byte 		_seg	*tinf;//?? where in the id engine is this used and what is it? --sparky4
 	unsigned	_seg	*mapsegs[MAPPLANES];
 	void		_seg	*grsegs[NUMCHUNKS];
 	byte		far		grneeded[NUMCHUNKS];

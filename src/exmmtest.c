@@ -46,9 +46,9 @@
 //	#define PRINTBBDUMP
 #define BUFFDUMP
 
-#define BBUFNAME gvar.ca.tinf[0]//bigbuffer
-//#define INITBBUF static memptr BBUFNAME;
-#define BBUFPTR	(memptr *)&BBUFNAME
+#define BBUFNAME bigbuffer//gvar.ca.tinf[0]
+#define INITBBUF static memptr BBUFNAME;
+#define BBUFPTR	MEMPTR BBUFNAME
 
 #ifdef __BORLANDC__
 #define BBUF		(memptr *)BBUFPTR//
@@ -224,11 +224,11 @@ PRINTBB; printf("\n\npress any key to continue!\n"); getch();
 #endif	//filereadload
 
 
-#ifdef __WATCOMC__
+/*#ifdef __WATCOMC__
 	IN_Startup(&gvar);
 	ShapeTest_(&gvar);
 	IN_Shutdown(&gvar);
-#endif
+#endif*/
 
 
 	DebugMemory_(&gvar, 1);

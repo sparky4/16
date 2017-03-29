@@ -1057,7 +1057,7 @@ dinorm:
 //
 // load the data offsets from ???head.ext
 //
-	MM_GetPtr (&(memptr)grstarts,(NUMCHUNKS+1)*FILEPOSSIZE);
+	MM_GetPtr (MEMPTR grstarts,(NUMCHUNKS+1)*FILEPOSSIZE);
 
 	if ((handle = open(GREXT"HEAD."EXT,
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
@@ -1082,7 +1082,7 @@ dinorm:
 // load the pic and sprite headers into the arrays in the data segment
 //
 #if NUMPICS>0
-	MM_GetPtr(&(memptr)pictable,NUMPICS*sizeof(pictabletype));
+	MM_GetPtr(MEMPTR pictable,NUMPICS*sizeof(pictabletype));
 	CAL_GetGrChunkLength(STRUCTPIC);		// position file pointer
 	MM_GetPtr(&compseg,chunkcomplen);
 	CA_FarRead (grhandle,compseg,chunkcomplen);
@@ -1091,7 +1091,7 @@ dinorm:
 #endif
 
 #if NUMPICM>0
-	MM_GetPtr(&(memptr)picmtable,NUMPICM*sizeof(pictabletype));
+	MM_GetPtr(MEMPTR picmtable,NUMPICM*sizeof(pictabletype));
 	CAL_GetGrChunkLength(STRUCTPICM);		// position file pointer
 	MM_GetPtr(&compseg,chunkcomplen);
 	CA_FarRead (grhandle,compseg,chunkcomplen);
@@ -1100,7 +1100,7 @@ dinorm:
 #endif
 
 #if NUMSPRITES>0
-	MM_GetPtr(&(memptr)spritetable,NUMSPRITES*sizeof(spritetabletype));
+	MM_GetPtr(MEMPTR spritetable,NUMSPRITES*sizeof(spritetabletype));
 	CAL_GetGrChunkLength(STRUCTSPRITE);	// position file pointer
 	MM_GetPtr(&compseg,chunkcomplen);
 	CA_FarRead (grhandle,compseg,chunkcomplen);
@@ -1123,25 +1123,25 @@ dinorm:
 
 void CAL_SetupMapFile (global_game_variables_t *gvar)
 {
-/*	int handle;
+	int handle;
 	long length;
 
 //
 // load maphead.ext (offsets and tileinfo for map file)
 //
 #ifndef MAPHEADERLINKED
-	if ((handle = open("MAPHEAD."EXT,
+	if ((handle = open("maphead.mph",
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		printf("Can't open MAPHEAD."EXT"!");
+		Quit (gvar, "Can't open maphead.mph");
 	length = filelength(handle);
-	MM_GetPtr (&(memptr)tinf,length);
-	CA_FarRead(handle, tinf, length);
+	MM_GetPtr (MEMPTR gvar->ca.tinf,length,gvar);
+	CA_FarRead(handle, gvar->ca.tinf, length,gvar);
 	close(handle);
-//#else
+#else
 
 	tinf = (byte _seg *)FP_SEG(&maphead);
 
-#endif*/
+#endif
 
 //
 // open the data file
@@ -1149,18 +1149,16 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 //TODO: multiple files
 	if ((gvar->ca.file.maphandle[0] = open("data/test.map",
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-	{
-		printf("Can't open data/test.map!");
-	}
-// #ifdef MAPHEADERLINKED
-// 	if ((maphandle = open("GAMEMAPS."EXT,
-// 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-// 		Quit (gvar, "Can't open GAMEMAPS."EXT"!");
-// //#else
-// 	if ((maphandle = open("MAPTEMP."EXT,
-// 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-// 		Quit (gvar, "Can't open MAPTEMP."EXT"!");
-// #endif
+		Quit (gvar, "Can't open data/test.map!");
+/*#ifdef MAPHEADERLINKED
+	if ((maphandle = open("GAMEMAPS."EXTENSION,
+		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
+		Quit ("Can't open GAMEMAPS."EXTENSION"!");
+#else
+	if ((maphandle = open("MAPTEMP."EXTENSION,
+		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
+		Quit ("Can't open MAPTEMP."EXTENSION"!");
+#endif*/
 }
 
 //==========================================================================
@@ -1187,7 +1185,7 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
 		Quit (gvar, "Can't open AUDIOHED."EXT"!");
 	length = filelength(handle);
-	MM_GetPtr (&(memptr)audiostarts,length);
+	MM_GetPtr (MEMPTR audiostarts,length);
 	CA_FarRead(handle, (byte far *)audiostarts, length);
 	close(handle);
 #else
@@ -1244,10 +1242,17 @@ void CA_Startup(global_game_variables_t *gvar)
 	unlink("meminfo.16w");
 	gvar->handle.showmemhandle = open("meminfo.16w", O_CREAT | O_WRONLY | O_TEXT);
 #endif
-/*
-	CAL_SetupGrFile ();
-	CAL_SetupAudioFile ();*/
+
+
+#ifndef NOMAPS
 	CAL_SetupMapFile (gvar);
+#endif
+#ifndef NOGRAPHICS
+	CAL_SetupGrFile (gvar);
+#endif
+#ifndef NOAUDIO
+	CAL_SetupMapFile (gvar);
+#endif
 
 	gvar->ca.camap.mapon = -1;
 	gvar->ca.ca_levelbit = 1;
@@ -1305,7 +1310,7 @@ void CA_CacheAudioChunk (int chunk)
 
 	if (audiosegs[chunk])
 	{
-		MM_SetPurge (&(memptr)audiosegs[chunk],0);
+		MM_SetPurge (MEMPTR audiosegs[chunk],0);
 		return;							// allready in memory
 	}
 
@@ -1327,7 +1332,7 @@ void CA_CacheAudioChunk (int chunk)
 
 #ifndef AUDIOHEADERLINKED
 
-	MM_GetPtr (&(memptr)audiosegs[chunk],compressed);
+	MM_GetPtr (MEMPTR audiosegs[chunk],compressed);
 	if (mmerror)
 		return;
 
@@ -1352,7 +1357,7 @@ void CA_CacheAudioChunk (int chunk)
 
 	expanded = *(long far *)source;
 	source += 4;			// skip over length
-	MM_GetPtr (&(memptr)audiosegs[chunk],expanded);
+	MM_GetPtr (MEMPTR audiosegs[chunk],expanded);
 	if (mmerror)
 		goto done;
 	CAL_HuffExpand (source,audiosegs[chunk],expanded,audiohuffman);
@@ -1393,7 +1398,7 @@ void CA_LoadAllSounds (void)
 
 	for (i=0;i<NUMSOUNDS;i++,start++)
 		if (audiosegs[start])
-			MM_SetPurge (&(memptr)audiosegs[start],3);		// make purgable
+			MM_SetPurge (MEMPTR audiosegs[start],3);		// make purgable
 
 cachein:
 
@@ -1898,12 +1903,12 @@ void CA_CacheMap (global_game_variables_t *gvar)
 //		if (pos<0)						// $FFFFFFFF start is a sparse map
 //		  printf("CA_CacheMap: Tried to load a non existent map!");
 
-//		MM_GetPtr(&(memptr)gvar->ca.camapheaderseg[mapnum],sizeof(maptype));
+//		MM_GetPtr(MEMPTR gvar->ca.camapheaderseg[mapnum],sizeof(maptype));
 //		lseek(maphandle,pos,SEEK_SET);
 //		CA_FarRead (maphandle,(memptr)mapheaderseg[mapnum],sizeof(maptype));
 //	}
 //	else
-//		MM_SetPurge (&(memptr)mapheaderseg[mapnum], 0, &(gvar->mm));
+//		MM_SetPurge (MEMPTR mapheaderseg[mapnum], 0, &(gvar->mm));
 
 //
 // load the planes in
@@ -1921,7 +1926,7 @@ void CA_CacheMap (global_game_variables_t *gvar)
 		if (!compressed)
 			continue;		// the plane is not used in this game
 
-		dest = &(memptr)mapsegs[plane];
+		dest = MEMPTR mapsegs[plane];
 		MM_GetPtr(dest,size);
 
 		lseek(maphandle,pos,SEEK_SET);

@@ -28,8 +28,8 @@
 //===========================================================================
 
 //#define NOMAPS
-//#define NOGRAPHICS
-//#define NOAUDIO
+#define NOGRAPHICS
+#define NOAUDIO
 
 //#define MAPHEADERLINKED
 //#define GRHEADERLINKED
@@ -46,9 +46,9 @@
 	unsigned	RLEWtag;
 	long		headeroffsets[100];
 	byte		tileinfo[];
-} mapfiletype;*/
+} mapfiletype;
 
-/*typedef	struct
+typedef	struct
 {
 	long		planestart[3];
 	unsigned	planelength[3];

@@ -65,6 +65,8 @@ MK_FP(segment value, 0)*/
 
 typedef void _seg * memptr;
 
+#define MEMPTR (memptr *)&//old is &(memptr)
+
 #ifdef __WATCOMC__	//functions found in borland c but not watcom c
 #define _argv __argv
 #define _argc __argc
