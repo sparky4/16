@@ -226,7 +226,7 @@ PRINTBB; printf("\n\npress any key to continue!\n"); getch();
 
 #ifdef __WATCOMC__
 	IN_Startup(&gvar);
-	ShapeTest (&gvar);
+	ShapeTest_(&gvar);
 	IN_Shutdown(&gvar);
 #endif
 

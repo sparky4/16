@@ -192,10 +192,11 @@ TESTEXEC = &
 	0.exe &
 	exmmtest.exe &
 	vgmtest.exe &
-	zcroll.exe &
+	xcroll.exe &
 	inputest.exe &
 	vrstest.exe &
 	maptest.exe
+#zcroll.exe &
 TESTEXEC2 = &
 	pcxtest.exe &
 	scroll.exe &
@@ -248,6 +249,8 @@ bakapi.exe:		bakapi.$(OBJ) gfx.lib $(DOSLIB)
 #
 scroll.exe:	scroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 scroll.$(OBJ):	$(SRC)/scroll.c
+xcroll.exe:	xcroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
+xcroll.$(OBJ):	$(SRC)/xcroll.c
 zcroll.exe:	zcroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 zcroll.$(OBJ):	$(SRC)/zcroll.c
 tesuto.exe:	tesuto.$(OBJ) 16_head.$(OBJ) gfx.lib $(DOSLIB)
@@ -382,8 +385,8 @@ ll.$(OBJ):		$(SRCLIB)/ll.c	$(SRCLIB)/ll.h
 #other~
 #
 clean: .symbolic
-	@if not exist $(DOSLIBDIR)/buildall.sh wmake -h initlibs
-	@wmake -h initscript
+	@if not exist $(DOSLIBDIR)/buildall.sh wmake -s -h initlibs
+	@wmake -s -h initscript
 	@for %f in ($(ALLEXEC)) do @if exist %f $(REMOVECOMMAND) %f
 !ifdef __LINUX__
 	@if exist *.LIB $(REMOVECOMMAND) *.LIB
@@ -391,7 +394,7 @@ clean: .symbolic
 	@if exist *.EXE $(REMOVECOMMAND) *.EXE
 	@if exist *.OBJ $(REMOVECOMMAND) *.OBJ
 	#@for %f in ($(SPRIUTILEXEC)) do @if exist %f $(REMOVECOMMAND) %f
-	@if not exist vrl2vrs wmake -h pcx2vrl
+	@if not exist vrl2vrs wmake -s -h pcx2vrl
 !else
 	@if exist *.o $(REMOVECOMMAND) *.o
 !endif
@@ -470,11 +473,11 @@ www: .symbolic
 	@for %f in ($(EXEC)) do @if exist %f @$(COPYCOMMAND) %f /var/www/
 	@./src/util/z.sh $(EXEC) $(EXEC)
 	@./src/util/z2.sh data.zip data
-	@wmake -h wwwext
+	@wmake -s -h wwwext
 
 wwwext: .symbolic
-	@wmake -h wwwext1
-	@wmake -h wwwext2
+	@wmake -s -h wwwext1
+	@wmake -s -h wwwext2
 
 wwwext1: .symbolic
 	####----@ssh -p $(HOSTPORT) $(HOSTUSER)@$(HOSTADDR) 'rm -f $(HOSTDIR)/16/*exe*'
@@ -529,11 +532,11 @@ reinitlibs: .symbolic
 	@$(REMOVECOMMAND) -rf 16/wolf3d
 	@$(REMOVECOMMAND) -rf 16/keen
 	@$(REMOVECOMMAND) -rf 16/Catacomb3D
-	@wmake -h initlibs
+	@wmake -s -h initlibs
 
 initlibs: .symbolic
-	@wmake -h initconfig
-	@wmake -h getlib
+	@wmake -s -h initconfig
+	@wmake -s -h getlib
 	@cd 16
 	@git clone https://github.com/FlatRockSoft/CatacombApocalypse.git
 	@git clone https://github.com/id-Software/wolf3d.git
@@ -553,19 +556,19 @@ getlib: .symbolic
 ##
 xlib: .symbolic
 	@cd 16$(DIRSEP)xlib
-	@wmake -h clean
-	@wmake -h all
+	@wmake -s -h clean
+	@wmake -s -h all
 	@cd $(BUILD_ROOT)
 
 mx: .symbolic
 	@cd 16$(DIRSEP)xw
 #	@wmake clean
-	@wmake -h all
+	@wmake -s -h all
 	@cd $(BUILD_ROOT)
 
 mx_: .symbolic
 	@cd 16$(DIRSEP)xw_
-	@wmake -h -f makefile all
+	@wmake -s -h -f makefile all
 	@cd $(BUILD_ROOT)
 
 !ifdef __LINUX__

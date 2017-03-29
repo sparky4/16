@@ -108,7 +108,7 @@ void _DEBUGF(const char *fmt,...) {
 */
 
 #pragma warn -pia
-void ShapeTest (global_game_variables_t *gvar)
+void ShapeTest_(global_game_variables_t *gvar)
 {
 extern	word	NumDigi;
 extern	word	_seg *DigiList;
@@ -265,8 +265,6 @@ static	char	buf[10];
 		while (!(scan = gvar->in.inst->LastScan))
 		{}
 //			SD_Poll();
-
-//if(IN_KeyDown(sc_Escape)) break;
 
 		IN_ClearKey(scan);
 		switch (scan)

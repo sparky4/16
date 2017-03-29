@@ -26,7 +26,7 @@ void
 main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
-	Startup16(&gvar);
+	Startup16(&gvar);//initgame equ
 
 	/* save the palette */
 	modexPalSave(gvar.video.dpal);
@@ -52,8 +52,8 @@ main(int argc, char *argv[])
 	modexFadeOn(4, gvar.video.dpal);
 //	InitGame ();//to be defined in 16_tail
 
-//	DemoLoop();//to be defined in 16_tail
+//++++	DemoLoop();//to be defined in 16_tail
 
-//	Quit("Demo loop exited???");
+//++++	Quit("Demo loop exited???");
 
 }
