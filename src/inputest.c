@@ -49,7 +49,7 @@ ctrl_Keyboard1);
 //0000	nibbletest();
 //0000	booleantest();
 	//printf("dbg_testkeyin=%u	dbg_testcontrolnoisy=%u	dbg_nogvar.playerinpu=%u\nloop if this is not responsive then please KILL or reset machine sorry!!\n", dbg_testkeyin, dbg_testcontrolnoisy, dbg_nogvar.playerinpu);
-	while(!IN_KeyDown(sc_Escape))
+	while(!gvar.in.inst->Keyboard[sc_Escape])
 	{
 //0000		shinkutxt(&gvar);
 		IN_ReadControl(&gvar.player[0], &gvar);
@@ -87,10 +87,9 @@ ctrl_Keyboard1);
 			} else { gvar.player[0].enti.q = 1; gvar.player[0].enti.d = 2; }
 		break;
 	}
-		//printf("%u\n", IN_KeyDown(sc_Escape));
+		//printf("%u\n", gvar.in.inst->Keyboard[sc_Escape]);
 		//if(
-		IN_qb(sc_9);//>0) printf("IN_qb(sc_9)=%u\n", IN_qb(sc_9));
-		if(IN_KeyDown(88))	//speed
+		if(gvar.in.inst->Keyboard[88])	//speed
 		{
 			switch(gvar.kurokku.fpscap)
 			{

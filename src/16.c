@@ -40,7 +40,7 @@ main(int argc, char *argv[])
 	while(1)
 	{
 		IN_ReadControl(&gvar.player[0], &gvar);
-		if(IN_KeyDown(sc_Escape)) break;
+		if(gvar.in.inst->Keyboard[sc_Escape]) break;
 		shinku(&gvar);
 		_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);
 	}

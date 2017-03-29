@@ -34,34 +34,34 @@
 #include "src/lib/testpatt.h"
 
 #define TAIL_FUNCTIONKEYFUNCTIONS \
-	if(IN_KeyDown(88)){ panswitch=!panswitch;							IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[88]){ panswitch=!panswitch;							IN_UserInput(1, &gvar); } \
 	TAIL_FUNCTIONKEYFUNCTIONS0EXE
 
 #define RFDEBUGFUNCTIONS
 #ifdef __DEBUG_RF__
 #undef RFDEBUGFUNCTIONS
 #define RFDEBUGFUNCTIONS \
-	if(IN_KeyDown(sc_F11)){ dbg_pagedelayrendermap=!dbg_pagedelayrendermap;		IN_UserInput(1, &gvar); } \
-	if(IN_KeyDown(sc_F9)){ dbg_pagenorendermap=!dbg_pagenorendermap;			IN_UserInput(1, &gvar); }
+	if(gvar.in.inst->Keyboard[sc_F11]){ dbg_pagedelayrendermap=!dbg_pagedelayrendermap;		IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_F9]){ dbg_pagenorendermap=!dbg_pagenorendermap;			IN_UserInput(1, &gvar); }
 #endif
 
 /*#define SPRIDEBUGFUNCTIONS
 #ifdef __DEBUG_SPRI__
 #undef SPRIDEBUGFUNCTIONS
 #define SPRIDEBUGFUNCTIONS \
-	if(IN_KeyDown(sc_Y)){ dbg_delayanimation=!dbg_delayanimation;				IN_UserInput(1, &gvar); }
-//	if(IN_KeyDown(sc_F9)){ dbg_pagenorendermap=!dbg_pagenorendermap;			IN_UserInput(1, &gvar); }
+	if(gvar.in.inst->Keyboard[sc_Y]){ dbg_delayanimation=!dbg_delayanimation;				IN_UserInput(1, &gvar); }
+//	if(gvar.in.inst->Keyboard[sc_F9]){ dbg_pagenorendermap=!dbg_pagenorendermap;			IN_UserInput(1, &gvar); }
 #endif*/
 
 #define TAIL_FUNCTIONKEYFUNCTIONS0EXE \
-	if(IN_KeyDown(sc_F4)){ turboXT(12);									IN_UserInput(1, &gvar); } \
-	if(IN_KeyDown(68/*sc_F10*/)){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap;		IN_UserInput(1, &gvar); } \
-	if(IN_KeyDown(sc_F8)){ gvar.video.bgps=!gvar.video.bgps;					IN_UserInput(1, &gvar); } \
-	if(IN_KeyDown(sc_F7)){ ZC_ShowMV(&gvar.mv, 0, 1);						IN_UserInput(1, &gvar); } \
-	if(IN_KeyDown(sc_F6)){ ZC_ShowMV(&gvar.mv, 0, 0);						IN_UserInput(1, &gvar); } \
-	if(IN_KeyDown(sc_T)){ gvar.video.rss=!gvar.video.rss;						IN_UserInput(1, &gvar); } \
-	if(IN_KeyDown(sc_P)){ modexpdump(&gvar.video.page[0]);					IN_UserInput(1, &gvar); } \
-	if(IN_KeyDown(sc_Y)){ dbg_delayanimation=!dbg_delayanimation;				IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_F4]){ turboXT(12);									IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[68/*sc_F10*/]){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap;		IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_F8]){ gvar.video.bgps=!gvar.video.bgps;					IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_F7]){ ZC_ShowMV(&gvar.mv, 0, 1);						IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_F6]){ ZC_ShowMV(&gvar.mv, 0, 0);						IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_T]){ gvar.video.rss=!gvar.video.rss;						IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_P]){ modexpdump(&gvar.video.page[0]);					IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_Y]){ dbg_delayanimation=!dbg_delayanimation;				IN_UserInput(1, &gvar); } \
 	RFDEBUGFUNCTIONS
 
 #define TAIL_PANKEYFUN \
@@ -72,28 +72,28 @@
 	ZC_panPageManual(&gvar.mv, &gvar.player, 0);
 
 #define FUNCTIONKEYSHOWMV \
-	if(IN_KeyDown(1+1)){ gvar.video.sp=0; ZC_ShowMV(&gvar.mv, 0, 0); } \
-	if(IN_KeyDown(2+1)){ gvar.video.sp=1; ZC_ShowMV(&gvar.mv, 0, 0); } \
-	if(IN_KeyDown(3+1)){ gvar.video.sp=2; ZC_ShowMV(&gvar.mv, 0, 1); } \
-	if(IN_KeyDown(4+1)){ gvar.video.sp=3; ZC_ShowMV(&gvar.mv, 0, 1); }
+	if(gvar.in.inst->Keyboard[1+1]){ gvar.video.sp=0; ZC_ShowMV(&gvar.mv, 0, 0); } \
+	if(gvar.in.inst->Keyboard[2+1]){ gvar.video.sp=1; ZC_ShowMV(&gvar.mv, 0, 0); } \
+	if(gvar.in.inst->Keyboard[3+1]){ gvar.video.sp=2; ZC_ShowMV(&gvar.mv, 0, 1); } \
+	if(gvar.in.inst->Keyboard[4+1]){ gvar.video.sp=3; ZC_ShowMV(&gvar.mv, 0, 1); }
 
 #define TAIL_FUNCTIONKEYDRAWJUNK \
 	FUNCTIONKEYSHOWMV \
 	TAIL_FUNCTIONKEYDRAWJUNKNOMV
 
 #define TAIL_FUNCTIONKEYDRAWJUNKNOMV \
-	if(IN_KeyDown(sc_A)) modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 3); \
-	if(IN_KeyDown(sc_S)) modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 4); \
+	if(gvar.in.inst->Keyboard[sc_A]){ modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 3); } \
+	if(gvar.in.inst->Keyboard[sc_S]){ modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 4); } \
 \
-	if(IN_KeyDown(sc_Z)){ DRAWCORNERBOXES } \
-	if(IN_KeyDown(sc_X)){ TESTBG12 } \
-	if(IN_KeyDown(sc_C)){ TESTBG34 } \
-	if(IN_KeyDown(sc_V)) VL_PatternDraw(&gvar.video, 0, 1, 1); \
-	if(IN_KeyDown(sc_I)){ dbg_maptext=!dbg_maptext; IN_UserInput(1, &gvar); }
-/*	if(IN_KeyDown(sc_PgDn)){ \
+	if(gvar.in.inst->Keyboard[sc_Z]){ DRAWCORNERBOXES } \
+	if(gvar.in.inst->Keyboard[sc_X]){ TESTBG12 } \
+	if(gvar.in.inst->Keyboard[sc_C]){ TESTBG34 } \
+	if(gvar.in.inst->Keyboard[sc_V]){ VL_PatternDraw(&gvar.video, 0, 1, 1); } \
+	if(gvar.in.inst->Keyboard[sc_I]){ dbg_maptext=!dbg_maptext; IN_UserInput(1, &gvar); }
+/*	if(gvar.in.inst->Keyboard[sc_PgDn]){ \
 		rotateR(gvar.video.palette, sizeof(gvar.video.palette)/sizeof(gvar.video.palette[0])); \
 		VL_UpdatePaletteWrite(&gvar.video.palette, 0);		IN_UserInput(1, &gvar); } \
-	if(IN_KeyDown(sc_PgUp)){ \
+	if(gvar.in.inst->Keyboard[sc_PgUp]){ \
 		rotateL(gvar.video.palette, sizeof(gvar.video.palette)/sizeof(gvar.video.palette[0])); \
 		VL_UpdatePaletteWrite(&gvar.video.palette, 0);		IN_UserInput(1, &gvar); }*/
 

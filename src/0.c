@@ -138,18 +138,18 @@ int main(int argc,char **argv)
 		/* do it */
 		omemptr = vga_state.vga_graphics_ram; // save original mem ptr
 
-		while(!IN_KeyDown(sc_Escape))
+		while(!gvar.in.inst->Keyboard[sc_Escape])
 		{
 			IN_ReadControl(&gvar.player[0], &gvar);
-			if(IN_KeyDown(68)){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap; IN_UserInput(1, &gvar); } //f10
+			if(gvar.in.inst->Keyboard[68]){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap; IN_UserInput(1, &gvar); } //f10
 			TAIL_PANKEYFUN;
-			if(IN_KeyDown(sc_Space) || zerostoppause)	//space
+			if(gvar.in.inst->Keyboard[sc_Space] || zerostoppause)	//space
 			{
 				anim=!anim;
 				DRAWCORNERBOXES;
 				if(!zerostoppause) IN_UserInput(1, &gvar); else zerostoppause=0;
 			}
-			if(IN_KeyDown(sc_R)){
+			if(gvar.in.inst->Keyboard[sc_R]){
 				gvar.video.page[0].dx=gvar.video.page[0].dy=gvar.video.page[1].dx=gvar.video.page[1].dy=16;
 				gvar.mv[0].tx = gvar.mv[0].ty = gvar.mv[1].tx = gvar.mv[1].ty = INITTNUM;
 				VL_ShowPage(&gvar.video.page[gvar.video.sp], 1, 0);

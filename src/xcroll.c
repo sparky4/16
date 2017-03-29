@@ -137,7 +137,7 @@ void main(int argc, char *argv[])
 #endif
 	}
 
-//	while(!IN_KeyDown(sc_Escape) && !IN_KeyDown(sc_Space) && !IN_KeyDown(sc_Enter)){ FUNCTIONKEYSHOWMV }
+//	while(!gvar.in.inst->Keyboard[sc_Escape) && !gvar.in.inst->Keyboard[sc_Space) && !gvar.in.inst->Keyboard[sc_Enter]){ FUNCTIONKEYSHOWMV }
 	gvar.video.page[0].tlx=gvar.mv[0].tx*TILEWH;
 	gvar.video.page[0].tly=gvar.mv[0].ty*TILEWH;
 	shinku(&gvar);
@@ -145,7 +145,7 @@ void main(int argc, char *argv[])
 #ifdef FADE
 	modexFadeOn(4, &gvar.video.palette);
 #endif
-	while(!IN_KeyDown(sc_Escape) && gvar.player[0].enti.hp>0)
+	while(!gvar.in.inst->Keyboard[sc_Escape] && gvar.player[0].enti.hp>0)
 	{
 		gvar.video.page[0].tlx=gvar.mv[0].tx*TILEWH;
 		gvar.video.page[0].tly=gvar.mv[0].ty*TILEWH;
@@ -165,8 +165,8 @@ void main(int argc, char *argv[])
 		}
 
 		//the scripting stuff....
-		//if(((gvar.player[0].enti.triggerx == TRIGGX && gvar.player[0].enti.triggery == TRIGGY) && IN_KeyDown(0x1C))||(gvar.player[0].enti.tx == 5 && gvar.player[0].enti.ty == 5))
-		if(((gvar.mv[0].map->layerdata[0].data[(gvar.player[0].enti.triggerx-1)+(map.width*(gvar.player[0].enti.triggery-1))] == 0) && IN_KeyDown(0x1C))||(gvar.player[0].enti.tx == 5 && gvar.player[0].enti.ty == 5))
+		//if(((gvar.player[0].enti.triggerx == TRIGGX && gvar.player[0].enti.triggery == TRIGGY) && gvar.in.inst->Keyboard[0x1C))||(gvar.player[0].enti.tx == 5 && gvar.player[0].enti.ty == 5))
+		if(((gvar.mv[0].map->layerdata[0].data[(gvar.player[0].enti.triggerx-1)+(map.width*(gvar.player[0].enti.triggery-1))] == 0) && gvar.in.inst->Keyboard[0x1C])||(gvar.player[0].enti.tx == 5 && gvar.player[0].enti.ty == 5))
 		{
 			short i;
 			for(i=800; i>=400; i--)
@@ -178,21 +178,21 @@ void main(int argc, char *argv[])
 		if(gvar.player[0].enti.q == (TILEWH/(gvar.player[0].enti.speed))+1 && gvar.player[0].info.dir != 2 && (gvar.player[0].enti.triggerx == 5 && gvar.player[0].enti.triggery == 5)){ gvar.player[0].enti.hp--; }
 		//debugging binds!
 
-		if(IN_KeyDown(24)){ modexPalUpdate0(&gvar.video.palette); /*paloffset=0;*/ modexpdump(gvar.mv[0].page); IN_UserInput(1, &gvar); } //o
-		if(IN_KeyDown(22)){ modexPalUpdate0(&gvar.video.palette); } //u
+		if(gvar.in.inst->Keyboard[24]){ modexPalUpdate0(&gvar.video.palette); /*paloffset=0;*/ modexpdump(gvar.mv[0].page); IN_UserInput(1, &gvar); } //o
+		if(gvar.in.inst->Keyboard[22]){ modexPalUpdate0(&gvar.video.palette); } //u
 
 		TAIL_FUNCTIONKEYFUNCTIONS
 		TAIL_FUNCTIONKEYDRAWJUNK
-		if(IN_KeyDown(sc_L)){ modexClearRegion(&gvar.video.page[0], gvar.player[0].enti.x, gvar.player[0].enti.y, 16, 16, 1); }
-		if(IN_KeyDown(sc_J) || IN_KeyDown(sc_K))
+		if(gvar.in.inst->Keyboard[sc_L]){ modexClearRegion(&gvar.video.page[0], gvar.player[0].enti.x, gvar.player[0].enti.y, 16, 16, 1); }
+		if(gvar.in.inst->Keyboard[sc_J] || gvar.in.inst->Keyboard[sc_K])
 		{
-			if(IN_KeyDown(sc_J))
+			if(gvar.in.inst->Keyboard[sc_J])
 			{
 				bakapee1=FILENAME_1;
 				bakapee1p=FILENAME_1P;
 				gvar.player[0].enti.overdraww=0;
 			}
-			if(IN_KeyDown(sc_K))
+			if(gvar.in.inst->Keyboard[sc_K])
 			{
 				bakapee1=FILENAME_2;
 				bakapee1p=FILENAME_2P;
@@ -203,9 +203,9 @@ void main(int argc, char *argv[])
 			VL_LoadPalFile(bakapee1p, &gvar.video.palette);
 		}//JK
 #ifdef FADE
-		if(IN_KeyDown(10)){ modexPalOverscan(rand()%56); modexPalUpdate(gvar.video.dpal); IN_UserInput(1, &gvar); }
+		if(gvar.in.inst->Keyboard[10]){ modexPalOverscan(rand()%56); modexPalUpdate(gvar.video.dpal); IN_UserInput(1, &gvar); }
 #endif
-		if(IN_KeyDown(sc_R)){ modexPalOverscan(rand()%56); } //r
+		if(gvar.in.inst->Keyboard[sc_R]){ modexPalOverscan(rand()%56); } //r
 
 		if((gvar.player[0].enti.q==1) && !(gvar.player[0].enti.x%TILEWH==0 && gvar.player[0].enti.y%TILEWH==0)) Quit(&gvar, "PLAYER OFF THE RAILS!");//break;	//incase things go out of sync!
 	}
@@ -218,7 +218,7 @@ void main(int argc, char *argv[])
 	modexFadeOff(4, &gvar.video.palette);
 #endif
 	Shutdown16(&gvar);
-	printf("\nProject 16 zcroll.exe. This is just a test file!\n");
+	printf("\nProject 16 xcroll.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	SCROLLEXITMESG;
 	WCPU_cpufpumesg();

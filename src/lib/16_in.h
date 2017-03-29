@@ -250,8 +250,8 @@ void IN_StopDemo(void);
 void IN_FreeDemoBuffer(void);
 #endif
 
-boolean	IN_KeyDown(byte code),
-		IN_qb(byte kee);
+//boolean	IN_KeyDown(byte code),
+//		IN_qb(byte kee);
 void		IN_ClearKey(byte code),
 		IN_KbdLED();
 ScanCode	IN_GetLastScan(),

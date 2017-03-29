@@ -147,20 +147,20 @@ void main(int argc, char *argv[])
 
 	i=0,k=0,j=0;
 	startclk = *clockw;
-	while(!IN_KeyDown(sc_Escape))
+	while(!gvar.in.inst->Keyboard[sc_Escape])
 	{
 		IN_ReadControl(&gvar.player[0], &gvar);
 		ZC_panPageManual(&gvar.mv, &gvar.player, 0);
-//			if(IN_KeyDown(sc_5)){ modexClearRegion(&gvar.video.page[1],  gvar.video.page[1].sw, 16, 8, 4, 45); }
-// 			if(IN_KeyDown(sc_4)){
+//			if(gvar.in.inst->Keyboard[sc_5)){ modexClearRegion(&gvar.video.page[1],  gvar.video.page[1].sw, 16, 8, 4, 45); }
+// 			if(gvar.in.inst->Keyboard[sc_4)){
 // 				modexClearRegion(&gvar.video.page[1], 16, 16, gvar.video.page[1].sw, gvar.video.page[1].sh, 128);
 // 				modexClearRegion(&gvar.video.page[1], 32, 32, gvar.video.page[1].sw-32, gvar.video.page[1].sh-32, 42);
 // 				modexClearRegion(&gvar.video.page[1], 48, 48, gvar.video.page[1].sw-64, gvar.video.page[1].sh-64, 128);
 // 			}
 		TAIL_PANKEYFUN;
-		if(IN_KeyDown(12)) modexClearRegion(&gvar.video.page[0], (gvar.video.page[0].width/2)-4, (gvar.video.page[0].height/2)-16, 24, 32, 15);
-		if(IN_KeyDown(13)) modexClearRegion(&gvar.video.page[1], (gvar.video.page[1].width/2)-4, (gvar.video.page[1].height/2)-16, 24, 32, 15);
-/*====		if(IN_KeyDown(7)){
+		if(gvar.in.inst->Keyboard[12]) modexClearRegion(&gvar.video.page[0], (gvar.video.page[0].width/2)-4, (gvar.video.page[0].height/2)-16, 24, 32, 15);
+		if(gvar.in.inst->Keyboard[13]) modexClearRegion(&gvar.video.page[1], (gvar.video.page[1].width/2)-4, (gvar.video.page[1].height/2)-16, 24, 32, 15);
+/*====		if(gvar.in.inst->Keyboard[7)){
 			for(i=0;i<3;i++)
 			{
 				pal2[i] = rand()%64;
@@ -170,9 +170,9 @@ void main(int argc, char *argv[])
 			}
 //			if(i>PAL_SIZE) i=0;
 		}//9*/
-		if(IN_KeyDown(25)){ modexpdump(&gvar.video.page[gvar.video.sp]); IN_UserInput(1, &gvar); }//p
-		if(IN_KeyDown(sc_I)){ drawboxesmodex(&gvar.video.page[gvar.video.sp]); IN_UserInput(1, &gvar); }//i
-		if(IN_KeyDown(sc_O)){ copyboxesmodex(&gvar.video.page, !gvar.video.sp); IN_UserInput(1, &gvar); }//o
+		if(gvar.in.inst->Keyboard[25]){ modexpdump(&gvar.video.page[gvar.video.sp]); IN_UserInput(1, &gvar); }//p
+		if(gvar.in.inst->Keyboard[sc_I]){ drawboxesmodex(&gvar.video.page[gvar.video.sp]); IN_UserInput(1, &gvar); }//i
+		if(gvar.in.inst->Keyboard[sc_O]){ copyboxesmodex(&gvar.video.page, !gvar.video.sp); IN_UserInput(1, &gvar); }//o
 		//VL_ShowPage(&gvar.video.page[gvar.video.sp], 0, 0);
 		ZC_ShowMV(&gvar.mv, 0, 0);
 	}

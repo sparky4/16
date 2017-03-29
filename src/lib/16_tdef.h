@@ -310,7 +310,6 @@ typedef struct// inconfig
 // 	Global variables
 	KeyboardDef	KbdDefs[MaxKbds];
 	JoystickDef	JoyDefs[MaxJoys];
-	//struct	instat	*inst;
 	inst_t	*inst;
 } in_info_t;
 
