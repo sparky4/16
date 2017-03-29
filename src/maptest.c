@@ -59,7 +59,7 @@ main(int argc, char *argv[])
 	getch();
 #ifdef DUMP_MAP
 	//if(map.width*map.height != 1200)
-	for(k=0;k<MAP_LAYERS;k++)
+	for(k=0;k<MAPPLANES;k++)
 	{
 		printf("maplayer: %u\n[\n", k);
 		for(i=0; i<(map.width*map.height); i++)

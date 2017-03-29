@@ -2024,7 +2024,7 @@ void CA_ClearMarks (global_game_variables_t *gvar)
 	int i;
 
 	for (i=0;i<NUMCHUNKS;i++)
-		gvar->video.grneeded[i]&=~gvar->ca.ca_levelbit;
+		gvar->ca.grneeded[i]&=~gvar->ca.ca_levelbit;
 }
 
 //===========================================================================
@@ -2041,7 +2041,7 @@ void CA_ClearMarks (global_game_variables_t *gvar)
 
 void CA_ClearAllMarks (global_game_variables_t *gvar)
 {
-	_fmemset (gvar->video.grneeded,0,sizeof(gvar->video.grneeded));
+	_fmemset (gvar->ca.grneeded,0,sizeof(gvar->ca.grneeded));
 	gvar->ca.ca_levelbit = 1;
 	gvar->ca.ca_levelnum = 0;
 }

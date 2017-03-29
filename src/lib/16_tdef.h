@@ -171,11 +171,11 @@ typedef struct {
 	byte	*data;			//TODO: 16_mm and 16_ca must handle this
 } mapl_t;	//map layer array type def
 
-#define MAP_LAYERS 3
+#define MAPPLANES		3
 typedef struct {
 	//long		planestart[3];
 	//unsigned	planelength[3];
-	mapl_t layerdata[MAP_LAYERS];	// mapdata for multilayer (map index values for rendering which image on the tile)
+	mapl_t layerdata[MAPPLANES];	// mapdata for multilayer (map index values for rendering which image on the tile)
 	tiles_t *tiles;		//TODO: 16_mm and 16_ca must handle this	// tilesets for layers (currently ony 4 can be loaded wwww)
 	int width, height;		//this has to be signed!
 	byte name[16];
@@ -390,7 +390,7 @@ typedef struct
 	//0000word startclk; float clk, tickclk;	//timer
 //newer vars
 //TODO: find out how they are used
-	byte grneeded[NUMCHUNKS];
+//	byte grneeded[NUMCHUNKS];
 } video_t;
 
 //from scroll16
@@ -581,7 +581,6 @@ typedef struct
 //==========================================================================
 
 #define NUMMAPS		4//39
-#define MAPPLANES		3
 #define NUMSNDCHUNKS		84
 
 typedef struct
@@ -589,10 +588,18 @@ typedef struct
   word bit0,bit1;	// 0-255 is a character, > is a pointer to a node
 } huffnode;
 
+typedef	struct
+{
+	long		planestart[3];
+	unsigned	planelength[3];
+	unsigned	width,height;
+	char		name[16];
+} maptype;
+
 typedef struct
 {
 	int		mapon, mapnum;
-	//maptype		_seg	*mapheaderseg[NUMMAPS];
+	maptype		_seg	*mapheaderseg[NUMMAPS];
 } ca_mapinfo_t;
 
 typedef struct
@@ -602,36 +609,28 @@ typedef struct
 	int			audiohandle[4];	// handle to AUDIOT / AUDIO
 } ca_handle_t;
 /*
- 16/wf3d8086/id_ca.c:byte 		_seg	*tinf;
-16/wf3d8086/id_ca.c:unsigned	_seg	*mapsegs[MAPPLANES];
-16/wf3d8086/id_ca.c:maptype		_seg	*mapheaderseg[NUMMAPS];
-16/wf3d8086/id_ca.c:byte		_seg	*audiosegs[NUMSNDCHUNKS];
-16/wf3d8086/id_ca.c:void		_seg	*grsegs[NUMCHUNKS];
-16/wf3d8086/id_ca.c:long		_seg *grstarts;	// array of offsets in egagraph, -1 for sparse
-16/wf3d8086/id_ca.c:long		_seg *audiostarts;	// array of offsets in audio / audiot
 16/wf3d8086/id_ca.c:	grstarts = (long _seg *)FP_SEG(&EGAhead);
 16/wf3d8086/id_ca.c:	tinf = (byte _seg *)FP_SEG(&maphead);
 16/wf3d8086/id_ca.c:		pos = ((mapfiletype	_seg *)tinf)->headeroffsets[i];
 16/wf3d8086/id_ca.c:	audiostarts = (long _seg *)FP_SEG(&audiohead);
 16/wf3d8086/id_ca.c:		((mapfiletype _seg *)tinf)->RLEWtag);
 16/wf3d8086/id_ca.c:		((mapfiletype _seg *)tinf)->RLEWtag);
-16/wf3d8086/id_ca.c:					source = (byte _seg *)bufferseg+(pos-bufferstart);*/
+16/wf3d8086/id_ca.c:					source = (byte _seg *)bufferseg+(pos-bufferstart);
+*/
 typedef struct	//TODO: USE THIS!!!!
 {
 	byte	ca_levelbit,ca_levelnum;
 	ca_handle_t		file;		//files to open
 	ca_mapinfo_t	camap;
 
-	unsigned	_seg	*mapsegs[MAP_LAYERS];
+	byte 		_seg	*tinf[4];//?? where in the id engine is this used and what is it? --sparky4
+	unsigned	_seg	*mapsegs[MAPPLANES];
 	void		_seg	*grsegs[NUMCHUNKS];
 	byte		far		grneeded[NUMCHUNKS];
 	word		_seg *audiosegs[NUMSNDCHUNKS];//long
 
 	word		_seg	*grstarts;	// array of offsets in egagraph, -1 for sparse//long
 	word		_seg	*audiostarts;	// array of offsets in audio / audiot//long
-
-	//misc memptr
-	byte		_seg	*tinf[4];
 
 	huffnode huffnode;
 

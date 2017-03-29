@@ -31,3 +31,213 @@ kd_play.c:						RF_RemoveSprite (&obj->sprite);
 kd_play.c:		RF_Refresh();
 kd_play.c:			RF_SetRefreshHook (&FadeAndUnhook);
 kd_play.c:			RF_NewPosition (orgx,orgy);
+-------------------------------------------------------------------------------
+					./qcata.sh start
+-------------------------------------------------------------------------------
+==== 16/Catacomb3D ====
+16/Catacomb3D/C3_MAIN.C:void RF_FixOfs (void)
+16/Catacomb3D/ID_RF.C:// RF_Startup
+16/Catacomb3D/ID_RF.C:= RF_Startup
+16/Catacomb3D/ID_RF.C:void RF_Startup (void)
+16/Catacomb3D/ID_RF.C:= RF_Shutdown
+16/Catacomb3D/ID_RF.C:void RF_Shutdown (void)
+16/Catacomb3D/ID_RF.C:= RF_FixOfs
+16/Catacomb3D/ID_RF.C:void RF_FixOfs (void)
+16/Catacomb3D/ID_RF.C:= RF_NewMap
+16/Catacomb3D/ID_RF.C:void RF_NewMap (void)
+16/Catacomb3D/ID_RF.C:		Quit ("RF_NewMap: Map too tall!");
+16/Catacomb3D/ID_RF.C:	RF_SetScrollBlock (0,MAPBORDER-1,true);
+16/Catacomb3D/ID_RF.C:	RF_SetScrollBlock (0,mapheight-MAPBORDER,true);
+16/Catacomb3D/ID_RF.C:	RF_SetScrollBlock (MAPBORDER-1,0,false);
+16/Catacomb3D/ID_RF.C:	RF_SetScrollBlock (mapwidth-MAPBORDER,0,false);
+16/Catacomb3D/ID_RF.C:= RF_MarkTileGraphics
+16/Catacomb3D/ID_RF.C:void RF_MarkTileGraphics (void)
+16/Catacomb3D/ID_RF.C:						strcpy (str,"RF_MarkTileGraphics: Background anim of 0:");
+16/Catacomb3D/ID_RF.C:						Quit ("RF_MarkTileGraphics: Too many unique animated tiles!");
+16/Catacomb3D/ID_RF.C:						strcpy (str,"RF_MarkTileGraphics: Unending background animation:");
+16/Catacomb3D/ID_RF.C:						strcpy (str,"RF_MarkTileGraphics: Foreground anim of 0:");
+16/Catacomb3D/ID_RF.C:						Quit ("RF_MarkTileGraphics: Too many unique animated tiles!");
+16/Catacomb3D/ID_RF.C:						strcpy (str,"RF_MarkTileGraphics: Unending foreground animation:");
+16/Catacomb3D/ID_RF.C:			Quit ("RF_CheckForAnimTile: No free spots in tilearray!");
+16/Catacomb3D/ID_RF.C:			Quit ("RF_CheckForAnimTile: No free spots in tilearray!");
+16/Catacomb3D/ID_RF.C:= RF_SetScrollBlock
+16/Catacomb3D/ID_RF.C:void RF_SetScrollBlock (int x, int y, boolean horizontal)
+16/Catacomb3D/ID_RF.C:			Quit ("RF_SetScrollBlock: Too many horizontal scroll blocks");
+16/Catacomb3D/ID_RF.C:			Quit ("RF_SetScrollBlock: Too many vertical scroll blocks");
+16/Catacomb3D/ID_RF.C:= RF_SetRefreshHook
+16/Catacomb3D/ID_RF.C:void RF_SetRefreshHook (void (*func) (void) )
+16/Catacomb3D/ID_RF.C:= RF_ForceRefresh
+16/Catacomb3D/ID_RF.C:void RF_ForceRefresh (void)
+16/Catacomb3D/ID_RF.C:	RF_NewPosition (originxglobal,originyglobal);
+16/Catacomb3D/ID_RF.C:	RF_Refresh ();
+16/Catacomb3D/ID_RF.C:	RF_Refresh ();
+16/Catacomb3D/ID_RF.C:= RF_MapToMap
+16/Catacomb3D/ID_RF.C:void RF_MapToMap (unsigned srcx, unsigned srcy,
+16/Catacomb3D/ID_RF.C:= RF_MemToMap
+16/Catacomb3D/ID_RF.C:void RF_MemToMap (unsigned far *source, unsigned plane,
+16/Catacomb3D/ID_RF.C:= RF_ClearBlock
+16/Catacomb3D/ID_RF.C:void RF_ClearBlock (int	x, int y, int width, int height)
+16/Catacomb3D/ID_RF.C:= RF_RedrawBlock
+16/Catacomb3D/ID_RF.C:void RF_RedrawBlock (int x, int y, int width, int height)
+16/Catacomb3D/ID_RF.C:= RF_CalcTics
+16/Catacomb3D/ID_RF.C:void RF_CalcTics (void)
+16/Catacomb3D/ID_RF.C:= RF_FindFreeBuffer
+16/Catacomb3D/ID_RF.C:unsigned RF_FindFreeBuffer (void)
+16/Catacomb3D/ID_RF.C:= RF_NewPosition EGA
+16/Catacomb3D/ID_RF.C:void RF_NewPosition (unsigned x, unsigned y)
+16/Catacomb3D/ID_RF.C:= RF_Scroll  EGA
+16/Catacomb3D/ID_RF.C:void RF_Scroll (int x, int y)
+16/Catacomb3D/ID_RF.C:		RF_NewPosition(originxglobal,originyglobal);
+16/Catacomb3D/ID_RF.C:= RF_PlaceSprite   EGA
+16/Catacomb3D/ID_RF.C:void RF_PlaceSprite (void **user,unsigned globalx,unsigned globaly,
+16/Catacomb3D/ID_RF.C:		RF_RemoveSprite (user);
+16/Catacomb3D/ID_RF.C:			Quit ("RF_PlaceSprite: No free spots in spritearray!");
+16/Catacomb3D/ID_RF.C:		strcpy (str,"RF_PlaceSprite: Placed an uncached sprite:");
+16/Catacomb3D/ID_RF.C:= RF_RemoveSprite  EGA
+16/Catacomb3D/ID_RF.C:void RF_RemoveSprite (void **user)
+16/Catacomb3D/ID_RF.C:= RF_Refresh   EGA
+16/Catacomb3D/ID_RF.C:void RF_Refresh (void)
+16/Catacomb3D/ID_RF.C:	RF_CalcTics ();
+16/Catacomb3D/ID_RF.C:= RF_NewPosition   CGA
+16/Catacomb3D/ID_RF.C:void RF_NewPosition (unsigned x, unsigned y)
+16/Catacomb3D/ID_RF.C:= RF_Scroll       CGA
+16/Catacomb3D/ID_RF.C:void RF_Scroll (int x, int y)
+16/Catacomb3D/ID_RF.C:		RF_NewPosition(originxglobal,originyglobal);
+16/Catacomb3D/ID_RF.C:= RF_PlaceSprite  CGA
+16/Catacomb3D/ID_RF.C:void RF_PlaceSprite (void **user,unsigned globalx,unsigned globaly,
+16/Catacomb3D/ID_RF.C:		RF_RemoveSprite (user);
+16/Catacomb3D/ID_RF.C:			Quit ("RF_PlaceSprite: No free spots in spritearray!");
+16/Catacomb3D/ID_RF.C:		strcpy (str,"RF_PlaceSprite: Placed an uncached sprite!");
+16/Catacomb3D/ID_RF.C:= RF_RemoveSprite CGA
+16/Catacomb3D/ID_RF.C:void RF_RemoveSprite (void **user)
+16/Catacomb3D/ID_RF.C:= RF_Refresh        CGA
+16/Catacomb3D/ID_RF.C:void RF_Refresh (void)
+16/Catacomb3D/ID_US_2.C:	RF_FixOfs();
+16/Catacomb3D/ID_RF.H:#define __ID_RF__
+16/Catacomb3D/ID_RF.H:void RF_Startup (void);
+16/Catacomb3D/ID_RF.H:void RF_Shutdown (void);
+16/Catacomb3D/ID_RF.H:void RF_FixOfs (void);
+16/Catacomb3D/ID_RF.H:void RF_NewMap (void);
+16/Catacomb3D/ID_RF.H:void RF_MarkTileGraphics (void);
+16/Catacomb3D/ID_RF.H:void RF_SetScrollBlock (int x, int y, boolean horizontal);
+16/Catacomb3D/ID_RF.H:void RF_NewPosition (unsigned x, unsigned y);
+16/Catacomb3D/ID_RF.H:void RF_Scroll (int x, int y);
+16/Catacomb3D/ID_RF.H:void RF_MapToMap (unsigned srcx, unsigned srcy,
+16/Catacomb3D/ID_RF.H:void RF_MemToMap (unsigned far *source, unsigned plane,
+16/Catacomb3D/ID_RF.H:void RF_ClearBlock (int	x, int y, int width, int height);
+16/Catacomb3D/ID_RF.H:void RF_RedrawBlock (int x, int y, int width, int height);
+16/Catacomb3D/ID_RF.H:void RF_PlaceSprite (void **user,unsigned globalx,unsigned globaly,
+16/Catacomb3D/ID_RF.H:void RF_RemoveSprite (void **user);
+16/Catacomb3D/ID_RF.H:void RF_CalcTics (void);
+16/Catacomb3D/ID_RF.H:void RF_Refresh (void);
+16/Catacomb3D/ID_RF.H:void RF_ForceRefresh (void);
+16/Catacomb3D/ID_RF.H:void RF_SetRefreshHook (void (*func) (void) );
+16/Catacomb3D/ID_RF.H:unsigned RF_FindFreeBuffer (void);
+==== 16/CatacombApocalypse ====
+16/CatacombApocalypse/C6_MAIN.C:void RF_FixOfs (void)
+16/CatacombApocalypse/GELIB.C:			RF_RemoveSprite(&CurBOBShape->sprite);
+16/CatacombApocalypse/GELIB.C:				RF_RemoveSprite (&CurBOBShape->sprite);
+16/CatacombApocalypse/GELIB.C:			RF_PlaceSprite(&Shape->sprite,obj->x+Shape->x_offset,obj->y+Shape->y_offset, Shape->shapenum, spritedraw,Shape->priority,Shape->sprflags);
+16/CatacombApocalypse/GELIB.C:	RF_NewPosition(0,0);
+16/CatacombApocalypse/GELIB.C:	RF_Refresh();
+16/CatacombApocalypse/GELIB.C:	RF_ForceRefresh();
+16/CatacombApocalypse/GELIB.C:	RF_ForceRefresh();
+16/CatacombApocalypse/GELIB.C:		RF_Refresh();
+16/CatacombApocalypse/ID_RF.C:// RF_Startup
+16/CatacombApocalypse/ID_RF.C:= RF_Startup
+16/CatacombApocalypse/ID_RF.C:void RF_Startup (void)
+16/CatacombApocalypse/ID_RF.C:= RF_Shutdown
+16/CatacombApocalypse/ID_RF.C:void RF_Shutdown (void)
+16/CatacombApocalypse/ID_RF.C:= RF_FixOfs
+16/CatacombApocalypse/ID_RF.C:void RF_FixOfs (void)
+16/CatacombApocalypse/ID_RF.C:= RF_NewMap
+16/CatacombApocalypse/ID_RF.C:void RF_NewMap (void)
+16/CatacombApocalypse/ID_RF.C:		Quit ("RF_NewMap: Map too tall!");
+16/CatacombApocalypse/ID_RF.C:	RF_SetScrollBlock (0,MAPBORDER-1,true);
+16/CatacombApocalypse/ID_RF.C:	RF_SetScrollBlock (0,mapheight-MAPBORDER,true);
+16/CatacombApocalypse/ID_RF.C:	RF_SetScrollBlock (MAPBORDER-1,0,false);
+16/CatacombApocalypse/ID_RF.C:	RF_SetScrollBlock (mapwidth-MAPBORDER,0,false);
+16/CatacombApocalypse/ID_RF.C:= RF_MarkTileGraphics
+16/CatacombApocalypse/ID_RF.C:void RF_MarkTileGraphics (void)
+16/CatacombApocalypse/ID_RF.C:						strcpy (str,"RF_MarkTileGraphics: Background anim of 0:");
+16/CatacombApocalypse/ID_RF.C:						Quit ("RF_MarkTileGraphics: Too many unique animated tiles!");
+16/CatacombApocalypse/ID_RF.C:						strcpy (str,"RF_MarkTileGraphics: Unending background animation:");
+16/CatacombApocalypse/ID_RF.C:						strcpy (str,"RF_MarkTileGraphics: Foreground anim of 0:");
+16/CatacombApocalypse/ID_RF.C:						Quit ("RF_MarkTileGraphics: Too many unique animated tiles!");
+16/CatacombApocalypse/ID_RF.C:						strcpy (str,"RF_MarkTileGraphics: Unending foreground animation:");
+16/CatacombApocalypse/ID_RF.C:			Quit ("RF_CheckForAnimTile: No free spots in tilearray!");
+16/CatacombApocalypse/ID_RF.C:			Quit ("RF_CheckForAnimTile: No free spots in tilearray!");
+16/CatacombApocalypse/ID_RF.C:= RF_SetScrollBlock
+16/CatacombApocalypse/ID_RF.C:void RF_SetScrollBlock (int x, int y, boolean horizontal)
+16/CatacombApocalypse/ID_RF.C:			Quit ("RF_SetScrollBlock: Too many horizontal scroll blocks");
+16/CatacombApocalypse/ID_RF.C:			Quit ("RF_SetScrollBlock: Too many vertical scroll blocks");
+16/CatacombApocalypse/ID_RF.C:= RF_SetRefreshHook
+16/CatacombApocalypse/ID_RF.C:void RF_SetRefreshHook (void (*func) (void) )
+16/CatacombApocalypse/ID_RF.C:= RF_ForceRefresh
+16/CatacombApocalypse/ID_RF.C:void RF_ForceRefresh (void)
+16/CatacombApocalypse/ID_RF.C:	RF_NewPosition (originxglobal,originyglobal);
+16/CatacombApocalypse/ID_RF.C:	RF_Refresh ();
+16/CatacombApocalypse/ID_RF.C:	RF_Refresh ();
+16/CatacombApocalypse/ID_RF.C:= RF_MapToMap
+16/CatacombApocalypse/ID_RF.C:void RF_MapToMap (unsigned srcx, unsigned srcy,
+16/CatacombApocalypse/ID_RF.C:= RF_MemToMap
+16/CatacombApocalypse/ID_RF.C:void RF_MemToMap (unsigned far *source, unsigned plane,
+16/CatacombApocalypse/ID_RF.C:= RF_ClearBlock
+16/CatacombApocalypse/ID_RF.C:void RF_ClearBlock (int	x, int y, int width, int height)
+16/CatacombApocalypse/ID_RF.C:= RF_RedrawBlock
+16/CatacombApocalypse/ID_RF.C:void RF_RedrawBlock (int x, int y, int width, int height)
+16/CatacombApocalypse/ID_RF.C:= RF_CalcTics
+16/CatacombApocalypse/ID_RF.C:void RF_CalcTics (void)
+16/CatacombApocalypse/ID_RF.C:= RF_FindFreeBuffer
+16/CatacombApocalypse/ID_RF.C:unsigned RF_FindFreeBuffer (void)
+16/CatacombApocalypse/ID_RF.C:= RF_NewPosition EGA
+16/CatacombApocalypse/ID_RF.C:void RF_NewPosition (unsigned x, unsigned y)
+16/CatacombApocalypse/ID_RF.C:= RF_Scroll  EGA
+16/CatacombApocalypse/ID_RF.C:void RF_Scroll (int x, int y)
+16/CatacombApocalypse/ID_RF.C:		RF_NewPosition(originxglobal,originyglobal);
+16/CatacombApocalypse/ID_RF.C:= RF_PlaceSprite   EGA
+16/CatacombApocalypse/ID_RF.C:void RF_PlaceSprite (void **user,unsigned globalx,unsigned globaly,
+16/CatacombApocalypse/ID_RF.C:		RF_RemoveSprite (user);
+16/CatacombApocalypse/ID_RF.C:			Quit ("RF_PlaceSprite: No free spots in spritearray!");
+16/CatacombApocalypse/ID_RF.C:		strcpy (str,"RF_PlaceSprite: Placed an uncached sprite:");
+16/CatacombApocalypse/ID_RF.C:= RF_RemoveSprite  EGA
+16/CatacombApocalypse/ID_RF.C:void RF_RemoveSprite (void **user)
+16/CatacombApocalypse/ID_RF.C:= RF_Refresh   EGA
+16/CatacombApocalypse/ID_RF.C:void RF_Refresh (void)
+16/CatacombApocalypse/ID_RF.C:	RF_CalcTics ();
+16/CatacombApocalypse/ID_RF.C:= RF_NewPosition   CGA
+16/CatacombApocalypse/ID_RF.C:void RF_NewPosition (unsigned x, unsigned y)
+16/CatacombApocalypse/ID_RF.C:= RF_Scroll       CGA
+16/CatacombApocalypse/ID_RF.C:void RF_Scroll (int x, int y)
+16/CatacombApocalypse/ID_RF.C:		RF_NewPosition(originxglobal,originyglobal);
+16/CatacombApocalypse/ID_RF.C:= RF_PlaceSprite  CGA
+16/CatacombApocalypse/ID_RF.C:void RF_PlaceSprite (void **user,unsigned globalx,unsigned globaly,
+16/CatacombApocalypse/ID_RF.C:		RF_RemoveSprite (user);
+16/CatacombApocalypse/ID_RF.C:			Quit ("RF_PlaceSprite: No free spots in spritearray!");
+16/CatacombApocalypse/ID_RF.C:		strcpy (str,"RF_PlaceSprite: Placed an uncached sprite!");
+16/CatacombApocalypse/ID_RF.C:= RF_RemoveSprite CGA
+16/CatacombApocalypse/ID_RF.C:void RF_RemoveSprite (void **user)
+16/CatacombApocalypse/ID_RF.C:= RF_Refresh        CGA
+16/CatacombApocalypse/ID_RF.C:void RF_Refresh (void)
+16/CatacombApocalypse/ID_US_2.C:	RF_FixOfs();
+16/CatacombApocalypse/ID_RF.H:#define __ID_RF__
+16/CatacombApocalypse/ID_RF.H:void RF_Startup (void);
+16/CatacombApocalypse/ID_RF.H:void RF_Shutdown (void);
+16/CatacombApocalypse/ID_RF.H:void RF_FixOfs (void);
+16/CatacombApocalypse/ID_RF.H:void RF_NewMap (void);
+16/CatacombApocalypse/ID_RF.H:void RF_MarkTileGraphics (void);
+16/CatacombApocalypse/ID_RF.H:void RF_SetScrollBlock (int x, int y, boolean horizontal);
+16/CatacombApocalypse/ID_RF.H:void RF_NewPosition (unsigned x, unsigned y);
+16/CatacombApocalypse/ID_RF.H:void RF_Scroll (int x, int y);
+16/CatacombApocalypse/ID_RF.H:void RF_MapToMap (unsigned srcx, unsigned srcy,
+16/CatacombApocalypse/ID_RF.H:void RF_MemToMap (unsigned far *source, unsigned plane,
+16/CatacombApocalypse/ID_RF.H:void RF_ClearBlock (int	x, int y, int width, int height);
+16/CatacombApocalypse/ID_RF.H:void RF_RedrawBlock (int x, int y, int width, int height);
+16/CatacombApocalypse/ID_RF.H:void RF_PlaceSprite (void **user,unsigned globalx,unsigned globaly,
+16/CatacombApocalypse/ID_RF.H:void RF_RemoveSprite (void **user);
+16/CatacombApocalypse/ID_RF.H:void RF_CalcTics (void);
+16/CatacombApocalypse/ID_RF.H:void RF_Refresh (void);
+16/CatacombApocalypse/ID_RF.H:void RF_ForceRefresh (void);
+16/CatacombApocalypse/ID_RF.H:void RF_SetRefreshHook (void (*func) (void) );
+16/CatacombApocalypse/ID_RF.H:unsigned RF_FindFreeBuffer (void);
+===============		./qcata.sh end		===============

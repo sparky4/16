@@ -76,6 +76,8 @@ unsigned	SX_T_SHIFT;		// screen x >> ?? = tile EGA = 1, CGA = 2;
 #define	UPDATESPARESIZE		(UPDATEWIDE*2+4)
 #define UPDATESIZE			(UPDATESCREENSIZE+2*UPDATESPARESIZE)
 
+#define MAXSCROLLEDGES	6
+
 /*
 =============================================================================
 
@@ -230,7 +232,9 @@ void RFL_NewTile (unsigned updateoffset);
 void RFL_MaskForegroundTiles (void);
 void RFL_UpdateTiles (void);
 
+void RFL_BoundScroll (int x, int y);//++++??
 void RFL_CalcOriginStuff (long x, long y);
+void RFL_ClearScrollBlocks (void);//++++??
 void RFL_InitSpriteList (void);
 void RFL_InitAnimList (void);
 void RFL_CheckForAnimTile (unsigned x, unsigned y);
@@ -340,6 +344,40 @@ void RF_Shutdown (void)
 
 //===========================================================================
 
+
+/*
+=====================
+=
+= RF_FixOfs
+=
+= Sets bufferofs,displayofs, and masterofs to regular values, for the
+= occasions when you have moved them around manually
+=
+=====================
+*/
+
+void RF_FixOfs (void)
+{
+	if (grmode == EGAGR)
+	{
+		screenpage = 0;
+		otherpage = 1;
+		panx = pany = pansx = pansy = panadjust = 0;
+		displayofs = screenstart[screenpage];
+		bufferofs = screenstart[otherpage];
+		masterofs = screenstart[2];
+		VW_SetScreen (displayofs,0);
+	}
+	else
+	{
+		bufferofs = 0;
+		masterofs = 0x8000;
+	}
+}
+
+
+//===========================================================================
+
 /*
 =====================
 =
@@ -364,6 +402,8 @@ void RF_NewMap (void)
 //
 // make a lookup table for the maps left edge
 //
+	if (mapheight > MAXMAPHEIGHT)
+	Quit ("RF_NewMap: Map too tall!");
 	spot = 0;
 	for (i=0;i<mapheight;i++)
 	{
@@ -378,7 +418,6 @@ void RF_NewMap (void)
 	for (y=0;y<PORTTILESHIGH;y++)
 		for (x=0;x<UPDATEWIDE;x++)
 			*table++ = mapbwidthtable[y]+x*2;
-
 
 //
 // the y max value clips off the bottom half of a tile so a map that is
@@ -396,6 +435,11 @@ void RF_NewMap (void)
 //
 	RFL_InitSpriteList ();
 	RFL_InitAnimList ();
+	RFL_ClearScrollBlocks ();
+	RF_SetScrollBlock (0,MAPBORDER-1,true);
+	RF_SetScrollBlock (0,mapheight-MAPBORDER,true);
+	RF_SetScrollBlock (MAPBORDER-1,0,false);
+	RF_SetScrollBlock (mapwidth-MAPBORDER,0,false);
 
 
 	lasttimecount = TimeCount;		// setup for adaptive timing
@@ -458,7 +502,7 @@ void RF_MarkTileGraphics (void)
 				// new chain of animating tiles
 
 				if (i>=MAXANIMTYPES)
-					//Quit ("RF_MarkTileGraphics: Too many unique animated tiles!");
+					Quit ("RF_MarkTileGraphics: Too many unique animated tiles!");
 				allanims[i].current = tile;
 				allanims[i].count = tinf[SPEED+tile];
 
@@ -472,7 +516,7 @@ void RF_MarkTileGraphics (void)
 					CA_MarkGrChunk(STARTTILE16+next);
 					next += (signed char)(tinf[ANIM+next]);
 					if (++anims > 20)
-						//Quit ("MarkTileGraphics: Unending animation!");
+						Quit ("MarkTileGraphics: Unending animation!");
 				}
 
 			}
@@ -508,7 +552,7 @@ nextback:
 				// new chain of animating tiles
 
 				if (i>=MAXANIMTYPES)
-					//Quit ("RF_MarkTileGraphics: Too many unique animated tiles!");
+					Quit ("RF_MarkTileGraphics: Too many unique animated tiles!");
 				allanims[i].current = tilehigh;
 				allanims[i].count = tinf[MSPEED+tile];
 
@@ -522,7 +566,7 @@ nextback:
 					CA_MarkGrChunk(STARTTILE16M+next);
 					next += (signed char)(tinf[MANIM+next]);
 					if (++anims > 20)
-						//Quit ("MarkTileGraphics: Unending animation!");
+						Quit ("MarkTileGraphics: Unending animation!");
 				}
 
 			}
@@ -586,10 +630,10 @@ void RFL_CheckForAnimTile (unsigned x, unsigned y)
 //
 	map = mapsegs[0]+offset;
 	tile = *map;
-	if (tinf[ANIM+tile])
+	if (tinf[ANIM+tile] && tinf[SPEED+tile])
 	{
 		if (!animfreeptr)
-			//Quit ("RF_CheckForAnimTile: No free spots in tilearray!");
+			Quit ("RF_CheckForAnimTile: No free spots in tilearray!");
 		anim = animfreeptr;
 		animfreeptr = animfreeptr->nexttile;
 		next = animhead;				// stick it at the start of the list
@@ -611,10 +655,10 @@ void RFL_CheckForAnimTile (unsigned x, unsigned y)
 //
 	map = mapsegs[1]+offset;
 	tile = *map;
-	if (tinf[MANIM+tile])
+	if (tinf[MANIM+tile] && tinf[MSPEED+tile])
 	{
 		if (!animfreeptr)
-			//Quit ("RF_CheckForAnimTile: No free spots in tilearray!");
+			Quit ("RF_CheckForAnimTile: No free spots in tilearray!");
 		anim = animfreeptr;
 		animfreeptr = animfreeptr->nexttile;
 		next = animhead;				// stick it at the start of the list
@@ -681,6 +725,37 @@ void RFL_RemoveAnimsOnY (unsigned y)
 	while (current)
 	{
 		if (current->y == y)
+		{
+			*(void **)current->prevptr = current->nexttile;
+			if (current->nexttile)
+				current->nexttile->prevptr = current->prevptr;
+			next = current->nexttile;
+			current->nexttile = animfreeptr;
+			animfreeptr = current;
+			current = next;
+		}
+		else
+			current = current->nexttile;
+	}
+}
+
+
+/*
+====================
+=
+= RFL_RemoveAnimsInBlock
+=
+====================
+*/
+
+void RFL_RemoveAnimsInBlock (unsigned x, unsigned y, unsigned width, unsigned height)
+{
+	animtiletype *current,*next;
+
+	current = animhead;
+	while (current)
+	{
+		if (current->x - x < width && current->y - y < height)
 		{
 			*(void **)current->prevptr = current->nexttile;
 			if (current->nexttile)
@@ -766,7 +841,7 @@ void RFL_AnimateTiles (void)
 			y = current->y-originytile;
 
 			if (x>=PORTTILESWIDE || y>=PORTTILESHIGH)
-				//Quit ("RFL_AnimateTiles: Out of bounds!");
+				Quit ("RFL_AnimateTiles: Out of bounds!");
 
 			updateofs = uwidthtable[y] + x;
 			RFL_NewTile(updateofs);				// puts "1"s in both pages
@@ -853,6 +928,115 @@ void RFL_CalcOriginStuff (long x, long y)
 
 }
 
+
+/*
+=================
+=
+= RFL_ClearScrollBlocks
+=
+=================
+*/
+
+void RFL_ClearScrollBlocks (void)
+{
+	hscrollblocks = vscrollblocks = 0;
+}
+
+
+/*
+=================
+=
+= RF_SetScrollBlock
+=
+= Sets a horizontal or vertical scroll block
+= a horizontal block is ----, meaning it blocks up/down movement
+=
+=================
+*/
+
+void RF_SetScrollBlock (int x, int y, boolean horizontal)
+{
+	if (horizontal)
+	{
+		hscrolledge[hscrollblocks] = y;
+		if (hscrollblocks++ == MAXSCROLLEDGES)
+			Quit ("RF_SetScrollBlock: Too many horizontal scroll blocks");
+	}
+	else
+	{
+		vscrolledge[vscrollblocks] = x;
+		if (vscrollblocks++ == MAXSCROLLEDGES)
+			Quit ("RF_SetScrollBlock: Too many vertical scroll blocks");
+	}
+}
+
+
+/*
+=================
+=
+= RFL_BoundScroll
+=
+= Bound a given x/y movement to scroll blocks
+=
+=================
+*/
+
+void RFL_BoundScroll (int x, int y)
+{
+	int	check,newxtile,newytile;
+
+	originxglobal += x;
+	originyglobal += y;
+
+	newxtile= originxglobal >> G_T_SHIFT;
+	newytile = originyglobal >> G_T_SHIFT;
+
+	if (x>0)
+	{
+		newxtile+=SCREENTILESWIDE;
+		for (check=0;check<vscrollblocks;check++)
+			if (vscrolledge[check] == newxtile)
+			{
+				originxglobal = originxglobal&0xff00;
+				break;
+			}
+	}
+	else if (x<0)
+	{
+		for (check=0;check<vscrollblocks;check++)
+			if (vscrolledge[check] == newxtile)
+			{
+				originxglobal = (originxglobal&0xff00)+0x100;
+				break;
+			}
+	}
+
+
+	if (y>0)
+	{
+		newytile+=SCREENTILESHIGH;
+		for (check=0;check<hscrollblocks;check++)
+			if (hscrolledge[check] == newytile)
+			{
+				originyglobal = originyglobal&0xff00;
+				break;
+			}
+	}
+	else if (y<0)
+	{
+		for (check=0;check<hscrollblocks;check++)
+			if (hscrolledge[check] == newytile)
+			{
+				originyglobal = (originyglobal&0xff00)+0x100;
+				break;
+			}
+	}
+
+
+	RFL_CalcOriginStuff (originxglobal, originyglobal);
+}
+
+
 //===========================================================================
 
 /*
@@ -869,6 +1053,7 @@ void RF_SetRefreshHook (void (*func) (void) )
 }
 
 
+//===========================================================================
 
 /*
 =================
@@ -926,8 +1111,8 @@ void	RFL_NewRow (int dir)
 		ystep = 1;
 		count = PORTTILESHIGH;
 		break;
-	//default:
-		//Quit ("RFL_NewRow: Bad dir!");
+	default:
+		Quit ("RFL_NewRow: Bad dir!");
 	}
 
 	while (count--)
@@ -957,7 +1142,336 @@ void RF_ForceRefresh (void)
 	RF_Refresh ();
 }
 
+//===========================================================================
 
+/*
+=====================
+=
+= RF_MapToMap
+=
+= Copies a block of tiles (all three planes) from one point
+= in the map to another, accounting for animating tiles
+=
+=====================
+*/
+
+void RF_MapToMap (unsigned srcx, unsigned srcy,
+				  unsigned destx, unsigned desty,
+				  unsigned width, unsigned height)
+{
+	int			x,y;
+	unsigned	source,destofs,xspot,yspot;
+	unsigned	linedelta,p0,p1,p2,updatespot;
+	unsigned	far *source0, far *source1, far *source2;
+	unsigned	far *dest0, far *dest1, far *dest2;
+	boolean		changed;
+
+	RFL_RemoveAnimsInBlock (destx,desty,width,height);
+
+	source = mapbwidthtable[srcy]/2 + srcx;
+
+	source0 = mapsegs[0]+source;
+	source1 = mapsegs[1]+source;
+	source2 = mapsegs[2]+source;
+
+	destofs = mapbwidthtable[desty]/2 + destx;
+	destofs -= source;
+
+	linedelta = mapwidth - width;
+
+	for (y=0;y<height;y++,source0+=linedelta,source1+=linedelta,source2+=linedelta)
+		for (x=0;x<width;x++,source0++,source1++,source2++)
+		{
+			p0 = *source0;
+			p1 = *source1;
+			p2 = *source2;
+
+			dest0 = source0 + destofs;
+			dest1 = source1 + destofs;
+			dest2 = source2 + destofs;
+
+//
+// only make a new tile if it is different
+//
+			if (p0 != *dest0 || p1 != *dest1 || p2 != *dest2)
+			{
+				*dest0 = p0;
+				*dest1 = p1;
+				*dest2 = p2;
+				changed = true;
+			}
+			else
+				changed = false;
+
+//
+// if tile is on the view port
+//
+			xspot = destx+x-originxtile;
+			yspot = desty+y-originytile;
+			if (yspot < PORTTILESHIGH && xspot < PORTTILESWIDE)
+			{
+				if (changed)
+				{
+					updatespot = uwidthtable[yspot]+xspot;
+					RFL_NewTile(updatespot);
+				}
+				RFL_CheckForAnimTile (destx+x,desty+y);
+			}
+		}
+}
+
+//===========================================================================
+
+
+/*
+=====================
+=
+= RF_MemToMap
+=
+= Copies a string of tiles from main memory to the map,
+= accounting for animating tiles
+=
+=====================
+*/
+
+void RF_MemToMap (unsigned far *source, unsigned plane,
+				  unsigned destx, unsigned desty,
+				  unsigned width, unsigned height)
+{
+	int			x,y;
+	unsigned	xspot,yspot;
+	unsigned	linedelta,updatespot;
+	unsigned	far *dest,old,new;
+	boolean		changed;
+
+	RFL_RemoveAnimsInBlock (destx,desty,width,height);
+
+	dest = mapsegs[plane] + mapbwidthtable[desty]/2 + destx;
+
+	linedelta = mapwidth - width;
+
+	for (y=0;y<height;y++,dest+=linedelta)
+		for (x=0;x<width;x++)
+		{
+			old = *dest;
+			new = *source++;
+			if (old != new)
+			{
+				*dest = new;
+				changed = true;
+			}
+			else
+				changed = false;
+
+			dest++;
+			xspot = destx+x-originxtile;
+			yspot = desty+y-originytile;
+			if (yspot < PORTTILESHIGH && xspot < PORTTILESWIDE)
+			{
+				if (changed)
+				{
+					updatespot = uwidthtable[yspot]+xspot;
+					RFL_NewTile(updatespot);
+				}
+				RFL_CheckForAnimTile (destx+x,desty+y);
+			}
+		}
+}
+
+//===========================================================================
+
+
+/*
+=====================
+=
+= RFL_BoundNewOrigin
+=
+= Copies a string of tiles from main memory to the map,
+= accounting for animating tiles
+=
+=====================
+*/
+
+void RFL_BoundNewOrigin (unsigned orgx,unsigned orgy)
+{
+	int	check,edge;
+
+//
+// calculate new origin related globals
+//
+	if (orgx<originxmin)
+	  orgx=originxmin;
+	else if (orgx>originxmax)
+	  orgx=originxmax;
+
+	if (orgy<originymin)
+	  orgy=originymin;
+	else if (orgy>originymax)
+	  orgy=originymax;
+
+	originxtile = orgx>>G_T_SHIFT;
+	originytile = orgy>>G_T_SHIFT;
+
+	for (check=0;check<vscrollblocks;check++)
+	{
+		edge = vscrolledge[check];
+		if (edge>=originxtile && edge <=originxtile+10)
+		{
+			orgx = (edge+1)*TILEGLOBAL;
+			break;
+		}
+		if (edge>=originxtile+11 && edge <=originxtile+20)
+		{
+			orgx = (edge-20)*TILEGLOBAL;
+			break;
+		}
+	}
+
+	for (check=0;check<hscrollblocks;check++)
+	{
+		edge = hscrolledge[check];
+		if (edge>=originytile && edge <=originytile+6)
+		{
+			orgy = (edge+1)*TILEGLOBAL;
+			break;
+		}
+		if (edge>=originytile+7 && edge <=originytile+13)
+		{
+			orgy = (edge-13)*TILEGLOBAL;
+			break;
+		}
+	}
+
+
+	RFL_CalcOriginStuff (orgx,orgy);
+}
+
+
+//===========================================================================
+
+/*
+=====================
+=
+= RF_ClearBlock
+=
+= Posts erase blocks to clear a certain area of the screen to the master
+= screen, to erase text or something draw directly to the screen
+=
+= Parameters in pixels, but erasure is byte bounded
+=
+=====================
+*/
+
+void RF_ClearBlock (int	x, int y, int width, int height)
+{
+	eraseblocktype block;
+
+#if GRMODE == EGAGR
+	block.screenx = x/8+originxscreen;
+	block.screeny = y+originyscreen;
+	block.width = (width+(x&7)+7)/8;
+	block.height = height;
+	memcpy (eraselistptr[0]++,&block,sizeof(block));
+	memcpy (eraselistptr[1]++,&block,sizeof(block));
+#endif
+
+#if GRMODE == CGAGR
+	block.screenx = x/4+originxscreen;
+	block.screeny = y+originyscreen;
+	block.width = (width+(x&3)+3)/4;
+	block.height = height;
+	memcpy (eraselistptr[0]++,&block,sizeof(block));
+#endif
+
+}
+
+//===========================================================================
+
+/*
+=====================
+=
+= RF_RedrawBlock
+=
+= Causes a number of tiles to be redrawn to the master screen and updated
+=
+= Parameters in pixels, but erasure is tile bounded
+=
+=====================
+*/
+
+void RF_RedrawBlock (int x, int y, int width, int height)
+{
+	int	xx,yy,xl,xh,yl,yh;
+
+	xl=(x+panx)/16;
+	xh=(x+panx+width+15)/16;
+	yl=(y+pany)/16;
+	yh=(y+pany+height+15)/16;
+	for (yy=yl;yy<=yh;yy++)
+		for (xx=xl;xx<=xh;xx++)
+			RFL_NewTile (yy*UPDATEWIDE+xx);
+}
+
+
+//===========================================================================
+
+/*
+=====================
+=
+= RF_CalcTics
+=
+=====================
+*/
+
+void RF_CalcTics (void)
+{
+	long	newtime,oldtimecount;
+
+//
+// calculate tics since last refresh for adaptive timing
+//
+	if (lasttimecount > TimeCount)
+		TimeCount = lasttimecount;		// if the game was paused a LONG time
+
+	if (DemoMode)					// demo recording and playback needs
+	{								// to be constant
+//
+// take DEMOTICS or more tics, and modify Timecount to reflect time taken
+//
+		oldtimecount = lasttimecount;
+		while (TimeCount<oldtimecount+DEMOTICS*2)
+		;
+		lasttimecount = oldtimecount + DEMOTICS;
+		TimeCount = lasttimecount + DEMOTICS;
+		tics = DEMOTICS;
+	}
+	else
+	{
+//
+// non demo, so report actual time
+//
+		do
+		{
+			newtime = TimeCount;
+			tics = newtime-lasttimecount;
+		} while (tics<MINTICS);
+		lasttimecount = newtime;
+
+#ifdef PROFILE
+			strcpy (scratch,"\tTics:");
+			itoa (tics,str,10);
+			strcat (scratch,str);
+			strcat (scratch,"\n");
+			write (profilehandle,scratch,strlen(scratch));
+#endif
+
+		if (tics>MAXTICS)
+		{
+			TimeCount -= (tics-MAXTICS);
+			tics = MAXTICS;
+		}
+	}
+}
 
 /*
 =============================================================================
@@ -969,6 +1483,39 @@ void RF_ForceRefresh (void)
 
 #if GRMODE == EGAGR
 
+/*
+=====================
+=
+= RF_FindFreeBuffer
+=
+= Finds the start of unused, non visable buffer space
+=
+=====================
+*/
+
+unsigned RF_FindFreeBuffer (void)
+{
+	unsigned	spot,i,j;
+	boolean		ok;
+
+	for (i=0;i<3;i++)
+	{
+		spot = screenstart[i]+SCREENSPACE;
+		ok = true;
+		for (j=0;j<3;j++)
+			if (spot == screenstart[j])
+			{
+				ok = false;
+				break;
+			}
+		if (ok)
+			return spot;
+	}
+
+	return 0;	// never get here...
+}
+
+//===========================================================================
 
 /*
 =====================
@@ -984,10 +1531,11 @@ void RF_NewPosition (unsigned x, unsigned y)
 	byte	*page0ptr,*page1ptr;
 	unsigned 	updatenum;
 
-//
+	RFL_BoundNewOrigin (x,y);
+/*??
 // calculate new origin related globals
 //
-	RFL_CalcOriginStuff (x,y);
+	RFL_CalcOriginStuff (x,y);*/
 
 //
 // clear out all animating tiles
@@ -997,10 +1545,11 @@ void RF_NewPosition (unsigned x, unsigned y)
 //
 // set up the new update arrays at base position
 //
-	memset (tilecache,0,sizeof(tilecache));		// old cache is invalid
+//??	memset (tilecache,0,sizeof(tilecache));		// old cache is invalid
 
 	updatestart[0] = baseupdatestart[0];
 	updatestart[1] = baseupdatestart[1];
+	updateptr = updatestart[otherpage];
 
 	page0ptr = updatestart[0]+PORTTILESWIDE;	// used to stick "0"s after rows
 	page1ptr = updatestart[1]+PORTTILESWIDE;
@@ -1233,10 +1782,11 @@ void RF_PlaceSprite (void **user,unsigned globalx,unsigned globaly,
 {
 	spritelisttype	register *sprite,*next;
 	spritetabletype far *spr;
-	spritetype /*_seg*/	*block;
+	spritetype _seg	*block;
 	unsigned	shift,pixx;
+	char		str[80],str2[10];
 
-	if (!spritenumber)
+	if (!spritenumber || spritenumber == (unsigned)-1)
 	{
 		RF_RemoveSprite (user);
 		return;
@@ -1276,7 +1826,7 @@ void RF_PlaceSprite (void **user,unsigned globalx,unsigned globaly,
 	// this is a brand new sprite, so allocate a block from the array
 
 		if (!spritefreeptr)
-			//Quit ("RF_PlaceSprite: No free spots in spritearray!");
+			Quit ("RF_PlaceSprite: No free spots in spritearray!");
 
 		sprite = spritefreeptr;
 		spritefreeptr = spritefreeptr->nextsprite;
@@ -1294,7 +1844,15 @@ linknewspot:
 // write the new info to the sprite
 //
 	spr = &spritetable[spritenumber-STARTSPRITES];
-	block = (spritetype /*_seg*/ *)grsegs[spritenumber];
+	block = (spritetype _seg *)grsegs[spritenumber];
+
+	if (!block)
+	{
+		strcpy (str,"RF_PlaceSprite: Placed an uncached sprite:");
+		itoa (spritenumber,str2,10);
+		strcat (str,str2);
+		Quit (str);
+	}
 
 	globaly+=spr->orgy;
 	globalx+=spr->orgx;
@@ -1646,7 +2204,6 @@ redraw:
 void RF_Refresh (void)
 {
 	byte	*newupdate;
-	long	newtime;
 
 	updateptr = updatestart[otherpage];
 
@@ -1703,28 +2260,7 @@ asm	mov	[WORD PTR es:di],UPDATETERMINATE
 //
 // calculate tics since last refresh for adaptive timing
 //
-	if (lasttimecount > TimeCount)
-		lasttimecount = TimeCount;		// if the game was paused a LONG time
-	do
-	{
-		newtime = TimeCount;
-		tics = newtime-lasttimecount;
-	} while (tics<MINTICS);
-	lasttimecount = newtime;
-
-#ifdef PROFILE
-	strcpy (scratch,"\tTics:");
-	itoa (tics,str,10);
-	strcat (scratch,str);
-	strcat (scratch,"\n");
-	write (profilehandle,scratch,strlen(scratch));
-#endif
-
-	if (tics>MAXTICS)
-	{
-		TimeCount -= (tics-MAXTICS);
-		tics = MAXTICS;
-	}
+	RF_CalcTics ();
 }
 
 #endif		// GRMODE == EGAGR
@@ -1754,10 +2290,11 @@ void RF_NewPosition (unsigned x, unsigned y)
 	byte	*spotptr;
 	unsigned 	updatenum;
 
-//
+	RFL_BoundNewOrigin (x,y);
+/*??
 // calculate new origin related globals
 //
-	RFL_CalcOriginStuff (x,y);
+	RFL_CalcOriginStuff (x,y);*/
 
 //
 // clear out all animating tiles
@@ -1922,10 +2459,11 @@ void RF_PlaceSprite (void **user,unsigned globalx,unsigned globaly,
 {
 	spritelisttype	register *sprite,*next;
 	spritetabletype far *spr;
-	spritetype /*_seg*/	*block;
+	spritetype _seg	*block;
 	unsigned	shift,pixx;
+	char		str[80],str2[10];
 
-	if (!spritenumber)
+	if (!spritenumber || spritenumber == (unsigned)-1)
 	{
 		RF_RemoveSprite (user);
 		return;
@@ -1961,7 +2499,7 @@ void RF_PlaceSprite (void **user,unsigned globalx,unsigned globaly,
 	// this is a brand new sprite, so allocate a block from the array
 
 		if (!spritefreeptr)
-			//Quit ("RF_PlaceSprite: No free spots in spritearray!");
+			Quit ("RF_PlaceSprite: No free spots in spritearray!");
 
 		sprite = spritefreeptr;
 		spritefreeptr = spritefreeptr->nextsprite;
@@ -1979,7 +2517,16 @@ linknewspot:
 // write the new info to the sprite
 //
 	spr = &spritetable[spritenumber-STARTSPRITES];
-	block = (spritetype /*_seg*/ *)grsegs[spritenumber];
+	block = (spritetype _seg *)grsegs[spritenumber];
+
+	if (!block)
+	{
+		strcpy (str,"RF_PlaceSprite: Placed an uncached sprite!");
+		itoa (spritenumber,str2,10);
+		strcat (str,str2);
+		Quit (str);
+	}
+
 
 	globaly+=spr->orgy;
 	globalx+=spr->orgx;
@@ -2336,29 +2883,7 @@ void RF_Refresh (void)
 //
 // calculate tics since last refresh for adaptive timing
 //
-	if (lasttimecount > TimeCount)
-		lasttimecount = TimeCount;		// if the game was paused a LONG time
-	do
-	{
-		newtime = TimeCount;
-		tics = newtime-lasttimecount;
-	} while (tics<MINTICS);
-	lasttimecount = newtime;
-
-#ifdef PROFILE
-	itoa (tics,str,10);
-	strcat (str,"\t");
-	ltoa (TimeCount,str2,10);
-	strcat (str,str2);
-	strcat (str,"\t");
-	ltoa (LocalTime,str2,10);
-	strcat (str,str2);
-	strcat (str,"\n");
-	write (profile,str,strlen(str));
-#endif
-	if (tics>MAXTICS)
-		tics = MAXTICS;
-
+	RF_CalcTics ();
 }
 
 #endif		// GRMODE == CGAGR
