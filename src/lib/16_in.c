@@ -503,7 +503,7 @@ IN_GetJoyButtonsDB(word joy)
 //
 ///////////////////////////////////////////////////////////////////////////
 static void
-INL_StartKbd(global_game_variables_t *gvar)
+INL_StartKbd()
 {
 	INL_KeyHook = NULL;	// Clear key hook
 
@@ -680,7 +680,7 @@ IN_Startup(global_game_variables_t *gvar)
 		}
 	}
 
-	INL_StartKbd(gvar);
+	INL_StartKbd();
 	gvar->in.MousePresent = checkmouse? INL_StartMouse() : false;
 
 	for (i = 0;i < MaxJoys;i++)
@@ -1183,8 +1183,13 @@ boolean IN_CheckAck (global_game_variables_t *gvar)
 //
 // see if something has been pressed
 //
-	if (inst.LastScan)
-		return true;
+	if(!gvar->in.IN_Started)
+		getch();
+	else
+	{
+		if (inst.LastScan)
+			return true;
+	}
 
 	buttons = IN_JoyButtons () << 4;
 	if (gvar->in.MousePresent)

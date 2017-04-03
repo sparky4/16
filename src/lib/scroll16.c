@@ -589,7 +589,7 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 			//modexDrawBmpRegion	(page, x, y, rx, ry, t->tileWidth, t->tileHeight, (t->data));
 #endif
 #ifdef __DEBUG_MAP__
-			if(dbg_maptext){ sprintf(global_temp_status_text2, "%u", i); modexprint(page, x, y, 1, 0, 1, 2, global_temp_status_text2); }
+			if(dbg_maptext){ sprintf(global_temp_status_text2, "%u", i); modexprint(page, x, y, 1, 0, 1, 2, 1, global_temp_status_text2); }
 #endif
 		break;
 	}
@@ -604,7 +604,7 @@ if(dbg_pagedelayrendermap)		if(!y)	y+=TILEWH;	else	y-=TILEWH;
 	poopoffset%=player[0].enti.speed;
 //printf("y: %d\n", poopoffset);
 #ifdef __DEBUG_RF__
-if(dbg_pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dx); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 0, PALMAPDRAWW, 1, global_temp_status_text); }
+if(dbg_pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dx); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 0, PALMAPDRAWW, 1, 1, global_temp_status_text); }
 #endif
 	/* the position within the map array */
 	i=ty * mv->map->width + tx;
@@ -613,7 +613,7 @@ if(dbg_pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dx); mo
 			mapDrawTile(mv->map->tiles, mv->map->layerdata[0].data[i], mv->page, mv->dx, y);
 			for(z=1;z<=2;z++)
 				if(mv->map->layerdata[z].data[i]){
-					sprintf(global_temp_status_text2, "%u", mv->map->layerdata[z].data[i]); modexprint(mv->page, mv->dx, y, 1, 0, PALMAPDRAWW, z+2, global_temp_status_text2);
+					sprintf(global_temp_status_text2, "%u", mv->map->layerdata[z].data[i]); modexprint(mv->page, mv->dx, y, 1, 0, PALMAPDRAWW, z+2, 1, global_temp_status_text2);
 					//mapDrawTile(mv->map->tiles, mv->map->layerdata[z].data[i], mv->page, mv->dx, y);
 				}
 		}
@@ -644,7 +644,7 @@ if(dbg_pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dy); mo
 			mapDrawTile(mv->map->tiles, mv->map->layerdata[0].data[i], mv->page, x, mv->dy);
 			for(z=1;z<=2;z++)
 				if(mv->map->layerdata[z].data[i]){
-					sprintf(global_temp_status_text2, "%u", mv->map->layerdata[z].data[i]); modexprint(mv->page, x, mv->dy, 1, 0, PALMAPDRAWW, z+2, global_temp_status_text2);
+					sprintf(global_temp_status_text2, "%u", mv->map->layerdata[z].data[i]); modexprint(mv->page, x, mv->dy, 1, 0, PALMAPDRAWW, z+2, 1, global_temp_status_text2);
 					//mapDrawTile(mv->map->tiles, mv->map->layerdata[z].data[i], mv->page, x, mv->dy);
 				}
 		}
@@ -666,7 +666,7 @@ void mapDrawWRow(map_view_t *mv, int tx, int ty, word y)
 			mapDrawTile(mv->map->tiles, mv->map->layerdata[0].data[i], mv->page, mv->dx, y);
 			for(z=1;z<=2;z++)
 				if(mv->map->layerdata[z].data[i]){
-					sprintf(global_temp_status_text2, "%u", mv->map->layerdata[z].data[i]); modexprint(mv->page, mv->dx, y, 1, 0, PALMAPDRAWW, z+2, global_temp_status_text2);
+					sprintf(global_temp_status_text2, "%u", mv->map->layerdata[z].data[i]); modexprint(mv->page, mv->dx, y, 1, 0, PALMAPDRAWW, z+2, 1, global_temp_status_text2);
 					//mapDrawTile(mv->map->tiles, mv->map->layerdata[z].data[i], mv->page, mv->dx, y);
 				}
 		}
@@ -688,7 +688,7 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x)
 			mapDrawTile(mv->map->tiles, mv->map->layerdata[0].data[i], mv->page, x, mv->dy);
 			for(z=1;z<=2;z++)
 				if(mv->map->layerdata[z].data[i]){
-					sprintf(global_temp_status_text2, "%u", mv->map->layerdata[z].data[i]); modexprint(mv->page, x, mv->dy, 1, 0, PALMAPDRAWW, z+2, global_temp_status_text2);
+					sprintf(global_temp_status_text2, "%u", mv->map->layerdata[z].data[i]); modexprint(mv->page, x, mv->dy, 1, 0, PALMAPDRAWW, z+2, 1, global_temp_status_text2);
 					//mapDrawTile(mv->map->tiles, mv->map->layerdata[z].data[i], mv->page, x, mv->dy);
 				}
 		}
@@ -722,7 +722,7 @@ void shinku(global_game_variables_t *gv)
 				gv->video.page[/*!*/(gv->video.p)].dx,
 				gv->video.page[/*!*/(gv->video.p)].dy,
 				96, 16);
-			modexprint(&(gv->video.page[/*!*/(gv->video.p)]), x, y, type, 1, col, bgcol, global_temp_status_text);
+			modexprint(&(gv->video.page[/*!*/(gv->video.p)]), x, y, type, 1, col, 1, bgcol, global_temp_status_text);
 //0000printf("dx=%u	dy=%u\n", gv->video.page[/*!*/(gv->video.p)].dx, gv->video.page[/*!*/(gv->video.p)].dy);
 		}
 		gv->kurokku.tiku=0;

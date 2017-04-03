@@ -283,7 +283,7 @@ void ding(page_t *page, bakapee_t *pee, word q)
 // 			pee->coor = rand()%256;
 // 			modexcls(page, pee->coor, VGA);
 			colorz(page, pee);
-			modexprint(page, page->sw/2, page->sh/2, 1, 0, 47, 0, "bakapi");
+			modexprint(page, page->sw/2, page->sh/2, 1, 0, 47, 0, 1, "bakapi");
 		break;
 		case 7:
 			if(pee->coor <= pee->hgq)
@@ -294,7 +294,7 @@ void ding(page_t *page, bakapee_t *pee, word q)
 		break;
 		case 8:
 			colorz(page, pee);
-			modexprint(page, page->sw/2, page->sh/2, 1, 0, 47, 0, "bakapi");
+			modexprint(page, page->sw/2, page->sh/2, 1, 0, 47, 0, 1, "bakapi");
 		break;
 		case 9:
 			if(pee->coor <= pee->hgq)

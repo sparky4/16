@@ -96,10 +96,16 @@
 	if(gvar.in.inst->Keyboard[sc_PgUp]){ \
 		rotateL(gvar.video.palette, sizeof(gvar.video.palette)/sizeof(gvar.video.palette[0])); \
 		VL_UpdatePaletteWrite(&gvar.video.palette, 0);		IN_UserInput(1, &gvar); }*/
+#ifdef __BORLANDC__
+#define PAL_WRITE_REG		   0x03C8   /* Color register, write address */
+#define PAL_DATA_REG			0x03C9   /* Color register, data port */
+word modexPalOverscan(word col);
+#endif
 
-void DebugMemory_(global_game_variables_t *gvar, boolean q);
 void Shutdown16(global_game_variables_t *gvar);
 void Startup16(global_game_variables_t *gvar);
+void TL_VidInit(global_game_variables_t *gvar);
+void DebugMemory_(global_game_variables_t *gvar, boolean q);
 void ClearMemory (global_game_variables_t *gvar);
 void Quit (global_game_variables_t *gvar, char *error);
 void turboXT(byte bakapee);

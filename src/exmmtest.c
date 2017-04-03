@@ -45,6 +45,9 @@
 //#define EXMMVERBOSE__
 //	#define PRINTBBDUMP
 #define BUFFDUMP
+#define NOVID
+
+#define KEYP IN_Shutdown(&gvar); printf("\n\npress any key to continue!\n"); getch(); IN_Startup(&gvar);
 
 #define BBUFNAME bigbuffer//gvar.ca.tinf[0]
 #define INITBBUF static memptr BBUFNAME;
@@ -60,11 +63,12 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-
+#ifdef __BORLANDC__
 void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
 {
 	printf("VGAmodeX dummy:\n	%Fp	%Fp	%Fp\n", &vq, &cmem, gv);
 }
+#endif
 
 //printf("*	%Fp\t", *BBUF);
 //printf("*	     %04x\t", *BBUF);
@@ -101,8 +105,7 @@ void segatesuto()
 //
 // 	}
 // 	printf("]\n");
-//	printf("press any key to continue!\n");
-//	getch();
+//	KEYP
 }
 #endif
 
@@ -110,6 +113,10 @@ void
 main(int argc, char *argv[])
 {
 	byte w;
+#ifndef NOVID
+	boolean			done;
+	ScanCode		scan;
+#endif
 	static global_game_variables_t gvar;
 #ifdef INITBBUF
 	INITBBUF
@@ -139,7 +146,7 @@ main(int argc, char *argv[])
 	dbg_debugca=1;
 #endif
 #ifdef PRINTBBDUMP
-//0000PRINTBB; printf("press any key to continue!\n"); getch();
+//0000PRINTBB; KEYP
 #endif
 	if(argv[1]){ bakapee1 = argv[1];
 	if(argv[2]) bakapee2 = argv[2]; }
@@ -148,6 +155,12 @@ main(int argc, char *argv[])
 		bakapee1 = "data/koishi~.pcx";
 		bakapee2 = "data/test.map";
 	}
+#ifndef NOVID
+	Startup16(&gvar);
+
+	// save the palette
+	modexPalSave(&gvar.video.dpal); modexFadeOff(4, &gvar.video.dpal); //modexPalBlack();
+#else	//NOVID
 	//printf("main()=%Fp	start MM\n", *argv[0]);
 	MM_Startup(&gvar); //printf("ok\n");
 #ifdef __16_PM__
@@ -156,12 +169,13 @@ main(int argc, char *argv[])
 	{
 #endif
 		PM_Startup(&gvar); PM_CheckMainMem(&gvar); PM_UnlockMainMem(&gvar);
-//0000		printf("PM Started\n"); printf("press any key to continue!\n"); getch();
+//0000		printf("PM Started\n"); KEYP
 #ifdef __DEBUG_PM__
 	}
 #endif
 #endif
 
+#endif //NOVID
 #ifdef __DEBUG_MM__
 	dbg_debugmm=0;
 #endif
@@ -169,7 +183,7 @@ main(int argc, char *argv[])
 //	printf("		done!\n");
 #ifdef PRINTBBDUMP
 //0000
-PRINTBB; printf("\n\npress any key to continue!\n"); getch();
+PRINTBB; KEYP
 #endif
 #ifdef __DEBUG_MM__
 	dbg_debugmm=1;
@@ -203,33 +217,63 @@ PRINTBB; printf("\n\npress any key to continue!\n"); getch();
 #ifdef PRINTBBDUMP
 		PRINTBB;
 #endif
+
 //endif // BUFFDUMP
 
 		//printf("dark purple = purgable\n");
 		//printf("medium blue = non purgable\n");
 		//printf("red = locked\n");
-	//	printf("press any key to continue!\n");
+	//	KEYP
 	//	DebugMemory_(&gvar, 1);
 		if(baka) printf("\nyay!\n");
 		else printf("\npoo!\n");
 #ifdef BUFFDUMPPAUSE
-		printf("press any key to continue!\n"); getch();
+		KEYP
 #endif
 #ifdef FILEREAD
 	}
 #endif
 #ifndef BUFFDUMPPAUSE
-	printf("press any key to continue!\n"); getch();
+	KEYP
 #endif
 #endif	//filereadload
 
 
-/*#ifdef __WATCOMC__
-	IN_Startup(&gvar);
-	ShapeTest_(&gvar);
-	IN_Shutdown(&gvar);
-#endif*/
+#ifdef __WATCOMC__
+#ifndef NOVID
+	VGAmodeX(1, 0, &gvar);
+	modexPalUpdate0(&gvar.video.palette);
+//	ShapeTest_(&gvar);
 
+	for (done = false;!done;)
+	{
+		while (!(scan = gvar.in.inst->LastScan))
+		{}
+	//			SD_Poll();
+
+		IN_ClearKey(scan);
+		switch (scan)
+		{
+			case sc_Space:
+				MM_ShowMemoryVidVer(&gvar);
+			break;
+			case sc_O:
+				modexPalUpdate0(&gvar.video.palette); modexpdump(&gvar.video.page);
+			break;
+			case sc_P:
+				modexpdump(&gvar.video.page[0]);
+			break;
+			case sc_V:
+				VL_PatternDraw(&gvar.video, 0, 1, 1);
+			break;
+			default:
+			//case sc_Escape:
+				done = true;
+			break;
+		}
+	}
+#endif
+#endif
 
 	DebugMemory_(&gvar, 1);
 	MM_DumpData(&gvar);
@@ -237,6 +281,9 @@ PRINTBB; printf("\n\npress any key to continue!\n"); getch();
 	//printf("bakapee1=%s\n", bakapee1);
 	//printf("bakapee2=%s\n", bakapee2);
 	MM_FreePtr(BBUFPTR, &gvar);
+#ifndef NOVID
+	Shutdown16(&gvar);
+#else
 #ifdef __16_PM__
 #ifdef __DEBUG_PM__
 	if(dbg_debugpm>0)
@@ -245,6 +292,8 @@ PRINTBB; printf("\n\npress any key to continue!\n"); getch();
 #endif
 	CA_Shutdown(&gvar);
 	MM_Shutdown(&gvar);
+#endif	//NOVID
+	IN_Shutdown(&gvar);
 	free(bakapee1); free(bakapee2);
 	printf("========================================\n");
 	printf("near=	%Fp ", gvar.mm.nearheap);
@@ -299,6 +348,7 @@ PRINTBB; printf("\n\npress any key to continue!\n"); getch();
 #endif
 	printf("\n");
 #endif
+	printf("old_mode=%u	VL_Started=%u", gvar.video.old_mode, gvar.video.VL_Started);
 	//printf("based core left:			%lu\n", (dword)_basedcoreleft());
 	//printf("huge core left:			%lu\n", (dword)_hugecoreleft());
 }

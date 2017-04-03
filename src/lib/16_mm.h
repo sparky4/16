@@ -25,8 +25,6 @@
 #include "src/lib/16_head.h"
 #include "src/lib/16_hc.h"
 #include "src/lib/16_tail.h"
-//++++mh	#include "src/lib/16_in.h"
-
 
 #ifdef __DEBUG__		// 1 == Debug/Dev  ;  0 == Production/final
 #define OUT_OF_MEM_MSG	"MM_GetPtr: Out of memory!\nYou were short :%lu bytes\n"
@@ -198,6 +196,7 @@ void MM_SetPurge(memptr *baseptr, int purge, global_game_variables_t *gvar);
 void MM_SetLock(memptr *baseptr, boolean locked, global_game_variables_t *gvar);
 void MM_SortMem(global_game_variables_t *gvar);
 void MM_ShowMemory(global_game_variables_t *gvar);
+void MM_ShowMemoryVidVer(global_game_variables_t *gvar);
 void MM_DumpData(global_game_variables_t *gvar);
 dword MM_UnusedMemory(global_game_variables_t *gvar);
 dword MM_TotalFree(global_game_variables_t *gvar);

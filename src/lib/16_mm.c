@@ -1150,7 +1150,7 @@ void MM_SetLock(memptr *baseptr, boolean locked, global_game_variables_t *gvar)
 void MM_SortMem(global_game_variables_t *gvar)
 {
 	mmblocktype far *scan,far *last,far *next;
-	unsigned	start,length,source,dest;//++++,oldborder;
+	unsigned	start,length,source,dest,oldborder;
 	//++++int			playing;
 
 	//
@@ -1173,8 +1173,8 @@ void MM_SortMem(global_game_variables_t *gvar)
 
 
 	SD_StopSound();*/
-//	oldborder = bordercolor;
-//	VW_ColorBorder (15);
+	oldborder = gvar->video.bordercolor;
+	gvar->video.bordercolor = modexPalOverscan(15);
 
 	if(beforesort)
 		beforesort();
@@ -1267,7 +1267,6 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 	//dword wwww;
 	byte    scratch[160],scratch0[4096],str[16];//[[[[scratch1[160],
 	//byte d = '#';
-//[[[[	VW_SetDefaultColors();
 //[[[[	VW_SetLineWidth(40);
 //++++mh	temp = bufferofs;
 //++++mh	bufferofs = 0;
@@ -1407,6 +1406,46 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 //++++mh	IN_Ack();
 //****	VW_SetLineWidth(64);
 //++++mh	bufferofs = temp;
+}
+
+void MM_ShowMemoryVidVer(global_game_variables_t *gvar)
+{
+	mmblocktype far *scan;
+	unsigned color,temp,x,y;
+	long	end;//,owner;
+	//char    scratch[80],str[10];
+
+	temp = gvar->video.ofs.bufferofs;
+	gvar->video.ofs.bufferofs = gvar->video.ofs.displayofs;
+	scan = gvar->mm.mmhead;
+
+	end = -1;
+
+	while (scan)
+	{
+		if (scan->attributes & PURGEBITS)
+			color = 5;		// dark purple = purgable
+		else
+			color = 9;		// medium blue = non purgable
+		if (scan->attributes & LOCKBIT)
+			color = 12;		// red = locked
+		if (scan->start<=end)
+			Quit (gvar, "MM_ShowMemory: Memory block order currupted!");
+		end = scan->length-1;
+		y = scan->start/320;
+		x = scan->start%320;
+		VL_Hlin(x,x+end,y,color, &gvar->video.ofs);
+		VL_Plot(x,y,15, &gvar->video.ofs);
+		if (scan->next && scan->next->start > end+1)
+			VL_Hlin(x+end+1,x+(scan->next->start-scan->start),y,0, &gvar->video.ofs);	// black = free
+
+		scan = scan->next;
+	}
+
+	VL_FadeIn(0,255,&gvar->video.palette,10, &gvar->video);
+	IN_Ack(gvar);
+
+	gvar->video.ofs.bufferofs = temp;
 }
 
 //==========================================================================

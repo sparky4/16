@@ -354,13 +354,16 @@ typedef struct
 } kurokku_t;
 
 //===================================//
-#define     PALSIZE            768
+#define PALSIZE	768
 #define NUMCHUNKS	416	//keen
+#define MAXSCANLINES	240			// size of ylookup table
+
 //video
 typedef struct
 {
 	unsigned int offscreen_ofs;
 	unsigned int pattern_ofs;
+	unsigned	bufferofs,	ylookup[MAXSCANLINES], linewidth,displayofs;
 } ofs_t;	//unfinished
 
 typedef struct
@@ -376,8 +379,10 @@ typedef struct
 
 typedef struct
 {
+	boolean	VL_Started;
 	char old_mode;		//old video mode before game!
 	byte palette[PALSIZE], dpal[PALSIZE];	//palette array
+	byte		far	palette1[256][3],far palette2[256][3];
 	page_t page[MAXPAGE];	//can be used as a pointer to root page[0]
 	word vmem_remain;	//remaining video memory
 	byte num_of_pages;	//number of actual pages
@@ -392,6 +397,10 @@ typedef struct
 	ofs_t	ofs;		//offset vars used for doslib
 	word	vh;		//video combined height
 	//0000word startclk; float clk, tickclk;	//timer
+	//wolf3d vars
+	boolean	screenfaded;
+	word		bordercolor;
+	boolean	fastpalette;
 } video_t;
 
 //from scroll16
@@ -642,17 +651,16 @@ typedef struct	//TODO: USE THIS!!!!
 //==========================================================================
 
 //actual global game varables!
-/*typedef enum {
-	ENGI_QUIT,
-	ENGI_RUN,
-	ENGI_MENU,
-	ENGI_PAUSE
-} engi_stat_t;*/
-//ENGI_INPUT,
+/*typedef struct {
+	boolean clearmem;
+} vidsw_t;
+
+typedef struct {
+	vidsw_t vsw;
+} sw_t;*/
 
 typedef struct
 {
-//----	engi_stat_t	engi_stat;
 	video_t	video;	// video settings variable
 	ca_t		ca;	// ca stuff
 	pm_t		pm;	// pm stuff
@@ -662,6 +670,7 @@ typedef struct
 	in_info_t	in;		// 16_in info
 	player_t	player[MaxPlayers];	// player vars
 	map_view_t	mv[4];
+//	sw_t		sw;
 } global_game_variables_t;
 
 #ifdef __WATCOMC__

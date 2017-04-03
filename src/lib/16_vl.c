@@ -43,16 +43,18 @@ void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
 	{
 		case 0: // deinit the video
 			// change to the video mode we were in before we switched to mode 13h
-			modexLeave();
-			in.h.ah = 0x00;
-			in.h.al = gv->video.old_mode;
-			int86(0x10, &in, &out);
+			if(gv->video.VL_Started)
+			{
+				modexLeave();
+				in.h.ah = 0x00;
+				in.h.al = gv->video.old_mode;
+				int86(0x10, &in, &out);
+			}
+			gv->video.VL_Started=0;
 		break;
 		default: // init the video
-			// get old video mode
-			//in.h.ah = 0xf;
-			//int86(0x10, &in, &out);
-			gv->video.old_mode = vgaGetMode();//out.h.al;
+			if(gv->video.VL_Started)
+				return;
 			// enter mode
 			modexEnter(vq, cmem, gv);
 		break;
@@ -163,12 +165,47 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 		}
 		break;
 	}
+	VL_SetLineWidth (cm.offset, &gv->video.ofs);
+	gv->video.VL_Started=1;
 }
 
 void
 modexLeave() {
 	/* VGAmodeX restores original mode and palette */
 	vgaSetMode(TEXT_MODE);
+}
+
+/*
+====================
+=
+= VL_SetLineWidth
+=
+= Line witdh is in WORDS, 40 words is normal width for vgaplanegr
+=
+====================
+*/
+
+void VL_SetLineWidth (unsigned width, ofs_t *ofs)
+{
+	int i,offset;
+
+//
+// set wide virtual screen
+//
+	outport (CRTC_INDEX,CRTC_OFFSET+width*256);
+
+//
+// set up lookup tables
+//
+	ofs->linewidth = width*2;
+
+	offset = 0;
+
+	for (i=0;i<MAXSCANLINES;i++)
+	{
+		ofs->ylookup[i]=offset;
+		offset += ofs->linewidth;
+	}
 }
 
 page_t
@@ -416,8 +453,7 @@ modexClearRegion(page_t *page, int x, int y, int w, int h, byte color)
 	word poffset = pageOff + y*(page->stridew) + xoff;	// starting offset
 	word scanCount=w>>2;						// number of iterations per row (excluding right clip)
 	word nextRow = page->stridew-scanCount-1;		// loc of next row
-	byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08};			// clips for rectangles not on 4s
-	byte rclip[] = {0x00, 0x01, 0x03, 0x07};
+	LRCLIPDEF
 	byte left = lclip[x&0x03];
 	byte right = rclip[(x+w)&0x03];
 
@@ -498,8 +534,7 @@ modexCopyPageRegion(page_t *dest, page_t *src,
 	word scans	= vga_state.vga_stride+8;				//++++0000 the quick and dirty fix of the major issue with p16 video display wwww
 	word nextSrcRow = src->stridew - scans - 1;
 	word nextDestRow = dest->stridew - scans - 1;
-	byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08};			// clips for rectangles not on 4s
-	byte rclip[] = {0x00, 0x01, 0x03, 0x07};
+	LRCLIPDEF
 	byte left = lclip[sx&0x03];
 	byte right = rclip[(sx+width)&0x03];
 
@@ -580,6 +615,7 @@ modexCopyPageRegion(page_t *dest, page_t *src,
 	}
 }
 
+//check 16_vl_1.c
 
 /* fade and flash */
 void
@@ -782,14 +818,16 @@ modexPalUpdate0(byte *p)
 	}
 }
 
-void
+word
 modexPalOverscan(word col)
 {
 	//modexWaitBorder();
 	vga_wait_for_vsync();
 	outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
 	outp(PAL_DATA_REG, col);
+	return col;
 }
+//check 16_vl_1.c
 
 void modexputPixel(page_t *page, int x, int y, byte color)
 {
@@ -858,7 +896,7 @@ void modexDrawChar(page_t *page, int x/*for planar selection only*/, word t, wor
 	}
 }
 
-void modexprint(page_t *page, sword x, sword y, word t, boolean tlsw, word col, word bgcol, const byte *str)
+void modexprint(page_t *page, sword x, sword y, word t, boolean tlsw, word col, word bgcol, boolean sw, const byte *str)
 {
 	word s, o, w;
 	word x_draw;
@@ -867,38 +905,46 @@ void modexprint(page_t *page, sword x, sword y, word t, boolean tlsw, word col, 
 	word addrr;
 	byte c;
 
-	if(tlsw){ x-=page->tlx; y-=page->tly; }
-	x_draw = x/4;
-	addrq = (page->stridew) * y + (word)(x_draw) +
-		((word)page->data);
-	addrr = addrq;
-	s=romFonts[t].seg;
-	o=romFonts[t].off;
-	w=romFonts[t].charSize;
-	romFontsData.chw=0;
-
-	for(; *str != '\0'; str++)
+	switch(sw)
 	{
-		c = (*str);
-		if(c=='\n')
-		{
-			x = x_draw;
-			romFontsData.chw = 0;
-			addrq += (page->stridew) * 8;
+		case 0:
+			printf("%s\n", str);
+		break;
+		case 1:
+			if(tlsw){ x-=page->tlx; y-=page->tly; }
+			x_draw = x/4;
+			addrq = (page->stridew) * y + (word)(x_draw) +
+				((word)page->data);
 			addrr = addrq;
-			y += 8;
-			continue;
-		}
+			s=romFonts[t].seg;
+			o=romFonts[t].off;
+			w=romFonts[t].charSize;
+			romFontsData.chw=0;
 
-	// load the character into romFontsData.l
-	// no need for inline assembly!
-	// NTS: It might even be faster to just let the modexDrawChar point directly at ROM font than to copy per char! --J.C.
-		_fmemcpy(romFontsData.l,MK_FP(s,o+(w*c))/*ROM font location*/,w/*char size*/);
-		modexDrawChar(page, x_draw/*for mode X planar use*/, t, col, bgcol, addrr);
-		x_draw += 8; /* track X for edge of screen */
-		addrr += 2; /* move 8 pixels over (2 x 4 planar pixels per byte) */
+			for(; *str != '\0'; str++)
+			{
+				c = (*str);
+				if(c=='\n')
+				{
+					x = x_draw;
+					romFontsData.chw = 0;
+					addrq += (page->stridew) * 8;
+					addrr = addrq;
+					y += 8;
+					continue;
+				}
+
+			// load the character into romFontsData.l
+			// no need for inline assembly!
+			// NTS: It might even be faster to just let the modexDrawChar point directly at ROM font than to copy per char! --J.C.
+				_fmemcpy(romFontsData.l,MK_FP(s,o+(w*c))/*ROM font location*/,w/*char size*/);
+				modexDrawChar(page, x_draw/*for mode X planar use*/, t, col, bgcol, addrr);
+				x_draw += 8; /* track X for edge of screen */
+				addrr += 2; /* move 8 pixels over (2 x 4 planar pixels per byte) */
+			}
+			//printf("print xy:%dx%d	tlxy:%dx%d\n", x, y, page->tlx, page->tly);
+		break;
 	}
-	//printf("print xy:%dx%d	tlxy:%dx%d\n", x, y, page->tlx, page->tly);
 }
 
 void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str)
@@ -1102,6 +1148,8 @@ modexWaitBorder_end()
 	}
 
 }
+
+//===========================================================================
 
 //
 // printings of video memory information
