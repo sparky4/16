@@ -45,7 +45,7 @@
 //#define EXMMVERBOSE__
 //	#define PRINTBBDUMP
 #define BUFFDUMP
-#define NOVID
+//#define NOVID
 
 #define KEYP IN_Shutdown(&gvar); printf("\n\npress any key to continue!\n"); getch(); IN_Startup(&gvar);
 
@@ -159,7 +159,9 @@ main(int argc, char *argv[])
 	Startup16(&gvar);
 
 	// save the palette
+#ifdef __WATCOMC__
 	modexPalSave(&gvar.video.dpal); modexFadeOff(4, &gvar.video.dpal); //modexPalBlack();
+#endif
 #else	//NOVID
 	//printf("main()=%Fp	start MM\n", *argv[0]);
 	MM_Startup(&gvar); //printf("ok\n");
@@ -242,7 +244,7 @@ PRINTBB; KEYP
 #ifdef __WATCOMC__
 #ifndef NOVID
 	VGAmodeX(1, 0, &gvar);
-	modexPalUpdate0(&gvar.video.palette);
+//	modexPalUpdate0(&gvar.video.palette);
 //	ShapeTest_(&gvar);
 
 	for (done = false;!done;)
@@ -257,6 +259,7 @@ PRINTBB; KEYP
 			case sc_Space:
 				MM_ShowMemoryVidVer(&gvar);
 			break;
+//#ifdef __WATCOMC__
 			case sc_O:
 				modexPalUpdate0(&gvar.video.palette); modexpdump(&gvar.video.page);
 			break;
@@ -266,12 +269,14 @@ PRINTBB; KEYP
 			case sc_V:
 				VL_PatternDraw(&gvar.video, 0, 1, 1);
 			break;
+//#endif
 			default:
-			//case sc_Escape:
+			case sc_Escape:
 				done = true;
 			break;
 		}
 	}
+	VGAmodeX(0, 0, &gvar);
 #endif
 #endif
 

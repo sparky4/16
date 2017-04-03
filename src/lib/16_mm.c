@@ -1431,18 +1431,20 @@ void MM_ShowMemoryVidVer(global_game_variables_t *gvar)
 			color = 12;		// red = locked
 		if (scan->start<=end)
 			Quit (gvar, "MM_ShowMemory: Memory block order currupted!");
-		end = scan->length-1;
+		//end = scan->length-1;
+		end = scan->start+(scan->length)-1;
 		y = scan->start/320;
 		x = scan->start%320;
-		VL_Hlin(x,x+end,y,color, &gvar->video.ofs);
+		VW_Hlin(x,x+end,y,color, &gvar->video.ofs);
 		VL_Plot(x,y,15, &gvar->video.ofs);
-		if (scan->next && scan->next->start > end+1)
-			VL_Hlin(x+end+1,x+(scan->next->start-scan->start),y,0, &gvar->video.ofs);	// black = free
+		//if (scan->next && scan->next->start > end+1)
+		if (scan->next && scan->next->start >= end+1)
+			VW_Hlin(x+end+1,x+(scan->next->start-scan->start),y,0, &gvar->video.ofs);	// black = free
 
 		scan = scan->next;
 	}
 
-	VL_FadeIn(0,255,&gvar->video.palette,10, &gvar->video);
+	//----VL_FadeIn(0,255,&gvar->video.palette,10, &gvar->video);
 	IN_Ack(gvar);
 
 	gvar->video.ofs.bufferofs = temp;

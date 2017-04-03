@@ -60,11 +60,11 @@
 
 // clips for rectangles not on 4s
 #define LRCLIPDEF \
-	byte lclip[] = {0x0f, 0x0e, 0x0c, 0x08}; \
-	byte rclip[] = {0x00, 0x01, 0x03, 0x07};
+	static byte lclip[4] = {0x0f, 0x0e, 0x0c, 0x08}; \
+	static byte rclip[4] = {0x00, 0x01, 0x03, 0x07};
 
 #define VCLIPDEF \
-	byte pclip[] = {1,2,4,8};
+	static byte pclip[4] = {1,2,4,8};
 
 typedef union
 {
@@ -163,6 +163,9 @@ extern byte far*  VGA;  /* The VGA Memory */
 void VGAMAPMASK(byte x);
 void VGAWRITEMODE(byte x);
 void VGAREADMAP(byte x);
+
+#define VW_Hlin(x,z,y,c,q)	VL_Hlin(x,y,(z)-(x)+1,c,q)
+#define VW_Vlin(y,z,x,c,q)	VL_Vlin(x,y,(z)-(y)+1,c,q)
 
 /* -============================ Functions =============================- */
 /* mode switching, page, and plane functions */
