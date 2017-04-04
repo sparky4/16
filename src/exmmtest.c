@@ -297,7 +297,6 @@ PRINTBB; KEYP
 	MM_Shutdown(&gvar);
 #endif	//NOVID
 	IN_Shutdown(&gvar);
-	free(bakapee1); free(bakapee2);
 	printf("========================================\n");
 	printf("near=	%Fp ", gvar.mm.nearheap);
 	printf("far=	%Fp", gvar.mm.farheap);

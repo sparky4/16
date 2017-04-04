@@ -304,8 +304,6 @@ if(!noanim) {
 	buffer = NULL;
 	free(buffer);
 	bufsz = 0;
-	free(bakapee1);
-	free(bakapee2);
 	printf("\nProject 16 0.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	//SCROLLEXITMESG;
