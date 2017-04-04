@@ -35,6 +35,9 @@ updated
 #include "src/lib/16_rf.h"
 #pragma hdrstop
 
+struct glob_game_vars *gvar;
+static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
+
 /*
 =============================================================================
 
@@ -366,7 +369,7 @@ void RF_FixOfs (void)
 		displayofs = screenstart[screenpage];
 		bufferofs = screenstart[otherpage];
 		masterofs = screenstart[2];
-		VW_SetScreen (displayofs,0);
+		VL_SetScreen (displayofs,0);
 	}
 	else
 	{
@@ -403,7 +406,7 @@ void RF_NewMap (void)
 // make a lookup table for the maps left edge
 //
 	if (mapheight > MAXMAPHEIGHT)
-	Quit ("RF_NewMap: Map too tall!");
+	Quit (gvar, "RF_NewMap: Map too tall!");
 	spot = 0;
 	for (i=0;i<mapheight;i++)
 	{
@@ -502,7 +505,7 @@ void RF_MarkTileGraphics (void)
 				// new chain of animating tiles
 
 				if (i>=MAXANIMTYPES)
-					Quit ("RF_MarkTileGraphics: Too many unique animated tiles!");
+					Quit (gvar, "RF_MarkTileGraphics: Too many unique animated tiles!");
 				allanims[i].current = tile;
 				allanims[i].count = tinf[SPEED+tile];
 
@@ -516,7 +519,7 @@ void RF_MarkTileGraphics (void)
 					CA_MarkGrChunk(STARTTILE16+next);
 					next += (signed char)(tinf[ANIM+next]);
 					if (++anims > 20)
-						Quit ("MarkTileGraphics: Unending animation!");
+						Quit (gvar, "MarkTileGraphics: Unending animation!");
 				}
 
 			}
@@ -552,7 +555,7 @@ nextback:
 				// new chain of animating tiles
 
 				if (i>=MAXANIMTYPES)
-					Quit ("RF_MarkTileGraphics: Too many unique animated tiles!");
+					Quit (gvar, "RF_MarkTileGraphics: Too many unique animated tiles!");
 				allanims[i].current = tilehigh;
 				allanims[i].count = tinf[MSPEED+tile];
 
@@ -566,7 +569,7 @@ nextback:
 					CA_MarkGrChunk(STARTTILE16M+next);
 					next += (signed char)(tinf[MANIM+next]);
 					if (++anims > 20)
-						Quit ("MarkTileGraphics: Unending animation!");
+						Quit (gvar, "MarkTileGraphics: Unending animation!");
 				}
 
 			}
@@ -633,7 +636,7 @@ void RFL_CheckForAnimTile (unsigned x, unsigned y)
 	if (tinf[ANIM+tile] && tinf[SPEED+tile])
 	{
 		if (!animfreeptr)
-			Quit ("RF_CheckForAnimTile: No free spots in tilearray!");
+			Quit (gvar, "RF_CheckForAnimTile: No free spots in tilearray!");
 		anim = animfreeptr;
 		animfreeptr = animfreeptr->nexttile;
 		next = animhead;				// stick it at the start of the list
@@ -658,7 +661,7 @@ void RFL_CheckForAnimTile (unsigned x, unsigned y)
 	if (tinf[MANIM+tile] && tinf[MSPEED+tile])
 	{
 		if (!animfreeptr)
-			Quit ("RF_CheckForAnimTile: No free spots in tilearray!");
+			Quit (gvar, "RF_CheckForAnimTile: No free spots in tilearray!");
 		anim = animfreeptr;
 		animfreeptr = animfreeptr->nexttile;
 		next = animhead;				// stick it at the start of the list
@@ -841,7 +844,7 @@ void RFL_AnimateTiles (void)
 			y = current->y-originytile;
 
 			if (x>=PORTTILESWIDE || y>=PORTTILESHIGH)
-				Quit ("RFL_AnimateTiles: Out of bounds!");
+				Quit (gvar, "RFL_AnimateTiles: Out of bounds!");
 
 			updateofs = uwidthtable[y] + x;
 			RFL_NewTile(updateofs);				// puts "1"s in both pages
@@ -960,13 +963,13 @@ void RF_SetScrollBlock (int x, int y, boolean horizontal)
 	{
 		hscrolledge[hscrollblocks] = y;
 		if (hscrollblocks++ == MAXSCROLLEDGES)
-			Quit ("RF_SetScrollBlock: Too many horizontal scroll blocks");
+			Quit (gvar, "RF_SetScrollBlock: Too many horizontal scroll blocks");
 	}
 	else
 	{
 		vscrolledge[vscrollblocks] = x;
 		if (vscrollblocks++ == MAXSCROLLEDGES)
-			Quit ("RF_SetScrollBlock: Too many vertical scroll blocks");
+			Quit (gvar, "RF_SetScrollBlock: Too many vertical scroll blocks");
 	}
 }
 
@@ -1112,7 +1115,7 @@ void	RFL_NewRow (int dir)
 		count = PORTTILESHIGH;
 		break;
 	default:
-		Quit ("RFL_NewRow: Bad dir!");
+		Quit (gvar, "RFL_NewRow: Bad dir!");
 	}
 
 	while (count--)
@@ -1154,7 +1157,7 @@ void RF_ForceRefresh (void)
 =
 =====================
 */
-
+/*++++
 void RF_MapToMap (unsigned srcx, unsigned srcy,
 				  unsigned destx, unsigned desty,
 				  unsigned width, unsigned height)
@@ -1219,7 +1222,7 @@ void RF_MapToMap (unsigned srcx, unsigned srcy,
 			}
 		}
 }
-
+*/
 //===========================================================================
 
 
@@ -1233,7 +1236,7 @@ void RF_MapToMap (unsigned srcx, unsigned srcy,
 =
 =====================
 */
-
+/*++++
 void RF_MemToMap (unsigned far *source, unsigned plane,
 				  unsigned destx, unsigned desty,
 				  unsigned width, unsigned height)
@@ -1276,7 +1279,7 @@ void RF_MemToMap (unsigned far *source, unsigned plane,
 				RFL_CheckForAnimTile (destx+x,desty+y);
 			}
 		}
-}
+}*/
 
 //===========================================================================
 
@@ -1426,6 +1429,7 @@ void RF_RedrawBlock (int x, int y, int width, int height)
 void RF_CalcTics (void)
 {
 	long	newtime,oldtimecount;
+	word TimeCount = *clockw;
 
 //
 // calculate tics since last refresh for adaptive timing
@@ -1676,11 +1680,11 @@ void RF_Scroll (int x, int y)
 			oldscreen = screenstart[i] - screenmove;
 			newscreen = oldscreen + screencopy;
 			screenstart[i] = newscreen + screenmove;
-			VW_ScreenToScreen (oldscreen,newscreen,
+//++++			VW_ScreenToScreen (oldscreen,newscreen,
 				PORTTILESWIDE*2,PORTTILESHIGH*16);
 
 			if (i==screenpage)
-				VW_SetScreen(newscreen+oldpanadjust,oldpanx & xpanmask);
+				VL_SetScreen(newscreen+oldpanadjust,oldpanx & xpanmask);
 		}
 	}
 	bufferofs = screenstart[otherpage];
@@ -1826,7 +1830,7 @@ void RF_PlaceSprite (void **user,unsigned globalx,unsigned globaly,
 	// this is a brand new sprite, so allocate a block from the array
 
 		if (!spritefreeptr)
-			Quit ("RF_PlaceSprite: No free spots in spritearray!");
+			Quit (gvar, "RF_PlaceSprite: No free spots in spritearray!");
 
 		sprite = spritefreeptr;
 		spritefreeptr = spritefreeptr->nextsprite;
@@ -2013,7 +2017,7 @@ void RFL_EraseBlocks (void)
 	// erase the block by copying from the master screen
 	//
 		pos = ylookup[block->screeny]+block->screenx;
-		VW_ScreenToScreen (masterofs+pos,bufferofs+pos,
+//++++		VW_ScreenToScreen (masterofs+pos,bufferofs+pos,
 			block->width,block->height);
 
 	//
@@ -2161,7 +2165,7 @@ redraw:
 			switch (sprite->draw)
 			{
 			case spritedraw:
-				VW_MaskBlock(grsegs[sprite->grseg], sourceofs,
+//++++				VW_MaskBlock(grsegs[sprite->grseg], sourceofs,
 					dest,sprite->width,height,sprite->planesize);
 				break;
 
@@ -2235,7 +2239,7 @@ void RF_Refresh (void)
 //
 // display the changed screen
 //
-	VW_SetScreen(bufferofs+panadjust,panx & xpanmask);
+	VL_SetScreen(bufferofs+panadjust,panx & xpanmask);
 
 //
 // prepare for next refresh
@@ -2499,7 +2503,7 @@ void RF_PlaceSprite (void **user,unsigned globalx,unsigned globaly,
 	// this is a brand new sprite, so allocate a block from the array
 
 		if (!spritefreeptr)
-			Quit ("RF_PlaceSprite: No free spots in spritearray!");
+			Quit (gvar, "RF_PlaceSprite: No free spots in spritearray!");
 
 		sprite = spritefreeptr;
 		spritefreeptr = spritefreeptr->nextsprite;
@@ -2676,7 +2680,7 @@ void RFL_EraseBlocks (void)
 		pos = ylookup[block->screeny]+block->screenx;
 		block->width = (block->width + (pos&1) + 1)& ~1;
 		pos &= ~1;				// make sure a word copy gets used
-		VW_ScreenToScreen (masterofs+pos,bufferofs+pos,
+//++++		VW_ScreenToScreen (masterofs+pos,bufferofs+pos,
 			block->width,block->height);
 
 	//

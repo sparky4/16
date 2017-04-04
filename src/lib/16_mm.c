@@ -1257,6 +1257,8 @@ void MM_SortMem(global_game_variables_t *gvar)
 =====================
 */
 
+//#define MMSMSORTNEWTYPE
+
 void MM_ShowMemory(global_game_variables_t *gvar)
 {
 	mmblocktype far *scan;
@@ -1301,8 +1303,11 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 			write(gvar->handle.debughandle,scratch,strlen(scratch));
 			Quit (gvar, "MM_ShowMemory: Memory block order currupted!");
 		}
+#ifndef MMSMSORTNEWTYPE
 		end = scan->length-1;
-		//end = scan->start+(scan->length)-1;
+#else
+		end = scan->start+(scan->length)-1;
+#endif
 		y = scan->start/320;
 		x = scan->start%320;
 		VW_Hlin(x,x+end,y,color, &gvar->video.ofs);
@@ -1313,8 +1318,11 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 			strcat(scratch0, "+");
 		}
 //++==++==optional		strcat(scratch0, AARESET); strcat(scratch0, AAGREY); strcat(scratch0,"_");
+#ifdef MMSMSORTNEWTYPE
 		if (scan->next && scan->next->start > end+1)
-		//if (scan->next && scan->next->start >= end+1)
+#else
+		if (scan->next && scan->next->start >= end+1)
+#endif
 		{
 			VW_Hlin(x+end+1,x+(scan->next->start-scan->start),y,0, &gvar->video.ofs);	// black = free
 			strcat(scratch0, AARESET);
@@ -1329,7 +1337,9 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 			//printf("w=%u	start=%04x	next=%04x	end=%lu\n", w/80, scan->start, (scan->next->start), end+1);
 			//printf("==================\n");
 			strcat(scratch0, "\n");
-		}/*else {//if(scan->next->start <= scan->start){
+		}
+#if 0
+		else {//if(scan->next->start <= scan->start){
 			scan->next->start=scan->start+0x1000;
 			strcat(scratch0, AARESET);
 			strcat(scratch0, "\n");
@@ -1343,7 +1353,8 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 			printf("w=%x	start=%x	next=%x	end=%u\n", w, scan->start, (scan->next->start), end+1);
 			printf("================\n");
 			getch();
-		}*/
+		}
+#endif
 		strcat(scratch0, AARESET);
 		//strcat(scratch0,"\n");
 		strcat(scratch,"Seg:");
