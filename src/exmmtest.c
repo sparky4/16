@@ -238,7 +238,6 @@ PRINTBB; KEYP
 #endif
 #endif	//filereadload
 
-
 #ifdef __WATCOMC__
 #ifndef NOVID
 	VGAmodeX(1, 0, &gvar);
@@ -277,7 +276,7 @@ PRINTBB; KEYP
 	VGAmodeX(0, 0, &gvar);
 #endif
 #endif
-
+	MM_ShowMemory(&gvar);
 	DebugMemory_(&gvar, 1);
 	MM_DumpData(&gvar);
 	MM_Report_(&gvar);
