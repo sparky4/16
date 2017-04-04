@@ -33,6 +33,20 @@
 #include "src/lib/16_vl.h"
 #include "src/lib/testpatt.h"
 
+#ifdef __WATCOMC__
+#include <hw/cpu/cpu.h>
+#include <hw/dos/dos.h>
+#include <hw/vga/vga.h>
+#include <hw/vga/vrl.h>
+#include <hw/vga/vrs.h>
+#endif
+
+//gvar.video.ofs.bufferofs,gvar.video.ofs.displayofs,
+#define FIZZLEFADEFUNCTION \
+	if(gvar.in.inst->Keyboard[sc_F]){ FizzleFade(\
+	atoi(gvar.video.page[0].data),atoi(gvar.video.page[1].data),\
+320,240,true, &gvar);	IN_UserInput(1, &gvar); } \
+
 #define TAIL_FUNCTIONKEYFUNCTIONS \
 	if(gvar.in.inst->Keyboard[88]){ panswitch=!panswitch;							IN_UserInput(1, &gvar); } \
 	TAIL_FUNCTIONKEYFUNCTIONS0EXE
@@ -55,14 +69,15 @@
 
 #define TAIL_FUNCTIONKEYFUNCTIONS0EXE \
 	if(gvar.in.inst->Keyboard[sc_F4]){ turboXT(12);									IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[68/*sc_F10*/]){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap;		IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[sc_F8]){ gvar.video.vga_state.bgps=!gvar.video.vga_state.bgps;					IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[68/*sc_F10*/]){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap;			IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_F8]){ gvar.video.vga_state.bgps=!gvar.video.vga_state.bgps;		IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_F7]){ ZC_ShowMV(&gvar.mv, 0, 1);						IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_F6]){ ZC_ShowMV(&gvar.mv, 0, 0);						IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[sc_T]){ gvar.video.vga_state.rss=!gvar.video.vga_state.rss;						IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_T]){ gvar.video.vga_state.rss=!gvar.video.vga_state.rss;			IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_P]){ modexpdump(&gvar.video.page[0]);					IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_Y]){ dbg_delayanimation=!dbg_delayanimation;				IN_UserInput(1, &gvar); } \
 	RFDEBUGFUNCTIONS
+//FIZZLEFADEFUNCTION
 
 #define TAIL_PANKEYFUN \
 	TAIL_PANKEYFUNZC \
@@ -105,6 +120,7 @@ word modexPalOverscan(word col);
 void Shutdown16(global_game_variables_t *gvar);
 void Startup16(global_game_variables_t *gvar);
 void TL_VidInit(global_game_variables_t *gvar);
+void FizzleFade (unsigned source, unsigned dest,unsigned width,unsigned height, boolean abortable, global_game_variables_t *gv);
 void DebugMemory_(global_game_variables_t *gvar, boolean q);
 void ClearMemory (global_game_variables_t *gvar);
 void Quit (global_game_variables_t *gvar, char *error);

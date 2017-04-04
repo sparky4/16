@@ -1260,31 +1260,34 @@ void MM_SortMem(global_game_variables_t *gvar)
 void MM_ShowMemory(global_game_variables_t *gvar)
 {
 	mmblocktype far *scan;
-	//word temp;
+	unsigned color,temp,x,y,w;
 	sdword	end,owner;
-	//word chx,chy;
-	word w;
-	//dword wwww;
-	byte    scratch[160],scratch0[4096],str[16];//[[[[scratch1[160],
-	//byte d = '#';
-//[[[[	VW_SetLineWidth(40);
-//++++mh	temp = bufferofs;
-//++++mh	bufferofs = 0;
-//[[[[	VW_SetScreen (0,0);
+	byte    scratch[160],scratch0[4096],str[16];
+
+	VL_SetLineWidth(40, &gvar->video.ofs);
+	temp = gvar->video.ofs.bufferofs;
+	gvar->video.ofs.bufferofs = gvar->video.ofs.displayofs;
 	scan = gvar->mm.mmhead;
-	end = -1;
+
+	end = -1; w = 0;
 
 	CA_OpenDebug (gvar);
-	w=0;
-	while(scan)
+	while (scan)
 	{
 		strcpy(scratch, AARESET);
 		if(scan->attributes & PURGEBITS)
+		{
+			color = 5;		// dark purple = purgable
 			strcpy(scratch0, AAMAGENTA);		// dark purple = purgable
-		else
+		}else{
+			color = 9;		// medium blue = non purgable
 			strcpy(scratch0, AABLUE);		// medium blue = non purgable
+		}
 		if(scan->attributes & LOCKBIT)
+		{
+			color = 12;		// red = locked
  			strcpy(scratch0, AARED);		// red = locked
+		}
 		if(scan->start<=end)
 		{
 			printf("\nend==%d\n\n", end);
@@ -1296,50 +1299,38 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 			ultoa (scan->start,str,10);
 			strcat (scratch,str);
 			write(gvar->handle.debughandle,scratch,strlen(scratch));
-			//modexprint(&page, chx, chy, 1, 0, 24, "\nMM_ShowMemory: Memory block order currupted!\n");
-			break;
+			Quit (gvar, "MM_ShowMemory: Memory block order currupted!");
 		}
-		end = scan->start+(scan->length)-1;
-//++++		chy = scan->start/320;
-//++++		chx = scan->start%320;
-				//modexhlin(page, scan->start, (unsigned)end, chy, color);
-				//for(chx=scan->start;chx+4>=(word)end;chx+=4)
-				//{
-//++++					modexClearRegion(page, chx, chy, 4, 4, color);
-				//}
-//++++		VW_Hlin(scan->start,(unsigned)end,0,color);
+		end = scan->length-1;
+		//end = scan->start+(scan->length)-1;
+		y = scan->start/320;
+		x = scan->start%320;
+		VW_Hlin(x,x+end,y,color, &gvar->video.ofs);
+		VL_Plot(x,y,15, &gvar->video.ofs);
 		for(w=(scan->start)/80;w<=end/80;w++)
 		{
 			//printf("+	%u	%lu\n", w, scan->length);
 			strcat(scratch0, "+");
 		}
-		//++==++==optional strcat(scratch0, AARESET); strcat(scratch0, AAGREY); strcat(scratch0,"_");
-//++++		VW_Plot(scan->start,0,15);
-//++++				modexClearRegion(page, chx, chy, 4, 4, 15);
-//++++			VW_Hlin(end+1,scan->next->start,0,0);	// black = free
-
-		//wwww=(dword)(scan->next->start)-(dword)scan->start;
-		//wwww=(dword)scan->start+(dword)(scan->next->start);
-		if (scan->next && scan->next->start >= end+1)
+//++==++==optional		strcat(scratch0, AARESET); strcat(scratch0, AAGREY); strcat(scratch0,"_");
+		if (scan->next && scan->next->start > end+1)
+		//if (scan->next && scan->next->start >= end+1)
 		{
+			VW_Hlin(x+end+1,x+(scan->next->start-scan->start),y,0, &gvar->video.ofs);	// black = free
 			strcat(scratch0, AARESET);
-			//++==++==optional strcat(scratch0, "\n");
+//++==++==optional			strcat(scratch0, "\n");
 			strcat(scratch0,AAGREEN);
 			for(w=(end+1)/80;w<=((scan->next->start-scan->start)/80);w++)
-			//for(w=(wwww)/80;w<=((end+1)/80);w++)
-			//for(w=(end+1)/80;w<=((wwww)/80);w++)
 			{
 				//printf("0	%x	%u	%lu\n", scan->next->start, w, scan->length);
 				strcat(scratch0,"0");
 			}
 			//printf("==================\n");
-			//printf("w=%u	wwww=%lu	start=%04x	next=%04x	end=%lu\n", w/80, wwww/80, scan->start, (scan->next->start), end+1);
+			//printf("w=%u	start=%04x	next=%04x	end=%lu\n", w/80, scan->start, (scan->next->start), end+1);
 			//printf("==================\n");
 			strcat(scratch0, "\n");
-			//getch();
 		}/*else {//if(scan->next->start <= scan->start){
 			scan->next->start=scan->start+0x1000;
-			wwww=(dword)(scan->next->start)-(dword)scan->start;
 			strcat(scratch0, AARESET);
 			strcat(scratch0, "\n");
 			strcat(scratch0,AAGREEN);
@@ -1349,23 +1340,12 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 				strcat(scratch0,"0");
 			}
 			printf("================\n");
-			printf("w=%x	start=%x	next=%x	end=%u	%lu\n", w, scan->start, (scan->next->start), end+1, wwww);
+			printf("w=%x	start=%x	next=%x	end=%u\n", w, scan->start, (scan->next->start), end+1);
 			printf("================\n");
 			getch();
 		}*/
 		strcat(scratch0, AARESET);
 		//strcat(scratch0,"\n");
-			//for(chx=scan->next->start;chx+4>=(word)end+1;chx+=4)
-			//{
-//				chx+=scan->next->start;
-//				modexClearRegion(page, chx, chy, 4, 4, 2);
-			//}
-					//modexhlin(page, end+1,scan->next->start, chy, 0);
-/*		y = scan->start/320;
-		x = scan->start%320;
-		VW_Hlin(x,x+end,y,color);
-		VW_Plot(x,y,15);*/
-//++++			VW_Hlin(x+end+1,x+(scan->next->start-scan->start),y,0);	// black = free
 		strcat(scratch,"Seg:");
 		ultoa (scan->start,str,16);
 		strcat (scratch,str);
@@ -1379,76 +1359,19 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 		strcat (scratch,"\n");
 		write(gvar->handle.debughandle,scratch,strlen(scratch));
 		write(gvar->handle.debughandle,scratch0,strlen(scratch0));
-//modexprint(page, chx, chy, 1, 0, 24, &scratch);
-//++++chy+=4;
 //fprintf(stdout, "%s", scratch);
 
 		scan = scan->next;
 	}
-	/*strcpy(scratch1, AARESET);
-	strcat(scratch1, "========================================\n");
-	strcat(scratch1, "near=	 ");
-	ultoa (*(gvar->mm.nearheap),str,10);
-	strcat (scratch1,str);
-	strcat(scratch1, "	far= ");
-	ultoa (*(gvar->mm.farheap),str,10);
-	strcat (scratch1,str);
-	strcat(scratch1, "\n");
-	//strcat(scratch1, "&near=	%Fp ", &(gvar->mm.nearheap));
-	//strcat(scratch1, "&far=	%Fp", &(gvar->mm.farheap));
-	//strcat(scratch1, "\n");
-	strcat(scratch1, "========================================\n");
-	write(gvar->handle.debughandle,scratch1,strlen(scratch1));*/
-
 
 	CA_CloseDebug (gvar);
 
-//++++mh	IN_Ack();
-//****	VW_SetLineWidth(64);
-//++++mh	bufferofs = temp;
-}
-
-void MM_ShowMemoryVidVer(global_game_variables_t *gvar)
-{
-	mmblocktype far *scan;
-	unsigned color,temp,x,y;
-	long	end;//,owner;
-	//char    scratch[80],str[10];
-
-	temp = gvar->video.ofs.bufferofs;
-	gvar->video.ofs.bufferofs = gvar->video.ofs.displayofs;
-	scan = gvar->mm.mmhead;
-
-	end = -1;
-
-	while (scan)
-	{
-		if (scan->attributes & PURGEBITS)
-			color = 5;		// dark purple = purgable
-		else
-			color = 9;		// medium blue = non purgable
-		if (scan->attributes & LOCKBIT)
-			color = 12;		// red = locked
-		if (scan->start<=end)
-			Quit (gvar, "MM_ShowMemory: Memory block order currupted!");
-		//end = scan->length-1;
-		end = scan->start+(scan->length)-1;
-		y = scan->start/320;
-		x = scan->start%320;
-		VW_Hlin(x,x+end,y,color, &gvar->video.ofs);
-		VL_Plot(x,y,15, &gvar->video.ofs);
-		//if (scan->next && scan->next->start > end+1)
-		if (scan->next && scan->next->start >= end+1)
-			VW_Hlin(x+end+1,x+(scan->next->start-scan->start),y,0, &gvar->video.ofs);	// black = free
-
-		scan = scan->next;
-	}
-
-	//----VL_FadeIn(0,255,&gvar->video.palette,10, &gvar->video);
 	IN_Ack(gvar);
-
+//****	VW_SetLineWidth(64);
 	gvar->video.ofs.bufferofs = temp;
 }
+
+
 
 //==========================================================================
 
@@ -1610,7 +1533,7 @@ void MM_Report_(global_game_variables_t *gvar)
 		printf("	%c%cEMM v%x.%x available\n", 0xC7, 0xC4, gvar->pm.emm.EMSVer>>4,gvar->pm.emm.EMSVer&0x0F);
 		printf("	%c%ctotalEMSpages:	%u	", 0xC7, 0xC4, gvar->pm.emm.totalEMSpages); printf("freeEMSpages:	%u\n", gvar->pm.emm.freeEMSpages);
 		printf("	%c%cEMSPageFrame:	%04x\n", 0xC7, 0xC4, gvar->pm.emm.EMSPageFrame);
-		printf("	%c%cEMSmem:	%lu\n", 0xD3, 0xC4, gvar->mmi.EMSmem);
+		printf("	%c%cEMSmem:	%lu or %luk\n", 0xD3, 0xC4, gvar->mmi.EMSmem, gvar->mmi.EMSmem/1204);
 	}
 	if(MML_CheckForXMS())
 	{
@@ -1618,7 +1541,7 @@ void MM_Report_(global_game_variables_t *gvar)
 		printf("	%c%cXMS v%x.%x available\n", 0xC7, 0xC4, XMSVer>>8,XMSVer&0x0F);
 		printf("	%c%cXMSDriver:	%Fp\n", 0xC7, 0xC4, XMSDriver);
 		printf("	%c%cXMSHandle:	%04x\n", 0xC7, 0xC4, gvar->pm.xmm.XMSHandle);
-		printf("	%c%cXMSmem:	%lu\n", 0xD3, 0xC4, gvar->mmi.XMSmem);
+		printf("	%c%cXMSmem:	%lu or %lukb\n", 0xD3, 0xC4, gvar->mmi.XMSmem, gvar->mmi.XMSmem/1024);
 	}
 	printf("	%cConv.	%u\n", 0xC9, gvar->pm.mm.MainPresent); DebugMemory_(gvar, 0);
 	//printf("mainmem:	%lu\n", gvar->mmi.mainmem);
@@ -1773,7 +1696,8 @@ void MM_BombOnError(boolean bomb, global_game_variables_t *gvar)
 	gvar->mm.bombonerror = bomb;
 }
 
-/*void MM_GetNewBlock(global_game_variables_t *gvar)
+#if 0
+void MM_GetNewBlock(global_game_variables_t *gvar)
 {
 	if(!gvar->mm.mmfree)
 		MML_ClearBlock(gvar);
@@ -1792,7 +1716,8 @@ void MM_FreeBlock(mmblocktype *x, global_game_variables_t *gvar)
 	x->useptr=NULL;
 	x->next=gvar->mm.mmfree;
 	gvar->mm.mmfree=x;
-}*/
+}
+#endif
 
 void xms_call(byte v, global_game_variables_t *gvar)
 {

@@ -329,5 +329,6 @@ void ding(page_t *page, bakapee_t *pee, word q)
 		default:
 		break;
 	}
+	//printf("	%dx%d	%dx%d\n", pee->xx, pee->yy, tx, ty);
 	//pee->coor++;
 }

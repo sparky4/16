@@ -28,7 +28,7 @@
 static bakapee_t bakapee;
 word key,d,xpos,ypos,xdir,ydir;
 sword vgamodex_mode = 1; // 320x240 default
-int ch=0x0;
+//int ch=0x0;
 
 void
 main(int argc, char *argvar[])
@@ -86,6 +86,7 @@ main(int argc, char *argvar[])
 		printf("This program requires VGA or higher graphics hardware\n");
 		return;
 	}
+	textInit();
 
 	// main variables values
 	d=4; // switch variable
@@ -95,17 +96,15 @@ main(int argc, char *argvar[])
 	xdir=1;
 	ydir=1;
 
-	VGAmodeX(vgamodex_mode, 1, &gvar); // TODO: Suggestion: Instead of magic numbers for the first param, might I suggest defining an enum or some #define constants that are easier to remember? --J.C.
+	VGAmodeX(vgamodex_mode, 0, &gvar); // TODO: Suggestion: Instead of magic numbers for the first param, might I suggest defining an enum or some #define constants that are easier to remember? --J.C.
 		// this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
 		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
 
 	bakapee.xx = rand()&0%gvar.video.page[0].width;
 	bakapee.yy = rand()&0%gvar.video.page[0].height;
 	bakapee.gq = 0;
-	bakapee.sx=0;
-	bakapee.sy=0;
-	bakapee.bakax=0;
-	bakapee.bakay=0;
+	bakapee.sx=	bakapee.sy=0;
+	bakapee.bakax=	bakapee.bakay=0;
 	bakapee.coor=0;
 
 	//once where #defines
@@ -114,9 +113,18 @@ main(int argc, char *argvar[])
 	bakapee.lgq=32;
 	bakapee.hgq=55;
 
+	switch(WCPU_detectcpu())
+	{
+		case 0:
+			bakapee.tile=1;
+		break;
+		default:
+			bakapee.tile=0;
+		break;
+	}
+
 	/* setup camera and screen~ */
 	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
-	textInit();
 
 	//modexPalUpdate(bmp.palette); //____
 	//modexDrawBmp(VGA, 0, 0, &bmp, 0); //____
@@ -125,7 +133,7 @@ main(int argc, char *argvar[])
 	VL_ShowPage(&gvar.video.page[0], 0, 0);
 
 // screen savers
-#ifdef BOINK
+//#ifdef BOINK
 	while(d>0)	// on!
 	{
 		int c;
@@ -285,11 +293,12 @@ pee:
 				break;
 				default:
 					key=0;
-					break;
+				break;
 			}
 		}
 	}
-#else // !defined(BOINK)
+#if 0
+//#else // !defined(BOINK)
 // FIXME: Does not compile. Do you want to remove this?
 // INFO: This is a testing section for textrendering and panning for project 16 --sparky4
 	while(1)
@@ -325,5 +334,7 @@ pee:
 //	printf("page.width=%u	", gvar.video.page[0].width); printf("page.height=%u\n", gvar.video.page[0].height);
 	printf("bakapi ver. 1.04.16.04\nis made by sparky4i†ƒÖ…j feel free to use it ^^\nLicence: GPL v3\n");
 	printf("compiled on 2016/04/04\n");
+//	printf("[%u]%dx%d	[%dx%d]	%u %u %u\n[%u	%u	%u]", key, bakapee.bakax, bakapee.bakay, bakapee.xx, bakapee.yy,
+//bakapee.coor, bakapee.tile, bakapee.gq, bakapee.bonk, bakapee.lgq, bakapee.hgq);
 }
 //pee!

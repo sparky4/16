@@ -361,6 +361,12 @@ typedef struct
 //video
 typedef struct
 {
+	word	tileHeight, tileWidth;	//defined by mapfile
+	word	quadwh;			//preproccessed quad size of tilewidth and tileheight
+} tile_dimention_t;
+
+typedef struct
+{
 	unsigned int offscreen_ofs;
 	unsigned int pattern_ofs;
 	unsigned	bufferofs,	ylookup[MAXSCANLINES], linewidth,displayofs;
@@ -396,6 +402,7 @@ typedef struct
 	nibble sfip;		//shinku_fps_indicator_page; // we're on page 1 now, shinku(). follow along please or it will not be visible.
 	ofs_t	ofs;		//offset vars used for doslib
 	word	vh;		//video combined height
+	tile_dimention_t	td;
 	//0000word startclk; float clk, tickclk;	//timer
 	//wolf3d vars
 	boolean	screenfaded;
@@ -659,7 +666,9 @@ typedef struct {
 	vidsw_t vsw;
 } sw_t;*/
 
-typedef struct
+
+
+typedef struct glob_game_vars
 {
 	video_t	video;	// video settings variable
 	ca_t		ca;	// ca stuff

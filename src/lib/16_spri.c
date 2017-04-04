@@ -22,6 +22,8 @@
 
 #include "src/lib/16_spri.h"
 
+struct glob_game_vars	*ggvv;
+
 char* get_curr_anim_name(struct sprite *spri)
 {
 	// Retrive animation name list
@@ -197,7 +199,11 @@ void animate_spri(entity_t *enti, video_t *video)
 	);
 #endif
 #ifdef __DEBUG_SPRI__
-	if(dbg_delayanimation) delay(250);//{ while(!IN_KeyDown(sc_Space)/* && !IN_KeyDown(sc_Escape)*/){} delay(250); }
+//	if(ggvv->player[0].enti.q<5)
+	if(dbg_delayanimation)
+	{
+		IN_Ack(ggvv);// delay(250);//{ while(!IN_KeyDown(sc_Space)/* && !IN_KeyDown(sc_Escape)*/){} delay(250); }
+	}
 #endif
 	if(!video->vga_state.rss)
 	{

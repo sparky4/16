@@ -188,8 +188,6 @@ EXTERNTESTEXEC = &
 	db.exe
 TESTEXEC = &
 	vidtest.exe &
-	tesuto.exe &
-	0.exe &
 	exmmtest.exe &
 	vgmtest.exe &
 	xcroll.exe &
@@ -204,6 +202,8 @@ TESTEXEC2 = &
 	fonttest.exe &
 	fontgfx.exe &
 	test0.exe &
+	tesuto.exe &
+	0.exe &
 	$(EXTERNTESTEXEC)
 TESTEXEC3= &
 	pcxtest2.exe
@@ -242,7 +242,7 @@ testexec: $(EXEC) $(TESTEXEC2)
 # game and bakapi executables
 #
 16.exe:		16.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
-bakapi.exe:		bakapi.$(OBJ) gfx.lib $(DOSLIB)
+bakapi.exe:		bakapi.$(OBJ) gfx.lib $(DOSLIB) 16_wcpu.$(OBJ)
 
 #
 # Test Executables!
@@ -347,7 +347,7 @@ joytest.exe:
 16_vl.$(OBJ):	$(SRCLIB)/16_vl.c $(SRCLIB)/16_vl.h
 16_vl_1.$(OBJ):	$(SRCLIB)/16_vl_1.c $(SRCLIB)/16_vl.h
 16_vlpal.$(OBJ):	$(SRCLIB)/16_vlpa_.c	$(SRCLIB)/16_vlpal.c $(SRCLIB)/16_vlpal.h
-bakapee.$(OBJ):$(SRCLIB)/bakapee.c $(SRCLIB)/bakapee.h
+bakapee.$(OBJ):	$(SRCLIB)/bakapee.c $(SRCLIB)/bakapee.h
 16render.$(OBJ):$(SRCLIB)/16render.c $(SRCLIB)/16render.h
 16planar.$(OBJ):$(MODEXLIB16)/16planar.c $(MODEXLIB16)/16planar.h
 16_vrs.$(OBJ):	$(SRCLIB)/16_vrs.c $(SRCLIB)/16_vrs.h $(DOSLIB)

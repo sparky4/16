@@ -35,14 +35,6 @@
 // #include "src/lib/modex16/192x144_.h"
 // #include "src/lib/modex16/160x120.h"
 
-#ifdef __WATCOMC__
-#include <hw/cpu/cpu.h>
-#include <hw/dos/dos.h>
-#include <hw/vga/vga.h>
-#include <hw/vga/vrl.h>
-#include <hw/vga/vrs.h>
-#endif
-
 //320x240 = 20x15
 //192x144 = 12x9
 

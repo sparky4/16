@@ -6,8 +6,7 @@
 =====================
 */
 
-void
-DemoLoop (void)
+void DemoLoop (void)
 {
 	char		*s;
 	word		move;

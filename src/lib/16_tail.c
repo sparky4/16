@@ -20,11 +20,14 @@
  *
  */
 /*
- * 16 library
+ * 16 tail library
  */
 
 #include "src/lib/16_tail.h"
 #include "src/lib/16text.h"
+
+static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
+
 /*
 ==========================
 =
@@ -127,7 +130,7 @@ void	TL_VidInit(global_game_variables_t *gvar)
 	// get old video mode
 	//in.h.ah = 0xf;
 	//int86(0x10, &in, &out);
-	gvar->video.old_mode = vgaGetMode();//out.h.al;
+	if(!gvar->video.old_mode) gvar->video.old_mode = vgaGetMode();//out.h.al;
 #else
 	gvar->video.old_mode = 3;
 #endif
@@ -282,6 +285,176 @@ void	TL_VidInit(global_game_variables_t *gvar)
 //===========================================================================
 
 /*
+===================
+=
+= FizzleFade
+=
+===================
+*/
+
+#define PIXPERFRAME     1600
+
+void FizzleFade (unsigned source, unsigned dest,
+	unsigned width,unsigned height, boolean abortable, global_game_variables_t *gv)
+{
+	unsigned        drawofs,pagedelta;
+	unsigned        char maskb[8] = {1,2,4,8,16,32,64,128};
+	unsigned        x,y,p,frame;
+	long            rndval;
+	word TimeCount = *clockw;
+	word screenseg = SCREENSEG;
+
+	pagedelta = dest-source;
+//++++	VL_SetScreen (dest,0);
+	rndval = 1;
+	x = y = 0;
+
+	__asm {
+		mov	es,[screenseg]
+		mov	dx,SC_INDEX
+		mov	al,SC_MAPMASK
+		out	dx,al
+	}
+
+	TimeCount=frame=0;
+	do      // while (1)
+	{
+		if (abortable)
+		{
+			IN_ReadControl(0,gv);
+			if (gv->player[0].info.button0 || gv->player[0].info.button1 || gv->in.inst->Keyboard[sc_Space]
+			|| gv->in.inst->Keyboard[sc_Enter])
+			{
+//++++				VW_ScreenToScreen (source,dest,width/8,height);
+				return;
+			}
+		}
+
+		for (p=0;p<PIXPERFRAME;p++)
+		{
+			//
+			// seperate random value into x/y pair
+			//
+			__asm {
+				mov	ax,[WORD PTR rndval]
+				mov	dx,[WORD PTR rndval+2]
+				mov	bx,ax
+				dec	bl
+				mov	[BYTE PTR y],bl                 // low 8 bits - 1 = y xoordinate
+				mov	bx,ax
+				mov	cx,dx
+				shr	cx,1
+				rcr	bx,1
+				shr	bx,1
+				shr	bx,1
+				shr	bx,1
+				shr	bx,1
+				shr	bx,1
+				shr	bx,1
+				shr	bx,1
+				mov	[x],bx                                  // next 9 bits = x xoordinate
+			//
+			// advance to next random element
+			//
+				shr	dx,1
+				rcr	ax,1
+				jnc	noxor
+				xor	dx,0x0001
+				xor	ax,0x2000
+#ifdef __BORLANDC__
+			}
+#endif
+noxor:
+#ifdef __BORLANDC__
+			__asm {
+#endif
+				mov	[WORD PTR rndval],ax
+				mov	[WORD PTR rndval+2],dx
+			}
+
+			if (x>width || y>height)
+				continue;
+			drawofs = source+gv->video.ofs.ylookup[y];
+
+			__asm {
+				mov	cx,[x]
+				mov	si,cx
+				and	si,7
+				mov	dx,GC_INDEX
+				mov	al,GC_BITMASK
+				mov	ah,BYTE PTR [maskb+si]
+				out	dx,ax
+
+				mov	si,[drawofs]
+				shr	cx,1
+				shr	cx,1
+				shr	cx,1
+				add	si,cx
+				mov	di,si
+				add	di,[pagedelta]
+
+				mov	dx,GC_INDEX
+				mov	al,GC_READMAP                   // leave GC_INDEX set to READMAP
+				out	    dx,al
+
+				mov	dx,SC_INDEX+1
+				mov	al,1
+				out	    dx,al
+				mov	dx,GC_INDEX+1
+				mov	al,0
+				out	    dx,al
+
+				mov	bl,[es:si]
+				xchg	[es:di],bl
+
+				mov	dx,SC_INDEX+1
+				mov	al,2
+				out	    dx,al
+				mov	dx,GC_INDEX+1
+				mov	al,1
+				out	    dx,al
+
+				mov	bl,[es:si]
+				xchg	[es:di],bl
+
+				mov	dx,SC_INDEX+1
+				mov	al,4
+				out	    dx,al
+				mov	dx,GC_INDEX+1
+				mov	al,2
+				out	    dx,al
+
+				mov	bl,[es:si]
+				xchg	[es:di],bl
+
+				mov	dx,SC_INDEX+1
+				mov	al,8
+				out	    dx,al
+				mov	dx,GC_INDEX+1
+				mov	al,3
+				out	    dx,al
+
+				mov	bl,[es:si]
+				xchg	[es:di],bl
+			}
+
+			if (rndval == 1)		// entire sequence has been completed
+			{
+//++++				VGABITMASK(255);
+//++++				VGAMAPMASK(15);
+				return;
+			}
+		}
+		frame++;
+//++++		while (TimeCount<frame){}	// don't go too fast
+	} while (1);
+
+
+}
+
+//===========================================================================
+
+/*
 ==================
 =
 = DebugMemory
@@ -319,7 +492,7 @@ void DebugMemory_(global_game_variables_t *gvar, boolean q)
 #ifdef __WATCOMC__
 	//IN_Ack ();
 #endif
-	if(q) MM_ShowMemory (gvar);
+//	if(q) MM_ShowMemory (gvar);
 }
 
 /*

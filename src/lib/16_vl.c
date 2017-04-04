@@ -55,6 +55,10 @@ void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
 		default: // init the video
 			if(gv->video.VL_Started)
 				return;
+			// get old video mode
+			//in.h.ah = 0xf;
+			//int86(0x10, &in, &out);
+			gv->video.old_mode = vgaGetMode();//out.h.al;
 			// enter mode
 			modexEnter(vq, cmem, gv);
 		break;
@@ -173,39 +177,6 @@ void
 modexLeave() {
 	/* VGAmodeX restores original mode and palette */
 	vgaSetMode(TEXT_MODE);
-}
-
-/*
-====================
-=
-= VL_SetLineWidth
-=
-= Line witdh is in WORDS, 40 words is normal width for vgaplanegr
-=
-====================
-*/
-
-void VL_SetLineWidth (unsigned width, ofs_t *ofs)
-{
-	int i,offset;
-
-//
-// set wide virtual screen
-//
-	outport (CRTC_INDEX,CRTC_OFFSET+width*256);
-
-//
-// set up lookup tables
-//
-	ofs->linewidth = width*2;
-
-	offset = 0;
-
-	for (i=0;i<MAXSCANLINES;i++)
-	{
-		ofs->ylookup[i]=offset;
-		offset += ofs->linewidth;
-	}
 }
 
 page_t

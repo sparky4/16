@@ -45,7 +45,8 @@
 //#define EXMMVERBOSE__
 //	#define PRINTBBDUMP
 #define BUFFDUMP
-//#define NOVID
+#define NOVID
+
 
 #define KEYP IN_Shutdown(&gvar); printf("\n\npress any key to continue!\n"); getch(); IN_Startup(&gvar);
 
@@ -257,7 +258,7 @@ PRINTBB; KEYP
 		switch (scan)
 		{
 			case sc_Space:
-				MM_ShowMemoryVidVer(&gvar);
+				MM_ShowMemory(&gvar);
 			break;
 //#ifdef __WATCOMC__
 			case sc_O:
@@ -353,7 +354,7 @@ PRINTBB; KEYP
 #endif
 	printf("\n");
 #endif
-	printf("old_mode=%u	VL_Started=%u", gvar.video.old_mode, gvar.video.VL_Started);
+	//printf("old_mode=%u	VL_Started=%u", gvar.video.old_mode, gvar.video.VL_Started);
 	//printf("based core left:			%lu\n", (dword)_basedcoreleft());
 	//printf("huge core left:			%lu\n", (dword)_hugecoreleft());
 }

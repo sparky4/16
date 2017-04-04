@@ -42,9 +42,8 @@
 
 #define	BUFFERSIZE		0x1000		// miscelanious, allways available buffer
 
-//moved to typdefst
+//moved to 16_tdef.h
 //#define MAXBLOCKS		1024
-
 
 
 //--------
@@ -196,7 +195,6 @@ void MM_SetPurge(memptr *baseptr, int purge, global_game_variables_t *gvar);
 void MM_SetLock(memptr *baseptr, boolean locked, global_game_variables_t *gvar);
 void MM_SortMem(global_game_variables_t *gvar);
 void MM_ShowMemory(global_game_variables_t *gvar);
-void MM_ShowMemoryVidVer(global_game_variables_t *gvar);
 void MM_DumpData(global_game_variables_t *gvar);
 dword MM_UnusedMemory(global_game_variables_t *gvar);
 dword MM_TotalFree(global_game_variables_t *gvar);

@@ -52,6 +52,7 @@ void main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
 	char *bakapee1,*bakapee1p;
+	struct glob_game_vars	*ggvv;
 //	sword bakapee;
 // 	if(argv[1]) bakapee = atoi(argv[1]);
 // 	else bakapee = 1;
@@ -60,6 +61,7 @@ void main(int argc, char *argv[])
 
 	bakapee1=malloc(64);
 	bakapee1p=malloc(64);
+	ggvv=&gvar;
 
 	if (argc < 2) {
 		//fprintf(stderr,"drawvrl <VRL file> <palette file>\n palette file optional\n");

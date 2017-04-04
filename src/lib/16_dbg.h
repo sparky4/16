@@ -22,6 +22,7 @@
 extern boolean dbg_debugmm;
 #endif
 #ifdef __DEBUG_PM__
+//#define __DEBUG_PM_MAIN__
 extern boolean dbg_debugpm;
 #endif
 #ifdef __DEBUG_CA__

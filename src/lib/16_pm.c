@@ -507,7 +507,6 @@ PML_XMSCopy(boolean toxms,byte far *addr,word xmspage,word length, global_game_v
 	if (!addr)
 	{
 		Quit (gvar, "PML_XMSCopy: zero address\n");
-		//return;
 	}
 
 	xoffset = (dword)xmspage * PMPageSize;
@@ -621,8 +620,10 @@ PM_SetMainMemPurge(int level, global_game_variables_t *gvar)
 	for (i = 0;i < PMMaxMainMem;i++)
 	{
 #ifdef __DEBUG_PM__
+#ifdef __DEBUG_PM_MAIN__
 		printf("PM_SetMainMemPurge()	info of gvar->pm.mm.MainMemPages[i]\n");
 		printf("&	%Fp,	%Fp\n", &gvar->pm.mm.MainMemPages[i],	&(gvar->pm.mm.MainMemPages[i]));
+#endif
 #endif
 		if (gvar->pm.mm.MainMemPages[i])
 			MM_SetPurge(&(gvar->pm.mm.MainMemPages[i]),level, gvar);

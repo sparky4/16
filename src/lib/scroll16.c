@@ -753,7 +753,7 @@ void shinku(global_game_variables_t *gv)
 			//modexCopyPageRegion(&video->page[0], &video->page[1], enti->x, enti->y, 0, 0, 24, 32);
 		}*/
 		VL_ShowPage(&(gv->video.page[gv->video.sp]), gv->kurokku.fpscap, 0);
-		gv->video.dorender =!gv->video.dorender ;
+		gv->video.dorender =!gv->video.dorender;
 		//0000gv->video.tickclk = ((*clockw)-gv->video.startclk)/18.2;
 	}
 	PM_NextFrame(gv);
