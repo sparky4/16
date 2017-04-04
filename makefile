@@ -193,6 +193,8 @@ TESTEXEC = &
 	xcroll.exe &
 	inputest.exe &
 	vrstest.exe &
+	tesuto.exe &
+	0.exe &
 	maptest.exe
 #zcroll.exe &
 TESTEXEC2 = &
@@ -202,8 +204,6 @@ TESTEXEC2 = &
 	fonttest.exe &
 	fontgfx.exe &
 	test0.exe &
-	tesuto.exe &
-	0.exe &
 	$(EXTERNTESTEXEC)
 TESTEXEC3= &
 	pcxtest2.exe

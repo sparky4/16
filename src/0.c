@@ -46,21 +46,18 @@ int main(int argc,char **argv)
 	unsigned int bufsz;
 	int fd;
 	//nibble i;
-	char *bakapee1,*bakapee2;
+	char bakapee1[64],bakapee2[64];
 
 	boolean anim=1,noanim=0,zerostoppause=1;
 
-	bakapee1=malloc(64);
-	bakapee2=malloc(64);
-
 	if (argc < 2) {
 		//fprintf(stderr,"drawvrl <VRL file> <palette file>\n palette file optional\n");
-		bakapee1 = FILENAME_1;//"data/aconita.vrl";
-		bakapee2 = FILENAME_2;//"data/aconita.pal";
+		strcpy(bakapee1, FILENAME_1);//"data/aconita.vrl";
+		strcpy(bakapee2, FILENAME_2);//"data/aconita.pal";
 
 	}else{
-		if(argv[1]) bakapee1 = argv[1];
-		if(argv[2]) bakapee2 = argv[2];
+		if(argv[1]){ strcpy(bakapee1, argv[1]);//bakapee1[] = *argv[1];
+		if(argv[2]) strcpy(bakapee2, argv[2]); }//bakapee2[] = argv[2]; }
 	}
 
 	fd = open(bakapee1,O_RDONLY|O_BINARY);

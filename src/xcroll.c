@@ -51,7 +51,7 @@ memptr pal;
 void main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
-	char *bakapee1,*bakapee1p;
+	char bakapee1[64],bakapee1p[64];
 	struct glob_game_vars	*ggvv;
 //	sword bakapee;
 // 	if(argv[1]) bakapee = atoi(argv[1]);
@@ -59,18 +59,16 @@ void main(int argc, char *argv[])
 
 	Startup16(&gvar);
 
-	bakapee1=malloc(64);
-	bakapee1p=malloc(64);
 	ggvv=&gvar;
 
 	if (argc < 2) {
 		//fprintf(stderr,"drawvrl <VRL file> <palette file>\n palette file optional\n");
-		bakapee1 =		FILENAME_1;
-		bakapee1p =	FILENAME_1P;
+		strcpy(bakapee1, FILENAME_1);
+		strcpy(bakapee1p, FILENAME_1P);
 
 	}else{
-		if(argv[1]) bakapee1 = argv[1];
-		if(argv[2]) bakapee1p = argv[2];
+		if(argv[1]){ strcpy(bakapee1, argv[1]);
+		if(argv[2]) strcpy(bakapee1p, argv[2]); }
 	}
 
 	// OK, this one takes hellova time and needs to be done in farmalloc or MM_...
@@ -190,14 +188,14 @@ void main(int argc, char *argv[])
 		{
 			if(gvar.in.inst->Keyboard[sc_J])
 			{
-				bakapee1=FILENAME_1;
-				bakapee1p=FILENAME_1P;
+				strcpy(bakapee1, FILENAME_1);
+				strcpy(bakapee1p, FILENAME_1P);
 				gvar.player[0].enti.overdraww=0;
 			}
 			if(gvar.in.inst->Keyboard[sc_K])
 			{
-				bakapee1=FILENAME_2;
-				bakapee1p=FILENAME_2P;
+				strcpy(bakapee1, FILENAME_2);
+				strcpy(bakapee1p, FILENAME_2P);
 				gvar.player[0].enti.overdraww=2;
 			}
 			//read_vrs(&gvar, bakapee1, gvar.player[0].enti.spri->spritesheet);
