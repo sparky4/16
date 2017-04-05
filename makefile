@@ -210,6 +210,7 @@ TESTEXEC3= &
 UTILEXEC = &
 	palettel.exe &
 	palllist.exe &
+	palbomb.exe &
 	palettec.exe
 !ifdef __LINUX__
 SPRIUTILEXEC = &
@@ -270,9 +271,10 @@ inputest.exe:	 inputest.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
 pcxtest.exe:	pcxtest.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
 vrstest.exe:	vrstest.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 #vgacamm.exe:	vgacamm.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
-palettec.exe:	palettec.$(OBJ) gfx.lib $(DOSLIB)
-palettel.exe:	 	palettel.$(OBJ) gfx.lib $(DOSLIB)
-palllist.exe:	 	palllist.$(OBJ) gfx.lib $(DOSLIB) ll.$(OBJ)
+palettec.exe:	palettec.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
+palettel.exe:	 	palettel.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
+palbomb.exe: 	palbomb.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
+palllist.exe:	 	palllist.$(OBJ) $(16LIB) gfx.lib $(DOSLIB) ll.$(OBJ)
 pcxtest2.exe:	 pcxtest2.$(OBJ) gfx.lib $(DOSLIB)
 #planrpcx.exe:	planrpcx.$(OBJ) gfx.lib
 maptest.exe:	maptest.$(OBJ) 16_map.$(OBJ) 16_head.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
@@ -298,6 +300,7 @@ vrstest.$(OBJ):$(SRC)/vrstest.c $(SRCLIB)/16_vl.h
 pcxtest2.$(OBJ):$(SRC)/pcxtest2.c $(SRCLIB)/16_vl.h
 palettec.$(OBJ):	$(SRC)/palettec.c
 palettel.$(OBJ):	$(SRC)/palettel.c
+palbomb.$(OBJ):	$(SRC)/palbomb.c
 palllist.$(OBJ):	$(SRC)/palllist.c
 maptest.$(OBJ):$(SRC)/maptest.c $(SRCLIB)/16_vl.h
 #emmtest.$(OBJ):$(SRC)/emmtest.c

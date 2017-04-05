@@ -385,10 +385,9 @@ typedef struct
 
 typedef struct
 {
-	boolean	VL_Started;
+	boolean	VL_Started,VL_Initiated;
 	char old_mode;		//old video mode before game!
 	byte palette[PALSIZE], dpal[PALSIZE];	//palette array
-	byte		far	palette1[256][3],far palette2[256][3];
 	page_t page[MAXPAGE];	//can be used as a pointer to root page[0]
 	word vmem_remain;	//remaining video memory
 	byte num_of_pages;	//number of actual pages
@@ -408,6 +407,7 @@ typedef struct
 	boolean	screenfaded;
 	word		bordercolor;
 	boolean	fastpalette;
+	byte		far	palette1[256][3],far palette2[256][3];
 } video_t;
 
 //from scroll16

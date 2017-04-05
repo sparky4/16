@@ -19,22 +19,17 @@
  * Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-
 #include "src/lib/16_vl.h"
+void main(int argc, char *argv[]) {
+	static global_game_variables_t gvar;			char bakapee[64] = "data/default.pal";
+	if(argv[1]) strcpy(bakapee, argv[1]); modexPalSave(&gvar.video.palette);// modexPalSave(&gvar.video.dpal); modexFadeOff(4, &gvar.video.dpal); modexPalBlack();
 
-void main(int argc, char *argv[])
-{
-	static global_game_variables_t gvar;
-	char bakapee[64] = "data\default.pal";
-
-	if(argv[1]) strcpy(bakapee, argv[1]);
-
-
-	VGAmodeX(1, 1, &gvar);
-
-	modexPalSave(&(gvar.video.palette));
-
-	modexSavePalFile(bakapee, &(gvar.video.palette));
-
-	VGAmodeX(0, 1, &gvar);
+	TL_VidInit(&gvar);	VGAmodeX(1, 0, &gvar);
+	modexSavePalFile(bakapee, &gvar.video.palette);
+	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);// modexFadeOn(4, &gvar.video.palette);
+	VL_ShowPage(&gvar.video.page[0], 1, 0);
+	modexpdump(&gvar.video.page[0]);
+	while(!kbhit()){ /*VL_modexPalScramble(&gvar.video.palette);*/ }
+//	modexPalSave(&gvar.video.palette);
+	VGAmodeX(0, 0, &gvar);
 }

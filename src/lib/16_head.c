@@ -182,7 +182,7 @@ void print_mem(void const *vp, size_t n)
 	{
 		printf("%02x", p[i]);
 		//printf("%c", p[i]);
-		if(!((i)%16)) printf("\n");
+		if((!(i%16)) && i) printf("\n");
 		else printf(" ");
 		//printf("%u%%40=%u\n", i, i%40);
 	}

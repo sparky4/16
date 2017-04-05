@@ -134,6 +134,7 @@ void	TL_VidInit(global_game_variables_t *gvar)
 #else
 	gvar->video.old_mode = 3;
 #endif
+	gvar->video.VL_Initiated = 1;
 }
 
 
