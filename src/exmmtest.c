@@ -127,12 +127,16 @@ main(int argc, char *argv[])
 //#ifdef __WATCOMC__
 //	__segment sega;
 //#endif
-	char bakapee1[64],bakapee2[64];
+	char *bakapee1,*bakapee2;
 	word baka;
 
 #ifdef __BORLANDC__
 	argc=argc;
 #endif
+	//file name //
+	bakapee1 = malloc(24);
+	bakapee2 = malloc(24);
+	//file name //
 
 #ifdef __16_PM__
 #ifdef __DEBUG_PM__
@@ -146,12 +150,12 @@ main(int argc, char *argv[])
 #ifdef PRINTBBDUMP
 //0000PRINTBB; KEYP
 #endif
-	if(argv[1]){ strcpy(bakapee1, argv[1]);//bakapee1[] = *argv[1];
-	if(argv[2]) strcpy(bakapee2, argv[2]); }//bakapee2[] = argv[2]; }
+	if(argv[1]){ bakapee1 = argv[1];
+	if(argv[2]) bakapee2 = argv[2]; }
 	else{
 	//{ printf("filename!: "); scanf("%[^\n]", &bakapee); }
-		strcpy(bakapee1, "data/koishi~.pcx"); //bakapee1 = "data/koishi~.pcx";
-		strcpy(bakapee2, "data/test.map"); //bakapee2 = "data/test.map";
+		bakapee1 = "data/koishi~.pcx";
+		bakapee2 = "data/test.map";
 	}
 #ifndef NOVID
 	Startup16(&gvar);
@@ -296,6 +300,7 @@ PRINTBB; KEYP
 	MM_Shutdown(&gvar);
 #endif	//NOVID
 	IN_Shutdown(&gvar);
+	free(bakapee1); free(bakapee2);
 	printf("========================================\n");
 	printf("near=	%Fp ", gvar.mm.nearheap);
 	printf("far=	%Fp", gvar.mm.farheap);
