@@ -253,9 +253,9 @@ PRINTBB; KEYP
 		IN_ClearKey(scan);
 		switch (scan)
 		{
-			case sc_Space:
-				MM_ShowMemory(&gvar);
-			break;
+//			case sc_Space:
+//				MM_ShowMemory(&gvar);
+//			break;
 //#ifdef __WATCOMC__
 			case sc_O:
 				modexPalUpdate0(&gvar.video.palette); modexpdump(&gvar.video.page);
@@ -276,7 +276,7 @@ PRINTBB; KEYP
 	VGAmodeX(0, 0, &gvar);
 #endif
 #endif
-	MM_ShowMemory(&gvar);
+//	MM_ShowMemory(&gvar);
 	DebugMemory_(&gvar, 1);
 	MM_DumpData(&gvar);
 	MM_Report_(&gvar);
