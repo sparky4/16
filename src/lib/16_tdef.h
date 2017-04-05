@@ -443,8 +443,8 @@ typedef struct
 //from 16_mm
 //==========================================================================
 
-#define MAXBLOCKS		1024
-#define MAXUMBS		12
+#define MAXBLOCKS		1024//kd=1300 wolf3d=700 cata=600
+//----#define MAXUMBS		12
 
 typedef struct mmblockstruct
 {
@@ -464,7 +464,6 @@ typedef struct
 
 typedef struct
 {
-	memptr bufferseg;
 	boolean		mmstarted, bombonerror, mmerror;
 	void far	*farheap;
 #ifdef __BORLANDC__
@@ -473,11 +472,12 @@ typedef struct
 #ifdef __WATCOMC__
 	void __near	*nearheap;
 #endif
-	unsigned int		EMSVer;
-	word numUMBs,UMBbase[MAXUMBS];
-	word			totalEMSpages, freeEMSpages, EMSpagesmapped, EMSHandle, EMSPageFrame;
-	//dword	numUMBs,UMBbase[MAXUMBS];
+//----	unsigned int		EMSVer;
+//----	word numUMBs,UMBbase[MAXUMBS];
+//----	word			totalEMSpages, freeEMSpages, EMSpagesmapped, EMSHandle, EMSPageFrame;
+//----	dword	numUMBs,UMBbase[MAXUMBS];
 	mmblocktype	far mmblocks[MAXBLOCKS],far *mmhead,far *mmfree,far *mmrover,far *mmnew;
+	memptr	bufferseg;	//Allocates bufferseg misc buffer
 } mminfo_t;
 
 //==========================================================================

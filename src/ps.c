@@ -14,6 +14,7 @@ void main()
 	PRINT_OPAQUE_STRUCT(&gvar.mm);
 	printf("mmi:\n");
 	PRINT_OPAQUE_STRUCT(&gvar.mmi);
+	printf("sizeof gvar=%d\n", sizeof(gvar));
 //	handle
 //	kurokku
 //	in
