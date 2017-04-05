@@ -29,7 +29,6 @@
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 #include "src/lib/16_hc.h"
-//#include "src/lib/16_vl.h"
 #include "src/lib/16_dbg.h"
 
 #pragma hdrstop
@@ -50,12 +49,12 @@
 
 #define KEYP IN_Shutdown(&gvar); printf("\n\npress any key to continue!\n"); getch(); IN_Startup(&gvar);
 
-#define BBUFNAME bigbuffer//gvar.ca.tinf[0]
-#define INITBBUF static memptr BBUFNAME;
+#define BBUFNAME gvar.mm.bufferseg//bigbuffer
+//#define INITBBUF static memptr BBUFNAME;
 #define BBUFPTR	MEMPTR BBUFNAME
 
 #ifdef __BORLANDC__
-#define BBUF		(memptr *)BBUFPTR//
+#define BBUF		(memptr *)BBUFPTR
 #define BBUFSTRING	(memptr *)BBUFNAME
 #endif
 #ifdef __WATCOMC__
@@ -110,92 +109,97 @@ void segatesuto()
 }
 #endif
 
-
-
-void
-main(int argc, char *argv[])
-{
-	byte w;
-#ifndef NOVID
-	boolean			done;
-	ScanCode		scan;
-#endif
-	static global_game_variables_t gvar;
-#ifdef INITBBUF
-	INITBBUF
-#endif
-//#ifdef __WATCOMC__
-//	__segment sega;
-//#endif
-	char *bakapee1,*bakapee2;
-	word baka;
-
-#ifdef __BORLANDC__
-	argc=argc;
-#endif
-	//file name //
-	bakapee1 = malloc(24);
-	bakapee2 = malloc(24);
-	//file name //
-
 #ifdef __16_PM__
 #ifdef __DEBUG_PM__
 	dbg_debugpm=1;	//debug pm
 #endif
 #endif
-
 #ifdef __DEBUG_CA__
 	dbg_debugca=1;
-#endif
-#ifdef PRINTBBDUMP
-//0000PRINTBB; KEYP
-#endif
-	if(argv[1]){ bakapee1 = argv[1];
-	if(argv[2]) bakapee2 = argv[2]; }
-	else{
-	//{ printf("filename!: "); scanf("%[^\n]", &bakapee); }
-		bakapee1 = "data/koishi~.pcx";
-		bakapee2 = "data/test.map";
-	}
-#ifndef NOVID
-	Startup16(&gvar);
-
-	// save the palette
-#ifdef __WATCOMC__
-	modexPalSave(&gvar.video.dpal); modexFadeOff(4, &gvar.video.dpal); //modexPalBlack();
-#endif
-#else	//NOVID
-	//printf("main()=%Fp	start MM\n", *argv[0]);
-	MM_Startup(&gvar); //printf("ok\n");
-#ifdef __16_PM__
-#ifdef __DEBUG_PM__
-	if(dbg_debugpm>0)
-	{
-#endif
-		PM_Startup(&gvar); PM_CheckMainMem(&gvar); PM_UnlockMainMem(&gvar);
-//0000		printf("PM Started\n"); KEYP
-#ifdef __DEBUG_PM__
-	}
-#endif
-#endif
-
-#endif //NOVID
-#ifdef __DEBUG_MM__
-	dbg_debugmm=0;
-#endif
-	CA_Startup(&gvar);
-//	printf("		done!\n");
-#ifdef PRINTBBDUMP
-//0000
-PRINTBB; KEYP
 #endif
 #ifdef __DEBUG_MM__
 	dbg_debugmm=1;
 #endif
 
+//===========================================================================//
+
+//=======================================//
+
+//	main
+
+//=======================================//
+void
+main(int argc, char *argv[])
+{
+	byte w;
+								#ifndef NOVID
+	boolean			done;
+	ScanCode		scan;
+								#endif
+	static global_game_variables_t gvar;
+								#ifdef INITBBUF
+	INITBBUF
+								#endif
+#if 0
+//#ifdef __WATCOMC__
+	__segment sega;
+#endif
+	char bakapee1[64] = "data/koishi~.pcx";
+	char bakapee2[64] = "data/test.map";
+	word baka;
+
+		#ifdef __BORLANDC__
+			argc=argc;
+		#endif
+
+								#ifdef PRINTBBDUMP
+								//0000PRINTBB; KEYP
+								#endif
+
+	if(argv[1]){ strcpy(bakapee1, argv[1]);//bakapee1[] = *argv[1];
+	if(argv[2]) strcpy(bakapee2, argv[2]); }//bakapee2[] = argv[2]; }
+#if 0
+	else{
+	//{ printf("filename!: "); scanf("%[^\n]", &bakapee); }
+		strcpy(bakapee1, "data/koishi~.pcx"); //bakapee1 = "data/koishi~.pcx";
+		strcpy(bakapee2, "data/test.map"); //bakapee2 = "data/test.map";
+	}
+#endif
+	printf("bakapee1[%s]\n", bakapee1);
+	printf("bakapee2[%s]\n", bakapee2);
+	KEYP
+
+								#ifndef NOVID
+	Startup16(&gvar);
+	// save the palette
+								#ifdef __WATCOMC__
+	modexPalSave(&gvar.video.dpal); modexFadeOff(4, &gvar.video.dpal); //modexPalBlack();
+								#endif
+								#else //NOVID
+	//printf("main()=%Fp	start MM\n", *argv[0]);
+	MM_Startup(&gvar);
+								#ifdef __16_PM__
+								#ifdef __DEBUG_PM__
+									if(dbg_debugpm>0)
+									{
+								#endif //__DEBUG_PM__
+	PM_Startup(&gvar); PM_CheckMainMem(&gvar); PM_UnlockMainMem(&gvar);
+								//0000printf("PM Started\n"); KEYP
+								#ifdef __DEBUG_PM__
+									}
+								#endif //__DEBUG_PM__
+								#endif //__16_PM__
+								#endif //elsed NOVID
+
+	CA_Startup(&gvar);
+								#ifdef PRINTBBDUMP
+								//0000
+PRINTBB; KEYP
+								#endif
+
 	w=0;
-#ifdef FILEREADLOAD
-#ifdef FILEREAD
+								#ifdef FILEREADLOAD
+								#ifdef FILEREAD
 	for(;w<2;w++)
 	{
 	//	printf("size of big buffer~=%u\n", _bmsize(segu, BBUF));
@@ -205,24 +209,24 @@ PRINTBB; KEYP
 			if(CA_ReadFile(bakapee2, BBUFPTR, &gvar)) baka=1; else baka=0;
 			printf("====================================read end===================================\n");
 		}
-#endif
+								#endif //FILEREAD
 		if(w==0)
 		{
 			printf("======================================load=====================================\n");
 			if(CA_LoadFile(bakapee1, BBUFPTR, &gvar)) baka=1; else baka=0;
 			printf("====================================load end===================================\n");
 		}
-//#ifdef __WATCOMC__
-//	printf("\nsize of big buffer~=%u\n", _bmsize(sega, BBUF));
-//#endif
-#ifdef BUFFDUMP
+								//#ifdef __WATCOMC__
+								//	printf("\nsize of big buffer~=%u\n", _bmsize(sega, BBUF));
+								//#endif
+								#ifdef BUFFDUMP
 		printf("contents of the buffer\n[\n%s\n]\n", BBUFSTRING);
-#endif// #else
-#ifdef PRINTBBDUMP
+								#endif// #else
+								#ifdef PRINTBBDUMP
 		PRINTBB;
-#endif
+								#endif
 
-//endif // BUFFDUMP
+								//endif // BUFFDUMP
 
 		//printf("dark purple = purgable\n");
 		//printf("medium blue = non purgable\n");
@@ -231,16 +235,13 @@ PRINTBB; KEYP
 	//	DebugMemory_(&gvar, 1);
 		if(baka) printf("\nyay!\n");
 		else printf("\npoo!\n");
-#ifdef BUFFDUMPPAUSE
+								#ifdef BUFFDUMPPAUSE
 		KEYP
-#endif
-#ifdef FILEREAD
+								#endif
+								#ifdef FILEREAD
 	}
-#endif
-#ifndef BUFFDUMPPAUSE
-	KEYP
-#endif
-#endif	//filereadload
+								#endif
+								#endif	//filereadload
 
 #ifdef __WATCOMC__
 #ifndef NOVID
@@ -287,41 +288,40 @@ PRINTBB; KEYP
 	//printf("bakapee1=%s\n", bakapee1);
 	//printf("bakapee2=%s\n", bakapee2);
 	MM_FreePtr(BBUFPTR, &gvar);
-#ifndef NOVID
+								#ifndef NOVID
 	Shutdown16(&gvar);
-#else
-#ifdef __16_PM__
-#ifdef __DEBUG_PM__
-	if(dbg_debugpm>0)
-#endif
-		PM_Shutdown(&gvar);
-#endif
+								#else //novid
+								#ifdef __16_PM__
+								#ifdef __DEBUG_PM__
+									if(dbg_debugpm>0)
+								#endif //__DEBUG_PM__
+	PM_Shutdown(&gvar);
+								#endif //__16_PM__
 	CA_Shutdown(&gvar);
 	MM_Shutdown(&gvar);
-#endif	//NOVID
+								#endif //NOVID
 	IN_Shutdown(&gvar);
-	free(bakapee1); free(bakapee2);
 	printf("========================================\n");
-	printf("near=	%Fp ", gvar.mm.nearheap);
-	printf("far=	%Fp", gvar.mm.farheap);
+	printf("near=	%Fp ",	gvar.mm.nearheap);
+	printf("far=	%Fp",			gvar.mm.farheap);
 	printf("\n");
-	printf("&near=	%Fp ", &(gvar.mm.nearheap));
-	printf("&far=	%Fp", &(gvar.mm.farheap));
+	printf("&near=	%Fp ",	&(gvar.mm.nearheap));
+	printf("&far=	%Fp",		&(gvar.mm.farheap));
 	printf("\n");
-#ifdef EXMMVERBOSE
-	printf("bigb=	%Fp ", BBUF);
-	//printf("bigbr=	%04x", BBUF);
+								#ifdef EXMMVERBOSE
+	printf("bigb=	%Fp ",	BBUF);
+	//printf("bigbr=	%04x",	BBUF);
 	//printf("\n");
-	printf("&bigb=%Fp ", BBUFPTR);
-	//printf("&bigb=%04x", BBUFPTR);
+	printf("&bigb=%Fp ",		BBUFPTR);
+	//printf("&bigb=%04x",		BBUFPTR);
 	printf("\n");
-#endif
+								#endif
 	printf("========================================\n");
 
-#ifdef EXMMVERBOSE__
+								#ifdef EXMMVERBOSE__
 	printf("coreleft():			%u\n", _memavl());
 	printf("farcoreleft():			%lu\n", (dword)HC_farcoreleft());
-#endif
+								#endif
 #ifdef __WATCOMC__
 //this is far	printf("Total free:			%lu\n", (dword)(HC_GetFreeSize()));
 //super buggy	printf("HC_coreleft():			%u\n", HC_coreleft());
@@ -345,6 +345,10 @@ PRINTBB; KEYP
 #endif
 	printf(".exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
+
+//end of program
+
+
 #if defined(__DEBUG__) && ( defined(__DEBUG_PM__) || defined(__DEBUG_MM__) )
 #ifdef __DEBUG_MM__
 	printf("debugmm: %u\t", dbg_debugmm);

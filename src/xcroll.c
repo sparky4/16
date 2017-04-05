@@ -51,26 +51,31 @@ memptr pal;
 void main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
-	char *bakapee1,*bakapee1p;
 	struct glob_game_vars	*ggvv;
 //	sword bakapee;
 // 	if(argv[1]) bakapee = atoi(argv[1]);
 // 	else bakapee = 1;
+	//char *bakapee1,*bakapee1p;
+	char bakapee1[64] = FILENAME_1;
+	char bakapee1p[64] = FILENAME_1P;
 
 	Startup16(&gvar);
 
-	bakapee1=malloc(64);
-	bakapee1p=malloc(64);
+//	bakapee1=mALLoc(64);
+//	bakapee1p=mALLoc(64);
 	ggvv=&gvar;
 
-	if (argc < 2) {
+	if (argc >= 2) {
+/*	if (argc < 2) {
 		//fprintf(stderr,"drawvrl <VRL file> <palette file>\n palette file optional\n");
 		bakapee1 =		FILENAME_1;
 		bakapee1p =	FILENAME_1P;
 
 	}else{
 		if(argv[1]) bakapee1 = argv[1];
-		if(argv[2]) bakapee1p = argv[2];
+		if(argv[2]) bakapee1p = argv[2];*/
+		if(argv[1]){ strcpy(bakapee1, argv[1]);
+		if(argv[2]) strcpy(bakapee1p, argv[2]); }
 	}
 
 	// OK, this one takes hellova time and needs to be done in farmalloc or MM_...
@@ -133,7 +138,7 @@ void main(int argc, char *argv[])
 #ifdef FADE
 		modexFadeOff(4, &gvar.video.palette);
 #endif
-		Quit(&gvar, "Wrong ID for sprite");
+		Quit (&gvar, "Wrong ID for sprite");
 #ifdef FADE
 		modexFadeOn(4, &gvar.video.dpal);
 #endif
@@ -180,8 +185,8 @@ void main(int argc, char *argv[])
 		if(gvar.player[0].enti.q == (TILEWH/(gvar.player[0].enti.speed))+1 && gvar.player[0].info.dir != 2 && (gvar.player[0].enti.triggerx == 5 && gvar.player[0].enti.triggery == 5)){ gvar.player[0].enti.hp--; }
 		//debugging binds!
 
-		if(gvar.in.inst->Keyboard[24]){ modexPalUpdate0(&gvar.video.palette); /*paloffset=0;*/ modexpdump(gvar.mv[0].page); IN_UserInput(1, &gvar); } //o
-		if(gvar.in.inst->Keyboard[22]){ modexPalUpdate0(&gvar.video.palette); } //u
+		if(gvar.in.inst->Keyboard[24]){ VL_modexPalScramble(&gvar.video.palette); /*paloffset=0;*/ modexpdump(gvar.mv[0].page); IN_UserInput(1, &gvar); } //o
+		if(gvar.in.inst->Keyboard[22]){ VL_modexPalScramble(&gvar.video.palette); } //u
 
 		TAIL_FUNCTIONKEYFUNCTIONS
 		TAIL_FUNCTIONKEYDRAWJUNK
@@ -190,14 +195,18 @@ void main(int argc, char *argv[])
 		{
 			if(gvar.in.inst->Keyboard[sc_J])
 			{
-				bakapee1=FILENAME_1;
-				bakapee1p=FILENAME_1P;
+//				bakapee1=FILENAME_1;
+//				bakapee1p=FILENAME_1P;
+				strcpy(bakapee1, FILENAME_1);
+				strcpy(bakapee1p, FILENAME_1P);
 				gvar.player[0].enti.overdraww=0;
 			}
 			if(gvar.in.inst->Keyboard[sc_K])
 			{
-				bakapee1=FILENAME_2;
-				bakapee1p=FILENAME_2P;
+//				bakapee1=FILENAME_2;
+//				bakapee1p=FILENAME_2P;
+				strcpy(bakapee1, FILENAME_2);
+				strcpy(bakapee1p, FILENAME_2P);
 				gvar.player[0].enti.overdraww=2;
 			}
 			//read_vrs(&gvar, bakapee1, gvar.player[0].enti.spri->spritesheet);
@@ -209,7 +218,7 @@ void main(int argc, char *argv[])
 #endif
 		if(gvar.in.inst->Keyboard[sc_R]){ modexPalOverscan(rand()%56); } //r
 
-		if((gvar.player[0].enti.q==1) && !(gvar.player[0].enti.x%TILEWH==0 && gvar.player[0].enti.y%TILEWH==0)) Quit(&gvar, "PLAYER OFF THE RAILS!");//break;	//incase things go out of sync!
+		if((gvar.player[0].enti.q==1) && !(gvar.player[0].enti.x%TILEWH==0 && gvar.player[0].enti.y%TILEWH==0)) Quit (&gvar, "PLAYER OFF THE RAILS!");//break;	//incase things go out of sync!
 	}
 
 	/* fade back to text mode */

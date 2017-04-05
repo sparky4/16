@@ -771,7 +771,8 @@ modexPalUpdate(byte *p)
 }
 
 void
-modexPalUpdate0(byte *p)
+//modexPalUpdate0(byte *p)
+VL_modexPalScramble(byte *p)
 {
 	int i;
 	//modexWaitBorder();

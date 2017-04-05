@@ -22,15 +22,13 @@
 
 #include "src/lib/16_vl.h"
 
-void
-main(int argc, char *argv[])
+void main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
-	char *bakapee;
+	char bakapee[64] = "data\default.pal";
 
-	bakapee = malloc(64);
-	if(argv[1]) bakapee = argv[1];
-	else bakapee = "data/default.pal";
+	if(argv[1]) strcpy(bakapee, argv[1]);
+
 
 	VGAmodeX(1, 1, &gvar);
 
@@ -39,6 +37,4 @@ main(int argc, char *argv[])
 	modexSavePalFile(bakapee, &(gvar.video.palette));
 
 	VGAmodeX(0, 1, &gvar);
-	free(bakapee);
-
 }

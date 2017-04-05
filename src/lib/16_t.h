@@ -77,12 +77,12 @@ typedef void _seg * memptr;
 #define pokeb(segm,ofs,value) (peekb((segm),(ofs)) = (byte)(value))
 #define poke(segm,ofs,value) (peek((segm),(ofs)) = (word)(value))
 
-#define inportb(port)         inp(port)
-#define inport(port)         inpw(port)
-#define outportb(port, val)   outp(port, val)
-#define outport(port, val)   outpw(port, val)
+#define inportb(port)		inp(port)
+#define inport(port)		inpw(port)
+#define outportb(port, val)	outp(port, val)
+#define outport(port, val)	outpw(port, val)
 
-//#define asm __asm
+#define asm __asm
 #define getvect _dos_getvect
 #define setvect _dos_setvect
 

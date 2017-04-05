@@ -23,17 +23,18 @@
 #include "src/lib/16_vl.h"
 #include "src/lib/bakapee.h"
 
-char *bakapee;
 word i;
 
-void
-main(int argc, char *argv[])
+void main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
-	bakapee = malloc(64);
-	if(argv[1]) bakapee = argv[1];
-	else bakapee = "data/default.pal";
+	char bakapee[64] = "data\default.pal";
+
+	if(argv[1]) strcpy(bakapee, argv[1]);
+
+
 	modexPalSave(&(gvar.video.palette));
+	VL_modexPalScramble(&(gvar.video.palette));
 	VGAmodeX(1, 1, &gvar);
 	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
 	modexPalBlack();
@@ -42,12 +43,11 @@ main(int argc, char *argv[])
 	modexPalUpdate(&(gvar.video.palette));
 	modexFadeOn(1, &(gvar.video.palette));
 	modexpdump(&gvar.video.page[0]);
-	getch();
+//	getch();
 	VGAmodeX(0, 0, &gvar);
 	modexPalUpdate(&(gvar.video.palette));
 	/*for(i=0;i<768;i++)
 	{
 		printf("%02X ", pal[i]);
 	}*/
-	free(bakapee);
 }

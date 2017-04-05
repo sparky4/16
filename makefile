@@ -223,7 +223,8 @@ SPRIUTILEXEC = &
 EXEC = &
 	16.exe &
 	bakapi.exe &
-	$(TESTEXEC)
+	$(TESTEXEC) &
+	$(UTILEXEC)
 
 #!ifdef __LINUX__
 #EXEC += $(SPRIUTILEXEC)

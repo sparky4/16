@@ -204,7 +204,7 @@ void modexPalWhite();
 
 /* utility functions */
 void modexPalUpdate(byte *p);
-void modexPalUpdate0(byte *p);
+void VL_modexPalScramble(byte *p);
 word modexPalOverscan(word col);
 void VL_Plot (int x, int y, int color, ofs_t *ofs);
 void VL_Hlin (unsigned x, unsigned y, unsigned width, unsigned color, ofs_t *ofs);

@@ -46,21 +46,26 @@ int main(int argc,char **argv)
 	unsigned int bufsz;
 	int fd;
 	//nibble i;
-	char *bakapee1,*bakapee2;
+	//char *bakapee1,*bakapee2;
+	char bakapee1[64] = FILENAME_1;
+	char bakapee2[64] = FILENAME_2;
 
 	boolean anim=1,noanim=0,zerostoppause=1;
 
-	bakapee1=malloc(64);
-	bakapee2=malloc(64);
+//	bakapee1=mALLoc(64);
+//	bakapee2=mALLoc(64);
 
-	if (argc < 2) {
+	if (argc >= 2) {
+/*	if (argc < 2) {
 		//fprintf(stderr,"drawvrl <VRL file> <palette file>\n palette file optional\n");
 		bakapee1 = FILENAME_1;//"data/aconita.vrl";
 		bakapee2 = FILENAME_2;//"data/aconita.pal";
 
 	}else{
 		if(argv[1]) bakapee1 = argv[1];
-		if(argv[2]) bakapee2 = argv[2];
+		if(argv[2]) bakapee2 = argv[2];*/
+		if(argv[1]){ strcpy(bakapee1, argv[1]);//bakapee1[] = *argv[1];
+		if(argv[2]) strcpy(bakapee2, argv[2]); }//bakapee2[] = argv[2]; }
 	}
 
 	fd = open(bakapee1,O_RDONLY|O_BINARY);
@@ -92,7 +97,7 @@ int main(int argc,char **argv)
 		return 1;
 	}
 	VGAmodeX(1, 1, &gvar);
-	modexPalUpdate0(gvar.video.palette);
+	VL_modexPalScramble(gvar.video.palette);
 
 	/* load color palette */
 	VL_LoadPalFile(bakapee2, &gvar.video.palette);
@@ -307,8 +312,7 @@ if(!noanim) {
 	buffer = NULL;
 	free(buffer);
 	bufsz = 0;
-	free(bakapee1);
-	free(bakapee2);
+//	free(bakapee1); free(bakapee2);
 	printf("\nProject 16 0.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	//SCROLLEXITMESG;
