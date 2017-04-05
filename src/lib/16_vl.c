@@ -169,7 +169,7 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 		}
 		break;
 	}
-	VL_SetLineWidth (cm.offset, &gv->video.ofs);
+//	VL_SetLineWidth (cm.offset, &gv->video.ofs);
 	gv->video.VL_Started=1;
 }
 
