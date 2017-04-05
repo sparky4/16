@@ -225,4 +225,5 @@ void main(int argc, char *argv[])
 #ifdef FADE
 	modexFadeOn(4, gvar.video.dpal);
 #endif
+	//PRINT_OPAQUE_STRUCT(&gvar);
 }

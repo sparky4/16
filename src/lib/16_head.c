@@ -172,3 +172,20 @@ byte dirchar(byte in)
 	}
 	return out;
 }
+
+//from: http://stackoverflow.com/questions/5349896/print-a-struct-in-c
+void print_mem(void const *vp, size_t n)
+{
+	size_t i;
+	unsigned char const *p = vp;
+	for (i=0; i<n; i++)
+	{
+		printf("%02x", p[i]);
+		//printf("%c", p[i]);
+		if(!((i)%16)) printf("\n");
+		else printf(" ");
+		//printf("%u%%40=%u\n", i, i%40);
+	}
+	putchar('\n');
+	printf("\nstruct size is %zu bytes\n", n);
+};

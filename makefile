@@ -279,6 +279,7 @@ fmemtest.exe:	 fmemtest.$(OBJ)
 exmmtest.exe:	 exmmtest.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 vgmtest.exe:	vgmtest.$(OBJ) vgmsnd.lib $(16LIB) $(DOSLIB) gfx.lib
 db.exe:		db.$(OBJ)
+ps.exe:		ps.$(OBJ)
 wcpu.exe:		wcpu.$(OBJ) $(16LIB) $(DOSLIB)
 
 #
@@ -314,6 +315,7 @@ inputest.$(OBJ):$(SRC)/inputest.c
 exmmtest.$(OBJ):$(SRC)/exmmtest.c
 vgmtest.$(OBJ):$(SRC)/vgmtest.c
 db.$(OBJ):		$(UTIL)/db.c
+ps.$(OBJ):		$(SRC)/ps.c
 
 #
 # non executable objects libraries
