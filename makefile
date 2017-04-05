@@ -279,7 +279,7 @@ fmemtest.exe:	 fmemtest.$(OBJ)
 exmmtest.exe:	 exmmtest.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 vgmtest.exe:	vgmtest.$(OBJ) vgmsnd.lib $(16LIB) $(DOSLIB) gfx.lib
 db.exe:		db.$(OBJ)
-ps.exe:		ps.$(OBJ)
+ps.exe:		ps.$(OBJ) 16_head.$(OBJ)
 wcpu.exe:		wcpu.$(OBJ) $(16LIB) $(DOSLIB)
 
 #
