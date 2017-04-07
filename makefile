@@ -228,7 +228,9 @@ EXEC = &
 	16.exe &
 	bakapi.exe &
 	$(TESTEXEC) &
-	$(UTILEXEC)
+	$(UTILEXEC) &
+	imfplay.exe &
+	opltest.exe
 
 #!ifdef __LINUX__
 #EXEC += $(SPRIUTILEXEC)
@@ -356,6 +358,14 @@ $(DOSLIB_ADLIB)/$(DOSLIB_MEMMODE)/adlib.lib:
 joytest.exe:
 	cd $(DOSLIB_JOYSTICK:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
 	$(COPYCOMMAND) $(DOSLIB_JOYSTICK:$(to_os_path))$(DIRSEP)$(DOSLIB_MEMMODE)$(DIRSEP)test.exe joytest.exe
+
+imfplay.exe:
+	cd $(DOSLIB_ADLIB:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
+	$(COPYCOMMAND) $(DOSLIB_ADLIB:$(to_os_path))$(DIRSEP)$(DOSLIB_MEMMODE)$(DIRSEP)imfplay.exe imfplay.exe
+
+opltest.exe:
+	cd $(DOSLIB_ADLIB:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
+	$(COPYCOMMAND) $(DOSLIB_ADLIB:$(to_os_path))$(DIRSEP)$(DOSLIB_MEMMODE)$(DIRSEP)test.exe opltest.exe
 
 16_vl.$(OBJ):	$(SRCLIB)/16_vl.c $(SRCLIB)/16_vl.h
 16_vl_1.$(OBJ):	$(SRCLIB)/16_vl_1.c $(SRCLIB)/16_vl.h
