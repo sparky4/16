@@ -56,8 +56,8 @@ typedef struct _vgm_file
 } VGM_FILE;
 
 
-UINT8 OpenVGMFile(const char* FileName, VGM_FILE* vgmFile);
-void FreeVGMFile(VGM_FILE* vgmFile);
+UINT8 OpenVGMFile(const char* FileName, VGM_FILE* vgmFile, global_game_variables_t *gvar);
+void FreeVGMFile(VGM_FILE* vgmFile, global_game_variables_t *gvar);
 
 void InitEngine(void);
 void DeinitEngine(void);

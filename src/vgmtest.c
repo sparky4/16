@@ -27,6 +27,12 @@
 #include "src/lib/16_sd.h"
 //#include "src/lib/doslib/adlib.h"
 #include "src/lib/16_in.h"
+#include "src/lib/16_tail.h"
+#include "src/lib/16_pm.h"
+#include "src/lib/16_ca.h"
+#include "src/lib/16_mm.h"
+#include "src/lib/16_hc.h"
+#include "src/lib/16_dbg.h"
 
 void OPL2_Write(UINT8 reg, UINT8 data);
 UINT8 OPL2_ReadStatus(void);
@@ -48,14 +54,16 @@ UINT8 OPL2_ReadStatus(void)
 void
 main(int argc, char *argv[])
 {
-//	static global_game_variables_t gvar;
+	static global_game_variables_t gvar;
 	VGM_FILE pee[9];
-	char *bakapee;
+	char bakapee[64] = "data/adlib.vgm";
 
-	bakapee = malloc(64);
-	if(argv[1]) bakapee = argv[1];
-	else bakapee = "data/adlib.vgm";
-	printf("%x\n", OpenVGMFile(bakapee, &pee[0]));
+	if(argv[1]) strcpy(bakapee, argv[1]);
+
+	MM_Startup(&gvar);
+//	PM_Startup(&gvar); PM_CheckMainMem(&gvar); PM_UnlockMainMem(&gvar);
+//	CA_Startup(&gvar);
+	printf("%x\n", OpenVGMFile(bakapee, &pee[0], &gvar));
 //	IN_Startup(); IN_Default(0,&gvar.player[0],ctrl_Keyboard1);
 	InitEngine();
 	PlayMusic(&pee[0]);
@@ -66,7 +74,10 @@ main(int argc, char *argv[])
 		UpdateSoundEngine();
 	}
 	StopMusic();
-	FreeVGMFile(&pee[0]);
+	FreeVGMFile(&pee[0], &gvar);
 	DeinitEngine();
 	//IN_Shutdown();
+//	PM_Shutdown(&gvar);
+//	CA_Shutdown(&gvar);
+	MM_Shutdown(&gvar);
 }

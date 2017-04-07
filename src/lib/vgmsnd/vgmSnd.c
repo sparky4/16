@@ -137,7 +137,7 @@ static const UINT8 CHN_OPMASK_REV[0x20] =
 	0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 
-UINT8 OpenVGMFile(const char* FileName, VGM_FILE* vgmFile)
+UINT8 OpenVGMFile(const char* FileName, VGM_FILE* vgmFile, global_game_variables_t *gvar)
 {
 	size_t hdrSize;
 	size_t readEl;	// 'elements' read from file
@@ -171,7 +171,9 @@ UINT8 OpenVGMFile(const char* FileName, VGM_FILE* vgmFile)
 	}
 
 	vgmFile->dataLen = vgmBaseHdr.lngEOFOffset + 0x04;
-	vgmFile->data = (UINT8*)malloc(vgmFile->dataLen);
+	//vgmFile->data = (UINT8*)malloc(vgmFile->dataLen);
+	MM_GetPtr(MEMPTR gvar->ca.audiosegs[0], vgmFile->dataLen, gvar);
+	vgmFile->data = (UINT8*)gvar->ca.audiosegs[0];
 	if (vgmFile->data == NULL)
 	{
 		fclose(hFile);
@@ -212,9 +214,11 @@ UINT8 OpenVGMFile(const char* FileName, VGM_FILE* vgmFile)
 	return 0x00;
 }
 
-void FreeVGMFile(VGM_FILE* vgmFile)
+void FreeVGMFile(VGM_FILE* vgmFile, global_game_variables_t *gvar)
 {
-	free(vgmFile->data);	vgmFile->data = NULL;
+	//if(vgmFile->data){ free(vgmFile->data);	vgmFile->data = NULL; }
+//	if(vgmFile->data) free(vgmFile->data);
+	MM_FreePtr(MEMPTR gvar->ca.audiosegs[0], gvar);
 	vgmFile->dataLen = 0;
 
 	return;

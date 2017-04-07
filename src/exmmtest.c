@@ -109,18 +109,6 @@ void segatesuto()
 }
 #endif
 
-#ifdef __16_PM__
-#ifdef __DEBUG_PM__
-	dbg_debugpm=1;	//debug pm
-#endif
-#endif
-#ifdef __DEBUG_CA__
-	dbg_debugca=1;
-#endif
-#ifdef __DEBUG_MM__
-	dbg_debugmm=1;
-#endif
-
 //===========================================================================//
 
 //=======================================//
@@ -155,6 +143,17 @@ main(int argc, char *argv[])
 								#ifdef PRINTBBDUMP
 								//0000PRINTBB; KEYP
 								#endif
+#ifdef __16_PM__
+#ifdef __DEBUG_PM__
+	dbg_debugpm=1;	//debug pm
+#endif
+#endif
+#ifdef __DEBUG_CA__
+	dbg_debugca=1;
+#endif
+#ifdef __DEBUG_MM__
+	dbg_debugmm=1;
+#endif
 
 	if(argv[1]){ strcpy(bakapee1, argv[1]);//bakapee1[] = *argv[1];
 	if(argv[2]) strcpy(bakapee2, argv[2]); }//bakapee2[] = argv[2]; }

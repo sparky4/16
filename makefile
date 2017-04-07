@@ -89,6 +89,7 @@ DOSLIB_DOS=$(DOSLIBDIR)/hw/dos
 DOSLIB_VGA=$(DOSLIBDIR)/hw/vga
 DOSLIB_8250=$(DOSLIBDIR)/hw/8250
 DOSLIB_8254=$(DOSLIBDIR)/hw/8254
+DOSLIB_8259=$(DOSLIBDIR)/hw/8259
 DOSLIB_ADLIB=$(DOSLIBDIR)/hw/adlib
 DOSLIB_JOYSTICK=$(DOSLIBDIR)/hw/joystick
 DOSLIB_MEMMODE=dos86$(MEMORYMODE)
@@ -146,7 +147,7 @@ DOSLIBOBJ += 8250.$(OBJ)
 #
 # libraries
 #
-DOSLIBLIBS = $(DOSLIB_CPU)/$(DOSLIB_MEMMODE)/cpu.lib $(DOSLIB_DOS)/$(DOSLIB_MEMMODE)/dos.lib $(DOSLIB_VGA)/$(DOSLIB_MEMMODE)/vga.lib $(DOSLIB_8254)/$(DOSLIB_MEMMODE)/8254.lib $(DOSLIB_ADLIB)/$(DOSLIB_MEMMODE)/adlib.lib
+DOSLIBLIBS = $(DOSLIB_CPU)/$(DOSLIB_MEMMODE)/cpu.lib $(DOSLIB_DOS)/$(DOSLIB_MEMMODE)/dos.lib $(DOSLIB_VGA)/$(DOSLIB_MEMMODE)/vga.lib $(DOSLIB_8254)/$(DOSLIB_MEMMODE)/8254.lib $(DOSLIB_8259)/$(DOSLIB_MEMMODE)/8259.lib $(DOSLIB_ADLIB)/$(DOSLIB_MEMMODE)/adlib.lib
 !ifeq DEBUGSERIAL 1
 DOSLIBLIBS += $(DOSLIB_8250)/$(DOSLIB_MEMMODE)/8250.lib
 !endif
@@ -198,7 +199,8 @@ TESTEXEC = &
 	vrstest.exe &
 	tesuto.exe &
 	0.exe &
-	maptest.exe
+	maptest.exe &
+	imfplay.exe
 #zcroll.exe &
 TESTEXEC2 = &
 	pcxtest.exe &
@@ -229,7 +231,6 @@ EXEC = &
 	bakapi.exe &
 	$(TESTEXEC) &
 	$(UTILEXEC) &
-	imfplay.exe &
 	opltest.exe
 
 #!ifdef __LINUX__
@@ -273,6 +274,7 @@ fontgfx.exe:	fontgfx.$(OBJ) gfx.lib $(DOSLIB)
 inputest.exe:	 inputest.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
 #inntest.exe:	 	inntest.$(OBJ)	$(16LIBNOINOBJS) 16_in_1.$(OBJ) $(DOSLIB) gfx.lib
 sountest.exe:	sountest.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
+imfplay.exe:		imfplay.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
 pcxtest.exe:	pcxtest.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
 vrstest.exe:	vrstest.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 #vgacamm.exe:	vgacamm.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
@@ -317,6 +319,7 @@ fontgfx.$(OBJ):$(SRC)/fontgfx.c
 inputest.$(OBJ):$(SRC)/inputest.c
 #inntest.$(OBJ):$(SRC)/inntest.c
 sountest.$(OBJ): $(SRC)/sountest.c
+imfplay.$(OBJ): $(SRC)/imfplay.c
 #miditest.$(OBJ): $(SRC)/miditest.c
 #testemm.$(OBJ):$(SRC)/testemm.c
 #testemm0.$(OBJ): $(SRC)/testemm0.c
@@ -352,6 +355,8 @@ $(DOSLIB_8250)/$(DOSLIB_MEMMODE)/8250.lib:
 	cd $(DOSLIB_8250:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
 $(DOSLIB_8254)/$(DOSLIB_MEMMODE)/8254.lib:
 	cd $(DOSLIB_8254:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
+$(DOSLIB_8259)/$(DOSLIB_MEMMODE)/8259.lib:
+	cd $(DOSLIB_8259:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
 $(DOSLIB_ADLIB)/$(DOSLIB_MEMMODE)/adlib.lib:
 	cd $(DOSLIB_ADLIB:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
 
@@ -359,9 +364,9 @@ joytest.exe:
 	cd $(DOSLIB_JOYSTICK:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
 	$(COPYCOMMAND) $(DOSLIB_JOYSTICK:$(to_os_path))$(DIRSEP)$(DOSLIB_MEMMODE)$(DIRSEP)test.exe joytest.exe
 
-imfplay.exe:
-	cd $(DOSLIB_ADLIB:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
-	$(COPYCOMMAND) $(DOSLIB_ADLIB:$(to_os_path))$(DIRSEP)$(DOSLIB_MEMMODE)$(DIRSEP)imfplay.exe imfplay.exe
+#imfplay.exe:
+#	cd $(DOSLIB_ADLIB:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
+#	$(COPYCOMMAND) $(DOSLIB_ADLIB:$(to_os_path))$(DIRSEP)$(DOSLIB_MEMMODE)$(DIRSEP)imfplay.exe imfplay.exe
 
 opltest.exe:
 	cd $(DOSLIB_ADLIB:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
