@@ -20,10 +20,12 @@
  *
  */
 
-#ifndef __16_SND_H_
-#define __16_SND_H_
+#ifndef __16_SD_H_
+#define __16_SD_H_
 
 #include "src/lib/16_head.h"
+#include <hw/8254/8254.h>		/* 8254 timer */
+#include <hw/adlib/adlib.h>
 
 #define MIN_REGISTER			0x01
 #define MAX_REGISTER			0xF5

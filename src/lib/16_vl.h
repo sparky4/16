@@ -130,7 +130,7 @@ extern byte far*  VGA;  /* The VGA Memory */
 #define ATR_INDEX			AC_INDEX
 #define ATR_OVERSCAN		17
 #define DISPLAY_ENABLE		0x01
-#define MAP_MASK		0x02
+//#define MAP_MASK		0x02
 #define PAL_READ_REG			0x03C7   /* Color register, read address */
 #define PAL_WRITE_REG		   0x03C8   /* Color register, write address */
 #define PAL_DATA_REG			0x03C9   /* Color register, data port */
@@ -164,8 +164,8 @@ void VGAREADMAP(byte x);
 void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv);
 void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv);
 byte vgaGetMode();
+extern void TL_VidInit(global_game_variables_t *gvar);
 void modexLeave();
-void VL_SetLineWidth (unsigned width, ofs_t *ofs);
 void modexsetBaseXMode();
 page_t modexDefaultPage(page_t *p);
 page_t modexNextPage(page_t *p);
@@ -249,6 +249,7 @@ void modexWaitBorder();
 void modexWaitBorder_start();
 void modexWaitBorder_end();
 void VL_WaitVBL(word num);
+void VL_SetLineWidth (unsigned width, ofs_t *ofs);
 void VL_PrintmodexmemInfo(video_t *v);
 
 #endif

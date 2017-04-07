@@ -509,7 +509,7 @@ void ClearMemory (global_game_variables_t *gvar)
 #ifdef __16_PM__
 	PM_UnlockMainMem(gvar);
 #endif
-	//snd
+	//sd
 	MM_SortMem (gvar);
 }
 

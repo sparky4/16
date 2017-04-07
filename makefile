@@ -88,6 +88,8 @@ DOSLIB_CPU=$(DOSLIBDIR)/hw/cpu
 DOSLIB_DOS=$(DOSLIBDIR)/hw/dos
 DOSLIB_VGA=$(DOSLIBDIR)/hw/vga
 DOSLIB_8250=$(DOSLIBDIR)/hw/8250
+DOSLIB_8254=$(DOSLIBDIR)/hw/8254
+DOSLIB_ADLIB=$(DOSLIBDIR)/hw/adlib
 DOSLIB_JOYSTICK=$(DOSLIBDIR)/hw/joystick
 DOSLIB_MEMMODE=dos86$(MEMORYMODE)
 
@@ -132,7 +134,7 @@ LIBFLAGS=$(WLIBQ) -b -n
 #
 # objects
 #
-VGMSNDOBJ = vgmSnd.$(OBJ) 16_snd.$(OBJ)
+VGMSNDOBJ = vgmSnd.$(OBJ) 16_sd.$(OBJ)
 #OLDLIBOBJS=bitmap.$(OBJ) 16render.$(OBJ)
 GFXLIBOBJS = 16_vl.$(OBJ) 16_vl_1.$(OBJ) 16_vlpal.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16_vrs.$(OBJ) 16_spri.$(OBJ) $(OLDLIBOBJS)
 16LIBOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_head.$(OBJ) 16_enti.$(OBJ) 16_dbg.$(OBJ) 16_in.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_wcpu.$(OBJ) 16_timer.$(OBJ) jsmn.$(OBJ) 16_map.$(OBJ) 16text.$(OBJ)
@@ -144,7 +146,7 @@ DOSLIBOBJ += 8250.$(OBJ)
 #
 # libraries
 #
-DOSLIBLIBS = $(DOSLIB_CPU)/$(DOSLIB_MEMMODE)/cpu.lib $(DOSLIB_DOS)/$(DOSLIB_MEMMODE)/dos.lib $(DOSLIB_VGA)/$(DOSLIB_MEMMODE)/vga.lib
+DOSLIBLIBS = $(DOSLIB_CPU)/$(DOSLIB_MEMMODE)/cpu.lib $(DOSLIB_DOS)/$(DOSLIB_MEMMODE)/dos.lib $(DOSLIB_VGA)/$(DOSLIB_MEMMODE)/vga.lib $(DOSLIB_8254)/$(DOSLIB_MEMMODE)/8254.lib $(DOSLIB_ADLIB)/$(DOSLIB_MEMMODE)/adlib.lib
 !ifeq DEBUGSERIAL 1
 DOSLIBLIBS += $(DOSLIB_8250)/$(DOSLIB_MEMMODE)/8250.lib
 !endif
@@ -158,7 +160,7 @@ DOSLIB=doslib.lib
 
 .asm : $(MODEXLIB);$(UTIL)
 
-.lib : .;$(DOSLIB_CPU)/$(DOSLIB_MEMMODE);$(DOSLIB_DOS)/$(DOSLIB_MEMMODE);$(DOSLIB_VGA)/$(DOSLIB_MEMMODE);$(DOSLIB_8250)/$(DOSLIB_MEMMODE)
+.lib : .;$(DOSLIB_CPU)/$(DOSLIB_MEMMODE);$(DOSLIB_DOS)/$(DOSLIB_MEMMODE);$(DOSLIB_VGA)/$(DOSLIB_MEMMODE);$(DOSLIB_8250)/$(DOSLIB_MEMMODE);$(DOSLIB_8254)/$(DOSLIB_MEMMODE);$(DOSLIB_ADLIB)/$(DOSLIB_MEMMODE)
 
 .$(OBJ) : .
 
@@ -190,6 +192,7 @@ TESTEXEC = &
 	vidtest.exe &
 	exmmtest.exe &
 	vgmtest.exe &
+	sountest.exe &
 	xcroll.exe &
 	inputest.exe &
 	vrstest.exe &
@@ -267,7 +270,7 @@ fonttest.exe:	 fonttest.$(OBJ) gfx.lib
 fontgfx.exe:	fontgfx.$(OBJ) gfx.lib $(DOSLIB)
 inputest.exe:	 inputest.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
 #inntest.exe:	 	inntest.$(OBJ)	$(16LIBNOINOBJS) 16_in_1.$(OBJ) $(DOSLIB) gfx.lib
-#sountest.exe:	sountest.$(OBJ) $(16LIB)
+sountest.exe:	sountest.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
 pcxtest.exe:	pcxtest.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
 vrstest.exe:	vrstest.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 #vgacamm.exe:	vgacamm.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
@@ -311,7 +314,7 @@ fonttest.$(OBJ):$(SRC)/fonttest.c
 fontgfx.$(OBJ):$(SRC)/fontgfx.c
 inputest.$(OBJ):$(SRC)/inputest.c
 #inntest.$(OBJ):$(SRC)/inntest.c
-#sountest.$(OBJ): $(SRC)/sountest.c
+sountest.$(OBJ): $(SRC)/sountest.c
 #miditest.$(OBJ): $(SRC)/miditest.c
 #testemm.$(OBJ):$(SRC)/testemm.c
 #testemm0.$(OBJ): $(SRC)/testemm0.c
@@ -345,6 +348,10 @@ $(DOSLIB_VGA)/$(DOSLIB_MEMMODE)/vga.lib:
 	cd $(DOSLIB_VGA:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
 $(DOSLIB_8250)/$(DOSLIB_MEMMODE)/8250.lib:
 	cd $(DOSLIB_8250:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
+$(DOSLIB_8254)/$(DOSLIB_MEMMODE)/8254.lib:
+	cd $(DOSLIB_8254:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
+$(DOSLIB_ADLIB)/$(DOSLIB_MEMMODE)/adlib.lib:
+	cd $(DOSLIB_ADLIB:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
 
 joytest.exe:
 	cd $(DOSLIB_JOYSTICK:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
@@ -378,7 +385,7 @@ midi.$(OBJ):	$(SRCLIB)/midi.c $(SRCLIB)/midi.h
 16_head.$(OBJ):$(SRCLIB)/16_head.c $(SRCLIB)/16_head.h
 16_tail.$(OBJ):$(SRCLIB)/16_tail.c $(SRCLIB)/16_tail.h
 16_hc.$(OBJ):	 $(SRCLIB)/16_hc.c $(SRCLIB)/16_hc.h
-16_snd.$(OBJ):	$(SRCLIB)/16_snd.c $(SRCLIB)/16_snd.h
+16_sd.$(OBJ):	$(SRCLIB)/16_sd.c $(SRCLIB)/16_sd.h
 jsmn.$(OBJ):	$(JSMNLIB)/jsmn.c $(JSMNLIB)/jsmn.h
 kitten.$(OBJ):	$(NYANLIB)/kitten.c $(NYANLIB)/kitten.h
 vgmSnd.$(OBJ):	$(VGMSNDLIB)/vgmSnd.c $(VGMSNDLIB)/vgmSnd.h

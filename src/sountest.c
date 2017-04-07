@@ -23,9 +23,9 @@
 #include <stdio.h>
 
 #include "src/lib/16_in.h"
-//#include "src/lib/16_snd.h"
-#include "src/lib/doslib/adlib.h"
-#include "src/lib/doslib/8254.h"		/* 8254 timer */
+#include "src/lib/16_sd.h"
+//#include <hw/8254/8254.h>		/* 8254 timer */
+//#include <hw/adlib/adlib.h>
 
 static unsigned int musical_scale[18] = {
 	0x1B0,			/* E */
@@ -53,6 +53,8 @@ void main(int argc, char near *argv[])
 {
 	static global_game_variables_t gvar;
 	word i;
+	boolean			done;
+	ScanCode		scan;
 //	static FMInstrument testInst =
 //{
 //0x00, 0x01,	/* modulator frequency multiple... 0x20 */
@@ -63,12 +65,12 @@ void main(int argc, char near *argv[])
 //0x36,				/* feedback algorithm and strength 0xC0 */
 //};
 
-	IN_Startup();
+	IN_Startup(&gvar);
 	//FMReset();
 	//FMSetVoice(0, &testInst);
 	if(!init_adlib())
 	{
-		Quit(gvar, "Cannot init library");
+		Quit(&gvar, "Cannot init library");
 	}
 
 	if (adlib_fm_voices > 9)
@@ -114,23 +116,32 @@ void main(int argc, char near *argv[])
 	adlib_apply_all();
 
 	printf("press Z!  to noise\npress ESC to quit");
-	printf("p");
-	while(!IN_qb(1))
+	printf("\np");
+	for (done = false;!done;)
 	{
-		if(IN_qb(44))
+		while (!(scan = gvar.in.inst->LastScan))
+		{}
+//			SD_Poll();
+
+		IN_ClearKey(scan);
+		switch (scan)
 		{
-			printf("e");
-			adlib_fm[0].mod.key_on = 1;
-			//FMKeyOn(0, 0x106, 4);
+			case sc_Escape:
+				done = true;
+			break;
+			case sc_Z:
+				adlib_fm[0].mod.key_on = 1;
+				//FMKeyOn(0, 0x106, 4);
+			break;
+			default:
+				adlib_fm[0].mod.key_on = 0;
+				//FMKeyOff(0);
+			break;
 		}
-		else
-		{
-			adlib_fm[0].mod.key_on = 0;
-			//FMKeyOff(0);
-		}
+		if(adlib_fm[0].mod.key_on) printf("e");
 		adlib_update_groupA0(0,&adlib_fm[0]);
 	}
 	printf("!\n");
 	shutdown_adlib();
-	IN_Shutdown();
+	IN_Shutdown(&gvar);
 }

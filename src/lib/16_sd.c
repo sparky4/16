@@ -20,7 +20,7 @@
  *
  */
 
-#include "src/lib/16_snd.h"
+#include "src/lib/16_sd.h"
 
 void opl2out(word reg, word data)
 {

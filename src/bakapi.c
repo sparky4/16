@@ -28,6 +28,7 @@
 static bakapee_t bakapee;
 word key,d,xpos,ypos,xdir,ydir;
 sword vgamodex_mode = 1; // 320x240 default
+void TL_VidInit(global_game_variables_t *gvar){}
 //int ch=0x0;
 
 void

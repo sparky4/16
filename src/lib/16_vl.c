@@ -55,6 +55,8 @@ void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
 		default: // init the video
 			if(gv->video.VL_Started)
 				return;
+			if(!gv->video.VL_Initiated)
+				TL_VidInit(gv);
 			// get old video mode
 			//in.h.ah = 0xf;
 			//int86(0x10, &in, &out);
@@ -412,7 +414,7 @@ modexPanPage(page_t *page, int dx, int dy) {
 
 void
 modexSelectPlane(byte plane) {
-	outp(SC_INDEX, MAP_MASK);	  /* select plane */
+	outp(SC_INDEX, SC_MAPMASK);	  /* select plane */
 	outp(SC_DATA,  plane);
 }
 
@@ -448,7 +450,7 @@ modexClearRegion(page_t *page, int x, int y, int w, int h, byte color)
 		MOV ES, AX
 		MOV DI, poffset	 ; go to the first pixel
 		MOV DX, SC_INDEX	; point to the map mask
-		MOV AL, MAP_MASK
+		MOV AL, SC_MAPMASK
 		OUT DX, AL
 		INC DX
 		MOV AL, color	   ; get ready to write colors
@@ -537,7 +539,7 @@ modexCopyPageRegion(page_t *dest, page_t *src,
 
 		MOV AX, SC_INDEX	; point to the mask register
 		MOV DX, AX		  ;
-		MOV AL, MAP_MASK	;
+		MOV AL, SC_MAPMASK	;
 		OUT DX, AL		  ;
 		INC DX		  ;
 
