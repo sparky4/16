@@ -199,14 +199,29 @@ void FMSetVoice(int voiceNum, FMInstrument *ins){
 
 void SD_Initimf(global_game_variables_t *gvar)
 {
+	if (!init_adlib()) {
+		printf("Cannot init library\n");
+		return;
+	}
+	if (!probe_8254()) { /* we need the timer to keep time with the music */
+		printf("8254 timer not found\n");
+		return;
+	}
+
 	gvar->ca.sd.irq0_ticks=
-	gvar->ca.sd.irq0_cnt=
-	gvar->ca.sd.irq0_add=
+	//gvar->ca.sd.irq0_cnt=
+	//gvar->ca.sd.irq0_add=
 	gvar->ca.sd.imf_delay_countdown=
 	gvar->ca.sd.irq0_max=0;
 	gvar->ca.sd.imf_music=
 	gvar->ca.sd.imf_play_ptr=
 	gvar->ca.sd.imf_music_end=NULL;
+	gvar->ca.sd.irq0_cnt = 0;
+	gvar->ca.sd.irq0_add = 182;
+	gvar->ca.sd.irq0_max = 1000; /* about 18.2Hz */
+
+	SD_adlib_shut_up();
+	shutdown_adlib_opl3(); // NTS: Apparently the music won't play otherwise
 }
 
 void SD_imf_free_music(global_game_variables_t *gvar)

@@ -207,14 +207,7 @@ void main(int argc,char **argv) {
 		return;
 	}
 
-	if (!init_adlib()) {
-		printf("Cannot init library\n");
-		return;
-	}
-	if (!probe_8254()) { /* we need the timer to keep time with the music */
-		printf("8254 timer not found\n");
-		return;
-	}
+	SD_Initimf(&gvar);
 
 	if (!SD_imf_load_music(argv[1], &gvar)) {
 		printf("Failed to load IMF Music\n");
@@ -222,14 +215,9 @@ void main(int argc,char **argv) {
 	}
 
 	write_8254_system_timer(T8254_REF_CLOCK_HZ / tickrate);
-	gvar.ca.sd.irq0_cnt = 0;
-	gvar.ca.sd.irq0_add = 182;
-	gvar.ca.sd.irq0_max = 1000; /* about 18.2Hz */
 	old_irq0 = _dos_getvect(8);/*IRQ0*/
 	_dos_setvect(8,irq0);
 
-	SD_adlib_shut_up();
-	shutdown_adlib_opl3(); // NTS: Apparently the music won't play otherwise
 	_cli();
 	gvar.ca.sd.irq0_ticks = ptick = 0;
 	_sti();
