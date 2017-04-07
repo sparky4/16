@@ -26,6 +26,9 @@
 #include "src/lib/16_head.h"
 #include <hw/8254/8254.h>		/* 8254 timer */
 #include <hw/adlib/adlib.h>
+#include <hw/vga/vga.h>
+#include <hw/dos/dos.h>
+#include <hw/8259/8259.h>
 
 #define MIN_REGISTER			0x01
 #define MAX_REGISTER			0xF5
@@ -57,5 +60,12 @@ void FMReset(void/*int percusiveMode*/);
 void FMKeyOff(int voice);
 void FMKeyOn(int voice, int freq, int octave);
 void FMSetVoice(int voiceNum, FMInstrument *ins);
+
+void SD_Initimf(global_game_variables_t *gvar);
+void SD_imf_free_music(global_game_variables_t *gvar);
+int SD_imf_load_music(const char *path, global_game_variables_t *gvar);
+//void interrupt irq0(global_game_variables_t *gvar);
+void SD_imf_tick(global_game_variables_t *gvar);
+void SD_adlib_shut_up();
 
 #endif /*__16_SND_H_*/

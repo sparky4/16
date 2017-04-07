@@ -22,6 +22,9 @@
 
 #include "src/lib/16_sd.h"
 
+//static void (interrupt *old_irq0)();
+extern struct glob_game_vars	*ggvv;
+
 void opl2out(word reg, word data)
 {
 	__asm
@@ -192,3 +195,139 @@ void FMSetVoice(int voiceNum, FMInstrument *ins){
 	opCellNum = (byte)0xC0 + (byte)voiceNum;
 	opl2out(opCellNum, ins->Feedback);
 } /* End of FMSetVoice */
+
+
+void SD_Initimf(global_game_variables_t *gvar)
+{
+	gvar->ca.sd.irq0_ticks=
+	gvar->ca.sd.irq0_cnt=
+	gvar->ca.sd.irq0_add=
+	gvar->ca.sd.imf_delay_countdown=
+	gvar->ca.sd.irq0_max=0;
+	gvar->ca.sd.imf_music=
+	gvar->ca.sd.imf_play_ptr=
+	gvar->ca.sd.imf_music_end=NULL;
+}
+
+void SD_imf_free_music(global_game_variables_t *gvar)
+{
+	if (gvar->ca.sd.imf_music) free(gvar->ca.sd.imf_music);
+	MM_FreePtr(MEMPTR gvar->ca.audiosegs[0], gvar);	//TODO make behave like id engine
+	gvar->ca.sd.imf_music = gvar->ca.sd.imf_play_ptr = gvar->ca.sd.imf_music_end = NULL;
+	gvar->ca.sd.imf_delay_countdown = 0;
+}
+
+int SD_imf_load_music(const char *path, global_game_variables_t *gvar)
+{
+	unsigned long len;
+	unsigned char buf[8];
+	int fd;
+
+	SD_imf_free_music(gvar);
+
+	fd = open(path,O_RDONLY|O_BINARY);
+	if (fd < 0) return 0;
+
+	len = lseek(fd,0,SEEK_END);
+	lseek(fd,0,SEEK_SET);
+	read(fd,buf,2);
+	if (buf[0] != 0 || buf[1] != 0) // type 1 IMF
+		len = *((uint16_t*)buf);
+	else
+		lseek(fd,0,SEEK_SET);
+
+	if (len == 0 || len > 65535UL) {
+		close(fd);
+		return 0;
+	}
+	len -= len & 3;
+
+	MM_GetPtr(MEMPTR gvar->ca.audiosegs[0],len, gvar);
+	gvar->ca.sd.imf_music = (struct imf_entry *)gvar->ca.audiosegs[0];
+	if (gvar->ca.sd.imf_music == NULL) {
+		close(fd);
+		return 0;
+	}
+	read(fd,gvar->ca.sd.imf_music,len);
+	close(fd);
+
+	gvar->ca.sd.imf_play_ptr = gvar->ca.sd.imf_music;
+	gvar->ca.sd.imf_music_end = gvar->ca.sd.imf_music + (len >> 2UL);
+	return 1;
+}
+
+// WARNING: subroutine call in interrupt handler. make sure you compile with -zu flag for large/compact memory models
+/*void interrupt irq0()
+{
+	ggvv->ca.sd.irq0_ticks++;
+	if ((ggvv->ca.sd.irq0_cnt += ggvv->ca.sd.irq0_add) >= ggvv->ca.sd.irq0_max) {
+		ggvv->ca.sd.irq0_cnt -= ggvv->ca.sd.irq0_max;
+		old_irq0();
+	}
+	else {
+		p8259_OCW2(0,P8259_OCW2_NON_SPECIFIC_EOI);
+	}
+}*/
+
+void SD_imf_tick(global_game_variables_t *gvar)
+{
+	if (gvar->ca.sd.imf_delay_countdown == 0) {
+		do {
+			adlib_write(gvar->ca.sd.imf_play_ptr->reg,gvar->ca.sd.imf_play_ptr->data);
+			gvar->ca.sd.imf_delay_countdown = gvar->ca.sd.imf_play_ptr->delay;
+			gvar->ca.sd.imf_play_ptr++;
+			if (gvar->ca.sd.imf_play_ptr == gvar->ca.sd.imf_music_end)
+			{
+//				printf("replay\n");
+				gvar->ca.sd.imf_play_ptr = gvar->ca.sd.imf_music;
+			}
+		} while (gvar->ca.sd.imf_delay_countdown == 0);
+	}
+	else {
+		gvar->ca.sd.imf_delay_countdown--;
+	}
+}
+
+void SD_adlib_shut_up() {
+	int i;
+
+	memset(adlib_fm,0,sizeof(adlib_fm));
+	memset(&adlib_reg_bd,0,sizeof(adlib_reg_bd));
+	for (i=0;i < adlib_fm_voices;i++) {
+		struct adlib_fm_operator *f;
+		f = &adlib_fm[i].mod;
+		f->ch_a = f->ch_b = f->ch_c = f->ch_d = 1;
+		f = &adlib_fm[i].car;
+		f->ch_a = f->ch_b = f->ch_c = f->ch_d = 1;
+	}
+
+	for (i=0;i < adlib_fm_voices;i++) {
+		struct adlib_fm_operator *f;
+
+		f = &adlib_fm[i].mod;
+		f->mod_multiple = 1;
+		f->total_level = 63 - 16;
+		f->attack_rate = 15;
+		f->decay_rate = 4;
+		f->sustain_level = 0;
+		f->release_rate = 8;
+		f->f_number = 400;
+		f->sustain = 1;
+		f->octave = 4;
+		f->key_on = 0;
+
+		f = &adlib_fm[i].car;
+		f->mod_multiple = 1;
+		f->total_level = 63 - 16;
+		f->attack_rate = 15;
+		f->decay_rate = 4;
+		f->sustain_level = 0;
+		f->release_rate = 8;
+		f->f_number = 0;
+		f->sustain = 1;
+		f->octave = 0;
+		f->key_on = 0;
+	}
+
+	adlib_apply_all();
+}

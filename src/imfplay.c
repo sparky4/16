@@ -19,6 +19,8 @@
 #include "src/lib/16_mm.h"
 #include "src/lib/16_hc.h"
 #include "src/lib/16_dbg.h"
+#include "src/lib/16_sd.h"
+
 // #include <stdio.h>
 // #include <conio.h> /* this is where Open Watcom hides the outp() etc. functions */
 // #include <stdlib.h>
@@ -29,14 +31,10 @@
 // #include <fcntl.h>
 // #include <math.h>
 // #include <dos.h>
-
-#include <hw/vga/vga.h>
-#include <hw/dos/dos.h>
-#include <hw/8254/8254.h>		/* 8254 timer */
-#include <hw/8259/8259.h>
-#include <hw/adlib/adlib.h>
+struct glob_game_vars	*ggvv;
 
 static void (interrupt *old_irq0)();
+/*static void (interrupt *old_irq0)();
 static volatile unsigned long irq0_ticks=0;
 static volatile unsigned int irq0_cnt=0,irq0_add=0,irq0_max=0;
 
@@ -112,19 +110,20 @@ int imf_load_music(const char *path, global_game_variables_t *gvar) {
 	PRINTBB;
 	return 1;
 }
-
-/* WARNING: subroutine call in interrupt handler. make sure you compile with -zu flag for large/compact memory models */
-void interrupt irq0() {
-	irq0_ticks++;
-	if ((irq0_cnt += irq0_add) >= irq0_max) {
-		irq0_cnt -= irq0_max;
+*/
+// WARNING: subroutine call in interrupt handler. make sure you compile with -zu flag for large/compact memory models
+void interrupt irq0()
+{
+	ggvv->ca.sd.irq0_ticks++;
+	if ((ggvv->ca.sd.irq0_cnt += ggvv->ca.sd.irq0_add) >= ggvv->ca.sd.irq0_max) {
+		ggvv->ca.sd.irq0_cnt -= ggvv->ca.sd.irq0_max;
 		old_irq0();
 	}
 	else {
 		p8259_OCW2(0,P8259_OCW2_NON_SPECIFIC_EOI);
 	}
 }
-
+/*
 void imf_tick() {
 	if (imf_delay_countdown == 0) {
 		do {
@@ -185,7 +184,7 @@ void adlib_shut_up() {
 	}
 
 	adlib_apply_all();
-}
+}*/
 
 void main(int argc,char **argv) {
 	static global_game_variables_t gvar;
@@ -198,6 +197,7 @@ void main(int argc,char **argv) {
 #ifdef __DEBUG_MM_
 	dbg_debugmm=1;
 #endif
+	ggvv=&gvar;
 	MM_Startup(&gvar);
 	PM_Startup(&gvar); PM_CheckMainMem(&gvar); PM_UnlockMainMem(&gvar);
 	CA_Startup(&gvar);
@@ -216,35 +216,35 @@ void main(int argc,char **argv) {
 		return;
 	}
 
-	if (!imf_load_music(argv[1], &gvar)) {
+	if (!SD_imf_load_music(argv[1], &gvar)) {
 		printf("Failed to load IMF Music\n");
 		return;
 	}
 
 	write_8254_system_timer(T8254_REF_CLOCK_HZ / tickrate);
-	irq0_cnt = 0;
-	irq0_add = 182;
-	irq0_max = 1000; /* about 18.2Hz */
+	gvar.ca.sd.irq0_cnt = 0;
+	gvar.ca.sd.irq0_add = 182;
+	gvar.ca.sd.irq0_max = 1000; /* about 18.2Hz */
 	old_irq0 = _dos_getvect(8);/*IRQ0*/
 	_dos_setvect(8,irq0);
 
-	adlib_shut_up();
+	SD_adlib_shut_up();
 	shutdown_adlib_opl3(); // NTS: Apparently the music won't play otherwise
 	_cli();
-	irq0_ticks = ptick = 0;
+	gvar.ca.sd.irq0_ticks = ptick = 0;
 	_sti();
 
 	while (1) {
 		unsigned long adv;
 
 		_cli();
-		adv = irq0_ticks - ptick;
+		adv = gvar.ca.sd.irq0_ticks - ptick;
 		if (adv >= 100UL) adv = 100UL;
-		ptick = irq0_ticks;
+		ptick = gvar.ca.sd.irq0_ticks;
 		_sti();
 
 		while (adv != 0) {
-			imf_tick();
+			SD_imf_tick(&gvar);
 			adv--;
 		}
 
@@ -259,8 +259,8 @@ void main(int argc,char **argv) {
 	}
 //	printf("contents of the imf_music\n[\n%s\n]\n", imf_music);
 
-	imf_free_music(&gvar);
-	adlib_shut_up();
+	SD_imf_free_music(&gvar);
+	SD_adlib_shut_up();
 	shutdown_adlib();
 	_dos_setvect(8,old_irq0);
 	write_8254_system_timer(0);/* back to normal 18.2Hz */

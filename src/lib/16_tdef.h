@@ -594,14 +594,25 @@ typedef struct
 
 //==========================================================================
 
-/*
+//for 16_sd
+//==========================================================================
 #pragma pack(push,1)
-typedef struct imf_entry {
+typedef struct imf_entry
+{
 	uint8_t		reg,data;
 	uint16_t	delay;
 } imf_entry_t;
 #pragma pack(pop)
-*/
+
+typedef struct
+{
+	volatile unsigned long irq0_ticks;//=0;
+	volatile unsigned int irq0_cnt,irq0_add,irq0_max;//=0;
+	imf_entry_t*	imf_music;//=NULL;
+	imf_entry_t*	imf_play_ptr;//=NULL;
+	imf_entry_t*	imf_music_end;//=NULL;
+	uint16_t		imf_delay_countdown;//=0;
+} sd_t;
 
 //==========================================================================
 
@@ -660,8 +671,9 @@ typedef struct	//TODO: USE THIS!!!!
 	word		_seg	*grstarts;	// array of offsets in egagraph, -1 for sparse//long
 	word		_seg	*audiostarts;	// array of offsets in audio / audiot//long
 
-	huffnode huffnode;
+	huffnode	huffnode;
 
+	sd_t		sd;
 	//TODO: extend! and learn from keen/wolf/catacomb's code wwww
 	memptr	spribuff;
 } ca_t;
