@@ -63,12 +63,24 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-#ifdef __BORLANDC__
+//#ifdef __BORLANDC__
 void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
 {
 	printf("VGAmodeX dummy:\n	%Fp	%Fp	%Fp\n", &vq, &cmem, gv);
 }
-#endif
+
+word modexPalOverscan(word col)
+{
+	//modexWaitBorder();
+	outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
+	outp(PAL_DATA_REG, col);
+	return col;
+}
+void	TL_VidInit(global_game_variables_t *gvar)
+{
+	gvar->video.old_mode = 3;
+}
+//#endif
 
 //printf("*	%Fp\t", *BBUF);
 //printf("*	     %04x\t", *BBUF);

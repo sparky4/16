@@ -1123,15 +1123,13 @@ dinorm:
 
 void CAL_SetupMapFile (global_game_variables_t *gvar)
 {
-#ifndef MAPHEADERLINKED
-	int handle;
-	long length;
-#endif
+//++	int handle;
+//++	long length;
 
 //
 // load maphead.ext (offsets and tileinfo for map file)
 //
-#ifndef MAPHEADERLINKED
+/*#ifndef MAPHEADERLINKED
 	if ((handle = open("maphead.mph",
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
 		Quit (gvar, "Can't open maphead.mph");
@@ -1143,13 +1141,13 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 
 	gvar->ca.tinf = (byte _seg *)FP_SEG(&maphead);
 
-#endif
+#endif*/
 
 //
 // open the data file
 //
 //TODO: multiple files
-	if ((gvar->ca.file.maphandle[0] = open("data/test.map",
+	if ((gvar->ca.file.maphandle = open("data/test.map",
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
 		Quit (gvar, "Can't open data/test.map!");
 /*#ifdef MAPHEADERLINKED
@@ -1174,18 +1172,18 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 ======================
 */
 
-/*void CAL_SetupAudioFile (void)
+void CAL_SetupAudioFile (global_game_variables_t *gvar)
 {
-	int handle;
-	long length;
+//++	int handle;
+//++	long length;
 
 //
 // load maphead.ext (offsets and tileinfo for map file)
 //
-#ifndef AUDIOHEADERLINKED
-	if ((handle = open("AUDIOHED."EXT,
+/*#ifndef AUDIOHEADERLINKED
+	if ((handle = open("audihead.adh,
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit (gvar, "Can't open AUDIOHED."EXT"!");
+		Quit (gvar, "Can't open audihead.adh!");
 	length = filelength(handle);
 	MM_GetPtr (MEMPTR audiostarts,length);
 	CA_FarRead(handle, (byte far *)audiostarts, length);
@@ -1194,21 +1192,25 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 	audiohuffman = (huffnode *)&audiodict;
 	CAL_OptimizeNodes (audiohuffman);
 	audiostarts = (long _seg *)FP_SEG(&audiohead);
-#endif
+#endif*/
 
 //
 // open the data file
 //
-#ifndef AUDIOHEADERLINKED
+//TODO: multiple files
+	if ((gvar->ca.file.audiohandle = open("data/02.imf",
+		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
+		Quit (gvar, "Can't open data/02.imf!");
+/*#ifndef AUDIOHEADERLINKED
 	if ((audiohandle = open("AUDIOT."EXT,
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
 		Quit (gvar, "Can't open AUDIOT."EXT"!");
-#else
+//#else
 	if ((audiohandle = open("AUDIO."EXT,
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
 		Quit (gvar, "Can't open AUDIO."EXT"!");
-#endif
-}*/
+#endif*/
+}
 
 //==========================================================================
 
@@ -1253,7 +1255,7 @@ void CA_Startup(global_game_variables_t *gvar)
 	CAL_SetupGrFile (gvar);
 #endif
 #ifndef NOAUDIO
-	CAL_SetupMapFile (gvar);
+	CAL_SetupAudioFile (gvar);
 #endif
 
 	gvar->ca.camap.mapon = -1;
@@ -1285,10 +1287,9 @@ void CA_Shutdown(global_game_variables_t *gvar)
 #endif
  	close(gvar->handle.showmemhandle);
 
-	close(*(gvar->ca.file.maphandle));
-/*++++
-	close(grhandle);
-	close(audiohandle);*/
+	close(gvar->ca.file.maphandle);
+	close(gvar->ca.file.grhandle);
+	close(gvar->ca.file.audiohandle);
 }
 
 //===========================================================================

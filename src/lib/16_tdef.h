@@ -599,8 +599,8 @@ typedef struct
 #pragma pack(push,1)
 typedef struct imf_entry
 {
-	uint8_t		reg,data;
-	uint16_t	delay;
+	byte		reg,data;
+	word		delay;
 } imf_entry_t;
 #pragma pack(pop)
 
@@ -611,7 +611,7 @@ typedef struct
 	imf_entry_t*	imf_music;//=NULL;
 	imf_entry_t*	imf_play_ptr;//=NULL;
 	imf_entry_t*	imf_music_end;//=NULL;
-	uint16_t		imf_delay_countdown;//=0;
+	word		imf_delay_countdown;//=0;
 } sd_t;
 
 //==========================================================================
@@ -643,9 +643,9 @@ typedef struct
 
 typedef struct
 {
-	int			maphandle[4];		// handle to MAPTEMP / GAMEMAPS
-	int			grhandle[4];		// handle to EGAGRAPH
-	int			audiohandle[4];	// handle to AUDIOT / AUDIO
+	int			maphandle;		// handle to MAPTEMP / GAMEMAPS
+	int			grhandle;		// handle to EGAGRAPH
+	int			audiohandle;	// handle to AUDIOT / AUDIO
 } ca_handle_t;
 /*
 16/wf3d8086/id_ca.c:	grstarts = (long _seg *)FP_SEG(&EGAhead);
