@@ -26,6 +26,7 @@
 #include "src/lib/16_dbg.h"
 
 #define FADE
+//#define NOMAPLOAD
 
 //map_view_t mv[4];
 static map_t map;
@@ -83,13 +84,16 @@ void main(int argc, char *argv[])
 	//----gvar.player[0].enti.spri.spritesheet = malloc(sizeof(struct vrs_container));
 
 	// create the map
+#ifndef NOMAPLOAD
 //	fprintf(stderr, "testing map load~	");
 	CA_loadmap("data/test.map", &map, &gvar);
 	chkmap(&map, 0);
 //	initMap(&map);
 //	printf("chkmap ok	");
 //	fprintf(stderr, "yay map loaded~~\n");
-
+#else
+	initMap(&map);
+#endif
 	// data
 	VRS_LoadVRS(bakapee1, &gvar.player[0].enti, &gvar);
 

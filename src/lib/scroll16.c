@@ -307,7 +307,7 @@ void ZC_ShowMV(map_view_t *moo, boolean vsync, boolean sr)
 	outp(AC_INDEX, (moo[0].page->dx & 0x03) << 1);
 	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = moo[0].page->stridew;
 }
-
+#if 0
 void
 initMap(map_t *map) {
 	// just a place holder to fill out an alternating pattern
@@ -324,6 +324,47 @@ initMap(map_t *map) {
 			i++;
 		}
 		tile = tile ? 0 : 1;
+	}
+}
+#endif
+void
+initMap(map_t *map) {
+	/* just a place holder to fill out an alternating pattern */
+	int x, y;
+	int i;
+	int tile = 1;
+	dbg_maptext=1;
+	map->tiles = malloc(sizeof(tiles_t));
+
+	/* create the tile set */
+	map->tiles->spri = malloc(sizeof(sprite_t));
+	map->tiles->spri->sprite_vrl_cont.vrl_header->width = (TILEWH*2);
+	map->tiles->spri->sprite_vrl_cont.vrl_header->height= TILEWH;
+	map->tiles->spri->sprite_vrl_cont.buffer = malloc((TILEWH*2)*TILEWH);
+	map->tiles->tileHeight = TILEWH;
+	map->tiles->tileWidth =TILEWH;
+	map->tiles->rows = 1;
+	map->tiles->cols = 2;
+
+	i=0;
+	for(y=0; y<TILEWH; y++) {
+	for(x=0; x<(TILEWH*2); x++) {
+		if(x<TILEWH)
+			map->tiles->spri->sprite_vrl_cont.buffer[i] = 2;//0x24;
+		else
+			map->tiles->spri->sprite_vrl_cont.buffer[i] = 1;//0x34;
+		i++;
+	}
+	}
+
+	i=0;
+	for(y=0; y<map->height; y++) {
+		for(x=0; x<map->width; x++) {
+			map->layerdata[0].data[i] = tile;
+			tile = tile ? 1 : 2;
+			i++;
+		}
+		tile = tile ? 1 : 2;
 	}
 }
 
