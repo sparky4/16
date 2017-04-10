@@ -29,11 +29,11 @@
 
 //#define NOMAPS
 #define NOGRAPHICS
-//#define NOAUDIO
+#define NOAUDIO
 
-//#define MAPHEADERLINKED
+#define MAPHEADERLINKED
 //#define GRHEADERLINKED
-//#define AUDIOHEADERLINKED
+#define AUDIOHEADERLINKED
 
 //#define NUMMAPS		39
 //#define MAPPLANES		3

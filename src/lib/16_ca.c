@@ -1123,13 +1123,15 @@ dinorm:
 
 void CAL_SetupMapFile (global_game_variables_t *gvar)
 {
-//++	int handle;
-//++	long length;
+#ifndef MAPHEADERLINKED
+	int handle;
+	long length;
+#endif
 
 //
 // load maphead.ext (offsets and tileinfo for map file)
 //
-/*#ifndef MAPHEADERLINKED
+#ifndef MAPHEADERLINKED
 	if ((handle = open("maphead.mph",
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
 		Quit (gvar, "Can't open maphead.mph");
@@ -1141,7 +1143,7 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 
 	gvar->ca.tinf = (byte _seg *)FP_SEG(&maphead);
 
-#endif*/
+#endif
 
 //
 // open the data file
@@ -1172,18 +1174,18 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 ======================
 */
 
-void CAL_SetupAudioFile (global_game_variables_t *gvar)
+/*void CAL_SetupAudioFile (void)
 {
-//++	int handle;
-//++	long length;
+	int handle;
+	long length;
 
 //
 // load maphead.ext (offsets and tileinfo for map file)
 //
-/*#ifndef AUDIOHEADERLINKED
-	if ((handle = open("audihead.adh,
+#ifndef AUDIOHEADERLINKED
+	if ((handle = open("AUDIOHED."EXT,
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit (gvar, "Can't open audihead.adh!");
+		Quit (gvar, "Can't open AUDIOHED."EXT"!");
 	length = filelength(handle);
 	MM_GetPtr (MEMPTR audiostarts,length);
 	CA_FarRead(handle, (byte far *)audiostarts, length);
@@ -1192,25 +1194,21 @@ void CAL_SetupAudioFile (global_game_variables_t *gvar)
 	audiohuffman = (huffnode *)&audiodict;
 	CAL_OptimizeNodes (audiohuffman);
 	audiostarts = (long _seg *)FP_SEG(&audiohead);
-#endif*/
+#endif
 
 //
 // open the data file
 //
-//TODO: multiple files
-	if ((gvar->ca.file.audiohandle = open("data/02.imf",
-		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit (gvar, "Can't open data/02.imf!");
-/*#ifndef AUDIOHEADERLINKED
+#ifndef AUDIOHEADERLINKED
 	if ((audiohandle = open("AUDIOT."EXT,
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
 		Quit (gvar, "Can't open AUDIOT."EXT"!");
-//#else
+#else
 	if ((audiohandle = open("AUDIO."EXT,
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
 		Quit (gvar, "Can't open AUDIO."EXT"!");
-#endif*/
-}
+#endif
+}*/
 
 //==========================================================================
 
@@ -1255,7 +1253,7 @@ void CA_Startup(global_game_variables_t *gvar)
 	CAL_SetupGrFile (gvar);
 #endif
 #ifndef NOAUDIO
-	CAL_SetupAudioFile (gvar);
+	CAL_SetupMapFile (gvar);
 #endif
 
 	gvar->ca.camap.mapon = -1;
