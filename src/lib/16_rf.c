@@ -359,23 +359,23 @@ void RF_Shutdown (void)
 =====================
 */
 
-void RF_FixOfs (void)
+void RF_FixOfs (global_game_variables_t *gvar)
 {
-	if (grmode == EGAGR)
-	{
+//	if (grmode == EGAGR)
+//	{
 		screenpage = 0;
 		otherpage = 1;
-		panx = pany = pansx = pansy = panadjust = 0;
+		gvar->video.ofs.pan.panx = gvar->video.ofs.pan.pany = gvar->video.ofs.pan.pansx = gvar->video.ofs.pan.pansy = gvar->video.ofs.pan.panadjust = 0;
 		displayofs = screenstart[screenpage];
 		bufferofs = screenstart[otherpage];
 		masterofs = screenstart[2];
-		VL_SetScreen (displayofs,0);
+/*++++		VL_SetScreen (displayofs,0);
 	}
 	else
 	{
 		bufferofs = 0;
 		masterofs = 0x8000;
-	}
+	}*/
 }
 
 
@@ -915,19 +915,20 @@ void RFL_CalcOriginStuff (long x, long y)
 	originyscreen = originytile<<SY_T_SHIFT;
 	originmap = mapbwidthtable[originytile] + originxtile*2;
 
-#if GRMODE == EGAGR
-	panx = (originxglobal>>G_P_SHIFT) & 15;
-	pansx = panx & 8;
-	pany = pansy = (originyglobal>>G_P_SHIFT) & 15;
-	panadjust = panx/8 + ylookup[pany];
-#endif
+//#if GRMODE == EGAGR
+	gvar->video.ofs.pan.panx = (originxglobal>>G_P_SHIFT) & 15;
+	gvar->video.ofs.pan.pansx = gvar->video.ofs.pan.panx & 8;
+	gvar->video.ofs.pan.pany = gvar->video.ofs.pan.pansy = (originyglobal>>G_P_SHIFT) & 15;
+	gvar->video.ofs.pan.panadjust = gvar->video.ofs.pan.panx/8 + gvar->video.ofs.ylookup[gvar->video.ofs.pan.pany];
+/*#endif
 
 #if GRMODE == CGAGR
-	panx = (originxglobal>>G_P_SHIFT) & 15;
-	pansx = panx & 12;
-	pany = pansy = (originyglobal>>G_P_SHIFT) & 15;
-	panadjust = pansx/4 + ylookup[pansy];
+	gvar->video.ofs.pan.panx = (originxglobal>>G_P_SHIFT) & 15;
+	gvar->video.ofs.pan.pansx = gvar->video.ofs.pan.panx & 12;
+	gvar->video.ofs.pan.pany = gvar->video.ofs.pan.pansy = (originyglobal>>G_P_SHIFT) & 15;
+	gvar->video.ofs.pan.panadjust = gvar->video.ofs.pan.pansx/4 + gvar->video.ofs.ylookup[gvar->video.ofs.pan.pansy];
 #endif
+	*/
 
 }
 
@@ -942,7 +943,7 @@ void RFL_CalcOriginStuff (long x, long y)
 
 void RFL_ClearScrollBlocks (void)
 {
-	hscrollblocks = vscrollblocks = 0;
+	gvar->video.ofs.pan.hscrollblocks = gvar->video.ofs.pan.vscrollblocks = 0;
 }
 
 
@@ -961,14 +962,14 @@ void RF_SetScrollBlock (int x, int y, boolean horizontal)
 {
 	if (horizontal)
 	{
-		hscrolledge[hscrollblocks] = y;
-		if (hscrollblocks++ == MAXSCROLLEDGES)
+		gvar->video.ofs.pan.hscrolledge[gvar->video.ofs.pan.hscrollblocks] = y;
+		if (gvar->video.ofs.pan.hscrollblocks++ == MAXSCROLLEDGES)
 			Quit (gvar, "RF_SetScrollBlock: Too many horizontal scroll blocks");
 	}
 	else
 	{
-		vscrolledge[vscrollblocks] = x;
-		if (vscrollblocks++ == MAXSCROLLEDGES)
+		gvar->video.ofs.pan.vscrolledge[gvar->video.ofs.pan.vscrollblocks] = x;
+		if (gvar->video.ofs.pan.vscrollblocks++ == MAXSCROLLEDGES)
 			Quit (gvar, "RF_SetScrollBlock: Too many vertical scroll blocks");
 	}
 }
@@ -997,8 +998,8 @@ void RFL_BoundScroll (int x, int y)
 	if (x>0)
 	{
 		newxtile+=SCREENTILESWIDE;
-		for (check=0;check<vscrollblocks;check++)
-			if (vscrolledge[check] == newxtile)
+		for (check=0;check<gvar->video.ofs.pan.vscrollblocks;check++)
+			if (gvar->video.ofs.pan.vscrolledge[check] == newxtile)
 			{
 				originxglobal = originxglobal&0xff00;
 				break;
@@ -1006,8 +1007,8 @@ void RFL_BoundScroll (int x, int y)
 	}
 	else if (x<0)
 	{
-		for (check=0;check<vscrollblocks;check++)
-			if (vscrolledge[check] == newxtile)
+		for (check=0;check<gvar->video.ofs.pan.vscrollblocks;check++)
+			if (gvar->video.ofs.pan.vscrolledge[check] == newxtile)
 			{
 				originxglobal = (originxglobal&0xff00)+0x100;
 				break;
@@ -1018,8 +1019,8 @@ void RFL_BoundScroll (int x, int y)
 	if (y>0)
 	{
 		newytile+=SCREENTILESHIGH;
-		for (check=0;check<hscrollblocks;check++)
-			if (hscrolledge[check] == newytile)
+		for (check=0;check<gvar->video.ofs.pan.hscrollblocks;check++)
+			if (gvar->video.ofs.pan.hscrolledge[check] == newytile)
 			{
 				originyglobal = originyglobal&0xff00;
 				break;
@@ -1027,8 +1028,8 @@ void RFL_BoundScroll (int x, int y)
 	}
 	else if (y<0)
 	{
-		for (check=0;check<hscrollblocks;check++)
-			if (hscrolledge[check] == newytile)
+		for (check=0;check<gvar->video.ofs.pan.hscrollblocks;check++)
+			if (gvar->video.ofs.pan.hscrolledge[check] == newytile)
 			{
 				originyglobal = (originyglobal&0xff00)+0x100;
 				break;
@@ -1315,9 +1316,9 @@ void RFL_BoundNewOrigin (unsigned orgx,unsigned orgy)
 	originxtile = orgx>>G_T_SHIFT;
 	originytile = orgy>>G_T_SHIFT;
 
-	for (check=0;check<vscrollblocks;check++)
+	for (check=0;check<gvar->video.ofs.pan.vscrollblocks;check++)
 	{
-		edge = vscrolledge[check];
+		edge = gvar->video.ofs.pan.vscrolledge[check];
 		if (edge>=originxtile && edge <=originxtile+10)
 		{
 			orgx = (edge+1)*TILEGLOBAL;
@@ -1330,9 +1331,9 @@ void RFL_BoundNewOrigin (unsigned orgx,unsigned orgy)
 		}
 	}
 
-	for (check=0;check<hscrollblocks;check++)
+	for (check=0;check<gvar->video.ofs.pan.hscrollblocks;check++)
 	{
-		edge = hscrolledge[check];
+		edge = gvar->video.ofs.pan.hscrolledge[check];
 		if (edge>=originytile && edge <=originytile+6)
 		{
 			orgy = (edge+1)*TILEGLOBAL;
@@ -1406,10 +1407,10 @@ void RF_RedrawBlock (int x, int y, int width, int height)
 {
 	int	xx,yy,xl,xh,yl,yh;
 
-	xl=(x+panx)/16;
-	xh=(x+panx+width+15)/16;
-	yl=(y+pany)/16;
-	yh=(y+pany+height+15)/16;
+	xl=(x+gvar->video.ofs.pan.panx)/16;
+	xh=(x+gvar->video.ofs.pan.panx+width+15)/16;
+	yl=(y+gvar->video.ofs.pan.pany)/16;
+	yh=(y+gvar->video.ofs.pan.pany+height+15)/16;
 	for (yy=yl;yy<=yh;yy++)
 		for (xx=xl;xx<=xh;xx++)
 			RFL_NewTile (yy*UPDATEWIDE+xx);
@@ -1437,7 +1438,7 @@ void RF_CalcTics (void)
 	if (lasttimecount > TimeCount)
 		TimeCount = lasttimecount;		// if the game was paused a LONG time
 
-	if (DemoMode)					// demo recording and playback needs
+/*++++	if (DemoMode)					// demo recording and playback needs
 	{								// to be constant
 //
 // take DEMOTICS or more tics, and modify Timecount to reflect time taken
@@ -1450,7 +1451,7 @@ void RF_CalcTics (void)
 		tics = DEMOTICS;
 	}
 	else
-	{
+	{*/
 //
 // non demo, so report actual time
 //
@@ -1474,7 +1475,7 @@ void RF_CalcTics (void)
 			TimeCount -= (tics-MAXTICS);
 			tics = MAXTICS;
 		}
-	}
+//	}
 }
 
 /*
@@ -1536,10 +1537,10 @@ void RF_NewPosition (unsigned x, unsigned y)
 	unsigned 	updatenum;
 
 	RFL_BoundNewOrigin (x,y);
-/*??
+
 // calculate new origin related globals
 //
-	RFL_CalcOriginStuff (x,y);*/
+	RFL_CalcOriginStuff (x,y);
 
 //
 // clear out all animating tiles
@@ -1549,7 +1550,7 @@ void RF_NewPosition (unsigned x, unsigned y)
 //
 // set up the new update arrays at base position
 //
-//??	memset (tilecache,0,sizeof(tilecache));		// old cache is invalid
+	memset (tilecache,0,sizeof(tilecache));		// old cache is invalid
 
 	updatestart[0] = baseupdatestart[0];
 	updatestart[1] = baseupdatestart[1];
@@ -1635,14 +1636,14 @@ void RF_Scroll (int x, int y)
 	int			oldxt,oldyt,move,yy;
 	unsigned	updatespot;
 	byte		*update0,*update1;
-	unsigned	oldpanx,oldpanadjust,oldoriginmap,oldscreen,newscreen,screencopy;
+	unsigned	oldgvar->video.ofs.pan.panx,oldgvar->video.ofs.pan.panadjust,oldoriginmap,oldscreen,newscreen,screencopy;
 	int			screenmove;
 
 	oldxt = originxtile;
 	oldyt = originytile;
 	oldoriginmap = originmap;
-	oldpanadjust = panadjust;
-	oldpanx = panx;
+	oldgvar->video.ofs.pan.panadjust = gvar->video.ofs.pan.panadjust;
+	oldgvar->video.ofs.pan.panx = gvar->video.ofs.pan.panx;
 
 	RFL_CalcOriginStuff ((long)originxglobal + x,(long)originyglobal + y);
 
@@ -1683,8 +1684,8 @@ void RF_Scroll (int x, int y)
 //++++			VW_ScreenToScreen (oldscreen,newscreen,
 				PORTTILESWIDE*2,PORTTILESHIGH*16);
 
-			if (i==screenpage)
-				VL_SetScreen(newscreen+oldpanadjust,oldpanx & xpanmask);
+//++++			if (i==screenpage)
+//++++				VL_SetScreen(newscreen+oldgvar->video.ofs.pan.panadjust,oldgvar->video.ofs.pan.panx & xpanmask);
 		}
 	}
 	bufferofs = screenstart[otherpage];
@@ -2016,7 +2017,7 @@ void RFL_EraseBlocks (void)
 	//
 	// erase the block by copying from the master screen
 	//
-		pos = ylookup[block->screeny]+block->screenx;
+		pos = gvar->video.ofs.ylookup[block->screeny]+block->screenx;
 //++++		VW_ScreenToScreen (masterofs+pos,bufferofs+pos,
 			block->width,block->height);
 
@@ -2160,7 +2161,7 @@ redraw:
 				height = PORTSCREENHIGH - porty;    // clip bottom off
 			}
 
-			dest = bufferofs + ylookup[porty] + portx;
+			dest = bufferofs + gvar->video.ofs.ylookup[porty] + portx;
 
 			switch (sprite->draw)
 			{
@@ -2239,7 +2240,7 @@ void RF_Refresh (void)
 //
 // display the changed screen
 //
-	VL_SetScreen(bufferofs+panadjust,panx & xpanmask);
+	VL_SetScreen(bufferofs+gvar->video.ofs.pan.panadjust,gvar->video.ofs.pan.panx & xpanmask);
 
 //
 // prepare for next refresh
@@ -2295,10 +2296,10 @@ void RF_NewPosition (unsigned x, unsigned y)
 	unsigned 	updatenum;
 
 	RFL_BoundNewOrigin (x,y);
-/*??
+
 // calculate new origin related globals
 //
-	RFL_CalcOriginStuff (x,y);*/
+	RFL_CalcOriginStuff (x,y);
 
 //
 // clear out all animating tiles
@@ -2677,7 +2678,7 @@ void RFL_EraseBlocks (void)
 	//
 	// erase the block by copying from the master screen
 	//
-		pos = ylookup[block->screeny]+block->screenx;
+		pos = gvar->video.ofs.ylookup[block->screeny]+block->screenx;
 		block->width = (block->width + (pos&1) + 1)& ~1;
 		pos &= ~1;				// make sure a word copy gets used
 //++++		VW_ScreenToScreen (masterofs+pos,bufferofs+pos,
@@ -2815,7 +2816,7 @@ redraw:
 				height = PORTSCREENHIGH - porty;    // clip bottom off
 			}
 
-			dest = bufferofs + ylookup[porty] + portx;
+			dest = bufferofs + gvar->video.ofs.ylookup[porty] + portx;
 
 			switch (sprite->draw)
 			{

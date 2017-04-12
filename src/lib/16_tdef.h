@@ -365,11 +365,22 @@ typedef struct
 	word	quadwh;			//preproccessed quad size of tilewidth and tileheight
 } tile_dimention_t;
 
+#define MAXSCROLLEDGES 6
+typedef struct
+{
+	unsigned	panx,pany;		// panning adjustments inside port in pixels
+	unsigned	pansx,pansy;
+	unsigned	panadjust;		// panx/pany adjusted by screen resolution
+	int		hscrollblocks,vscrollblocks;
+	int		hscrolledge[MAXSCROLLEDGES],vscrolledge[MAXSCROLLEDGES];
+} pan_t;
+
 typedef struct
 {
 	unsigned int offscreen_ofs;
 	unsigned int pattern_ofs;
 	unsigned	bufferofs,	ylookup[MAXSCANLINES], linewidth,displayofs;
+	pan_t		pan;
 } ofs_t;	//unfinished
 
 typedef struct

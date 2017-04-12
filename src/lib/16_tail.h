@@ -59,6 +59,13 @@
 	if(gvar.in.inst->Keyboard[sc_F9]){ dbg_pagenorendermap=!dbg_pagenorendermap;			IN_UserInput(1, &gvar); }
 #endif
 
+/*#define MAPDEBUGFUNCTIONS
+#ifdef __DEBUG_MAP__
+#undef MAPDEBUGFUNCTIONS
+#define MAPDEBUGFUNCTIONS \
+	if(gvar.in.inst->Keyboard[sc_F12]){ dbg_maptext!=dbg_maptext;						IN_UserInput(1, &gvar); }
+#endif*/
+
 /*#define SPRIDEBUGFUNCTIONS
 #ifdef __DEBUG_SPRI__
 #undef SPRIDEBUGFUNCTIONS
