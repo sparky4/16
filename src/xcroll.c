@@ -161,7 +161,6 @@ void main(int argc, char *argv[])
 	{
 		gvar.video.page[0].tlx=gvar.mv[0].tx*TILEWH;
 		gvar.video.page[0].tly=gvar.mv[0].ty*TILEWH;
-		modexWaitBorder();
 		shinku(&gvar);
 		//top left corner & bottem right corner of map veiw be set as map edge trigger since maps are actually square
 		//to stop scrolling and have the gvar.player position data move to the edge of the screen with respect to the direction

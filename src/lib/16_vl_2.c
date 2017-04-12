@@ -33,8 +33,9 @@ char global_temp_status_text2[512];
 
 void VL_modexPrintTextBox(global_game_variables_t *gvar)
 {
-#define PRINTTEXTBOXW	gvar->video.page[0].width
+#define PRINTTEXTBOXW	gvar->video.page[0].sw
 #define PRINTTEXTBOXH	160
+//#define PRINTTEXTBOXSIZE	51200
 #define PRINTTEXTBOXHLINE		0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD//,	0xCD,	0xCD,	0xCD,	0xCD
 #define PRINTTEXTBOXHLINETOP		0xCD, 0xCD, 0xCD, 0xCD, 0xCD, 0xCD, 0xCD, 0xCD, 0xCB, 0xCD, PRINTTEXTBOXHLINE
 #define PRINTTEXTBOXHLINEBOTTOM	0xCD, 0xCD, 0xCD, 0xCD, 0xCD, 0xCD, 0xCD, 0xCD, 0xCA, 0xCD, PRINTTEXTBOXHLINE
@@ -57,16 +58,18 @@ void VL_modexPrintTextBox(global_game_variables_t *gvar)
 	nibble i;
 	boolean			done;
 	ScanCode		scan;
+//	word		huge	textboxbuff[PRINTTEXTBOXSIZE];
 #ifndef PRINTTEXTBOXSTABLE
 	word q;
 #endif
 	//backuppart
-	modexCopyPageRegion(&gvar->video.page[0], &gvar->video.page[1],
-			0,
-			0,
+	modexCopyPageRegion(&gvar->video.page[1], &gvar->video.page[0],
 			x,
-			PRINTTEXTBOXH,
+			gvar->video.page[0].height-PRINTTEXTBOXH,
+			x,
+			gvar->video.page[0].height-PRINTTEXTBOXH,
 			PRINTTEXTBOXW, PRINTTEXTBOXH);
+//	memcpy(&textboxbuff, gvar->video.page[0].data, PRINTTEXTBOXSIZE);
 // 		mxOutText(xpos+1, ypos+gvar.video.page[0].height-40, "|    |Chikyuu:$line1");
 // 		mxOutText(xpos+1, ypos+gvar.video.page[0].height-32, "|    |$line2");
 // 		mxOutText(xpos+1, ypos+gvar.video.page[0].height-24, "|    |$line3");
@@ -91,6 +94,7 @@ void VL_modexPrintTextBox(global_game_variables_t *gvar)
 #endif
 	sprintf(global_temp_status_text, "%s", str3);
 	modexprint(&(gvar->video.page[(gvar->video.p)]), x, y+gvar->video.page[0].height-v, type, 1, col, bgcol, 1, global_temp_status_text);
+	//PRINT TEXT
 	for (i = 0,done = false;!done;)
 	{
 		while (!(scan = gvar->in.inst->LastScan))
@@ -104,15 +108,18 @@ void VL_modexPrintTextBox(global_game_variables_t *gvar)
 			case sc_Escape:
 				done = true;
 			break;
+			case sc_Q:
 			case sc_Enter:
 				//PM_GetPage(i, gvar);
 			break;
 		}
 	}
-	modexCopyPageRegion(&gvar->video.page[1], &gvar->video.page[0],
+
+	modexCopyPageRegion(&gvar->video.page[0], &gvar->video.page[1],
 			x,
-			PRINTTEXTBOXH,
-			0,
-			0,
+			gvar->video.page[0].height-PRINTTEXTBOXH,
+			x,
+			gvar->video.page[0].height-PRINTTEXTBOXH,
 			PRINTTEXTBOXW, PRINTTEXTBOXH);
+//	memcpy(&gvar->video.page[0].data, &textboxbuff, PRINTTEXTBOXSIZE);
 }
