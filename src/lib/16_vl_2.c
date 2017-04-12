@@ -61,7 +61,7 @@ void VL_modexPrintTextBox(global_game_variables_t *gvar)
 	word q;
 #endif
 	//backuppart
-	modexCopyPageRegion(&gvar->video.page[0], &gvar->video.page[2],
+	modexCopyPageRegion(&gvar->video.page[0], &gvar->video.page[1],
 			0,
 			0,
 			x,
@@ -109,7 +109,7 @@ void VL_modexPrintTextBox(global_game_variables_t *gvar)
 			break;
 		}
 	}
-	modexCopyPageRegion(&gvar->video.page[2], &gvar->video.page[0],
+	modexCopyPageRegion(&gvar->video.page[1], &gvar->video.page[0],
 			x,
 			PRINTTEXTBOXH,
 			0,
