@@ -83,6 +83,7 @@
 	if(gvar.in.inst->Keyboard[sc_T]){ gvar.video.vga_state.rss=!gvar.video.vga_state.rss;			IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_P]){ modexpdump(&gvar.video.page[0]);					IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_Y]){ dbg_delayanimation=!dbg_delayanimation;				IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_Q]){ VL_modexPrintTextBox(&gvar);						IN_UserInput(1, &gvar); } \
 	RFDEBUGFUNCTIONS
 //FIZZLEFADEFUNCTION
 
@@ -111,13 +112,13 @@
 	if(gvar.in.inst->Keyboard[sc_X]){ TESTBG12 } \
 	if(gvar.in.inst->Keyboard[sc_C]){ TESTBG34 } \
 	if(gvar.in.inst->Keyboard[sc_V]){ VL_PatternDraw(&gvar.video, 0, 1, 1); } \
-	if(gvar.in.inst->Keyboard[sc_I]){ dbg_maptext=!dbg_maptext; IN_UserInput(1, &gvar); }
-/*	if(gvar.in.inst->Keyboard[sc_PgDn]){ \
+	if(gvar.in.inst->Keyboard[sc_I]){ dbg_maptext=!dbg_maptext; IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_PgDn]){ \
 		rotateR(gvar.video.palette, sizeof(gvar.video.palette)/sizeof(gvar.video.palette[0])); \
 		VL_UpdatePaletteWrite(&gvar.video.palette, 0);		IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_PgUp]){ \
 		rotateL(gvar.video.palette, sizeof(gvar.video.palette)/sizeof(gvar.video.palette[0])); \
-		VL_UpdatePaletteWrite(&gvar.video.palette, 0);		IN_UserInput(1, &gvar); }*/
+		VL_UpdatePaletteWrite(&gvar.video.palette, 0);		IN_UserInput(1, &gvar); }
 #ifdef __BORLANDC__
 #define PAL_WRITE_REG		   0x03C8   /* Color register, write address */
 #define PAL_DATA_REG			0x03C9   /* Color register, data port */

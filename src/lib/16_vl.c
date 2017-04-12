@@ -364,7 +364,8 @@ modexShowPage(page_t *page) {
 
 //args: page, vertical sync switch, screen resolution switch, page0 switch
 void
-VL_ShowPage(page_t *page, boolean vsync, boolean sr) {
+VL_ShowPage(page_t *page, boolean vsync, boolean sr)
+{
 	word high_address, low_address, offset;
 	byte crtcOffset;
 
@@ -402,6 +403,7 @@ VL_ShowPage(page_t *page, boolean vsync, boolean sr) {
 	outp(AC_INDEX, 0x33);
 	outp(AC_INDEX, (page->dx & 0x03) << 1);
 	vga_state.vga_graphics_ram = (VGA_RAM_PTR)page->data;
+	vga_state.vga_draw_stride_limit = vga_state.vga_draw_stride = page->stridew;
 }
 
 //=============================================================================
@@ -694,10 +696,15 @@ modexLoadPalFile(byte *filename, byte *palette) {
 	fclose(file);
 }
 
-
 void VL_LoadPalFile(const char *filename, byte *palette)
 {
-	VL_LoadPalFilewithoffset(filename, palette, 0);
+	VL_LoadPalFilewithoffset(filename, palette, 8);
+	VL_LoadPalFileCore(palette);
+}
+
+void VL_LoadPalFileCore(byte *palette)
+{
+	VL_LoadPalFilewithoffset("data/16.pal", palette, 0);
 }
 
 void VL_LoadPalFilewithoffset(const char *filename, byte *palette, word o)

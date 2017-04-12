@@ -39,5 +39,6 @@ void	TL_VidInit(global_game_variables_t *gvar)
 	//in.h.ah = 0xf;
 	//int86(0x10, &in, &out);
 	if(!gvar->video.old_mode) gvar->video.old_mode = vgaGetMode();//out.h.al;
+	VL_LoadPalFileCore(gvar->video.palette);
 	gvar->video.VL_Initiated = 1;
 }

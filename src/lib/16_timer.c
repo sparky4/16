@@ -65,10 +65,6 @@ double time_in_seconds(global_game_variables_t *gv)
 	return (gv->kurokku.t) / CLOCKS_PER_SEC;
 }
 
-// big global status text buffer
-char global_temp_status_text[512];
-char global_temp_status_text2[512];
-
 /*double time_in_seconds(time_t in_t)
 {
 	return (in_t) / CLOCKS_PER_SEC;

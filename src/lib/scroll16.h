@@ -42,6 +42,8 @@
 
 #define SPRITE
 //#define TILERENDER
+#define SHOWFPS
+//#define OLDWALKSHOWPAGESTUFF
 
 #define PLAYERBMPDATAVAR	gvar.player[pn].data
 #define PLAYERBMPDATA		*PLAYERBMPDATAVAR
@@ -203,51 +205,6 @@ boolean ZC_walk2(entity_t *ent, map_view_t *map_v);
 
 // Move gvar.player around and call map scrolling if required/possible
 void walk_player(player_t *player, map_view_t *map_v);
-
-//check map edge
-inline boolean ZC_mapEdgeChk(map_view_t *map_v, nibble dir, boolean pansw)
-{
-	int	w,h;
-
-	switch (pansw)
-	{
-		case 0:
-			w = map_v[0].map->width;
-			h = map_v[0].map->height;
-		break;
-		case 1:
-			w = map_v[0].page->ti.tilesw;
-			h = map_v[0].page->ti.tilesh;
-		break;
-	}
-
-	switch(dir)
-	{
-		//no direction
-		default:
-		case 2:
-			//0000pip[0].video->startclk = (*clockw);
-			return false;
-		break;
-		//right movement
-		case 3:
-			if(map_v[0].tx >= 0 && map_v[0].tx+map_v[0].page->ti.tw < w) return true;
-		break;
-		//left movement
-		case 1:
-			if(map_v[0].tx > 0 && map_v[0].tx+map_v[0].page->ti.tw <= w) return true;
-		break;
-		//down movement
-		case 4:
-			if(map_v[0].ty >= 0 && map_v[0].ty+map_v[0].page->ti.th < h) return true;
-		break;
-		//up movement
-		case 0:
-			if(map_v[0].ty > 0 && map_v[0].ty+map_v[0].page->ti.th <= h) return true;
-		break;
-	}
-	return false;
-}
 
 // Scroll map in one direction (assumed from gvar.player's movement)
 void mapScroll(map_view_t *mv, player_t *player);

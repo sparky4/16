@@ -430,6 +430,7 @@ typedef struct
 	int tx,ty; //appears to be the top left tile position on the viewable screen map
 	word dxThresh,dyThresh; //Threshold for physical tile switch
 	video_t *video;	//pointer to game variables of the video
+	kurokku_t *kurokku;	//pointer to game variables of the kurokku
 	nibble __near *p;	// pointer to video's render page num
 	nibble __near *sp;	// pointer to video's show page num
 	int dx, dy;	// draw row and col var
