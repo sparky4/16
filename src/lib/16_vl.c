@@ -359,7 +359,9 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 		}
 		break;
 	}
-	VL_SetLineWidth (cm.offset, gv);
+//	VL_SetLineWidth (cm.offset, gv);
+	gv->video.ofs.displayofs = 0;
+	gv->video.ofs.bufferofs = gv->video.page[0].width*gv->video.page[0].height;//gvar->video.page[0].pagesize;
 	gv->video.curr_mode=vq;
 	gv->video.VL_Started=1;
 }
@@ -546,7 +548,7 @@ void modexHiganbanaPageSetup(video_t *video)
 	video->vga_state.vga_draw_stride=	vga_state.vga_draw_stride;
 	video->vga_state.vga_draw_stride_limit=	vga_state.vga_draw_stride_limit;
 	//sprite render switch and bgpreservation switch
-	video->vga_state.rss=		1;
+	video->vga_state.rss=	1;
 	video->vga_state.bgps=	1;
 
 	//setup the buffersize

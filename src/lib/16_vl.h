@@ -214,11 +214,11 @@ void modexPalWhite();
 void modexPalUpdate(byte *p);
 void VL_modexPalScramble(byte *p);
 word modexPalOverscan(word col);
-void VL_Plot (int x, int y, int color, ofs_t *ofs);
-void VL_Hlin (unsigned x, unsigned y, unsigned width, unsigned color, ofs_t *ofs);
-void VL_Vlin (int x, int y, int height, int color, ofs_t *ofs);
-void VL_Bar (int x, int y, int width, int height, int color, ofs_t *ofs);
-void VL_MemToScreen (byte far *source, int width, int height, int x, int y, ofs_t *ofs);
+void VL_Plot (int x, int y, int color, global_game_variables_t *gvar);
+void VL_Hlin (unsigned x, unsigned y, unsigned width, unsigned color, global_game_variables_t *gvar);
+void VL_Vlin (int x, int y, int height, int color, global_game_variables_t *gvar);
+void VL_Bar (int x, int y, int width, int height, int color, global_game_variables_t *gvar);
+void VL_MemToScreen (byte far *source, int width, int height, int x, int y, global_game_variables_t *gvar);
 void modexputPixel(page_t *page, int x, int y, byte color);
 byte modexgetPixel(page_t *page, int x, int y);
 

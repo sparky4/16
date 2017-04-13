@@ -310,7 +310,8 @@ noxor:
 
 			if ((x>width || y>height) && (x<width*2 && y<height*2))
 				continue;
-			drawofs = source+(gvar->video.ofs.ylookup[y]) + (x>>2);
+			//drawofs = source+(gvar->video.ofs.ylookup[y]) + (x>>2);
+			drawofs = source+(y*gvar->video.page[0].stridew) + (x>>2);
 
 			//
 			// copy one pixel

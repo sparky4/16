@@ -1266,7 +1266,7 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 	sdword	end,owner;
 	byte    scratch[160],scratch0[4096],str[16];
 
-	VL_SetLineWidth(40, gvar);
+//	VL_SetLineWidth(40, gvar);
 	temp = gvar->video.ofs.bufferofs;
 	gvar->video.ofs.bufferofs = gvar->video.ofs.displayofs;
 	scan = gvar->mm.mmhead;
@@ -1310,8 +1310,8 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 #endif
 		y = scan->start/320;
 		x = scan->start%320;
-		VW_Hlin(x,x+end,y,color, &gvar->video.ofs);
-		VL_Plot(x,y,15, &gvar->video.ofs);
+		VW_Hlin(x,x+end,y,color,gvar);
+		VL_Plot(x,y,15,gvar);
 		for(w=(scan->start)/80;w<=end/80;w++)
 		{
 			//printf("+	%u	%lu\n", w, scan->length);
@@ -1324,7 +1324,7 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 		if (scan->next && scan->next->start >= end+1)
 #endif
 		{
-			VW_Hlin(x+end+1,x+(scan->next->start-scan->start),y,0, &gvar->video.ofs);	// black = free
+			VW_Hlin(x+end+1,x+(scan->next->start-scan->start),y,0,gvar);	// black = free
 			strcat(scratch0, AARESET);
 //++==++==optional			strcat(scratch0, "\n");
 			strcat(scratch0,AAGREEN);

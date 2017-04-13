@@ -377,9 +377,10 @@ typedef struct
 
 typedef struct
 {
+	//ylookup[MAXSCANLINES],
 	unsigned int offscreen_ofs;
 	unsigned int pattern_ofs;
-	unsigned	bufferofs,	ylookup[MAXSCANLINES], linewidth,displayofs;
+	unsigned	bufferofs,linewidth,displayofs;
 	pan_t		pan;
 } ofs_t;	//unfinished
 

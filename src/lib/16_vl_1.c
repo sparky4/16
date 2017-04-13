@@ -168,7 +168,7 @@ SetScreen_done:
 =
 ====================
 */
-
+#if 0
 void VL_SetLineWidth (unsigned width, global_game_variables_t *gvar)
 {
 	int i,offset;
@@ -190,10 +190,8 @@ void VL_SetLineWidth (unsigned width, global_game_variables_t *gvar)
 		gvar->video.ofs.ylookup[i]=offset;
 		offset += gvar->video.ofs.linewidth;
 	}
-	gvar->video.ofs.displayofs = 0;
-	gvar->video.ofs.bufferofs = gvar->video.page[0].width*gvar->video.page[0].height;//gvar->video.page[0].pagesize;
 }
-
+#endif
 /*
 =============================================================================
 
@@ -504,14 +502,15 @@ void VL_TestPaletteSet (video_t *v)
 =================
 */
 
-void VL_Plot (int x, int y, int color, ofs_t *ofs)
+void VL_Plot (int x, int y, int color, global_game_variables_t *gvar)
 {
 	byte mask;
 	VCLIPDEF
 
 	mask = pclip[x&3];
 	VGAMAPMASK(mask);
-	*(byte far *)MK_FP(SCREENSEG,ofs->bufferofs+(ofs->ylookup[y]+(x>>2))) = color;
+	//*(byte far *)MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+(gvar->video.ofs.ylookup[y]+(x>>2))) = color;
+	*(byte far *)MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+((y*gvar->video.page[0].stridew)+(x>>2))) = color;
 	VGAMAPMASK(15);
 }
 
@@ -524,7 +523,7 @@ void VL_Plot (int x, int y, int color, ofs_t *ofs)
 =================
 */
 
-void VL_Hlin	(unsigned x, unsigned y, unsigned width, unsigned color, ofs_t *ofs)
+void VL_Hlin	(unsigned x, unsigned y, unsigned width, unsigned color, global_game_variables_t *gvar)
 {
 	unsigned		xbyte;
 	byte			far *dest;
@@ -538,7 +537,8 @@ void VL_Hlin	(unsigned x, unsigned y, unsigned width, unsigned color, ofs_t *ofs
 	rightmask = rclip[(x+width-1)&3];
 	midbytes = ((x+width+3)>>2) - xbyte - 2;
 
-	dest = MK_FP(SCREENSEG,ofs->bufferofs+ofs->ylookup[y]+xbyte);
+	//dest = MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+gvar->video.ofs.ylookup[y]+xbyte);
+	dest = MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+(y*gvar->video.page[0].stridew)+xbyte);
 
 	if (midbytes<0)
 	{
@@ -571,7 +571,7 @@ void VL_Hlin	(unsigned x, unsigned y, unsigned width, unsigned color, ofs_t *ofs
 =================
 */
 
-void VL_Vlin	(int x, int y, int height, int color, ofs_t *ofs)
+void VL_Vlin	(int x, int y, int height, int color, global_game_variables_t *gvar)
 {
 	byte	far *dest,mask;
 	VCLIPDEF
@@ -579,12 +579,13 @@ void VL_Vlin	(int x, int y, int height, int color, ofs_t *ofs)
 	mask = pclip[x&3];
 	VGAMAPMASK(mask);
 
-	dest = MK_FP(SCREENSEG,ofs->bufferofs+ofs->ylookup[y]+(x>>2));
+	//dest = MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+gvar->video.ofs.ylookup[y]+(x>>2));
+	dest = MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+(y*gvar->video.page[0].stridew)+(x>>2));
 
 	while (height--)
 	{
 		*dest = color;
-		dest += ofs->linewidth;
+		dest += gvar->video.ofs.linewidth;
 	}
 
 	VGAMAPMASK(15);
@@ -599,7 +600,7 @@ void VL_Vlin	(int x, int y, int height, int color, ofs_t *ofs)
 =================
 */
 
-void VL_Bar (int x, int y, int width, int height, int color, ofs_t *ofs)
+void VL_Bar (int x, int y, int width, int height, int color, global_game_variables_t *gvar)
 {
 	byte	far *dest;
 	byte	leftmask,rightmask;
@@ -610,9 +611,10 @@ void VL_Bar (int x, int y, int width, int height, int color, ofs_t *ofs)
 	leftmask = lclip[x&3];
 	rightmask = rclip[(x+width-1)&3];
 	midbytes = ((x+width+3)>>2) - (x>>2) - 2;
-	linedelta = ofs->linewidth-(midbytes+1);
+	linedelta = gvar->video.ofs.linewidth-(midbytes+1);
 
-	dest = MK_FP(SCREENSEG,ofs->bufferofs+ofs->ylookup[y]+(x>>2));
+	//dest = MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+gvar->video.ofs.ylookup[y]+(x>>2));
+	dest = MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+(y*gvar->video.page[0].stridew)+(x>>2));
 
 	if (midbytes<0)
 	{
@@ -621,7 +623,7 @@ void VL_Bar (int x, int y, int width, int height, int color, ofs_t *ofs)
 		while (height--)
 		{
 			*dest = color;
-			dest += ofs->linewidth;
+			dest += gvar->video.ofs.linewidth;
 		}
 		VGAMAPMASK(15);
 		return;
@@ -657,13 +659,14 @@ void VL_Bar (int x, int y, int width, int height, int color, ofs_t *ofs)
 =================
 */
 
-void VL_MemToScreen (byte far *source, int width, int height, int x, int y, ofs_t *ofs)
+void VL_MemToScreen (byte far *source, int width, int height, int x, int y, global_game_variables_t *gvar)
 {
 	byte    far *screen,far *dest,mask;
 	int		plane;
 
 	width>>=2;
-	dest = MK_FP(SCREENSEG,ofs->bufferofs+ofs->ylookup[y]+(x>>2) );
+	//dest = MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+gvar->video.ofs.ylookup[y]+(x>>2));
+	dest = MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+(y*gvar->video.page[0].stridew)+(x>>2));
 	mask = 1 << (x&3);
 
 	for	(plane = 0; plane<4; plane++)
@@ -674,7 +677,7 @@ void VL_MemToScreen (byte far *source, int width, int height, int x, int y, ofs_
 			mask = 1;
 
 		screen = dest;
-		for	(y=0;y<height;y++,screen+=ofs->linewidth,source+=width)
+		for	(y=0;y<height;y++,screen+=gvar->video.ofs.linewidth,source+=width)
 			_fmemcpy (screen,source,width);
 	}
 }

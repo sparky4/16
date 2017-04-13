@@ -84,7 +84,7 @@
 	if(gvar.in.inst->Keyboard[sc_P]){ modexpdump(&gvar.video.page[0]);					IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_Y]){ dbg_delayanimation=!dbg_delayanimation;				IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_Q]){ VL_modexPrintTextBox(&gvar);						IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[sc_W]){ VL_MemToScreen((byte __far *)&gvar, 64, 64, 16, 16, &gvar.video.ofs);	IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_W]){ VL_MemToScreen((byte __far *)&gvar, 64, 64, 16, 16, &gvar);	IN_UserInput(1, &gvar); } \
 	RFDEBUGFUNCTIONS
 //FIZZLEFADEFUNCTION
 
