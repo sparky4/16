@@ -108,7 +108,8 @@ void main(int argc, char *argv[])
 	modexPalBlack();
 #endif
 
-	VGAmodeX(1/*bakapee*/, 1, &gvar);
+	//--VGAmodeX(1/*bakapee*/, 1, &gvar);
+	VL_Startup(&gvar);
 
 	/* load color palette */
 	/*ptmp.offset=(paloffset/3);
@@ -118,7 +119,7 @@ void main(int argc, char *argv[])
 	//printf("1:	%d\n", paloffset);
 	map.tiles->data->offset=(paloffset/3);
 	modexPalUpdate(map.tiles->data, &paloffset, 0, 0);*/
-	VL_LoadPalFile(bakapee1p, &gvar.video.palette);
+	VL_LoadPalFile(bakapee1p, &gvar.video.palette, &gvar);
 	//VL_LoadPalFile("data/default.pal", &gvar.video.palette);
 
 #ifdef FADE
@@ -216,7 +217,7 @@ void main(int argc, char *argv[])
 			}
 			//read_vrs(&gvar, bakapee1, gvar.player[0].enti.spri->spritesheet);
 			VRS_ReadVRS(bakapee1, &gvar.player[0].enti, &gvar);
-			VL_LoadPalFile(bakapee1p, &gvar.video.palette);
+			VL_LoadPalFile(bakapee1p, &gvar.video.palette, &gvar);
 		}//JK
 #ifdef FADE
 		if(gvar.in.inst->Keyboard[10]){ modexPalOverscan(rand()%56); modexPalUpdate(gvar.video.dpal); IN_UserInput(1, &gvar); }

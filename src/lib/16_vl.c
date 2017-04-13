@@ -30,10 +30,179 @@ byte far* VGA=(byte far*) 0xA0000000;   /* this points to video memory. */
 static void fadePalette(sbyte fade, sbyte start, word iter, byte *palette);
 static byte tmppal[PAL_SIZE];
 
+//===========================================================================
+
+/*
+=======================
+=
+= VL_Startup
+=
+=======================
+*/
+
+void	VL_Startup (global_game_variables_t *gvar)
+{
+	__asm	cld;
+
+	VGAmodeX(1/*TODO other modes*/, 1, gvar);
+	VL_LoadPalFileCore(gvar->video.palette, gvar);
+	//Quit ("Improper video card!  If you really have a VGA card that I am not\ndetecting it!", gvar);
+}
+
+
+
+/*
+=======================
+=
+= VL_Shutdown
+=
+=======================
+*/
+
+void	VL_Shutdown (global_game_variables_t *gvar)
+{
+	VGAmodeX(0, 1, gvar);
+}
+
+/*
+=======================
+=
+= VL_SetVGAPlaneMode
+=
+=======================
+*/
+#if 0
+void	VL_SetVGAPlaneMode (global_game_variables_t *gvar)
+{
+	VL_vgaSetMode(VGA_256_COLOR_MODE);
+	VL_DePlaneVGA ();
+	VGAMAPMASK(15);
+	VL_SetLineWidth (40, &gvar->video.ofs);
+}
+#endif
+
+//===========================================================================
+
+/*
+=================
+=
+= VL_ClearVideo
+=
+= Fill the entire video buffer with a given color
+=
+=================
+*/
+
+void VL_ClearVideo (byte color)
+{
+	__asm {
+		mov	dx,GC_INDEX
+		mov	al,GC_MODE
+		out	dx,al
+		inc	dx
+		in	al,dx
+		and	al,0xfc				// write mode 0 to store directly to video
+		out	dx,al
+
+		mov	dx,SC_INDEX
+		mov	ax,SC_MAPMASK+15*256
+		out	dx,ax				// write through all four planes
+
+		mov	ax,SCREENSEG
+		mov	es,ax
+		mov	al,[color]
+		mov	ah,al
+		mov	cx,0x8000			// 0x8000 words, clearing 8 video bytes/word
+		xor	di,di
+		rep	stosw
+	}
+}
+
+/*
+=============================================================================
+
+			VGA REGISTER MANAGEMENT ROUTINES
+
+=============================================================================
+*/
+
+
+/*
+=================
+=
+= VL_DePlaneVGA
+=
+=================
+*/
+#if 0
+void VL_DePlaneVGA (void)
+{
+
+//
+// change CPU addressing to non linear mode
+//
+
+//
+// turn off chain 4 and odd/even
+//
+	outportb (SC_INDEX,SC_MEMMODE);
+	outportb (SC_INDEX+1,(inportb(SC_INDEX+1)&~8)|4);
+
+	outportb (SC_INDEX,SC_MAPMASK);		// leave this set throughought
+
+//
+// turn off odd/even and set write mode 0
+//
+	outportb (GC_INDEX,GC_MODE);
+	outportb (GC_INDEX+1,inportb(GC_INDEX+1)&~0x13);
+
+//
+// turn off chain
+//
+	outportb (GC_INDEX,GC_MISCELLANEOUS);
+	outportb (GC_INDEX+1,inportb(GC_INDEX+1)&~2);
+
+//
+// clear the entire buffer space, because int 10h only did 16 k / plane
+//
+	VL_ClearVideo (0);
+
+//
+// change CRTC scanning from doubleword to byte mode, allowing >64k scans
+//
+	outportb (CRTC_INDEX,CRTC_UNDERLINE);
+	outportb (CRTC_INDEX+1,inportb(CRTC_INDEX+1)&~0x40);
+
+	outportb (CRTC_INDEX,CRTC_MODE);
+	outportb (CRTC_INDEX+1,inportb(CRTC_INDEX+1)|0x40);
+}
+#endif
+//===========================================================================
+
+/*
+====================
+=
+= VL_SetSplitScreen
+=
+====================
+*/
+
+void VL_SetSplitScreen (int linenum)
+{
+	VL_WaitVBL (1);
+	linenum=linenum*2-1;
+	outportb (CRTC_INDEX,CRTC_LINECOMPARE);
+	outportb (CRTC_INDEX+1,linenum % 256);
+	outportb (CRTC_INDEX,CRTC_OVERFLOW);
+	outportb (CRTC_INDEX+1, 1+16*(linenum/256));
+	outportb (CRTC_INDEX,CRTC_MAXSCANLINE);
+	outportb (CRTC_INDEX+1,inportb(CRTC_INDEX+1) & (255-64));
+}
+
 /////////////////////////////////////////////////////////////////////////////
-//																														//
-// setvideo() - This function Manages the video modes												//
-//																														//
+//															//
+// setvideo() - This function Manages the video modes						//
+//															//
 /////////////////////////////////////////////////////////////////////////////
 void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
 {
@@ -60,22 +229,26 @@ void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
 			// get old video mode
 			//in.h.ah = 0xf;
 			//int86(0x10, &in, &out);
-			gv->video.old_mode = vgaGetMode();//out.h.al;
+			gv->video.old_mode = VL_vgaGetMode();//out.h.al;
 			// enter mode
 			modexEnter(vq, cmem, gv);
 		break;
 	}
 }
 
-static void
-vgaSetMode(byte mode)
+//---------------------------------------------------
+//
+// Use the bios to set the current video mode
+//
+
+/*static */void
+VL_vgaSetMode(byte mode)
 {
 	union REGS regs;
 
 	regs.h.ah = SET_MODE;
 	regs.h.al = mode;
 	int86(VIDEO_INT, &regs, &regs);
-  //int10_setmode(mode);
 }
 
 //---------------------------------------------------
@@ -83,8 +256,8 @@ vgaSetMode(byte mode)
 // Use the bios to get the current video mode
 //
 
-byte/*FIXME: why long? "long" is 32-bit datatype, VGA modes are 8-bit numbers. */
-vgaGetMode()
+byte
+VL_vgaGetMode(void)
 {
 	return int10_getmode();
 }
@@ -92,11 +265,11 @@ vgaGetMode()
 /* -========================= Entry  Points ==========================- */
 void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 {
-	word i;
+	//word i;
 	struct vga_mode_params cm;
 	//int CRTParmCount;
 
-	vgaSetMode(VGA_256_COLOR_MODE);
+	VL_vgaSetMode(VGA_256_COLOR_MODE);
 	vga_enable_256color_modex();
 
 	update_state_from_vga();
@@ -158,27 +331,33 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 	vga_state.vga_stride = cm.offset * 2;
 	vga_write_crtc_mode(&cm,0);
 
-	/* clear video memory */
+	// clear video memory //
 	switch (cmem)
 	{
-		case 1: {
-			/* clear video memory */
-			dword far*ptr=(dword far*)vga_state.vga_graphics_ram;//VGA;	  /* used for faster screen clearing */
+		case 1:
+		{
+#if 0
+			dword far*ptr=(dword far*)vga_state.vga_graphics_ram;//VGA;	  // used for faster screen clearing //
 			vga_write_sequencer(2/*map mask register*/,0xf/*all 4 planes*/);
 			for(i = 0;i < 0x4000; i++) ptr[i] = 0x0000; // 0x4000 x dword = 64KB
-			/* fix up the palette and everything */
-			modexPalBlack();	//reset the palette~
+			// fix up the palette and everything //
+			modexPalBlack();	//reset the palette~//
+#endif
+			//
+			// clear the entire buffer space, because int 10h only did 16 k / plane
+			//
+			VL_ClearVideo (0);
 		}
 		break;
 	}
-//	VL_SetLineWidth (cm.offset, &gv->video.ofs);
+	VL_SetLineWidth (cm.offset, &gv->video.ofs);
 	gv->video.VL_Started=1;
 }
 
-void
-modexLeave() {
-	/* VGAmodeX restores original mode and palette */
-	vgaSetMode(TEXT_MODE);
+void modexLeave(void)
+{
+	// VGAmodeX restores original mode and palette
+	VL_vgaSetMode(TEXT_MODE);
 }
 
 page_t
@@ -644,14 +823,15 @@ fadePalette(sbyte fade, sbyte start, word iter, byte *palette) {
 }
 
 
-/* save and load */
-void
-modexPalSave(byte *palette) {
+// save and load
+void modexPalSave(byte *palette)
+{
 	int  i;
 
-	outp(PAL_READ_REG, 0);	  /* start at palette entry 0 */
-	for(i=0; i<PAL_SIZE; i++) {
-	palette[i] = inp(PAL_DATA_REG); /* read the palette data */
+	outp(PAL_READ_REG, 0);			// start at palette entry 0
+	for(i=0; i<PAL_SIZE; i++)
+	{
+		palette[i] = inp(PAL_DATA_REG);	// read the palette data
 	}
 }
 
@@ -696,18 +876,18 @@ modexLoadPalFile(byte *filename, byte *palette) {
 	fclose(file);
 }
 
-void VL_LoadPalFile(const char *filename, byte *palette)
+void VL_LoadPalFile(const char *filename, byte *palette, global_game_variables_t *gvar)
 {
-	VL_LoadPalFilewithoffset(filename, palette, 8);
-	VL_LoadPalFileCore(palette);
+	VL_LoadPalFilewithoffset(filename, palette, 8, gvar);
+//	VL_LoadPalFileCore(palette);
 }
 
-void VL_LoadPalFileCore(byte *palette)
+void VL_LoadPalFileCore(byte *palette, global_game_variables_t *gvar)
 {
-	VL_LoadPalFilewithoffset("data/16.pal", palette, 0);
+	VL_LoadPalFilewithoffset("data/16.pal", palette, 0, gvar);
 }
 
-void VL_LoadPalFilewithoffset(const char *filename, byte *palette, word o)
+void VL_LoadPalFilewithoffset(const char *filename, byte *palette, word o, global_game_variables_t *gvar)
 {
 	int fd;
 
@@ -716,15 +896,24 @@ void VL_LoadPalFilewithoffset(const char *filename, byte *palette, word o)
 		read(fd,palette,	PAL_SIZE);
 		close(fd);
 
-		VL_UpdatePaletteWrite(palette, o);
+		VL_UpdatePaletteWrite(palette, o, gvar);
 	}
 }
 
-void VL_UpdatePaletteWrite(byte *palette, word o)
+void VL_UpdatePaletteWrite(byte *palette, word o, global_game_variables_t *gvar)
 {
 	word i;
 	vga_palette_lseek(/*1+*/o);
-	for (i=o;i < 256-o;i++) vga_palette_write(palette[(i*3)+0]>>2,palette[(i*3)+1]>>2,palette[(i*3)+2]>>2);
+	//for (i=o;i < 256-o;i++)
+	for (i=0;i < 256-o;i++)
+		vga_palette_write(palette[(i*3)+0]>>2,palette[(i*3)+1]>>2,palette[(i*3)+2]>>2);
+
+	VL_PaletteSync(gvar);
+}
+
+void VL_PaletteSync(global_game_variables_t *gvar)
+{
+	modexPalSave(&gvar->video.palette);
 }
 
 void
@@ -1035,7 +1224,7 @@ void modexpdump(page_t *pee)
 		}
 	}
 }
-
+#if 0
 /////////////////////////////////////////////////////////////////////////////
 //																		 //
 // cls() - This clears the screen to the specified color, on the VGA or on //
@@ -1050,7 +1239,7 @@ void modexcls(page_t *page, byte color, byte *Where)
 	//_fmemset(VGA, color, 16000);
 	_fmemset(Where, color, page->stridew*page->height);
 }
-
+#endif
 //
 // pattern filler from joncampbell123's code
 //

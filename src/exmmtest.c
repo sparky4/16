@@ -64,6 +64,8 @@
 
 ////////////////////////////////////////////////////////////////////////////
 //#ifdef __BORLANDC__
+void VL_Startup (global_game_variables_t *gvar){}
+void VL_Shutdown (global_game_variables_t *gvar){}
 void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
 {
 	printf("VGAmodeX dummy:\n	%Fp	%Fp	%Fp\n", &vq, &cmem, gv);

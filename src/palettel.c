@@ -20,12 +20,13 @@
  *
  */
 #include "src/lib/16_vl.h"
-void main(int argc, char *argv[]) {
+void main(int argc, char *argv[])
+{
 	static global_game_variables_t gvar; word i;	char bakapee[64] = "data/16.pal";
 	if(argv[1]) strcpy(bakapee, argv[1]);// modexPalSave(&gvar.video.dpal); modexFadeOff(4, &gvar.video.dpal); modexPalBlack();
 
 	TL_VidInit(&gvar);	VGAmodeX(1, 0, &gvar);
-	VL_LoadPalFile(bakapee, &gvar.video.palette);		//modexLoadPalFile(bakapee, &(gvar.video.palette));
+	VL_LoadPalFile(bakapee, &gvar.video.palette, &gvar);		//modexLoadPalFile(bakapee, &(gvar.video.palette));
 	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);// modexFadeOn(4, &gvar.video.palette);
 	VL_ShowPage(&gvar.video.page[0], 1, 0);
 	modexpdump(&gvar.video.page[0]);

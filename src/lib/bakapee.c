@@ -22,6 +22,225 @@
 
 #include "src/lib/bakapee.h"
 
+struct glob_game_vars	*ggvv;
+//static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
+char global_temp_status_text[512];
+char global_temp_status_text2[512];
+
+//==========================================================================
+
+/*
+===================
+=
+= FizzleFade
+=
+= returns true if aborted
+=
+===================
+*/
+
+//extern	ControlInfo	c;
+#define PIXPOSX			gvar->video.page[0].sw/2
+#define PIXPOSY			gvar->video.page[0].sh/2
+
+boolean baka_FizzleFade (page_t *source, page_t *dest, unsigned frames, boolean abortable, global_game_variables_t *gvar)
+{
+	dword		p,pixperframe;
+	unsigned	drawofs,pagedelta;
+	byte 		mask,maskb[8] = {1,2,4,8};
+	unsigned	x,y,frame		,esorig;
+	dword		rndval;
+//	word TimeCount = *clockw;
+	word screenseg = SCREENSEG;
+
+	pagedelta = (word)dest->sw*dest->sh;//(word)(source->data - dest->data);//(dest->data - source->data)
+	rndval = 1;	esorig = 0;
+	x = y = dest->dx;
+	pixperframe = 76800/(dword)frames;
+
+//	IN_StartAck ();
+
+//	VL_ShowPage(dest, 1, 0);
+//	VL_ShowPage(source, 1, 0);
+
+//	modexClearRegion(dest, 0, 0, (dest->width), (dest->height), 12);
+	modexClearRegion(source, 0, 0, (source->width), (source->height), 64);
+
+	__asm {
+		mov	[esorig],es
+	}
+//	TimeCount=
+	frame=0;
+	do	// while (1)
+	{
+sprintf(global_temp_status_text, "%u", frame);
+modexprint(dest, PIXPOSX, PIXPOSY, 1, 0, 47, 0, 1, global_temp_status_text);
+		if (abortable && kbhit())//IN_CheckAck () )
+			return true;
+
+		__asm {
+			mov	es,[screenseg]
+		}
+
+		for (p=0;p<pixperframe;p++)
+		{
+			__asm {
+				//
+				// seperate random value into x/y pair
+				//
+				mov	ax,[WORD PTR rndval]
+				mov	dx,[WORD PTR rndval+2]
+				mov	bx,ax
+				dec	bl
+				mov	[BYTE PTR y],bl			// low 8 bits - 1 = y xoordinate
+				mov	bx,ax
+				mov	cx,dx
+				mov	[BYTE PTR x],ah			// next 9 bits = x xoordinate
+				mov	[BYTE PTR x+1],dl
+				//
+				// advance to next random element
+				//
+				shr	dx,1
+				rcr	ax,1
+				jnc	noxor
+				xor	dx,0x0001
+				xor	ax,0x2000
+#ifdef __BORLANDC__
+			}
+#endif
+noxor:
+#ifdef __BORLANDC__
+			__asm {
+#endif
+				mov	[WORD PTR rndval],ax
+				mov	[WORD PTR rndval+2],dx
+			}
+
+			if (x>dest->sw || y>dest->sh)
+				continue;
+			drawofs = (word)(source->data)+gvar->video.ofs.ylookup[y] + (x>>2);
+sprintf(global_temp_status_text, "draw - %Fp", drawofs);
+modexprint(dest, PIXPOSX, 16+PIXPOSY, 1, 0, 47, 0, 1, global_temp_status_text);
+sprintf(global_temp_status_text, "pdet - %Fp", pagedelta);
+modexprint(dest, PIXPOSX, 24+PIXPOSY, 1, 0, 47, 0, 1, global_temp_status_text);
+sprintf(global_temp_status_text, "srce - %Fp", source->data);
+modexprint(dest, PIXPOSX, 32+PIXPOSY, 1, 0, 47, 0, 1, global_temp_status_text);
+sprintf(global_temp_status_text, "dest - %Fp", dest->data);
+modexprint(dest, PIXPOSX, 40+PIXPOSY, 1, 0, 47, 0, 1, global_temp_status_text);
+
+			//
+			// copy one pixel
+			//
+			mask = x&3;
+			VGAREADMAP(mask);
+			mask = maskb[mask];
+			VGAMAPMASK(mask);
+
+			__asm {
+				mov	di,[drawofs]
+				mov	al,[es:di]
+				add	di,[pagedelta]
+				mov	[es:di],al
+			}
+
+			if (rndval == 1)		// entire sequence has been completed
+				return false;
+		}
+		frame++;
+//--		while (TimeCount<frame){}//;		// don't go too fast
+	} while (1);
+	__asm {
+		mov	es,[esorig]
+	}
+	return false;
+}
+#if 0
+boolean baka_FizzleFade (unsigned source, unsigned dest, unsigned width,unsigned height, unsigned frames, boolean abortable, global_game_variables_t *gvar)
+{
+	int			pixperframe;
+	unsigned	drawofs,pagedelta;
+	byte 		mask,maskb[8] = {1,2,4,8};
+	unsigned	x,y,p,frame;
+	dword		rndval;
+	word TimeCount = *clockw;
+	word screenseg = SCREENSEG;
+
+	pagedelta = dest-source;
+	rndval = 1;
+	x = y = 0;
+	pixperframe = 64000/frames;
+
+	VGAmodeX(0, 0, gvar);
+//	IN_StartAck ();
+//	VL_ShowPage((page_t *)dest, 1, 0);
+	VGAmodeX(1, 0, gvar);
+
+	TimeCount=frame=0;
+	do	// while (1)
+	{
+		if (abortable && !kbhit())//IN_CheckAck () )
+			return true;
+
+		__asm {
+			mov	es,[screenseg]
+		}
+
+		for (p=0;p<pixperframe;p++)
+		{
+			__asm {
+				//
+				// seperate random value into x/y pair
+				//
+					mov	ax,[WORD PTR rndval]
+					mov	dx,[WORD PTR rndval+2]
+					mov	bx,ax
+					dec	bl
+					mov	[BYTE PTR y],bl			// low 8 bits - 1 = y xoordinate
+					mov	bx,ax
+					mov	cx,dx
+					mov	[BYTE PTR x],ah			// next 9 bits = x xoordinate
+					mov	[BYTE PTR x+1],dl
+				//
+				// advance to next random element
+				//
+					shr	dx,1
+					rcr	ax,1
+					jnc	noxor
+					xor	dx,0x0001
+					xor	ax,0x2000
+noxor:
+					mov	[WORD PTR rndval],ax
+					mov	[WORD PTR rndval+2],dx
+			}
+
+			if (x>width || y>height)
+				continue;
+			drawofs = source+gvar->video.ofs.ylookup[y] + (x>>2);
+
+			//
+			// copy one pixel
+			//
+			mask = x&3;
+			VGAREADMAP(mask);
+			mask = maskb[mask];
+			VGAMAPMASK(mask);
+
+			__asm {
+				mov	di,[drawofs]
+				mov	al,[es:di]
+				add	di,[pagedelta]
+				mov	[es:di],al
+			}
+
+			if (rndval == 1)		// entire sequence has been completed
+				return false;
+		}
+		frame++;
+//		while (TimeCount<frame){}//;		// don't go too fast
+	} while (1);
+	return false;
+}
+#endif
 /* clrstdin() clear any leftover chars tha may be in stdin stream */
 void clrstdin()
 {
@@ -34,7 +253,8 @@ void colortest(page_t *page, bakapee_t *pee)
 {
 	//if(pee->coor < 256)
 	//{
-		modexcls(page, pee->coor, VGA);
+//		modexcls(page, pee->coor, VGA);
+		VL_ClearVideo (pee->coor);
 		pee->coor++;
 	//}else pee->coor = 0;
 }
@@ -44,7 +264,8 @@ void colorz(page_t *page, bakapee_t *pee)
 {
 	if(pee->coor <= pee->hgq)
 	{
-		modexcls(page, pee->coor, VGA);
+//		modexcls(page, pee->coor, VGA);
+		VL_ClearVideo (pee->coor);
 		pee->coor++;
 	}else pee->coor = pee->lgq;
 }
@@ -297,11 +518,9 @@ void ding(page_t *page, bakapee_t *pee, word q)
 			modexprint(page, page->sw/2, page->sh/2, 1, 0, 47, 0, 1, "bakapi");
 		break;
 		case 9:
-			if(pee->coor <= pee->hgq)
-			{
-				ssd(page, pee, q);
-				pee->coor++;
-			}else pee->coor = pee->lgq;
+			//baka_FizzleFade (ggvv->video.ofs.bufferofs, ggvv->video.ofs.displayofs, page->sw, page->sh, false, ggvv);
+//			modexprint(page, page->sw/2, page->sh/2, 1, 0, 47, 0, 1, "bakapi start");
+//			if(!baka_FizzleFade ((unsigned)page, (unsigned)page, page->width, page->height, 70, false, ggvv))
 		break;
 		case 10:
 			ssd(page, pee, q); /*printf("%d\n", pee->coor);*/

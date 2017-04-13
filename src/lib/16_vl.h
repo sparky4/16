@@ -151,21 +151,27 @@ extern byte far*  VGA;  /* The VGA Memory */
 //
 // VGA hardware routines
 //
-
-void VGAMAPMASK(byte x);
-void VGAWRITEMODE(byte x);
-void VGAREADMAP(byte x);
+void	VGAWRITEMODE(byte x),
+	VGAMAPMASK(byte x),
+	VGAREADMAP(byte x),
+	VGABITMASK(byte x);
 
 #define VW_Hlin(x,z,y,c,q)	VL_Hlin(x,y,(z)-(x)+1,c,q)
 #define VW_Vlin(y,z,x,c,q)	VL_Vlin(x,y,(z)-(y)+1,c,q)
 
 /* -============================ Functions =============================- */
 /* mode switching, page, and plane functions */
-void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv);
-void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv);
-byte vgaGetMode();
+void	VL_Startup (global_game_variables_t *gvar),
+	VL_Shutdown (global_game_variables_t *gvar),
+	VL_SetVGAPlaneMode (global_game_variables_t *gvar),
+	VL_ClearVideo (byte color),
+	VL_DePlaneVGA (),
+	VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv),
+	modexEnter(sword vq, boolean cmem, global_game_variables_t *gv);
+void VL_vgaSetMode(byte mode);
+byte VL_vgaGetMode(void);
 extern void TL_VidInit(global_game_variables_t *gvar);
-void modexLeave();
+void modexLeave(void);
 void modexsetBaseXMode();
 page_t modexDefaultPage(page_t *p);
 page_t modexNextPage(page_t *p);
@@ -192,10 +198,11 @@ void modexFlashOff(word fade, byte *palette);
 void modexPalSave(byte *palette);
 //byte *modexNewPal();
 void modexLoadPalFile(char *filename, byte *palette);
-void VL_LoadPalFile(const char *filename, byte *palette);
-void VL_LoadPalFileCore(byte *palette);
-void VL_LoadPalFilewithoffset(const char *filename, byte *palette, word o);
-void VL_UpdatePaletteWrite(byte *palette, word o);
+void VL_LoadPalFile(const char *filename, byte *palette, global_game_variables_t *gvar);
+void VL_LoadPalFileCore(byte *palette, global_game_variables_t *gvar);
+void VL_LoadPalFilewithoffset(const char *filename, byte *palette, word o, global_game_variables_t *gvar);
+void VL_UpdatePaletteWrite(byte *palette, word o, global_game_variables_t *gvar);
+void VL_PaletteSync(global_game_variables_t *gvar);
 void modexSavePalFile(char *filename, byte *palette);
 #define MenuFadeIn()	VL_FadeIn(0,255,&gamepal,10)
 
@@ -211,6 +218,7 @@ void VL_Plot (int x, int y, int color, ofs_t *ofs);
 void VL_Hlin (unsigned x, unsigned y, unsigned width, unsigned color, ofs_t *ofs);
 void VL_Vlin (int x, int y, int height, int color, ofs_t *ofs);
 void VL_Bar (int x, int y, int width, int height, int color, ofs_t *ofs);
+void VL_MemToScreen (byte far *source, int width, int height, int x, int y, ofs_t *ofs);
 void modexputPixel(page_t *page, int x, int y, byte color);
 byte modexgetPixel(page_t *page, int x, int y);
 
@@ -245,7 +253,6 @@ void modexprint(page_t *page, sword x, sword y, word t, boolean tlsw, word col, 
 void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
 void VL_modexPrintTextBox(global_game_variables_t *gvar);
 void modexpdump(page_t *pee);
-void modexcls(page_t *page, byte color, byte *Where);
 void VL_PatternDraw(video_t *video, word pn, boolean sw, boolean allsw);
 void modexWaitBorder();
 void modexWaitBorder_start();

@@ -19,9 +19,11 @@
  * Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-
-#ifndef __BAKAPI_H_
-#define __BAKAPI_H_
+/*
+ * BAKAPEE!
+ */
+#ifndef __BAKAPI_H__
+#define __BAKAPI_H__
 
 #include "src/lib/bakapee.h"
 #include "src/lib/wcpu/16_wcpu.h"
@@ -29,4 +31,4 @@
 //project 16 testing define switch for veiwing the contents of the video memory --sparky4
 #define BOINK // what does this mean? --J.C.
 
-#endif /*__BAKAPI_H_*/
+#endif /*__BAKAPI_H__*/

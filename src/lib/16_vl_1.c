@@ -3,19 +3,19 @@
  *
  * This file is part of Project 16.
  *
- * Project 16 is free software; you can redistribute it and/or modify
+ * Project 16 is free software; you can redistribute it and/or	modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
- * Project 16 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * Project 16 is distributed in	the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without	even the implied warranty of
+ * MERCHANTABILITY or	FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for	more details.
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>, or
- * write to the Free Software Foundation, Inc., 51 Franklin Street,
+ * write to the Free Software Foundation, Inc., 51 Franklin	Street,
  * Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
@@ -46,7 +46,7 @@ void	VL_SetScreen (unsigned int crtc, int pelpan)
 
 		mov	dx,STATUS_REGISTER_1
 
-	// wait for a display signal to make sure the raster isn't in the middle
+	// wait for	a display signal to make sure the raster isn't in	the middle
 	// of a sync
 
 #ifdef __BORLANDC__
@@ -121,7 +121,7 @@ SetScreen_setcrtc:
 	__asm {
 #endif
 	// set CRTC start
-	// for some reason, my XT's EGA card doesn't like word outs to the CRTC index...
+	// for	some reason, my XT's EGA card doesn't like word outs to the CRTC index...
 
 		mov	cx,[crtc]
 		mov	dx,CRTC_INDEX
@@ -141,7 +141,7 @@ SetScreen_setcrtc:
 	// set horizontal panning
 
 		mov	dx,ATR_INDEX
-//		mov	al,ATR_PELPAN or 20h
+//		mov	al,ATR_PELPAN or	20h
 		out	dx,al
 		jmp	SetScreen_done
 		mov	al,[BYTE PTR pelpan]		//pel pan value
@@ -164,7 +164,7 @@ SetScreen_done:
 =
 = VL_SetLineWidth
 =
-= Line witdh is in WORDS, 40 words is normal width for vgaplanegr
+= Line witdh is in	WORDS, 40 words is normal width for	vgaplanegr
 =
 ====================
 */
@@ -185,7 +185,7 @@ void VL_SetLineWidth (unsigned width, ofs_t *ofs)
 
 	offset = 0;
 
-	for (i=0;i<MAXSCANLINES;i++)
+	for	(i=0;i<MAXSCANLINES;i++)
 	{
 		ofs->ylookup[i]=offset;
 		offset += ofs->linewidth;
@@ -216,7 +216,7 @@ void VL_FillPalette (int red, int green, int blue)
 	int	i;
 
 	outportb (PAL_WRITE_REG,0);
-	for (i=0;i<256;i++)
+	for	(i=0;i<256;i++)
 	{
 		outportb (PAL_DATA_REG,red);
 		outportb (PAL_DATA_REG,green);
@@ -280,7 +280,7 @@ void VL_SetPalette (byte far *palette, video_t *v)
 	fastpalette=v->fastpalette;
 
 //	outportb (PAL_WRITE_REG,0);
-//	for (i=0;i<768;i++)
+//	for	(i=0;i<768;i++)
 //		outportb(PAL_DATA_REG,*palette++);
 
 	__asm {
@@ -293,14 +293,14 @@ void VL_SetPalette (byte far *palette, video_t *v)
 		test	[ss:fastpalette],1
 		jz	slowset
 //
-// set palette fast for cards that can take it
+// set palette fast for	cards that can take it
 //
 		//mov	cx,768
 		//rep outsb
 		//jmp	done
 
 //
-// set palette slowly for some video cards
+// set palette slowly for	some video cards
 //
 #ifdef __BORLANDC__
 	}
@@ -356,7 +356,7 @@ void VL_GetPalette (byte far *palette)
 	int	i;
 
 	outportb (PAL_READ_REG,0);
-	for (i=0;i<768;i++)
+	for	(i=0;i<768;i++)
 		*palette++ = inportb(PAL_DATA_REG);
 }
 
@@ -368,7 +368,7 @@ void VL_GetPalette (byte far *palette)
 =
 = VL_FadeOut
 =
-= Fades the current palette to the given color in the given number of steps
+= Fades the current palette to the given color	in	the given number of steps
 =
 =================
 */
@@ -385,11 +385,11 @@ void VL_FadeOut (int start, int end, int red, int green, int blue, int steps, vi
 //
 // fade through intermediate frames
 //
-	for (i=0;i<steps;i++)
+	for	(i=0;i<steps;i++)
 	{
 		origptr = &v->palette1[start][0];
 		newptr = &v->palette2[start][0];
-		for (j=start;j<=end;j++)
+		for	(j=start;j<=end;j++)
 		{
 			orig = *origptr++;
 			delta = red-orig;
@@ -437,9 +437,9 @@ void VL_FadeIn (int start, int end, byte far *palette, int steps, video_t *v)
 //
 // fade through intermediate frames
 //
-	for (i=0;i<steps;i++)
+	for	(i=0;i<steps;i++)
 	{
-		for (j=start;j<=end;j++)
+		for	(j=start;j<=end;j++)
 		{
 			delta = palette[j]-v->palette1[0][j];
 			v->palette2[0][j] = v->palette1[0][j] + delta * i / steps;
@@ -463,7 +463,7 @@ void VL_FadeIn (int start, int end, byte far *palette, int steps, video_t *v)
 =
 = VL_TestPaletteSet
 =
-= Sets the palette with outsb, then reads it in and compares
+= Sets the palette with outsb, then reads it in	and	compares
 = If it compares ok, fastpalette is set to true.
 =
 =================
@@ -473,7 +473,7 @@ void VL_TestPaletteSet (video_t *v)
 {
 	int	i;
 
-	for (i=0;i<768;i++)
+	for	(i=0;i<768;i++)
 		v->palette1[0][i] = i;
 
 	v->fastpalette = true;
@@ -522,7 +522,7 @@ void VL_Plot (int x, int y, int color, ofs_t *ofs)
 =================
 */
 
-void VL_Hlin (unsigned x, unsigned y, unsigned width, unsigned color, ofs_t *ofs)
+void VL_Hlin	(unsigned x, unsigned y, unsigned width, unsigned color, ofs_t *ofs)
 {
 	unsigned		xbyte;
 	byte			far *dest;
@@ -540,7 +540,7 @@ void VL_Hlin (unsigned x, unsigned y, unsigned width, unsigned color, ofs_t *ofs
 
 	if (midbytes<0)
 	{
-	// all in one byte
+	// all in	one byte
 		VGAMAPMASK(leftmask&rightmask);
 		*dest = color;
 		VGAMAPMASK(15);
@@ -569,7 +569,7 @@ void VL_Hlin (unsigned x, unsigned y, unsigned width, unsigned color, ofs_t *ofs
 =================
 */
 
-void VL_Vlin (int x, int y, int height, int color, ofs_t *ofs)
+void VL_Vlin	(int x, int y, int height, int color, ofs_t *ofs)
 {
 	byte	far *dest,mask;
 	VCLIPDEF
@@ -614,7 +614,7 @@ void VL_Bar (int x, int y, int width, int height, int color, ofs_t *ofs)
 
 	if (midbytes<0)
 	{
-	// all in one byte
+	// all in	one byte
 		VGAMAPMASK(leftmask&rightmask);
 		while (height--)
 		{
@@ -643,13 +643,48 @@ void VL_Bar (int x, int y, int width, int height, int color, ofs_t *ofs)
 	VGAMAPMASK(15);
 }
 
+//==========================================================================
+
+/*
+=================
+=
+= VL_MemToScreen
+=
+= Draws a block of data to the screen.
+=
+=================
+*/
+
+void VL_MemToScreen (byte far *source, int width, int height, int x, int y, ofs_t *ofs)
+{
+	byte    far *screen,far *dest,mask;
+	int		plane;
+
+	width>>=2;
+	dest = MK_FP(SCREENSEG,ofs->bufferofs+ofs->ylookup[y]+(x>>2) );
+	mask = 1 << (x&3);
+
+	for	(plane = 0; plane<4; plane++)
+	{
+		VGAMAPMASK(mask);
+		mask <<= 1;
+		if (mask == 16)
+			mask = 1;
+
+		screen = dest;
+		for	(y=0;y<height;y++,screen+=ofs->linewidth,source+=width)
+			_fmemcpy (screen,source,width);
+	}
+}
+
+//==========================================================================
 
 /*
 ==============
 
  VL_WaitVBL			******** NEW *********
 
- Wait for the vertical retrace (returns before the actual vertical sync)
+ Wait for	the vertical retrace (returns before the actual vertical sync)
 
 ==============
 */
@@ -670,7 +705,7 @@ void VL_WaitVBL(word num)
 
 		mov	cx,[num]
 	//
-	// wait for a display signal to make sure the raster isn't in the middle
+	// wait for	a display signal to make sure the raster isn't in	the middle
 	// of a sync
 	//
 #ifdef __BORLANDC__
@@ -703,23 +738,9 @@ void VL_WaitVBL(word num)
 }
 
 //===========================================================================
-
-void VGAMAPMASK(byte x)
-{
-	__asm {
-//		cli
-		mov	dx,SC_INDEX
-		mov	al,SC_MAPMASK
-		mov	ah,x
-		out	dx,ax
-//		sti
-	}
-}
-
-void VGAWRITEMODE(byte x)
-{
-	__asm {
-//		cli
+#if 0
+#define VGAWRITEMODE(x) asm{
+		cli
 		mov	dx,GC_INDEX
 		mov	al,GC_MODE
 		out	dx,al
@@ -728,19 +749,82 @@ void VGAWRITEMODE(byte x)
 		and	al,252
 		or	al,x
 		out	dx,al
-//		sti
+		sti
+}
+
+#define VGAMAPMASK(x) asm{
+		cli
+		mov	dx,SC_INDEX
+		mov	al,SC_MAPMASK
+		mov	ah,x
+		out	dx,ax
+		sti
+}
+
+#define VGAREADMAP(x) asm{
+		cli
+		mov	dx,GC_INDEX
+		mov	al,GC_READMAP
+		mov	ah,x
+		out	dx,ax
+		sti
+}
+
+#define EGABITMASK(x) asm{
+		mov	dx,GC_INDEX
+		mov	ax,GC_BITMASK+256*x
+		out	dx,ax
+		sti
+}
+#endif
+void VGAWRITEMODE(byte x)
+{
+	__asm {
+		cli
+		mov	dx,GC_INDEX
+		mov	al,GC_MODE
+		out	dx,al
+		inc	dx
+		in	al,dx
+		and	al,252
+		or	al,x
+		out	dx,al
+		sti
+	}
+}
+
+void VGAMAPMASK(byte x)
+{
+	__asm {
+		cli
+		mov	dx,SC_INDEX
+		mov	al,SC_MAPMASK
+		mov	ah,x
+		out	dx,ax
+		sti
 	}
 }
 
 void VGAREADMAP(byte x)
 {
 	__asm {
-//		cli
+		cli
 		mov	dx,GC_INDEX
 		mov	al,GC_READMAP
 		mov	ah,x
 		out	dx,ax
-//		sti
+		sti
+	}
+}
+
+void VGABITMASK(byte x)
+{
+	word q = 256*x;
+	__asm {
+		mov	dx,GC_INDEX
+		mov	ax,GC_BITMASK+q
+		out	dx,ax
+		sti
 	}
 }
 

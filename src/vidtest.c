@@ -107,7 +107,7 @@ void main(int argc, char *argv[])
 	modexPalBlack();
 
 	/* load our palette */
-	VL_LoadPalFile("data/16.pal", &gvar.video.palette);
+	VL_LoadPalFile("data/16.pal", &gvar.video.palette, &gvar);
 	bmp1.offset=(paloffset/3);
 	VL_palette(&bmp1, &gvar.video.palette, &paloffset, 0, 0, &gvar);
 

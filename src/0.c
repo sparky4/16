@@ -100,7 +100,7 @@ int main(int argc,char **argv)
 	VL_modexPalScramble(gvar.video.palette);
 
 	/* load color palette */
-	VL_LoadPalFile(bakapee2, &gvar.video.palette);
+	VL_LoadPalFile(bakapee2, &gvar.video.palette, &gvar);
 
 	/* preprocess the sprite to generate line offsets */
 	vrl_lineoffs = vrl1_vgax_genlineoffsets(vrl_header,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));

@@ -877,7 +877,7 @@ void shinku(global_game_variables_t *gv)
 				gv->video.page[/*!*/(gv->video.p)].dx,
 				gv->video.page[/*!*/(gv->video.p)].dy,
 				96, 16);
-			modexprint(&(gv->video.page[/*!*/(gv->video.p)]), x, y, type, 1, col, 1, bgcol, global_temp_status_text);
+			modexprint(&(gv->video.page[/*!*/(gv->video.p)]), x, y, type, 1, col, bgcol, 1, global_temp_status_text);
 //0000printf("dx=%u	dy=%u\n", gv->video.page[/*!*/(gv->video.p)].dx, gv->video.page[/*!*/(gv->video.p)].dy);
 		}
 #endif

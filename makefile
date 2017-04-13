@@ -250,7 +250,7 @@ testexec: $(EXEC) $(TESTEXEC2)
 # game and bakapi executables
 #
 16.exe:		16.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
-bakapi.exe:		bakapi.$(OBJ) gfx.lib $(DOSLIB) 16_wcpu.$(OBJ)
+bakapi.exe:		bakapi.$(OBJ) 16_vl.$(OBJ) 16_vl_1.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) $(DOSLIB) 16_wcpu.$(OBJ)# gfx.lib
 
 #
 # Test Executables!

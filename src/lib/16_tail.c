@@ -86,7 +86,7 @@ void Shutdown16(global_game_variables_t *gvar)
 	MM_Shutdown(gvar);
 #ifdef __WATCOMC__
 	if(gvar->video.VL_Started)
-		VGAmodeX(0, 1, gvar);
+		VL_Shutdown (gvar);//VGAmodeX(0, 1, gvar);
 #endif
 }
 
@@ -393,13 +393,13 @@ noxor:
 
 			if (rndval == 1)		// entire sequence has been completed
 			{
-//++++				VGABITMASK(255);
-//++++				VGAMAPMASK(15);
+				VGABITMASK(255);
+				VGAMAPMASK(15);
 				return;
 			}
 		}
 		frame++;
-//++++		while (TimeCount<frame){}	// don't go too fast
+		while (TimeCount<frame){}	// don't go too fast
 	} while (1);
 
 

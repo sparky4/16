@@ -122,7 +122,7 @@ void main()
 	/*modexLoadPalFile("data/spri/chikyuu.pal", &pal);
 	modexPalUpdate(pal);*/
 	//modexClearRegion(&gvar.video.page[0], 0, 0, gvar.video.page[0].width, gvar.video.page[0].height, 2);
-	VL_LoadPalFile("data/spri/chikyuu.pal", &gvar.video.palette);
+	VL_LoadPalFile("data/spri/chikyuu.pal", &gvar.video.palette, &gvar);
 	for (i = 0; i < 10; i++){
 		enti.spri.delay = 1;
 

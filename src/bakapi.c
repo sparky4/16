@@ -35,10 +35,13 @@ void
 main(int argc, char *argvar[])
 {
 	static global_game_variables_t gvar;
+	struct glob_game_vars	*ggvv;
 	char *a;
 	int i;
 	word panq=1, pand=0;
 	boolean panswitch=0;
+
+	ggvv=&gvar;
 
 	// allow changing default mode from command line
 	for (i=1;i < argc;) {
@@ -126,12 +129,23 @@ main(int argc, char *argvar[])
 
 	/* setup camera and screen~ */
 	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
+	gvar.video.page[1] = modexNextPage(&gvar.video.page[0]);
 
 	//modexPalUpdate(bmp.palette); //____
 	//modexDrawBmp(VGA, 0, 0, &bmp, 0); //____
 	//getch(); //____
 
 	VL_ShowPage(&gvar.video.page[0], 0, 0);
+	{
+		word w;
+		for(w=0;w<64000;w++)
+		{
+			ding(&gvar.video.page[1], &bakapee, 4);
+		}
+		if(!baka_FizzleFade (&gvar.video.page[1], &gvar.video.page[0], 70, true, &gvar))
+		modexprint(&gvar.video.page[0], gvar.video.page[0].sw/2, gvar.video.page[0].sh/2, 1, 0, 47, 0, 1, "bakapi ok");
+	}
+	while(!kbhit()){}
 
 // screen savers
 //#ifdef BOINK
@@ -148,8 +162,8 @@ main(int argc, char *argvar[])
 				}else c=getch();
 			}
 
-			if(!panswitch)	ding(&gvar.video.page[0], &bakapee, key);
-			else			ding(&gvar.video.page[0], &bakapee, 2);
+			if(!panswitch)	ding(&gvar.video.page[0], &bakapee, 2);
+			else			ding(&gvar.video.page[0], &bakapee, 9);
 			if(panswitch!=0)
 			{
 				//right movement
@@ -195,6 +209,24 @@ main(int argc, char *argvar[])
 						VL_ShowPage(&gvar.video.page[0], 0, 0);
 						panq++;
 					} else { panq = 1; pand = 0; }
+				}
+				if((c==0x4d && pand == 0) || pand == 2)
+				{
+					if(pand == 0){ pand = 2; }
+					if(panq<=(TILEWH/(4)))
+					{
+						gvar.video.page[0].dx++;
+						VL_ShowPage(&gvar.video.page[0], 0, 0);
+						panq++;
+					} else { panq = 1; pand = 0; }
+				}
+				if(c==0x01+1)
+				{
+					VL_ShowPage(&gvar.video.page[0], 0, 0);
+				}
+				if(c==0x02+1)
+				{
+					VL_ShowPage(&gvar.video.page[1], 0, 0);
 				}
 				if(c==0x71 || c==0xb1 || c=='p')
 				{
@@ -279,6 +311,7 @@ pee:
 					key = c - '0';
 					VGAmodeX(vgamodex_mode, 0, &gvar);
 					gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
+					gvar.video.page[1] = modexNextPage(&gvar.video.page[1]);
 		// this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
 		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
 					VL_ShowPage(&gvar.video.page[0], 0, 0);
@@ -294,6 +327,7 @@ pee:
 				break;
 				default:
 					key=0;
+					clrscr();	//added to clear screen wwww
 				break;
 			}
 		}
