@@ -44,7 +44,12 @@
 //#define EXMMVERBOSE__
 //	#define PRINTBBDUMP
 #define BUFFDUMP
+#ifdef __BORLANDC__
 #define NOVID
+#endif
+#ifdef __WATCOMC__
+#define NOVID
+#endif
 
 
 #define KEYP IN_Shutdown(&gvar); printf("\n\npress any key to continue!\n"); getch(); IN_Startup(&gvar);
@@ -63,7 +68,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-//#ifdef __BORLANDC__
+#ifdef NOVID
 //void VL_Startup (global_game_variables_t *gvar){}
 void VL_Shutdown (global_game_variables_t *gvar){}
 void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
@@ -82,7 +87,7 @@ void	TL_VidInit(global_game_variables_t *gvar)
 {
 	gvar->video.old_mode = 3;
 }
-//#endif
+#endif
 
 //printf("*	%Fp\t", *BBUF);
 //printf("*	     %04x\t", *BBUF);
@@ -185,9 +190,7 @@ main(int argc, char *argv[])
 								#ifndef NOVID
 	Startup16(&gvar);
 	// save the palette
-								#ifdef __WATCOMC__
 	modexPalSave(&gvar.video.dpal); modexFadeOff(4, &gvar.video.dpal); //modexPalBlack();
-								#endif
 								#else //NOVID
 	//printf("main()=%Fp	start MM\n", *argv[0]);
 	MM_Startup(&gvar);
@@ -271,12 +274,12 @@ PRINTBB; KEYP
 		IN_ClearKey(scan);
 		switch (scan)
 		{
-//			case sc_Space:
-//				MM_ShowMemory(&gvar);
-//			break;
+			case sc_Space:
+				MM_ShowMemory(&gvar);
+			break;
 //#ifdef __WATCOMC__
 			case sc_O:
-				modexPalUpdate0(&gvar.video.palette); modexpdump(&gvar.video.page);
+				VL_modexPalScramble(&gvar.video.palette); modexpdump(&gvar.video.page);
 			break;
 			case sc_P:
 				modexpdump(&gvar.video.page[0]);

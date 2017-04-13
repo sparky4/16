@@ -375,6 +375,17 @@ boolean CA_ReadFile(char *filename, memptr *ptr, global_game_variables_t *gvar)
 		return false;
 
 	size = filelength(handle);
+#ifdef __DEBUG_CA__
+	if(dbg_debugca>0){
+		printf("===============================================================================\n");
+		printf("		CA_ReadFile\n");
+		printf("===============================================================================\n");
+		//%04x
+		printf("	ptr=%Fp\n", ptr);
+		printf("	*ptr=%Fp\n", *ptr);
+		printf("	&ptr=%Fp\n", &ptr);
+	}
+#endif
 	if(!CA_FarRead(handle,*ptr,size, gvar))
 	{
 		close(handle);

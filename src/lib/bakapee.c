@@ -136,6 +136,7 @@ noxor:
 				continue;
 			//drawofs = source+(gvar->video.ofs.ylookup[y]) + (x>>2);
 			drawofs = source+(y*gvar->video.page[0].stridew) + (x>>2);
+/*
 sprintf(global_temp_status_text, "draw - %Fp", drawofs);
 modexprint(&(gvar->video.page[0]), PIXPOSX, q+PIXPOSY, 1, 0, 47, 0, 1, global_temp_status_text); q+=8;
 sprintf(global_temp_status_text, "pdet - %Fp", pagedelta);
@@ -144,6 +145,7 @@ sprintf(global_temp_status_text, "srce - %Fp", source);
 modexprint(&(gvar->video.page[0]), PIXPOSX, q+PIXPOSY, 1, 0, 47, 0, 1, global_temp_status_text); q+=8;
 sprintf(global_temp_status_text, "dest - %Fp", dest);
 modexprint(&(gvar->video.page[0]), PIXPOSX, q+PIXPOSY, 1, 0, 47, 0, 1, global_temp_status_text); q=16;
+*/
 
 			//
 			// copy one pixel

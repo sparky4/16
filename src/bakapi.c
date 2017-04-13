@@ -150,12 +150,12 @@ main(int argc, char *argvar[])
 			ding(&gvar.video.page[1], &bakapee, 2);
 		}
 #ifdef BAKAFIZZUNSIGNED
-		if(!baka_FizzleFade (gvar.video.ofs.bufferofs, gvar.video.ofs.displayofs, vga_state.vga_width, vga_state.vga_height, 70, true, &gvar))
+		baka_FizzleFade (gvar.video.ofs.bufferofs, gvar.video.ofs.displayofs, vga_state.vga_width, vga_state.vga_height, 70, true, &gvar);
 #else
-		if(!baka_FizzleFade (&gvar.video.page[1], &gvar.video.page[0], vga_state.vga_width, vga_state.vga_height, 70, true, &gvar))
+		baka_FizzleFade (&gvar.video.page[1], &gvar.video.page[0], vga_state.vga_width, vga_state.vga_height, 70, true, &gvar);
 #endif
 		//ding(&gvar.video.page[showpage], &bakapee, 9);
-		modexprint(&gvar.video.page[0], gvar.video.page[0].sw/2, gvar.video.page[0].sh/2, 1, 0, 47, 0, 1, "bakapi ok");
+//		modexprint(&gvar.video.page[0], gvar.video.page[0].sw/2, gvar.video.page[0].sh/2, 1, 0, 47, 0, 1, "bakapi ok");
 	}
 	while(!kbhit()){}
 
