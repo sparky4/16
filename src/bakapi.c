@@ -27,9 +27,14 @@
  */
 static bakapee_t bakapee;
 word key,d,xpos,ypos,xdir,ydir;
-sword vgamodex_mode = 1; // 320x240 default
+sword vgamodex_mode = 1; //	1 = 320x240 with buffer
 void TL_VidInit(global_game_variables_t *gvar){}
 //int ch=0x0;
+
+#define SETUPPAGEBAKAPI \
+gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0], &gvar.video); \
+gvar.video.page[1] = modexNextPage(&gvar.video.page[0]);
+
 
 void
 main(int argc, char *argvar[])
@@ -40,6 +45,7 @@ main(int argc, char *argvar[])
 	int i;
 	word panq=1, pand=0;
 	boolean panswitch=0;
+	word	showpage=0;
 
 	ggvv=&gvar;
 
@@ -128,21 +134,23 @@ main(int argc, char *argvar[])
 	}
 
 	/* setup camera and screen~ */
-	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
-	gvar.video.page[1] = modexNextPage(&gvar.video.page[0]);
+	SETUPPAGEBAKAPI
 
 	//modexPalUpdate(bmp.palette); //____
 	//modexDrawBmp(VGA, 0, 0, &bmp, 0); //____
 	//getch(); //____
+	VL_SetLineWidth (40, &gvar);
 
-	VL_ShowPage(&gvar.video.page[0], 0, 0);
+	VL_ShowPage(&gvar.video.page[showpage], 0, 0);
 	{
 		word w;
 		for(w=0;w<64000;w++)
 		{
+			ding(&gvar.video.page[showpage], &bakapee, 4);
 			ding(&gvar.video.page[1], &bakapee, 4);
 		}
-		if(!baka_FizzleFade (&gvar.video.page[1], &gvar.video.page[0], 70, true, &gvar))
+		if(!baka_FizzleFade (gvar.video.ofs.bufferofs, gvar.video.ofs.displayofs, vga_state.vga_width, vga_state.vga_height, 70, true, &gvar))
+		//ding(&gvar.video.page[showpage], &bakapee, 9);
 		modexprint(&gvar.video.page[0], gvar.video.page[0].sw/2, gvar.video.page[0].sh/2, 1, 0, 47, 0, 1, "bakapi ok");
 	}
 	while(!kbhit()){}
@@ -162,8 +170,8 @@ main(int argc, char *argvar[])
 				}else c=getch();
 			}
 
-			if(!panswitch)	ding(&gvar.video.page[0], &bakapee, 2);
-			else			ding(&gvar.video.page[0], &bakapee, 9);
+			if(!panswitch)	ding(&gvar.video.page[0], &bakapee, key);
+			else			ding(&gvar.video.page[0], &bakapee, 2);
 			if(panswitch!=0)
 			{
 				//right movement
@@ -255,17 +263,18 @@ main(int argc, char *argvar[])
 					printf("on.	");
 				break;
 			}
-			//printf("\n");
 			printf("Pan mode is ");
 			switch (panswitch)
 			{
 				case 0:
-					printf("off.\n");
+					printf("off.");
 				break;
 				case 1:
-					printf("on.\n");
+					printf("on.");
 				break;
 			}
+			printf(" Showing page %u", showpage);
+			printf("\n");
 			printf("Incrementation of color happens at every %uth plot.\n", bakapee.bonk);
 			printf("Enter 1, 2, 3, 4, 5, 6, 8, or 9 to run a screensaver, or enter 0 to quit.\n");
 pee:
@@ -298,7 +307,19 @@ pee:
 						break;
 					}
 					key=0;
-					break;
+				break;
+				case 'q':
+					switch (showpage)
+					{
+						case 0:
+							showpage=1;
+						break;
+						case 1:
+							showpage=0;
+						break;
+					}
+					key=0;
+				break;
 				case '8':
 					c+=8;
 				case '1':
@@ -310,11 +331,11 @@ pee:
 				case '9':
 					key = c - '0';
 					VGAmodeX(vgamodex_mode, 0, &gvar);
-					gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]);
-					gvar.video.page[1] = modexNextPage(&gvar.video.page[1]);
+					VL_ShowPage(&gvar.video.page[showpage], 0, 0);
+					SETUPPAGEBAKAPI
 		// this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
 		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
-					VL_ShowPage(&gvar.video.page[0], 0, 0);
+					VL_ShowPage(&gvar.video.page[showpage], 0, 0);
 					break;
 				case '-':
 					if(bakapee.bonk>0)
@@ -327,9 +348,9 @@ pee:
 				break;
 				default:
 					key=0;
-					clrscr();	//added to clear screen wwww
 				break;
 			}
+			clrscr();	//added to clear screen wwww
 		}
 	}
 #if 0

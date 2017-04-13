@@ -26,8 +26,6 @@
 #include "src/lib/16_tail.h"
 #include "src/lib/16text.h"
 
-static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
-
 /*
 ==========================
 =
@@ -247,68 +245,53 @@ void Shutdown16(global_game_variables_t *gvar)
 
 #define PIXPERFRAME     1600
 
-void FizzleFade (unsigned source, unsigned dest,
-	unsigned width,unsigned height, boolean abortable, global_game_variables_t *gv)
+boolean FizzleFade (unsigned source, unsigned dest, unsigned width, unsigned height, unsigned frames, boolean abortable, global_game_variables_t *gvar)
 {
-	unsigned        drawofs,pagedelta;
-	unsigned        char maskb[8] = {1,2,4,8,16,32,64,128};
-	unsigned        x,y,p,frame;
-	long            rndval;
-	word TimeCount = *clockw;
+	word		p,pixperframe;
+	unsigned	drawofs,pagedelta;
+	byte 		mask,maskb[8] = {1,2,4,8};
+	unsigned	x,y,frame		,esorig,q;
+	dword		rndval;
 	word screenseg = SCREENSEG;
 
 	pagedelta = dest-source;
-//++++	VL_SetScreen (dest,0);
-	rndval = 1;
+	rndval = 1;	esorig = 0; q = 16;
 	x = y = 0;
+	pixperframe = 76800/(dword)frames;
+
+	IN_StartAck (gvar);
 
 	__asm {
-		mov	es,[screenseg]
-		mov	dx,SC_INDEX
-		mov	al,SC_MAPMASK
-		out	dx,al
+		mov	[esorig],es
 	}
-
-	TimeCount=frame=0;
-	do      // while (1)
+	frame=0;
+	do	// while (1)
 	{
-		if (abortable)
-		{
-			IN_ReadControl(0,gv);
-			if (gv->player[0].info.button0 || gv->player[0].info.button1 || gv->in.inst->Keyboard[sc_Space]
-			|| gv->in.inst->Keyboard[sc_Enter])
-			{
-//++++				VW_ScreenToScreen (source,dest,width/8,height);
-				return;
-			}
+		if (abortable && IN_CheckAck (gvar) )
+			return true;
+
+		__asm {
+			mov	es,[screenseg]
 		}
 
-		for (p=0;p<PIXPERFRAME;p++)
+		for (p=0;p<pixperframe;p++)
 		{
-			//
-			// seperate random value into x/y pair
-			//
 			__asm {
+				//
+				// seperate random value into x/y pair
+				//
 				mov	ax,[WORD PTR rndval]
 				mov	dx,[WORD PTR rndval+2]
 				mov	bx,ax
 				dec	bl
-				mov	[BYTE PTR y],bl                 // low 8 bits - 1 = y xoordinate
+				mov	[BYTE PTR y],bl			// low 8 bits - 1 = y xoordinate
 				mov	bx,ax
 				mov	cx,dx
-				shr	cx,1
-				rcr	bx,1
-				shr	bx,1
-				shr	bx,1
-				shr	bx,1
-				shr	bx,1
-				shr	bx,1
-				shr	bx,1
-				shr	bx,1
-				mov	[x],bx                                  // next 9 bits = x xoordinate
-			//
-			// advance to next random element
-			//
+				mov	[BYTE PTR x],ah			// next 9 bits = x xoordinate
+				mov	[BYTE PTR x+1],dl
+				//
+				// advance to next random element
+				//
 				shr	dx,1
 				rcr	ax,1
 				jnc	noxor
@@ -325,84 +308,39 @@ noxor:
 				mov	[WORD PTR rndval+2],dx
 			}
 
-			if (x>width || y>height)
+			if ((x>width || y>height) && (x<width*2 && y<height*2))
 				continue;
-			drawofs = source+gv->video.ofs.ylookup[y];
+			drawofs = source+(gvar->video.ofs.ylookup[y]) + (x>>2);
+
+			//
+			// copy one pixel
+			//
+//*
+			mask = x&3;
+			VGAREADMAP(mask);
+			mask = maskb[mask];
+			VGAMAPMASK(mask);
+//*/
+//			modexputPixel(&(gvar->video.page[0]), x, y, rand()%8);
+//			VL_Plot (x, y, 15, &(gvar->video.ofs));
 
 			__asm {
-				mov	cx,[x]
-				mov	si,cx
-				and	si,7
-				mov	dx,GC_INDEX
-				mov	al,GC_BITMASK
-				mov	ah,BYTE PTR [maskb+si]
-				out	dx,ax
-
-				mov	si,[drawofs]
-				shr	cx,1
-				shr	cx,1
-				shr	cx,1
-				add	si,cx
-				mov	di,si
+				mov	di,[drawofs]
+				mov	al,[es:di]
 				add	di,[pagedelta]
-
-				mov	dx,GC_INDEX
-				mov	al,GC_READMAP                   // leave GC_INDEX set to READMAP
-				out	    dx,al
-
-				mov	dx,SC_INDEX+1
-				mov	al,1
-				out	    dx,al
-				mov	dx,GC_INDEX+1
-				mov	al,0
-				out	    dx,al
-
-				mov	bl,[es:si]
-				xchg	[es:di],bl
-
-				mov	dx,SC_INDEX+1
-				mov	al,2
-				out	    dx,al
-				mov	dx,GC_INDEX+1
-				mov	al,1
-				out	    dx,al
-
-				mov	bl,[es:si]
-				xchg	[es:di],bl
-
-				mov	dx,SC_INDEX+1
-				mov	al,4
-				out	    dx,al
-				mov	dx,GC_INDEX+1
-				mov	al,2
-				out	    dx,al
-
-				mov	bl,[es:si]
-				xchg	[es:di],bl
-
-				mov	dx,SC_INDEX+1
-				mov	al,8
-				out	    dx,al
-				mov	dx,GC_INDEX+1
-				mov	al,3
-				out	    dx,al
-
-				mov	bl,[es:si]
-				xchg	[es:di],bl
+				mov	[es:di],al
 			}
 
 			if (rndval == 1)		// entire sequence has been completed
-			{
-				VGABITMASK(255);
-				VGAMAPMASK(15);
-				return;
-			}
+				return false;
 		}
 		frame++;
-		while (TimeCount<frame){}	// don't go too fast
+//--		while (TimeCount<frame){}//;		// don't go too fast
 	} while (1);
-
-
+	__asm {
+		mov	es,[esorig]
+	}
+	return false;
 }
 
 //===========================================================================

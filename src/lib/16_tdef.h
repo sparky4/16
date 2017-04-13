@@ -398,6 +398,7 @@ typedef struct
 {
 	boolean	VL_Started,VL_Initiated;
 	char old_mode;		//old video mode before game!
+	sword curr_mode;		//modex curent mode
 	byte palette[PALSIZE], dpal[PALSIZE];	//palette array
 	page_t page[MAXPAGE];	//can be used as a pointer to root page[0]
 	word vmem_remain;	//remaining video memory

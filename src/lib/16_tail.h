@@ -129,7 +129,7 @@ word modexPalOverscan(word col);
 void Shutdown16(global_game_variables_t *gvar);
 void Startup16(global_game_variables_t *gvar);
 void TL_VidInit(global_game_variables_t *gvar);
-void FizzleFade (unsigned source, unsigned dest,unsigned width,unsigned height, boolean abortable, global_game_variables_t *gv);
+boolean FizzleFade (unsigned source, unsigned dest, unsigned width, unsigned height, unsigned frames, boolean abortable, global_game_variables_t *gvar);
 void DebugMemory_(global_game_variables_t *gvar, boolean q);
 void ClearMemory (global_game_variables_t *gvar);
 void Quit (global_game_variables_t *gvar, char *error);

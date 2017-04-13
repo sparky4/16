@@ -282,14 +282,15 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 	switch(vq)
 	{
 		case 1:
+		case 8: //320x240 no buffer
 			//CRTParmCount = sizeof(ModeX_320x240regs) / sizeof(ModeX_320x240regs[0]);
 			/*for(i=0; i<CRTParmCount; i++) {
 				outpw(CRTC_INDEX, ModeX_320x240regs[i]);
 			}*/
-			/* width and height */
+			// width and height //
 			gv->video.page[0].sw = vga_state.vga_width = 320; // VGA lib currently does not update this
 			gv->video.page[0].sh = vga_state.vga_height = 240; // VGA lib currently does not update this
-			/* virtual width and height. match screen, at first */
+			// virtual width and height. match screen, at first //
 			gv->video.page[0].height = gv->video.page[0].sh;
 			gv->video.page[0].width = gv->video.page[0].sw;
 
@@ -319,7 +320,15 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 		case 2: // TODO: 160x120 according to ModeX_160x120regs
 			return;
 		case 3: // TODO: 160x120 according to ModeX_320x200regs
-			return;
+			gv->video.page[0].sw = vga_state.vga_width = 300; // VGA lib currently does not update this
+			gv->video.page[0].sh = vga_state.vga_height = 200; // VGA lib currently does not update this
+			// virtual width and height. match screen, at first //
+			gv->video.page[0].height = gv->video.page[0].sh;
+			gv->video.page[0].width = gv->video.page[0].sw;
+
+			cm.offset = (vga_state.vga_width / (4 * 2)); // 320 wide (40 x 4 pixel groups x 2)
+			//return;
+		break;
 		case 4: // TODO: 160x120 according to ModeX_192x144regs
 			return;
 		case 5: // TODO: 160x120 according to ModeX_256x192regs
@@ -350,7 +359,8 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 		}
 		break;
 	}
-	VL_SetLineWidth (cm.offset, &gv->video.ofs);
+	VL_SetLineWidth (cm.offset, gv);
+	gv->video.curr_mode=vq;
 	gv->video.VL_Started=1;
 }
 
@@ -360,6 +370,7 @@ void modexLeave(void)
 	VL_vgaSetMode(TEXT_MODE);
 }
 
+#if 0
 page_t
 modexDefaultPage(page_t *p)
 {
@@ -373,8 +384,46 @@ modexDefaultPage(page_t *p)
 	page.dy = 0;
 	page.sw = p->sw;
 	page.sh = p->sh;
-	page.width = p->sw+TILEWHD;
-	page.height = p->sh+TILEWHD;
+	page.width = p->sw;
+	page.height = p->sh;
+	page.ti.tw = page.sw/TILEWH;
+	page.ti.th = page.sh/TILEWH;
+	page.ti.tilesw=page.width/TILEWH;
+	page.ti.tilesh=page.height/TILEWH;
+	page.ti.tilemidposscreenx = page.ti.tw/2;
+	page.ti.tilemidposscreeny = (page.ti.th/2)+1;
+	page.stridew=page.width/4;
+	page.pagesize = (word)(page.stridew)*page.height;
+	page.pi=page.width*4;
+	page.id = 0;
+
+	if(ggvv->video.curr_mode = 1)
+	{
+		page.width += TILEWHD;
+		page.height += TILEWHD;
+	}
+
+	return page;
+}
+#endif
+page_t
+modexDefaultPage(page_t *p, video_t *v)
+{
+	page_t page;
+
+	/* default page values */
+	//page.data = VGA;
+	//page.data = (byte far *)(vga_state.vga_graphics_ram);
+	page.data = (vga_state.vga_graphics_ram);
+	page.dx = 0;
+	page.dy = 0;
+	page.sw = p->sw;
+	page.sh = p->sh;
+	page.width = p->sw;
+	page.height = p->sh;
+	if(v->curr_mode == 1)
+{	page.width += TILEWHD;
+	page.height += TILEWHD; }
 	page.ti.tw = page.sw/TILEWH;
 	page.ti.th = page.sh/TILEWH;
 	page.ti.tilesw=page.width/TILEWH;
@@ -477,7 +526,7 @@ void modexHiganbanaPageSetup(video_t *video)
 {
 	video->vmem_remain=65535U;
 	video->num_of_pages=0;
-	(video->page[0]) = modexDefaultPage(&(video->page[0]));	video->num_of_pages++;	//video->page[0].width += (TILEWHD); video->page[0].height += (TILEWHD);
+	(video->page[0]) = modexDefaultPage(&(video->page[0]), video);	video->num_of_pages++;	//video->page[0].width += (TILEWHD); video->page[0].height += (TILEWHD);
 	(video->page[1]) = modexNextPage(&(video->page[0]));	video->num_of_pages++;
 //0000	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), (video->page[0]).width, TILEWH*4);		video->num_of_pages++;
 //0000	(video->page[3]) = (video->page[2]);		video->num_of_pages++;
@@ -878,7 +927,7 @@ modexLoadPalFile(byte *filename, byte *palette) {
 
 void VL_LoadPalFile(const char *filename, byte *palette, global_game_variables_t *gvar)
 {
-	VL_LoadPalFilewithoffset(filename, palette, 8, gvar);
+	VL_LoadPalFilewithoffset(filename, palette, 9, gvar);
 //	VL_LoadPalFileCore(palette);
 }
 

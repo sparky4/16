@@ -1266,7 +1266,7 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 	sdword	end,owner;
 	byte    scratch[160],scratch0[4096],str[16];
 
-	VL_SetLineWidth(40, &gvar->video.ofs);
+	VL_SetLineWidth(40, gvar);
 	temp = gvar->video.ofs.bufferofs;
 	gvar->video.ofs.bufferofs = gvar->video.ofs.displayofs;
 	scan = gvar->mm.mmhead;

@@ -173,7 +173,7 @@ byte VL_vgaGetMode(void);
 extern void TL_VidInit(global_game_variables_t *gvar);
 void modexLeave(void);
 void modexsetBaseXMode();
-page_t modexDefaultPage(page_t *p);
+page_t modexDefaultPage(page_t *p, video_t *v);
 page_t modexNextPage(page_t *p);
 page_t modexNextPageFlexibleSize(page_t *p, word x, word y);
 void modexCalcVmemRemain(video_t *video);
@@ -258,7 +258,7 @@ void modexWaitBorder();
 void modexWaitBorder_start();
 void modexWaitBorder_end();
 void VL_WaitVBL(word num);
-void VL_SetLineWidth (unsigned width, ofs_t *ofs);
+void VL_SetLineWidth (unsigned width, global_game_variables_t *gvar);
 void VL_PrintmodexmemInfo(video_t *v);
 
 #endif

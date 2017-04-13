@@ -41,7 +41,7 @@ typedef struct {
 	word bonk,lgq,hgq;
 } bakapee_t;
 
-boolean baka_FizzleFade (page_t *source, page_t *dest, unsigned frames, boolean abortable, global_game_variables_t *gvar);
+boolean baka_FizzleFade (unsigned source, unsigned dest, unsigned width, unsigned height, unsigned frames, boolean abortable, global_game_variables_t *gvar);
 void clrstdin();
 void colortest(page_t *page, bakapee_t *pee);
 void colorz(page_t *page, bakapee_t *pee);

@@ -24,6 +24,7 @@
  */
 
 #include "src/lib/16_tail.h"
+#include "src/lib/16_vl.h"
 
 void	TL_VidInit(global_game_variables_t *gvar)
 {

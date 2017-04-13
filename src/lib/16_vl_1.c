@@ -169,7 +169,7 @@ SetScreen_done:
 ====================
 */
 
-void VL_SetLineWidth (unsigned width, ofs_t *ofs)
+void VL_SetLineWidth (unsigned width, global_game_variables_t *gvar)
 {
 	int i,offset;
 
@@ -181,15 +181,17 @@ void VL_SetLineWidth (unsigned width, ofs_t *ofs)
 //
 // set up lookup tables
 //
-	ofs->linewidth = width*2;
+	gvar->video.ofs.linewidth = width*2;
 
 	offset = 0;
 
 	for	(i=0;i<MAXSCANLINES;i++)
 	{
-		ofs->ylookup[i]=offset;
-		offset += ofs->linewidth;
+		gvar->video.ofs.ylookup[i]=offset;
+		offset += gvar->video.ofs.linewidth;
 	}
+	gvar->video.ofs.displayofs = 0;
+	gvar->video.ofs.bufferofs = gvar->video.page[0].width*gvar->video.page[0].height;//gvar->video.page[0].pagesize;
 }
 
 /*
