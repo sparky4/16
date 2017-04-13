@@ -33,9 +33,10 @@ char global_temp_status_text2[512];
 
 void VL_modexPrintTextBox(global_game_variables_t *gvar)
 {
-#define PRINTTEXTBOXW	gvar->video.page[0].sw
-#define PRINTTEXTBOXH	160
-#define PRINTTEXTBOXSIZE	20480//51200
+#define PRINTTEXTBOXW	gvar->video.page[0].width
+#define PRINTTEXTBOXH	gvar->video.page[0].height-96
+#define PRINTTEXTBOXY	160-48//112//184//gvar->video.page[0].height-100-16
+//#define PRINTTEXTBOXSIZE	20480//51200
 #define PRINTTEXTBOXHLINE		0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD,	0xCD//,	0xCD,	0xCD,	0xCD,	0xCD
 #define PRINTTEXTBOXHLINETOP		0xCD, 0xCD, 0xCD, 0xCD, 0xCD, 0xCD, 0xCD, 0xCD, 0xCB, 0xCD, PRINTTEXTBOXHLINE
 #define PRINTTEXTBOXHLINEBOTTOM	0xCD, 0xCD, 0xCD, 0xCD, 0xCD, 0xCD, 0xCD, 0xCD, 0xCA, 0xCD, PRINTTEXTBOXHLINE
@@ -54,7 +55,7 @@ void VL_modexPrintTextBox(global_game_variables_t *gvar)
 	word x = gvar->video.page[/*!*/(gvar->video.p)].dx;	//(gv->video.page[(gv->video.p)].tlx) - // follow the screen
 	word y = gvar->video.page[/*!*/(gvar->video.p)].dy;	//(gv->video.page[(gv->video.p)].tly) - // follow the screen
 	word col = 3, bgcol = 0, type = 1;//w = 64, h = 8,
-	word v = gvar->video.page[0].height-PRINTTEXTBOXH;	//vertical offset
+	word v = PRINTTEXTBOXY;	//vertical offset
 	nibble i;
 	boolean			done;
 	ScanCode		scan;
@@ -63,12 +64,11 @@ void VL_modexPrintTextBox(global_game_variables_t *gvar)
 	word q;
 #endif
 	//backuppart
-
 	modexCopyPageRegion(&gvar->video.page[1], &gvar->video.page[0],
-			x,
-			gvar->video.page[0].height-PRINTTEXTBOXH,
-			x,
-			gvar->video.page[0].height-PRINTTEXTBOXH,
+			0,
+			PRINTTEXTBOXY,
+			0,
+			PRINTTEXTBOXY,
 			PRINTTEXTBOXW, PRINTTEXTBOXH);
 //	memcpy(&textboxbuff, gvar->video.page[0].data, PRINTTEXTBOXSIZE);
 // 		mxOutText(xpos+1, ypos+gvar.video.page[0].height-40, "|    |Chikyuu:$line1");
@@ -96,6 +96,7 @@ void VL_modexPrintTextBox(global_game_variables_t *gvar)
 	sprintf(global_temp_status_text, "%s", str3);
 	modexprint(&(gvar->video.page[(gvar->video.p)]), x, y+gvar->video.page[0].height-v, type, 1, col, bgcol, 1, global_temp_status_text);
 	//PRINT TEXT
+//		sprintf(global_temp_status_text, "%c", 0x07);	modexprint(&(gvar->video.page[(gvar->video.p)]), x, y+gvar->video.page[0].height-v, type, 1, col, bgcol, 1,		global_temp_status_text);
 	for (i = 0,done = false;!done;)
 	{
 		while (!(scan = gvar->in.inst->LastScan))
@@ -117,10 +118,10 @@ void VL_modexPrintTextBox(global_game_variables_t *gvar)
 	}
 
 	modexCopyPageRegion(&gvar->video.page[0], &gvar->video.page[1],
-			x,
-			gvar->video.page[0].height-PRINTTEXTBOXH,
-			x,
-			gvar->video.page[0].height-PRINTTEXTBOXH,
+			0,
+			PRINTTEXTBOXY,
+			0,
+			PRINTTEXTBOXY,
 			PRINTTEXTBOXW, PRINTTEXTBOXH);
 //	memcpy(&gvar->video.page[0].data, &textboxbuff, PRINTTEXTBOXSIZE);
 }
