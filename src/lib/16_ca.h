@@ -27,7 +27,7 @@
 
 //===========================================================================
 
-#define NOMAPS
+//#define NOMAPS
 #define NOGRAPHICS
 #define NOAUDIO
 

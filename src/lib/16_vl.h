@@ -168,12 +168,12 @@ void	VL_Startup (global_game_variables_t *gvar),
 	VL_DePlaneVGA (),
 	VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv),
 	modexEnter(sword vq, boolean cmem, global_game_variables_t *gv);
-void VL_vgaSetMode(byte mode);
+//void VL_vgaSetMode(byte mode);
 byte VL_vgaGetMode(void);
 extern void TL_VidInit(global_game_variables_t *gvar);
 void modexLeave(void);
 void modexsetBaseXMode();
-page_t modexDefaultPage(page_t *p, video_t *v);
+page_t modexDefaultPage(page_t *p/*, video_t *v*/);
 page_t modexNextPage(page_t *p);
 page_t modexNextPageFlexibleSize(page_t *p, word x, word y);
 void modexCalcVmemRemain(video_t *video);

@@ -69,7 +69,7 @@ boolean baka_FizzleFade (unsigned source, unsigned dest, unsigned width, unsigne
 	pagedelta = dest-source;
 	rndval = 1;	esorig = 0; q = 16;
 	x = y = 0;
-	pixperframe = 64000/(dword)frames;
+	pixperframe = /*64000*/76800/(dword)frames;
 
 //	IN_StartAck ();
 
@@ -87,8 +87,6 @@ boolean baka_FizzleFade (unsigned source, unsigned dest, unsigned width, unsigne
 	frame=0;
 	do	// while (1)
 	{
-sprintf(global_temp_status_text, "%u", frame);
-modexprint(&(gvar->video.page[0]), PIXPOSX, PIXPOSY, 1, 0, 47, 0, 1, global_temp_status_text);
 		if (abortable && kbhit())//IN_CheckAck () )
 			return true;
 
@@ -135,6 +133,7 @@ noxor:
 			if ((x>width || y>height) && (x<width*2 && y<height*2))
 				continue;
 			//drawofs = source+(gvar->video.ofs.ylookup[y]) + (x>>2);
+			//drawofs = source+((y+1)*gvar->video.page[0].stridew) + (x>>2);
 			drawofs = source+(y*gvar->video.page[0].stridew) + (x>>2);
 /*
 sprintf(global_temp_status_text, "draw - %Fp", drawofs);
@@ -150,14 +149,10 @@ modexprint(&(gvar->video.page[0]), PIXPOSX, q+PIXPOSY, 1, 0, 47, 0, 1, global_te
 			//
 			// copy one pixel
 			//
-//*
 			mask = x&3;
 			VGAREADMAP(mask);
 			mask = maskb[mask];
 			VGAMAPMASK(mask);
-//*/
-//			modexputPixel(&(gvar->video.page[0]), x, y, rand());
-//			VL_Plot (x, y, 15, &(gvar->video.ofs));
 
 			__asm {
 				mov	di,[drawofs]

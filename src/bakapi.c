@@ -32,7 +32,7 @@ void TL_VidInit(global_game_variables_t *gvar){}
 //int ch=0x0;
 
 #define SETUPPAGEBAKAPI \
-gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0], &gvar.video); \
+gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]/*, &gvar.video*/); \
 gvar.video.page[1] = modexNextPage(&gvar.video.page[0]);
 
 
@@ -45,7 +45,6 @@ main(int argc, char *argvar[])
 	int i;
 	word panq=1, pand=0;
 	boolean panswitch=0;
-	word	showpage=0;
 
 	ggvv=&gvar;
 
@@ -141,21 +140,19 @@ main(int argc, char *argvar[])
 	//getch(); //____
 	//VL_SetLineWidth (40, &gvar);
 
-	VL_ShowPage(&gvar.video.page[showpage], 0, 0);
+	VL_ShowPage(&gvar.video.page[0], 1, 0);
 	{
 		word w;
 		for(w=0;w<64000;w++)
 		{
-			ding(&gvar.video.page[showpage], &bakapee, 2);
+			ding(&gvar.video.page[0], &bakapee, 2);
 			ding(&gvar.video.page[1], &bakapee, 2);
 		}
 #ifdef BAKAFIZZUNSIGNED
-		baka_FizzleFade (gvar.video.ofs.bufferofs, gvar.video.ofs.displayofs, vga_state.vga_width, vga_state.vga_height, 70, true, &gvar);
+		baka_FizzleFade (gvar.video.ofs.bufferofs, gvar.video.ofs.displayofs, gvar.video.page[0].width, gvar.video.page[0].height, 70, true, &gvar);
 #else
 		baka_FizzleFade (&gvar.video.page[1], &gvar.video.page[0], vga_state.vga_width, vga_state.vga_height, 70, true, &gvar);
 #endif
-		//ding(&gvar.video.page[showpage], &bakapee, 9);
-//		modexprint(&gvar.video.page[0], gvar.video.page[0].sw/2, gvar.video.page[0].sh/2, 1, 0, 47, 0, 1, "bakapi ok");
 	}
 	while(!kbhit()){}
 
@@ -277,7 +274,6 @@ main(int argc, char *argvar[])
 					printf("on.");
 				break;
 			}
-			printf(" Showing page %u", showpage);
 			printf("\n");
 			printf("Incrementation of color happens at every %uth plot.\n", bakapee.bonk);
 			printf("Enter 1, 2, 3, 4, 5, 6, 8, or 9 to run a screensaver, or enter 0 to quit.\n");
@@ -312,18 +308,6 @@ pee:
 					}
 					key=0;
 				break;
-				case 'q':
-					switch (showpage)
-					{
-						case 0:
-							showpage=1;
-						break;
-						case 1:
-							showpage=0;
-						break;
-					}
-					key=0;
-				break;
 				case '8':
 					c+=8;
 				case '1':
@@ -335,12 +319,11 @@ pee:
 				case '9':
 					key = c - '0';
 					VGAmodeX(vgamodex_mode, 0, &gvar);
-					VL_ShowPage(&gvar.video.page[showpage], 0, 0);
 					SETUPPAGEBAKAPI
 		// this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
 		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
-					VL_ShowPage(&gvar.video.page[showpage], 0, 0);
-					break;
+					VL_ShowPage(&gvar.video.page[0], 0, 0);
+				break;
 				case '-':
 					if(bakapee.bonk>0)
 						bakapee.bonk-=100;
@@ -352,11 +335,12 @@ pee:
 				break;
 				default:
 					key=0;
+					clrscr();	//added to clear screen wwww
 				break;
 			}
-			clrscr();	//added to clear screen wwww
 		}
 	}
+	clrscr();	//added to clear screen wwww
 #if 0
 //#else // !defined(BOINK)
 // FIXME: Does not compile. Do you want to remove this?

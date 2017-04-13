@@ -282,7 +282,7 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 	switch(vq)
 	{
 		case 1:
-		case 8: //320x240 no buffer
+//		case 8: //320x240 no buffer
 			//CRTParmCount = sizeof(ModeX_320x240regs) / sizeof(ModeX_320x240regs[0]);
 			/*for(i=0; i<CRTParmCount; i++) {
 				outpw(CRTC_INDEX, ModeX_320x240regs[i]);
@@ -320,15 +320,7 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 		case 2: // TODO: 160x120 according to ModeX_160x120regs
 			return;
 		case 3: // TODO: 160x120 according to ModeX_320x200regs
-			gv->video.page[0].sw = vga_state.vga_width = 300; // VGA lib currently does not update this
-			gv->video.page[0].sh = vga_state.vga_height = 200; // VGA lib currently does not update this
-			// virtual width and height. match screen, at first //
-			gv->video.page[0].height = gv->video.page[0].sh;
-			gv->video.page[0].width = gv->video.page[0].sw;
-
-			cm.offset = (vga_state.vga_width / (4 * 2)); // 320 wide (40 x 4 pixel groups x 2)
-			//return;
-		break;
+			return;
 		case 4: // TODO: 160x120 according to ModeX_192x144regs
 			return;
 		case 5: // TODO: 160x120 according to ModeX_256x192regs
@@ -362,7 +354,7 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 //	VL_SetLineWidth (cm.offset, gv);
 	gv->video.ofs.displayofs = 0;
 	gv->video.ofs.bufferofs = gv->video.page[0].width*gv->video.page[0].height;//gvar->video.page[0].pagesize;
-	gv->video.curr_mode=vq;
+//	gv->video.curr_mode=vq;
 	gv->video.VL_Started=1;
 }
 
@@ -372,7 +364,6 @@ void modexLeave(void)
 	VL_vgaSetMode(TEXT_MODE);
 }
 
-#if 0
 page_t
 modexDefaultPage(page_t *p)
 {
@@ -399,15 +390,9 @@ modexDefaultPage(page_t *p)
 	page.pi=page.width*4;
 	page.id = 0;
 
-	if(ggvv->video.curr_mode = 1)
-	{
-		page.width += TILEWHD;
-		page.height += TILEWHD;
-	}
-
 	return page;
 }
-#endif
+#if 0
 page_t
 modexDefaultPage(page_t *p, video_t *v)
 {
@@ -439,7 +424,7 @@ modexDefaultPage(page_t *p, video_t *v)
 
 	return page;
 }
-
+#endif
 /* returns the next page in contiguous memory
  * the next page will be the same size as p, by default
  */
@@ -528,7 +513,7 @@ void modexHiganbanaPageSetup(video_t *video)
 {
 	video->vmem_remain=65535U;
 	video->num_of_pages=0;
-	(video->page[0]) = modexDefaultPage(&(video->page[0]), video);	video->num_of_pages++;	//video->page[0].width += (TILEWHD); video->page[0].height += (TILEWHD);
+	(video->page[0]) = modexDefaultPage(&(video->page[0])/*, video*/);	video->num_of_pages++;	//video->page[0].width += (TILEWHD); video->page[0].height += (TILEWHD);
 	(video->page[1]) = modexNextPage(&(video->page[0]));	video->num_of_pages++;
 //0000	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), (video->page[0]).width, TILEWH*4);		video->num_of_pages++;
 //0000	(video->page[3]) = (video->page[2]);		video->num_of_pages++;
