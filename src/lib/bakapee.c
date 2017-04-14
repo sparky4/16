@@ -166,6 +166,7 @@ modexprint(&(gvar->video.page[0]), PIXPOSX, q+PIXPOSY, 1, 0, 47, 0, 1, global_te
 		}
 		frame++;
 //--		while (TimeCount<frame){}//;		// don't go too fast
+		delay(10);
 	} while (1);
 	__asm {
 		mov	es,[esorig]
@@ -697,13 +698,15 @@ void ding(page_t *page, bakapee_t *pee, word q)
 			colorz(page, pee);
 			modexprint(page, page->sw/2, page->sh/2, 1, 0, 47, 0, 1, "bakapi");
 		break;
-		case 9:
+/*		case 9:
+			modexClearRegion(&(ggvv->video.page[0]), 0, 0, ggvv->video.page[0].width/2, ggvv->video.page[0].height/2, 15);
 #ifdef BAKAFIZZUNSIGNED
-			baka_FizzleFade (ggvv->video.ofs.bufferofs, ggvv->video.ofs.displayofs, vga_state.vga_width, vga_state.vga_height, 70, true, ggvv);
+//			baka_FizzleFade (ggvv->video.ofs.bufferofs, ggvv->video.ofs.displayofs, vga_state.vga_width, vga_state.vga_height, 70, true, ggvv);
+			baka_FizzleFade (ggvv->video.ofs.bufferofs, ggvv->video.ofs.displayofs, ggvv->video.page[0].width, ggvv->video.page[0].height, 70, true, ggvv);
 #else
 			baka_FizzleFade (&ggvv->video.page[1], &ggvv->video.page[0], vga_state.vga_width, vga_state.vga_height, 70, true, ggvv);
 #endif
-		break;
+		break;*/
 		case 10:
 			ssd(page, pee, q); /*printf("%d\n", pee->coor);*/
 		break;

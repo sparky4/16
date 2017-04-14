@@ -32,7 +32,7 @@ void TL_VidInit(global_game_variables_t *gvar){}
 //int ch=0x0;
 
 #define SETUPPAGEBAKAPI \
-gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]/*, &gvar.video*/); \
+gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]); \
 gvar.video.page[1] = modexNextPage(&gvar.video.page[0]);
 
 
@@ -146,8 +146,12 @@ main(int argc, char *argvar[])
 		for(w=0;w<64000;w++)
 		{
 			ding(&gvar.video.page[0], &bakapee, 2);
-			ding(&gvar.video.page[1], &bakapee, 2);
+//			ding(&gvar.video.page[1], &bakapee, 2);
 		}
+		modexClearRegion(&(gvar.video.page[1]), 0, 0, gvar.video.page[0].width, gvar.video.page[0].height, 14);
+		VL_ShowPage(&gvar.video.page[1], 0, 0);
+		while(!kbhit()){} getch();
+		VL_ShowPage(&gvar.video.page[0], 0, 0);
 #ifdef BAKAFIZZUNSIGNED
 		baka_FizzleFade (gvar.video.ofs.bufferofs, gvar.video.ofs.displayofs, gvar.video.page[0].width, gvar.video.page[0].height, 70, true, &gvar);
 #else
@@ -171,7 +175,13 @@ main(int argc, char *argvar[])
 				}else c=getch();
 			}
 
-			if(!panswitch)	ding(&gvar.video.page[0], &bakapee, key);
+			if(!panswitch){
+				if(key==9)
+				{
+					ding(&gvar.video.page[1], &bakapee, 4);
+					ding(&gvar.video.page[0], &bakapee, 4);
+					baka_FizzleFade (gvar.video.ofs.bufferofs, gvar.video.ofs.displayofs, gvar.video.page[0].width, gvar.video.page[0].height, 70, true, &gvar);
+				}else ding(&gvar.video.page[0], &bakapee, key); }
 			else			ding(&gvar.video.page[0], &bakapee, 2);
 			if(panswitch!=0)
 			{
@@ -251,6 +261,7 @@ main(int argc, char *argvar[])
 		// this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
 		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
 			VGAmodeX(0, 0, &gvar);
+			clrscr();	//added to clear screen wwww
 			// user imput switch
 			//fprintf(stderr, "xx=%d	yy=%d	tile=%d\n", bakapee.xx, bakapee.yy, bakapee.tile);
 			//fprintf(stderr, "dx=%d	dy=%d	", gvar.video.page[0].dx, gvar.video.page[0].dy);
@@ -285,16 +296,17 @@ pee:
 					d=0;
 					break;
 				case 'p': // test pan
-				switch (panswitch)
-				{
-					case 0:
-						panswitch=1;
-					break;
-					case 1:
-						panswitch=0;
-					break;
-				}
-				goto pee;
+					switch (panswitch)
+					{
+						case 0:
+							panswitch=1;
+						break;
+						case 1:
+							panswitch=0;
+						break;
+					}
+					key=0;
+					goto pee;
 				break;
 				case 'b': // test tile change
 					switch (bakapee.tile)
@@ -335,7 +347,6 @@ pee:
 				break;
 				default:
 					key=0;
-					clrscr();	//added to clear screen wwww
 				break;
 			}
 		}
