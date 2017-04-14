@@ -36,7 +36,7 @@
 # serial output is plain text ASCII.
 DEBUGSERIAL=1
 
-DELLOGFILE=0
+DELLOGFILE=1
 
 #192x144
 #wwww will add these
