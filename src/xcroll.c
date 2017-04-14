@@ -24,6 +24,7 @@
 #include "src/lib/16_timer.h"
 #include "src/lib/16render.h"
 #include "src/lib/16_dbg.h"
+#include "src/lib/16_sd.h"
 
 #define FADE
 //#define NOMAPLOAD
@@ -37,6 +38,7 @@ boolean panswitch=0,baka=0;
 //extern boolean pageflipflop=1;
 extern boolean pagenorendermap;	//default: 0
 unsigned int i;
+struct glob_game_vars *ggvv;
 
 #ifdef FADE
 //static word paloffset=0;
@@ -49,10 +51,26 @@ memptr pal;
 #define FILENAME_2	"data/spri/me.vrs"
 #define FILENAME_2P	"data/spri/me.pal"
 
+static void (interrupt *old_irq0)();
+// WARNING: subroutine call in interrupt handler. make sure you compile with -zu flag for large/compact memory models
+void interrupt irq0()
+{
+	ggvv->ca.sd.irq0_ticks++;
+	if ((ggvv->ca.sd.irq0_cnt += ggvv->ca.sd.irq0_add) >= ggvv->ca.sd.irq0_max) {
+		ggvv->ca.sd.irq0_cnt -= ggvv->ca.sd.irq0_max;
+		old_irq0();
+	}
+	else {
+		p8259_OCW2(0,P8259_OCW2_NON_SPECIFIC_EOI);
+	}
+}
+
 void main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
-	struct glob_game_vars *ggvv;
+	unsigned long tickrate = 700;
+	unsigned long ptick;
+	unsigned long adv;
 //	sword bakapee;
 // 	if(argv[1]) bakapee = atoi(argv[1]);
 // 	else bakapee = 1;
@@ -61,6 +79,7 @@ void main(int argc, char *argv[])
 	char bakapee1p[64] = FILENAME_1P;
 
 	Startup16(&gvar);
+	if (!SD_imf_load_music("data/02.imf", &gvar)){ printf("Failed to load IMF Music\n"); return; }
 
 //	bakapee1=mALLoc(64);
 //	bakapee1p=mALLoc(64);
@@ -85,6 +104,7 @@ void main(int argc, char *argv[])
 
 	// create the map
 //	fprintf(stderr, "testing map load~	");
+
 	CA_loadmap("data/test.map", &map, &gvar);
 #ifndef NOMAPLOAD
 	chkmap(&map, 0);
@@ -131,18 +151,15 @@ void main(int argc, char *argv[])
 	// setup camera and screen~
 	modexHiganbanaPageSetup(&gvar);
 	ZC_MVSetup(&gvar.mv, &map, &gvar);
-
+/*
 #ifdef FADE
 	modexFadeOn(4, &gvar.video.palette);
 #endif
-
-	IN_StartAck (&gvar);
-	MM_ShowMemory(&gvar);
-	while (!IN_CheckAck (&gvar)){}
+	IN_StartAck (&gvar); MM_ShowMemory(&gvar); while (!IN_CheckAck (&gvar)){}
 #ifdef FADE
 	modexPalBlack();	//so player will not see loadings~
 #endif
-
+*/
 	// set up paging
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(&gvar.mv, 0, 0);
@@ -150,6 +167,15 @@ void main(int argc, char *argv[])
 	ZC_PlayerXYpos(0, 0, &gvar.player, &gvar.mv, 0, 1);
 	EN_initPlayer(&gvar.player[0], &gvar.video);
 	//print_anim_ids(gvar.player[0].enti.spri);
+	SD_Initimf(&gvar);
+
+	write_8254_system_timer(T8254_REF_CLOCK_HZ / tickrate);
+	old_irq0 = _dos_getvect(8);/*IRQ0*/
+	_dos_setvect(8,irq0);
+
+//	_cli();
+	gvar.ca.sd.irq0_ticks = ptick = 0;
+//	_sti();
 	if (gvar.video.sprifilei == -1)
 	{
 #ifdef FADE
@@ -172,6 +198,15 @@ void main(int argc, char *argv[])
 #endif
 	while(!gvar.in.inst->Keyboard[sc_Escape] && gvar.player[0].enti.hp>0)
 	{
+//		_cli();
+		adv = gvar.ca.sd.irq0_ticks - ptick;
+		if (adv >= 100UL) adv = 100UL;
+		ptick = gvar.ca.sd.irq0_ticks;
+//		_sti();
+		while (adv != 0) {
+			SD_imf_tick(&gvar);
+			adv--;
+		}
 		gvar.video.page[0].tlx=gvar.mv[0].tx*TILEWH;
 		gvar.video.page[0].tly=gvar.mv[0].ty*TILEWH;
 		shinku(&gvar);
@@ -246,6 +281,11 @@ void main(int argc, char *argv[])
 	modexSavePalFile("data/g.pal", &gvar.video.palette);
 	modexFadeOff(4, &gvar.video.palette);
 #endif
+	SD_imf_free_music(&gvar);
+	SD_adlib_shut_up();
+	shutdown_adlib();
+	_dos_setvect(8,old_irq0);
+	write_8254_system_timer(0);/* back to normal 18.2Hz */
 	Shutdown16(&gvar);
 	printf("\nProject 16 xcroll.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
