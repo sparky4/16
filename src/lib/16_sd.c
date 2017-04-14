@@ -226,7 +226,7 @@ void SD_Initimf(global_game_variables_t *gvar)
 
 void SD_imf_free_music(global_game_variables_t *gvar)
 {
-	if (gvar->ca.sd.imf_music) free(gvar->ca.sd.imf_music);
+//	if (gvar->ca.sd.imf_music) free(gvar->ca.sd.imf_music);
 	MM_FreePtr(MEMPTR gvar->ca.audiosegs[0], gvar);	//TODO make behave like id engine
 	gvar->ca.sd.imf_music = gvar->ca.sd.imf_play_ptr = gvar->ca.sd.imf_music_end = NULL;
 	gvar->ca.sd.imf_delay_countdown = 0;
