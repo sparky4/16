@@ -37,6 +37,10 @@
 
 #define MAXPAGE 4
 
+#define BDOFSCONV (unsigned __near)
+#define BOFS page[1].data
+#define DOFS page[0].data
+
 /*
  * typedefs of the game variables!
  */
@@ -380,8 +384,9 @@ typedef struct
 	//ylookup[MAXSCANLINES],
 	unsigned int offscreen_ofs;
 	unsigned int pattern_ofs;
-	unsigned	bufferofs,linewidth,displayofs;
+//	unsigned	bufferofs,linewidth,displayofs;
 	pan_t		pan;
+
 } ofs_t;	//unfinished
 
 typedef struct
@@ -717,6 +722,7 @@ typedef struct glob_game_vars
 	player_t	player[MaxPlayers];	// player vars
 	map_view_t	mv[4];
 //	sw_t		sw;
+	boolean	DLStarted;
 } global_game_variables_t;
 
 #ifdef __WATCOMC__

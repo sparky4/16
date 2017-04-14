@@ -1241,7 +1241,7 @@ void MM_SortMem(global_game_variables_t *gvar)
 	if(aftersort)
 		aftersort();
 
-//	VW_ColorBorder (oldborder);
+	VL_ColorBorder (oldborder, &gvar->video);
 
 /*++++	if(playing)
 		MM_SetLock((memptr *)&audiosegs[playing],false);*/
@@ -1258,17 +1258,20 @@ void MM_SortMem(global_game_variables_t *gvar)
 */
 
 //#define MMSMSORTNEWTYPE
+#define MMSHOWMEMOFFSET 0//(gvar->video.page[0].dx+(gvar->video.page[0].dy*gvar->video.page[0].stridew))
 
 void MM_ShowMemory(global_game_variables_t *gvar)
 {
 	mmblocktype far *scan;
-	unsigned color,temp,x,y,w;
+	unsigned color,temp,x,y		,w;//,bofstemp;
 	sdword	end,owner;
 	byte    scratch[160],scratch0[4096],str[16];
 
-//	VL_SetLineWidth(40, gvar);
-	temp = gvar->video.ofs.bufferofs;
-	gvar->video.ofs.bufferofs = gvar->video.ofs.displayofs;
+//--	VL_SetLineWidth(40, gvar);
+	//temp = gvar->video.ofs.bufferofs;
+	//gvar->video.ofs.bufferofs = gvar->video.ofs.displayofs;
+	temp = BDOFSCONV gvar->video.BOFS+MMSHOWMEMOFFSET;
+	gvar->video.BOFS = gvar->video.DOFS;
 	scan = gvar->mm.mmhead;
 
 	end = -1; w = 0;
@@ -1303,13 +1306,14 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 			write(gvar->handle.debughandle,scratch,strlen(scratch));
 			Quit (gvar, "MM_ShowMemory: Memory block order currupted!");
 		}
-#ifndef MMSMSORTNEWTYPE
-		end = scan->length-1;
-#else
+#ifdef MMSMSORTNEWTYPE
 		end = scan->start+(scan->length)-1;
+#else
+		end = scan->length-1;
 #endif
-		y = scan->start/320;
-		x = scan->start%320;
+		if(!gvar->video.page[0].width) gvar->video.page[0].width = 352;
+		y = scan->start/gvar->video.page[0].width;
+		x = scan->start%gvar->video.page[0].width;
 		VW_Hlin(x,x+end,y,color,gvar);
 		VL_Plot(x,y,15,gvar);
 		for(w=(scan->start)/80;w<=end/80;w++)
@@ -1317,7 +1321,8 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 			//printf("+	%u	%lu\n", w, scan->length);
 			strcat(scratch0, "+");
 		}
-//++==++==optional		strcat(scratch0, AARESET); strcat(scratch0, AAGREY); strcat(scratch0,"_");
+		//++==++==optional
+		strcat(scratch0, AARESET); strcat(scratch0, AAGREY); strcat(scratch0,"_");
 #ifdef MMSMSORTNEWTYPE
 		if (scan->next && scan->next->start > end+1)
 #else
@@ -1360,9 +1365,11 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 		strcat(scratch,"Seg:");
 		ultoa (scan->start,str,16);
 		strcat (scratch,str);
+//		strcat(scratch, AABLACK); strcat(scratch,"\t"); strcat(scratch, AARESET);
 		strcat (scratch,"\tSize:");
 		ultoa ((unsigned)scan->length,str,10);
 		strcat (scratch,str);
+//		strcat(scratch, AABLACK); strcat(scratch,"\t"); strcat(scratch, AARESET);
 		strcat (scratch,"\tOwner:0x");
 		owner = (unsigned)scan->useptr;
 		ultoa (owner,str,16);
@@ -1378,8 +1385,11 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 	CA_CloseDebug (gvar);
 
 	IN_Ack(gvar);
-//****	VW_SetLineWidth(64);
-	gvar->video.ofs.bufferofs = temp;
+//--	VW_SetLineWidth(64);
+	//gvar->video.ofs.bufferofs = temp;
+	//bofstemp = BDOFSCONV gvar->video.BOFS;//+MMSHOWMEMOFFSET;
+	//bofstemp = temp;
+	gvar->video.BOFS = (byte __far *)temp;
 }
 
 

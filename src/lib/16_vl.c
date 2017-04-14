@@ -351,9 +351,9 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 		}
 		break;
 	}
-//	VL_SetLineWidth (cm.offset, gv);
-	gv->video.ofs.displayofs = 0;
-	gv->video.ofs.bufferofs = gv->video.page[0].width*gv->video.page[0].height;//gvar->video.page[0].pagesize;
+//--	VL_SetLineWidth (cm.offset, gv);
+	//gv->video.ofs.displayofs = 0;
+	//gv->video.ofs.bufferofs = gv->video.page[0].width*gv->video.page[0].height;//gvar->video.page[0].pagesize;
 //	gv->video.curr_mode=vq;
 	gv->video.VL_Started=1;
 }
@@ -1033,6 +1033,7 @@ modexPalOverscan(word col)
 	outp(PAL_DATA_REG, col);
 	return col;
 }
+
 //check 16_vl_1.c
 
 void modexputPixel(page_t *page, int x, int y, byte color)

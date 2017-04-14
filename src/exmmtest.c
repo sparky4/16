@@ -44,11 +44,12 @@
 //#define EXMMVERBOSE__
 //	#define PRINTBBDUMP
 #define BUFFDUMP
+
 #ifdef __BORLANDC__
 #define NOVID
 #endif
 #ifdef __WATCOMC__
-#define NOVID
+//#define NOVID
 #endif
 
 
@@ -69,8 +70,8 @@
 
 ////////////////////////////////////////////////////////////////////////////
 #ifdef NOVID
-void VL_Startup (global_game_variables_t *gvar){}
-void VL_Shutdown (global_game_variables_t *gvar){}
+void VL_Startup (global_game_variables_t *gvar){ gvar=gvar; }
+void VL_Shutdown (global_game_variables_t *gvar){ gvar=gvar; }
 void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
 {
 	printf("VGAmodeX dummy:\n	%Fp	%Fp	%Fp\n", &vq, &cmem, gv);
@@ -297,7 +298,7 @@ PRINTBB; KEYP
 	VGAmodeX(0, 0, &gvar);
 #endif
 #endif
-//	MM_ShowMemory(&gvar);
+	MM_ShowMemory(&gvar);
 	DebugMemory_(&gvar, 1);
 	MM_DumpData(&gvar);
 	MM_Report_(&gvar);

@@ -36,7 +36,7 @@
 # serial output is plain text ASCII.
 DEBUGSERIAL=1
 
-DELLOGFILE=1
+DELLOGFILE=0
 
 #192x144
 #wwww will add these
@@ -286,8 +286,8 @@ pcxtest2.exe:	 pcxtest2.$(OBJ) gfx.lib $(DOSLIB)
 #planrpcx.exe:	planrpcx.$(OBJ) gfx.lib
 maptest.exe:	maptest.$(OBJ) 16_map.$(OBJ) 16_head.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
 fmemtest.exe:	 fmemtest.$(OBJ)
-exmmtest.exe:	 exmmtest.$(OBJ) 16_pm.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_mm.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ) 16_vl_1.$(OBJ) 16_tail.$(OBJ) 16_in.$(OBJ) 16_dbg.$(OBJ)
-#$(16LIB) gfx.lib $(DOSLIB)
+exmmtest.exe:	 exmmtest.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
+#16_pm.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_mm.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ) 16_vl_1.$(OBJ) 16_tail.$(OBJ) 16_in.$(OBJ) 16_dbg.$(OBJ)
 vgmtest.exe:	vgmtest.$(OBJ) vgmsnd.lib $(16LIB) $(DOSLIB) gfx.lib
 db.exe:		db.$(OBJ)
 ps.exe:		ps.$(OBJ) 16_head.$(OBJ)

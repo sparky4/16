@@ -48,6 +48,7 @@ boolean baka_FizzleFade (unsigned source, unsigned dest, unsigned width, unsigne
 boolean baka_FizzleFade (page_t *sourcepage, page_t *destpage, unsigned width, unsigned height, unsigned frames, boolean abortable, global_game_variables_t *gvar);
 #endif
 void clrstdin();
+void TL_DosLibStartup(global_game_variables_t *gvar);
 void colortest(page_t *page, bakapee_t *pee);
 void colorz(page_t *page, bakapee_t *pee);
 void ssd(page_t *page, bakapee_t *pee, word svq);

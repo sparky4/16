@@ -54,40 +54,45 @@ char global_temp_status_text2[512];
 */
 
 //extern	ControlInfo	c;
-#define PIXPOSX			gvar->video.page[0].sw/2
-#define PIXPOSY			gvar->video.page[0].sh/2
+//#define PIXPOSX			gvar->video.page[0].sw/2
+//#define PIXPOSY			gvar->video.page[0].sh/2
 #ifdef BAKAFIZZUNSIGNED
 boolean baka_FizzleFade (unsigned source, unsigned dest, unsigned width, unsigned height, unsigned frames, boolean abortable, global_game_variables_t *gvar)
 {
 	word		p,pixperframe;
 	unsigned	drawofs,pagedelta;
 	byte 		mask,maskb[8] = {1,2,4,8};
-	unsigned	x,y,frame		,esorig,q;
-	dword		rndval;
-	word screenseg = SCREENSEG;
+	unsigned	x,y,frame;
+	long		rndval;
+	word		screenseg;
+#ifdef __WATCOMC__
+	unsigned	esorig;//,q;
+#endif
 
 	pagedelta = dest-source;
-	rndval = 1;	esorig = 0; q = 16;
+	rndval = 1;
+#ifdef __WATCOMC__
+	esorig = 0;// q = 16;
+#endif
 	x = y = 0;
-	pixperframe = /*64000*/76800/(dword)frames;
+	pixperframe = (dword)(gvar->video.page[0].width*gvar->video.page[0].height)/frames;//64000/(dword)frames;
+	screenseg = SCREENSEG;
 
-//	IN_StartAck ();
-
-//	VL_ShowPage(&(gvar->video.page[0]), 1, 0);
-//	VL_ShowPage(&(gvar->video.page[1]), 1, 0);
+//	IN_StartAck (gvar);
 
 //	modexClearRegion(&(gvar->video.page[0]), 0, 0, gvar->video.page[0].width, gvar->video.page[0].height, 0);
 //	modexClearRegion(&(gvar->video.page[1]), 0, 0, gvar->video.page[0].width, gvar->video.page[0].height, 15);
-//	VL_SetLineWidth(44, gvar);
 
+#ifdef __WATCOMC__
 	__asm {
 		mov	[esorig],es
 	}
+#endif
 //	TimeCount=
 	frame=0;
 	do	// while (1)
 	{
-		if (abortable && kbhit())//IN_CheckAck () )
+		if (abortable && kbhit())//IN_CheckAck (gvar) )
 			return true;
 
 		__asm {
@@ -128,12 +133,10 @@ noxor:
 				mov	[WORD PTR rndval+2],dx
 			}
 
-//			if (x>destpage->width || y>destpage->height)
-//			if (x<destpage->sw || y<destpage->sh)
-			if ((x>width || y>height) && (x<width*2 && y<height*2))
+			if (x>width || y>height)
+//			if ((x>width || y>height) && (x<width*2 && y<height*2))
 				continue;
-			//drawofs = source+(gvar->video.ofs.ylookup[y]) + (x>>2);
-			//drawofs = source+((y+1)*gvar->video.page[0].stridew) + (x>>2);
+//			drawofs = source+(gvar->video.ofs.ylookup[y]) + (x>>2);
 			drawofs = source+(y*gvar->video.page[0].stridew) + (x>>2);
 /*
 sprintf(global_temp_status_text, "draw - %Fp", drawofs);
@@ -166,15 +169,17 @@ modexprint(&(gvar->video.page[0]), PIXPOSX, q+PIXPOSY, 1, 0, 47, 0, 1, global_te
 		}
 		frame++;
 //--		while (TimeCount<frame){}//;		// don't go too fast
-		delay(10);
+		delay(1);
 	} while (1);
+#ifdef __WATCOMC__
 	__asm {
 		mov	es,[esorig]
 	}
 	return false;
+#endif
 }
-
-#else
+#endif
+#if 0
 boolean baka_FizzleFade (page_t *sourcepage, page_t *destpage, unsigned width, unsigned height, unsigned frames, boolean abortable, global_game_variables_t *gvar)
 {
 	word		p,pixperframe;
@@ -422,11 +427,51 @@ modexprint(destpage, PIXPOSX, q+PIXPOSY, 1, 0, 47, 0, 1, global_temp_status_text
 	return false;
 }
 #endif
-/* clrstdin() clear any leftover chars tha may be in stdin stream */
+// clrstdin() clear any leftover chars tha may be in stdin stream //
 void clrstdin()
 {
    int ch = 0;
    while( ( ch = getchar() ) != '\n' && ch != EOF );
+}
+
+//===========================================================================
+
+/*
+====================
+=
+= TL_DosLibStartup
+=
+====================
+*/
+
+void TL_DosLibStartup(global_game_variables_t *gvar)
+{
+	if(gvar->DLStarted)
+		return;
+
+	// DOSLIB: check our environment
+	probe_dos();
+
+	// DOSLIB: what CPU are we using?
+	// NTS: I can see from the makefile Sparky4 intends this to run on 8088 by the -0 switch in CFLAGS.
+	//	  So this code by itself shouldn't care too much what CPU it's running on. Except that other
+	//	  parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
+	//	  the CPU to carry out tasks. --J.C.
+	cpu_probe();
+
+	// DOSLIB: check for VGA
+	if (!probe_vga()) {
+		printf("VGA probe failed\n");
+		return;
+	}
+	// hardware must be VGA or higher!
+	if (!(vga_state.vga_flags & VGA_IS_VGA)) {
+		printf("This program requires VGA or higher graphics hardware\n");
+		return;
+	}
+
+	textInit();
+	gvar->DLStarted = true;
 }
 
 //color ‚Ä‚·‚Æ

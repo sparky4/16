@@ -483,6 +483,25 @@ void VL_TestPaletteSet (video_t *v)
 		v->fastpalette = false;
 }
 
+/*
+==================
+=
+= VL_ColorBorder
+=
+==================
+*/
+
+void VL_ColorBorder (int color, video_t *v)
+{
+	union REGS in, out;
+
+	in.h.ah = 0x10;
+	in.h.al = 0x01;
+	in.h.bh = color;
+	int86(0x10, &in, &out);
+	v->bordercolor = color;
+}
+
 
 /*
 =============================================================================
@@ -507,10 +526,13 @@ void VL_Plot (int x, int y, int color, global_game_variables_t *gvar)
 	byte mask;
 	VCLIPDEF
 
+	if(!gvar->video.VL_Started) return;
+
 	mask = pclip[x&3];
 	VGAMAPMASK(mask);
 	//*(byte far *)MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+(gvar->video.ofs.ylookup[y]+(x>>2))) = color;
-	*(byte far *)MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+((y*gvar->video.page[0].stridew)+(x>>2))) = color;
+	//*(byte far *)MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+((y*gvar->video.page[0].stridew)+(x>>2))) = color;
+	*(byte far *)MK_FP(SCREENSEG,BDOFSCONV gvar->video.BOFS+((y*gvar->video.page[0].stridew)+(x>>2))) = color;
 	VGAMAPMASK(15);
 }
 
@@ -532,13 +554,15 @@ void VL_Hlin	(unsigned x, unsigned y, unsigned width, unsigned color, global_gam
 
 	LRCLIPDEF
 
+	if(!gvar->video.VL_Started) return;
+
 	xbyte = x>>2;
 	leftmask = lclip[x&3];
 	rightmask = rclip[(x+width-1)&3];
 	midbytes = ((x+width+3)>>2) - xbyte - 2;
 
 	//dest = MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+gvar->video.ofs.ylookup[y]+xbyte);
-	dest = MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+(y*gvar->video.page[0].stridew)+xbyte);
+	dest = MK_FP(SCREENSEG,BDOFSCONV gvar->video.BOFS+(y*gvar->video.page[0].stridew)+xbyte);
 
 	if (midbytes<0)
 	{
@@ -576,16 +600,19 @@ void VL_Vlin	(int x, int y, int height, int color, global_game_variables_t *gvar
 	byte	far *dest,mask;
 	VCLIPDEF
 
+	if(!gvar->video.VL_Started) return;
+
 	mask = pclip[x&3];
 	VGAMAPMASK(mask);
 
 	//dest = MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+gvar->video.ofs.ylookup[y]+(x>>2));
-	dest = MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+(y*gvar->video.page[0].stridew)+(x>>2));
+	dest = MK_FP(SCREENSEG,BDOFSCONV gvar->video.BOFS+(y*gvar->video.page[0].stridew)+(x>>2));
 
 	while (height--)
 	{
 		*dest = color;
-		dest += gvar->video.ofs.linewidth;
+		//dest += gvar->video.ofs.linewidth;
+		dest += gvar->video.page[0].stridew;
 	}
 
 	VGAMAPMASK(15);
@@ -608,13 +635,16 @@ void VL_Bar (int x, int y, int width, int height, int color, global_game_variabl
 
 	LRCLIPDEF
 
+	if(!gvar->video.VL_Started) return;
+
 	leftmask = lclip[x&3];
 	rightmask = rclip[(x+width-1)&3];
 	midbytes = ((x+width+3)>>2) - (x>>2) - 2;
-	linedelta = gvar->video.ofs.linewidth-(midbytes+1);
+	//linedelta = gvar->video.ofs.linewidth-(midbytes+1);
+	linedelta = gvar->video.page[0].stridew-(midbytes+1);
 
 	//dest = MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+gvar->video.ofs.ylookup[y]+(x>>2));
-	dest = MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+(y*gvar->video.page[0].stridew)+(x>>2));
+	dest = MK_FP(SCREENSEG,BDOFSCONV gvar->video.BOFS+(y*gvar->video.page[0].stridew)+(x>>2));
 
 	if (midbytes<0)
 	{
@@ -623,7 +653,8 @@ void VL_Bar (int x, int y, int width, int height, int color, global_game_variabl
 		while (height--)
 		{
 			*dest = color;
-			dest += gvar->video.ofs.linewidth;
+			//dest += gvar->video.ofs.linewidth;
+			dest += gvar->video.page[0].stridew;
 		}
 		VGAMAPMASK(15);
 		return;
@@ -666,7 +697,7 @@ void VL_MemToScreen (byte far *source, int width, int height, int x, int y, glob
 
 	width>>=2;
 	//dest = MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+gvar->video.ofs.ylookup[y]+(x>>2));
-	dest = MK_FP(SCREENSEG,gvar->video.ofs.bufferofs+(y*gvar->video.page[0].stridew)+(x>>2));
+	dest = MK_FP(SCREENSEG,BDOFSCONV gvar->video.BOFS+(y*gvar->video.page[0].stridew)+(x>>2));
 	mask = 1 << (x&3);
 
 	for	(plane = 0; plane<4; plane++)
@@ -677,7 +708,8 @@ void VL_MemToScreen (byte far *source, int width, int height, int x, int y, glob
 			mask = 1;
 
 		screen = dest;
-		for	(y=0;y<height;y++,screen+=gvar->video.ofs.linewidth,source+=width)
+		//for	(y=0;y<height;y++,screen+=gvar->video.ofs.linewidth,source+=width)
+		for	(y=0;y<height;y++,screen+=gvar->video.page[0].stridew,source+=width)
 			_fmemcpy (screen,source,width);
 	}
 }

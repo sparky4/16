@@ -214,6 +214,7 @@ void modexPalWhite();
 void modexPalUpdate(byte *p);
 void VL_modexPalScramble(byte *p);
 word modexPalOverscan(word col);
+void VL_ColorBorder (int color, video_t *v);
 void VL_Plot (int x, int y, int color, global_game_variables_t *gvar);
 void VL_Hlin (unsigned x, unsigned y, unsigned width, unsigned color, global_game_variables_t *gvar);
 void VL_Vlin (int x, int y, int height, int color, global_game_variables_t *gvar);

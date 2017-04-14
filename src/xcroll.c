@@ -125,12 +125,23 @@ void main(int argc, char *argv[])
 #ifdef FADE
 	modexPalSave(&gvar.video.palette);
 	modexSavePalFile("data/g.pal", &gvar.video.palette);
-	modexPalBlack();	//so gvar.player will not see loadings~
+	modexPalBlack();	//so player will not see loadings~
 #endif
 
 	// setup camera and screen~
 	modexHiganbanaPageSetup(&gvar.video);
 	ZC_MVSetup(&gvar.mv, &map, &gvar);
+
+#ifdef FADE
+	modexFadeOn(4, &gvar.video.palette);
+#endif
+
+	IN_StartAck (&gvar);
+	MM_ShowMemory(&gvar);
+	while (!IN_CheckAck (&gvar)){}
+#ifdef FADE
+	modexPalBlack();	//so player will not see loadings~
+#endif
 
 	// set up paging
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
@@ -153,6 +164,7 @@ void main(int argc, char *argv[])
 //	while(!gvar.in.inst->Keyboard[sc_Escape) && !gvar.in.inst->Keyboard[sc_Space) && !gvar.in.inst->Keyboard[sc_Enter]){ FUNCTIONKEYSHOWMV }
 	gvar.video.page[0].tlx=gvar.mv[0].tx*TILEWH;
 	gvar.video.page[0].tly=gvar.mv[0].ty*TILEWH;
+
 	shinku(&gvar);
 //modexpdump(gvar.mv[0].page);
 #ifdef FADE

@@ -31,10 +31,6 @@ sword vgamodex_mode = 1; //	1 = 320x240 with buffer
 void TL_VidInit(global_game_variables_t *gvar){}
 //int ch=0x0;
 
-#define SETUPPAGEBAKAPI \
-gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]); \
-gvar.video.page[1] = modexNextPage(&gvar.video.page[0]);
-
 
 void
 main(int argc, char *argvar[])
@@ -42,9 +38,9 @@ main(int argc, char *argvar[])
 	static global_game_variables_t gvar;
 	struct glob_game_vars	*ggvv;
 	char *a;
-	int i;
-	word panq=1, pand=0;
-	boolean panswitch=0;
+	int i,c;
+	word panq=1, pand=0,showding=0;
+	boolean panswitch=0,bptest=1,runding=1;
 
 	ggvv=&gvar;
 
@@ -75,52 +71,21 @@ main(int argc, char *argvar[])
 		}
 	}
 
-	// DOSLIB: check our environment
-	probe_dos();
-
-	// DOSLIB: what CPU are we using?
-	// NTS: I can see from the makefile Sparky4 intends this to run on 8088 by the -0 switch in CFLAGS.
-	//      So this code by itself shouldn't care too much what CPU it's running on. Except that other
-	//      parts of this project (DOSLIB itself) rely on CPU detection to know what is appropriate for
-	//      the CPU to carry out tasks. --J.C.
-	cpu_probe();
-
-	// DOSLIB: check for VGA
-	if (!probe_vga()) {
-		printf("VGA probe failed\n");
-		return;
-	}
-	// hardware must be VGA or higher!
-	if (!(vga_state.vga_flags & VGA_IS_VGA)) {
-		printf("This program requires VGA or higher graphics hardware\n");
-		return;
-	}
-	textInit();
+	// initiate doslib //
+	TL_DosLibStartup(&gvar);
 
 	// main variables values
 	d=4; // switch variable
 	key=2; // default screensaver number
-	xpos=TILEWHD;
-	ypos=TILEWHD;
-	xdir=1;
-	ydir=1;
+	xpos=TILEWHD; ypos=TILEWHD; xdir=1; ydir=1;
 
 	VGAmodeX(vgamodex_mode, 0, &gvar); // TODO: Suggestion: Instead of magic numbers for the first param, might I suggest defining an enum or some #define constants that are easier to remember? --J.C.
 		// this code is written around modex16 which so far is a better fit than using DOSLIB vga directly, so leave MXLIB code in.
 		// we'll integrate DOSLIB vga into that part of the code instead for less disruption. -- J.C.
-
-	bakapee.xx = rand()&0%gvar.video.page[0].width;
-	bakapee.yy = rand()&0%gvar.video.page[0].height;
-	bakapee.gq = 0;
-	bakapee.sx=	bakapee.sy=0;
-	bakapee.bakax=	bakapee.bakay=0;
-	bakapee.coor=0;
-
+	bakapee.xx = rand()&0%gvar.video.page[0].width; bakapee.yy = rand()&0%gvar.video.page[0].height;
+	bakapee.gq = 0; bakapee.sx=bakapee.sy=0; bakapee.bakax=bakapee.bakay=0; bakapee.coor=0;
 	//once where #defines
-	bakapee.tile=0;
-	bakapee.bonk=400;
-	bakapee.lgq=32;
-	bakapee.hgq=55;
+	bakapee.tile=0; bakapee.bonk=400; bakapee.lgq=32; bakapee.hgq=55;
 
 	switch(WCPU_detectcpu())
 	{
@@ -132,39 +97,85 @@ main(int argc, char *argvar[])
 		break;
 	}
 
-	/* setup camera and screen~ */
+	// setup camera and screen~ //
 	SETUPPAGEBAKAPI
 
-	//modexPalUpdate(bmp.palette); //____
-	//modexDrawBmp(VGA, 0, 0, &bmp, 0); //____
-	//getch(); //____
-	//VL_SetLineWidth (40, &gvar);
-
 	VL_ShowPage(&gvar.video.page[0], 1, 0);
+	BAKAPIINITFIZZTEST
+
+	while (bptest)
 	{
-		word w;
-		for(w=0;w<64000;w++)
+/*		if (key > 0)
+		{*/
+		while (!kbhit() && runding)
+			{
+				//{ word w; for(w=0;w<(gvar.video.page[0].width*gvar.video.page[0].height);w++) {}}
+				ding(&gvar.video.page[showding], &bakapee, 4);
+			}
+		if (kbhit())
+//			{
+			getch(); // eat keyboard input
+//				break;
+//			}
+//		}*/
+
 		{
-			ding(&gvar.video.page[0], &bakapee, 2);
-//			ding(&gvar.video.page[1], &bakapee, 2);
+
+			c = getch();
+			switch (c)
+			{
+				case 27: // Escape key //
+				case '0':
+				default:
+					bptest = false;
+				break;
+				case 'b': // test tile change //
+					switch (bakapee.tile)
+					{
+						case 0:
+							bakapee.tile=1;
+						break;
+						case 1:
+							bakapee.tile=0;
+						break;
+					}
+				break;
+				case 'r':
+					runding = false;
+					BAKAPIINITFIZZTEST
+				break;
+				case 'e':
+					runding = 1;
+				break;
+				case 'z':
+					runding = false;
+					FIZZFADEFUN
+//					runding = true;
+				break;
+				case '3':
+				case '4':
+					runding = 1;
+					showding = c - '0' - 3;
+				break;
+				case '1':
+				case '2':
+	//			case '5':
+	//			case '6':
+	//			case '9':
+					key = c - '0' - 1;
+					VL_ShowPage(&gvar.video.page[key], 1, 0);
+				break;
+			}
 		}
-		modexClearRegion(&(gvar.video.page[1]), 0, 0, gvar.video.page[0].width, gvar.video.page[0].height, 14);
-		VL_ShowPage(&gvar.video.page[1], 0, 0);
-		while(!kbhit()){} getch();
-		VL_ShowPage(&gvar.video.page[0], 0, 0);
-#ifdef BAKAFIZZUNSIGNED
-		baka_FizzleFade (gvar.video.ofs.bufferofs, gvar.video.ofs.displayofs, gvar.video.page[0].width, gvar.video.page[0].height, 70, true, &gvar);
-#else
-		baka_FizzleFade (&gvar.video.page[1], &gvar.video.page[0], vga_state.vga_width, vga_state.vga_height, 70, true, &gvar);
-#endif
 	}
-	while(!kbhit()){}
+
+
+//while(!kbhit()){}
 
 // screen savers
 //#ifdef BOINK
 	while(d>0)	// on!
 	{
-		int c;
 		/* run screensaver routine until keyboard input */
 		while (key > 0) {
 			if (kbhit()) {
@@ -180,7 +191,7 @@ main(int argc, char *argvar[])
 				{
 					ding(&gvar.video.page[1], &bakapee, 4);
 					ding(&gvar.video.page[0], &bakapee, 4);
-					baka_FizzleFade (gvar.video.ofs.bufferofs, gvar.video.ofs.displayofs, gvar.video.page[0].width, gvar.video.page[0].height, 70, true, &gvar);
+					FIZZFADEFUN
 				}else ding(&gvar.video.page[0], &bakapee, key); }
 			else			ding(&gvar.video.page[0], &bakapee, 2);
 			if(panswitch!=0)

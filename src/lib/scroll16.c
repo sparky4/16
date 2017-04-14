@@ -1058,7 +1058,6 @@ void player_walk(player_t *player, map_view_t *map_v){
  */
 
 
-
 void mapScroll(map_view_t *mv, player_t *player)
 {
 	//word x, y;  /* coordinate for drawing */

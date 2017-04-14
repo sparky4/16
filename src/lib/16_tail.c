@@ -243,27 +243,38 @@ void Shutdown16(global_game_variables_t *gvar)
 ===================
 */
 
-#define PIXPERFRAME     1600
-
 boolean FizzleFade (unsigned source, unsigned dest, unsigned width, unsigned height, unsigned frames, boolean abortable, global_game_variables_t *gvar)
 {
 	word		p,pixperframe;
 	unsigned	drawofs,pagedelta;
 	byte 		mask,maskb[8] = {1,2,4,8};
-	unsigned	x,y,frame		,esorig,q;
-	dword		rndval;
-	word screenseg = SCREENSEG;
+	unsigned	x,y,frame;
+	long		rndval;
+	word		screenseg;
+#ifdef __WATCOMC__
+	unsigned	esorig;//,q;
+#endif
 
 	pagedelta = dest-source;
-	rndval = 1;	esorig = 0; q = 16;
+	rndval = 1;
+#ifdef __WATCOMC__
+	esorig = 0;// q = 16;
+#endif
 	x = y = 0;
-	pixperframe = 76800/(dword)frames;
+	pixperframe = (dword)(gvar->video.page[0].width*gvar->video.page[0].height)/frames;
+	screenseg = SCREENSEG;
 
 	IN_StartAck (gvar);
 
+//	modexClearRegion(&(gvar->video.page[0]), 0, 0, gvar->video.page[0].width, gvar->video.page[0].height, 0);
+//	modexClearRegion(&(gvar->video.page[1]), 0, 0, gvar->video.page[0].width, gvar->video.page[0].height, 15);
+
+#ifdef __WATCOMC__
 	__asm {
 		mov	[esorig],es
 	}
+#endif
+//	TimeCount=
 	frame=0;
 	do	// while (1)
 	{
@@ -308,22 +319,19 @@ noxor:
 				mov	[WORD PTR rndval+2],dx
 			}
 
-			if ((x>width || y>height) && (x<width*2 && y<height*2))
+			if (x>width || y>height)
+//			if ((x>width || y>height) && (x<width*2 && y<height*2))
 				continue;
-			//drawofs = source+(gvar->video.ofs.ylookup[y]) + (x>>2);
+//			drawofs = source+(gvar->video.ofs.ylookup[y]) + (x>>2);
 			drawofs = source+(y*gvar->video.page[0].stridew) + (x>>2);
 
 			//
 			// copy one pixel
 			//
-//*
 			mask = x&3;
 			VGAREADMAP(mask);
 			mask = maskb[mask];
 			VGAMAPMASK(mask);
-//*/
-//			modexputPixel(&(gvar->video.page[0]), x, y, rand()%8);
-//			VL_Plot (x, y, 15, &(gvar->video.ofs));
 
 			__asm {
 				mov	di,[drawofs]
@@ -337,11 +345,14 @@ noxor:
 		}
 		frame++;
 //--		while (TimeCount<frame){}//;		// don't go too fast
+		delay(1);
 	} while (1);
+#ifdef __WATCOMC__
 	__asm {
 		mov	es,[esorig]
 	}
 	return false;
+#endif
 }
 
 //===========================================================================

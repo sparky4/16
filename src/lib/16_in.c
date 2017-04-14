@@ -169,6 +169,7 @@ static	Direction	DirTable[] =		// Quick lookup for total direction
 static	void			(*INL_KeyHook)(void);
 static	void interrupt	(*OldKeyVect)(void);
 static	char			*ParmStringsIN[] = {"nojoys","nomouse",nil};
+static	void			INL_StartKbd(void);
 
 //	Internal routines
 

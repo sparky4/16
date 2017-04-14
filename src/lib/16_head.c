@@ -34,6 +34,13 @@ filesize(FILE *fp)
 	return(size_of_file);
 }
 
+// clrstdin() clear any leftover chars tha may be in stdin stream //
+void clrstdin()
+{
+   int ch = 0;
+   while( ( ch = getchar() ) != '\n' && ch != EOF );
+}
+
 //from http://stackoverflow.com/questions/2736753/how-to-remove-extension-from-file-name
 // remove_ext: removes the "extension" from a file spec.
 //   mystr is the string to process.
@@ -49,7 +56,6 @@ char *remove_ext (char* mystr, char dot, char sep) {
 	char *retstr, *lastdot, *lastsep;
 
 	// Error checks and allocate string.
-
 	if (mystr == NULL)
 		return NULL;
 	if ((retstr = malloc(strlen (mystr) + 1)) == NULL)
@@ -83,7 +89,6 @@ char *remove_ext (char* mystr, char dot, char sep) {
 	free(mystr);
 	return retstr;
 }
-
 
 
 //from http://quiz.geeksforgeeks.org/c-program-cyclically-rotate-array-one/
@@ -148,7 +153,7 @@ US_CheckParm(char *parm,char **strings)
 	return(-1);
 }
 
-
+// for input test //
 byte dirchar(byte in)
 {
 	byte out;

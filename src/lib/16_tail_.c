@@ -26,9 +26,20 @@
 #include "src/lib/16_tail.h"
 #include "src/lib/16_vl.h"
 
-void	TL_VidInit(global_game_variables_t *gvar)
+//===========================================================================
+
+/*
+====================
+=
+= TL_DosLibStartup
+=
+====================
+*/
+
+void TL_DosLibStartup(global_game_variables_t *gvar)
 {
-	start_timer(gvar);
+	if(gvar->DLStarted)
+		return;
 
 	// DOSLIB: check our environment
 	probe_dos();
@@ -60,6 +71,24 @@ void	TL_VidInit(global_game_variables_t *gvar)
 	_DEBUGF("Serial debug output printf test %u %u %u\n",1U,2U,3U);
 
 	textInit();
+	gvar->DLStarted = true;
+}
+
+//===========================================================================
+
+/*
+====================
+=
+= TL_VidInit
+=
+====================
+*/
+
+void	TL_VidInit(global_game_variables_t *gvar)
+{
+	start_timer(gvar);
+
+	if(!gvar->DLStarted) TL_DosLibStartup(gvar);
 
 	// get old video mode
 	//in.h.ah = 0xf;

@@ -197,8 +197,9 @@ typedef union REGPACK	regs_t;
 
 #define INPUT_STATUS_1		0x03da
 
-/* local function */
+// local function //
 long int filesize(FILE *fp);
+void clrstdin();
 char *remove_ext(char* mystr, char dot, char sep);
 void rotateR(byte arr[], byte n);
 void rotateL(byte arr[], byte n);
