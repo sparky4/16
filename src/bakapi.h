@@ -35,7 +35,7 @@
 #define DOFSS	BDOFSCONV (gvar.video.DOFS)//gvar.video.ofs.displayofs
 
 #define SETUPPAGEBAKAPI \
-gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]); \
+gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0], &gvar.video); \
 gvar.video.page[1] = modexNextPage(&gvar.video.page[0]);
 
 #ifdef BAKAFIZZUNSIGNED

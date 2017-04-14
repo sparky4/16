@@ -354,7 +354,7 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 //--	VL_SetLineWidth (cm.offset, gv);
 	//gv->video.ofs.displayofs = 0;
 	//gv->video.ofs.bufferofs = gv->video.page[0].width*gv->video.page[0].height;//gvar->video.page[0].pagesize;
-//	gv->video.curr_mode=vq;
+	gv->video.curr_mode=vq;
 	gv->video.VL_Started=1;
 }
 
@@ -364,11 +364,11 @@ void modexLeave(void)
 	VL_vgaSetMode(TEXT_MODE);
 }
 
+#if 0
 page_t
 modexDefaultPage(page_t *p)
 {
 	page_t page;
-
 	/* default page values */
 	//page.data = VGA;
 	//page.data = (byte far *)(vga_state.vga_graphics_ram);
@@ -389,10 +389,14 @@ modexDefaultPage(page_t *p)
 	page.pagesize = (word)(page.stridew)*page.height;
 	page.pi=page.width*4;
 	page.id = 0;
-
+	if(ggvv->video.curr_mode = 1)
+	{
+		page.width += TILEWHD;
+		page.height += TILEWHD;
+	}
 	return page;
 }
-#if 0
+#endif
 page_t
 modexDefaultPage(page_t *p, video_t *v)
 {
@@ -424,7 +428,7 @@ modexDefaultPage(page_t *p, video_t *v)
 
 	return page;
 }
-#endif
+
 /* returns the next page in contiguous memory
  * the next page will be the same size as p, by default
  */
@@ -513,7 +517,7 @@ void modexHiganbanaPageSetup(video_t *video)
 {
 	video->vmem_remain=65535U;
 	video->num_of_pages=0;
-	(video->page[0]) = modexDefaultPage(&(video->page[0])/*, video*/);	video->num_of_pages++;	//video->page[0].width += (TILEWHD); video->page[0].height += (TILEWHD);
+	(video->page[0]) = modexDefaultPage(&(video->page[0]), video);	video->num_of_pages++;	//video->page[0].width += (TILEWHD); video->page[0].height += (TILEWHD);
 	(video->page[1]) = modexNextPage(&(video->page[0]));	video->num_of_pages++;
 //0000	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), (video->page[0]).width, TILEWH*4);		video->num_of_pages++;
 //0000	(video->page[3]) = (video->page[2]);		video->num_of_pages++;

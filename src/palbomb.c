@@ -26,7 +26,7 @@ void main(int argc, char *argv[]) {
 
 	TL_VidInit(&gvar);	VGAmodeX(1, 0, &gvar);
 
-	gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0]/*, &gvar.video*/);
+	PALPROGRAMSNEWPAGE
 	VL_ShowPage(&gvar.video.page[0], 1, 0);
 	modexpdump(&gvar.video.page[0]);
 	while(!kbhit()){ VL_modexPalScramble(&gvar.video.palette); }

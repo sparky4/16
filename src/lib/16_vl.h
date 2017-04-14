@@ -158,6 +158,7 @@ void	VGAWRITEMODE(byte x),
 
 #define VW_Hlin(x,z,y,c,q)	VL_Hlin(x,y,(z)-(x)+1,c,q)
 #define VW_Vlin(y,z,x,c,q)	VL_Vlin(x,y,(z)-(y)+1,c,q)
+#define PALPROGRAMSNEWPAGE gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0], &gvar.video);// modexFadeOn(4, &gvar.video.palette);
 
 /* -============================ Functions =============================- */
 /* mode switching, page, and plane functions */
@@ -173,7 +174,7 @@ byte VL_vgaGetMode(void);
 extern void TL_VidInit(global_game_variables_t *gvar);
 void modexLeave(void);
 void modexsetBaseXMode();
-page_t modexDefaultPage(page_t *p/*, video_t *v*/);
+page_t modexDefaultPage(page_t *p, video_t *v);
 page_t modexNextPage(page_t *p);
 page_t modexNextPageFlexibleSize(page_t *p, word x, word y);
 void modexCalcVmemRemain(video_t *video);
