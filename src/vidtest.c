@@ -121,7 +121,7 @@ void main(int argc, char *argv[])
 	//modexPalOverscan(44+1);
 
 	/* set up the page, but with 16 pixels on all borders in offscreen mem */
-	modexHiganbanaPageSetup(&gvar.video);
+	modexHiganbanaPageSetup(&gvar);
 	ZC_MVSetup(&gvar.mv, &map, &gvar);
 
 	/* fill the page with one color, but with a black border */

@@ -398,7 +398,7 @@ modexDefaultPage(page_t *p)
 }
 #endif
 page_t
-modexDefaultPage(page_t *p, video_t *v)
+modexDefaultPage(page_t *p, global_game_variables_t *gvar)
 {
 	page_t page;
 
@@ -412,7 +412,7 @@ modexDefaultPage(page_t *p, video_t *v)
 	page.sh = p->sh;
 	page.width = p->sw;
 	page.height = p->sh;
-	if(v->curr_mode == 1)
+	if(gvar->video.curr_mode == 1)
 {	page.width += TILEWHD;
 	page.height += TILEWHD; }
 	page.ti.tw = page.sw/TILEWH;
@@ -513,38 +513,38 @@ void VL_Initofs(video_t *video)
 	}
 }
 
-void modexHiganbanaPageSetup(video_t *video)
+void modexHiganbanaPageSetup(global_game_variables_t *gvar)
 {
-	video->vmem_remain=65535U;
-	video->num_of_pages=0;
-	(video->page[0]) = modexDefaultPage(&(video->page[0]), video);	video->num_of_pages++;	//video->page[0].width += (TILEWHD); video->page[0].height += (TILEWHD);
-	(video->page[1]) = modexNextPage(&(video->page[0]));	video->num_of_pages++;
-//0000	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), (video->page[0]).width, TILEWH*4);		video->num_of_pages++;
-//0000	(video->page[3]) = (video->page[2]);		video->num_of_pages++;
-////	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), TILEWH*4, TILEWH*4);		video->num_of_pages++;
-////	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), video->page[0].sw, 208);	video->num_of_pages++;
- 	(video->page[2]) = modexNextPageFlexibleSize(&(video->page[1]), video->page[0].width, 96);	video->num_of_pages++;
- 	(video->page[3]) = modexNextPageFlexibleSize(&(video->page[2]), video->page[0].width, 96);	video->num_of_pages++;
-	modexCalcVmemRemain(video);
+	gvar->video.vmem_remain=65535U;
+	gvar->video.num_of_pages=0;
+	(gvar->video.page[0]) = modexDefaultPage(&(gvar->video.page[0]), gvar);	gvar->video.num_of_pages++;	//gvar->video.page[0].width += (TILEWHD); gvar->video.page[0].height += (TILEWHD);
+	(gvar->video.page[1]) = modexNextPage(&(gvar->video.page[0]));	gvar->video.num_of_pages++;
+//0000	(gvar->video.page[2]) = modexNextPageFlexibleSize(&(gvar->video.page[1]), (gvar->video.page[0]).width, TILEWH*4);		gvar->video.num_of_pages++;
+//0000	(gvar->video.page[3]) = (gvar->video.page[2]);		gvar->video.num_of_pages++;
+////	(gvar->video.page[2]) = modexNextPageFlexibleSize(&(gvar->video.page[1]), TILEWH*4, TILEWH*4);		gvar->video.num_of_pages++;
+////	(gvar->video.page[3]) = modexNextPageFlexibleSize(&(gvar->video.page[2]), gvar->video.page[0].sw, 208);	gvar->video.num_of_pages++;
+ 	(gvar->video.page[2]) = modexNextPageFlexibleSize(&(gvar->video.page[1]), gvar->video.page[0].width, 96);	gvar->video.num_of_pages++;
+ 	(gvar->video.page[3]) = modexNextPageFlexibleSize(&(gvar->video.page[2]), gvar->video.page[0].width, 96);	gvar->video.num_of_pages++;
+	modexCalcVmemRemain(&gvar->video);
 
-	video->sp=video->p =	0;	//showpage
-	video->dorender =	1;			//render
-	video->vh=video->page[0].height+video->page[1].height+video->page[2].height+video->page[3].height;
+	gvar->video.sp=gvar->video.p =	0;	//showpage
+	gvar->video.dorender =	1;			//render
+	gvar->video.vh=gvar->video.page[0].height+gvar->video.page[1].height+gvar->video.page[2].height+gvar->video.page[3].height;
 
-	VL_Initofs(video);
+	VL_Initofs(&gvar->video);
 	//doslib origi var
-	video->vga_state.omemptr=			vga_state.vga_graphics_ram;
-	video->vga_state.vga_draw_stride=	vga_state.vga_draw_stride;
-	video->vga_state.vga_draw_stride_limit=	vga_state.vga_draw_stride_limit;
+	gvar->video.vga_state.omemptr=			vga_state.vga_graphics_ram;
+	gvar->video.vga_state.vga_draw_stride=	vga_state.vga_draw_stride;
+	gvar->video.vga_state.vga_draw_stride_limit=	vga_state.vga_draw_stride_limit;
 	//sprite render switch and bgpreservation switch
-	video->vga_state.rss=	1;
-	video->vga_state.bgps=	1;
+	gvar->video.vga_state.rss=	1;
+	gvar->video.vga_state.bgps=	1;
 
 	//setup the buffersize
-	video->page[0].dx=video->page[0].dy=
-		video->page[1].dx=video->page[1].dy=TILEWH;	// 1 tile size buffer
-	video->page[2].dx=video->page[2].dy=
-		video->page[3].dx=video->page[3].dy=0;		// cache pages are buffer wwww
+	gvar->video.page[0].dx=gvar->video.page[0].dy=
+		gvar->video.page[1].dx=gvar->video.page[1].dy=TILEWH;	// 1 tile size buffer
+	gvar->video.page[2].dx=gvar->video.page[2].dy=
+		gvar->video.page[3].dx=gvar->video.page[3].dy=0;		// cache pages are buffer wwww
 }
 
 //

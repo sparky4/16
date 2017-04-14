@@ -35,8 +35,8 @@
 #define DOFSS	BDOFSCONV (gvar.video.DOFS)//gvar.video.ofs.displayofs
 
 #define SETUPPAGEBAKAPI \
-gvar.video.page[0] = modexDefaultPage(&gvar.video.page[0], &gvar.video); \
-gvar.video.page[1] = modexNextPage(&gvar.video.page[0]);
+	PALPROGRAMSNEWPAGE \
+	gvar.video.page[1] = modexNextPage(&gvar.video.page[0]);
 
 #ifdef BAKAFIZZUNSIGNED
 #define FIZZFADEFUN baka_FizzleFade (BOFSS, DOFSS, gvar.video.page[0].width, gvar.video.page[0].height, 70, true, &gvar);

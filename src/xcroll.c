@@ -52,7 +52,7 @@ memptr pal;
 void main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
-	struct glob_game_vars	*ggvv;
+	struct glob_game_vars *ggvv;
 //	sword bakapee;
 // 	if(argv[1]) bakapee = atoi(argv[1]);
 // 	else bakapee = 1;
@@ -129,7 +129,7 @@ void main(int argc, char *argv[])
 #endif
 
 	// setup camera and screen~
-	modexHiganbanaPageSetup(&gvar.video);
+	modexHiganbanaPageSetup(&gvar);
 	ZC_MVSetup(&gvar.mv, &map, &gvar);
 
 #ifdef FADE

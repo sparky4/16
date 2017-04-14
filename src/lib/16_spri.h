@@ -23,9 +23,7 @@
 #define __16_SPRI__
 
 #include "src/lib/16_vrs.h"
-#ifndef OLDOLDOLDOLDSCROLLEXE
 #include "src/lib/scroll16.h"
-#endif
 
 //moved to 16_tdef.h
 // struct sprite

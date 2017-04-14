@@ -111,7 +111,7 @@ int main(int argc,char **argv)
 	EN_initPlayer(&gvar.player[0], &gvar.video);
 
 	/* setup camera and screen~ */
-	modexHiganbanaPageSetup(&gvar.video);
+	modexHiganbanaPageSetup(&gvar);
 	ZC_MVSetup(&gvar.mv, &map, &gvar);
 	ZC_ShowMV(&gvar.mv, gvar.video.sp, 0);
 

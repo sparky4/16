@@ -22,8 +22,6 @@
 
 #include "src/lib/16_spri.h"
 
-struct glob_game_vars	*ggvv;
-
 char* get_curr_anim_name(struct sprite *spri)
 {
 	// Retrive animation name list
@@ -103,6 +101,7 @@ void animate_spri(entity_t *enti, video_t *video)
 #define INC_PER_FRAME if(enti->q&1) enti->persist_aniframe++; if(enti->persist_aniframe>4) enti->persist_aniframe = 1;
 	unsigned int i,o,o2; int j;
 	int x,y,rx,ry,w,h;
+	static struct glob_game_vars *ggvv;
 	VGA_RAM_PTR omemptr = (VGA_RAM_PTR)video->page[0].data;// save original mem ptr
 
 	x=enti->spri.x;

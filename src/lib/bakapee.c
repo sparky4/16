@@ -22,7 +22,6 @@
 
 #include "src/lib/bakapee.h"
 
-struct glob_game_vars	*ggvv;
 //static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
 char global_temp_status_text[512];
 char global_temp_status_text2[512];

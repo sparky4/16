@@ -107,7 +107,7 @@ void main()
 	if(CA_LoadFile("data/spri/CHUBACW1.vrl", &bigbuffer, &mm, &mmi)) baka=1; else baka=0;*/
 
 	VGAmodeX(1, 1, &gvar);
-	modexHiganbanaPageSetup(&gvar.video);
+	modexHiganbanaPageSetup(&gvar);
 	VL_ShowPage(&gvar.video.page[0], 1, 0);
 
 	/* non sprite comparison */
