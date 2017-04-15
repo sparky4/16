@@ -3,6 +3,7 @@
 #include "16/src/lib/bitmap.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <malloc.h>
 //#include "dos_kb.h"
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 240
@@ -75,7 +76,7 @@ void main() {
 //	setkb(1);
 	IN_Startup(&gvar);
 	/* create the map */
-	map = allocMap(160,120); //20x15 is the resolution of the screen you can make omapS smaller than 20x15 but the null space needs to be drawn properly
+	map = allocMap(40,30); //20x15 is the resolution of the screen you can make omapS smaller than 20x15 but the null space needs to be drawn properly
 	oinitMap(&map);
 	mv.map = &map;
 //	mv2.map = &map;
@@ -96,6 +97,7 @@ void main() {
 //	show = &mv;
 //	draw = &mv2;
 	draw = &mv;
+//IN_StartAck (&gvar); while (!IN_CheckAck (&gvar)){ } omodexLeave(); IN_Shutdown(&gvar); exit(0);
 
 	//TODO: set player position data here according to the viewable map screen thingy
 
@@ -157,7 +159,7 @@ allocMap(int w, int h) {
 
 	result.width =w;
 	result.height=h;
-	result.data = malloc(sizeof(byte) * w * h);
+	result.data = _fmalloc(sizeof(byte) * w * h);
 
 	return result;
 }
@@ -169,13 +171,13 @@ oinitMap(omap_t *map) {
 	int x, y;
 	int i;
 	int tile = 1;
-	map->tiles = malloc(sizeof(otiles_t));
+	map->tiles = _fmalloc(sizeof(otiles_t));
 
 	/* create the tile set */
-	map->tiles->data = malloc(sizeof(bitmap_t));
+	map->tiles->data = _fmalloc(sizeof(bitmap_t));
 	map->tiles->data->width = (TILEWH*2);
 	map->tiles->data->height= TILEWH;
-	map->tiles->data->data = malloc((TILEWH*2)*TILEWH);
+	map->tiles->data->data = _fmalloc((TILEWH*2)*TILEWH);
 	map->tiles->tileHeight = TILEWH;
 	map->tiles->tileWidth =TILEWH;
 	map->tiles->rows = 1;
