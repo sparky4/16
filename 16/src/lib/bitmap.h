@@ -30,4 +30,5 @@
 
 bitmap_t bitmapLoadPcx(char *filename, global_game_variables_t *gv);
 tileset_t bitmapLoadPcxTiles(char *filename, word twidth, word theight);
+byte *modexNewPal();
 #endif

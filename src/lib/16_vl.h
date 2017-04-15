@@ -180,7 +180,7 @@ page_t modexNextPageFlexibleSize(page_t *p, word x, word y);
 void modexCalcVmemRemain(video_t *video);
 void VL_Initofs(video_t *video);
 void modexHiganbanaPageSetup(global_game_variables_t *gvar);
-//void modexShowPage(page_t *page);
+void modexShowPage(page_t *page);//for 0croll.exe
 void VL_ShowPage(page_t *page, boolean vsync, boolean sr);
 void modexPanPage(page_t *page, int dx, int dy);
 void modexSelectPlane(byte plane);

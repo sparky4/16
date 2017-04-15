@@ -23,7 +23,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
-#include "src/lib/bitmap.h"
+#include "16/src/lib/bitmap.h"
 #include "src/lib/16_mm.h"
 #include "src/lib/16_pm.h"
 #include "src/lib/16_ca.h"
@@ -196,4 +196,17 @@ bitmapLoadPcxTiles(char *filename, word twidth, word theight) {
 	fclose(file);
 
 	return ts;
+}
+
+byte *
+modexNewPal() {
+	byte *ptr;
+	ptr = malloc(PAL_SIZE);
+
+	// handle errors
+	if(!ptr) {
+		printf("Could not allocate palette.\n");
+	}
+
+	return ptr;
 }

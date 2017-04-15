@@ -159,7 +159,7 @@ modexDrawBmpRegion(page_t *page, int x, int y,
 		MOV ES, AX
 
 		MOV DX, SC_INDEX	; point at the map mask register
-		MOV AL, MAP_MASK	;
+		MOV AL, SC_MAPMASK	;
 		OUT DX, AL	      ;
 
 	PLANE_LOOP:
@@ -226,7 +226,7 @@ modexDrawSpriteRegion(page_t *page, int x, int y,
 		MOV ES, AX
 
 		MOV DX, SC_INDEX	; point at the map mask register
-		MOV AL, MAP_MASK	;
+		MOV AL, SC_MAPMASK	;
 		OUT DX, AL	      ;
 
 	PLANE_LOOP:
@@ -305,7 +305,7 @@ modexDrawBmpPBufRegion(page_t *page, int x, int y,
 		MOV ES, AX
 
 		MOV DX, SC_INDEX	; point at the map mask register
-		MOV AL, MAP_MASK	;
+		MOV AL, SC_MAPMASK	;
 		OUT DX, AL	      ;
 
 	PLANE_LOOP:
@@ -383,7 +383,7 @@ modexDrawSpritePBufRegion(page_t *page, int x, int y,
 		MOV ES, AX
 
 		MOV DX, SC_INDEX	; point at the map mask register
-		MOV AL, MAP_MASK	;
+		MOV AL, SC_MAPMASK	;
 		OUT DX, AL	      ;
 
 	PLANE_LOOP:

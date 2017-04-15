@@ -136,8 +136,8 @@ LIBFLAGS=$(WLIBQ) -b -n
 # objects
 #
 VGMSNDOBJ = vgmSnd.$(OBJ)
-#OLDLIBOBJS=bitmap.$(OBJ) 16render.$(OBJ)
-GFXLIBOBJS = 16_vl.$(OBJ) 16_vl_1.$(OBJ) 16_vl_2.$(OBJ) 16_vlpal.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16_vrs.$(OBJ) 16_spri.$(OBJ) $(OLDLIBOBJS)
+OLDLIBOBJS=bitmap.$(OBJ) 16render.$(OBJ)
+GFXLIBOBJS = 16_vl.$(OBJ) 16_vl_1.$(OBJ) 16_vl_2.$(OBJ) 16_vlpal.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16_vrs.$(OBJ) 16_spri.$(OBJ)
 16LIBOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_head.$(OBJ) 16_enti.$(OBJ) 16_dbg.$(OBJ) 16_in.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_wcpu.$(OBJ) 16_timer.$(OBJ) jsmn.$(OBJ) 16_map.$(OBJ) 16text.$(OBJ) 16_sd.$(OBJ) 16_tail_.$(OBJ) 16_dbg_1.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 !ifeq DEBUGSERIAL 1
@@ -157,7 +157,7 @@ DOSLIB=doslib.lib
 #
 #	Files locations
 #
-.c : $(SRC);$(SRCLIB);$(MODEXLIB16);$(JSMNLIB);$(NYANLIB);$(VGMSNDLIB);$(WCPULIB);$(UTIL)
+.c : $(SRC);$(SRCLIB);$(MODEXLIB16);$(JSMNLIB);$(NYANLIB);$(VGMSNDLIB);$(WCPULIB);$(UTIL);16/$(SRCLIB)
 
 .asm : $(MODEXLIB);$(UTIL)
 
@@ -195,6 +195,7 @@ TESTEXEC = &
 	vgmtest.exe &
 	sountest.exe &
 	xcroll.exe &
+	0croll.exe &
 	inputest.exe &
 	vrstest.exe &
 	tesuto.exe &
@@ -255,6 +256,8 @@ bakapi.exe:		bakapi.$(OBJ) 16_vl.$(OBJ) 16_vl_1.$(OBJ) 16text.$(OBJ) bakapee.$(O
 #
 # Test Executables!
 #
+0croll.exe:	0croll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB) $(OLDLIBOBJS)
+0croll.$(OBJ):	$(SRC)/0croll.c
 scroll.exe:	scroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 scroll.$(OBJ):	$(SRC)/scroll.c
 xcroll.exe:	xcroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
@@ -381,7 +384,7 @@ bakapee.$(OBJ):	$(SRCLIB)/bakapee.c $(SRCLIB)/bakapee.h
 16planar.$(OBJ):$(MODEXLIB16)/16planar.c $(MODEXLIB16)/16planar.h
 16_vrs.$(OBJ):	$(SRCLIB)/16_vrs.c $(SRCLIB)/16_vrs.h $(DOSLIB)
 16_spri.$(OBJ):$(SRCLIB)/16_spri.c $(SRCLIB)/16_spri.h
-bitmap.$(OBJ):	$(SRCLIB)/bitmap.c $(SRCLIB)/bitmap.h
+bitmap.$(OBJ):	16/$(SRCLIB)/bitmap.c 16/$(SRCLIB)/bitmap.h
 planar.$(OBJ):	$(SRCLIB)/planar.c $(SRCLIB)/planar.h
 scroll16.$(OBJ):$(SRCLIB)/scroll16.c $(SRCLIB)/scroll16.h
 16text.$(OBJ):	$(SRCLIB)/16text.c $(SRCLIB)/16text.h
