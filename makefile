@@ -256,7 +256,7 @@ bakapi.exe:		bakapi.$(OBJ) 16_vl.$(OBJ) 16_vl_1.$(OBJ) 16text.$(OBJ) bakapee.$(O
 #
 # Test Executables!
 #
-0croll.exe:	0croll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB) $(OLDLIBOBJS)
+0croll.exe:	0croll.$(OBJ) $(OLDLIBOBJS) omodex16.$(OBJ) 16_in.$(OBJ)
 0croll.$(OBJ):	$(SRC)/0croll.c
 scroll.exe:	scroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 scroll.$(OBJ):	$(SRC)/scroll.c
@@ -385,6 +385,7 @@ bakapee.$(OBJ):	$(SRCLIB)/bakapee.c $(SRCLIB)/bakapee.h
 16_vrs.$(OBJ):	$(SRCLIB)/16_vrs.c $(SRCLIB)/16_vrs.h $(DOSLIB)
 16_spri.$(OBJ):$(SRCLIB)/16_spri.c $(SRCLIB)/16_spri.h
 bitmap.$(OBJ):	16/$(SRCLIB)/bitmap.c 16/$(SRCLIB)/bitmap.h
+omodex16.$(OBJ):	16/$(SRCLIB)/omodex16.c 16/$(SRCLIB)/omodex16.h
 planar.$(OBJ):	$(SRCLIB)/planar.c $(SRCLIB)/planar.h
 scroll16.$(OBJ):$(SRCLIB)/scroll16.c $(SRCLIB)/scroll16.h
 16text.$(OBJ):	$(SRCLIB)/16text.c $(SRCLIB)/16text.h

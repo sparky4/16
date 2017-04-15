@@ -1,5 +1,5 @@
-//#include "modex16.h"
-#include "src/lib/16_vl.h"
+//from https://github.com/sparky4/16/commit/a19d7592507e5f7aa91f4a6b6611e021bd1a3e8d
+#include "16/src/lib/omodex16.h"
 #include "16/src/lib/bitmap.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,7 +29,7 @@ typedef struct {
 
 typedef struct {
 	omap_t *map;
-	page_t *page;
+	opage_t *page;
 	int tx; //???? appears to be the tile position on the viewable screen map
 	int ty; //???? appears to be the tile position on the viewable screen map
 	word dxThresh; //????
@@ -49,7 +49,7 @@ void omapScrollLeft(omap_view_t *mv, byte offest);
 void omapScrollUp(omap_view_t *mv, byte offset);
 void omapScrollDown(omap_view_t *mv, byte offset);
 void omapGoTo(omap_view_t *mv, int tx, int ty);
-void omapDrawTile(otiles_t *t, word i, page_t *page, word x, word y);
+void omapDrawTile(otiles_t *t, word i, opage_t *page, word x, word y);
 void omapDrawRow(omap_view_t *mv, int tx, int ty, word y);
 void omapDrawCol(omap_view_t *mv, int tx, int ty, word x);
 
@@ -62,7 +62,7 @@ void main() {
 	//int ch=0x0;
 //	byte ch;
 //	int q=0;
-	page_t screen;//,screen2;
+	opage_t screen;//,screen2;
 	omap_t map;
 	omap_view_t mv;//, mv2;
 	omap_view_t *draw;//, *show, *tmp;
@@ -82,15 +82,15 @@ void main() {
 
 	/* draw the tiles */
 	ptr = map.data;
-	modexEnter(1, 1, &gvar);
-	screen = modexDefaultPage(&screen, &gvar);
+	omodexEnter(1, 1, &gvar);
+	screen = omodexDefaultPage();
 	screen.width += (TILEWH*2);
 	mv.page = &screen;
 	omapGoTo(&mv, 16, 16);
-//	screen2=modexNextPage(mv.page);
+//	screen2=omodexNextPage(mv.page);
 //	mv2.page = &screen2;
 //	omapGoTo(&mv2, 16, 16);
-//	modexShowPage(mv.page);
+//	omodexShowPage(mv.page);
 
 	/* set up paging */
 //	show = &mv;
@@ -106,7 +106,7 @@ void main() {
 	while(!gvar.in.inst->Keyboard[77]){
 //		for(q=0; q<TILEWH; q++) {
 		omapScrollRight(draw, 1);
-//		modexShowPage(draw->page);
+//		omodexShowPage(draw->page);
 //		omapScrollRight(draw, 1);
 //		SWAP(draw, show);
 //		}
@@ -115,7 +115,7 @@ void main() {
 	while(!gvar.in.inst->Keyboard[75]){
 //		for(q=0; q<TILEWH; q++) {
  		omapScrollLeft(draw, 1);
-//		modexShowPage(draw->page);
+//		omodexShowPage(draw->page);
 // 		omapScrollLeft(show, 1);
 //		SWAP(draw, show);
 //		}
@@ -124,7 +124,7 @@ void main() {
 	while(!gvar.in.inst->Keyboard[80]){
 //		for(q=0; q<TILEWH; q++) {
 		omapScrollDown(draw, 1);
-//		modexShowPage(draw->page);
+//		omodexShowPage(draw->page);
 //		omapScrollDown(show, 1);
 //		SWAP(draw, show);
 //		}
@@ -133,18 +133,18 @@ void main() {
 	while(!gvar.in.inst->Keyboard[72]){
 //		for(q=0; q<TILEWH; q++) {
 		omapScrollUp(draw, 1);
-//		modexShowPage(draw->page);
+//		omodexShowPage(draw->page);
 //		omapScrollUp(show, 1);
 //		SWAP(draw, show);
 //		}
 	}
 
 	//keyp(ch);
-	modexShowPage(draw->page);
+	omodexShowPage(draw->page);
 
 	}
 
-	modexLeave();
+	omodexLeave();
 
 //	setkb(0);
 	IN_Shutdown(&gvar);
@@ -312,7 +312,7 @@ omapGoTo(omap_view_t *mv, int tx, int ty) {
 	mv->dyThresh = mv->map->tiles->tileHeight * 2;
 
 	/* draw the tiles */
-	modexClearRegion(mv->page, 0, 0, mv->page->width, mv->page->height, 0);
+	omodexClearRegion(mv->page, 0, 0, mv->page->width, mv->page->height, 0);
 	py=0;
 	i=mv->ty * mv->map->width + mv->tx;
 	for(ty=mv->ty-1; py < SCREEN_HEIGHT+mv->dyThresh && ty < mv->map->height; ty++, py+=mv->map->tiles->tileHeight) {
@@ -323,12 +323,12 @@ omapGoTo(omap_view_t *mv, int tx, int ty) {
 
 
 void
-omapDrawTile(otiles_t *t, word i, page_t *page, word x, word y) {
+omapDrawTile(otiles_t *t, word i, opage_t *page, word x, word y) {
 	word rx;
 	word ry;
 	rx = (i % t->cols) * t->tileWidth;
 	ry = (i / t->cols) * t->tileHeight;
-	modexDrawBmpRegion(page, x, y, rx, ry, t->tileWidth, t->tileHeight, t->data);
+	omodexDrawBmpRegion(page, x, y, rx, ry, t->tileWidth, t->tileHeight, t->data);
 }
 
 

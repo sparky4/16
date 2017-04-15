@@ -77,7 +77,7 @@ static void loadPcxPalette(FILE *file, bitmap_t *result) {
 	/* handle the palette */
 	fseek(file, -769, SEEK_END);
 	val = fgetc(file);
-	result->palette = modexNewPal();
+	result->palette = omodexNewPal();
 	if(head.version == 5 && val == 12) {
 	/* use the vga palette */
 	for(index=0; !feof(file) && index < PAL_SIZE; index++) {
@@ -196,17 +196,4 @@ bitmapLoadPcxTiles(char *filename, word twidth, word theight) {
 	fclose(file);
 
 	return ts;
-}
-
-byte *
-modexNewPal() {
-	byte *ptr;
-	ptr = malloc(PAL_SIZE);
-
-	// handle errors
-	if(!ptr) {
-		printf("Could not allocate palette.\n");
-	}
-
-	return ptr;
 }

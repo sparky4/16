@@ -26,9 +26,9 @@
 #ifndef BITMAP_H
 #define BITMAP_H
 
-#include "src/lib/16_vl.h"
+#include "16/src/lib/omodex16.h"
 
 bitmap_t bitmapLoadPcx(char *filename, global_game_variables_t *gv);
 tileset_t bitmapLoadPcxTiles(char *filename, word twidth, word theight);
-byte *modexNewPal();
+
 #endif

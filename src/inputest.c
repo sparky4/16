@@ -29,9 +29,10 @@ void
 main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
-	//extern struct inconfig inpu;
+#ifdef __DEBUG_InputMgr__
 	dbg_testkeyin=0;
 	dbg_testcontrolnoisy=1;
+#endif
 	start_timer(&gvar);
 	//Startup16(&gvar);
 	IN_Startup(&gvar);
@@ -108,6 +109,8 @@ ctrl_Keyboard1);
 	//printf("%u\n", in.Keyboard[sc_Escape]);
 	printf("inputest.exe ");
 	printf("version %s\n", VERSION);
+#ifdef __DEBUG_InputMgr__
 	printf("testkeyin=%u\n", dbg_testkeyin);
 	printf("testcontrolnoisy=%u\n", dbg_testcontrolnoisy);
+#endif
 }

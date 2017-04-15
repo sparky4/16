@@ -28,7 +28,9 @@
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 
+#ifdef __DEBUG_InputMgr__
 extern boolean dbg_nointest;
+#endif
 boolean panswitch;
 
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
@@ -53,7 +55,9 @@ void main()
 	int size=0;
 */
 
+#ifdef __DEBUG_InputMgr__
 	dbg_nointest=0;
+#endif
 	Startup16(&gvar);
 
 /*	CA_LoadFile("data/spri/chikyuu.vrs", &bigbuffer, &gvar);

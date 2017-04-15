@@ -52,7 +52,7 @@ void modexDrawPBufRegion	(page_t *page, int x, int y, int rx, int ry, int rw, in
 	//printf("%d,%d p(%d,%d) r(%d,%d) rwh(%d,%d)\n", x, y, px, py, rx, ry, rw, rh);
 	for(plane=0; plane < 4; plane++) {
 		i=PEEE+prh;
-		modexSelectPlane(PLANE(plane-1));
+		omodexSelectPlane(PLANE(plane-1));
 		for(; y < py+rh; y++) {
 				_fmemcpy(page->data + (((page->width/4) * (y)) + ((x) / 4)), &(p->plane[plane][i]), prw);
 				i+=PE;
@@ -120,7 +120,7 @@ oldDrawBmp(byte far* page, int x, int y, bitmap_t *bmp, byte sprite)
 
 	/* TODO Make this fast.  It's SLOOOOOOW */
 	for(plane=0; plane < 4; plane++) {
-		modexSelectPlane(PLANE(plane+x));
+		omodexSelectPlane(PLANE(plane+x));
 		for(px = plane; px < bmp->width; px+=4) {
 			offset=px;
 			for(py=0; py<bmp->height; py++) {
