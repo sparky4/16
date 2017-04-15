@@ -1282,15 +1282,15 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 		strcpy(scratch, AARESET);
 		if(scan->attributes & PURGEBITS)
 		{
-			color = 5;		// dark purple = purgable
+			color = 6;		// dark purple = purgable
 			strcpy(scratch0, AAMAGENTA);		// dark purple = purgable
 		}else{
-			color = 9;		// medium blue = non purgable
+			color = 2;		// medium blue = non purgable
 			strcpy(scratch0, AABLUE);		// medium blue = non purgable
 		}
 		if(scan->attributes & LOCKBIT)
 		{
-			color = 12;		// red = locked
+			color = 1;		// red = locked
  			strcpy(scratch0, AARED);		// red = locked
 		}
 		if(scan->start<=end)
@@ -1329,7 +1329,7 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 		if (scan->next && scan->next->start >= end+1)
 #endif
 		{
-			VW_Hlin(x+end+1,x+(scan->next->start-scan->start),y,0,gvar);	// black = free
+			VW_Hlin(x+end+1,x+(scan->next->start-scan->start),y,3,gvar);	// black = free//now green
 			strcat(scratch0, AARESET);
 //++==++==optional			strcat(scratch0, "\n");
 			strcat(scratch0,AAGREEN);

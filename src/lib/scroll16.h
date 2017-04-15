@@ -91,9 +91,9 @@ printf("\n\n");\
 	printf("gvar.video:\n");\
 	printf(" r=%u ", gvar.video.dorender);\
 	printf("bgps=%u ", gvar.video.vga_state.bgps);\
-	printf("dbg_delayanimation=%u ", dbg_delayanimation);\
 printf("\n\n");
 
+//	printf("dbg_delayanimation=%u ", dbg_delayanimation);
 /*
 	if(IN_KeyDown(sc_F11)){ pagedelayrendermap=!pagedelayrendermap;		IN_UserInput(1, &gvar); }
 	if(IN_KeyDown(sc_F10)){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap;		IN_UserInput(1, &gvar); }

@@ -262,7 +262,7 @@ PRINTBB; KEYP
 
 #ifdef __WATCOMC__
 #ifndef NOVID
-	VGAmodeX(1, 0, &gvar);
+	VGAmodeX(8, 0, &gvar);
 //	modexPalUpdate0(&gvar.video.palette);
 //	ShapeTest_(&gvar);
 
@@ -375,6 +375,8 @@ PRINTBB; KEYP
 #endif
 	printf("\n");
 #endif
+//	printf("curr_mode=%u\n", gvar.video.curr_mode);
+//	VL_PrintmodexmemInfo(&gvar.video);
 	//printf("old_mode=%u	VL_Started=%u", gvar.video.old_mode, gvar.video.VL_Started);
 	//printf("based core left:			%lu\n", (dword)_basedcoreleft());
 	//printf("huge core left:			%lu\n", (dword)_hugecoreleft());

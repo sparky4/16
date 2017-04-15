@@ -282,7 +282,7 @@ void modexEnter(sword vq, boolean cmem, global_game_variables_t *gv)
 	switch(vq)
 	{
 		case 1:
-//		case 8: //320x240 no buffer
+		case 8: //320x240 no buffer
 			//CRTParmCount = sizeof(ModeX_320x240regs) / sizeof(ModeX_320x240regs[0]);
 			/*for(i=0; i<CRTParmCount; i++) {
 				outpw(CRTC_INDEX, ModeX_320x240regs[i]);
@@ -1374,17 +1374,24 @@ void VL_PrintmodexmemInfo(video_t *v)
 //	printf("========================================\n");
 	printf("  Virtual Screen: %dx", v->page[0].width);	printf("%d	", v->page[0].height);	printf("Tile: %dx", v->page[0].ti.tilesw);		printf("%d", v->page[0].ti.tilesh);	printf("=((Virtual Screen)/16)\n");
 	printf("  	  Screen: %dx", v->page[0].sw);		printf("%d	", v->page[0].sh);		printf("Tile: %dx", v->page[0].ti.tw);			printf("%d", v->page[0].ti.th);		printf("=((Screen)/16)\n");
+	printf("  stride: %u ", vga_state.vga_stride);
+	printf("draw_stride: %u ", vga_state.vga_draw_stride);
+	printf("draw_stride_limit: %u\n", vga_state.vga_draw_stride_limit);
 
-	printf("  Free Video Memory: %u\n", v->vmem_remain);
-	printf("  page");
-	for(i=0; i<v->num_of_pages;i++)
+	if(v->vmem_remain)
+		printf("  Free Video Memory: %u\n", v->vmem_remain);
+	if(v->num_of_pages)
 	{
-		printf("	[%u]=", i);
-		printf("(%Fp)", (v->page[i].data));
-		printf(" size=%u	", v->page[i].pagesize);
-		printf("w=%-3lu  h=%-3lu ", (unsigned long)v->page[i].width, (unsigned long)v->page[i].height);
-		printf("sw=%-3lu  sh=%-3lu ", (unsigned long)v->page[i].sw, (unsigned long)v->page[i].sh);
-		printf("pi=%u", v->page[i].pi);
-		printf("\n");
+	printf("  page");
+		for(i=0; i<v->num_of_pages;i++)
+		{
+			printf("	[%u]=", i);
+			printf("(%Fp)", (v->page[i].data));
+			printf(" size=%u	", v->page[i].pagesize);
+			printf("w=%-3lu  h=%-3lu ", (unsigned long)v->page[i].width, (unsigned long)v->page[i].height);
+			printf("sw=%-3lu  sh=%-3lu ", (unsigned long)v->page[i].sw, (unsigned long)v->page[i].sh);
+			printf("pi=%u", v->page[i].pi);
+			printf("\n");
+		}
 	}
 }
