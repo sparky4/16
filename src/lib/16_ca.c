@@ -38,6 +38,7 @@ loaded into the data segment
 
 //#define THREEBYTEGRSTARTS
 //https://github.com/open-watcom/open-watcom-v2/issues/279#issuecomment-244587566 for _seg
+//http://www.shikadi.net/moddingwiki/GameMaps_Format for info on the code
 /*
 =============================================================================
 
