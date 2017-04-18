@@ -105,7 +105,7 @@ void main() {
 	//TODO: top left corner & bottem right corner of map veiw be set as map edge trigger since omapS are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
-	while(!gvar.in.inst->Keyboard[77]){
+	while(gvar.in.inst->Keyboard[77]){
 //		for(q=0; q<TILEWH; q++) {
 		omapScrollRight(draw, 1);
 //		omodexShowPage(draw->page);
@@ -114,7 +114,7 @@ void main() {
 //		}
 	}
 
-	while(!gvar.in.inst->Keyboard[75]){
+	while(gvar.in.inst->Keyboard[75]){
 //		for(q=0; q<TILEWH; q++) {
  		omapScrollLeft(draw, 1);
 //		omodexShowPage(draw->page);
@@ -123,7 +123,7 @@ void main() {
 //		}
 	}
 
-	while(!gvar.in.inst->Keyboard[80]){
+	while(gvar.in.inst->Keyboard[80]){
 //		for(q=0; q<TILEWH; q++) {
 		omapScrollDown(draw, 1);
 //		omodexShowPage(draw->page);
@@ -132,7 +132,7 @@ void main() {
 //		}
 	}
 
-	while(!gvar.in.inst->Keyboard[72]){
+	while(gvar.in.inst->Keyboard[72]){
 //		for(q=0; q<TILEWH; q++) {
 		omapScrollUp(draw, 1);
 //		omodexShowPage(draw->page);
@@ -159,7 +159,7 @@ allocMap(int w, int h) {
 
 	result.width =w;
 	result.height=h;
-	result.data = _fmalloc(sizeof(byte) * w * h);
+	result.data = malloc(sizeof(byte) * w * h);
 
 	return result;
 }
@@ -171,13 +171,13 @@ oinitMap(omap_t *map) {
 	int x, y;
 	int i;
 	int tile = 1;
-	map->tiles = _fmalloc(sizeof(otiles_t));
+	map->tiles = malloc(sizeof(otiles_t));
 
 	/* create the tile set */
-	map->tiles->data = _fmalloc(sizeof(bitmap_t));
+	map->tiles->data = malloc(sizeof(bitmap_t));
 	map->tiles->data->width = (TILEWH*2);
 	map->tiles->data->height= TILEWH;
-	map->tiles->data->data = _fmalloc((TILEWH*2)*TILEWH);
+	map->tiles->data->data = malloc((TILEWH*2)*TILEWH);
 	map->tiles->tileHeight = TILEWH;
 	map->tiles->tileWidth =TILEWH;
 	map->tiles->rows = 1;

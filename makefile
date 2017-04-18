@@ -512,7 +512,7 @@ www: .symbolic
 	@wmake -s -h wwwext
 
 wwwext: .symbolic
-#	@wmake -s -h wwwext1
+	@wmake -s -h wwwext1
 	@wmake -s -h wwwext2
 
 wwwext1: .symbolic
