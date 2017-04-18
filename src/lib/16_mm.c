@@ -914,7 +914,8 @@ void MM_Shutdown(global_game_variables_t *gvar)
 
 void MM_GetPtr (memptr *baseptr, dword size, global_game_variables_t *gvar)
 {
-	mmblocktype far *scan,far *lastscan,far *endscan,far *purge,far *next;
+	mmblocktype far *scan,far *lastscan,far *endscan
+						,far *purge,far *next;
 	int			search;
 	unsigned	needed,startseg;
 
@@ -1025,19 +1026,19 @@ void MM_GetPtr (memptr *baseptr, dword size, global_game_variables_t *gvar)
 =
 = MM_FreePtr
 =
-= Allocates an unlocked, unpurgable block
+= Deallocates an unlocked, purgable block
 =
 ====================
 */
 
-void MM_FreePtr(memptr *baseptr, global_game_variables_t *gvar)
+void MM_FreePtr (memptr *baseptr, global_game_variables_t *gvar)
 {
 	mmblocktype far *scan,far *last;
 
 	last = gvar->mm.mmhead;
 	scan = last->next;
 
-	if(baseptr == gvar->mm.mmrover->useptr)	// removed the last allocated block
+	if (baseptr == gvar->mm.mmrover->useptr)	// removed the last allocated block
 		gvar->mm.mmrover = gvar->mm.mmhead;
 
 	while(scan->useptr != baseptr && scan)
@@ -1047,10 +1048,7 @@ void MM_FreePtr(memptr *baseptr, global_game_variables_t *gvar)
 	}
 
 	if(!scan)
-	{
-		Quit(gvar, "MM_FreePtr: Block not found!\n");
-		//printf("MM_FreePtr: Block not found!\n"); return;
-	}
+		Quit (gvar, "MM_FreePtr: Block not found!");
 
 	last->next = scan->next;
 
@@ -1068,8 +1066,7 @@ void MM_FreePtr(memptr *baseptr, global_game_variables_t *gvar)
 =====================
 */
 
-
-void MM_SetPurge(memptr *baseptr, int purge, global_game_variables_t *gvar)
+void MM_SetPurge (memptr *baseptr, int purge, global_game_variables_t *gvar)
 {
 	mmblocktype far *start;
 
@@ -1077,18 +1074,15 @@ void MM_SetPurge(memptr *baseptr, int purge, global_game_variables_t *gvar)
 
 	do
 	{
-		if(gvar->mm.mmrover->useptr == baseptr)
+		if (gvar->mm.mmrover->useptr == baseptr)
 			break;
 
 		gvar->mm.mmrover = gvar->mm.mmrover->next;
 
-		if(!gvar->mm.mmrover)
+		if (!gvar->mm.mmrover)
 			gvar->mm.mmrover = gvar->mm.mmhead;
-		else if(gvar->mm.mmrover == start)
-		{
+		else if (gvar->mm.mmrover == start)
 			Quit (gvar, "MM_SetPurge: Block not found!");
-			//return;
-		}
 
 	} while(1);
 
@@ -1108,7 +1102,7 @@ void MM_SetPurge(memptr *baseptr, int purge, global_game_variables_t *gvar)
 =====================
 */
 
-void MM_SetLock(memptr *baseptr, boolean locked, global_game_variables_t *gvar)
+void MM_SetLock (memptr *baseptr, boolean locked, global_game_variables_t *gvar)
 {
 	mmblocktype far *start;
 
@@ -1116,18 +1110,15 @@ void MM_SetLock(memptr *baseptr, boolean locked, global_game_variables_t *gvar)
 
 	do
 	{
-		if(gvar->mm.mmrover->useptr == baseptr)
+		if (gvar->mm.mmrover->useptr == baseptr)
 			break;
 
 		gvar->mm.mmrover = gvar->mm.mmrover->next;
 
-		if(!gvar->mm.mmrover)
+		if (!gvar->mm.mmrover)
 			gvar->mm.mmrover = gvar->mm.mmhead;
-		else if(gvar->mm.mmrover == start)
-		{
+		else if (gvar->mm.mmrover == start)
 			Quit (gvar, "MM_SetLock: Block not found!");
-			//return;
-		}
 
 	} while(1);
 
@@ -1147,7 +1138,7 @@ void MM_SetLock(memptr *baseptr, boolean locked, global_game_variables_t *gvar)
 =====================
 */
 
-void MM_SortMem(global_game_variables_t *gvar)
+void MM_SortMem (global_game_variables_t *gvar)
 {
 	mmblocktype far *scan,far *last,far *next;
 	unsigned	start,length,source,dest,oldborder;
@@ -1200,8 +1191,7 @@ void MM_SortMem(global_game_variables_t *gvar)
 			// throw out the purgable block
 			//
 				next = scan->next;
-				FREEBLOCK(scan);
-				//MM_FreeBlock(scan, gvar);
+				FREEBLOCK(scan); //MM_FreeBlock(scan, gvar);
 				last->next = next;
 				scan = next;
 				continue;
@@ -1260,7 +1250,7 @@ void MM_SortMem(global_game_variables_t *gvar)
 //#define MMSMSORTNEWTYPE
 #define MMSHOWMEMOFFSET 0//(gvar->video.page[0].dx+(gvar->video.page[0].dy*gvar->video.page[0].stridew))
 
-void MM_ShowMemory(global_game_variables_t *gvar)
+void MM_ShowMemory (global_game_variables_t *gvar)
 {
 	mmblocktype far *scan;
 	unsigned color,temp,x,y		,w;//,bofstemp;
@@ -1385,14 +1375,9 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 	CA_CloseDebug (gvar);
 
 	IN_Ack(gvar);
-//--	VW_SetLineWidth(64);
-	//gvar->video.ofs.bufferofs = temp;
-	//bofstemp = BDOFSCONV gvar->video.BOFS;//+MMSHOWMEMOFFSET;
-	//bofstemp = temp;
+
 	gvar->video.BOFS = (byte __far *)temp;
 }
-
-
 
 //==========================================================================
 
@@ -1404,12 +1389,12 @@ void MM_ShowMemory(global_game_variables_t *gvar)
 =====================
 */
 
-void MM_DumpData(global_game_variables_t *gvar)
+void MM_DumpData (global_game_variables_t *gvar)
 {
 	mmblocktype far *scan,far *best;
 	long	lowest,oldlowest;
-	word	owner;
-	byte	lock,purge;
+	unsigned	owner;
+	char	lock,purge;
 	FILE	*dumpfile;
 
 #ifdef __WATCOMC__
@@ -1482,9 +1467,9 @@ void MM_DumpData(global_game_variables_t *gvar)
 ======================
 */
 
-dword MM_UnusedMemory(global_game_variables_t *gvar)
+dword MM_UnusedMemory (global_game_variables_t *gvar)
 {
-	dword free;
+	unsigned free;
 	mmblocktype far *scan;
 
 	free = 0;
@@ -1497,7 +1482,6 @@ dword MM_UnusedMemory(global_game_variables_t *gvar)
 	}
 
 	return free*16lu;
-//	return free;
 }
 
 //==========================================================================
@@ -1513,9 +1497,9 @@ dword MM_UnusedMemory(global_game_variables_t *gvar)
 ======================
 */
 
-dword MM_TotalFree(global_game_variables_t *gvar)
+dword MM_TotalFree (global_game_variables_t *gvar)
 {
-	dword free;
+	unsigned free;
 	mmblocktype far *scan;
 
 	free = 0;
@@ -1530,7 +1514,6 @@ dword MM_TotalFree(global_game_variables_t *gvar)
 	}
 
 	return free*16lu;
-//	return free;
 }
 
 //==========================================================================
@@ -1712,7 +1695,7 @@ void MM_EMSerr(byte *stri, byte err)
 =====================
 */
 
-void MM_BombOnError(boolean bomb, global_game_variables_t *gvar)
+void MM_BombOnError (boolean bomb, global_game_variables_t *gvar)
 {
 	gvar->mm.bombonerror = bomb;
 }
