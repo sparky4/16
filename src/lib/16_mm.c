@@ -1257,24 +1257,26 @@ void MM_SortMem (global_game_variables_t *gvar)
 =====================
 */
 
-//#define MMSMSORTNEWTYPE
-#define MMSHOWMEMOFFSET 0//(gvar->video.page[0].dx+(gvar->video.page[0].dy*gvar->video.page[0].stridew))
+#define MMSMPANVID
 
 void MM_ShowMemory (global_game_variables_t *gvar)
 {
 	mmblocktype far *scan;
-	unsigned color,temp,x,y		,w;//,bofstemp;
+	unsigned color,temp,x,y		,w,width;
 	sdword	end,owner;
 	byte    scratch[160],scratch0[4096],str[16];
 
+	if(!gvar->video.page[0].width) gvar->video.page[0].sw = gvar->video.page[0].width = 320;	//to prevent division by 0
 //--	VL_SetLineWidth(40, gvar);
 	//temp = gvar->video.ofs.bufferofs;
 	//gvar->video.ofs.bufferofs = gvar->video.ofs.displayofs;
-	temp = BDOFSCONV gvar->video.BOFS+MMSHOWMEMOFFSET;
+	temp = BDOFSCONV gvar->video.BOFS;
 	gvar->video.BOFS = gvar->video.DOFS;
 	scan = gvar->mm.mmhead;
 
 	end = -1; w = 0;
+
+	width = gvar->video.page[0].width;
 
 	CA_OpenDebug (gvar);
 	while (scan)
@@ -1293,7 +1295,7 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 			color = 1;		// red = locked
  			strcpy(scratch0, AARED);		// red = locked
 		}
-		if(scan->start<=end)
+		if (scan->start<=end)
 		{
 			printf("\nend==%d\n\n", end);
 			strcat(scratch, "MM_ShowMemory: Memory block order currupted!\n");
@@ -1306,28 +1308,20 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 			write(gvar->handle.debughandle,scratch,strlen(scratch));
 			Quit (gvar, "MM_ShowMemory: Memory block order currupted!");
 		}
-#ifdef MMSMSORTNEWTYPE
-		end = scan->start+(scan->length)-1;
-#else
 		end = scan->length-1;
-#endif
-		if(!gvar->video.page[0].width) gvar->video.page[0].width = 352;
-		y = scan->start/gvar->video.page[0].width;
-		x = scan->start%gvar->video.page[0].width;
+		y = scan->start/width;
+		x = scan->start%width;
 		VW_Hlin(x,x+end,y,color,gvar);
-		VL_Plot(x,y,15,gvar);
+		VL_Plot(x,y,5,gvar);
 		for(w=(scan->start)/80;w<=end/80;w++)
 		{
-			//printf("+	%u	%lu\n", w, scan->length);
+//printf("+	%u	%lu\n", w, scan->length);
 			strcat(scratch0, "+");
 		}
 		//++==++==optional
 		strcat(scratch0, AARESET); strcat(scratch0, AAGREY); strcat(scratch0,"_");
-#ifdef MMSMSORTNEWTYPE
+
 		if (scan->next && scan->next->start > end+1)
-#else
-		if (scan->next && scan->next->start >= end+1)
-#endif
 		{
 			VW_Hlin(x+end+1,x+(scan->next->start-scan->start),y,3,gvar);	// black = free//now green
 			strcat(scratch0, AARESET);
@@ -1335,7 +1329,7 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 			strcat(scratch0,AAGREEN);
 			for(w=(end+1)/80;w<=((scan->next->start-scan->start)/80);w++)
 			{
-				//printf("0	%x	%u	%lu\n", scan->next->start, w, scan->length);
+//printf("0	%x	%u	%lu\n", scan->next->start, w, scan->length);
 				strcat(scratch0,"0");
 			}
 			//printf("==================\n");
@@ -1380,11 +1374,50 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 //fprintf(stdout, "%s", scratch);
 
 		scan = scan->next;
+//if(color!=6) IN_Ack(gvar);
 	}
 
 	CA_CloseDebug (gvar);
 
+#ifdef MMSMPANVID
+	{
+		int dx,dy,odx,ody;
+		odx = gvar->video.page[0].dx;
+		ody = gvar->video.page[0].dy;
+		dx = dy = 0;
+		while(!gvar->in.inst->Keyboard[sc_Escape])
+		{
+			if(gvar->in.inst->Keyboard[sc_UpArrow])
+			{
+				if(dy>0)
+					dy--;
+			}
+			else if(gvar->in.inst->Keyboard[sc_DownArrow])
+			{
+				if(dy<gvar->video.page[0].height-gvar->video.page[0].sh)
+					dy++;
+			}
+			if(gvar->in.inst->Keyboard[sc_LeftArrow])
+			{
+				if(dx>0)
+					dx--;
+			}
+			else if(gvar->in.inst->Keyboard[sc_RightArrow])
+			{
+				if(dx<gvar->video.page[0].width-gvar->video.page[0].sw)
+					dx++;
+			}
+
+			modexPanPage(&gvar->video.page[0], dx, dy);
+			VL_ShowPage(&gvar->video.page[0], 1, 1);
+		}
+
+		gvar->video.page[0].dx = odx;
+		gvar->video.page[0].dy = ody;
+	}
+#else
 	IN_Ack(gvar);
+#endif
 
 	gvar->video.BOFS = (byte __far *)temp;
 }
