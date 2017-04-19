@@ -110,8 +110,7 @@ int imf_load_music(const char *path, global_game_variables_t *gvar) {
 	PRINTBB;
 	return 1;
 }
-*/
-#ifndef LIBIRQ0
+
 // WARNING: subroutine call in interrupt handler. make sure you compile with -zu flag for large/compact memory models
 void interrupt irq0()
 {
@@ -124,8 +123,7 @@ void interrupt irq0()
 		p8259_OCW2(0,P8259_OCW2_NON_SPECIFIC_EOI);
 	}
 }
-#endif
-/*
+
 void imf_tick() {
 	if (imf_delay_countdown == 0) {
 		do {
@@ -190,8 +188,7 @@ void adlib_shut_up() {
 
 void main(int argc,char **argv) {
 	static global_game_variables_t gvar;
-	unsigned long tickrate = 700;
-	unsigned long ptick;
+	unsigned long ptick, tickrate = 700;
 	int c;
 #ifdef __DEBUG_CA__
 	dbg_debugca=1;
@@ -200,24 +197,22 @@ void main(int argc,char **argv) {
 	dbg_debugmm=1;
 #endif
 	ggvv=&gvar;
-	MM_Startup(&gvar);
-	PM_Startup(&gvar); PM_CheckMainMem(&gvar); PM_UnlockMainMem(&gvar);
-	CA_Startup(&gvar);
+	StartupCAMMPM(&gvar);
 	printf("ADLIB FM test program IMFPLAY\n");
 	if (argc < 2) {
 		printf("You must specify an IMF file to play\n");
-		return;
+//		return;
 	}
 
 	SD_Initimf(&gvar);
 
 	if (!SD_imf_load_music(argv[1], &gvar)) {
 		printf("Failed to load IMF Music\n");
-		return;
+//		return;
 	}
 
 	write_8254_system_timer(T8254_REF_CLOCK_HZ / tickrate);
-	old_irq0 = _dos_getvect(8);/*IRQ0*/
+	old_irq0 = _dos_getvect(8);	/*IRQ0*/
 	_dos_setvect(8,irq0);
 
 	_cli();
@@ -253,8 +248,6 @@ void main(int argc,char **argv) {
 	SD_adlib_shut_up();
 	shutdown_adlib();
 	_dos_setvect(8,old_irq0);
-	write_8254_system_timer(0);/* back to normal 18.2Hz */
-	PM_Shutdown(&gvar);
-	CA_Shutdown(&gvar);
-	MM_Shutdown(&gvar);
+	write_8254_system_timer(0);	/* back to normal 18.2Hz */
+	ShutdownCAMMPM(&gvar);
 }

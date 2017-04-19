@@ -34,7 +34,6 @@
 #define MAX_REGISTER			0xF5
 #define ADLIB_FM_ADDRESS	0x388	/* adlib address/status register */
 #define ADLIB_FM_DATA		0x389	/* adlib data register           */
-#define LIBIRQ0
 
 /*
 * FM Instrument definition for .SBI files - SoundBlaster instrument

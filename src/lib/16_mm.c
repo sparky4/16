@@ -74,7 +74,9 @@ void		(* XMSaddr) (void);		// far pointer to XMS driver
 =============================================================================
 */
 #ifndef __16_PM__
+#if 0
 static	char *ParmStringsexmm[] = {"noems","noxms",""};
+#endif
 #endif
 /*
 ======================
@@ -172,6 +174,7 @@ boolean MML_CheckForEMS(void)
 }
 
 #ifndef __16_PM__
+#if 0
 /*
 ======================
 =
@@ -456,6 +459,7 @@ byte MM_MapXEMS(global_game_variables_t *gvar)
 	return 0;
 }
 #endif
+#endif
 //==========================================================================
 
 /*
@@ -491,6 +495,7 @@ boolean MML_CheckForXMS(void)
 }
 
 #ifndef __16_PM__
+#if 0
 /*
 ======================
 =
@@ -577,6 +582,7 @@ void MML_ShutdownXMS(global_game_variables_t *gvar)
 		}
 	}
 }
+#endif
 #endif
 //==========================================================================
 
@@ -815,6 +821,7 @@ void MM_Startup(global_game_variables_t *gvar)
 	gvar->mmi.mainmem = gvar->mmi.nearheap + gvar->mmi.farheap;
 
 #if !defined(__16_PM__)// && defined(__WATCOMC__)
+#if 0
 	if(!dbg_debugpm) {
 //
 // detect EMS and allocate up to 64K at page frame
@@ -856,6 +863,7 @@ goto xmsskip;//0000
 	}
 xmsskip:
 #endif
+#endif
 //
 // allocate the misc buffer
 //
@@ -889,6 +897,7 @@ void MM_Shutdown(global_game_variables_t *gvar)
 	free(gvar->mm.nearheap);//	printf("		near freed\n");
 #endif
 #ifndef __16_PM__
+#if 0
 #ifdef __DEBUG__
 	if(!dbg_debugpm) {
 #endif
@@ -896,6 +905,7 @@ void MM_Shutdown(global_game_variables_t *gvar)
 	if(MML_CheckForXMS()){ MML_ShutdownXMS(gvar); }//printf("		XMS freed\n"); }
 #ifdef __DEBUG__
 	}
+#endif
 #endif
 #endif
 }
@@ -1526,7 +1536,7 @@ dword MM_TotalFree (global_game_variables_t *gvar)
 =====================
 */
 
-void MM_Report_(global_game_variables_t *gvar)
+void MM_Report_ (global_game_variables_t *gvar)
 {
 	printf("========================================\n");
 	printf("		MM_Report_\n");
@@ -1537,7 +1547,7 @@ void MM_Report_(global_game_variables_t *gvar)
 		printf("	%c%cEMM v%x.%x available\n", 0xC7, 0xC4, gvar->pm.emm.EMSVer>>4,gvar->pm.emm.EMSVer&0x0F);
 		printf("	%c%ctotalEMSpages:	%u	", 0xC7, 0xC4, gvar->pm.emm.totalEMSpages); printf("freeEMSpages:	%u\n", gvar->pm.emm.freeEMSpages);
 		printf("	%c%cEMSPageFrame:	%04x\n", 0xC7, 0xC4, gvar->pm.emm.EMSPageFrame);
-		printf("	%c%cEMSmem:	%lu or %luk\n", 0xD3, 0xC4, gvar->mmi.EMSmem, gvar->mmi.EMSmem/1204);
+		printf("	%c%cEMSmem:	%lu\n", 0xD3, 0xC4, gvar->mmi.EMSmem);
 	}
 	if(MML_CheckForXMS())
 	{
@@ -1545,7 +1555,7 @@ void MM_Report_(global_game_variables_t *gvar)
 		printf("	%c%cXMS v%x.%x available\n", 0xC7, 0xC4, XMSVer>>8,XMSVer&0x0F);
 		printf("	%c%cXMSDriver:	%Fp\n", 0xC7, 0xC4, XMSDriver);
 		printf("	%c%cXMSHandle:	%04x\n", 0xC7, 0xC4, gvar->pm.xmm.XMSHandle);
-		printf("	%c%cXMSmem:	%lu or %lukb\n", 0xD3, 0xC4, gvar->mmi.XMSmem, gvar->mmi.XMSmem/1024);
+		printf("	%c%cXMSmem:	%lu\n", 0xD3, 0xC4, gvar->mmi.XMSmem);
 	}
 	printf("	%cConv.	%u\n", 0xC9, gvar->pm.mm.MainPresent); DebugMemory_(gvar, 0);
 	//printf("mainmem:	%lu\n", gvar->mmi.mainmem);

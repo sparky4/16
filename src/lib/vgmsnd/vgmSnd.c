@@ -217,11 +217,11 @@ UINT8 OpenVGMFile(const char* FileName, VGM_FILE* vgmFile, global_game_variables
 void FreeVGMFile(VGM_FILE* vgmFile, global_game_variables_t *gvar)
 {
 	//if(vgmFile->data){ free(vgmFile->data);	vgmFile->data = NULL; }
-//	if(vgmFile->data) free(vgmFile->data);
 	MM_FreePtr(MEMPTR gvar->ca.audiosegs[0], gvar);
+	if(vgmFile->data) free(vgmFile->data);
 	vgmFile->dataLen = 0;
 
-	return;
+//	return;
 }
 
 

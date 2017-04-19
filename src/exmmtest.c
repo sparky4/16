@@ -193,8 +193,8 @@ main(int argc, char *argv[])
 	// save the palette
 	modexPalSave(&gvar.video.dpal); modexFadeOff(4, &gvar.video.dpal); //modexPalBlack();
 								#else //NOVID
-	//printf("main()=%Fp	start MM\n", *argv[0]);
-	MM_Startup(&gvar);
+	StartupCAMMPM(&gvar);
+/*	MM_Startup(&gvar);
 								#ifdef __16_PM__
 								#ifdef __DEBUG_PM__
 									if(dbg_debugpm>0)
@@ -206,9 +206,8 @@ main(int argc, char *argv[])
 									}
 								#endif //__DEBUG_PM__
 								#endif //__16_PM__
+	CA_Startup(&gvar);*/
 								#endif //elsed NOVID
-
-	CA_Startup(&gvar);
 								#ifdef PRINTBBDUMP
 								//0000
 PRINTBB; KEYP
@@ -308,14 +307,15 @@ PRINTBB; KEYP
 								#ifndef NOVID
 	Shutdown16(&gvar);
 								#else //novid
-								#ifdef __16_PM__
+	ShutdownCAMMPM(&gvar);
+/*								#ifdef __16_PM__
 								#ifdef __DEBUG_PM__
 									if(dbg_debugpm>0)
 								#endif //__DEBUG_PM__
 	PM_Shutdown(&gvar);
 								#endif //__16_PM__
 	CA_Shutdown(&gvar);
-	MM_Shutdown(&gvar);
+	MM_Shutdown(&gvar);*/
 								#endif //NOVID
 	IN_Shutdown(&gvar);
 	printf("========================================\n");

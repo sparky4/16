@@ -36,25 +36,19 @@
 ==========================
 */
 
-void Startup16(global_game_variables_t *gvar)
+void Startup16 (global_game_variables_t *gvar)
 {
 	gvar->video.VL_Started=0;
 	TL_VidInit(gvar);
 	gvar->mm.mmstarted=0;
 	gvar->pm.PMStarted=0;
-	MM_Startup(gvar);
+	StartupCAMMPM(gvar);
 #ifdef __WATCOMC__
 #ifdef __DEBUG_InputMgr__
 	if(!dbg_nointest)
 #endif
 	IN_Startup(gvar);
 #endif
-#ifdef __16_PM__
-	PM_Startup(gvar);
-	PM_CheckMainMem(gvar);
-	PM_UnlockMainMem(gvar);
-#endif
-	CA_Startup(gvar);
 }
 
 //===========================================================================
@@ -69,23 +63,81 @@ void Startup16(global_game_variables_t *gvar)
 ==========================
 */
 
-void Shutdown16(global_game_variables_t *gvar)
+void Shutdown16 (global_game_variables_t *gvar)
 {
-#ifdef __16_PM__
-	PM_Shutdown(gvar);
-#endif
 #ifdef __WATCOMC__
 #ifdef __DEBUG_InputMgr__
 	if(!dbg_nointest)
 #endif
 	IN_Shutdown(gvar);
 #endif
-	CA_Shutdown(gvar);
-	MM_Shutdown(gvar);
+	ShutdownCAMMPM(gvar);
 #ifdef __WATCOMC__
 	if(gvar->video.VL_Started)
 		VL_Shutdown (gvar);//VGAmodeX(0, 1, gvar);
 #endif
+}
+
+//===========================================================================
+
+/*
+==========================
+=
+= StartupCAMMPM
+=
+==========================
+*/
+
+void StartupCAMMPM (global_game_variables_t *gvar)
+{
+/*
+ 	MM_Startup ();                  // so the signon screen can be freed
+
+	SignonScreen ();
+
+	VW_Startup ();
+	IN_Startup ();
+	PM_Startup ();
+	PM_UnlockMainMem ();
+	SD_Startup ();
+	CA_Startup ();
+	US_Startup ();
+*/
+	MM_Startup(gvar);
+#ifdef __16_PM__
+	PM_Startup(gvar);
+//????	PM_CheckMainMem(gvar);
+	PM_UnlockMainMem(gvar);
+#endif
+	CA_Startup(gvar);
+}
+
+//===========================================================================
+
+/*
+==========================
+=
+= ShutdownCAMMPM
+=
+==========================
+*/
+
+void ShutdownCAMMPM (global_game_variables_t *gvar)
+{
+/*
+	US_Shutdown ();
+	SD_Shutdown ();
+	PM_Shutdown ();
+	IN_Shutdown ();
+	VW_Shutdown ();
+	CA_Shutdown ();
+	MM_Shutdown ()
+*/
+#ifdef __16_PM__
+	PM_Shutdown(gvar);
+#endif
+	CA_Shutdown(gvar);
+	MM_Shutdown(gvar);
 }
 
 //===========================================================================

@@ -26,7 +26,6 @@
 #include "src/lib/vgmsnd/vgmSnd.h"
 #include "src/lib/16_sd.h"
 //#include "src/lib/doslib/adlib.h"
-#include "src/lib/16_in.h"
 #include "src/lib/16_tail.h"
 #include "src/lib/16_pm.h"
 #include "src/lib/16_ca.h"
@@ -61,22 +60,18 @@ main(int argc, char *argv[])
 	if(argv[1]) strcpy(bakapee, argv[1]);
 
 	MM_Startup(&gvar);
-//	PM_Startup(&gvar); PM_CheckMainMem(&gvar); PM_UnlockMainMem(&gvar);
+//	PM_Startup(&gvar); PM_UnlockMainMem(&gvar);
 //	CA_Startup(&gvar);
 	printf("%x\n", OpenVGMFile(bakapee, &pee[0], &gvar));
-//	IN_Startup(); IN_Default(0,&gvar.player[0],ctrl_Keyboard1);
 	InitEngine();
 	PlayMusic(&pee[0]);
-//	while(!IN_KeyDown(sc_Escape))
 	while(!kbhit())
 	{
-//		IN_ReadControl(0,&gvar.player);
 		UpdateSoundEngine();
 	}
 	StopMusic();
-	FreeVGMFile(&pee[0], &gvar);
+	FreeVGMFile(&pee[0], &gvar); printf("ok\n");
 	DeinitEngine();
-	//IN_Shutdown();
 //	PM_Shutdown(&gvar);
 //	CA_Shutdown(&gvar);
 	MM_Shutdown(&gvar);

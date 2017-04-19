@@ -53,28 +53,14 @@ void main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
 	struct glob_game_vars *ggvv;
-//	sword bakapee;
-// 	if(argv[1]) bakapee = atoi(argv[1]);
-// 	else bakapee = 1;
-	//char *bakapee1,*bakapee1p;
 	char bakapee1[64] = FILENAME_1;
 	char bakapee1p[64] = FILENAME_1P;
 
 	Startup16(&gvar);
 
-//	bakapee1=mALLoc(64);
-//	bakapee1p=mALLoc(64);
 	ggvv=&gvar;
 
 	if (argc >= 2) {
-/*	if (argc < 2) {
-		//fprintf(stderr,"drawvrl <VRL file> <palette file>\n palette file optional\n");
-		bakapee1 =		FILENAME_1;
-		bakapee1p =	FILENAME_1P;
-
-	}else{
-		if(argv[1]) bakapee1 = argv[1];
-		if(argv[2]) bakapee1p = argv[2];*/
 		if(argv[1]){ strcpy(bakapee1, argv[1]);
 		if(argv[2]) strcpy(bakapee1p, argv[2]); }
 	}

@@ -270,7 +270,6 @@ int SD_imf_load_music(const char *path, global_game_variables_t *gvar)
 	return 1;
 }
 
-#ifdef LIBIRQ0
 struct glob_game_vars	*ggvv;
 // WARNING: subroutine call in interrupt handler. make sure you compile with -zu flag for large/compact memory models
 void interrupt irq0()
@@ -284,7 +283,6 @@ void interrupt irq0()
 		p8259_OCW2(0,P8259_OCW2_NON_SPECIFIC_EOI);
 	}
 }
-#endif
 
 void SD_imf_tick(global_game_variables_t *gvar)
 {
