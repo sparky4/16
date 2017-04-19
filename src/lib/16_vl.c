@@ -1107,7 +1107,7 @@ void modexDrawChar(page_t *page, int x/*for planar selection only*/, word t, wor
 	}
 }
 
-void modexprint(page_t *page, sword x, sword y, word t, boolean tlsw, word col, word bgcol, boolean sw, const byte *str)
+void modexprint(page_t *page, sword x, sword y, word t, boolean tlsw, word color, word bgcolor, boolean vidsw, const byte *str)
 {
 	word s, o, w;
 	word x_draw;
@@ -1116,7 +1116,7 @@ void modexprint(page_t *page, sword x, sword y, word t, boolean tlsw, word col, 
 	word addrr;
 	byte c;
 
-	switch(sw)
+	switch(vidsw)
 	{
 		case 0:
 			printf("%s\n", str);
@@ -1149,7 +1149,7 @@ void modexprint(page_t *page, sword x, sword y, word t, boolean tlsw, word col, 
 			// no need for inline assembly!
 			// NTS: It might even be faster to just let the modexDrawChar point directly at ROM font than to copy per char! --J.C.
 				_fmemcpy(romFontsData.l,MK_FP(s,o+(w*c))/*ROM font location*/,w/*char size*/);
-				modexDrawChar(page, x_draw/*for mode X planar use*/, t, col, bgcol, addrr);
+				modexDrawChar(page, x_draw/*for mode X planar use*/, t, color, bgcolor, addrr);
 				x_draw += 8; /* track X for edge of screen */
 				addrr += 2; /* move 8 pixels over (2 x 4 planar pixels per byte) */
 			}

@@ -475,6 +475,12 @@ typedef struct mmblockstruct
 	struct mmblockstruct far *next;
 } mmblocktype;
 
+typedef struct mmshowmemoryinfo
+{
+	word x,y;
+	mmblocktype far *scan;
+} mmshowmemoryinfo_t;
+
 typedef struct
 {
 	dword	nearheap,farheap,EMSmem,XMSmem,mainmem;

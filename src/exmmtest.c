@@ -274,9 +274,9 @@ PRINTBB; KEYP
 		IN_ClearKey(scan);
 		switch (scan)
 		{
-			case sc_Space:
-				MM_ShowMemory(&gvar);
-			break;
+//			case sc_Space:
+//				MM_ShowMemory(&gvar);
+//			break;
 //#ifdef __WATCOMC__
 			case sc_O:
 				VL_modexPalScramble(&gvar.video.palette); modexpdump(&gvar.video.page);

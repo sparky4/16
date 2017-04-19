@@ -1257,14 +1257,18 @@ void MM_SortMem (global_game_variables_t *gvar)
 =====================
 */
 
-#define MMSMPANVID
+#ifdef __WATCOMC__
+//#define MMSMPANVID
+#define MMSMSCANINFO
+#endif
 
 void MM_ShowMemory (global_game_variables_t *gvar)
 {
 	mmblocktype far *scan;
-	unsigned color,temp,x,y		,w,width;
+	unsigned color,temp,x,y		,w,q,width;
 	sdword	end,owner;
-	byte    scratch[160],scratch0[4096],str[16];
+	byte		scratch[160],scratch0[4096],str[16];
+	mmshowmemoryinfo_t scaninfo[MAXBLOCKS];
 
 	if(!gvar->video.page[0].width) gvar->video.page[0].sw = gvar->video.page[0].width = 320;	//to prevent division by 0
 //--	VL_SetLineWidth(40, gvar);
@@ -1276,11 +1280,12 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 
 	end = -1; w = 0;
 
-	width = gvar->video.page[0].width;
+	width = gvar->video.page[0].width; q = 0;
 
 	CA_OpenDebug (gvar);
 	while (scan)
 	{
+		scaninfo[q].scan = scan;
 		strcpy(scratch, AARESET);
 		if(scan->attributes & PURGEBITS)
 		{
@@ -1311,6 +1316,8 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 		end = scan->length-1;
 		y = scan->start/width;
 		x = scan->start%width;
+		scaninfo[q].x = x;
+		scaninfo[q].y = y;
 		VW_Hlin(x,x+end,y,color,gvar);
 		VL_Plot(x,y,5,gvar);
 		for(w=(scan->start)/80;w<=end/80;w++)
@@ -1374,6 +1381,7 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 //fprintf(stdout, "%s", scratch);
 
 		scan = scan->next;
+		q++;
 //if(color!=6) IN_Ack(gvar);
 	}
 
@@ -1415,9 +1423,68 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 		gvar->video.page[0].dx = odx;
 		gvar->video.page[0].dy = ody;
 	}
-#else
-	IN_Ack(gvar);
 #endif
+#ifdef MMSMSCANINFO
+	{
+		unsigned		maxq = q;
+		boolean			done;
+		ScanCode		scancode;
+		int xpos,ypos;
+		word qq, ccolor = 3;
+		IN_Ack(gvar);
+//		VL_ClearVideo (8);
+		for (qq = 0,done = false;!done;)
+		{
+			if(scaninfo[qq].scan->attributes & PURGEBITS)
+			{
+				ccolor = 6;		// dark purple = purgable
+			}else{
+				ccolor = 2;		// medium blue = non purgable
+			}
+			if(scaninfo[qq].scan->attributes & LOCKBIT)
+			{
+				ccolor = 1;		// red = locked
+			}
+/*typedef struct mmblockstruct{
+	word	start,length;
+	unsigned	attributes;
+	memptr		*useptr;	// pointer to the segment start
+	struct mmblockstruct far *next;
+} mmblocktype;*/
+			//modexprint(page, x, y, t, tlsw, color, bgcolor, vidsw, const byte *str);
+#define MMSMPRINTMEMINFO modexprint(&(gvar->video.page[0]), xpos, ypos, 1, 0, ccolor, 8, gvar->video.VL_Started, global_temp_status_text); ypos+=8;
+			VL_ShowPage(&gvar->video.page[0], 1, 0);
+			if(!gvar->video.VL_Started) clrscr();
+			sprintf(global_temp_status_text, "block #%04u", qq); MMSMPRINTMEMINFO
+//			sprintf(global_temp_status_text, "%Fp", scaninfo[qq].scan->useptr); MMSMPRINTMEMINFO
+			sprintf(global_temp_status_text, "%04x", (unsigned)scaninfo[qq].scan->useptr); MMSMPRINTMEMINFO
+			sprintf(global_temp_status_text, "size: %05u", (unsigned)scan->length); MMSMPRINTMEMINFO
+			sprintf(global_temp_status_text, "free: %05u", (unsigned)(scaninfo[qq].scan->next->start-scaninfo[qq].scan->start)); MMSMPRINTMEMINFO
+			//if (scan->next && scan->next->start > end+1) free
+			xpos = 16;
+			ypos = 16;//(gvar->video.page[0].sh-(32));//8*4
+			while (!(scancode = gvar->in.inst->LastScan)){}
+
+			IN_ClearKey(scancode);
+			switch (scancode)
+			{
+				case sc_LeftArrow:
+					if(qq>0) qq--;
+					else	qq = maxq;
+				break;
+				case sc_RightArrow:
+					if(qq<maxq) qq++;
+					else qq = 0;
+				break;
+				case sc_Escape:
+					done = true;
+				break;
+			}
+		}
+	}
+#endif
+
+	IN_Ack(gvar);
 
 	gvar->video.BOFS = (byte __far *)temp;
 }

@@ -1,28 +1,53 @@
+-------------------------------------------------------------------------------
+					./qwolf.sh start
+-------------------------------------------------------------------------------
+==== 16/wf3d8086 ====
 16/wf3d8086/contigsc.c:	shape = PM_GetSpritePage (shapenum);
 16/wf3d8086/contigsc.c:	shape = PM_GetSpritePage (shapenum);
 
 16/wf3d8086/id_sd.c:	addr = PM_GetSoundPage(page);
 16/wf3d8086/id_sd.c:	PM_SetPageLock(PMSoundStart + page,pml_Locked);
 16/wf3d8086/id_sd.c:		PM_SetPageLock(i + PMSoundStart,pml_Unlocked);
+16/wf3d8086/id_sd.c:		DigiNextLen = (DigiLeft >= PMPageSize)? PMPageSize : (DigiLeft % PMPageSize);
+16/wf3d8086/id_sd.c:	DigiLastEnd = DigiPage + ((DigiLeft + (PMPageSize - 1)) / PMPageSize);
+16/wf3d8086/id_sd.c:	len = (DigiLeft >= PMPageSize)? PMPageSize : (DigiLeft % PMPageSize);
 16/wf3d8086/id_sd.c:	PM_UnlockMainMem();
+16/wf3d8086/id_sd.c:	MM_GetPtr(&list,PMPageSize);
 16/wf3d8086/id_sd.c:	PM_CheckMainMem();
 16/wf3d8086/id_sd.c:	p = (word far *)MK_FP(PM_GetPage(ChunksInFile - 1),0);
+16/wf3d8086/id_sd.c:	_fmemcpy((void far *)list,(void far *)p,PMPageSize);
+16/wf3d8086/id_sd.c:	pg = PMSoundStart;
+16/wf3d8086/id_sd.c:	for (i = 0;i < PMPageSize / (sizeof(word) * 2);i++,p += 2)
+16/wf3d8086/id_sd.c:		pg += (p[1] + (PMPageSize - 1)) / PMPageSize;
 16/wf3d8086/id_sd.c:	PM_UnlockMainMem();
 
 16/wf3d8086/wl_act2.c:	PM_UnlockMainMem ();
 16/wf3d8086/wl_act2.c:	PM_CheckMainMem ();
 
+16/wf3d8086/wl_debug.c:		page = &PMPages[i];
+16/wf3d8086/wl_debug.c:		if (i < PMSpriteStart)
+16/wf3d8086/wl_debug.c:		else if (i < PMSoundStart)
 16/wf3d8086/wl_debug.c:		addr = PM_GetPageAddress(i);
+16/wf3d8086/wl_debug.c:			if (i < PMSpriteStart)
+16/wf3d8086/wl_debug.c:			else if (i < PMSoundStart)
+16/wf3d8086/wl_debug.c:				SimpleScaleShape (160, i-PMSpriteStart, 64);
+16/wf3d8086/wl_debug.c:					k += (DigiList[(j * 2) + 1] + (PMPageSize - 1)) / PMPageSize;
+16/wf3d8086/wl_debug.c:					k = (DigiList[(j * 2) + 1] + (PMPageSize - 1)) / PMPageSize;
+16/wf3d8086/wl_debug.c:						(i >= PMSoundStart + DigiList[j * 2])
+16/wf3d8086/wl_debug.c:					&&	(i < PMSoundStart + DigiList[j * 2] + k)
+16/wf3d8086/wl_debug.c:					US_PrintUnsigned(i - PMSoundStart - DigiList[j * 2]);
+16/wf3d8086/wl_debug.c:			i = PMSpriteStart;
+16/wf3d8086/wl_debug.c:			i = PMSoundStart;
 16/wf3d8086/wl_debug.c:				PM_GetPage(j);
 16/wf3d8086/wl_debug.c:			PM_GetPage(i);
 
+16/wf3d8086/wl_draw.c:#define DOORWALL	(PMSpriteStart-8)
 16/wf3d8086/wl_draw.c:		*( ((unsigned *)&postsource)+1) = (unsigned)PM_GetPage(wallpic);
 16/wf3d8086/wl_draw.c:		*( ((unsigned *)&postsource)+1) = (unsigned)PM_GetPage(wallpic);
 16/wf3d8086/wl_draw.c:		*( ((unsigned *)&postsource)+1) = (unsigned)PM_GetPage(doorpage);
 16/wf3d8086/wl_draw.c:		*( ((unsigned *)&postsource)+1) = (unsigned)PM_GetPage(doorpage+1);
 16/wf3d8086/wl_draw.c:		*( ((unsigned *)&postsource)+1) = (unsigned)PM_GetPage(wallpic);
 16/wf3d8086/wl_draw.c:		*( ((unsigned *)&postsource)+1) = (unsigned)PM_GetPage(wallpic);
-
 16/wf3d8086/wl_draw.c:	PM_NextFrame();
 
 16/wf3d8086/wl_game.c:	PM_UnlockMainMem();
@@ -41,7 +66,9 @@
 16/wf3d8086/wl_main.c:	PM_Startup ();
 16/wf3d8086/wl_main.c:	PM_UnlockMainMem ();
 
+16/wf3d8086/wl_menu.c:				StartCPMusic(MENUSONG);
 16/wf3d8086/wl_menu.c:				PM_CheckMainMem ();
+16/wf3d8086/wl_menu.c:				StartCPMusic(MENUSONG);
 16/wf3d8086/wl_menu.c:				PM_CheckMainMem ();
 
 16/wf3d8086/wl_play.c:		PM_CheckMainMem ();
@@ -55,3 +82,4 @@
 
 16/wf3d8086/wolfhack.c:	src = PM_GetPage(0);
 16/wf3d8086/wolfhack.c:	src = PM_GetPage(1);
+===============		./qwolf.sh end		===============
