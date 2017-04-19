@@ -33,7 +33,7 @@
 #include <dos.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <conio.h> // just for wait
+#include <conio.h> // this is where Open Watcom hides the outp() etc. functions // just for wait
 #include <time.h> // just for wait
 #include <ctype.h>
 #include <fcntl.h>

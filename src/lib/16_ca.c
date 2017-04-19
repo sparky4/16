@@ -1435,7 +1435,8 @@ cachein:
 
 //===========================================================================
 
-//++++#if GRMODE == EGAGR
+//????#if GRMODE == EGAGR
+#if 0
 
 /*
 ======================
@@ -1446,7 +1447,7 @@ cachein:
 =
 ======================
 */
-/*++++
+
 unsigned	static	sheight,swidth;
 boolean static dothemask;
 
@@ -1458,92 +1459,114 @@ void CAL_ShiftSprite (unsigned segment,unsigned source,unsigned dest,
 	swidth = width;
 	dothemask = domask;
 
-asm	mov	ax,[segment]
-asm	mov	ds,ax		// source and dest are in same segment, and all local
+	__asm {
+		mov	ax,[segment]
+		mov	ds,ax		// source and dest are in same segment, and all local
 
-asm	mov	bx,[source]
-asm	mov	di,[dest]
+		mov	bx,[source]
+		mov	di,[dest]
 
-asm	mov	bp,[pixshift]
-asm	shl	bp,1
-asm	mov	bp,WORD PTR [shifttabletable+bp]	// bp holds pointer to shift table
+		mov	bp,[pixshift]
+		shl	bp,1
+		mov	bp,WORD PTR [shifttabletable+bp]	// bp holds pointer to shift table
 
-asm	cmp	[ss:dothemask],0
-asm	je		skipmask
+		cmp	[ss:dothemask],0
+		je		skipmask
 
 //
 // table shift the mask
 //
-asm	mov	dx,[ss:sheight]
-
+		mov	dx,[ss:sheight]
+#ifdef __BORLANDC__
+	}
+#endif
 domaskrow:
-
-asm	mov	BYTE PTR [di],255	// 0xff first byte
-asm	mov	cx,ss:[swidth]
-
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		mov	BYTE PTR [di],255	// 0xff first byte
+		mov	cx,ss:[swidth]
+#ifdef __BORLANDC__
+	}
+#endif
 domaskbyte:
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		mov	al,[bx]				// source
+		not	al
+		inc	bx					// next source byte
+		xor	ah,ah
+		shl	ax,1
+		mov	si,ax
+		mov	ax,[bp+si]			// table shift into two bytes
+		not	ax
+		and	[di],al				// and with first byte
+		inc	di
+		mov	[di],ah				// replace next byte
 
-asm	mov	al,[bx]				// source
-asm	not	al
-asm	inc	bx					// next source byte
-asm	xor	ah,ah
-asm	shl	ax,1
-asm	mov	si,ax
-asm	mov	ax,[bp+si]			// table shift into two bytes
-asm	not	ax
-asm	and	[di],al				// and with first byte
-asm	inc	di
-asm	mov	[di],ah				// replace next byte
+		loop	domaskbyte
 
-asm	loop	domaskbyte
-
-asm	inc	di					// the last shifted byte has 1s in it
-asm	dec	dx
-asm	jnz	domaskrow
-
+		inc	di					// the last shifted byte has 1s in it
+		dec	dx
+		jnz	domaskrow
+#ifdef __BORLANDC__
+	}
+#endif
 skipmask:
-
+#ifdef __BORLANDC__
+	__asm {
+#endif
 //
 // table shift the data
 //
-asm	mov	dx,ss:[sheight]
-asm	shl	dx,1
-asm	shl	dx,1				// four planes of data
-
+		mov	dx,ss:[sheight]
+		shl	dx,1
+		shl	dx,1				// four planes of data
+#ifdef __BORLANDC__
+	}
+#endif
 dodatarow:
-
-asm	mov	BYTE PTR [di],0		// 0 first byte
-asm	mov	cx,ss:[swidth]
-
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		mov	BYTE PTR [di],0		// 0 first byte
+		mov	cx,ss:[swidth]
+#ifdef __BORLANDC__
+	}
+#endif
 dodatabyte:
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		mov	al,[bx]				// source
+		inc	bx					// next source byte
+		xor	ah,ah
+		shl	ax,1
+		mov	si,ax
+		mov	ax,[bp+si]			// table shift into two bytes
+		or	[di],al				// or with first byte
+		inc	di
+		mov	[di],ah				// replace next byte
 
-asm	mov	al,[bx]				// source
-asm	inc	bx					// next source byte
-asm	xor	ah,ah
-asm	shl	ax,1
-asm	mov	si,ax
-asm	mov	ax,[bp+si]			// table shift into two bytes
-asm	or	[di],al				// or with first byte
-asm	inc	di
-asm	mov	[di],ah				// replace next byte
+		loop	dodatabyte
 
-asm	loop	dodatabyte
-
-asm	inc	di					// the last shifted byte has 0s in it
-asm	dec	dx
-asm	jnz	dodatarow
+		inc	di					// the last shifted byte has 0s in it
+		dec	dx
+		jnz	dodatarow
 
 //
 // done
 //
 
-asm	mov	ax,ss				// restore data segment
-asm	mov	ds,ax
+		mov	ax,ss				// restore data segment
+		mov	ds,ax
+	}
 
 }
 
 #endif
-*/
+
 //===========================================================================
 
 /*

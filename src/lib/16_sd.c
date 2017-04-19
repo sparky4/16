@@ -23,7 +23,7 @@
 #include "src/lib/16_sd.h"
 
 //static void (interrupt *old_irq0)();
-extern struct glob_game_vars	*ggvv;
+void interrupt	(*old_irq0)(void);
 
 void opl2out(word reg, word data)
 {
@@ -196,7 +196,6 @@ void FMSetVoice(int voiceNum, FMInstrument *ins){
 	opl2out(opCellNum, ins->Feedback);
 } /* End of FMSetVoice */
 
-
 void SD_Initimf(global_game_variables_t *gvar)
 {
 	if (!init_adlib()) {
@@ -271,8 +270,10 @@ int SD_imf_load_music(const char *path, global_game_variables_t *gvar)
 	return 1;
 }
 
+#ifdef LIBIRQ0
+struct glob_game_vars	*ggvv;
 // WARNING: subroutine call in interrupt handler. make sure you compile with -zu flag for large/compact memory models
-/*void interrupt irq0()
+void interrupt irq0()
 {
 	ggvv->ca.sd.irq0_ticks++;
 	if ((ggvv->ca.sd.irq0_cnt += ggvv->ca.sd.irq0_add) >= ggvv->ca.sd.irq0_max) {
@@ -282,7 +283,8 @@ int SD_imf_load_music(const char *path, global_game_variables_t *gvar)
 	else {
 		p8259_OCW2(0,P8259_OCW2_NON_SPECIFIC_EOI);
 	}
-}*/
+}
+#endif
 
 void SD_imf_tick(global_game_variables_t *gvar)
 {

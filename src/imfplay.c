@@ -31,9 +31,9 @@
 // #include <fcntl.h>
 // #include <math.h>
 // #include <dos.h>
-struct glob_game_vars	*ggvv;
 
-static void (interrupt *old_irq0)();
+extern struct glob_game_vars	*ggvv;
+
 /*static void (interrupt *old_irq0)();
 static volatile unsigned long irq0_ticks=0;
 static volatile unsigned int irq0_cnt=0,irq0_add=0,irq0_max=0;
@@ -111,6 +111,7 @@ int imf_load_music(const char *path, global_game_variables_t *gvar) {
 	return 1;
 }
 */
+#ifndef LIBIRQ0
 // WARNING: subroutine call in interrupt handler. make sure you compile with -zu flag for large/compact memory models
 void interrupt irq0()
 {
@@ -123,6 +124,7 @@ void interrupt irq0()
 		p8259_OCW2(0,P8259_OCW2_NON_SPECIFIC_EOI);
 	}
 }
+#endif
 /*
 void imf_tick() {
 	if (imf_delay_countdown == 0) {
