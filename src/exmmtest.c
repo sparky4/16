@@ -49,7 +49,7 @@
 #define NOVID
 #endif
 #ifdef __WATCOMC__
-//#define NOVID
+#define NOVID
 #endif
 
 
@@ -69,7 +69,8 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-#ifdef NOVID
+//#ifdef NOVID
+#ifdef __BORLANDC__
 void VL_Startup (global_game_variables_t *gvar){ gvar=gvar; }
 void VL_Shutdown (global_game_variables_t *gvar){ gvar=gvar; }
 void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
@@ -140,10 +141,6 @@ void
 main(int argc, char *argv[])
 {
 	byte w;
-								#ifndef NOVID
-	boolean			done;
-	ScanCode		scan;
-								#endif
 	static global_game_variables_t gvar;
 								#ifdef INITBBUF
 	INITBBUF
@@ -264,7 +261,11 @@ PRINTBB; KEYP
 	VGAmodeX(8, 0, &gvar);
 //	modexPalUpdate0(&gvar.video.palette);
 //	ShapeTest_(&gvar);
-
+	MM_ShowMemory(&gvar);
+#if 0
+	{
+	boolean			done;
+	ScanCode		scan;
 	for (done = false;!done;)
 	{
 		while (!(scan = gvar.in.inst->LastScan))
@@ -294,6 +295,8 @@ PRINTBB; KEYP
 			break;
 		}
 	}
+}
+#endif
 	VGAmodeX(0, 0, &gvar);
 #endif
 #endif
