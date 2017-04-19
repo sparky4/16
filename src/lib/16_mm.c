@@ -1445,6 +1445,7 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 			{
 				ccolor = 1;		// red = locked
 			}
+			end = scaninfo[qq].scan->length-1;
 /*typedef struct mmblockstruct{
 	word	start,length;
 	unsigned	attributes;
@@ -1461,15 +1462,17 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 			sprintf(global_temp_status_text, "block #%04u", qq); MMSMPRINTMEMINFO
 //			sprintf(global_temp_status_text, "%Fp", scaninfo[qq].scan->useptr); MMSMPRINTMEMINFO
 			sprintf(global_temp_status_text, "%04x", (unsigned)scaninfo[qq].scan->useptr); MMSMPRINTMEMINFO
-			sprintf(global_temp_status_text, "size: %05u", (unsigned)scan->length); MMSMPRINTMEMINFO
-			sprintf(global_temp_status_text, "free: %05u", (unsigned)(scaninfo[qq].scan->next->start-scaninfo[qq].scan->start)); MMSMPRINTMEMINFO
-			end = scaninfo[qq].scan->length-1;
+			sprintf(global_temp_status_text, "size: %05u", (unsigned)scaninfo[qq].scan->length); MMSMPRINTMEMINFO
+			if (scaninfo[qq].scan->next && scaninfo[qq].scan->next->start > end+1)
+			{
+				sprintf(global_temp_status_text, "free: %05u", (unsigned)(scaninfo[qq].scan->next->start-scaninfo[qq].scan->start)); MMSMPRINTMEMINFO
+			}
 			y = ypos;//scaninfo[qq].scan->start/width;
 			x = xpos;//scaninfo[qq].scan->start%width;
 			VW_Hlin(x,x+end,y,ccolor,gvar);
 			VL_Plot(x,y,5,gvar);
 			if (scaninfo[qq].scan->next && scaninfo[qq].scan->next->start > end+1)
-				VW_Hlin(x+end+1,x+(scaninfo[qq].scan->next->start-scan->start),y,3,gvar);	// black = free//now green
+				VW_Hlin(x+end+1,x+(scaninfo[qq].scan->next->start-scaninfo[qq].scan->start),y,3,gvar);	// black = free//now green
 
 			//if (scan->next && scan->next->start > end+1) free
 			xpos = 16;
