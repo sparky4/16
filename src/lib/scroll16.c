@@ -912,8 +912,8 @@ void shinku(global_game_variables_t *gv)
 			//modexWaitBorder();
 			//modexWaitBorder_start();
 #else
-			vga_wait_for_vsync();
-			//vga_wait_for_vsync_end();
+			//vga_wait_for_vsync();
+			vga_wait_for_vsync_end();
 #endif
 			gv->kurokku.frames_per_second=60;
 		break;
