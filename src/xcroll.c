@@ -22,7 +22,6 @@
 
 #include "src/lib/scroll16.h"
 #include "src/lib/16_timer.h"
-#include "src/lib/16render.h"
 #include "src/lib/16_dbg.h"
 
 #define FADE

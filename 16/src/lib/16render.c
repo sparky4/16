@@ -23,7 +23,7 @@
  * Render data code~
  */
 
-#include "src/lib/16render.h"
+#include "16/src/lib/16render.h"
 
 //TODO! ADD CLIPPING!!
 //memory management needs to be added
@@ -289,7 +289,7 @@ void
 modexDrawBmpPBufRegion(page_t *page, int x, int y,
 		   int rx, int ry, int rw, int rh, planar_buf_t *bmp) {
 	word poffset = (word) page->data  + y*(page->width/4) + x/4;
-	byte *data = bmp->plane[0];
+	byte *data = (byte *)bmp->plane[0];
 	word bmpOffset = (word) data + ry * bmp->width + rx;
 	word width = rw;
 	word height = rh;
@@ -367,7 +367,7 @@ void
 modexDrawSpritePBufRegion(page_t *page, int x, int y,
 		      int rx, int ry, int rw, int rh, planar_buf_t *bmp) {
 	word poffset = (word)page->data + y*(page->width/4) + x/4;
-	byte *data = bmp->plane[0];
+	byte *data = (byte *)bmp->plane[0];
 	word bmpOffset = (word) data + ry * bmp->width + rx;
 	word width = rw;
 	word height = rh;

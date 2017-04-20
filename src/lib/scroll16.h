@@ -29,8 +29,7 @@
 #include "src/lib/16_vl.h"
 #include "src/lib/16_in.h"
 #include "src/lib/16_map.h" //map is loaded here www
-#include "src/lib/16render.h"
-//#include "src/lib/16_map.h"	//new map stuff
+//#include "src/lib/16render.h"
 #include "src/lib/16_timer.h"
 #include "src/lib/wcpu/16_wcpu.h"
 #include "src/lib/16_spri.h"

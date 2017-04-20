@@ -105,7 +105,7 @@ void main() {
 	//TODO: top left corner & bottem right corner of map veiw be set as map edge trigger since omapS are actually square
 	//to stop scrolling and have the player position data move to the edge of the screen with respect to the direction
 	//when player.tx or player.ty == 0 or player.tx == 20 or player.ty == 15 then stop because that is edge of map and you do not want to walk of the map
-	while(gvar.in.inst->Keyboard[77]){
+	if(gvar.in.inst->Keyboard[77]){
 //		for(q=0; q<TILEWH; q++) {
 		omapScrollRight(draw, 1);
 //		omodexShowPage(draw->page);
@@ -114,7 +114,7 @@ void main() {
 //		}
 	}
 
-	while(gvar.in.inst->Keyboard[75]){
+	if(gvar.in.inst->Keyboard[75]){
 //		for(q=0; q<TILEWH; q++) {
  		omapScrollLeft(draw, 1);
 //		omodexShowPage(draw->page);
@@ -123,7 +123,7 @@ void main() {
 //		}
 	}
 
-	while(gvar.in.inst->Keyboard[80]){
+	if(gvar.in.inst->Keyboard[80]){
 //		for(q=0; q<TILEWH; q++) {
 		omapScrollDown(draw, 1);
 //		omodexShowPage(draw->page);
@@ -132,7 +132,7 @@ void main() {
 //		}
 	}
 
-	while(gvar.in.inst->Keyboard[72]){
+	if(gvar.in.inst->Keyboard[72]){
 //		for(q=0; q<TILEWH; q++) {
 		omapScrollUp(draw, 1);
 //		omodexShowPage(draw->page);

@@ -157,7 +157,7 @@ DOSLIB=doslib.lib
 #
 #	Files locations
 #
-.c : $(SRC);$(SRCLIB);$(MODEXLIB16);$(JSMNLIB);$(NYANLIB);$(VGMSNDLIB);$(WCPULIB);$(UTIL);16/$(SRCLIB)
+.c : $(SRC);$(SRCLIB);$(MODEXLIB16);$(JSMNLIB);$(NYANLIB);$(VGMSNDLIB);$(WCPULIB);$(UTIL)
 
 .asm : $(MODEXLIB);$(UTIL)
 
@@ -256,8 +256,6 @@ bakapi.exe:		bakapi.$(OBJ) 16_vl.$(OBJ) 16_vl_1.$(OBJ) 16text.$(OBJ) bakapee.$(O
 #
 # Test Executables!
 #
-0croll.exe:	0croll.$(OBJ) $(OLDLIBOBJS) omodex16.$(OBJ) 16_in.$(OBJ)
-0croll.$(OBJ):	$(SRC)/0croll.c
 scroll.exe:	scroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 scroll.$(OBJ):	$(SRC)/scroll.c
 xcroll.exe:	xcroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
@@ -299,21 +297,21 @@ wcpu.exe:		wcpu.$(OBJ) $(16LIB) $(DOSLIB)
 #
 # executable's objects
 #
-16.$(OBJ):		$(SRC)/16.c $(SRC)/16.h
-bakapi.$(OBJ):	$(SRC)/bakapi.c $(SRC)/bakapi.h
-vidtest.$(OBJ):	$(SRC)/vidtest.c $(SRCLIB)/16_vl.h
-#test2.$(OBJ):	$(SRC)/test2.c $(SRCLIB)/16_vl.h
+16.$(OBJ):		$(SRC)/16.c	$(SRC)/16.h
+bakapi.$(OBJ):	$(SRC)/bakapi.c	$(SRC)/bakapi.h
+vidtest.$(OBJ):	$(SRC)/vidtest.c	$(SRCLIB)/16_vl.h
+#test2.$(OBJ):	$(SRC)/test2.c	$(SRCLIB)/16_vl.h
 test0.$(OBJ):	 $(SRC)/test0.c
-pcxtest.$(OBJ):$(SRC)/pcxtest.c $(SRCLIB)/16_vl.h
-vrstest.$(OBJ):$(SRC)/vrstest.c $(SRCLIB)/16_vl.h
-#vgacamm.$(OBJ):$(SRC)/vgacamm.c $(SRCLIB)/16_vl.h
-#planrpcx.$(OBJ): $(SRC)/planrpcx.c $(SRCLIB)/16_vl.h
-pcxtest2.$(OBJ):$(SRC)/pcxtest2.c $(SRCLIB)/16_vl.h
+pcxtest.$(OBJ):$(SRC)/pcxtest.c	$(SRCLIB)/16_vl.h
+vrstest.$(OBJ):$(SRC)/vrstest.c	$(SRCLIB)/16_vl.h
+#vgacamm.$(OBJ):$(SRC)/vgacamm.c	$(SRCLIB)/16_vl.h
+#planrpcx.$(OBJ): $(SRC)/planrpcx.c	$(SRCLIB)/16_vl.h
+pcxtest2.$(OBJ):$(SRC)/pcxtest2.c	$(SRCLIB)/16_vl.h
 palettec.$(OBJ):	$(SRC)/palettec.c
 palettel.$(OBJ):	$(SRC)/palettel.c
 palbomb.$(OBJ):	$(SRC)/palbomb.c
 palllist.$(OBJ):	$(SRC)/palllist.c
-maptest.$(OBJ):$(SRC)/maptest.c $(SRCLIB)/16_vl.h
+maptest.$(OBJ):$(SRC)/maptest.c	$(SRCLIB)/16_vl.h
 #emmtest.$(OBJ):$(SRC)/emmtest.c
 #emsdump.$(OBJ):$(SRC)/emsdump.c
 fmemtest.$(OBJ):$(SRC)/fmemtest.c
@@ -376,46 +374,58 @@ opltest.exe:
 	cd $(DOSLIB_ADLIB:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
 	$(COPYCOMMAND) $(DOSLIB_ADLIB:$(to_os_path))$(DIRSEP)$(DOSLIB_MEMMODE)$(DIRSEP)test.exe opltest.exe
 
-16_vl.$(OBJ):	$(SRCLIB)/16_vl.c $(SRCLIB)/16_vl.h
-16_vl_1.$(OBJ):	$(SRCLIB)/16_vl_1.c $(SRCLIB)/16_vl.h
-16_vlpal.$(OBJ):	$(SRCLIB)/16_vlpa_.c	$(SRCLIB)/16_vlpal.c $(SRCLIB)/16_vlpal.h
-bakapee.$(OBJ):	$(SRCLIB)/bakapee.c $(SRCLIB)/bakapee.h
-16render.$(OBJ):$(SRCLIB)/16render.c $(SRCLIB)/16render.h
-16planar.$(OBJ):$(MODEXLIB16)/16planar.c $(MODEXLIB16)/16planar.h
-16_vrs.$(OBJ):	$(SRCLIB)/16_vrs.c $(SRCLIB)/16_vrs.h $(DOSLIB)
-16_spri.$(OBJ):$(SRCLIB)/16_spri.c $(SRCLIB)/16_spri.h
-bitmap.$(OBJ):	16/$(SRCLIB)/bitmap.c 16/$(SRCLIB)/bitmap.h
-omodex16.$(OBJ):	16/$(SRCLIB)/omodex16.c 16/$(SRCLIB)/omodex16.h
-planar.$(OBJ):	$(SRCLIB)/planar.c $(SRCLIB)/planar.h
-scroll16.$(OBJ):$(SRCLIB)/scroll16.c $(SRCLIB)/scroll16.h
-16text.$(OBJ):	$(SRCLIB)/16text.c $(SRCLIB)/16text.h
-16_enti.$(OBJ):	$(SRCLIB)/16_enti.c $(SRCLIB)/16_enti.h
-mapread.$(OBJ):$(SRCLIB)/mapread.c $(SRCLIB)/mapread.h
-16_map.$(OBJ):$(SRCLIB)/16_map.c $(SRCLIB)/16_map.h
-16_timer.$(OBJ):$(SRCLIB)/16_timer.c $(SRCLIB)/16_timer.h
-16_in.$(OBJ):	 $(SRCLIB)/16_in.c $(SRCLIB)/16_in.h
-#16_in_1.$(OBJ):	 $(SRCLIB)/16_in_1.c $(SRCLIB)/16_in_1.h
-16_rf.$(OBJ):	 $(SRCLIB)/16_rf.c	$(SRCLIB)/16_rf.h
-16_mm.$(OBJ):	 $(SRCLIB)/16_mm.c	$(SRCLIB)/16_mm.h
-16_pm.$(OBJ):	 $(SRCLIB)/16_pm.c	$(SRCLIB)/16_pm.h
-16_ca.$(OBJ):	 $(SRCLIB)/16_ca.c	$(SRCLIB)/16_ca.h
-16_us.$(OBJ):	 $(SRCLIB)/16_us.c
-16_dbg.$(OBJ):	$(SRCLIB)/16_dbg.c $(SRCLIB)/16_dbg.h
-16_dbg_1.$(OBJ):	$(SRCLIB)/16_dbg_1.c $(SRCLIB)/16_dbg.h
-midi.$(OBJ):	$(SRCLIB)/midi.c $(SRCLIB)/midi.h
-16_head.$(OBJ):$(SRCLIB)/16_head.c $(SRCLIB)/16_head.h
-16_tail.$(OBJ):$(SRCLIB)/16_tail.c $(SRCLIB)/16_tail.h
-16_tail_.$(OBJ):$(SRCLIB)/16_tail_.c $(SRCLIB)/16_tail.h
-16_hc.$(OBJ):	 $(SRCLIB)/16_hc.c $(SRCLIB)/16_hc.h
-16_sd.$(OBJ):	$(SRCLIB)/16_sd.c $(SRCLIB)/16_sd.h
-jsmn.$(OBJ):	$(JSMNLIB)/jsmn.c $(JSMNLIB)/jsmn.h
-kitten.$(OBJ):	$(NYANLIB)/kitten.c $(NYANLIB)/kitten.h
-vgmSnd.$(OBJ):	$(VGMSNDLIB)/vgmSnd.c $(VGMSNDLIB)/vgmSnd.h
-16_wcpu.$(OBJ):	$(WCPULIB)/16_wcpu.c $(WCPULIB)/16_wcpu.h
-#memory.$(OBJ):$(EXMMLIB)/memory.c $(EXMMLIB)/memory.h
-c_utils.$(OBJ):$(MODEXLIB)/c_utils.asm
-modex.$(OBJ):	 $(MODEXLIB)/modex.asm
+16_vl.$(OBJ):	$(SRCLIB)/16_vl.c	$(SRCLIB)/16_vl.h
+16_vl_1.$(OBJ):	$(SRCLIB)/16_vl_1.c	$(SRCLIB)/16_vl.h
+16_vlpal.$(OBJ):	$(SRCLIB)/16_vlpa_.c	$(SRCLIB)/16_vlpal.c	$(SRCLIB)/16_vlpal.h
+bakapee.$(OBJ):	$(SRCLIB)/bakapee.c	$(SRCLIB)/bakapee.h
+16planar.$(OBJ):	$(MODEXLIB16)/16planar.c $(MODEXLIB16)/16planar.h
+16_vrs.$(OBJ):	$(SRCLIB)/16_vrs.c	$(SRCLIB)/16_vrs.h $(DOSLIB)
+16_spri.$(OBJ):	$(SRCLIB)/16_spri.c	$(SRCLIB)/16_spri.h
+planar.$(OBJ):	$(SRCLIB)/planar.c	$(SRCLIB)/planar.h
+scroll16.$(OBJ):	$(SRCLIB)/scroll16.c	$(SRCLIB)/scroll16.h
+16text.$(OBJ):	$(SRCLIB)/16text.c	$(SRCLIB)/16text.h
+16_enti.$(OBJ):	$(SRCLIB)/16_enti.c	$(SRCLIB)/16_enti.h
+mapread.$(OBJ):	$(SRCLIB)/mapread.c	$(SRCLIB)/mapread.h
+16_map.$(OBJ):	$(SRCLIB)/16_map.c	$(SRCLIB)/16_map.h
+16_timer.$(OBJ):	$(SRCLIB)/16_timer.c	$(SRCLIB)/16_timer.h
+16_in.$(OBJ):	$(SRCLIB)/16_in.c	$(SRCLIB)/16_in.h
+16_mm.$(OBJ):	$(SRCLIB)/16_mm.c	$(SRCLIB)/16_mm.h
+16_pm.$(OBJ):	$(SRCLIB)/16_pm.c	$(SRCLIB)/16_pm.h
+16_ca.$(OBJ):	$(SRCLIB)/16_ca.c	$(SRCLIB)/16_ca.h
+16_rf.$(OBJ):	$(SRCLIB)/16_rf.c
+16_us.$(OBJ):	$(SRCLIB)/16_us.c
+16_dbg.$(OBJ):	$(SRCLIB)/16_dbg.c	$(SRCLIB)/16_dbg.h
+16_dbg_1.$(OBJ):	$(SRCLIB)/16_dbg_1.c	$(SRCLIB)/16_dbg.h
+16_head.$(OBJ):	$(SRCLIB)/16_head.c	$(SRCLIB)/16_head.h
+16_tail.$(OBJ):	$(SRCLIB)/16_tail.c	$(SRCLIB)/16_tail.h
+16_tail_.$(OBJ):	$(SRCLIB)/16_tail_.c	$(SRCLIB)/16_tail.h
+16_hc.$(OBJ):	$(SRCLIB)/16_hc.c	$(SRCLIB)/16_hc.h
+16_sd.$(OBJ):	$(SRCLIB)/16_sd.c	$(SRCLIB)/16_sd.h
+jsmn.$(OBJ):	$(JSMNLIB)/jsmn.c	$(JSMNLIB)/jsmn.h
+kitten.$(OBJ):	$(NYANLIB)/kitten.c	$(NYANLIB)/kitten.h
+vgmSnd.$(OBJ):	$(VGMSNDLIB)/vgmSnd.c	$(VGMSNDLIB)/vgmSnd.h
+16_wcpu.$(OBJ):	$(WCPULIB)/16_wcpu.c	$(WCPULIB)/16_wcpu.h
+#memory.$(OBJ):	$(EXMMLIB)/memory.c	$(EXMMLIB)/memory.h
+midi.$(OBJ):	$(SRCLIB)/midi.c
+c_utils.$(OBJ):	$(MODEXLIB)/c_utils.asm
+modex.$(OBJ):	$(MODEXLIB)/modex.asm
 ll.$(OBJ):		$(SRCLIB)/ll.c	$(SRCLIB)/ll.h
+
+#
+# old 16 lib
+#
+0croll.exe:	0croll.$(OBJ) $(OLDLIBOBJS) omodex16.$(OBJ) 16_ino.$(OBJ)
+	wcl -0 $(WCLQ) 0croll.$(OBJ) omodex16.$(OBJ) bitmap.$(OBJ) 16_ino.$(OBJ)
+0croll.$(OBJ):	$(SRC)/0croll.c
+	wcl -0 $(WCLQ) -i"src/lib/doslib" -fo=.$(OBJ) -c src/0croll.c
+16render.$(OBJ):	16/$(SRCLIB)/16render.c	16/$(SRCLIB)/16render.h
+	wcl -0 $(WCLQ) -i"src/lib/doslib" -fo=.$(OBJ) -c 16/src/lib/16render.c
+bitmap.$(OBJ):	16/$(SRCLIB)/bitmap.c	16/$(SRCLIB)/bitmap.h
+	wcl -0 $(WCLQ) -i"src/lib/doslib" -fo=.$(OBJ) -c 16/src/lib/bitmap.c
+omodex16.$(OBJ):	16/$(SRCLIB)/omodex16.c	16/$(SRCLIB)/omodex16.h
+	wcl -0 $(WCLQ) -i"src/lib/doslib" -fo=.$(OBJ) -c 16/src/lib/omodex16.c
+16_ino.$(OBJ):	$(SRCLIB)/16_in.c	$(SRCLIB)/16_in.h
+	wcl -0 $(WCLQ) -i"src/lib/doslib" -fo=16_ino.$(OBJ) -c src/lib/16_in.c
 
 #
 #other~
