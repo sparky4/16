@@ -362,6 +362,11 @@ typedef struct
 #define NUMCHUNKS	416	//keen
 #define MAXSCANLINES	240			// size of ylookup table
 
+typedef struct
+{
+	int width,height;
+} pictabletype;
+
 //video
 typedef struct
 {
@@ -426,6 +431,7 @@ typedef struct
 	word		bordercolor;
 	boolean	fastpalette;
 	byte		far	palette1[256][3],far palette2[256][3];
+	pictabletype	_seg *pictable;
 } video_t;
 
 //from scroll16
@@ -645,7 +651,7 @@ typedef struct
 //==========================================================================
 
 #define NOMAPS
-#define NOGRAPHICS
+//#define NOGRAPHICS
 #define NOAUDIO
 
 #define MAPHEADERLINKED
@@ -654,14 +660,15 @@ typedef struct
 
 #define NUMMAPS		4//39
 #define NUMSNDCHUNKS		4//3
-#define NUMPICS		132//wolf3d wl6
+//#define NUMPICS		132//wolf3d wl6
 
 #define STRUCTPIC	0
 
 
-#define GDICTNAME	"vgadict."
-#define GHEADNAME	"vgahead."
-#define GFILENAME	"vgagraph."
+#define DATADIR		"data/"
+#define GDICTNAME	DATADIR"vgadict."
+#define GHEADNAME	DATADIR"vgahead."
+#define GFILENAME	DATADIR"vgagraph."
 #define EXTENSION	"hb1"
 
 

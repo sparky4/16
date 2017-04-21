@@ -205,13 +205,13 @@ void CA_CloseDebug(global_game_variables_t *gvar)
 =
 ============================
 */
-/*++++
-void CAL_GetGrChunkLength (int chunk)
+
+void CAL_GetGrChunkLength (int chunk,global_game_variables_t *gvar)
 {
 	lseek(gvar->ca.file.grhandle,GRFILEPOS(chunk),SEEK_SET);
 	read(gvar->ca.file.grhandle,&gvar->ca.chunkexplen,sizeof(gvar->ca.chunkexplen));
 	gvar->ca.chunkcomplen = GRFILEPOS(chunk+1)-GRFILEPOS(chunk)-4;
-}*/
+}
 
 
 /*
@@ -1036,8 +1036,8 @@ dinorm:
 =
 ======================
 */
-////++++TODO: enable!
-/*void CAL_SetupGrFile (global_game_variables_t *gvar)
+
+void CAL_SetupGrFile (global_game_variables_t *gvar)
 {
 	char fname[13];
 	int handle;
@@ -1100,11 +1100,11 @@ dinorm:
 // load the pic and sprite headers into the arrays in the data segment
 //
 #if NUMPICS>0
-	MM_GetPtr(MEMPTR pictable,NUMPICS*sizeof(pictabletype),gvar);
-	CAL_GetGrChunkLength(STRUCTPIC);		// position file pointer
+	MM_GetPtr(MEMPTR gvar->video.pictable,NUMPICS*sizeof(pictabletype),gvar);
+	CAL_GetGrChunkLength(STRUCTPIC,gvar);		// position file pointer
 	MM_GetPtr(&compseg,gvar->ca.chunkcomplen, gvar);
 	CA_FarRead (gvar->ca.file.grhandle,compseg,gvar->ca.chunkcomplen,gvar);
-	CAL_HuffExpand (compseg, (byte far *)pictable,NUMPICS*sizeof(pictabletype),gvar->ca.grhuffman);
+	CAL_HuffExpand (compseg, (byte far *)gvar->video.pictable,NUMPICS*sizeof(pictabletype),gvar->ca.grhuffman);
 	MM_FreePtr(&compseg,gvar);
 #endif
 
@@ -1126,7 +1126,7 @@ dinorm:
 	MM_FreePtr(&compseg);
 #endif
 
-}*/
+}
 
 //==========================================================================
 
