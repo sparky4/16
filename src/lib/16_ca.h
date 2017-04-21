@@ -27,7 +27,8 @@
 
 //===========================================================================
 
-//#define NOMAPS
+/*moved to src/lib/16_tdef.h
+#define NOMAPS
 #define NOGRAPHICS
 #define NOAUDIO
 
@@ -35,8 +36,8 @@
 //#define GRHEADERLINKED
 #define AUDIOHEADERLINKED
 
-//#define NUMMAPS		39
-//#define MAPPLANES		3
+#define NUMMAPS		39
+#define MAPPLANES		3*/
 //++++#define PROFILE//++++
 
 //===========================================================================

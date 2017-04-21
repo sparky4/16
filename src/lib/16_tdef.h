@@ -644,8 +644,26 @@ typedef struct
 //from 16_ca
 //==========================================================================
 
+#define NOMAPS
+#define NOGRAPHICS
+#define NOAUDIO
+
+#define MAPHEADERLINKED
+//#define GRHEADERLINKED
+#define AUDIOHEADERLINKED
+
 #define NUMMAPS		4//39
-#define NUMSNDCHUNKS		84
+#define NUMSNDCHUNKS		4//3
+#define NUMPICS		132//wolf3d wl6
+
+#define STRUCTPIC	0
+
+
+#define GDICTNAME	"vgadict."
+#define GHEADNAME	"vgahead."
+#define GFILENAME	"vgagraph."
+#define EXTENSION	"hb1"
+
 
 typedef struct
 {
@@ -696,7 +714,19 @@ typedef struct	//TODO: USE THIS!!!!
 	word		_seg	*grstarts;	// array of offsets in egagraph, -1 for sparse//long
 	word		_seg	*audiostarts;	// array of offsets in audio / audiot//long
 
-	huffnode	huffnode;
+#ifdef GRHEADERLINKED
+	huffnode	*grhuffman;
+#else
+	huffnode	grhuffman[255];
+#endif
+
+#ifdef AUDIOHEADERLINKED
+	huffnode	*audiohuffman;
+#else
+	huffnode	audiohuffman[255];
+#endif
+
+	long		chunkcomplen,chunkexplen;
 
 	sd_t		sd;
 	//TODO: extend! and learn from keen/wolf/catacomb's code wwww

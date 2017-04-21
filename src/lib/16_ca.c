@@ -98,16 +98,17 @@ extern	byte	EGAdict;
 extern	byte	far	maphead;
 extern	byte	mapdict;
 extern	byte	far	audiohead;
-extern	byte	audiodict;
+extern	byte	audiodict;*/
 
+void CA_CannotOpen(char *string, global_game_variables_t *gvar);
 
-long		_seg *grstarts;	// array of offsets in egagraph, -1 for sparse
+/*long		_seg *grstarts;	// array of offsets in egagraph, -1 for sparse
 long		_seg *audiostarts;	// array of offsets in audio / audiot
 
 #ifdef GRHEADERLINKED
-huffnode	*grhuffman;
+huffnode	*gvar->ca.grhuffman;
 #else
-huffnode	grhuffman[255];
+huffnode	gvar->ca.grhuffman[255];
 #endif
 
 #ifdef AUDIOHEADERLINKED
@@ -121,7 +122,7 @@ int			grhandle;		// handle to EGAGRAPH
 int			maphandle;		// handle to MAPTEMP / GAMEMAPS
 int			audiohandle;	// handle to AUDIOT / AUDIO
 
-long		chunkcomplen,chunkexplen;
+long		c hunkcomplen,c hunkexplen;
 
 SDMode		oldsoundmode;
 
@@ -130,7 +131,8 @@ SDMode		oldsoundmode;
 void	CAL_DialogDraw (char *title,unsigned numcache);
 void	CAL_DialogUpdate (void);
 void	CAL_DialogFinish (void);*/
-//void	CAL_CarmackExpand (unsigned far *source, unsigned far *dest,unsigned length);
+void	CAL_CarmackExpand (unsigned far *source, unsigned far *dest,
+		unsigned length);
 
 
 #ifdef THREEBYTEGRSTARTS
@@ -206,9 +208,9 @@ void CA_CloseDebug(global_game_variables_t *gvar)
 /*++++
 void CAL_GetGrChunkLength (int chunk)
 {
-	lseek(grhandle,GRFILEPOS(chunk),SEEK_SET);
-	read(grhandle,&chunkexplen,sizeof(chunkexplen));
-	chunkcomplen = GRFILEPOS(chunk+1)-GRFILEPOS(chunk)-4;
+	lseek(gvar->ca.file.grhandle,GRFILEPOS(chunk),SEEK_SET);
+	read(gvar->ca.file.grhandle,&gvar->ca.chunkexplen,sizeof(gvar->ca.chunkexplen));
+	gvar->ca.chunkcomplen = GRFILEPOS(chunk+1)-GRFILEPOS(chunk)-4;
 }*/
 
 
@@ -1034,24 +1036,19 @@ dinorm:
 =
 ======================
 */
-////++++ enable!
-/*void CAL_SetupGrFile (void)
+////++++TODO: enable!
+/*void CAL_SetupGrFile (global_game_variables_t *gvar)
 {
+	char fname[13];
 	int handle;
 	memptr compseg;
 
 #ifdef GRHEADERLINKED
 
-#if GRMODE == EGAGR
-	grhuffman = (huffnode *)&EGAdict;
-	grstarts = (long _seg *)FP_SEG(&EGAhead);
-#endif
-#if GRMODE == CGAGR
-	grhuffman = (huffnode *)&CGAdict;
-	grstarts = (long _seg *)FP_SEG(&CGAhead);
-#endif
+	gvar->ca.grhuffman = (huffnode *)&VGAdict;
+	grstarts = (long _seg *)FP_SEG(&VGAhead);
 
-	CAL_OptimizeNodes (grhuffman);
+	CAL_OptimizeNodes (gvar->ca.grhuffman);
 
 #else
 
@@ -1059,23 +1056,29 @@ dinorm:
 // load ???dict.ext (huffman dictionary for graphics files)
 //
 
-	if ((handle = open(GREXT"DICT."EXT,
-		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit (gvar, "Can't open "GREXT"DICT."EXT"!");
+	strcpy(fname,GDICTNAME);
+	strcat(fname,EXTENSION);
 
-	read(handle, &grhuffman, sizeof(grhuffman));
+	if ((handle = open(fname,
+		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
+		CA_CannotOpen(fname,gvar);
+
+	read(handle, &gvar->ca.grhuffman, sizeof(gvar->ca.grhuffman));
 	close(handle);
-	CAL_OptimizeNodes (grhuffman);
+	CAL_OptimizeNodes (gvar->ca.grhuffman);
 //
 // load the data offsets from ???head.ext
 //
-	MM_GetPtr (MEMPTR grstarts,(NUMCHUNKS+1)*FILEPOSSIZE);
+	MM_GetPtr (MEMPTR gvar->ca.grstarts,(NUMCHUNKS+1)*FILEPOSSIZE, gvar);
 
-	if ((handle = open(GREXT"HEAD."EXT,
+	strcpy(fname,GHEADNAME);
+	strcat(fname,EXTENSION);
+
+	if ((handle = open(fname,
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit (gvar, "Can't open "GREXT"HEAD."EXT"!");
+		CA_CannotOpen(fname,gvar);
 
-	CA_FarRead(handle, (memptr)grstarts, (NUMCHUNKS+1)*FILEPOSSIZE);
+	CA_FarRead(handle, (memptr)gvar->ca.grstarts, (NUMCHUNKS+1)*FILEPOSSIZE, gvar);
 
 	close(handle);
 
@@ -1085,38 +1088,41 @@ dinorm:
 //
 // Open the graphics file, leaving it open until the game is finished
 //
-	grhandle = open(GREXT"GRAPH."EXT, O_RDONLY | O_BINARY);
-	if (grhandle == -1)
-		Quit (gvar, "Cannot open "GREXT"GRAPH."EXT"!");
+	strcpy(fname,GFILENAME);
+	strcat(fname,EXTENSION);
+
+	gvar->ca.file.grhandle = open(fname, O_RDONLY | O_BINARY);
+	if (gvar->ca.file.grhandle == -1)
+		CA_CannotOpen(fname,gvar);
 
 
 //
 // load the pic and sprite headers into the arrays in the data segment
 //
 #if NUMPICS>0
-	MM_GetPtr(MEMPTR pictable,NUMPICS*sizeof(pictabletype));
+	MM_GetPtr(MEMPTR pictable,NUMPICS*sizeof(pictabletype),gvar);
 	CAL_GetGrChunkLength(STRUCTPIC);		// position file pointer
-	MM_GetPtr(&compseg,chunkcomplen);
-	CA_FarRead (grhandle,compseg,chunkcomplen);
-	CAL_HuffExpand (compseg, (byte far *)pictable,NUMPICS*sizeof(pictabletype),grhuffman);
-	MM_FreePtr(&compseg);
+	MM_GetPtr(&compseg,gvar->ca.chunkcomplen, gvar);
+	CA_FarRead (gvar->ca.file.grhandle,compseg,gvar->ca.chunkcomplen,gvar);
+	CAL_HuffExpand (compseg, (byte far *)pictable,NUMPICS*sizeof(pictabletype),gvar->ca.grhuffman);
+	MM_FreePtr(&compseg,gvar);
 #endif
 
 #if NUMPICM>0
 	MM_GetPtr(MEMPTR picmtable,NUMPICM*sizeof(pictabletype));
 	CAL_GetGrChunkLength(STRUCTPICM);		// position file pointer
-	MM_GetPtr(&compseg,chunkcomplen);
-	CA_FarRead (grhandle,compseg,chunkcomplen);
-	CAL_HuffExpand (compseg, (byte far *)picmtable,NUMPICS*sizeof(pictabletype),grhuffman);
+	MM_GetPtr(&compseg,gvar->ca.chunkcomplen);
+	CA_FarRead (gvar->ca.file.grhandle,compseg,gvar->ca.chunkcomplen);
+	CAL_HuffExpand (compseg, (byte far *)picmtable,NUMPICS*sizeof(pictabletype),gvar->ca.grhuffman);
 	MM_FreePtr(&compseg);
 #endif
 
 #if NUMSPRITES>0
 	MM_GetPtr(MEMPTR spritetable,NUMSPRITES*sizeof(spritetabletype));
 	CAL_GetGrChunkLength(STRUCTSPRITE);	// position file pointer
-	MM_GetPtr(&compseg,chunkcomplen);
-	CA_FarRead (grhandle,compseg,chunkcomplen);
-	CAL_HuffExpand (compseg, (byte far *)spritetable,NUMSPRITES*sizeof(spritetabletype),grhuffman);
+	MM_GetPtr(&compseg,gvar->ca.chunkcomplen);
+	CA_FarRead (gvar->ca.file.grhandle,compseg,gvar->ca.chunkcomplen);
+	CAL_HuffExpand (compseg, (byte far *)spritetable,NUMSPRITES*sizeof(spritetabletype),gvar->ca.grhuffman);
 	MM_FreePtr(&compseg);
 #endif
 
@@ -1165,13 +1171,13 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
 		Quit (gvar, "Can't open data/test.map!");
 /*#ifdef MAPHEADERLINKED
-	if ((maphandle = open("GAMEMAPS."EXTENSION,
+	if ((maphandle = open("GAMEMAPS.16"ENSION,
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit ("Can't open GAMEMAPS."EXTENSION"!");
+		Quit ("Can't open GAMEMAPS.16"ENSION"!");
 #else
-	if ((maphandle = open("MAPTEMP."EXTENSION,
+	if ((maphandle = open("MAPTEMP.16"ENSION,
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit ("Can't open MAPTEMP."EXTENSION"!");
+		Quit ("Can't open MAPTEMP.16"ENSION"!");
 #endif*/
 }
 
@@ -1195,9 +1201,9 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 // load maphead.ext (offsets and tileinfo for map file)
 //
 #ifndef AUDIOHEADERLINKED
-	if ((handle = open("AUDIOHED."EXT,
+	if ((handle = open("AUDIOHED.16",
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit (gvar, "Can't open AUDIOHED."EXT"!");
+		Quit (gvar, "Can't open AUDIOHED.16""!");
 	length = filelength(handle);
 	MM_GetPtr (MEMPTR audiostarts,length);
 	CA_FarRead(handle, (byte far *)audiostarts, length);
@@ -1212,13 +1218,13 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 // open the data file
 //
 #ifndef AUDIOHEADERLINKED
-	if ((audiohandle = open("AUDIOT."EXT,
+	if ((audiohandle = open("AUDIOT.16",
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit (gvar, "Can't open AUDIOT."EXT"!");
+		Quit (gvar, "Can't open AUDIOT.16""!");
 #else
-	if ((audiohandle = open("AUDIO."EXT,
+	if ((audiohandle = open("AUDIO.16",
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit (gvar, "Can't open AUDIO."EXT"!");
+		Quit (gvar, "Can't open AUDIO.16""!");
 #endif
 }*/
 
@@ -1329,7 +1335,7 @@ void CA_CacheAudioChunk (int chunk)
 
 // MDM begin - (GAMERS EDGE)
 //
-	if (!FindFile("AUDIO."EXT,NULL,2))
+	if (!FindFile("AUDIO.16",NULL,2))
 		Quit (gvar, "CA_CacheAudioChunk(): Can't find audio files.");
 //
 // MDM end
@@ -1604,7 +1610,7 @@ void CAL_CacheSprite (int chunk, byte far *compressed)
 //
 // expand the unshifted shape
 //
-	CAL_HuffExpand (compressed, &dest->data[0],smallplane*2,grhuffman);
+	CAL_HuffExpand (compressed, &dest->data[0],smallplane*2,gvar->ca.grhuffman);
 
 #endif
 
@@ -1633,7 +1639,7 @@ void CAL_CacheSprite (int chunk, byte far *compressed)
 //
 // expand the unshifted shape
 //
-	CAL_HuffExpand (compressed, &dest->data[0],smallplane*5,grhuffman);
+	CAL_HuffExpand (compressed, &dest->data[0],smallplane*5,gvar->ca.grhuffman);
 
 //
 // make the shifts!
@@ -1765,7 +1771,7 @@ void CAL_ExpandGrChunk (int chunk, byte far *source)
 		MM_GetPtr (&grsegs[chunk],expanded);
 		if (mmerror)
 			return;
-		CAL_HuffExpand (source,grsegs[chunk],expanded,grhuffman);
+		CAL_HuffExpand (source,grsegs[chunk],expanded,gvar->ca.grhuffman);
 	}
 }
 */
@@ -1801,11 +1807,11 @@ void CAL_ReadGrChunk (int chunk)
 
 	compressed = GRFILEPOS(next)-pos;
 
-	lseek(grhandle,pos,SEEK_SET);
+	lseek(gvar->ca.file.grhandle,pos,SEEK_SET);
 
 	if (compressed<=BUFFERSIZE)
 	{
-		CA_FarRead(grhandle,bufferseg,compressed);
+		CA_FarRead(gvar->ca.file.grhandle,bufferseg,compressed);
 		source = bufferseg;
 	}
 	else
@@ -1814,7 +1820,7 @@ void CAL_ReadGrChunk (int chunk)
 		if (mmerror)
 			return;
 		MM_SetLock (&bigbufferseg,true);
-		CA_FarRead(grhandle,bigbufferseg,compressed);
+		CA_FarRead(gvar->ca.file.grhandle,bigbufferseg,compressed);
 		source = bigbufferseg;
 	}
 
@@ -1850,7 +1856,7 @@ void CA_CacheGrChunk (int chunk)
 
 // MDM begin - (GAMERS EDGE)
 //
-	if (!FindFile("EGAGRAPH."EXT,NULL,2))
+	if (!FindFile("EGAGRAPH.16",NULL,2))
 		Quit (gvar, "CA_CacheGrChunk(): Can't find graphics files.");
 //
 // MDM end
@@ -1869,18 +1875,18 @@ void CA_CacheGrChunk (int chunk)
 
 	compressed = GRFILEPOS(next)-pos;
 
-	lseek(grhandle,pos,SEEK_SET);
+	lseek(gvar->ca.file.grhandle,pos,SEEK_SET);
 
 	if (compressed<=BUFFERSIZE)
 	{
-		CA_FarRead(grhandle,bufferseg,compressed);
+		CA_FarRead(gvar->ca.file.grhandle,bufferseg,compressed);
 		source = bufferseg;
 	}
 	else
 	{
 		MM_GetPtr(&bigbufferseg,compressed);
 		MM_SetLock (&bigbufferseg,true);
-		CA_FarRead(grhandle,bigbufferseg,compressed);
+		CA_FarRead(gvar->ca.file.grhandle,bigbufferseg,compressed);
 		source = bigbufferseg;
 	}
 
@@ -2317,7 +2323,7 @@ void CAL_CacheMarks (char *title, global_game_variables_t *gvar)
 
 // MDM begin - (GAMERS EDGE)
 //
-//	if (!FindFile("EGAGRAPH."EXT,NULL,2))
+//	if (!FindFile("EGAGRAPH.16",NULL,2))
 //		Quit (gvar, "CA_CacheMarks(): Can't find graphics files.");
 //
 // MDM end
@@ -2388,8 +2394,8 @@ void CAL_CacheMarks (char *title, global_game_variables_t *gvar)
 							next = NUMCHUNKS;			// read pos to posend
 					}
 
-					lseek(grhandle,pos,SEEK_SET);
-					CA_FarRead(grhandle,(gvar->mm.bufferseg),endpos-pos,gvar);
+					lseek(gvar->ca.file.grhandle,pos,SEEK_SET);
+					CA_FarRead(gvar->ca.file.grhandle,(gvar->mm.bufferseg),endpos-pos,gvar);
 					bufferstart = pos;
 					bufferend = endpos;
 					source = bufferseg;
@@ -2402,8 +2408,8 @@ void CAL_CacheMarks (char *title, global_game_variables_t *gvar)
 				if (mmerror)
 					return;
 				MM_SetLock (&bigbufferseg,true);
-				lseek(grhandle,pos,SEEK_SET);
-				CA_FarRead(grhandle,bigbufferseg,compressed,gvar);
+				lseek(gvar->ca.file.grhandle,pos,SEEK_SET);
+				CA_FarRead(gvar->ca.file.grhandle,bigbufferseg,compressed,gvar);
 				source = bigbufferseg;
 			}
 
@@ -2422,3 +2428,13 @@ void CAL_CacheMarks (char *title, global_game_variables_t *gvar)
 		if (dialog && finishcachebox)
 			finishcachebox();
 }*/
+
+void CA_CannotOpen(char *string, global_game_variables_t *gvar)
+{
+ char str[30];
+
+ strcpy(str,"Can't open ");
+ strcat(str,string);
+ strcat(str,"!\n");
+ Quit (gvar, str);
+}

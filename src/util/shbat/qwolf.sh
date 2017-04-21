@@ -5,7 +5,9 @@ dir2="16/wolf3d/WOLFSRC"
 echo ====	$dir1	====
 grep "$1" "$dir1"/*.c
 grep "$1" "$dir1"/*.h
+grep "$1" "$dir1"/*.asm
 echo ====	$dir2	====
 grep "$1" "$dir2"/*.C
 grep "$1" "$dir2"/*.H
+grep "$1" "$dir2"/*.ASM
 . ./src/util/qfoot.sh $0
