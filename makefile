@@ -199,7 +199,7 @@ TESTEXEC = &
 	inputest.exe &
 	vrstest.exe &
 	tesuto.exe &
-	0.exe &
+	0tesuto.exe &
 	maptest.exe &
 	imfplay.exe
 #zcroll.exe &
@@ -264,8 +264,8 @@ zcroll.exe:	zcroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 zcroll.$(OBJ):	$(SRC)/zcroll.c
 tesuto.exe:	tesuto.$(OBJ) 16_head.$(OBJ) gfx.lib $(DOSLIB)
 tesuto.$(OBJ):	$(SRC)/tesuto.c
-0.exe:			0.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
-0.$(OBJ):		 $(SRC)/0.c
+0tesuto.exe:			0tesuto.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
+0tesuto.$(OBJ):		 $(SRC)/0tesuto.c
 vidtest.exe:		 vidtest.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 #test2.exe:	test2.$(OBJ) gfx.lib $(DOSLIB)
 test0.exe:		test0.$(OBJ)
