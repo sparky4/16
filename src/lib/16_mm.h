@@ -29,7 +29,7 @@
 #ifdef __DEBUG__		// 1 == Debug/Dev  ;  0 == Production/final
 #define OUT_OF_MEM_MSG	"MM_GetPtr: Out of memory!\nYou were short :%lu bytes\n"
 #else
-#define OUT_OF_MEM_MSG	"\npee\n"
+#define OUT_OF_MEM_MSG	"\n"
 #endif
 
 //#define GETNEWBLOCK {if(!(mmnew=mmfree))Quit("MM_GETNEWBLOCK: No free blocks!") ;mmfree=mmfree->next;}

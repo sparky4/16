@@ -936,13 +936,14 @@ void MM_GetPtr (memptr *baseptr, dword size, global_game_variables_t *gvar)
 	gvar->mm.mmnew->useptr = baseptr;
 	//if(gvar->mm.mmnew->useptr==NULL){
 #ifdef __DEBUG_MM__
+	printf("MM_GetPtr\n");
 	if(dbg_debugmm>0){
-		printf("MM_GetPtr\n");
 		//%04x
 		printf("	baseptr=%Fp	", baseptr); printf("useptr=%Fp\n", gvar->mm.mmnew->useptr);
 		printf("	*baseptr=%Fp	", *baseptr); printf("*useptr=%Fp\n", *(gvar->mm.mmnew->useptr));
 		printf("	&baseptr=%Fp	", &baseptr); printf("&useptr=%Fp\n", &(gvar->mm.mmnew->useptr));
 	}
+	printf("	size is %lu\n", size);
 #endif
 	//Quit(gvar, "gvar->mm.mmnew->useptr==NULL"); }
 	gvar->mm.mmnew->attributes = BASEATTRIBUTES;
