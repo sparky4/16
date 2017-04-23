@@ -1,23 +1,19 @@
-/* Project 16 Source Code~
- * Copyright (C) 2012-2017 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
+/* Catacomb Apocalypse Source Code
+ * Copyright (C) 1993-2014 Flat Rock Software
  *
- * This file is part of Project 16.
- *
- * Project 16 is free software; you can redistribute it and/or modify
+ * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
+ * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * Project 16 is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>, or
- * write to the Free Software Foundation, Inc., 51 Franklin Street,
- * Fifth Floor, Boston, MA 02110-1301 USA.
- *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
 // ID_MM.H
@@ -33,7 +29,7 @@
 #ifdef __DEBUG__		// 1 == Debug/Dev  ;  0 == Production/final
 #define OUT_OF_MEM_MSG	"MM_GetPtr: Out of memory!\nYou were short :%lu bytes\n"
 #else
-#define OUT_OF_MEM_MSG	"\n"
+#define OUT_OF_MEM_MSG	"\npee\n"
 #endif
 
 //#define GETNEWBLOCK {if(!(mmnew=mmfree))Quit("MM_GETNEWBLOCK: No free blocks!") ;mmfree=mmfree->next;}
@@ -182,13 +178,13 @@ typedef struct
 boolean MML_CheckForEMS(void);
 //byte MML_SetupEMS(mminfo_t *mm);
 //void MML_ShutdownEMS(mminfo_t *mm);
-//byte MM_MapEMS(global_game_variables_t *gvar);
+byte MM_MapEMS(global_game_variables_t *gvar);
 //byte MM_MapXEMS(global_game_variables_t *gvar);
 boolean MML_CheckForXMS(void);
 //void MML_SetupXMS(mminfo_t *mm, mminfotype *mmi);
 //void MML_ShutdownXMS(mminfo_t *mm);
-void MML_UseSpace (word segstart, word seglength, global_game_variables_t *gvar);
-void MML_ClearBlock (global_game_variables_t *gvar);
+void MML_UseSpace(word segstart, dword seglength, global_game_variables_t *gvar);
+void MML_ClearBlock(global_game_variables_t *gvar);
 
 void MM_Startup(global_game_variables_t *gvar);
 void MM_Shutdown(global_game_variables_t *gvar);

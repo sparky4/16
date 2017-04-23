@@ -65,28 +65,9 @@ MK_FP(segment value, 0)*/
 
 typedef void _seg * memptr;
 
-#define MEMPTRCONV			(memptr *)&
+#define MEMPTR (memptr *)&//old is &(memptr)
 
-//bcc
-#ifdef __BORLANDC__
-#define MEMPTRANDPERCONV	&
-//#define BYTEFARPTRCONV		(unsigned char far *)
-//#define SMDPTRANDPERCONV	&
-//#define SDFPTRANDPERCONV	&
-//#define OBTPTRANDPERCONV	&
-//#define SDTPTRANDPERCONV	&
-#endif
-//
-
-//wcc
 #ifdef __WATCOMC__	//functions found in borland c but not watcom c
-#define MEMPTRANDPERCONV
-//#define BYTEFARPTRCONV
-//#define SMDPTRANDPERCONV	(void *)&
-//#define SDFPTRANDPERCONV	(struct diskfree_t *)&
-//#define OBTPTRANDPERCONV	(void const *)&
-//#define SDTPTRANDPERCONV	(struct dostime_t *)&
-
 #define _argv __argv
 #define _argc __argc
 #define geninterrupt(n) int86(n,&CPURegs,&CPURegs);

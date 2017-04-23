@@ -57,7 +57,7 @@
 
 #define BBUFNAME gvar.mm.bufferseg//bigbuffer
 //#define INITBBUF static memptr BBUFNAME;
-#define BBUFPTR	MEMPTRCONV BBUFNAME
+#define BBUFPTR	MEMPTR BBUFNAME
 
 #ifdef __BORLANDC__
 #define BBUF		(memptr *)BBUFPTR

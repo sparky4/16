@@ -226,7 +226,7 @@ void SD_Initimf(global_game_variables_t *gvar)
 void SD_imf_free_music(global_game_variables_t *gvar)
 {
 //	if (gvar->ca.sd.imf_music) free(gvar->ca.sd.imf_music);
-	MM_FreePtr(MEMPTRCONV gvar->ca.audiosegs[0], gvar);	//TODO make behave like id engine
+	MM_FreePtr(MEMPTR gvar->ca.audiosegs[0], gvar);	//TODO make behave like id engine
 	gvar->ca.sd.imf_music = gvar->ca.sd.imf_play_ptr = gvar->ca.sd.imf_music_end = NULL;
 	gvar->ca.sd.imf_delay_countdown = 0;
 }
@@ -256,7 +256,7 @@ int SD_imf_load_music(const char *path, global_game_variables_t *gvar)
 	}
 	len -= len & 3;
 
-	MM_GetPtr(MEMPTRCONV gvar->ca.audiosegs[0],len, gvar);
+	MM_GetPtr(MEMPTR gvar->ca.audiosegs[0],len, gvar);
 	gvar->ca.sd.imf_music = (struct imf_entry *)gvar->ca.audiosegs[0];
 	if (gvar->ca.sd.imf_music == NULL) {
 		close(fd);

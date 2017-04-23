@@ -172,7 +172,7 @@ UINT8 OpenVGMFile(const char* FileName, VGM_FILE* vgmFile, global_game_variables
 
 	vgmFile->dataLen = vgmBaseHdr.lngEOFOffset + 0x04;
 	//vgmFile->data = (UINT8*)malloc(vgmFile->dataLen);
-	MM_GetPtr(MEMPTRCONV gvar->ca.audiosegs[0], vgmFile->dataLen, gvar);
+	MM_GetPtr(MEMPTR gvar->ca.audiosegs[0], vgmFile->dataLen, gvar);
 	vgmFile->data = (UINT8*)gvar->ca.audiosegs[0];
 	if (vgmFile->data == NULL)
 	{
@@ -217,7 +217,7 @@ UINT8 OpenVGMFile(const char* FileName, VGM_FILE* vgmFile, global_game_variables
 void FreeVGMFile(VGM_FILE* vgmFile, global_game_variables_t *gvar)
 {
 	//if(vgmFile->data){ free(vgmFile->data);	vgmFile->data = NULL; }
-	MM_FreePtr(MEMPTRCONV gvar->ca.audiosegs[0], gvar);
+	MM_FreePtr(MEMPTR gvar->ca.audiosegs[0], gvar);
 	if(vgmFile->data) free(vgmFile->data);
 	vgmFile->dataLen = 0;
 
