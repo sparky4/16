@@ -1159,7 +1159,7 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 #ifndef MAPHEADERLINKED
 	if ((handle = open("maphead.mph",
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit ("Can't open maphead.mph");
+		Quit (gvar, "Can't open maphead.mph");
 	length = filelength(handle);
 	MM_GetPtr (MEMPTRCONV gvar->ca.tinf,length,gvar);
 	CA_FarRead(handle, gvar->ca.tinf, length,gvar);
@@ -1176,7 +1176,7 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 //TODO: multiple files
 	if ((gvar->ca.file.maphandle = open("data/test.map",
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit ("Can't open data/test.map!");
+		Quit (gvar, "Can't open data/test.map!");
 /*#ifdef MAPHEADERLINKED
 	if ((maphandle = open("GAMEMAPS.16"ENSION,
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
@@ -1210,7 +1210,7 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 #ifndef AUDIOHEADERLINKED
 	if ((handle = open("AUDIOHED.16",
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit ("Can't open AUDIOHED.16""!");
+		Quit (gvar, "Can't open AUDIOHED.16""!");
 	length = filelength(handle);
 	MM_GetPtr (MEMPTRCONV audiostarts,length);
 	CA_FarRead(handle, (byte far *)audiostarts, length);
@@ -1227,11 +1227,11 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 #ifndef AUDIOHEADERLINKED
 	if ((audiohandle = open("AUDIOT.16",
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit ("Can't open AUDIOT.16""!");
+		Quit (gvar, "Can't open AUDIOT.16""!");
 #else
 	if ((audiohandle = open("AUDIO.16",
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit ("Can't open AUDIO.16""!");
+		Quit (gvar, "Can't open AUDIO.16""!");
 #endif
 }*/
 
@@ -1343,7 +1343,7 @@ void CA_CacheAudioChunk (int chunk)
 // MDM begin - (GAMERS EDGE)
 //
 	if (!FindFile("AUDIO.16",NULL,2))
-		Quit ("CA_CacheAudioChunk(): Can't find audio files.");
+		Quit (gvar, "CA_CacheAudioChunk(): Can't find audio files.");
 //
 // MDM end
 
@@ -1705,7 +1705,7 @@ void CAL_CacheSprite (int chunk, byte far *compressed)
 		break;
 
 	default:
-		Quit ("CAL_CacheSprite: Bad shifts number!");
+		Quit (gvar, "CAL_CacheSprite: Bad shifts number!");
 	}
 
 #endif
@@ -1864,7 +1864,7 @@ void CA_CacheGrChunk (int chunk)
 // MDM begin - (GAMERS EDGE)
 //
 	if (!FindFile("EGAGRAPH.16",NULL,2))
-		Quit ("CA_CacheGrChunk(): Can't find graphics files.");
+		Quit (gvar, "CA_CacheGrChunk(): Can't find graphics files.");
 //
 // MDM end
 
@@ -2331,7 +2331,7 @@ void CAL_CacheMarks (char *title, global_game_variables_t *gvar)
 // MDM begin - (GAMERS EDGE)
 //
 //	if (!FindFile("EGAGRAPH.16",NULL,2))
-//		Quit ("CA_CacheMarks(): Can't find graphics files.");
+//		Quit (gvar, "CA_CacheMarks(): Can't find graphics files.");
 //
 // MDM end
 
@@ -2443,5 +2443,5 @@ void CA_CannotOpen(char *string, global_game_variables_t *gvar)
  strcpy(str,"Can't open ");
  strcat(str,string);
  strcat(str,"!\n");
- Quit (str);
+ Quit (gvar, str);
 }
