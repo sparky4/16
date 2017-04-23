@@ -475,12 +475,13 @@ void ClearMemory (global_game_variables_t *gvar)
 ==========================
 */
 
-void Quit (global_game_variables_t *gvar, char *error)
+void Quit (char *error)
 {
+
 	//unsigned		finscreen;
 	memptr	screen=0;
 
-	ClearMemory (gvar);
+	ClearMemory (ggvv);
 	if (!*error)
 	{
 // #ifndef JAPAN
@@ -494,7 +495,7 @@ void Quit (global_game_variables_t *gvar, char *error)
 // 		CA_CacheGrChunk (ERRORSCREEN);
 // 		screen = grsegs[ERRORSCREEN];
 	}
-	Shutdown16(gvar);
+	Shutdown16(ggvv);
 
 	if (error && *error)
 	{

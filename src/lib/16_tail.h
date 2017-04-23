@@ -41,7 +41,8 @@
 #include <hw/vga/vrs.h>
 #endif
 
-//gvar.video.ofs.bufferofs,gvar.video.ofs.displayofs,
+extern struct glob_game_vars	*ggvv;
+
 #define FIZZLEFADEFUNCTION \
 	if(gvar.in.inst->Keyboard[sc_F]){ FizzleFade(\
 	atoi(gvar.video.page[0].data),atoi(gvar.video.page[1].data),\
@@ -135,7 +136,7 @@ void TL_VidInit(global_game_variables_t *gvar);
 boolean FizzleFade (unsigned source, unsigned dest, unsigned width, unsigned height, unsigned frames, boolean abortable, global_game_variables_t *gvar);
 void DebugMemory_(global_game_variables_t *gvar, boolean q);
 void ClearMemory (global_game_variables_t *gvar);
-void Quit (global_game_variables_t *gvar, char *error);
+void Quit (char *error);
 void turboXT(byte bakapee);
 void nibbletest();
 void booleantest();

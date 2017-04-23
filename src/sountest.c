@@ -70,7 +70,7 @@ void main(int argc, char near *argv[])
 	//FMSetVoice(0, &testInst);
 	if(!init_adlib())
 	{
-		Quit(&gvar, "Cannot init library");
+		Quit ("Cannot init library");
 	}
 
 	if (adlib_fm_voices > 9)

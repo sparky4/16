@@ -138,7 +138,7 @@ void main(int argc, char *argv[])
 #ifdef FADE
 		modexFadeOff(4, &gvar.video.palette);
 #endif
-		Quit (&gvar, "Wrong ID for sprite");
+		Quit ("Wrong ID for sprite");
 #ifdef FADE
 		modexFadeOn(4, &gvar.video.dpal);
 #endif
@@ -219,7 +219,7 @@ void main(int argc, char *argv[])
 #endif
 		if(gvar.in.inst->Keyboard[sc_R]){ modexPalOverscan(rand()%56); } //r
 
-		if((gvar.player[0].enti.q==1) && !(gvar.player[0].enti.x%TILEWH==0 && gvar.player[0].enti.y%TILEWH==0)) Quit (&gvar, "PLAYER OFF THE RAILS!");//break;	//incase things go out of sync!
+		if((gvar.player[0].enti.q==1) && !(gvar.player[0].enti.x%TILEWH==0 && gvar.player[0].enti.y%TILEWH==0)) Quit ("PLAYER OFF THE RAILS!");//break;	//incase things go out of sync!
 	}
 
 	/* fade back to text mode */
