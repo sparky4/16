@@ -1,19 +1,23 @@
-/* Catacomb Apocalypse Source Code
- * Copyright (C) 1993-2014 Flat Rock Software
+/* Project 16 Source Code~
+ * Copyright (C) 2012-2017 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
- * This program is free software; you can redistribute it and/or modify
+ * This file is part of Project 16.
+ *
+ * Project 16 is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * Project 16 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>, or
+ * write to the Free Software Foundation, Inc., 51 Franklin Street,
+ * Fifth Floor, Boston, MA 02110-1301 USA.
+ *
  */
 
 // NEWMM.C
@@ -550,7 +554,7 @@ getmemory:
 	}
 #endif
 //	printf("base=%u	", base); printf("size=%u\n", size);
-	MML_UseSpace(base,size, gvar);
+	MML_UseSpace (base,size, gvar);
 	gvar->mmi.XMSmem += size*16;
 	gvar->mm.UMBbase[gvar->mm.numUMBs] = base;
 	gvar->mm.numUMBs++;
@@ -609,7 +613,7 @@ void MML_ShutdownXMS(global_game_variables_t *gvar)
 	{
 		scan->blob=segm;
 
-		//MML_UseSpace(segstart, seglength, gvar);
+		//MML_UseSpace (segstart, seglength, gvar);
 
 		printf("MML_UseSpace: Segment spans two blocks!\n");
 	//}
@@ -624,7 +628,7 @@ void MML_ShutdownXMS(global_game_variables_t *gvar)
 	}
 //++++todo: linked list of segment!
 */
-void MML_UseSpace(word segstart, dword seglength, global_game_variables_t *gvar)
+void MML_UseSpace (word segstart, dword seglength, global_game_variables_t *gvar)
 {
 	mmblocktype far *scan,far *last;
 	word	oldend;
@@ -740,7 +744,7 @@ void MML_ClearBlock(global_game_variables_t *gvar)
 ===================
 */
 
-void MM_Startup(global_game_variables_t *gvar)
+void MM_Startup (global_game_variables_t *gvar)
 {
 	int i;
 	//dword length,seglength;
@@ -793,7 +797,7 @@ void MM_Startup(global_game_variables_t *gvar)
 	length -= SAVENEARHEAP;
 	seglength = length / 16;			// now in paragraphs
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
-	MML_UseSpace(segstart,seglength, gvar);
+	MML_UseSpace (segstart,seglength, gvar);
 	gvar->mmi.nearheap = length;
 	//0000printf("near:	start=%Fp	segstart=%x	seglen=%lu	len=%lu\n", start, segstart, (dword)seglength, length);
 
@@ -814,7 +818,7 @@ void MM_Startup(global_game_variables_t *gvar)
 	length -= SAVEFARHEAP;
 	seglength = length / 16;			// now in paragraphs
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
-	MML_UseSpace(segstart,seglength, gvar);
+	MML_UseSpace (segstart,seglength, gvar);
 	gvar->mmi.farheap = length;
 	//0000printf("far:	start=%Fp	segstart=%x	seglen=%lu	len=%lu\n", start, segstart, (dword)seglength, length);
 
@@ -837,7 +841,7 @@ void MM_Startup(global_game_variables_t *gvar)
 	{
 		MML_SetupEMS(gvar);					// allocate space
 		//16_PM: EMS4! AND EMS 3.2 MASSIVE DATA HANDLMENT!
-		MML_UseSpace(gvar->mm.EMSPageFrame,(MAPPAGES)*0x4000lu, gvar);
+		MML_UseSpace (gvar->mm.EMSPageFrame,(MAPPAGES)*0x4000lu, gvar);
 		//if(gvar->pm.emm.EMSVer<0x40)
 			MM_MapEMS(gvar);					// map in used pages
 		//else
@@ -884,7 +888,7 @@ xmsskip:
 ====================
 */
 
-void MM_Shutdown(global_game_variables_t *gvar)
+void MM_Shutdown (global_game_variables_t *gvar)
 {
 	if(!(gvar->mm.mmstarted))
 		return;

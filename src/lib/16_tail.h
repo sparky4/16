@@ -41,7 +41,8 @@
 #include <hw/vga/vrs.h>
 #endif
 
-//gvar.video.ofs.bufferofs,gvar.video.ofs.displayofs,
+extern struct glob_game_vars	*ggvv;
+
 #define FIZZLEFADEFUNCTION \
 	if(gvar.in.inst->Keyboard[sc_F]){ FizzleFade(\
 	atoi(gvar.video.page[0].data),atoi(gvar.video.page[1].data),\
