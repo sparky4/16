@@ -41,8 +41,8 @@
 
 #define FREEBLOCK(x) {*x->useptr=NULL;x->next=gvar->mm.mmfree;gvar->mm.mmfree=x;}
 
-#define SAVENEARHEAP	0x200		// space to leave in data segment
-#define SAVEFARHEAP	0x400			// space to leave in far heap
+#define SAVENEARHEAP	0x400		// space to leave in data segment
+#define SAVEFARHEAP	0			// space to leave in far heap
 
 #define	BUFFERSIZE		0x1000		// miscelanious, allways available buffer
 
@@ -106,7 +106,7 @@
 
 extern	void		(* beforesort) (void);
 extern	void		(* aftersort) (void);
-extern	void		(* XMSaddr) (void);		// far pointer to XMS driver
+//extern	void		(* XMSaddr) (void);		// far pointer to XMS driver
 extern	dword	XMSDriver;
 extern	word		XMSVer;
 
@@ -179,35 +179,35 @@ typedef struct
 
 //==========================================================================
 
-boolean MML_CheckForEMS(void);
+boolean MML_CheckForEMS (void);
 //byte MML_SetupEMS(mminfo_t *mm);
 //void MML_ShutdownEMS(mminfo_t *mm);
 //byte MM_MapEMS(global_game_variables_t *gvar);
 //byte MM_MapXEMS(global_game_variables_t *gvar);
-boolean MML_CheckForXMS(void);
+boolean MML_CheckForXMS (void);
 //void MML_SetupXMS(mminfo_t *mm, mminfotype *mmi);
 //void MML_ShutdownXMS(mminfo_t *mm);
-void MML_UseSpace(word segstart, dword seglength, global_game_variables_t *gvar);
+void MML_UseSpace (unsigned segstart, unsigned seglength, global_game_variables_t *gvar);
 void MML_ClearBlock (global_game_variables_t *gvar);
 
-void MM_Startup(global_game_variables_t *gvar);
-void MM_Shutdown(global_game_variables_t *gvar);
+void MM_Startup (global_game_variables_t *gvar);
+void MM_Shutdown (global_game_variables_t *gvar);
 
-void MM_GetPtr(memptr *baseptr,dword size, global_game_variables_t *gvar);
-void MM_FreePtr(memptr *baseptr, global_game_variables_t *gvar);
-void MM_SetPurge(memptr *baseptr, int purge, global_game_variables_t *gvar);
-void MM_SetLock(memptr *baseptr, boolean locked, global_game_variables_t *gvar);
-void MM_SortMem(global_game_variables_t *gvar);
-void MM_ShowMemory(global_game_variables_t *gvar);
-void MM_DumpData(global_game_variables_t *gvar);
-dword MM_UnusedMemory(global_game_variables_t *gvar);
-dword MM_TotalFree(global_game_variables_t *gvar);
-void MM_Report_(global_game_variables_t *gvar);
-/*static */void MM_EMSerr(byte *stri, byte err);
-void MM_BombOnError(boolean bomb, global_game_variables_t *gvar);
+void MM_GetPtr (memptr *baseptr,dword size, global_game_variables_t *gvar);
+void MM_FreePtr (memptr *baseptr, global_game_variables_t *gvar);
+void MM_SetPurge (memptr *baseptr, int purge, global_game_variables_t *gvar);
+void MM_SetLock (memptr *baseptr, boolean locked, global_game_variables_t *gvar);
+void MM_SortMem (global_game_variables_t *gvar);
+void MM_ShowMemory (global_game_variables_t *gvar);
+void MM_DumpData (global_game_variables_t *gvar);
+dword MM_UnusedMemory (global_game_variables_t *gvar);
+dword MM_TotalFree (global_game_variables_t *gvar);
+void MM_Report_ (global_game_variables_t *gvar);
+/*static */void MM_EMSerr (byte *stri, byte err);
+void MM_BombOnError (boolean bomb, global_game_variables_t *gvar);
 //void MM_GetNewBlock(mminfo_t *mm);
 //void MM_FreeBlock(mmblocktype *x, mminfo_t *mm);
-void xms_call(byte v, global_game_variables_t *gvar);
+void xms_call (byte v, global_game_variables_t *gvar);
 
 //==========================================================================
 

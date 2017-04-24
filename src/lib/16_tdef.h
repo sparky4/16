@@ -468,14 +468,11 @@ typedef struct
 //from 16_mm
 //==========================================================================
 
-#define MAXBLOCKS		1024//kd=1300 wolf3d=700 cata=600
-//----#define MAXUMBS		12
+#define MAXBLOCKS		800//kd=1300 wolf3d=700 cata=600
 
 typedef struct mmblockstruct
 {
-	word	start,length;
-	//word	start;	dword length;
-//++++	word	blob;	//for data larger than 64k
+	unsigned	start,length;
 	unsigned	attributes;
 	memptr		*useptr;	// pointer to the segment start
 	struct mmblockstruct far *next;
@@ -660,9 +657,10 @@ typedef struct
 
 #define NUMMAPS		4//39
 #define NUMSNDCHUNKS		4//3
-//#define NUMPICS		132//wolf3d wl6
+//#define NUMPICS		4//132//wolf3d wl6
 
 #define STRUCTPIC	0
+#define CASVT		dword	//*start var type
 
 
 #define DATADIR		"data/"
@@ -718,8 +716,8 @@ typedef struct	//TODO: USE THIS!!!!
 	byte		far		grneeded[NUMCHUNKS];
 	word		_seg *audiosegs[NUMSNDCHUNKS];//long
 
-	word		_seg	*grstarts;	// array of offsets in egagraph, -1 for sparse//long
-	word		_seg	*audiostarts;	// array of offsets in audio / audiot//long
+	CASVT		_seg	*grstarts;	// array of offsets in egagraph, -1 for sparse//long
+	CASVT		_seg	*audiostarts;	// array of offsets in audio / audiot//long
 
 #ifdef GRHEADERLINKED
 	huffnode	*grhuffman;
@@ -733,7 +731,7 @@ typedef struct	//TODO: USE THIS!!!!
 	huffnode	audiohuffman[255];
 #endif
 
-	long		chunkcomplen,chunkexplen;
+	CASVT		chunkcomplen,chunkexplen;//long
 
 	sd_t		sd;
 	//TODO: extend! and learn from keen/wolf/catacomb's code wwww

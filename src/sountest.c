@@ -65,13 +65,14 @@ void main(int argc, char near *argv[])
 //0x36,				/* feedback algorithm and strength 0xC0 */
 //};
 
-	IN_Startup(&gvar);
 	//FMReset();
 	//FMSetVoice(0, &testInst);
 	if(!init_adlib())
 	{
-		Quit(&gvar, "Cannot init library");
+		printf("Cannot init library\n");
+		exit(-1);
 	}
+	IN_Startup(&gvar);
 
 	if (adlib_fm_voices > 9)
 		printf("OPL3!\n");
