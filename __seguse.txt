@@ -103,13 +103,6 @@
 16/wf3d8086/id_vh.c:	src = (byte _seg *)grsegs[STARTTILE8];
 16/wf3d8086/id_vh.c:	src = (byte _seg *)grsegs[STARTTILE16];
 16/wf3d8086/id_vh.c:		src = (byte _seg *)grsegs[STARTTILE16+i];
-16/wf3d8086/oldscale.c:t_compscale _seg *scaledirectory[MAXSCALEHEIGHT+1];
-16/wf3d8086/oldscale.c:t_compscale 	_seg *work;
-16/wf3d8086/oldscale.c:	_fmemcpy ((byte _seg *)(*finalspot),(byte _seg *)work,totalsize);
-16/wf3d8086/oldscale.c:	t_compshape	_seg *shape;
-16/wf3d8086/oldscale.c:	t_compscale _seg *comptable;
-16/wf3d8086/oldscale.c:	t_compshape	_seg *shape;
-16/wf3d8086/oldscale.c:	t_compscale _seg *comptable;
 16/wf3d8086/wl_debug.c:	spritetype _seg	*block;
 16/wf3d8086/wl_debug.c:extern	word	_seg *DigiList;
 16/wf3d8086/wl_menu.c:	fontstruct _seg *font;
@@ -170,13 +163,6 @@
 16/wolf3d/WOLFSRC/ID_VH.C:	src = (byte _seg *)grsegs[STARTTILE8];
 16/wolf3d/WOLFSRC/ID_VH.C:	src = (byte _seg *)grsegs[STARTTILE16];
 16/wolf3d/WOLFSRC/ID_VH.C:		src = (byte _seg *)grsegs[STARTTILE16+i];
-16/wolf3d/WOLFSRC/OLDSCALE.C:t_compscale _seg *scaledirectory[MAXSCALEHEIGHT+1];
-16/wolf3d/WOLFSRC/OLDSCALE.C:t_compscale 	_seg *work;
-16/wolf3d/WOLFSRC/OLDSCALE.C:	_fmemcpy ((byte _seg *)(*finalspot),(byte _seg *)work,totalsize);
-16/wolf3d/WOLFSRC/OLDSCALE.C:	t_compshape	_seg *shape;
-16/wolf3d/WOLFSRC/OLDSCALE.C:	t_compscale _seg *comptable;
-16/wolf3d/WOLFSRC/OLDSCALE.C:	t_compshape	_seg *shape;
-16/wolf3d/WOLFSRC/OLDSCALE.C:	t_compscale _seg *comptable;
 16/wolf3d/WOLFSRC/WL_DEBUG.C:	spritetype _seg	*block;
 16/wolf3d/WOLFSRC/WL_DEBUG.C:extern	word	_seg *DigiList;
 16/wolf3d/WOLFSRC/WL_MENU.C:	fontstruct _seg *font;
