@@ -1,19 +1,23 @@
-/* Catacomb Apocalypse Source Code
- * Copyright (C) 1993-2014 Flat Rock Software
+/* Project 16 Source Code~
+ * Copyright (C) 2012-2017 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
- * This program is free software; you can redistribute it and/or modify
+ * This file is part of Project 16.
+ *
+ * Project 16 is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * Project 16 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>, or
+ * write to the Free Software Foundation, Inc., 51 Franklin Street,
+ * Fifth Floor, Boston, MA 02110-1301 USA.
+ *
  */
 
 // NEWMM.C
@@ -28,7 +32,7 @@ Primary coder: John Carmack
 
 RELIES ON
 ---------
-Quit (global_game_variables_t *gvar, char *error) function
+Quit (gvar, global_game_variables_t *gvar, char *error) function
 
 
 WORK TO DO
@@ -57,14 +61,48 @@ Open Watcom port by sparky4
 /*
 =============================================================================
 
+							LOCAL INFO
+
+=============================================================================
+*/
+
+#define LOCKBIT		0x80	// if set in attributes, block cannot be moved
+#define PURGEBITS	3		// 0-3 level, 0= unpurgable, 3= purge first
+#define PURGEMASK	0xfffc
+#define BASEATTRIBUTES	0	// unlocked, non purgable
+
+//#define MAXUMBS		10
+
+/*typedef struct mmblockstruct
+{
+	unsigned	start,length;
+	unsigned	attributes;
+	memptr		*useptr;	// pointer to the segment start
+	struct mmblockstruct far *next;
+} mmblocktype;*/
+
+
+//#define GETNEWBLOCK {if(!(mmnew=mmfree))Quit("MM_GETNEWBLOCK: No free blocks!") ;mmfree=mmfree->next;}
+//
+
+#define GETNEWBLOCK {if(!gvar->mm.mmfree)MML_ClearBlock(gvar);gvar->mm.mmnew=gvar->mm.mmfree;gvar->mm.mmfree=gvar->mm.mmfree->next;}
+
+#define FREEBLOCK(x) {*x->useptr=NULL;x->next=gvar->mm.mmfree;gvar->mm.mmfree=x;}
+
+/*
+=============================================================================
+
 						 GLOBAL VARIABLES
 
 =============================================================================
 */
 
+/*mminfotype	mminfo;
+memptr		bufferseg;
+boolean		mmerror;*/
+
 void		(* beforesort) (void);
 void		(* aftersort) (void);
-void		(* XMSaddr) (void);		// far pointer to XMS driver
 
 /*
 =============================================================================
@@ -73,6 +111,38 @@ void		(* XMSaddr) (void);		// far pointer to XMS driver
 
 =============================================================================
 */
+
+/*boolean		mmstarted;
+
+void far	*farheap;
+void		*nearheap;
+
+mmblocktype	far mmblocks[MAXBLOCKS]
+			,far *mmhead,far *mmfree,far *mmrover,far *mmnew;
+
+boolean		bombonerror;*/
+
+//unsigned	totalEMSpages,freeEMSpages,EMSpageframe,EMSpagesmapped,EMShandle;
+
+void		(* XMSaddr) (void);		// far pointer to XMS driver
+
+/*unsigned	numUMBs,UMBbase[MAXUMBS];*/
+
+//==========================================================================
+
+//
+// local prototypes
+//
+
+boolean		MML_CheckForEMS (void);
+void 		MML_ShutdownEMS (void);
+void 		MM_MapEMS (void);
+boolean 	MML_CheckForXMS (void);
+void 		MML_ShutdownXMS (void);
+//void		MML_UseSpace (unsigned segstart, unsigned seglength);
+//void 		MML_ClearBlock (void);
+
+//==========================================================================
 #ifndef __16_PM__
 #if 0
 static	char *ParmStringsexmm[] = {"noems","noxms",""};
@@ -624,10 +694,10 @@ void MML_ShutdownXMS(global_game_variables_t *gvar)
 	}
 //++++todo: linked list of segment!
 */
-void MML_UseSpace(word segstart, dword seglength, global_game_variables_t *gvar)
+void MML_UseSpace (unsigned segstart, unsigned seglength, global_game_variables_t *gvar)
 {
 	mmblocktype far *scan,far *last;
-	word	oldend;
+	unsigned	oldend;
 	sdword		extra;
 	//word segm=1;
 
@@ -656,8 +726,9 @@ void MML_UseSpace(word segstart, dword seglength, global_game_variables_t *gvar)
 // take the given range out of the block
 //
 	oldend = scan->start + scan->length;
-	extra = oldend - (segstart+((unsigned)seglength));
+	extra = oldend - (segstart+seglength);
 	if (extra < 0)
+#ifdef __DEBUG_MM__
 	{
 		printf("========================================\n");
 		printf("start=%x	", scan->start);
@@ -671,6 +742,9 @@ void MML_UseSpace(word segstart, dword seglength, global_game_variables_t *gvar)
 		printf("========================================\n");
 		//return;
 	}
+#else
+		Quit (gvar, "MML_UseSpace: Segment spans two blocks!");
+#endif
 
 	if (segstart == scan->start)
 	{
@@ -707,7 +781,7 @@ void MML_UseSpace(word segstart, dword seglength, global_game_variables_t *gvar)
 ====================
 */
 
-void MML_ClearBlock(global_game_variables_t *gvar)
+void MML_ClearBlock (global_game_variables_t *gvar)
 {
 	mmblocktype far *scan;//,far *last;
 
@@ -723,7 +797,7 @@ void MML_ClearBlock(global_game_variables_t *gvar)
 		scan = scan->next;
 	}
 
-	printf("MM_ClearBlock: No purgable blocks!\n");
+	Quit (gvar, "MM_ClearBlock: No purgable blocks!\n");
 }
 
 
@@ -740,26 +814,24 @@ void MML_ClearBlock(global_game_variables_t *gvar)
 ===================
 */
 
-void MM_Startup(global_game_variables_t *gvar)
+void MM_Startup (global_game_variables_t *gvar)
 {
 	int i;
-	//dword length,seglength;
-	dword length; word seglength;
+	dword length;
 	void far	*start;
-	word	segstart;//,endfree;
+	unsigned	segstart,seglength;//,endfree;
 
 	if(gvar->mm.mmstarted)
-		MM_Shutdown(gvar);
+		MM_Shutdown (gvar);
 
 	gvar->mm.mmstarted = true;
 	gvar->mm.bombonerror = true;
-
 //
 // set up the linked list (everything in the free list;
 //
 	gvar->mm.mmhead = NULL;
 	gvar->mm.mmfree = &(gvar->mm.mmblocks[0]);
-	for(i=0;i<MAXBLOCKS-1;i++)
+	for (i=0;i<MAXBLOCKS-1;i++)
 		gvar->mm.mmblocks[i].next = &(gvar->mm.mmblocks[i+1]);
 	gvar->mm.mmblocks[i].next = NULL;
 
@@ -773,6 +845,7 @@ void MM_Startup(global_game_variables_t *gvar)
 	gvar->mm.mmnew->attributes = LOCKBIT;
 	gvar->mm.mmnew->next = NULL;
 	gvar->mm.mmrover = gvar->mm.mmhead;
+
 
 //
 // get all available near conventional memory segments
@@ -793,7 +866,7 @@ void MM_Startup(global_game_variables_t *gvar)
 	length -= SAVENEARHEAP;
 	seglength = length / 16;			// now in paragraphs
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
-	MML_UseSpace(segstart,seglength, gvar);
+	MML_UseSpace (segstart,seglength, gvar);
 	gvar->mmi.nearheap = length;
 	//0000printf("near:	start=%Fp	segstart=%x	seglen=%lu	len=%lu\n", start, segstart, (dword)seglength, length);
 
@@ -814,7 +887,7 @@ void MM_Startup(global_game_variables_t *gvar)
 	length -= SAVEFARHEAP;
 	seglength = length / 16;			// now in paragraphs
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
-	MML_UseSpace(segstart,seglength, gvar);
+	MML_UseSpace (segstart,seglength, gvar);
 	gvar->mmi.farheap = length;
 	//0000printf("far:	start=%Fp	segstart=%x	seglen=%lu	len=%lu\n", start, segstart, (dword)seglength, length);
 
@@ -869,7 +942,7 @@ xmsskip:
 //
 	gvar->mm.mmrover = gvar->mm.mmhead;		// start looking for space after low block
 
-	MM_GetPtr(&(gvar->mm.bufferseg),BUFFERSIZE, gvar);
+	MM_GetPtr (&(gvar->mm.bufferseg),BUFFERSIZE, gvar);
 }
 
 //==========================================================================
@@ -884,7 +957,7 @@ xmsskip:
 ====================
 */
 
-void MM_Shutdown(global_game_variables_t *gvar)
+void MM_Shutdown (global_game_variables_t *gvar)
 {
 	if(!(gvar->mm.mmstarted))
 		return;
@@ -922,10 +995,10 @@ void MM_Shutdown(global_game_variables_t *gvar)
 ====================
 */
 
-void MM_GetPtr (memptr *baseptr, dword size, global_game_variables_t *gvar)
+void MM_GetPtr (memptr *baseptr,dword size, global_game_variables_t *gvar)
 {
 	mmblocktype far *scan,far *lastscan,far *endscan
-						,far *purge,far *next;
+				,far *purge,far *next;
 	int			search;
 	unsigned	needed,startseg;
 
@@ -934,18 +1007,19 @@ void MM_GetPtr (memptr *baseptr, dword size, global_game_variables_t *gvar)
 	GETNEWBLOCK;				// fill in start and next after a spot is found
 	gvar->mm.mmnew->length = needed;
 	gvar->mm.mmnew->useptr = baseptr;
+	gvar->mm.mmnew->attributes = BASEATTRIBUTES;
 	//if(gvar->mm.mmnew->useptr==NULL){
 #ifdef __DEBUG_MM__
+	printf("MM_GetPtr\n");
 	if(dbg_debugmm>0){
-		printf("MM_GetPtr\n");
 		//%04x
 		printf("	baseptr=%Fp	", baseptr); printf("useptr=%Fp\n", gvar->mm.mmnew->useptr);
 		printf("	*baseptr=%Fp	", *baseptr); printf("*useptr=%Fp\n", *(gvar->mm.mmnew->useptr));
 		printf("	&baseptr=%Fp	", &baseptr); printf("&useptr=%Fp\n", &(gvar->mm.mmnew->useptr));
 	}
+	printf("	size is %lu\n", size);
 #endif
-	//Quit(gvar, "gvar->mm.mmnew->useptr==NULL"); }
-	gvar->mm.mmnew->attributes = BASEATTRIBUTES;
+	//Quit (gvar, "gvar->mm.mmnew->useptr==NULL"); }
 
 //tryagain:
 	for (search = 0; search<3; search++)
@@ -1023,7 +1097,7 @@ void MM_GetPtr (memptr *baseptr, dword size, global_game_variables_t *gvar)
 		//heapdump();
 #endif
 		printf(OUT_OF_MEM_MSG,(size-gvar->mmi.nearheap));
-		Quit(gvar, "for stability reasons the program will shut down! wwww\n");
+		Quit (gvar, "for stability reasons the program will shut down! wwww\n");
 	}
 	else
 		gvar->mm.mmerror = true;
@@ -1051,13 +1125,13 @@ void MM_FreePtr (memptr *baseptr, global_game_variables_t *gvar)
 	if (baseptr == gvar->mm.mmrover->useptr)	// removed the last allocated block
 		gvar->mm.mmrover = gvar->mm.mmhead;
 
-	while(scan->useptr != baseptr && scan)
+	while (scan->useptr != baseptr && scan)
 	{
 		last = scan;
 		scan = scan->next;
 	}
 
-	if(!scan)
+	if (!scan)
 		Quit (gvar, "MM_FreePtr: Block not found!");
 
 	last->next = scan->next;
@@ -1094,7 +1168,7 @@ void MM_SetPurge (memptr *baseptr, int purge, global_game_variables_t *gvar)
 		else if (gvar->mm.mmrover == start)
 			Quit (gvar, "MM_SetPurge: Block not found!");
 
-	} while(1);
+	} while (1);
 
 	gvar->mm.mmrover->attributes &= ~PURGEBITS;
 	gvar->mm.mmrover->attributes |= purge;
@@ -1169,7 +1243,7 @@ void MM_SortMem (global_game_variables_t *gvar)
 			playing += STARTADLIBSOUNDS;
 			break;
 		}
-		MM_SetLock((memptr *)&audiosegs[playing],true);
+		MM_SetLock(MEMPTRCONV audiosegs[playing],true);
 	}
 
 
@@ -1177,16 +1251,16 @@ void MM_SortMem (global_game_variables_t *gvar)
 	oldborder = gvar->video.bordercolor;
 	gvar->video.bordercolor = modexPalOverscan(15);
 
-	if(beforesort)
+	if (beforesort)
 		beforesort();
 
 	scan = gvar->mm.mmhead;
 
 	last = NULL;		// shut up compiler warning
 
-	while(scan)
+	while (scan)
 	{
-		if(scan->attributes & LOCKBIT)
+		if (scan->attributes & LOCKBIT)
 		{
 		//
 		// block is locked, so try to pile later blocks right after it
@@ -1195,7 +1269,7 @@ void MM_SortMem (global_game_variables_t *gvar)
 		}
 		else
 		{
-			if(scan->attributes & PURGEBITS)
+			if (scan->attributes & PURGEBITS)
 			{
 			//
 			// throw out the purgable block
@@ -1211,12 +1285,12 @@ void MM_SortMem (global_game_variables_t *gvar)
 			//
 			// push the non purgable block on top of the last moved block
 			//
-				if(scan->start != start)
+				if (scan->start != start)
 				{
 					length = scan->length;
 					source = scan->start;
 					dest = start;
-					while(length > 0xf00)
+					while (length > 0xf00)
 					{
 						movedata(source,0,dest,0,0xf00*16);
 						length -= 0xf00;
@@ -1238,7 +1312,7 @@ void MM_SortMem (global_game_variables_t *gvar)
 
 	gvar->mm.mmrover = gvar->mm.mmhead;
 
-	if(aftersort)
+	if (aftersort)
 		aftersort();
 
 	VL_ColorBorder (oldborder, &gvar->video);

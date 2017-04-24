@@ -1420,7 +1420,7 @@ PM_NextFrame(global_game_variables_t *gvar)
 		{
 			char buf[40];
 			sprintf(buf,"PM_NextFrame: Page %d is locked",i);
-			Quit(gvar, buf);
+			Quit (gvar, buf);
 		}
 	}
 //#endif
