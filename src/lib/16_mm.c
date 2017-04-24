@@ -1534,11 +1534,11 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 } mmblocktype;*/
 			//modexprint(page, x, y, t, tlsw, color, bgcolor, vidsw, const byte *str);
 #define MMSMPRINTMEMINFO modexprint(&(gvar->video.page[0]), xpos, ypos, 1, 0, ccolor, 8, gvar->video.VL_Started, global_temp_status_text); ypos+=8;
-			if(!gvar->video.VL_Started) clrscr(); else
+			if(gvar->video.VL_Started)
 			{
 				VL_ShowPage(&gvar->video.page[0], 1, 0);
 				modexClearRegion(&gvar->video.page[0], 0, 0, gvar->video.page[0].width, gvar->video.page[0].height, 8);
-			}
+			}else clrscr();
 			sprintf(global_temp_status_text, "block #%04u", qq); MMSMPRINTMEMINFO
 //			sprintf(global_temp_status_text, "%Fp", scaninfo[qq].scan->useptr); MMSMPRINTMEMINFO
 			sprintf(global_temp_status_text, "%04x", (unsigned)scaninfo[qq].scan->useptr); MMSMPRINTMEMINFO
