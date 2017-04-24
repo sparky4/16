@@ -36,7 +36,7 @@ loaded into the data segment
 #pragma warn -pro
 #pragma warn -use
 
-#define THREEBYTEGRSTARTS
+//#define THREEBYTEGRSTARTS
 //https://github.com/open-watcom/open-watcom-v2/issues/279#issuecomment-244587566 for _seg
 //http://www.shikadi.net/moddingwiki/GameMaps_Format for info on the code
 /*
@@ -121,9 +121,9 @@ huffnode	audiohuffman[255];
 int			grhandle;		// handle to EGAGRAPH
 int			maphandle;		// handle to MAPTEMP / GAMEMAPS
 int			audiohandle;	// handle to AUDIOT / AUDIO
-*/
-long		chunkcomplen,chunkexplen;
-/*
+
+long		c hunkcomplen,c hunkexplen;
+
 SDMode		oldsoundmode;
 
 
@@ -138,14 +138,14 @@ void	CAL_CarmackExpand (unsigned far *source, unsigned far *dest,
 #ifdef THREEBYTEGRSTARTS
 #define FILEPOSSIZE	3
 //#define	GRFILEPOS(c) (*(long far *)(((byte far *)grstarts)+(c)*3)&0xffffff)
-CASVT GRFILEPOS(int c, global_game_variables_t *gvar)
+long GRFILEPOS(int c, global_game_variables_t *gvar)
 {
-	CASVT value;
+	long value;
 	int	offset;
 
 	offset = c*3;
 
-	value = *(CASVT far *)(((byte far *)gvar->ca.grstarts)+offset);
+	value = *(long far *)(((byte far *)gvar->ca.grstarts)+offset);
 
 	value &= 0x00ffffffl;
 
@@ -156,11 +156,7 @@ CASVT GRFILEPOS(int c, global_game_variables_t *gvar)
 };
 #else
 #define FILEPOSSIZE	4
-//#define	GRFILEPOS(c) (gvar->ca.grstarts[c])
-CASVT GRFILEPOS(int c, global_game_variables_t *gvar)
-{
-	return gvar->ca.grstarts[c];
-}
+#define	GRFILEPOS(c) (gvar->ca.grstarts[c])
 #endif
 
 /*
@@ -212,9 +208,9 @@ void CA_CloseDebug(global_game_variables_t *gvar)
 
 void CAL_GetGrChunkLength (int chunk,global_game_variables_t *gvar)
 {
-	lseek(gvar->ca.file.grhandle,GRFILEPOS(chunk,gvar),SEEK_SET);
+	lseek(gvar->ca.file.grhandle,GRFILEPOS(chunk),SEEK_SET);
 	read(gvar->ca.file.grhandle,&gvar->ca.chunkexplen,sizeof(gvar->ca.chunkexplen));
-	gvar->ca.chunkcomplen = GRFILEPOS(chunk+1,gvar)-GRFILEPOS(chunk,gvar)-4;
+	gvar->ca.chunkcomplen = GRFILEPOS(chunk+1)-GRFILEPOS(chunk)-4;
 }
 
 
@@ -1108,10 +1104,7 @@ void CAL_SetupGrFile (global_game_variables_t *gvar)
 #if NUMPICS>0
 	MM_GetPtr(MEMPTRCONV gvar->video.pictable,NUMPICS*sizeof(pictabletype),gvar);
 	CAL_GetGrChunkLength(STRUCTPIC,gvar);		// position file pointer
-	printf("CAL_SetupGrFile:\n");
-	printf("	gvar->ca.chunkcomplen size is %lu\n", gvar->ca.chunkcomplen);
-	MM_GetPtr(&compseg,gvar->ca.chunkcomplen,gvar);
-	IN_Ack(gvar);
+	MM_GetPtr(&compseg,gvar->ca.chunkcomplen, gvar);
 	CA_FarRead (gvar->ca.file.grhandle,compseg,gvar->ca.chunkcomplen,gvar);
 	CAL_HuffExpand (compseg, (byte far *)gvar->video.pictable,NUMPICS*sizeof(pictabletype),gvar->ca.grhuffman);
 	MM_FreePtr(&compseg,gvar);
@@ -1182,11 +1175,11 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 /*#ifdef MAPHEADERLINKED
 	if ((maphandle = open("GAMEMAPS.16"ENSION,
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit (gvar, "Can't open GAMEMAPS.16"ENSION"!");
+		Quit ("Can't open GAMEMAPS.16"ENSION"!");
 #else
 	if ((maphandle = open("MAPTEMP.16"ENSION,
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
-		Quit (gvar, "Can't open MAPTEMP.16"ENSION"!");
+		Quit ("Can't open MAPTEMP.16"ENSION"!");
 #endif*/
 }
 
@@ -1806,15 +1799,15 @@ void CAL_ReadGrChunk (int chunk)
 // load the chunk into a buffer, either the miscbuffer if it fits, or allocate
 // a larger buffer
 //
-	pos = GRFILEPOS(chunk,gvar);
+	pos = GRFILEPOS(chunk);
 	if (pos<0)							// $FFFFFFFF start is a sparse tile
 	  return;
 
 	next = chunk +1;
-	while (GRFILEPOS(next,gvar) == -1)		// skip past any sparse tiles
+	while (GRFILEPOS(next) == -1)		// skip past any sparse tiles
 		next++;
 
-	compressed = GRFILEPOS(next,gvar)-pos;
+	compressed = GRFILEPOS(next)-pos;
 
 	lseek(gvar->ca.file.grhandle,pos,SEEK_SET);
 
@@ -1874,7 +1867,7 @@ void CA_CacheGrChunk (int chunk)
 // load the chunk into a buffer, either the miscbuffer if it fits, or allocate
 // a larger buffer
 //
-	pos = GRFILEPOS(chunk,gvar);
+	pos = GRFILEPOS(chunk);
 	if (pos<0)							// $FFFFFFFF start is a sparse tile
 	  return;
 
@@ -1882,7 +1875,7 @@ void CA_CacheGrChunk (int chunk)
 	while (GRFILEPOS(next) == -1)		// skip past any sparse tiles
 		next++;
 
-	compressed = GRFILEPOS(next,gvar)-pos;
+	compressed = GRFILEPOS(next)-pos;
 
 	lseek(gvar->ca.file.grhandle,pos,SEEK_SET);
 
@@ -2361,7 +2354,7 @@ void CAL_CacheMarks (char *title, global_game_variables_t *gvar)
 			if (dialog && updatecachebox)
 				updatecachebox ();
 
-			pos = GRFILEPOS(i,gvar);
+			pos = GRFILEPOS(i);
 			if (pos<0)
 				continue;
 
@@ -2369,7 +2362,7 @@ void CAL_CacheMarks (char *title, global_game_variables_t *gvar)
 			while (GRFILEPOS(next) == -1)		// skip past any sparse tiles
 				next++;
 
-			compressed = GRFILEPOS(next,gvar)-pos;
+			compressed = GRFILEPOS(next)-pos;
 			endpos = pos+compressed;
 
 			if (compressed<=BUFFERSIZE)
@@ -2392,10 +2385,10 @@ void CAL_CacheMarks (char *title, global_game_variables_t *gvar)
 						if (next == NUMCHUNKS)
 							continue;
 
-						nextpos = GRFILEPOS(next,gvar);
-						while (GRFILEPOS(++next,gvar) == -1)	// skip past any sparse tiles
+						nextpos = GRFILEPOS(next);
+						while (GRFILEPOS(++next) == -1)	// skip past any sparse tiles
 							;
-						nextendpos = GRFILEPOS(next,gvar);
+						nextendpos = GRFILEPOS(next);
 						if (nextpos - endpos <= MAXEMPTYREAD
 						&& nextendpos-pos <= BUFFERSIZE)
 							endpos = nextendpos;

@@ -41,8 +41,8 @@
 
 #define FREEBLOCK(x) {*x->useptr=NULL;x->next=gvar->mm.mmfree;gvar->mm.mmfree=x;}
 
-#define SAVENEARHEAP	0x400		// space to leave in data segment
-#define SAVEFARHEAP	0			// space to leave in far heap
+#define SAVENEARHEAP	0x200		// space to leave in data segment
+#define SAVEFARHEAP	0x400			// space to leave in far heap
 
 #define	BUFFERSIZE		0x1000		// miscelanious, allways available buffer
 
@@ -106,7 +106,7 @@
 
 extern	void		(* beforesort) (void);
 extern	void		(* aftersort) (void);
-//extern	void		(* XMSaddr) (void);		// far pointer to XMS driver
+extern	void		(* XMSaddr) (void);		// far pointer to XMS driver
 extern	dword	XMSDriver;
 extern	word		XMSVer;
 
@@ -187,8 +187,8 @@ boolean MML_CheckForEMS(void);
 boolean MML_CheckForXMS(void);
 //void MML_SetupXMS(mminfo_t *mm, mminfotype *mmi);
 //void MML_ShutdownXMS(mminfo_t *mm);
- void MML_UseSpace (unsigned segstart, unsigned seglength, global_game_variables_t *gvar);
- void MML_ClearBlock (global_game_variables_t *gvar);
+void MML_UseSpace(word segstart, dword seglength, global_game_variables_t *gvar);
+void MML_ClearBlock (global_game_variables_t *gvar);
 
 void MM_Startup(global_game_variables_t *gvar);
 void MM_Shutdown(global_game_variables_t *gvar);

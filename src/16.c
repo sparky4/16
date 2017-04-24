@@ -54,6 +54,6 @@ main(int argc, char *argv[])
 
 //++++	DemoLoop();//to be defined in 16_tail
 
-//++++	Quit(gvar, "Demo loop exited???");
+//++++	Quit("Demo loop exited???");
 
 }
