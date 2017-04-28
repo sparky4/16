@@ -41,6 +41,8 @@
 #define BOFS page[1].data
 #define DOFS page[0].data
 
+#define CONFIGNAME "config.16"
+
 /*
  * typedefs of the game variables!
  */

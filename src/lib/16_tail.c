@@ -149,25 +149,25 @@ void ShutdownCAMMPM (global_game_variables_t *gvar)
 =
 ====================
 */
-
-/*void ReadConfig(void)
+#if 0
+void ReadConfig(void)
 {
 	int					 file;
-	SDMode		  sd;
-	SMMode		  sm;
-	SDSMode		 sds;
+//	SDMode		  sd;
+//	SMMode		  sm;
+//	SDSMode		 sds;
 
 
-	if ( (file = open(configname,O_BINARY | O_RDONLY)) != -1)
+	if ( (file = open(CONFIGNAME,O_BINARY | O_RDONLY)) != -1)
 	{
 	//
 	// valid config file
 	//
-		read(file,Scores,sizeof(HighScore) * MaxScores);
+//		read(file,Scores,sizeof(HighScore) * MaxScores);
 
-		read(file,&sd,sizeof(sd));
-		read(file,&sm,sizeof(sm));
-		read(file,&sds,sizeof(sds));
+//		read(file,&sd,sizeof(sd));
+//		read(file,&sm,sizeof(sm));
+//		read(file,&sds,sizeof(sds));
 
 		read(file,&mouseenabled,sizeof(mouseenabled));
 		read(file,&joystickenabled,sizeof(joystickenabled));
@@ -185,7 +185,7 @@ void ShutdownCAMMPM (global_game_variables_t *gvar)
 
 		close(file);
 
-		if (sd == sdm_AdLib && !AdLibPresent && !SoundBlasterPresent)
+		/*if (sd == sdm_AdLib && !AdLibPresent && !SoundBlasterPresent)
 		{
 			sd = sdm_PC;
 			sd = smm_Off;
@@ -193,7 +193,7 @@ void ShutdownCAMMPM (global_game_variables_t *gvar)
 
 		if ((sds == sds_SoundBlaster && !SoundBlasterPresent) ||
 			(sds == sds_SoundSource && !SoundSourcePresent))
-			sds = sds_Off;
+			sds = sds_Off;*/
 
 		if (!MousePresent)
 			mouseenabled = false;
@@ -208,7 +208,7 @@ void ShutdownCAMMPM (global_game_variables_t *gvar)
 	//
 	// no config file, so select by hardware
 	//
-		if (SoundBlasterPresent || AdLibPresent)
+/*		if (SoundBlasterPresent || AdLibPresent)
 		{
 			sd = sdm_AdLib;
 			sm = smm_AdLib;
@@ -224,7 +224,7 @@ void ShutdownCAMMPM (global_game_variables_t *gvar)
 		else if (SoundSourcePresent)
 			sds = sds_SoundSource;
 		else
-			sds = sds_Off;
+			sds = sds_Off;*/
 
 		if (MousePresent)
 			mouseenabled = true;
@@ -241,7 +241,7 @@ void ShutdownCAMMPM (global_game_variables_t *gvar)
 	SD_SetMusicMode (sm);
 	SD_SetSoundMode (sd);
 	SD_SetDigiDevice (sds);
-}*/
+}
 
 
 /*
@@ -252,20 +252,20 @@ void ShutdownCAMMPM (global_game_variables_t *gvar)
 ====================
 */
 
-/*void WriteConfig(void)
+void WriteConfig(void)
 {
 	int					 file;
 
-	file = open(configname,O_CREAT | O_BINARY | O_WRONLY,
+	file = open(CONFIGNAME,O_CREAT | O_BINARY | O_WRONLY,
 				S_IREAD | S_IWRITE | S_IFREG);
 
 	if (file != -1)
 	{
-		write(file,Scores,sizeof(HighScore) * MaxScores);
+//		write(file,Scores,sizeof(HighScore) * MaxScores);
 
-		write(file,&SoundMode,sizeof(SoundMode));
-		write(file,&MusicMode,sizeof(MusicMode));
-		write(file,&DigiMode,sizeof(DigiMode));
+//		write(file,&SoundMode,sizeof(SoundMode));
+//		write(file,&MusicMode,sizeof(MusicMode));
+//		write(file,&DigiMode,sizeof(DigiMode));
 
 		write(file,&mouseenabled,sizeof(mouseenabled));
 		write(file,&joystickenabled,sizeof(joystickenabled));
@@ -278,13 +278,13 @@ void ShutdownCAMMPM (global_game_variables_t *gvar)
 		write(file,&buttonmouse,sizeof(buttonmouse));
 		write(file,&buttonjoy,sizeof(buttonjoy));
 
-		write(file,&viewsize,sizeof(viewsize));
+//		write(file,&viewsize,sizeof(viewsize));
 		write(file,&mouseadjustment,sizeof(mouseadjustment));
 
 		close(file);
 	}
-}*/
-
+}
+#endif
 //===========================================================================
 
 /*
