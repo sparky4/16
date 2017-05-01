@@ -235,3 +235,159 @@ static	char	buf[10];
 	//SD_StopDigitized();
 }
 #pragma warn +pia
+
+#ifdef __WATCOMC__
+#ifdef __DEBUG_VL__
+
+//===========================================================================
+
+/*
+================
+=
+= ShowPalVarSync
+=
+================
+*/
+
+//#define SHOWPALVARIMODQUAD	((spv.i)%QUADWH)
+#define SHOWPALVARIMOD			((spv.i)%TILEWH)
+#define SHOWPALVARIDIV			((spv.i)/TILEWH)
+#define SHOWPALVARIMODCOND		(!SHOWPALVARIMOD)
+#define SHOWPALVARIDIVCOND		(!SHOWPALVARIDIV)
+#define SHOWPALVARIMODIFCOND	if(SHOWPALVARIMODCOND && spv.i)
+#define SHOWPALVARIDIVIFCOND		if(SHOWPALVARIDIVCOND && spv.i)
+//<PAL_SIZE/3 && spv.i)
+#define SHOWPALVARPALSIZELIMIT	255
+
+spv_t ShowPalVarSync (spv_t *spv)
+{
+	spv_t		result;
+	result = *spv;
+
+//	if(result.paly<result.palq+TILEWH*8) result.paly+=result.mult;
+//	if(result.palx<result.palq+TILEWH*12) result.palx+=result.mult;
+//	modexClearRegion(&gvar->video.page[0], result.palx+TILEWH, result.paly+TILEWH, result.mult, result.mult, result.i);
+	return result;
+}
+
+/*
+================
+=
+= ShowPalVal
+=
+================
+*/
+
+void ShowPalVal (global_game_variables_t *gvar)
+{
+	boolean			done				,err;
+	ScanCode		scan;
+	spv_t			spv;
+	word ccolor = 3, xpos = gvar->video.page[0].dx, ypos = gvar->video.page[0].dy;
+
+	spv.mult=(QUADWH);
+	spv.palq=(spv.mult)*TILEWH;
+	spv.i = 0;
+
+//	IN_UserInput(1, gvar);
+	modexpdump(&gvar->video.page[0]);
+
+	for (spv.oi = 1,done = false;!done;)
+	{
+		SHOWPALVARIMODIFCOND
+		{
+			if(err) printf("SHOWPALVARIMODIFCOND\n");
+			if(spv.i==SHOWPALVARPALSIZELIMIT) spv.paly=(TILEWH*8)+spv.mult*SHOWPALVARIDIV;
+			spv.palx=(TILEWH*12);
+		}else	spv.palx=(TILEWH*12)+spv.mult*SHOWPALVARIMOD;
+		if(spv.i<SHOWPALVARPALSIZELIMIT) SHOWPALVARIDIVIFCOND
+		{
+			if(err) printf("SHOWPALVARIDIVIFCOND\n");
+			spv.paly=(TILEWH*8);
+		}else	spv.paly=(TILEWH*8)+spv.mult*SHOWPALVARIDIV;
+
+		if((spv.palx<TILEWH*12 || spv.paly<TILEWH*8) && spv.i) err=true;
+		else err = false;
+		if(err){ printf("ERR	"); printf("%ux%u	%u\n", spv.palx, spv.paly, spv.i); }
+
+		if(spv.oi!=spv.i)
+		{
+			modexpdump(&gvar->video.page[0]);
+			modexClearRegion(&gvar->video.page[0], spv.palx+TILEWH, spv.paly+TILEWH, spv.mult, spv.mult, 5);
+			modexClearRegion(&gvar->video.page[0], spv.palx+TILEWH+1, spv.paly+TILEWH+1, spv.mult-2, spv.mult-2, spv.i);
+			spv.oi = spv.i;
+		}
+
+#define SHOWPALVARPRINT modexprint(&(gvar->video.page[0]), xpos, ypos, 1, 0, ccolor, 8, gvar->video.VL_Started, global_temp_status_text); ypos+=8;
+		sprintf(global_temp_status_text, "%03u", spv.i); SHOWPALVARPRINT
+		sprintf(global_temp_status_text, "r %03u", gvar->video.palette[(spv.i*3)+0]/*>>2*/); SHOWPALVARPRINT
+		sprintf(global_temp_status_text, "g %03u", gvar->video.palette[(spv.i*3)+1]/*>>2*/); SHOWPALVARPRINT
+		sprintf(global_temp_status_text, "b %03u", gvar->video.palette[(spv.i*3)+2]/*>>2*/); SHOWPALVARPRINT
+		xpos = gvar->video.page[0].dx; ypos = gvar->video.page[0].dy;
+
+		while (!(scan = gvar->in.inst->LastScan))
+		{}
+
+		IN_ClearKey(scan);
+		switch (scan)
+		{
+		case sc_LeftArrow:
+			if (spv.i > 0)
+			{
+				spv.i--;
+			}
+			else
+			{
+				spv.palx=gvar->video.page[0].sw-spv.mult;
+				spv.paly=gvar->video.page[0].sh-spv.mult;
+				spv.i = SHOWPALVARPALSIZELIMIT;
+			}
+		break;
+		case sc_RightArrow:
+			if (spv.i < SHOWPALVARPALSIZELIMIT)
+			{
+				spv.i++;
+			}
+				else
+			{
+				spv.palx=TILEWH*12;
+				spv.paly=TILEWH*8;
+				spv.i = 0;
+			}
+		break;
+		case sc_UpArrow:
+			if (spv.i > 0)
+			{
+				spv.i-=16;
+			}
+			else
+			{
+				spv.palx=gvar->video.page[0].sw-spv.mult;
+				spv.paly=gvar->video.page[0].sh-spv.mult;
+				spv.i = SHOWPALVARPALSIZELIMIT;
+			}
+		break;
+		case sc_DownArrow:
+			if (spv.i < SHOWPALVARPALSIZELIMIT)
+			{
+				spv.i+=16;
+			}
+				else
+			{
+				spv.palx=TILEWH*12;
+				spv.paly=TILEWH*8;
+				spv.i = 0;
+			}
+		break;
+		case sc_W:	// Walls
+			spv.i = 0;
+			break;
+		case sc_Escape:
+			done = true;
+			break;
+		}
+	}
+	IN_UserInput(1, gvar);
+}
+#endif	//debug vl
+#endif	//watcomc

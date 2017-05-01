@@ -138,6 +138,8 @@
 #define	key_LSuper			0x5b
 #define	key_RSuper			0x5c
 #define	key_Menu			0x5d
+#define	sc_LBrkt
+#define	sc_RBrkt
 
 // 	Stuff for the mouse
 #define	MReset		0

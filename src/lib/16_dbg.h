@@ -7,7 +7,7 @@
 #include "src/lib/16_tdef.h"
 
 #define __DEBUG__
-//#define __DEBUG_InputMgr__
+#define __DEBUG_InputMgr__
 #define __DEBUG_MAP__
 //#define __DEBUG_2__
 //#define __DEBUG_CA__
@@ -15,6 +15,7 @@
 //#define __DEBUG_MM__
 //#define __DEBUG_RF__
 #define __DEBUG_SPRI__
+#define __DEBUG_VL__
 
 
 #ifdef __DEBUG__
@@ -44,6 +45,12 @@ extern boolean dbg_delayanimation;
 #endif
 
 #ifdef __WATCOMC__
+typedef struct
+{
+	word	palq,mult;
+	word	palx, paly;
+	byte	i, oi;
+} spv_t;
 # ifdef DEBUGSERIAL
 #  include <hw/8250/8250.h>
 
@@ -66,5 +73,11 @@ static inline int _DEBUG_INIT() {
 #endif //watcomc
 
 void ShapeTest_(global_game_variables_t *gvar);
+#ifdef __WATCOMC__
+#ifdef __DEBUG_VL__
+spv_t ShowPalVarSync (spv_t *spv);
+void ShowPalVal (global_game_variables_t *gvar);
+#endif
+#endif
 
 #endif // _SRC_LIB_16_DBG

@@ -121,7 +121,7 @@ void main(int argc, char *argv[])
 	modexFadeOn(4, &gvar.video.palette);
 #endif
 
-	IN_StartAck (&gvar);	MM_ShowMemory(&gvar);	while (!IN_CheckAck (&gvar)){}
+//	IN_StartAck (&gvar);	MM_ShowMemory(&gvar);	while (!IN_CheckAck (&gvar)){}
 #ifdef FADE
 	modexPalBlack();	//so player will not see loadings~
 #endif
@@ -186,12 +186,13 @@ void main(int argc, char *argv[])
 		if(gvar.player[0].enti.q == (TILEWH/(gvar.player[0].enti.speed))+1 && gvar.player[0].info.dir != 2 && (gvar.player[0].enti.triggerx == 5 && gvar.player[0].enti.triggery == 5)){ gvar.player[0].enti.hp--; }
 		//debugging binds!
 
-		if(gvar.in.inst->Keyboard[24]){ VL_modexPalScramble(&gvar.video.palette); /*paloffset=0;*/ modexpdump(gvar.mv[0].page); IN_UserInput(1, &gvar); } //o
-		if(gvar.in.inst->Keyboard[22]){ VL_modexPalScramble(&gvar.video.palette); } //u
+		if(gvar.in.inst->Keyboard[24]){ VL_modexPalScramble(&gvar.video.palette); /*paloffset=0;*/ VL_LoadPalFileCore(&gvar.video.palette, &gvar); modexpdump(gvar.mv[0].page); IN_UserInput(1, &gvar); } //o
+		if(gvar.in.inst->Keyboard[22]){ VL_modexPalScramble(&gvar.video.palette); VL_LoadPalFileCore(&gvar.video.palette, &gvar); } //u
 
 		TAIL_FUNCTIONKEYFUNCTIONS
 		TAIL_FUNCTIONKEYDRAWJUNK
-		if(gvar.in.inst->Keyboard[sc_L]){ modexClearRegion(&gvar.video.page[0], gvar.player[0].enti.x, gvar.player[0].enti.y, 16, 16, 1); }
+//		if(gvar.in.inst->Keyboard[sc_L]){ modexClearRegion(&gvar.video.page[0], gvar.player[0].enti.x, gvar.player[0].enti.y, 16, 16, 1); }
+		if(gvar.in.inst->Keyboard[sc_L]){ ShowPalVal (&gvar);								IN_UserInput(1, &gvar); }
 		if(gvar.in.inst->Keyboard[sc_J] || gvar.in.inst->Keyboard[sc_K])
 		{
 			if(gvar.in.inst->Keyboard[sc_J])

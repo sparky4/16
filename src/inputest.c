@@ -30,8 +30,8 @@ main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
 #ifdef __DEBUG_InputMgr__
-	dbg_testkeyin=0;
-	dbg_testcontrolnoisy=1;
+	dbg_testkeyin=1;
+	dbg_testcontrolnoisy=0;
 #endif
 	start_timer(&gvar);
 	//Startup16(&gvar);
