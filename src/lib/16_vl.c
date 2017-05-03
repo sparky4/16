@@ -916,38 +916,43 @@ modexLoadPalFile(byte *filename, byte *palette) {
 	fclose(file);
 }
 
+void VLL_LoadPalFilewithoffset(const char *filename, byte *palette, word o, word palsize, global_game_variables_t *gvar)
+{
+	int fd;
+	byte *newpalette;
+
+	fd = open(filename,O_RDONLY|O_BINARY);
+	if (fd >= 0) {
+		read(fd,palette,	palsize);
+		close(fd);
+
+		if(palsize==27) newpalette = palette; else{	//if core then load it
+		newpalette = &palette[3];			//skip overscan color
+		if(!o) o++;
+		}
+		VL_UpdatePaletteWrite(newpalette, o, gvar);
+	}
+}
+
 void VL_LoadPalFile(const char *filename, byte *palette, global_game_variables_t *gvar)
 {
-	VL_LoadPalFilewithoffset(filename, palette,
-		0, gvar);
-		//9, gvar);
-//	VL_LoadPalFileCore(palette);
+	VLL_LoadPalFilewithoffset(filename, palette,
+		0,
+//		9,
+		PAL_SIZE, gvar);
 }
 
 void VL_LoadPalFileCore(byte *palette, global_game_variables_t *gvar)
 {
-	VL_LoadPalFilewithoffset("data/16.pal", palette, 0, gvar);
-}
-
-void VL_LoadPalFilewithoffset(const char *filename, byte *palette, word o, global_game_variables_t *gvar)
-{
-	int fd;
-
-	fd = open(filename,O_RDONLY|O_BINARY);
-	if (fd >= 0) {
-		read(fd,palette,	PAL_SIZE);
-		close(fd);
-
-		VL_UpdatePaletteWrite(palette, o, gvar);
-	}
+	VLL_LoadPalFilewithoffset("data/16.pal", palette, 0, 27, gvar);
 }
 
 void VL_UpdatePaletteWrite(byte *palette, word o, global_game_variables_t *gvar)
 {
 	word i;
-	vga_palette_lseek(/*1+*/o);
-	//for (i=o;i < 256-o;i++)
-	for (i=0;i < 256-o;i++)
+
+	vga_palette_lseek(o);
+	for (i=0;i < 255-o;i++)
 		vga_palette_write(palette[(i*3)+0]>>2,palette[(i*3)+1]>>2,palette[(i*3)+2]>>2);
 
 	VL_PaletteSync(gvar);
@@ -1031,12 +1036,17 @@ VL_modexPalScramble(byte *p)
 }
 
 word
-modexPalOverscan(word col)
+VL_modexPalOverscan(byte *p, word col)
 {
+	int i;
 	//modexWaitBorder();
 	vga_wait_for_vsync();
 	outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
-	outp(PAL_DATA_REG, col);
+	for(i=col; i<(3+col); i++)
+	{
+		outp(PAL_DATA_REG, p[i]);
+	}
+//	modexPalSave(p);
 	return col;
 }
 

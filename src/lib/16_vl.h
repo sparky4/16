@@ -201,7 +201,7 @@ void modexPalSave(byte *palette);
 void modexLoadPalFile(char *filename, byte *palette);
 void VL_LoadPalFile(const char *filename, byte *palette, global_game_variables_t *gvar);
 void VL_LoadPalFileCore(byte *palette, global_game_variables_t *gvar);
-void VL_LoadPalFilewithoffset(const char *filename, byte *palette, word o, global_game_variables_t *gvar);
+//void VLL_LoadPalFilewithoffset(const char *filename, byte *palette, word o, global_game_variables_t *gvar);
 void VL_UpdatePaletteWrite(byte *palette, word o, global_game_variables_t *gvar);
 void VL_PaletteSync(global_game_variables_t *gvar);
 void modexSavePalFile(char *filename, byte *palette);
@@ -214,7 +214,7 @@ void modexPalWhite();
 /* utility functions */
 void modexPalUpdate(byte *p);
 void VL_modexPalScramble(byte *p);
-word modexPalOverscan(word col);
+word VL_modexPalOverscan(byte *p, word col);
 void VL_ColorBorder (int color, video_t *v);
 void VL_Plot (int x, int y, int color, global_game_variables_t *gvar);
 void VL_Hlin (unsigned x, unsigned y, unsigned width, unsigned color, global_game_variables_t *gvar);

@@ -1249,7 +1249,7 @@ void MM_SortMem (global_game_variables_t *gvar)
 
 	SD_StopSound();*/
 	oldborder = gvar->video.bordercolor;
-	gvar->video.bordercolor = modexPalOverscan(15);
+	gvar->video.bordercolor = VL_modexPalOverscan(gvar->video.palette, 4);
 
 	if (beforesort)
 		beforesort();

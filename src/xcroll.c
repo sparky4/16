@@ -232,11 +232,12 @@ void main(int argc, char *argv[])
 			//read_vrs(&gvar, bakapee, gvar.player[0].enti.spri->spritesheet);
 			VRS_ReadVRS(bakapee, &gvar.player[0].enti, &gvar);
 			VL_LoadPalFile(bakapeep, &gvar.video.palette, &gvar);
+			ZC_animatePlayer(&gvar.mv, &gvar.player, 0);
 		}//JK
-#ifdef FADE
-		if(gvar.in.inst->Keyboard[10]){ modexPalOverscan(rand()%56); modexPalUpdate(gvar.video.dpal); IN_UserInput(1, &gvar); }
-#endif
-		if(gvar.in.inst->Keyboard[sc_R]){ modexPalOverscan(rand()%56); } //r
+//#ifdef FADE
+//		if(gvar.in.inst->Keyboard[10]){ modexPalOverscan(rand()%56); modexPalUpdate(gvar.video.dpal); IN_UserInput(1, &gvar); }
+//#endif
+		if(gvar.in.inst->Keyboard[sc_R]){ VL_modexPalOverscan(&gvar.video.palette, rand()%32); } //r
 
 		if((gvar.player[0].enti.q==1) && !(gvar.player[0].enti.x%TILEWH==0 && gvar.player[0].enti.y%TILEWH==0)) Quit (&gvar, "PLAYER OFF THE RAILS!");//break;	//incase things go out of sync!
 	}
