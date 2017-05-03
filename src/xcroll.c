@@ -46,7 +46,7 @@ memptr pal;
 #define FILENAME_1P	"data/spri/chikyuu.pal"
 #define FILENAME_2	"data/spri/me.vrs"
 #define FILENAME_2P	"data/spri/me.pal"
-#define FILENAME_3	"data/spri/chistnd.vrl"
+//#define FILENAME_3	"data/spri/chistnd.vrl"
 
 void main(int argc, char *argv[])
 {
@@ -57,7 +57,7 @@ void main(int argc, char *argv[])
 
 	char bakapee[64] = FILENAME_1;
 	char bakapeep[64] = FILENAME_1P;
-	char bakapee3[64] = FILENAME_3;
+//	char bakapee3[64] = FILENAME_3;
 
 	Startup16(&gvar);
 
@@ -86,7 +86,6 @@ void main(int argc, char *argv[])
 #endif
 	// data
 	VRS_LoadVRS(bakapee, &gvar.player[0].enti, &gvar);
-//	VRS_LoadVRS(bakapee3, &enti, &gvar);
 
 	// input!
 	IN_Default(0, &gvar.player[0],ctrl_Keyboard1, &gvar);
@@ -200,7 +199,7 @@ void main(int argc, char *argv[])
 		if(gvar.in.inst->Keyboard[sc_LBrkt]){ ShowPalVal (&gvar);								IN_UserInput(1, &gvar); }
 
 //===============================================================================
-
+#if 0
 		if(gvar.in.inst->Keyboard[sc_BackSlash]){
 			VRS_ReadVRL(bakapee3, &gvar.player[0].enti, &gvar);
 			DrawVRL(
@@ -213,7 +212,7 @@ void main(int argc, char *argv[])
 			);	while (!IN_CheckAck (&gvar)){}
 			VRS_ReadVRS(bakapee, &gvar.player[0].enti, &gvar);
 		IN_UserInput(1, &gvar); }
-
+#endif
 //===============================================================================
 
 		if(gvar.in.inst->Keyboard[sc_J] || gvar.in.inst->Keyboard[sc_K])

@@ -9,42 +9,12 @@ Object 4's name: 'stump'
                      "walkable":"0"
                     }
 		walkable: 0
-DrawVRL:
-[00]	85
-[01]	00
-[02]	0b
-[03]	86
-[04]	00
-[05]	02
-[06]	88
-[07]	01
-[08]	0b
-[09]	88
-[10]	04
-[11]	0b
-[12]	ff
-[13]	84
-[14]	00
-[15]	0b
-[16]	06
-[17]	00
-[18]	02
-[19]	06
-[20]	04
-[21]	04
-[22]	03
-[23]	02
-[24]	87
-[25]	01
-[26]	0b
-[27]	01
-[28]	02
-[29]	05
-[30]	02
-[31]	01
+VRS_OpenVRS
+	vrl_size=515
+
 
 Project 16 xcroll.exe. This is just a test file!
-version May  3 2017 13:29:21
+version May  3 2017 15:15:20
 page[0]dxy: 16x16
 
 player vars:

@@ -53,7 +53,7 @@ void DrawVRL (unsigned int x,unsigned int y,struct vrl1_vgax_header *hdr,vrl1_vg
 //			if(*(s+a)<=13)
 //				if (!(a%4) && a ) printf("\n");
 //				sprintf(outputvars[sx][by], "%02x", *(s+a));
-				printf("[%02u]	%02x\n", a, *(s+a));
+				printf("[%02u]	%u\n", a, *(s+a));
 //				by++;
 		}
 

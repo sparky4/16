@@ -35,7 +35,6 @@ void VRS_OpenVRS(char *filename, entity_t *enti, boolean rlsw, global_game_varia
 	struct vrl1_vgax_header far *curr_vrl;
 	uint32_t vrl_size;
 	int num_of_vrl,i;
-	int size=0;
 
 	switch(rlsw)
 	{
@@ -49,7 +48,7 @@ void VRS_OpenVRS(char *filename, entity_t *enti, boolean rlsw, global_game_varia
 
 	// Insert sanity cheks later
 	enti->spri.spritesheet.buffer = gvar->ca.spribuff;
-	enti->spri.spritesheet.data_size = size - sizeof(struct vrl1_vgax_header);
+	enti->spri.spritesheet.data_size = sizeof(enti->spri.spritesheet.buffer) - sizeof(struct vrl1_vgax_header);
 	num_of_vrl = 0;
 	vrl_id_iter = (uint16_t far *)(enti->spri.spritesheet.buffer + enti->spri.spritesheet.vrs_hdr->offset_table[VRS_HEADER_OFFSET_SPRITE_ID_LIST]);
 	while(vrl_id_iter[num_of_vrl]){
@@ -60,8 +59,8 @@ void VRS_OpenVRS(char *filename, entity_t *enti, boolean rlsw, global_game_varia
 #ifndef VRS_USECAMMPM
 	vrl_line_offsets = malloc(sizeof(vrl1_vgax_offset_t *)*num_of_vrl);//TODO: USE MM_ CA_ AND PM_
 #else
-	MM_GetPtr(MEMPTRCONV gvar->ca.grsegs[0], sizeof(vrl1_vgax_offset_t *)*num_of_vrl, gvar);
-	enti->spri.spritesheet.vrl_line_offsets = (vrl1_vgax_offset_t **)gvar->ca.grsegs[0];
+	MM_GetPtr(MEMPTRCONV gvar->ca.grsegs, sizeof(vrl1_vgax_offset_t *)*num_of_vrl, gvar);
+	enti->spri.spritesheet.vrl_line_offsets = (vrl1_vgax_offset_t **)gvar->ca.grsegs;
 #endif
 
 	vrl_headers_offsets = (uint32_t far *)(enti->spri.spritesheet.buffer + enti->spri.spritesheet.vrs_hdr->offset_table[VRS_HEADER_OFFSET_VRS_LIST]);
@@ -86,20 +85,21 @@ void VRS_OpenVRS(char *filename, entity_t *enti, boolean rlsw, global_game_varia
 #ifndef VRS_USECAMMPM
 	enti->spri.spritesheet.vrl_line_offsets = vrl_line_offsets;
 #endif
+//	printf("VRS_OpenVRS\n");
+//	printf("	vrl_size=%lu\n\n",vrl_size);
 }
 
+#if 0
+//
 void VRS_ReadVRL(char *filename, entity_t *enti, global_game_variables_t *gvar){	VRS_OpenVRL(filename, enti, 1, gvar);	}
 void VRS_LoadVRL(char *filename, entity_t *enti, global_game_variables_t *gvar){	VRS_OpenVRL(filename, enti, 0, gvar);	}
 void VRS_OpenVRL(char *filename, entity_t *enti, boolean rlsw, global_game_variables_t *gvar)
 {
-	vrl1_vgax_offset_t *vrl_line_offsets;
-//	struct vrl1_vgax_header *vrl_header;
-//	uint16_t far *vrl_id_iter;
+#ifndef VRL_USECAMMPM
+	vrl1_vgax_offset_t *line_offsets;
+#endif
 //	uint32_t far *vrl_headers_offsets;
-//	struct vrl1_vgax_header far *curr_vrl;
-	uint32_t vrl_size;
-//	int num_of_vrl,i;
-	int size=0;
+	struct vrl1_vgax_header far *curr_vrl;
 
 	switch(rlsw)
 	{
@@ -113,50 +113,34 @@ void VRS_OpenVRL(char *filename, entity_t *enti, boolean rlsw, global_game_varia
 
 	// Insert sanity cheks later
 	enti->spri.sprite_vrl_cont.buffer = gvar->ca.spribuff;
-	enti->spri.sprite_vrl_cont.data_size = size - sizeof(struct vrl1_vgax_header);
-
-	vrl_size = enti->spri.sprite_vrl_cont.buffer - enti->spri.sprite_vrl_cont.buffer - sizeof(struct vrl1_vgax_header);
-//	vrl_header = (struct vrl1_vgax_header far *)(enti->spri.sprite_vrl_cont.buffer + enti->spri.sprite_vrl_cont.buffer);
-#if 0
-	num_of_vrl = 0;
-	while(vrl_id_iter[num_of_vrl]){
-		num_of_vrl++;
-	}
+	enti->spri.sprite_vrl_cont.data_size = sizeof(enti->spri.spritesheet.buffer) - sizeof(struct vrl1_vgax_header);
 
 	// Allocate memory for vrl line offsets table
-//#ifndef VRS_USECAMMPM
-	vrl_line_offsets = malloc(sizeof(vrl1_vgax_offset_t *)*num_of_vrl);//TODO: USE MM_ CA_ AND PM_
-//#else
-	MM_GetPtr(MEMPTRCONV gvar->ca.grsegs[0], sizeof(vrl1_vgax_offset_t *)*num_of_vrl, gvar);
-	enti->spri.sprite_vrl_cont.vrl_line_offsets = (vrl1_vgax_offset_t **)gvar->ca.grsegs[0];
-//#endif
-
-	vrl_headers_offsets = (uint32_t far *)(enti->spri.sprite_vrl_cont.buffer + enti->spri.sprite_vrl_cont.vrs_hdr->offset_table[VRS_HEADER_OFFSET_VRS_LIST]);
-	// Calculate line offsets for each vrl
-	for(i = 0; i < num_of_vrl; i++){
-		curr_vrl = (struct vrl1_vgax_header far *)(enti->spri.sprite_vrl_cont.buffer + vrl_headers_offsets[i]);
-
-		// Calc. vrl size as (next_offset - curr_offset)
-		if (i != num_of_vrl - 1){
-			vrl_size = vrl_headers_offsets[i+1] - vrl_headers_offsets[i] - sizeof(struct vrl1_vgax_header);
-		}
-		// If it's the last vrl, size is (next_vrs_struct_offset - curr_offset)
-		else{
-			vrl_size = enti->spri.sprite_vrl_cont.vrs_hdr->offset_table[VRS_HEADER_OFFSET_SPRITE_ID_LIST] - vrl_headers_offsets[i] - sizeof(struct vrl1_vgax_header);
-		}
-#ifndef VRS_USECAMMPM
-		vrl_line_offsets = vrl1_vgax_genlineoffsets(curr_vrl, (byte *)curr_vrl + sizeof(struct vrl1_vgax_header), vrl_size);
+#ifndef VRL_USECAMMPM
+	line_offsets = malloc(sizeof(vrl1_vgax_offset_t *));//TODO: USE MM_ CA_ AND PM_
 #else
-		enti->spri.sprite_vrl_cont.vrl_line_offsets[i] = vrl1_vgax_genlineoffsets(curr_vrl, (byte *)curr_vrl + sizeof(struct vrl1_vgax_header), vrl_size);
-#endif
-	}
+	MM_GetPtr(MEMPTRCONV gvar->ca.grsegs[0], sizeof(vrl1_vgax_offset_t *), gvar);
+	enti->spri.sprite_vrl_cont.line_offsets = (vrl1_vgax_offset_t *)gvar->ca.grsegs[0];
 #endif
 
-		vrl_line_offsets = vrl1_vgax_genlineoffsets(enti->spri.sprite_vrl_cont.vrl_header,	(byte *)enti->spri.sprite_vrl_cont.buffer + sizeof(struct vrl1_vgax_header),	vrl_size);
-#ifndef VRS_USECAMMPM
-	enti->spri.sprite_vrl_cont.vrl_line_offsets = vrl_line_offsets;
+	//vrl_headers_offsets = (uint32_t far *)(enti->spri.sprite_vrl_cont.buffer + enti->spri.sprite_vrl_cont.vrs_hdr->offset_table[VRL_HEADER_OFFSET_VRL_LIST]);
+	// Calculate line offsets for each vrl
+		curr_vrl = (struct vrl1_vgax_header far *)(enti->spri.sprite_vrl_cont.buffer);// + vrl_headers_offsets);
+
+#ifndef VRL_USECAMMPM
+		line_offsets = vrl1_vgax_genlineoffsets(curr_vrl, (byte *)curr_vrl + sizeof(struct vrl1_vgax_header), sizeof(enti->spri.spritesheet.buffer));
+#else
+		enti->spri.sprite_vrl_cont.line_offsets = vrl1_vgax_genlineoffsets(curr_vrl, (byte *)curr_vrl + sizeof(struct vrl1_vgax_header), sizeof(enti->spri.spritesheet.buffer));
 #endif
+
+#ifndef VRL_USECAMMPM
+	enti->spri.sprite_vrl_cont.line_offsets = line_offsets;
+#endif
+	printf("VRS_OpenVRL\n");
+	printf("	vrl_size=%lu\n\n",sizeof(enti->spri.spritesheet.buffer));
 }
+//
+#endif
 
 // Seek and return a specified .vrl blob from .vrs blob in far memory
 int get_vrl_by_id(struct vrs_container far *vrs_cont, uint16_t id, struct vrl_container *vrl_cont){

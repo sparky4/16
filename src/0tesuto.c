@@ -29,8 +29,10 @@
 
 //#define FILENAME_1 "data/aconita.vrl"
 //#define FILENAME_2 "data/aconita.pal"
-#define FILENAME_1 "data/spri/chikyuu.vrl"
+#define FILENAME_1 "data/spri/chistnd.vrl"
 #define FILENAME_2 "data/spri/chikyuu.pal"
+
+//#define ZSP
 
 #define INITTNUM 1
 
@@ -41,7 +43,7 @@ int main(int argc,char **argv)
 {
 	static global_game_variables_t gvar;
 	struct vrl1_vgax_header *vrl_header;
-	vrl1_vgax_offset_t *vrl_lineoffs;
+	vrl1_vgax_offset_t *line_offsets;
 	unsigned char *buffer;
 	unsigned int bufsz;
 	int fd;
@@ -50,10 +52,10 @@ int main(int argc,char **argv)
 	char bakapee1[64] = FILENAME_1;
 	char bakapee2[64] = FILENAME_2;
 
-	boolean anim=1,noanim=0,zerostoppause=1;
-
-//	bakapee1=mALLoc(64);
-//	bakapee2=mALLoc(64);
+	boolean anim=1,noanim=0;
+#ifdef ZSP
+	boolean zerostoppause=1;
+#endif
 
 	if (argc >= 2) {
 /*	if (argc < 2) {
@@ -103,8 +105,8 @@ int main(int argc,char **argv)
 	VL_LoadPalFile(bakapee2, &gvar.video.palette, &gvar);
 
 	/* preprocess the sprite to generate line offsets */
-	vrl_lineoffs = vrl1_vgax_genlineoffsets(vrl_header,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
-	if (vrl_lineoffs == NULL) return 1;
+	line_offsets = vrl1_vgax_genlineoffsets(vrl_header,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
+	if (line_offsets == NULL) return 1;
 
 	IN_Startup(&gvar);
 	IN_Default(0,&gvar.player[0],ctrl_Keyboard1, &gvar);
@@ -148,11 +150,17 @@ int main(int argc,char **argv)
 			IN_ReadControl(&gvar.player[0], &gvar);
 			if(gvar.in.inst->Keyboard[68]){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap; IN_UserInput(1, &gvar); } //f10
 			TAIL_PANKEYFUN;
-			if(gvar.in.inst->Keyboard[sc_Space] || zerostoppause)	//space
+			if(gvar.in.inst->Keyboard[sc_Space]
+#ifdef ZSP
+				|| zerostoppause
+#endif
+)	//space
 			{
 				anim=!anim;
 				DRAWCORNERBOXES;
+#ifdef ZSP
 				if(!zerostoppause) IN_UserInput(1, &gvar); else zerostoppause=0;
+#endif
 			}
 			if(gvar.in.inst->Keyboard[sc_R]){
 				gvar.video.page[0].dx=gvar.video.page[0].dy=gvar.video.page[1].dx=gvar.video.page[1].dy=16;
@@ -190,7 +198,7 @@ int main(int argc,char **argv)
 				vga_state.vga_graphics_ram = omemptr + gvar.video.page[0].pagesize + gvar.video.page[1].pagesize;
 
 				/* then the sprite. note modding ram ptr means we just draw to (x&3,0) */
-draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,vrl_lineoffs,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
+draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,line_offsets,buffer+sizeof(*vrl_header),bufsz-sizeof(*vrl_header));
 //printf("x=%d	y=%d	rx=%d	ry=%d\n", x, y, rx, ry);
 
 				/* restore ptr */
@@ -308,7 +316,7 @@ if(!noanim) {
 }
 	IN_Shutdown(&gvar);
 	VGAmodeX(0, 1, &gvar);
-	free(vrl_lineoffs);
+	free(line_offsets);
 	buffer = NULL;
 	free(buffer);
 	bufsz = 0;

@@ -918,7 +918,9 @@ modexLoadPalFile(byte *filename, byte *palette) {
 
 void VL_LoadPalFile(const char *filename, byte *palette, global_game_variables_t *gvar)
 {
-	VL_LoadPalFilewithoffset(filename, palette, 9, gvar);
+	VL_LoadPalFilewithoffset(filename, palette,
+		0, gvar);
+		//9, gvar);
 //	VL_LoadPalFileCore(palette);
 }
 
