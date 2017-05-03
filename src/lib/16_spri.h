@@ -25,6 +25,8 @@
 #include "src/lib/16_vrs.h"
 #include "src/lib/scroll16.h"
 
+void DrawVRL (unsigned int x,unsigned int y,struct vrl1_vgax_header *hdr,vrl1_vgax_offset_t *lineoffs/*array hdr->width long*/,unsigned char *data,unsigned int datasz);
+
 //moved to 16_tdef.h
 // struct sprite
 // {

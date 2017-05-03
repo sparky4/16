@@ -451,6 +451,128 @@ void DebugMemory_(global_game_variables_t *gvar, boolean q)
 }
 
 /*
+===================
+=
+= TestSprites
+=
+===================
+*/
+
+#if 0
+#define DISPWIDTH	110
+#define	TEXTWIDTH   40
+void TestSprites(void)
+{
+	int hx,hy,sprite,oldsprite,bottomy,topx,shift;
+	spritetabletype far *spr;
+	spritetype _seg	*block;
+	unsigned	mem,scan;
+
+
+	VW_FixRefreshBuffer ();
+	US_CenterWindow (30,17);
+
+	US_CPrint ("Sprite Test");
+	US_CPrint ("-----------");
+
+	hy=PrintY;
+	hx=(PrintX+56)&(~7);
+	topx = hx+TEXTWIDTH;
+
+	US_Print ("Chunk:\nWidth:\nHeight:\nOrgx:\nOrgy:\nXl:\nYl:\nXh:\nYh:\n"
+			  "Shifts:\nMem:\n");
+
+	bottomy = PrintY;
+
+	sprite = STARTSPRITES;
+	shift = 0;
+
+	do
+	{
+		if (sprite>=STARTTILE8)
+			sprite = STARTTILE8-1;
+		else if (sprite<STARTSPRITES)
+			sprite = STARTSPRITES;
+
+		spr = &spritetable[sprite-STARTSPRITES];
+		block = (spritetype _seg *)grsegs[sprite];
+
+		VWB_Bar (hx,hy,TEXTWIDTH,bottomy-hy,WHITE);
+
+		PrintX=hx;
+		PrintY=hy;
+		US_PrintUnsigned (sprite);US_Print ("\n");PrintX=hx;
+		US_PrintUnsigned (spr->width);US_Print ("\n");PrintX=hx;
+		US_PrintUnsigned (spr->height);US_Print ("\n");PrintX=hx;
+		US_PrintSigned (spr->orgx);US_Print ("\n");PrintX=hx;
+		US_PrintSigned (spr->orgy);US_Print ("\n");PrintX=hx;
+		US_PrintSigned (spr->xl);US_Print ("\n");PrintX=hx;
+		US_PrintSigned (spr->yl);US_Print ("\n");PrintX=hx;
+		US_PrintSigned (spr->xh);US_Print ("\n");PrintX=hx;
+		US_PrintSigned (spr->yh);US_Print ("\n");PrintX=hx;
+		US_PrintSigned (spr->shifts);US_Print ("\n");PrintX=hx;
+		if (!block)
+		{
+			US_Print ("-----");
+		}
+		else
+		{
+			mem = block->sourceoffset[3]+5*block->planesize[3];
+			mem = (mem+15)&(~15);		// round to paragraphs
+			US_PrintUnsigned (mem);
+		}
+
+		oldsprite = sprite;
+		do
+		{
+		//
+		// draw the current shift, then wait for key
+		//
+			VWB_Bar(topx,hy,DISPWIDTH,bottomy-hy,WHITE);
+			if (block)
+			{
+				PrintX = topx;
+				PrintY = hy;
+				US_Print ("Shift:");
+				US_PrintUnsigned (shift);
+				US_Print ("\n");
+				VWB_DrawSprite (topx+16+shift*2,PrintY,sprite);
+			}
+
+			VW_UpdateScreen();
+
+			scan = IN_WaitForKey ();
+
+			switch (scan)
+			{
+			case sc_UpArrow:
+				sprite++;
+				break;
+			case sc_DownArrow:
+				sprite--;
+				break;
+			case sc_LeftArrow:
+				if (--shift == -1)
+					shift = 3;
+				break;
+			case sc_RightArrow:
+				if (++shift == 4)
+					shift = 0;
+				break;
+			case sc_Escape:
+				return;
+			}
+
+		} while (sprite == oldsprite);
+
+  } while (1);
+
+
+}
+
+#endif
+
+/*
 ==========================
 =
 = ClearMemory

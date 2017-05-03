@@ -1451,7 +1451,7 @@ cachein:
 //===========================================================================
 
 //????#if GRMODE == EGAGR
-#if 0
+#if 1
 
 /*
 ======================
@@ -1465,9 +1465,10 @@ cachein:
 
 unsigned	static	sheight,swidth;
 boolean static dothemask;
+unsigned	*shifttabletable[8];
 
 void CAL_ShiftSprite (unsigned segment,unsigned source,unsigned dest,
-	unsigned width, unsigned height, unsigned pixshift, boolean domask)
+	unsigned width, unsigned height, unsigned pixshift, boolean domask, global_game_variables_t *gvar)
 {
 
 	sheight = height;		// because we are going to reassign bp
@@ -1484,6 +1485,7 @@ void CAL_ShiftSprite (unsigned segment,unsigned source,unsigned dest,
 		mov	bp,[pixshift]
 		shl	bp,1
 		mov	bp,WORD PTR [shifttabletable+bp]	// bp holds pointer to shift table
+//		mov	bp,WORD PTR [gvar->video.shifttabletable+bp]	// bp holds pointer to shift table
 
 		cmp	[ss:dothemask],0
 		je		skipmask
@@ -1593,8 +1595,8 @@ dodatabyte:
 =
 ======================
 */
-/*++++
-void CAL_CacheSprite (int chunk, byte far *compressed)
+
+void CAL_CacheSprite (int chunk, byte far *compressed, global_game_variables_t *gvar)
 {
 	int i;
 	unsigned shiftstarts[5];
@@ -1602,11 +1604,12 @@ void CAL_CacheSprite (int chunk, byte far *compressed)
 	spritetabletype far *spr;
 	spritetype _seg *dest;
 
-#if GRMODE == CGAGR
+#if 0
+//GRMODE == CGAGR
 //
 // CGA has no pel panning, so shifts are never needed
 //
-	spr = &spritetable[chunk-STARTSPRITES];
+	spr = &gvar->video.spritetable[chunk-STARTSPRITES];
 	smallplane = spr->width*spr->height;
 	MM_GetPtr (&grsegs[chunk],smallplane*2+MAXSHIFTS*6);
 	if (mmerror)
@@ -1624,12 +1627,12 @@ void CAL_CacheSprite (int chunk, byte far *compressed)
 #endif
 
 
-#if GRMODE == EGAGR
+//#if GRMODE == EGAGR
 
 //
 // calculate sizes
 //
-	spr = &spritetable[chunk-STARTSPRITES];
+	spr = &gvar->video.spritetable[chunk-STARTSPRITES];
 	smallplane = spr->width*spr->height;
 	bigplane = (spr->width+1)*spr->height;
 
@@ -1640,10 +1643,10 @@ void CAL_CacheSprite (int chunk, byte far *compressed)
 	shiftstarts[4] = shiftstarts[3] + bigplane*5;	// nothing ever put here
 
 	expanded = shiftstarts[spr->shifts];
-	MM_GetPtr (&grsegs[chunk],expanded);
-	if (mmerror)
+	MM_GetPtr (MEMPTRCONV gvar->ca.grsegs[chunk],expanded, gvar);
+	if (gvar->mm.mmerror)
 		return;
-	dest = (spritetype _seg *)grsegs[chunk];
+	dest = (spritetype _seg *)gvar->ca.grsegs[chunk];
 
 //
 // expand the unshifted shape
@@ -1677,8 +1680,8 @@ void CAL_CacheSprite (int chunk, byte far *compressed)
 			dest->planesize[i] = bigplane;
 			dest->width[i] = spr->width+1;
 		}
-		CAL_ShiftSprite ((unsigned)grsegs[chunk],dest->sourceoffset[0],
-			dest->sourceoffset[2],spr->width,spr->height,4,true);
+		CAL_ShiftSprite ((unsigned)gvar->ca.grsegs[chunk],dest->sourceoffset[0],
+			dest->sourceoffset[2],spr->width,spr->height,4,true,gvar);
 		break;
 
 	case	4:
@@ -1689,20 +1692,20 @@ void CAL_CacheSprite (int chunk, byte far *compressed)
 		dest->sourceoffset[1] = shiftstarts[1];
 		dest->planesize[1] = bigplane;
 		dest->width[1] = spr->width+1;
-		CAL_ShiftSprite ((unsigned)grsegs[chunk],dest->sourceoffset[0],
-			dest->sourceoffset[1],spr->width,spr->height,2,true);
+		CAL_ShiftSprite ((unsigned)gvar->ca.grsegs[chunk],dest->sourceoffset[0],
+			dest->sourceoffset[1],spr->width,spr->height,2,true,gvar);
 
 		dest->sourceoffset[2] = shiftstarts[2];
 		dest->planesize[2] = bigplane;
 		dest->width[2] = spr->width+1;
-		CAL_ShiftSprite ((unsigned)grsegs[chunk],dest->sourceoffset[0],
-			dest->sourceoffset[2],spr->width,spr->height,4,true);
+		CAL_ShiftSprite ((unsigned)gvar->ca.grsegs[chunk],dest->sourceoffset[0],
+			dest->sourceoffset[2],spr->width,spr->height,4,true,gvar);
 
 		dest->sourceoffset[3] = shiftstarts[3];
 		dest->planesize[3] = bigplane;
 		dest->width[3] = spr->width+1;
-		CAL_ShiftSprite ((unsigned)grsegs[chunk],dest->sourceoffset[0],
-			dest->sourceoffset[3],spr->width,spr->height,6,true);
+		CAL_ShiftSprite ((unsigned)gvar->ca.grsegs[chunk],dest->sourceoffset[0],
+			dest->sourceoffset[3],spr->width,spr->height,6,true,gvar);
 
 		break;
 
@@ -1710,8 +1713,8 @@ void CAL_CacheSprite (int chunk, byte far *compressed)
 		Quit (gvar, "CAL_CacheSprite: Bad shifts number!");
 	}
 
-#endif
-}*/
+//#endif
+}
 
 //===========================================================================
 

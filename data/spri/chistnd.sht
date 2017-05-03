@@ -1,0 +1,26 @@
+# CHISTND.PCX demo sprite sheet compiler script
+# (C) 2016 Jonathan Campbell
+
+# *spritesheet declares the section used by the sprite sheet cutting tool
+#
+# Sprites are declared by name (which becomes the .VRL file) at the + in the form:
+# +NAME@ID
+#
+# Sprite names are meant for temporary use when compiling the sprite sheet into VRLs.
+# At some point a longer name might be provided for use in your code.
+# This will fill the CURRENT WORKING DIRECTORY with .VRL files as directed when you
+# run PCXSSCUT, make sure your makefile does this in a temporary directory when
+# you integrate into your build and that your cleanup commands delete these files,
+# and that your .gitignore does not attempt to commit these files.
+
+# this format is a bit crap, but we'll improve it as needed. be patient.
+
+# begin spritesheet section
+*spritesheet
+
+# ---------------- player, walking, blue shirt with white cross. Frame 2/3 could be used for standing still
+
+# player, forward, frame 1/3
++CHUBFCW0@11
+xy=0,0
+wh=16,32

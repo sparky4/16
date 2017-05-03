@@ -64,6 +64,9 @@ struct vrl_container{
 void VRS_ReadVRS(char *filename, entity_t *enti, global_game_variables_t *gvar);
 void VRS_LoadVRS(char *filename, entity_t *enti, global_game_variables_t *gvar);
 void VRS_OpenVRS(char *filename, entity_t *enti, boolean rlsw, global_game_variables_t *gvar);
+void VRS_ReadVRL(char *filename, entity_t *enti, global_game_variables_t *gvar);
+void VRS_LoadVRL(char *filename, entity_t *enti, global_game_variables_t *gvar);
+void VRS_OpenVRL(char *filename, entity_t *enti, boolean rlsw, global_game_variables_t *gvar);
 
 /* Seek and return a specified .vrl blob from .vrs blob in memory
 * In:

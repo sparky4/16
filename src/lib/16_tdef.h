@@ -360,9 +360,29 @@ typedef struct
 } kurokku_t;
 
 //===================================//
-#define PALSIZE	768
-#define NUMCHUNKS	416	//keen
-#define MAXSCANLINES	240			// size of ylookup table
+#define PALSIZE			768	//vga
+#define NUMCHUNKS		416	//keen
+#define MAXSCANLINES	240	// size of ylookup table
+
+#define MAXSHIFTS		4
+#define STARTSPRITES	0	//temp
+
+typedef struct
+{
+	int	width,
+		height,
+		orgx,orgy,
+		xl,yl,xh,yh,
+		shifts;
+} spritetabletype;
+
+typedef	struct
+{
+	unsigned	sourceoffset[MAXSHIFTS];
+	unsigned	planesize[MAXSHIFTS];
+	unsigned	width[MAXSHIFTS];
+	byte		data[];
+} spritetype;		// the memptr for each sprite points to this
 
 typedef struct
 {
@@ -434,6 +454,8 @@ typedef struct
 	boolean	fastpalette;
 	byte		far	palette1[256][3],far palette2[256][3];
 	pictabletype	_seg *pictable;
+	spritetabletype _seg *spritetable;
+	unsigned	*shifttabletable[8];
 } video_t;
 
 //from scroll16
@@ -751,7 +773,10 @@ typedef struct {
 	vidsw_t vsw;
 } sw_t;*/
 
-
+#ifdef __WATCOMC__
+extern char global_temp_status_text[512];
+extern char global_temp_status_text2[512];
+#endif
 
 typedef struct glob_game_vars
 {
@@ -768,9 +793,4 @@ typedef struct glob_game_vars
 	boolean	DLStarted;
 } global_game_variables_t;
 
-#ifdef __WATCOMC__
-extern char global_temp_status_text[512];
-extern char global_temp_status_text2[512];
-#define EINVFMT EMFILE
-#endif
 #endif /* _TYPEDEFSTRUCT_H_ */

@@ -138,8 +138,10 @@
 #define	key_LSuper			0x5b
 #define	key_RSuper			0x5c
 #define	key_Menu			0x5d
-#define	sc_LBrkt
-#define	sc_RBrkt
+#define	sc_LBrkt		0x1a	//	[
+#define	sc_RBrkt		0x1b	//	]
+#define	sc_BackSlash	0x2b	//	|
+#define	sc_ForeSlash	0x35	//	/ ?
 
 // 	Stuff for the mouse
 #define	MReset		0

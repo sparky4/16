@@ -89,6 +89,7 @@ typedef void _seg * memptr;
 
 #define _argv __argv
 #define _argc __argc
+#define EINVFMT EMFILE
 #define geninterrupt(n) int86(n,&CPURegs,&CPURegs);
 
 #define peekb(segm,ofs) (*(byte far*)MK_FP((segm),(ofs)))

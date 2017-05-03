@@ -27,7 +27,6 @@
 #define FADE
 //#define NOMAPLOAD
 
-//map_view_t mv[4];
 static map_t map;
 float t;
 
@@ -47,21 +46,26 @@ memptr pal;
 #define FILENAME_1P	"data/spri/chikyuu.pal"
 #define FILENAME_2	"data/spri/me.vrs"
 #define FILENAME_2P	"data/spri/me.pal"
+#define FILENAME_3	"data/spri/chistnd.vrl"
 
 void main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
 	struct glob_game_vars *ggvv;
-	char bakapee1[64] = FILENAME_1;
-	char bakapee1p[64] = FILENAME_1P;
+
+//	static entity_t enti;
+
+	char bakapee[64] = FILENAME_1;
+	char bakapeep[64] = FILENAME_1P;
+	char bakapee3[64] = FILENAME_3;
 
 	Startup16(&gvar);
 
 	ggvv=&gvar;
 
 	if (argc >= 2) {
-		if(argv[1]){ strcpy(bakapee1, argv[1]);
-		if(argv[2]) strcpy(bakapee1p, argv[2]); }
+		if(argv[1]){ strcpy(bakapee, argv[1]);
+		if(argv[2]) strcpy(bakapeep, argv[2]); }
 	}
 
 	// OK, this one takes hellova time and needs to be done in farmalloc or MM_...
@@ -81,7 +85,8 @@ void main(int argc, char *argv[])
 	//initMap(&map);
 #endif
 	// data
-	VRS_LoadVRS(bakapee1, &gvar.player[0].enti, &gvar);
+	VRS_LoadVRS(bakapee, &gvar.player[0].enti, &gvar);
+//	VRS_LoadVRS(bakapee3, &enti, &gvar);
 
 	// input!
 	IN_Default(0, &gvar.player[0],ctrl_Keyboard1, &gvar);
@@ -104,7 +109,7 @@ void main(int argc, char *argv[])
 	//printf("1:	%d\n", paloffset);
 	map.tiles->data->offset=(paloffset/3);
 	modexPalUpdate(map.tiles->data, &paloffset, 0, 0);*/
-	VL_LoadPalFile(bakapee1p, &gvar.video.palette, &gvar);
+	VL_LoadPalFile(bakapeep, &gvar.video.palette, &gvar);
 	//VL_LoadPalFile("data/default.pal", &gvar.video.palette);
 
 #ifdef FADE
@@ -121,7 +126,7 @@ void main(int argc, char *argv[])
 	modexFadeOn(4, &gvar.video.palette);
 #endif
 
-//	IN_StartAck (&gvar);	MM_ShowMemory(&gvar);	while (!IN_CheckAck (&gvar)){}
+//0000	IN_StartAck (&gvar);	MM_ShowMemory(&gvar);	while (!IN_CheckAck (&gvar)){}
 #ifdef FADE
 	modexPalBlack();	//so player will not see loadings~
 #endif
@@ -191,29 +196,43 @@ void main(int argc, char *argv[])
 
 		TAIL_FUNCTIONKEYFUNCTIONS
 		TAIL_FUNCTIONKEYDRAWJUNK
-//		if(gvar.in.inst->Keyboard[sc_L]){ modexClearRegion(&gvar.video.page[0], gvar.player[0].enti.x, gvar.player[0].enti.y, 16, 16, 1); }
-		if(gvar.in.inst->Keyboard[sc_L]){ ShowPalVal (&gvar);								IN_UserInput(1, &gvar); }
+		if(gvar.in.inst->Keyboard[sc_L]){ modexClearRegion(&gvar.video.page[0], gvar.player[0].enti.x, gvar.player[0].enti.y, 16, 16, 1); }
+		if(gvar.in.inst->Keyboard[sc_LBrkt]){ ShowPalVal (&gvar);								IN_UserInput(1, &gvar); }
+
+//===============================================================================
+
+		if(gvar.in.inst->Keyboard[sc_BackSlash]){
+			VRS_ReadVRL(bakapee3, &gvar.player[0].enti, &gvar);
+			DrawVRL(
+				gvar.player[0].enti.x,
+				gvar.player[0].enti.y,
+				gvar.player[0].enti.spri.sprite_vrl_cont.vrl_header,
+				gvar.player[0].enti.spri.sprite_vrl_cont.line_offsets,
+				gvar.player[0].enti.spri.sprite_vrl_cont.buffer + sizeof(struct vrl1_vgax_header),
+				gvar.player[0].enti.spri.sprite_vrl_cont.data_size
+			);	while (!IN_CheckAck (&gvar)){}
+			VRS_ReadVRS(bakapee, &gvar.player[0].enti, &gvar);
+		IN_UserInput(1, &gvar); }
+
+//===============================================================================
+
 		if(gvar.in.inst->Keyboard[sc_J] || gvar.in.inst->Keyboard[sc_K])
 		{
 			if(gvar.in.inst->Keyboard[sc_J])
 			{
-//				bakapee1=FILENAME_1;
-//				bakapee1p=FILENAME_1P;
-				strcpy(bakapee1, FILENAME_1);
-				strcpy(bakapee1p, FILENAME_1P);
+				strcpy(bakapee, FILENAME_1);
+				strcpy(bakapeep, FILENAME_1P);
 				gvar.player[0].enti.overdraww=0;
 			}
 			if(gvar.in.inst->Keyboard[sc_K])
 			{
-//				bakapee1=FILENAME_2;
-//				bakapee1p=FILENAME_2P;
-				strcpy(bakapee1, FILENAME_2);
-				strcpy(bakapee1p, FILENAME_2P);
+				strcpy(bakapee, FILENAME_2);
+				strcpy(bakapeep, FILENAME_2P);
 				gvar.player[0].enti.overdraww=2;
 			}
-			//read_vrs(&gvar, bakapee1, gvar.player[0].enti.spri->spritesheet);
-			VRS_ReadVRS(bakapee1, &gvar.player[0].enti, &gvar);
-			VL_LoadPalFile(bakapee1p, &gvar.video.palette, &gvar);
+			//read_vrs(&gvar, bakapee, gvar.player[0].enti.spri->spritesheet);
+			VRS_ReadVRS(bakapee, &gvar.player[0].enti, &gvar);
+			VL_LoadPalFile(bakapeep, &gvar.video.palette, &gvar);
 		}//JK
 #ifdef FADE
 		if(gvar.in.inst->Keyboard[10]){ modexPalOverscan(rand()%56); modexPalUpdate(gvar.video.dpal); IN_UserInput(1, &gvar); }

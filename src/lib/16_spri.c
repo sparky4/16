@@ -21,6 +21,64 @@
  */
 
 #include "src/lib/16_spri.h"
+#include <hw/vga/vrl1xdrc.h>
+//void draw_vrl1_vgax_modex_strip(unsigned char far *draw,unsigned char far *s);
+
+//===========================================================================
+
+//#define NEWVRSDRAWFUN
+void DrawVRL (unsigned int x,unsigned int y,struct vrl1_vgax_header *hdr,vrl1_vgax_offset_t *lineoffs/*array hdr->width long*/,unsigned char *data,unsigned int datasz) {
+	unsigned char far *draw;
+	unsigned int vram_offset = (y * vga_state.vga_draw_stride) + (x >> 2),sx;
+	unsigned int vramlimit = vga_state.vga_draw_stride_limit;
+	unsigned char vga_plane = (x & 3);
+	unsigned char *s;
+
+//	byte	outputvars[72][128];
+	word a;//,by,bxmax,bymax;
+
+	printf("DrawVRL:\n");
+
+	/* draw one by one */
+	for (sx=0;sx < hdr->width;sx++) {
+		draw = vga_state.vga_graphics_ram + vram_offset;
+		vga_write_sequencer(0x02/*map mask*/,1 << vga_plane);
+		s = data + lineoffs[sx];
+		draw_vrl1_vgax_modex_strip(draw,s);
+
+		if(!sx)
+		for(a=0;a<hdr->height;a++)//hdr->width*
+		{
+//			if((*(s+a)==0x0) && (*(s+(a+1))==0x20) && (*(s+(a+2))==0xff)) a+=2;
+//			if(*(s+a)<=13)
+//				if (!(a%4) && a ) printf("\n");
+//				sprintf(outputvars[sx][by], "%02x", *(s+a));
+				printf("[%02u]	%02x\n", a, *(s+a));
+//				by++;
+		}
+
+		/* end of a vertical strip. next line? */
+		if ((++vga_plane) == 4) {
+			if (--vramlimit == 0) break;
+			vram_offset++;
+			vga_plane = 0;
+		}
+	}
+#if 0
+	bxmax = sx; bymax = by;
+	for(by=0;by<bymax;by++)
+	{
+		for(sx=0;sx<bxmax;sx++)
+		{
+//			if (!(sx%hdr->width) && sx ) printf("\n	");
+			printf("%02x ", outputvars[sx][by]);
+		}
+		printf("\n	");
+	}
+#endif
+}
+
+//===========================================================================
 
 char* get_curr_anim_name(struct sprite *spri)
 {
@@ -188,7 +246,12 @@ void animate_spri(entity_t *enti, video_t *video)
 #ifndef SPRITE
 	modexClearRegion(&video->page[0], x, y, 16, 32, 1);
 #else
-	draw_vrl1_vgax_modex(
+#ifndef NEWVRSDRAWFUN
+	draw_vrl1_vgax_modex
+#else
+	DrawVRL
+#endif
+	(
 		x-rx,
 		y-ry,
 		enti->spri.sprite_vrl_cont.vrl_header,
