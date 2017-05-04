@@ -673,7 +673,7 @@ typedef struct
 //==========================================================================
 
 #define NOMAPS
-//#define NOGRAPHICS
+#define NOGRAPHICS
 #define NOAUDIO
 
 #define MAPHEADERLINKED
