@@ -115,7 +115,7 @@ void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid);
 void ZC_mapScroll(map_view_t *mv, player_t *player, word pn);
-void ZC_PlayerXYpos(int x, int y, player_t *player, map_view_t *pip, nibble pn, boolean defaultsw);
+void ZC_PlayerXYpos(int x, int y, player_t *player, map_view_t *pip, boolean defaultsw);
 sword chkmap(map_t *map, word q);
 void mapGoTo(map_view_t *mv, int tx, int ty);
 void ZC_mapinitMV(map_view_t *mv, int tx, int ty);
@@ -207,5 +207,7 @@ void walk_player(player_t *player, map_view_t *map_v);
 
 // Scroll map in one direction (assumed from gvar.player's movement)
 void mapScroll(map_view_t *mv, player_t *player);
+
+void ZC_GirdChk (global_game_variables_t *gvar, player_t *player);
 
 #endif /*__SCROLL16_H_*/

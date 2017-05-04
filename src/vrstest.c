@@ -151,7 +151,7 @@ void main()
 		TAIL_FUNCTIONKEYDRAWJUNKNOMV
 		if(gvar.in.inst->Keyboard[sc_F7]){ VL_ShowPage(&gvar.video.page[0], 1, 1);							IN_UserInput(1, &gvar); }
 		if(gvar.in.inst->Keyboard[sc_F6]){ VL_ShowPage(&gvar.video.page[0], 1, 0);							IN_UserInput(1, &gvar); }
-		if(gvar.in.inst->Keyboard[25]){ modexpdump(&gvar.video.page[0]);  IN_UserInput(1, &gvar); } //p
+		if(gvar.in.inst->Keyboard[25]){ modexpdump(0, &gvar);  IN_UserInput(1, &gvar); } //p
 	}
 	VGAmodeX(0, 1, &gvar);
 	MM_ShowMemory(&gvar);

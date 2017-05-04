@@ -170,7 +170,7 @@ void main(int argc, char *argv[])
 			}
 //			if(i>PAL_SIZE) i=0;
 		}//9*/
-		if(gvar.in.inst->Keyboard[25]){ modexpdump(&gvar.video.page[gvar.video.sp]); IN_UserInput(1, &gvar); }//p
+		if(gvar.in.inst->Keyboard[25]){ modexpdump(gvar.video.sp, &gvar); IN_UserInput(1, &gvar); }//p
 		if(gvar.in.inst->Keyboard[sc_I]){ drawboxesmodex(&gvar.video.page[gvar.video.sp]); IN_UserInput(1, &gvar); }//i
 		if(gvar.in.inst->Keyboard[sc_O]){ copyboxesmodex(&gvar.video.page, !gvar.video.sp); IN_UserInput(1, &gvar); }//o
 		//VL_ShowPage(&gvar.video.page[gvar.video.sp], 0, 0);

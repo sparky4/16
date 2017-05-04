@@ -408,10 +408,10 @@ typedef struct
 
 typedef struct
 {
-	//ylookup[MAXSCANLINES],
+//----	ylookup[MAXSCANLINES],
 	unsigned int offscreen_ofs;
 	unsigned int pattern_ofs;
-//	unsigned	bufferofs,linewidth,displayofs;
+//+-+-	unsigned	bufferofs,linewidth,displayofs;
 	pan_t		pan;
 
 } ofs_t;	//unfinished
@@ -454,8 +454,9 @@ typedef struct
 	boolean	fastpalette;
 	byte		far	palette1[256][3],far palette2[256][3];
 	pictabletype	_seg *pictable;
-	spritetabletype _seg *spritetable;
-	unsigned	*shifttabletable[8];
+	//keen/cata vars
+//	spritetabletype _seg *spritetable;
+//	unsigned	*shifttabletable[8];
 } video_t;
 
 //from scroll16

@@ -40,7 +40,8 @@ unsigned int i;
 //static word paloffset=0;
 #endif
 byte *ptr;
-memptr pal;
+//memptr pal;
+boolean spriteswitch=0;
 
 #define FILENAME_1	"data/spri/chikyuu.vrs"
 #define FILENAME_1P	"data/spri/chikyuu.pal"
@@ -134,7 +135,7 @@ void main(int argc, char *argv[])
 	//TODO: LOAD map data and position the map in the middle of the screen if smaller then screen
 	mapGoTo(&gvar.mv, 0, 0);
 
-	ZC_PlayerXYpos(0, 0, &gvar.player, &gvar.mv, 0, 1);
+	ZC_PlayerXYpos(0, 0, &gvar.player[0], &gvar.mv, 1);
 	EN_initPlayer(&gvar.player[0], &gvar.video);
 	//print_anim_ids(gvar.player[0].enti.spri);
 	if (gvar.video.sprifilei == -1)
@@ -189,14 +190,12 @@ void main(int argc, char *argv[])
 		}
 		if(gvar.player[0].enti.q == (TILEWH/(gvar.player[0].enti.speed))+1 && gvar.player[0].info.dir != 2 && (gvar.player[0].enti.triggerx == 5 && gvar.player[0].enti.triggery == 5)){ gvar.player[0].enti.hp--; }
 		//debugging binds!
-
-		if(gvar.in.inst->Keyboard[24]){ VL_modexPalScramble(&gvar.video.palette); /*paloffset=0;*/ VL_LoadPalFileCore(&gvar.video.palette, &gvar); modexpdump(gvar.mv[0].page); IN_UserInput(1, &gvar); } //o
+//		if(gvar.in.inst->Keyboard[24]){ VL_modexPalScramble(&gvar.video.palette); /*paloffset=0;*/ VL_LoadPalFileCore(&gvar.video.palette, &gvar); modexpdump(gvar.mv[0].page); IN_UserInput(1, &gvar); } //o
 		if(gvar.in.inst->Keyboard[22]){ VL_modexPalScramble(&gvar.video.palette); VL_LoadPalFileCore(&gvar.video.palette, &gvar); } //u
 
 		TAIL_FUNCTIONKEYFUNCTIONS
 		TAIL_FUNCTIONKEYDRAWJUNK
 		if(gvar.in.inst->Keyboard[sc_L]){ modexClearRegion(&gvar.video.page[0], gvar.player[0].enti.x, gvar.player[0].enti.y, 16, 16, 1); }
-		if(gvar.in.inst->Keyboard[sc_LBrkt]){ ShowPalVal (&gvar);								IN_UserInput(1, &gvar); }
 
 //===============================================================================
 #if 0
@@ -215,31 +214,36 @@ void main(int argc, char *argv[])
 #endif
 //===============================================================================
 
-		if(gvar.in.inst->Keyboard[sc_J] || gvar.in.inst->Keyboard[sc_K])
+		if(gvar.in.inst->Keyboard[sc_J])// || gvar.in.inst->Keyboard[sc_K])
 		{
-			if(gvar.in.inst->Keyboard[sc_J])
+			if(spriteswitch)//gvar.in.inst->Keyboard[sc_J])
 			{
 				strcpy(bakapee, FILENAME_1);
 				strcpy(bakapeep, FILENAME_1P);
 				gvar.player[0].enti.overdraww=0;
 			}
-			if(gvar.in.inst->Keyboard[sc_K])
+			else//if(gvar.in.inst->Keyboard[sc_K])
 			{
 				strcpy(bakapee, FILENAME_2);
 				strcpy(bakapeep, FILENAME_2P);
 				gvar.player[0].enti.overdraww=2;
 			}
+			spriteswitch=!spriteswitch;
+
 			//read_vrs(&gvar, bakapee, gvar.player[0].enti.spri->spritesheet);
 			VRS_ReadVRS(bakapee, &gvar.player[0].enti, &gvar);
 			VL_LoadPalFile(bakapeep, &gvar.video.palette, &gvar);
 			ZC_animatePlayer(&gvar.mv, &gvar.player, 0);
+			IN_UserInput(1, &gvar);
 		}//JK
 //#ifdef FADE
 //		if(gvar.in.inst->Keyboard[10]){ modexPalOverscan(rand()%56); modexPalUpdate(gvar.video.dpal); IN_UserInput(1, &gvar); }
 //#endif
 		if(gvar.in.inst->Keyboard[sc_R]){ VL_modexPalOverscan(&gvar.video.palette, rand()%32); } //r
 
-		if((gvar.player[0].enti.q==1) && !(gvar.player[0].enti.x%TILEWH==0 && gvar.player[0].enti.y%TILEWH==0)) Quit (&gvar, "PLAYER OFF THE RAILS!");//break;	//incase things go out of sync!
+
+		//if((gvar.player[0].enti.q==1) && !(gvar.player[0].enti.x%TILEWH==0 && gvar.player[0].enti.y%TILEWH==0)) Quit (&gvar, "PLAYER OFF THE RAILS!");//break;	//incase things go out of sync!
+		ZC_GirdChk(&gvar, &gvar.player[0]);
 	}
 
 	/* fade back to text mode */

@@ -614,16 +614,16 @@ void ZC_mapScroll(map_view_t *mv, player_t *player, word pn)
 //===========================================================================
 //TODO: put player in starting position of assigned spot on map
 //default player position on the viewable map
-void ZC_PlayerXYpos(int x, int y, player_t *player, map_view_t *pip, nibble pn, boolean defaultsw)
+void ZC_PlayerXYpos(int x, int y, player_t *player, map_view_t *pip, boolean defaultsw)
 {
-	player[pn].enti.tx = x + pip[0].tx;
-	player[pn].enti.ty = y + pip[0].ty;
+	player->enti.tx = x + pip[0].tx;
+	player->enti.ty = y + pip[0].ty;
 
 	switch(defaultsw)
 	{
 		case 1:
-			player[pn].enti.tx += pip[0].page->ti.tilemidposscreenx;
-			player[pn].enti.ty += pip[0].page->ti.tilemidposscreeny;
+			player->enti.tx += pip[0].page->ti.tilemidposscreenx;
+			player->enti.ty += pip[0].page->ti.tilemidposscreeny;
 		break;
 		case 0:
 		break;
@@ -1090,4 +1090,12 @@ void mapScroll(map_view_t *mv, player_t *player)
 		default:
 			break;
 	}
+}
+
+void ZC_GirdChk (global_game_variables_t *gvar, player_t *player)
+{
+	if((player->enti.q==1) &&
+		!(player->enti.x%gvar->mv[0].map->tiles->tileWidth==0 && player->enti.y%gvar->mv[0].map->tiles->tileHeight==0))
+		ZC_PlayerXYpos(0, 0, player, gvar->mv, 1);
+		//TODO: MAKE SURE TO RESYNC PLAYER IN WALKABLE SPOT
 }

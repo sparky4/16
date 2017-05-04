@@ -81,10 +81,12 @@
 	if(gvar.in.inst->Keyboard[sc_F7]){ ZC_ShowMV(&gvar.mv, 0, 1);						IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_F6]){ ZC_ShowMV(&gvar.mv, 0, 0);						IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_T]){ gvar.video.vga_state.rss=!gvar.video.vga_state.rss;			IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[sc_P]){ modexpdump(&gvar.video.page[0]);					IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_P]){ modexpdump(0, &gvar);							IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_Y]){ dbg_delayanimation=!dbg_delayanimation;				IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_Q]){ VL_modexPrintTextBox(&gvar);						IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_W]){ VL_MemToScreen((byte __far *)&gvar, 64, 64, 16, 16, &gvar);	IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_LBrkt]){ ShowPalVal (&gvar);							IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_M]){ MM_ShowMemory(&gvar);							IN_UserInput(1, &gvar); } \
 	RFDEBUGFUNCTIONS
 //FIZZLEFADEFUNCTION
 

@@ -231,21 +231,9 @@ void CAL_GetGrChunkLength (int chunk,global_game_variables_t *gvar)
 boolean CA_FarRead(int handle, byte far *dest, dword length, global_game_variables_t *gvar)
 {
 	boolean flag=0;
-	//dword fat=0;
-	//word segm=0;
-	if(gvar->pm.emm.EMSVer<0x40)
-	if(length>0xfffflu)
-	{
-		printf("File is a fat bakapee\n");
-		//segm=(length%0xfffflu)-1;
-		//fat=segm*0xfffflu;
-		//length-=fat;
-		printf("CA_FarRead doesn't support 64K reads yet!\n");
-		return 0;//TODO: EXPAND!!!
-	}
+	if (length>0xfffflu)
+		Quit (gvar, "CA_FarRead doesn't support 64K reads yet!");//TODO: EXPAND!!!
 
-	//if(!fat&&!segm)
-	//{
 	__asm {
 		push	ds
 		mov	bx,[handle]
@@ -293,7 +281,7 @@ End:
 /*
 ==========================
 =
-= CA_SegWrite
+= CA_FarWrite
 =
 = Write from a file to a far pointer
 =
@@ -303,21 +291,9 @@ End:
 boolean CA_FarWrite(int handle, byte far *source, dword length, global_game_variables_t *gvar)
 {
 	boolean flag=0;
-	//dword fat=0;
-	//word segm=0;
-	if(gvar->pm.emm.EMSVer<0x40)
-	if(length>0xfffflu)
-	{
-		printf("File is a fat bakapee\n");
-		//segm=(length%0xfffflu)-1;
-		//fat=segm*0xfffflu;
-		//length-=fat;
-		printf("CA_FarWrite doesn't support 64K reads yet!\n");
-		return 0;
-	}
+	if (length>0xfffflu)
+		Quit (gvar, "CA_FarWrite doesn't support 64K reads yet!");//TODO: EXPAND!!!
 
-	//if(!fat&&!segm)
-	//{
 	__asm {
 		push	ds
 		mov	bx,[handle]
@@ -1451,7 +1427,6 @@ cachein:
 //===========================================================================
 
 //????#if GRMODE == EGAGR
-#if 1
 
 /*
 ======================
@@ -1462,10 +1437,9 @@ cachein:
 =
 ======================
 */
-
+/*++++
 unsigned	static	sheight,swidth;
 boolean static dothemask;
-unsigned	*shifttabletable[8];
 
 void CAL_ShiftSprite (unsigned segment,unsigned source,unsigned dest,
 	unsigned width, unsigned height, unsigned pixshift, boolean domask, global_game_variables_t *gvar)
@@ -1583,7 +1557,7 @@ dodatabyte:
 }
 
 #endif
-
+*/
 //===========================================================================
 
 /*
@@ -1595,7 +1569,7 @@ dodatabyte:
 =
 ======================
 */
-
+/*++++
 void CAL_CacheSprite (int chunk, byte far *compressed, global_game_variables_t *gvar)
 {
 	int i;
@@ -1714,7 +1688,7 @@ void CAL_CacheSprite (int chunk, byte far *compressed, global_game_variables_t *
 	}
 
 //#endif
-}
+}*/
 
 //===========================================================================
 

@@ -288,7 +288,7 @@ void ShowPalVal (global_game_variables_t *gvar)
 	spv.i = 0;
 
 //	IN_UserInput(1, gvar);
-	modexpdump(&gvar->video.page[0]);
+	modexpdump(0, gvar);
 
 	for (spv.oi = 1,done = false;!done;)
 	{
@@ -310,13 +310,13 @@ void ShowPalVal (global_game_variables_t *gvar)
 
 		if(spv.oi!=spv.i)
 		{
-			modexpdump(&gvar->video.page[0]);
+			modexpdump(0, gvar);
 			modexClearRegion(&gvar->video.page[0], spv.palx+TILEWH, spv.paly+TILEWH, spv.mult, spv.mult, 5);
 			modexClearRegion(&gvar->video.page[0], spv.palx+TILEWH+1, spv.paly+TILEWH+1, spv.mult-2, spv.mult-2, spv.i);
 			spv.oi = spv.i;
 		}
 
-#define SHOWPALVARPRINT modexprint(&(gvar->video.page[0]), xpos, ypos, 1, 0, ccolor, 8, gvar->video.VL_Started, global_temp_status_text); ypos+=8;
+#define SHOWPALVARPRINT modexprint(&(gvar->video.page[0]), xpos, ypos, 1, 1, ccolor, 8, gvar->video.VL_Started, global_temp_status_text); ypos+=8;
 		sprintf(global_temp_status_text, "%03u", spv.i); SHOWPALVARPRINT
 		sprintf(global_temp_status_text, "r %03u", gvar->video.palette[(spv.i*3)+0]/*>>2*/); SHOWPALVARPRINT
 		sprintf(global_temp_status_text, "g %03u", gvar->video.palette[(spv.i*3)+1]/*>>2*/); SHOWPALVARPRINT
@@ -385,7 +385,7 @@ void ShowPalVal (global_game_variables_t *gvar)
 			break;
 		}
 	}
-	IN_UserInput(1, gvar);
+//	IN_UserInput(1, gvar);
 }
 #endif	//debug vl
 #endif	//watcomc

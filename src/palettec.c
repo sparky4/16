@@ -28,7 +28,7 @@ void main(int argc, char *argv[]) {
 	modexSavePalFile(bakapee, &gvar.video.palette);
 	PALPROGRAMSNEWPAGE
 	VL_ShowPage(&gvar.video.page[0], 1, 0);
-	modexpdump(&gvar.video.page[0]);
+	modexpdump(0, &gvar);
 	while(!kbhit()){ /*VL_modexPalScramble(&gvar.video.palette);*/ }
 //	modexPalSave(&gvar.video.palette);
 	VGAmodeX(0, 0, &gvar);

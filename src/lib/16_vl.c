@@ -879,11 +879,11 @@ void modexPalSave(byte *palette)
 /*byte *
 modexNewPal() {
 	byte *ptr;
-	ptr = m a l l o c(PAL_SIZE);
+	ptr = mAlloc(PAL_SIZE);
 
 	// handle errors
 	if(!ptr) {
-		printf("Could not allocate palette.\n");
+		printf("Could not Allocate palette.\n");
 	}
 
 	return ptr;
@@ -937,8 +937,8 @@ void VLL_LoadPalFilewithoffset(const char *filename, byte *palette, word o, word
 void VL_LoadPalFile(const char *filename, byte *palette, global_game_variables_t *gvar)
 {
 	VLL_LoadPalFilewithoffset(filename, palette,
-		0,
-//		9,
+		0,	//overwrite core/system palette
+//		9,	//preserved core/system palette
 		PAL_SIZE, gvar);
 }
 
@@ -1135,7 +1135,7 @@ void modexprint(page_t *page, sword x, sword y, word t, boolean tlsw, word color
 		break;
 		case 1:
 			if(tlsw){ x-=page->tlx; y-=page->tly; }
-			x_draw = x/4;
+			x_draw = x>>2;
 			addrq = (page->stridew) * y + (word)(x_draw) +
 				((word)page->data);
 			addrr = addrq;
@@ -1264,7 +1264,7 @@ void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, c
 }
 
 /* palette dump on display! */
-void modexpdump(page_t *pee)
+void modexpdump(nibble pagenum, global_game_variables_t *gvar)
 {
 	int mult=(QUADWH);
 	int palq=(mult)*TILEWH;
@@ -1272,10 +1272,11 @@ void modexpdump(page_t *pee)
 	int palx, paly;
 	for(paly=TILEWH*8; paly<palq+TILEWH*8; paly+=mult){
 		for(palx=TILEWH*12; palx<palq+TILEWH*12; palx+=mult){
-				modexClearRegion(pee, palx+TILEWH, paly+TILEWH, mult, mult, palcol);
+				modexClearRegion(&gvar->video.page[pagenum], palx+TILEWH, paly+TILEWH, mult, mult, palcol);
 			palcol++;
 		}
 	}
+	modexPalSave(gvar->video.palette);
 }
 #if 0
 /////////////////////////////////////////////////////////////////////////////

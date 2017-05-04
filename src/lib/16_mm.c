@@ -789,9 +789,9 @@ void MML_ClearBlock (global_game_variables_t *gvar)
 
 	while(scan)
 	{
-		if(!(scan->attributes&LOCKBIT) && (scan->attributes&PURGEBITS))
+		if(!(scan->attributes&LOCKBIT) && (scan->attributes&PURGEBITS) )
 		{
-			MM_FreePtr(scan->useptr, gvar);
+			MM_FreePtr (scan->useptr, gvar);
 			return;
 		}
 		scan = scan->next;
@@ -1010,14 +1010,21 @@ void MM_GetPtr (memptr *baseptr,dword size, global_game_variables_t *gvar)
 	gvar->mm.mmnew->attributes = BASEATTRIBUTES;
 	//if(gvar->mm.mmnew->useptr==NULL){
 #ifdef __DEBUG_MM__
-	printf("MM_GetPtr\n");
 	if(dbg_debugmm>0){
+	printf("===============================================================================\n");
+	printf("		MM_GetPtr\n");
+	printf("===============================================================================\n");
 		//%04x
-		printf("	baseptr=%Fp	", baseptr); printf("useptr=%Fp\n", gvar->mm.mmnew->useptr);
-		printf("	*baseptr=%Fp	", *baseptr); printf("*useptr=%Fp\n", *(gvar->mm.mmnew->useptr));
-		printf("	&baseptr=%Fp	", &baseptr); printf("&useptr=%Fp\n", &(gvar->mm.mmnew->useptr));
+//		printf("	baseptr=%Fp	", baseptr); printf("useptr=%Fp\n", gvar->mm.mmnew->useptr);
+//		//printf("	*baseptr=%Fp	", *baseptr); printf("*useptr=%Fp\n", *(gvar->mm.mmnew->useptr));
+//		printf("	&baseptr=%Fp	", &baseptr); printf("&useptr=%Fp\n", &(gvar->mm.mmnew->useptr));
+
+		printf("	baseptr=%04x	", baseptr); printf("useptr=%04x\n", gvar->mm.mmnew->useptr);
+		//printf("	*baseptr=%04x	", *baseptr); printf("*useptr=%04x\n", *(gvar->mm.mmnew->useptr));
+		printf("	&baseptr=%04u	", &baseptr); printf("&useptr=%04u\n", &(gvar->mm.mmnew->useptr));
+
+		printf("	size is %lu\n", size);
 	}
-	printf("	size is %lu\n", size);
 #endif
 	//Quit (gvar, "gvar->mm.mmnew->useptr==NULL"); }
 
@@ -1498,6 +1505,17 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 	}
 #endif
 #ifdef MMSMSCANINFO
+	MM_ShowMemoryDetail (x, y, w, q, end, &scaninfo, gvar);
+#endif
+
+
+	if(gvar->video.VL_Started) IN_Ack(gvar);
+
+	gvar->video.BOFS = (byte __far *)temp;
+}
+
+#ifdef MMSMSCANINFO
+void MM_ShowMemoryDetail (unsigned x, unsigned y, unsigned w, unsigned q, sdword end, mmshowmemoryinfo_t *scaninfo, global_game_variables_t *gvar)
 	{
 		byte scratch1[4];
 		unsigned		maxq = q;
@@ -1533,7 +1551,7 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 	struct mmblockstruct far *next;
 } mmblocktype;*/
 			//modexprint(page, x, y, t, tlsw, color, bgcolor, vidsw, const byte *str);
-#define MMSMPRINTMEMINFO modexprint(&(gvar->video.page[0]), xpos, ypos, 1, 0, ccolor, 8, gvar->video.VL_Started, global_temp_status_text); ypos+=8;
+#define MMSMPRINTMEMINFO modexprint(&(gvar->video.page[0]), xpos, ypos, 1, 1, ccolor, 8, gvar->video.VL_Started, global_temp_status_text); ypos+=8;
 			if(gvar->video.VL_Started)
 			{
 				VL_ShowPage(&gvar->video.page[0], 1, 0);
@@ -1541,7 +1559,8 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 			}else clrscr();
 			sprintf(global_temp_status_text, "block #%04u", qq); MMSMPRINTMEMINFO
 //			sprintf(global_temp_status_text, "%Fp", scaninfo[qq].scan->useptr); MMSMPRINTMEMINFO
-			sprintf(global_temp_status_text, "%04x", (unsigned)scaninfo[qq].scan->useptr); MMSMPRINTMEMINFO
+			sprintf(global_temp_status_text, "start:  %04x", (unsigned)scaninfo[qq].scan->start); MMSMPRINTMEMINFO
+			sprintf(global_temp_status_text, "useptr: %04x", (unsigned)scaninfo[qq].scan->useptr); MMSMPRINTMEMINFO
 			sprintf(global_temp_status_text, "size: %05u", (unsigned)scaninfo[qq].scan->length); MMSMPRINTMEMINFO
 			if (scaninfo[qq].scan->next && scaninfo[qq].scan->next->start > end+1)
 			{
@@ -1583,8 +1602,8 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 			if(gvar->video.VL_Started)
 			{
 				//if (scan->next && scan->next->start > end+1) free
-				xpos = 16;
-				ypos = 16;//(gvar->video.page[0].sh-(32));//8*4
+				xpos = gvar->video.page[0].dx;
+				ypos = gvar->video.page[0].dy;//(gvar->video.page[0].sh-(32));//8*4
 			}
 			else
 			{
@@ -1605,6 +1624,14 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 					if(qq<maxq) qq++;
 					else qq = 0;
 				break;
+/*				case sc_UpArrow:
+					if(qq>0) qq-=100;
+					else	qq = maxq;
+				break;
+				case sc_DownArrow:
+					if(qq<maxq) qq+=100;
+					else qq = 0;
+				break;*/
 				case sc_Escape:
 					done = true;
 				break;
@@ -1612,11 +1639,6 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 		}
 	}
 #endif
-
-	if(gvar->video.VL_Started) IN_Ack(gvar);
-
-	gvar->video.BOFS = (byte __far *)temp;
-}
 
 //==========================================================================
 

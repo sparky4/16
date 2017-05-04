@@ -59,8 +59,16 @@ void VRS_OpenVRS(char *filename, entity_t *enti, boolean rlsw, global_game_varia
 #ifndef VRS_USECAMMPM
 	vrl_line_offsets = malloc(sizeof(vrl1_vgax_offset_t *)*num_of_vrl);//TODO: USE MM_ CA_ AND PM_
 #else
-	MM_GetPtr(MEMPTRCONV gvar->ca.grsegs, sizeof(vrl1_vgax_offset_t *)*num_of_vrl, gvar);
-	enti->spri.spritesheet.vrl_line_offsets = (vrl1_vgax_offset_t **)gvar->ca.grsegs;
+	switch(rlsw)
+	{
+		case 0:
+#ifdef __DEBUG_MM__
+			dbg_debugmm=0;
+#endif
+			MM_GetPtr(MEMPTRCONV gvar->ca.grsegs, sizeof(vrl1_vgax_offset_t *)*num_of_vrl, gvar);
+			enti->spri.spritesheet.vrl_line_offsets = (vrl1_vgax_offset_t **)gvar->ca.grsegs;
+		break;
+	}
 #endif
 
 	vrl_headers_offsets = (uint32_t far *)(enti->spri.spritesheet.buffer + enti->spri.spritesheet.vrs_hdr->offset_table[VRS_HEADER_OFFSET_VRS_LIST]);
