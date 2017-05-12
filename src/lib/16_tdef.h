@@ -676,9 +676,9 @@ typedef struct
 #define NOGRAPHICS
 #define NOAUDIO
 
-#define MAPHEADERLINKED
+//#define MAPHEADERLINKED
 //#define GRHEADERLINKED
-#define AUDIOHEADERLINKED
+//#define AUDIOHEADERLINKED
 
 #define NUMMAPS		4//39
 #define NUMSNDCHUNKS		4//3
@@ -692,7 +692,6 @@ typedef struct
 #define GDICTNAME	DATADIR"vgadict."
 #define GHEADNAME	DATADIR"vgahead."
 #define GFILENAME	DATADIR"vgagraph."
-#define EXTENSION	"hb1"
 
 
 typedef struct
@@ -710,9 +709,10 @@ typedef	struct
 
 typedef struct
 {
-	int		mapon, mapnum;
-	maptype		_seg	*mapheaderseg[NUMMAPS];
-} ca_mapinfo_t;
+	unsigned	RLEWtag;
+	long		headeroffsets[100];
+	byte		tileinfo[];
+} mapfiletype;
 
 typedef struct
 {
@@ -733,9 +733,10 @@ typedef struct	//TODO: USE THIS!!!!
 {
 	byte	ca_levelbit,ca_levelnum;
 	ca_handle_t		file;		//files to open
-	ca_mapinfo_t	camap;
 
 	byte 		_seg	*tinf;//?? where in the id engine is this used and what is it? --sparky4
+	int		mapon, mapnum;
+	maptype		_seg	*mapheaderseg[NUMMAPS];
 	unsigned	_seg	*mapsegs[MAPPLANES];
 	void		_seg	*grsegs[NUMCHUNKS];
 	byte		far		grneeded[NUMCHUNKS];
