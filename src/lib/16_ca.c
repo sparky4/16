@@ -2284,9 +2284,9 @@ void	CAL_DialogFinish (void)
 = CA_CacheMarks
 =
 ======================
-*//*++++
+*/
 #define MAXEMPTYREAD	1024
-
+/*++++ segments
 void CAL_CacheMarks (char *title, global_game_variables_t *gvar)
 {
 	boolean dialog;
@@ -2321,8 +2321,8 @@ void CAL_CacheMarks (char *title, global_game_variables_t *gvar)
 
 // MDM begin - (GAMERS EDGE)
 //
-//	if (!FindFile("EGAGRAPH.16",NULL,2))
-//		Quit (gvar, "CA_CacheMarks(): Can't find graphics files.");
+//????	if (!FindFile("EGAGRAPH.16",NULL,2))
+//????		Quit (gvar, "CA_CacheMarks(): Can't find graphics files.");
 //
 // MDM end
 
@@ -2425,7 +2425,7 @@ void CAL_CacheMarks (char *title, global_game_variables_t *gvar)
 //
 		if (dialog && finishcachebox)
 			finishcachebox();
-}*/
+}//*/
 
 void CA_CannotOpen(char *string, global_game_variables_t *gvar)
 {
