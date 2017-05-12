@@ -216,7 +216,8 @@ int newloadmap(char *mn, map_t *map) {
 //======
 
 
-#define MAPBUFINLM *(gvar->ca.mapsegs)
+#define MAPBUFINLM *(gvar->ca.tinf)
+//mapsegs)
 int CA_loadmap(char *mn, map_t *map, global_game_variables_t *gvar)
 {
 	jsmn_parser p;
