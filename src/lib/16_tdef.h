@@ -84,6 +84,8 @@ typedef struct vrs_container{
 	};
 	// Array of corresponding vrl line offsets
 	vrl1_vgax_offset_t **vrl_line_offsets;
+	//sprite buffer
+	byte far _seg *spribuff;
 } vrs_container_t;
 
 typedef struct vrl_container{
@@ -96,6 +98,8 @@ typedef struct vrl_container{
 	};
 	// Pointer to a corresponding vrl line offsets struct
 	vrl1_vgax_offset_t *line_offsets;
+	//sprite buffer
+	byte far _seg *spribuff;
 } vrl_container_t;
 
 typedef struct sprite
@@ -765,7 +769,6 @@ typedef struct	//TODO: USE THIS!!!!
 
 	sd_t		sd;
 	//TODO: extend! and learn from keen/wolf/catacomb's code wwww
-	memptr	spribuff;
 } ca_t;
 
 //==========================================================================
