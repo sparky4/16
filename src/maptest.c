@@ -23,7 +23,7 @@
 #include <malloc.h>
 
 #define DUMP
-//#define DUMP_MAP
+#define DUMP_MAP
 
 void
 main(int argc, char *argv[])
@@ -42,7 +42,6 @@ main(int argc, char *argv[])
 
 	MM_Startup(&gvar);
 	PM_Startup(&gvar);
-	//printf("pmstarted ok\n");
 	PM_CheckMainMem(&gvar);
 	PM_UnlockMainMem(&gvar);
 	CA_Startup(&gvar);
@@ -50,7 +49,6 @@ main(int argc, char *argv[])
 	fprintf(stderr, fmt, _memavl());
 	fprintf(stderr, fmt0, _memmax());
 	fprintf(stderr, "Size of map var = %u\n", _msize(&(gvar.ca.mapsegs)));
-	//getch();
 
 	CA_loadmap("data/test.map", &map, &gvar);
 #ifdef DUMP
@@ -58,7 +56,6 @@ main(int argc, char *argv[])
 	fprintf(stdout, "map.height=	%d\n", map.height);
 	getch();
 #ifdef DUMP_MAP
-	//if(map.width*map.height != 1200)
 	for(k=0;k<MAPPLANES;k++)
 	{
 		printf("maplayer: %u\n[\n", k);
