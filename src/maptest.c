@@ -23,7 +23,7 @@
 #include <malloc.h>
 
 #define DUMP
-//#define DUMP_MAP
+#define DUMP_MAP
 
 void
 main(int argc, char *argv[])
