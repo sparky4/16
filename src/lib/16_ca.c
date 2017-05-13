@@ -1088,23 +1088,23 @@ void CAL_SetupGrFile (global_game_variables_t *gvar)
 	CAL_GetGrChunkLength(STRUCTPIC,gvar);		// position file pointer
 	printf("CAL_SetupGrFile:\n");
 	printf("	gvar->ca.chunkcomplen size is %lu\n", gvar->ca.chunkcomplen);
-	MM_GetPtr(&compseg,gvar->ca.chunkcomplen,gvar);
-	IN_Ack(gvar);
+	MM_GetPtr(MEMPTRANDPERCONV compseg,gvar->ca.chunkcomplen,gvar);								IN_Ack(gvar);
 	CA_FarRead (gvar->ca.file.grhandle,compseg,gvar->ca.chunkcomplen,gvar);
 	CAL_HuffExpand (compseg, (byte far *)gvar->video.pictable,NUMPICS*sizeof(pictabletype),gvar->ca.grhuffman);
-	MM_FreePtr(&compseg,gvar);
+	MM_FreePtr(MEMPTRANDPERCONV compseg,gvar);
 #endif
 
-#if NUMPICM>0
+#if 0
+	//NUMPICM>0
 	MM_GetPtr(MEMPTRCONV picmtable,NUMPICM*sizeof(pictabletype));
 	CAL_GetGrChunkLength(STRUCTPICM);		// position file pointer
 	MM_GetPtr(&compseg,gvar->ca.chunkcomplen);
 	CA_FarRead (gvar->ca.file.grhandle,compseg,gvar->ca.chunkcomplen);
 	CAL_HuffExpand (compseg, (byte far *)picmtable,NUMPICS*sizeof(pictabletype),gvar->ca.grhuffman);
 	MM_FreePtr(&compseg);
-#endif
+//#endif
 
-#if NUMSPRITES>0
+//#if NUMSPRITES>0
 	MM_GetPtr(MEMPTRCONV spritetable,NUMSPRITES*sizeof(spritetabletype));
 	CAL_GetGrChunkLength(STRUCTSPRITE);	// position file pointer
 	MM_GetPtr(&compseg,gvar->ca.chunkcomplen);

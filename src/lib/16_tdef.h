@@ -694,6 +694,10 @@ typedef struct
 #define GFILENAME	DATADIR"vgagraph."
 
 
+#define MAPSEGBUF	mapsegs
+#define MAPSEGPTR	MAPSEGBUF[0]
+#define MAPSEGINLM	(gvar->ca.MAPSEGPTR)
+
 typedef struct
 {
   word bit0,bit1;	// 0-255 is a character, > is a pointer to a node

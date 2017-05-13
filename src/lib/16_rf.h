@@ -81,12 +81,12 @@
 #define MSPEED      (INTILE+NUMTILE16M)
 #define	CGAGR	1
 #define	EGAGR	2
-#define	MAXSHIFTS	1
+//#define	MAXSHIFTS	1
 #define	TILEWIDTH	TILEWH
 typedef enum {NOcard,MDAcard,CGAcard,EGAcard,MCGAcard,VGAcard,
 		  HGCcard=0x80,HGCPcard,HICcard} cardtype;
 typedef enum {CGAgr,EGAgr,VGAgr} grtype;
-typedef struct
+/*typedef struct
 {
   int	width,
 	height,
@@ -101,7 +101,7 @@ typedef	struct
 	unsigned	planesize[MAXSHIFTS];
 	unsigned	width[MAXSHIFTS];
 	byte		data[];
-} spritetype;		// the memptr for each sprite points to this
+} spritetype;		// the memptr for each sprite points to this*/
 //
 
 //===========================================================================

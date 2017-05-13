@@ -23,7 +23,7 @@
 #include <malloc.h>
 
 #define DUMP
-#define DUMP_MAP
+//#define DUMP_MAP
 
 void
 main(int argc, char *argv[])
@@ -48,7 +48,7 @@ main(int argc, char *argv[])
 
 	fprintf(stderr, fmt, _memavl());
 	fprintf(stderr, fmt0, _memmax());
-	fprintf(stderr, "Size of map var = %u\n", _msize(&(gvar.ca.mapsegs)));
+	fprintf(stderr, "Size of map var = %u\n", _msize(&(gvar.ca.MAPSEGPTR)));
 
 	CA_loadmap("data/test.map", &map, &gvar);
 #ifdef DUMP
@@ -72,7 +72,7 @@ main(int argc, char *argv[])
 		getch();
 	}
 #else
-	//fprintf(stderr, "contents of the buffer\n[\n%s\n]\n", (gvar.ca.mapsegs));
+	fprintf(stderr, "contents of the buffer\n[\n%s\n]\n", (gvar.ca.MAPSEGPTR));
 #endif
 	/*fprintf(stdout, "&main()=%Fp\n", *argv[0]);
 	fprintf(stdout, "&map==%Fp\n", &map);
@@ -82,7 +82,7 @@ main(int argc, char *argv[])
 	fprintf(stdout, "&map.data==%Fp\n", map.data);*/
 #endif
 	//fprintf(stderr, "here comes dat boi!\n"); getch(); fprintf(stderr, "%s", datboi);
-	MM_FreePtr((memptr *)&(gvar.ca.mapsegs), &gvar);
+	MM_FreePtr(MEMPTRCONV (gvar.ca.MAPSEGPTR), &gvar);
 	PM_Shutdown(&gvar);
 	CA_Shutdown(&gvar);
 	MM_Shutdown(&gvar);

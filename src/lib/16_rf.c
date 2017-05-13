@@ -919,7 +919,8 @@ void RFL_CalcOriginStuff (long x, long y)
 	gvar->video.ofs.pan.panx = (originxglobal>>G_P_SHIFT) & 15;
 	gvar->video.ofs.pan.pansx = gvar->video.ofs.pan.panx & 8;
 	gvar->video.ofs.pan.pany = gvar->video.ofs.pan.pansy = (originyglobal>>G_P_SHIFT) & 15;
-	gvar->video.ofs.pan.panadjust = gvar->video.ofs.pan.panx/8 + gvar->video.ofs.ylookup[gvar->video.ofs.pan.pany];
+//	gvar->video.ofs.pan.panadjust = gvar->video.ofs.pan.panx/8 + gvar->video.ofs.ylookup[gvar->video.ofs.pan.pany];
+	gvar->video.ofs.pan.panadjust = gvar->video.ofs.pan.panx/8 + (gvar->video.ofs.pan.pany*gvar->video.page[0].stridew);
 /*#endif
 
 #if GRMODE == CGAGR
@@ -1368,7 +1369,7 @@ void RFL_BoundNewOrigin (unsigned orgx,unsigned orgy)
 
 void RF_ClearBlock (int	x, int y, int width, int height)
 {
-	eraseblocktype block;
+//	eraseblocktype block;
 
 #if GRMODE == EGAGR
 	block.screenx = x/8+originxscreen;
@@ -1429,7 +1430,7 @@ void RF_RedrawBlock (int x, int y, int width, int height)
 
 void RF_CalcTics (void)
 {
-	long	newtime,oldtimecount;
+	long	newtime;//,oldtimecount;
 	word TimeCount = *clockw;
 
 //
@@ -2678,7 +2679,8 @@ void RFL_EraseBlocks (void)
 	//
 	// erase the block by copying from the master screen
 	//
-		pos = gvar->video.ofs.ylookup[block->screeny]+block->screenx;
+//----		pos = gvar->video.ofs.ylookup[block->screeny]+block->screenx;
+		pos = (block->screeny*gvar->video.page[0].stridew)+block->screenx;
 		block->width = (block->width + (pos&1) + 1)& ~1;
 		pos &= ~1;				// make sure a word copy gets used
 //++++		VW_ScreenToScreen (masterofs+pos,bufferofs+pos,
