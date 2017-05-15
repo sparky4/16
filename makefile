@@ -34,7 +34,7 @@
 # comment this out on game release.
 # serial output goes to COM1 at 9600 baud 1 stop bit odd parity.
 # serial output is plain text ASCII.
-DEBUGSERIAL=1
+DEBUGSERIAL=0
 
 DELLOGFILE=1
 
@@ -139,8 +139,10 @@ LIBFLAGS=$(WLIBQ) -b -n
 #
 VGMSNDOBJ = vgmSnd.$(OBJ)
 OLDLIBOBJS=bitmap.$(OBJ) 16render.$(OBJ)
-GFXLIBOBJS = 16_vl.$(OBJ) 16_vl_1.$(OBJ) 16_vl_2.$(OBJ) 16_vlpal.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) scroll16.$(OBJ) 16_vrs.$(OBJ) 16_spri.$(OBJ)
-16LIBOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_head.$(OBJ) 16_enti.$(OBJ) 16_dbg.$(OBJ) 16_in.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_wcpu.$(OBJ) 16_timer.$(OBJ) jsmn.$(OBJ) 16_map.$(OBJ) 16text.$(OBJ) 16_sd.$(OBJ) 16_tail_.$(OBJ) 16_dbg_1.$(OBJ)
+GFXLIBCOREOBJS = 16_vl.$(OBJ) 16text.$(OBJ) scroll16.$(OBJ) 16_vrs.$(OBJ) 16_spri.$(OBJ) 16_vl_1.$(OBJ)	#bakapee.$(OBJ)
+GFXLIBOBJS = $(GFXLIBCOREOBJS) 16_vl_2.$(OBJ) 16_vlpal.$(OBJ)
+16LIBCOREOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_head.$(OBJ) 16_enti.$(OBJ) 16_dbg.$(OBJ) 16_in.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_wcpu.$(OBJ) 16_timer.$(OBJ) jsmn.$(OBJ) 16_map.$(OBJ) 16_tail_.$(OBJ)
+16LIBOBJS = $(16LIBCOREOBJS) 16_sd.$(OBJ) 16_dbg_1.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 !ifeq DEBUGSERIAL 1
 DOSLIBOBJ += 8250.$(OBJ)
@@ -260,7 +262,8 @@ bakapi.exe:		bakapi.$(OBJ) 16_vl.$(OBJ) 16_vl_1.$(OBJ) 16text.$(OBJ) bakapee.$(O
 #
 scroll.exe:	scroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 scroll.$(OBJ):	$(SRC)/scroll.c
-xcroll.exe:	xcroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
+#$(16LIB) gfx.lib
+xcroll.exe:	xcroll.$(OBJ) $(DOSLIB) $(16LIBCOREOBJS) $(GFXLIBCOREOBJS)
 xcroll.$(OBJ):	$(SRC)/xcroll.c
 zcroll.exe:	zcroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 zcroll.$(OBJ):	$(SRC)/zcroll.c

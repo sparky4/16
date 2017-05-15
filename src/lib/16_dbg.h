@@ -6,7 +6,9 @@
 #include "src/lib/16_pm.h"
 #include "src/lib/16_tdef.h"
 
-#define __DEBUG__
+//#define __DEBUG__
+
+#ifdef __DEBUG__
 //#define __DEBUG_InputMgr__
 #define __DEBUG_MAP__
 //#define __DEBUG_2__
@@ -16,6 +18,7 @@
 //#define __DEBUG_RF__
 #define __DEBUG_SPRI__
 #define __DEBUG_VL__
+#endif
 
 
 #ifdef __DEBUG__

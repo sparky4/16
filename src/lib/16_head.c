@@ -22,6 +22,9 @@
 
 #include "src/lib/16_head.h"
 
+char global_temp_status_text[512];
+char global_temp_status_text2[512];
+
 long int
 filesize(FILE *fp)
 {
