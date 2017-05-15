@@ -6,7 +6,7 @@
 #include "src/lib/16_pm.h"
 #include "src/lib/16_tdef.h"
 
-//#define __DEBUG__
+#define __DEBUG__
 
 #ifdef __DEBUG__
 //#define __DEBUG_InputMgr__
