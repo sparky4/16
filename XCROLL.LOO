@@ -9,14 +9,15 @@ Object 4's name: 'stump'
                      "walkable":"0"
                     }
 		walkable: 0
+freeing tok
 
 Project 16 xcroll.exe. This is just a test file!
-version May  3 2017 19:14:27
+version May 15 2017 11:41:36
 page[0]dxy: 16x16
 
 player vars:
-	xy: 160x128	txy: 13x15	triggxy: 13x14	value: 11
-	hp: 4	q: 1	info.dir: 2	d: 2	dire: 11	pdir: 0
+	xy: 144x128	txy: 9x8	triggxy: 8x8	value: 0
+	hp: 4	q: 1	info.dir: 2	d: 2	dire: 41	pdir: 1
 	delay=1
 
 VL_PrintmodexmemInfo:
@@ -24,12 +25,12 @@ VL_PrintmodexmemInfo:
   	  Screen: 320x240	Tile: 20x15=((Screen)/16)
   stride: 80 draw_stride: 88 draw_stride_limit: 88
   Free Video Memory: 767
-  page	[0]=(a000:268c) size=23936	w=352  h=272 sw=320  sh=240 pi=1408
-	[1]=(a000:840c) size=23936	w=352  h=272 sw=320  sh=240 pi=1408
-	[2]=(a000:e18c) size=8448	w=352  h=96  sw=352  sh=96  pi=1408
-	[3]=(a000:028c) size=8448	w=352  h=96  sw=352  sh=96  pi=1408
+  page	[0]=(a000:0000) size=23936	w=352  h=272 sw=320  sh=240 pi=1408
+	[1]=(a000:5d80) size=23936	w=352  h=272 sw=320  sh=240 pi=1408
+	[2]=(a000:bb00) size=8448	w=352  h=96  sw=352  sh=96  pi=1408
+	[3]=(a000:dc00) size=8448	w=352  h=96  sw=352  sh=96  pi=1408
 gvar.video:
  r=0 bgps=1 
 
 detected CPU type: 80386 or newer
-detected FPU type: 80387
+detected FPU type: îæí†àşÂìæí†àÿçº•îæí†àşÂîæí†àÿç‹Ë¸»‚é`R¸`»‹éWR¸a»”éNR¸0»éERf¸„ø
