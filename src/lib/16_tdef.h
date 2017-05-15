@@ -497,7 +497,7 @@ typedef struct
 //from 16_mm
 //==========================================================================
 
-#define MAXBLOCKS		800		//kd=1300 wolf3d=700 cata=600
+#define MAXBLOCKS		600//800		//kd=1300 wolf3d=700 cata=600
 
 typedef struct mmblockstruct
 {
@@ -744,7 +744,7 @@ typedef struct	//TODO: USE THIS!!!!
 
 	byte 		_seg	*tinf;//?? where in the id engine is this used and what is it? --sparky4
 	int		mapon, mapnum;
-//	maptype		_seg	*mapheaderseg[NUMMAPS];
+	maptype		_seg	*mapheaderseg[NUMMAPS];
 	unsigned	_seg	*mapsegs[MAPPLANES];
 	void		_seg	*grsegs[NUMCHUNKS];
 	byte		far		grneeded[NUMCHUNKS];
