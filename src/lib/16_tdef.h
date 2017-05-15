@@ -497,7 +497,7 @@ typedef struct
 //from 16_mm
 //==========================================================================
 
-#define MAXBLOCKS		800		//kd=1300 wolf3d=700 cata=600
+#define MAXBLOCKS		600//800		//kd=1300 wolf3d=700 cata=600
 
 typedef struct mmblockstruct
 {

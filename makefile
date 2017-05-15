@@ -119,7 +119,7 @@ UPXQ=-qqq
 #
 # compile flags
 #
-S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#24576
+S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k40960#32768#24576
 Z_FLAGS=-zk0 -zc -zm#### -zp4 -ei
 O_FLAGS=-opnr -oe=24 -oil+ -outback -ohm
 T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 -d1 -fo=.$(OBJ)## -e=65536
@@ -519,6 +519,9 @@ comq: .symbolic
 	@*upx -9 $(UPXQ) $(EXEC)
 
 www: .symbolic
+	@if exist 16.exe @wmake -s -h wwwdo
+
+wwwdo: .symbolic
 	@for %f in (/var/www/$(EXEC)) do @if exist /var/www/%f $(REMOVECOMMAND) /var/www/%f
 	@$(REMOVECOMMAND) /var/www/*.exe.zi*
 	@$(REMOVECOMMAND) /var/www/*.zip.zi*
