@@ -159,9 +159,7 @@ void animate_spri(entity_t *enti, video_t *video)
 #define INC_PER_FRAME if(enti->q&1) enti->persist_aniframe++; if(enti->persist_aniframe>4) enti->persist_aniframe = 1;
 	unsigned int i,o,o2; int j;
 	int x,y,rx,ry,w,h;
-#ifdef __DEBUG_SPRI__
 	static struct glob_game_vars *ggvv;
-#endif
 	VGA_RAM_PTR omemptr = (VGA_RAM_PTR)video->page[0].data;// save original mem ptr
 
 	x=enti->spri.x;
