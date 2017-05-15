@@ -366,7 +366,7 @@ typedef struct
 //===================================//
 #define PALSIZE			768	//vga
 #define NUMCHUNKS		416	//keen
-#define MAXSCANLINES	240	// size of ylookup table
+//#define MAXSCANLINES	240	// size of ylookup table
 
 #define MAXSHIFTS		4
 #define STARTSPRITES	0	//temp
@@ -400,7 +400,7 @@ typedef struct
 	word	quadwh;			//preproccessed quad size of tilewidth and tileheight
 } tile_dimention_t;
 
-#define MAXSCROLLEDGES 6
+#define MAXSCROLLEDGES 2
 typedef struct
 {
 	unsigned	panx,pany;		// panning adjustments inside port in pixels
@@ -497,7 +497,7 @@ typedef struct
 //from 16_mm
 //==========================================================================
 
-#define MAXBLOCKS		800//kd=1300 wolf3d=700 cata=600
+#define MAXBLOCKS		256//800		//kd=1300 wolf3d=700 cata=600
 
 typedef struct mmblockstruct
 {
@@ -756,13 +756,13 @@ typedef struct	//TODO: USE THIS!!!!
 #ifdef GRHEADERLINKED
 	huffnode	*grhuffman;
 #else
-	huffnode	grhuffman[255];
+	huffnode	grhuffman[63];
 #endif
 
 #ifdef AUDIOHEADERLINKED
 	huffnode	*audiohuffman;
 #else
-	huffnode	audiohuffman[255];
+//	huffnode	audiohuffman[63];
 #endif
 
 	CASVT		chunkcomplen,chunkexplen;//long
