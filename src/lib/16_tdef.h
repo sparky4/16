@@ -497,7 +497,7 @@ typedef struct
 //from 16_mm
 //==========================================================================
 
-#define MAXBLOCKS		256//800		//kd=1300 wolf3d=700 cata=600
+#define MAXBLOCKS		800		//kd=1300 wolf3d=700 cata=600
 
 typedef struct mmblockstruct
 {
@@ -762,7 +762,7 @@ typedef struct	//TODO: USE THIS!!!!
 #ifdef AUDIOHEADERLINKED
 	huffnode	*audiohuffman;
 #else
-//	huffnode	audiohuffman[63];
+	huffnode	audiohuffman[63];
 #endif
 
 	CASVT		chunkcomplen,chunkexplen;//long

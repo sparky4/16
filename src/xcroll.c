@@ -27,7 +27,7 @@
 //#define FADE
 //#define NOMAPLOAD
 
-#define VERBOSESCROLL
+//#define VERBOSESCROLL
 
 static map_t map;
 float t;
