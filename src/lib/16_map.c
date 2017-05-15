@@ -242,8 +242,10 @@ int CA_loadmap(char *mn, map_t *map, global_game_variables_t *gvar)
 	else if(status != tokcount) { printf("Warning: used %d tok\n", status);}
 	extract_map((char const *)MAPSEGINLM, tok, tokcount, map);
 
+	printf("freeing tok\n");
 	free(tok);	//TODO: USE MM_ CA_ AND PM_
-	fclose(fh);	//TODO: USE MM_ CA_ AND PM_
+//	printf("fclose fh\n");
+//	fclose(fh);	//TODO: USE MM_ CA_ AND PM_
 
 	return 0;
 }
