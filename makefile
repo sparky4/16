@@ -119,7 +119,8 @@ UPXQ=-qqq
 #
 # compile flags
 #
-S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k32768#24576
+#-st
+S_FLAGS=-sg -of+ -zu -zdf -zff -zgf -k24576#32768
 Z_FLAGS=-zk0 -zc -zm -zp4 -ei
 O_FLAGS=-opnr -oe=24 -oil+ -outback -ohm
 T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 -d1 -fo=.$(OBJ)## -e=65536

@@ -457,7 +457,7 @@ typedef struct
 	word		bordercolor;
 	boolean	fastpalette;
 	byte		far	palette1[256][3],far palette2[256][3];
-	pictabletype	_seg *pictable;
+//????	pictabletype	_seg *pictable;
 	//keen/cata vars
 //	spritetabletype _seg *spritetable;
 //	unsigned	*shifttabletable[8];
