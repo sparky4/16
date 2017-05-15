@@ -154,7 +154,8 @@ void main(int argc, char *argv[])
 	modexFadeOn(4, &gvar.video.palette);
 #endif
 
-//0000	IN_StartAck (&gvar);	MM_ShowMemory(&gvar);	while (!IN_CheckAck (&gvar)){}
+//0000
+	IN_StartAck (&gvar);	MM_ShowMemory(&gvar);	while (!IN_CheckAck (&gvar)){}
 #ifdef FADE
 	modexPalBlack();	//so player will not see loadings~
 #endif
