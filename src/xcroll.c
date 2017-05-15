@@ -24,10 +24,8 @@
 #include "src/lib/16_timer.h"
 #include "src/lib/16_dbg.h"
 
-//#define FADE
+#define FADE
 //#define NOMAPLOAD
-
-//#define VERBOSESCROLL
 
 static map_t map;
 float t;
@@ -65,8 +63,6 @@ void main(int argc, char *argv[])
 	Startup16(&gvar);
 
 	ggvv=&gvar;
-	// input!
-	IN_Default(0, &gvar.player[0],ctrl_Keyboard1, &gvar);
 
 	if (argc >= 2) {
 		if(argv[1]){ strcpy(bakapee, argv[1]);
@@ -78,40 +74,22 @@ void main(int argc, char *argv[])
 	//----gvar.player[0].enti.spri.spritesheet = malloc(sizeof(struct vrs_container));
 
 	// create the map
-		#ifdef VERBOSESCROLL
-	fprintf(stderr, "testing map load~	");
-		#endif
+//	fprintf(stderr, "testing map load~	");
 	CA_loadmap("data/test.map", &map, &gvar);
 #ifndef NOMAPLOAD
 	chkmap(&map, 0);
 //	initMap(&map);
+//	printf("chkmap ok	");
+//	fprintf(stderr, "yay map loaded~~\n");
 #else
 	chkmap(&map, 1);
 	//initMap(&map);
 #endif
-		#ifdef VERBOSESCROLL
-	fprintf(stderr, "chkmap ok	");
-	fprintf(stderr, "yay map loaded~~\n");
-		#endif
-
-		#ifdef VERBOSESCROLL
-	fprintf(stderr, "press a key wwww\n");
-	IN_StartAck (&gvar);	while (!IN_CheckAck (&gvar)){}
-		#endif
-
 	// data
-		#ifdef VERBOSESCROLL
-	fprintf(stderr, "VRS_LoadVRS	");
-		#endif
 	VRS_LoadVRS(bakapee, &gvar.player[0].enti, &gvar);
-		#ifdef VERBOSESCROLL
-	fprintf(stderr, "ok~\n");
-		#endif
 
-		#ifdef VERBOSESCROLL
-	fprintf(stderr, "press a key wwww\n");
-	IN_StartAck (&gvar);	while (!IN_CheckAck (&gvar)){}
-		#endif
+	// input!
+	IN_Default(0, &gvar.player[0],ctrl_Keyboard1, &gvar);
 
 	// save the palette
 #ifdef FADE
@@ -131,9 +109,6 @@ void main(int argc, char *argv[])
 	//printf("1:	%d\n", paloffset);
 	map.tiles->data->offset=(paloffset/3);
 	modexPalUpdate(map.tiles->data, &paloffset, 0, 0);*/
-		#ifdef VERBOSESCROLL
-	fprintf(stderr, "VL_LoadPalFile	");
-		#endif
 	VL_LoadPalFile(bakapeep, &gvar.video.palette, &gvar);
 	//VL_LoadPalFile("data/default.pal", &gvar.video.palette);
 
@@ -142,9 +117,6 @@ void main(int argc, char *argv[])
 	modexSavePalFile("data/g.pal", &gvar.video.palette);
 	modexPalBlack();	//so player will not see loadings~
 #endif
-		#ifdef VERBOSESCROLL
-	fprintf(stderr, "ok\n");
-		#endif
 
 	// setup camera and screen~
 	modexHiganbanaPageSetup(&gvar);

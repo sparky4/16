@@ -49,16 +49,19 @@ typedef	enum	{ichi,ni,san,yon,go,roku,shichi,hachi,kyu,ju,juichi,juni,jusan,juyo
 /*typedef unsigned memseg;
 
 memptr should be replaced by memseg in code.
+
 on usage where you need pointer convert memseg type (segment) to far pointer by
 MK_FP(segment value, 0)*/
-	#ifdef __WATCOMC__
+#ifdef __WATCOMC__
 //typedef void __based( void ) * memptr;	////old //----typedef void __based(__self) * memptr;
 //typedef unsigned short _seg; // it will contains segment value (as Borland _seg)
 #define _seg __based( void )
-	#endif
-	#ifdef __BORLANDC__
+// #define __SEGA __segment
+#endif
+#ifdef __BORLANDC__
 #define _memavl()               coreleft()
-	#endif
+// #define __SEGA _seg
+#endif
 
 typedef void _seg * memptr;
 
