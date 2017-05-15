@@ -1895,7 +1895,7 @@ void CA_CacheGrChunk (int chunk)
 =
 ======================
 */
-/*++++ segments!
+
 void CA_CacheMap (global_game_variables_t *gvar)
 {
 	long	pos,compressed;
@@ -2006,7 +2006,7 @@ void CA_CacheMap (global_game_variables_t *gvar)
 		if (compressed>BUFFERSIZE)
 			MM_FreePtr(&bigbufferseg, gvar);
 	}
-}//*/
+}
 
 //===========================================================================
 
@@ -2140,9 +2140,9 @@ void CA_SetAllPurge (global_game_variables_t *gvar)
 //
 // free map headers and map planes
 //
-//	for (i=0;i<NUMMAPS;i++)
-//		if (gvar->ca.mapheaderseg[i])
-//			MM_SetPurge (MEMPTRCONV gvar->ca.mapheaderseg[i],3, gvar);
+	for (i=0;i<NUMMAPS;i++)
+		if (gvar->ca.mapheaderseg[i])
+			MM_SetPurge (MEMPTRCONV gvar->ca.mapheaderseg[i],3, gvar);
 
 	for (i=0;i<3;i++)
 		if (gvar->ca.mapsegs[i])

@@ -400,7 +400,7 @@ typedef struct
 	word	quadwh;			//preproccessed quad size of tilewidth and tileheight
 } tile_dimention_t;
 
-#define MAXSCROLLEDGES 6
+#define MAXSCROLLEDGES 2
 typedef struct
 {
 	unsigned	panx,pany;		// panning adjustments inside port in pixels
