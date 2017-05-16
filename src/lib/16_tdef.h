@@ -84,8 +84,6 @@ typedef struct vrs_container{
 	};
 	// Array of corresponding vrl line offsets
 	vrl1_vgax_offset_t **vrl_line_offsets;
-	//sprite buffer
-	byte far _seg *spribuff;
 } vrs_container_t;
 
 typedef struct vrl_container{
@@ -98,8 +96,6 @@ typedef struct vrl_container{
 	};
 	// Pointer to a corresponding vrl line offsets struct
 	vrl1_vgax_offset_t *line_offsets;
-	//sprite buffer
-	byte far _seg *spribuff;
 } vrl_container_t;
 
 typedef struct sprite
@@ -366,7 +362,7 @@ typedef struct
 //===================================//
 #define PALSIZE			768	//vga
 #define NUMCHUNKS		416	//keen
-//#define MAXSCANLINES	240	// size of ylookup table
+#define MAXSCANLINES	240	// size of ylookup table
 
 #define MAXSHIFTS		4
 #define STARTSPRITES	0	//temp
@@ -400,7 +396,7 @@ typedef struct
 	word	quadwh;			//preproccessed quad size of tilewidth and tileheight
 } tile_dimention_t;
 
-#define MAXSCROLLEDGES 2
+#define MAXSCROLLEDGES 6
 typedef struct
 {
 	unsigned	panx,pany;		// panning adjustments inside port in pixels
@@ -457,7 +453,7 @@ typedef struct
 	word		bordercolor;
 	boolean	fastpalette;
 	byte		far	palette1[256][3],far palette2[256][3];
-//????	pictabletype	_seg *pictable;
+	pictabletype	_seg *pictable;
 	//keen/cata vars
 //	spritetabletype _seg *spritetable;
 //	unsigned	*shifttabletable[8];
@@ -497,7 +493,7 @@ typedef struct
 //from 16_mm
 //==========================================================================
 
-#define MAXBLOCKS		600//800		//kd=1300 wolf3d=700 cata=600
+#define MAXBLOCKS		800//kd=1300 wolf3d=700 cata=600
 
 typedef struct mmblockstruct
 {
@@ -680,9 +676,9 @@ typedef struct
 #define NOGRAPHICS
 #define NOAUDIO
 
-//#define MAPHEADERLINKED
+#define MAPHEADERLINKED
 //#define GRHEADERLINKED
-//#define AUDIOHEADERLINKED
+#define AUDIOHEADERLINKED
 
 #define NUMMAPS		4//39
 #define NUMSNDCHUNKS		4//3
@@ -696,11 +692,8 @@ typedef struct
 #define GDICTNAME	DATADIR"vgadict."
 #define GHEADNAME	DATADIR"vgahead."
 #define GFILENAME	DATADIR"vgagraph."
+#define EXTENSION	"hb1"
 
-
-#define MAPSEGBUF	mapsegs
-#define MAPSEGPTR	MAPSEGBUF[0]
-#define MAPSEGINLM	(gvar->ca.MAPSEGPTR)
 
 typedef struct
 {
@@ -717,10 +710,9 @@ typedef	struct
 
 typedef struct
 {
-	unsigned	RLEWtag;
-	long		headeroffsets[100];
-	byte		tileinfo[];
-} mapfiletype;
+	int		mapon, mapnum;
+	maptype		_seg	*mapheaderseg[NUMMAPS];
+} ca_mapinfo_t;
 
 typedef struct
 {
@@ -741,10 +733,9 @@ typedef struct	//TODO: USE THIS!!!!
 {
 	byte	ca_levelbit,ca_levelnum;
 	ca_handle_t		file;		//files to open
+	ca_mapinfo_t	camap;
 
 	byte 		_seg	*tinf;//?? where in the id engine is this used and what is it? --sparky4
-	int		mapon, mapnum;
-	maptype		_seg	*mapheaderseg[NUMMAPS];
 	unsigned	_seg	*mapsegs[MAPPLANES];
 	void		_seg	*grsegs[NUMCHUNKS];
 	byte		far		grneeded[NUMCHUNKS];
@@ -756,19 +747,20 @@ typedef struct	//TODO: USE THIS!!!!
 #ifdef GRHEADERLINKED
 	huffnode	*grhuffman;
 #else
-	huffnode	grhuffman[63];
+	huffnode	grhuffman[255];
 #endif
 
 #ifdef AUDIOHEADERLINKED
 	huffnode	*audiohuffman;
 #else
-	huffnode	audiohuffman[63];
+	huffnode	audiohuffman[255];
 #endif
 
 	CASVT		chunkcomplen,chunkexplen;//long
 
 	sd_t		sd;
 	//TODO: extend! and learn from keen/wolf/catacomb's code wwww
+	memptr	spribuff;
 } ca_t;
 
 //==========================================================================
