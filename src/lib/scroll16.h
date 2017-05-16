@@ -41,7 +41,7 @@
 
 #define SPRITE
 //#define TILERENDER
-#define SHOWFPS
+//0000#define SHOWFPS
 //#define OLDWALKSHOWPAGESTUFF
 
 #define PLAYERBMPDATAVAR	gvar.player[pn].data

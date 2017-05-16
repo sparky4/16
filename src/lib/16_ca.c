@@ -163,6 +163,8 @@ CASVT GRFILEPOS(int c, global_game_variables_t *gvar)
 }
 #endif
 
+#define EXTENSION	"hb1"
+
 /*
 =============================================================================
 
@@ -1086,23 +1088,23 @@ void CAL_SetupGrFile (global_game_variables_t *gvar)
 	CAL_GetGrChunkLength(STRUCTPIC,gvar);		// position file pointer
 	printf("CAL_SetupGrFile:\n");
 	printf("	gvar->ca.chunkcomplen size is %lu\n", gvar->ca.chunkcomplen);
-	MM_GetPtr(&compseg,gvar->ca.chunkcomplen,gvar);
-	IN_Ack(gvar);
+	MM_GetPtr(MEMPTRANDPERCONV compseg,gvar->ca.chunkcomplen,gvar);								IN_Ack(gvar);
 	CA_FarRead (gvar->ca.file.grhandle,compseg,gvar->ca.chunkcomplen,gvar);
 	CAL_HuffExpand (compseg, (byte far *)gvar->video.pictable,NUMPICS*sizeof(pictabletype),gvar->ca.grhuffman);
-	MM_FreePtr(&compseg,gvar);
+	MM_FreePtr(MEMPTRANDPERCONV compseg,gvar);
 #endif
 
-#if NUMPICM>0
+#if 0
+	//NUMPICM>0
 	MM_GetPtr(MEMPTRCONV picmtable,NUMPICM*sizeof(pictabletype));
 	CAL_GetGrChunkLength(STRUCTPICM);		// position file pointer
 	MM_GetPtr(&compseg,gvar->ca.chunkcomplen);
 	CA_FarRead (gvar->ca.file.grhandle,compseg,gvar->ca.chunkcomplen);
 	CAL_HuffExpand (compseg, (byte far *)picmtable,NUMPICS*sizeof(pictabletype),gvar->ca.grhuffman);
 	MM_FreePtr(&compseg);
-#endif
+//#endif
 
-#if NUMSPRITES>0
+//#if NUMSPRITES>0
 	MM_GetPtr(MEMPTRCONV spritetable,NUMSPRITES*sizeof(spritetabletype));
 	CAL_GetGrChunkLength(STRUCTSPRITE);	// position file pointer
 	MM_GetPtr(&compseg,gvar->ca.chunkcomplen);
@@ -1142,7 +1144,7 @@ void CAL_SetupMapFile (global_game_variables_t *gvar)
 	MM_GetPtr (MEMPTRCONV gvar->ca.tinf,length,gvar);
 	CA_FarRead(handle, gvar->ca.tinf, length,gvar);
 	close(handle);
-//#else
+#else
 
 	gvar->ca.tinf = (byte _seg *)FP_SEG(&maphead);
 
@@ -1259,7 +1261,7 @@ void CA_Startup(global_game_variables_t *gvar)
 	CAL_SetupMapFile (gvar);
 #endif
 
-	gvar->ca.camap.mapon = -1;
+	gvar->ca.mapon = -1;
 	gvar->ca.ca_levelbit = 1;
 	gvar->ca.ca_levelnum = 0;
 
@@ -1893,7 +1895,7 @@ void CA_CacheGrChunk (int chunk)
 =
 ======================
 */
-/*++++ segments!
+
 void CA_CacheMap (global_game_variables_t *gvar)
 {
 	long	pos,compressed;
@@ -1910,33 +1912,43 @@ void CA_CacheMap (global_game_variables_t *gvar)
 //
 // free up memory from last map
 //
-	if (gvar->ca.camap.mapon>-1 && gvar->ca.camap.mapheaderseg[gvar->ca.camap.mapon])
-		MM_SetPurge (((memptr)gvar->ca.camap.mapheaderseg[(gvar->ca.camap.mapon)]), 3, gvar);
+	if (gvar->ca.mapon>-1 && gvar->ca.mapheaderseg[gvar->ca.mapon])
+		MM_SetPurge ((MEMPTRCONV gvar->ca.mapheaderseg[(gvar->ca.mapon)]), 3, gvar);
 	for (plane=0;plane<MAPPLANES;plane++)
-		if (gvar->ca.camap.mapsegs[plane])
-			MM_FreePtr ((memptr)gvar->ca.camap.mapsegs[plane], gvar);
+		if (gvar->ca.mapsegs[plane])
+			MM_FreePtr (MEMPTRCONV gvar->ca.mapsegs[plane], gvar);
 
-	gvar->ca.camap.mapon = gvar->ca.camap.mapnum;
+	gvar->ca.mapon = gvar->ca.mapnum;
 
 
 //
 // load map header
 // The header will be cached if it is still around
 //
-//	if (!gvar->ca.camap.mapheaderseg[gvar->ca.camap.mapnum])
-//	{
-//		//pos = ((mapfiletype	_seg *)tinf)->headeroffsets[mapnum];
-//		//pos = ((_seg *)gvar->ca.camap.tinf)->headeroffsets[gvar->ca.camap.mapnum];
-//		pos = ((memptr)gvar->ca.camap.tinf)->headeroffsets[gvar->ca.camap.mapnum];
-//		if (pos<0)						// $FFFFFFFF start is a sparse map
-//		  printf("CA_CacheMap: Tried to load a non existent map!");
+	if (!gvar->ca.mapheaderseg[gvar->ca.mapnum])
+	{
+		pos = ((mapfiletype	_seg *)gvar->ca.tinf)->headeroffsets[gvar->ca.mapnum];
+		if (pos<0)						// $FFFFFFFF start is a sparse map
+			Quit (gvar, "CA_CacheMap: Tried to load a non existent map!");
 
-//		MM_GetPtr(MEMPTRCONV gvar->ca.camapheaderseg[mapnum],sizeof(maptype));
-//		lseek(maphandle,pos,SEEK_SET);
-//		CA_FarRead (maphandle,(memptr)mapheaderseg[mapnum],sizeof(maptype));
-//	}
-//	else
-//		MM_SetPurge (MEMPTRCONV mapheaderseg[mapnum], 0, &(gvar->mm));
+		MM_GetPtr(MEMPTRCONV gvar->ca.mapheaderseg[gvar->ca.mapnum],sizeof(maptype), gvar);
+		lseek(gvar->ca.file.maphandle,pos,SEEK_SET);
+#ifdef MAPHEADERLINKED
+//#if BUFFERSIZE < sizeof(maptype)
+//The general buffer size is too small!
+//#endif
+		//
+		// load in, then unhuffman to the destination
+		//
+		CA_FarRead (gvar->ca.file.maphandle,gvar->mm.bufferseg,((mapfiletype	_seg *)gvar->ca.tinf)->headersize[gvar->ca.mapnum], gvar);
+		CAL_HuffExpand ((byte huge *)bufferseg,
+			(byte huge *)gvar->ca.mapheaderseg[gvar->ca.mapnum],sizeof(maptype),maphuffman, gvar);
+#else
+		CA_FarRead (gvar->ca.file.maphandle,(memptr)gvar->ca.mapheaderseg[gvar->ca.mapnum],sizeof(maptype), gvar);
+#endif
+	}
+	else
+		MM_SetPurge (MEMPTRCONV gvar->ca.mapheaderseg[gvar->ca.mapnum], 0, gvar);
 
 //
 // load the planes in
@@ -1944,30 +1956,30 @@ void CA_CacheMap (global_game_variables_t *gvar)
 // allways reloaded, never cached)
 //
 
-	size = mapheaderseg[mapnum]->width * mapheaderseg[mapnum]->height * 2;
+	size = gvar->ca.mapheaderseg[gvar->ca.mapnum]->width * gvar->ca.mapheaderseg[gvar->ca.mapnum]->height * 2;
 
 	for (plane = 0; plane<MAPPLANES; plane++)
 	{
-		//pos = mapheaderseg[mapnum]->planestart[plane];
-		//compressed = mapheaderseg[mapnum]->planelength[plane];
+		pos = gvar->ca.mapheaderseg[gvar->ca.mapnum]->planestart[plane];
+		compressed = gvar->ca.mapheaderseg[gvar->ca.mapnum]->planelength[plane];
 
 		if (!compressed)
 			continue;		// the plane is not used in this game
 
-		dest = MEMPTRCONV mapsegs[plane];
-		MM_GetPtr(dest,size);
+		dest = MEMPTRCONV gvar->ca.mapsegs[plane];
+		MM_GetPtr(dest,size, gvar);
 
-		lseek(maphandle,pos,SEEK_SET);
+		lseek(gvar->ca.file.maphandle,pos,SEEK_SET);
 		if (compressed<=BUFFERSIZE)
-			source = bufferseg;
+			source = gvar->mm.bufferseg;
 		else
 		{
-			MM_GetPtr(&bigbufferseg,compressed);
-			MM_SetLock (&bigbufferseg,true);
+			MM_GetPtr(&bigbufferseg,compressed, gvar);
+			MM_SetLock (&bigbufferseg,true, gvar);
 			source = bigbufferseg;
 		}
 
-		CA_FarRead(maphandle,(byte far *)source,compressed);
+		CA_FarRead(gvar->ca.file.maphandle,(byte far *)source,compressed, gvar);
 #ifdef MAPHEADERLINKED
 		//
 		// unhuffman, then unRLEW
@@ -1977,7 +1989,7 @@ void CA_CacheMap (global_game_variables_t *gvar)
 		//
 		expanded = *source;
 		source++;
-		MM_GetPtr (&buffer2seg,expanded);
+		MM_GetPtr (&buffer2seg,expanded, gvar);
 		CAL_CarmackExpand (source, (unsigned far *)buffer2seg,expanded);
 		CA_RLEWexpand (((unsigned far *)buffer2seg)+1,*dest,size,
 		((mapfiletype _seg *)tinf)->RLEWtag);
@@ -1988,13 +2000,13 @@ void CA_CacheMap (global_game_variables_t *gvar)
 		// unRLEW, skipping expanded length
 		//
 		CA_RLEWexpand (source+1, *dest,size,
-		((mapfiletype _seg *)tinf)->RLEWtag);
+		((mapfiletype _seg *)gvar->ca.tinf)->RLEWtag);
 #endif
 
 		if (compressed>BUFFERSIZE)
-			MM_FreePtr(&bigbufferseg);
+			MM_FreePtr(&bigbufferseg, gvar);
 	}
-}//*/
+}
 
 //===========================================================================
 
@@ -2128,20 +2140,20 @@ void CA_SetAllPurge (global_game_variables_t *gvar)
 //
 // free map headers and map planes
 //
-//	for (i=0;i<NUMMAPS;i++)
-//		if (gvar->ca.camap.mapheaderseg[i])
-//			MM_SetPurge (gvar->ca.camap.mapheaderseg[i],3, gvar);
+	for (i=0;i<NUMMAPS;i++)
+		if (gvar->ca.mapheaderseg[i])
+			MM_SetPurge (MEMPTRCONV gvar->ca.mapheaderseg[i],3, gvar);
 
 	for (i=0;i<3;i++)
 		if (gvar->ca.mapsegs[i])
-			MM_FreePtr ((memptr *)&gvar->ca.mapsegs[i], gvar);
+			MM_FreePtr (MEMPTRCONV gvar->ca.mapsegs[i], gvar);
 
 //
 // free sounds
 //
 	for (i=0;i<NUMSNDCHUNKS;i++)
 		if (gvar->ca.audiosegs[i])
-			MM_SetPurge ((memptr *)&gvar->ca.audiosegs[i],3, gvar);
+			MM_SetPurge (MEMPTRCONV gvar->ca.audiosegs[i],3, gvar);
 
 //
 // free graphics
@@ -2272,9 +2284,9 @@ void	CAL_DialogFinish (void)
 = CA_CacheMarks
 =
 ======================
-*//*++++
+*/
 #define MAXEMPTYREAD	1024
-
+/*++++ segments
 void CAL_CacheMarks (char *title, global_game_variables_t *gvar)
 {
 	boolean dialog;
@@ -2309,8 +2321,8 @@ void CAL_CacheMarks (char *title, global_game_variables_t *gvar)
 
 // MDM begin - (GAMERS EDGE)
 //
-//	if (!FindFile("EGAGRAPH.16",NULL,2))
-//		Quit (gvar, "CA_CacheMarks(): Can't find graphics files.");
+//????	if (!FindFile("EGAGRAPH.16",NULL,2))
+//????		Quit (gvar, "CA_CacheMarks(): Can't find graphics files.");
 //
 // MDM end
 
@@ -2413,7 +2425,7 @@ void CAL_CacheMarks (char *title, global_game_variables_t *gvar)
 //
 		if (dialog && finishcachebox)
 			finishcachebox();
-}*/
+}//*/
 
 void CA_CannotOpen(char *string, global_game_variables_t *gvar)
 {

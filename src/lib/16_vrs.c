@@ -39,15 +39,15 @@ void VRS_OpenVRS(char *filename, entity_t *enti, boolean rlsw, global_game_varia
 	switch(rlsw)
 	{
 		case 1:
-			CA_ReadFile(filename, &gvar->ca.spribuff, gvar);
+			CA_ReadFile(filename, MEMPTRCONV enti->spri.spritesheet.spribuff, gvar);
 		break;
 		case 0:
-			CA_LoadFile(filename, &gvar->ca.spribuff, gvar);
+			CA_LoadFile(filename, MEMPTRCONV enti->spri.spritesheet.spribuff, gvar);
 		break;
 	}
 
 	// Insert sanity cheks later
-	enti->spri.spritesheet.buffer = gvar->ca.spribuff;
+	enti->spri.spritesheet.buffer = enti->spri.spritesheet.spribuff;	//TODO: merge these 2 vars into 1
 	enti->spri.spritesheet.data_size = sizeof(enti->spri.spritesheet.buffer) - sizeof(struct vrl1_vgax_header);
 	num_of_vrl = 0;
 	vrl_id_iter = (uint16_t far *)(enti->spri.spritesheet.buffer + enti->spri.spritesheet.vrs_hdr->offset_table[VRS_HEADER_OFFSET_SPRITE_ID_LIST]);
@@ -112,15 +112,15 @@ void VRS_OpenVRL(char *filename, entity_t *enti, boolean rlsw, global_game_varia
 	switch(rlsw)
 	{
 		case 1:
-			CA_ReadFile(filename, &gvar->ca.spribuff, gvar);
+			CA_ReadFile(filename, &enti->spri.spritesheet.spribuff, gvar);
 		break;
 		case 0:
-			CA_LoadFile(filename, &gvar->ca.spribuff, gvar);
+			CA_LoadFile(filename, &enti->spri.spritesheet.spribuff, gvar);
 		break;
 	}
 
 	// Insert sanity cheks later
-	enti->spri.sprite_vrl_cont.buffer = gvar->ca.spribuff;
+	enti->spri.sprite_vrl_cont.buffer = enti->spri.spritesheet.spribuff;
 	enti->spri.sprite_vrl_cont.data_size = sizeof(enti->spri.spritesheet.buffer) - sizeof(struct vrl1_vgax_header);
 
 	// Allocate memory for vrl line offsets table
