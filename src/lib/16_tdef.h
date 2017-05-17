@@ -497,11 +497,13 @@ typedef struct
 //from 16_mm
 //==========================================================================
 
-#define MAXBLOCKS		600//800		//kd=1300 wolf3d=700 cata=600
+#define MAXBLOCKS		1024		//kd=1300 wolf3d=700 cata=600
 
 typedef struct mmblockstruct
 {
-	unsigned	start,length;
+	//word	start,length;
+	word	start;	dword length;
+	//word	blob;	//for data larger than 64k
 	unsigned	attributes;
 	memptr		*useptr;	// pointer to the segment start
 	struct mmblockstruct far *next;
