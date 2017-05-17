@@ -22,7 +22,12 @@
 
 #include "src/lib/scroll16.h"
 #include "src/lib/16_timer.h"
-#include "src/lib/16_dbg.h"
+//#include "src/lib/16_dbg.h"
+
+#ifdef __DEBUG__
+boolean
+	dbg_nointest=1;
+#endif
 
 #define FADE
 //#define NOMAPLOAD

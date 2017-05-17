@@ -36,7 +36,7 @@
 
 //#define DEBUG_MAPDATA
 //#define DEBUG_MAPVARS
-#define DEBUG_OBVARS
+//0000++#define DEBUG_OBVARS
 //#define DEBUG_JS
 
 //typedefs moved to 16_tdef.h
