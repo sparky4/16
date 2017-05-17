@@ -125,190 +125,191 @@ boolean ZCL_ScreenMidPosChk(map_view_t *map_v, nibble dir, int tx, int ty)
 	return false;
 }
 
-//#define INC_PER_FRAME if(player[pn].enti.q&1) player[pn].enti.persist_aniframe++; if(player[pn].enti.persist_aniframe>4) player[pn].enti.persist_aniframe = 1;
+//#define INC_PER_FRAME if(gvar->player[pn].enti.q&1) gvar->player[pn].enti.persist_aniframe++; if(gvar->player[pn].enti.persist_aniframe>4) gvar->player[pn].enti.persist_aniframe = 1;
 #ifdef OLDWALKSHOWPAGESTUFF
-#define SHOWMVFUN__ ZC_ShowMV(pip, 1, 0);
+#define SHOWMVFUN__ VL_ShowPage(&gvar->video.page[0], 1, 0);//modexShowPage(&gvar->video.page);
+//ZC_ShowMV(gvar->mv, 1, 0);
 #endif
 
-void ZC_walk(map_view_t *pip, player_t *player, word pn)
+void ZC_walk(global_game_variables_t *gvar, word pn)
 {
-	switch(player[pn].enti.d)
+	switch(gvar->player[pn].enti.d)
 	{
 		//no direction
 		case 2:
-			//0000pip[0].video->startclk = (*clockw);
+			//0000gvar->mv[0].video->startclk = (*clockw);
 		break;
 		//right movement
 		case 3:
-			if(ZCL_ScreenMidPosChk(pip, player[pn].enti.d, player[pn].enti.tx, player[pn].enti.ty) &&
-			ZCL_CollCheck(pip, player[pn].enti.d, player[pn].enti.tx, player[pn].enti.ty))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))	//collision detection!
+			if(ZCL_ScreenMidPosChk(gvar->mv, gvar->player[pn].enti.d, gvar->player[pn].enti.tx, gvar->player[pn].enti.ty) &&
+			ZCL_CollCheck(gvar->mv, gvar->player[pn].enti.d, gvar->player[pn].enti.tx, gvar->player[pn].enti.ty))//!(gvar->player[pn].enti.tx+1 == TRIGGX && gvar->player[pn].enti.ty == TRIGGY))	//collision detection!
 			{
-				player[pn].walktype=2;
-				if(player[pn].enti.q<=player[pn].enti.spt)
+				gvar->player[pn].walktype=2;
+				if(gvar->player[pn].enti.q<=gvar->player[pn].enti.spt)
 				{
-					ZC_animatePlayer(pip, player, pn);
-					ZC_mapScroll(pip, player, pn);
-					player[pn].enti.q++;
-					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
+					ZC_animatePlayer(gvar->mv, gvar->player, pn);
+					ZC_mapScroll(gvar->mv, gvar->player, pn);
+					gvar->player[pn].enti.q++;
+					//0000gvar->mv[0].video->clk = ((*clockw)-gvar->mv[0].video->startclk)/18.2;
 #ifdef OLDWALKSHOWPAGESTUFF
 					SHOWMVFUN__
 #endif
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
+				} else { gvar->player[pn].enti.q = 1; gvar->player[pn].enti.d = 2; gvar->player[pn].enti.tx++; }
 			}
-			else if(ZCL_mapEdgeChk(pip, player[pn].enti.d, player[pn].enti.tx, player[pn].enti.ty, 0, 1) &&
-			ZCL_CollCheck(pip, player[pn].enti.d, player[pn].enti.tx, player[pn].enti.ty))//!(player[pn].enti.tx+1 == TRIGGX && player[pn].enti.ty == TRIGGY))
+			else if(ZCL_mapEdgeChk(gvar->mv, gvar->player[pn].enti.d, gvar->player[pn].enti.tx, gvar->player[pn].enti.ty, 0, 1) &&
+			ZCL_CollCheck(gvar->mv, gvar->player[pn].enti.d, gvar->player[pn].enti.tx, gvar->player[pn].enti.ty))//!(gvar->player[pn].enti.tx+1 == TRIGGX && gvar->player[pn].enti.ty == TRIGGY))
 			{
-				player[pn].walktype=1;
-				if(player[pn].enti.q<=player[pn].enti.spt)
+				gvar->player[pn].walktype=1;
+				if(gvar->player[pn].enti.q<=gvar->player[pn].enti.spt)
 				{
-					player[pn].enti.x+=(player[pn].enti.speed);
-					ZC_animatePlayer(pip, player, pn);
-					player[pn].enti.q++;
+					gvar->player[pn].enti.x+=(gvar->player[pn].enti.speed);
+					ZC_animatePlayer(gvar->mv, gvar->player, pn);
+					gvar->player[pn].enti.q++;
 #ifdef OLDWALKSHOWPAGESTUFF
 					SHOWMVFUN__
 #endif
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx++; }
+				} else { gvar->player[pn].enti.q = 1; gvar->player[pn].enti.d = 2; gvar->player[pn].enti.tx++; }
 			}
 			else
 			{
-				player[pn].walktype=0;
-				ZC_animatePlayer(pip, player, pn);
-				player[pn].enti.d = 2;
+				gvar->player[pn].walktype=0;
+				ZC_animatePlayer(gvar->mv, gvar->player, pn);
+				gvar->player[pn].enti.d = 2;
 #ifdef OLDWALKSHOWPAGESTUFF
 				SHOWMVFUN__
 #endif
 			}
-			player[pn].enti.triggerx = player[pn].enti.tx+1;
-			player[pn].enti.triggery = player[pn].enti.ty;
+			gvar->player[pn].enti.triggerx = gvar->player[pn].enti.tx+1;
+			gvar->player[pn].enti.triggery = gvar->player[pn].enti.ty;
 		break;
 		//left movement
 		case 1:
-			if(ZCL_ScreenMidPosChk(pip, player[pn].enti.d, player[pn].enti.tx, player[pn].enti.ty) &&
-			ZCL_CollCheck(pip, player[pn].enti.d, player[pn].enti.tx, player[pn].enti.ty))//!(player[pn].enti.tx-1 == TRIGGX && player[pn].enti.ty == TRIGGY))	//collision detection!
+			if(ZCL_ScreenMidPosChk(gvar->mv, gvar->player[pn].enti.d, gvar->player[pn].enti.tx, gvar->player[pn].enti.ty) &&
+			ZCL_CollCheck(gvar->mv, gvar->player[pn].enti.d, gvar->player[pn].enti.tx, gvar->player[pn].enti.ty))//!(gvar->player[pn].enti.tx-1 == TRIGGX && gvar->player[pn].enti.ty == TRIGGY))	//collision detection!
 			{
-				player[pn].walktype=2;
-				if(player[pn].enti.q<=player[pn].enti.spt)
+				gvar->player[pn].walktype=2;
+				if(gvar->player[pn].enti.q<=gvar->player[pn].enti.spt)
 				{
-					ZC_animatePlayer(pip, player, pn);
-					ZC_mapScroll(pip, player, pn);
-					player[pn].enti.q++;
-					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
+					ZC_animatePlayer(gvar->mv, gvar->player, pn);
+					ZC_mapScroll(gvar->mv, gvar->player, pn);
+					gvar->player[pn].enti.q++;
+					//0000gvar->mv[0].video->clk = ((*clockw)-gvar->mv[0].video->startclk)/18.2;
 #ifdef OLDWALKSHOWPAGESTUFF
 					SHOWMVFUN__
 #endif
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
+				} else { gvar->player[pn].enti.q = 1; gvar->player[pn].enti.d = 2; gvar->player[pn].enti.tx--; }
 			}
-			else if(ZCL_mapEdgeChk(pip, player[pn].enti.d, player[pn].enti.tx, player[pn].enti.ty, 0, 1) &&
-			ZCL_CollCheck(pip, player[pn].enti.d, player[pn].enti.tx, player[pn].enti.ty))//!(player[pn].enti.tx-1 == TRIGGX && player[pn].enti.ty == TRIGGY))
+			else if(ZCL_mapEdgeChk(gvar->mv, gvar->player[pn].enti.d, gvar->player[pn].enti.tx, gvar->player[pn].enti.ty, 0, 1) &&
+			ZCL_CollCheck(gvar->mv, gvar->player[pn].enti.d, gvar->player[pn].enti.tx, gvar->player[pn].enti.ty))//!(gvar->player[pn].enti.tx-1 == TRIGGX && gvar->player[pn].enti.ty == TRIGGY))
 			{
-				player[pn].walktype=1;
-				if(player[pn].enti.q<=player[pn].enti.spt)
+				gvar->player[pn].walktype=1;
+				if(gvar->player[pn].enti.q<=gvar->player[pn].enti.spt)
 				{
-					player[pn].enti.x-=(player[pn].enti.speed);
-					ZC_animatePlayer(pip, player, pn);
-					player[pn].enti.q++;
+					gvar->player[pn].enti.x-=(gvar->player[pn].enti.speed);
+					ZC_animatePlayer(gvar->mv, gvar->player, pn);
+					gvar->player[pn].enti.q++;
 #ifdef OLDWALKSHOWPAGESTUFF
 					SHOWMVFUN__
 #endif
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.tx--; }
+				} else { gvar->player[pn].enti.q = 1; gvar->player[pn].enti.d = 2; gvar->player[pn].enti.tx--; }
 			}
 			else
 			{
-				player[pn].walktype=0;
-				ZC_animatePlayer(pip, player, pn);
-				player[pn].enti.d = 2;
+				gvar->player[pn].walktype=0;
+				ZC_animatePlayer(gvar->mv, gvar->player, pn);
+				gvar->player[pn].enti.d = 2;
 #ifdef OLDWALKSHOWPAGESTUFF
 				SHOWMVFUN__
 #endif
 			}
-			player[pn].enti.triggerx = player[pn].enti.tx-1;
-			player[pn].enti.triggery = player[pn].enti.ty;
+			gvar->player[pn].enti.triggerx = gvar->player[pn].enti.tx-1;
+			gvar->player[pn].enti.triggery = gvar->player[pn].enti.ty;
 		break;
 		//down movement
 		case 4:
-			if(ZCL_ScreenMidPosChk(pip, player[pn].enti.d, player[pn].enti.tx, player[pn].enti.ty) &&
-			ZCL_CollCheck(pip, player[pn].enti.d, player[pn].enti.tx, player[pn].enti.ty))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty+1 == TRIGGY))	//collision detection!
+			if(ZCL_ScreenMidPosChk(gvar->mv, gvar->player[pn].enti.d, gvar->player[pn].enti.tx, gvar->player[pn].enti.ty) &&
+			ZCL_CollCheck(gvar->mv, gvar->player[pn].enti.d, gvar->player[pn].enti.tx, gvar->player[pn].enti.ty))//!(gvar->player[pn].enti.tx == TRIGGX && gvar->player[pn].enti.ty+1 == TRIGGY))	//collision detection!
 			{
-				player[pn].walktype=2;
-				if(player[pn].enti.q<=player[pn].enti.spt)
+				gvar->player[pn].walktype=2;
+				if(gvar->player[pn].enti.q<=gvar->player[pn].enti.spt)
 				{
-					ZC_animatePlayer(pip, player, pn);
-					ZC_mapScroll(pip, player, pn);
-					player[pn].enti.q++;
-					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
+					ZC_animatePlayer(gvar->mv, gvar->player, pn);
+					ZC_mapScroll(gvar->mv, gvar->player, pn);
+					gvar->player[pn].enti.q++;
+					//0000gvar->mv[0].video->clk = ((*clockw)-gvar->mv[0].video->startclk)/18.2;
 #ifdef OLDWALKSHOWPAGESTUFF
 					SHOWMVFUN__
 #endif
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
+				} else { gvar->player[pn].enti.q = 1; gvar->player[pn].enti.d = 2; gvar->player[pn].enti.ty++; }
 			}
-			else if(ZCL_mapEdgeChk(pip, player[pn].enti.d, player[pn].enti.tx, player[pn].enti.ty, 0, 1) &&
-			ZCL_CollCheck(pip, player[pn].enti.d, player[pn].enti.tx, player[pn].enti.ty))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty+1 == TRIGGY))
+			else if(ZCL_mapEdgeChk(gvar->mv, gvar->player[pn].enti.d, gvar->player[pn].enti.tx, gvar->player[pn].enti.ty, 0, 1) &&
+			ZCL_CollCheck(gvar->mv, gvar->player[pn].enti.d, gvar->player[pn].enti.tx, gvar->player[pn].enti.ty))//!(gvar->player[pn].enti.tx == TRIGGX && gvar->player[pn].enti.ty+1 == TRIGGY))
 			{
-				player[pn].walktype=1;
-				if(player[pn].enti.q<=player[pn].enti.spt)
+				gvar->player[pn].walktype=1;
+				if(gvar->player[pn].enti.q<=gvar->player[pn].enti.spt)
 				{
-					player[pn].enti.y+=(player[pn].enti.speed);
-					ZC_animatePlayer(pip, player, pn);
-					player[pn].enti.q++;
+					gvar->player[pn].enti.y+=(gvar->player[pn].enti.speed);
+					ZC_animatePlayer(gvar->mv, gvar->player, pn);
+					gvar->player[pn].enti.q++;
 #ifdef OLDWALKSHOWPAGESTUFF
 					SHOWMVFUN__
 #endif
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty++; }
+				} else { gvar->player[pn].enti.q = 1; gvar->player[pn].enti.d = 2; gvar->player[pn].enti.ty++; }
 			}
 			else
 			{
-				player[pn].walktype=0;
-				ZC_animatePlayer(pip, player, pn);
-				player[pn].enti.d = 2;
+				gvar->player[pn].walktype=0;
+				ZC_animatePlayer(gvar->mv, gvar->player, pn);
+				gvar->player[pn].enti.d = 2;
 #ifdef OLDWALKSHOWPAGESTUFF
 				SHOWMVFUN__
 #endif
 			}
-			player[pn].enti.triggerx = player[pn].enti.tx;
-			player[pn].enti.triggery = player[pn].enti.ty+1;
+			gvar->player[pn].enti.triggerx = gvar->player[pn].enti.tx;
+			gvar->player[pn].enti.triggery = gvar->player[pn].enti.ty+1;
 		break;
 		//up movement
 		case 0:
-			if(ZCL_ScreenMidPosChk(pip, player[pn].enti.d, player[pn].enti.tx, player[pn].enti.ty) &&
-			ZCL_CollCheck(pip, player[pn].enti.d, player[pn].enti.tx, player[pn].enti.ty))//!(player[pn].enti.tx == TRIGGX && player[pn].enti.ty-1 == TRIGGY))	//collision detection!
+			if(ZCL_ScreenMidPosChk(gvar->mv, gvar->player[pn].enti.d, gvar->player[pn].enti.tx, gvar->player[pn].enti.ty) &&
+			ZCL_CollCheck(gvar->mv, gvar->player[pn].enti.d, gvar->player[pn].enti.tx, gvar->player[pn].enti.ty))//!(gvar->player[pn].enti.tx == TRIGGX && gvar->player[pn].enti.ty-1 == TRIGGY))	//collision detection!
 			{
-				player[pn].walktype=2;
-				if(player[pn].enti.q<=player[pn].enti.spt)
+				gvar->player[pn].walktype=2;
+				if(gvar->player[pn].enti.q<=gvar->player[pn].enti.spt)
 				{
-					ZC_animatePlayer(pip, player, pn);
-					ZC_mapScroll(pip, player, pn);
-					player[pn].enti.q++;
-					//0000pip[0].video->clk = ((*clockw)-pip[0].video->startclk)/18.2;
+					ZC_animatePlayer(gvar->mv, gvar->player, pn);
+					ZC_mapScroll(gvar->mv, gvar->player, pn);
+					gvar->player[pn].enti.q++;
+					//0000gvar->mv[0].video->clk = ((*clockw)-gvar->mv[0].video->startclk)/18.2;
 #ifdef OLDWALKSHOWPAGESTUFF
 					SHOWMVFUN__
 #endif
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
+				} else { gvar->player[pn].enti.q = 1; gvar->player[pn].enti.d = 2; gvar->player[pn].enti.ty--; }
 			}
-			else if(ZCL_mapEdgeChk(pip, player[pn].enti.d, player[pn].enti.tx, player[pn].enti.ty, 0, 1) &&
-			ZCL_CollCheck(pip, player[pn].enti.d, player[pn].enti.tx, player[pn].enti.ty))//!(player[pn].enti.tx == TRIGGX &&  player[pn].enti.ty-1 == TRIGGY))
+			else if(ZCL_mapEdgeChk(gvar->mv, gvar->player[pn].enti.d, gvar->player[pn].enti.tx, gvar->player[pn].enti.ty, 0, 1) &&
+			ZCL_CollCheck(gvar->mv, gvar->player[pn].enti.d, gvar->player[pn].enti.tx, gvar->player[pn].enti.ty))//!(gvar->player[pn].enti.tx == TRIGGX &&  gvar->player[pn].enti.ty-1 == TRIGGY))
 			{
-				player[pn].walktype=1;
-				if(player[pn].enti.q<=player[pn].enti.spt)
+				gvar->player[pn].walktype=1;
+				if(gvar->player[pn].enti.q<=gvar->player[pn].enti.spt)
 				{
-					player[pn].enti.y-=(player[pn].enti.speed);
-					ZC_animatePlayer(pip, player, pn);
-					player[pn].enti.q++;
+					gvar->player[pn].enti.y-=(gvar->player[pn].enti.speed);
+					ZC_animatePlayer(gvar->mv, gvar->player, pn);
+					gvar->player[pn].enti.q++;
 #ifdef OLDWALKSHOWPAGESTUFF
 					SHOWMVFUN__
 #endif
-				} else { player[pn].enti.q = 1; player[pn].enti.d = 2; player[pn].enti.ty--; }
+				} else { gvar->player[pn].enti.q = 1; gvar->player[pn].enti.d = 2; gvar->player[pn].enti.ty--; }
 			}
 			else
 			{
-				player[pn].walktype=0;
-				ZC_animatePlayer(pip, player, pn);
-				player[pn].enti.d = 2;
+				gvar->player[pn].walktype=0;
+				ZC_animatePlayer(gvar->mv, gvar->player, pn);
+				gvar->player[pn].enti.d = 2;
 #ifdef OLDWALKSHOWPAGESTUFF
 				SHOWMVFUN__
 #endif
 			}
-			player[pn].enti.triggerx = player[pn].enti.tx;
-			player[pn].enti.triggery = player[pn].enti.ty-1;
+			gvar->player[pn].enti.triggerx = gvar->player[pn].enti.tx;
+			gvar->player[pn].enti.triggery = gvar->player[pn].enti.ty-1;
 		break;
 	}
 }
@@ -908,13 +909,12 @@ void shinku(global_game_variables_t *gv)
 			gv->kurokku.frames_per_second=1;
 		break;
 		case 1:
-#ifdef OLDWALKSHOWPAGESTUFF
-			//modexWaitBorder();
-			//modexWaitBorder_start();
-#else
+//#ifndef OLDWALKSHOWPAGESTUFF
 			//vga_wait_for_vsync();
 			vga_wait_for_vsync_end();
-#endif
+//#else
+			//modexWaitBorder();
+//#endif
 			gv->kurokku.frames_per_second=60;
 		break;
 	}
@@ -995,6 +995,9 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn)
 		animate_spri(&player[pn].enti, pip[0].video);
 	}
 //0000if(player[pn].enti.q<4) delay(200);
+#ifdef OLDWALKSHOWPAGESTUFF
+	modexWaitBorder();
+#endif
 }
 
 /*

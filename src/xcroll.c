@@ -158,6 +158,10 @@ void main(int argc, char *argv[])
 	gvar.video.page[0].tlx=gvar.mv[0].tx*TILEWH;
 	gvar.video.page[0].tly=gvar.mv[0].ty*TILEWH;
 
+#ifdef OLDWALKSHOWPAGESTUFF
+	VL_ShowPage(&(gvar.video.page[gvar.video.sp]), gvar.kurokku.fpscap, 0);
+#endif
+
 	shinku(&gvar);
 //modexpdump(gvar.mv[0].page);
 #ifdef FADE
@@ -176,7 +180,8 @@ void main(int argc, char *argv[])
 		IN_ReadControl(&gvar.player[0], &gvar);
 		if(!panswitch){
 			//ZC_walk2(gvar.player[0].ent, mv);
-			ZC_walk(&gvar.mv, &gvar.player, 0);
+			//ZC_walk(&gvar.mv, &gvar.player, 0);
+			ZC_walk(&gvar, 0);
 		}else{
 			TAIL_PANKEYFUNZC;
 			//printf("	gvar.player[0].enti.q: %d", gvar.player[0].enti.q);	printf("	gvar.player[0].d: %d\n", gvar.player[0].d);

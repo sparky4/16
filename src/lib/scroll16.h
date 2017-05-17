@@ -41,8 +41,10 @@
 
 #define SPRITE
 //#define TILERENDER
+
 //0000#define SHOWFPS
 //#define OLDWALKSHOWPAGESTUFF
+
 
 #define PLAYERBMPDATAVAR	gvar.player[pn].data
 #define PLAYERBMPDATA		*PLAYERBMPDATAVAR
@@ -105,7 +107,7 @@ extern char global_temp_status_text[512];
 extern char global_temp_status_text2[512];
 
 void initMap(map_t *map);
-void ZC_walk(map_view_t *pip, player_t *player, word pn);
+void ZC_walk(global_game_variables_t *gvar, word pn);
 void ZC_panPageManual(map_view_t *pip, player_t *player, word pn);
 void ZC_MVSetup(map_view_t *pip, map_t *map, global_game_variables_t *gv);
 void ZC_MVInit(map_view_t *pip, int tx, int ty);
