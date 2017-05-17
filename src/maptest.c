@@ -42,15 +42,13 @@ main(int argc, char *argv[])
 
 	MM_Startup(&gvar);
 	PM_Startup(&gvar);
-	//printf("pmstarted ok\n");
 	PM_CheckMainMem(&gvar);
 	PM_UnlockMainMem(&gvar);
 	CA_Startup(&gvar);
 
 	fprintf(stderr, fmt, _memavl());
 	fprintf(stderr, fmt0, _memmax());
-	fprintf(stderr, "Size of map var = %u\n", _msize(&(gvar.ca.mapsegs)));
-	//getch();
+	fprintf(stderr, "Size of map var = %u\n", _msize(&(gvar.ca.MAPSEGPTR)));
 
 	CA_loadmap("data/test.map", &map, &gvar);
 #ifdef DUMP
@@ -58,7 +56,6 @@ main(int argc, char *argv[])
 	fprintf(stdout, "map.height=	%d\n", map.height);
 	getch();
 #ifdef DUMP_MAP
-	//if(map.width*map.height != 1200)
 	for(k=0;k<MAPPLANES;k++)
 	{
 		printf("maplayer: %u\n[\n", k);
@@ -75,7 +72,7 @@ main(int argc, char *argv[])
 		getch();
 	}
 #else
-	//fprintf(stderr, "contents of the buffer\n[\n%s\n]\n", (gvar.ca.mapsegs));
+	fprintf(stderr, "contents of the buffer\n[\n%s\n]\n", (gvar.ca.MAPSEGPTR));
 #endif
 	/*fprintf(stdout, "&main()=%Fp\n", *argv[0]);
 	fprintf(stdout, "&map==%Fp\n", &map);
@@ -85,7 +82,7 @@ main(int argc, char *argv[])
 	fprintf(stdout, "&map.data==%Fp\n", map.data);*/
 #endif
 	//fprintf(stderr, "here comes dat boi!\n"); getch(); fprintf(stderr, "%s", datboi);
-	MM_FreePtr((memptr *)&(gvar.ca.mapsegs), &gvar);
+	MM_FreePtr(MEMPTRCONV (gvar.ca.MAPSEGPTR), &gvar);
 	PM_Shutdown(&gvar);
 	CA_Shutdown(&gvar);
 	MM_Shutdown(&gvar);
