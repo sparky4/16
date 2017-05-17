@@ -771,6 +771,7 @@ typedef struct	//TODO: USE THIS!!!!
 
 	sd_t		sd;
 	//TODO: extend! and learn from keen/wolf/catacomb's code wwww
+	memptr	spribuff;	//temp
 } ca_t;
 
 //==========================================================================
