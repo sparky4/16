@@ -80,7 +80,9 @@
 //printf("middle tile position: %dx", gvar.video.page[0].tilemidposscreenx);	printf("%d\n", gvar.video.page[0].tilemidposscreeny);
 //printf("	aniframe=%u", gvar.player[0].enti.persist_aniframe);
 //printf("mv[0]txy: %dx%d	", mv[0].tx, mv[0].ty); printf("mv[1]txy: %dx%d", mv[1].tx, mv[1].ty);
-#define SCROLLEXITMESG 	printf("page[0]dxy: %dx%d", gvar.video.page[0].dx, gvar.video.page[0].dy);\
+//	printf("page[0]dxy: %dx%d", gvar.video.page[0].dx, gvar.video.page[0].dy);
+#define SCROLLEXITMESG \
+	printf("size of mmblocktype: %u	", sizeof(mmblocktype));\
 	printf("\n\n");\
 	printf("player vars:\n");\
 	printf("	xy: %dx%d", gvar.player[0].enti.x, gvar.player[0].enti.y); printf("	txy: %dx%d", gvar.player[0].enti.tx, gvar.player[0].enti.ty); printf("	triggxy: %dx%d", gvar.player[0].enti.triggerx, gvar.player[0].enti.triggery); printf("	value: %d\n", gvar.mv[1].map->layerdata[0].data[(gvar.player[0].enti.triggerx-1)+(map.width*(gvar.player[0].enti.triggery-1))]);\
