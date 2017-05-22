@@ -826,7 +826,7 @@ void MM_Startup (global_game_variables_t *gvar)
 
 	//has to be 16
 	if(sizeof(mmblocktype)!=16)
-		return;
+		Quit (gvar, "mmblocktype size is not 16");
 
 	gvar->mm.mmstarted = true;
 	gvar->mm.bombonerror = true;
