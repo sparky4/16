@@ -69,9 +69,6 @@ void main(int argc, char *argv[])
 
 	ggvv=&gvar;
 
-	// input!
-	IN_Default(0, &gvar.player[0],ctrl_Keyboard1, &gvar);
-
 	if (argc >= 2) {
 		if(argv[1]){ strcpy(bakapee, argv[1]);
 		if(argv[2]) strcpy(bakapeep, argv[2]); }
@@ -94,9 +91,10 @@ void main(int argc, char *argv[])
 	//initMap(&map);
 #endif
 	// data
-	printf("loading vrs	");
-	VRS_LoadVRS(bakapee, &gvar.player[0].enti, &gvar);	printf("ok\n");
-	IN_StartAck (&gvar);	while (!IN_CheckAck (&gvar)){}
+	VRS_LoadVRS(bakapee, &gvar.player[0].enti, &gvar);
+
+	// input!
+	IN_Default(0, &gvar.player[0],ctrl_Keyboard1, &gvar);
 
 	// save the palette
 #ifdef FADE
