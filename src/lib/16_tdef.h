@@ -501,9 +501,8 @@ typedef struct
 
 typedef struct mmblockstruct
 {
-	//word	start,length;
+	//word	start,length,		blob;	//for data larger than 64k
 	word	start;	dword length;
-	//word	blob;	//for data larger than 64k
 	unsigned	attributes;
 	memptr		*useptr;	// pointer to the segment start
 	struct mmblockstruct far *next;
@@ -771,7 +770,7 @@ typedef struct	//TODO: USE THIS!!!!
 
 	sd_t		sd;
 	//TODO: extend! and learn from keen/wolf/catacomb's code wwww
-	memptr	spribuff;	//temp
+	memptr	spribuff[64];	//temp
 } ca_t;
 
 //==========================================================================

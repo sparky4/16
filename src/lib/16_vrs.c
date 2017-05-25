@@ -33,24 +33,24 @@ void VRS_OpenVRS(char *filename, entity_t *enti, boolean rlsw, global_game_varia
 	uint16_t far *vrl_id_iter;
 	uint32_t far *vrl_headers_offsets;
 	struct vrl1_vgax_header far *curr_vrl;
-	uint32_t vrl_size;
+	uint16_t vrl_size;
 	int num_of_vrl,i;
 
 	switch(rlsw)
 	{
 		case 1:
-			CA_ReadFile(filename, &gvar->ca.spribuff, gvar);
-//TODO ++++			CA_ReadFile(filename, MEMPTRCONV enti->spri.spritesheet.spribuff, gvar);
+//TODO ++++			CA_ReadFile(filename, &gvar->ca.spribuff, gvar);
+			CA_ReadFile(filename, MEMPTRCONV enti->spri.spritesheet.spribuff, gvar);
 		break;
 		case 0:
-			CA_LoadFile(filename, &gvar->ca.spribuff, gvar);
-//TODO ++++			CA_LoadFile(filename, MEMPTRCONV enti->spri.spritesheet.spribuff, gvar);
+//TODO ++++			CA_LoadFile(filename, &gvar->ca.spribuff, gvar);
+			CA_LoadFile(filename, MEMPTRCONV enti->spri.spritesheet.spribuff, gvar);
 		break;
 	}
 
 	// Insert sanity cheks later
-	enti->spri.spritesheet.buffer = gvar->ca.spribuff;
-//TODO ++++	enti->spri.spritesheet.buffer = enti->spri.spritesheet.spribuff;	//TODO: merge these 2 vars into 1
+//TODO ++++	enti->spri.spritesheet.buffer = gvar->ca.spribuff;
+	enti->spri.spritesheet.buffer = enti->spri.spritesheet.spribuff;	//TODO: merge these 2 vars into 1
 	enti->spri.spritesheet.data_size = sizeof(enti->spri.spritesheet.buffer) - sizeof(struct vrl1_vgax_header);
 	num_of_vrl = 0;
 	vrl_id_iter = (uint16_t far *)(enti->spri.spritesheet.buffer + enti->spri.spritesheet.vrs_hdr->offset_table[VRS_HEADER_OFFSET_SPRITE_ID_LIST]);
@@ -68,8 +68,12 @@ void VRS_OpenVRS(char *filename, entity_t *enti, boolean rlsw, global_game_varia
 #ifdef __DEBUG_MM__
 			dbg_debugmm=0;
 #endif
-			MM_GetPtr(MEMPTRCONV gvar->ca.grsegs, sizeof(vrl1_vgax_offset_t *)*num_of_vrl, gvar);
-			enti->spri.spritesheet.vrl_line_offsets = (vrl1_vgax_offset_t **)gvar->ca.grsegs;
+//			MM_GetPtr(MEMPTRCONV gvar->ca.grsegs, sizeof(vrl1_vgax_offset_t *)*num_of_vrl, gvar);
+//			enti->spri.spritesheet.vrl_line_offsets = (vrl1_vgax_offset_t **)gvar->ca.grsegs;
+			MM_GetPtr(gvar->ca.spribuff, sizeof(vrl1_vgax_offset_t *)*num_of_vrl, gvar);
+			enti->spri.spritesheet.vrl_line_offsets = (vrl1_vgax_offset_t **)(gvar->ca.spribuff);
+//			MM_GetPtr(spribuff, sizeof(vrl1_vgax_offset_t *)*num_of_vrl, gvar);
+//			enti->spri.spritesheet.vrl_line_offsets = (vrl1_vgax_offset_t **)spribuff;
 		break;
 	}
 #endif
