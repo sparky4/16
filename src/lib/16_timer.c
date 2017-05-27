@@ -41,7 +41,7 @@ clock_t start_timer(global_game_variables_t *gv)
 		break;
 		default:
 			gv->kurokku.fpscap=1;
-			gv->kurokku.frames_per_second=60;
+			gv->kurokku.frames_per_second=FPSVALUE;
 		break;
 	}
 	return gv->kurokku.t;
@@ -96,6 +96,7 @@ void shinkutxt(global_game_variables_t *gv)
 // 	}
 }
 
+#if 0
 void WaitPee()
 {
     while(inp(INPUT_STATUS_1)  & 8)  {
@@ -106,3 +107,4 @@ void WaitPee()
 	/* spin */
     }
 }
+#endif

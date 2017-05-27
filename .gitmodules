@@ -21,3 +21,7 @@
 [submodule "Catacomb3D"]
         path = 16/Catacomb3D
 	url = https://github.com/FlatRockSoft/Catacomb3D.git
+
+[submodule "shitman"]
+        path = 16/shitman
+        url = https://github.com/joncampbell123/shitman.git

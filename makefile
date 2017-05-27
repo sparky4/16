@@ -593,6 +593,7 @@ reinitlibs: .symbolic
 	@$(REMOVECOMMAND) -rf 16/wolf3d
 	@$(REMOVECOMMAND) -rf 16/keen
 	@$(REMOVECOMMAND) -rf 16/Catacomb3D
+	@$(REMOVECOMMAND) -rf 16/shitman
 	@wmake -s -h initlibs
 
 initlibs: .symbolic
@@ -603,6 +604,7 @@ initlibs: .symbolic
 	@git clone https://github.com/id-Software/wolf3d.git
 	@git clone https://github.com/keendreams/keen.git
 	@git clone https://github.com/FlatRockSoft/Catacomb3D.git
+	@git clone https://github.com/joncampbell123/shitman.git
 	@cd $(BUILD_ROOT)
 	@$(COPYCOMMAND) $(DOSLIBDIR)/make-lowercase .
 

@@ -25,12 +25,14 @@
 #include "src/lib/16_head.h"
 #include "src/lib/wcpu/16_wcpu.h"
 
+#define FPSVALUE 60
+
 clock_t start_timer(global_game_variables_t *gv);
 double elapsed_timer(global_game_variables_t *gv);
 double ticktock(global_game_variables_t *gv);
 double time_in_seconds(global_game_variables_t *gv);
 //double time_in_seconds(time_t in_t);
 void shinkutxt(global_game_variables_t *gv);
-void WaitPee(void);
+//void WaitPee(void);
 
 #endif

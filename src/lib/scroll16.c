@@ -915,7 +915,7 @@ void shinku(global_game_variables_t *gv)
 //#else
 			//modexWaitBorder();
 //#endif
-			gv->kurokku.frames_per_second=60;
+			gv->kurokku.frames_per_second=FPSVALUE;
 		break;
 	}
 	PM_NextFrame(gv);
