@@ -604,7 +604,6 @@ initlibs: .symbolic
 	@git clone https://github.com/id-Software/wolf3d.git
 	@git clone https://github.com/keendreams/keen.git
 	@git clone https://github.com/FlatRockSoft/Catacomb3D.git
-	@wmake initshitman
 	@cd $(BUILD_ROOT)
 	@$(COPYCOMMAND) $(DOSLIBDIR)/make-lowercase .
 
