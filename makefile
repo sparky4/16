@@ -604,10 +604,7 @@ initlibs: .symbolic
 	@git clone https://github.com/id-Software/wolf3d.git
 	@git clone https://github.com/keendreams/keen.git
 	@git clone https://github.com/FlatRockSoft/Catacomb3D.git
-	@git clone https://github.com/joncampbell123/shitman.git
-	@cd 16/shitman
-	@$(REMOVECOMMAND) -rf doslib
-	@git clone https://github.com/joncampbell123/doslib.git
+	@wmake initshitman
 	@cd $(BUILD_ROOT)
 	@$(COPYCOMMAND) $(DOSLIBDIR)/make-lowercase .
 
@@ -615,6 +612,14 @@ getlib: .symbolic
 	@cd $(SRCLIB:$(to_os_path))
 	@git clone https://github.com/joncampbell123/doslib.git
 	@git clone https://github.com/zserge/jsmn.git
+	@cd $(BUILD_ROOT)
+
+initshitman: .symbolic
+	@cd 16
+	@git clone https://github.com/joncampbell123/shitman.git
+	@cd shitman
+	@$(REMOVECOMMAND) -rf doslib
+	@git clone https://github.com/joncampbell123/doslib.git
 	@cd $(BUILD_ROOT)
 
 ##
