@@ -605,6 +605,9 @@ initlibs: .symbolic
 	@git clone https://github.com/keendreams/keen.git
 	@git clone https://github.com/FlatRockSoft/Catacomb3D.git
 	@git clone https://github.com/joncampbell123/shitman.git
+	@cd 16/shitman
+	@$(REMOVECOMMAND) -rf doslib
+	@git clone https://github.com/joncampbell123/doslib.git
 	@cd $(BUILD_ROOT)
 	@$(COPYCOMMAND) $(DOSLIBDIR)/make-lowercase .
 
