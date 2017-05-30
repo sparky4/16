@@ -115,7 +115,8 @@ int main(int argc,char **argv)
 	/* setup camera and screen~ */
 	modexHiganbanaPageSetup(&gvar);
 	ZC_MVSetup(&gvar.mv, &map, &gvar);
-	ZC_ShowMV(&gvar.mv, gvar.video.sp, 0);
+	//ZC_ShowMV(&gvar.mv, gvar.video.sp, 0);
+	VL_ShowPage(&gvar.video.page[gvar.video.sp], 0, 0);
 
 //	VL_PatternDraw(video_t *video, word pn, boolean sw, boolean allsw);
 	VL_PatternDraw(&gvar.video, 0/*gvar.video.sp*/, 0, 1);
@@ -230,7 +231,8 @@ draw_vrl1_vgax_modex(x-rx,y-ry,vrl_header,line_offsets,buffer+sizeof(*vrl_header
 
 //===========================================================================//
 
-	ZC_ShowMV(&gvar.mv, 0, 0);
+	//ZC_ShowMV(&gvar.mv, 0, 0);
+	VL_ShowPage(&gvar.video.page[gvar.video.sp], 0, 0);
 if(!noanim) {
 	/* another handy "demo" effect using VGA write mode 1.
 	 * we can take what's on screen and vertically squash it like an old analog TV set turning off. */

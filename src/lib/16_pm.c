@@ -1208,7 +1208,7 @@ PM_GetPage(int pagenum, global_game_variables_t *gvar)
 	if (pagenum >= gvar->pm.fi.ChunksInFile)
 		Quit (gvar, "PM_GetPage: Invalid page request");
 
-//#ifdef __DEBUG_2__	// for debugging
+#ifdef __DEBUG_2__	// for debugging
 	__asm {
 		mov	dx,STATUS_REGISTER_1
 		in	al,dx
@@ -1218,7 +1218,7 @@ PM_GetPage(int pagenum, global_game_variables_t *gvar)
 		mov	al,10	// bright green
 		out	dx,al
 	}
-//#endif
+#endif
 
 	if (!(result = PM_GetPageAddress(pagenum, gvar)))
 	{
@@ -1236,7 +1236,7 @@ if (!gvar->pm.PMPages[pagenum].offset)	// JDC: sparse page
 	}
 	gvar->pm.PMPages[pagenum].lastHit =  gvar->pm.PMFrameCount;
 
-//#ifdef __DEBUG_2__	// for debugging
+#ifdef __DEBUG_2__	// for debugging
 	__asm{
 		mov	dx,STATUS_REGISTER_1
 		in	al,dx
@@ -1248,7 +1248,7 @@ if (!gvar->pm.PMPages[pagenum].offset)	// JDC: sparse page
 		mov	al,0x20	// normal
 		out	dx,al
 	}
-//#endif
+#endif
 
 	return(result);
 }

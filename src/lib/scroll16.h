@@ -114,7 +114,7 @@ void ZC_walk(global_game_variables_t *gvar, word pn);
 void ZC_panPageManual(map_view_t *pip, player_t *player, word pn);
 void ZC_MVSetup(map_view_t *pip, map_t *map, global_game_variables_t *gv);
 void ZC_MVInit(map_view_t *pip, int tx, int ty);
-void ZC_ShowMV(map_view_t *moo, boolean vsync, boolean sr);
+//void ZC_ShowMV(map_view_t *moo, boolean vsync, boolean sr);
 void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid);
 void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid);

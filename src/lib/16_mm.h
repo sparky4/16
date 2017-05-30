@@ -190,6 +190,7 @@ boolean MML_CheckForXMS (void);
 void MML_UseSpace (unsigned segstart, unsigned seglength, global_game_variables_t *gvar);
 void MML_ClearBlock (global_game_variables_t *gvar);
 
+void MM_Reset (global_game_variables_t *gvar);
 void MM_Startup (global_game_variables_t *gvar);
 void MM_Shutdown (global_game_variables_t *gvar);
 

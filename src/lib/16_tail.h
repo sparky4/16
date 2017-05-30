@@ -78,15 +78,15 @@
 	if(gvar.in.inst->Keyboard[sc_F4]){ turboXT(12);									IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[68/*sc_F10*/]){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap;			IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_F8]){ gvar.video.vga_state.bgps=!gvar.video.vga_state.bgps;		IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[sc_F7]){ ZC_ShowMV(&gvar.mv, 0, 1);						IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[sc_F6]){ ZC_ShowMV(&gvar.mv, 0, 0);						IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_F7]){ VL_ShowPage(&gvar.video.page, 0, 1);						IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_F6]){ VL_ShowPage(&gvar.video.page, 0, 0);						IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_T]){ gvar.video.vga_state.rss=!gvar.video.vga_state.rss;			IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_P]){ modexpdump(0, &gvar);							IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_Y]){ dbg_delayanimation=!dbg_delayanimation;				IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_Q]){ VL_modexPrintTextBox(&gvar);						IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_W]){ VL_MemToScreen((byte __far *)&gvar, 64, 64, 16, 16, &gvar);	IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_LBrkt]){ ShowPalVal (&gvar);							IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[sc_M]){ MM_ShowMemory(&gvar);							IN_UserInput(1, &gvar); } \
+	if(gvar.in.inst->Keyboard[sc_M]){ MM_ShowMemory(&gvar);	MM_DumpData (&gvar);			IN_UserInput(1, &gvar); } \
 	RFDEBUGFUNCTIONS
 //FIZZLEFADEFUNCTION
 
@@ -98,10 +98,10 @@
 	ZC_panPageManual(&gvar.mv, &gvar.player, 0);
 
 #define FUNCTIONKEYSHOWMV \
-	if(gvar.in.inst->Keyboard[1+1]){ gvar.video.sp=0; ZC_ShowMV(&gvar.mv, 0, 0); } \
-	if(gvar.in.inst->Keyboard[2+1]){ gvar.video.sp=1; ZC_ShowMV(&gvar.mv, 0, 0); } \
-	if(gvar.in.inst->Keyboard[3+1]){ gvar.video.sp=2; ZC_ShowMV(&gvar.mv, 0, 1); } \
-	if(gvar.in.inst->Keyboard[4+1]){ gvar.video.sp=3; ZC_ShowMV(&gvar.mv, 0, 1); }
+	if(gvar.in.inst->Keyboard[1+1]){ gvar.video.sp=0; VL_ShowPage(&gvar.video.page, 0, 0); } \
+	if(gvar.in.inst->Keyboard[2+1]){ gvar.video.sp=1; VL_ShowPage(&gvar.video.page, 0, 0); } \
+	if(gvar.in.inst->Keyboard[3+1]){ gvar.video.sp=2; VL_ShowPage(&gvar.video.page, 0, 1); } \
+	if(gvar.in.inst->Keyboard[4+1]){ gvar.video.sp=3; VL_ShowPage(&gvar.video.page, 0, 1); }
 
 #define TAIL_FUNCTIONKEYDRAWJUNK \
 	FUNCTIONKEYSHOWMV \

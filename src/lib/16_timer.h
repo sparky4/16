@@ -25,7 +25,7 @@
 #include "src/lib/16_head.h"
 #include "src/lib/wcpu/16_wcpu.h"
 
-#define FPSVALUE 60
+#define FPSVALUE 30
 
 clock_t start_timer(global_game_variables_t *gv);
 double elapsed_timer(global_game_variables_t *gv);

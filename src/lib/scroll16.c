@@ -318,7 +318,7 @@ void ZC_walk(global_game_variables_t *gvar, word pn)
 //panning page
 void ZC_panPageManual(map_view_t *pip, player_t *player, word pn)
 {
-#define SHOWMVFUN_ ZC_ShowMV(pip, 0, 0);
+#define SHOWMVFUN_ VL_ShowPage(pip[0].page, 0, 0);//ZC_ShowMV(pip, 0, 0);
 	switch(player[pn].enti.d)
 	{
 		//right movement
@@ -413,6 +413,8 @@ void ZC_MVInit(map_view_t *pip, int tx, int ty)
 	//pip[0].ty = pip[1].ty = ty;
 }
 
+//#if 0
+//for backwards compatibility with code i am lazy ww
 void ZC_ShowMV(map_view_t *moo, boolean vsync, boolean sr)
 {
 	VL_ShowPage(moo[0].page, vsync, sr);

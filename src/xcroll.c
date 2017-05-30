@@ -23,8 +23,10 @@
 #include "src/lib/scroll16.h"
 #include "src/lib/16_timer.h"
 //#include "src/lib/16_dbg.h"
+//HC_heapdump
 
 #ifdef __DEBUG__
+#define SCROLLEXEDEBUG
 boolean
 	dbg_nointest=1;
 #endif
@@ -59,8 +61,6 @@ void main(int argc, char *argv[])
 	static global_game_variables_t gvar;
 	struct glob_game_vars *ggvv;
 
-//	static entity_t enti;
-
 	char bakapee[64] = FILENAME_1;
 	char bakapeep[64] = FILENAME_1P;
 //	char bakapee3[64] = FILENAME_3;
@@ -79,19 +79,34 @@ void main(int argc, char *argv[])
 	//----gvar.player[0].enti.spri.spritesheet = malloc(sizeof(struct vrs_container));
 
 	// create the map
-//	fprintf(stderr, "testing map load~	");
+		#ifdef SCROLLEXEDEBUG
+	strcpy(gvar.handle.datadumpfilename, "xcroll1.16w");	MM_DumpData (&gvar);
+	fprintf(stderr, "testing map load~	");
+		#endif
 	CA_loadmap("data/test.map", &map, &gvar);
 #ifndef NOMAPLOAD
 	chkmap(&map, 0);
-//	initMap(&map);
-//	printf("chkmap ok	");
-//	fprintf(stderr, "yay map loaded~~\n");
 #else
 	chkmap(&map, 1);
-	//initMap(&map);
 #endif
+	//initMap(&map);
+		#ifdef SCROLLEXEDEBUG
+	printf("chkmap ok\n");
+//	fprintf(stderr, "yay map loaded~~\n");
+	strcpy(gvar.handle.datadumpfilename, "xcroll2.16w");	MM_DumpData (&gvar);
+		#endif
+
 	// data
+		#ifdef SCROLLEXEDEBUG
+	fprintf(stderr, "VRS_LoadVRS~	");
+	strcpy(gvar.handle.datadumpfilename, "xcroll3.16w");	MM_DumpData (&gvar);
+		#endif
 	VRS_LoadVRS(bakapee, &gvar.player[0].enti, &gvar);
+		#ifdef SCROLLEXEDEBUG
+	printf("VRS load OK~\n");
+	strcpy(gvar.handle.datadumpfilename, "xcroll4.16w");	MM_DumpData (&gvar);
+		#endif
+	strcpy(gvar.handle.datadumpfilename, "xcroll.16w");
 
 	// input!
 	IN_Default(0, &gvar.player[0],ctrl_Keyboard1, &gvar);
@@ -263,6 +278,10 @@ void main(int argc, char *argv[])
 	modexSavePalFile("data/g.pal", &gvar.video.palette);
 	modexFadeOff(4, &gvar.video.palette);
 #endif
+		#ifdef SCROLLEXEDEBUG
+	MM_Reset(&gvar);	MM_DumpData (&gvar);
+	HC_heapdump (&gvar);
+		#endif
 	Shutdown16(&gvar);
 	printf("\nProject 16 xcroll.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);

@@ -806,6 +806,31 @@ void MML_ClearBlock (global_game_variables_t *gvar)
 /*
 ===================
 =
+= MM_Reset
+=
+===================
+*/
+
+void MM_Reset (global_game_variables_t *gvar)
+{
+//	//has to be 16
+//	if(sizeof(mmblocktype)!=16)
+//		return;
+
+#ifdef __BORLANDC__
+	strcpy(gvar->handle.datadumpfilename, "mmdump.16b");
+#endif
+#ifdef __WATCOMC__
+	strcpy(gvar->handle.datadumpfilename, "mmdump.16w");
+#endif
+}
+
+
+//==========================================================================
+
+/*
+===================
+=
 = MM_Startup
 =
 = Grabs all space from turbo with malloc/farmalloc
@@ -824,9 +849,7 @@ void MM_Startup (global_game_variables_t *gvar)
 	if(gvar->mm.mmstarted)
 		MM_Shutdown (gvar);
 
-	//has to be 16
-	if(sizeof(mmblocktype)!=16)
-		return;
+	MM_Reset (gvar);
 
 	gvar->mm.mmstarted = true;
 	gvar->mm.bombonerror = true;
@@ -1670,16 +1693,9 @@ void MM_DumpData (global_game_variables_t *gvar)
 #ifdef __BORLANDC__
 	free(gvar->mm.nearheap);
 #endif
-#ifdef __BORLANDC__
-		dumpfile = fopen ("mmdump.16b","w");
-#endif
-#ifdef __WATCOMC__
-		dumpfile = fopen ("mmdump.16w","w");
-#endif
-	if (!dumpfile){
-		printf("MM_DumpData: Couldn't open MMDUMP.16!\n");
-		return;
-	}
+	dumpfile = fopen (gvar->handle.datadumpfilename, "w");
+	if (!dumpfile)
+		Quit (gvar, "MM_DumpData: Couldn't open MMDUMP.16!\n");
 
 	lowest = -1;
 	do
@@ -1717,8 +1733,8 @@ void MM_DumpData (global_game_variables_t *gvar)
 
 	} while (lowest != 0xffff);
 
-	fclose(dumpfile);
-	printf("MMDUMP.16 created.\n");
+	fclose (dumpfile);
+//00	printf ("MMDUMP.16 created.\n");
 }
 
 //==========================================================================

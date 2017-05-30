@@ -1241,6 +1241,7 @@ void CA_Startup(global_game_variables_t *gvar)
 #endif
 #endif//profile
 
+#ifdef SHOWMEMINFO
 #ifdef __BORLANDC__
 	unlink("meminfo.16b");
 	gvar->handle.showmemhandle = open("meminfo.16b", O_CREAT | O_WRONLY | O_TEXT);
@@ -1248,6 +1249,7 @@ void CA_Startup(global_game_variables_t *gvar)
 #ifdef __WATCOMC__
 	unlink("meminfo.16w");
 	gvar->handle.showmemhandle = open("meminfo.16w", O_CREAT | O_WRONLY | O_TEXT);
+#endif
 #endif
 
 
@@ -1288,7 +1290,9 @@ void CA_Shutdown(global_game_variables_t *gvar)
 #ifdef PROFILE
 	close(gvar->handle.profilehandle);
 #endif
+#ifdef SHOWMEMINFO
  	close(gvar->handle.showmemhandle);
+#endif
 
 	close(gvar->ca.file.maphandle);
 	close(gvar->ca.file.grhandle);

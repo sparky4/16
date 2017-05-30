@@ -567,14 +567,14 @@ modexShowPage(page_t *page) {
 	low_address  = LOW_ADDRESS  | (offset << 8);
 
 	/* wait for appropriate timing and then program CRTC */
-//+=+=										while ((inp(INPUT_STATUS_1) & DISPLAY_ENABLE));
+//+=+=										while ((inp(STATUS_REGISTER_1) & DISPLAY_ENABLE));
 	outpw(CRTC_INDEX, high_address);
 	outpw(CRTC_INDEX, low_address);
 	outp(CRTC_INDEX, 0x13);
 	outp(CRTC_DATA, crtcOffset);
 
 	/* wait for one retrace */
-//+=+=										while (!(inp(INPUT_STATUS_1) & VRETRACE));
+//+=+=										while (!(inp(STATUS_REGISTER_1) & VRETRACE));
 
 	/* do PEL panning here */
 	outp(AC_INDEX, 0x33);
@@ -609,14 +609,14 @@ VL_ShowPage(page_t *page, boolean vsync, boolean sr)
 	low_address  = LOW_ADDRESS  | (offset << 8);
 
 	// wait for appropriate timing and then program CRTC
-	if(vsync) while ((inp(INPUT_STATUS_1) & DISPLAY_ENABLE));
+	if(vsync) while ((inp(STATUS_REGISTER_1) & DISPLAY_ENABLE));
 	outpw(CRTC_INDEX, high_address);
 	outpw(CRTC_INDEX, low_address);
 	outp(CRTC_INDEX, 0x13);
 	outp(CRTC_DATA, crtcOffset);
 
 	// wait for one retrace
-	if(vsync) while (!(inp(INPUT_STATUS_1) & VRETRACE));
+	if(vsync) while (!(inp(STATUS_REGISTER_1) & VRETRACE));
 
 	// do PEL panning here
 	outp(AC_INDEX, 0x33);
@@ -1346,11 +1346,11 @@ void VL_PatternDraw(video_t *video, word pn, boolean sw, boolean allsw)
 
 void
 modexWaitBorder() {
-	while(inp(INPUT_STATUS_1)  & 8)  {
+	while(inp(STATUS_REGISTER_1)  & 8)  {
 	// spin
 	}
 
-	while(!(inp(INPUT_STATUS_1)  & 8))  {
+	while(!(inp(STATUS_REGISTER_1)  & 8))  {
 	//spin
 	}
 }
@@ -1358,7 +1358,7 @@ modexWaitBorder() {
 void
 modexWaitBorder_start()
 {
-	while(inp(INPUT_STATUS_1)  & 8)  {
+	while(inp(STATUS_REGISTER_1)  & 8)  {
 	// spin
 	}
 
@@ -1367,7 +1367,7 @@ modexWaitBorder_start()
 void
 modexWaitBorder_end()
 {
-	while(!(inp(INPUT_STATUS_1)  & 8))  {
+	while(!(inp(STATUS_REGISTER_1)  & 8))  {
 	// spin
 	}
 

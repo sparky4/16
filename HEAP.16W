@@ -1,0 +1,79 @@
+
+	== default ==
+
+  USED block at 2e770016 of size 6146
+  USED block at 2e771818 of size 20
+  USED block at 2e77182c of size 66
+  USED block at 2e77186e of size 50
+  USED block at 2e7718a0 of size 50
+  USED block at 2e7718d2 of size 50
+  USED block at 2e771904 of size 50
+  USED block at 2e771936 of size 50
+  USED block at 2e771968 of size 50
+  USED block at 2e77199a of size 50
+  USED block at 2e7719cc of size 50
+  USED block at 2e7719fe of size 50
+  USED block at 2e771a30 of size 50
+  USED block at 2e771a62 of size 50
+  USED block at 2e771a94 of size 50
+  FREE block at 2e771ac6 of size 29618
+  USED block at 2e778e78 of size 1202
+  USED block at 2e77932a of size 1202
+  USED block at 2e7797dc of size 1202
+  USED block at 2e779c8e of size 136
+  USED block at 2e779d16 of size 22
+  FREE block at 2e779d2c of size 8202
+ERROR - bad node in heap
+
+	== near ==
+
+  FREE block at 1e76f9a6 of size 12
+  FREE block at 1e76f9b2 of size 320
+  FREE block at 1e76faf2 of size 52
+  FREE block at 1e76fb26 of size 20
+  FREE block at 1e76fb3a of size 20
+  FREE block at 1e76fb4e of size 20
+  FREE block at 1e76fb62 of size 20
+  FREE block at 1e76fb76 of size 20
+  FREE block at 1e76fb8a of size 1138
+OK - end of heap
+
+	== far ==
+
+  FREE block at 2e770016 of size 6146
+  FREE block at 2e771818 of size 20
+  FREE block at 2e77182c of size 66
+  FREE block at 2e77186e of size 50
+  FREE block at 2e7718a0 of size 50
+  FREE block at 2e7718d2 of size 50
+  FREE block at 2e771904 of size 50
+  FREE block at 2e771936 of size 50
+  FREE block at 2e771968 of size 50
+  FREE block at 2e77199a of size 50
+  FREE block at 2e7719cc of size 50
+  FREE block at 2e7719fe of size 50
+  FREE block at 2e771a30 of size 50
+  FREE block at 2e771a62 of size 50
+  FREE block at 2e771a94 of size 50
+  FREE block at 2e771ac6 of size 29618
+  FREE block at 2e778e78 of size 1202
+  FREE block at 2e77932a of size 1202
+  FREE block at 2e7797dc of size 1202
+  FREE block at 2e779c8e of size 136
+  FREE block at 2e779d16 of size 22
+  FREE block at 2e779d2c of size 8202
+ERROR - bad node in heap
+
+Memory Type         Total      Used       Free
+----------------  --------   --------   --------
+Default		   48416	10596	  37820
+Near		   1622		484	  1138
+Far		   48416	10596	  37820
+----------------  --------   --------   --------
+HC_coreleft = 1136
+HC_farcoreleft = 417792
+HC_GetFreeSize = 37820
+HC_GetNearFreeSize = 1138
+HC_GetFarFreeSize = 37820
+memavl = 1136
+stackavail = 31484

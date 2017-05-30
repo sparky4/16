@@ -195,8 +195,6 @@ extern	int			profilehandle,debughandle;	//make it into game global
 typedef union REGPACK	regs_t;
 #endif
 
-#define INPUT_STATUS_1		0x03da
-
 // local function //
 long int filesize(FILE *fp);
 void clrstdin();
