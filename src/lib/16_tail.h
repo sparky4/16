@@ -118,10 +118,10 @@
 	if(gvar.in.inst->Keyboard[sc_I]){ dbg_maptext=!dbg_maptext; IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_PgDn]){ \
 		rotateR(gvar.video.palette, sizeof(gvar.video.palette)/sizeof(gvar.video.palette[0])); \
-		VL_UpdatePaletteWrite(&gvar.video.palette, 0, &gvar);		IN_UserInput(1, &gvar); } \
+		VL_UpdatePaletteWrite(&gvar.video.palette, 0, 255, &gvar);		IN_UserInput(1, &gvar); } \
 	if(gvar.in.inst->Keyboard[sc_PgUp]){ \
 		rotateL(gvar.video.palette, sizeof(gvar.video.palette)/sizeof(gvar.video.palette[0])); \
-		VL_UpdatePaletteWrite(&gvar.video.palette, 0, &gvar);		IN_UserInput(1, &gvar); }
+		VL_UpdatePaletteWrite(&gvar.video.palette, 0, 255, &gvar);		IN_UserInput(1, &gvar); }
 #ifdef __BORLANDC__
 #define PAL_WRITE_REG		   0x03C8   /* Color register, write address */
 #define PAL_DATA_REG			0x03C9   /* Color register, data port */

@@ -47,22 +47,6 @@
  * typedefs of the game variables!
  */
 typedef struct {
-	byte *data;
-	word width;
-	word height;
-	byte *palette;
-	word offset;
-} bitmap_t;
-
-typedef struct {
-	byte far **data;
-	word ntiles;		// the number of tiles
-	word twidth;	// width of the tiles
-	word theight;	// height of the tiles
-	byte *palette;	// palette for the tile set
-} tileset_t;
-
-typedef struct {
 	byte far *plane[4];	// 4 planes of image data
 	word width;			// width of the image (spread across 4 planes)
 	word height;		// height of the image (spread across 4 planes)
@@ -138,7 +122,7 @@ typedef	struct
 	nibble pred;	//prev. direction for animation changing
 	word dire;		//sprite in use
 	nibble q;		//loop variable for anumation and locking the playing to compleate the animation cycle to prevent issues with misalignment www
-	word speed;		//entity speed!
+//	word speed;		//entity speed!
 	word spt;		//speed per tile
 #ifdef	__WATCOMC__
 	sprite_t spri; // sprite used by entity
@@ -801,6 +785,7 @@ typedef struct glob_game_vars
 	in_info_t	in;		// 16_in info
 	player_t	player[MaxPlayers];	// player vars
 	map_view_t	mv[4];
+	map_t		map;
 //	sw_t		sw;
 	boolean	DLStarted;
 } global_game_variables_t;

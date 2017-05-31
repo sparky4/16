@@ -145,7 +145,7 @@ LIBFLAGS=$(WLIBQ) -b -n
 #
 VGMSNDOBJ = vgmSnd.$(OBJ)
 OLDLIBOBJS=bitmap.$(OBJ) 16render.$(OBJ)
-GFXLIBOBJS = 16_vl.$(OBJ) 16_vl_1.$(OBJ) 16_vl_2.$(OBJ) 16_vlpal.$(OBJ) 16text.$(OBJ) scroll16.$(OBJ) 16_vrs.$(OBJ) 16_spri.$(OBJ)
+GFXLIBOBJS = 16_vl.$(OBJ) 16_vl_1.$(OBJ) 16_vl_2.$(OBJ) 16_vlpal.$(OBJ) 16text.$(OBJ) scroll16.$(OBJ) 16_spri.$(OBJ)
 16LIBOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_head.$(OBJ) 16_enti.$(OBJ) 16_dbg.$(OBJ) 16_in.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_wcpu.$(OBJ) 16_timer.$(OBJ) jsmn.$(OBJ) 16_map.$(OBJ) 16_sd.$(OBJ) 16_tail_.$(OBJ) 16_dbg_1.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 !ifeq DEBUGSERIAL 1
@@ -204,6 +204,7 @@ TESTEXEC = &
 	sountest.exe &
 	xcroll.exe &
 	0croll.exe &
+	1croll.exe &
 	inputest.exe &
 	vrstest.exe &
 	tesuto.exe &
@@ -266,7 +267,7 @@ bakapi.exe:		bakapi.$(OBJ) 16_vl.$(OBJ) 16_vl_1.$(OBJ) 16text.$(OBJ) bakapee.$(O
 #
 scroll.exe:	scroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 scroll.$(OBJ):	$(SRC)/scroll.c
-xcroll.exe:	xcroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
+xcroll.exe:	xcroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)		#bitmapl.$(OBJ)
 xcroll.$(OBJ):	$(SRC)/xcroll.c
 zcroll.exe:	zcroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 zcroll.$(OBJ):	$(SRC)/zcroll.c
@@ -387,7 +388,7 @@ opltest.exe:
 16_vlpal.$(OBJ):	$(SRCLIB)/16_vlpa_.c	$(SRCLIB)/16_vlpal.c	$(SRCLIB)/16_vlpal.h
 bakapee.$(OBJ):	$(SRCLIB)/bakapee.c	$(SRCLIB)/bakapee.h
 16planar.$(OBJ):	$(MODEXLIB16)/16planar.c $(MODEXLIB16)/16planar.h
-16_vrs.$(OBJ):	$(SRCLIB)/16_vrs.c	$(SRCLIB)/16_vrs.h $(DOSLIB)
+#16_vrs.$(OBJ):	$(SRCLIB)/16_vrs.c	$(SRCLIB)/16_vrs.h $(DOSLIB)
 16_spri.$(OBJ):	$(SRCLIB)/16_spri.c	$(SRCLIB)/16_spri.h
 planar.$(OBJ):	$(SRCLIB)/planar.c	$(SRCLIB)/planar.h
 scroll16.$(OBJ):	$(SRCLIB)/scroll16.c	$(SRCLIB)/scroll16.h
@@ -414,10 +415,11 @@ kitten.$(OBJ):	$(NYANLIB)/kitten.c	$(NYANLIB)/kitten.h
 vgmSnd.$(OBJ):	$(VGMSNDLIB)/vgmSnd.c	$(VGMSNDLIB)/vgmSnd.h
 16_wcpu.$(OBJ):	$(WCPULIB)/16_wcpu.c	$(WCPULIB)/16_wcpu.h
 #memory.$(OBJ):	$(EXMMLIB)/memory.c	$(EXMMLIB)/memory.h
-midi.$(OBJ):	$(SRCLIB)/midi.c
+#midi.$(OBJ):	$(SRCLIB)/midi.c
 c_utils.$(OBJ):	$(MODEXLIB)/c_utils.asm
 modex.$(OBJ):	$(MODEXLIB)/modex.asm
 ll.$(OBJ):		$(SRCLIB)/ll.c	$(SRCLIB)/ll.h
+bitmapl.$(OBJ):	$(SRCLIB)/bitmapl.c	$(SRCLIB)/bitmapl.h
 
 #
 # old 16 lib
@@ -426,6 +428,10 @@ ll.$(OBJ):		$(SRCLIB)/ll.c	$(SRCLIB)/ll.h
 	wcl -0 $(WCLQ) 0croll.$(OBJ) modex16.obj dos_kb.obj bitmap.obj# omodex16.$(OBJ) bitmap.$(OBJ)# 16_ino.$(OBJ)
 0croll.$(OBJ):	$(SRC)/0croll.c
 	wcl -0 $(WCLQ) -i"src/lib/doslib" -fo=.$(OBJ) -c src/0croll.c
+1croll.exe:	1croll.$(OBJ) modex16.obj dos_kb.obj bitmap.obj# $(OLDLIBOBJS) omodex16.$(OBJ)# 16_ino.$(OBJ)
+	wcl -0 $(WCLQ) 1croll.$(OBJ) modex16.obj dos_kb.obj bitmap.obj# omodex16.$(OBJ) bitmap.$(OBJ)# 16_ino.$(OBJ)
+1croll.$(OBJ):	$(SRC)/1croll.c
+	wcl -0 $(WCLQ) -i"src/lib/doslib" -fo=.$(OBJ) -c src/1croll.c
 #16render.$(OBJ):	$(OLDMODEX16LIBDIR)/16render.c	$(OLDMODEX16LIBDIR)/16render.h
 #	wcl -0 $(WCLQ) -i"src/lib/doslib" -fo=.$(OBJ) -c $(OLDMODEX16LIBDIR)/16render.c
 bitmap.$(OBJ):	$(OLDMODEX16LIBDIR)/bitmap.c	$(OLDMODEX16LIBDIR)/bitmap.h

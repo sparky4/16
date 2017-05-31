@@ -35,9 +35,9 @@ void EN_initentity(entity_t *enti, video_t *video)
 	enti->d =		2;//dir var
 	enti->pred =	4;//previous dir
 	enti->hp =		4;//hit points
-	enti->speed =	4;//walkspeed
+	enti->spt =	4;//walkspeed
 	enti->persist_aniframe = enti->q;
-	enti->spt=(TILEWH/(enti->speed));	//speed per tile wwww
+	enti->spt=(TILEWH/(enti->spt));	//speed per tile wwww
 	enti->overdraww =	0;
 	enti->overdrawh =	4;
 

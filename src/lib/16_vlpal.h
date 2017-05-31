@@ -3,6 +3,7 @@
 
 #include "src/lib/16_vl.h"
 #include "src/lib/16_vlpld.h"
+#include "16/modex16/bitmap.h"
 
 
 typedef struct

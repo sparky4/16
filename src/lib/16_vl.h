@@ -205,7 +205,7 @@ void modexLoadPalFile(char *filename, byte *palette);
 void VL_LoadPalFile(const char *filename, byte *palette, global_game_variables_t *gvar);
 void VL_LoadPalFileCore(byte *palette, global_game_variables_t *gvar);
 //void VLL_LoadPalFilewithoffset(const char *filename, byte *palette, word o, global_game_variables_t *gvar);
-void VL_UpdatePaletteWrite(byte *palette, word o, global_game_variables_t *gvar);
+void VL_UpdatePaletteWrite(byte *palette, word o, word palsize, global_game_variables_t *gvar);
 void VL_PaletteSync(global_game_variables_t *gvar);
 void modexSavePalFile(char *filename, byte *palette);
 #define MenuFadeIn()	VL_FadeIn(0,255,&gamepal,10)

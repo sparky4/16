@@ -22,8 +22,66 @@
 #ifndef __16_SPRI__
 #define __16_SPRI__
 
-#include "src/lib/16_vrs.h"
+//#include "src/lib/16_vrs.h"
+#include "src/lib/16_vl.h"
+//#include <hw/cpu/cpu.h>
+//#include <hw/dos/dos.h>
+#include <hw/vga/vrl.h>
+#include "src/lib/16_ca.h"
 #include "src/lib/scroll16.h"
+
+
+/*
+struct vrs_container{
+	// Size of a .vrs lob in memory
+	// minus header
+	dword data_size;
+	union{
+		byte far *buffer;
+		struct vrs_header far *vrs_hdr;
+	};
+	// Array of corresponding vrl line offsets
+	vrl1_vgax_offset_t **vrl_line_offsets;
+};
+*//*
+struct vrl_container{
+	// Size of a .vrl blob in memory
+	// minus header
+	dword data_size;
+	union{
+		byte far *buffer;
+		struct vrl1_vgax_header far *vrl_header;
+	};
+	// Pointer to a corresponding vrl line offsets struct
+	vrl1_vgax_offset_t *line_offsets;
+};
+*/
+/* Read .vrs file into memory
+* In:
+* + char *filename - name of the file to load
+* + struct vrs_container *vrs_cont - pointer to the vrs_container
+* to load the file into
+* Out:
+* + int - 0 on succes, 1 on failure
+*/
+void VRS_ReadVRS(char *filename, entity_t *enti, global_game_variables_t *gvar);
+void VRS_LoadVRS(char *filename, entity_t *enti, global_game_variables_t *gvar);
+void VRS_OpenVRS(char *filename, entity_t *enti, boolean rlsw, global_game_variables_t *gvar);
+void VRS_ReadVRL(char *filename, entity_t *enti, global_game_variables_t *gvar);
+void VRS_LoadVRL(char *filename, entity_t *enti, global_game_variables_t *gvar);
+void VRS_OpenVRL(char *filename, entity_t *enti, boolean rlsw, global_game_variables_t *gvar);
+
+/* Seek and return a specified .vrl blob from .vrs blob in memory
+* In:
+* + struct vrs_container *vrs_cont - pointer to the vrs_container
+* with a loaded .vrs file
+* + uint16_t id - id of the vrl to retrive
+* + struct vrl_container * vrl_cont - pointer to vrl_container to load to
+* Out:
+* int - operation status
+* to the requested .vrl blob
+*/
+int get_vrl_by_id(struct vrs_container *vrs_cont, uint16_t id, struct vrl_container * vrl_cont);
 
 void DrawVRL (unsigned int x,unsigned int y,struct vrl1_vgax_header *hdr,vrl1_vgax_offset_t *lineoffs/*array hdr->width long*/,unsigned char *data,unsigned int datasz);
 

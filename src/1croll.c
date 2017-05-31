@@ -1,8 +1,8 @@
-#include "src\lib\modex16.h"
+#include "16/modex16/modex16.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "src\lib\dos_kb.h"
-#include "src\lib\wtest\wtest.c"
+#include "16/modex16/dos_kb.h"
+//#include "src/lib/wtest/wtest.h"
 
 //word far *clock= (word far*) 0x046C; /* 18.2hz clock */
 
@@ -69,7 +69,7 @@ void animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short
 void main() {
 	bitmap_t ptmp; // player sprite
 	word q=1;
-	const char *cpus;
+//++++	const char *cpus;
 	static int persist_aniframe = 0;    /* gonna be increased to 1 before being used, so 0 is ok for default */
 	page_t screen, screen2, screen3;
 	map_t map;
@@ -87,7 +87,7 @@ void main() {
 	/* draw the tiles */
 	ptr = map.data;
 	/*data\\*/
-	ptmp = bitmapLoadPcx("ptmp.pcx"); // load sprite
+	ptmp = bitmapLoadPcx("data/chikyuu.pcx"); // load sprite
 	setkb(1);
 	modexEnter();
 	modexPalUpdate(ptmp.palette);
@@ -343,6 +343,8 @@ break;
 	printf("temporary player sprite 0: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=45556867\n");
 	printf("temporary player sprite 1: http://www.pixiv.net/member_illust.php?mode=medium&illust_id=44606385\n");
 	printf("\n");
+#if 0
+	//++++
 	switch(detectcpu())
 	{
 		case 0: cpus = "8086/8088 or 186/88"; break;
@@ -351,6 +353,7 @@ break;
 		default: cpus = "internal error"; break;
 	}
 	printf("detected CPU type: %s\n", cpus);
+#endif
 }
 
 
@@ -611,5 +614,5 @@ animatePlayer(map_view_t *src, map_view_t *dest, /*map_view_t *top, */short d1, 
 	//modexClearRegion(top->page, 66, 66, 2, 40, 0);
 	//modexCopyPageRegion(dest->page, top->page, 66, 66, 66, 66, 2, 40);
 	//turn this off if XT
-	if(detectcpu() > 0) modexWaitBorder();
+//++++	if(detectcpu() > 0) modexWaitBorder();
 }

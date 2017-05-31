@@ -916,6 +916,8 @@ modexLoadPalFile(byte *filename, byte *palette) {
 	fclose(file);
 }
 
+#define COREPALSIZE 9//27	//3*9
+
 void VLL_LoadPalFilewithoffset(const char *filename, byte *palette, word o, word palsize, global_game_variables_t *gvar)
 {
 	int fd;
@@ -923,36 +925,36 @@ void VLL_LoadPalFilewithoffset(const char *filename, byte *palette, word o, word
 
 	fd = open(filename,O_RDONLY|O_BINARY);
 	if (fd >= 0) {
-		read(fd,palette,	palsize);
+		read(fd,palette,	palsize*3);
 		close(fd);
 
-		if(palsize==27) newpalette = palette; else{	//if core then load it
+		if(palsize==COREPALSIZE) newpalette = palette; else{	//if core then load it
 		newpalette = &palette[3];			//skip overscan color
 		if(!o) o++;
 		}
-		VL_UpdatePaletteWrite(newpalette, o, gvar);
+		VL_UpdatePaletteWrite(newpalette, o, palsize, gvar);
 	}
 }
 
 void VL_LoadPalFile(const char *filename, byte *palette, global_game_variables_t *gvar)
 {
 	VLL_LoadPalFilewithoffset(filename, palette,
-		0,	//overwrite core/system palette
-//		9,	//preserved core/system palette
-		PAL_SIZE, gvar);
+		0,			//overwrite core/system palette
+//		COREPALSIZE,	//preserved core/system palette
+		PAL_SIZE/3, gvar);
 }
 
 void VL_LoadPalFileCore(byte *palette, global_game_variables_t *gvar)
 {
-	VLL_LoadPalFilewithoffset("data/16.pal", palette, 0, 27, gvar);
+	VLL_LoadPalFilewithoffset("data/16.pal", palette, 0, COREPALSIZE, gvar);
 }
 
-void VL_UpdatePaletteWrite(byte *palette, word o, global_game_variables_t *gvar)
+void VL_UpdatePaletteWrite(byte *palette, word o, word p, global_game_variables_t *gvar)
 {
 	word i;
 
 	vga_palette_lseek(o);
-	for (i=0;i < 255-o;i++)
+	for (i=0;i < p-o;i++)
 		vga_palette_write(palette[(i*3)+0]>>2,palette[(i*3)+1]>>2,palette[(i*3)+2]>>2);
 
 	VL_PaletteSync(gvar);

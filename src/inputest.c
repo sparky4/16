@@ -45,7 +45,7 @@ ctrl_Keyboard1);
 
 	gvar.player[0].enti.q=1;
 	gvar.player[0].enti.d=2;
-	gvar.player[0].enti.speed=4;
+	gvar.player[0].enti.spt=4;
 
 //0000	nibbletest();
 //0000	booleantest();
@@ -58,7 +58,7 @@ ctrl_Keyboard1);
 		{
 		//right movement
 		case 3:
-			if(gvar.player[0].enti.q<=(TILEWH/(gvar.player[0].enti.speed)))
+			if(gvar.player[0].enti.q<=(TILEWH/(gvar.player[0].enti.spt)))
 			{
 				gvar.player[0].enti.q++;
 			} else { gvar.player[0].enti.q = 1; gvar.player[0].enti.d = 2; }
@@ -66,7 +66,7 @@ ctrl_Keyboard1);
 
 		//left movement
 		case 1:
-			if(gvar.player[0].enti.q<=(TILEWH/(gvar.player[0].enti.speed)))
+			if(gvar.player[0].enti.q<=(TILEWH/(gvar.player[0].enti.spt)))
 			{
 				gvar.player[0].enti.q++;
 			} else { gvar.player[0].enti.q = 1; gvar.player[0].enti.d = 2; }
@@ -74,7 +74,7 @@ ctrl_Keyboard1);
 
 		//down movement
 		case 4:
-			if(gvar.player[0].enti.q<=(TILEWH/(gvar.player[0].enti.speed)))
+			if(gvar.player[0].enti.q<=(TILEWH/(gvar.player[0].enti.spt)))
 			{
 				gvar.player[0].enti.q++;
 			} else { gvar.player[0].enti.q = 1; gvar.player[0].enti.d = 2; }
@@ -82,7 +82,7 @@ ctrl_Keyboard1);
 
 		//up movement
 		case 0:
-			if(gvar.player[0].enti.q<=(TILEWH/(gvar.player[0].enti.speed)))
+			if(gvar.player[0].enti.q<=(TILEWH/(gvar.player[0].enti.spt)))
 			{
 				gvar.player[0].enti.q++;
 			} else { gvar.player[0].enti.q = 1; gvar.player[0].enti.d = 2; }

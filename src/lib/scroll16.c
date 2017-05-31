@@ -162,7 +162,7 @@ void ZC_walk(global_game_variables_t *gvar, word pn)
 				gvar->player[pn].walktype=1;
 				if(gvar->player[pn].enti.q<=gvar->player[pn].enti.spt)
 				{
-					gvar->player[pn].enti.x+=(gvar->player[pn].enti.speed);
+					gvar->player[pn].enti.x+=(gvar->player[pn].enti.spt);
 					ZC_animatePlayer(gvar->mv, gvar->player, pn);
 					gvar->player[pn].enti.q++;
 #ifdef OLDWALKSHOWPAGESTUFF
@@ -205,7 +205,7 @@ void ZC_walk(global_game_variables_t *gvar, word pn)
 				gvar->player[pn].walktype=1;
 				if(gvar->player[pn].enti.q<=gvar->player[pn].enti.spt)
 				{
-					gvar->player[pn].enti.x-=(gvar->player[pn].enti.speed);
+					gvar->player[pn].enti.x-=(gvar->player[pn].enti.spt);
 					ZC_animatePlayer(gvar->mv, gvar->player, pn);
 					gvar->player[pn].enti.q++;
 #ifdef OLDWALKSHOWPAGESTUFF
@@ -248,7 +248,7 @@ void ZC_walk(global_game_variables_t *gvar, word pn)
 				gvar->player[pn].walktype=1;
 				if(gvar->player[pn].enti.q<=gvar->player[pn].enti.spt)
 				{
-					gvar->player[pn].enti.y+=(gvar->player[pn].enti.speed);
+					gvar->player[pn].enti.y+=(gvar->player[pn].enti.spt);
 					ZC_animatePlayer(gvar->mv, gvar->player, pn);
 					gvar->player[pn].enti.q++;
 #ifdef OLDWALKSHOWPAGESTUFF
@@ -291,7 +291,7 @@ void ZC_walk(global_game_variables_t *gvar, word pn)
 				gvar->player[pn].walktype=1;
 				if(gvar->player[pn].enti.q<=gvar->player[pn].enti.spt)
 				{
-					gvar->player[pn].enti.y-=(gvar->player[pn].enti.speed);
+					gvar->player[pn].enti.y-=(gvar->player[pn].enti.spt);
 					ZC_animatePlayer(gvar->mv, gvar->player, pn);
 					gvar->player[pn].enti.q++;
 #ifdef OLDWALKSHOWPAGESTUFF
@@ -756,7 +756,7 @@ void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, w
 #ifdef __DEBUG_RF__
 if(dbg_pagedelayrendermap)		if(!y)	y+=TILEWH;	else	y-=TILEWH;
 #endif
-	poopoffset%=player[0].enti.speed;
+	poopoffset%=player[0].enti.spt;
 //printf("y: %d\n", poopoffset);
 #ifdef __DEBUG_RF__
 if(dbg_pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dx); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 0, PALMAPDRAWW, 1, 1, global_temp_status_text); }
@@ -785,7 +785,7 @@ void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, w
 #ifdef __DEBUG_RF__
 if(dbg_pagedelayrendermap)		if(!x)	x+=TILEWH;		else	x-=TILEWH;
 #endif
-	poopoffset%=player[0].enti.speed;
+	poopoffset%=player[0].enti.spt;
 //printf("x: %d\n", poopoffset);
 #ifdef __DEBUG_RF__
 if(dbg_pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dy); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 0, PALMAPDRAWW, 1, global_temp_status_text); }
@@ -942,7 +942,7 @@ void near ZC_animatePlayer(map_view_t *pip, player_t *player, word pn)
 		break;
 		case 2:
 			dd = 1;
-			qq = player[pn].enti.q*player[pn].enti.speed;
+			qq = player[pn].enti.q*player[pn].enti.spt;
 		break;
 	}
 	x-=4;

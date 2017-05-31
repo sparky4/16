@@ -86,7 +86,7 @@
 	printf("size of mmblocktype: %u	", sizeof(mmblocktype));\
 	printf("\n\n");\
 	printf("player vars:\n");\
-	printf("	xy: %dx%d", gvar.player[0].enti.x, gvar.player[0].enti.y); printf("	txy: %dx%d", gvar.player[0].enti.tx, gvar.player[0].enti.ty); printf("	triggxy: %dx%d", gvar.player[0].enti.triggerx, gvar.player[0].enti.triggery); printf("	value: %d\n", gvar.mv[1].map->layerdata[0].data[(gvar.player[0].enti.triggerx-1)+(map.width*(gvar.player[0].enti.triggery-1))]);\
+	printf("	xy: %dx%d", gvar.player[0].enti.x, gvar.player[0].enti.y); printf("	txy: %dx%d", gvar.player[0].enti.tx, gvar.player[0].enti.ty); printf("	triggxy: %dx%d", gvar.player[0].enti.triggerx, gvar.player[0].enti.triggery); printf("	value: %d\n", gvar.mv[1].map->layerdata[0].data[(gvar.player[0].enti.triggerx-1)+(gvar.map.width*(gvar.player[0].enti.triggery-1))]);\
 	printf("	hp: %d", (gvar.player[0].enti.hp));	printf("	q: %u", gvar.player[0].enti.q);	printf("	info.dir: %u", gvar.player[0].info.dir);	printf("	d: %u", gvar.player[0].enti.d);	printf("	dire: %u", gvar.player[0].enti.dire);\
 		printf("	pdir: %u\n", gvar.player[0].pdir); printf("	delay=%u", gvar.player[0].enti.spri.delay);\
 printf("\n\n");\
@@ -133,7 +133,7 @@ void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 inline void near ScrollRight(map_view_t *mv, player_t *pl, word id, word plid)
 {
 	/* increment the pixel position and update the page */
-	mv[id].page->dx += pl[plid].enti.speed;
+	mv[id].page->dx += pl[plid].enti.spt;
 
 	/* check to see if this changes the tile */
 	if(mv[id].page->dx >= mv[id].dxThresh )
@@ -150,7 +150,7 @@ inline void near ScrollRight(map_view_t *mv, player_t *pl, word id, word plid)
 inline void near ScrollLeft(map_view_t *mv, player_t *pl, word id, word plid)
 {
 	/* decrement the pixel position and update the page */
-	mv[id].page->dx -= pl[plid].enti.speed;
+	mv[id].page->dx -= pl[plid].enti.spt;
 
 	/* check to see if this changes the tile */
 	if(mv[id].page->dx == 0)
@@ -167,7 +167,7 @@ inline void near ScrollLeft(map_view_t *mv, player_t *pl, word id, word plid)
 inline void near ScrollUp(map_view_t *mv, player_t *pl, word id, word plid)
 {
 	/* decrement the pixel position and update the page */
-	mv[id].page->dy -= pl[plid].enti.speed;
+	mv[id].page->dy -= pl[plid].enti.spt;
 
 	/* check to see if this changes the tile */
 	if(mv[id].page->dy == 0 )
@@ -184,7 +184,7 @@ inline void near ScrollUp(map_view_t *mv, player_t *pl, word id, word plid)
 inline void near ScrollDown(map_view_t *mv, player_t *pl, word id, word plid)
 {
 	/* increment the pixel position and update the page */
-	mv[id].page->dy += pl[plid].enti.speed;
+	mv[id].page->dy += pl[plid].enti.spt;
 
 	/* check to see if this changes the tile */
 	if(mv[id].page->dy >= mv[id].dyThresh )

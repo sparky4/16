@@ -1734,6 +1734,14 @@ void MM_DumpData (global_game_variables_t *gvar)
 	} while (lowest != 0xffff);
 
 	fclose (dumpfile);
+
+	//reset filename
+#ifdef __BORLANDC__
+	strcpy(gvar->handle.datadumpfilename, "mmdump.16b");
+#endif
+#ifdef __WATCOMC__
+	strcpy(gvar->handle.datadumpfilename, "mmdump.16w");
+#endif
 //00	printf ("MMDUMP.16 created.\n");
 }
 

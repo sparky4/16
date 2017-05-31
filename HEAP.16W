@@ -1,79 +1,81 @@
 
 	== default ==
 
-  USED block at 2e770016 of size 6146
-  USED block at 2e771818 of size 20
-  USED block at 2e77182c of size 66
-  USED block at 2e77186e of size 50
-  USED block at 2e7718a0 of size 50
-  USED block at 2e7718d2 of size 50
-  USED block at 2e771904 of size 50
-  USED block at 2e771936 of size 50
-  USED block at 2e771968 of size 50
-  USED block at 2e77199a of size 50
-  USED block at 2e7719cc of size 50
-  USED block at 2e7719fe of size 50
-  USED block at 2e771a30 of size 50
-  USED block at 2e771a62 of size 50
-  USED block at 2e771a94 of size 50
-  FREE block at 2e771ac6 of size 29618
-  USED block at 2e778e78 of size 1202
-  USED block at 2e77932a of size 1202
-  USED block at 2e7797dc of size 1202
-  USED block at 2e779c8e of size 136
-  USED block at 2e779d16 of size 22
-  FREE block at 2e779d2c of size 8202
+  USED block at 2ed20016 of size 4098
+  USED block at 2ed21018 of size 20
+  USED block at 2ed2102c of size 66
+  USED block at 2ed2106e of size 50
+  USED block at 2ed210a0 of size 50
+  USED block at 2ed210d2 of size 50
+  USED block at 2ed21104 of size 50
+  USED block at 2ed21136 of size 50
+  USED block at 2ed21168 of size 50
+  USED block at 2ed2119a of size 50
+  USED block at 2ed211cc of size 50
+  USED block at 2ed211fe of size 50
+  USED block at 2ed21230 of size 50
+  USED block at 2ed21262 of size 50
+  USED block at 2ed21294 of size 50
+  FREE block at 2ed212c6 of size 29552
+  USED block at 2ed28636 of size 1202
+  USED block at 2ed28ae8 of size 1202
+  USED block at 2ed28f9a of size 1202
+  USED block at 2ed2944c of size 136
+  USED block at 2ed294d4 of size 22
+  FREE block at 2ed294ea of size 8202
+  FREE block at 2ed2b4f4 of size 0
 ERROR - bad node in heap
 
 	== near ==
 
-  FREE block at 1e76f9a6 of size 12
-  FREE block at 1e76f9b2 of size 320
-  FREE block at 1e76faf2 of size 52
-  FREE block at 1e76fb26 of size 20
-  FREE block at 1e76fb3a of size 20
-  FREE block at 1e76fb4e of size 20
-  FREE block at 1e76fb62 of size 20
-  FREE block at 1e76fb76 of size 20
-  FREE block at 1e76fb8a of size 1138
+  FREE block at 1ed1f9f6 of size 12
+  FREE block at 1ed1fa02 of size 320
+  FREE block at 1ed1fb42 of size 52
+  FREE block at 1ed1fb76 of size 20
+  FREE block at 1ed1fb8a of size 20
+  FREE block at 1ed1fb9e of size 20
+  FREE block at 1ed1fbb2 of size 20
+  FREE block at 1ed1fbc6 of size 20
+  FREE block at 1ed1fbda of size 1058
 OK - end of heap
 
 	== far ==
 
-  FREE block at 2e770016 of size 6146
-  FREE block at 2e771818 of size 20
-  FREE block at 2e77182c of size 66
-  FREE block at 2e77186e of size 50
-  FREE block at 2e7718a0 of size 50
-  FREE block at 2e7718d2 of size 50
-  FREE block at 2e771904 of size 50
-  FREE block at 2e771936 of size 50
-  FREE block at 2e771968 of size 50
-  FREE block at 2e77199a of size 50
-  FREE block at 2e7719cc of size 50
-  FREE block at 2e7719fe of size 50
-  FREE block at 2e771a30 of size 50
-  FREE block at 2e771a62 of size 50
-  FREE block at 2e771a94 of size 50
-  FREE block at 2e771ac6 of size 29618
-  FREE block at 2e778e78 of size 1202
-  FREE block at 2e77932a of size 1202
-  FREE block at 2e7797dc of size 1202
-  FREE block at 2e779c8e of size 136
-  FREE block at 2e779d16 of size 22
-  FREE block at 2e779d2c of size 8202
+  FREE block at 2ed20016 of size 4098
+  FREE block at 2ed21018 of size 20
+  FREE block at 2ed2102c of size 66
+  FREE block at 2ed2106e of size 50
+  FREE block at 2ed210a0 of size 50
+  FREE block at 2ed210d2 of size 50
+  FREE block at 2ed21104 of size 50
+  FREE block at 2ed21136 of size 50
+  FREE block at 2ed21168 of size 50
+  FREE block at 2ed2119a of size 50
+  FREE block at 2ed211cc of size 50
+  FREE block at 2ed211fe of size 50
+  FREE block at 2ed21230 of size 50
+  FREE block at 2ed21262 of size 50
+  FREE block at 2ed21294 of size 50
+  FREE block at 2ed212c6 of size 29552
+  FREE block at 2ed28636 of size 1202
+  FREE block at 2ed28ae8 of size 1202
+  FREE block at 2ed28f9a of size 1202
+  FREE block at 2ed2944c of size 136
+  FREE block at 2ed294d4 of size 22
+  FREE block at 2ed294ea of size 8202
+  FREE block at 2ed2b4f4 of size 0
 ERROR - bad node in heap
 
 Memory Type         Total      Used       Free
 ----------------  --------   --------   --------
-Default		   48416	10596	  37820
-Near		   1622		484	  1138
-Far		   48416	10596	  37820
+Default		   46302	8548	  37754
+Near		   1542		484	  1058
+Far		   46302	8548	  37754
 ----------------  --------   --------   --------
-HC_coreleft = 1136
-HC_farcoreleft = 417792
-HC_GetFreeSize = 37820
-HC_GetNearFreeSize = 1138
-HC_GetFarFreeSize = 37820
-memavl = 1136
+HC_coreleft = 1056
+HC_farcoreleft = 415744
+HC_GetFreeSize = 37754
+HC_GetNearFreeSize = 1058
+HC_GetFarFreeSize = 37754
+memavl = 1056
 stackavail = 31484

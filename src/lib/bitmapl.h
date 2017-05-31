@@ -1,9 +1,9 @@
 /*
  * Functions and types for loading and manipulating bitmaps.
  */
-#ifndef BITMAP_H
-#define BITMAP_H
-#include "types.h"
+#ifndef BITMAPL_H
+#define BITMAPL_H
+#include "src/lib/16_t.h"
 typedef struct {
 	byte *data;
 	word width;
