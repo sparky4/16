@@ -28,7 +28,7 @@
 //#define NOMAPLOAD
 //#define OLDPLAYERSPRITESTUFF
 #ifdef __DEBUG__
-//#define SCROLLEXEDEBUG
+#define SCROLLEXEDEBUG
 boolean
 	dbg_nointest=1;
 #endif
@@ -95,11 +95,12 @@ void main(int argc, char *argv[])
 
 	// create the map
 		#ifdef SCROLLEXEDEBUG
-	strcpy(gvar.handle.datadumpfilename, "xcroll1.16w");	MM_DumpData (&gvar);
+	//strcpy(gvar.handle.datadumpfilename, "mmdump1.16w");	MM_DumpData (&gvar);
+	//strcpy(gvar.handle.heapdumpfilename, "heap1.16w");		HC_heapdump(&gvar);
 	//fprintf(stderr, "testing map load~	");
 		#endif
-	CA_loadmap("data/test.map", &gvar.map, &gvar);
 #ifndef NOMAPLOAD
+	CA_loadmap("data/test.map", &gvar.map, &gvar);
 	chkmap(&gvar.map, 0);
 #else
 	chkmap(&gvar.map, 1);
@@ -108,7 +109,8 @@ void main(int argc, char *argv[])
 		#ifdef SCROLLEXEDEBUG
 	printf("chkmap ok\n");
 //	fprintf(stderr, "yay map loaded~~\n");
-	strcpy(gvar.handle.datadumpfilename, "xcroll2.16w");	MM_DumpData (&gvar);
+	//strcpy(gvar.handle.datadumpfilename, "mmdump2.16w");	MM_DumpData (&gvar);
+	//strcpy(gvar.handle.heapdumpfilename, "heap2.16w");		HC_heapdump(&gvar);
 		#endif
 
 	// data
@@ -118,14 +120,15 @@ void main(int argc, char *argv[])
 #else
 		#ifdef SCROLLEXEDEBUG
 	fprintf(stderr, "VRS_LoadVRS~	");
-	strcpy(gvar.handle.datadumpfilename, "xcroll3.16w");	MM_DumpData (&gvar);
+	//strcpy(gvar.handle.datadumpfilename, "mmdump3.16w");	MM_DumpData (&gvar);
+	//strcpy(gvar.handle.heapdumpfilename, "heap3.16w");		HC_heapdump(&gvar);
 		#endif
 	VRS_LoadVRS(bakapee, &gvar.player[0].enti, &gvar);
 		#ifdef SCROLLEXEDEBUG
 	printf("VRS load OK~\n");
-	strcpy(gvar.handle.datadumpfilename, "xcroll4.16w");	MM_DumpData (&gvar);
+	//strcpy(gvar.handle.datadumpfilename, "mmdump4.16w");	MM_DumpData (&gvar);
+	//strcpy(gvar.handle.heapdumpfilename, "heap4.16w");		HC_heapdump(&gvar);
 		#endif
-	strcpy(gvar.handle.datadumpfilename, "xcroll.16w");
 #endif
 
 	// input!

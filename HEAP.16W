@@ -1,81 +1,47 @@
 
-	== default ==
-
-  USED block at 2ed20016 of size 4098
-  USED block at 2ed21018 of size 20
-  USED block at 2ed2102c of size 66
-  USED block at 2ed2106e of size 50
-  USED block at 2ed210a0 of size 50
-  USED block at 2ed210d2 of size 50
-  USED block at 2ed21104 of size 50
-  USED block at 2ed21136 of size 50
-  USED block at 2ed21168 of size 50
-  USED block at 2ed2119a of size 50
-  USED block at 2ed211cc of size 50
-  USED block at 2ed211fe of size 50
-  USED block at 2ed21230 of size 50
-  USED block at 2ed21262 of size 50
-  USED block at 2ed21294 of size 50
-  FREE block at 2ed212c6 of size 29552
-  USED block at 2ed28636 of size 1202
-  USED block at 2ed28ae8 of size 1202
-  USED block at 2ed28f9a of size 1202
-  USED block at 2ed2944c of size 136
-  USED block at 2ed294d4 of size 22
-  FREE block at 2ed294ea of size 8202
-  FREE block at 2ed2b4f4 of size 0
-ERROR - bad node in heap
-
 	== near ==
 
-  FREE block at 1ed1f9f6 of size 12
-  FREE block at 1ed1fa02 of size 320
-  FREE block at 1ed1fb42 of size 52
-  FREE block at 1ed1fb76 of size 20
-  FREE block at 1ed1fb8a of size 20
-  FREE block at 1ed1fb9e of size 20
-  FREE block at 1ed1fbb2 of size 20
-  FREE block at 1ed1fbc6 of size 20
-  FREE block at 1ed1fbda of size 1058
+  USED block at 1d0d:f9a6 of size 12
+  USED block at 1d0d:f9b2 of size 320
+  USED block at 1d0d:faf2 of size 52
+  USED block at 1d0d:fb26 of size 20
+  USED block at 1d0d:fb3a of size 20
+  USED block at 1d0d:fb4e of size 20
+  USED block at 1d0d:fb62 of size 20
+  USED block at 1d0d:fb76 of size 20
+  FREE block at 1d0d:fb8a of size 1138
 OK - end of heap
 
 	== far ==
 
-  FREE block at 2ed20016 of size 4098
-  FREE block at 2ed21018 of size 20
-  FREE block at 2ed2102c of size 66
-  FREE block at 2ed2106e of size 50
-  FREE block at 2ed210a0 of size 50
-  FREE block at 2ed210d2 of size 50
-  FREE block at 2ed21104 of size 50
-  FREE block at 2ed21136 of size 50
-  FREE block at 2ed21168 of size 50
-  FREE block at 2ed2119a of size 50
-  FREE block at 2ed211cc of size 50
-  FREE block at 2ed211fe of size 50
-  FREE block at 2ed21230 of size 50
-  FREE block at 2ed21262 of size 50
-  FREE block at 2ed21294 of size 50
-  FREE block at 2ed212c6 of size 29552
-  FREE block at 2ed28636 of size 1202
-  FREE block at 2ed28ae8 of size 1202
-  FREE block at 2ed28f9a of size 1202
-  FREE block at 2ed2944c of size 136
-  FREE block at 2ed294d4 of size 22
-  FREE block at 2ed294ea of size 8202
-  FREE block at 2ed2b4f4 of size 0
-ERROR - bad node in heap
+  USED block at 2d0e:0016 of size 10246
+  USED block at 2d0e:281c of size 136
+  USED block at 2d0e:28a4 of size 66
+  USED block at 2d0e:28e6 of size 50
+  USED block at 2d0e:2918 of size 50
+  USED block at 2d0e:294a of size 50
+  USED block at 2d0e:297c of size 50
+  USED block at 2d0e:29ae of size 50
+  USED block at 2d0e:29e0 of size 50
+  USED block at 2d0e:2a12 of size 50
+  USED block at 2d0e:2a44 of size 50
+  USED block at 2d0e:2a76 of size 50
+  USED block at 2d0e:2aa8 of size 50
+  USED block at 2d0e:2ada of size 50
+  USED block at 2d0e:2b0c of size 50
+  USED block at 2d0e:2b3e of size 20
+  FREE block at 2d0e:2b52 of size 7370
+OK - end of heap
 
 Memory Type         Total      Used       Free
 ----------------  --------   --------   --------
-Default		   46302	8548	  37754
-Near		   1542		484	  1058
-Far		   46302	8548	  37754
+Near		   1622		484	  1138
+Far		   18438	11068	  7370
 ----------------  --------   --------   --------
-HC_coreleft = 1056
-HC_farcoreleft = 415744
-HC_GetFreeSize = 37754
-HC_GetNearFreeSize = 1058
-HC_GetFarFreeSize = 37754
-memavl = 1056
-stackavail = 31484
+HC_coreleft = 1136
+HC_farcoreleft = 450560
+HC_GetFreeSize = 7370
+HC_GetNearFreeSize = 1138
+HC_GetFarFreeSize = 7370
+memavl = 1136
+stackavail = 31498

@@ -823,6 +823,13 @@ void MM_Reset (global_game_variables_t *gvar)
 #ifdef __WATCOMC__
 	strcpy(gvar->handle.datadumpfilename, "mmdump.16w");
 #endif
+
+#ifdef __BORLANDC__
+	strcpy(gvar->handle.heapdumpfilename, "heap.16b");
+#endif
+#ifdef __WATCOMC__
+	strcpy(gvar->handle.heapdumpfilename, "heap.16w");
+#endif
 }
 
 

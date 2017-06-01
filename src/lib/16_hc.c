@@ -421,13 +421,14 @@ size_t HC_GetNearFreeSize(void)
 
 void HC_heapdump(global_game_variables_t *gvar)
 {
-	struct _heapinfo fh_info, nh_info, h_info;
+	struct _heapinfo fh_info, nh_info;//, h_info;
 	int heap_status;
-	size_t h_free, nh_free, fh_free, h_total, nh_total, fh_total, h_used, nh_used, fh_used;
+	size_t nh_free, fh_free, nh_total, fh_total, nh_used, fh_used;//,	h_free, h_total, h_used;
 	byte	scratch[1024],str[16];
 
 	HC_OpenDebug(gvar);
 
+#if 0
 	strcpy(scratch,"\n	== default ==\n\n");
 	write(gvar->handle.heaphandle,scratch,strlen(scratch));
 	h_info._pentry = NULL;
@@ -435,13 +436,16 @@ void HC_heapdump(global_game_variables_t *gvar)
 	for(;;) {
 		heap_status = _heapwalk( &h_info );
 		if( heap_status != _HEAPOK ) break;
-		strcpy(scratch,"  "); strcat(scratch,(h_info._useflag == _USEDENTRY ? "USED" : "FREE")); strcat(scratch," block at "); ultoa((dword)h_info._pentry,str,16); strcat(scratch,str); strcat(scratch," of size "); ultoa(h_info._size,str,10); strcat(scratch,str); strcat(scratch,"\n");
+		strcpy(scratch,"  "); strcat(scratch,(h_info._useflag == _USEDENTRY ? "USED" : "FREE")); strcat(scratch," block at ");
+		sprintf(str, "%Fp", h_info._pentry); //ultoa((dword)h_info._pentry,str,16);
+			strcat(scratch,str); strcat(scratch," of size "); ultoa(h_info._size,str,10); strcat(scratch,str); strcat(scratch,"\n");
 		if((h_info._useflag == _USEDENTRY ? "USED" : "FREE")=="FREE") h_free += h_info._size;
 		if((h_info._useflag == _USEDENTRY ? "USED" : "FREE")=="USED") h_used += h_info._size;
 		h_total += h_info._size;
 		write(gvar->handle.heaphandle,scratch,strlen(scratch));
 	}
 	HC_heapstat(gvar, heap_status, &scratch);
+#endif
 
 	//near
 	strcpy(scratch,"\n	== near ==\n\n");
@@ -451,7 +455,9 @@ void HC_heapdump(global_game_variables_t *gvar)
 	for(;;) {
 		heap_status = _nheapwalk( &nh_info );
 		if( heap_status != _HEAPOK ) break;
-		strcpy(scratch,"  "); strcat(scratch,(h_info._useflag == _USEDENTRY ? "USED" : "FREE")); strcat(scratch," block at "); ultoa((dword)nh_info._pentry,str,16); strcat(scratch,str); strcat(scratch," of size "); ultoa(nh_info._size,str,10); strcat(scratch,str); strcat(scratch,"\n");
+		strcpy(scratch,"  "); strcat(scratch,(nh_info._useflag == _USEDENTRY ? "USED" : "FREE")); strcat(scratch," block at ");
+		sprintf(str, "%Fp", nh_info._pentry); //ultoa((dword)nh_info._pentry,str,16);
+			strcat(scratch,str); strcat(scratch," of size "); ultoa(nh_info._size,str,10); strcat(scratch,str); strcat(scratch,"\n");
 /*		printf( "  %s block at %Fp of size %4.4X\n",
 (nh_info._useflag == _USEDENTRY ? "USED" : "FREE"),
 nh_info._pentry, nh_info._size );*/
@@ -470,7 +476,9 @@ nh_info._pentry, nh_info._size );*/
 	for(;;) {
 		heap_status = _fheapwalk( &fh_info );
 		if( heap_status != _HEAPOK ) break;
-		strcpy(scratch,"  "); strcat(scratch,(h_info._useflag == _USEDENTRY ? "USED" : "FREE")); strcat(scratch," block at "); ultoa((dword)fh_info._pentry,str,16); strcat(scratch,str); strcat(scratch," of size "); ultoa(fh_info._size,str,10); strcat(scratch,str); strcat(scratch,"\n");
+		strcpy(scratch,"  "); strcat(scratch,(fh_info._useflag == _USEDENTRY ? "USED" : "FREE")); strcat(scratch," block at ");
+		sprintf(str, "%Fp", fh_info._pentry); //ultoa((dword)fh_info._pentry,str,16);
+			strcat(scratch,str); strcat(scratch," of size "); ultoa(fh_info._size,str,10); strcat(scratch,str); strcat(scratch,"\n");
 		/*printf( "  %s block at %Fp of size %4.4X\n",
 (fh_info._useflag == _USEDENTRY ? "USED" : "FREE"),
 fh_info._pentry, fh_info._size );*/
@@ -484,7 +492,7 @@ fh_info._pentry, fh_info._size );*/
 	strcpy(scratch,"\n");
 	strcat(scratch,kittengets(2,0,"Memory Type         Total      Used       Free\n"));
 	strcat(scratch,"----------------  --------   --------   --------\n");
-	printmeminfoline(&scratch, "Default", h_total, h_used, h_free);
+//	printmeminfoline(&scratch, "Default", h_total, h_used, h_free);
 	printmeminfoline(&scratch, "Near", nh_total, nh_used, nh_free);
 	printmeminfoline(&scratch, "Far", fh_total, fh_used, fh_free);
 	strcat(scratch,"----------------  --------   --------   --------\n");
@@ -554,15 +562,22 @@ void HC_OpenDebug(global_game_variables_t *gvar)
 {
 #ifdef __BORLANDC__
 	unlink("heap.16b");
-	gvar->handle.heaphandle = open("heap.16b", O_CREAT | O_WRONLY | O_TEXT);
+	gvar->handle.heaphandle = open(gvar->handle.heapdumpfilename, O_CREAT | O_WRONLY | O_TEXT);
 #endif
 #ifdef __WATCOMC__
 	unlink("heap.16w");
-	gvar->handle.heaphandle = open("heap.16w", O_CREAT | O_WRONLY | O_TEXT);
+	gvar->handle.heaphandle = open(gvar->handle.heapdumpfilename, O_CREAT | O_WRONLY | O_TEXT);
 #endif
 }
 
 void HC_CloseDebug(global_game_variables_t *gvar)
 {
 	close(gvar->handle.heaphandle);
+
+#ifdef __BORLANDC__
+	strcpy(gvar->handle.heapdumpfilename, "heap.16b");
+#endif
+#ifdef __WATCOMC__
+	strcpy(gvar->handle.heapdumpfilename, "heap.16w");
+#endif
 }

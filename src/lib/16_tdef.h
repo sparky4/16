@@ -335,6 +335,7 @@ typedef struct
 	int profilehandle,debughandle,showmemhandle;
 	int heaphandle;
 	byte datadumpfilename[12];
+	byte heapdumpfilename[12];
 } loghandle_t;
 
 typedef struct

@@ -25,10 +25,6 @@
 #include <stdlib.h>
 #include "src/lib/16_vl.h"
 
-// big global status text buffer
-char global_temp_status_text[512];
-char global_temp_status_text2[512];
-
 #define PRINTTEXTBOXSTABLE
 
 void VL_modexPrintTextBox(global_game_variables_t *gvar)
