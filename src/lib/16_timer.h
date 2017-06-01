@@ -32,7 +32,7 @@ double elapsed_timer(global_game_variables_t *gv);
 double ticktock(global_game_variables_t *gv);
 double time_in_seconds(global_game_variables_t *gv);
 //double time_in_seconds(time_t in_t);
-void shinkutxt(global_game_variables_t *gv);
+//void shinkutxt(global_game_variables_t *gv);
 //void WaitPee(void);
 
 #endif

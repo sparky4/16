@@ -70,6 +70,7 @@ double time_in_seconds(global_game_variables_t *gv)
 	return (in_t) / CLOCKS_PER_SEC;
 }*/
 
+#if 0
 /*	sync	*/
 void shinkutxt(global_game_variables_t *gv)
 {
@@ -96,7 +97,7 @@ void shinkutxt(global_game_variables_t *gv)
 // 	}
 }
 
-#if 0
+//#if 0
 void WaitPee()
 {
     while(inp(INPUT_STATUS_1)  & 8)  {
