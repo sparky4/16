@@ -24,7 +24,8 @@
 #include "src/lib/16_timer.h"
 //#include "src/lib/16_dbg.h"
 
-#define FADE
+//#define FADE
+
 //#define NOMAPLOAD
 //#define OLDPLAYERSPRITESTUFF
 #ifdef __DEBUG__
@@ -336,6 +337,16 @@ void main(int argc, char *argv[])
 	modexFadeOn(4, gvar.video.dpal);
 #endif
 }
+
+
+
+
+
+
+
+
+
+
 
 #ifdef OLDPLAYERSPRITESTUFF
 void

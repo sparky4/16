@@ -131,7 +131,7 @@ O_FLAGS=-opnr -oe=24 -oil+ -outback -ohm
 T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 -d1 -fo=.$(OBJ)## -e=65536
 
 DBUGFLAGS=-fm=$^&.meh -fd=$^&
-CPPFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 -DSTACKSIZE=STKSIZ
+CPPFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 -DSTACKSIZE=$(STKSIZ)
 !ifeq DEBUGSERIAL 1
 CPPFLAGS += -DDEBUGSERIAL
 !endif
@@ -267,7 +267,7 @@ bakapi.exe:		bakapi.$(OBJ) 16_vl.$(OBJ) 16_vl_1.$(OBJ) 16text.$(OBJ) bakapee.$(O
 #
 scroll.exe:	scroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 scroll.$(OBJ):	$(SRC)/scroll.c
-xcroll.exe:	xcroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)		#bitmapl.$(OBJ)
+xcroll.exe:	xcroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)		bitmapl.$(OBJ)
 xcroll.$(OBJ):	$(SRC)/xcroll.c
 zcroll.exe:	zcroll.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 zcroll.$(OBJ):	$(SRC)/zcroll.c
