@@ -86,7 +86,7 @@ void TL_DosLibStartup(global_game_variables_t *gvar)
 
 void	TL_VidInit(global_game_variables_t *gvar)
 {
-	start_timer(gvar);
+	start_timer(gvar);	//i do not remeber why this is here wwww i think it should be somewhere else www
 
 	if(!gvar->DLStarted) TL_DosLibStartup(gvar);
 

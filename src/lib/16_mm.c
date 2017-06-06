@@ -896,7 +896,7 @@ void MM_Startup (global_game_variables_t *gvar)
 //
 // get all available far conventional memory segments
 //
-	length=HC_farcoreleft();
+	length=farcoreleft();
 	start = gvar->mm.farheap = farmalloc(length);
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVEFARHEAP;
@@ -1345,6 +1345,15 @@ void MM_SortMem (global_game_variables_t *gvar)
 
 //==========================================================================
 
+#ifdef __BORLANDC__
+extern char global_temp_status_text[512];
+extern char global_temp_status_text2[512];
+#endif
+#ifdef __WATCOMC__
+//#define MMSMPANVID
+#define MMSMSCANINFO
+#endif
+
 /*
 =====================
 =
@@ -1352,11 +1361,6 @@ void MM_SortMem (global_game_variables_t *gvar)
 =
 =====================
 */
-
-#ifdef __WATCOMC__
-//#define MMSMPANVID
-#define MMSMSCANINFO
-#endif
 
 void MM_ShowMemory (global_game_variables_t *gvar)
 {
@@ -1567,11 +1571,14 @@ void MM_ShowMemoryDetail (unsigned x, unsigned y, unsigned w, unsigned q, sdword
 } mmblocktype;*/
 			//modexprint(page, x, y, t, tlsw, color, bgcolor, vidsw, const byte *str);
 #define MMSMPRINTMEMINFO modexprint(&(gvar->video.page[0]), xpos, ypos, 1, 1, ccolor, 8, gvar->video.VL_Started, global_temp_status_text); ypos+=8;
+#ifdef __WATCOMC__
 			if(gvar->video.VL_Started)
 			{
 				VL_ShowPage(&gvar->video.page[0], 1, 0);
 				modexClearRegion(&gvar->video.page[0], 0, 0, gvar->video.page[0].width, gvar->video.page[0].height, 8);
-			}else clrscr();
+			}else
+#endif
+				clrscr();
 			sprintf(global_temp_status_text, "block #%04u", qq); MMSMPRINTMEMINFO
 //			sprintf(global_temp_status_text, "%Fp", scaninfo[qq].scan->useptr); MMSMPRINTMEMINFO
 			sprintf(global_temp_status_text, "start:  %04x", (unsigned)scaninfo[qq].scan->start); MMSMPRINTMEMINFO
@@ -1592,6 +1599,7 @@ void MM_ShowMemoryDetail (unsigned x, unsigned y, unsigned w, unsigned q, sdword
 			{
 				printf("%s", scratch1);
 				printf("%s", AAGREY); printf("_");
+				if(scaninfo[qq].scan->length<64000)
 				for(w=(scaninfo[qq].scan->start)/80;w<=end/80;w++)
 				{
 					//strcat(scratch1, "+");

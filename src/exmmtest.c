@@ -22,7 +22,6 @@
 /*
 	exmm test
 */
-#include <malloc.h>		// for _memavl()
 #include "src/lib/16_head.h"
 #include "src/lib/16_tail.h"
 #include "src/lib/16_pm.h"
@@ -194,6 +193,9 @@ main(int argc, char *argv[])
 PRINTBB; KEYP
 								#endif
 
+	IN_Default(0,&gvar.player[0],ctrl_Keyboard1, &gvar);
+	IN_SetControlType(&gvar.player[0],ctrl_Keyboard1);
+
 	{
 	byte w;	word baka;
 	w=0;
@@ -325,8 +327,8 @@ PRINTBB; KEYP
 	printf("========================================\n");
 
 								#ifdef EXMMVERBOSE__
-	printf("coreleft():			%u\n", _memavl());
-	printf("farcoreleft():			%lu\n", (dword)HC_farcoreleft());
+	printf("coreleft():			%u\n", coreleft());
+	printf("farcoreleft():			%ld\n", farcoreleft());
 								#endif
 #ifdef __WATCOMC__
 //this is far	printf("Total free:			%lu\n", (dword)(HC_GetFreeSize()));
@@ -337,11 +339,11 @@ PRINTBB; KEYP
 	HC_heapdump(&gvar);
 //	segatesuto();
 #endif
-/*#ifdef __BORLANDC__
-	//printf("core left:			%lu\n", (dword)HC_coreleft());
-	//printf("far core left:			%lu\n", (dword)HC_farcoreleft());
-//	printf("\nfarcoreleft():			%lu\n", farcoreleft());
-#endif*/
+#ifdef __BORLANDC__
+//	printf("HC_coreleft:			%lu\n", (dword)HC_coreleft());
+//	printf("HC_farcoreleft:			%lu\n", (dword)HC_farcoreleft());
+//	printf("HC_Newfarcoreleft():		%lu\n", (dword)HC_Newfarcoreleft());
+#endif
 	printf("Project 16 ");
 #ifdef __WATCOMC__
 	printf("exmmtest");

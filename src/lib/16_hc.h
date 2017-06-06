@@ -28,7 +28,7 @@
 
 #include "src/lib/16_head.h"
 
-long HC_farcoreleft();
+long HC_Newfarcoreleft();
 #ifdef __BORLANDC__
 void * HC_LargestFreeBlock(size_t* Size);
 #endif
@@ -37,7 +37,7 @@ void __near* HC_LargestFreeBlock(size_t* Size);
 #endif
 size_t HC_coreleft(void);
 void far* HC_LargestFarFreeBlock(size_t* Size);
-size_t HC_farcoreleft_(void);
+size_t HC_farcoreleft(void);
 /*void huge* LargestHugeFreeBlock(size_t* Size);
 size_t _hugecoreleft(void);
 void __based(__self)* LargestBasedFreeBlock(size_t* Size);

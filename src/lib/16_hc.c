@@ -28,10 +28,9 @@
 
 //from ftp://213.85.246.177/pub/FreeBSD/ports/archivers/arj/work/arj-3.10.22/environ.c
 //#ifdef __WATCOMC__
-#define FARCORELEFTPTR __huge
-long HC_farcoreleft()
+long HC_Newfarcoreleft()
 {
-	void FARCORELEFTPTR *hp;		static long rc=736L;	long s_rc;
+	void huge *hp;		static long rc=736L;	long s_rc;
 
 	s_rc=rc;	rc+=2L;
 	do
@@ -190,7 +189,7 @@ void far* HC_LargestFarFreeBlock(size_t* Size)
 	return p;
 }
 
-size_t HC_farcoreleft_(void)
+size_t HC_farcoreleft(void)
 {
 	size_t total = 0;
 	void far* pFirst = NULL;
@@ -493,13 +492,15 @@ fh_info._pentry, fh_info._size );*/
 	printmeminfoline(&scratch, "Near", nh_total, nh_used, nh_free);
 	printmeminfoline(&scratch, "Far", fh_total, fh_used, fh_free);
 	strcat(scratch,"----------------  --------   --------   --------\n");
-	strcat(scratch,"HC_coreleft = ");			ultoa((dword)HC_coreleft(),str,10);		strcat(scratch,str);	strcat(scratch,"\n");
-	strcat(scratch,"HC_farcoreleft = ");		ultoa((dword)HC_farcoreleft(),str,10);	strcat(scratch,str);	strcat(scratch,"\n");
+	strcat(scratch,"HC_coreleft = ");			ultoa((dword)HC_coreleft(),str,10);			strcat(scratch,str);	strcat(scratch,"\n");
+	strcat(scratch,"HC_farcoreleft = ");			ultoa((dword)HC_farcoreleft(),str,10);		strcat(scratch,str);	strcat(scratch,"\n");
+	strcat(scratch,"HC_Newfarcoreleft = ");			ultoa((dword)HC_Newfarcoreleft(),str,10);		strcat(scratch,str);	strcat(scratch,"\n");
 	strcat(scratch,"HC_GetFreeSize = ");		ultoa((dword)HC_GetFreeSize(),str,10);		strcat(scratch,str);	strcat(scratch,"\n");
 	strcat(scratch,"HC_GetNearFreeSize = ");	ultoa((dword)HC_GetNearFreeSize(),str,10);	strcat(scratch,str);	strcat(scratch,"\n");
 	strcat(scratch,"HC_GetFarFreeSize = "); 	ultoa((dword)HC_GetFarFreeSize(),str,10);	strcat(scratch,str);	strcat(scratch,"\n");
-	strcat(scratch,"memavl = ");			ultoa((dword)_memavl(),str,10);			strcat(scratch,str);	strcat(scratch,"\n");
-	strcat(scratch,"stackavail = ");		ultoa((dword)stackavail(),str,10);		strcat(scratch,str);	strcat(scratch,"\n");
+	strcat(scratch,"coreleft = ");				ultoa((dword)coreleft(),str,10);				strcat(scratch,str);	strcat(scratch,"\n");
+	strcat(scratch,"farcoreleft = ");			ultoa((dword)farcoreleft(),str,10);			strcat(scratch,str);	strcat(scratch,"\n");
+	strcat(scratch,"stackavail = ");			ultoa((dword)stackavail(),str,10);			strcat(scratch,str);	strcat(scratch,"\n");
 	write(gvar->handle.heaphandle,scratch,strlen(scratch));
 	HC_CloseDebug(gvar);
 }
@@ -583,7 +584,12 @@ void HC_CloseDebug(global_game_variables_t *gvar)
 unsigned long farcoreleft()
 {
 	_fheapgrow();
-	return HC_farcoreleft();
+	//return HC_farcoreleft();
+// #ifdef __BORLANDC__
+// 	r 0x90000UL-16UL
+// #endif
+
+	return 0x90000UL+16UL;
 }
 
 unsigned long coreleft()

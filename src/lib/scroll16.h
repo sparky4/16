@@ -42,8 +42,7 @@
 #define SPRITE
 //#define TILERENDER
 
-//0000
-#define SHOWFPS
+//0000#define SHOWFPS
 //#define OLDWALKSHOWPAGESTUFF
 
 

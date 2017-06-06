@@ -1,0 +1,36 @@
+
+	== near ==
+
+  USED block at 1714:f386 of size 12
+  USED block at 1714:f392 of size 322
+  USED block at 1714:f4d4 of size 52
+  USED block at 1714:f508 of size 20
+  USED block at 1714:f51c of size 20
+  USED block at 1714:f530 of size 20
+  USED block at 1714:f544 of size 20
+  USED block at 1714:f558 of size 20
+  FREE block at 1714:f56c of size 2704
+OK - end of heap
+
+	== far ==
+
+  USED block at 2715:0016 of size 136
+  FREE block at 2715:009e of size 18
+  USED block at 2715:00b0 of size 20
+  FREE block at 2715:00c4 of size 7992
+OK - end of heap
+
+Memory Type         Total      Used       Free
+----------------  --------   --------   --------
+Near		   3190		486	  2704
+Far		   8166		156	  8010
+----------------  --------   --------   --------
+HC_coreleft = 2702
+HC_farcoreleft = 35120
+HC_Newfarcoreleft = 0
+HC_GetFreeSize = 32436
+HC_GetNearFreeSize = 2704
+HC_GetFarFreeSize = 32436
+coreleft = 2702
+farcoreleft = 589840
+stackavail = 31498
