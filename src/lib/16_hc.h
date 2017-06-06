@@ -52,4 +52,9 @@ void HC_heapstat0(int heap_status);
 void HC_OpenDebug(global_game_variables_t *gvar);
 void HC_CloseDebug(global_game_variables_t *gvar);
 
+#ifdef __WATCOMC__
+unsigned long farcoreleft();
+unsigned long coreleft();
+#endif
+
 #endif /* __16HC__ */

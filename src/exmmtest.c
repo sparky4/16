@@ -50,6 +50,7 @@
 #endif
 #ifdef __WATCOMC__
 #define NOVID
+//#define			SCROLLLOAD
 #endif
 
 
@@ -69,7 +70,6 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-//#ifdef NOVID
 #ifdef __BORLANDC__
 void VL_Startup (global_game_variables_t *gvar){ gvar=gvar; }
 void VL_Shutdown (global_game_variables_t *gvar){ gvar=gvar; }
@@ -130,6 +130,14 @@ void segatesuto()
 }
 #endif
 
+#ifdef SCROLLLOAD
+#define FILENAME_1	"data/spri/chikyuu.vrs"
+#define FILENAME_2	"data/test.map"
+#else
+#define FILENAME_1	"data/koishi~.pcx"
+#define FILENAME_2	"data/test.map"
+#endif
+
 //===========================================================================//
 
 //=======================================//
@@ -140,18 +148,13 @@ void segatesuto()
 void
 main(int argc, char *argv[])
 {
-	byte w;
 	static global_game_variables_t gvar;
 								#ifdef INITBBUF
 	INITBBUF
 								#endif
-#if 0
-//#ifdef __WATCOMC__
-	__segment sega;
-#endif
-	char bakapee1[64] = "data/koishi~.pcx";
-	char bakapee2[64] = "data/test.map";
-	word baka;
+
+	char bakapee1[64] = FILENAME_1;
+	char bakapee2[64] = FILENAME_2;
 
 		#ifdef __BORLANDC__
 			argc=argc;
@@ -174,13 +177,7 @@ main(int argc, char *argv[])
 
 	if(argv[1]){ strcpy(bakapee1, argv[1]);//bakapee1[] = *argv[1];
 	if(argv[2]) strcpy(bakapee2, argv[2]); }//bakapee2[] = argv[2]; }
-#if 0
-	else{
-	//{ printf("filename!: "); scanf("%[^\n]", &bakapee); }
-		strcpy(bakapee1, "data/koishi~.pcx"); //bakapee1 = "data/koishi~.pcx";
-		strcpy(bakapee2, "data/test.map"); //bakapee2 = "data/test.map";
-	}
-#endif
+
 	printf("bakapee1[%s]\n", bakapee1);
 	printf("bakapee2[%s]\n", bakapee2);
 	KEYP
@@ -188,28 +185,17 @@ main(int argc, char *argv[])
 								#ifndef NOVID
 	Startup16(&gvar);
 	// save the palette
-	modexPalSave(&gvar.video.dpal); modexFadeOff(4, &gvar.video.dpal); //modexPalBlack();
+	modexPalSave(&gvar.video.dpal); //modexFadeOff(4, &gvar.video.dpal); //modexPalBlack();
 								#else //NOVID
 	StartupCAMMPM(&gvar);
-/*	MM_Startup(&gvar);
-								#ifdef __16_PM__
-								#ifdef __DEBUG_PM__
-									if(dbg_debugpm>0)
-									{
-								#endif //__DEBUG_PM__
-	PM_Startup(&gvar); PM_CheckMainMem(&gvar); PM_UnlockMainMem(&gvar);
-								//0000printf("PM Started\n"); KEYP
-								#ifdef __DEBUG_PM__
-									}
-								#endif //__DEBUG_PM__
-								#endif //__16_PM__
-	CA_Startup(&gvar);*/
 								#endif //elsed NOVID
 								#ifdef PRINTBBDUMP
 								//0000
 PRINTBB; KEYP
 								#endif
 
+	{
+	byte w;	word baka;
 	w=0;
 								#ifdef FILEREADLOAD
 								#ifdef FILEREAD
@@ -229,17 +215,12 @@ PRINTBB; KEYP
 			if(CA_LoadFile(bakapee1, BBUFPTR, &gvar)) baka=1; else baka=0;
 			printf("====================================load end===================================\n");
 		}
-								//#ifdef __WATCOMC__
-								//	printf("\nsize of big buffer~=%u\n", _bmsize(sega, BBUF));
-								//#endif
 								#ifdef BUFFDUMP
 		printf("contents of the buffer\n[\n%s\n]\n", BBUFSTRING);
-								#endif// #else
+								#endif
 								#ifdef PRINTBBDUMP
 		PRINTBB;
 								#endif
-
-								//endif // BUFFDUMP
 
 		//printf("dark purple = purgable\n");
 		//printf("medium blue = non purgable\n");
@@ -255,12 +236,24 @@ PRINTBB; KEYP
 	}
 								#endif
 								#endif	//filereadload
+	}
 
-#ifdef __WATCOMC__
+							#ifdef SCROLLLOAD
+//							#else		//scrollload
+	CA_loadmap(bakapee2, &gvar.map, &gvar);
+//	newloadmap(bakapee2, &gvar.map);
+	VRS_LoadVRS(bakapee1, &gvar.player[0].enti, &gvar);
+	HC_heapdump(&gvar);
+	KEYP
+							#endif	//scrollload
+
 #ifndef NOVID
-	VGAmodeX(8, 0, &gvar);
-//	modexPalUpdate0(&gvar.video.palette);
+	VL_Startup(&gvar);//	VGAmodeX(8, 0, &gvar);
+	modexHiganbanaPageSetup(&gvar);
+//	VL_modexPalScramble(&gvar.video.palette);
+	VL_LoadPalFileCore(&gvar.video.palette, &gvar);
 //	ShapeTest_(&gvar);
+#endif
 	MM_ShowMemory(&gvar);
 #if 0
 	{
@@ -297,10 +290,11 @@ PRINTBB; KEYP
 	}
 }
 #endif
-	VGAmodeX(0, 0, &gvar);
+#ifndef NOVID
+	if(gvar.video.VL_Started)
+		VL_Shutdown (&gvar);//VGAmodeX(0, 0, gvar);
+	modexFadeOn(4, gvar.video.dpal);
 #endif
-#endif
-	MM_ShowMemory(&gvar);
 	DebugMemory_(&gvar, 1);
 	MM_DumpData(&gvar);
 	MM_Report_(&gvar);
@@ -311,14 +305,6 @@ PRINTBB; KEYP
 	Shutdown16(&gvar);
 								#else //novid
 	ShutdownCAMMPM(&gvar);
-/*								#ifdef __16_PM__
-								#ifdef __DEBUG_PM__
-									if(dbg_debugpm>0)
-								#endif //__DEBUG_PM__
-	PM_Shutdown(&gvar);
-								#endif //__16_PM__
-	CA_Shutdown(&gvar);
-	MM_Shutdown(&gvar);*/
 								#endif //NOVID
 	IN_Shutdown(&gvar);
 	printf("========================================\n");

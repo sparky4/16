@@ -31,12 +31,9 @@
 #define FARCORELEFTPTR __huge
 long HC_farcoreleft()
 {
-	void FARCORELEFTPTR *hp;
-	static long rc=736L;
-	long s_rc;
+	void FARCORELEFTPTR *hp;		static long rc=736L;	long s_rc;
 
-	s_rc=rc;
-	rc+=2L;
+	s_rc=rc;	rc+=2L;
 	do
 		hp=halloc(rc-=2L, 1024);
 	while(hp==NULL&&rc>0L);
@@ -581,3 +578,17 @@ void HC_CloseDebug(global_game_variables_t *gvar)
 	strcpy(gvar->handle.heapdumpfilename, "heap.16w");
 #endif
 }
+
+#ifdef __WATCOMC__
+unsigned long farcoreleft()
+{
+	_fheapgrow();
+	return HC_farcoreleft();
+}
+
+unsigned long coreleft()
+{
+	_nheapgrow();
+	return _memavl();
+}
+#endif

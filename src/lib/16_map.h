@@ -44,7 +44,7 @@
 int jsoneq(const char *json, jsmntok_t *tok, const char *s);
 //word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, map_t *map, dword q);
 //int loadmap(char *mn, map_t *map, global_game_variables_t *gvar);
-//int newloadmap(char *mn, map_t *map);
+int newloadmap(char *mn, map_t *map);
 int CA_loadmap(char *mn, map_t *map, global_game_variables_t *gvar);
 
 #endif/*_16_LIB__H_*/

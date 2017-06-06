@@ -646,10 +646,11 @@ void Quit (global_game_variables_t *gvar, char *error)
 
 //===========================================================================
 
-#ifndef __WATCOMC__
-char global_temp_status_text[512];
-char global_temp_status_text2[512];
-#else
+//#ifndef __WATCOMC__
+//char global_temp_status_text[512];
+//char global_temp_status_text2[512];
+//#else
+#ifdef __WATCOMC__
 //
 // for mary4 (XT)
 // this is from my XT's BIOS

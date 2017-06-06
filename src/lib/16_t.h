@@ -56,9 +56,6 @@ MK_FP(segment value, 0)*/
 //typedef unsigned short _seg; // it will contains segment value (as Borland _seg)
 #define _seg __based( void )
 	#endif
-	#ifdef __BORLANDC__
-#define _memavl()               coreleft()
-	#endif
 
 typedef void _seg * memptr;
 
@@ -72,6 +69,9 @@ typedef void _seg * memptr;
 //#define SDFPTRANDPERCONV	&
 //#define OBTPTRANDPERCONV	&
 //#define SDTPTRANDPERCONV	&
+
+#define nearmalloc malloc
+#define nearfree free
 #endif
 //
 
@@ -103,13 +103,19 @@ typedef void _seg * memptr;
 #define getvect _dos_getvect
 #define setvect _dos_setvect
 
+#define farmalloc _fmalloc
+#define farfree _ffree
+#define nearmalloc _nmalloc
+#define nearfree _nfree
+
 //from http://www.verycomputer.com/3_65d875cc818b54ec_1.htm
 void clrscr(void);
-#pragma aux clrscr= \
-  " mov ah, 0fh " \
-  " int 10h " \
-  " xor ah, ah " \
-  " int 10h " ;
+#pragma aux clrscr=\
+	" mov ah, 0fh "\
+	" int 10h "\
+	" xor ah, ah "\
+	" int 10h ";
+
 //from http://stackoverflow.com/questions/18425748/gotoxy-function-using-printf-s-position
 inline void gotoxy(int x,int y)
 {

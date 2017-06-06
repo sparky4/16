@@ -849,7 +849,7 @@ void MM_Reset (global_game_variables_t *gvar)
 void MM_Startup (global_game_variables_t *gvar)
 {
 	int i;
-	dword length;
+	unsigned 	long length;
 	void far	*start;
 	unsigned	segstart,seglength;//,endfree;
 
@@ -857,7 +857,6 @@ void MM_Startup (global_game_variables_t *gvar)
 		MM_Shutdown (gvar);
 
 	MM_Reset (gvar);
-
 	gvar->mm.mmstarted = true;
 	gvar->mm.bombonerror = true;
 //
@@ -884,17 +883,8 @@ void MM_Startup (global_game_variables_t *gvar)
 //
 // get all available near conventional memory segments
 //
-#ifdef __WATCOMC__
-	_nheapgrow();
-#endif
-	length=(word)_memavl();//(word)coreleft();
-	//start = gvar->mm.nearheap = _fmalloc(length);
-#ifdef __WATCOMC__
-	start = (void __far *)(gvar->mm.nearheap = _nmalloc(length));
-#endif
-#ifdef __BORLANDC__
-	start = (void far *)(gvar->mm.nearheap = malloc(length));
-#endif
+	length=coreleft();
+	start = (void far *)(gvar->mm.nearheap = nearmalloc(length));
 
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;
@@ -903,30 +893,19 @@ void MM_Startup (global_game_variables_t *gvar)
 	MML_UseSpace (segstart,seglength, gvar);
 	gvar->mmi.nearheap = length;
 	//0000printf("near:	start=%Fp	segstart=%x	seglen=%lu	len=%lu\n", start, segstart, (dword)seglength, length);
-
 //
 // get all available far conventional memory segments
 //
-#ifdef __WATCOMC__
-	_fheapgrow();
-#endif
-#ifdef __BORLANDC__
-//	printf("farcoreleft()				%lu\n", farcoreleft());
-//	printf("(farcoreleft()+32)-_FCORELEFT	%d\n", (sword)((farcoreleft()+32)-_FCORELEFT));
-#endif
-	length=_FCORELEFT;
-	start = gvar->mm.farheap = _fmalloc(length);//start = gvar->mm.farheap = halloc(length, 1);
-
+	length=HC_farcoreleft();
+	start = gvar->mm.farheap = farmalloc(length);
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVEFARHEAP;
 	seglength = length / 16;			// now in paragraphs
 	segstart = FP_SEG(start)+(FP_OFF(start)+15)/16;
 	MML_UseSpace (segstart,seglength, gvar);
 	gvar->mmi.farheap = length;
-	//0000printf("far:	start=%Fp	segstart=%x	seglen=%lu	len=%lu\n", start, segstart, (dword)seglength, length);
-
 	gvar->mmi.mainmem = gvar->mmi.nearheap + gvar->mmi.farheap;
-
+	//0000printf("far:	start=%Fp	segstart=%x	seglen=%lu	len=%lu\n", start, segstart, (dword)seglength, length);
 #if !defined(__16_PM__)// && defined(__WATCOMC__)
 #if 0
 	if(!dbg_debugpm) {

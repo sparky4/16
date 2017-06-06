@@ -532,6 +532,7 @@ comq: .symbolic
 
 www: .symbolic
 	@if exist 16.exe @wmake -s -h wwwdo
+	@if exist 16.exe @wmake -s -h wwwext
 
 wwwdo: .symbolic
 	@for %f in (/var/www/$(EXEC)) do @if exist /var/www/%f $(REMOVECOMMAND) /var/www/%f
@@ -540,7 +541,6 @@ wwwdo: .symbolic
 	@for %f in ($(EXEC)) do @if exist %f @$(COPYCOMMAND) %f /var/www/
 	@./src/util/z.sh $(EXEC) $(EXEC)
 	@./src/util/z2.sh data.zip data
-	@wmake -s -h wwwext
 
 wwwext: .symbolic
 	@wmake -s -h wwwext2

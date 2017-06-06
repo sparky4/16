@@ -35,6 +35,8 @@ int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 	return -1;
 }
 
+//TODO: WORK ON THIS LIKE CRAZY!	--sparky4
+//FIXME: please FIX THIS AND USE CA!	--sparky4
 void extract_map(const char *js, jsmntok_t *t, size_t count, map_t *map) {
 	int i, j, k, indent=0, inner_end;
 	char *s;

@@ -160,14 +160,9 @@ extern	int			profilehandle,debughandle;	//make it into game global
 //#define OLD16_VL
 
 #define	nil	((void *)0)
-#ifdef __BORLANDC__
-//#define _FCORELEFT 0x90000UL-16UL
-#define _FCORELEFT HC_farcoreleft()
-#define sprite
-#endif
+
 #ifdef __WATCOMC__
 //#define _FCORELEFT 0x90000UL+16UL
-#define _FCORELEFT HC_farcoreleft()
 /*static union REGS CPURegs;
 
 #define _AX CPURegs.x.ax
@@ -187,10 +182,7 @@ extern	int			profilehandle,debughandle;	//make it into game global
 #define _DL CPURegs.h.dl
 
 #define geninterrupt(n) int86(n,&CPURegs,&CPURegs);*/
-#define peekb(segm,ofs) (*(byte far*)MK_FP((segm),(ofs)))
-#define peekw(segm,ofs) (*(word far*)MK_FP((segm),(ofs)))
-#define pokeb(segm,ofs,value) (peekb((segm),(ofs)) = (byte)(value))
-#define pokew(segm,ofs,value) (peekw((segm),(ofs)) = (word)(value))
+
 
 typedef union REGPACK	regs_t;
 #endif
