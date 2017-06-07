@@ -28,7 +28,7 @@
 
 #include "src/lib/16_head.h"
 
-long HC_Newfarcoreleft();
+//long HC_Newfarcoreleft();
 #ifdef __BORLANDC__
 void * HC_LargestFreeBlock(size_t* Size);
 #endif
@@ -36,18 +36,15 @@ void * HC_LargestFreeBlock(size_t* Size);
 void __near* HC_LargestFreeBlock(size_t* Size);
 #endif
 size_t HC_coreleft(void);
-void far* HC_LargestFarFreeBlock(size_t* Size);
-size_t HC_farcoreleft(void);
-/*void huge* LargestHugeFreeBlock(size_t* Size);
-size_t _hugecoreleft(void);
-void __based(__self)* LargestBasedFreeBlock(size_t* Size);
-size_t _basedcoreleft(void);*/
-size_t HC_GetFreeSize(void);
-size_t HC_GetFarFreeSize(void);
+void far* HC_LargestFarFreeBlock(unsigned long* Size);
+unsigned long HC_farcoreleft(void);
+//size_t HC_GetFreeSize(void);
+unsigned long HC_GetFarFreeSize(void);
 size_t HC_GetNearFreeSize(void);
+
 void HC_heapdump(global_game_variables_t *gvar);
-void HC_heapstat(global_game_variables_t *gvar, int heap_status, byte *str);
-void HC_heapstat0(int heap_status);
+void HCL_heapstat(global_game_variables_t *gvar, int heap_status, byte *str);
+void HCL_heapstat0(int heap_status);
 
 void HC_OpenDebug(global_game_variables_t *gvar);
 void HC_CloseDebug(global_game_variables_t *gvar);

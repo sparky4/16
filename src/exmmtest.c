@@ -242,10 +242,10 @@ PRINTBB; KEYP
 
 							#ifdef SCROLLLOAD
 //							#else		//scrollload
-	CA_loadmap(bakapee2, &gvar.map, &gvar);
+//	CA_loadmap(bakapee2, &gvar.map, &gvar);	//BREAKS!
 //	newloadmap(bakapee2, &gvar.map);
 	VRS_LoadVRS(bakapee1, &gvar.player[0].enti, &gvar);
-	HC_heapdump(&gvar);
+//	HC_heapdump(&gvar);
 	KEYP
 							#endif	//scrollload
 
@@ -327,8 +327,8 @@ PRINTBB; KEYP
 	printf("========================================\n");
 
 								#ifdef EXMMVERBOSE__
-	printf("coreleft():			%u\n", coreleft());
-	printf("farcoreleft():			%ld\n", farcoreleft());
+	printf("coreleft():		%u\n", coreleft());
+	printf("farcoreleft():		%ld\n", farcoreleft());
 								#endif
 #ifdef __WATCOMC__
 //this is far	printf("Total free:			%lu\n", (dword)(HC_GetFreeSize()));

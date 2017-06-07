@@ -27,10 +27,11 @@
 #include <malloc.h>
 
 //from ftp://213.85.246.177/pub/FreeBSD/ports/archivers/arj/work/arj-3.10.22/environ.c
+#if 0
 //#ifdef __WATCOMC__
 long HC_Newfarcoreleft()
 {
-	void huge *hp;		static long rc=736L;	long s_rc;
+	void __huge *hp;		static long rc=736L;	long s_rc;
 
 	s_rc=rc;	rc+=2L;
 	do
@@ -48,7 +49,7 @@ long HC_Newfarcoreleft()
 	} while(hp!=NULL);
 	return((rc-16L)*1024L);
 }
-//#endif
+#endif
 
 void
 #ifdef __BORLANDC__
@@ -160,12 +161,12 @@ size_t HC_coreleft(void)
 	return total;
 }
 
-void far* HC_LargestFarFreeBlock(size_t* Size)
+void far* HC_LargestFarFreeBlock(unsigned long* Size)
 {
-	size_t s0, s1;
+	unsigned long s0, s1;
 	void far* p;
 
-	s0 = ~(size_t)0 ^ (~(size_t)0 >> 1);
+	s0 = ~(unsigned long)0 ^ (~(unsigned long)0 >> 1);
 	while (s0 && (p = _fmalloc(s0)) == NULL)
 		s0 >>= 1;
 
@@ -189,14 +190,14 @@ void far* HC_LargestFarFreeBlock(size_t* Size)
 	return p;
 }
 
-size_t HC_farcoreleft(void)
+unsigned long HC_farcoreleft(void)
 {
-	size_t total = 0;
+	unsigned long total = 0UL;
 	void far* pFirst = NULL;
 	void far* pLast = NULL;
 	for(;;)
 	{
-		size_t largest;
+		unsigned long largest;
 		void far* p = HC_LargestFarFreeBlock(&largest);
 		if (largest < sizeof(void far*))
 		{
@@ -360,7 +361,7 @@ size_t _basedcoreleft(void)
 	}
 	return total;
 }*/
-
+#if 0
 size_t HC_GetFreeSize(void)
 {
 	struct _heapinfo h_info;
@@ -375,15 +376,16 @@ size_t HC_GetFreeSize(void)
 		if((h_info._useflag == _USEDENTRY ? "USED" : "FREE")=="USED") h_used += h_info._size;
 		h_total += h_info._size;
 	}
-	HC_heapstat0(heap_status);
+	HCL_heapstat0(heap_status);
 	return h_free;
 }
+#endif
 
-size_t HC_GetFarFreeSize(void)
+unsigned long HC_GetFarFreeSize(void)
 {
 	struct _heapinfo fh_info;
 	int heap_status;
-	size_t fh_free=0, fh_total=0, fh_used=0;
+	unsigned long fh_free=0, fh_total=0, fh_used=0;
 
 	fh_info._pentry = NULL;
 	for(;;) {
@@ -393,7 +395,7 @@ size_t HC_GetFarFreeSize(void)
 		if((fh_info._useflag == _USEDENTRY ? "USED" : "FREE")=="USED") fh_used += fh_info._size;
 		fh_total += fh_info._size;
 	}
-	HC_heapstat0(heap_status);
+	HCL_heapstat0(heap_status);
 	return fh_free;
 }
 
@@ -411,7 +413,7 @@ size_t HC_GetNearFreeSize(void)
 		if((nh_info._useflag == _USEDENTRY ? "USED" : "FREE")=="USED") nh_used += nh_info._size;
 		nh_total += nh_info._size;
 	}
-	HC_heapstat0(heap_status);
+	HCL_heapstat0(heap_status);
 	return nh_free;
 }
 
@@ -440,7 +442,7 @@ void HC_heapdump(global_game_variables_t *gvar)
 		h_total += h_info._size;
 		write(gvar->handle.heaphandle,scratch,strlen(scratch));
 	}
-	HC_heapstat(gvar, heap_status, &scratch);
+	HCL_heapstat(gvar, heap_status, &scratch);
 #endif
 
 	//near
@@ -462,7 +464,7 @@ nh_info._pentry, nh_info._size );*/
 		nh_total += nh_info._size;
 		write(gvar->handle.heaphandle,scratch,strlen(scratch));
 	}
-	HC_heapstat(gvar, heap_status, &scratch);
+	HCL_heapstat(gvar, heap_status, &scratch);
 
 	//far
 	strcpy(scratch,"\n	== far ==\n\n");
@@ -483,7 +485,7 @@ fh_info._pentry, fh_info._size );*/
 		fh_total += fh_info._size;
 		write(gvar->handle.heaphandle,scratch,strlen(scratch));
 	}
-	HC_heapstat(gvar, heap_status, &scratch);
+	HCL_heapstat(gvar, heap_status, &scratch);
 
 	strcpy(scratch,"\n");
 	strcat(scratch,kittengets(2,0,"Memory Type         Total      Used       Free\n"));
@@ -494,8 +496,8 @@ fh_info._pentry, fh_info._size );*/
 	strcat(scratch,"----------------  --------   --------   --------\n");
 	strcat(scratch,"HC_coreleft = ");			ultoa((dword)HC_coreleft(),str,10);			strcat(scratch,str);	strcat(scratch,"\n");
 	strcat(scratch,"HC_farcoreleft = ");			ultoa((dword)HC_farcoreleft(),str,10);		strcat(scratch,str);	strcat(scratch,"\n");
-	strcat(scratch,"HC_Newfarcoreleft = ");			ultoa((dword)HC_Newfarcoreleft(),str,10);		strcat(scratch,str);	strcat(scratch,"\n");
-	strcat(scratch,"HC_GetFreeSize = ");		ultoa((dword)HC_GetFreeSize(),str,10);		strcat(scratch,str);	strcat(scratch,"\n");
+//	strcat(scratch,"HC_Newfarcoreleft = ");		ultoa((dword)HC_Newfarcoreleft(),str,10);		strcat(scratch,str);	strcat(scratch,"\n");
+//	strcat(scratch,"HC_GetFreeSize = ");		ultoa((dword)HC_GetFreeSize(),str,10);		strcat(scratch,str);	strcat(scratch,"\n");
 	strcat(scratch,"HC_GetNearFreeSize = ");	ultoa((dword)HC_GetNearFreeSize(),str,10);	strcat(scratch,str);	strcat(scratch,"\n");
 	strcat(scratch,"HC_GetFarFreeSize = "); 	ultoa((dword)HC_GetFarFreeSize(),str,10);	strcat(scratch,str);	strcat(scratch,"\n");
 	strcat(scratch,"coreleft = ");				ultoa((dword)coreleft(),str,10);				strcat(scratch,str);	strcat(scratch,"\n");
@@ -505,7 +507,7 @@ fh_info._pentry, fh_info._size );*/
 	HC_CloseDebug(gvar);
 }
 
-void HC_heapstat(global_game_variables_t *gvar, int heap_status, byte *str)
+void HCL_heapstat(global_game_variables_t *gvar, int heap_status, byte *str)
 {
 	switch( heap_status ) {
 		case _HEAPEND:
@@ -527,7 +529,7 @@ void HC_heapstat(global_game_variables_t *gvar, int heap_status, byte *str)
 	write(gvar->handle.heaphandle,(str),strlen((str)));
 }
 
-void HC_heapstat0(int heap_status)
+void HCL_heapstat0(int heap_status)
 {
 	switch( heap_status ) {
 		case _HEAPEND:
@@ -546,7 +548,22 @@ void HC_heapstat0(int heap_status)
 			printf("ERROR - bad node in heap\n");
 	}
 }
+
+unsigned long farcoreleft()
+{
+//----	_fheapgrow();
+	return HC_farcoreleft();
+//stack overflows	return HC_GetFarFreeSize();
+}
+
+unsigned long coreleft()
+{
+	_nheapgrow();
+	return _memavl();
+//	return HC_GetNearFreeSize();
+}
 #endif
+
 /*
 ============================
 =
@@ -579,22 +596,3 @@ void HC_CloseDebug(global_game_variables_t *gvar)
 	strcpy(gvar->handle.heapdumpfilename, "heap.16w");
 #endif
 }
-
-#ifdef __WATCOMC__
-unsigned long farcoreleft()
-{
-	_fheapgrow();
-	//return HC_farcoreleft();
-// #ifdef __BORLANDC__
-// 	r 0x90000UL-16UL
-// #endif
-
-	return 0x90000UL+16UL;
-}
-
-unsigned long coreleft()
-{
-	_nheapgrow();
-	return _memavl();
-}
-#endif

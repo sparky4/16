@@ -106,7 +106,8 @@ void StartupCAMMPM (global_game_variables_t *gvar)
 	MM_Startup(gvar);
 #ifdef __16_PM__
 	PM_Startup(gvar);
-//????	PM_CheckMainMem(gvar);
+//????
+	PM_CheckMainMem(gvar);
 	PM_UnlockMainMem(gvar);
 #endif
 	CA_Startup(gvar);
