@@ -51,6 +51,7 @@ long HC_Newfarcoreleft()
 }
 #endif
 
+//from: https://stackoverflow.com/questions/14386856/c-check-available-ram
 void
 #ifdef __BORLANDC__
  *
@@ -117,6 +118,7 @@ HC_LargestFreeBlock(size_t* Size)
 	return p;
 }
 
+//from: https://stackoverflow.com/questions/14386856/c-check-available-ram
 size_t HC_coreleft(void)
 {
 	size_t total = 0;
@@ -161,6 +163,7 @@ size_t HC_coreleft(void)
 	return total;
 }
 
+//far version of above
 void far* HC_LargestFarFreeBlock(unsigned long* Size)
 {
 	unsigned long s0, s1;
@@ -190,6 +193,7 @@ void far* HC_LargestFarFreeBlock(unsigned long* Size)
 	return p;
 }
 
+//far version of above
 unsigned long HC_farcoreleft(void)
 {
 	unsigned long total = 0UL;
