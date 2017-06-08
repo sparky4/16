@@ -163,7 +163,7 @@ CASVT GRFILEPOS(int c, global_game_variables_t *gvar)
 }
 #endif
 
-#define EXTENSION	"hb1"
+//#define EXTENSION	"hb1"
 
 /*
 =============================================================================
@@ -1041,7 +1041,7 @@ void CAL_SetupGrFile (global_game_variables_t *gvar)
 //
 
 	strcpy(fname,GDICTNAME);
-	strcat(fname,EXTENSION);
+	strcat(fname,"hb1");
 
 	if ((handle = open(fname,
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
@@ -1056,7 +1056,7 @@ void CAL_SetupGrFile (global_game_variables_t *gvar)
 	MM_GetPtr (MEMPTRCONV gvar->ca.grstarts,(NUMCHUNKS+1)*FILEPOSSIZE, gvar);
 
 	strcpy(fname,GHEADNAME);
-	strcat(fname,EXTENSION);
+	strcat(fname,"hb1");
 
 	if ((handle = open(fname,
 		 O_RDONLY | O_BINARY, S_IREAD)) == -1)
@@ -1073,7 +1073,7 @@ void CAL_SetupGrFile (global_game_variables_t *gvar)
 // Open the graphics file, leaving it open until the game is finished
 //
 	strcpy(fname,GFILENAME);
-	strcat(fname,EXTENSION);
+	strcat(fname,"hb1");
 
 	gvar->ca.file.grhandle = open(fname, O_RDONLY | O_BINARY);
 	if (gvar->ca.file.grhandle == -1)

@@ -40,7 +40,8 @@
 #define FILEREAD
 //#define EXMMVERBOSE
 //#define BUFFDUMPPAUSE
-//#define EXMMVERBOSE__
+#define EXMMVERBOSE__
+//#define EXMMHEAPPTR
 //	#define PRINTBBDUMP
 #define BUFFDUMP
 
@@ -179,6 +180,11 @@ main(int argc, char *argv[])
 
 	printf("bakapee1[%s]\n", bakapee1);
 	printf("bakapee2[%s]\n", bakapee2);
+
+								#ifdef EXMMVERBOSE__
+	printf("coreleft():		%u\n", coreleft());
+	printf("farcoreleft():		%ld\n", farcoreleft());
+								#endif
 	KEYP
 
 								#ifndef NOVID
@@ -300,22 +306,19 @@ PRINTBB; KEYP
 	DebugMemory_(&gvar, 1);
 	MM_DumpData(&gvar);
 	MM_Report_(&gvar);
+	HC_heapdump(&gvar);
 	//printf("bakapee1=%s\n", bakapee1);
 	//printf("bakapee2=%s\n", bakapee2);
-	MM_FreePtr(BBUFPTR, &gvar);
-								#ifndef NOVID
-	Shutdown16(&gvar);
-								#else //novid
-	ShutdownCAMMPM(&gvar);
-								#endif //NOVID
-	IN_Shutdown(&gvar);
+
 	printf("========================================\n");
+								#ifdef EXMMHEAPPTR
 	printf("near=	%Fp ",	gvar.mm.nearheap);
 	printf("far=	%Fp",			gvar.mm.farheap);
 	printf("\n");
 	printf("&near=	%Fp ",	&(gvar.mm.nearheap));
 	printf("&far=	%Fp",		&(gvar.mm.farheap));
 	printf("\n");
+								#endif
 								#ifdef EXMMVERBOSE
 	printf("bigb=	%Fp ",	BBUF);
 	//printf("bigbr=	%04x",	BBUF);
@@ -324,19 +327,26 @@ PRINTBB; KEYP
 	//printf("&bigb=%04x",		BBUFPTR);
 	printf("\n");
 								#endif
-	printf("========================================\n");
-
 								#ifdef EXMMVERBOSE__
 	printf("coreleft():		%u\n", coreleft());
 	printf("farcoreleft():		%ld\n", farcoreleft());
 								#endif
+	printf("========================================\n");
+
+	MM_FreePtr(BBUFPTR, &gvar);
+								#ifndef NOVID
+	Shutdown16(&gvar);
+								#else //novid
+	ShutdownCAMMPM(&gvar);
+								#endif //NOVID
+	IN_Shutdown(&gvar);
+
 #ifdef __WATCOMC__
 //this is far	printf("Total free:			%lu\n", (dword)(HC_GetFreeSize()));
 //super buggy	printf("HC_coreleft():			%u\n", HC_coreleft());
 //	printf("HC_farcoreleft():			%lu\n", (dword)HC_farcoreleft());
 	//printf("HC_GetNearFreeSize():		%u\n", HC_GetNearFreeSize());
 	//printf("HC_GetFarFreeSize():			%lu\n", (dword)HC_GetFarFreeSize());
-	HC_heapdump(&gvar);
 //	segatesuto();
 #endif
 #ifdef __BORLANDC__

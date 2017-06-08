@@ -884,7 +884,7 @@ void MM_Startup (global_game_variables_t *gvar)
 // get all available near conventional memory segments
 //
 	length=coreleft();
-	start = (void far *)(gvar->mm.nearheap = nearmalloc(length));
+	start = (void far *)(gvar->mm.nearheap = _nmalloc(length));
 
 	length -= 16-(FP_OFF(start)&15);
 	length -= SAVENEARHEAP;
@@ -976,12 +976,7 @@ void MM_Shutdown (global_game_variables_t *gvar)
 		return;
 
 	_ffree(gvar->mm.farheap);//	printf("		far freed\n");
-#ifdef __WATCOMC__
 	_nfree(gvar->mm.nearheap);//	printf("		near freed\n");
-#endif
-#ifdef __BORLANDC__
-	free(gvar->mm.nearheap);//	printf("		near freed\n");
-#endif
 #ifndef __16_PM__
 #if 0
 #ifdef __DEBUG__
@@ -1477,7 +1472,9 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 		strcat (scratch,"\n");
 		write(gvar->handle.debughandle,scratch,strlen(scratch));
 		write(gvar->handle.debughandle,scratch0,strlen(scratch0));
-//fprintf(stdout, "%s", scratch);
+//0000fprintf(stdout, "\n[%s]", scratch);
+//0000fprintf(stdout, "[\n%s\n]", scratch0);
+//0000fprintf(stdout, "[%u]\n", q);
 
 		scan = scan->next;
 		q++;
@@ -1541,12 +1538,12 @@ void MM_ShowMemoryDetail (unsigned x, unsigned y, unsigned w, unsigned q, sdword
 		boolean			done;
 		ScanCode		scancode;
 		int xpos,ypos;
-		word qq, ccolor = 3;
+		word ccolor = 3;
 		IN_Ack(gvar);
 //		VL_ClearVideo (8);
-		for (qq = 0,done = false;!done;)
+		for (q = 0,done = false;!done;)
 		{
-			if(scaninfo[qq].scan->attributes & PURGEBITS)
+			if(scaninfo[q].scan->attributes & PURGEBITS)
 			{
 				ccolor = 6;		// dark purple = purgable
 				strcpy(scratch1, AAMAGENTA);		// dark purple = purgable
@@ -1556,13 +1553,13 @@ void MM_ShowMemoryDetail (unsigned x, unsigned y, unsigned w, unsigned q, sdword
 				strcpy(scratch1, AABLUE);		// medium blue = non purgable
 				//printf("%s", AABLUE);
 			}
-			if(scaninfo[qq].scan->attributes & LOCKBIT)
+			if(scaninfo[q].scan->attributes & LOCKBIT)
 			{
 				ccolor = 1;		// red = locked
 				strcpy(scratch1, AARED);		// red = locked
 				//printf("%s", AARED);
 			}
-			end = scaninfo[qq].scan->length-1;
+			end = scaninfo[q].scan->length-1;
 /*typedef struct mmblockstruct{
 	word	start,length;
 	unsigned	attributes;
@@ -1579,19 +1576,19 @@ void MM_ShowMemoryDetail (unsigned x, unsigned y, unsigned w, unsigned q, sdword
 			}else
 #endif
 				clrscr();
-			sprintf(global_temp_status_text, "block #%04u", qq); MMSMPRINTMEMINFO
-//			sprintf(global_temp_status_text, "%Fp", scaninfo[qq].scan->useptr); MMSMPRINTMEMINFO
-			sprintf(global_temp_status_text, "start:  %04x", (unsigned)scaninfo[qq].scan->start); MMSMPRINTMEMINFO
-			sprintf(global_temp_status_text, "useptr: %04x", (unsigned)scaninfo[qq].scan->useptr); MMSMPRINTMEMINFO
-			sprintf(global_temp_status_text, "size: %05u", (unsigned)scaninfo[qq].scan->length); MMSMPRINTMEMINFO
-			if (scaninfo[qq].scan->next && scaninfo[qq].scan->next->start > end+1)
+			sprintf(global_temp_status_text, "block #%04u", q); MMSMPRINTMEMINFO
+//			sprintf(global_temp_status_text, "%Fp", scaninfo[q].scan->useptr); MMSMPRINTMEMINFO
+			sprintf(global_temp_status_text, "start:  %04x", (unsigned)scaninfo[q].scan->start); MMSMPRINTMEMINFO
+			sprintf(global_temp_status_text, "useptr: %04x", (unsigned)scaninfo[q].scan->useptr); MMSMPRINTMEMINFO
+			sprintf(global_temp_status_text, "size: %05u", (unsigned)scaninfo[q].scan->length); MMSMPRINTMEMINFO
+			if (scaninfo[q].scan->next && scaninfo[q].scan->next->start > end+1)
 			{
-				sprintf(global_temp_status_text, "free: %05u", (unsigned)(scaninfo[qq].scan->next->start-scaninfo[qq].scan->start)); MMSMPRINTMEMINFO
+				sprintf(global_temp_status_text, "free: %05u", (unsigned)(scaninfo[q].scan->next->start-scaninfo[q].scan->start)); MMSMPRINTMEMINFO
 			}
 			if(gvar->video.VL_Started)
 			{
-				y = ypos;//scaninfo[qq].scan->start/width;
-				x = xpos;//scaninfo[qq].scan->start%width;
+				y = ypos;//scaninfo[q].scan->start/width;
+				x = xpos;//scaninfo[q].scan->start%width;
 				VW_Hlin(x,x+end,y,ccolor,gvar);
 				VL_Plot(x,y,5,gvar);
 			}
@@ -1599,8 +1596,8 @@ void MM_ShowMemoryDetail (unsigned x, unsigned y, unsigned w, unsigned q, sdword
 			{
 				printf("%s", scratch1);
 				printf("%s", AAGREY); printf("_");
-				if(scaninfo[qq].scan->length<64000)
-				for(w=(scaninfo[qq].scan->start)/80;w<=end/80;w++)
+				if(scaninfo[q].scan->length<64000)
+				for(w=(scaninfo[q].scan->start)/80;w<=end/80;w++)
 				{
 					//strcat(scratch1, "+");
 					printf("+");
@@ -1608,18 +1605,18 @@ void MM_ShowMemoryDetail (unsigned x, unsigned y, unsigned w, unsigned q, sdword
 			}
 
 
-				if (scaninfo[qq].scan->next && scaninfo[qq].scan->next->start > end+1) if(!gvar->video.VL_Started)
+				if (scaninfo[q].scan->next && scaninfo[q].scan->next->start > end+1) if(!gvar->video.VL_Started)
 				{
 					//strcat(scratch1, AARESET);
 					printf("%s", AARESET);
 					//strcat(scratch1,AAGREEN);
 					printf("%s", AAGREEN);
-					for(w=(end+1)/80;w<=((scaninfo[qq].scan->next->start-scaninfo[qq].scan->start)/80);w++)
+					for(w=(end+1)/80;w<=((scaninfo[q].scan->next->start-scaninfo[q].scan->start)/80);w++)
 					{
 						//strcat(scratch1,"0");
 						printf("0");
 					}
-				}else VW_Hlin(x+end+1,x+(scaninfo[qq].scan->next->start-scaninfo[qq].scan->start),y,3,gvar);	// black = free//now green
+				}else VW_Hlin(x+end+1,x+(scaninfo[q].scan->next->start-scaninfo[q].scan->start),y,3,gvar);	// black = free//now green
 
 
 			if(gvar->video.VL_Started)
@@ -1634,27 +1631,28 @@ void MM_ShowMemoryDetail (unsigned x, unsigned y, unsigned w, unsigned q, sdword
 				printf("%s", AARESET);
 				printf("\n");
 			}
+//0000			fprintf(stdout, "q=%u	maxq=%u\n", q, maxq);
 			while (!(scancode = gvar->in.inst->LastScan)){}
 
 			IN_ClearKey(scancode);
 			switch (scancode)
 			{
 				case sc_LeftArrow:
-					if(qq>0) qq--;
-					else	qq = maxq;
+					if(q>0) q--;
+					else	q = maxq;
 				break;
 				case sc_RightArrow:
-					if(qq<maxq) qq++;
-					else qq = 0;
+					if(q<maxq) q++;
+					else q = 0;
 				break;
-/*				case sc_UpArrow:
-					if(qq>0) qq-=100;
-					else	qq = maxq;
+				case sc_UpArrow:
+					if(q>10) q-=10;
+					else	q = maxq;
 				break;
 				case sc_DownArrow:
-					if(qq<maxq) qq+=100;
-					else qq = 0;
-				break;*/
+					if(q<maxq+10) q+=10;
+					else q = 0;
+				break;
 				case sc_Escape:
 					done = true;
 				break;
@@ -1681,12 +1679,7 @@ void MM_DumpData (global_game_variables_t *gvar)
 	char	lock,purge;
 	FILE	*dumpfile;
 
-#ifdef __WATCOMC__
 	_nfree(gvar->mm.nearheap);
-#endif
-#ifdef __BORLANDC__
-	free(gvar->mm.nearheap);
-#endif
 	dumpfile = fopen (gvar->handle.datadumpfilename, "w");
 	if (!dumpfile)
 		Quit (gvar, "MM_DumpData: Couldn't open MMDUMP.16!\n");

@@ -70,48 +70,23 @@ HC_LargestFreeBlock(size_t* Size)
 #endif
 
 	s0 = ~(size_t)0 ^ (~(size_t)0 >> 1);
-#ifdef __BORLANDC__
-	while (s0 && (p = malloc(s0)) == NULL)
-#endif
-#ifdef __WATCOMC__
 	while (s0 && (p = _nmalloc(s0)) == NULL)
-#endif
 		s0 >>= 1;
 
 	if (p)
-#ifdef __BORLANDC__
-		free(p);
-#endif
-#ifdef __WATCOMC__
 		_nfree(p);
-#endif
 
 	s1 = s0 >> 1;
 	while (s1)
 	{
-#ifdef __BORLANDC__
-		if ((p = malloc(s0 + s1)) != NULL)
-#endif
-#ifdef __WATCOMC__
 		if ((p = _nmalloc(s0 + s1)) != NULL)
-#endif
 		{
 			s0 += s1;
-#ifdef __BORLANDC__
-			free(p);
-#endif
-#ifdef __WATCOMC__
 			_nfree(p);
-#endif
 		}
 	s1 >>= 1;
 	}
-#ifdef __BORLANDC__
-	while (s0 && (p = malloc(s0)) == NULL)
-#endif
-#ifdef __WATCOMC__
 	while (s0 && (p = _nmalloc(s0)) == NULL)
-#endif
 		s0 ^= s0 & -s0;
 
 	*Size = s0;
@@ -131,12 +106,7 @@ size_t HC_coreleft(void)
 		if (largest < sizeof(void __near*))
 		{
 			if (p != NULL)
-#ifdef __BORLANDC__
-			free(p);
-#endif
-#ifdef __WATCOMC__
 			_nfree(p);
-#endif
 			break;
 		}
 		*(void __near* __near*)p = NULL;
@@ -152,12 +122,7 @@ size_t HC_coreleft(void)
 	while (pFirst != NULL)
 	{
 		void __near* p = *(void __near* __near*)pFirst;
-#ifdef __BORLANDC__
-		free(pFirst);
-#endif
-#ifdef __WATCOMC__
 		_nfree(pFirst);
-#endif
 		pFirst = p;
 	}
 	return total;
@@ -228,7 +193,7 @@ unsigned long HC_farcoreleft(void)
 	return total;
 }
 
-#ifdef __WATCOMC__
+//==#ifdef __WATCOMC__
 /*void huge* LargestHugeFreeBlock(size_t* Size)
 {
 	size_t s0, s1;
@@ -364,8 +329,8 @@ size_t _basedcoreleft(void)
 		pFirst = p;
 	}
 	return total;
-}*/
-#if 0
+}
+
 size_t HC_GetFreeSize(void)
 {
 	struct _heapinfo h_info;
@@ -380,13 +345,34 @@ size_t HC_GetFreeSize(void)
 		if((h_info._useflag == _USEDENTRY ? "USED" : "FREE")=="USED") h_used += h_info._size;
 		h_total += h_info._size;
 	}
-	HCL_heapstat0(heap_status);
+	HCL_heapstat(heap_status);
 	return h_free;
 }
-#endif
+*/
+
+void HCL_HeapWalking (struct _heapinfo *h_info, hc_use_t *hu, unsigned nearfarswitch)
+{
+	hu->h_free=0; hu->h_total=0; hu->h_used=0;
+
+	h_info->_pentry = NULL;
+	for(;;) {
+		if(nearfarswitch==0) hu->heap_status = _nheapwalk( h_info );
+		else if(nearfarswitch==1) hu->heap_status = _fheapwalk( h_info );
+		if( hu->heap_status != _HEAPOK ) break;
+		if((h_info->_useflag == _USEDENTRY ? "USED" : "FREE")=="FREE") hu->h_free += h_info->_size;
+		if((h_info->_useflag == _USEDENTRY ? "USED" : "FREE")=="USED") hu->h_used += h_info->_size;
+		hu->h_total += h_info->_size;
+	}
+	HCL_heapstat(hu->heap_status);
+}
 
 unsigned long HC_GetFarFreeSize(void)
 {
+	struct _heapinfo h_info;
+	hc_use_t hu;
+	HCL_HeapWalking (&h_info, &hu, 1);
+	return hu.h_free;
+#if 0
 	struct _heapinfo fh_info;
 	int heap_status;
 	unsigned long fh_free=0, fh_total=0, fh_used=0;
@@ -399,12 +385,18 @@ unsigned long HC_GetFarFreeSize(void)
 		if((fh_info._useflag == _USEDENTRY ? "USED" : "FREE")=="USED") fh_used += fh_info._size;
 		fh_total += fh_info._size;
 	}
-	HCL_heapstat0(heap_status);
+	HCL_heapstat(heap_status);
 	return fh_free;
+#endif
 }
 
 size_t HC_GetNearFreeSize(void)
 {
+	struct _heapinfo h_info;
+	hc_use_t hu;
+	HCL_HeapWalking (&h_info, &hu, 0);
+	return hu.h_free;
+#if 0
 	struct _heapinfo nh_info;
 	int heap_status;
 	size_t nh_free=0, nh_total=0, nh_used=0;
@@ -417,8 +409,9 @@ size_t HC_GetNearFreeSize(void)
 		if((nh_info._useflag == _USEDENTRY ? "USED" : "FREE")=="USED") nh_used += nh_info._size;
 		nh_total += nh_info._size;
 	}
-	HCL_heapstat0(heap_status);
+	HCL_heapstat(heap_status);
 	return nh_free;
+#endif
 }
 
 void HC_heapdump(global_game_variables_t *gvar)
@@ -446,7 +439,7 @@ void HC_heapdump(global_game_variables_t *gvar)
 		h_total += h_info._size;
 		write(gvar->handle.heaphandle,scratch,strlen(scratch));
 	}
-	HCL_heapstat(gvar, heap_status, &scratch);
+	HCL_heapstatLogWrite(gvar, heap_status, scratch);
 #endif
 
 	//near
@@ -468,7 +461,7 @@ nh_info._pentry, nh_info._size );*/
 		nh_total += nh_info._size;
 		write(gvar->handle.heaphandle,scratch,strlen(scratch));
 	}
-	HCL_heapstat(gvar, heap_status, &scratch);
+	HCL_heapstatLogWrite(gvar, heap_status, scratch);
 
 	//far
 	strcpy(scratch,"\n	== far ==\n\n");
@@ -489,14 +482,16 @@ fh_info._pentry, fh_info._size );*/
 		fh_total += fh_info._size;
 		write(gvar->handle.heaphandle,scratch,strlen(scratch));
 	}
-	HCL_heapstat(gvar, heap_status, &scratch);
+	HCL_heapstatLogWrite(gvar, heap_status, scratch);
 
 	strcpy(scratch,"\n");
+#ifdef __WATCOMC__
 	strcat(scratch,kittengets(2,0,"Memory Type         Total      Used       Free\n"));
+#endif
 	strcat(scratch,"----------------  --------   --------   --------\n");
 //	printmeminfoline(&scratch, "Default", h_total, h_used, h_free);
-	printmeminfoline(&scratch, "Near", nh_total, nh_used, nh_free);
-	printmeminfoline(&scratch, "Far", fh_total, fh_used, fh_free);
+	printmeminfoline(scratch, "Near", nh_total, nh_used, nh_free);
+	printmeminfoline(scratch, "Far", fh_total, fh_used, fh_free);
 	strcat(scratch,"----------------  --------   --------   --------\n");
 	strcat(scratch,"HC_coreleft = ");			ultoa((dword)HC_coreleft(),str,10);			strcat(scratch,str);	strcat(scratch,"\n");
 	strcat(scratch,"HC_farcoreleft = ");			ultoa((dword)HC_farcoreleft(),str,10);		strcat(scratch,str);	strcat(scratch,"\n");
@@ -511,7 +506,7 @@ fh_info._pentry, fh_info._size );*/
 	HC_CloseDebug(gvar);
 }
 
-void HCL_heapstat(global_game_variables_t *gvar, int heap_status, byte *str)
+void HCL_heapstatLogWrite(global_game_variables_t *gvar, int heap_status, byte *str)
 {
 	switch( heap_status ) {
 		case _HEAPEND:
@@ -524,16 +519,18 @@ void HCL_heapstat(global_game_variables_t *gvar, int heap_status, byte *str)
 		case _HEAPBADBEGIN:
 			strcpy((str),"ERROR - heap is damaged\n");
 		break;
+#ifdef __WATCOMC__
 		case _HEAPBADPTR:
 			strcpy((str),"ERROR - bad pointer to heap\n");
 		break;
+#endif
 		case _HEAPBADNODE:
 			strcpy((str),"ERROR - bad node in heap\n");
 	}
 	write(gvar->handle.heaphandle,(str),strlen((str)));
 }
 
-void HCL_heapstat0(int heap_status)
+void HCL_heapstat(int heap_status)
 {
 	switch( heap_status ) {
 		case _HEAPEND:
@@ -545,14 +542,18 @@ void HCL_heapstat0(int heap_status)
 		case _HEAPBADBEGIN:
 			printf("ERROR - heap is damaged\n");
 		break;
+#ifdef __WATCOMC__
 		case _HEAPBADPTR:
 			printf("ERROR - bad pointer to heap\n");
 		break;
+#endif
 		case _HEAPBADNODE:
 			printf("ERROR - bad node in heap\n");
 	}
 }
 
+//++
+#ifdef __WATCOMC__
 unsigned long farcoreleft()
 {
 //----	_fheapgrow();

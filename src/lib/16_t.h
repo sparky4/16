@@ -70,8 +70,17 @@ typedef void _seg * memptr;
 //#define OBTPTRANDPERCONV	&
 //#define SDTPTRANDPERCONV	&
 
-#define nearmalloc malloc
-#define nearfree free
+#define _nmalloc malloc
+#define _nfree free
+
+#define _nheapwalk heapwalk
+#define _fheapwalk farheapwalk
+
+//heapinfo vars
+#define _heapinfo heapinfo
+#define _pentry	ptr
+#define _size	size
+#define _useflag	in_use
 #endif
 //
 

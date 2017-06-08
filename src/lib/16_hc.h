@@ -28,6 +28,27 @@
 
 #include "src/lib/16_head.h"
 
+typedef struct heapusage
+{
+	unsigned long h_free, h_total, h_used;
+	int heap_status;
+} hc_use_t;
+
+#ifdef __BORLANDC__
+#if 0
+/*typedef */struct _heapinfo
+{
+	int	  _far *_pentry;	//- heap entry pointer
+	size_t _size;	   	//- size of heap entry
+	int	  _useflag;	   	//- entry in use return value
+};// _heapinfo_t;
+#endif
+
+#define _HEAPBADBEGIN   2       /* heap header is corrupted */
+#define _HEAPBADNODE    3       /* heap entry is corrupted */
+#define _HEAPBADPTR     5       /* invalid heap entry pointer (_heapwalk) */
+#endif
+
 //long HC_Newfarcoreleft();
 #ifdef __BORLANDC__
 void * HC_LargestFreeBlock(size_t* Size);
@@ -43,8 +64,8 @@ unsigned long HC_GetFarFreeSize(void);
 size_t HC_GetNearFreeSize(void);
 
 void HC_heapdump(global_game_variables_t *gvar);
-void HCL_heapstat(global_game_variables_t *gvar, int heap_status, byte *str);
-void HCL_heapstat0(int heap_status);
+void HCL_heapstatLogWrite(global_game_variables_t *gvar, int heap_status, byte *str);
+void HCL_heapstat(int heap_status);
 
 void HC_OpenDebug(global_game_variables_t *gvar);
 void HC_CloseDebug(global_game_variables_t *gvar);
