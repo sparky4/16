@@ -40,8 +40,7 @@
 #define FILEREAD
 //#define EXMMVERBOSE
 //#define BUFFDUMPPAUSE
-#define EXMMVERBOSE__
-//#define EXMMHEAPPTR
+//#define EXMMVERBOSE__
 //	#define PRINTBBDUMP
 #define BUFFDUMP
 
@@ -70,7 +69,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-#ifdef __BORLANDC__
+#ifdef NOVID
 void VL_Startup (global_game_variables_t *gvar){ gvar=gvar; }
 void VL_Shutdown (global_game_variables_t *gvar){ gvar=gvar; }
 void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
@@ -78,17 +77,31 @@ void VGAmodeX(sword vq, boolean cmem, global_game_variables_t *gv)
 	printf("VGAmodeX dummy:\n	%Fp	%Fp	%Fp\n", &vq, &cmem, gv);
 }
 
-word modexPalOverscan(word col)
+word
+VL_modexPalOverscan(byte *p, word col)
 {
+	int i;
 	//modexWaitBorder();
+//	vga_wait_for_vsync();
 	outp(PAL_WRITE_REG, 0);  /* start at the beginning of palette */
-	outp(PAL_DATA_REG, col);
+	for(i=col; i<(3+col); i++)
+	{
+		outp(PAL_DATA_REG, p[i]);
+	}
+//	modexPalSave(p);
 	return col;
 }
 void	TL_VidInit(global_game_variables_t *gvar)
 {
 	gvar->video.old_mode = 3;
 }
+
+#ifdef __WATCOMC__
+void VL_ShowPage(page_t *page, boolean vsync, boolean sr){}
+void modexClearRegion(page_t *page, int x, int y, int w, int h, byte color){}
+void modexprint(page_t *page, sword x, sword y, word t, boolean tlsw, word color, word bgcolor, boolean vidsw, const byte *str){ printf("%s\n", str); }
+void modexpdump(nibble pagenum, global_game_variables_t *gvar){}
+#endif
 #endif
 
 //printf("*	%Fp\t", *BBUF);
@@ -180,7 +193,6 @@ main(int argc, char *argv[])
 
 	printf("bakapee1[%s]\n", bakapee1);
 	printf("bakapee2[%s]\n", bakapee2);
-
 								#ifdef EXMMVERBOSE__
 	printf("coreleft():		%u\n", coreleft());
 	printf("farcoreleft():		%ld\n", farcoreleft());
@@ -306,19 +318,22 @@ PRINTBB; KEYP
 	DebugMemory_(&gvar, 1);
 	MM_DumpData(&gvar);
 	MM_Report_(&gvar);
-	HC_heapdump(&gvar);
 	//printf("bakapee1=%s\n", bakapee1);
 	//printf("bakapee2=%s\n", bakapee2);
-
+	MM_FreePtr(BBUFPTR, &gvar);
+								#ifndef NOVID
+	Shutdown16(&gvar);
+								#else //novid
+	ShutdownCAMMPM(&gvar);
+								#endif //NOVID
+	IN_Shutdown(&gvar);
 	printf("========================================\n");
-								#ifdef EXMMHEAPPTR
 	printf("near=	%Fp ",	gvar.mm.nearheap);
 	printf("far=	%Fp",			gvar.mm.farheap);
 	printf("\n");
 	printf("&near=	%Fp ",	&(gvar.mm.nearheap));
 	printf("&far=	%Fp",		&(gvar.mm.farheap));
 	printf("\n");
-								#endif
 								#ifdef EXMMVERBOSE
 	printf("bigb=	%Fp ",	BBUF);
 	//printf("bigbr=	%04x",	BBUF);
@@ -327,20 +342,12 @@ PRINTBB; KEYP
 	//printf("&bigb=%04x",		BBUFPTR);
 	printf("\n");
 								#endif
+	printf("========================================\n");
+
 								#ifdef EXMMVERBOSE__
 	printf("coreleft():		%u\n", coreleft());
 	printf("farcoreleft():		%ld\n", farcoreleft());
 								#endif
-	printf("========================================\n");
-
-	MM_FreePtr(BBUFPTR, &gvar);
-								#ifndef NOVID
-	Shutdown16(&gvar);
-								#else //novid
-	ShutdownCAMMPM(&gvar);
-								#endif //NOVID
-	IN_Shutdown(&gvar);
-
 #ifdef __WATCOMC__
 //this is far	printf("Total free:			%lu\n", (dword)(HC_GetFreeSize()));
 //super buggy	printf("HC_coreleft():			%u\n", HC_coreleft());
@@ -354,6 +361,7 @@ PRINTBB; KEYP
 //	printf("HC_farcoreleft:			%lu\n", (dword)HC_farcoreleft());
 //	printf("HC_Newfarcoreleft():		%lu\n", (dword)HC_Newfarcoreleft());
 #endif
+	HC_heapdump(&gvar);
 	printf("Project 16 ");
 #ifdef __WATCOMC__
 	printf("exmmtest");

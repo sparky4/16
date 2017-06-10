@@ -799,6 +799,7 @@ PML_ReadFromFile(byte far *buf,long offset,word length, global_game_variables_t 
 //
 //	PML_OpenPageFile() - Opens the page file and sets up the page info
 //
+#if 0
 void
 PML_OpenPageFile(global_game_variables_t *gvar)
 {
@@ -869,6 +870,7 @@ PML_ClosePageFile(global_game_variables_t *gvar)
 		MM_FreePtr((void _seg *)&gvar->pm.PMSegPages, gvar);
 	}
 }
+#endif
 
 /////////////////////////////////////////////////////////////////////////////
 //

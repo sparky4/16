@@ -125,7 +125,6 @@
 #ifdef __BORLANDC__
 #define PAL_WRITE_REG		   0x03C8   /* Color register, write address */
 #define PAL_DATA_REG			0x03C9   /* Color register, data port */
-word modexPalOverscan(word col);
 #endif
 
 void	Shutdown16(global_game_variables_t *gvar),
