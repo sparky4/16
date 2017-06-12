@@ -317,6 +317,7 @@ PRINTBB; KEYP
 #endif
 	DebugMemory_(&gvar, 1);
 	MM_DumpData(&gvar);
+	KEYP
 	MM_Report_(&gvar);
 	//printf("bakapee1=%s\n", bakapee1);
 	//printf("bakapee2=%s\n", bakapee2);

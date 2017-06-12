@@ -1,30 +1,30 @@
 
 	== near ==
 
-  USED block at 12bf:e706 of size 12
-  USED block at 12bf:e712 of size 322
-  USED block at 12bf:e854 of size 52
-  USED block at 12bf:e888 of size 20
-  USED block at 12bf:e89c of size 20
-  USED block at 12bf:e8b0 of size 20
-  USED block at 12bf:e8c4 of size 20
-  USED block at 12bf:e8d8 of size 20
-  FREE block at 12bf:e8ec of size 5904
+  USED block at 12c2:e706 of size 12
+  USED block at 12c2:e712 of size 322
+  USED block at 12c2:e854 of size 52
+  USED block at 12c2:e888 of size 20
+  USED block at 12c2:e89c of size 20
+  USED block at 12c2:e8b0 of size 20
+  USED block at 12c2:e8c4 of size 20
+  USED block at 12c2:e8d8 of size 20
+  FREE block at 12c2:e8ec of size 5904
 OK - end of heap
 
 	== far ==
 
-  USED block at 22c0:0016 of size 136
-  FREE block at 22c0:009e of size 48840
-  USED block at 22c0:bf66 of size 20
-  FREE block at 22c0:bf7a of size 16514
-  FREE block at 32c1:0016 of size 65510
-  FREE block at 42c2:0016 of size 65510
-  FREE block at 52c3:0016 of size 65510
-  FREE block at 62c4:0016 of size 65510
-  FREE block at 72c5:0016 of size 65510
-  FREE block at 82c6:0016 of size 65510
-  FREE block at 92c7:0016 of size 49174
+  USED block at 22c3:0016 of size 136
+  FREE block at 22c3:009e of size 48840
+  USED block at 22c3:bf66 of size 20
+  FREE block at 22c3:bf7a of size 16514
+  FREE block at 32c4:0016 of size 65510
+  FREE block at 42c5:0016 of size 65510
+  FREE block at 52c6:0016 of size 65510
+  FREE block at 62c7:0016 of size 65510
+  FREE block at 72c8:0016 of size 65510
+  FREE block at 82c9:0016 of size 65510
+  FREE block at 92ca:0016 of size 49174
 OK - end of heap
 
 Memory Type         Total      Used       Free
