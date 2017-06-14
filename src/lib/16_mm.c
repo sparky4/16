@@ -883,7 +883,7 @@ void MM_Startup (global_game_variables_t *gvar)
 //
 // get all available near conventional memory segments
 //
-	length=coreleft();
+	length=(word)coreleft();
 	start = (void far *)(gvar->mm.nearheap = _nmalloc(length));
 
 	length -= 16-(FP_OFF(start)&15);

@@ -96,11 +96,12 @@
 
 //==========================================================================
 
-//moved to typdefst
+//typedef void _seg * memptr;	//moved to 16_t.h
+
 /*typedef struct
 {
 	dword	nearheap,farheap,EMSmem,XMSmem,mainmem;
-} mminfotype;*/
+} mminfotype;*/	//moved to 16_tdef.h
 
 //==========================================================================
 

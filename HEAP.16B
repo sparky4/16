@@ -1,21 +1,23 @@
 
 	== near ==
 
-  FREE block at 1704:0004 of size 528
-  FREE block at 1725:0004 of size 64
+  FREE block at 1708:0004 of size 528
+  FREE block at 1729:0004 of size 528
+  FREE block at 174A:0004 of size 64
 OK - end of heap
 
 	== far ==
 
-  FREE block at 1704:0004 of size 528
-  FREE block at 1725:0004 of size 64
+  FREE block at 1708:0004 of size 528
+  FREE block at 1729:0004 of size 528
+  FREE block at 174A:0004 of size 64
 OK - end of heap
 
 ----------------  --------   --------   --------
-Near		   592		0	  0
-Far		   592		0	  0
+Near		   1120		0	  0
+Far		   1120		0	  0
 ----------------  --------   --------   --------
-HC_coreleft = 36051
+HC_coreleft = 35459
 HC_farcoreleft = 0
 HC_GetNearFreeSize = 0
 HC_GetFarFreeSize = 0
