@@ -210,7 +210,8 @@ TESTEXEC = &
 	tesuto.exe &
 	0tesuto.exe &
 	maptest.exe &
-	imfplay.exe
+	imfplay.exe &
+	vrldbg.exe
 #zcroll.exe &
 TESTEXEC2 = &
 	pcxtest.exe &
@@ -232,7 +233,8 @@ SPRIUTILEXEC = &
 	pcx2vrl &
 	pcxsscut &
 	vrl2vrs &
-	vrsdump
+	vrsdump &
+	vrldbg
 #UTILEXEC += $(SPRIUTILEXEC)
 !endif
 
@@ -285,6 +287,7 @@ inputest.exe:	 inputest.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
 #inntest.exe:	 	inntest.$(OBJ)	$(16LIBNOINOBJS) 16_in_1.$(OBJ) $(DOSLIB) gfx.lib
 sountest.exe:	sountest.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
 imfplay.exe:		imfplay.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
+vrldbg.exe:		vrldbg.$(OBJ) #gfx.lib $(DOSLIB)
 pcxtest.exe:	pcxtest.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
 vrstest.exe:	vrstest.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 #vgacamm.exe:	vgacamm.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
@@ -332,6 +335,7 @@ inputest.$(OBJ):$(SRC)/inputest.c
 #inntest.$(OBJ):$(SRC)/inntest.c
 sountest.$(OBJ): $(SRC)/sountest.c
 imfplay.$(OBJ): $(SRC)/imfplay.c
+vrldbg.$(OBJ):	$(SRC)/vrldbg.c
 #miditest.$(OBJ): $(SRC)/miditest.c
 #testemm.$(OBJ):$(SRC)/testemm.c
 #testemm0.$(OBJ): $(SRC)/testemm0.c
