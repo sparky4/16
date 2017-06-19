@@ -2116,7 +2116,7 @@ void CA_SetGrPurge (global_game_variables_t *gvar)
 
 	for (i=0;i<NUMCHUNKS;i++)
 		if (gvar->ca.grsegs[i])
-			MM_SetPurge (gvar->ca.grsegs[i],3, gvar);
+			MM_SetPurge (MEMPTRCONV gvar->ca.grsegs[i],3, gvar);
 }
 
 

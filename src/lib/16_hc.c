@@ -485,9 +485,7 @@ fh_info._pentry, fh_info._size );*/
 	HCL_heapstatLogWrite(gvar, heap_status, scratch);
 
 	strcpy(scratch,"\n");
-#ifdef __WATCOMC__
 	strcat(scratch,kittengets(2,0,"Memory Type         Total      Used       Free\n"));
-#endif
 	strcat(scratch,"----------------  --------   --------   --------\n");
 //	printmeminfoline(&scratch, "Default", h_total, h_used, h_free);
 	printmeminfoline(scratch, "Near", nh_total, nh_used, nh_free);
