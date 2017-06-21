@@ -119,8 +119,8 @@ UPXQ=-qqq
 #
 # stacksize
 #
-STKSIZ=32768
-#24576#40960
+STKSIZ=24576
+#32768#40960
 
 #
 # compile flags

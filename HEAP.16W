@@ -1,15 +1,15 @@
 
 	== near ==
 
-  USED block at 12c6:e706 of size 12
-  USED block at 12c6:e712 of size 322
-  USED block at 12c6:e854 of size 52
-  USED block at 12c6:e888 of size 20
-  USED block at 12c6:e89c of size 20
-  USED block at 12c6:e8b0 of size 20
-  USED block at 12c6:e8c4 of size 20
-  USED block at 12c6:e8d8 of size 20
-  FREE block at 12c6:e8ec of size 5904
+  USED block at 12c6:c706 of size 12
+  USED block at 12c6:c712 of size 322
+  USED block at 12c6:c854 of size 52
+  USED block at 12c6:c888 of size 20
+  USED block at 12c6:c89c of size 20
+  USED block at 12c6:c8b0 of size 20
+  USED block at 12c6:c8c4 of size 20
+  USED block at 12c6:c8d8 of size 20
+  FREE block at 12c6:c8ec of size 14096
 OK - end of heap
 
 	== far ==
@@ -29,13 +29,13 @@ OK - end of heap
 
 Memory Type         Total      Used       Free
 ----------------  --------   --------   --------
-Near		   6390		486	  5904
+Near		   14582	486	  14096
 Far		   48992	156	  48836
 ----------------  --------   --------   --------
-HC_coreleft = 5902
-HC_farcoreleft = 513472
-HC_GetNearFreeSize = 5904
+HC_coreleft = 14094
+HC_farcoreleft = 521664
+HC_GetNearFreeSize = 14096
 HC_GetFarFreeSize = 507588
-coreleft = 5902
-farcoreleft = 513472
-stackavail = 31454
+coreleft = 14094
+farcoreleft = 521664
+stackavail = 23262
