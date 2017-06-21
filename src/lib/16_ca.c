@@ -1889,7 +1889,7 @@ void CA_CacheGrChunk (int chunk)
 	CAL_ExpandGrChunk (chunk,source);
 
 	if (compressed>BUFFERSIZE)
-		MM_FreePtr(&bigbufferseg);
+		MM_FreePtr (MEMPTRCONV bigbufferseg);
 }
 */
 
@@ -1982,8 +1982,8 @@ void CA_CacheMap (global_game_variables_t *gvar)
 			source = gvar->mm.bufferseg;
 		else
 		{
-			MM_GetPtr(&bigbufferseg,compressed, gvar);
-			MM_SetLock (&bigbufferseg,true, gvar);
+			MM_GetPtr(MEMPTRCONV bigbufferseg,compressed, gvar);
+			MM_SetLock (MEMPTRCONV bigbufferseg,true, gvar);
 			source = bigbufferseg;
 		}
 
@@ -2012,7 +2012,7 @@ void CA_CacheMap (global_game_variables_t *gvar)
 #endif
 
 		if (compressed>BUFFERSIZE)
-			MM_FreePtr(&bigbufferseg, gvar);
+			MM_FreePtr(MEMPTRCONV bigbufferseg, gvar);
 	}
 }
 

@@ -52,22 +52,10 @@ long HC_Newfarcoreleft()
 #endif
 
 //from: https://stackoverflow.com/questions/14386856/c-check-available-ram
-void
-#ifdef __BORLANDC__
- *
-#endif
-#ifdef __WATCOMC__
- __near*
-#endif
-HC_LargestFreeBlock(size_t* Size)
+void __near* HC_LargestFreeBlock(size_t* Size)
 {
 	size_t s0, s1;
-#ifdef __BORLANDC__
-	void * p;
-#endif
-#ifdef __WATCOMC__
 	void __near* p;
-#endif
 
 	s0 = ~(size_t)0 ^ (~(size_t)0 >> 1);
 	while (s0 && (p = _nmalloc(s0)) == NULL)

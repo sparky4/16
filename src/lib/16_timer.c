@@ -29,7 +29,7 @@ clock_t start_timer(global_game_variables_t *gv)
 	gv->kurokku.t = clock();
 	gv->kurokku.tiku = 0; gv->video.sfip = 0;
 	gv->kurokku.clock_start = *clockw;
-	gv->kurokku.clock = clockw;
+	gv->kurokku.clock = (word *)clockw;
 	gv->kurokku.wcpu = WCPU_detectcpu();
 
 	//turn this off if XT

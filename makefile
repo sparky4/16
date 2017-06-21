@@ -654,6 +654,7 @@ mx_: .symbolic
 
 !ifdef __LINUX__
 vrs: .symbolic
+vrl: .symbolic
 $(SPRIUTILEXEC):
 	@cd $(DOSLIB_VGA:$(to_os_path))
 	#@make clean

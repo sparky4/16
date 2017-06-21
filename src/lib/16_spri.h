@@ -81,7 +81,7 @@ void VRS_OpenVRL(char *filename, entity_t *enti, boolean rlsw, global_game_varia
 * int - operation status
 * to the requested .vrl blob
 */
-int get_vrl_by_id(struct vrs_container *vrs_cont, uint16_t id, struct vrl_container * vrl_cont);
+int get_vrl_by_id(struct vrs_container far *vrs_cont, uint16_t id, struct vrl_container *vrl_cont);
 
 void DrawVRL (unsigned int x,unsigned int y,struct vrl1_vgax_header *hdr,vrl1_vgax_offset_t *lineoffs/*array hdr->width long*/,unsigned char *data,unsigned int datasz);
 

@@ -96,7 +96,7 @@ void VRS_OpenVRS(char *filename, entity_t *enti, boolean rlsw, global_game_varia
 #ifndef VRS_USECAMMPM
 		vrl_line_offsets[i] = vrl1_vgax_genlineoffsets(curr_vrl, (byte *)curr_vrl + sizeof(struct vrl1_vgax_header), vrl_size);
 #else
-		enti->spri.spritesheet.vrl_line_offsets[i] = vrl1_vgax_genlineoffsets(curr_vrl, (byte *)curr_vrl + sizeof(struct vrl1_vgax_header), vrl_size);
+		enti->spri.spritesheet.vrl_line_offsets[i] = vrl1_vgax_genlineoffsets((struct vrl1_vgax_header *)curr_vrl, (byte *)curr_vrl + sizeof(struct vrl1_vgax_header), vrl_size);
 #endif
 	}
 #ifndef VRS_USECAMMPM
@@ -294,7 +294,7 @@ void init_anim(struct sprite *spri, int anim_index)
 	spri->curr_spri_id = anim_list[0].sprite_id;
 	spri->delay = anim_list[0].delay;
 
-	spri->curr_anim_list = anim_list;
+	spri->curr_anim_list = (struct vrs_animation_list_entry_t *)anim_list;
 }
 
 int set_anim_by_id(struct sprite *spri, int anim_id)
