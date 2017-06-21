@@ -22,51 +22,7 @@
 /*
 	exmm test
 */
-#include "src/lib/16_head.h"
-#include "src/lib/16_tail.h"
-#include "src/lib/16_pm.h"
-#include "src/lib/16_ca.h"
-#include "src/lib/16_mm.h"
-#include "src/lib/16_hc.h"
-#include "src/lib/16_dbg.h"
-
-#pragma hdrstop
-
-#pragma warn -pro
-#pragma warn -use
-
-//file load or read definition
-#define FILEREADLOAD
-#define FILEREAD
-//#define EXMMVERBOSE
-//#define BUFFDUMPPAUSE
-//#define EXMMVERBOSE__
-//	#define PRINTBBDUMP
-#define BUFFDUMP
-
-#ifdef __BORLANDC__
-#define NOVID
-#endif
-#ifdef __WATCOMC__
-#define NOVID
-//#define			SCROLLLOAD
-#endif
-
-
-#define KEYP IN_Shutdown(&gvar); printf("\n\npress any key to continue!\n"); getch(); IN_Startup(&gvar);
-
-#define BBUFNAME gvar.mm.bufferseg//bigbuffer
-//#define INITBBUF static memptr BBUFNAME;
-#define BBUFPTR	MEMPTRCONV BBUFNAME
-
-#ifdef __BORLANDC__
-#define BBUF		(memptr *)BBUFPTR
-#define BBUFSTRING	(memptr *)BBUFNAME
-#endif
-#ifdef __WATCOMC__
-#define BBUF		BBUFNAME
-#define BBUFSTRING	BBUF
-#endif
+#include "src/exmmtest.h"
 
 ////////////////////////////////////////////////////////////////////////////
 #ifdef NOVID
@@ -104,23 +60,6 @@ void modexpdump(nibble pagenum, global_game_variables_t *gvar){}
 #endif
 #endif
 
-//printf("*	%Fp\t", *BBUF);
-//printf("*	     %04x\t", *BBUF);
-#define PRINTBB {\
-	printf("-------------------------------------------------------------------------------\n");\
-	printf("&main()=	%Fp\n", argv[0]);\
-	printf("buffer:\n");\
-	printf("	%Fp\t", BBUF);\
-	printf("&%Fp\n", BBUFPTR);\
-	printf("	     %04x\t", BBUF);\
-	printf("&     %04x\n", BBUFPTR);\
-	printf("-------------------------------------------------------------------------------\n");\
-}
-	//printf("&main()=	%Fp\n", *argv[0]);
-	//printf("bigbuffer=	%Fp\n", bigbuffer);
-	//printf("&bigbuffer=	%Fp\n", &bigbuffer);
-	//printf("bigbuffer=	%04x\n", bigbuffer);
-	//printf("&bigbuffer=	%04x\n", &bigbuffer);
 #ifdef __WATCOMC__
 void segatesuto()
 {
@@ -197,6 +136,7 @@ main(int argc, char *argv[])
 	printf("coreleft():		%u\n", coreleft());
 	printf("farcoreleft():		%ld\n", farcoreleft());
 								#endif
+	printf("stackavail()=%u\n", stackavail());
 	KEYP
 
 								#ifndef NOVID

@@ -20,7 +20,7 @@
  *
  */
 /*
-	heap test stuff
+	heap check
 */
 
 #include "src/lib/16_hc.h"
