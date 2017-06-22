@@ -47,9 +47,9 @@ Near		   9718		484	  9234
 Far		   45170	4256	  40914
 ----------------  --------   --------   --------
 HC_coreleft = 9232
-HC_farcoreleft = 396888
+HC_farcoreleft = 394756
 HC_GetNearFreeSize = 9234
 HC_GetFarFreeSize = 40914
 coreleft = 9232
-farcoreleft = 396888
+farcoreleft = 394756
 stackavail = 23262
