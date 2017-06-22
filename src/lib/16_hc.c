@@ -117,12 +117,12 @@ size_t HC_coreleft(void)
 }
 
 //far version of above
-void far* HC_LargestFarFreeBlock(unsigned long* Size)
+void __far* HC_LargestFarFreeBlock(dword* Size)
 {
-	unsigned long s0, s1;
-	void far* p;
+	dword s0, s1;
+	void __far* p;
 
-	s0 = ~(unsigned long)0 ^ (~(unsigned long)0 >> 1);
+	s0 = ~(dword)0 ^ (~(dword)0 >> 1);
 	while (s0 && (p = _fmalloc(s0)) == NULL)
 		s0 >>= 1;
 
@@ -147,37 +147,39 @@ void far* HC_LargestFarFreeBlock(unsigned long* Size)
 }
 
 //far version of above
-unsigned long HC_farcoreleft(void)
+dword HC_farcoreleft(void)
 {
-	unsigned long total = 0UL;
-	void far* pFirst = NULL;
-	void far* pLast = NULL;
+	dword total = 0UL;
+	void __far* pFirst = NULL;
+	void __far* pLast = NULL;
 	for(;;)
 	{
-		unsigned long largest;
-		void far* p = HC_LargestFarFreeBlock(&largest);
-		if (largest < sizeof(void far*))
+		dword largest;
+		void __far* p = HC_LargestFarFreeBlock(&largest);
+		if (largest < sizeof(void __far*))
 		{
 			if (p != NULL)
 			_ffree(p);
 			break;
 		}
-		*(void far* far*)p = NULL;
+		*(void __far* __far*)p = NULL;
 		total += largest;
 		if (pFirst == NULL)
 			pFirst = p;
 
 		if (pLast != NULL)
-			*(void far* far*)pLast = p;
+			*(void __far* __far*)pLast = p;
 		pLast = p;
 	}
 
 	while (pFirst != NULL)
 	{
-		void far* p = *(void far* far*)pFirst;
+		void __far* p = *(void __far* __far*)pFirst;
 		_ffree(pFirst);
 		pFirst = p;
 	}
+
+	//if(total>16) total+=16;	total &= 0xfffffff0UL;
 	return total;
 }
 
@@ -294,25 +296,25 @@ size_t _basedcoreleft(void)
 	{
 		size_t largest;
 		void __based(segu)* p = LargestBasedFreeBlock(&largest);
-		if (largest < sizeof(void far*))
+		if (largest < sizeof(void __far*))
 		{
 			if (p != NULL)
 			_ffree(p);
 			break;
 		}
-		*(void far* far*)p = NULL;
+		*(void __far* __far*)p = NULL;
 		total += largest;
 		if (pFirst == NULL)
 			pFirst = p;
 
 		if (pLast != NULL)
-			*(void far* far*)pLast = p;
+			*(void __far* __far*)pLast = p;
 		pLast = p;
 	}
 
 	while (pFirst != NULL)
 	{
-		void far* p = *(void far* far*)pFirst;
+		void __far* p = *(void __far* __far*)pFirst;
 		_ffree(pFirst);
 		pFirst = p;
 	}
@@ -354,7 +356,7 @@ void HCL_HeapWalking (struct _heapinfo *h_info, hc_use_t *hu, unsigned nearfarsw
 	HCL_heapstat(hu->heap_status);
 }
 
-unsigned long HC_GetFarFreeSize(void)
+dword HC_GetFarFreeSize(void)
 {
 	struct _heapinfo h_info;
 	hc_use_t hu;
@@ -363,7 +365,7 @@ unsigned long HC_GetFarFreeSize(void)
 #if 0
 	struct _heapinfo fh_info;
 	int heap_status;
-	unsigned long fh_free=0, fh_total=0, fh_used=0;
+	dword fh_free=0, fh_total=0, fh_used=0;
 
 	fh_info._pentry = NULL;
 	for(;;) {
@@ -540,14 +542,22 @@ void HCL_heapstat(int heap_status)
 
 //++
 #ifdef __WATCOMC__
-unsigned long farcoreleft()
+dword farcoreleft()
 {
 //----	_fheapgrow();
-	return HC_farcoreleft();
+	// #ifdef __BORLANDC__
+// 	r 0x90000UL-16UL
+// #endif
+//	printf("\nfarcoreleft()=%lu\n", HC_farcoreleft());
+
+//----
+	return 0x90000UL+16UL;
+//----	return 589824UL+16UL;
+//++++	return HC_farcoreleft();
 //stack overflows	return HC_GetFarFreeSize();
 }
 
-unsigned long coreleft()
+dword coreleft()
 {
 	_nheapgrow();
 	return _memavl();

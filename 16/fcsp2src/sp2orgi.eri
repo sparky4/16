@@ -1,0 +1,13 @@
+sp2orgi.asm(158): Warning! W095: size not specified -- BYTE PTR is assumed
+sp2orgi.asm(160): Error! E040: Invalid instruction operands
+sp2orgi.asm(271): Error! E040: Invalid instruction operands
+sp2orgi.asm(389): Error! E077: A constant operand is expected in multiplication
+sp2orgi.asm(466): Warning! W095: size not specified -- BYTE PTR is assumed
+sp2orgi.asm(470): Error! E040: Invalid instruction operands
+sp2orgi.asm(557): Warning! W095: size not specified -- BYTE PTR is assumed
+sp2orgi.asm(558): Warning! W095: size not specified -- BYTE PTR is assumed
+sp2orgi.asm(559): Warning! W096: size not specified -- WORD PTR is assumed
+sp2orgi.asm(577): Error! E040: Invalid instruction operands
+sp2orgi.asm(589): Error! E040: Invalid instruction operands
+sp2orgi.asm(591): Error! E077: A constant operand is expected in multiplication
+sp2orgi.asm(603): Error! E040: Invalid instruction operands

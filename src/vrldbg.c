@@ -14,7 +14,7 @@
 
 #include "src/lib/doslib/hw/vga/vrl.h"
 #include "src/lib/doslib/hw/vga/vrs.h"
-#include "src/lib/doslib/hw/vga/pcxfmt.h"
+//#include "src/lib/doslib/hw/vga/pcxfmt.h"
 //#include "src/lib/doslib/hw/vga/comshtps.h"
 
 #ifndef O_BINARY

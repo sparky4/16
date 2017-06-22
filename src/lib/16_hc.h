@@ -20,7 +20,7 @@
  *
  */
 /*
-	heap test stuff
+	heap check
 */
 
 #ifndef __16HC__
@@ -50,14 +50,9 @@ typedef struct heapusage
 #endif
 
 //long HC_Newfarcoreleft();
-#ifdef __BORLANDC__
-void * HC_LargestFreeBlock(size_t* Size);
-#endif
-#ifdef __WATCOMC__
 void __near* HC_LargestFreeBlock(size_t* Size);
-#endif
 size_t HC_coreleft(void);
-void far* HC_LargestFarFreeBlock(unsigned long* Size);
+void far* HC_LargestFarFreeBlock(dword* Size);
 unsigned long HC_farcoreleft(void);
 //size_t HC_GetFreeSize(void);
 unsigned long HC_GetFarFreeSize(void);
