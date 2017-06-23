@@ -477,16 +477,16 @@ fh_info._pentry, fh_info._size );*/
 	strcpy(scratch,"\n");
 	strcat(scratch,kittengets(2,0,"Memory Type         Total      Used       Free\n"));
 	strcat(scratch,"----------------  --------   --------   --------\n");
-//	printmeminfoline(&scratch, "Default", h_total, h_used, h_free);
+//--	printmeminfoline(&scratch, "Default", h_total, h_used, h_free);
 	printmeminfoline(scratch, "Near", nh_total, nh_used, nh_free);
 	printmeminfoline(scratch, "Far", fh_total, fh_used, fh_free);
 	strcat(scratch,"----------------  --------   --------   --------\n");
 	strcat(scratch,"HC_coreleft = ");			ultoa((dword)HC_coreleft(),str,10);			strcat(scratch,str);	strcat(scratch,"\n");
 	strcat(scratch,"HC_farcoreleft = ");			ultoa((dword)HC_farcoreleft(),str,10);		strcat(scratch,str);	strcat(scratch,"\n");
-//	strcat(scratch,"HC_Newfarcoreleft = ");		ultoa((dword)HC_Newfarcoreleft(),str,10);		strcat(scratch,str);	strcat(scratch,"\n");
-//	strcat(scratch,"HC_GetFreeSize = ");		ultoa((dword)HC_GetFreeSize(),str,10);		strcat(scratch,str);	strcat(scratch,"\n");
-	strcat(scratch,"HC_GetNearFreeSize = ");	ultoa((dword)HC_GetNearFreeSize(),str,10);	strcat(scratch,str);	strcat(scratch,"\n");
-	strcat(scratch,"HC_GetFarFreeSize = "); 	ultoa((dword)HC_GetFarFreeSize(),str,10);	strcat(scratch,str);	strcat(scratch,"\n");
+//--	strcat(scratch,"HC_Newfarcoreleft = ");		ultoa((dword)HC_Newfarcoreleft(),str,10);		strcat(scratch,str);	strcat(scratch,"\n");
+//--	strcat(scratch,"HC_GetFreeSize = ");		ultoa((dword)HC_GetFreeSize(),str,10);		strcat(scratch,str);	strcat(scratch,"\n");
+//00	strcat(scratch,"HC_GetNearFreeSize = ");	ultoa((dword)HC_GetNearFreeSize(),str,10);	strcat(scratch,str);	strcat(scratch,"\n");
+//00	strcat(scratch,"HC_GetFarFreeSize = "); 	ultoa((dword)HC_GetFarFreeSize(),str,10);	strcat(scratch,str);	strcat(scratch,"\n");
 	strcat(scratch,"coreleft = ");				ultoa((dword)coreleft(),str,10);				strcat(scratch,str);	strcat(scratch,"\n");
 	strcat(scratch,"farcoreleft = ");			ultoa((dword)farcoreleft(),str,10);			strcat(scratch,str);	strcat(scratch,"\n");
 	strcat(scratch,"stackavail = ");			ultoa((dword)stackavail(),str,10);			strcat(scratch,str);	strcat(scratch,"\n");
@@ -545,15 +545,14 @@ void HCL_heapstat(int heap_status)
 dword farcoreleft()
 {
 //----	_fheapgrow();
-	// #ifdef __BORLANDC__
-// 	r 0x90000UL-16UL
+// #ifdef __BORLANDC__
+// 	return 0x90000UL-16UL;
 // #endif
-//	printf("\nfarcoreleft()=%lu\n", HC_farcoreleft());
 
-//----
-	return 0x90000UL+16UL;
+//----	return 0x90000UL+16UL;
 //----	return 589824UL+16UL;
-//++++	return HC_farcoreleft();
+//++++
+	return HC_farcoreleft();
 //stack overflows	return HC_GetFarFreeSize();
 }
 

@@ -1,14 +1,14 @@
 
 	== near ==
 
-  FREE block at 170E:0004 of size 528
-  FREE block at 172F:0004 of size 64
+  FREE block at 170C:0004 of size 528
+  FREE block at 172D:0004 of size 64
 OK - end of heap
 
 	== far ==
 
-  FREE block at 170E:0004 of size 528
-  FREE block at 172F:0004 of size 64
+  FREE block at 170C:0004 of size 528
+  FREE block at 172D:0004 of size 64
 OK - end of heap
 
 Memory Type         Total      Used       Free
@@ -16,10 +16,10 @@ Memory Type         Total      Used       Free
 Near		   592		0	  0
 Far		   592		0	  0
 ----------------  --------   --------   --------
-HC_coreleft = 35891
-HC_farcoreleft = 0
+HC_coreleft = 49152
+HC_farcoreleft = 1020
 HC_GetNearFreeSize = 0
 HC_GetFarFreeSize = 0
-coreleft = 0
-farcoreleft = 0
+coreleft = 1008
+farcoreleft = 1008
 stackavail = 2828

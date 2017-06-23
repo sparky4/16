@@ -126,7 +126,7 @@ STKSIZ=24576
 # compile flags
 #
 S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k$(STKSIZ)
-Z_FLAGS=-zk0 -zc -zm#### -zp4 -ei
+Z_FLAGS=-zk0 -zc#### -zp4 -ei#### -zm
 O_FLAGS=-opnr -oe=24 -oil+ -outback -ohm
 T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 -d1 -fo=.$(OBJ)## -e=65536
 
@@ -167,7 +167,7 @@ DOSLIB=doslib.lib
 #
 .c : $(SRC);$(SRCLIB);$(MODEXLIB16);$(JSMNLIB);$(NYANLIB);$(VGMSNDLIB);$(WCPULIB);$(UTIL)
 
-.asm : $(MODEXLIB);$(UTIL)
+.asm : $(MODEXLIB);$(UTIL);16/fcsp2src
 
 .lib : .;$(DOSLIB_CPU)/$(DOSLIB_MEMMODE);$(DOSLIB_DOS)/$(DOSLIB_MEMMODE);$(DOSLIB_VGA)/$(DOSLIB_MEMMODE);$(DOSLIB_8250)/$(DOSLIB_MEMMODE);$(DOSLIB_8254)/$(DOSLIB_MEMMODE);$(DOSLIB_ADLIB)/$(DOSLIB_MEMMODE)
 
@@ -251,6 +251,7 @@ EXEC = &
 
 ALLEXEC = &
 	$(EXEC) &
+	sp2.exe &
 	$(UTILEXEC) &
 	$(TESTEXEC2) &
 	$(TESTEXEC3)
@@ -263,6 +264,7 @@ testexec: $(EXEC) $(TESTEXEC2)
 #
 16.exe:		16.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 bakapi.exe:		bakapi.$(OBJ) 16_vl.$(OBJ) 16_vl_1.$(OBJ) 16text.$(OBJ) bakapee.$(OBJ) $(DOSLIB) 16_wcpu.$(OBJ)# gfx.lib
+sp2.exe:		sp2.$(OBJ)
 
 #
 # Test Executables!
@@ -312,6 +314,7 @@ wcpu.exe:		wcpu.$(OBJ) $(16LIB) $(DOSLIB)
 #
 16.$(OBJ):		$(SRC)/16.c	$(SRC)/16.h
 bakapi.$(OBJ):	$(SRC)/bakapi.c	$(SRC)/bakapi.h
+sp2.$(OBJ):		16/fcsp2src/sp2.asm
 vidtest.$(OBJ):	$(SRC)/vidtest.c	$(SRCLIB)/16_vl.h
 #test2.$(OBJ):	$(SRC)/test2.c	$(SRCLIB)/16_vl.h
 test0.$(OBJ):	 $(SRC)/test0.c

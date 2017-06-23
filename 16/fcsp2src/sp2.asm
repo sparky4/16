@@ -586,9 +586,9 @@ doit70	PROC NEAR
 	mov	di,OFFSET p00
 	call	set3drot
 ;---add more text to 3d scroller
-	sub	ds:textcnt,90;;;;SCROLLSPEED
+	sub	word ptr ds:textcnt,90;;;;SCROLLSPEED
 	jnc	@@t1
-	mov	ds:textcnt,1023;;;;LETTERDOTSPACING*8-1
+	mov	word ptr ds:textcnt,1023;;;;LETTERDOTSPACING*8-1
 	mov	si,ds:text
 	mov	bl,ds:[si]
 	IFDEF XORTEXTS
