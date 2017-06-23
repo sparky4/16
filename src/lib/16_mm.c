@@ -1631,7 +1631,8 @@ void MM_ShowMemoryDetail (unsigned x, unsigned y, unsigned w, unsigned q, sdword
 				printf("%s", AARESET);
 				printf("\n");
 			}
-//0000			fprintf(stdout, "q=%u	maxq=%u\n", q, maxq);
+//0000printf("%s", AABLACK); fprintf(stdout, "q=%u	maxq=%u\n", q, maxq); printf("%s", AARESET);
+fprintf(stdout, "");	//this is a HAX to make it decrement and increment properly when it is at 0 and qmax
 			while (!(scancode = gvar->in.inst->LastScan)){}
 
 			IN_ClearKey(scancode);
