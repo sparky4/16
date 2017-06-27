@@ -386,7 +386,7 @@ kittenclose (void)
  * Returns a pointer to input string.
  */
 
-int mystrtoul(char *src, int base, int size, int *error)
+int mystrtoul(char __far*src, int base, int size, int __far*error)
 {
   int ret = 0;
 

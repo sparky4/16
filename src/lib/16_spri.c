@@ -440,9 +440,9 @@ void animate_spri(entity_t *enti, video_t *video)
 	(
 		x-rx,
 		y-ry,
-		(struct vrl1_vgax_header *)enti->spri.sprite_vrl_cont.vrl_header,
+		enti->spri.sprite_vrl_cont.vrl_header,
 		enti->spri.sprite_vrl_cont.line_offsets,
-		(byte *)enti->spri.sprite_vrl_cont.buffer + sizeof(struct vrl1_vgax_header),
+		enti->spri.sprite_vrl_cont.buffer + sizeof(struct vrl1_vgax_header),
 		enti->spri.sprite_vrl_cont.data_size
 	);
 #endif

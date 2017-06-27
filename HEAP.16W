@@ -1,19 +1,51 @@
 
 	== near ==
 
-  USED block at 0f62:d436 of size 8
-  USED block at 0f62:d43e of size 322
-  USED block at 0f62:d580 of size 32
-  USED block at 0f62:d5a0 of size 14
-  USED block at 0f62:d5ae of size 16
-  USED block at 0f62:d5be of size 14
-  USED block at 0f62:d5cc of size 14
-  USED block at 0f62:d5da of size 16
-  USED block at 0f62:d5ea of size 136
-  FREE block at 0f62:d672 of size 10634
+  USED block at 1d37:da06 of size 12
+  USED block at 1d37:da12 of size 320
+  USED block at 1d37:db52 of size 52
+  USED block at 1d37:db86 of size 20
+  USED block at 1d37:db9a of size 20
+  USED block at 1d37:dbae of size 20
+  USED block at 1d37:dbc2 of size 20
+  USED block at 1d37:dbd6 of size 20
+  FREE block at 1d37:dbea of size 9234
 OK - end of heap
 
 	== far ==
 
-  FREE block at 1f63:0016 of size 8166
-OK - end of heap
+  USED block at 2d38:0016 of size 8002
+  USED block at 2d38:1f58 of size 20
+  USED block at 2d38:1f6c of size 66
+  USED block at 2d38:1fae of size 50
+  USED block at 2d38:1fe0 of size 50
+  USED block at 2d38:2012 of size 50
+  USED block at 2d38:2044 of size 50
+  USED block at 2d38:2076 of size 50
+  USED block at 2d38:20a8 of size 50
+  USED block at 2d38:20da of size 50
+  USED block at 2d38:210c of size 50
+  USED block at 2d38:213e of size 50
+  USED block at 2d38:2170 of size 50
+  USED block at 2d38:21a2 of size 50
+  USED block at 2d38:21d4 of size 50
+  FREE block at 2d38:2206 of size 29552
+  USED block at 2d38:9576 of size 1202
+  USED block at 2d38:9a28 of size 1202
+  USED block at 2d38:9eda of size 1202
+  USED block at 2d38:a38c of size 136
+  USED block at 2d38:a414 of size 22
+  FREE block at 2d38:a42a of size 8202
+  FREE block at 2d38:c434 of size 59406
+ERROR - bad node in heap
+
+Memory Type         Total      Used       Free
+----------------  --------   --------   --------
+Near		   9718		484	  9234
+Far		   44076	12452	  31624
+----------------  --------   --------   --------
+HC_coreleft = 9232
+HC_farcoreleft = 462576
+coreleft = 9232
+farcoreleft = 462576
+stackavail = 23306

@@ -267,7 +267,7 @@ void INL_Mouse(int x)
 //
 ///////////////////////////////////////////////////////////////////////////
 static void
-INL_GetMouseDelta(int *x,int *y)
+INL_GetMouseDelta(int __far*x,int __far*y)
 {
 	union REGS CPURegs;
 	Mouse(MDelta);
@@ -298,7 +298,7 @@ INL_GetMouseButtons(void)
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-IN_GetJoyAbs(word joy,word *xp,word *yp)
+IN_GetJoyAbs(word joy,word __far*xp,word __far*yp)
 {
 	byte	xb,yb,
 			xs,ys;
@@ -387,7 +387,7 @@ done:
 //		joystick (from +/-127)
 //
 ///////////////////////////////////////////////////////////////////////////
-void INL_GetJoyDelta(word joy,int *dx,int *dy/*,boolean adaptive*/, global_game_variables_t *gvar)
+void INL_GetJoyDelta(word joy,int __far*dx,int __far*dy/*,boolean adaptive*/, global_game_variables_t *gvar)
 {
 	word		x,y;
 	word TimeCount = *clockw;

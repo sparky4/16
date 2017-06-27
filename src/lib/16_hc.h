@@ -50,9 +50,9 @@ typedef struct heapusage
 #endif
 
 //long HC_Newfarcoreleft();
-void __near* HC_LargestFreeBlock(size_t* Size);
+void __near* HC_LargestFreeBlock(size_t __far* Size);
 size_t HC_coreleft(void);
-void far* HC_LargestFarFreeBlock(dword* Size);
+void far* HC_LargestFarFreeBlock(dword __far* Size);
 unsigned long HC_farcoreleft(void);
 //size_t HC_GetFreeSize(void);
 unsigned long HC_GetFarFreeSize(void);

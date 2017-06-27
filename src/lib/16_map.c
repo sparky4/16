@@ -180,7 +180,7 @@ int newloadmap(char *mn, map_t *map) {
 	int status;
 
 	/* Prepare parser */
-	jsmn_init(&p);
+	jsmn_init((jsmn_parser *)&p);
 
 	file_s = filesize(fh);
 	js = malloc(file_s);//TODO: USE MM_ CA_ AND PM_
@@ -195,11 +195,11 @@ int newloadmap(char *mn, map_t *map) {
 		fclose(fh);
 		return 1;
 	}
-	tokcount = jsmn_parse(&p, js, file_s, NULL, 0);
+	tokcount = jsmn_parse((jsmn_parser *)&p, js, file_s, NULL, 0);
 	tok = malloc(tokcount*sizeof(jsmntok_t));//TODO: USE MM_ CA_ AND PM_
 	printf("Allocated %d tokens", tokcount);
-	jsmn_init(&p);
-	if((status = jsmn_parse(&p, js, file_s, tok, tokcount)) < 0)
+	jsmn_init((jsmn_parser *)&p);
+	if((status = jsmn_parse((jsmn_parser *)&p, js, file_s, tok, tokcount)) < 0)
 	{
 		printf("Error: %d\n", status);
 		return status;
@@ -228,15 +228,15 @@ int CA_loadmap(char *mn, map_t *map, global_game_variables_t *gvar)
 	int status;
 
 	/* Prepare parser */
-	jsmn_init(&p);
+	jsmn_init((jsmn_parser *)&p);
 
 	file_s = filesize(fh);
 	CA_LoadFile(mn, MEMPTRCONV MAPSEGINLM, gvar);
-	tokcount = jsmn_parse(&p, (char const *)MAPSEGINLM, file_s, NULL, 0);
+	tokcount = jsmn_parse((jsmn_parser *)&p, (char const *)MAPSEGINLM, file_s, NULL, 0);
 	tok = malloc(tokcount*sizeof(jsmntok_t));//TODO: USE MM_ CA_ AND PM_
 //	printf("Allocated %d tokens", tokcount);
-	jsmn_init(&p);
-	if((status = jsmn_parse(&p, (char const *)MAPSEGINLM, file_s, tok, tokcount)) < 0)
+	jsmn_init((jsmn_parser *)&p);
+	if((status = jsmn_parse((jsmn_parser *)&p, (char const *)MAPSEGINLM, file_s, tok, tokcount)) < 0)
 	{
 		printf("Error: %d\n", status);
 		return status;

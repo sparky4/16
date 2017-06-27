@@ -64,7 +64,7 @@ DOSLIBMAKEALL=.\build.bat
 !endif
 
 TARGET_OS = dos
-MEMORYMODE = m
+MEMORYMODE = l
 
 BUILD_ROOT=$+$(%__CWD__)$-
 #EXMMTESTDIR=16$(DIRSEP)exmmtest$(DIRSEP)
