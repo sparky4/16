@@ -43,7 +43,7 @@
 #define FILEREAD
 //#define EXMMVERBOSE
 //#define BUFFDUMPPAUSE
-#define EXMMVERBOSE__
+//#define EXMMVERBOSE__
 //	#define PRINTBBDUMP
 #define BUFFDUMP
 

@@ -162,6 +162,7 @@ extern	int			profilehandle,debughandle;	//make it into game global
 #define	nil	((void *)0)
 
 #ifdef __WATCOMC__
+//#define _FCORELEFT 0x90000UL+16UL
 /*static union REGS CPURegs;
 
 #define _AX CPURegs.x.ax

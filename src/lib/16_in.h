@@ -224,7 +224,7 @@ extern	void		IN_Startup(global_game_variables_t *gvar),IN_Shutdown(global_game_v
 					IN_ReadCursor(CursorInfo *, global_game_variables_t *gvar),
 					IN_ReadControl(player_t *player, global_game_variables_t *gvar),
 					IN_SetControlType(player_t *player,ControlType type),
-					IN_GetJoyAbs(word joy,word __far*xp,word __far*yp),
+					IN_GetJoyAbs(word joy,word *xp,word *yp),
 					IN_SetupJoy(word joy,word minx,word maxx,
 								word miny,word maxy, global_game_variables_t *gvar),
 #if DEMO0
@@ -241,7 +241,7 @@ extern	byte		*IN_GetScanName(ScanCode);
 byte	IN_MouseButtons (global_game_variables_t *gvar);
 byte	IN_JoyButtons (void);
 
-void INL_GetJoyDelta(word joy,int __far*dx,int __far*dy/*,boolean adaptive*/, global_game_variables_t *gvar);
+void INL_GetJoyDelta(word joy,int *dx,int *dy/*,boolean adaptive*/, global_game_variables_t *gvar);
 void IN_StartAck(global_game_variables_t *gvar);
 boolean IN_CheckAck (global_game_variables_t *gvar);
 boolean IN_IsUserInput(global_game_variables_t *gvar);

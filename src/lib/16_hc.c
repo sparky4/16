@@ -52,7 +52,7 @@ long HC_Newfarcoreleft()
 #endif
 
 //from: https://stackoverflow.com/questions/14386856/c-check-available-ram
-void __near* HC_LargestFreeBlock(size_t __far* Size)
+void __near* HC_LargestFreeBlock(size_t* Size)
 {
 	size_t s0, s1;
 	void __near* p;
@@ -117,7 +117,7 @@ size_t HC_coreleft(void)
 }
 
 //far version of above
-void __far* HC_LargestFarFreeBlock(dword __far* Size)
+void __far* HC_LargestFarFreeBlock(dword* Size)
 {
 	dword s0, s1;
 	void __far* p;
@@ -340,14 +340,14 @@ size_t HC_GetFreeSize(void)
 }
 */
 
-void HCL_HeapWalking (struct _heapinfo __far*h_info, hc_use_t __far*hu, unsigned nearfarswitch)
+void HCL_HeapWalking (struct _heapinfo *h_info, hc_use_t *hu, unsigned nearfarswitch)
 {
 	hu->h_free=0; hu->h_total=0; hu->h_used=0;
 
 	h_info->_pentry = NULL;
 	for(;;) {
-		if(nearfarswitch==0) hu->heap_status = _nheapwalk( (struct _heapinfo *)h_info );
-		else if(nearfarswitch==1) hu->heap_status = _fheapwalk( (struct _heapinfo *)h_info );
+		if(nearfarswitch==0) hu->heap_status = _nheapwalk( h_info );
+		else if(nearfarswitch==1) hu->heap_status = _fheapwalk( h_info );
 		if( hu->heap_status != _HEAPOK ) break;
 		if((h_info->_useflag == _USEDENTRY ? "USED" : "FREE")=="FREE") hu->h_free += h_info->_size;
 		if((h_info->_useflag == _USEDENTRY ? "USED" : "FREE")=="USED") hu->h_used += h_info->_size;
@@ -438,7 +438,7 @@ void HC_heapdump(global_game_variables_t *gvar)
 	nh_info._pentry = NULL;
 	nh_free=0; nh_total=0; nh_used=0;
 	for(;;) {
-		heap_status = _nheapwalk( (struct _heapinfo *)&nh_info );
+		heap_status = _nheapwalk( &nh_info );
 		if( heap_status != _HEAPOK ) break;
 		strcpy(scratch,"  "); strcat(scratch,(nh_info._useflag == _USEDENTRY ? "USED" : "FREE")); strcat(scratch," block at ");
 		sprintf(str, "%Fp", nh_info._pentry); //ultoa((dword)nh_info._pentry,str,16);
@@ -459,7 +459,7 @@ nh_info._pentry, nh_info._size );*/
 	fh_info._pentry = NULL;
 	fh_free=0; fh_total=0; fh_used=0;
 	for(;;) {
-		heap_status = _fheapwalk( (struct _heapinfo *)&fh_info );
+		heap_status = _fheapwalk( &fh_info );
 		if( heap_status != _HEAPOK ) break;
 		strcpy(scratch,"  "); strcat(scratch,(fh_info._useflag == _USEDENTRY ? "USED" : "FREE")); strcat(scratch," block at ");
 		sprintf(str, "%Fp", fh_info._pentry); //ultoa((dword)fh_info._pentry,str,16);
@@ -549,15 +549,11 @@ dword farcoreleft()
 // 	return 0x90000UL-16UL;
 // #endif
 
-#if !defined(__LARGE__) && !defined(__COMPACT__) && !defined(__HUGE__)
-//----
-	return 0x90000UL+16UL;
+//----	return 0x90000UL+16UL;
 //----	return 589824UL+16UL;
-#else
 //++++
 	return HC_farcoreleft();
 //stack overflows	return HC_GetFarFreeSize();
-#endif
 }
 
 dword coreleft()

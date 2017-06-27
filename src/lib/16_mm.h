@@ -201,7 +201,7 @@ void MM_SetPurge (memptr *baseptr, int purge, global_game_variables_t *gvar);
 void MM_SetLock (memptr *baseptr, boolean locked, global_game_variables_t *gvar);
 void MM_SortMem (global_game_variables_t *gvar);
 void MM_ShowMemory (global_game_variables_t *gvar);
-void MM_ShowMemoryDetail (unsigned x, unsigned y, unsigned w, unsigned q, sdword end, mmshowmemoryinfo_t __far*scaninfo, global_game_variables_t *gvar);
+void MM_ShowMemoryDetail (unsigned x, unsigned y, unsigned w, unsigned q, sdword end, mmshowmemoryinfo_t *scaninfo, global_game_variables_t *gvar);
 void MM_DumpData (global_game_variables_t *gvar);
 dword MM_UnusedMemory (global_game_variables_t *gvar);
 dword MM_TotalFree (global_game_variables_t *gvar);
