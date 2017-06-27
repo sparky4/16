@@ -1,55 +1,19 @@
 
 	== near ==
 
-  USED block at 1e27:da06 of size 12
-  USED block at 1e27:da12 of size 320
-  USED block at 1e27:db52 of size 52
-  USED block at 1e27:db86 of size 20
-  USED block at 1e27:db9a of size 20
-  USED block at 1e27:dbae of size 20
-  USED block at 1e27:dbc2 of size 20
-  USED block at 1e27:dbd6 of size 20
-  FREE block at 1e27:dbea of size 9234
+  USED block at 0f62:d436 of size 8
+  USED block at 0f62:d43e of size 322
+  USED block at 0f62:d580 of size 32
+  USED block at 0f62:d5a0 of size 14
+  USED block at 0f62:d5ae of size 16
+  USED block at 0f62:d5be of size 14
+  USED block at 0f62:d5cc of size 14
+  USED block at 0f62:d5da of size 16
+  USED block at 0f62:d5ea of size 136
+  FREE block at 0f62:d672 of size 10634
 OK - end of heap
 
 	== far ==
 
-  USED block at 2e28:0016 of size 65342
-  USED block at 2e28:ff54 of size 20
-  USED block at 2e28:ff68 of size 136
-  FREE block at 2e28:fff0 of size 12
-  USED block at 3e29:0016 of size 66
-  USED block at 3e29:0058 of size 50
-  USED block at 3e29:008a of size 50
-  USED block at 3e29:00bc of size 50
-  USED block at 3e29:00ee of size 50
-  USED block at 3e29:0120 of size 50
-  USED block at 3e29:0152 of size 50
-  USED block at 3e29:0184 of size 50
-  USED block at 3e29:01b6 of size 50
-  USED block at 3e29:01e8 of size 50
-  USED block at 3e29:021a of size 50
-  USED block at 3e29:024c of size 50
-  USED block at 3e29:027e of size 50
-  FREE block at 3e29:02b0 of size 29552
-  USED block at 3e29:7620 of size 1202
-  USED block at 3e29:7ad2 of size 1202
-  USED block at 3e29:7f84 of size 1202
-  USED block at 3e29:8436 of size 22
-  FREE block at 3e29:844c of size 8202
-  FREE block at 3e29:a456 of size 3148
-  FREE block at 3e29:b0a2 of size 0
-ERROR - bad node in heap
-
-Memory Type         Total      Used       Free
-----------------  --------   --------   --------
-Near		   9718		484	  9234
-Far		   45170	4256	  40914
-----------------  --------   --------   --------
-HC_coreleft = 9232
-HC_farcoreleft = 396888
-HC_GetNearFreeSize = 9234
-HC_GetFarFreeSize = 40914
-coreleft = 9232
-farcoreleft = 396888
-stackavail = 23262
+  FREE block at 1f63:0016 of size 8166
+OK - end of heap
