@@ -199,6 +199,7 @@ EXTERNTESTEXEC = &
 	db.exe
 TESTEXEC = &
 	vidtest.exe &
+	paltest.exe &
 	exmmtest.exe &
 	vgmtest.exe &
 	sountest.exe &
@@ -280,6 +281,7 @@ tesuto.$(OBJ):	$(SRC)/tesuto.c
 0tesuto.exe:			0tesuto.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 0tesuto.$(OBJ):		 $(SRC)/0tesuto.c
 vidtest.exe:		 vidtest.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
+paltest.exe:		 paltest.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 #test2.exe:	test2.$(OBJ) gfx.lib $(DOSLIB)
 test0.exe:		test0.$(OBJ)
 fonttest.exe:	 fonttest.$(OBJ) gfx.lib
@@ -316,6 +318,7 @@ wcpu.exe:		wcpu.$(OBJ) $(16LIB) $(DOSLIB)
 bakapi.$(OBJ):	$(SRC)/bakapi.c	$(SRC)/bakapi.h
 sp2.$(OBJ):		16/fcsp2src/sp2.asm
 vidtest.$(OBJ):	$(SRC)/vidtest.c	$(SRCLIB)/16_vl.h
+psltest.$(OBJ):	$(SRC)/paltest.c	$(SRCLIB)/16_vl.h
 #test2.$(OBJ):	$(SRC)/test2.c	$(SRCLIB)/16_vl.h
 test0.$(OBJ):	 $(SRC)/test0.c
 pcxtest.$(OBJ):$(SRC)/pcxtest.c	$(SRCLIB)/16_vl.h
