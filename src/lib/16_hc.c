@@ -549,11 +549,14 @@ dword farcoreleft()
 // 	return 0x90000UL-16UL;
 // #endif
 
+#if !defined(__LARGE__) && !defined(__COMPACT__) && !defined(__HUGE__)
 //----	return 0x90000UL+16UL;
 //----	return 589824UL+16UL;
+#else
 //++++
 	return HC_farcoreleft();
 //stack overflows	return HC_GetFarFreeSize();
+#endif
 }
 
 dword coreleft()
