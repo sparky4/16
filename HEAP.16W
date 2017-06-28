@@ -1,39 +1,50 @@
 
 	== near ==
 
-  USED block at 1226:c706 of size 12
-  USED block at 1226:c712 of size 322
-  USED block at 1226:c854 of size 52
-  USED block at 1226:c888 of size 20
-  USED block at 1226:c89c of size 20
-  USED block at 1226:c8b0 of size 20
-  USED block at 1226:c8c4 of size 20
-  USED block at 1226:c8d8 of size 20
-  FREE block at 1226:c8ec of size 14096
+  USED block at           of size 12
+  USED block at           of size 354
+  USED block at           of size 52
+  USED block at           of size 20
+  USED block at           of size 20
+  USED block at           of size 20
+  USED block at           of size 20
+  USED block at           of size 20
+  FREE block at           of size 9200
 OK - end of heap
 
 	== far ==
 
-  USED block at 2227:0016 of size 136
-  FREE block at 2227:009e of size 48840
-  USED block at 2227:bf66 of size 20
-  FREE block at 2227:bf7a of size 16514
-  FREE block at 3228:0016 of size 65510
-  FREE block at 4229:0016 of size 65510
-  FREE block at 522a:0016 of size 65510
-  FREE block at 622b:0016 of size 65510
-  FREE block at 722c:0016 of size 65510
-  FREE block at 822d:0016 of size 65510
-  FREE block at 922e:0016 of size 49174
-OK - end of heap
+  USED block at 0005:0001 of size 24484
+  USED block at 0005:0005 of size 20
+  USED block at 0005:0005 of size 66
+  USED block at 0005:0006 of size 50
+  USED block at 0005:0006 of size 50
+  USED block at 0005:0006 of size 50
+  USED block at 0005:0006 of size 50
+  USED block at 0005:0006 of size 50
+  USED block at 0005:0006 of size 50
+  USED block at 0005:0006 of size 50
+  USED block at 0005:0006 of size 50
+  USED block at 0005:0006 of size 50
+  USED block at 0005:0006 of size 50
+  USED block at 0005:0006 of size 50
+  USED block at 0005:0006 of size 50
+  FREE block at 0005:0006 of size 29552
+  USED block at           of size 1202
+  USED block at           of size 1202
+  USED block at           of size 1202
+  USED block at           of size 136
+  USED block at           of size 22
+  FREE block at           of size 8202
+ERROR - bad node in heap
 
 Memory Type         Total      Used       Free
 ----------------  --------   --------   --------
-Near		   14582	486	  14096
-Far		   48992	156	  48836
+Near		   9718		518	  9200
+Far		   1152		28934	  37754
 ----------------  --------   --------   --------
-HC_coreleft = 14094
-HC_farcoreleft = 521664
-coreleft = 14094
-farcoreleft = 521664
+HC_coreleft = 9198
+HC_farcoreleft = 265976
+coreleft = 9198
+farcoreleft = 265976
 stackavail = 23306
