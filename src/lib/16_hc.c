@@ -552,7 +552,8 @@ dword farcoreleft()
 // #endif
 
 #if !defined(__LARGE__) && !defined(__COMPACT__) && !defined(__HUGE__)
-//----	return 0x90000UL+16UL;
+//----
+	return 0x90000UL+16UL;
 //----	return 589824UL+16UL;
 #else
 //++++
