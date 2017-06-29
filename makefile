@@ -115,7 +115,7 @@ WCLQ=-zq
 UPXQ=-qqq
 
 # symbolic debug for wsample/wprof/wd
-D_FLAGS=-d1+
+D_FLAGS=-d2#1+
 
 # stacksize
 STKSIZ=32768
