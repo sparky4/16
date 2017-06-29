@@ -8,6 +8,7 @@ extern "C"
 
 #include "src/lib/vgmsnd/stdtype.h"
 #include "src/lib/16_head.h"
+#include "src/lib/16_tail.h"
 
 typedef struct _vgm_file_header
 {

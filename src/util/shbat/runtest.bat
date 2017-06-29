@@ -1,2 +1,3 @@
 @echo off
-wsample xcroll.exe %*
+wsample -b=31 xcroll.exe %*
+wprof xcroll.smp

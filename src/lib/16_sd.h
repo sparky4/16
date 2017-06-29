@@ -24,6 +24,7 @@
 #define __16_SD_H_
 
 #include "src/lib/16_head.h"
+#include "src/lib/16_tail.h"
 #include <hw/8254/8254.h>		/* 8254 timer */
 #include <hw/adlib/adlib.h>
 #include <hw/vga/vga.h>

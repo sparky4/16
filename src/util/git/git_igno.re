@@ -33,6 +33,9 @@ pcx2vrl
 pcxsscut
 vrl2vrs
 vrsdump
+vrldbg
+ps.exe
+*.upx
 # except foo.html which is maintained by hand.
 #!foo.html
 # Ignore objects and archives.

@@ -1,13 +1,14 @@
 #! /bin/bash
 pee="-h"
-wmake -s "$pee" clean
-wmake -s "$pee"
-wmake -s "$pee" comp
+# -s"
+wmake ${pee} clean
+wmake ${pee}
+wmake ${pee} comp
 #if [[ -f *.err ]]
 #then
 #	echo dumping *.err
 	#cat *.err
-	wmake -s "$pee" vomitchan
+	wmake ${pee} vomitchan
 #fi
 #if [ -f 16_head.o ]
 #then

@@ -23,9 +23,9 @@
 #ifndef _SRC_LIB_16_DBG
 #define _SRC_LIB_16_DBG
 
-#include "src/lib/16_head.h"
+//#include "src/lib/16_head.h"
 #include "src/lib/16_pm.h"
-#include "src/lib/16_tdef.h"
+//#include "src/lib/16_tdef.h"
 
 #define __DEBUG__
 

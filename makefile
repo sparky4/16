@@ -109,16 +109,15 @@ HOST2DIR=~/public_html/
 #ssh port
 HOST2PORT=22
 
-#
 # quiet flags
-#
 WLIBQ=-q
 WCLQ=-zq
 UPXQ=-qqq
 
-#
+# symbolic debug for wsample/wprof/wd
+D_FLAGS=-d1+
+
 # stacksize
-#
 STKSIZ=32768
 #24576#40960
 
@@ -128,9 +127,9 @@ STKSIZ=32768
 S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k$(STKSIZ)
 Z_FLAGS=-zk0 -zc#### -zp4 -ei#### -zm
 O_FLAGS=-opnr -oe=24 -oil+ -outback -ohm
-T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 -d1 -fo=.$(OBJ)## -e=65536
+T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 $(D_FLAGS) -fo=.$(OBJ)## -e=65536
 
-DBUGFLAGS=-fm=$^&.meh -fd=$^&
+DBUGFLAGS=$(D_FLAGS) -fm=$^&.meh -fd=$^&
 CPPFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 -DSTACKSIZE=$(STKSIZ)
 !ifeq DEBUGSERIAL 1
 CPPFLAGS += -DDEBUGSERIAL
@@ -461,6 +460,7 @@ dos_kb.$(OBJ):	$(OLDMODEX16LIBDIR)/dos_kb.c	$(OLDMODEX16LIBDIR)/dos_kb.h
 #
 clean: .symbolic
 	@if not exist $(DOSLIBDIR)/buildall.sh wmake -s -h initlibs
+	@if not exist ps.exe wmake -s -h ps.exe
 	@wmake -s -h initscript
 	@for %f in ($(ALLEXEC)) do @if exist %f $(REMOVECOMMAND) %f
 !ifdef __LINUX__
