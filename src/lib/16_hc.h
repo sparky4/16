@@ -34,15 +34,12 @@ typedef struct heapusage
 	int heap_status;
 } hc_use_t;
 
-#ifdef __BORLANDC__
-#if 0
-/*typedef */struct _heapinfo
-{
-	int	  _far *_pentry;	//- heap entry pointer
-	size_t _size;	   	//- size of heap entry
-	int	  _useflag;	   	//- entry in use return value
-};// _heapinfo_t;
+#ifdef __WATCOMC__
+#define NPTR __near
 #endif
+
+#ifdef __BORLANDC__
+#define NPTR
 
 #define _HEAPBADBEGIN   2       /* heap header is corrupted */
 #define _HEAPBADNODE    3       /* heap entry is corrupted */
@@ -50,7 +47,7 @@ typedef struct heapusage
 #endif
 
 //long HC_Newfarcoreleft();
-void __near* HC_LargestFreeBlock(size_t* Size);
+void NPTR* HC_LargestFreeBlock(size_t* Size);
 size_t HC_coreleft(void);
 void far* HC_LargestFarFreeBlock(dword* Size);
 unsigned long HC_farcoreleft(void);

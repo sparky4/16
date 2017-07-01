@@ -36,7 +36,7 @@
 # serial output is plain text ASCII.
 DEBUGSERIAL=1
 
-DELLOGFILE=0
+DELLOGFILE=1
 
 #192x144
 #wwww will add these
@@ -115,7 +115,7 @@ WCLQ=-zq
 UPXQ=-qqq
 
 # symbolic debug for wsample/wprof/wd
-D_FLAGS=-d2#1+
+D_FLAGS=-d1#+
 
 # stacksize
 STKSIZ=32768
@@ -125,11 +125,11 @@ STKSIZ=32768
 # compile flags
 #
 S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k$(STKSIZ)
-Z_FLAGS=-zk0 -zc#### -zp4 -ei#### -zm
+Z_FLAGS=-zk0 -zc#### -zp4 -ei# -zm
 O_FLAGS=-opnr -oe=24 -oil+ -outback -ohm
 T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 $(D_FLAGS) -fo=.$(OBJ)## -e=65536
 
-DBUGFLAGS=$(D_FLAGS) -fm=$^&.meh -fd=$^&
+DBUGFLAGS=-fm=$^&.meh -fd=$^& $(D_FLAGS)
 CPPFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 -DSTACKSIZE=$(STKSIZ)
 !ifeq DEBUGSERIAL 1
 CPPFLAGS += -DDEBUGSERIAL
@@ -287,7 +287,6 @@ fonttest.exe:	 fonttest.$(OBJ) gfx.lib
 #fonttes0.exe:	fonttes0.$(OBJ) $(16LIB)
 fontgfx.exe:	fontgfx.$(OBJ) gfx.lib $(DOSLIB)
 inputest.exe:	 inputest.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
-#inntest.exe:	 	inntest.$(OBJ)	$(16LIBNOINOBJS) 16_in_1.$(OBJ) $(DOSLIB) gfx.lib
 sountest.exe:	sountest.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
 imfplay.exe:		imfplay.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
 vrldbg.exe:		vrldbg.$(OBJ) #gfx.lib $(DOSLIB)
@@ -298,12 +297,12 @@ palettec.exe:	palettec.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 palettel.exe:	 	palettel.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 palbomb.exe: 	palbomb.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 palllist.exe:	 	palllist.$(OBJ) $(16LIB) gfx.lib $(DOSLIB) ll.$(OBJ)
-pcxtest2.exe:	 pcxtest2.$(OBJ) gfx.lib $(DOSLIB)
+pcxtest2.exe:	pcxtest2.$(OBJ) gfx.lib $(DOSLIB)
 #planrpcx.exe:	planrpcx.$(OBJ) gfx.lib
 maptest.exe:	maptest.$(OBJ) 16_map.$(OBJ) 16_head.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
-fmemtest.exe:	 fmemtest.$(OBJ)
-exmmtest.exe:	 exmmtest.$(OBJ)	16_pm.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_mm.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ) 16_vl_1.$(OBJ) 16_tail.$(OBJ) 16_in.$(OBJ) 16_dbg.$(OBJ)
-	#$(16LIB) gfx.lib $(DOSLIB)
+fmemtest.exe:	fmemtest.$(OBJ)
+exmmtest.exe:	exmmtest.$(OBJ)	$(16LIB) gfx.lib $(DOSLIB)
+	#16_pm.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_mm.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ) 16_vl_1.$(OBJ) 16_tail.$(OBJ) 16_in.$(OBJ) 16_dbg.$(OBJ)
 
 vgmtest.exe:	vgmtest.$(OBJ) vgmsnd.lib $(16LIB) $(DOSLIB) gfx.lib
 db.exe:		db.$(OBJ)

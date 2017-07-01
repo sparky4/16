@@ -51,7 +51,7 @@
 #define NOVID
 #endif
 #ifdef __WATCOMC__
-#define NOVID
+//#define NOVID
 //#define			SCROLLLOAD
 #endif
 

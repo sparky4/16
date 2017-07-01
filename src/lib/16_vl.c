@@ -545,6 +545,9 @@ void modexHiganbanaPageSetup(global_game_variables_t *gvar)
 		gvar->video.page[1].dx=gvar->video.page[1].dy=TILEWH;	// 1 tile size buffer
 	gvar->video.page[2].dx=gvar->video.page[2].dy=
 		gvar->video.page[3].dx=gvar->video.page[3].dy=0;		// cache pages are buffer wwww
+
+	gvar->video.page[0].tlx=gvar->mv[0].tx*TILEWH;
+	gvar->video.page[0].tly=gvar->mv[0].ty*TILEWH;
 }
 
 //

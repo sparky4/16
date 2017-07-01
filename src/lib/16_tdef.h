@@ -496,7 +496,7 @@ typedef struct mmblockstruct
 
 typedef struct mmshowmemoryinfo
 {
-	word x,y;
+//	unsigned x,y;
 	mmblocktype far *scan;
 } mmshowmemoryinfo_t;
 
