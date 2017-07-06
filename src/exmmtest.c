@@ -208,10 +208,10 @@ PRINTBB; KEYP
 							#endif	//scrollload
 
 #ifndef NOVID
-	VL_Startup(&gvar);//	VGAmodeX(8, 0, &gvar);
+	VGAmodeX(8, 0, &gvar); VL_LoadPalFileCore(&gvar.video.palette, &gvar);
 	modexHiganbanaPageSetup(&gvar);
+//	gvar.video.page[0].dx = gvar.video.page[0].dy = 0;
 //	VL_modexPalScramble(&gvar.video.palette);
-	VL_LoadPalFileCore(&gvar.video.palette, &gvar);
 //	ShapeTest_(&gvar);
 #endif
 	MM_ShowMemory(&gvar);

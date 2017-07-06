@@ -1421,17 +1421,18 @@ reset:
 		end = scan->length-1;
 		y = scan->start/width;
 		x = scan->start%width;
-#ifdef MMSMSCANINFO
+#if 0
+//def MMSMSCANINFO
 		if(restarted){
 			y += gvar->video.page[0].dy;
 			x += gvar->video.page[0].dx;
 		}
-#if 0
+//#if 0
 		else{
 			scaninfo[q].y = y;
 			scaninfo[q].x = x;
 		}
-#endif
+//#endif
 #endif
 		VW_Hlin(x,x+end,y,color,gvar);
 		VL_Plot(x,y,5,gvar);
@@ -1611,7 +1612,7 @@ reset:
 		{
 			printf("%s", scratch1);
 			printf("%s", AAGREY); printf("_");
-			if(scaninfo[q].scan->length<64000)
+//			if(scaninfo[q].scan->length<64000)
 			for(w=(scaninfo[q].scan->start)/80;w<=end/80;w++)
 			{
 				//strcat(scratch1, "+");
@@ -1675,6 +1676,7 @@ reset:
 //				y = gvar->video.page[0].dy;//(gvar->video.page[0].sh-(32));//8*4
 				oldq = q;
 				restarted = true;
+				modexClearRegion(&gvar->video.page[0], 0, 0, gvar->video.page[0].width, gvar->video.page[0].height, 8);
 				goto reset;
 			break;
 			case sc_Escape:
@@ -1684,10 +1686,9 @@ reset:
 	}
 //}
 //	MM_ShowMemoryDetail (x, y, w, q, end, &scaninfo, gvar);
+#else
+	if(gvar->video.VL_Started) IN_Ack(gvar);
 #endif
-
-
-//??	if(gvar->video.VL_Started) IN_Ack(gvar);
 
 	gvar->video.BOFS = (byte __far *)temp;
 }
