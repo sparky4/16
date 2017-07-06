@@ -196,6 +196,7 @@ void printmeminfoline(byte *strc, const byte *pee, size_t h_total, size_t h_used
 int US_CheckParm(char *parm,char **strings);
 byte dirchar(byte in);
 void print_mem(void const *vp, size_t n);
+void hres (void);
 
 #define PRINT_OPAQUE_STRUCT(p)  print_mem((p), sizeof(*(p)))
 

@@ -227,7 +227,8 @@ UTILEXEC = &
 	palettel.exe &
 	palllist.exe &
 	palbomb.exe &
-	palettec.exe
+	palettec.exe &
+	ps.exe
 !ifdef __LINUX__
 SPRIUTILEXEC = &
 	pcx2vrl &

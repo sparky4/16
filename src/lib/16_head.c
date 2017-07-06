@@ -198,3 +198,15 @@ void print_mem(void const *vp, size_t n)
 	putchar('\n');
 	printf("\nstruct size is %zu bytes\n", n);
 };
+
+//from: https://groups.google.com/forum/#!topic/comp.lang.asm.x86/QtuVXl43nDo
+void hres (void)
+{
+	__asm {
+		mov	ax,3
+		int	10h
+		mov	ax,1112h
+		xor	bx,bx
+		int	10h
+	}
+}

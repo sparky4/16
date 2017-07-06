@@ -1413,12 +1413,8 @@ reset:
 		{
 			printf("\nend==%d\n\n", end);
 			strcat(scratch, "MM_ShowMemory: Memory block order currupted!\n");
-			strcat(scratch, "End's Size: ");
-			ultoa (end,str,10);
-			strcat (scratch,str);
-			strcat(scratch, "\nscan->start's Size: ");
-			ultoa (scan->start,str,10);
-			strcat (scratch,str);
+			strcat(scratch, "End's Size: ");	ultoa (end,str,10);	strcat (scratch,str);
+			strcat(scratch, "\nscan->start's Size: ");	ultoa (scan->start,str,10);	strcat (scratch,str);
 			write(gvar->handle.debughandle,scratch,strlen(scratch));
 			Quit (gvar, "MM_ShowMemory: Memory block order currupted!");
 		}

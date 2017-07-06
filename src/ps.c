@@ -4,6 +4,7 @@
 void main()
 {
 	static global_game_variables_t gvar;
+	hres();
 	printf("video:\n");
 	PRINT_OPAQUE_STRUCT(&gvar.video);
 	printf("ca:\n");
