@@ -1361,7 +1361,7 @@ extern char global_temp_status_text2[512];
 void MM_ShowMemory (global_game_variables_t *gvar)
 {
 	mmblocktype far *scan;
-	unsigned color,temp,x,y		,w,width;
+	unsigned color,temp,x,y		,w,width,sw;
 	sdword	end,owner;
 	byte		scratch[160],scratch0[4096],str[16];
 #ifdef MMSMSCANINFO
@@ -1387,7 +1387,7 @@ reset:
 
 	end = -1; w = 0;
 
-	width = gvar->video.page[0].sw;
+	width = gvar->video.page[0].width; sw = gvar->video.page[0].sw;
 
 	CA_OpenDebug (gvar);
 	while (scan)
@@ -1419,8 +1419,8 @@ reset:
 			Quit (gvar, "MM_ShowMemory: Memory block order currupted!");
 		}
 		end = scan->length-1;
-		y = scan->start/width;
-		x = scan->start%width;
+		y = gvar->video.page[0].dx+(scan->start/sw);
+		x = gvar->video.page[0].dy+(scan->start%sw);
 #if 0
 //def MMSMSCANINFO
 		if(restarted){
@@ -1591,8 +1591,8 @@ reset:
 		}else	ypos+=8;
 		if(gvar->video.VL_Started)
 		{
-			y = scaninfo[q].scan->start/width;
-			x = scaninfo[q].scan->start%width;
+			y = scaninfo[q].scan->start/sw;
+			x = scaninfo[q].scan->start%sw;
 			if(!mmsmscaninfoxyposinew)
 			{
 				y = ypos;
