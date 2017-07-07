@@ -1368,7 +1368,7 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 	mmshowmemoryinfo_t scaninfo[MAXBLOCKS];
 	byte scratch1[4];
 	unsigned		xpos,ypos, oldq,q,maxq;
-	boolean		done,restarted;
+	boolean		done,restarted,mmsmscaninfoxyposinew;
 	ScanCode		scancode;
 #endif
 
@@ -1379,7 +1379,7 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 	temp = BDOFSCONV gvar->video.BOFS;
 	gvar->video.BOFS = gvar->video.DOFS;
 #ifdef MMSMSCANINFO
-	oldq = 0; restarted = false;
+	oldq = 0; restarted = false; mmsmscaninfoxyposinew = false;
 reset:
 	q = 0;
 #endif
@@ -1427,12 +1427,12 @@ reset:
 			y += gvar->video.page[0].dy;
 			x += gvar->video.page[0].dx;
 		}
-//#if 0
+#if 0
 		else{
 			scaninfo[q].y = y;
 			scaninfo[q].x = x;
 		}
-//#endif
+#endif
 #endif
 		VW_Hlin(x,x+end,y,color,gvar);
 		VL_Plot(x,y,5,gvar);
@@ -1506,8 +1506,7 @@ reset:
 
 	CA_CloseDebug (gvar);
 
-#if 0
-//def MMSMPANVID
+#ifdef MMSMPANVID
 	{
 		int dx,dy,odx,ody;
 		odx = gvar->video.page[0].dx;
@@ -1545,9 +1544,7 @@ reset:
 	}
 #endif
 #ifdef MMSMSCANINFO
-//#define MMSMSCANINFOXYPOSNEW
-//{
-	maxq = q;
+	maxq = q-1;
 	if(restarted) q = oldq;
 	else q = 0;
 	restarted = false;
@@ -1596,15 +1593,16 @@ reset:
 		{
 			y = scaninfo[q].scan->start/width;
 			x = scaninfo[q].scan->start%width;
-#ifndef MMSMSCANINFOXYPOSNEW
-			y = ypos;
-			x = xpos;
-#else
-			//y = scaninfo[q].y;
-			//x = scaninfo[q].x;
-			y += gvar->video.page[0].dy;
-			x += gvar->video.page[0].dx;
-#endif
+			if(!mmsmscaninfoxyposinew)
+			{
+				y = ypos;
+				x = xpos;
+			}else{
+				//y = scaninfo[q].y;
+				//x = scaninfo[q].x;
+				y += gvar->video.page[0].dy;
+				x += gvar->video.page[0].dx;
+			}
 			VW_Hlin(x,x+end,y,color,gvar);
 			VL_Plot(x,y,5,gvar);
 		}
@@ -1612,7 +1610,6 @@ reset:
 		{
 			printf("%s", scratch1);
 			printf("%s", AAGREY); printf("_");
-//			if(scaninfo[q].scan->length<64000)
 			for(w=(scaninfo[q].scan->start)/80;w<=end/80;w++)
 			{
 				//strcat(scratch1, "+");
@@ -1639,7 +1636,7 @@ reset:
 		{
 			//if (scan->next && scan->next->start > end+1) free
 			xpos = gvar->video.page[0].dx;
-			ypos = gvar->video.page[0].dy;//(gvar->video.page[0].sh-(32));//8*4
+			ypos = gvar->video.page[0].dy;
 		}
 		else
 		{
@@ -1654,6 +1651,11 @@ reset:
 		IN_ClearKey(scancode);
 		switch (scancode)
 		{
+			case sc_Enter:
+				if(!mmsmscaninfoxyposinew) mmsmscaninfoxyposinew = true;
+				else mmsmscaninfoxyposinew = false;
+				//mmsmscaninfoxyposinew!=mmsmscaninfoxyposinew;
+			break;
 			case sc_LeftArrow:
 				if(q>0) q--;
 				else	q = maxq;
@@ -1671,9 +1673,6 @@ reset:
 				else q = 0;
 			break;
 			case sc_Space:
-//				scan = gvar->mm.mmhead;
-//				x = gvar->video.page[0].dx;
-//				y = gvar->video.page[0].dy;//(gvar->video.page[0].sh-(32));//8*4
 				oldq = q;
 				restarted = true;
 				modexClearRegion(&gvar->video.page[0], 0, 0, gvar->video.page[0].width, gvar->video.page[0].height, 8);
@@ -1684,8 +1683,6 @@ reset:
 			break;
 		}
 	}
-//}
-//	MM_ShowMemoryDetail (x, y, w, q, end, &scaninfo, gvar);
 #else
 	if(gvar->video.VL_Started) IN_Ack(gvar);
 #endif
@@ -1693,134 +1690,8 @@ reset:
 	gvar->video.BOFS = (byte __far *)temp;
 }
 
-#if 0
-//def MMSMSCANINFO
-void MM_ShowMemoryDetail (unsigned x, unsigned y, unsigned w, unsigned q, sdword end, mmshowmemoryinfo_t *scaninfo, global_game_variables_t *gvar)
-	{
-		byte scratch1[4];
-		unsigned		maxq = q;
-		boolean			done;
-		ScanCode		scancode;
-		int xpos,ypos;
-		word ccolor = 3;
-		IN_Ack(gvar);
-//		VL_ClearVideo (8);
-		for (q = 0,done = false;!done;)
-		{
-			if(scaninfo[q].scan->attributes & PURGEBITS)
-			{
-				ccolor = 6;		// dark purple = purgable
-				strcpy(scratch1, AAMAGENTA);		// dark purple = purgable
-				//printf("%s", AAMAGENTA);
-			}else{
-				ccolor = 2;		// medium blue = non purgable
-				strcpy(scratch1, AABLUE);		// medium blue = non purgable
-				//printf("%s", AABLUE);
-			}
-			if(scaninfo[q].scan->attributes & LOCKBIT)
-			{
-				ccolor = 1;		// red = locked
-				strcpy(scratch1, AARED);		// red = locked
-				//printf("%s", AARED);
-			}
-			end = scaninfo[q].scan->length-1;
-//modexprint(page, x, y, t, tlsw, color, bgcolor, vidsw, const byte *str);
-#define MMSMPRINTMEMINFO modexprint(&(gvar->video.page[0]), xpos, ypos, 1, 1, ccolor, 8, gvar->video.VL_Started, global_temp_status_text); ypos+=8;
-#ifdef __WATCOMC__
-			if(gvar->video.VL_Started)
-			{
-				VL_ShowPage(&gvar->video.page[0], 1, 0);
-				modexClearRegion(&gvar->video.page[0], 0, 0, gvar->video.page[0].width, gvar->video.page[0].height, 8);
-			}else
-#endif
-				clrscr();
-			sprintf(global_temp_status_text, "block #%04u", q); MMSMPRINTMEMINFO
-//			sprintf(global_temp_status_text, "%Fp", scaninfo[q].scan->useptr); MMSMPRINTMEMINFO
-			sprintf(global_temp_status_text, "start:  %04x", (unsigned)scaninfo[q].scan->start); MMSMPRINTMEMINFO
-			sprintf(global_temp_status_text, "useptr: %04x", (unsigned)scaninfo[q].scan->useptr); MMSMPRINTMEMINFO
-			sprintf(global_temp_status_text, "size: %05u", (unsigned)scaninfo[q].scan->length); MMSMPRINTMEMINFO
-			if (scaninfo[q].scan->next && scaninfo[q].scan->next->start > end+1)
-			{
-				sprintf(global_temp_status_text, "free: %05u", (unsigned)(scaninfo[q].scan->next->start-scaninfo[q].scan->start)); MMSMPRINTMEMINFO
-			}
-			if(gvar->video.VL_Started)
-			{
-				y = ypos;//scaninfo[q].scan->start/width;
-				x = xpos;//scaninfo[q].scan->start%width;
-				VW_Hlin(x,x+end,y,ccolor,gvar);
-				VL_Plot(x,y,5,gvar);
-			}
-			else
-			{
-				printf("%s", scratch1);
-				printf("%s", AAGREY); printf("_");
-				if(scaninfo[q].scan->length<64000)
-				for(w=(scaninfo[q].scan->start)/80;w<=end/80;w++)
-				{
-					//strcat(scratch1, "+");
-					printf("+");
-				}
-			}
-
-
-				if (scaninfo[q].scan->next && scaninfo[q].scan->next->start > end+1) if(!gvar->video.VL_Started)
-				{
-					//strcat(scratch1, AARESET);
-					printf("%s", AARESET);
-					//strcat(scratch1,AAGREEN);
-					printf("%s", AAGREEN);
-					for(w=(end+1)/80;w<=((scaninfo[q].scan->next->start-scaninfo[q].scan->start)/80);w++)
-					{
-						//strcat(scratch1,"0");
-						printf("0");
-					}
-				}else VW_Hlin(x+end+1,x+(scaninfo[q].scan->next->start-scaninfo[q].scan->start),y,3,gvar);	// black = free//now green
-
-
-			if(gvar->video.VL_Started)
-			{
-				//if (scan->next && scan->next->start > end+1) free
-				xpos = gvar->video.page[0].dx;
-				ypos = gvar->video.page[0].dy;//(gvar->video.page[0].sh-(32));//8*4
-			}
-			else
-			{
-				//printf("%s\n", scratch1);
-				printf("%s", AARESET);
-				printf("\n");
-			}
-//0000printf("%s", AABLACK); fprintf(stdout, "q=%u	maxq=%u\n", q, maxq); printf("%s", AARESET);
-//fprintf(stdout, "");	//this is a HAX to make it decrement and increment properly when it is at 0 and qmax
-			while (!(scancode = gvar->in.inst->LastScan)){}
-
-			IN_ClearKey(scancode);
-			switch (scancode)
-			{
-				case sc_LeftArrow:
-					if(q>0) q--;
-					else	q = maxq;
-				break;
-				case sc_RightArrow:
-					if(q<maxq) q++;
-					else q = 0;
-				break;
-				case sc_UpArrow:
-					if(q>10) q-=10;
-					else	q = maxq;
-				break;
-				case sc_DownArrow:
-					if(q<maxq+10) q+=10;
-					else q = 0;
-				break;
-				case sc_Escape:
-					done = true;
-				break;
-			}
-		}
-	}
-#endif
-
 //==========================================================================
+
 
 /*
 =====================

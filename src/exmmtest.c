@@ -210,7 +210,7 @@ PRINTBB; KEYP
 #ifndef NOVID
 	VGAmodeX(8, 0, &gvar); VL_LoadPalFileCore(&gvar.video.palette, &gvar);
 	modexHiganbanaPageSetup(&gvar);
-//	gvar.video.page[0].dx = gvar.video.page[0].dy = 0;
+	gvar.video.page[0].dx = gvar.video.page[0].dy = 0;
 //	VL_modexPalScramble(&gvar.video.palette);
 //	ShapeTest_(&gvar);
 #endif
