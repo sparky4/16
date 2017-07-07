@@ -1387,7 +1387,7 @@ reset:
 
 	end = -1; w = 0;
 
-	width = gvar->video.page[0].width;
+	width = gvar->video.page[0].sw;
 
 	CA_OpenDebug (gvar);
 	while (scan)
@@ -1544,7 +1544,7 @@ reset:
 	}
 #endif
 #ifdef MMSMSCANINFO
-	maxq = q-1;
+	maxq = q;
 	if(restarted) q = oldq;
 	else q = 0;
 	restarted = false;
@@ -1576,7 +1576,7 @@ reset:
 		if(gvar->video.VL_Started)
 		{
 			VL_ShowPage(&gvar->video.page[0], 1, 0);
-			modexClearRegion(&gvar->video.page[0], 0, 0, gvar->video.page[0].width, gvar->video.page[0].height, 8);
+			modexClearRegion(&gvar->video.page[0], gvar->video.page[0].dx, gvar->video.page[0].dy, gvar->video.page[0].sw, gvar->video.page[0].sh, 8);
 		}else
 #endif
 			clrscr();
@@ -1665,17 +1665,17 @@ reset:
 				else q = 0;
 			break;
 			case sc_UpArrow:
-				if(q>10) q-=10;
+				if(q>9) q-=10;
 				else	q = maxq;
 			break;
 			case sc_DownArrow:
-				if(q<maxq+10) q+=10;
+				if(q<maxq-9) q+=10;
 				else q = 0;
 			break;
 			case sc_Space:
 				oldq = q;
 				restarted = true;
-				modexClearRegion(&gvar->video.page[0], 0, 0, gvar->video.page[0].width, gvar->video.page[0].height, 8);
+				modexClearRegion(&gvar->video.page[0], gvar->video.page[0].dx, gvar->video.page[0].dy, gvar->video.page[0].sw, gvar->video.page[0].sh, 8);
 				goto reset;
 			break;
 			case sc_Escape:
