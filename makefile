@@ -522,8 +522,8 @@ backupscript: .symbolic
 	@$(COPYCOMMAND) wbuild.sh wbuild.s
 	@if exist *.bat $(MOVECOMMAND) *.bat $(SCRIPTBATDIR)/
 	@if exist *.sh $(MOVECOMMAND) *.sh $(SCRIPTBATDIR)/
-	@$(COPYCOMMAND) WBUILD.B WBUILD.BAT
-	@$(COPYCOMMAND) wbuild.s wbuild.sh
+	@$(MOVECOMMAND) WBUILD.B WBUILD.BAT
+	@$(MOVECOMMAND) wbuild.s wbuild.sh
 !ifdef __LINUX__
 	@if exist *.BAT $(MOVECOMMAND) *.BAT $(SCRIPTBATDIR)/
 	@if not exist ud.sh $(COPYCOMMAND) $(SCRIPTBATDIR)/ud.sh ./
