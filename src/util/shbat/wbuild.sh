@@ -1,7 +1,7 @@
 #! /bin/bash
 pee="-h"
 # -s"
-wmake ${pee} clean
+wmake -h -s clean
 wmake ${pee}
 wmake ${pee} comp
 #if [[ -f *.err ]]

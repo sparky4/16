@@ -115,11 +115,11 @@ WCLQ=-zq
 UPXQ=-qqq
 
 # symbolic debug for wsample/wprof/wd
-D_FLAGS=-d1#+
+D_FLAGS=-d1+
 
 # stacksize
 STKSIZ=32768
-#24576#40960
+#STKSIZ=24576#40960
 
 #
 # compile flags
@@ -518,8 +518,12 @@ initconfig: .symbolic
 
 
 backupscript: .symbolic
+	@$(COPYCOMMAND) WBUILD.BAT WBUILD.B
+	@$(COPYCOMMAND) wbuild.sh wbuild.s
 	@if exist *.bat $(MOVECOMMAND) *.bat $(SCRIPTBATDIR)/
 	@if exist *.sh $(MOVECOMMAND) *.sh $(SCRIPTBATDIR)/
+	@$(COPYCOMMAND) WBUILD.B WBUILD.BAT
+	@$(COPYCOMMAND) wbuild.s wbuild.sh
 !ifdef __LINUX__
 	@if exist *.BAT $(MOVECOMMAND) *.BAT $(SCRIPTBATDIR)/
 	@if not exist ud.sh $(COPYCOMMAND) $(SCRIPTBATDIR)/ud.sh ./

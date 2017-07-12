@@ -1,7 +1,7 @@
 @echo off
 set pee="-h"
 rem -s"
-wmake %pee clean
+wmake -h -s clean
 wmake %pee
 rem wmake %pee comp
 if exist *.err (wmake %pee vomitchan)
