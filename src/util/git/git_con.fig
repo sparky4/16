@@ -10,7 +10,7 @@
 	remote = origin
 	merge = refs/heads/master
 [remote "origin"]
-	url = git@github.com:sparky4/16.git
+	url = sparky4@github.com:sparky4/16.git
 	fetch = +refs/heads/*:refs/remotes/origin/*
 [remote "sf"]
 	url = ssh://sparky4q@git.code.sf.net/p/project16/code
