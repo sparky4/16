@@ -1,1 +1,12 @@
 stuck on cache manager / memory manager / page manager proper usage with new file formats
+
+16_ca needs huge amounts of work and I should remember what needs to be done soon
+[going to port rest of code to borland c some time so we can use the core components of id engine here]
+[I may not be able to, i am very stif on CA]
+[going to add 16_us.c eventually but the debug system and CA_ PM_ and MM_ usage is priority now]
+
+
+palette debug show values added wwww and i need to know how to see vrs/vrl imaage data palette index numbers
+[i am trying to find out how the hell you get the index number values of VRL/VRS]
+[vrldbg.exe added for a dirivative of vrldbg thanks johncampbell321\!]
+working on this
