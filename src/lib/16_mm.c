@@ -1505,6 +1505,7 @@ reset:
 	}
 
 	CA_CloseDebug (gvar);
+	if (gvar->video.VL_Started) IN_Ack(gvar);
 
 #ifdef MMSMPANVID
 	{
@@ -1549,8 +1550,10 @@ reset:
 	else q = 0;
 	restarted = false;
 
-	IN_Ack(gvar);
-//	VL_ClearVideo (8);
+	while (!(scancode = gvar->in.inst->LastScan)){}
+//	IN_ClearKey(scancode);
+//	IN_Ack(gvar);
+
 	for (done = false;!done;)
 	{
 		if(scaninfo[q].scan->attributes & PURGEBITS)
@@ -1683,8 +1686,8 @@ reset:
 			break;
 		}
 	}
-#else
-	if(gvar->video.VL_Started) IN_Ack(gvar);
+//#else
+//	if(gvar->video.VL_Started) IN_Ack(gvar);
 #endif
 
 	gvar->video.BOFS = (byte __far *)temp;
