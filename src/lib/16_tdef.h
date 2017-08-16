@@ -398,6 +398,16 @@ typedef struct
 
 typedef struct
 {
+	sword x;
+	sword y;
+	word t;
+	boolean tlsw;
+	word color;
+	word bgcolor;
+} modexprint_t;
+
+typedef struct
+{
 //----	ylookup[MAXSCANLINES],
 	unsigned int offscreen_ofs;
 	unsigned int pattern_ofs;
@@ -436,6 +446,7 @@ typedef struct
 	nibble sfip;		//shinku_fps_indicator_page; // we're on page 1 now, shinku(). follow along please or it will not be visible.
 	ofs_t	ofs;		//offset vars used for doslib
 	word	vh;		//video combined height
+	modexprint_t	print;	//modexprint variables
 	tile_dimention_t	td;
 	//0000word startclk; float clk, tickclk;	//timer
 	//wolf3d vars

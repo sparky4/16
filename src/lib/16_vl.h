@@ -258,6 +258,7 @@ void modexDrawChar(page_t *page, int x/*for planar selection only*/, word t, wor
 void modexprint(page_t *page, sword x, sword y, word t, boolean tlsw, word color, word bgcolor, boolean vidsw, const byte *str);
 void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, const byte *str);
 void VL_modexPrintTextBox(global_game_variables_t *gvar);
+void VL_print(const byte *str, nibble pagenum, global_game_variables_t *gvar);
 void modexpdump(nibble pagenum, global_game_variables_t *gvar);
 void VL_PatternDraw(video_t *video, word pn, boolean sw, boolean allsw);
 void modexWaitBorder();

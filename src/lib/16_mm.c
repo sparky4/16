@@ -1367,7 +1367,7 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 #ifdef MMSMSCANINFO
 	mmshowmemoryinfo_t scaninfo[MAXBLOCKS];
 	byte scratch1[4];
-	unsigned		xpos,ypos, oldq,q,maxq;
+	unsigned		/*xpos,ypos, */oldq,q,maxq;
 	boolean		done,restarted,mmsmscaninfoxyposinew;
 	ScanCode		scancode;
 #endif
@@ -1478,7 +1478,10 @@ reset:
 #endif
 		strcat(scratch0, AARESET);
 		//strcat(scratch0,"\n");
-		strcat(scratch,"Seg:");
+		strcat(scratch,"Block:");
+		ultoa (q,str,10);
+		strcat (scratch,str);
+		strcat(scratch,"\tSeg:");
 		ultoa (scan->start,str,16);
 		strcat (scratch,str);
 //		strcat(scratch, AABLACK); strcat(scratch,"\t"); strcat(scratch, AARESET);
@@ -1501,11 +1504,10 @@ reset:
 #ifdef MMSMSCANINFO
 		q++;
 #endif
-//0000if(q==1 && gvar->video.VL_Started && color!=6) IN_Ack(gvar);
+//0000if(gvar->video.VL_Started && color!=6) IN_Ack(gvar);
 	}
 
 	CA_CloseDebug (gvar);
-	if (gvar->video.VL_Started) IN_Ack(gvar);
 
 #ifdef MMSMPANVID
 	{
@@ -1513,6 +1515,8 @@ reset:
 		odx = gvar->video.page[0].dx;
 		ody = gvar->video.page[0].dy;
 		dx = dy = 0;
+
+		while (!(scancode = gvar->in.inst->LastScan)){}
 		while(!gvar->in.inst->Keyboard[sc_Escape] && !gvar->in.inst->Keyboard[sc_Space])
 		{
 			if(gvar->in.inst->Keyboard[sc_UpArrow])
@@ -1545,7 +1549,8 @@ reset:
 	}
 #endif
 #ifdef MMSMSCANINFO
-	maxq = q;
+	if (gvar->video.VL_Started) IN_Ack(gvar);
+	maxq = q-1;
 	if(restarted) q = oldq;
 	else q = 0;
 	restarted = false;
@@ -1573,8 +1578,13 @@ reset:
 			//printf("%s", AARED);
 		}
 		end = scaninfo[q].scan->length-1;
-//modexprint(page, x, y, t, tlsw, color, bgcolor, vidsw, const byte *str);
-#define MMSMPRINTMEMINFO modexprint(&(gvar->video.page[0]), xpos, ypos, 1, 1, color, 8, gvar->video.VL_Started, global_temp_status_text); ypos+=8;
+
+		gvar->video.print.t=1;
+		gvar->video.print.tlsw=1;
+		gvar->video.print.color=color;
+		gvar->video.print.bgcolor=8;
+#define MMSMPRINTMEMINFO	VL_print(global_temp_status_text, 0, gvar); gvar->video.print.y+=8;
+//modexprint(&(gvar->video.page[0]), xpos, ypos, 1, 1, color, 8, gvar->video.VL_Started, global_temp_status_text);
 #ifdef __WATCOMC__
 		if(gvar->video.VL_Started)
 		{
@@ -1591,15 +1601,15 @@ reset:
 		if (scaninfo[q].scan->next && scaninfo[q].scan->next->start > end+1)
 		{
 			sprintf(global_temp_status_text, "free: %05u", (unsigned)(scaninfo[q].scan->next->start-scaninfo[q].scan->start)); MMSMPRINTMEMINFO
-		}else	ypos+=8;
+		}else	/*ypos*/gvar->video.print.y+=8;
 		if(gvar->video.VL_Started)
 		{
 			y = scaninfo[q].scan->start/sw;
 			x = scaninfo[q].scan->start%sw;
 			if(!mmsmscaninfoxyposinew)
 			{
-				y = ypos;
-				x = xpos;
+				y = gvar->video.print.y;//ypos;
+				x = gvar->video.print.x;//xpos;
 			}else{
 				//y = scaninfo[q].y;
 				//x = scaninfo[q].x;
@@ -1638,8 +1648,8 @@ reset:
 		if(gvar->video.VL_Started)
 		{
 			//if (scan->next && scan->next->start > end+1) free
-			xpos = gvar->video.page[0].dx;
-			ypos = gvar->video.page[0].dy;
+			/*xpos*/gvar->video.print.x = gvar->video.page[0].dx;
+			/*ypos*/gvar->video.print.y = gvar->video.page[0].dy;
 		}
 		else
 		{
@@ -1686,8 +1696,8 @@ reset:
 			break;
 		}
 	}
-//#else
-//	if(gvar->video.VL_Started) IN_Ack(gvar);
+#else
+	if(gvar->video.VL_Started) IN_Ack(gvar);
 #endif
 
 	gvar->video.BOFS = (byte __far *)temp;

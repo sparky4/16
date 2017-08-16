@@ -1268,6 +1268,12 @@ void modexprintbig(page_t *page, word x, word y, word t, word col, word bgcol, c
 	}
 }
 
+//	short hand of modexprint
+void VL_print(const byte *str, nibble pagenum, global_game_variables_t *gvar)
+{
+	modexprint(&(gvar->video.page[pagenum]), gvar->video.print.x, gvar->video.print.y, gvar->video.print.t, gvar->video.print.tlsw, gvar->video.print.color, gvar->video.print.bgcolor, gvar->video.VL_Started, str);
+}
+
 /* palette dump on display! */
 void modexpdump(nibble pagenum, global_game_variables_t *gvar)
 {
@@ -1392,7 +1398,8 @@ void VL_PrintmodexmemInfo(video_t *v)
 //	printf("========================================\n");
 	printf("  Virtual Screen: %dx", v->page[0].width);	printf("%d	", v->page[0].height);	printf("Tile: %dx", v->page[0].ti.tilesw);		printf("%d", v->page[0].ti.tilesh);	printf("=((Virtual Screen)/16)\n");
 	printf("  	  Screen: %dx", v->page[0].sw);		printf("%d	", v->page[0].sh);		printf("Tile: %dx", v->page[0].ti.tw);			printf("%d", v->page[0].ti.th);		printf("=((Screen)/16)\n");
-	printf("  stride: %u ", vga_state.vga_stride);
+	printf("  vga_stride: %u ", vga_state.vga_stride);
+	printf("pagestride: %u ", v->page[0].stridew);
 	printf("draw_stride: %u ", vga_state.vga_draw_stride);
 	printf("draw_stride_limit: %u\n", vga_state.vga_draw_stride_limit);
 

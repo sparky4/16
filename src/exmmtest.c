@@ -56,6 +56,7 @@ void	TL_VidInit(global_game_variables_t *gvar)
 void VL_ShowPage(page_t *page, boolean vsync, boolean sr){}
 void modexClearRegion(page_t *page, int x, int y, int w, int h, byte color){}
 void modexprint(page_t *page, sword x, sword y, word t, boolean tlsw, word color, word bgcolor, boolean vidsw, const byte *str){ printf("%s\n", str); }
+void VL_print(const byte *str, nibble pagenum, global_game_variables_t *gvar){ printf("%s\n", str); }
 void modexpdump(nibble pagenum, global_game_variables_t *gvar){}
 #endif
 #endif
@@ -199,8 +200,7 @@ PRINTBB; KEYP
 	}
 
 							#ifdef SCROLLLOAD
-//							#else		//scrollload
-//	CA_loadmap(bakapee2, &gvar.map, &gvar);	//BREAKS!
+	CA_loadmap(bakapee2, &gvar.map, &gvar);	//BREAKS!
 //	newloadmap(bakapee2, &gvar.map);
 	VRS_LoadVRS(bakapee1, &gvar.player[0].enti, &gvar);
 //	HC_heapdump(&gvar);
