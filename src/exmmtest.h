@@ -57,7 +57,7 @@
 
 #define KEYP IN_Shutdown(&gvar); printf("\n\npress any key to continue!\n"); getch(); IN_Startup(&gvar);
 
-#define BBUFNAME gvar.mm.bufferseg//bigbuffer
+#define BBUFNAME gvar.mm.bufferseg
 //#define INITBBUF static memptr BBUFNAME;
 #define BBUFPTR	MEMPTRCONV BBUFNAME
 

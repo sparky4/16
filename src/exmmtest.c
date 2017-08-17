@@ -105,6 +105,7 @@ main(int argc, char *argv[])
 								#ifdef INITBBUF
 	INITBBUF
 								#endif
+	//0000mmblocktype far *scan;
 
 	char bakapee1[64] = FILENAME_1;
 	char bakapee2[64] = FILENAME_2;
@@ -177,7 +178,18 @@ PRINTBB; KEYP
 			printf("====================================load end===================================\n");
 		}
 								#ifdef BUFFDUMP
-		printf("contents of the buffer\n[\n%s\n]\n", BBUFSTRING);
+		printf("contents of the buffer\n[\n%.*s\n]\n", strlen(BBUFSTRING), BBUFSTRING);
+#if 0
+//0000
+		scan = gvar.mm.mmhead;
+		while (scan->useptr != &BBUFNAME && scan)
+		{
+			scan = scan->next;
+		}
+		printf("\n	%Fp	%Fp\n", scan->useptr, &BBUFNAME);
+		printf("\nstrlen of buffer = %zu\n", strlen(BBUFSTRING));
+		printf("length of buffer = %lu\n", scan->scan->length);
+#endif
 								#endif
 								#ifdef PRINTBBDUMP
 		PRINTBB;
@@ -209,6 +221,7 @@ PRINTBB; KEYP
 
 #ifndef NOVID
 	VGAmodeX(8, 0, &gvar); VL_LoadPalFileCore(&gvar.video.palette, &gvar);
+	VL_ClearVideo (0);
 	modexHiganbanaPageSetup(&gvar);
 	gvar.video.page[0].dx = gvar.video.page[0].dy = 0;
 //	VL_modexPalScramble(&gvar.video.palette);
