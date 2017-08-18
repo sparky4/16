@@ -1361,13 +1361,13 @@ extern char global_temp_status_text2[512];
 void MM_ShowMemory (global_game_variables_t *gvar)
 {
 	mmblocktype far *scan;
-	unsigned color,temp,x,y		,w,width,sw;
+	unsigned color,temp,x,y		,q,w,width,sw;
 	sdword	end,owner;
 	byte		scratch[160],scratch0[4096],str[16];
 #ifdef MMSMSCANINFO
 	mmshowmemoryinfo_t scaninfo[MAXBLOCKS];
 	byte scratch1[4];
-	unsigned		/*xpos,ypos, */oldq,q,maxq;
+	unsigned		/*xpos,ypos, */oldq,maxq;
 	boolean		done,restarted,mmsmscaninfoxyposinew;
 	ScanCode		scancode;
 #endif
@@ -1381,11 +1381,10 @@ void MM_ShowMemory (global_game_variables_t *gvar)
 #ifdef MMSMSCANINFO
 	oldq = 0; restarted = false; mmsmscaninfoxyposinew = false;
 reset:
-	q = 0;
 #endif
 	scan = gvar->mm.mmhead;
 
-	end = -1; w = 0;
+	end = -1; w = 0; q = 0;
 
 	width = gvar->video.page[0].width; sw = gvar->video.page[0].sw;
 
@@ -1501,9 +1500,9 @@ reset:
 //0000fprintf(stdout, "[%u]\n", q);
 
 		scan = scan->next;
-#ifdef MMSMSCANINFO
+//#ifdef MMSMSCANINFO
 		q++;
-#endif
+//#endif
 //0000if(gvar->video.VL_Started && color!=6) IN_Ack(gvar);
 	}
 
@@ -1592,7 +1591,9 @@ reset:
 			modexClearRegion(&gvar->video.page[0], gvar->video.page[0].dx, gvar->video.page[0].dy, gvar->video.page[0].sw, gvar->video.page[0].sh, 8);
 		}else
 #endif
+		{
 			clrscr();
+		}
 		sprintf(global_temp_status_text, "block #%04u", q); MMSMPRINTMEMINFO
 //		sprintf(global_temp_status_text, "%Fp", scaninfo[q].scan->useptr); MMSMPRINTMEMINFO
 		sprintf(global_temp_status_text, "start:  %04x", (unsigned)scaninfo[q].scan->start); MMSMPRINTMEMINFO
