@@ -87,7 +87,7 @@ void segatesuto()
 #define FILENAME_1	"data/spri/chikyuu.vrs"
 #define FILENAME_2	"data/test.map"
 #else
-#define FILENAME_1	"data/koishi~.pcx"
+#define FILENAME_1	"data/spri/chikyuu.sht"
 #define FILENAME_2	"data/test.map"
 #endif
 
@@ -105,7 +105,6 @@ main(int argc, char *argv[])
 								#ifdef INITBBUF
 	INITBBUF
 								#endif
-	//0000mmblocktype far *scan;
 
 	char bakapee1[64] = FILENAME_1;
 	char bakapee2[64] = FILENAME_2;
@@ -178,18 +177,29 @@ PRINTBB; KEYP
 			printf("====================================load end===================================\n");
 		}
 								#ifdef BUFFDUMP
-		printf("contents of the buffer\n[\n%.*s\n]\n", strlen(BBUFSTRING), BBUFSTRING);
+		{
+			size_t file_s;
+			FILE *fh;
+
+			if(!w)	fh = fopen(bakapee1, "r");
+			else	fh = fopen(bakapee2, "r");
+			file_s = filesize(fh);
+			fclose(fh);
+		printf("contents of the buffer\n[\n%.*s\n]\n", file_s, BBUFSTRING);
 #if 0
 //0000
-		scan = gvar.mm.mmhead;
-		while (scan->useptr != &BBUFNAME && scan)
-		{
-			scan = scan->next;
-		}
-		printf("\n	%Fp	%Fp\n", scan->useptr, &BBUFNAME);
-		printf("\nstrlen of buffer = %zu\n", strlen(BBUFSTRING));
-		printf("length of buffer = %lu\n", scan->scan->length);
+// 			mmblocktype far *scan;
+// 			scan = gvar.mm.mmhead;
+// 			while (scan->useptr != &BBUFNAME && scan)
+// 			{
+// 				scan = scan->next;
+// 			}
+// 			printf("\n	%Fp	%Fp\n", scan->useptr, &BBUFNAME);
+			printf("\nstrlen of buffer = %zu\n", strlen(BBUFSTRING));
+			printf("length of buffer = %zu\n", file_s);
+//			printf("length of buffer = %lu\n", scan->length);
 #endif
+		}
 								#endif
 								#ifdef PRINTBBDUMP
 		PRINTBB;
