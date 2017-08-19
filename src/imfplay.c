@@ -19,7 +19,7 @@
 #include "src/lib/16_mm.h"
 #include "src/lib/16_hc.h"
 #include "src/lib/16_dbg.h"
-//#include "src/lib/16_sd.h"
+#include "src/lib/16_sd.h"
 
 // #include <stdio.h>
 // #include <conio.h> /* this is where Open Watcom hides the outp() etc. functions */
