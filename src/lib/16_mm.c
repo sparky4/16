@@ -1263,10 +1263,9 @@ void MM_SortMem (global_game_variables_t *gvar)
 
 
 	SD_StopSound();*/
-#ifdef __WATCOMC__
+
 	oldborder = gvar->video.bordercolor;
 	gvar->video.bordercolor = VL_modexPalOverscan(gvar->video.palette, 4);
-#endif
 
 	if (beforesort)
 		beforesort();
@@ -1344,10 +1343,10 @@ void MM_SortMem (global_game_variables_t *gvar)
 extern char global_temp_status_text[512];
 extern char global_temp_status_text2[512];
 #endif
-#ifdef __WATCOMC__
+//#ifdef __WATCOMC__
 //#define MMSMPANVID
 #define MMSMSCANINFO
-#endif
+//#endif
 
 /*
 =====================
@@ -1361,7 +1360,7 @@ extern char global_temp_status_text2[512];
 void MM_ShowMemory (global_game_variables_t *gvar)
 {
 	mmblocktype far *scan;
-	unsigned color,temp,x,y		,q,w,width,sw;
+	unsigned color,temp,x,y		,q,w/*,width*/,sw;
 	sdword	end,owner;
 	byte		scratch[160],scratch0[4096],str[16];
 #ifdef MMSMSCANINFO
@@ -1386,7 +1385,8 @@ reset:
 
 	end = -1; w = 0; q = 0;
 
-	width = gvar->video.page[0].width; sw = gvar->video.page[0].sw;
+	//width = gvar->video.page[0].width;
+	sw = gvar->video.page[0].sw;
 
 	CA_OpenDebug (gvar);
 	while (scan)
@@ -1500,9 +1500,8 @@ reset:
 //0000fprintf(stdout, "[%u]\n", q);
 
 		scan = scan->next;
-//#ifdef MMSMSCANINFO
 		q++;
-//#endif
+
 //0000if(gvar->video.VL_Started && color!=6) IN_Ack(gvar);
 	}
 
@@ -1689,9 +1688,11 @@ reset:
 			case sc_Space:
 				oldq = q;
 				restarted = true;
-				modexClearRegion(&gvar->video.page[0], gvar->video.page[0].dx, gvar->video.page[0].dy, gvar->video.page[0].sw, gvar->video.page[0].sh, 8);
+#ifdef __WATCOMC__
+				if(gvar->video.VL_Started) modexClearRegion(&gvar->video.page[0], gvar->video.page[0].dx, gvar->video.page[0].dy, gvar->video.page[0].sw, gvar->video.page[0].sh, 8);
+#endif
 				goto reset;
-			break;
+
 			case sc_Escape:
 				done = true;
 			break;

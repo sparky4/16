@@ -52,11 +52,12 @@ void	TL_VidInit(global_game_variables_t *gvar)
 	gvar->video.old_mode = 3;
 }
 
+void VL_print(const byte *str, nibble pagenum, global_game_variables_t *gvar){ printf("%s\n", str); }
+
 #ifdef __WATCOMC__
 void VL_ShowPage(page_t *page, boolean vsync, boolean sr){}
 void modexClearRegion(page_t *page, int x, int y, int w, int h, byte color){}
 void modexprint(page_t *page, sword x, sword y, word t, boolean tlsw, word color, word bgcolor, boolean vidsw, const byte *str){ printf("%s\n", str); }
-void VL_print(const byte *str, nibble pagenum, global_game_variables_t *gvar){ printf("%s\n", str); }
 void modexpdump(nibble pagenum, global_game_variables_t *gvar){}
 #endif
 #endif

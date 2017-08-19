@@ -26,8 +26,8 @@
 #include "src/lib/16_vl.h"
 
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
-#define VGASTRIDEVARIABLE	vga_state.vga_stride
-//#define VGASTRIDEVARIABLE	gvar->video.page[0].stridew
+//#define VGASTRIDEVARIABLE	vga_state.vga_stride
+#define VGASTRIDEVARIABLE	gvar->video.page[0].stridew
 
 //===========================================================================
 
