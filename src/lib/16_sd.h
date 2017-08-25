@@ -31,6 +31,8 @@
 #include <hw/dos/dos.h>
 #include <hw/8259/8259.h>
 
+//#define SD_USESCAMMPM
+
 #define MIN_REGISTER			0x01
 #define MAX_REGISTER			0xF5
 #define ADLIB_FM_ADDRESS	0x388	/* adlib address/status register */

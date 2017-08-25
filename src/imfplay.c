@@ -243,7 +243,7 @@ void main(int argc,char **argv) {
 			}
 		}
 	}
-	printf("contents of the imf_music\n[\n%s\n]\n", gvar.ca.sd.imf_music);
+//0000	printf("contents of the imf_music\n[\n%s\n]\n", gvar.ca.sd.imf_music);
 
 	SD_imf_free_music(&gvar);
 	SD_adlib_shut_up();

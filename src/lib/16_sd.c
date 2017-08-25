@@ -22,8 +22,6 @@
 
 #include "src/lib/16_sd.h"
 
-//#define SD_USESCAMMPM
-
 static void (interrupt *SD_old_irq0)();
 //void interrupt	(*old_irq0)(void);
 
