@@ -34,8 +34,8 @@
 
 extern struct glob_game_vars	*ggvv;
 
-/*static void (interrupt *old_irq0)();
-static volatile unsigned long irq0_ticks=0;
+static void (interrupt *old_irq0)();
+/*static volatile unsigned long irq0_ticks=0;
 static volatile unsigned int irq0_cnt=0,irq0_add=0,irq0_max=0;
 
 #pragma pack(push,1)
@@ -65,10 +65,10 @@ static uint16_t			imf_delay_countdown=0;
 }
 
 void imf_free_music(global_game_variables_t *gvar) {
-	if (imf_music) free(imf_music);
-	MM_FreePtr(MEMPTR gvar->ca.audiosegs[0], gvar);
-	imf_music = imf_play_ptr = imf_music_end = NULL;
-	imf_delay_countdown = 0;
+	if (gvar->ca.sd.imf_music) free(gvar->ca.sd.imf_music);
+	MM_FreePtr(MEMPTRCONV gvar->ca.audiosegs[0], gvar);
+	gvar->ca.sd.imf_music = gvar->ca.sd.imf_play_ptr = gvar->ca.sd.imf_music_end = NULL;
+	gvar->ca.sd.imf_delay_countdown = 0;
 }
 
 int imf_load_music(const char *path, global_game_variables_t *gvar) {
@@ -96,20 +96,20 @@ int imf_load_music(const char *path, global_game_variables_t *gvar) {
 	len -= len & 3;
 
 //	imf_music = malloc(len);
-	MM_GetPtr(MEMPTR gvar->ca.audiosegs[0],len, gvar);
-	imf_music = (struct imf_entry *)gvar->ca.audiosegs[0];
-	if (imf_music == NULL) {
+	MM_GetPtr(MEMPTRCONV gvar->ca.audiosegs[0],len, gvar);
+	gvar->ca.sd.imf_music = (struct imf_entry *)gvar->ca.audiosegs[0];
+	if (gvar->ca.sd.imf_music == NULL) {
 		close(fd);
 		return 0;
 	}
-	read(fd,imf_music,len);
+	read(fd,gvar->ca.sd.imf_music,len);
 	close(fd);
 
-	imf_play_ptr = imf_music;
-	imf_music_end = imf_music + (len >> 2UL);
-	PRINTBB;
+	gvar->ca.sd.imf_play_ptr = gvar->ca.sd.imf_music;
+	gvar->ca.sd.imf_music_end = gvar->ca.sd.imf_music + (len >> 2UL);
+//	PRINTBB;
 	return 1;
-}
+}*/
 
 // WARNING: subroutine call in interrupt handler. make sure you compile with -zu flag for large/compact memory models
 void interrupt irq0()
@@ -124,7 +124,7 @@ void interrupt irq0()
 	}
 }
 
-void imf_tick() {
+/*void imf_tick() {
 	if (imf_delay_countdown == 0) {
 		do {
 			adlib_write(imf_play_ptr->reg,imf_play_ptr->data);
@@ -200,15 +200,15 @@ void main(int argc,char **argv) {
 	StartupCAMMPM(&gvar);
 	printf("ADLIB FM test program IMFPLAY\n");
 	if (argc < 2) {
-		printf("You must specify an IMF file to play\n");
-//		return;
+		printf("You must specify an IMF file to play\n"); ShutdownCAMMPM(&gvar);
+		return;
 	}
 
 	SD_Initimf(&gvar);
 
 	if (!SD_imf_load_music(argv[1], &gvar)) {
-		printf("Failed to load IMF Music\n");
-//		return;
+		printf("Failed to load IMF Music\n"); ShutdownCAMMPM(&gvar);
+		return;
 	}
 
 	write_8254_system_timer(T8254_REF_CLOCK_HZ / tickrate);
@@ -219,6 +219,7 @@ void main(int argc,char **argv) {
 	gvar.ca.sd.irq0_ticks = ptick = 0;
 	_sti();
 
+	printf("playing!\n");
 	while (1) {
 		unsigned long adv;
 
@@ -242,7 +243,7 @@ void main(int argc,char **argv) {
 			}
 		}
 	}
-//	printf("contents of the imf_music\n[\n%s\n]\n", imf_music);
+	printf("contents of the imf_music\n[\n%s\n]\n", gvar.ca.sd.imf_music);
 
 	SD_imf_free_music(&gvar);
 	SD_adlib_shut_up();

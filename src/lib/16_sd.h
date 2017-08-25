@@ -52,7 +52,7 @@ typedef struct{
 	byte Feedback;                  /* feedback algorithm and strength  */
 } FMInstrument;
 
-extern void interrupt	(*old_irq0)(void);
+//extern void interrupt	(*old_irq0)(void);
 
 void opl2out(word reg, word data);
 void opl3out(word reg, word data);
@@ -66,7 +66,7 @@ void FMSetVoice(int voiceNum, FMInstrument *ins);
 void SD_Initimf(global_game_variables_t *gvar);
 void SD_imf_free_music(global_game_variables_t *gvar);
 int SD_imf_load_music(const char *path, global_game_variables_t *gvar);
-void interrupt irq0(void);
+void interrupt SD_irq0(void);
 void SD_imf_tick(global_game_variables_t *gvar);
 void SD_adlib_shut_up();
 

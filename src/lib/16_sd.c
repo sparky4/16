@@ -22,8 +22,10 @@
 
 #include "src/lib/16_sd.h"
 
-//static void (interrupt *old_irq0)();
-void interrupt	(*old_irq0)(void);
+//#define SD_USESCAMMPM
+
+static void (interrupt *SD_old_irq0)();
+//void interrupt	(*old_irq0)(void);
 
 void opl2out(word reg, word data)
 {
@@ -225,8 +227,11 @@ void SD_Initimf(global_game_variables_t *gvar)
 
 void SD_imf_free_music(global_game_variables_t *gvar)
 {
-//	if (gvar->ca.sd.imf_music) free(gvar->ca.sd.imf_music);
+#ifndef SD_USESCAMMPM
+	if (gvar->ca.sd.imf_music) free(gvar->ca.sd.imf_music);
+#else
 	MM_FreePtr(MEMPTRCONV gvar->ca.audiosegs[0], gvar);	//TODO make behave like id engine
+#endif
 	gvar->ca.sd.imf_music = gvar->ca.sd.imf_play_ptr = gvar->ca.sd.imf_music_end = NULL;
 	gvar->ca.sd.imf_delay_countdown = 0;
 }
@@ -256,8 +261,12 @@ int SD_imf_load_music(const char *path, global_game_variables_t *gvar)
 	}
 	len -= len & 3;
 
+#ifndef SD_USESCAMMPM
+	gvar->ca.sd.imf_music = malloc(len);
+#else
 	MM_GetPtr(MEMPTRCONV gvar->ca.audiosegs[0],len, gvar);
 	gvar->ca.sd.imf_music = (struct imf_entry *)gvar->ca.audiosegs[0];
+#endif
 	if (gvar->ca.sd.imf_music == NULL) {
 		close(fd);
 		return 0;
@@ -272,12 +281,12 @@ int SD_imf_load_music(const char *path, global_game_variables_t *gvar)
 
 struct glob_game_vars	*ggvv;
 // WARNING: subroutine call in interrupt handler. make sure you compile with -zu flag for large/compact memory models
-void interrupt irq0()
+void interrupt SD_irq0()
 {
 	ggvv->ca.sd.irq0_ticks++;
 	if ((ggvv->ca.sd.irq0_cnt += ggvv->ca.sd.irq0_add) >= ggvv->ca.sd.irq0_max) {
 		ggvv->ca.sd.irq0_cnt -= ggvv->ca.sd.irq0_max;
-		old_irq0();
+		SD_old_irq0();
 	}
 	else {
 		p8259_OCW2(0,P8259_OCW2_NON_SPECIFIC_EOI);
