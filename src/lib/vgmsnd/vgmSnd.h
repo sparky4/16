@@ -1,6 +1,8 @@
 #ifndef __VGMSNDDRV_H__
 #define __VGMSNDDRV_H__
 
+//#define VGM_USESCAMMPM
+
 #ifdef __cplusplus
 extern "C"
 {

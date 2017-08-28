@@ -25,3 +25,7 @@
 [submodule "shitman"]
         path = 16/shitman
         url = https://github.com/joncampbell123/shitman.git
+
+[submodule "dro2imf"]
+	path = "16/dro2imf"
+	url = https://github.com/Malvineous/dro2imf.git

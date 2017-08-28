@@ -31,7 +31,7 @@
 #include <hw/dos/dos.h>
 #include <hw/8259/8259.h>
 
-//#define SD_USESCAMMPM
+#define SD_USESCAMMPM
 
 #define MIN_REGISTER			0x01
 #define MAX_REGISTER			0xF5
@@ -66,6 +66,7 @@ void FMKeyOn(int voice, int freq, int octave);
 void FMSetVoice(int voiceNum, FMInstrument *ins);
 
 void SD_Initimf(global_game_variables_t *gvar);
+void SD_imf_reset_music(global_game_variables_t *gvar);
 void SD_imf_free_music(global_game_variables_t *gvar);
 int SD_imf_load_music(const char *path, global_game_variables_t *gvar);
 void interrupt SD_irq0(void);

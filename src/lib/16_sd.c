@@ -223,6 +223,12 @@ void SD_Initimf(global_game_variables_t *gvar)
 	shutdown_adlib_opl3(); // NTS: Apparently the music won't play otherwise
 }
 
+void SD_imf_reset_music(global_game_variables_t *gvar)
+{
+	gvar->ca.sd.imf_music = gvar->ca.sd.imf_play_ptr = gvar->ca.sd.imf_music_end = NULL;
+	gvar->ca.sd.imf_delay_countdown = 0;
+}
+
 void SD_imf_free_music(global_game_variables_t *gvar)
 {
 #ifndef SD_USESCAMMPM
@@ -230,8 +236,7 @@ void SD_imf_free_music(global_game_variables_t *gvar)
 #else
 	MM_FreePtr(MEMPTRCONV gvar->ca.audiosegs[0], gvar);	//TODO make behave like id engine
 #endif
-	gvar->ca.sd.imf_music = gvar->ca.sd.imf_play_ptr = gvar->ca.sd.imf_music_end = NULL;
-	gvar->ca.sd.imf_delay_countdown = 0;
+	SD_imf_reset_music(gvar);
 }
 
 int SD_imf_load_music(const char *path, global_game_variables_t *gvar)
@@ -240,7 +245,11 @@ int SD_imf_load_music(const char *path, global_game_variables_t *gvar)
 	unsigned char buf[8];
 	int fd;
 
+#ifndef SD_USESCAMMPM
 	SD_imf_free_music(gvar);
+#else
+	SD_imf_reset_music(gvar);
+#endif
 
 	fd = open(path,O_RDONLY|O_BINARY);
 	if (fd < 0) return 0;

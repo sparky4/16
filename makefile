@@ -236,7 +236,8 @@ SPRIUTILEXEC = &
 	pcxsscut &
 	vrl2vrs &
 	vrsdump &
-	vrldbg
+	vrldbg &
+	dro2imf
 #UTILEXEC += $(SPRIUTILEXEC)
 !endif
 
@@ -473,6 +474,7 @@ clean: .symbolic
 	@if exist *.OBJ $(REMOVECOMMAND) *.OBJ
 	#@for %f in ($(SPRIUTILEXEC)) do @if exist %f $(REMOVECOMMAND) %f
 	@if not exist vrl2vrs wmake -s -h pcx2vrl
+	@if not exist dro2imf wmake -s -h drotoimf
 !else
 	@if exist *.o $(REMOVECOMMAND) *.o
 !endif
@@ -618,6 +620,7 @@ reinitlibs: .symbolic
 	@$(REMOVECOMMAND) -rf 16/keen
 	@$(REMOVECOMMAND) -rf 16/Catacomb3D
 	@$(REMOVECOMMAND) -rf 16/shitman
+	@$(REMOVECOMMAND) -rf 16/dro2imf
 	@wmake -s -h initlibs
 
 initlibs: .symbolic
@@ -628,6 +631,7 @@ initlibs: .symbolic
 	@git clone https://github.com/id-Software/wolf3d.git
 	@git clone https://github.com/keendreams/keen.git
 	@git clone https://github.com/FlatRockSoft/Catacomb3D.git
+	@git clone https://github.com/Malvineous/dro2imf.git
 	@cd $(BUILD_ROOT)
 	@$(COPYCOMMAND) $(DOSLIBDIR)/make-lowercase .
 
@@ -666,6 +670,11 @@ mx_: .symbolic
 	@cd $(BUILD_ROOT)
 
 !ifdef __LINUX__
+drotoimf: .symbolic
+	@cd 16/dro2imf
+	@make
+	@$(MOVECOMMAND) dro2imf ../..
+	@cd $(BUILD_ROOT)
 vrs: .symbolic
 vrl: .symbolic
 $(SPRIUTILEXEC):
