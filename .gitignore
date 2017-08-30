@@ -34,7 +34,6 @@ pcxsscut
 vrl2vrs
 vrsdump
 vrldbg
-dro2imf
 ps.exe
 *.upx
 # except foo.html which is maintained by hand.
