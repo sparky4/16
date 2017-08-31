@@ -667,6 +667,7 @@ typedef struct
 	imf_entry_t*	imf_play_ptr;//=NULL;
 	imf_entry_t*	imf_music_end;//=NULL;
 	word		imf_delay_countdown;//=0;
+	dword		ptick,tickrate;
 } sd_t;
 
 //==========================================================================

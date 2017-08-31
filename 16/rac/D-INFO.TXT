@@ -1,0 +1,199 @@
+
+
+                              *         *
+                     * *                            *
+                 *  *                                     *
+                                       ‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹
+       €€€€€€‹ ﬂﬂﬂ €€‹  ‹€€ €€€ﬂﬂﬂ €€€‹€   €   ‹‹‹€‹‹‹€   ‹   €   ﬂ€   €€
+       €€€ €€€ €€€ €€€€€€€€ €€€ﬂﬂ  €€€€    €      €   €   €   €   ‹    €€
+       €€€ €€€ €€€ €€€ﬁ›€€€ €€€    €€€ €   €€€€   €   €   €   €   €€   €€ 
+       €€€ €€€ €€€ €€€  €€€ €€€    €€€ €   €€€€   €   €   €   €   €€   €€
+       €€€€€€ﬂ €€€ €€€  €€€ €€€€€€ €€€ €   €      €   €       €   €€   €€
+                                       ﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂ
+
+
+                          ?   t h e   p o w e r s
+ ------------------------------------------------------------------------------
+
+	                assassin        the druid
+        	            rdos        the mage
+                           ondar        he is a bartender
+                    	haberman        it might be that. 
+
+
+
+			   I   t h e   i d e a
+ ------------------------------------------------------------------------------
+
+  we are a couple of friends knowing each other for years,  working together on
+  software projects nowadays.  we all are busy studying yet, so don't expect  a 
+  bunch of new releases every month. our goal is to deliver quality productions
+  on both pc-demo / pc-commercial scene time by time.  
+
+
+                            p r o d u c t i o n s   
+ ------------------------------------------------------------------------------
+
+  [ important releases in 1995 ]
+
+  rumb117i.zip*  55kb   jun   memory manager, gives you upper memory without
+                              protected mode masters such as qemm / emm386
+ 
+  rumb118i.zip*  60kb   sep   updated version (more boards as well)
+ 
+  rumb119i.zip*  57kb   dec   next updated version. man this look so serious.
+
+
+  [ important releases in 1996 ]  
+
+  rumb11dc.zip*  54kb   jun   a new one with more boards support
+
+
+  [ important releases in 1997 ]
+
+  rumb11ea.zip   54kb   jan   another new version, now not only demo!!!
+
+  * marked product is commercial or shareware - expect only partialy working
+   demo-version in this free package.
+
+
+--------------------------------------------------------------------------------
+    IMPORTANT NOTE TO ALL DISTRIBUTORS OF OUR PRODUCTS! PLEASE REMOVE EVERY
+    OUR SINGLE PRODUCTION NOT MENTIONED IN THIS LIST FROM YOUR BOARD. IT IS 
+    NO MORE OFFICIAL RELEASE OF US (WE SHAME FOR IT :-). THANK YOU ...
+--------------------------------------------------------------------------------
+
+
+
+                       b u l l e t i n   b o a r d s  
+ ------------------------------------------------------------------------------
+	       get our productions on these sites worldwide.
+			   ( alphabetical order )
+
+ a.c.e.                +33-1-45887-5484   28k8   france, hq     gandalf
+ a touch of eternity   +46-18-240037      28k8   sweden, hq     drain
+ count zero            +47-5512-2962      28k8   norway         yitzhaq, calvin
+ digital fuse          +32-2-7570-776     28k8   belgium, hq    dr.vibe, mmouse 
+ genesis               +32-2-2453-498     28k8   belgium, ehq   darkness
+ mostly harmless       +46-8-6369-011     28k8   sweden         thefreak
+ shoebox universe #1   +43-1-8928-998     33k6   austria        eliot
+ shoebox universe #2   +43-1-8924-204	  14k4                  reebok
+ space bar             +47-6493-3499      33k6   norway, hq     hybris
+ surfers dream         +46-(0)300-21883   28k8   sweden         balrog
+ velvet demosite       +32-3-38515-94     28k8   belgium        sdog
+
+ please contact us, if you want to become our site and/or hq. send us some bbs
+ info and your personalities. you have to include your bbs advertisement, too.
+
+
+
+			     i n t e r n e t
+ ------------------------------------------------------------------------------
+	 every our single release is also available on the net.
+	
+	 	    ftp://sorry.vse.cz/dimension
+	           http://sorry.vse.cz/dimension
+ 
+
+   tunes released by assassin for tm (three musicians) available on:
+
+		     ftp://fm.org/pub/music/tm
+
+	
+    you may also visit the file section of ircbot _gore on #daskmig
+
+		       directory: /dimension
+
+
+                             t o u c h   u s  
+ ------------------------------------------------------------------------------
+	       contact our team using the following ways.
+
+
+ internet email:    
+
+  dv@pf.jcu.cz                 (general requests, commercials..)
+  dv@pf.jcu.cz		       (assassin)
+  roman@sorry.vse.cz 	       (rdos, rdosumb, rdosplay, remus etc.)
+  xstao02@sorry.vse.cz         (ondar)
+  xkovacic@dinf.fst.cvut.cz    (haberman fans)  
+
+ snail mail:
+
+  (assassin)           (rdos)             (ondar)              (haberman)
+  david voracek        roman dolejsi      ondrej stasek        jiri kovacicin
+  branisovska 50       husova 419         j.dietricha 4        xxxxmovingxxxx
+  370 05 c budejovice  373 82 vcelna      370 08 c budejovice  xxxxmovingxxxx
+  czech republic       czech republic     czech republic       czech republic
+
+ internet relay chat:
+
+  meet us on irc channels #daskmig and #coders, or leave a note for assassin
+  on ircbot _gore present on #daskmig.
+
+                                     
+                             g r e e t i n g s
+ ------------------------------------------------------------------------------
+
+         
+       €€ﬂﬂ€‹              			  from assassin
+       €€  €€                                 
+       €€‹‹€ﬂ rain,  axl,  asyntote,  balrog,  moebius,  basehead,  necros
+       sunday,  zodiak,  recc,  cutnpaste,  dune,  derpiipo,  vic,  mellow-d
+       spinny,  charon,  gandalf,  pellicus,  pit bull,  naali,  lemming, aap
+       fuckeer,  reebok,  hybris,  lizardking,  naali,  pelusa,  nahkamuum
+       primon,  beatnik,  hachazo,  distance,  thefear,  skaven,  sleeping dog 
+       alex dusty,  darkness,  laser harp,  big jim,  sikamikanico,  wizard   
+       eliott,  tdj,  leviathan,  desmond,  jare,  tmk,  hoplite,  jmag  
+       mikmak,  hachazo,  svarvarn,  ryan cramer,  miss saigon,  perex
+       zden,  thefreak,  marwin  and  _garbage_obvious_rumourspreading_elk.
+       ( plus everyone i may forgot to mention... )
+
+            
+       ‹€ﬂﬂ€‹                                      from rdos 
+       €€ﬂﬂ€€
+       €€  €€ lfatip,  charon,  jetman,  fuckeer,  tom,  jap,  perex,
+       rum,  piitr,  desmond,  hachazo,  deejay,  bohunka,  ludek,  ivo,
+       some of his school mates plus contacts and kavon of course
+
+           
+       €€‹‹€€                                      from ondar   
+       €€ﬁ›€€
+       €€  €€ y sister eva,  dolphine,  rum,  mr.error,  piitr
+       charon,  perex,  buusaci,  jetman,  kavon,  desmond,  hachazo 
+       jana,  fuckeer,  pelusa,  filip,  alfatip,  vasek,  honza,
+       kaja,  and  vojta
+
+      
+       €€‹ €€                                      from haberman  
+       €€ﬂ€€€
+       €€  €€ op
+
+ 
+
+                              t h a n k   y o u
+ ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+             f o r   b e i n g   o u r s   f o r   a   w h i l e . . 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                        
+.10-29-96

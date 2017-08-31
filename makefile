@@ -211,7 +211,6 @@ TESTEXEC = &
 	0tesuto.exe &
 	maptest.exe &
 	imfplay.exe &
-	i0fplay.exe &
 	vrldbg.exe
 #zcroll.exe &
 TESTEXEC2 = &
@@ -292,7 +291,6 @@ fontgfx.exe:	fontgfx.$(OBJ) gfx.lib $(DOSLIB)
 inputest.exe:	 inputest.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
 sountest.exe:	sountest.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
 imfplay.exe:		imfplay.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
-i0fplay.exe:		i0fplay.$(OBJ) $(DOSLIB)
 vrldbg.exe:		vrldbg.$(OBJ) #gfx.lib $(DOSLIB)
 pcxtest.exe:	pcxtest.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
 vrstest.exe:	vrstest.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
@@ -343,7 +341,6 @@ inputest.$(OBJ):$(SRC)/inputest.c
 #inntest.$(OBJ):$(SRC)/inntest.c
 sountest.$(OBJ): $(SRC)/sountest.c
 imfplay.$(OBJ): $(SRC)/imfplay.c
-i0fplay.$(OBJ): $(SRC)/i0fplay.c
 vrldbg.$(OBJ):	$(SRC)/vrldbg.c
 #miditest.$(OBJ): $(SRC)/miditest.c
 #testemm.$(OBJ):$(SRC)/testemm.c

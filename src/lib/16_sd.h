@@ -67,6 +67,8 @@ void FMSetVoice(int voiceNum, FMInstrument *ins);
 
 void SD_Initimf(global_game_variables_t *gvar);
 void SD_imf_reset_music(global_game_variables_t *gvar);
+void	SD_StartupTimer(global_game_variables_t *gvar),
+		SD_ShutdownTimer();
 void SD_imf_free_music(global_game_variables_t *gvar);
 int SD_imf_load_music(const char *path, global_game_variables_t *gvar);
 void interrupt SD_irq0(void);
