@@ -236,7 +236,10 @@ SPRIUTILEXEC = &
 	vrl2vrs &
 	vrsdump &
 	vrldbg &
-	dro2imf
+	dro2imf &
+	dro2vgm &
+	imf2vgm &
+	raw2vgm
 #UTILEXEC += $(SPRIUTILEXEC)
 !endif
 
@@ -472,6 +475,7 @@ clean: .symbolic
 	#@for %f in ($(SPRIUTILEXEC)) do @if exist %f $(REMOVECOMMAND) %f
 	@if not exist vrl2vrs wmake -s -h pcx2vrl
 	@if not exist dro2imf wmake -s -h drotoimf
+	@if not exist raw2vgm wmake -s -h vgmtools
 !else
 	@if exist *.o $(REMOVECOMMAND) *.o
 !endif
@@ -618,6 +622,7 @@ reinitlibs: .symbolic
 	@$(REMOVECOMMAND) -rf 16/Catacomb3D
 	@$(REMOVECOMMAND) -rf 16/shitman
 	@$(REMOVECOMMAND) -rf 16/dro2imf
+	@$(REMOVECOMMAND) -rf 16/vgmtools
 	@wmake -s -h initlibs
 
 initlibs: .symbolic
@@ -629,6 +634,7 @@ initlibs: .symbolic
 	@git clone https://github.com/keendreams/keen.git
 	@git clone https://github.com/FlatRockSoft/Catacomb3D.git
 	@git clone https://github.com/Malvineous/dro2imf.git
+	@git clone https://github.com/vgmrips/vgmtools.git
 	@cd $(BUILD_ROOT)
 	@$(COPYCOMMAND) $(DOSLIBDIR)/make-lowercase .
 
@@ -672,6 +678,15 @@ drotoimf: .symbolic
 	@make
 	@$(MOVECOMMAND) dro2imf ../..
 	@cd $(BUILD_ROOT)
+
+vgmtools: .symbolic
+	@cd 16/vgmtools
+	@make
+	@$(MOVECOMMAND) dro2vgm ../..
+	@$(MOVECOMMAND) imf2vgm ../..
+	@$(MOVECOMMAND) raw2vgm ../..
+	@cd $(BUILD_ROOT)
+
 vrs: .symbolic
 vrl: .symbolic
 $(SPRIUTILEXEC):

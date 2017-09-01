@@ -35,6 +35,9 @@ vrl2vrs
 vrsdump
 vrldbg
 dro2imf
+dro2vgm
+imf2vgm
+raw2vgm
 ps.exe
 *.upx
 # except foo.html which is maintained by hand.

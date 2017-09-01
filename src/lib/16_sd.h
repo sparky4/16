@@ -54,8 +54,6 @@ typedef struct{
 	byte Feedback;                  /* feedback algorithm and strength  */
 } FMInstrument;
 
-//extern void interrupt	(*old_irq0)(void);
-
 void opl2out(word reg, word data);
 void opl3out(word reg, word data);
 void opl3exp(word data);
