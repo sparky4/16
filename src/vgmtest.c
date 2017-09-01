@@ -55,13 +55,14 @@ main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
 	VGM_FILE pee[9];
-	char bakapee[64] = "data/adlib.vgm";
+	char bakapee[64] = "data/02.vgm";
 
 	if(argv[1]) strcpy(bakapee, argv[1]);
 
-	MM_Startup(&gvar);
+//	MM_Startup(&gvar);
 //	PM_Startup(&gvar); PM_UnlockMainMem(&gvar);
 //	CA_Startup(&gvar);
+	StartupCAMMPM(&gvar);
 	printf("%x\n", OpenVGMFile(bakapee, &pee[0], &gvar));
 	InitEngine();
 	PlayMusic(&pee[0]);
@@ -74,5 +75,6 @@ main(int argc, char *argv[])
 	DeinitEngine();
 //	PM_Shutdown(&gvar);
 //	CA_Shutdown(&gvar);
-	MM_Shutdown(&gvar);
+//	MM_Shutdown(&gvar);
+	ShutdownCAMMPM(&gvar);
 }
