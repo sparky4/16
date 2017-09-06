@@ -1,0 +1,8 @@
+option quiet
+debug dwarf
+option stack=32768
+system dos
+file ps.obj
+file 16_head.obj
+name ps.exe
+option map=ps.meh

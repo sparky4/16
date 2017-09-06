@@ -464,7 +464,6 @@ dos_kb.$(OBJ):	$(OLDMODEX16LIBDIR)/dos_kb.c	$(OLDMODEX16LIBDIR)/dos_kb.h
 #
 clean: .symbolic
 	@if not exist $(DOSLIBDIR)/buildall.sh wmake -s -h initlibs
-	@if not exist ps.exe wmake -s -h ps.exe
 	@wmake -s -h initscript
 	@for %f in ($(ALLEXEC)) do @if exist %f $(REMOVECOMMAND) %f
 !ifdef __LINUX__
@@ -504,6 +503,7 @@ clean: .symbolic
 #	@$(COPYCOMMAND) $(SRCLIB)16_hc.* $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(SRCLIB)types.h $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(NYANLIB)* $(EXMMTESTDIR)$(NYANLIB)
+	@if not exist ps.exe wmake -s -h ps.exe
 
 nuke: .symbolic
 	@wmake clean
