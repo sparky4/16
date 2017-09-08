@@ -6,8 +6,17 @@
 #echo Open Watcom Build Environment
 ROOT=/home/sparky4/p/osfree
 watcomver=""
-watcom=/dos/fdos/watcom${watcomver}
-WATCOM=$watcom
+
+if [ -d /usr/src/open-watcom-v2/rel ]; then
+    # Jon's Linux system
+    watcom=/usr/src/open-watcom-v2/rel
+    WATCOM=$watcom
+else
+    # original sparky4 config
+    watcom=/dos/fdos/watcom${watcomver}
+    WATCOM=$watcom
+fi
+
 OS=LINUX
 ENV=LINUX
 SHELL=Bourne
