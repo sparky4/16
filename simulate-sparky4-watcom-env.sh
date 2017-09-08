@@ -39,7 +39,18 @@ INCLUDE=$watcom/h:$watcom/h/dos:$watcom/lh:$watcom/h/os2
 WIPFC=$watcom/wipfc
 LIB=$watcom/lib286/dos:$watcom/lib386:$watcom/lib386/dos:$watcom/lib286:$ROOT/lib
 export OS REXX WATCOM ROOT TOOLS INCLUDE LIB WIPFC
-. ~/setvars.sh
+
+if [ -d /usr/src/open-watcom-v2/rel ]; then
+    # Jon's Linux system
+    cur=`pwd`
+    cd $WATCOM/.. || exit 1
+    . ./setvars.sh
+    cd "$cur" || exit 1
+else
+    # original sparky4 config
+    . ~/setvars.sh
+fi
+
 PATH=$watcom/binl${PEE}:$TOOLS:$ROOT:$PATH
 WD_PATH=$watcom/binl${PEE}
 
