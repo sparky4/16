@@ -22,7 +22,8 @@ ENV=LINUX
 SHELL=Bourne
 REXX=/usr/bin/rexx
 
-
+# use 64-bit Linux binaries on 64-bit.
+# NTS: watcomver is never set, therefore this currently has NO EFFECT.
 if [ "${watcomver}" == 2 ]; then
 	MACHINE_TYPE=`uname -m`
 	if [ ${MACHINE_TYPE} == 'x86_64' ]; then
