@@ -503,7 +503,7 @@ clean: .symbolic
 #	@$(COPYCOMMAND) $(SRCLIB)16_hc.* $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(SRCLIB)types.h $(EXMMTESTDIR)$(SRCLIB)
 #	@$(COPYCOMMAND) $(NYANLIB)* $(EXMMTESTDIR)$(NYANLIB)
-	@if not exist ps.exe wmake -s -h ps.exe
+#	@if not exist ps.exe wmake -s -h ps.exe
 
 nuke: .symbolic
 	@wmake clean
