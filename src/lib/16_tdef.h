@@ -651,6 +651,49 @@ typedef struct
 
 //for 16_sd
 //==========================================================================
+
+/////////////////////////////////////////////////
+//
+// MUSE Header for .WL6
+// Created Tue Jul 14 15:04:53 1992
+//
+/////////////////////////////////////////////////
+
+#define NUMSOUNDS		87
+//--#define NUMSNDCHUNKS		288
+
+//
+// Sound names & indexes
+//
+typedef enum {
+		HITWALLSND,              // 0
+		SELECTWPNSND,            // 1
+		SELECTITEMSND,           // 2
+		LASTSOUND
+	     } soundnames;
+
+//
+// Base offsets
+//
+#define STARTPCSOUNDS		0
+#define STARTADLIBSOUNDS	87
+#define STARTDIGISOUNDS		174
+#define STARTMUSIC		261
+
+//
+// Music names & indexes
+//
+typedef enum {
+		CORNER_MUS,              // 0
+		LASTMUSIC
+	     } musicnames;
+
+/////////////////////////////////////////////////
+//
+// Thanks for playing with MUSE!
+//
+/////////////////////////////////////////////////
+
 #pragma pack(push,1)
 typedef struct imf_entry
 {

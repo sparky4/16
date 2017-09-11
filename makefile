@@ -261,7 +261,7 @@ ALLEXEC = &
 	$(TESTEXEC2) &
 	$(TESTEXEC3)
 
-all: $(EXEC)
+all: $(EXEC)#	id_sd.$(OBJ)
 testexec: $(EXEC) $(TESTEXEC2)
 
 #
@@ -424,6 +424,7 @@ mapread.$(OBJ):	$(SRCLIB)/mapread.c	$(SRCLIB)/mapread.h
 16_tail_.$(OBJ):	$(SRCLIB)/16_tail_.c	$(SRCLIB)/16_tail.h
 16_hc.$(OBJ):	$(SRCLIB)/16_hc.c	$(SRCLIB)/16_hc.h
 16_sd.$(OBJ):	$(SRCLIB)/16_sd.c	$(SRCLIB)/16_sd.h
+id_sd.$(OBJ):	$(SRCLIB)/id_sd.c	$(SRCLIB)/id_sd.h
 jsmn.$(OBJ):	$(JSMNLIB)/jsmn.c	$(JSMNLIB)/jsmn.h
 kitten.$(OBJ):	$(NYANLIB)/kitten.c	$(NYANLIB)/kitten.h
 vgmSnd.$(OBJ):	$(VGMSNDLIB)/vgmSnd.c	$(VGMSNDLIB)/vgmSnd.h
@@ -555,10 +556,16 @@ www: .symbolic
 	@if exist 16.exe @wmake -s -h wwwdo
 	@if exist 16.exe @wmake -s -h wwwext
 
-wwwdo: .symbolic
+cleanwww:	.symbolic
+wwwclean:	.symbolic
+wwwcl:		.symbolic
+clwww:		.symbolic
 	@for %f in (/var/www/$(EXEC)) do @if exist /var/www/%f $(REMOVECOMMAND) /var/www/%f
 	@$(REMOVECOMMAND) /var/www/*.exe.zi*
 	@$(REMOVECOMMAND) /var/www/*.zip.zi*
+
+wwwdo: .symbolic
+	@wmake clwww
 	@for %f in ($(EXEC)) do @if exist %f @$(COPYCOMMAND) %f /var/www/
 	@./src/util/z.sh $(EXEC) $(EXEC)
 	@./src/util/z2.sh data.zip data
