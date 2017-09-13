@@ -25,6 +25,7 @@
 //	ID_SD.h - Sound Manager Header
 //	Version for Wolfenstein
 //	By Jason Blochowiak
+//	Open Watcom port by sparky4
 //
 
 #ifndef	__16_SD__
@@ -225,14 +226,14 @@ extern	int			DigiMap[];
 extern	dword	TimeCount;					// Global time in ticks
 
 // Function prototypes
-extern	void	SD_Startup(void),
-				SD_Shutdown(void),
-				SD_Default(boolean gotit,SDMode sd,SMMode sm),
+extern	void	SD_Startup(global_game_variables_t *gvar),
+				SD_Shutdown(global_game_variables_t *gvar),
+				SD_Default(boolean gotit,SDMode sd,SMMode sm, global_game_variables_t *gvar),
 
 				SD_PositionSound(int leftvol,int rightvol);
-extern	boolean	SD_PlaySound(soundnames sound);
-extern	void	SD_SetPosition(int leftvol,int rightvol),
-				SD_StopSound(void),
+extern	boolean	SD_PlaySound(soundnames sound, global_game_variables_t *gvar);
+extern	void	SD_SetPosition(int leftvol,int rightvol, global_game_variables_t *gvar),
+				SD_StopSound(global_game_variables_t *gvar),
 				SD_WaitSoundDone(void),
 
 				SD_StartMusic(MusicGroup far *music),
@@ -242,17 +243,17 @@ extern	void	SD_SetPosition(int leftvol,int rightvol),
 
 				SD_SetUserHook(void (*hook)(void));
 extern	boolean	SD_MusicPlaying(void),
-				SD_SetSoundMode(SDMode mode),
+				SD_SetSoundMode(SDMode mode, global_game_variables_t *gvar),
 				SD_SetMusicMode(SMMode mode);
 extern	word	SD_SoundPlaying(void);
 
-extern	void	SD_SetDigiDevice(SDSMode),
-				SD_PlayDigitized(word which,int leftpos,int rightpos),
+extern	void	SD_SetDigiDevice(SDSMode, global_game_variables_t *gvar),
+				SD_PlayDigitized(word which,int leftpos,int rightpos, global_game_variables_t *gvar),
 				SD_StopDigitized(global_game_variables_t *gvar),
-				SD_Poll(void);
+				SD_Poll(global_game_variables_t *gvar);
 
 #ifdef	_MUSE_	// MUSE Goes directly to the lower level routines
-extern	void	SDL_PCPlaySound(PCSound far *sound),
+extern	void	SDL_PCPlaySound(PCSound far *sound, global_game_variables_t *gvar),
 				SDL_PCStopSound(void),
 				SDL_ALPlaySound(AdLibSound far *sound),
 				SDL_ALStopSound(void);
