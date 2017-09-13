@@ -248,7 +248,7 @@ extern	word	SD_SoundPlaying(void);
 
 extern	void	SD_SetDigiDevice(SDSMode),
 				SD_PlayDigitized(word which,int leftpos,int rightpos),
-				SD_StopDigitized(void),
+				SD_StopDigitized(global_game_variables_t *gvar),
 				SD_Poll(void);
 
 #ifdef	_MUSE_	// MUSE Goes directly to the lower level routines

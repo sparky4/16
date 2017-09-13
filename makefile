@@ -127,7 +127,7 @@ STKSIZ=32768
 S_FLAGS=-sg -st -of+ -zu -zdf -zff -zgf -k$(STKSIZ)
 Z_FLAGS=-zk0 -zc#### -zp4 -ei# -zm
 O_FLAGS=-opnr -oe=24 -oil+ -outback -ohm
-T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 $(D_FLAGS) -fo=.$(OBJ)## -e=65536
+T_FLAGS=-bt=dos -wx -m$(MEMORYMODE) -0 -fpi87 $(D_FLAGS) -fo=.$(OBJ)# -e=65536
 
 DBUGFLAGS=-fm=$^&.meh -fd=$^& $(D_FLAGS)
 CPPFLAGS=-DTARGET_MSDOS=16 -DMSDOS=1 -DSTACKSIZE=$(STKSIZ)
