@@ -70,12 +70,16 @@
 #define	writereg(n)	outportb(alFMData,n)
 #define	readstat()	inportb(alFMStatus)
 
+#define SD_USECATA3DSETTIMERSPEED
+
 //	Imports from ID_SD_A.ASM
-/*extern*/	void			SDL_SetDS(void),
-						SDL_IndicatePC(boolean on);
+#if 0
+/*extern*/	void			SDL_SetDS(void);
 /*extern*/	void interrupt	SDL_t0ExtremeAsmService(void),
 						SDL_t0FastAsmService(void),
 						SDL_t0SlowAsmService(void);
+#endif
+		void	SDL_IndicatePC(boolean on);
 
 //	Global variables
 	boolean		SoundSourcePresent,
@@ -126,6 +130,7 @@ static	void			(*SoundUserHook)(void);
 static	boolean			DigiMissed,DigiLastSegment;
 static	memptr			DigiNextAddr;
 static	word			DigiNextLen;
+		boolean			pcindicate;
 
 #if 0
 //	SoundBlaster variables
@@ -179,7 +184,7 @@ static	byte			carriers[9] =  { 3, 4, 5,11,12,13,19,20,21},
 static	word			alFXReg;
 static	ActiveTrack		*tracks[sqMaxTracks];//,
 //--						mytracks[sqMaxTracks];
-static	word			sqMode,sqFadeStep;
+//--static	word			sqMode,sqFadeStep;
 		word			far *sqHack,far *sqHackPtr,sqHackLen,sqHackSeqLen;
 		long			sqHackTime;
 
@@ -227,6 +232,7 @@ SDL_SetIntsPerSec(word ints)
 	SDL_SetTimer0(1192030 / ints);
 }
 
+#ifndef SD_USECATA3DSETTIMERSPEED
 static void
 SDL_SetTimerSpeed(void)
 {
@@ -260,6 +266,19 @@ SDL_SetTimerSpeed(void)
 		TimerRate = rate;
 	}
 }
+#else
+static void
+SDL_SetTimerSpeed(void)
+{
+	word	rate;
+
+	if (MusicMode == smm_AdLib)
+		rate = TickBase * 8;
+	else
+		rate = TickBase * 2;
+	SDL_SetIntsPerSec(rate);
+}
+#endif
 
 ///////////////////////////////////////////////////////////////////////////
 //
@@ -903,7 +922,8 @@ asm	in	al, dx
 //	SDL_SetInstrument() - Puts an instrument into a generator
 //
 ///////////////////////////////////////////////////////////////////////////
-static void
+//static void
+void
 SDL_SetInstrument(int track,int which,Instrument far *inst,boolean percussive)
 {
 	byte		c,m;
@@ -1175,9 +1195,9 @@ SDL_DetectAdLib(void)
 	status1 = readstat();
 	alOut(2,0xff);	// Set timer 1
 	alOut(4,0x21);	// Start timer 1
-#if 0
 	SDL_Delay(TimerDelay100);
-#else
+
+#if 0
 	__asm {
 		mov	dx,0x388
 		mov	cx,100
@@ -1211,19 +1231,20 @@ usecloop:
 		return(false);
 }
 
-#if 0
 ///////////////////////////////////////////////////////////////////////////
 //
 //	SDL_t0Service() - My timer 0 ISR which handles the different timings and
 //		dispatches to whatever other routines are appropriate
 //
 ///////////////////////////////////////////////////////////////////////////
-static void interrupt
+//static void interrupt
+void interrupt
 SDL_t0Service(void)
 {
 static	word	count = 1;
+	boolean myackflag = 0;
 
-#if 1	// for debugging
+//00#if 0	// for debugging
 asm	mov	dx,STATUS_REGISTER_1
 asm	in	al,dx
 asm	mov	dx,ATR_INDEX
@@ -1231,14 +1252,14 @@ asm	mov	al,ATR_OVERSCAN
 asm	out	dx,al
 asm	mov	al,4	// red
 asm	out	dx,al
-#endif
+//00#endif
 
 	HackCount++;
 
 	if ((MusicMode == smm_AdLib) || (DigiMode == sds_SoundSource))
 	{
 		SDL_ALService();
-		SDL_SSService();
+//SS		SDL_SSService();
 //		if (!(++count & 7))
 		if (!(++count % 10))
 		{
@@ -1281,17 +1302,33 @@ asm	out	dx,al
 		}
 	}
 
-asm	mov	ax,[WORD PTR TimerCount]
-asm	add	ax,[WORD PTR TimerDivisor]
-asm	mov	[WORD PTR TimerCount],ax
-asm	jnc	myack
-	t0OldService();			// If we overflow a word, time to call old int handler
-asm	jmp	olddone
-myack:;
-	outportb(0x20,0x20);	// Ack the interrupt
-olddone:;
+	__asm {
+		mov	ax,[WORD PTR TimerCount]
+		add	ax,[WORD PTR TimerDivisor]
+		mov	[WORD PTR TimerCount],ax
+		jnc	myack
+		jmp end1
+#ifdef __BORLANDC__
+	}
+#endif
+myack:
+#ifdef __BORLANDC__
+	__asm {
+#endif
+		mov	myackflag,1
+#ifdef __BORLANDC__
+	}
+#endif
+end1:
+#ifdef __WATCOMC__
+	}
+#endif
+	if(!myackflag)
+		t0OldService();			// If we overflow a word, time to call old int handler
+	else
+		outportb(0x20,0x20);	// Ack the interrupt
 
-#if 1	// for debugging
+//00#if 0	// for debugging
 asm	mov	dx,STATUS_REGISTER_1
 asm	in	al,dx
 asm	mov	dx,ATR_INDEX
@@ -1301,9 +1338,8 @@ asm	mov	al,3	// blue
 asm	out	dx,al
 asm	mov	al,0x20	// normal
 asm	out	dx,al
-#endif
+//00#endif
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 //
@@ -1353,7 +1389,19 @@ SDL_StartDevice(void)
 	}
 	SoundNumber = SoundPriority = 0;
 }
+#if 0
+static void
+SDL_SetTimerSpeed(void)
+{
+	word	rate;
 
+	if (MusicMode == smm_AdLib)
+		rate = TickBase * 8;
+	else
+		rate = TickBase * 2;
+	SDL_SetIntsPerSec(rate);
+}
+#endif
 //	Public routines
 
 ///////////////////////////////////////////////////////////////////////////
@@ -1463,7 +1511,7 @@ SD_Startup(global_game_variables_t *gvar)
 	if (SD_Started)
 		return;
 
-	SDL_SetDS();
+//??	SDL_SetDS();
 
 	ssIsTandy = false;
 //SS	ssNoCheck = false;
@@ -1510,6 +1558,9 @@ SD_Startup(global_game_variables_t *gvar)
 
 	t0OldService = getvect(8);	// Get old timer 0 ISR
 
+	SDL_InitDelay();			// SDL_InitDelay() uses t0OldService
+
+	setvect(8,SDL_t0Service);	// Set to my timer 0 ISR
 	LocalTime = TimeCount = alTimeCount = 0;
 
 	SD_SetSoundMode(sdm_Off, gvar);
@@ -2203,12 +2254,12 @@ void interrupt SDL_t0SlowAsmService(void)
 	else
 		outp(0x20,0x20);
 }
-
+#endif
 void SDL_IndicatePC(boolean ind)
 {
 	pcindicate=ind;
 }
-
+#if 0
 void
 SDL_DigitizedDoneInIRQ(void)
 {
