@@ -1473,9 +1473,9 @@ SD_Startup(global_game_variables_t *gvar)
 
 	if (SD_Started)
 		return;
-
-//??	SDL_SetDS();
-
+#ifndef SD_USECATA3DSETTIMERSPEED
+	SDL_SetDS();
+#endif
 	ssIsTandy = false;
 //SS	ssNoCheck = false;
 	alNoCheck = false;
@@ -1520,10 +1520,11 @@ SD_Startup(global_game_variables_t *gvar)
 	SoundUserHook = 0;
 
 	t0OldService = getvect(8);	// Get old timer 0 ISR
-
+#ifdef SD_USECATA3DSETTIMERSPEED
 	SDL_InitDelay();			// SDL_InitDelay() uses t0OldService
 
 	setvect(8,SDL_t0Service);	// Set to my timer 0 ISR
+#endif
 	LocalTime = TimeCount = alTimeCount = 0;
 
 	SD_SetSoundMode(sdm_Off, gvar);
