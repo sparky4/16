@@ -25,6 +25,8 @@
 void main()
 {
 	/*static */global_game_variables_t gvar;
+	printf("start\n");
 	SD_Startup(&gvar);
+	printf("shutdown\n");
 	SD_Shutdown(&gvar);
 }
