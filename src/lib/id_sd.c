@@ -70,16 +70,15 @@
 #define	writereg(n)	outportb(alFMData,n)
 #define	readstat()	inportb(alFMStatus)
 
-#define SD_USECATA3DSETTIMERSPEED
+//#define SD_USECATA3DSETTIMERSPEED
 
 //	Imports from ID_SD_A.ASM
-#if 0
 /*extern*/	void			SDL_SetDS(void);
-/*extern*/	void interrupt	SDL_t0ExtremeAsmService(void),
-						SDL_t0FastAsmService(void),
-						SDL_t0SlowAsmService(void);
-#endif
-		void	SDL_IndicatePC(boolean on);
+/*extern*/	void interrupt	SDL_t0ExtremeAsmService(void);//,
+//					SDL_t0FastAsmService(void),
+//					SDL_t0SlowAsmService(void);
+	void			SDL_IndicatePC(boolean on),
+					SDL_DigitizedDoneInIRQ();
 
 //	Global variables
 	boolean		AdLibPresent,
@@ -120,7 +119,6 @@ static	void			(*SoundUserHook)(void);
 static	boolean			DigiMissed,DigiLastSegment;
 static	memptr			DigiNextAddr;
 static	word			DigiNextLen;
-		boolean			pcindicate;
 
 //	PC Sound variables
 		volatile byte	pcLastSample,far *pcSound;
@@ -153,6 +151,196 @@ static	ActiveTrack		*tracks[sqMaxTracks];//,
 
 //	Internal routines
 		void			SDL_DigitizedDone(void);
+
+//Assembly functions
+boolean		alNoIRQ;
+
+int count_time=0;
+int count_fx=0;
+int extreme=0;
+
+void SDL_turnOnPCSpeaker(word timerval)
+{
+	__asm {
+		mov	bx,timerval
+		mov	al,0b6h
+		out	43h,al
+		mov	al,bl
+		out	42h,al
+		mov	al,bh
+		out	42h,al
+		in	al,61h
+		or	al,3
+		out	61h,al
+	}
+}
+
+void SDL_turnOffPCSpeaker()
+{
+	__asm {
+		in	al,61h
+		and	al,0fch
+		out	61h,al
+	}
+}
+
+void SDL_setPCSpeaker(byte val)
+{
+	__asm {
+		mov	al,val
+		in	al,61h
+		and	al,0fch
+		or	al,ah
+		out	61h,al
+	}
+}
+
+void SDL_DoFX()
+{
+	if(pcSound)
+	{
+		if(*pcSound!=pcLastSample)
+		{
+			pcLastSample=*pcSound;
+
+			if(pcLastSample)
+				SDL_turnOnPCSpeaker(pcLastSample*60);
+			else
+				SDL_turnOffPCSpeaker();
+		}
+		pcSound++;
+		pcLengthLeft--;
+		if(!pcLengthLeft)
+		{
+			pcSound=0;
+			SoundNumber=(soundnames)0;
+			SoundPriority=0;
+			SDL_turnOffPCSpeaker();
+		}
+	}
+
+	if(alSound && !alNoIRQ)
+	{
+		if(*alSound)
+		{
+			alOut/*InIRQ*/(alFreqL,*alSound);
+			alOut/*InIRQ*/(alFreqH,alBlock);
+		}
+		else alOut/*InIRQ*/(alFreqH,0);
+		alSound++;
+		alLengthLeft--;
+		if(!alLengthLeft)
+		{
+			alSound=0;
+			SoundNumber=(soundnames)0;
+			SoundPriority=0;
+			alOut/*InIRQ*/(alFreqH,0);
+		}
+	}
+
+}
+
+void SDL_DoFast()
+{
+	count_fx++;
+	if(count_fx>=5)
+	{
+		count_fx=0;
+
+		SDL_DoFX();
+
+		count_time++;
+		if(count_time>=2)
+		{
+			TimeCount++;
+			count_time=0;
+		}
+	}
+
+	if(sqActive && !alNoIRQ)
+	{
+		if(sqHackLen)
+		{
+			do
+			{
+				if(sqHackTime>alTimeCount) break;
+				sqHackTime=alTimeCount+*(sqHackPtr+1);
+				alOut/*InIRQ*/(*(byte *)sqHackPtr,*(((byte *)sqHackPtr)+1));
+				sqHackPtr+=2;
+				sqHackLen-=4;
+			}
+			while(sqHackLen);
+		}
+		alTimeCount++;
+		if(!sqHackLen)
+		{
+			sqHackPtr=sqHack;
+			sqHackLen=sqHackSeqLen;
+			alTimeCount=0;
+			sqHackTime=0;
+		}
+	}
+
+//SS	if(ssSample)
+//SS	{
+//SS		if(!(inp(ssStatus)&0x40))
+//SS		{
+//SS			outp(ssData,*ssSample++);
+//SS			outp(ssControl,ssOff);
+//SS			__asm push ax
+//SS			__asm pop ax
+//SS			outp(ssControl,ssOn);
+//SS			__asm push ax
+//SS			__asm pop ax
+//SS			ssLengthLeft--;
+//SS			if(!ssLengthLeft)
+//SS			{
+//SS				ssSample=0;
+//SS				SDL_DigitizedDoneInIRQ();
+//SS			}
+//SS		}
+//SS	}
+
+	TimerCount+=TimerDivisor;
+	if(*((word *)&TimerCount+1))
+	{
+		*((word *)&TimerCount+1)=0;
+		t0OldService();
+	}
+	else
+	{
+		outp(0x20,0x20);
+	}
+}
+
+// Timer 0 ISR for 700Hz interrupts
+void interrupt SDL_t0FastAsmService(void)
+{
+	SDL_DoFast();
+}
+
+// Timer 0 ISR for 140Hz interrupts
+void interrupt SDL_t0SlowAsmService(void)
+{
+	count_time++;
+	if(count_time>=2)
+	{
+		TimeCount++;
+		count_time=0;
+	}
+
+	SDL_DoFX();
+
+	TimerCount+=TimerDivisor;
+	if(*((word *)&TimerCount+1))
+	{
+		*((word *)&TimerCount+1)=0;
+		t0OldService();
+	}
+	else
+		outp(0x20,0x20);
+}
+
 
 ///////////////////////////////////////////////////////////////////////////
 //
@@ -261,7 +449,7 @@ SDL_TimingService(void)
 
 	outportb(0x20,0x20);				// Ack interrupt
 }
-
+#ifdef SD_USECATA3DSETTIMERSPEED
 ///////////////////////////////////////////////////////////////////////////
 //
 //	SDL_InitDelay() - Sets up TimerDelay's for SDL_Delay()
@@ -322,7 +510,7 @@ done:
 
 	setvect(8,t0OldService);			// Set back to old ISR
 }
-
+#endif
 ///////////////////////////////////////////////////////////////////////////
 //
 //	SDL_Delay() - Delays the specified amount of time
@@ -1972,8 +2160,15 @@ SD_MusicPlaying(void)
 	return(result);
 }
 
-#if 0
+//#if 0
+//
 // SD ASS!
+//
+
+//variables for these assembly functions
+volatile boolean pcindicate;
+volatile unsigned/*boolean*/ MyDS;
+
 void SDL_SetDS()
 {
 	__asm {
@@ -1983,159 +2178,7 @@ void SDL_SetDS()
 	}
 }
 
-void SDL_turnOnPCSpeaker(word timerval)
-{
-	__asm {
-		mov	bx,timerval
-		mov	al,0b6h
-		out	43h,al
-		mov	al,bl
-		out	42h,al
-		mov	al,bh
-		out	42h,al
-		in	al,61h
-		or	al,3
-		out	61h,al
-	}
-}
-
-void SDL_turnOffPCSpeaker()
-{
-	__asm {
-		in	al,61h
-		and	al,0fch
-		out	61h,al
-	}
-}
-
-void SDL_setPCSpeaker(byte val)
-{
-	__asm {
-		mov	al,val
-		in	al,61h
-		and	al,0fch
-		or	al,ah
-		out	61h,al
-	}
-}
-
-void SDL_DoFX()
-{
-	if(pcSound)
-	{
-		if(*pcSound!=pcLastSample)
-		{
-			pcLastSample=*pcSound;
-
-			if(pcLastSample)
-				SDL_turnOnPCSpeaker(pcLastSample*60);
-			else
-				SDL_turnOffPCSpeaker();
-		}
-		pcSound++;
-		pcLengthLeft--;
-		if(!pcLengthLeft)
-		{
-			pcSound=0;
-			SoundNumber=(soundnames)0;
-			SoundPriority=0;
-			SDL_turnOffPCSpeaker();
-		}
-	}
-
-	if(alSound && !alNoIRQ)
-	{
-		if(*alSound)
-		{
-			alOutInIRQ(alFreqL,*alSound);
-			alOutInIRQ(alFreqH,alBlock);
-		}
-		else alOutInIRQ(alFreqH,0);
-		alSound++;
-		alLengthLeft--;
-		if(!alLengthLeft)
-		{
-			alSound=0;
-			SoundNumber=(soundnames)0;
-			SoundPriority=0;
-			alOutInIRQ(alFreqH,0);
-		}
-	}
-
-}
-
-void SDL_DoFast()
-{
-	count_fx++;
-	if(count_fx>=5)
-	{
-		count_fx=0;
-
-		SDL_DoFX();
-
-		count_time++;
-		if(count_time>=2)
-		{
-			TimeCount++;
-			count_time=0;
-		}
-	}
-
-	if(sqActive && !alNoIRQ)
-	{
-		if(sqHackLen)
-		{
-			do
-			{
-				if(sqHackTime>alTimeCount) break;
-				sqHackTime=alTimeCount+*(sqHackPtr+1);
-				alOutInIRQ(*(byte *)sqHackPtr,*(((byte *)sqHackPtr)+1));
-				sqHackPtr+=2;
-				sqHackLen-=4;
-			}
-			while(sqHackLen);
-		}
-		alTimeCount++;
-		if(!sqHackLen)
-		{
-			sqHackPtr=sqHack;
-			sqHackLen=sqHackSeqLen;
-			alTimeCount=0;
-			sqHackTime=0;
-		}
-	}
-
-	if(ssSample)
-	{
-		if(!(inp(ssStatus)&0x40))
-		{
-			outp(ssData,*ssSample++);
-			outp(ssControl,ssOff);
-			__asm push ax
-			__asm pop ax
-			outp(ssControl,ssOn);
-			__asm push ax
-			__asm pop ax
-			ssLengthLeft--;
-			if(!ssLengthLeft)
-			{
-				ssSample=0;
-				SDL_DigitizedDoneInIRQ();
-			}
-		}
-	}
-
-	TimerCount+=TimerDivisor;
-	if(*((word *)&TimerCount+1))
-	{
-		*((word *)&TimerCount+1)=0;
-		t0OldService();
-	}
-	else
-	{
-		outp(0x20,0x20);
-	}
-}
+//
 
 // Timer 0 ISR for 7000Hz interrupts
 void interrupt SDL_t0ExtremeAsmService(void)
@@ -2164,66 +2207,13 @@ void interrupt SDL_t0ExtremeAsmService(void)
 		outp(0x20,0x20);
 }
 
-// Timer 0 ISR for 7000Hz interrupts
-void interrupt __SDL_t0ExtremeAsmService()
-{
-	if(pcindicate)
-	{
-		if(pcSound)
-		{
-			SDL_setPCSpeaker(((*pcSound++)&0x80)>>6);
-			pcLengthLeft--;
-			if(!pcLengthLeft)
-			{
-				pcSound=0;
-				SDL_turnOffPCSpeaker();
-				SDL_DigitizedDoneInIRQ();
-			}
-		}
-	}
-	extreme++;
-	if(extreme>=10)
-	{
-		extreme=0;
-		SDL_DoFast();
-	}
-	else
-		outp(0x20,0x20);
-}
+//
 
-// Timer 0 ISR for 700Hz interrupts
-void interrupt SDL_t0FastAsmService(void)
-{
-	SDL_DoFast();
-}
-
-// Timer 0 ISR for 140Hz interrupts
-void interrupt SDL_t0SlowAsmService(void)
-{
-	count_time++;
-	if(count_time>=2)
-	{
-		TimeCount++;
-		count_time=0;
-	}
-
-	SDL_DoFX();
-
-	TimerCount+=TimerDivisor;
-	if(*((word *)&TimerCount+1))
-	{
-		*((word *)&TimerCount+1)=0;
-		t0OldService();
-	}
-	else
-		outp(0x20,0x20);
-}
-#endif
 void SDL_IndicatePC(boolean ind)
 {
 	pcindicate=ind;
 }
-#if 0
+
 void
 SDL_DigitizedDoneInIRQ(void)
 {
@@ -2255,6 +2245,7 @@ SDL_DigitizedDoneInIRQ(void)
 	}
 }
 
+#if 0
 // Inside an interrupt handler interrupts should already be disabled
 // so don't disable them again and cause V86 exceptions which cost
 // aprox. 300 processor tics!
