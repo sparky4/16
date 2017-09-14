@@ -23,7 +23,7 @@
 #include <stdio.h>
 
 #include "src/lib/16_in.h"
-#include "src/lib/16_sd.h"
+#include "src/lib/16_snd.h"
 //#include <hw/8254/8254.h>		/* 8254 timer */
 //#include <hw/adlib/adlib.h>
 

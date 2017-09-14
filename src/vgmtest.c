@@ -24,7 +24,7 @@
  */
 
 #include "src/lib/vgmsnd/vgmSnd.h"
-#include "src/lib/16_sd.h"
+#include "src/lib/16_snd.h"
 //#include "src/lib/doslib/adlib.h"
 #include "src/lib/16_tail.h"
 #include "src/lib/16_pm.h"

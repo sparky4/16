@@ -145,7 +145,7 @@ LIBFLAGS=$(WLIBQ) -b -n
 VGMSNDOBJ = vgmSnd.$(OBJ)
 OLDLIBOBJS=bitmap.$(OBJ) 16render.$(OBJ)
 GFXLIBOBJS = 16_vl.$(OBJ) 16_vl_1.$(OBJ) 16_vl_2.$(OBJ) 16_vlpal.$(OBJ) 16text.$(OBJ) scroll16.$(OBJ) 16_spri.$(OBJ)
-16LIBOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_head.$(OBJ) 16_enti.$(OBJ) 16_dbg.$(OBJ) 16_in.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_wcpu.$(OBJ) 16_timer.$(OBJ) jsmn.$(OBJ) 16_map.$(OBJ) 16_sd.$(OBJ) 16_tail_.$(OBJ) 16_dbg_1.$(OBJ)
+16LIBOBJS = 16_mm.$(OBJ) 16_pm.$(OBJ) 16_ca.$(OBJ) 16_tail.$(OBJ) 16_head.$(OBJ) 16_enti.$(OBJ) 16_dbg.$(OBJ) 16_in.$(OBJ) kitten.$(OBJ) 16_hc.$(OBJ) 16_wcpu.$(OBJ) 16_timer.$(OBJ) jsmn.$(OBJ) 16_map.$(OBJ) 16_sd.$(OBJ) 16_snd.$(OBJ) 16_tail_.$(OBJ) 16_dbg_1.$(OBJ)
 DOSLIBOBJ = adlib.$(OBJ) 8254.$(OBJ) 8259.$(OBJ) dos.$(OBJ) cpu.$(OBJ)
 !ifeq DEBUGSERIAL 1
 DOSLIBOBJ += 8250.$(OBJ)
@@ -202,6 +202,8 @@ TESTEXEC = &
 	exmmtest.exe &
 	vgmtest.exe &
 	sountest.exe &
+	imfplay.exe &
+	sdtest.exe &
 	xcroll.exe &
 	0croll.exe &
 	1croll.exe &
@@ -210,7 +212,6 @@ TESTEXEC = &
 	tesuto.exe &
 	0tesuto.exe &
 	maptest.exe &
-	imfplay.exe &
 	vrldbg.exe
 #zcroll.exe &
 TESTEXEC2 = &
@@ -261,7 +262,7 @@ ALLEXEC = &
 	$(TESTEXEC2) &
 	$(TESTEXEC3)
 
-all: $(EXEC)	id_sd.$(OBJ)
+all: $(EXEC)
 testexec: $(EXEC) $(TESTEXEC2)
 
 #
@@ -294,6 +295,7 @@ fontgfx.exe:	fontgfx.$(OBJ) gfx.lib $(DOSLIB)
 inputest.exe:	 inputest.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
 sountest.exe:	sountest.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
 imfplay.exe:		imfplay.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
+sdtest.exe:	sdtest.$(OBJ) $(16LIB) $(DOSLIB) gfx.lib
 vrldbg.exe:		vrldbg.$(OBJ) #gfx.lib $(DOSLIB)
 pcxtest.exe:	pcxtest.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
 vrstest.exe:	vrstest.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
@@ -342,7 +344,8 @@ fonttest.$(OBJ):$(SRC)/fonttest.c
 fontgfx.$(OBJ):$(SRC)/fontgfx.c
 inputest.$(OBJ):$(SRC)/inputest.c
 #inntest.$(OBJ):$(SRC)/inntest.c
-sountest.$(OBJ): $(SRC)/sountest.c
+sountest.$(OBJ):	$(SRC)/sountest.c
+sdtest.$(OBJ):	$(SRC)/sdtest.c
 imfplay.$(OBJ): $(SRC)/imfplay.c
 vrldbg.$(OBJ):	$(SRC)/vrldbg.c
 #miditest.$(OBJ): $(SRC)/miditest.c
@@ -423,8 +426,8 @@ mapread.$(OBJ):	$(SRCLIB)/mapread.c	$(SRCLIB)/mapread.h
 16_tail.$(OBJ):	$(SRCLIB)/16_tail.c	$(SRCLIB)/16_tail.h
 16_tail_.$(OBJ):	$(SRCLIB)/16_tail_.c	$(SRCLIB)/16_tail.h
 16_hc.$(OBJ):	$(SRCLIB)/16_hc.c	$(SRCLIB)/16_hc.h
+16_snd.$(OBJ):	$(SRCLIB)/16_snd.c	$(SRCLIB)/16_snd.h
 16_sd.$(OBJ):	$(SRCLIB)/16_sd.c	$(SRCLIB)/16_sd.h
-id_sd.$(OBJ):	$(SRCLIB)/id_sd.c	$(SRCLIB)/id_sd.h
 jsmn.$(OBJ):	$(JSMNLIB)/jsmn.c	$(JSMNLIB)/jsmn.h
 kitten.$(OBJ):	$(NYANLIB)/kitten.c	$(NYANLIB)/kitten.h
 vgmSnd.$(OBJ):	$(VGMSNDLIB)/vgmSnd.c	$(VGMSNDLIB)/vgmSnd.h
