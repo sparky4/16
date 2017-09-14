@@ -82,9 +82,7 @@
 		void	SDL_IndicatePC(boolean on);
 
 //	Global variables
-	boolean		SoundSourcePresent,
-				AdLibPresent,
-				SoundBlasterPresent,SBProPresent,
+	boolean		AdLibPresent,
 				NeedsDigitized,NeedsMusic,
 				SoundPositioned;
 	SDMode		SoundMode;
@@ -94,7 +92,6 @@
 	word		HackCount;
 	word		*SoundTable;	// Really * _seg *SoundTable, but that don't work
 	boolean		ssIsTandy;
-	word		ssPort = 2;
 	int			DigiMap[LASTSOUND];
 
 //	Internal variables
@@ -106,13 +103,6 @@ static	boolean			SD_Started;
 static	char			*ParmStrings[] =
 						{
 							"noal",
-							"nosb",
-							"nopro",
-							"noss",
-							"sst",
-							"ss1",
-							"ss2",
-							"ss3",
 							nil
 						};
 static	void			(*SoundUserHook)(void);
@@ -131,33 +121,6 @@ static	boolean			DigiMissed,DigiLastSegment;
 static	memptr			DigiNextAddr;
 static	word			DigiNextLen;
 		boolean			pcindicate;
-
-#if 0
-//	SoundBlaster variables
-static	boolean					sbNoCheck,sbNoProCheck;
-static	volatile boolean		sbSamplePlaying;
-static	byte					sbOldIntMask = -1;
-static	volatile byte			huge *sbNextSegPtr;
-static	byte					sbDMA = 1,
-								sbDMAa1 = 0x83,sbDMAa2 = 2,sbDMAa3 = 3,
-								sba1Vals[] = {0x87,0x83,0,0x82},
-								sba2Vals[] = {0,2,0,6},
-								sba3Vals[] = {1,3,0,7};
-static	int						sbLocation = -1,sbInterrupt = 7,sbIntVec = 0xf,
-								sbIntVectors[] = {-1,-1,0xa,0xb,-1,0xd,-1,0xf,-1,-1,-1};
-static	volatile dword		sbNextSegLen;
-static	volatile SampledSound	huge *sbSamples;
-static	void interrupt			(*sbOldIntHand)(void);
-static	byte					sbpOldFMMix,sbpOldVOCMix;
-
-//	SoundSource variables
-		boolean				ssNoCheck;
-		boolean				ssActive;
-		word				ssControl,ssStatus,ssData;
-		byte				ssOn,ssOff;
-		volatile byte		far *ssSample;
-		volatile dword	ssLengthLeft;
-#endif
 
 //	PC Sound variables
 		volatile byte	pcLastSample,far *pcSound;
