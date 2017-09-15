@@ -29,6 +29,7 @@
 #include "src/lib/16_mm.h"
 #include "src/lib/16_ca.h"
 #include "src/lib/16_in.h"
+#include "src/lib/16_sd.h"
 #include "src/lib/16_dbg.h"
 #include "src/lib/16_vl.h"
 #include "src/lib/testpatt.h"
@@ -134,6 +135,8 @@ void	Shutdown16(global_game_variables_t *gvar),
 void TL_DosLibStartup(global_game_variables_t *gvar);
 void TL_VidInit(global_game_variables_t *gvar);
 boolean FizzleFade (unsigned source, unsigned dest, unsigned width, unsigned height, unsigned frames, boolean abortable, global_game_variables_t *gvar);
+void TL_StartMusic(global_game_variables_t *gvar);
+void TL_StopMusic(global_game_variables_t *gvar);
 void DebugMemory_(global_game_variables_t *gvar, boolean q);
 void ClearMemory (global_game_variables_t *gvar);
 void Quit (global_game_variables_t *gvar, char *error);

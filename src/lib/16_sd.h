@@ -34,6 +34,8 @@
 #include "src/lib/16_head.h"
 #include "src/lib/16_pm.h"
 
+//#define SD_USECATA3DSETTIMERSPEED
+
 void	alOut(byte n,byte b);
 
 #ifdef	__DEBUG__
@@ -260,4 +262,3 @@ extern	void	SDL_PCPlaySound(PCSound far *sound, global_game_variables_t *gvar),
 #endif
 
 #endif
-

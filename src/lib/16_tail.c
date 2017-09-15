@@ -410,6 +410,69 @@ noxor:
 //===========================================================================
 
 /*
+=============================================================================
+
+						MUSIC STUFF
+
+=============================================================================
+*/
+
+
+/*
+=================
+=
+= StopMusic
+=
+=================
+*/
+
+void TL_StopMusic(global_game_variables_t *gvar)
+{
+	int	i;
+
+	SD_MusicOff();
+	for (i = 0;i < LASTMUSIC;i++)
+		if (gvar->ca.audiosegs[STARTMUSIC + i])
+		{
+			MM_SetPurge(MEMPTRCONV gvar->ca.audiosegs[STARTMUSIC + i],3, gvar);
+			MM_SetLock(MEMPTRCONV gvar->ca.audiosegs[STARTMUSIC + i],false, gvar);
+		}
+}
+
+//==========================================================================
+
+
+/*
+=================
+=
+= StartMusic
+=
+=================
+*/
+
+void TL_StartMusic(global_game_variables_t *gvar)
+{
+	musicnames	chunk;
+
+	SD_MusicOff();
+	chunk = 0;//++++songs[gamestate.mapon+gamestate.episode*10];
+
+//	if ((chunk == -1) || (MusicMode != smm_AdLib))
+//DEBUG control panel		return;
+
+//++++	MM_BombOnError (false,gvar);
+//++++	CA_CacheAudioChunk(STARTMUSIC + chunk, gvar);
+//++++	MM_BombOnError (true,gvar);
+//++++	if (gvar->mm.mmerror)
+//++++		gvar->mm.mmerror = false;
+//++++	else
+//++++	{
+		MM_SetLock(MEMPTRCONV gvar->ca.audiosegs[STARTMUSIC + chunk],true, gvar);
+		SD_StartMusic((MusicGroup far *)gvar->ca.audiosegs[STARTMUSIC + chunk]);
+//++++	}
+}
+
+/*
 ==================
 =
 = DebugMemory

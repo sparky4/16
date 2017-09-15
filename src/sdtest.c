@@ -21,12 +21,27 @@
  */
 
 #include "src/lib/16_sd.h"
+#include "src/lib/16_tail.h"
 
-void main()
+void main(int argc,char **argv)
 {
-	/*static */global_game_variables_t gvar;
+	ScanCode scancode;
+	static global_game_variables_t gvar;
+	StartupCAMMPM(&gvar);
+	if(!CA_LoadFile(argv[1], MEMPTRCONV gvar.ca.audiosegs[0], &gvar))
+	{
+		printf("Failed to load IMF Music\n");
+		ShutdownCAMMPM(&gvar);
+		return;
+	}
+	IN_Startup(&gvar);
 	printf("start\n");
 	SD_Startup(&gvar);
+	TL_StartMusic (&gvar);
+	while (!(scancode = gvar.in.inst->LastScan)){}
 	printf("shutdown\n");
+	TL_StopMusic(&gvar);
 	SD_Shutdown(&gvar);
+	IN_Shutdown(&gvar);
+	ShutdownCAMMPM(&gvar);
 }

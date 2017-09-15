@@ -133,4 +133,6 @@ inline void gotoxy(int x,int y)
 }
 #endif
 
+#define PFDT	printf(".");
+
 #endif/*_TYPE_H_*/
