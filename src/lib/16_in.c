@@ -251,13 +251,13 @@ static	boolean	special;
 
 void INL_Mouse(int x)
 {
-	//union REGS CPURegs;
-	//x = CPURegs.x.ax;
-	__asm {
+	union REGS CPURegs;
+	x = CPURegs.x.ax;
+/*_=_=	__asm {
 		mov	ax,x
 		int	MouseInt
-	}
-	//int86(MouseInt,&CPURegs,&CPURegs);
+	}*/
+	int86(MouseInt,&CPURegs,&CPURegs);
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -273,6 +273,12 @@ INL_GetMouseDelta(int *x,int *y)
 	Mouse(MDelta);
 	*x = CPURegs.x.cx;
 	*y = CPURegs.x.dx;
+#ifdef __DEBUG_InputMgr__
+	if(dbg_joymousedelta)
+	{
+		printf("mousedelta=[%dx%d]\n", *x, *y);
+	}
+	#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -535,15 +541,15 @@ INL_ShutKbd(void)
 static boolean
 INL_StartMouse(void)
 {
-#if 0
+	union REGS CPURegs;
 	if (getvect(MouseInt))
 	{
 		Mouse(MReset);
-		if (_AX == 0xffff)
+		if (/*_AX*/CPURegs.x.ax == 0xffff)
 			return(true);
 	}
 	return(false);
-#endif
+#if 0
 	byte far *vector;
 
 
@@ -555,6 +561,7 @@ INL_StartMouse(void)
 
 	Mouse(MReset);
 	return true;
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -850,6 +857,9 @@ IN_ReadControl(player_t *player, global_game_variables_t *gvar)
 			sword conpee;
 			byte dir=DirTable[2];
 register	KeyboardDef	*def;
+//#ifdef __DEBUG_InputMgr__
+//static		int			old_dx,old_dy;
+//#endif
 
 	dx = dy = 0;
 	mx = my = motion_None;
@@ -1004,6 +1014,13 @@ register	KeyboardDef	*def;
 	}
 #endif
 #ifdef __DEBUG_InputMgr__
+/*if(dbg_joymousedelta)
+{
+	if(dx!=old_dx || dy!=old_dy) printf("dx,dy	[%d,%d]	%d,%d\n", dx, dy, mx, my);
+	if(dx!=old_dx)	old_dx=dx;
+	if(dy!=old_dy)	old_dy=dy;
+}*/
+
 if(dbg_testcontrolnoisy > 0)
 if(player->info.dir!=2/*(inst.Keyboard[def->up] || inst.Keyboard[def->down] || inst.Keyboard[def->left] || inst.Keyboard[def->right])*/ || player->enti.q>1)
 {

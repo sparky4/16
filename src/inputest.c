@@ -25,6 +25,9 @@
 #include "src/lib/16_in.h"
 #include "src/lib/16_tail.h"
 
+#define INPUTEST_JOYSTICKPADTEST
+//#define INPUTEST_MOUSETEST
+
 void
 main(int argc, char *argv[])
 {
@@ -32,16 +35,33 @@ main(int argc, char *argv[])
 #ifdef __DEBUG_InputMgr__
 	dbg_testkeyin=1;
 	dbg_testcontrolnoisy=0;
+	dbg_joymousedelta=1;
 #endif
 	start_timer(&gvar);
 	//Startup16(&gvar);
 	IN_Startup(&gvar);
 	IN_Default(0,&gvar.player[0],
-ctrl_Keyboard1, &gvar);
-//ctrl_Joystick1);
+				#if !defined(INPUTEST_JOYSTICKPADTEST) && !defined(INPUTEST_MOUSETEST)
+								ctrl_Keyboard1
+				#endif
+				#if defined(INPUTEST_JOYSTICKPADTEST) && !defined(INPUTEST_MOUSETEST)
+								ctrl_Joystick1
+				#endif
+				#if !defined(INPUTEST_JOYSTICKPADTEST) && defined(INPUTEST_MOUSETEST)
+								ctrl_Mouse
+				#endif
+												, &gvar);
 	IN_SetControlType(&gvar.player[0],
-ctrl_Keyboard1);
-//ctrl_Joystick1);
+				#if !defined(INPUTEST_JOYSTICKPADTEST) && !defined(INPUTEST_MOUSETEST)
+								ctrl_Keyboard1
+				#endif
+				#if defined(INPUTEST_JOYSTICKPADTEST) && !defined(INPUTEST_MOUSETEST)
+								ctrl_Joystick1
+				#endif
+				#if !defined(INPUTEST_JOYSTICKPADTEST) && defined(INPUTEST_MOUSETEST)
+								ctrl_Mouse
+				#endif
+												);
 
 	gvar.player[0].enti.q=1;
 	gvar.player[0].enti.d=2;
@@ -112,5 +132,8 @@ ctrl_Keyboard1);
 #ifdef __DEBUG_InputMgr__
 	printf("testkeyin=%u\n", dbg_testkeyin);
 	printf("testcontrolnoisy=%u\n", dbg_testcontrolnoisy);
+	printf("dbg_joymousedelta=%u\n", dbg_joymousedelta);
 #endif
+	printf("JoysPresent={%d,%d}\n", gvar.in.JoysPresent[0], gvar.in.JoysPresent[1]);
+	printf("MousePresent=%d\n", gvar.in.MousePresent);
 }

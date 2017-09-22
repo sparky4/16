@@ -30,7 +30,7 @@
 #define __DEBUG__
 
 #ifdef __DEBUG__
-//#define __DEBUG_InputMgr__
+#define __DEBUG_InputMgr__
 #define __DEBUG_MAP__
 //#define __DEBUG_2__
 //#define __DEBUG_CA__
@@ -54,7 +54,7 @@ extern boolean dbg_debugpm;
 extern boolean dbg_debugca;
 #endif
 #ifdef __DEBUG_InputMgr__
-extern boolean dbg_testkeyin,dbg_testcontrolnoisy,dbg_nointest;
+extern boolean dbg_testkeyin,dbg_testcontrolnoisy,dbg_nointest,dbg_joymousedelta;
 #endif
 #ifdef __DEBUG_MAP__
 extern boolean dbg_maptext;

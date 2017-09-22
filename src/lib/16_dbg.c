@@ -33,7 +33,7 @@ boolean dbg_debugpm=0;
 boolean dbg_debugca=0;
 #endif
 #ifdef __DEBUG_InputMgr__
-boolean dbg_testkeyin=0,dbg_testcontrolnoisy=0,dbg_nointest=0;
+boolean dbg_testkeyin=0,dbg_testcontrolnoisy=0,dbg_nointest=0,dbg_joymousedelta=0;
 #endif
 #ifdef __DEBUG_MAP__
 boolean dbg_maptext=0;

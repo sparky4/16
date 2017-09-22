@@ -144,11 +144,12 @@
 #define	sc_ForeSlash	0x35	//	/ ?
 
 // 	Stuff for the mouse
-#define	MReset		0
+//moved to 16_tdef.h
+/*#define	MReset		0
 #define	MButtons	3
 #define	MDelta		11
 
-#define	MouseInt	0x33
+#define	MouseInt	0x33*/
 #ifdef DEMO0
 typedef	enum		{
 						demo_Off,demo_Record,demo_Playback,demo_PlayDone
