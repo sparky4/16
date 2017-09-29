@@ -135,8 +135,8 @@ void	Shutdown16(global_game_variables_t *gvar),
 void TL_DosLibStartup(global_game_variables_t *gvar);
 void TL_VidInit(global_game_variables_t *gvar);
 boolean FizzleFade (unsigned source, unsigned dest, unsigned width, unsigned height, unsigned frames, boolean abortable, global_game_variables_t *gvar);
-void TL_StartMusic(global_game_variables_t *gvar);
-void TL_StopMusic(global_game_variables_t *gvar);
+void PL_StartMusic(global_game_variables_t *gvar);
+void PL_StopMusic(global_game_variables_t *gvar);
 void DebugMemory_(global_game_variables_t *gvar, boolean q);
 void ClearMemory (global_game_variables_t *gvar);
 void Quit (global_game_variables_t *gvar, char *error);

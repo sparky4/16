@@ -249,17 +249,6 @@ static	boolean	special;
 	outportb(0x20,0x20);
 }
 
-void INL_Mouse(int x)
-{
-	union REGS CPURegs;
-	x = CPURegs.x.ax;
-/*_=_=	__asm {
-		mov	ax,x
-		int	MouseInt
-	}*/
-	int86(MouseInt,&CPURegs,&CPURegs);
-}
-
 ///////////////////////////////////////////////////////////////////////////
 //
 //	INL_GetMouseDelta() - Gets the amount that the mouse has moved from the
@@ -269,16 +258,9 @@ void INL_Mouse(int x)
 static void
 INL_GetMouseDelta(int *x,int *y)
 {
-	union REGS CPURegs;
 	Mouse(MDelta);
-	*x = CPURegs.x.cx;
-	*y = CPURegs.x.dx;
-#ifdef __DEBUG_InputMgr__
-	if(dbg_joymousedelta)
-	{
-		printf("mousedelta=[%dx%d]\n", *x, *y);
-	}
-	#endif
+	*x = _CX;
+	*y = _DX;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -290,11 +272,10 @@ INL_GetMouseDelta(int *x,int *y)
 static word
 INL_GetMouseButtons(void)
 {
-	union REGS CPURegs;
 	word	buttons;
 
 	Mouse(MButtons);
-	buttons = CPURegs.x.bx;
+	buttons = _BX;
 	return(buttons);
 }
 
@@ -510,7 +491,7 @@ IN_GetJoyButtonsDB(word joy)
 //
 ///////////////////////////////////////////////////////////////////////////
 static void
-INL_StartKbd()
+INL_StartKbd(void)
 {
 	INL_KeyHook = NULL;	// Clear key hook
 
@@ -541,15 +522,15 @@ INL_ShutKbd(void)
 static boolean
 INL_StartMouse(void)
 {
-	union REGS CPURegs;
+#if 0
 	if (getvect(MouseInt))
 	{
 		Mouse(MReset);
-		if (/*_AX*/CPURegs.x.ax == 0xffff)
+		if (_AX == 0xffff)
 			return(true);
 	}
 	return(false);
-#if 0
+#else
 	byte far *vector;
 
 
@@ -697,7 +678,6 @@ IN_Startup(global_game_variables_t *gvar)
 	gvar->in.inst = &inst;
 
 	gvar->in.IN_Started = true;
-
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -857,9 +837,6 @@ IN_ReadControl(player_t *player, global_game_variables_t *gvar)
 			sword conpee;
 			byte dir=DirTable[2];
 register	KeyboardDef	*def;
-//#ifdef __DEBUG_InputMgr__
-//static		int			old_dx,old_dy;
-//#endif
 
 	dx = dy = 0;
 	mx = my = motion_None;
@@ -889,8 +866,7 @@ register	KeyboardDef	*def;
 #endif
 		switch (type = player->Controls)
 		{
-		case ctrl_Keyboard1:
-		case ctrl_Keyboard2:
+		case ctrl_Keyboard:
 			def = &(gvar->in.KbdDefs[type - ctrl_Keyboard]);
 
 /*			if (Keyboard[def->upleft])
@@ -965,8 +941,8 @@ register	KeyboardDef	*def;
 	}
 	else
 	{
-		dx = mx;// * 127;
-		dy = my;// * 127;
+		dx = mx * 127;
+		dy = my * 127;
 	}
 
 	player->info.x = dx;
@@ -1014,12 +990,21 @@ register	KeyboardDef	*def;
 	}
 #endif
 #ifdef __DEBUG_InputMgr__
-/*if(dbg_joymousedelta)
+if(dbg_joymousedelta)
 {
-	if(dx!=old_dx || dy!=old_dy) printf("dx,dy	[%d,%d]	%d,%d\n", dx, dy, mx, my);
-	if(dx!=old_dx)	old_dx=dx;
-	if(dy!=old_dy)	old_dy=dy;
-}*/
+	{
+static		int			old_dx,old_dy;
+static		word		old_buttons=0;
+		if(dx!=old_dx || dy!=old_dy) printf("dx,dy	[%d,%d]	%d,%d\n", dx, dy, mx, my);
+		if(dx!=old_dx)	old_dx=dx;
+		if(dy!=old_dy)	old_dy=dy;
+		if(old_buttons!=buttons)
+		{
+			printf("	buttons={%u,%u,%u,%u}\n", player->info.button0, player->info.button1, player->info.button2, player->info.button3);
+			old_buttons=buttons;
+		}
+	}
+}
 
 if(dbg_testcontrolnoisy > 0)
 if(player->info.dir!=2/*(inst.Keyboard[def->up] || inst.Keyboard[def->down] || inst.Keyboard[def->left] || inst.Keyboard[def->right])*/ || player->enti.q>1)
@@ -1295,11 +1280,10 @@ boolean IN_UserInput(word delay, global_game_variables_t *gvar)
 
 byte	IN_MouseButtons (global_game_variables_t *gvar)
 {
-	union REGS CPURegs;
 	if (gvar->in.MousePresent)
 	{
 		Mouse(MButtons);
-		return CPURegs.x.bx;
+		return _BX;
 	}
 	else
 		return 0;

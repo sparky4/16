@@ -150,6 +150,8 @@
 #define	MDelta		11
 
 #define	MouseInt	0x33*/
+#define	Mouse(x)	_AX = x,geninterrupt(MouseInt)
+
 #ifdef DEMO0
 typedef	enum		{
 						demo_Off,demo_Record,demo_Playback,demo_PlayDone
@@ -246,8 +248,6 @@ void INL_GetJoyDelta(word joy,int *dx,int *dy/*,boolean adaptive*/, global_game_
 void IN_StartAck(global_game_variables_t *gvar);
 boolean IN_CheckAck (global_game_variables_t *gvar);
 boolean IN_IsUserInput(global_game_variables_t *gvar);
-#define Mouse(x)         INL_Mouse(x)
-//void IN_SetKeyHook(void (*hook)());
 #if DEMO0
 boolean IN_StartDemoRecord(word bufsize);
 void IN_StartDemoPlayback(byte *buffer,word bufsize);

@@ -28,10 +28,13 @@
 
 //#define NOMAPLOAD
 //#define OLDPLAYERSPRITESTUFF
+#define XC_CTRLTYPE ctrl_Keyboard
+//Mouse
 #ifdef __DEBUG__
 #define SCROLLEXEDEBUG
 boolean
-	dbg_nointest=1;
+	dbg_nointest=0,
+	dbg_joymousedelta=0;
 #endif
 
 //static map_t map;
@@ -133,7 +136,8 @@ void main(int argc, char *argv[])
 #endif
 
 	// input!
-	IN_Default(0, &gvar.player[0],ctrl_Keyboard1, &gvar);
+	IN_Default(0, &gvar.player[0],XC_CTRLTYPE, &gvar);
+	IN_SetControlType(&gvar.player[0],XC_CTRLTYPE);
 
 	// save the palette
 #ifdef FADE

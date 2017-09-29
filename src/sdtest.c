@@ -37,10 +37,10 @@ void main(int argc,char **argv)
 	IN_Startup(&gvar);
 	printf("start\n");
 	SD_Startup(&gvar);
-	TL_StartMusic (&gvar);
+	PL_StartMusic (&gvar);
 	while (!(scancode = gvar.in.inst->LastScan)){}
 	printf("shutdown\n");
-	TL_StopMusic(&gvar);
+	PL_StopMusic(&gvar);
 	SD_Shutdown(&gvar);
 	IN_Shutdown(&gvar);
 	ShutdownCAMMPM(&gvar);

@@ -22,6 +22,11 @@
 
 #include "src/lib/16_head.h"
 
+//cpu reg stuff for _AX, _BX, _CX, _DX
+#ifdef __WATCOMC__
+union regs CPURegs;
+#endif
+
 // big global status text buffer
 char global_temp_status_text[512];
 char global_temp_status_text2[512];

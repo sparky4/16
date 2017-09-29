@@ -161,8 +161,8 @@ extern	int			profilehandle,debughandle;	//make it into game global
 #define	nil	((void *)0)
 
 #ifdef __WATCOMC__
-//#define _FCORELEFT 0x90000UL+16UL
-/*static union REGS CPURegs;
+//----#define _FCORELEFT 0x90000UL+16UL
+extern union REGS CPURegs;
 
 #define _AX CPURegs.x.ax
 #define _BX CPURegs.x.bx
@@ -180,7 +180,7 @@ extern	int			profilehandle,debughandle;	//make it into game global
 #define _DH CPURegs.h.dh
 #define _DL CPURegs.h.dl
 
-#define geninterrupt(n) int86(n,&CPURegs,&CPURegs);*/
+#define geninterrupt(n) int86(n,&CPURegs,&CPURegs);
 
 
 typedef union REGPACK	regs_t;

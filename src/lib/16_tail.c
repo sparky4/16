@@ -171,7 +171,6 @@ void ReadConfig(void)
 
 		read(file,&mouseenabled,sizeof(mouseenabled));
 		read(file,&joystickenabled,sizeof(joystickenabled));
-		read(file,&joypadenabled,sizeof(joypadenabled));
 		read(file,&joystickprogressive,sizeof(joystickprogressive));
 		read(file,&joystickport,sizeof(joystickport));
 
@@ -230,7 +229,6 @@ void ReadConfig(void)
 			mouseenabled = true;
 
 		joystickenabled = false;
-		joypadenabled = false;
 		joystickport = 0;
 		joystickprogressive = false;
 
@@ -269,7 +267,6 @@ void WriteConfig(void)
 
 		write(file,&mouseenabled,sizeof(mouseenabled));
 		write(file,&joystickenabled,sizeof(joystickenabled));
-		write(file,&joypadenabled,sizeof(joypadenabled));
 		write(file,&joystickprogressive,sizeof(joystickprogressive));
 		write(file,&joystickport,sizeof(joystickport));
 
@@ -408,69 +405,6 @@ noxor:
 }
 
 //===========================================================================
-
-/*
-=============================================================================
-
-						MUSIC STUFF
-
-=============================================================================
-*/
-
-
-/*
-=================
-=
-= StopMusic
-=
-=================
-*/
-
-void TL_StopMusic(global_game_variables_t *gvar)
-{
-	int	i;
-
-	SD_MusicOff();
-	for (i = 0;i < LASTMUSIC;i++)
-		if (gvar->ca.audiosegs[STARTMUSIC + i])
-		{
-			MM_SetPurge(MEMPTRCONV gvar->ca.audiosegs[STARTMUSIC + i],3, gvar);
-			MM_SetLock(MEMPTRCONV gvar->ca.audiosegs[STARTMUSIC + i],false, gvar);
-		}
-}
-
-//==========================================================================
-
-
-/*
-=================
-=
-= StartMusic
-=
-=================
-*/
-
-void TL_StartMusic(global_game_variables_t *gvar)
-{
-	musicnames	chunk;
-
-	SD_MusicOff();
-	chunk = 0;//++++songs[gamestate.mapon+gamestate.episode*10];
-
-//	if ((chunk == -1) || (MusicMode != smm_AdLib))
-//DEBUG control panel		return;
-
-//++++	MM_BombOnError (false,gvar);
-//++++	CA_CacheAudioChunk(STARTMUSIC + chunk, gvar);
-//++++	MM_BombOnError (true,gvar);
-//++++	if (gvar->mm.mmerror)
-//++++		gvar->mm.mmerror = false;
-//++++	else
-//++++	{
-		MM_SetLock(MEMPTRCONV gvar->ca.audiosegs[STARTMUSIC + chunk],true, gvar);
-		SD_StartMusic((MusicGroup far *)gvar->ca.audiosegs[STARTMUSIC + chunk]);
-//++++	}
-}
 
 /*
 ==================
