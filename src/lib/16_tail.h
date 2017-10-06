@@ -132,6 +132,7 @@ void	Shutdown16(global_game_variables_t *gvar),
 	Startup16(global_game_variables_t *gvar),
 	StartupCAMMPM (global_game_variables_t *gvar),
 	ShutdownCAMMPM (global_game_variables_t *gvar);
+void MU_IntroScreen(global_game_variables_t *gvar);
 void TL_DosLibStartup(global_game_variables_t *gvar);
 void TL_VidInit(global_game_variables_t *gvar);
 boolean FizzleFade (unsigned source, unsigned dest, unsigned width, unsigned height, unsigned frames, boolean abortable, global_game_variables_t *gvar);

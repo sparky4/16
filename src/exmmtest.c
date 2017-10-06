@@ -236,6 +236,13 @@ PRINTBB; KEYP
 	modexHiganbanaPageSetup(&gvar);
 	gvar.video.page[0].dx = gvar.video.page[0].dy = 0;
 //	VL_modexPalScramble(&gvar.video.palette);
+	{
+		unsigned temp;
+		temp = BDOFSCONV gvar.video.BOFS;
+		gvar.video.BOFS = gvar.video.DOFS;
+		MU_IntroScreen(&gvar);
+		gvar.video.BOFS = (byte __far *)temp;
+	}
 //	ShapeTest_(&gvar);
 #endif
 	MM_ShowMemory(&gvar);

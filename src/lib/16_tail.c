@@ -142,6 +142,112 @@ void ShutdownCAMMPM (global_game_variables_t *gvar)
 
 //===========================================================================
 
+////////////////////////////////////////////////////////////////////
+//
+// HANDLE INTRO SCREEN (SYSTEM CONFIG)
+//
+////////////////////////////////////////////////////////////////////
+void MU_IntroScreen(global_game_variables_t *gvar)
+{
+#define MAINCOLOR	0x6c
+#define EMSCOLOR	0x6c
+#define XMSCOLOR	0x6c
+
+#define FILLCOLOR	14
+
+	long memory,emshere,xmshere;
+	int i,num,ems[10]={100,200,300,400,500,600,700,800,900,1000},
+		xms[10]={100,200,300,400,500,600,700,800,900,1000},
+		main[10]={32,64,96,128,160,192,224,256,288,320};
+
+	gvar->video.print.t=1;
+	gvar->video.print.tlsw=1;
+	gvar->video.print.bgcolor=8;
+	gvar->video.print.color=5;
+
+	//
+	// DRAW MAIN MEMORY
+	//
+	num=32;
+	gvar->video.print.x=49-32;
+
+	memory=(1023l+gvar->mmi.nearheap+gvar->mmi.farheap)/1024l;
+	for (i=0;i<10;i++)
+		if (memory>=main[i])
+		{
+			gvar->video.print.y=163-8*i;
+			sprintf(global_temp_status_text, "% 4u", num); VL_print(global_temp_status_text, 0, gvar);
+			VL_Bar(49,163-8*i,6,5,MAINCOLOR-i,gvar);
+			num+=32;
+		}
+	gvar->video.print.y=171;
+	VL_print("MAIN", 0, gvar);
+
+
+	//
+	// DRAW EMS MEMORY
+	//
+	if (gvar->pm.emm.EMSPresent)
+	{
+		num=100;
+		gvar->video.print.x=89-32;
+
+		emshere=4l*gvar->pm.emm.EMSPagesAvail;
+		for (i=0;i<10;i++)
+			if (emshere>=ems[i])
+			{
+				gvar->video.print.y=163-8*i;
+				sprintf(global_temp_status_text, "% 4u", num); VL_print(global_temp_status_text, 0, gvar);
+				VL_Bar(89,163-8*i,6,5,EMSCOLOR-i,gvar);
+				num+=100;
+			}
+		gvar->video.print.y=171;
+		VL_print(" EMS", 0, gvar);
+	}
+
+	//
+	// DRAW XMS MEMORY
+	//
+	if (gvar->pm.xmm.XMSPresent)
+	{
+		num=100;
+		gvar->video.print.x=129-32;
+
+		xmshere=4l*gvar->pm.xmm.XMSPagesAvail;
+		for (i=0;i<10;i++)
+			if (xmshere>=xms[i])
+			{
+				gvar->video.print.y=163-8*i;
+				sprintf(global_temp_status_text, "% 4u", num); VL_print(global_temp_status_text, 0, gvar);
+				VL_Bar(129,163-8*i,6,5,XMSCOLOR-i,gvar);
+				num+=100;
+			}
+		gvar->video.print.y=171;
+		VL_print(" XMS", 0, gvar);
+	}
+
+	//
+	// FILL BOXES
+	//
+	if (gvar->in.MousePresent)
+		VL_Bar(164,82,12,2,FILLCOLOR,gvar);
+
+	if (gvar->in.JoysPresent[0] || gvar->in.JoysPresent[1])
+		VL_Bar(164,105,12,2,FILLCOLOR,gvar);
+
+//++++	if (gvar->sd.AdLibPresent)//SB && !SoundBlasterPresent)
+//++++		VL_Bar(164,128,12,2,FILLCOLOR,gvar);
+
+//SB	if (SoundBlasterPresent)
+//SB		VL_Bar(164,151,12,2,FILLCOLOR,gvar);
+
+//SS	if (SoundSourcePresent)
+//SS		VL_Bar(164,174,12,2,FILLCOLOR,gvar);
+	IN_Ack (gvar);
+}
+
+//===========================================================================
+
 /*
 ====================
 =
@@ -494,7 +600,7 @@ void TestSprites(void)
 		spr = &spritetable[sprite-STARTSPRITES];
 		block = (spritetype _seg *)grsegs[sprite];
 
-		VWB_Bar (hx,hy,TEXTWIDTH,bottomy-hy,WHITE);
+		VL_Bar (hx,hy,TEXTWIDTH,bottomy-hy,WHITE);
 
 		PrintX=hx;
 		PrintY=hy;
@@ -525,7 +631,7 @@ void TestSprites(void)
 		//
 		// draw the current shift, then wait for key
 		//
-			VWB_Bar(topx,hy,DISPWIDTH,bottomy-hy,WHITE);
+			VL_Bar(topx,hy,DISPWIDTH,bottomy-hy,WHITE);
 			if (block)
 			{
 				PrintX = topx;
