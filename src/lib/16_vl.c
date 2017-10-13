@@ -28,7 +28,7 @@
 byte far* VGA=(byte far*) 0xA0000000;   /* this points to video memory. */
 
 static void fadePalette(sbyte fade, sbyte start, word iter, byte *palette);
-static byte tmppal[PAL_SIZE];
+/*static */byte tmppal[PAL_SIZE];
 
 //===========================================================================
 

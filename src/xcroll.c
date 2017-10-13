@@ -315,6 +315,7 @@ void main(int argc, char *argv[])
 //		if(gvar.in.inst->Keyboard[10]){ modexPalOverscan(rand()%56); modexPalUpdate(gvar.video.dpal); IN_UserInput(1, &gvar); }
 //#endif
 		if(gvar.in.inst->Keyboard[sc_R]){ VL_modexPalOverscan(&gvar.video.palette, rand()%32); } //r
+		if(gvar.in.inst->Keyboard[sc_F]){ VL_SetPalette(&gamepal, &gvar.video); } //f
 
 
 		//if((gvar.player[0].enti.q==1) && !(gvar.player[0].enti.x%TILEWH==0 && gvar.player[0].enti.y%TILEWH==0)) Quit (&gvar, "PLAYER OFF THE RAILS!");//break;	//incase things go out of sync!

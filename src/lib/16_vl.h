@@ -68,6 +68,7 @@ typedef union
 
 /* -======================= Constants & Vars ==========================- */
 extern byte far*  VGA;  /* The VGA Memory */
+extern byte far gamepal;
 #define SCREEN_SEG		0xa000
 #define VIDEO_INT		0x10
 #define SET_MODE		0x00
@@ -200,6 +201,7 @@ void modexFlashOn(word fade, byte *palette);
 void modexFlashOff(word fade, byte *palette);
 
 /* palette loading and saving */
+void VL_SetPalette (byte far *palette, video_t *v);
 void modexPalSave(byte *palette);
 //byte *modexNewPal();
 void modexLoadPalFile(char *filename, byte *palette);
