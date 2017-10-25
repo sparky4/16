@@ -45,7 +45,8 @@ void	VL_Startup (global_game_variables_t *gvar)
 	__asm	cld;
 
 	VGAmodeX(1/*TODO other modes*/, 1, gvar);
-	VL_LoadPalFileCore(gvar->video.palette, gvar);
+//--	VL_LoadPalFileCore(gvar->video.palette, gvar);
+	VL_SetCorePal(gvar);
 	//Quit ("Improper video card!  If you really have a VGA card that I am not\ndetecting it!", gvar);
 }
 
@@ -937,6 +938,21 @@ void VLL_LoadPalFilewithoffset(const char *filename, byte *palette, word o, word
 		}
 		VL_UpdatePaletteWrite(newpalette, o, palsize, gvar);
 	}
+}
+
+//++++//
+void VL_SetCorePal(global_game_variables_t *gvar)
+{
+	byte *palette = &corepal;
+	word i;
+
+	vga_palette_lseek(0);
+	for (i=0;i < COREPALSIZE;i++)
+		vga_palette_write(palette[(i*3)+0]>>2,
+						  palette[(i*3)+1]>>2,
+						  palette[(i*3)+2]>>2);
+
+	VL_PaletteSync(gvar);
 }
 
 void VL_LoadPalFile(const char *filename, byte *palette, global_game_variables_t *gvar)

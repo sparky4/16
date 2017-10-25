@@ -53,3 +53,15 @@ unsigned char __far gamepal[768]={
  46, 58, 58, 39, 55, 55, 29, 50, 50, 18, 48, 48,  8, 45, 45,  8,
  44, 44,  0, 41, 41,  0, 38, 38,  0, 35, 35,  0, 33, 33,  0, 31,
  31,  0, 30, 30,  0, 29, 29,  0, 28, 28,  0, 27, 27, 38,  0, 34};
+
+const unsigned char __far corepal[27]={
+ 1,  1,  1,	//overscan color not pure black
+63,  0,  0,	//red
+ 0,  0, 63,	//blue
+ 0, 63,  0,	//green
+63, 63,  0,	//yellow
+63, 63, 63,	//white
+63,  0, 63,	//magenta
+ 0, 63, 63,	//cyan
+ 0,  0,  0,	//pure black
+};

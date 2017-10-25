@@ -28,7 +28,7 @@
 
 //#define NOMAPLOAD
 //#define OLDPLAYERSPRITESTUFF
-#define XC_CTRLTYPE ctrl_Mouse//Keyboard
+#define XC_CTRLTYPE ctrl_Joystick1//ctrl_Mouse//ctrl_Keyboard
 //Mouse
 #ifdef __DEBUG__
 #define SCROLLEXEDEBUG

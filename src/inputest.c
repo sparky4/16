@@ -25,8 +25,8 @@
 #include "src/lib/16_in.h"
 #include "src/lib/16_tail.h"
 
-//#define INPUTEST_JOYSTICKPADTEST
-#define INPUTEST_MOUSETEST
+#define INPUTEST_JOYSTICKPADTEST
+//#define INPUTEST_MOUSETEST
 
 void
 main(int argc, char *argv[])

@@ -69,6 +69,7 @@ typedef union
 /* -======================= Constants & Vars ==========================- */
 extern byte far*  VGA;  /* The VGA Memory */
 extern byte far gamepal;
+extern byte far corepal;	//core palette used universally
 #define SCREEN_SEG		0xa000
 #define VIDEO_INT		0x10
 #define SET_MODE		0x00
@@ -207,6 +208,7 @@ void modexPalSave(byte *palette);
 void modexLoadPalFile(char *filename, byte *palette);
 void VL_LoadPalFile(const char *filename, byte *palette, global_game_variables_t *gvar);
 void VL_LoadPalFileCore(byte *palette, global_game_variables_t *gvar);
+void VL_SetCorePal(global_game_variables_t *gvar);
 //void VLL_LoadPalFilewithoffset(const char *filename, byte *palette, word o, global_game_variables_t *gvar);
 void VL_UpdatePaletteWrite(byte *palette, word o, word palsize, global_game_variables_t *gvar);
 void VL_PaletteSync(global_game_variables_t *gvar);
