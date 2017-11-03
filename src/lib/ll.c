@@ -259,7 +259,6 @@ void Movenode(struct node** destRef, struct node** sourceRef)
 	/* Move dest to point to the new node */
 	*destRef = newnode;
 }
-#endif
 
 /*	Function to insert a node at the beginging of the
 	linked list */
