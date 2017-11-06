@@ -163,12 +163,12 @@ void main()
    
 	/* Let us create a sorted linked list to test the functions
 	 Created linked list will be 11->11->11->13->13->20 */
-	push(&head, 20);
-	push(&head, 13);
-	push(&head, 13);  
-	push(&head, 11);
-	push(&head, 11);
-	push(&head, 11); 
+	pushll(&head, 20);
+	pushll(&head, 13);
+	pushll(&head, 13);  
+	pushll(&head, 11);
+	pushll(&head, 11);
+	pushll(&head, 11); 
  
 	printf("\n Linked list before duplicate removal  ");
 	printList(head); 
