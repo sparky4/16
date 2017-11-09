@@ -165,19 +165,18 @@ void main()
 	 Created linked list will be 11->11->11->13->13->20 */
 	pushll(&head, 20);
 	pushll(&head, 13);
-	pushll(&head, 13);  
+	pushll(&head, 13);
 	pushll(&head, 11);
 	pushll(&head, 11);
-	pushll(&head, 11); 
- 
+	pushll(&head, 11);
+
 	printf("\n Linked list before duplicate removal  ");
-	printList(head); 
- 
+	printList(head);
+
 	/* Remove duplicates from linked list */
-	removeDuplicates(head); 
- 
-	printf("\n Linked list after duplicate removal ");		 
-	printList(head);			
-	
+	removeDuplicates(head);
+
+	printf("\n Linked list after duplicate removal ");
+	printList(head);
 }
 #endif

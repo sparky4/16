@@ -29,7 +29,7 @@
 #define LGQ 32
 #define HGQ 55
 
-static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
+static word far* clockw= (word far*) 0x046C; // 18.2hz clock //
 
 void drawboxesmodex(page_t *pg)
 {
@@ -47,44 +47,44 @@ void copyboxesmodex(page_t *page, boolean pn)
 void main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
-	map_t map;
 
 	int i, j;
 	word startclk, endclk;
 	word k;
 
+	//====word colo=LGQ;
+
 	Startup16(&gvar);
 
-	/* save the palette */
+	// save the palette //
 	//====modexPalSave(pal);
 	//====modexFadeOff(1, pal);
 	//====modexPalBlack();
 
-	//IN_Startup();
 	IN_Default(0,&gvar.player[0],ctrl_Keyboard1, &gvar);
 	EN_initPlayer(&gvar.player[0], &gvar.video);
 
-	VGAmodeX(1, 1, &gvar);
+	VL_Startup(&gvar);//VGAmodeX(1, 1, &gvar);
 	modexPalBlack();
 
-	/* load our palette */
+	// load our palette //
 	VL_LoadPalFile("data/16.pal", &gvar.video.palette, &gvar);
 
-	/* overscan show */
+	// overscan show //
 	//modexPalOverscan(44+1);
 
-	/* set up the page, but with 16 pixels on all borders in offscreen mem */
+	// set up the page, but with 16 pixels on all borders in offscreen mem //
 	modexHiganbanaPageSetup(&gvar);
-	ZC_MVSetup(&gvar.mv, &map, &gvar);
+	ZC_MVSetup(&gvar.mv, &gvar.map, &gvar);
 
-	/* fill the page with one color, but with a black border */
+	// fill the page with one color, but with a black border //
 	drawboxesmodex(&gvar.video.page[0]);
 	copyboxesmodex(&gvar.video.page, 1);
 	modexClearRegion(&gvar.video.page[2], 0, 0, gvar.video.page[2].sw, gvar.video.page[2].sh, 4);
 	modexClearRegion(&gvar.video.page[3], 0, 0, gvar.video.page[3].sw, gvar.video.page[3].sh, 6);
 
 
-	/* fade in */
+	// fade in //
 	//====modexFadeOn(1, pal2);
 
 	i=0,k=0,j=0;
@@ -112,16 +112,14 @@ void main(int argc, char *argv[])
 
 	endclk = *clockw;
 
-	/* fade back to text mode */
+	// fade back to text mode //
 	//====modexFadeOff(1, pal2);
 	//====modexPalBlack();
-	VGAmodeX(0, 1, &gvar);
-	Shutdown16(&gvar);
+	Shutdown16(&gvar);//VGAmodeX(0, 1, &gvar);
 	printf("Project 16 vidtest.exe. This is just a test file!\n");
 	printf("version %s\n", VERSION);
 	VL_PrintmodexmemInfo(&gvar.video);
 	printf("tx=%d	", gvar.mv[gvar.video.sp].tx); printf("ty=%d	", gvar.mv[gvar.video.sp].ty); printf("gvar.player.d=%d\n", gvar.player[0].enti.d);
-	//IN_Shutdown();
 	//====modexPalBlack();
 	//====modexFadeOn(1, pal);
 }

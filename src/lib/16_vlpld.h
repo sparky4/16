@@ -2,8 +2,10 @@
 #define __16_VLPALD_H__
 
 #define BEVERBOSEPALCHECK
+//#define BEVERBOSECOLORCHECK
+//#define DONOTPALCHECK
 
-#ifdef BEVERBOSEPALCHECK
+#ifdef BEVERBOSECOLORCHECK
 #define CHKCOLDBGOUT1 \
 		printf("q: %02d\n", (*q));\
 		printf("chkcolor start~\n");\
@@ -44,6 +46,17 @@
 		printf("2				   (*i): %d\n", (*i)/3); \
 		printf("2 offset of color in palette	(*q): %d\n", (*q)/3); \
 		printf("chkcolor end~\n");
+#else
+#define	CHKCOLDBGOUT1
+#define	CHKCOLDBGOUT2
+#define	CHKCOLDBGOUT3
+#define	CHKCOLDBGOUT4
+#define	CHKCOLDBGOUT5
+#define	CHKCOLDBGOUT6
+#define	CHKCOLDBGOUT7
+#define	CHKCOLDBGOUT8
+#define	CHKCOLDBGOUT9
+#define	CHKCOLDBGOUT10
 #endif
 //======//
 

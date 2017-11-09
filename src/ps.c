@@ -15,6 +15,11 @@ void main()
 	PRINT_OPAQUE_STRUCT(&gvar.mm);
 	printf("mmi:\n");
 	PRINT_OPAQUE_STRUCT(&gvar.mmi);
+	printf("sizeof gvar.video=%d\n", sizeof(gvar.video));
+	printf("sizeof gvar.ca=%d\n", sizeof(gvar.ca));
+	printf("sizeof gvar.pm=%d\n", sizeof(gvar.pm));
+	printf("sizeof gvar.mm=%d\n", sizeof(gvar.mm));
+	printf("sizeof gvar.mmi=%d\n", sizeof(gvar.mmi));
 	printf("sizeof gvar=%d\n", sizeof(gvar));
 //	handle
 //	kurokku

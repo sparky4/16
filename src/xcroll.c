@@ -22,19 +22,15 @@
 
 #include "src/lib/scroll16.h"
 #include "src/lib/16_timer.h"
-//#include "src/lib/16_dbg.h"
+#include "src/lib/16_dbg.h"
 
 //#define FADE
 
 //#define NOMAPLOAD
 //#define OLDPLAYERSPRITESTUFF
-#define XC_CTRLTYPE ctrl_Keyboard
-//Mouse
+#define XC_CTRLTYPE ctrl_Joystick1//ctrl_Mouse//ctrl_Keyboard
 #ifdef __DEBUG__
 #define SCROLLEXEDEBUG
-boolean
-	dbg_nointest=0,
-	dbg_joymousedelta=0;
 #endif
 
 //static map_t map;
@@ -83,6 +79,10 @@ void main(int argc, char *argv[])
 	char bakapee[64] = FILENAME_1;
 	char bakapeep[64] = FILENAME_1P;
 //	char bakapee3[64] = FILENAME_3;
+#ifdef __DEBUG__
+	dbg_nointest=0;
+	dbg_joymousedelta=0;
+#endif
 
 	Startup16(&gvar);
 

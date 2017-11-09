@@ -189,7 +189,7 @@ aqpee:
 		while(aq<=aa)
 		{
 #ifdef BEVERBOSEPALCHECK
-			printf("a[%02d]=(%d)\n", aq, a[aq]);//
+//			printf("a[%02d]=(%d)\n", aq, a[aq]);//0000
 #endif
 			if(a[aq]==-1) aq++;
 			else { aqoffset++; break; }
