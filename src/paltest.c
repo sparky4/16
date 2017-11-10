@@ -78,13 +78,13 @@ void main(int argc, char *argv[])
 	VL_LoadPalFile("data/16.pal", &gvar.video.palette, &gvar);
 #ifndef DONOTPALCHECK
 	bmp1.offset=(paloffset/3);
-//	VL_palette(&bmp1, &gvar.video.palette, &paloffset, 0, 0, &gvar);
+	VL_palette(&bmp1, &gvar.video.palette, &paloffset, 0, 0, NULL, &gvar);
 
 	//VL_LoadPalFilewithoffset("data/default.pal", &palette, paloffset);
 	modexLoadPalFile("data/16t.pal", &gvar.video.dpal);
 	//VLL_LoadPalFilewithoffset("data/16t.pal", &gvar.video.palette, paloffset, 8, &gvar);
 	bmp2.offset=(paloffset/3);
-//	VL_palette(&bmp2, &gvar.video.dpal, &paloffset, 0, 0, &gvar);
+	VL_palette(&bmp2, &gvar.video.dpal, &paloffset, 0, 0, NULL, &gvar);
 	//====modexLoadPalFile("data/default.pal", &pal2);
 #endif
 	VL_PaletteSync(&gvar);

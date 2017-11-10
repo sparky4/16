@@ -92,14 +92,17 @@ no... wait.... no wwww
 		//free(pal);
 }
 
+//what is *i, w, q, qq, z, aq, aa, pp, qp, and aqoffset...
+//pp is related to i
+
 void
-VL_palette(imgtestpal_t *bmp, byte *p, word *i, word qp, word aqoffset, global_game_variables_t *gv)
+VL_palette(imgtestpal_t *bmp, byte *p, word *i, word qp, word aqoffset, word *apal, global_game_variables_t *gv)
 {
 	//byte *p = bmp->palette;
 	word w=0;
 	word q=0;
 	word qq=0;
-	static word a[PAL_SIZE];	//palette array of change values!
+	word a[PAL_SIZE];	//palette array of change values!
 	word z=0, aq=0, aa=0, pp=0;
 
 	//modexWaitBorder();
@@ -253,7 +256,7 @@ printf("		  aq=%02d\n", aq);//
 printf("		  aa=%02d\n", aa);//
 #endif
 	//update the palette~
-	VL_palette(bmp, p, &pp, aq, aqoffset, gv);
+	VL_palette(bmp, p, &pp, aq, aqoffset, &a, gv);
 	(*i)=pp;
 
 	if(aq<aa){ pp=q; aq++; goto aqpee; }
