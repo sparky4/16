@@ -125,9 +125,9 @@ VL_palette(imgtestpal_t *bmp, byte *p, word *i, word qp, word aqoffset, word *ap
 		printf("qq: %02d\n", (qq));//
 		printf("	  (*i)-q=%02d\n", (*i)-q);//
 #endif
-		iq=(*i)-q;
 		outp(PAL_WRITE_REG, qq);  /* start at the beginning of palette */
 	}
+	iq=(*i)-q;
 	if((*i)<PAL_SIZE && w==0)
 	{
 		for(; (*i)<PAL_SIZE; (*i)++)
