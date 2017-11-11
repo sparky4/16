@@ -103,7 +103,7 @@ VL_palette(imgtestpal_t *bmp, byte *p, word *i, word qp, word aqoffset, word *ap
 	word q=0;
 	word qq=0;
 	word a[PAL_SIZE];	//palette array of change values!
-	word z=0, aq=0, aa=0, pp=0;
+	word z=0, aq=0, aa=0, pp=0, iq=0;//iq=(*i)-q
 
 	//modexWaitBorder();
 	vga_wait_for_vsync();
@@ -125,6 +125,7 @@ VL_palette(imgtestpal_t *bmp, byte *p, word *i, word qp, word aqoffset, word *ap
 		printf("qq: %02d\n", (qq));//
 		printf("	  (*i)-q=%02d\n", (*i)-q);//
 #endif
+		iq=(*i)-q;
 		outp(PAL_WRITE_REG, qq);  /* start at the beginning of palette */
 	}
 	if((*i)<PAL_SIZE && w==0)
@@ -132,8 +133,8 @@ VL_palette(imgtestpal_t *bmp, byte *p, word *i, word qp, word aqoffset, word *ap
 		for(; (*i)<PAL_SIZE; (*i)++)
 		{
 			//if(i%3==0 && (p[i+5]==p[i+4] && p[i+4]==p[i+3] && p[i+3]==p[i+2] && p[i+2]==p[i+1] && p[i+1]==p[i] && p[i+5]==p[i]))
-//____		  if((qp>0)&&((*i)-q)%3==0 && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5])) outp(PAL_DATA_REG, p[(*i)-q]); else
-			if(((((*i)-q)%3==0)) && (p[((*i)-q)]==p[((*i)-q)+3] && p[((*i)-q)+1]==p[((*i)-q)+4] && p[((*i)-q)+2]==p[((*i)-q)+5]))
+//____		  if((qp>0)&&(iq)%3==0 && (p[(iq)]==p[(iq)+3] && p[(iq)+1]==p[(iq)+4] && p[(iq)+2]==p[(iq)+5])) outp(PAL_DATA_REG, p[iq]); else
+			if((((iq)%3==0)) && (p[(iq)]==p[(iq)+3] && p[(iq)+1]==p[(iq)+4] && p[(iq)+2]==p[(iq)+5]))
 			{
 				w++;
 				break;
@@ -152,7 +153,7 @@ VL_palette(imgtestpal_t *bmp, byte *p, word *i, word qp, word aqoffset, word *ap
 			{
 				if(bmp->offset==0 && (*i)<3 && q==0) outp(PAL_DATA_REG, 0);
 				else
-				if(qp==0) outp(PAL_DATA_REG, p[(*i)-q]);
+				if(qp==0) outp(PAL_DATA_REG, p[iq]);
 				else
 				{ outp(PAL_DATA_REG, p[((*i)-(bmp->offset*3)+qp)]);
 #ifdef BEVERBOSEPALCHECK
