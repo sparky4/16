@@ -72,7 +72,6 @@
 #undef SPRIDEBUGFUNCTIONS
 #define SPRIDEBUGFUNCTIONS \
 	if(gvar.in.inst->Keyboard[sc_Y]){ dbg_delayanimation=!dbg_delayanimation;				IN_UserInput(1, &gvar); }
-//	if(gvar.in.inst->Keyboard[sc_F9]){ dbg_pagenorendermap=!dbg_pagenorendermap;			IN_UserInput(1, &gvar); }
 #endif*/
 
 #define TAIL_FUNCTIONKEYFUNCTIONS0EXE \

@@ -759,7 +759,7 @@ if(dbg_pagedelayrendermap)		if(!y)	y+=TILEWH;	else	y-=TILEWH;
 	poopoffset%=player[0].enti.spt;
 //printf("y: %d\n", poopoffset);
 #ifdef __DEBUG_RF__
-if(dbg_pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dx); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 0, PALMAPDRAWW, 1, 1, global_temp_status_text); }
+if(dbg_pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", poopoffset); modexprint(mv->page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 0, PALMAPDRAWW, 1, 1, global_temp_status_text); }
 #endif
 	/* the position within the map array */
 	i=ty * mv->map->width + tx;
@@ -775,7 +775,7 @@ if(dbg_pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dx); mo
 		i++; /* next! */
 	}
 #ifdef __DEBUG_RF__
-if(dbg_pagedelayrendermap) delay(200);
+if(dbg_pagedelayrendermap) DBG_RFDELAYMETHOD;
 #endif
 }
 
@@ -788,7 +788,7 @@ if(dbg_pagedelayrendermap)		if(!x)	x+=TILEWH;		else	x-=TILEWH;
 	poopoffset%=player[0].enti.spt;
 //printf("x: %d\n", poopoffset);
 #ifdef __DEBUG_RF__
-if(dbg_pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dy); modexprint(mv[0].page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 0, PALMAPDRAWW, 1, global_temp_status_text); }
+if(dbg_pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", poopoffset); modexprint(mv->page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 0, PALMAPDRAWW, 1, 1, global_temp_status_text); }
 #endif
 	/* location in the map array */
 	i=ty * mv->map->width + tx;
@@ -806,7 +806,7 @@ if(dbg_pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", mv->dy); mo
 		i += mv->map->width;
 	}
 #ifdef __DEBUG_RF__
-if(dbg_pagedelayrendermap) delay(200);
+if(dbg_pagedelayrendermap) DBG_RFDELAYMETHOD;
 #endif
 }
 

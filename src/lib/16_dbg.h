@@ -36,7 +36,7 @@
 //#define __DEBUG_CA__
 //#define __DEBUG_PM__
 //#define __DEBUG_MM__
-//#define __DEBUG_RF__
+#define __DEBUG_RF__
 #define __DEBUG_SPRI__
 #define __DEBUG_VL__
 #endif

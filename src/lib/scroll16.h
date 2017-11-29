@@ -55,7 +55,7 @@
 #define PCXBMPPTR	PCXBMPVAR
 
 //row and colum drawing routines
-#define FULLRCREND
+//#define FULLRCREND
 #define DRAWCOLNUM mv->page[id].dx
 #define DRAWROWNUM mv->page[id].dy
 //#define DRAWCOLNUM pl[plid].enti.q
@@ -64,6 +64,11 @@
 //for null map!
 #define MAPW	40
 #define MAPH	30
+
+extern struct glob_game_vars	*ggvv;
+#ifdef __DEBUG_RF__
+#define DBG_RFDELAYMETHOD delay(250);
+#endif
 
 //===========================================================================//
 
