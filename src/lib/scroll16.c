@@ -503,7 +503,7 @@ void near mapScrollRight(map_view_t *mv, player_t *player, word id, word plid)
 	if(player[plid].enti.q==4)
 #endif
 //		if(id==0)
-			mapDrawCol(&mv[id], mv[0].tx + mv[0].page->ti.tw, mv[0].ty-1, x, player, DRAWCOLNUM);
+			mapDrawCol(&mv[id], mv[0].tx + mv[0].page->ti.tw, mv[0].ty-1, x, player);
 //		else
 //			if(mv[0].video->vga_state.bgps)
 //				modexCopyPageRegion(mv->page, mv[0].page, x, 0, x, 0, mv[0].map->tiles->tileWidth, mv[0].page->height);
@@ -526,7 +526,7 @@ void near mapScrollLeft(map_view_t *mv, player_t *player, word id, word plid)
 	if(player[plid].enti.q==4)
 #endif
 //		if(id==0)
-			mapDrawCol(&mv[id], mv[0].tx - 1, mv[0].ty-1, x, player, DRAWCOLNUM);
+			mapDrawCol(&mv[id], mv[0].tx - 1, mv[0].ty-1, x, player);
 //		else
 //			if(mv[0].video->vga_state.bgps)
 //				modexCopyPageRegion(mv->page, mv[0].page, x, 0, x, 0, mv[0].map->tiles->tileWidth, mv[0].page->height);
@@ -549,7 +549,7 @@ void near mapScrollUp(map_view_t *mv, player_t *player, word id, word plid)
 	if(player[plid].enti.q==4)
 #endif
 //		if(id==0)
-			mapDrawRow(&mv[id], mv[0].tx - 1, mv[0].ty-1, y, player, DRAWROWNUM);
+			mapDrawRow(&mv[id], mv[0].tx - 1, mv[0].ty-1, y, player);
 //		else
 //			if(mv[0].video->vga_state.bgps)
 //				modexCopyPageRegion(mv->page, mv[0].page, 0, y, 0, y, mv[0].page->width, mv[0].map->tiles->tileHeight);
@@ -572,7 +572,7 @@ void near mapScrollDown(map_view_t *mv, player_t *player, word id, word plid)
 	if(player[plid].enti.q==4)
 #endif
 //		if(id==0)
-			mapDrawRow(&mv[id], mv[0].tx - 1, mv[0].ty+mv[0].page->ti.th, y, player, DRAWROWNUM);
+			mapDrawRow(&mv[id], mv[0].tx - 1, mv[0].ty+mv[0].page->ti.th, y, player);
 //		else
 //			if(mv[0].video->vga_state.bgps)
 //				modexCopyPageRegion(mv->page, mv[0].page, 0, y, 0, y, mv[0].page->width, mv[0].map->tiles->tileHeight);
@@ -750,28 +750,30 @@ mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y)
 	}
 }
 #define PALMAPDRAWW 13
-void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, word poopoffset)
+void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player)
 {
-	int i; nibble z;
-#ifdef __DEBUG_RF__
-if(dbg_pagedelayrendermap)		if(!y)	y+=TILEWH;	else	y-=TILEWH;
+	int i;
+#if defined(FULLRCREND) || defined(__DEBUG_RF__)
+	word drawtileoffset=0;
+//printf("y: %d	", drawtileoffset);
+	drawtileoffset%=player[0].enti.spt;
+//printf("%d\n", drawtileoffset);
 #endif
-	poopoffset%=player[0].enti.spt;
-//printf("y: %d\n", poopoffset);
 #ifdef __DEBUG_RF__
-if(dbg_pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", poopoffset); modexprint(mv->page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 0, PALMAPDRAWW, 1, 1, global_temp_status_text); }
+if(dbg_pagedelayrendermap){		if(!y)	y+=TILEWH;	else	y-=TILEWH;
+	sprintf(global_temp_status_text, "%-3u", drawtileoffset); modexprint(mv->page, player[0].enti.x, player[0].enti.y-28-(drawtileoffset*8) , 1, 0, PALMAPDRAWW, 1, 1, global_temp_status_text); }
 #endif
 	/* the position within the map array */
 	i=ty * mv->map->width + tx;
-	for(	mv->dx=poopoffset;	mv->dx<(mv->page->sw+mv->dxThresh)/(poopoffset+1) && tx < mv->map->width;	mv->dx+=mv->map->tiles->tileWidth, tx++) {
-		if(i>=0){
+	/*
+	*/
+#ifndef FULLRCREND
+	for(	mv->dx=drawtileoffset;	mv->dx<(mv->page->sw+mv->dxThresh)/(drawtileoffset+1) && tx < mv->map->width;	mv->dx+=mv->map->tiles->tileWidth, tx++) {
+#else
+	for(mv->dx=0;	mv->dx<mv->page->sw+mv->dxThresh && tx < mv->map->width;	mv->dx+=mv->map->tiles->tileWidth, tx++) {
+#endif
+		if(i>=0)
 			mapDrawTile(mv->map->tiles, mv->map->layerdata[0].data[i], mv->page, mv->dx, y);
-			for(z=1;z<=2;z++)
-				if(mv->map->layerdata[z].data[i]){
-					sprintf(global_temp_status_text2, "%u", mv->map->layerdata[z].data[i]); modexprint(mv->page, mv->dx, y, 1, 0, PALMAPDRAWW, z+2, 1, global_temp_status_text2);
-					//mapDrawTile(mv->map->tiles, mv->map->layerdata[z].data[i], mv->page, mv->dx, y);
-				}
-		}
 		i++; /* next! */
 	}
 #ifdef __DEBUG_RF__
@@ -779,30 +781,37 @@ if(dbg_pagedelayrendermap) DBG_RFDELAYMETHOD;
 #endif
 }
 
-void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, word poopoffset)
+
+
+
+
+
+
+
+void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player)
 {
-	int i; nibble z;
-#ifdef __DEBUG_RF__
-if(dbg_pagedelayrendermap)		if(!x)	x+=TILEWH;		else	x-=TILEWH;
+	int i;
+#if defined(FULLRCREND) || defined(__DEBUG_RF__)
+	word drawtileoffset=0;
+//printf("x: %d	", drawtileoffset);
+	drawtileoffset%=player[0].enti.spt;
+//printf("%d\n", drawtileoffset);
 #endif
-	poopoffset%=player[0].enti.spt;
-//printf("x: %d\n", poopoffset);
 #ifdef __DEBUG_RF__
-if(dbg_pagedelayrendermap){ sprintf(global_temp_status_text, "%-3u", poopoffset); modexprint(mv->page, player[0].enti.x, player[0].enti.y-28-(poopoffset*8) , 1, 0, PALMAPDRAWW, 1, 1, global_temp_status_text); }
+if(dbg_pagedelayrendermap){		if(!x)	x+=TILEWH;	else	x-=TILEWH;
+	sprintf(global_temp_status_text, "%-3u", drawtileoffset); modexprint(mv->page, player[0].enti.x, player[0].enti.y-28-(drawtileoffset*8) , 1, 0, PALMAPDRAWW, 1, 1, global_temp_status_text); }
 #endif
 	/* location in the map array */
 	i=ty * mv->map->width + tx;
 	/* We'll copy all of the columns in the screen,
 	   i + 1 row above and one below */
-	for(	mv->dy=poopoffset;	mv->dy<(mv->page->sh+mv->dyThresh)/(poopoffset+1) && ty < mv->map->height;	mv->dy+=mv->map->tiles->tileHeight, ty++) {
-		if(i>=0){
+#ifndef FULLRCREND
+	for(	mv->dy=drawtileoffset;	mv->dy<(mv->page->sh+mv->dyThresh)/(drawtileoffset+1) && ty < mv->map->height;	mv->dy+=mv->map->tiles->tileHeight, ty++) {
+#else
+	for(mv->dy=0;	mv->dy<mv->page->sh+mv->dyThresh && ty < mv->map->height;	mv->dy+=mv->map->tiles->tileHeight, ty++) {
+#endif
+		if(i>=0)
 			mapDrawTile(mv->map->tiles, mv->map->layerdata[0].data[i], mv->page, x, mv->dy);
-			for(z=1;z<=2;z++)
-				if(mv->map->layerdata[z].data[i]){
-					sprintf(global_temp_status_text2, "%u", mv->map->layerdata[z].data[i]); modexprint(mv->page, x, mv->dy, 1, 0, PALMAPDRAWW, z+2, 1, global_temp_status_text2);
-					//mapDrawTile(mv->map->tiles, mv->map->layerdata[z].data[i], mv->page, x, mv->dy);
-				}
-		}
 		i += mv->map->width;
 	}
 #ifdef __DEBUG_RF__

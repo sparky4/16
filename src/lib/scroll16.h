@@ -55,11 +55,14 @@
 #define PCXBMPPTR	PCXBMPVAR
 
 //row and colum drawing routines
-//#define FULLRCREND
+#define FULLRCREND
+//#ifdef FULLRCREND
 #define DRAWCOLNUM mv->page[id].dx
 #define DRAWROWNUM mv->page[id].dy
-//#define DRAWCOLNUM pl[plid].enti.q
-//#define DRAWROLNUM pl[plid].enti.q
+//#else
+//#define DRAWCOLNUM player[plid].enti.q
+//#define DRAWROWNUM player[plid].enti.q
+//#endif
 
 //for null map!
 #define MAPW	40
@@ -67,7 +70,7 @@
 
 extern struct glob_game_vars	*ggvv;
 #ifdef __DEBUG_RF__
-#define DBG_RFDELAYMETHOD delay(250);
+#define DBG_RFDELAYMETHOD delay(500);
 #endif
 
 //===========================================================================//
@@ -130,8 +133,8 @@ void mapGoTo(map_view_t *mv, int tx, int ty);
 void ZC_mapinitMV(map_view_t *mv, int tx, int ty);
 void ZC_mapredraw(map_view_t *mv, int tx, int ty);
 void near mapDrawTile(tiles_t *t, word i, page_t *page, word x, word y);
-void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player, word poopoffset);
-void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player, word poopoffset);
+void near mapDrawRow(map_view_t *mv, int tx, int ty, word y, player_t *player);
+void near mapDrawCol(map_view_t *mv, int tx, int ty, word x, player_t *player);
 void mapDrawWRow(map_view_t *mv, int tx, int ty, word y);
 void mapDrawWCol(map_view_t *mv, int tx, int ty, word x);
 inline void near ScrollRight(map_view_t *mv, player_t *pl, word id, word plid)
