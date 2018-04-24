@@ -24,6 +24,25 @@ dro to vgm get
 READ DESIGN.TXT
 
 
+====
+make a super fuckin minimal version of the engine of wolf3d
+CA!!
+SD!!
+ENGINE CORE!!!!
+PM!!
+unserstand how RF works 				reprep tile scroll stuff again.
+VL && VW redo... (like orgonikze and such)
+	borland c hax for gfx stuff
+
+
+!!display offset array (like wolf3d's)!!
+
+what did i do last?
+
+i did some minor things including commenting out some joy stick timing stuff and trying to reprep tile scroll stuff again. although i NEED to look at id_rf.c
+ah TEST JOYSTICK
+====
+
 
 
 
