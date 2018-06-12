@@ -170,6 +170,7 @@ extern union REGS CPURegs;
 #define _DX CPURegs.x.dx
 
 #define _SI CPURegs.x.si
+#define _DI CPURegs.x.di
 
 #define _AH CPURegs.h.ah
 #define _AL CPURegs.h.al
@@ -179,6 +180,8 @@ extern union REGS CPURegs;
 #define _CL CPURegs.h.cl
 #define _DH CPURegs.h.dh
 #define _DL CPURegs.h.dl
+
+#define _CFLAG CPURegs.x.cflag
 
 #define geninterrupt(n) int86(n,&CPURegs,&CPURegs);
 
@@ -197,6 +200,22 @@ int US_CheckParm(char *parm,char **strings);
 byte dirchar(byte in);
 void print_mem(void const *vp, size_t n);
 void hres (void);
+void regidump();
+
+//from https://stackoverflow.com/questions/111928/is-there-a-printf-converter-to-print-in-binary-format
+//printf("Leading text "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(byte));
+//For multi-byte types
+//printf("m: "BYTE_TO_BINARY_PATTERN" "BYTE_TO_BINARY_PATTERN"\n",		BYTE_TO_BINARY(m>>8), BYTE_TO_BINARY(m));
+#define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c"
+#define BYTE_TO_BINARY(byte)  \
+	(byte & 0x80 ? '1' : '0'), \
+	(byte & 0x40 ? '1' : '0'), \
+	(byte & 0x20 ? '1' : '0'), \
+	(byte & 0x10 ? '1' : '0'), \
+	(byte & 0x08 ? '1' : '0'), \
+	(byte & 0x04 ? '1' : '0'), \
+	(byte & 0x02 ? '1' : '0'), \
+	(byte & 0x01 ? '1' : '0')
 
 #define PRINT_OPAQUE_STRUCT(p)  print_mem((p), sizeof(*(p)))
 

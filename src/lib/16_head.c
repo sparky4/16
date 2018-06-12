@@ -215,3 +215,119 @@ void hres (void)
 		int	10h
 	}
 }
+
+#define REGIDUMP_HEX
+#define REGIDUMP_DUMPFLAGS
+//#define REGIDUMP_USE_CAPS	//uncomment to use the assembly
+//regester dump~
+void regidump()
+{
+	//GENERAL PURPOSE
+	unsigned short _ax,_bx,_cx,_dx;
+	unsigned short _cflag;
+	unsigned char _al,_ah,_bl,_bh,_cl,_ch,_dl,_dh;
+
+	unsigned short _bp,_si,_di,_sp;
+
+	unsigned short _cs,_ds,_es,_ss;	//SEGMENT
+//	unsigned short _ip;	//SPECIAL PURPOSE
+	_ax=_bx=_cx=_dx=_si=_di=_bp=_sp=_cs=_ds=_es=_ss=_cflag=0;
+	_ah=_al=_bh=_bl=_ch=_cl=_dh=_dl=0;
+
+#ifndef REGIDUMP_USE_CAPS
+	__asm {
+		mov _ax,ax
+		mov _bx,bx
+		mov _cx,cx
+		mov _dx,dx
+
+		mov _si,si
+		mov _di,di
+
+		/*mov _ip,ip
+
+		mov _cf,cf
+		mov _pf,pf
+		mov _af,af
+		mov _zf,zf
+		mov _sf,sf
+		mov _tf,tf
+		mov _if,if
+		mov _df,df
+		mov _of,of*/
+	}
+#else
+_ax=_AX;
+_bx=_BX;
+_cx=_CX;
+_dx=_DX;
+
+_si=_SI;
+_di=_DI;
+
+_ah=_AH;
+_al=_AL;
+_bh=_BH;
+_bl=_BL;
+_ch=_CH;
+_cl=_CL;
+_dh=_DH;
+_dl=_DL;
+#endif
+	_cflag=_CFLAG;
+	__asm {
+		mov _bp,bp
+		mov _sp,sp
+
+		mov _cs,cs
+		mov _ds,ds
+		mov _es,es
+		mov _ss,ss
+	}
+//	printf("integer values:	ax=%04d	bx=%04d	cx=%04d	dx=%04d\n", a, b, c, d);
+//	printf("unsigned values:ax=%04u	bx=%04u	cx=%04u	dx=%04u\n", a, b, c, d);
+	printf("================================================================================");
+	printf("16 bit 8088 register values\n");
+	printf("================================================================================");
+	printf("general purpose:\n");
+#ifndef REGIDUMP_HEX
+	printf("	ax=%04u\n	bx=%04u\n	cx=%04u\n	dx=%04u\n\n", _ax, _bx, _cx, _dx);
+	printf("	si=%04u\n	di=%04u\n	bp=%04u\n	sp=%04u\n", _si, _di, _bp, _sp);
+#else
+	printf("	ax=%04x\n	bx=%04x\n	cx=%04x\n	dx=%04x\n\n", _ax, _bx, _cx, _dx);
+	printf("	si=%04x\n	di=%04x\n	bp=%04x\n	sp=%04x\n", _si, _di, _bp, _sp);
+#endif
+	printf("		---------------------------------------\n");
+
+
+
+	printf("segment:\n");
+#ifndef REGIDUMP_HEX
+	printf("	cs=%04u\n	ds=%04u\n	es=%04u\n	ss=%04u\n", _cs, _ds, _es, _ss);
+#else
+	printf("	cs=%04x\n	ds=%04x\n	es=%04x\n	ss=%04x\n", _cs, _ds, _es, _ss);
+#endif
+	printf("		---------------------------------------\n");
+
+
+
+	printf("cflags:\n");
+/*	printf("	ip=%04u\n\n", _ip);
+	printf("	cf=%04u\npf=%04u\naf=%04u\nzf=%04u\nsf=%04u\ntf=%04u\nif=%04u\ndf=%04u\nof=%04u\n", _cf, _pf, _af, _zf, _sf, _tf, _if, _df, _of);
+	printf("		---------------------------------------\n");*/
+#ifdef REGIDUMP_DUMPFLAGS
+#ifndef REGIDUMP_HEX
+//	printf("	ip=%04u\n\n", _IP);
+//	printf("	cf=%04u\npf=%04u\naf=%04u\nzf=%04u\nsf=%04u\ntf=%04u\nif=%04u\ndf=%04u\nof=%04u\n", _CF, _PF, _AF, _ZF, _SF, _TF, _IF, _DF, _OF);
+#else
+//	printf("	ip=%04x\n\n", _IP);
+//	printf("	cf=%04x\npf=%04x\naf=%04x\nzf=%04x\nsf=%04x\ntf=%04x\nif=%04x\ndf=%04x\nof=%04x\n", _CF, _PF, _AF, _ZF, _SF, _TF, _IF, _DF, _OF);
+	printf("cflag: "BYTE_TO_BINARY_PATTERN""BYTE_TO_BINARY_PATTERN"\n",		BYTE_TO_BINARY(_cflag>>8), BYTE_TO_BINARY(_cflag));
+#endif
+	printf("dx: "BYTE_TO_BINARY_PATTERN""BYTE_TO_BINARY_PATTERN"\n",		BYTE_TO_BINARY(_dx>>8), BYTE_TO_BINARY(_dx));
+	printf("		---------------------------------------\n");
+#endif
+
+	printf("for more info see\n	http://stackoverflow.com/questions/9130349/how-many-registers-are-there-in-8086-8088\n");
+	printf("================================================================================");
+}

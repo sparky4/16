@@ -26,4 +26,5 @@ void main()
 //	in
 	//player
 	//mv
+	regidump();
 }
