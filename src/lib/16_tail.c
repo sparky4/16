@@ -793,20 +793,35 @@ void turboXT(byte bakapee)
 }
 #endif
 
-const char *word_to_binary(word x)
+//from https://stackoverflow.com/questions/18327439/printing-binary-representation-of-a-char-in-c
+const char *word_to_binary(int x)
 {
 	static char b[17];
 	int z;
 
 	b[0] = '\0';
-	for (z = 16; z > 0; z >>= 1)
+	for (z = 256; z > 0; z >>= 1)
+	{
+///		printf("		z=%u	b=%u	x=%u\n", z, b, x);
+		strcat(b, ((x & z) == z) ? "1" : "0");
+	}
+	return b;
+}
+
+const char *byte_to_binary(int x)
+{
+	static char b[9];
+	int z;
+
+	b[0] = '\0';
+	for (z = 128; z > 0; z >>= 1)
 	{
 		strcat(b, ((x & z) == z) ? "1" : "0");
 	}
 	return b;
 }
 
-const char *nibble_to_binary(nibble x)
+const char *nibble_to_binary(int x)
 {
 	static char b[9];
 	int z;
@@ -819,9 +834,9 @@ const char *nibble_to_binary(nibble x)
 	return b;
 }
 
-const char *boolean_to_binary(boolean x)
+const char *boolean_to_binary(int x)
 {
-	static char b[9];
+	static char b[3];
 	int z;
 
 	b[0] = '\0';
@@ -832,13 +847,35 @@ const char *boolean_to_binary(boolean x)
 	return b;
 }
 
+void wordtest()
+{
+	word pee;
+	printf("wordtest\n");
+	/* word to binary string */
+	for(pee=0;pee<280;pee++)
+		printf("	%u	%s\n", pee, word_to_binary(pee));
+	printf("	sizeof(word)=%s\n", word_to_binary(sizeof(word)));
+	printf("end of word test\n");
+}
+
+void bytetest()
+{
+	byte pee;
+	printf("bytetest\n");
+	/* byte to binary string */
+	for(pee=0;pee<18;pee++)
+		printf("	%u	%s\n", pee, byte_to_binary(pee));
+	printf("	sizeof(byte)=%s\n", byte_to_binary(sizeof(byte)));
+	printf("end of byte test\n");
+}
+
 void nibbletest()
 {
 	nibble pee;
 	printf("nibbletest\n");
 	/* nibble to binary string */
 	for(pee=0;pee<18;pee++)
-		printf("	%u %s\n", pee, nibble_to_binary(pee));
+		printf("	%u	%s\n", pee, nibble_to_binary(pee));
 	printf("	sizeof(nibble)=%s\n", nibble_to_binary(sizeof(nibble)));
 	printf("end of nibble test\n");
 }
@@ -849,7 +886,7 @@ void booleantest()
 	printf("booleantest\n");
 	/* boolean to binary string */
 	for(pee=0;pee<4;pee++)
-		printf("	%u %s\n", pee, boolean_to_binary(pee));
+		printf("	%u	%s\n", pee, boolean_to_binary(pee));
 	printf("	sizeof(boolean)=%s\n", boolean_to_binary(sizeof(boolean)));
 	printf("end of boolean test\n");
 }

@@ -141,6 +141,12 @@ void DebugMemory_(global_game_variables_t *gvar, boolean q);
 void ClearMemory (global_game_variables_t *gvar);
 void Quit (global_game_variables_t *gvar, char *error);
 void turboXT(byte bakapee);
+const char *word_to_binary(int x);
+const char *byte_to_binary(int x);
+const char *nibble_to_binary(int x);
+const char *boolean_to_binary(int x);
+void wordtest();
+void bytetest();
 void nibbletest();
 void booleantest();
 
