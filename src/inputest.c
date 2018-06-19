@@ -67,10 +67,6 @@ main(int argc, char *argv[])
 	gvar.player[0].enti.d=2;
 	gvar.player[0].enti.spt=4;
 
-//	wordtest();
-	bytetest();
-//0000	nibbletest();
-//0000	booleantest();
 	//printf("dbg_testkeyin=%u	dbg_testcontrolnoisy=%u	dbg_nogvar.playerinpu=%u\nloop if this is not responsive then please KILL or reset machine sorry!!\n", dbg_testkeyin, dbg_testcontrolnoisy, dbg_nogvar.playerinpu);
 	while(!gvar.in.inst->Keyboard[sc_Escape])
 	{
