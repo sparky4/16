@@ -216,7 +216,7 @@ void hres (void)
 	}
 }
 
-#define REGIDUMP_HEX
+//#define REGIDUMP_HEX
 #define REGIDUMP_DUMPFLAGS
 //#define REGIDUMP_USE_CAPS	//uncomment to use the assembly
 //regester dump~
@@ -319,14 +319,16 @@ _dl=_DL;
 #ifndef REGIDUMP_HEX
 //	printf("	ip=%04u\n\n", _IP);
 //	printf("	cf=%04u\npf=%04u\naf=%04u\nzf=%04u\nsf=%04u\ntf=%04u\nif=%04u\ndf=%04u\nof=%04u\n", _CF, _PF, _AF, _ZF, _SF, _TF, _IF, _DF, _OF);
+
+	printf("cflag: "BYTE_TO_BINARY_PATTERN""BYTE_TO_BINARY_PATTERN"\n",		BYTE_TO_BINARY(_cflag>>8), BYTE_TO_BINARY(_cflag));
 #else
 //	printf("	ip=%04x\n\n", _IP);
 //	printf("	cf=%04x\npf=%04x\naf=%04x\nzf=%04x\nsf=%04x\ntf=%04x\nif=%04x\ndf=%04x\nof=%04x\n", _CF, _PF, _AF, _ZF, _SF, _TF, _IF, _DF, _OF);
-	printf("cflag: "BYTE_TO_BINARY_PATTERN""BYTE_TO_BINARY_PATTERN"\n",		BYTE_TO_BINARY(_cflag>>8), BYTE_TO_BINARY(_cflag));
-//		printf("cflag: %s\n",(_cflag));
+	printf("cflag: %016x\n",(_cflag));
 #endif
-	printf("dx: "NIBBLE_TO_BINARY_PATTERN""NIBBLE_TO_BINARY_PATTERN"\n",		NIBBLE_TO_BINARY(_dx>>4), NIBBLE_TO_BINARY(_dx));
-	printf("dx: "BYTE_TO_BINARY_PATTERN""BYTE_TO_BINARY_PATTERN"\n",		BYTE_TO_BINARY(_dx>>8), BYTE_TO_BINARY(_dx));
+	printf("testing\n");
+//	printf("dx: "NIBBLE_TO_BINARY_PATTERN""NIBBLE_TO_BINARY_PATTERN"\n",		NIBBLE_TO_BINARY(_dx>>4), NIBBLE_TO_BINARY(_dx));
+//	printf("dx: "BYTE_TO_BINARY_PATTERN""BYTE_TO_BINARY_PATTERN"\n",		BYTE_TO_BINARY(_dx>>8), BYTE_TO_BINARY(_dx));
 	printf("dx: "WORD_TO_BINARY_PATTERN"\n",		WORD_TO_BINARY(_dx));
 	printf("		---------------------------------------\n");
 #endif
