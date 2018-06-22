@@ -226,7 +226,6 @@ TESTEXEC3= &
 	pcxtest2.exe
 UTILEXEC = &
 	palettel.exe &
-	palllist.exe &
 	palbomb.exe &
 	palettec.exe &
 	ps.exe
@@ -303,7 +302,6 @@ vrstest.exe:	vrstest.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 palettec.exe:	palettec.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 palettel.exe:	 	palettel.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 palbomb.exe: 	palbomb.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
-palllist.exe:	 	palllist.$(OBJ) $(16LIB) gfx.lib $(DOSLIB) ll.$(OBJ)
 pcxtest2.exe:	pcxtest2.$(OBJ) gfx.lib $(DOSLIB)
 #planrpcx.exe:	planrpcx.$(OBJ) gfx.lib
 maptest.exe:	maptest.$(OBJ) 16_map.$(OBJ) 16_head.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
@@ -334,7 +332,6 @@ pcxtest2.$(OBJ):$(SRC)/pcxtest2.c	$(SRCLIB)/16_vl.h
 palettec.$(OBJ):	$(SRC)/palettec.c
 palettel.$(OBJ):	$(SRC)/palettel.c
 palbomb.$(OBJ):	$(SRC)/palbomb.c
-palllist.$(OBJ):	$(SRC)/palllist.c
 maptest.$(OBJ):$(SRC)/maptest.c	$(SRCLIB)/16_vl.h
 #emmtest.$(OBJ):$(SRC)/emmtest.c
 #emsdump.$(OBJ):$(SRC)/emsdump.c
@@ -437,7 +434,6 @@ vgmSnd.$(OBJ):	$(VGMSNDLIB)/vgmSnd.c	$(VGMSNDLIB)/vgmSnd.h
 #midi.$(OBJ):	$(SRCLIB)/midi.c
 c_utils.$(OBJ):	$(MODEXLIB)/c_utils.asm
 modex.$(OBJ):	$(MODEXLIB)/modex.asm
-ll.$(OBJ):		$(SRCLIB)/ll.c	$(SRCLIB)/ll.h
 bitmapl.$(OBJ):	$(SRCLIB)/bitmapl.c	$(SRCLIB)/bitmapl.h
 
 #

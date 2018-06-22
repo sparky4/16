@@ -324,9 +324,10 @@ _dl=_DL;
 //	printf("	cf=%04x\npf=%04x\naf=%04x\nzf=%04x\nsf=%04x\ntf=%04x\nif=%04x\ndf=%04x\nof=%04x\n", _CF, _PF, _AF, _ZF, _SF, _TF, _IF, _DF, _OF);
 	printf("cflag: "BYTE_TO_BINARY_PATTERN""BYTE_TO_BINARY_PATTERN"\n",		BYTE_TO_BINARY(_cflag>>8), BYTE_TO_BINARY(_cflag));
 //		printf("cflag: %s\n",(_cflag));
-	printf("dx: "NIBBLE_TO_BINARY_PATTERN""NIBBLE_TO_BINARY_PATTERN"\n",		NIBBLE_TO_BINARY(_dx>>4), NIBBLE_TO_BINARY(_dx));
 #endif
+	printf("dx: "NIBBLE_TO_BINARY_PATTERN""NIBBLE_TO_BINARY_PATTERN"\n",		NIBBLE_TO_BINARY(_dx>>4), NIBBLE_TO_BINARY(_dx));
 	printf("dx: "BYTE_TO_BINARY_PATTERN""BYTE_TO_BINARY_PATTERN"\n",		BYTE_TO_BINARY(_dx>>8), BYTE_TO_BINARY(_dx));
+	printf("dx: "WORD_TO_BINARY_PATTERN"\n",		WORD_TO_BINARY(_dx));
 	printf("		---------------------------------------\n");
 #endif
 
