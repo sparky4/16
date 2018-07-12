@@ -229,6 +229,7 @@ UTILEXEC = &
 	palbomb.exe &
 	palettec.exe &
 	ps.exe
+#	fd-dbg.exe
 !ifdef __LINUX__
 SPRIUTILEXEC = &
 	pcx2vrl &
@@ -312,6 +313,7 @@ exmmtest.exe:	exmmtest.$(OBJ)	$(16LIB) gfx.lib $(DOSLIB)
 vgmtest.exe:	vgmtest.$(OBJ) vgmsnd.lib $(16LIB) $(DOSLIB) gfx.lib
 db.exe:		db.$(OBJ)
 ps.exe:		ps.$(OBJ) 16_head.$(OBJ)
+fd-dbg.exe:	fd-dbg.$(OBJ) 16_head.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ)
 wcpu.exe:		wcpu.$(OBJ) $(16LIB) $(DOSLIB)
 
 #
@@ -353,6 +355,7 @@ exmmtest.$(OBJ):$(SRC)/exmmtest.c
 vgmtest.$(OBJ):$(SRC)/vgmtest.c
 db.$(OBJ):		$(UTIL)/db.c
 ps.$(OBJ):		$(SRC)/ps.c
+fd-dbg.$(OBJ):		$(SRC)/fd-dbg.c
 
 #
 # non executable objects libraries
