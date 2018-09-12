@@ -1,0 +1,649 @@
+-------------------------------------------------------------------------------
+					./qkeen.sh start
+-------------------------------------------------------------------------------
+16/keen/id_us.c://	US_CheckHighScore() - Checks gamestate to see if the just-ended game
+16/keen/kd_act1.c:	if ( (ob->temp3+=tics) >= flowertime[gamestate.difficulty])
+16/keen/kd_demo.c:	gamestate.worldx = 0;		// spawn keen at starting spot
+16/keen/kd_demo.c:	gamestate.mapon = 0;
+16/keen/kd_demo.c:	gamestate.score = 0;
+16/keen/kd_demo.c:	gamestate.nextextra = 20000;
+16/keen/kd_demo.c:	gamestate.lives = 3;
+16/keen/kd_demo.c:	gamestate.flowerpowers = gamestate.boobusbombs = 0;
+16/keen/kd_demo.c:		gamestate.leveldone[i] = false;
+16/keen/kd_demo.c:	US_PrintUnsigned(gamestate.lives);
+16/keen/kd_demo.c:	US_PrintUnsigned(gamestate.boobusbombs);
+16/keen/kd_demo.c:	US_PrintUnsigned(gamestate.nextextra);
+16/keen/kd_demo.c:	US_PrintUnsigned(gamestate.keys);
+16/keen/kd_demo.c:	if (!CA_FarWrite(file,(void far *)&gamestate,sizeof(gamestate)))
+16/keen/kd_demo.c:	if (!CA_FarRead(file,(void far *)&gamestate,sizeof(gamestate)))
+16/keen/kd_demo.c:		gamestate.mapon = tedlevelnum;
+16/keen/kd_keen.c:	if ((gamestate.score>>16) != ob->temp1
+16/keen/kd_keen.c:		|| (unsigned)gamestate.score != ob->temp2 )
+16/keen/kd_keen.c:		ltoa (gamestate.score,str,10);
+16/keen/kd_keen.c:		ob->temp1 = gamestate.score>>16;
+16/keen/kd_keen.c:		ob->temp2 = gamestate.score;
+16/keen/kd_keen.c:		number = gamestate.boobusbombs;
+16/keen/kd_keen.c:		number = gamestate.flowerpowers;
+16/keen/kd_keen.c:		ob->temp3 = gamestate.flowerpowers;
+16/keen/kd_keen.c:	if (gamestate.lives != ob->temp4)
+16/keen/kd_keen.c:		if (gamestate.lives>9)
+16/keen/kd_keen.c:			MemDrawChar (gamestate.lives +1,dest,width,planesize);
+16/keen/kd_keen.c:		ob->temp4 = gamestate.lives;
+16/keen/kd_keen.c:		if (!gamestate.boobusbombs)
+16/keen/kd_keen.c:		gamestate.bombsthislevel--;
+16/keen/kd_keen.c:		gamestate.boobusbombs--;
+16/keen/kd_keen.c:		if (!gamestate.flowerpowers)
+16/keen/kd_keen.c:		gamestate.flowerpowers--;
+16/keen/kd_keen.c:	if (!gamestate.worldx)
+16/keen/kd_keen.c:		player->x = gamestate.worldx;
+16/keen/kd_keen.c:		player->y = gamestate.worldy;
+16/keen/kd_keen.c:					if (gamestate.boobusbombs < 12)
+16/keen/kd_keen.c:				gamestate.worldx = ob->x;
+16/keen/kd_keen.c:				gamestate.worldy = ob->y;
+16/keen/kd_keen.c:				gamestate.mapon = tile-2;
+16/keen/kd_keen.c:			gamestate.lives++;
+16/keen/kd_keen.c:			gamestate.lives+=3;
+16/keen/kd_keen.c:			gamestate.flowerpowers+=8;
+16/keen/kd_keen.c:			gamestate.flowerpowers++;
+16/keen/kd_keen.c:			gamestate.flowerpowers+=5;
+16/keen/kd_keen.c:			gamestate.boobusbombs++;
+16/keen/kd_keen.c:			gamestate.bombsthislevel++;
+16/keen/kd_keen.c:			gamestate.keys++;
+16/keen/kd_keen.c:		if (gamestate.keys)
+16/keen/kd_keen.c:				gamestate.keys--;
+16/keen/kd_main.c:		gamestate.boobusbombs=99;
+16/keen/kd_main.c:		gamestate.flowerpowers=99;
+16/keen/kd_main.c:		gamestate.keys=99;
+16/keen/kd_main.c:				gamestate.mapon = level;
+16/keen/kd_play.c:gametype	gamestate;
+16/keen/kd_play.c:		if (info>=3 && info<=18 && gamestate.leveldone[info-2])
+16/keen/kd_play.c:	CA_CacheMap (gamestate.mapon);
+16/keen/kd_play.c:	gamestate.score += points;
+16/keen/kd_play.c:	if (gamestate.score >= gamestate.nextextra)
+16/keen/kd_play.c:		gamestate.lives++;
+16/keen/kd_play.c:		gamestate.nextextra*=2;
+16/keen/kd_play.c:	gamestate.keys = 0;
+16/keen/kd_play.c:	gamestate.boobusbombs -= gamestate.bombsthislevel;
+16/keen/kd_play.c:	gamestate.lives--;
+16/keen/kd_play.c:	if (gamestate.lives < 0)
+16/keen/kd_play.c:			gamestate.mapon = 0;		// exit to tuberia
+16/keen/kd_play.c:				gamestate.mapon = 0;		// exit to tuberia
+16/keen/kd_play.c:	gamestate.difficulty = restartgame;
+16/keen/kd_play.c:			gamestate.bombsthislevel = 0;
+16/keen/kd_play.c:			gamestate.leveldone[mapon] = true;	// finished the level
+16/keen/kd_play.c:				gamestate.mapon = 0;
+16/keen/kd_play.c:	} while (gamestate.lives>-1 && playstate!=victorious);
+16/keen/kd_play.c:		if (gamestate.leveldone[i])
+16/keen/kd_play.c:	US_CheckHighScore (gamestate.score,cities);
+16/keen/kd_def.h:extern	gametype	gamestate;
+===============		./qkeen.sh end		===============
+-------------------------------------------------------------------------------
+					./qwolf.sh start
+-------------------------------------------------------------------------------
+==== 16/wf3d8086 ====
+16/wf3d8086/wl_act1.c:		  gamestate.treasuretotal++;
+16/wf3d8086/wl_act1.c:		if ( ! (gamestate.keys & (1 << (lock-dr_lock1) ) ) )
+16/wf3d8086/wl_act1.c:	if (gamestate.victoryflag)		// don't move door during victory sequence
+16/wf3d8086/wl_act1.c:	gamestate.secretcount++;
+16/wf3d8086/wl_act2.c:		  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:		  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:		  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:		  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:	new->hitpoints = starthitpoints[gamestate.difficulty][which];
+16/wf3d8086/wl_act2.c:	new->hitpoints = starthitpoints[gamestate.difficulty][en_boss];
+16/wf3d8086/wl_act2.c:	  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:	new->hitpoints = starthitpoints[gamestate.difficulty][en_gretel];
+16/wf3d8086/wl_act2.c:	  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:		  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:		  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:		  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:		  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:		  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:	new->hitpoints = starthitpoints[gamestate.difficulty][which];
+16/wf3d8086/wl_act2.c:	new->hitpoints = starthitpoints[gamestate.difficulty][en_trans];
+16/wf3d8086/wl_act2.c:	  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:	new->hitpoints = starthitpoints[gamestate.difficulty][en_uber];
+16/wf3d8086/wl_act2.c:	  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:	new->hitpoints = starthitpoints[gamestate.difficulty][en_will];
+16/wf3d8086/wl_act2.c:	  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:	new->hitpoints = starthitpoints[gamestate.difficulty][en_death];
+16/wf3d8086/wl_act2.c:	  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:	new->hitpoints = starthitpoints[gamestate.difficulty][en_angel];
+16/wf3d8086/wl_act2.c:	  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:	new->hitpoints = starthitpoints[gamestate.difficulty][en_spectre];
+16/wf3d8086/wl_act2.c:	  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:	  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:	new->hitpoints = starthitpoints[gamestate.difficulty][en_schabbs];
+16/wf3d8086/wl_act2.c:	  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:	new->hitpoints = starthitpoints[gamestate.difficulty][en_gift];
+16/wf3d8086/wl_act2.c:	  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:	new->hitpoints = starthitpoints[gamestate.difficulty][en_fat];
+16/wf3d8086/wl_act2.c:	  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:	new->hitpoints = starthitpoints[gamestate.difficulty][en_fake];
+16/wf3d8086/wl_act2.c:	  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:	new->hitpoints = starthitpoints[gamestate.difficulty][en_hitler];
+16/wf3d8086/wl_act2.c:	  gamestate.killtotal++;
+16/wf3d8086/wl_act2.c:	new->hitpoints = hitpoints[gamestate.difficulty];
+16/wf3d8086/wl_act2.c:	if (gamestate.victoryflag)
+16/wf3d8086/wl_act2.c:	if (gamestate.victoryflag)
+16/wf3d8086/wl_act2.c:	gamestate.victoryflag = true;
+16/wf3d8086/wl_act2.c:	player->x = gamestate.killx;
+16/wf3d8086/wl_act2.c:	player->y = gamestate.killy;
+16/wf3d8086/wl_agent.c:	if (!gamestate.ammo)		// must use knife with no ammo
+16/wf3d8086/wl_agent.c:	for (i=wp_knife ; i<=gamestate.bestweapon ; i++)
+16/wf3d8086/wl_agent.c:			gamestate.weapon = gamestate.chosenweapon = i;
+16/wf3d8086/wl_agent.c:	if (gamestate.victoryflag)		// watching the BJ actor
+16/wf3d8086/wl_agent.c:	if (gamestate.health)
+16/wf3d8086/wl_agent.c:			StatusDrawPic (17,4,GODMODEFACE1PIC+gamestate.faceframe);
+16/wf3d8086/wl_agent.c:		StatusDrawPic (17,4,FACE1APIC+3*((100-gamestate.health)/16)+gamestate.faceframe);
+16/wf3d8086/wl_agent.c:		gamestate.faceframe = (US_RndT()>>6);
+16/wf3d8086/wl_agent.c:		if (gamestate.faceframe==3)
+16/wf3d8086/wl_agent.c:			gamestate.faceframe = 1;
+16/wf3d8086/wl_agent.c:	LatchNumber (21,16,3,gamestate.health);
+16/wf3d8086/wl_agent.c:	if (gamestate.victoryflag)
+16/wf3d8086/wl_agent.c:	if (gamestate.difficulty==gd_baby)
+16/wf3d8086/wl_agent.c:		gamestate.health -= points;
+16/wf3d8086/wl_agent.c:	if (gamestate.health<=0)
+16/wf3d8086/wl_agent.c:		gamestate.health = 0;
+16/wf3d8086/wl_agent.c:	if (points > 30 && gamestate.health!=0 && !godmode)
+16/wf3d8086/wl_agent.c:	gamestate.health += points;
+16/wf3d8086/wl_agent.c:	if (gamestate.health>100)
+16/wf3d8086/wl_agent.c:		gamestate.health = 100;
+16/wf3d8086/wl_agent.c:	if (gamestate.mapon == 20)
+16/wf3d8086/wl_agent.c:	LatchNumber (2,16,2,gamestate.mapon+1);
+16/wf3d8086/wl_agent.c:	LatchNumber (14,16,1,gamestate.lives);
+16/wf3d8086/wl_agent.c:	if (gamestate.lives<9)
+16/wf3d8086/wl_agent.c:		gamestate.lives++;
+16/wf3d8086/wl_agent.c:	LatchNumber (6,16,6,gamestate.score);
+16/wf3d8086/wl_agent.c:	gamestate.score += points;
+16/wf3d8086/wl_agent.c:	while (gamestate.score >= gamestate.nextextra)
+16/wf3d8086/wl_agent.c:		gamestate.nextextra += EXTRAPOINTS;
+16/wf3d8086/wl_agent.c:	StatusDrawPic (32,8,KNIFEPIC+gamestate.weapon);
+16/wf3d8086/wl_agent.c:	if (gamestate.keys & 1)
+16/wf3d8086/wl_agent.c:	if (gamestate.keys & 2)
+16/wf3d8086/wl_agent.c:	if (gamestate.bestweapon<weapon)
+16/wf3d8086/wl_agent.c:		gamestate.bestweapon = gamestate.weapon
+16/wf3d8086/wl_agent.c:		= gamestate.chosenweapon = weapon;
+16/wf3d8086/wl_agent.c:	LatchNumber (27,16,2,gamestate.ammo);
+16/wf3d8086/wl_agent.c:	if (!gamestate.ammo)				// knife was out
+16/wf3d8086/wl_agent.c:		if (!gamestate.attackframe)
+16/wf3d8086/wl_agent.c:			gamestate.weapon = gamestate.chosenweapon;
+16/wf3d8086/wl_agent.c:	gamestate.ammo += ammo;
+16/wf3d8086/wl_agent.c:	if (gamestate.ammo > 99)
+16/wf3d8086/wl_agent.c:		gamestate.ammo = 99;
+16/wf3d8086/wl_agent.c:	gamestate.keys |= (1<<key);
+16/wf3d8086/wl_agent.c:		if (gamestate.health == 100)
+16/wf3d8086/wl_agent.c:		gamestate.treasurecount++;
+16/wf3d8086/wl_agent.c:		gamestate.treasurecount++;
+16/wf3d8086/wl_agent.c:		gamestate.treasurecount++;
+16/wf3d8086/wl_agent.c:		gamestate.treasurecount++;
+16/wf3d8086/wl_agent.c:		if (gamestate.ammo == 99)
+16/wf3d8086/wl_agent.c:		if (gamestate.ammo == 99)
+16/wf3d8086/wl_agent.c:		if (gamestate.ammo == 99)
+16/wf3d8086/wl_agent.c:		gamestate.treasurecount++;
+16/wf3d8086/wl_agent.c:		if (gamestate.health == 100)
+16/wf3d8086/wl_agent.c:		if (gamestate.health == 100)
+16/wf3d8086/wl_agent.c:		if (gamestate.health >10)
+16/wf3d8086/wl_agent.c:	gamestate.victoryflag = true;
+16/wf3d8086/wl_agent.c:	gamestate.weaponframe = 0;
+16/wf3d8086/wl_agent.c:	gamestate.attackframe = 0;
+16/wf3d8086/wl_agent.c:	gamestate.attackcount =
+16/wf3d8086/wl_agent.c:		attackinfo[gamestate.weapon][gamestate.attackframe].tics;
+16/wf3d8086/wl_agent.c:	gamestate.weaponframe =
+16/wf3d8086/wl_agent.c:		attackinfo[gamestate.weapon][gamestate.attackframe].frame;
+16/wf3d8086/wl_agent.c:	switch (gamestate.weapon)
+16/wf3d8086/wl_agent.c:	if (gamestate.victoryflag)		// watching the BJ actor
+16/wf3d8086/wl_agent.c:	if (gamestate.victoryflag)		// watching the BJ actor
+16/wf3d8086/wl_agent.c:	gamestate.attackcount -= tics;
+16/wf3d8086/wl_agent.c:	while (gamestate.attackcount <= 0)
+16/wf3d8086/wl_agent.c:		cur = &attackinfo[gamestate.weapon][gamestate.attackframe];
+16/wf3d8086/wl_agent.c:			if (!gamestate.ammo)
+16/wf3d8086/wl_agent.c:				gamestate.weapon = wp_knife;
+16/wf3d8086/wl_agent.c:				if (gamestate.weapon != gamestate.chosenweapon)
+16/wf3d8086/wl_agent.c:					gamestate.weapon = gamestate.chosenweapon;
+16/wf3d8086/wl_agent.c:			gamestate.attackframe = gamestate.weaponframe = 0;
+16/wf3d8086/wl_agent.c:			if (!gamestate.ammo)
+16/wf3d8086/wl_agent.c:				gamestate.attackframe -= 2;
+16/wf3d8086/wl_agent.c:			if (!gamestate.ammo)
+16/wf3d8086/wl_agent.c:				gamestate.attackframe++;
+16/wf3d8086/wl_agent.c:			gamestate.ammo--;
+16/wf3d8086/wl_agent.c:			if (gamestate.ammo && buttonstate[bt_attack])
+16/wf3d8086/wl_agent.c:				gamestate.attackframe -= 2;
+16/wf3d8086/wl_agent.c:		gamestate.attackcount += cur->tics;
+16/wf3d8086/wl_agent.c:		gamestate.attackframe++;
+16/wf3d8086/wl_agent.c:		gamestate.weaponframe =
+16/wf3d8086/wl_agent.c:			attackinfo[gamestate.weapon][gamestate.attackframe].frame;
+16/wf3d8086/wl_agent.c:	if (gamestate.victoryflag)		// watching the BJ actor
+16/wf3d8086/wl_agent.c:	if (gamestate.victoryflag)		// watching the BJ actor
+16/wf3d8086/wl_debug.c://		gamestate.mapon++;
+16/wf3d8086/wl_debug.c:		if (gamestate.bestweapon<wp_chaingun)
+16/wf3d8086/wl_debug.c:			GiveWeapon (gamestate.bestweapon+1);
+16/wf3d8086/wl_debug.c:		gamestate.ammo += 50;
+16/wf3d8086/wl_debug.c:		if (gamestate.ammo > 99)
+16/wf3d8086/wl_debug.c:			gamestate.ammo = 99;
+16/wf3d8086/wl_debug.c:				gamestate.mapon = level-1;
+16/wf3d8086/wl_draw.c: unsigned floor=egaFloor[gamestate.episode*10+mapon],
+16/wf3d8086/wl_draw.c:	  ceiling=egaCeiling[gamestate.episode*10+mapon];
+16/wf3d8086/wl_draw.c: unsigned ceiling=vgaCeiling[gamestate.episode*10+mapon];
+16/wf3d8086/wl_draw.c:	if (gamestate.victoryflag)
+16/wf3d8086/wl_draw.c:	if (gamestate.weapon != -1)
+16/wf3d8086/wl_draw.c:		shapenum = weaponscale[gamestate.weapon]+gamestate.weaponframe;
+16/wf3d8086/wl_game.c:gametype	gamestate;
+16/wf3d8086/wl_game.c:				  gamestate.secrettotal++;
+16/wf3d8086/wl_game.c:				if (gamestate.difficulty<gd_hard)
+16/wf3d8086/wl_game.c:				if (gamestate.difficulty<gd_medium)
+16/wf3d8086/wl_game.c:				if (gamestate.difficulty<gd_hard)
+16/wf3d8086/wl_game.c:				if (gamestate.difficulty<gd_medium)
+16/wf3d8086/wl_game.c:				if (gamestate.difficulty<gd_hard)
+16/wf3d8086/wl_game.c:				if (gamestate.difficulty<gd_medium)
+16/wf3d8086/wl_game.c:				if (gamestate.difficulty<gd_hard)
+16/wf3d8086/wl_game.c:				if (gamestate.difficulty<gd_medium)
+16/wf3d8086/wl_game.c:				if (gamestate.difficulty<gd_hard)
+16/wf3d8086/wl_game.c:				if (gamestate.difficulty<gd_medium)
+16/wf3d8086/wl_game.c:				if (gamestate.difficulty<gd_hard)
+16/wf3d8086/wl_game.c:				if (gamestate.difficulty<gd_medium)
+16/wf3d8086/wl_game.c:				if (gamestate.difficulty<gd_hard)
+16/wf3d8086/wl_game.c:				if (gamestate.difficulty<gd_medium)
+16/wf3d8086/wl_game.c:				if (gamestate.difficulty<gd_hard)
+16/wf3d8086/wl_game.c:				if (gamestate.difficulty<gd_medium)
+16/wf3d8086/wl_game.c:				if (gamestate.difficulty<gd_hard)
+16/wf3d8086/wl_game.c:				if (gamestate.difficulty<gd_medium)
+16/wf3d8086/wl_game.c:				if (gamestate.difficulty<gd_hard)
+16/wf3d8086/wl_game.c:				if (gamestate.difficulty<gd_medium)
+16/wf3d8086/wl_game.c:	 gamestate.TimeCount=
+16/wf3d8086/wl_game.c:	 gamestate.secrettotal=
+16/wf3d8086/wl_game.c:	 gamestate.killtotal=
+16/wf3d8086/wl_game.c:	 gamestate.treasuretotal=
+16/wf3d8086/wl_game.c:	 gamestate.secretcount=
+16/wf3d8086/wl_game.c:	 gamestate.killcount=
+16/wf3d8086/wl_game.c:	 gamestate.treasurecount=0;
+16/wf3d8086/wl_game.c:	CA_CacheMap (gamestate.mapon+10*gamestate.episode);
+16/wf3d8086/wl_game.c:	mapon-=gamestate.episode*10;
+16/wf3d8086/wl_game.c:	gamestate.mapon = level%10;
+16/wf3d8086/wl_game.c:	gamestate.mapon = level;
+16/wf3d8086/wl_game.c:	gamestate.mapon = *demoptr++;
+16/wf3d8086/wl_game.c:	gamestate.difficulty = gd_hard;
+16/wf3d8086/wl_game.c:	gamestate.weapon = -1;			// take away weapon
+16/wf3d8086/wl_game.c:	  gamestate.lives--;
+16/wf3d8086/wl_game.c:	if (gamestate.lives > -1)
+16/wf3d8086/wl_game.c:		gamestate.health = 100;
+16/wf3d8086/wl_game.c:		gamestate.weapon = gamestate.bestweapon
+16/wf3d8086/wl_game.c:			= gamestate.chosenweapon = wp_pistol;
+16/wf3d8086/wl_game.c:		gamestate.ammo = STARTAMMO;
+16/wf3d8086/wl_game.c:		gamestate.keys = 0;
+16/wf3d8086/wl_game.c:		gamestate.attackframe = gamestate.attackcount =
+16/wf3d8086/wl_game.c:		gamestate.weaponframe = 0;
+16/wf3d8086/wl_game.c:		  gamestate.score = gamestate.oldscore;
+16/wf3d8086/wl_game.c:		if (gamestate.mapon == 20)	// give them the key allways
+16/wf3d8086/wl_game.c:			gamestate.keys |= 1;
+16/wf3d8086/wl_game.c:			gamestate.oldscore = gamestate.score;
+16/wf3d8086/wl_game.c:			gamestate.mapon = 20;
+16/wf3d8086/wl_game.c:			gamestate.keys = 0;
+16/wf3d8086/wl_game.c:			if (gamestate.mapon == 1)
+16/wf3d8086/wl_game.c:				CheckHighScore (gamestate.score,gamestate.mapon+1);
+16/wf3d8086/wl_game.c:			if (gamestate.mapon == 3)
+16/wf3d8086/wl_game.c:				CheckHighScore (gamestate.score,gamestate.mapon+1);
+16/wf3d8086/wl_game.c:			gamestate.oldscore = gamestate.score;
+16/wf3d8086/wl_game.c:			if (gamestate.mapon == 9)
+16/wf3d8086/wl_game.c:				gamestate.mapon = ElevatorBackTo[gamestate.episode];	// back from secret
+16/wf3d8086/wl_game.c:				gamestate.mapon = 9;
+16/wf3d8086/wl_game.c:				switch(gamestate.mapon)
+16/wf3d8086/wl_game.c:				 case FROMSECRET1: gamestate.mapon = 18; break;
+16/wf3d8086/wl_game.c:				 case FROMSECRET2: gamestate.mapon = 19; break;
+16/wf3d8086/wl_game.c:			if (gamestate.mapon == 18 || gamestate.mapon == 19)
+16/wf3d8086/wl_game.c:				switch(gamestate.mapon)
+16/wf3d8086/wl_game.c:				 case 18: gamestate.mapon = FROMSECRET1+1; break;
+16/wf3d8086/wl_game.c:				 case 19: gamestate.mapon = FROMSECRET2+1; break;
+16/wf3d8086/wl_game.c:				gamestate.mapon++;
+16/wf3d8086/wl_game.c:			if (gamestate.lives > -1)
+16/wf3d8086/wl_game.c:			CheckHighScore (gamestate.score,gamestate.mapon+1);
+16/wf3d8086/wl_game.c:			CheckHighScore (gamestate.score,gamestate.mapon+1);
+16/wf3d8086/wl_inter.c:	if (gamestate.difficulty>=gd_medium)
+16/wf3d8086/wl_inter.c:	 Write(26,2,itoa(gamestate.mapon+1,tempstr,10));
+16/wf3d8086/wl_inter.c:	 Write(30,12,parTimes[gamestate.episode*10+mapon].timestr);
+16/wf3d8086/wl_inter.c:	 Write(26,12,parTimes[gamestate.episode*10+mapon].timestr);
+16/wf3d8086/wl_inter.c:	 sec=gamestate.TimeCount/70;
+16/wf3d8086/wl_inter.c:	 if (gamestate.TimeCount<parTimes[gamestate.episode*10+mapon].time*4200)
+16/wf3d8086/wl_inter.c:		timeleft=(parTimes[gamestate.episode*10+mapon].time*4200)/70-sec;
+16/wf3d8086/wl_inter.c:	 if (gamestate.killtotal)
+16/wf3d8086/wl_inter.c:		kr=(gamestate.killcount*100)/gamestate.killtotal;
+16/wf3d8086/wl_inter.c:	 if (gamestate.secrettotal)
+16/wf3d8086/wl_inter.c:		sr=(gamestate.secretcount*100)/gamestate.secrettotal;
+16/wf3d8086/wl_inter.c:	 if (gamestate.treasuretotal)
+16/wf3d8086/wl_inter.c:		tr=(gamestate.treasurecount*100)/gamestate.treasuretotal;
+16/wf3d8086/wl_inter.c:	if (gamestate.mapon == 1)
+16/wf3d8086/wl_inter.c:	if (gamestate.mapon == 3)
+16/wf3d8086/wl_inter.c:	myscore.episode = gamestate.episode;
+16/wf3d8086/wl_main.c:	memset (&gamestate,0,sizeof(gamestate));
+16/wf3d8086/wl_main.c:	gamestate.difficulty = difficulty;
+16/wf3d8086/wl_main.c:	gamestate.weapon = gamestate.bestweapon
+16/wf3d8086/wl_main.c:		= gamestate.chosenweapon = wp_pistol;
+16/wf3d8086/wl_main.c:	gamestate.health = 100;
+16/wf3d8086/wl_main.c:	gamestate.ammo = STARTAMMO;
+16/wf3d8086/wl_main.c:	gamestate.lives = 3;
+16/wf3d8086/wl_main.c:	gamestate.nextextra = EXTRAPOINTS;
+16/wf3d8086/wl_main.c:	gamestate.episode=episode;
+16/wf3d8086/wl_main.c:	size += sizeof(gamestate) +
+16/wf3d8086/wl_main.c:	CA_FarWrite (file,(void far *)&gamestate,sizeof(gamestate));
+16/wf3d8086/wl_main.c:	checksum = DoChecksum((byte far *)&gamestate,sizeof(gamestate),checksum);
+16/wf3d8086/wl_main.c:	CA_FarRead (file,(void far *)&gamestate,sizeof(gamestate));
+16/wf3d8086/wl_main.c:	checksum = DoChecksum((byte far *)&gamestate,sizeof(gamestate),checksum);
+16/wf3d8086/wl_main.c:	 gamestate.score = 0;
+16/wf3d8086/wl_main.c:	 gamestate.lives = 1;
+16/wf3d8086/wl_main.c:	 gamestate.weapon =
+16/wf3d8086/wl_main.c:	   gamestate.chosenweapon =
+16/wf3d8086/wl_main.c:	   gamestate.bestweapon = wp_pistol;
+16/wf3d8086/wl_main.c:	 gamestate.ammo = 8;
+16/wf3d8086/wl_main.c:			 gamestate.difficulty=level;
+16/wf3d8086/wl_main.c:		gamestate.episode = tedlevelnum/10;
+16/wf3d8086/wl_main.c:		gamestate.mapon = tedlevelnum%10;
+16/wf3d8086/wl_main.c:		gamestate.episode = 0;
+16/wf3d8086/wl_main.c:		gamestate.mapon = tedlevelnum;
+16/wf3d8086/wl_menu.c:				pickquick = gamestate.lives = 0;
+16/wf3d8086/wl_menu.c:	pickquick = gamestate.lives = 0;
+16/wf3d8086/wl_play.c:		gamestate.health = 100;
+16/wf3d8086/wl_play.c:		gamestate.ammo = 99;
+16/wf3d8086/wl_play.c:		gamestate.keys = 3;
+16/wf3d8086/wl_play.c:		gamestate.score = 0;
+16/wf3d8086/wl_play.c:		gamestate.TimeCount += 42000L;
+16/wf3d8086/wl_play.c:	chunk = songs[gamestate.mapon+gamestate.episode*10];
+16/wf3d8086/wl_play.c:		gamestate.TimeCount+=tics;
+16/wf3d8086/wl_state.c:		if (gamestate.bestweapon < wp_machinegun)
+16/wf3d8086/wl_state.c:		gamestate.killx = player->x;
+16/wf3d8086/wl_state.c:		gamestate.killy = player->y;
+16/wf3d8086/wl_state.c:		gamestate.killx = player->x;
+16/wf3d8086/wl_state.c:		gamestate.killy = player->y;
+16/wf3d8086/wl_state.c:		gamestate.killx = player->x;
+16/wf3d8086/wl_state.c:		gamestate.killy = player->y;
+16/wf3d8086/wl_state.c:		gamestate.killx = player->x;
+16/wf3d8086/wl_state.c:		gamestate.killy = player->y;
+16/wf3d8086/wl_state.c:	gamestate.killcount++;
+16/wf3d8086/wl_text.c:	ShowArticle(gamestate.episode + 1);
+16/wf3d8086/wl_text.c:	artnum = endextern+gamestate.episode;
+16/wf3d8086/wl_text.c:	endfilename[6] = '1'+gamestate.episode;
+16/wf3d8086/wl_def.h:// gamestate structure
+16/wf3d8086/wl_def.h:extern	gametype	gamestate;
+==== 16/wolf3d/WOLFSRC ====
+16/wolf3d/WOLFSRC/WL_ACT1.C:		  gamestate.treasuretotal++;
+16/wolf3d/WOLFSRC/WL_ACT1.C:		if ( ! (gamestate.keys & (1 << (lock-dr_lock1) ) ) )
+16/wolf3d/WOLFSRC/WL_ACT1.C:	if (gamestate.victoryflag)		// don't move door during victory sequence
+16/wolf3d/WOLFSRC/WL_ACT1.C:	gamestate.secretcount++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:		  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:		  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:		  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:		  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:	new->hitpoints = starthitpoints[gamestate.difficulty][which];
+16/wolf3d/WOLFSRC/WL_ACT2.C:	new->hitpoints = starthitpoints[gamestate.difficulty][en_boss];
+16/wolf3d/WOLFSRC/WL_ACT2.C:	  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:	new->hitpoints = starthitpoints[gamestate.difficulty][en_gretel];
+16/wolf3d/WOLFSRC/WL_ACT2.C:	  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:		  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:		  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:		  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:		  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:		  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:	new->hitpoints = starthitpoints[gamestate.difficulty][which];
+16/wolf3d/WOLFSRC/WL_ACT2.C:	new->hitpoints = starthitpoints[gamestate.difficulty][en_trans];
+16/wolf3d/WOLFSRC/WL_ACT2.C:	  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:	new->hitpoints = starthitpoints[gamestate.difficulty][en_uber];
+16/wolf3d/WOLFSRC/WL_ACT2.C:	  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:	new->hitpoints = starthitpoints[gamestate.difficulty][en_will];
+16/wolf3d/WOLFSRC/WL_ACT2.C:	  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:	new->hitpoints = starthitpoints[gamestate.difficulty][en_death];
+16/wolf3d/WOLFSRC/WL_ACT2.C:	  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:	new->hitpoints = starthitpoints[gamestate.difficulty][en_angel];
+16/wolf3d/WOLFSRC/WL_ACT2.C:	  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:	new->hitpoints = starthitpoints[gamestate.difficulty][en_spectre];
+16/wolf3d/WOLFSRC/WL_ACT2.C:	  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:	  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:	new->hitpoints = starthitpoints[gamestate.difficulty][en_schabbs];
+16/wolf3d/WOLFSRC/WL_ACT2.C:	  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:	new->hitpoints = starthitpoints[gamestate.difficulty][en_gift];
+16/wolf3d/WOLFSRC/WL_ACT2.C:	  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:	new->hitpoints = starthitpoints[gamestate.difficulty][en_fat];
+16/wolf3d/WOLFSRC/WL_ACT2.C:	  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:	new->hitpoints = starthitpoints[gamestate.difficulty][en_fake];
+16/wolf3d/WOLFSRC/WL_ACT2.C:	  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:	new->hitpoints = starthitpoints[gamestate.difficulty][en_hitler];
+16/wolf3d/WOLFSRC/WL_ACT2.C:	  gamestate.killtotal++;
+16/wolf3d/WOLFSRC/WL_ACT2.C:	new->hitpoints = hitpoints[gamestate.difficulty];
+16/wolf3d/WOLFSRC/WL_ACT2.C:	if (gamestate.victoryflag)
+16/wolf3d/WOLFSRC/WL_ACT2.C:	if (gamestate.victoryflag)
+16/wolf3d/WOLFSRC/WL_ACT2.C:	gamestate.victoryflag = true;
+16/wolf3d/WOLFSRC/WL_ACT2.C:	player->x = gamestate.killx;
+16/wolf3d/WOLFSRC/WL_ACT2.C:	player->y = gamestate.killy;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	if (!gamestate.ammo)		// must use knife with no ammo
+16/wolf3d/WOLFSRC/WL_AGENT.C:	for (i=wp_knife ; i<=gamestate.bestweapon ; i++)
+16/wolf3d/WOLFSRC/WL_AGENT.C:			gamestate.weapon = gamestate.chosenweapon = i;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	if (gamestate.victoryflag)		// watching the BJ actor
+16/wolf3d/WOLFSRC/WL_AGENT.C:	if (gamestate.health)
+16/wolf3d/WOLFSRC/WL_AGENT.C:			StatusDrawPic (17,4,GODMODEFACE1PIC+gamestate.faceframe);
+16/wolf3d/WOLFSRC/WL_AGENT.C:		StatusDrawPic (17,4,FACE1APIC+3*((100-gamestate.health)/16)+gamestate.faceframe);
+16/wolf3d/WOLFSRC/WL_AGENT.C:		gamestate.faceframe = (US_RndT()>>6);
+16/wolf3d/WOLFSRC/WL_AGENT.C:		if (gamestate.faceframe==3)
+16/wolf3d/WOLFSRC/WL_AGENT.C:			gamestate.faceframe = 1;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	LatchNumber (21,16,3,gamestate.health);
+16/wolf3d/WOLFSRC/WL_AGENT.C:	if (gamestate.victoryflag)
+16/wolf3d/WOLFSRC/WL_AGENT.C:	if (gamestate.difficulty==gd_baby)
+16/wolf3d/WOLFSRC/WL_AGENT.C:		gamestate.health -= points;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	if (gamestate.health<=0)
+16/wolf3d/WOLFSRC/WL_AGENT.C:		gamestate.health = 0;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	if (points > 30 && gamestate.health!=0 && !godmode)
+16/wolf3d/WOLFSRC/WL_AGENT.C:	gamestate.health += points;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	if (gamestate.health>100)
+16/wolf3d/WOLFSRC/WL_AGENT.C:		gamestate.health = 100;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	if (gamestate.mapon == 20)
+16/wolf3d/WOLFSRC/WL_AGENT.C:	LatchNumber (2,16,2,gamestate.mapon+1);
+16/wolf3d/WOLFSRC/WL_AGENT.C:	LatchNumber (14,16,1,gamestate.lives);
+16/wolf3d/WOLFSRC/WL_AGENT.C:	if (gamestate.lives<9)
+16/wolf3d/WOLFSRC/WL_AGENT.C:		gamestate.lives++;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	LatchNumber (6,16,6,gamestate.score);
+16/wolf3d/WOLFSRC/WL_AGENT.C:	gamestate.score += points;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	while (gamestate.score >= gamestate.nextextra)
+16/wolf3d/WOLFSRC/WL_AGENT.C:		gamestate.nextextra += EXTRAPOINTS;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	StatusDrawPic (32,8,KNIFEPIC+gamestate.weapon);
+16/wolf3d/WOLFSRC/WL_AGENT.C:	if (gamestate.keys & 1)
+16/wolf3d/WOLFSRC/WL_AGENT.C:	if (gamestate.keys & 2)
+16/wolf3d/WOLFSRC/WL_AGENT.C:	if (gamestate.bestweapon<weapon)
+16/wolf3d/WOLFSRC/WL_AGENT.C:		gamestate.bestweapon = gamestate.weapon
+16/wolf3d/WOLFSRC/WL_AGENT.C:		= gamestate.chosenweapon = weapon;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	LatchNumber (27,16,2,gamestate.ammo);
+16/wolf3d/WOLFSRC/WL_AGENT.C:	if (!gamestate.ammo)				// knife was out
+16/wolf3d/WOLFSRC/WL_AGENT.C:		if (!gamestate.attackframe)
+16/wolf3d/WOLFSRC/WL_AGENT.C:			gamestate.weapon = gamestate.chosenweapon;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	gamestate.ammo += ammo;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	if (gamestate.ammo > 99)
+16/wolf3d/WOLFSRC/WL_AGENT.C:		gamestate.ammo = 99;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	gamestate.keys |= (1<<key);
+16/wolf3d/WOLFSRC/WL_AGENT.C:		if (gamestate.health == 100)
+16/wolf3d/WOLFSRC/WL_AGENT.C:		gamestate.treasurecount++;
+16/wolf3d/WOLFSRC/WL_AGENT.C:		gamestate.treasurecount++;
+16/wolf3d/WOLFSRC/WL_AGENT.C:		gamestate.treasurecount++;
+16/wolf3d/WOLFSRC/WL_AGENT.C:		gamestate.treasurecount++;
+16/wolf3d/WOLFSRC/WL_AGENT.C:		if (gamestate.ammo == 99)
+16/wolf3d/WOLFSRC/WL_AGENT.C:		if (gamestate.ammo == 99)
+16/wolf3d/WOLFSRC/WL_AGENT.C:		if (gamestate.ammo == 99)
+16/wolf3d/WOLFSRC/WL_AGENT.C:		gamestate.treasurecount++;
+16/wolf3d/WOLFSRC/WL_AGENT.C:		if (gamestate.health == 100)
+16/wolf3d/WOLFSRC/WL_AGENT.C:		if (gamestate.health == 100)
+16/wolf3d/WOLFSRC/WL_AGENT.C:		if (gamestate.health >10)
+16/wolf3d/WOLFSRC/WL_AGENT.C:	gamestate.victoryflag = true;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	gamestate.weaponframe = 0;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	gamestate.attackframe = 0;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	gamestate.attackcount =
+16/wolf3d/WOLFSRC/WL_AGENT.C:		attackinfo[gamestate.weapon][gamestate.attackframe].tics;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	gamestate.weaponframe =
+16/wolf3d/WOLFSRC/WL_AGENT.C:		attackinfo[gamestate.weapon][gamestate.attackframe].frame;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	switch (gamestate.weapon)
+16/wolf3d/WOLFSRC/WL_AGENT.C:	if (gamestate.victoryflag)		// watching the BJ actor
+16/wolf3d/WOLFSRC/WL_AGENT.C:	if (gamestate.victoryflag)		// watching the BJ actor
+16/wolf3d/WOLFSRC/WL_AGENT.C:	gamestate.attackcount -= tics;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	while (gamestate.attackcount <= 0)
+16/wolf3d/WOLFSRC/WL_AGENT.C:		cur = &attackinfo[gamestate.weapon][gamestate.attackframe];
+16/wolf3d/WOLFSRC/WL_AGENT.C:			if (!gamestate.ammo)
+16/wolf3d/WOLFSRC/WL_AGENT.C:				gamestate.weapon = wp_knife;
+16/wolf3d/WOLFSRC/WL_AGENT.C:				if (gamestate.weapon != gamestate.chosenweapon)
+16/wolf3d/WOLFSRC/WL_AGENT.C:					gamestate.weapon = gamestate.chosenweapon;
+16/wolf3d/WOLFSRC/WL_AGENT.C:			gamestate.attackframe = gamestate.weaponframe = 0;
+16/wolf3d/WOLFSRC/WL_AGENT.C:			if (!gamestate.ammo)
+16/wolf3d/WOLFSRC/WL_AGENT.C:				gamestate.attackframe -= 2;
+16/wolf3d/WOLFSRC/WL_AGENT.C:			if (!gamestate.ammo)
+16/wolf3d/WOLFSRC/WL_AGENT.C:				gamestate.attackframe++;
+16/wolf3d/WOLFSRC/WL_AGENT.C:			gamestate.ammo--;
+16/wolf3d/WOLFSRC/WL_AGENT.C:			if (gamestate.ammo && buttonstate[bt_attack])
+16/wolf3d/WOLFSRC/WL_AGENT.C:				gamestate.attackframe -= 2;
+16/wolf3d/WOLFSRC/WL_AGENT.C:		gamestate.attackcount += cur->tics;
+16/wolf3d/WOLFSRC/WL_AGENT.C:		gamestate.attackframe++;
+16/wolf3d/WOLFSRC/WL_AGENT.C:		gamestate.weaponframe =
+16/wolf3d/WOLFSRC/WL_AGENT.C:			attackinfo[gamestate.weapon][gamestate.attackframe].frame;
+16/wolf3d/WOLFSRC/WL_AGENT.C:	if (gamestate.victoryflag)		// watching the BJ actor
+16/wolf3d/WOLFSRC/WL_AGENT.C:	if (gamestate.victoryflag)		// watching the BJ actor
+16/wolf3d/WOLFSRC/WL_DEBUG.C://		gamestate.mapon++;
+16/wolf3d/WOLFSRC/WL_DEBUG.C:		if (gamestate.bestweapon<wp_chaingun)
+16/wolf3d/WOLFSRC/WL_DEBUG.C:			GiveWeapon (gamestate.bestweapon+1);
+16/wolf3d/WOLFSRC/WL_DEBUG.C:		gamestate.ammo += 50;
+16/wolf3d/WOLFSRC/WL_DEBUG.C:		if (gamestate.ammo > 99)
+16/wolf3d/WOLFSRC/WL_DEBUG.C:			gamestate.ammo = 99;
+16/wolf3d/WOLFSRC/WL_DEBUG.C:				gamestate.mapon = level-1;
+16/wolf3d/WOLFSRC/WL_DRAW.C: unsigned floor=egaFloor[gamestate.episode*10+mapon],
+16/wolf3d/WOLFSRC/WL_DRAW.C:	  ceiling=egaCeiling[gamestate.episode*10+mapon];
+16/wolf3d/WOLFSRC/WL_DRAW.C: unsigned ceiling=vgaCeiling[gamestate.episode*10+mapon];
+16/wolf3d/WOLFSRC/WL_DRAW.C:	if (gamestate.victoryflag)
+16/wolf3d/WOLFSRC/WL_DRAW.C:	if (gamestate.weapon != -1)
+16/wolf3d/WOLFSRC/WL_DRAW.C:		shapenum = weaponscale[gamestate.weapon]+gamestate.weaponframe;
+16/wolf3d/WOLFSRC/WL_GAME.C:gametype	gamestate;
+16/wolf3d/WOLFSRC/WL_GAME.C:				  gamestate.secrettotal++;
+16/wolf3d/WOLFSRC/WL_GAME.C:				if (gamestate.difficulty<gd_hard)
+16/wolf3d/WOLFSRC/WL_GAME.C:				if (gamestate.difficulty<gd_medium)
+16/wolf3d/WOLFSRC/WL_GAME.C:				if (gamestate.difficulty<gd_hard)
+16/wolf3d/WOLFSRC/WL_GAME.C:				if (gamestate.difficulty<gd_medium)
+16/wolf3d/WOLFSRC/WL_GAME.C:				if (gamestate.difficulty<gd_hard)
+16/wolf3d/WOLFSRC/WL_GAME.C:				if (gamestate.difficulty<gd_medium)
+16/wolf3d/WOLFSRC/WL_GAME.C:				if (gamestate.difficulty<gd_hard)
+16/wolf3d/WOLFSRC/WL_GAME.C:				if (gamestate.difficulty<gd_medium)
+16/wolf3d/WOLFSRC/WL_GAME.C:				if (gamestate.difficulty<gd_hard)
+16/wolf3d/WOLFSRC/WL_GAME.C:				if (gamestate.difficulty<gd_medium)
+16/wolf3d/WOLFSRC/WL_GAME.C:				if (gamestate.difficulty<gd_hard)
+16/wolf3d/WOLFSRC/WL_GAME.C:				if (gamestate.difficulty<gd_medium)
+16/wolf3d/WOLFSRC/WL_GAME.C:				if (gamestate.difficulty<gd_hard)
+16/wolf3d/WOLFSRC/WL_GAME.C:				if (gamestate.difficulty<gd_medium)
+16/wolf3d/WOLFSRC/WL_GAME.C:				if (gamestate.difficulty<gd_hard)
+16/wolf3d/WOLFSRC/WL_GAME.C:				if (gamestate.difficulty<gd_medium)
+16/wolf3d/WOLFSRC/WL_GAME.C:				if (gamestate.difficulty<gd_hard)
+16/wolf3d/WOLFSRC/WL_GAME.C:				if (gamestate.difficulty<gd_medium)
+16/wolf3d/WOLFSRC/WL_GAME.C:				if (gamestate.difficulty<gd_hard)
+16/wolf3d/WOLFSRC/WL_GAME.C:				if (gamestate.difficulty<gd_medium)
+16/wolf3d/WOLFSRC/WL_GAME.C:	 gamestate.TimeCount=
+16/wolf3d/WOLFSRC/WL_GAME.C:	 gamestate.secrettotal=
+16/wolf3d/WOLFSRC/WL_GAME.C:	 gamestate.killtotal=
+16/wolf3d/WOLFSRC/WL_GAME.C:	 gamestate.treasuretotal=
+16/wolf3d/WOLFSRC/WL_GAME.C:	 gamestate.secretcount=
+16/wolf3d/WOLFSRC/WL_GAME.C:	 gamestate.killcount=
+16/wolf3d/WOLFSRC/WL_GAME.C:	 gamestate.treasurecount=0;
+16/wolf3d/WOLFSRC/WL_GAME.C:	CA_CacheMap (gamestate.mapon+10*gamestate.episode);
+16/wolf3d/WOLFSRC/WL_GAME.C:	mapon-=gamestate.episode*10;
+16/wolf3d/WOLFSRC/WL_GAME.C:	gamestate.mapon = level%10;
+16/wolf3d/WOLFSRC/WL_GAME.C:	gamestate.mapon = level;
+16/wolf3d/WOLFSRC/WL_GAME.C:	gamestate.mapon = *demoptr++;
+16/wolf3d/WOLFSRC/WL_GAME.C:	gamestate.difficulty = gd_hard;
+16/wolf3d/WOLFSRC/WL_GAME.C:	gamestate.weapon = -1;			// take away weapon
+16/wolf3d/WOLFSRC/WL_GAME.C:	  gamestate.lives--;
+16/wolf3d/WOLFSRC/WL_GAME.C:	if (gamestate.lives > -1)
+16/wolf3d/WOLFSRC/WL_GAME.C:		gamestate.health = 100;
+16/wolf3d/WOLFSRC/WL_GAME.C:		gamestate.weapon = gamestate.bestweapon
+16/wolf3d/WOLFSRC/WL_GAME.C:			= gamestate.chosenweapon = wp_pistol;
+16/wolf3d/WOLFSRC/WL_GAME.C:		gamestate.ammo = STARTAMMO;
+16/wolf3d/WOLFSRC/WL_GAME.C:		gamestate.keys = 0;
+16/wolf3d/WOLFSRC/WL_GAME.C:		gamestate.attackframe = gamestate.attackcount =
+16/wolf3d/WOLFSRC/WL_GAME.C:		gamestate.weaponframe = 0;
+16/wolf3d/WOLFSRC/WL_GAME.C:		  gamestate.score = gamestate.oldscore;
+16/wolf3d/WOLFSRC/WL_GAME.C:		if (gamestate.mapon == 20)	// give them the key allways
+16/wolf3d/WOLFSRC/WL_GAME.C:			gamestate.keys |= 1;
+16/wolf3d/WOLFSRC/WL_GAME.C:			gamestate.oldscore = gamestate.score;
+16/wolf3d/WOLFSRC/WL_GAME.C:			gamestate.mapon = 20;
+16/wolf3d/WOLFSRC/WL_GAME.C:			gamestate.keys = 0;
+16/wolf3d/WOLFSRC/WL_GAME.C:			if (gamestate.mapon == 1)
+16/wolf3d/WOLFSRC/WL_GAME.C:				CheckHighScore (gamestate.score,gamestate.mapon+1);
+16/wolf3d/WOLFSRC/WL_GAME.C:			if (gamestate.mapon == 3)
+16/wolf3d/WOLFSRC/WL_GAME.C:				CheckHighScore (gamestate.score,gamestate.mapon+1);
+16/wolf3d/WOLFSRC/WL_GAME.C:			gamestate.oldscore = gamestate.score;
+16/wolf3d/WOLFSRC/WL_GAME.C:			if (gamestate.mapon == 9)
+16/wolf3d/WOLFSRC/WL_GAME.C:				gamestate.mapon = ElevatorBackTo[gamestate.episode];	// back from secret
+16/wolf3d/WOLFSRC/WL_GAME.C:				gamestate.mapon = 9;
+16/wolf3d/WOLFSRC/WL_GAME.C:				switch(gamestate.mapon)
+16/wolf3d/WOLFSRC/WL_GAME.C:				 case FROMSECRET1: gamestate.mapon = 18; break;
+16/wolf3d/WOLFSRC/WL_GAME.C:				 case FROMSECRET2: gamestate.mapon = 19; break;
+16/wolf3d/WOLFSRC/WL_GAME.C:			if (gamestate.mapon == 18 || gamestate.mapon == 19)
+16/wolf3d/WOLFSRC/WL_GAME.C:				switch(gamestate.mapon)
+16/wolf3d/WOLFSRC/WL_GAME.C:				 case 18: gamestate.mapon = FROMSECRET1+1; break;
+16/wolf3d/WOLFSRC/WL_GAME.C:				 case 19: gamestate.mapon = FROMSECRET2+1; break;
+16/wolf3d/WOLFSRC/WL_GAME.C:				gamestate.mapon++;
+16/wolf3d/WOLFSRC/WL_GAME.C:			if (gamestate.lives > -1)
+16/wolf3d/WOLFSRC/WL_GAME.C:			CheckHighScore (gamestate.score,gamestate.mapon+1);
+16/wolf3d/WOLFSRC/WL_GAME.C:			CheckHighScore (gamestate.score,gamestate.mapon+1);
+16/wolf3d/WOLFSRC/WL_INTER.C:	if (gamestate.difficulty>=gd_medium)
+16/wolf3d/WOLFSRC/WL_INTER.C:	 Write(26,2,itoa(gamestate.mapon+1,tempstr,10));
+16/wolf3d/WOLFSRC/WL_INTER.C:	 Write(30,12,parTimes[gamestate.episode*10+mapon].timestr);
+16/wolf3d/WOLFSRC/WL_INTER.C:	 Write(26,12,parTimes[gamestate.episode*10+mapon].timestr);
+16/wolf3d/WOLFSRC/WL_INTER.C:	 sec=gamestate.TimeCount/70;
+16/wolf3d/WOLFSRC/WL_INTER.C:	 if (gamestate.TimeCount<parTimes[gamestate.episode*10+mapon].time*4200)
+16/wolf3d/WOLFSRC/WL_INTER.C:		timeleft=(parTimes[gamestate.episode*10+mapon].time*4200)/70-sec;
+16/wolf3d/WOLFSRC/WL_INTER.C:	 if (gamestate.killtotal)
+16/wolf3d/WOLFSRC/WL_INTER.C:		kr=(gamestate.killcount*100)/gamestate.killtotal;
+16/wolf3d/WOLFSRC/WL_INTER.C:	 if (gamestate.secrettotal)
+16/wolf3d/WOLFSRC/WL_INTER.C:		sr=(gamestate.secretcount*100)/gamestate.secrettotal;
+16/wolf3d/WOLFSRC/WL_INTER.C:	 if (gamestate.treasuretotal)
+16/wolf3d/WOLFSRC/WL_INTER.C:		tr=(gamestate.treasurecount*100)/gamestate.treasuretotal;
+16/wolf3d/WOLFSRC/WL_INTER.C:	if (gamestate.mapon == 1)
+16/wolf3d/WOLFSRC/WL_INTER.C:	if (gamestate.mapon == 3)
+16/wolf3d/WOLFSRC/WL_INTER.C:	myscore.episode = gamestate.episode;
+16/wolf3d/WOLFSRC/WL_MAIN.C:	memset (&gamestate,0,sizeof(gamestate));
+16/wolf3d/WOLFSRC/WL_MAIN.C:	gamestate.difficulty = difficulty;
+16/wolf3d/WOLFSRC/WL_MAIN.C:	gamestate.weapon = gamestate.bestweapon
+16/wolf3d/WOLFSRC/WL_MAIN.C:		= gamestate.chosenweapon = wp_pistol;
+16/wolf3d/WOLFSRC/WL_MAIN.C:	gamestate.health = 100;
+16/wolf3d/WOLFSRC/WL_MAIN.C:	gamestate.ammo = STARTAMMO;
+16/wolf3d/WOLFSRC/WL_MAIN.C:	gamestate.lives = 3;
+16/wolf3d/WOLFSRC/WL_MAIN.C:	gamestate.nextextra = EXTRAPOINTS;
+16/wolf3d/WOLFSRC/WL_MAIN.C:	gamestate.episode=episode;
+16/wolf3d/WOLFSRC/WL_MAIN.C:	size += sizeof(gamestate) +
+16/wolf3d/WOLFSRC/WL_MAIN.C:	CA_FarWrite (file,(void far *)&gamestate,sizeof(gamestate));
+16/wolf3d/WOLFSRC/WL_MAIN.C:	checksum = DoChecksum((byte far *)&gamestate,sizeof(gamestate),checksum);
+16/wolf3d/WOLFSRC/WL_MAIN.C:	CA_FarRead (file,(void far *)&gamestate,sizeof(gamestate));
+16/wolf3d/WOLFSRC/WL_MAIN.C:	checksum = DoChecksum((byte far *)&gamestate,sizeof(gamestate),checksum);
+16/wolf3d/WOLFSRC/WL_MAIN.C:	 gamestate.score = 0;
+16/wolf3d/WOLFSRC/WL_MAIN.C:	 gamestate.lives = 1;
+16/wolf3d/WOLFSRC/WL_MAIN.C:	 gamestate.weapon =
+16/wolf3d/WOLFSRC/WL_MAIN.C:	   gamestate.chosenweapon =
+16/wolf3d/WOLFSRC/WL_MAIN.C:	   gamestate.bestweapon = wp_pistol;
+16/wolf3d/WOLFSRC/WL_MAIN.C:	 gamestate.ammo = 8;
+16/wolf3d/WOLFSRC/WL_MAIN.C:			 gamestate.difficulty=level;
+16/wolf3d/WOLFSRC/WL_MAIN.C:		gamestate.episode = tedlevelnum/10;
+16/wolf3d/WOLFSRC/WL_MAIN.C:		gamestate.mapon = tedlevelnum%10;
+16/wolf3d/WOLFSRC/WL_MAIN.C:		gamestate.episode = 0;
+16/wolf3d/WOLFSRC/WL_MAIN.C:		gamestate.mapon = tedlevelnum;
+16/wolf3d/WOLFSRC/WL_MENU.C:				pickquick = gamestate.lives = 0;
+16/wolf3d/WOLFSRC/WL_MENU.C:	pickquick = gamestate.lives = 0;
+16/wolf3d/WOLFSRC/WL_PLAY.C:		gamestate.health = 100;
+16/wolf3d/WOLFSRC/WL_PLAY.C:		gamestate.ammo = 99;
+16/wolf3d/WOLFSRC/WL_PLAY.C:		gamestate.keys = 3;
+16/wolf3d/WOLFSRC/WL_PLAY.C:		gamestate.score = 0;
+16/wolf3d/WOLFSRC/WL_PLAY.C:		gamestate.TimeCount += 42000L;
+16/wolf3d/WOLFSRC/WL_PLAY.C:	chunk = songs[gamestate.mapon+gamestate.episode*10];
+16/wolf3d/WOLFSRC/WL_PLAY.C:		gamestate.TimeCount+=tics;
+16/wolf3d/WOLFSRC/WL_STATE.C:		if (gamestate.bestweapon < wp_machinegun)
+16/wolf3d/WOLFSRC/WL_STATE.C:		gamestate.killx = player->x;
+16/wolf3d/WOLFSRC/WL_STATE.C:		gamestate.killy = player->y;
+16/wolf3d/WOLFSRC/WL_STATE.C:		gamestate.killx = player->x;
+16/wolf3d/WOLFSRC/WL_STATE.C:		gamestate.killy = player->y;
+16/wolf3d/WOLFSRC/WL_STATE.C:		gamestate.killx = player->x;
+16/wolf3d/WOLFSRC/WL_STATE.C:		gamestate.killy = player->y;
+16/wolf3d/WOLFSRC/WL_STATE.C:		gamestate.killx = player->x;
+16/wolf3d/WOLFSRC/WL_STATE.C:		gamestate.killy = player->y;
+16/wolf3d/WOLFSRC/WL_STATE.C:	gamestate.killcount++;
+16/wolf3d/WOLFSRC/WL_TEXT.C:	ShowArticle(gamestate.episode + 1);
+16/wolf3d/WOLFSRC/WL_TEXT.C:	artnum = endextern+gamestate.episode;
+16/wolf3d/WOLFSRC/WL_TEXT.C:	endfilename[6] = '1'+gamestate.episode;
+16/wolf3d/WOLFSRC/WL_DEF.H:// gamestate structure
+16/wolf3d/WOLFSRC/WL_DEF.H:extern	gametype	gamestate;
+===============		./qwolf.sh end		===============
