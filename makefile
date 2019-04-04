@@ -83,7 +83,7 @@ MODEXLIB=$(SRCLIB)/modex
 VGMSNDLIB=$(SRCLIB)/vgmsnd
 DOSLIBDIR=$(SRCLIB)/doslib
 WCPULIB=$(SRCLIB)/wcpu
-OLDMODEX16LIBDIR=16/modex16
+OLDMODEX16LIBDIR=16$(DIRSEP)modex16
 #16/$(SRCLIB)
 
 DOSLIB_CPU=$(DOSLIBDIR)/hw/cpu
@@ -444,24 +444,24 @@ bitmapl.$(OBJ):	$(SRCLIB)/bitmapl.c	$(SRCLIB)/bitmapl.h
 #
 0croll.exe:	0croll.$(OBJ) modex16.obj dos_kb.obj bitmap.obj# $(OLDLIBOBJS) omodex16.$(OBJ)# 16_ino.$(OBJ)
 	wcl -0 $(WCLQ) 0croll.$(OBJ) modex16.obj dos_kb.obj bitmap.obj# omodex16.$(OBJ) bitmap.$(OBJ)# 16_ino.$(OBJ)
-0croll.$(OBJ):	$(SRC)/0croll.c
-	wcl -0 $(WCLQ) -i"src/lib/doslib" -fo=.$(OBJ) -c src/0croll.c
+0croll.$(OBJ):	$(SRC)$(DIRSEP)0croll.c
+	wcl -0 $(WCLQ) -i"$(DOSLIBDIR)" -fo=.$(OBJ) -c $(SRC)$(DIRSEP)0croll.c
 1croll.exe:	1croll.$(OBJ) modex16.obj dos_kb.obj bitmap.obj# $(OLDLIBOBJS) omodex16.$(OBJ)# 16_ino.$(OBJ)
 	wcl -0 $(WCLQ) 1croll.$(OBJ) modex16.obj dos_kb.obj bitmap.obj# omodex16.$(OBJ) bitmap.$(OBJ)# 16_ino.$(OBJ)
-1croll.$(OBJ):	$(SRC)/1croll.c
-	wcl -0 $(WCLQ) -i"src/lib/doslib" -fo=.$(OBJ) -c src/1croll.c
-#16render.$(OBJ):	$(OLDMODEX16LIBDIR)/16render.c	$(OLDMODEX16LIBDIR)/16render.h
-#	wcl -0 $(WCLQ) -i"src/lib/doslib" -fo=.$(OBJ) -c $(OLDMODEX16LIBDIR)/16render.c
-bitmap.$(OBJ):	$(OLDMODEX16LIBDIR)/bitmap.c	$(OLDMODEX16LIBDIR)/bitmap.h
-	wcl -0 $(WCLQ) -i"src/lib/doslib" -fo=.$(OBJ) -c $(OLDMODEX16LIBDIR)/bitmap.c
-#omodex16.$(OBJ):	$(OLDMODEX16LIBDIR)/omodex16.c	$(OLDMODEX16LIBDIR)/omodex16.h
-#	wcl -0 $(WCLQ) -i"src/lib/doslib" -fo=.$(OBJ) -c $(OLDMODEX16LIBDIR)/omodex16.c
-modex16.$(OBJ):	$(OLDMODEX16LIBDIR)/modex16.c	$(OLDMODEX16LIBDIR)/modex16.h
-	wcl -0 $(WCLQ) -i"src/lib/doslib" -fo=.$(OBJ) -c $(OLDMODEX16LIBDIR)/modex16.c
-#16_ino.$(OBJ):	$(SRCLIB)/16_in.c	$(SRCLIB)/16_in.h
-#	wcl -0 $(WCLQ) -i"src/lib/doslib" -fo=16_ino.$(OBJ) -c src/lib/16_in.c
-dos_kb.$(OBJ):	$(OLDMODEX16LIBDIR)/dos_kb.c	$(OLDMODEX16LIBDIR)/dos_kb.h
-	wcl -0 $(WCLQ) -i"src/lib/doslib" -fo=.$(OBJ) -c $(OLDMODEX16LIBDIR)/dos_kb.c
+1croll.$(OBJ):	$(SRC)$(DIRSEP)1croll.c
+	wcl -0 $(WCLQ) -i"$(DOSLIBDIR)" -fo=.$(OBJ) -c $(SRC)$(DIRSEP)1croll.c
+#16render.$(OBJ):	$(OLDMODEX16LIBDIR)$(DIRSEP)16render.c	$(OLDMODEX16LIBDIR)$(DIRSEP)16render.h
+#	wcl -0 $(WCLQ) -i"$(DOSLIBDIR)" -fo=.$(OBJ) -c $(OLDMODEX16LIBDIR)$(DIRSEP)16render.c
+bitmap.$(OBJ):	$(OLDMODEX16LIBDIR)$(DIRSEP)bitmap.c	$(OLDMODEX16LIBDIR)$(DIRSEP)bitmap.h
+	wcl -0 $(WCLQ) -i"$(DOSLIBDIR)" -fo=.$(OBJ) -c $(OLDMODEX16LIBDIR)$(DIRSEP)bitmap.c
+#omodex16.$(OBJ):	$(OLDMODEX16LIBDIR)$(DIRSEP)omodex16.c	$(OLDMODEX16LIBDIR)$(DIRSEP)omodex16.h
+#	wcl -0 $(WCLQ) -i"$(DOSLIBDIR)" -fo=.$(OBJ) -c $(OLDMODEX16LIBDIR)$(DIRSEP)omodex16.c
+modex16.$(OBJ):	$(OLDMODEX16LIBDIR)$(DIRSEP)modex16.c	$(OLDMODEX16LIBDIR)$(DIRSEP)modex16.h
+	wcl -0 $(WCLQ) -i"$(DOSLIBDIR)" -fo=.$(OBJ) -c $(OLDMODEX16LIBDIR)$(DIRSEP)modex16.c
+#16_ino.$(OBJ):	$(SRCLIB)$(DIRSEP)16_in.c	$(SRCLIB)$(DIRSEP)16_in.h
+#	wcl -0 $(WCLQ) -i"$(DOSLIBDIR)" -fo=16_ino.$(OBJ) -c $(SRC)$(DIRSEP)lib$(DIRSEP)16_in.c
+dos_kb.$(OBJ):	$(OLDMODEX16LIBDIR)$(DIRSEP)dos_kb.c	$(OLDMODEX16LIBDIR)$(DIRSEP)dos_kb.h
+	wcl -0 $(WCLQ) -i"$(DOSLIBDIR)" -fo=.$(OBJ) -c $(OLDMODEX16LIBDIR)$(DIRSEP)dos_kb.c
 
 #
 #other~
