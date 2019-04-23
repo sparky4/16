@@ -23,6 +23,8 @@
 #ifndef _16_MAP__H_
 #define _16_MAP__H_
 
+#define JSMN_STATIC
+
 #include "src/lib/16_head.h"
 #include "src/lib/16_tdef.h"
 #include "src/lib/jsmn/jsmn.h"
@@ -40,6 +42,9 @@
 //#define DEBUG_JS
 
 //typedefs moved to 16_tdef.h
+
+void jsmn_init(jsmn_parser *parser);
+int jsmn_parse(jsmn_parser *parser, const char *js, const size_t len, jsmntok_t *tokens, const unsigned int num_tokens);
 
 int jsoneq(const char *json, jsmntok_t *tok, const char *s);
 //word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, map_t *map, dword q);
