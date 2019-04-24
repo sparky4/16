@@ -1356,7 +1356,6 @@ extern char global_temp_status_text2[512];
 =====================
 */
 
-
 void MM_ShowMemory (global_game_variables_t *gvar)
 {
 	mmblocktype far *scan;
