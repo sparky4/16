@@ -24,7 +24,6 @@
 #define _16_MAP__H_
 
 #include "src/lib/16_head.h"
-#include "src/lib/16_tail.h"
 #include "src/lib/16_tdef.h"
 //#include "stdio.h" included in 16_head.h
 //#include "stdlib.h" included in 16_head.h
@@ -32,9 +31,6 @@
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 #include "src/lib/16_pm.h"
-/*#define JSMN_STATIC
-#include "src/lib/jsmn/jsmn.h"
-*/
 
 
 //#define DEBUG_MAPDATA
