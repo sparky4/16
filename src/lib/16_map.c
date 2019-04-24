@@ -23,6 +23,8 @@
 //TODO USE CA AND THIS FILE FORMAT
 
 #include "src/lib/16_map.h"
+#define JSMN_STATIC
+#include "src/lib/jsmn/jsmn.h"
 #include <malloc.h>
 
 // Ideally, preprocess json during compilation and read serialized data

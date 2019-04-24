@@ -23,17 +23,18 @@
 #ifndef _16_MAP__H_
 #define _16_MAP__H_
 
-#define JSMN_STATIC
-
 #include "src/lib/16_head.h"
+#include "src/lib/16_tail.h"
 #include "src/lib/16_tdef.h"
-#include "src/lib/jsmn/jsmn.h"
 //#include "stdio.h" included in 16_head.h
 //#include "stdlib.h" included in 16_head.h
 #include "src/lib/16_vl.h"
 #include "src/lib/16_ca.h"
 #include "src/lib/16_mm.h"
 #include "src/lib/16_pm.h"
+/*#define JSMN_STATIC
+#include "src/lib/jsmn/jsmn.h"
+*/
 
 
 //#define DEBUG_MAPDATA
@@ -43,7 +44,6 @@
 
 //typedefs moved to 16_tdef.h
 
-int jsoneq(const char *json, jsmntok_t *tok, const char *s);
 //word dump(const char *js, jsmntok_t *t, size_t count, word indent, char *js_sv, map_t *map, dword q);
 //int loadmap(char *mn, map_t *map, global_game_variables_t *gvar);
 int newloadmap(char *mn, map_t *map);
