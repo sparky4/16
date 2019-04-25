@@ -203,7 +203,6 @@ TESTEXEC = &
 	vgmtest.exe &
 	sountest.exe &
 	imfplay.exe &
-	sdtest.exe &
 	xcroll.exe &
 	0croll.exe &
 	1croll.exe &
@@ -214,6 +213,7 @@ TESTEXEC = &
 	maptest.exe &
 	vrldbg.exe
 #zcroll.exe &
+#sdtest.exe &	//disabled due to fuckery
 TESTEXEC2 = &
 	pcxtest.exe &
 	scroll.exe &

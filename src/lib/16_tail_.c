@@ -115,7 +115,7 @@ void	TL_VidInit(global_game_variables_t *gvar)
 =
 =================
 */
-
+#if 0
 void PL_StopMusic(global_game_variables_t *gvar)
 {
 	int	i;
@@ -161,3 +161,4 @@ void PL_StartMusic(global_game_variables_t *gvar)
 		SD_StartMusic((MusicGroup far *)gvar->ca.audiosegs[STARTMUSIC + chunk]);
 //++++	}
 }
+#endif	//disabled due to some fuckery i am not sure.
