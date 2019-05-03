@@ -193,7 +193,6 @@ LIBMAKERULE=*wlib $(LIBFLAGS) $(extra_$^&_lib_opts)$@ $<
 # List of executables to build
 #
 EXTERNTESTEXEC = &
-	joytest.exe &
 	wcpu.exe &
 	db.exe
 TESTEXEC = &
@@ -231,6 +230,9 @@ UTILEXEC = &
 	ps.exe
 #	fd-dbg.exe
 !ifdef __LINUX__
+DOSLIBTESTEXEC = &
+	joytest.exe &
+	opltest.exe
 SPRIUTILEXEC = &
 	pcx2vrl &
 	pcxsscut &
@@ -248,8 +250,7 @@ EXEC = &
 	16.exe &
 	bakapi.exe &
 	$(TESTEXEC) &
-	$(UTILEXEC) &
-	opltest.exe
+	$(UTILEXEC)
 
 #!ifdef __LINUX__
 #EXEC += $(SPRIUTILEXEC)
