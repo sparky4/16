@@ -67,8 +67,8 @@ TARGET_OS = dos
 MEMORYMODE = l
 
 BUILD_ROOT=$+$(%__CWD__)$-
-#EXMMTESTDIR=16$(DIRSEP)exmmtest$(DIRSEP)
-DATADIR=data$(DIRSEP)
+#EXMMTESTDIR=16/exmmtest/
+DATADIR=data/
 SPRI=$(DATADIR)/spri
 SRC=src
 UTIL=$(SRC)/util
@@ -372,33 +372,55 @@ doslib.lib: $(DOSLIBLIBS)
 #
 # library deps 16-bit large
 $(DOSLIB_CPU)/$(DOSLIB_MEMMODE)/cpu.lib:
-	cd $(DOSLIB_CPU:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
+	cd $(DOSLIB_CPU:$(to_os_path))
+	$(DOSLIBMAKE) $(DOSLIB_MEMMODE)
+	cd $(BUILD_ROOT)
 $(DOSLIB_DOS)/$(DOSLIB_MEMMODE)/dos.lib:
-	cd $(DOSLIB_DOS:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
+	cd $(DOSLIB_DOS:$(to_os_path))
+	$(DOSLIBMAKE) $(DOSLIB_MEMMODE)
+	cd $(BUILD_ROOT)
 $(DOSLIB_VGA)/$(DOSLIB_MEMMODE)/vgatty.lib:
-	cd $(DOSLIB_VGA:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
+	cd $(DOSLIB_VGA:$(to_os_path))
+	$(DOSLIBMAKE) $(DOSLIB_MEMMODE)
+	cd $(BUILD_ROOT)
 $(DOSLIB_VGA)/$(DOSLIB_MEMMODE)/vga.lib:
-	cd $(DOSLIB_VGA:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
+	cd $(DOSLIB_VGA:$(to_os_path))
+	$(DOSLIBMAKE) $(DOSLIB_MEMMODE)
+	cd $(BUILD_ROOT)
 $(DOSLIB_8250)/$(DOSLIB_MEMMODE)/8250.lib:
-	cd $(DOSLIB_8250:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
+	cd $(DOSLIB_8250:$(to_os_path))
+	$(DOSLIBMAKE) $(DOSLIB_MEMMODE)
+	cd $(BUILD_ROOT)
 $(DOSLIB_8254)/$(DOSLIB_MEMMODE)/8254.lib:
-	cd $(DOSLIB_8254:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
+	cd $(DOSLIB_8254:$(to_os_path))
+	$(DOSLIBMAKE) $(DOSLIB_MEMMODE)
+	cd $(BUILD_ROOT)
 $(DOSLIB_8259)/$(DOSLIB_MEMMODE)/8259.lib:
-	cd $(DOSLIB_8259:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
+	cd $(DOSLIB_8259:$(to_os_path))
+	$(DOSLIBMAKE) $(DOSLIB_MEMMODE)
+	cd $(BUILD_ROOT)
 $(DOSLIB_ADLIB)/$(DOSLIB_MEMMODE)/adlib.lib:
-	cd $(DOSLIB_ADLIB:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
+	cd $(DOSLIB_ADLIB:$(to_os_path))
+	$(DOSLIBMAKE) $(DOSLIB_MEMMODE)
+	cd $(BUILD_ROOT)
 
 joytest.exe:
-	cd $(DOSLIB_JOYSTICK:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
-	$(COPYCOMMAND) $(DOSLIB_JOYSTICK:$(to_os_path))$(DIRSEP)$(DOSLIB_MEMMODE)$(DIRSEP)test.exe joytest.exe
+	cd $(DOSLIB_JOYSTICK:$(to_os_path))
+	$(DOSLIBMAKE) $(DOSLIB_MEMMODE)
+	cd $(BUILD_ROOT)
+	$(COPYCOMMAND) $(DOSLIB_JOYSTICK:$(to_os_path))/$(DOSLIB_MEMMODE)/test.exe joytest.exe
 
 #imfplay.exe:
-#	cd $(DOSLIB_ADLIB:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
-#	$(COPYCOMMAND) $(DOSLIB_ADLIB:$(to_os_path))$(DIRSEP)$(DOSLIB_MEMMODE)$(DIRSEP)imfplay.exe imfplay.exe
+#	cd $(DOSLIB_ADLIB:$(to_os_path))
+#	$(DOSLIBMAKE) $(DOSLIB_MEMMODE)
+#	cd $(BUILD_ROOT)
+#	$(COPYCOMMAND) $(DOSLIB_ADLIB:$(to_os_path))/$(DOSLIB_MEMMODE)/imfplay.exe imfplay.exe
 
 opltest.exe:
-	cd $(DOSLIB_ADLIB:$(to_os_path)) && $(DOSLIBMAKE) $(DOSLIB_MEMMODE) && cd $(BUILD_ROOT)
-	$(COPYCOMMAND) $(DOSLIB_ADLIB:$(to_os_path))$(DIRSEP)$(DOSLIB_MEMMODE)$(DIRSEP)test.exe opltest.exe
+	cd $(DOSLIB_ADLIB:$(to_os_path))
+	$(DOSLIBMAKE) $(DOSLIB_MEMMODE)
+	cd $(BUILD_ROOT)
+	$(COPYCOMMAND) $(DOSLIB_ADLIB:$(to_os_path))/$(DOSLIB_MEMMODE)/test.exe opltest.exe
 
 16_vl.$(OBJ):	$(SRCLIB)/16_vl.c	$(SRCLIB)/16_vl.h
 16_vl_1.$(OBJ):	$(SRCLIB)/16_vl_1.c	$(SRCLIB)/16_vl.h
@@ -517,7 +539,7 @@ nuke: .symbolic
 	@wmake comp
 
 backupconfig: .symbolic
-	@$(COPYCOMMAND) .git$(DIRSEP)config $(GITCONFIGDIR)/git_con.fig
+	@$(COPYCOMMAND) .git/config $(GITCONFIGDIR)/git_con.fig
 	@$(COPYCOMMAND) .gitmodules $(GITCONFIGDIR)/git_modu.les
 	@$(COPYCOMMAND) .gitignore $(GITCONFIGDIR)/git_igno.re
 
@@ -667,19 +689,19 @@ initshitman: .symbolic
 ##	experimental libs
 ##
 xlib: .symbolic
-	@cd 16$(DIRSEP)xlib
+	@cd 16/xlib
 	@wmake -s -h clean
 	@wmake -s -h all
 	@cd $(BUILD_ROOT)
 
 mx: .symbolic
-	@cd 16$(DIRSEP)xw
+	@cd 16/xw
 #	@wmake clean
 	@wmake -s -h all
 	@cd $(BUILD_ROOT)
 
 mx_: .symbolic
-	@cd 16$(DIRSEP)xw_
+	@cd 16/xw_
 	@wmake -s -h -f makefile all
 	@cd $(BUILD_ROOT)
 
@@ -704,6 +726,6 @@ $(SPRIUTILEXEC):
 	@cd $(DOSLIB_VGA:$(to_os_path))
 	#@make clean
 	@make all
-	@for %f in ($(SPRIUTILEXEC)) do @if exist %f $(COPYCOMMAND) %f $(BUILD_ROOT)#$(DIRSEP)
+	@for %f in ($(SPRIUTILEXEC)) do @if exist %f $(COPYCOMMAND) %f $(BUILD_ROOT)#/
 	@cd $(BUILD_ROOT)
 !endif
