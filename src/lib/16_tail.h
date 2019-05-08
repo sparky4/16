@@ -127,6 +127,8 @@
 #define PAL_DATA_REG			0x03C9   /* Color register, data port */
 #endif
 
+extern char global_temp_status_text[512];
+
 void	Shutdown16(global_game_variables_t *gvar),
 	Startup16(global_game_variables_t *gvar),
 	StartupCAMMPM (global_game_variables_t *gvar),

@@ -55,7 +55,7 @@ DOSLIBMAKEALL=./buildall.sh build all
 to_os_path=/=\
 REMOVECOMMAND=del
 COPYCOMMAND=copy /y
-MOVECOMMAND=move
+MOVECOMMAND=move /q
 DIRSEP=\
 OBJ=obj
 DUMP=type
@@ -495,7 +495,6 @@ clean: .symbolic
 	@if not exist $(DOSLIBDIR)/buildall.sh wmake -s -h initlibs
 	@wmake -s -h initscript
 	@for %f in ($(ALLEXEC)) do @if exist %f $(REMOVECOMMAND) %f
-	@wmake -s -h exe2e
 !ifdef __LINUX__
 	@if exist *.LIB $(REMOVECOMMAND) *.LIB
 	@. src/util/bcexmm.sh
@@ -508,6 +507,7 @@ clean: .symbolic
 !else
 	@if exist *.o $(REMOVECOMMAND) *.o
 !endif
+	@wmake -s -h exe2e
 	@if exist *.$(OBJ) $(REMOVECOMMAND) *.$(OBJ)
 	@if exist *.bco $(REMOVECOMMAND) *.bco
 	@if exist *.BCO $(REMOVECOMMAND) *.BCO
@@ -586,11 +586,11 @@ comq: .symbolic
 	@wmake -s -h e2exe
 
 exe2e: .symbolic
-	@if exist *.exe $(MOVECOMMAND) *.exe *.e
+	@if exist *.exe $(MOVECOMMAND) *.exe $(SRC)
 	#@for %f in ($(ALLEXEC)) do @if exist %f $(REMOVECOMMAND) %f
 
 e2exe: .symbolic
-	@if exist *.e $(MOVECOMMAND) *.e *.exe
+	@if exist $(SRC)/*.exe $(MOVECOMMAND) $(SRC)/*.exe .
 
 www: .symbolic
 	@if exist 16.exe @wmake -s -h wwwdo

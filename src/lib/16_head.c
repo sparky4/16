@@ -224,14 +224,19 @@ void regidump()
 {
 	//GENERAL PURPOSE
 	unsigned short _ax,_bx,_cx,_dx;
+#ifndef __BORLANDC__
 	unsigned short _cflag;
+#endif
 	unsigned char _al,_ah,_bl,_bh,_cl,_ch,_dl,_dh;
 
 	unsigned short _bp,_si,_di,_sp;
 
-	unsigned short _cs,_ds,_es,_ss;	//SEGMENT
+	unsigned short _cs_,_ds_,_es_,_ss_;	//SEGMENT
 //	unsigned short _ip;	//SPECIAL PURPOSE
-	_ax=_bx=_cx=_dx=_si=_di=_bp=_sp=_cs=_ds=_es=_ss=_cflag=0;
+	_ax=_bx=_cx=_dx=_si=_di=_bp=_sp=_cs_=_ds_=_es_=_ss_=0;
+#ifndef __BORLANDC__
+	_cflag=0;
+#endif
 	_ah=_al=_bh=_bl=_ch=_cl=_dh=_dl=0;
 
 #ifndef REGIDUMP_USE_CAPS
@@ -255,6 +260,14 @@ void regidump()
 		mov _if,if
 		mov _df,df
 		mov _of,of*/
+		mov _ah,ah
+		mov _al,al
+		mov _bh,bh
+		mov _bl,bl
+		mov _ch,ch
+		mov _cl,cl
+		mov _dh,dh
+		mov _dl,dl
 	}
 #else
 _ax=_AX;
@@ -274,15 +287,17 @@ _cl=_CL;
 _dh=_DH;
 _dl=_DL;
 #endif
+#ifndef __BORLANDC__
 	_cflag=_CFLAG;
+#endif
 	__asm {
 		mov _bp,bp
 		mov _sp,sp
 
-		mov _cs,cs
-		mov _ds,ds
-		mov _es,es
-		mov _ss,ss
+		mov _cs_,cs
+		mov _ds_,ds
+		mov _es_,es
+		mov _ss_,ss
 	}
 //	printf("integer values:	ax=%04d	bx=%04d	cx=%04d	dx=%04d\n", a, b, c, d);
 //	printf("unsigned values:ax=%04u	bx=%04u	cx=%04u	dx=%04u\n", a, b, c, d);
@@ -303,14 +318,16 @@ _dl=_DL;
 
 	printf("segment:\n");
 #ifndef REGIDUMP_HEX
-	printf("	cs=%04u\n	ds=%04u\n	es=%04u\n	ss=%04u\n", _cs, _ds, _es, _ss);
+	//printf("	cs=%04u\n	ds=%04u\n	es=%04u\n	ss=%04u\n", _cs_, _ds, _es_, _ss_);
+	printf("	cs=%04u\n", _cs_);	printf("	ds=%04u\n", _ds_);	printf("	es=%04u\n", _es_);	printf("	ss=%04u\n", _ss_);
 #else
-	printf("	cs=%04x\n	ds=%04x\n	es=%04x\n	ss=%04x\n", _cs, _ds, _es, _ss);
+	//printf("	cs=%04x\n	ds=%04x\n	es=%04x\n	ss=%04x\n", _cs_, _ds_, _es_, _ss_);
+	printf("	cs=%04x\n", _cs_);	printf("	ds=%04x\n", _ds_);	printf("	es=%04x\n", _es_);	printf("	ss=%04x\n", _ss_);
 #endif
 	printf("		---------------------------------------\n");
 
 
-
+#ifndef __BORLANDC__
 	printf("cflags:\n");
 /*	printf("	ip=%04u\n\n", _ip);
 	printf("	cf=%04u\npf=%04u\naf=%04u\nzf=%04u\nsf=%04u\ntf=%04u\nif=%04u\ndf=%04u\nof=%04u\n", _cf, _pf, _af, _zf, _sf, _tf, _if, _df, _of);
@@ -325,12 +342,14 @@ _dl=_DL;
 //	printf("	ip=%04x\n\n", _IP);
 //	printf("	cf=%04x\npf=%04x\naf=%04x\nzf=%04x\nsf=%04x\ntf=%04x\nif=%04x\ndf=%04x\nof=%04x\n", _CF, _PF, _AF, _ZF, _SF, _TF, _IF, _DF, _OF);
 	printf("cflag: %016x\n",(_cflag));
+	printf("	ahl=%016x", _al|(_ah<<4));
 #endif
 	printf("testing\n");
 //	printf("dx: "NIBBLE_TO_BINARY_PATTERN""NIBBLE_TO_BINARY_PATTERN"\n",		NIBBLE_TO_BINARY(_dx>>4), NIBBLE_TO_BINARY(_dx));
 //	printf("dx: "BYTE_TO_BINARY_PATTERN""BYTE_TO_BINARY_PATTERN"\n",		BYTE_TO_BINARY(_dx>>8), BYTE_TO_BINARY(_dx));
 	printf("dx: "WORD_TO_BINARY_PATTERN"\n",		WORD_TO_BINARY(_dx));
 	printf("		---------------------------------------\n");
+#endif
 #endif
 
 	printf("for more info see\n	http://stackoverflow.com/questions/9130349/how-many-registers-are-there-in-8086-8088\n");
