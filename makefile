@@ -59,8 +59,8 @@ MOVECOMMAND=move
 DIRSEP=\
 OBJ=obj
 DUMP=type
-DOSLIBMAKE=.\make.bat
-DOSLIBMAKEALL=.\build.bat
+DOSLIBMAKE=make.bat build all
+DOSLIBMAKEALL=buildall.bat build all
 !endif
 
 TARGET_OS = dos
@@ -71,9 +71,9 @@ BUILD_ROOT=$+$(%__CWD__)$-
 DATADIR=data/
 SPRI=$(DATADIR)/spri
 SRC=src
-UTIL=$(SRC)/util
+UTIL=$(SRC)$(DIRSEP)util
 GITCONFIGDIR=$(UTIL)/git
-SCRIPTBATDIR=$(UTIL)/shbat
+SCRIPTBATDIR=$(UTIL)$(DIRSEP)shbat
 SRCLIB=$(SRC)/lib
 JSMNLIB=$(SRCLIB)/jsmn
 NYANLIB=$(SRCLIB)/nyan
@@ -250,11 +250,13 @@ EXEC = &
 	16.exe &
 	bakapi.exe &
 	$(TESTEXEC) &
-	$(UTILEXEC)
+	$(UTILEXEC) &
+	$(DOSLIBTESTEXEC)
 
-#!ifdef __LINUX__
-#EXEC += $(SPRIUTILEXEC)
-#!endif
+!ifdef __LINUX__
+#++?EXEC += $(SPRIUTILEXEC)
+#EXEC += $(DOSLIBTESTEXEC)
+!endif
 
 ALLEXEC = &
 	$(EXEC) &
@@ -493,6 +495,7 @@ clean: .symbolic
 	@if not exist $(DOSLIBDIR)/buildall.sh wmake -s -h initlibs
 	@wmake -s -h initscript
 	@for %f in ($(ALLEXEC)) do @if exist %f $(REMOVECOMMAND) %f
+	@wmake -s -h exe2e
 !ifdef __LINUX__
 	@if exist *.LIB $(REMOVECOMMAND) *.LIB
 	@. src/util/bcexmm.sh
@@ -552,31 +555,42 @@ initconfig: .symbolic
 
 backupscript: .symbolic
 	@$(COPYCOMMAND) WBUILD.BAT WBUILD.B
-	@$(COPYCOMMAND) wbuild.sh wbuild.s
 	@if exist *.bat $(MOVECOMMAND) *.bat $(SCRIPTBATDIR)/
-	@if exist *.sh $(MOVECOMMAND) *.sh $(SCRIPTBATDIR)/
 	@$(MOVECOMMAND) WBUILD.B WBUILD.BAT
-	@$(MOVECOMMAND) wbuild.s wbuild.sh
+
 !ifdef __LINUX__
+	@$(COPYCOMMAND) wbuild.sh wbuild.s
+	@if exist *.sh $(MOVECOMMAND) *.sh $(SCRIPTBATDIR)/
+	@$(MOVECOMMAND) wbuild.s wbuild.sh
+
 	@if exist *.BAT $(MOVECOMMAND) *.BAT $(SCRIPTBATDIR)/
-	@if not exist ud.sh $(COPYCOMMAND) $(SCRIPTBATDIR)/ud.sh ./
+	@if not exist ud.sh $(COPYCOMMAND) $(SCRIPTBATDIR)/ud.sh .
 !endif
-	@if not exist wbuild.sh $(COPYCOMMAND) $(SCRIPTBATDIR)/wbuild.sh ./
-	@if not exist WBUILD.BAT $(COPYCOMMAND) $(SCRIPTBATDIR)/WBUILD.BAT ./
+	@if not exist wbuild.sh $(COPYCOMMAND) $(SCRIPTBATDIR)/wbuild.sh .
+	@if not exist WBUILD.BAT $(COPYCOMMAND) $(SCRIPTBATDIR)/WBUILD.BAT .
 
 initscript: .symbolic
-	@$(COPYCOMMAND) $(SCRIPTBATDIR)/*.bat ./
-	@$(COPYCOMMAND) $(SCRIPTBATDIR)/*.sh ./
+	@$(COPYCOMMAND) $(SCRIPTBATDIR)$(DIRSEP)*.bat .
 !ifdef __LINUX__
-	@$(COPYCOMMAND) $(SCRIPTBATDIR)/*.BAT ./
+	@$(COPYCOMMAND) $(SCRIPTBATDIR)$(DIRSEP)*.sh .
+	@$(COPYCOMMAND) $(SCRIPTBATDIR)/*.BAT .
 !endif
 
 
 comp: .symbolic
-	@*upx -9 $(EXEC)
+	@*upx -9 *.exe#$(EXEC)
+	@wmake -s -h e2exe
 
 comq: .symbolic
-	@*upx -9 $(UPXQ) $(EXEC)
+	@*upx -9 $(UPXQ) *.exe#$(EXEC)
+	@wmake -s -h e2exe
+
+exe2e: .symbolic
+	@if exist *.exe $(MOVECOMMAND) *.exe *.e
+	#@for %f in ($(ALLEXEC)) do @if exist %f $(REMOVECOMMAND) %f
+
+e2exe: .symbolic
+	@if exist *.e $(MOVECOMMAND) *.e *.exe
 
 www: .symbolic
 	@if exist 16.exe @wmake -s -h wwwdo
