@@ -327,33 +327,33 @@ vidtest.$(OBJ):	$(SRC)/vidtest.c	$(SRCLIB)/16_vl.h
 psltest.$(OBJ):	$(SRC)/paltest.c	$(SRCLIB)/16_vl.h
 #test2.$(OBJ):	$(SRC)/test2.c	$(SRCLIB)/16_vl.h
 test0.$(OBJ):	 $(SRC)/test0.c
-pcxtest.$(OBJ):$(SRC)/pcxtest.c	$(SRCLIB)/16_vl.h
-vrstest.$(OBJ):$(SRC)/vrstest.c	$(SRCLIB)/16_vl.h
-#vgacamm.$(OBJ):$(SRC)/vgacamm.c	$(SRCLIB)/16_vl.h
+pcxtest.$(OBJ): $(SRC)/pcxtest.c	$(SRCLIB)/16_vl.h
+vrstest.$(OBJ): $(SRC)/vrstest.c	$(SRCLIB)/16_vl.h
+#vgacamm.$(OBJ): $(SRC)/vgacamm.c	$(SRCLIB)/16_vl.h
 #planrpcx.$(OBJ): $(SRC)/planrpcx.c	$(SRCLIB)/16_vl.h
-pcxtest2.$(OBJ):$(SRC)/pcxtest2.c	$(SRCLIB)/16_vl.h
+pcxtest2.$(OBJ): $(SRC)/pcxtest2.c	$(SRCLIB)/16_vl.h
 palettec.$(OBJ):	$(SRC)/palettec.c
 palettel.$(OBJ):	$(SRC)/palettel.c
 palbomb.$(OBJ):	$(SRC)/palbomb.c
-maptest.$(OBJ):$(SRC)/maptest.c	$(SRCLIB)/16_vl.h
-#emmtest.$(OBJ):$(SRC)/emmtest.c
-#emsdump.$(OBJ):$(SRC)/emsdump.c
-fmemtest.$(OBJ):$(SRC)/fmemtest.c
-fonttest.$(OBJ):$(SRC)/fonttest.c
+maptest.$(OBJ): $(SRC)/maptest.c	$(SRCLIB)/16_vl.h
+#emmtest.$(OBJ): $(SRC)/emmtest.c
+#emsdump.$(OBJ): $(SRC)/emsdump.c
+fmemtest.$(OBJ): $(SRC)/fmemtest.c
+fonttest.$(OBJ): $(SRC)/fonttest.c
 #fonttes0.$(OBJ): $(SRC)/fonttes0.c
-fontgfx.$(OBJ):$(SRC)/fontgfx.c
-inputest.$(OBJ):$(SRC)/inputest.c
-#inntest.$(OBJ):$(SRC)/inntest.c
+fontgfx.$(OBJ): $(SRC)/fontgfx.c
+inputest.$(OBJ): $(SRC)/inputest.c
+#inntest.$(OBJ): $(SRC)/inntest.c
 sountest.$(OBJ):	$(SRC)/sountest.c
 sdtest.$(OBJ):	$(SRC)/sdtest.c
 imfplay.$(OBJ): $(SRC)/imfplay.c
 vrldbg.$(OBJ):	$(SRC)/vrldbg.c
 #miditest.$(OBJ): $(SRC)/miditest.c
-#testemm.$(OBJ):$(SRC)/testemm.c
+#testemm.$(OBJ): $(SRC)/testemm.c
 #testemm0.$(OBJ): $(SRC)/testemm0.c
 #tsthimem.$(OBJ): $(SRC)/tsthimem.c
-exmmtest.$(OBJ):$(SRC)/exmmtest.c
-vgmtest.$(OBJ):$(SRC)/vgmtest.c
+exmmtest.$(OBJ): $(SRC)/exmmtest.c
+vgmtest.$(OBJ): $(SRC)/vgmtest.c
 db.$(OBJ):		$(UTIL)/db.c
 ps.$(OBJ):		$(SRC)/ps.c
 fd-dbg.$(OBJ):		$(SRC)/fd-dbg.c
