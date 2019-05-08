@@ -1344,8 +1344,8 @@ extern char global_temp_status_text[512];
 extern char global_temp_status_text2[512];
 #endif
 //#ifdef __WATCOMC__
-//++??#define MMSMPANVID
-//++++#define MMSMSCANINFO
+//#define MMSMPANVID
+#define MMSMSCANINFO
 //#endif
 
 /*

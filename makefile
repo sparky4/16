@@ -55,7 +55,7 @@ DOSLIBMAKEALL=./buildall.sh build all
 to_os_path=/=\
 REMOVECOMMAND=del
 COPYCOMMAND=copy /y
-MOVECOMMAND=move /q
+MOVECOMMAND=move /y
 DIRSEP=\
 OBJ=obj
 DUMP=type
@@ -507,7 +507,6 @@ clean: .symbolic
 !else
 	@if exist *.o $(REMOVECOMMAND) *.o
 !endif
-	@wmake -s -h exe2e
 	@if exist *.$(OBJ) $(REMOVECOMMAND) *.$(OBJ)
 	@if exist *.bco $(REMOVECOMMAND) *.bco
 	@if exist *.BCO $(REMOVECOMMAND) *.BCO
@@ -578,16 +577,22 @@ initscript: .symbolic
 
 
 comp: .symbolic
-	@if exist *.exe @upx -9 *.exe#$(EXEC)
+	@wmake -s -h exe2e
+	@*upx -9 *.exe#$(EXEC)
 	@wmake -s -h e2exe
 
 comq: .symbolic
-	@if exist *.exe @upx -9 $(UPXQ) *.exe#$(EXEC)
+	@wmake -s -h exe2e
+	@*upx -9 $(UPXQ) *.exe#$(EXEC)
 	@wmake -s -h e2exe
 
 exe2e: .symbolic
+	@for %f in ($(ALLEXEC)) do @if exist %f $(MOVECOMMAND) %f $(SRCLIB)
+!ifdef __LINUX__
+	@if exist *.EXE ./make-lowercase *.EXE
+!endif
 	@if exist *.exe $(MOVECOMMAND) *.exe $(SRC)
-	#@for %f in ($(ALLEXEC)) do @if exist %f $(REMOVECOMMAND) %f
+	@if exist $(SRCLIB)/*.exe $(MOVECOMMAND) $(SRCLIB)/*.exe .
 
 e2exe: .symbolic
 	@if exist $(SRC)/*.exe $(MOVECOMMAND) $(SRC)/*.exe .
