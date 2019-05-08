@@ -578,11 +578,11 @@ initscript: .symbolic
 
 
 comp: .symbolic
-	@*upx -9 *.exe#$(EXEC)
+	@if exist *.exe @upx -9 *.exe#$(EXEC)
 	@wmake -s -h e2exe
 
 comq: .symbolic
-	@*upx -9 $(UPXQ) *.exe#$(EXEC)
+	@if exist *.exe @upx -9 $(UPXQ) *.exe#$(EXEC)
 	@wmake -s -h e2exe
 
 exe2e: .symbolic
