@@ -617,7 +617,7 @@ wwwdo: .symbolic
 
 wwwext: .symbolic
 	@wmake -s -h wwwext2
-	@wmake -s -h wwwext1
+	#@wmake -s -h wwwext1
 
 wwwext1: .symbolic
 	####----@ssh -p $(HOSTPORT) $(HOSTUSER)@$(HOSTADDR) 'rm -f $(HOSTDIR)/16/*exe*'
