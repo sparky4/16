@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2020 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
+ * Copyright (C) 2012-2021 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -33,9 +33,9 @@ main(int argc, char *argv[])
 {
 	static global_game_variables_t gvar;
 #ifdef __DEBUG_InputMgr__
-	dbg_testkeyin=0;
+	dbg_testkeyin=1;
 	dbg_testcontrolnoisy=1;
-	dbg_joymousedelta=0;
+	dbg_joymousedelta=1;
 #endif
 	start_timer(&gvar);
 	//Startup16(&gvar);
@@ -67,7 +67,7 @@ main(int argc, char *argv[])
 	gvar.player[0].enti.d=2;
 	gvar.player[0].enti.spt=4;
 
-	//printf("dbg_testkeyin=%u	dbg_testcontrolnoisy=%u	dbg_nogvar.playerinpu=%u\nloop if this is not responsive then please KILL or reset machine sorry!!\n", dbg_testkeyin, dbg_testcontrolnoisy, dbg_nogvar.playerinpu);
+	printf("dbg_testkeyin=%u	dbg_testcontrolnoisy=%u\nloop if this is not responsive then please KILL or reset machine sorry!!\n", dbg_testkeyin, dbg_testcontrolnoisy);
 	while(!gvar.in.inst->Keyboard[sc_Escape])
 	{
 //0000		shinkutxt(&gvar);
