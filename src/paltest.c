@@ -136,6 +136,7 @@ void main(int argc, char *argv[])
 		if(gvar.in.inst->Keyboard[25]){ modexpdump(gvar.video.sp, &gvar); IN_UserInput(1, &gvar); }//p
 		if(gvar.in.inst->Keyboard[sc_I]){ drawboxesmodex(&gvar.video.page[gvar.video.sp]); IN_UserInput(1, &gvar); }//i
 		if(gvar.in.inst->Keyboard[sc_O]){ copyboxesmodex(&gvar.video.page, !gvar.video.sp); IN_UserInput(1, &gvar); }//o
+		if(gvar.in.inst->Keyboard[sc_LBrkt]){ ShowPalVal (&gvar);							IN_UserInput(1, &gvar); }//[
 		VL_ShowPage(&gvar.video.page[gvar.video.sp], 0, 0);
 		//ZC_ShowMV(&gvar.mv, 0, 0);
 	}
