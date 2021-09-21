@@ -52,12 +52,20 @@
 	if(gvar.in.inst->Keyboard[88]){ panswitch=!panswitch;							IN_UserInput(1, &gvar); } \
 	TAIL_FUNCTIONKEYFUNCTIONS0EXE
 
+
 #define RFDEBUGFUNCTIONS
 #ifdef __DEBUG_RF__
 #undef RFDEBUGFUNCTIONS
 #define RFDEBUGFUNCTIONS \
-	if(gvar.in.inst->Keyboard[sc_F11]){ dbg_pagedelayrendermap=!dbg_pagedelayrendermap;		IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[sc_F9]){ dbg_pagenorendermap=!dbg_pagenorendermap;			IN_UserInput(1, &gvar); }
+	switch(gvar.in.inst->CurCode) \
+	{ \
+		case sc_F11: \
+			dbg_pagedelayrendermap=!dbg_pagedelayrendermap;		IN_UserInput(1, &gvar); \
+		break; \
+		case sc_F9: \
+			dbg_pagenorendermap=!dbg_pagenorendermap;			IN_UserInput(1, &gvar); \
+		break; \
+	}
 #endif
 
 /*#define MAPDEBUGFUNCTIONS
@@ -75,20 +83,47 @@
 #endif*/
 
 #define TAIL_FUNCTIONKEYFUNCTIONS0EXE \
-	if(gvar.in.inst->Keyboard[sc_F4]){ turboXT(12);									IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[68/*sc_F10*/]){ gvar.kurokku.fpscap=!gvar.kurokku.fpscap;			IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[sc_F8]){ gvar.video.vga_state.bgps=!gvar.video.vga_state.bgps;		IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[sc_F7]){ VL_ShowPage(&gvar.video.page, 0, 1);						IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[sc_F6]){ VL_ShowPage(&gvar.video.page, 0, 0);						IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[sc_T]){ gvar.video.vga_state.rss=!gvar.video.vga_state.rss;			IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[sc_P]){ modexpdump(0, &gvar);							IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[sc_Y]){ dbg_delayanimation=!dbg_delayanimation;				IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[sc_Q]){ VL_modexPrintTextBox(&gvar);						IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[sc_W]){ VL_MemToScreen((byte __far *)&gvar, 64, 64, 16, 16, &gvar);	IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[sc_LBrkt]){ ShowPalVal (&gvar);							IN_UserInput(1, &gvar); } \
-	if(gvar.in.inst->Keyboard[sc_M]){ MM_ShowMemory(&gvar);	MM_DumpData (&gvar);			IN_UserInput(1, &gvar); } \
+	switch(gvar.in.inst->CurCode) \
+	{ \
+		case sc_F4: \
+			turboXT(12);												IN_UserInput(1, &gvar); \
+		break; \
+		case sc_F10: \
+			gvar.kurokku.fpscap=!gvar.kurokku.fpscap;					IN_UserInput(1, &gvar); \
+		break; \
+		case sc_F8: \
+			gvar.video.vga_state.bgps=!gvar.video.vga_state.bgps;		IN_UserInput(1, &gvar); \
+		break; \
+		case sc_F7: \
+			VL_ShowPage(&gvar.video.page, 0, 1);						IN_UserInput(1, &gvar); \
+		break; \
+		case sc_F6: \
+			VL_ShowPage(&gvar.video.page, 0, 0);						IN_UserInput(1, &gvar); \
+		break; \
+		case sc_T: \
+			gvar.video.vga_state.rss=!gvar.video.vga_state.rss;			IN_UserInput(1, &gvar); \
+		break; \
+		case sc_P: \
+			modexpdump(0, &gvar);										IN_UserInput(1, &gvar); \
+		break; \
+		case sc_Y: \
+			dbg_delayanimation=!dbg_delayanimation;						IN_UserInput(1, &gvar); \
+		break; \
+		case sc_Q: \
+			VL_modexPrintTextBox(&gvar);								IN_UserInput(1, &gvar); \
+		break; \
+		case sc_W: \
+			VL_MemToScreen((byte __far *)&gvar, 64, 64, 16, 16, &gvar);	IN_UserInput(1, &gvar); \
+		break; \
+		case sc_LBrkt: \
+			ShowPalVal (&gvar);											IN_UserInput(1, &gvar); \
+		break; \
+		case sc_M: \
+			MM_ShowMemory(&gvar);		MM_DumpData (&gvar);			IN_UserInput(1, &gvar); \
+		break; \
+	} \
 	RFDEBUGFUNCTIONS
-//FIZZLEFADEFUNCTION
+	//FIZZLEFADEFUNCTION
 
 #define TAIL_PANKEYFUN \
 	TAIL_PANKEYFUNZC \
