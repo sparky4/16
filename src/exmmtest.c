@@ -245,7 +245,8 @@ PRINTBB; KEYP
 	}
 //	ShapeTest_(&gvar);
 #endif
-//0000++++	MM_ShowMemory(&gvar);
+//0000++++
+	MM_ShowMemory(&gvar);
 #if 0
 	{
 	boolean			done;
