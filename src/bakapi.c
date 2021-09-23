@@ -258,7 +258,7 @@ main(int argc, char *argvar[])
 				{
 					VL_ShowPage(&gvar.video.page[1], 0, 0);
 				}
-				if(c==0x71 || c==0xb1 || c=='p')
+				if(c==27 || c==0x71 || c==0xb1 || c=='p')
 				{
 					//getch(); // eat keyboard input
 					panswitch=0;
