@@ -3,7 +3,7 @@ iff exist %* then
 	del %*
 endiff
 setlocal
-set url="138.47.241.187"
+set url="138.47.241.54"
 rem for %@eval[%#+1] in (%*) do (
 rem for %# in (1,1,%*) do (
 :loop
