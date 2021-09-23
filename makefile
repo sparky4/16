@@ -235,7 +235,6 @@ DOSLIBTESTEXEC = &
 	opltest.exe
 SPRIUTILEXEC = &
 	pcx2vrl &
-	png2vrl &
 	pcxsscut &
 	vrl2vrs &
 	vrsdump &
@@ -502,8 +501,9 @@ clean: .symbolic
 	@if exist *.EXE $(REMOVECOMMAND) *.EXE
 	@if exist *.OBJ $(REMOVECOMMAND) *.OBJ
 	#@for %f in ($(SPRIUTILEXEC)) do @if exist %f $(REMOVECOMMAND) %f
-	@if not exist vrl2vrs wmake -s -h pcx2vrl
-	####++++@if not exist png2vrl wmake -s -h png2vrl
+	@if not exist vrl2vrs wmake -s -h vrl2vrs
+	@if not exist pcx2vrl wmake -s -h pcx2vrl
+	#@if not exist png2vrl wmake -s -h png2vrl
 	@if not exist dro2imf wmake -s -h drotoimf
 	@if not exist raw2vgm wmake -s -h vgmtools
 !else
@@ -747,7 +747,9 @@ vrl: .symbolic
 $(SPRIUTILEXEC):
 	@cd $(DOSLIB_VGA:$(to_os_path))
 	#@make clean
-	@make all
+	####@make all
+	@make pcx2vrl
+	@make vrl2vrs
 	@for %f in ($(SPRIUTILEXEC)) do @if exist %f $(COPYCOMMAND) %f $(BUILD_ROOT)#/
 	@cd $(BUILD_ROOT)
 !endif
