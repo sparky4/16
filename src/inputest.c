@@ -45,7 +45,7 @@ main(int argc, char *argv[])
 								ctrl_Keyboard1
 				#endif
 				#if defined(INPUTEST_JOYSTICKPADTEST) && !defined(INPUTEST_MOUSETEST)
-								ctrl_Joystick1
+								ctrl_Joystick2
 				#endif
 				#if !defined(INPUTEST_JOYSTICKPADTEST) && defined(INPUTEST_MOUSETEST)
 								ctrl_Mouse

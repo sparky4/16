@@ -377,9 +377,9 @@ done:
 void INL_GetJoyDelta(word joy,int *dx,int *dy/*,boolean adaptive*/, global_game_variables_t *gvar)
 {
 	word		x,y;
-//00	word TimeCount = *clockw;
+//00++++	word TimeCount = *clockw;
 	JoystickDef	*def;
-//00static	word	lasttime;
+//00++++static	word	lasttime;
 
 	IN_GetJoyAbs(joy,&x,&y);
 	def = gvar->in.JoyDefs + joy;
@@ -440,7 +440,7 @@ void INL_GetJoyDelta(word joy,int *dx,int *dy/*,boolean adaptive*/, global_game_
 //			*dy *= time;
 //		}
 //	}
-//00	lasttime = TimeCount;
+//00++++	lasttime = TimeCount;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -470,15 +470,15 @@ register	word	result;
 word
 IN_GetJoyButtonsDB(word joy)
 {
-//00	word TimeCount = *clockw;
-//00	word	lasttime;
+//00++++	word TimeCount = *clockw;
+//00++++	word	lasttime;
 	word		result1,result2;
 
 	do
 	{
 		result1 = INL_GetJoyButtons(joy);
-//00		lasttime = TimeCount;
-//00		while(TimeCount == lasttime)
+//00++++		lasttime = TimeCount;
+//00++++		while(TimeCount == lasttime)
 			//;
 		result2 = INL_GetJoyButtons(joy);
 	} while(result1 != result2);
