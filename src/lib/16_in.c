@@ -1298,9 +1298,9 @@ byte	IN_MouseButtons (global_game_variables_t *gvar)
 ===================
 */
 
-byte	IN_JoyButtons (void)
+word	IN_JoyButtons (void)
 {
-	byte joybits;
+	word joybits;
 
 	joybits = inportb(0x201);	// Get all the joystick buttons
 	joybits >>= 4;				// only the high bits are useful

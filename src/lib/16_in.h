@@ -242,7 +242,7 @@ extern	byte		*IN_GetScanName(ScanCode);
 
 
 byte	IN_MouseButtons (global_game_variables_t *gvar);
-byte	IN_JoyButtons (void);
+word	IN_JoyButtons (void);
 
 void INL_GetJoyDelta(word joy,int *dx,int *dy/*,boolean adaptive*/, global_game_variables_t *gvar);
 void IN_StartAck(global_game_variables_t *gvar);
