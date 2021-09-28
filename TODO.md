@@ -35,12 +35,16 @@ What needs to be done
 - Use a little database to keep track of the images loaded and have manipulated the display pallette.
 - [ ] migrate from malloc and related to mm stuff
 
-stuff needs to be done that is realized in 2021
+- [ ] cache manager to work on newer file formats and the way the game will work
+- [ ] 4 button input on joystick stuff
+
+### stuff needs to be done that is realized in 2021:
 - [ ] return to ylookuptable found in wolf3d
 - [ ] *not sure* return ID engine code variables to their old variables
 - [ ] *again not sure* use doslib's variables for video
 - [ ] find a way to make adaptive tile refresh in p16
 
+### just stuff in general:
 - [ ] fix any bugs found
 - [ ] make the game wwww
 
