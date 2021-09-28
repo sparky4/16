@@ -752,4 +752,11 @@ $(SPRIUTILEXEC):
 	@make vrl2vrs
 	@for %f in ($(SPRIUTILEXEC)) do @if exist %f $(COPYCOMMAND) %f $(BUILD_ROOT)#/
 	@cd $(BUILD_ROOT)
+
+png2vrl: .symbolic
+	@cd $(DOSLIB_VGA:$(to_os_path))
+	#@make clean
+	@make png2vrl
+	@for %f in ($(SPRIUTILEXEC)) do @if exist %f $(COPYCOMMAND) %f $(BUILD_ROOT)#/
+	@cd $(BUILD_ROOT)
 !endif
