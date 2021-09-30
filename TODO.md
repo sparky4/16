@@ -40,6 +40,7 @@ What needs to be done
 
 ### stuff needs to be done that is realized in 2021:
 - [ ] return to ylookuptable found in wolf3d
+- [ ] clean up existing video system and organize the existing code into a clean library 16_VL and 16_VW
 - [ ] *not sure* return ID engine code variables to their old variables
 - [ ] *again not sure* use doslib's variables for video
 - [ ] find a way to make adaptive tile refresh in p16
