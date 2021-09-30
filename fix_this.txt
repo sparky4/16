@@ -1,0 +1,39 @@
+DO NOT USE MALLOC() OUTSIDE OF 16_HC AND 16_MM USE THE MEMORY MANAGER
+
+
+
+src/0croll.c:	result.data = malloc(sizeof(byte) * w * h);
+src/0croll.c:	map->tiles = malloc(sizeof(tiles_t));
+src/0croll.c:	map->tiles->data = malloc(sizeof(bitmap_t));
+src/0croll.c:	map->tiles->data->data = malloc((TILEWH*2)*TILEWH);
+src/0tesuto.c:		buffer = malloc(bufsz);
+src/1croll.c:	result.data = malloc(sizeof(byte) * w * h);
+src/1croll.c:	map->tiles = malloc(sizeof(tiles_t));
+src/1croll.c:	map->tiles->data = malloc(sizeof(bitmap_t));
+src/1croll.c:	map->tiles->data->data = malloc((TILEWH*2)*TILEWH);
+src/tesuto.c:		buffer = malloc(bufsz);
+src/vrldbg.c:    base = raw = malloc(rawlen);
+src/vrstest.c:	vrl_line_offsets = malloc(sizeof(vrl1_vgax_offset_t *)*num_of_vrl);
+src/vrstest.c:	enti.spri.sprite_vrl_cont = malloc(sizeof(struct vrl_container));*/
+src/xcroll.c:	//----gvar.player[0].enti.spri.spritesheet = malloc(sizeof(struct vrs_container));
+src/lib/16_head.c:	if ((retstr = malloc(strlen (mystr) + 1)) == NULL)
+src/lib/16_map.c:					map->layerdata[k].data = malloc(sizeof(byte) * t[i+1].size);//TODO: USE MM_ CA_ AND PM_
+src/lib/16_map.c:					//map->layerdata[k].layername = malloc(sizeof(byte) * MAPLNAMESIZE);//TODO: USE MM_ CA_ AND PM_
+src/lib/16_map.c:					map->tiles = malloc(sizeof(tiles_t));//TODO: USE MM_ CA_ AND PM_
+src/lib/16_map.c:	js = malloc(file_s);//TODO: USE MM_ CA_ AND PM_
+src/lib/16_map.c:		fprintf(stderr, "malloc(): errno = %d", 2);
+src/lib/16_map.c:	tok = malloc(tokcount*sizeof(jsmntok_t));//TODO: USE MM_ CA_ AND PM_
+src/lib/16_map.c:	tok = malloc(tokcount*sizeof(jsmntok_t));//TODO: USE MM_ CA_ AND PM_
+src/lib/16_snd.c:	gvar->ca.sd.imf_music = malloc(len);
+src/lib/16_spri.c:	vrl_line_offsets = malloc(sizeof(vrl1_vgax_offset_t *)*num_of_vrl);//TODO: USE MM_ CA_ AND PM_
+src/lib/16_spri.c:	line_offsets = malloc(sizeof(vrl1_vgax_offset_t *));//TODO: USE MM_ CA_ AND PM_
+src/lib/bitmapl.c:    ptr = _fmalloc(768);
+src/lib/bitmapl.c:    result.data = malloc(bufSize);
+src/lib/bitmapl.c:    ts.data = _fmalloc(sizeof(byte*) * ts.ntiles);
+src/lib/bitmapl.c:    ts.data[0] = _fmalloc(sizeof(byte) * ts.ntiles * twidth * theight);
+src/lib/scroll16.c:	map->tiles = malloc(sizeof(tiles_t));
+src/lib/scroll16.c:	map->tiles->spri = malloc(sizeof(sprite_t));
+src/lib/scroll16.c:	map->tiles->spri->sprite_vrl_cont.buffer = malloc((TILEWH*2)*TILEWH);
+src/lib/vgmsnd/fmopl.c:	ptr = (char *)malloc(state_size);
+src/lib/vgmsnd/fmopl.c:		Y8950->deltat->memory = (UINT8*)realloc(Y8950->deltat->memory, ROMSize);
+src/lib/vgmsnd/vgmSnd.c:	vgmFile->data = (UINT8*)malloc(vgmFile->dataLen);
