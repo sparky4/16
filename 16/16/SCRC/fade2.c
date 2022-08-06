@@ -15,8 +15,8 @@ void main() {
     /* fade to black and back */
 	while (!kbhit())
 	{
-		fadeOff(1, palette);
-		palBlack();
+		fadeOffHalf(1, palette);
+		//palBlack();
 		fadeOn(1, palette);
 		palUpdate(palette);
 	}

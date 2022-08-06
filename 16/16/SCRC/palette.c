@@ -24,6 +24,12 @@ fadeOff(word fade, byte *palette) {
 
 
 void
+fadeOffHalf(word fade, byte *palette) {
+	fadePaletteHalf(fade, 0, 64/fade+1, palette);
+}
+
+
+void
 flashOn(word fade, byte *palette) {
     fadePalette(fade, -64, 64/fade+1, palette);
 }
@@ -61,6 +67,31 @@ fadePalette(byte fade, byte start, word iter, byte *palette) {
     }
 }
 
+static void
+fadePaletteHalf(byte fade, byte start, word iter, byte *palette) {
+    word i;
+    byte dim = start;
+
+    /* handle the case where we just update */
+    if(iter == 0) {
+	palUpdate(palette);
+	return;
+    }
+
+    while(iter > iter/2) {  /* FadeLoop */
+	for(i=0; i<PAL_SIZE; i++) { /* loadpal_loop */
+	    tmppal[i] = palette[i] - dim;
+	    if(tmppal[i] > 127) {
+		tmppal[i] = 0;
+	    } else if(tmppal[i] > 63) {
+		tmppal[i] = 63;
+	    }
+	}
+        palUpdate(tmppal);
+	iter--;
+	dim += fade;
+    }
+}
 
 /* save and load */
 void
