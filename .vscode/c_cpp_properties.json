@@ -1,0 +1,31 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "linux-gcc-x64"
+        },
+        {
+            "name": "open watcom 2.0",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/dos/fdos/watcom2/h/**"
+            ],
+            "defines": [],
+            "compilerPath": "/dos/fdos/watcom2/binl/wcl",
+            "cStandard": "c89",
+            "cppStandard": "c++98",
+            "intelliSenseMode": "${default}",
+            "compilerArgs": [
+                "-0"
+            ]
+        }
+    ],
+    "version": 4
+}
