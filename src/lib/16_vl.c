@@ -880,10 +880,10 @@ void modexPalSave(byte *palette)
 }
 
 
-/*byte *
+byte *
 modexNewPal() {
 	byte *ptr;
-	ptr = mAlloc(PAL_SIZE);
+	ptr = malloc(PAL_SIZE);
 
 	// handle errors
 	if(!ptr) {
@@ -891,7 +891,71 @@ modexNewPal() {
 	}
 
 	return ptr;
-}*/
+}
+
+static struct pcxHeader {
+    byte id;
+    byte version;
+    byte encoding;
+    byte bpp;
+    word xmin;
+    word ymin;
+    word xmax;
+    word ymax;
+    word hres;
+    word vres;
+    byte pal16[48];
+    byte res1;
+    word bpplane;
+    word palType;
+    word hScreenSize;
+    word vScreenSize;
+    byte padding[54];
+} head;
+
+
+static void loadPcxStage1(FILE *file, bitmap_t *result) {
+    long bufSize;
+    int index;
+    byte count, val;
+    long int pos;
+
+    /* read the header */
+    fread(&head, sizeof(char), sizeof(struct pcxHeader), file);
+
+    /* get the width and height */
+    result->width = head.xmax - head.xmin + 1;
+    result->height = head.ymax - head.ymin + 1;
+
+    /* make sure this  is 8bpp */
+    if(head.bpp != 8) {
+	printf("I only know how to handle 8bpp pcx files!\n");
+	fclose(file);
+	exit(-2);
+    }
+}
+
+void loadPcxPalette(FILE *file, bitmap_t *result) {
+    byte val;
+    int index;
+
+    /* handle the palette */
+    fseek(file, -769, SEEK_END);
+    val = fgetc(file);
+    result->palette = modexNewPal();
+    if(head.version == 5 && val == 12) {
+	/* use the vga palette */
+	for(index=0; !feof(file) && index < PAL_SIZE; index++) {
+	    val = fgetc(file);
+	    result->palette[index] = val >> 2;
+	}
+    } else {
+	/* use the 16 color palette */
+	for(index=0; index<48; index++) {
+	    result->palette[index]  = head.pal16[index];
+	}
+    }
+}
 
 
 void
@@ -918,6 +982,422 @@ modexLoadPalFile(byte *filename, byte *palette) {
 	}
 
 	fclose(file);
+}
+
+bitmap_t
+bitmapLoadPcx(char *filename) {
+    FILE *file;
+    bitmap_t result;
+    long bufSize;
+    int index;
+    byte count, val;
+
+    /* open the PCX file for reading */
+    file = fopen(filename, "rb");
+    if(!file) {
+	printf("Could not open %s for reading.\n", filename);
+	exit(-2);
+    }
+
+    /* load the first part of the pcx file */
+    loadPcxStage1(file, &result);
+
+    /* allocate the buffer */
+    bufSize = result.width * result.height;
+    result.data = malloc(bufSize);
+    if(!result.data) {
+	printf("Could not allocate memory for bitmap data.");
+	fclose(file);
+	exit(-1);
+    }
+
+    /*  read the buffer in */
+    index = 0;
+    do {
+	/* get the run length and the value */
+	count = fgetc(file);
+	if(0xC0 ==  (count & 0xC0)) { /* this is the run count */
+	    count &= 0x3f;
+	    val = fgetc(file);
+	} else {
+	    val = count;
+	    count = 1;
+	}
+
+	/* write the pixel the specified number of times */
+	for(; count && index < bufSize; count--,index++)  {
+	    result.data[index] = val;
+	}
+    } while(index < bufSize);
+
+    loadPcxPalette(file, &result);
+
+    fclose(file);
+
+    return result;
+}
+
+
+tileset_t
+bitmapLoadPcxTiles(char *filename, word twidth, word theight) {
+    tileset_t ts;
+    FILE *file;
+    bitmap_t result;
+    int i;
+
+    /* open the PCX file for reading */
+    file = fopen(filename, "rb");
+    if(!file) {
+	printf("Could not open %s for reading.\n", filename);
+	exit(-2);
+    }
+
+    /* load the first part of the pcx file */
+    loadPcxStage1(file, &result);
+
+    /* get the number of tiles and set up the result structure */
+    ts.twidth = twidth;
+    ts.theight = theight;
+    ts.ntiles = (result.width/twidth) * (result.height/theight);
+    ts.palette = result.palette;
+
+    /* allocate the pixel storage for the tiles */
+    ts.data = malloc(sizeof(byte*) * ts.ntiles);
+    ts.data[0] = malloc(sizeof(byte) * ts.ntiles * twidth * theight);
+    for(i=1; i < ts.ntiles; i++) {
+	ts.data[i] = ts.data[i-1] + twidth * theight;
+    }
+
+    /* finish off the file */
+    loadPcxPalette(file, &result);
+
+    fclose(file);
+
+    return ts;
+}
+
+void
+oldDrawBmp(byte far* page, int x, int y, bitmap_t *bmp, byte sprite)
+{
+	byte plane;
+	word px, py;
+	word offset;
+
+	/* TODO Make this fast.  It's SLOOOOOOW */
+	for(plane=0; plane < 4; plane++) {
+		modexSelectPlane(PLANE(plane+x));
+		for(px = plane; px < bmp->width; px+=4) {
+			offset=px;
+			for(py=0; py<bmp->height; py++) {
+			if(!sprite || bmp->data[offset])
+				page[PAGE_OFFSET(x+px, y+py)] = bmp->data[offset];
+			offset+=bmp->width;
+			}
+		}
+	}
+}
+
+//* normal versions *//
+void
+modexDrawBmp(page_t *page, int x, int y, bitmap_t *bmp) {
+    /* draw the region (the entire freakin bitmap) */
+    modexDrawBmpRegion(page, x, y, 0, 0, bmp->width, bmp->height, bmp);
+}
+
+void
+modexDrawBmpRegion(page_t *page, int x, int y,
+		   int rx, int ry, int rw, int rh, bitmap_t *bmp) {
+	word poffset = (word)page->data + y*(page->width/4) + x/4;
+	byte *data = bmp->data;//+bmp->offset;
+	word bmpOffset = (word) data + ry * bmp->width + rx;
+	word width = rw;
+	word height = rh;
+	byte plane = 1 << ((byte) x & 0x03);
+	word scanCount = width/4 + (width%4 ? 1 :0);
+	word nextPageRow = page->width/4 - scanCount;
+	word nextBmpRow = (word) bmp->width - width;
+	word rowCounter=0;
+	byte planeCounter = 4;
+
+    __asm {
+		MOV AX, SCREEN_SEG      ; go to the VGA memory
+		MOV ES, AX
+
+		MOV DX, SC_INDEX	; point at the map mask register
+		MOV AL, SC_MAPMASK	;
+		OUT DX, AL	      ;
+
+	PLANE_LOOP:
+		MOV DX, SC_DATA	 ; select the current plane
+		MOV AL, plane	   ;
+		OUT DX, AL	      ;
+
+		;-- begin plane painting
+		MOV AX, height	  ; start the row counter
+		MOV rowCounter, AX      ;
+		MOV DI, poffset	 ; go to the first pixel
+		MOV SI, bmpOffset       ; go to the bmp pixel
+	ROW_LOOP:
+		MOV CX, width	   ; count the columns
+	SCAN_LOOP:
+		MOVSB		   ; copy the pixel
+		SUB CX, 3	       ; we skip the next 3
+		ADD SI, 3	       ; skip the bmp pixels
+		LOOP SCAN_LOOP	  ; finish the scan
+
+		MOV AX, nextPageRow
+		ADD DI, AX	      ; go to the next row on screen
+		MOV AX, nextBmpRow
+		ADD SI, AX	      ; go to the next row on bmp
+
+		DEC rowCounter
+		JNZ ROW_LOOP	    ; do all the rows
+		;-- end plane painting
+		MOV AL, plane	   ; advance to the next plane
+		SHL AL, 1	       ;
+		AND AL, 0x0f	    ; mask the plane properly
+		MOV plane, AL	   ; store the plane
+
+		INC bmpOffset	   ; start bmp at the right spot
+
+		DEC planeCounter
+		JNZ PLANE_LOOP	  ; do all 4 planes
+    }
+}
+
+void
+modexDrawSprite(page_t *page, int x, int y, bitmap_t *bmp) {
+    /* draw the whole sprite */
+    modexDrawSpriteRegion(page, x, y, 0, 0, bmp->width, bmp->height, bmp);
+}
+
+void
+modexDrawSpriteRegion(page_t *page, int x, int y,
+		      int rx, int ry, int rw, int rh, bitmap_t *bmp) {
+	word poffset = (word)page->data + y*(page->width/4) + x/4;
+	byte *data = bmp->data;//+bmp->offset;
+	word bmpOffset = (word) data + ry * bmp->width + rx;
+	word width = rw;
+	word height = rh;
+	byte plane = 1 << ((byte) x & 0x03);
+	word scanCount = width/4 + (width%4 ? 1 :0);
+	word nextPageRow = page->width/4 - scanCount;
+	word nextBmpRow = (word) bmp->width - width;
+	word rowCounter=0;
+	byte planeCounter = 4;
+
+    __asm {
+		MOV AX, SCREEN_SEG      ; go to the VGA memory
+		MOV ES, AX
+
+		MOV DX, SC_INDEX	; point at the map mask register
+		MOV AL, SC_MAPMASK	;
+		OUT DX, AL	      ;
+
+	PLANE_LOOP:
+		MOV DX, SC_DATA	 ; select the current plane
+		MOV AL, plane	   ;
+		OUT DX, AL	      ;
+
+		;-- begin plane painting
+		MOV AX, height	  ; start the row counter
+		MOV rowCounter, AX      ;
+		MOV DI, poffset	 ; go to the first pixel
+		MOV SI, bmpOffset       ; go to the bmp pixel
+	ROW_LOOP:
+		MOV CX, width	   ; count the columns
+	SCAN_LOOP:
+		LODSB
+		DEC SI
+		CMP AL, 0
+		JNE DRAW_PIXEL	  ; draw non-zero pixels
+
+		INC DI		  ; skip the transparent pixel
+		ADD SI, 1
+		JMP NEXT_PIXEL
+	DRAW_PIXEL:
+		MOVSB		   ; copy the pixel
+	NEXT_PIXEL:
+		SUB CX, 3	       ; we skip the next 3
+		ADD SI, 3	       ; skip the bmp pixels
+		LOOP SCAN_LOOP	  ; finish the scan
+
+		MOV AX, nextPageRow
+		ADD DI, AX	      ; go to the next row on screen
+		MOV AX, nextBmpRow
+		ADD SI, AX	      ; go to the next row on bmp
+
+		DEC rowCounter
+		JNZ ROW_LOOP	    ; do all the rows
+		;-- end plane painting
+
+		MOV AL, plane	   ; advance to the next plane
+		SHL AL, 1	       ;
+		AND AL, 0x0f	    ; mask the plane properly
+		MOV plane, AL	   ; store the plane
+
+		INC bmpOffset	   ; start bmp at the right spot
+
+		DEC planeCounter
+		JNZ PLANE_LOOP	  ; do all 4 planes
+    }
+}
+
+//* planar buffer versions *//
+void
+modexDrawBmpPBuf(page_t *page, int x, int y, planar_buf_t *bmp) {
+    /* draw the region (the entire freakin bitmap) */
+    modexDrawBmpPBufRegion(page, x, y, 0, 0, bmp->width, bmp->height, bmp);
+}
+
+void
+modexDrawBmpPBufRegion(page_t *page, int x, int y,
+		   int rx, int ry, int rw, int rh, planar_buf_t *bmp) {
+	word poffset = (word) page->data  + y*(page->width/4) + x/4;
+	byte *data = (byte *)bmp->plane[0];
+	word bmpOffset = (word) data + ry * bmp->width + rx;
+	word width = rw;
+	word height = rh;
+	byte plane = 1 << ((byte) x & 0x03);
+	word scanCount = width/4 + (width%4 ? 1 :0);
+	word nextPageRow = page->width/4 - scanCount;
+	word nextBmpRow = (word) bmp->width - width;
+	word rowCounter=0;
+	byte planeCounter = 4;
+
+    __asm {
+		MOV AX, SCREEN_SEG      ; go to the VGA memory
+		MOV ES, AX
+
+		MOV DX, SC_INDEX	; point at the map mask register
+		MOV AL, SC_MAPMASK	;
+		OUT DX, AL	      ;
+
+	PLANE_LOOP:
+		MOV DX, SC_DATA	 ; select the current plane
+		MOV AL, plane	   ;
+		OUT DX, AL	      ;
+
+		;-- begin plane painting
+		MOV AX, height	  ; start the row counter
+		MOV rowCounter, AX      ;
+		MOV DI, poffset	 ; go to the first pixel
+		MOV SI, bmpOffset       ; go to the bmp pixel
+	ROW_LOOP:
+		MOV CX, width	   ; count the columns
+	SCAN_LOOP:
+
+
+
+
+
+
+
+
+
+		MOVSB		   ; copy the pixel
+
+		SUB CX, 3	       ; we skip the next 3
+		ADD SI, 3	       ; skip the bmp pixels
+		LOOP SCAN_LOOP	  ; finish the scan
+
+		MOV AX, nextPageRow
+		ADD DI, AX	      ; go to the next row on screen
+		MOV AX, nextBmpRow
+		ADD SI, AX	      ; go to the next row on bmp
+
+		DEC rowCounter
+		JNZ ROW_LOOP	    ; do all the rows
+		;-- end plane painting
+
+		MOV AL, plane	   ; advance to the next plane
+		SHL AL, 1	       ;
+		AND AL, 0x0f	    ; mask the plane properly
+		MOV plane, AL	   ; store the plane
+
+		INC bmpOffset	   ; start bmp at the right spot
+
+		DEC planeCounter
+		JNZ PLANE_LOOP	  ; do all 4 planes
+    }
+}
+
+void
+modexDrawSpritePBuf(page_t *page, int x, int y, planar_buf_t *bmp) {
+    /* draw the whole sprite */
+    modexDrawSpritePBufRegion(page, x, y, 0, 0, bmp->width, bmp->height, bmp);
+}
+
+void
+modexDrawSpritePBufRegion(page_t *page, int x, int y,
+		      int rx, int ry, int rw, int rh, planar_buf_t *bmp) {
+	word poffset = (word)page->data + y*(page->width/4) + x/4;
+	byte *data = (byte *)bmp->plane[0];
+	word bmpOffset = (word) data + ry * bmp->width + rx;
+	word width = rw;
+	word height = rh;
+	byte plane = 1 << ((byte) x & 0x03);
+	word scanCount = width/4 + (width%4 ? 1 :0);
+	word nextPageRow = page->width/4 - scanCount;
+	word nextBmpRow = (word) bmp->width - width;
+	word rowCounter=0;
+	byte planeCounter = 4;
+
+    __asm {
+		MOV AX, SCREEN_SEG      ; go to the VGA memory
+		MOV ES, AX
+
+		MOV DX, SC_INDEX	; point at the map mask register
+		MOV AL, SC_MAPMASK	;
+		OUT DX, AL	      ;
+
+	PLANE_LOOP:
+		MOV DX, SC_DATA	 ; select the current plane
+		MOV AL, plane	   ;
+		OUT DX, AL	      ;
+
+		;-- begin plane painting
+		MOV AX, height	  ; start the row counter
+		MOV rowCounter, AX      ;
+		MOV DI, poffset	 ; go to the first pixel
+		MOV SI, bmpOffset       ; go to the bmp pixel
+	ROW_LOOP:
+		MOV CX, width	   ; count the columns
+	SCAN_LOOP:
+		LODSB
+		DEC SI
+		CMP AL, 0
+		JNE DRAW_PIXEL	  ; draw non-zero pixels
+
+		INC DI		  ; skip the transparent pixel
+		ADD SI, 1
+		JMP NEXT_PIXEL
+	DRAW_PIXEL:
+		MOVSB		   ; copy the pixel
+	NEXT_PIXEL:
+		SUB CX, 3	       ; we skip the next 3
+		ADD SI, 3	       ; skip the bmp pixels
+		LOOP SCAN_LOOP	  ; finish the scan
+
+		MOV AX, nextPageRow
+		ADD DI, AX	      ; go to the next row on screen
+		MOV AX, nextBmpRow
+		ADD SI, AX	      ; go to the next row on bmp
+
+		DEC rowCounter
+		JNZ ROW_LOOP	    ; do all the rows
+		;-- end plane painting
+
+		MOV AL, plane	   ; advance to the next plane
+		SHL AL, 1	       ;
+		AND AL, 0x0f	    ; mask the plane properly
+		MOV plane, AL	   ; store the plane
+
+		INC bmpOffset	   ; start bmp at the right spot
+
+		DEC planeCounter
+		JNZ PLANE_LOOP	  ; do all 4 planes
+    }
 }
 
 #define COREPALSIZE 9//27	//3*9

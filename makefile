@@ -306,7 +306,7 @@ vrstest.exe:	vrstest.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 palettec.exe:	palettec.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 palettel.exe:	 	palettel.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
 palbomb.exe: 	palbomb.$(OBJ) $(16LIB) gfx.lib $(DOSLIB)
-pcxtest2.exe:	pcxtest2.$(OBJ) gfx.lib $(DOSLIB)
+pcxtest2.exe:	pcxtest2.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
 #planrpcx.exe:	planrpcx.$(OBJ) gfx.lib
 maptest.exe:	maptest.$(OBJ) 16_map.$(OBJ) 16_head.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
 fmemtest.exe:	fmemtest.$(OBJ)

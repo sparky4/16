@@ -12,6 +12,8 @@
 #define PLANE(x) (1<< (x&3))
 #define SELECT_ALL_PLANES() outpw(0x03c4, 0xff02)
 
+#ifndef PAGET
+#define PAGET
 typedef struct {
     byte far* data;	/* the data for the page */
     word dx;		/* col we are viewing on the virtual screen */
@@ -19,6 +21,7 @@ typedef struct {
     word width;		/* virtual width of the page */
     word height;	/* virtual height of the page */
 } page_t;
+#endif
 
 /* -============================ Functions =============================- */
 /* mode switching, page, and plane functions */

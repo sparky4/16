@@ -24,8 +24,8 @@
 #include <dos.h>
 #include <string.h>
 #include "src/lib/16_vl.h"
-#include "16/src/lib/bitmap.h"
-#include "16/src/lib/16render.h"
+//#include "16/modex16/bitmap.h"
+//#include "16/modex16/16render.h"
 #include "src/lib/16_in.h"
 
 #include "src/lib/16_tail.h"
@@ -64,7 +64,8 @@ void main() {
 	}
 
 //0000	PCXBMP = bitmapLoadPcx("data/koishi~~.pcx");
-	PCXBMP = bitmapLoadPcx("data/chikyuu.pcx", &gvar);
+//0000	PCXBMP = bitmapLoadPcx("data/chikyuu.pcx"/*, &gvar*/);
+	PCXBMP = bitmapLoadPcx("data/maryai.pcx");
 //	PCXBMP = bitmapLoadPcx("data/koishi^^.pcx");
 //	PCXBMP = bitmapLoadPcx("16/PCX_LIB/chikyuu.pcx");
 //----	p = planar_buf_from_bitmap(PCXBMPPTR);

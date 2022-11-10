@@ -24,7 +24,7 @@
 #include <dos.h>
 #include <string.h>
 #include "src/lib/16_vl.h"
-#include "16/src/lib/bitmap.h"
+//#include "16/src/lib/bitmap.h"
 //----#include "src/lib/planar.h"
 
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
@@ -85,7 +85,8 @@ void main() {
 	}
 
 //0000	bmp = bitmapLoadPcx("data/koishi~~.pcx");
-	bmp = bitmapLoadPcx("data/chikyuu.pcx", &gvar);
+//0000	bmp = bitmapLoadPcx("data/chikyuu.pcx"/*, &gvar*/);
+	bmp = bitmapLoadPcx("data/maryai.pcx"/*, &gvar*/);
 //	bmp = bitmapLoadPcx("data/koishi^^.pcx");
 //	bmp = bitmapLoadPcx("16/PCX_LIB/chikyuu.pcx");
 //----	p = planar_buf_from_bitmap(&bmp);

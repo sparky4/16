@@ -37,7 +37,7 @@ extern boolean pagenorendermap;
 unsigned int i;
 //#ifdef FADE
 	static word paloffset=0;
-	byte *gvar.video.dpal;
+//--00	byte *gvar.video.dpal;
 //#endif
 //	byte *ptr;
 	byte *mappalptr;

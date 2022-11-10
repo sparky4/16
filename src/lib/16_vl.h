@@ -204,8 +204,21 @@ void modexFlashOff(word fade, byte *palette);
 /* palette loading and saving */
 void VL_SetPalette (byte far *palette, video_t *v);
 void modexPalSave(byte *palette);
-//byte *modexNewPal();
+byte *modexNewPal();
 void modexLoadPalFile(char *filename, byte *palette);
+static void loadPcxStage1(FILE *file, bitmap_t *result);
+void loadPcxPalette(FILE *file, bitmap_t *result);
+bitmap_t bitmapLoadPcx(char *filename);
+tileset_t bitmapLoadPcxTiles(char *filename, word twidth, word theight);
+void oldDrawBmp(byte far* page, int x, int y, bitmap_t *bmp, byte sprite);
+void modexDrawBmp(page_t *page, int x, int y, bitmap_t *bmp);
+void modexDrawBmpRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp);
+void modexDrawSprite(page_t *page, int x, int y, bitmap_t *bmp);
+void modexDrawSpriteRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, bitmap_t *bmp);
+void modexDrawBmpPBuf(page_t *page, int x, int y, planar_buf_t *bmp); /*pbuf version*/
+void modexDrawBmpPBufRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, planar_buf_t *bmp);
+void modexDrawSpritePBuf(page_t *page, int x, int y, planar_buf_t *bmp);
+void modexDrawSpritePBufRegion(page_t *page, int x, int y, int rx, int ry, int rw, int rh, planar_buf_t *bmp);
 void VL_LoadPalFile(const char *filename, byte *palette, global_game_variables_t *gvar);
 void VL_LoadPalFileCore(byte *palette, global_game_variables_t *gvar);
 void VL_SetCorePal(global_game_variables_t *gvar);

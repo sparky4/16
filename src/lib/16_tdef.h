@@ -207,6 +207,8 @@ typedef struct{
 	sword tileplayerposscreeny;	/* player position on screen */	/* needed for scroll and map system to work accordingly */
 } pagetileinfo_t;
 
+#ifndef PAGET
+#define PAGET
 typedef struct {
 	nibble/*word*/ id;	/* the Identification number of the page~ For layering~ */
 	byte far* data;	/* the data for the page */
@@ -225,6 +227,7 @@ typedef struct {
 //TODO: find where they are used
 	sword delta;			// How much should we shift the page for smooth scrolling
 } page_t;
+#endif
 
 //from 16_in
 //==========================================================================
