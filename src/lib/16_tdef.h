@@ -54,6 +54,8 @@ typedef struct {
 	byte *palette;
 } planar_buf_t;
 
+#ifndef BITMAPT
+#define BITMAPT
 typedef struct {
 	byte *data;
 	word width;
@@ -69,6 +71,7 @@ typedef struct {
 	word theight;	// height of the tiles
 	byte *palette;	// palette for the tile set
 } tileset_t;
+#endif
 
 //from 16_sprit.h
 #ifdef	__WATCOMC__
