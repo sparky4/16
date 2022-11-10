@@ -1,4 +1,4 @@
-”ŞŠİ‰Ô Project 01 ˜b‚Ì’n‹… //Higanbana Project 01 ~ Story of Chikyuu
+å½¼å²¸èŠ± Project 01 è©±ã®åœ°çƒ //Higanbana Project 01 ~ Story of Chikyuu
 ==============
 Open watcom to compile the code of project 16
 --------------
