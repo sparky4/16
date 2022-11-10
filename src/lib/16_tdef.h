@@ -54,6 +54,22 @@ typedef struct {
 	byte *palette;
 } planar_buf_t;
 
+typedef struct {
+	byte *data;
+	word width;
+	word height;
+	byte *palette;
+	word offset;
+} bitmap_t;
+
+typedef struct {
+	byte far **data;
+	word ntiles;		// the number of tiles
+	word twidth;	// width of the tiles
+	word theight;	// height of the tiles
+	byte *palette;	// palette for the tile set
+} tileset_t;
+
 //from 16_sprit.h
 #ifdef	__WATCOMC__
 #include <hw/vga/vrl.h>
@@ -316,8 +332,8 @@ typedef	struct
 	//struct sprite	*spri;	//supposively the sprite sheet data
 	//memptr		gr;
 #endif
-//	bitmap_t	*data;		//supposively the sprite sheet data//old format
-//	bitmap_t	bmp;
+	bitmap_t	*data;		//supposively the sprite sheet data//old format
+	bitmap_t	bmp;
 
 	//input
 	byte near		pdir;	//previous direction~ used in IN_16 in IN_ReadControl()

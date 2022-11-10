@@ -24,7 +24,7 @@
 #include <dos.h>
 #include <string.h>
 #include "src/lib/16_vl.h"
-#include "src/lib/bitmap.h"
+#include "16/src/lib/bitmap.h"
 #include "16/src/lib/16render.h"
 #include "src/lib/16_in.h"
 
@@ -70,7 +70,7 @@ void main() {
 //----	p = planar_buf_from_bitmap(PCXBMPPTR);
 
 	VGAmodeX(1, 1, &gvar);
-	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
+	//--00	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 
 	/* fix up the palette and everything */
 	modexPalUpdate(&PCXBMP->palette);

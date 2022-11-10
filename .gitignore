@@ -30,6 +30,7 @@ img
 !.git/config
 !.gitmodules
 pcx2vrl
+png2vrl
 pcxsscut
 vrl2vrs
 vrsdump

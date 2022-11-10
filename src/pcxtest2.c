@@ -24,7 +24,7 @@
 #include <dos.h>
 #include <string.h>
 #include "src/lib/16_vl.h"
-#include "src/lib/bitmap.h"
+#include "16/src/lib/bitmap.h"
 //----#include "src/lib/planar.h"
 
 static word far* clockw= (word far*) 0x046C; /* 18.2hz clock */
@@ -90,7 +90,7 @@ void main() {
 //	bmp = bitmapLoadPcx("16/PCX_LIB/chikyuu.pcx");
 //----	p = planar_buf_from_bitmap(&bmp);
 	VGAmodeX(1, 1, &gvar);
-	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
+	//--00	gvar.video.page[0]=modexDefaultPage(&gvar.video.page[0]);
 	gvar.video.page[0].sw+=32;
 	gvar.video.page[0].sh+=32;
 
