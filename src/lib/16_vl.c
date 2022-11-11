@@ -892,7 +892,7 @@ modexNewPal() {
 
 	return ptr;
 }
-
+// old library
 static struct pcxHeader {
     byte id;
     byte version;
@@ -1399,6 +1399,7 @@ modexDrawSpritePBufRegion(page_t *page, int x, int y,
 		JNZ PLANE_LOOP	  ; do all 4 planes
     }
 }
+// end of old library
 
 #define COREPALSIZE 9//27	//3*9
 
