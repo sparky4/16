@@ -393,7 +393,7 @@ End1:
 #ifdef __DEBUG_PM__
 	printf("XMSVer=%02X	", XMSVer);
 	printf("XMSAvail=%u\n", XMSAvail);
-	getch();
+//	getch();
 #endif
 	XMSAvail &= ~(PMPageSizeKB - 1);	// Round off to nearest page size
 	if (XMSAvail < (PMPageSizeKB * 2))	// Need at least 2 pages
