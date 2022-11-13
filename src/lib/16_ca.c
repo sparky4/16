@@ -237,8 +237,8 @@ void CAL_GetGrChunkLength (int chunk,global_game_variables_t *gvar)
 boolean CA_FarRead(int handle, byte far *dest, dword length, global_game_variables_t *gvar)
 {
 	boolean flag=0;
-	if (length>0xfffflu)
-		Quit (gvar, "CA_FarRead doesn't support 64K reads yet!");//TODO: EXPAND!!!
+//old	if (length>0xfffflu)
+//old		Quit (gvar, "CA_FarRead doesn't support 64K reads yet!");//TODO: EXPAND!!!
 
 	__asm {
 		push	ds
