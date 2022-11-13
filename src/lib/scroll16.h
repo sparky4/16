@@ -50,9 +50,9 @@
 #define PLAYERBMPDATA		*PLAYERBMPDATAVAR
 #define PLAYERBMPDATAPTR	PLAYERBMPDATAVAR
 
-#define PCXBMPVAR	gvar.player[0].data
-#define PCXBMP		*PCXBMPVAR
-#define PCXBMPPTR	PCXBMPVAR
+//#define PCXBMPVAR	gvar.player[0].data
+//#define PCXBMP		*PCXBMPVAR
+//#define PCXBMPPTR	PCXBMPVAR
 
 //row and colum drawing routines
 #define FULLRCREND
