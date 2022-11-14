@@ -46,10 +46,10 @@
  244E0H 24683H 001A4H WL_MENU10_DATA     FAR_DATA
  24690H 24809H 0017AH WL_MENU11_DATA     FAR_DATA
  24810H 24833H 00024H WL_MENU12_DATA     FAR_DATA
- 24840H 3423FH 0FA00H SignonSeg          FAR_DATA
- 34240H 342BFH 00080H ID_IN5_DATA        FAR_DATA
- 342C0H 3433FH 00080H ID_IN6_DATA        FAR_DATA
- 34340H 343BFH 00080H ID_IN7_DATA        FAR_DATA
+ 24840H 248BFH 00080H ID_IN5_DATA        FAR_DATA
+ 248C0H 2493FH 00080H ID_IN6_DATA        FAR_DATA
+ 24940H 249BFH 00080H ID_IN7_DATA        FAR_DATA
+ 249C0H 343BFH 0FA00H SignonSeg          FAR_DATA
  343C0H 343C0H 00000H _FARBSS            FAR_BSS
  343C0H 34918H 00559H _COMDEF_AA_        FAR_BSS
  34920H 35027H 00708H _COMDEF_AB_        FAR_BSS
@@ -250,10 +250,10 @@ Detailed map of segments
  244E:0000 01A4 C=FAR_DATA S=WL_MENU10_DATA G=(none)  M=WL_MENU.C  ACBP=68
  2469:0000 017A C=FAR_DATA S=WL_MENU11_DATA G=(none)  M=WL_MENU.C  ACBP=68
  2481:0000 0024 C=FAR_DATA S=WL_MENU12_DATA G=(none)  M=WL_MENU.C  ACBP=68
- 2484:0000 FA00 C=FAR_DATA S=SignonSeg      G=(none)  M=SIGNON.BIN   ACBP=60
- 3424:0000 0080 C=FAR_DATA S=ID_IN5_DATA    G=(none)  M=ID_IN.C    ACBP=68
- 342C:0000 0080 C=FAR_DATA S=ID_IN6_DATA    G=(none)  M=ID_IN.C    ACBP=68
- 3434:0000 0080 C=FAR_DATA S=ID_IN7_DATA    G=(none)  M=ID_IN.C    ACBP=68
+ 2484:0000 0080 C=FAR_DATA S=ID_IN5_DATA    G=(none)  M=ID_IN.C    ACBP=68
+ 248C:0000 0080 C=FAR_DATA S=ID_IN6_DATA    G=(none)  M=ID_IN.C    ACBP=68
+ 2494:0000 0080 C=FAR_DATA S=ID_IN7_DATA    G=(none)  M=ID_IN.C    ACBP=68
+ 249C:0000 FA00 C=FAR_DATA S=SignonSeg      G=(none)  M=SIGNON.BIN   ACBP=60
  343C:0000 0000 C=FAR_BSS S=_FARBSS        G=(none)  M=C0.ASM     ACBP=68
  343C:0000 0559 C=FAR_BSS S=_COMDEF_AA_    G=(none)  M=WL_ACT1.C  ACBP=60
  3492:0000 0708 C=FAR_BSS S=_COMDEF_AB_    G=(none)  M=WL_DRAW.C  ACBP=60
@@ -285,19 +285,19 @@ Detailed map of segments
  3A9C:16CA 0112 C=DATA   S=_DATA          G=DGROUP  M=WL_AGENT.C ACBP=48
  3A9C:17DC 0129 C=DATA   S=_DATA          G=DGROUP  M=WL_ACT1.C  ACBP=48
  3A9C:1906 1163 C=DATA   S=_DATA          G=DGROUP  M=WL_ACT2.C  ACBP=48
- 3A9C:2A6A 0300 C=DATA   S=_DATA          G=DGROUP  M=GAMEPAL.BIN  ACBP=48
- 3A9C:2D6A 0109 C=DATA   S=_DATA          G=DGROUP  M=ID_CA.C    ACBP=48
- 3A9C:2E74 005F C=DATA   S=_DATA          G=DGROUP  M=ID_IN.C    ACBP=48
- 3A9C:2ED4 015B C=DATA   S=_DATA          G=DGROUP  M=ID_MM.C    ACBP=48
- 3A9C:3030 0490 C=DATA   S=_DATA          G=DGROUP  M=ID_PM.C    ACBP=48
- 3A9C:34C0 0265 C=DATA   S=_DATA          G=DGROUP  M=ID_SD.C    ACBP=48
- 3A9C:3726 0104 C=DATA   S=_DATA          G=DGROUP  M=ID_SD_A.ASM ACBP=48
- 3A9C:382A 02B9 C=DATA   S=_DATA          G=DGROUP  M=ID_US_1.C  ACBP=48
- 3A9C:3AE4 0000 C=DATA   S=_DATA          G=DGROUP  M=ID_US_A.ASM ACBP=48
- 3A9C:3AE4 0097 C=DATA   S=_DATA          G=DGROUP  M=ID_VL.C    ACBP=48
- 3A9C:3B7C 0029 C=DATA   S=_DATA          G=DGROUP  M=ID_VH.C    ACBP=48
- 3A9C:3BA6 0002 C=DATA   S=_DATA          G=DGROUP  M=ID_VL_A.ASM ACBP=48
- 3A9C:3BA8 0000 C=DATA   S=_DATA          G=DGROUP  M=ID_VH_A.ASM ACBP=48
+ 3A9C:2A6A 0109 C=DATA   S=_DATA          G=DGROUP  M=ID_CA.C    ACBP=48
+ 3A9C:2B74 005F C=DATA   S=_DATA          G=DGROUP  M=ID_IN.C    ACBP=48
+ 3A9C:2BD4 015B C=DATA   S=_DATA          G=DGROUP  M=ID_MM.C    ACBP=48
+ 3A9C:2D30 0490 C=DATA   S=_DATA          G=DGROUP  M=ID_PM.C    ACBP=48
+ 3A9C:31C0 0265 C=DATA   S=_DATA          G=DGROUP  M=ID_SD.C    ACBP=48
+ 3A9C:3426 0104 C=DATA   S=_DATA          G=DGROUP  M=ID_SD_A.ASM ACBP=48
+ 3A9C:352A 02B9 C=DATA   S=_DATA          G=DGROUP  M=ID_US_1.C  ACBP=48
+ 3A9C:37E4 0000 C=DATA   S=_DATA          G=DGROUP  M=ID_US_A.ASM ACBP=48
+ 3A9C:37E4 0097 C=DATA   S=_DATA          G=DGROUP  M=ID_VL.C    ACBP=48
+ 3A9C:387C 0029 C=DATA   S=_DATA          G=DGROUP  M=ID_VH.C    ACBP=48
+ 3A9C:38A6 0002 C=DATA   S=_DATA          G=DGROUP  M=ID_VL_A.ASM ACBP=48
+ 3A9C:38A8 0000 C=DATA   S=_DATA          G=DGROUP  M=ID_VH_A.ASM ACBP=48
+ 3A9C:38A8 0300 C=DATA   S=_DATA          G=DGROUP  M=GAMEPAL.BIN  ACBP=48
  3A9C:3BB0 0002 C=DATA   S=_DATA          G=DGROUP  M=FPINIT     ACBP=68
  3A9C:3BC0 0000 C=DATA   S=_DATA          G=DGROUP  M=E87TRAP    ACBP=68
  3A9C:3BC0 0003 C=DATA   S=_DATA          G=DGROUP  M=PROTFLAG   ACBP=48
@@ -592,9 +592,9 @@ Detailed map of segments
  3A9C:E999       _abortprogram
  3A9C:50D8       _actorat
  3A9C:97CB       _AdLibPresent
- 3A9C:2DB3 idle  _afilename
+ 3A9C:2AB3 idle  _afilename
  3A9C:E438       _aftersort
- 3A9C:2DA9 idle  _aheadname
+ 3A9C:2AA9 idle  _aheadname
  3A9C:E63A       _alBlock
  3A9C:E636       _alLengthLeft
  3A9C:E640       _alNoCheck
@@ -615,7 +615,7 @@ Detailed map of segments
  3A9C:16EA idle  _attackinfo
  3A9C:DBA5       _audiohandle
  3A9C:DBAB       _audiohuffman
- 3A9C:2D6A       _audioname
+ 3A9C:2A6A       _audioname
  3A9C:9C06       _audiosegs
  3A9C:E3A3       _audiostarts
  14E0:0E10 idle  _A_Breathing
@@ -763,7 +763,7 @@ Detailed map of segments
  3A9C:9E34       _demobuffer
  3A9C:E3CA       _DemoBuffer
  048D:16CB idle  _DemoLoop
- 3A9C:2E7E idle  _DemoMode
+ 3A9C:2B7E idle  _DemoMode
  3A9C:1022       _demoname
  3A9C:E3C8       _DemoOffset
  3A9C:9E3E       _demoplayback
@@ -839,7 +839,7 @@ Detailed map of segments
  1162:0C16 idle  _DropItem
  3A9C:9FA6       _dummyobj
  3A9C:0C92 idle  _ElevatorBackTo
- 3A9C:304A idle  _EMMDriverName
+ 3A9C:2D4A idle  _EMMDriverName
  3A9C:E47A       _EMSAvail
  3A9C:E478       _EMSHandle
  3A9C:E45C       _EMSList
@@ -907,17 +907,17 @@ Detailed map of segments
  3A9C:D564       _fullscalefarcall
  3A9C:D3CA       _funnyticount
  0C63:11C9       _GameLoop
- 3A9C:2A6A       _gamepal
+ 3A9C:38A8       _gamepal
  3A9C:E893       _Games
  3A9C:90E0       _gamestate
- 3A9C:2D8B idle  _gdictname
+ 3A9C:2A8B idle  _gdictname
  12D7:0601       _GetBonus
  0000:387B       _getenv
  0DB1:0AB8       _GetNewActor
  0000:27A1       _gettext
  0000:1308       _getvect
- 3A9C:2D81 idle  _gfilename
- 3A9C:2D77 idle  _gheadname
+ 3A9C:2A81 idle  _gfilename
+ 3A9C:2A77 idle  _gheadname
  12D7:05B7 idle  _GiveAmmo
  12D7:0471 idle  _GiveExtraMan
  12D7:05EC idle  _GiveKey
@@ -997,7 +997,7 @@ Detailed map of segments
  3A9C:4FD0       _joystickenabled
  3A9C:4FCA       _joystickport
  3A9C:4FCC       _joystickprogressive
- 3A9C:2E74 idle  _KbdDefs
+ 3A9C:2B74 idle  _KbdDefs
  3A9C:97D3       _Keyboard
  1162:0CB1 idle  _KillActor
  3A9C:9E42       _killerobj
@@ -1019,7 +1019,7 @@ Detailed map of segments
  3A9C:9A3F       _layoutdone
  3A9C:9E2A       _leftchannel
  3A9C:9A6D       _leftmargin
- 3A9C:3AEE idle  _leftmasks
+ 3A9C:37EE idle  _leftmasks
  3A9C:E871       _LeftPosition
  3A9C:0E60 idle  _lefttable
  0AE0:0958       _LevelCompleted
@@ -1069,8 +1069,8 @@ Detailed map of segments
  3A9C:05AA idle  _mbarray
  0000:3941       _memcpy
  06B4:3EC7       _Message
- 3A9C:2D9F idle  _mfilename
- 3A9C:2D95 idle  _mheadname
+ 3A9C:2A9F idle  _mfilename
+ 3A9C:2A95 idle  _mheadname
  3A9C:D550       _midangle
  3A9C:149C idle  _mindist
  3A9C:9122       _minheightdiv
@@ -1152,8 +1152,8 @@ Detailed map of segments
  140C:05DB       _OperateDoor
  3A9C:15CA idle  _opposite
  3A9C:05B6 idle  _order
- 3A9C:3040 idle  _PageFile
- 3A9C:3032       _PageFileName
+ 3A9C:2D40 idle  _PageFile
+ 3A9C:2D32       _PageFileName
  0627:0485 idle  _PageLayout
  3A9C:9A8D       _pagenum
  3A6C:0000       _palette1
@@ -1179,7 +1179,7 @@ Detailed map of segments
  3A9C:9A47       _picx
  3A9C:9A45       _picy
  3A9C:912C       _pixelangle
- 3A9C:3AEA idle  _pixmasks
+ 3A9C:37EA idle  _pixmasks
  3A9C:D53A       _pixx
  140C:00E0       _PlaceItemType
  21A5:0000       _planepics
@@ -1276,7 +1276,7 @@ Detailed map of segments
  0DB1:0B1A idle  _RemoveObj
  3A9C:9E28       _rightchannel
  3A9C:9A4F       _rightmargin
- 3A9C:3AF2 idle  _rightmasks
+ 3A9C:37F2 idle  _rightmasks
  3A9C:E86F       _RightPosition
  3A9C:0C9E idle  _righttable
  0627:0003 idle  _RipToEOL
@@ -1295,11 +1295,11 @@ Detailed map of segments
  0F95:0396 idle  _ScalePost
  10D6:0487       _ScaleShape
  0C63:019A idle  _ScanInfoPlane
- 3A9C:383A       _Scores
+ 3A9C:353A       _Scores
  3A9C:D3D0       _screenfaded
  3A9C:1490       _screenloc
  3A9C:93B6       _screenofs
- 3A9C:3AE4       _screenseg
+ 3A9C:37E4       _screenseg
  1A9F:0B8C       _SDL_DigitizedDone
  1C31:0016       _SDL_IndicatePC
  1A9F:08D3 idle  _SDL_LoadDigiSegment
@@ -1353,7 +1353,7 @@ Detailed map of segments
  048D:1552       _ShowViewSize
  048D:0CFF       _ShutdownId
  1162:162B       _SightPlayer
- 2484:0000       _signon
+ 249C:0000       _signon
  048D:0FDE idle  _SignonScreen
  10D6:07A0       _SimpleScaleShape
  0000:0F4F       _sin
@@ -1406,7 +1406,7 @@ Detailed map of segments
  3A9C:E85B       _ssNoCheck
  3A9C:E851       _ssOff
  3A9C:E852       _ssOn
- 3A9C:34C0 idle  _ssPort
+ 3A9C:31C0 idle  _ssPort
  3A9C:E84D       _ssSample
  3A9C:E855       _ssStatus
  0DB1:0D9F       _StartBonusFlash
@@ -1742,9 +1742,9 @@ Detailed map of segments
  0DB1:0DB6 idle  _UpdatePaletteShifts
  3A9C:970F       _updateptr
  0C63:014C       _UpdateSoundLoc
- 3A9C:3836 idle  _USL_DrawString
+ 3A9C:3536 idle  _USL_DrawString
  1C78:0009 idle  _USL_HardError
- 3A9C:3832       _USL_MeasureString
+ 3A9C:3532       _USL_MeasureString
  1C78:03EA idle  _USL_PrintInCenter
  1C78:06A6 idle  _US_CenterWindow
  1C78:0229       _US_CheckParm
@@ -1863,7 +1863,7 @@ Detailed map of segments
  3A9C:9E1E       _XMSPagesAvail
  3A9C:E44C       _XMSPagesUsed
  3A9C:9E22       _XMSPresent
- 3A9C:3030 idle  _XMSProtectPage
+ 3A9C:2D30 idle  _XMSProtectPage
  3A9C:D54C       _xpartial
  3A9C:D546       _xpartialdown
  3A9C:D548       _xpartialup
@@ -2736,7 +2736,7 @@ Detailed map of segments
  2443:0000 idle  _NewMenu
  244E:0000 idle  _LSMenu
  2469:0000 idle  _CusMenu
- 2484:0000       _signon
+ 249C:0000       _signon
  343C:0000       _areaconnect
  3492:0000       _sintable
  3503:0000       _finetangent
@@ -3085,29 +3085,29 @@ Detailed map of segments
  3A9C:2A0A idle  _s_spectredie3
  3A9C:2A1A idle  _s_spectredie4
  3A9C:2A2A idle  _s_spectrewake
- 3A9C:2A6A       _gamepal
- 3A9C:2D6A       _audioname
- 3A9C:2D77 idle  _gheadname
- 3A9C:2D81 idle  _gfilename
- 3A9C:2D8B idle  _gdictname
- 3A9C:2D95 idle  _mheadname
- 3A9C:2D9F idle  _mfilename
- 3A9C:2DA9 idle  _aheadname
- 3A9C:2DB3 idle  _afilename
- 3A9C:2E74 idle  _KbdDefs
- 3A9C:2E7E idle  _DemoMode
- 3A9C:3030 idle  _XMSProtectPage
- 3A9C:3032       _PageFileName
- 3A9C:3040 idle  _PageFile
- 3A9C:304A idle  _EMMDriverName
- 3A9C:34C0 idle  _ssPort
- 3A9C:3832       _USL_MeasureString
- 3A9C:3836 idle  _USL_DrawString
- 3A9C:383A       _Scores
- 3A9C:3AE4       _screenseg
- 3A9C:3AEA idle  _pixmasks
- 3A9C:3AEE idle  _leftmasks
- 3A9C:3AF2 idle  _rightmasks
+ 3A9C:2A6A       _audioname
+ 3A9C:2A77 idle  _gheadname
+ 3A9C:2A81 idle  _gfilename
+ 3A9C:2A8B idle  _gdictname
+ 3A9C:2A95 idle  _mheadname
+ 3A9C:2A9F idle  _mfilename
+ 3A9C:2AA9 idle  _aheadname
+ 3A9C:2AB3 idle  _afilename
+ 3A9C:2B74 idle  _KbdDefs
+ 3A9C:2B7E idle  _DemoMode
+ 3A9C:2D30 idle  _XMSProtectPage
+ 3A9C:2D32       _PageFileName
+ 3A9C:2D40 idle  _PageFile
+ 3A9C:2D4A idle  _EMMDriverName
+ 3A9C:31C0 idle  _ssPort
+ 3A9C:3532       _USL_MeasureString
+ 3A9C:3536 idle  _USL_DrawString
+ 3A9C:353A       _Scores
+ 3A9C:37E4       _screenseg
+ 3A9C:37EA idle  _pixmasks
+ 3A9C:37EE idle  _leftmasks
+ 3A9C:37F2 idle  _rightmasks
+ 3A9C:38A8       _gamepal
  3A9C:3BB0       __8087
  3A9C:3BC0       __protected
  3A9C:3BC1       __LDT
