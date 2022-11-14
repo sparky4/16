@@ -346,6 +346,7 @@ void US_ControlPanel(byte scancode)
 	//
 	switch(scancode)
 	{
+#ifndef SPEAR
 		case sc_F1:
 			#ifdef SPEAR
 			BossKey();
@@ -357,7 +358,7 @@ void US_ControlPanel(byte scancode)
 			#endif
 			#endif
 			goto finishup;
-
+#endif
 		case sc_F2:
 			CP_SaveGame(0);
 			goto finishup;

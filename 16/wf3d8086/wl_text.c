@@ -422,11 +422,12 @@ void PageLayout (boolean shownumber)
 // clear the screen
 //
 	VWB_Bar (0,0,320,200,BACKCOLOR);
+#ifndef SPEAR
 	VWB_DrawPic (0,0,H_TOPWINDOWPIC);
 	VWB_DrawPic (0,8,H_LEFTWINDOWPIC);
 	VWB_DrawPic (312,8,H_RIGHTWINDOWPIC);
 	VWB_DrawPic (8,176,H_BOTTOMINFOPIC);
-
+#endif
 
 	for (i=0;i<TEXTROWS;i++)
 	{
@@ -558,10 +559,12 @@ void CacheLayoutGraphics (void)
 				numpages++;
 			if (ch == 'E')		// end of file, so load graphics and return
 			{
+#ifndef SPEAR
 				CA_MarkGrChunk(H_TOPWINDOWPIC);
 				CA_MarkGrChunk(H_LEFTWINDOWPIC);
 				CA_MarkGrChunk(H_RIGHTWINDOWPIC);
 				CA_MarkGrChunk(H_BOTTOMINFOPIC);
+#endif
 				CA_CacheMarks ();
 				text = textstart;
 				return;

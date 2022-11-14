@@ -1311,6 +1311,7 @@ void NonShareware(void)
 #endif
 #endif
 
+#if 0
 #ifdef SPEAR
 #ifndef SPEARDEMO
 ////////////////////////////////////////////////////////
@@ -1715,4 +1716,5 @@ void CopyProtection(void)
 
 #endif // SPEARDEMO
 #endif // SPEAR
+#endif // 0
 //===========================================================================
