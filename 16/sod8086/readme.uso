@@ -1,0 +1,39 @@
+Wolfenstein Makefile and Compile-Time Patch, Version 1.00
+---------------------------------------------------------
+
+Aha!  Finally, I got it to build...
+
+Anyway, if you have Borland C++ 3 or later, download the original source
+files, and extract this on top of them.  You can then run the compiler
+from the command line and get a working build.
+
+   C:\WOLFDEV>make -f makefile.wl6
+
+Or rename makefile.wl6 to makefile, being sure to edit the filename in the
+makefile itself (used to generate wolf3d.cfg when the makefile is altered)
+and then compile by typing simply "MAKE".  Yeah!
+
+For best results, get a copy of UPX from http://upx.sourceforge.net/ and
+compress it thus:
+
+   C:\WOLFDEV\OBJ>upx --best --8086 wolf3d.exe
+
+The result will be a binary that works properly and is only 94K - hey, you
+out-did id themselves!
+
+Hey, what else can you expect from a compiler jockey specializing in
+Borland products for DOS-16? :)
+
+Steve "Usotsuki" Nickolas
+<steve@dosius.zzn.com>
+2003.0501
+
+P.S.: For best results, change "steve" in the above address to "sysdev".
+Both e-mail addresses work, but since I get a LOT (about 50 per day) of
+junk mail at the above address, I have to filter it by hand, and I might
+miss your message if I think the sender line or subject line looks like
+a spammer.  The other e-mail gets no spam, and I would like to keep it
+that way!  But if you have serious questions or comments, please e-mail
+me there.
+
+-uso.

@@ -1605,7 +1605,7 @@ void main (void)
 
 	CheckForEpisodes();
 
-	Patch386 ();
+	//00--	Patch386 ();
 
 	InitGame ();
 
