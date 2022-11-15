@@ -1936,7 +1936,7 @@ void A_Dormant (objtype *ob)
 	long	deltax,deltay;
 	int	xl,xh,yl,yh;
 	int	x,y;
-	objtype	*tile;
+	unsigned	tile;
 
 	deltax = ob->x - player->x;
 	if (deltax < -MINACTORDIST || deltax > MINACTORDIST)
@@ -1959,7 +1959,7 @@ moveok:
 			tile = actorat[x][y];
 			if (!tile)
 				continue;
-			if (tile && tile<objlist)
+			if (tile<256)
 				return;
 			if (((objtype *)tile)->flags&FL_SHOOTABLE)
 				return;

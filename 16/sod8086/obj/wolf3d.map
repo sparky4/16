@@ -19,19 +19,19 @@
  11621H 12D75H 01755H WL_STATE_TEXT      CODE
  12D76H 140C5H 01350H WL_AGENT_TEXT      CODE
  140C6H 14E06H 00D41H WL_ACT1_TEXT       CODE
- 14E07H 166BEH 018B8H WL_ACT2_TEXT       CODE
- 166BFH 17E10H 01752H ID_CA_TEXT         CODE
- 17E11H 18994H 00B84H ID_IN_TEXT         CODE
- 18995H 1981BH 00E87H ID_MM_TEXT         CODE
- 1981CH 1A9FEH 011E3H ID_PM_TEXT         CODE
- 1A9FFH 1C317H 01919H ID_SD_TEXT         CODE
- 1C318H 1C788H 00471H ID_SD_A_TEXT       CODE
- 1C789H 1D38BH 00C03H ID_US_1_TEXT       CODE
- 1D38CH 1D3D0H 00045H ID_US_A_TEXT       CODE
- 1D3D1H 1DF43H 00B73H ID_VL_TEXT         CODE
- 1DF44H 1E86DH 0092AH ID_VH_TEXT         CODE
- 1E86EH 1EB01H 00294H ID_VL_A_TEXT       CODE
- 1EB02H 1ECF7H 001F6H ID_VH_A_TEXT       CODE
+ 14E07H 166BAH 018B4H WL_ACT2_TEXT       CODE
+ 166BBH 17E0CH 01752H ID_CA_TEXT         CODE
+ 17E0DH 18990H 00B84H ID_IN_TEXT         CODE
+ 18991H 19817H 00E87H ID_MM_TEXT         CODE
+ 19818H 1A9FAH 011E3H ID_PM_TEXT         CODE
+ 1A9FBH 1C313H 01919H ID_SD_TEXT         CODE
+ 1C314H 1C784H 00471H ID_SD_A_TEXT       CODE
+ 1C785H 1D387H 00C03H ID_US_1_TEXT       CODE
+ 1D388H 1D3CCH 00045H ID_US_A_TEXT       CODE
+ 1D3CDH 1DF3FH 00B73H ID_VL_TEXT         CODE
+ 1DF40H 1E869H 0092AH ID_VH_TEXT         CODE
+ 1E86AH 1EAFDH 00294H ID_VL_A_TEXT       CODE
+ 1EAFEH 1ECF3H 001F6H ID_VH_A_TEXT       CODE
  1ED00H 21476H 02777H EMU_PROG           CODE
  21480H 21A47H 005C8H E87_PROG           CODE
  21A50H 21A50H 00000H _FARDATA           FAR_DATA
@@ -220,19 +220,19 @@ Detailed map of segments
  1162:0001 1755 C=CODE   S=WL_STATE_TEXT  G=(none)  M=WL_STATE.C ACBP=28
  12D7:0006 1350 C=CODE   S=WL_AGENT_TEXT  G=(none)  M=WL_AGENT.C ACBP=28
  140C:0006 0D41 C=CODE   S=WL_ACT1_TEXT   G=(none)  M=WL_ACT1.C  ACBP=28
- 14E0:0007 18B8 C=CODE   S=WL_ACT2_TEXT   G=(none)  M=WL_ACT2.C  ACBP=28
- 166B:000F 1752 C=CODE   S=ID_CA_TEXT     G=(none)  M=ID_CA.C    ACBP=28
- 17E1:0001 0B84 C=CODE   S=ID_IN_TEXT     G=(none)  M=ID_IN.C    ACBP=28
- 1899:0005 0E87 C=CODE   S=ID_MM_TEXT     G=(none)  M=ID_MM.C    ACBP=28
- 1981:000C 11E3 C=CODE   S=ID_PM_TEXT     G=(none)  M=ID_PM.C    ACBP=28
- 1A9F:000F 1919 C=CODE   S=ID_SD_TEXT     G=(none)  M=ID_SD.C    ACBP=28
- 1C31:0008 0471 C=CODE   S=ID_SD_A_TEXT   G=(none)  M=ID_SD_A.ASM ACBP=48
- 1C78:0009 0C03 C=CODE   S=ID_US_1_TEXT   G=(none)  M=ID_US_1.C  ACBP=28
- 1D38:000C 0045 C=CODE   S=ID_US_A_TEXT   G=(none)  M=ID_US_A.ASM ACBP=48
- 1D3D:0001 0B73 C=CODE   S=ID_VL_TEXT     G=(none)  M=ID_VL.C    ACBP=28
- 1DF4:0004 092A C=CODE   S=ID_VH_TEXT     G=(none)  M=ID_VH.C    ACBP=28
- 1E86:000E 0294 C=CODE   S=ID_VL_A_TEXT   G=(none)  M=ID_VL_A.ASM ACBP=48
- 1EB0:0002 01F6 C=CODE   S=ID_VH_A_TEXT   G=(none)  M=ID_VH_A.ASM ACBP=48
+ 14E0:0007 18B4 C=CODE   S=WL_ACT2_TEXT   G=(none)  M=WL_ACT2.C  ACBP=28
+ 166B:000B 1752 C=CODE   S=ID_CA_TEXT     G=(none)  M=ID_CA.C    ACBP=28
+ 17E0:000D 0B84 C=CODE   S=ID_IN_TEXT     G=(none)  M=ID_IN.C    ACBP=28
+ 1899:0001 0E87 C=CODE   S=ID_MM_TEXT     G=(none)  M=ID_MM.C    ACBP=28
+ 1981:0008 11E3 C=CODE   S=ID_PM_TEXT     G=(none)  M=ID_PM.C    ACBP=28
+ 1A9F:000B 1919 C=CODE   S=ID_SD_TEXT     G=(none)  M=ID_SD.C    ACBP=28
+ 1C31:0004 0471 C=CODE   S=ID_SD_A_TEXT   G=(none)  M=ID_SD_A.ASM ACBP=48
+ 1C78:0005 0C03 C=CODE   S=ID_US_1_TEXT   G=(none)  M=ID_US_1.C  ACBP=28
+ 1D38:0008 0045 C=CODE   S=ID_US_A_TEXT   G=(none)  M=ID_US_A.ASM ACBP=48
+ 1D3C:000D 0B73 C=CODE   S=ID_VL_TEXT     G=(none)  M=ID_VL.C    ACBP=28
+ 1DF4:0000 092A C=CODE   S=ID_VH_TEXT     G=(none)  M=ID_VH.C    ACBP=28
+ 1E86:000A 0294 C=CODE   S=ID_VL_A_TEXT   G=(none)  M=ID_VL_A.ASM ACBP=48
+ 1EAF:000E 01F6 C=CODE   S=ID_VH_A_TEXT   G=(none)  M=ID_VH_A.ASM ACBP=48
  1ED0:0000 0000 C=CODE   S=EMU_PROG       G=(none)  M=FPINIT     ACBP=68
  1ED0:0000 2777 C=CODE   S=EMU_PROG       G=(none)  M=EMU086     ACBP=68
  2148:0000 0000 C=CODE   S=E87_PROG       G=(none)  M=FPINIT     ACBP=68
@@ -598,7 +598,7 @@ Detailed map of segments
  3A9C:E63A       _alBlock
  3A9C:E636       _alLengthLeft
  3A9C:E640       _alNoCheck
- 1A9F:0D3D       _alOut
+ 1A9F:0D39       _alOut
  3A9C:E63C       _alSound
  3A9C:E632       _alTimeCount
  3A9C:E622       _alZeroInst
@@ -660,40 +660,40 @@ Detailed map of segments
  0F95:0A99 idle  _CalcRotate
  0F95:0D8C       _CalcTics
  06B4:1743 idle  _CalibrateJoystick
- 166B:049C idle  _CAL_CarmackExpand
- 166B:0E72 idle  _CAL_ExpandGrChunk
- 166B:0094 idle  _CAL_GetGrChunkLength
- 166B:032F idle  _CAL_HuffExpand
- 166B:02D7 idle  _CAL_OptimizeNodes
- 166B:0BC0 idle  _CAL_SetupAudioFile
- 166B:07C3 idle  _CAL_SetupGrFile
- 166B:09F8 idle  _CAL_SetupMapFile
- 166B:0D3E       _CA_CacheAudioChunk
- 166B:0F49       _CA_CacheGrChunk
- 166B:1185       _CA_CacheMap
- 166B:13F4       _CA_CacheMarks
- 166B:1090       _CA_CacheScreen
- 166B:1700 idle  _CA_CannotOpen
- 166B:1372 idle  _CA_ClearAllMarks
- 166B:1351 idle  _CA_ClearMarks
- 166B:0083 idle  _CA_CloseDebug
- 166B:132A       _CA_DownLevel
- 166B:00F4       _CA_FarRead
- 166B:0140       _CA_FarWrite
+ 166B:0498 idle  _CAL_CarmackExpand
+ 166B:0E6E idle  _CAL_ExpandGrChunk
+ 166B:0090 idle  _CAL_GetGrChunkLength
+ 166B:032B idle  _CAL_HuffExpand
+ 166B:02D3 idle  _CAL_OptimizeNodes
+ 166B:0BBC idle  _CAL_SetupAudioFile
+ 166B:07BF idle  _CAL_SetupGrFile
+ 166B:09F4 idle  _CAL_SetupMapFile
+ 166B:0D3A       _CA_CacheAudioChunk
+ 166B:0F45       _CA_CacheGrChunk
+ 166B:1181       _CA_CacheMap
+ 166B:13F0       _CA_CacheMarks
+ 166B:108C       _CA_CacheScreen
+ 166B:16FC idle  _CA_CannotOpen
+ 166B:136E idle  _CA_ClearAllMarks
+ 166B:134D idle  _CA_ClearMarks
+ 166B:007F idle  _CA_CloseDebug
+ 166B:1326       _CA_DownLevel
+ 166B:00F0       _CA_FarRead
+ 166B:013C       _CA_FarWrite
  3A9C:98D8       _ca_levelbit
  3A9C:E3AB       _ca_levelnum
- 166B:0DED       _CA_LoadAllSounds
- 166B:0256 idle  _CA_LoadFile
- 166B:005F idle  _CA_OpenDebug
- 166B:018C idle  _CA_ReadFile
- 166B:05BA idle  _CA_RLEWCompress
- 166B:0707 idle  _CA_RLEWexpand
- 166B:13C6       _CA_SetAllPurge
- 166B:1398 idle  _CA_SetGrPurge
- 166B:0D15       _CA_Shutdown
- 166B:0CF4       _CA_Startup
- 166B:12E5       _CA_UpLevel
- 166B:01FE       _CA_WriteFile
+ 166B:0DE9       _CA_LoadAllSounds
+ 166B:0252 idle  _CA_LoadFile
+ 166B:005B idle  _CA_OpenDebug
+ 166B:0188 idle  _CA_ReadFile
+ 166B:05B6 idle  _CA_RLEWCompress
+ 166B:0703 idle  _CA_RLEWexpand
+ 166B:13C2       _CA_SetAllPurge
+ 166B:1394 idle  _CA_SetGrPurge
+ 166B:0D11       _CA_Shutdown
+ 166B:0CF0       _CA_Startup
+ 166B:12E1       _CA_UpLevel
+ 166B:01FA       _CA_WriteFile
  0DB1:0603       _CenterWindow
  3A9C:93B4       _centerx
  06B4:41BB       _CheckForEpisodes
@@ -886,7 +886,7 @@ Detailed map of segments
  044B:0000 idle  _FixedMul
  0F95:0DEF       _FixOfs
  06B4:265E idle  _FixupCustom
- 1DF4:07DE       _FizzleFade
+ 1DF4:07DA       _FizzleFade
  3A9C:9E50       _fizzlein
  0000:34FF       _flushall
  3A9C:93B8       _focallength
@@ -928,7 +928,7 @@ Detailed map of segments
  3A9C:A096       _godmode
  3A9C:DB93       _gotgatgun
  0000:2758       _gotoxy
- 166B:000F idle  _GRFILEPOS
+ 166B:000B idle  _GRFILEPOS
  3A9C:DBA9       _grhandle
  3A9C:DFA7       _grhuffman
  35E4:0000       _grneeded
@@ -962,28 +962,28 @@ Detailed map of segments
  048D:130D idle  _InitGame
  0DB1:0C20       _InitRedShifts
  140C:0006       _InitStaticList
- 17E1:01E0       _INL_GetJoyDelta
+ 17E0:01EC       _INL_GetJoyDelta
  3A9C:D97F       _insetupscaling
  06B4:2FF6       _IntroScreen
- 17E1:0B02       _IN_Ack
- 17E1:0AA8       _IN_CheckAck
- 17E1:06CB       _IN_ClearKeysDown
- 17E1:064D idle  _IN_Default
- 17E1:0145       _IN_GetJoyAbs
- 17E1:034E idle  _IN_GetJoyButtonsDB
+ 17E0:0B0E       _IN_Ack
+ 17E0:0AB4       _IN_CheckAck
+ 17E0:06D7       _IN_ClearKeysDown
+ 17E0:0659 idle  _IN_Default
+ 17E0:0151       _IN_GetJoyAbs
+ 17E0:035A idle  _IN_GetJoyButtonsDB
  06B4:40B0 idle  _IN_GetScanName
- 17E1:0B6F       _IN_JoyButtons
- 17E1:0B58       _IN_MouseButtons
- 17E1:06EA       _IN_ReadControl
- 17E1:0A0C idle  _IN_SetControlType
- 17E1:06B9 idle  _IN_SetKeyHook
- 17E1:04BF       _IN_SetupJoy
- 17E1:068D       _IN_Shutdown
- 17E1:0A58       _IN_StartAck
- 17E1:05AC       _IN_Startup
- 17E1:0B13       _IN_UserInput
- 17E1:0A3B       _IN_WaitForASCII
- 17E1:0A1D idle  _IN_WaitForKey
+ 17E0:0B7B       _IN_JoyButtons
+ 17E0:0B64       _IN_MouseButtons
+ 17E0:06F6       _IN_ReadControl
+ 17E0:0A18 idle  _IN_SetControlType
+ 17E0:06C5 idle  _IN_SetKeyHook
+ 17E0:04CB       _IN_SetupJoy
+ 17E0:0699       _IN_Shutdown
+ 17E0:0A64       _IN_StartAck
+ 17E0:05B8       _IN_Startup
+ 17E0:0B1F       _IN_UserInput
+ 17E0:0A47       _IN_WaitForASCII
+ 17E0:0A29 idle  _IN_WaitForKey
  0000:299D       _ioctl
  3A9C:93BC       _IsA386
  0000:150C       _isatty
@@ -1013,7 +1013,7 @@ Detailed map of segments
  3A9C:8458       _laststatobj
  3A9C:D55A       _lasttilehit
  3A9C:9A9C       _lasttimecount
- 1DF4:0660       _LatchDrawPic
+ 1DF4:065C       _LatchDrawPic
  12D7:02B5 idle  _LatchNumber
  3A9C:9E5A       _latchpics
  3A9C:9A3F       _layoutdone
@@ -1028,7 +1028,7 @@ Detailed map of segments
  3A9C:D96F       _linescale
  3A9C:EB2F       _linewidth
  3A9C:9719       _loadedgame
- 1DF4:06BD       _LoadLatchMem
+ 1DF4:06B9       _LoadLatchMem
  048D:08CB       _LoadTheGame
  3A9C:E867       _LocalTime
  0000:15B7       _lseek
@@ -1080,26 +1080,26 @@ Detailed map of segments
  3A9C:E428       _mmfree
  3A9C:E42C       _mmhead
  3A9C:9A2B       _mminfo
- 1899:0005 idle  _MML_CheckForXMS
- 1899:0246 idle  _MML_ClearBlock
- 1899:0020 idle  _MML_SetupXMS
- 1899:008F idle  _MML_ShutdownXMS
- 1899:00C0       _MML_UseSpace
+ 1899:0001 idle  _MML_CheckForXMS
+ 1899:0242 idle  _MML_ClearBlock
+ 1899:001C idle  _MML_SetupXMS
+ 1899:008B idle  _MML_ShutdownXMS
+ 1899:00BC       _MML_UseSpace
  3A9C:E420       _mmnew
  3A9C:E424       _mmrover
  3A9C:E436       _mmstarted
- 1899:0E81       _MM_BombOnError
- 1899:0C6B idle  _MM_DumpData
- 1899:0784       _MM_FreePtr
- 1899:04C7       _MM_GetPtr
- 1899:08CC       _MM_SetLock
- 1899:084B       _MM_SetPurge
- 1899:0B0E idle  _MM_ShowMemory
- 1899:049F       _MM_Shutdown
- 1899:0952       _MM_SortMem
- 1899:02AC       _MM_Startup
- 1899:0E03       _MM_TotalFree
- 1899:0D9C       _MM_UnusedMemory
+ 1899:0E7D       _MM_BombOnError
+ 1899:0C67 idle  _MM_DumpData
+ 1899:0780       _MM_FreePtr
+ 1899:04C3       _MM_GetPtr
+ 1899:08C8       _MM_SetLock
+ 1899:0847       _MM_SetPurge
+ 1899:0B0A idle  _MM_ShowMemory
+ 1899:049B       _MM_Shutdown
+ 1899:094E       _MM_SortMem
+ 1899:02A8       _MM_Startup
+ 1899:0DFF       _MM_TotalFree
+ 1899:0D98       _MM_UnusedMemory
  3A9C:93AC       _mouseadjustment
  3A9C:E3C0       _MouseDownCount
  3A9C:4FD2       _mouseenabled
@@ -1194,25 +1194,25 @@ Detailed map of segments
  3A9C:DB87       _plux
  3A9C:DB85       _pluy
  3A9C:E442       _PMFrameCount
- 1981:06FB idle  _PML_ClosePageFile
- 1981:0AFF idle  _PML_GetAPageBuffer
- 1981:0735 idle  _PML_GetEMSAddress
- 1981:0C0C idle  _PML_GetPageFromXMS
- 1981:086A idle  _PML_GiveLRUPage
- 1981:090B idle  _PML_GiveLRUXMSPage
- 1981:0C90 idle  _PML_LoadPage
- 1981:000C idle  _PML_MapEMS
- 1981:0514 idle  _PML_OpenPageFile
- 1981:097D idle  _PML_PutPageInXMS
- 1981:0494 idle  _PML_ReadFromFile
- 1981:0164 idle  _PML_ShutdownEMS
- 1981:046D idle  _PML_ShutdownMainMem
- 1981:02A8 idle  _PML_ShutdownXMS
- 1981:002F idle  _PML_StartupEMS
- 1981:03F0 idle  _PML_StartupMainMem
- 1981:0188 idle  _PML_StartupXMS
- 1981:0A2C idle  _PML_TransferPageSpace
- 1981:01FB idle  _PML_XMSCopy
+ 1981:06F7 idle  _PML_ClosePageFile
+ 1981:0AFB idle  _PML_GetAPageBuffer
+ 1981:0731 idle  _PML_GetEMSAddress
+ 1981:0C08 idle  _PML_GetPageFromXMS
+ 1981:0866 idle  _PML_GiveLRUPage
+ 1981:0907 idle  _PML_GiveLRUXMSPage
+ 1981:0C8C idle  _PML_LoadPage
+ 1981:0008 idle  _PML_MapEMS
+ 1981:0510 idle  _PML_OpenPageFile
+ 1981:0979 idle  _PML_PutPageInXMS
+ 1981:0490 idle  _PML_ReadFromFile
+ 1981:0160 idle  _PML_ShutdownEMS
+ 1981:0469 idle  _PML_ShutdownMainMem
+ 1981:02A4 idle  _PML_ShutdownXMS
+ 1981:002B idle  _PML_StartupEMS
+ 1981:03EC idle  _PML_StartupMainMem
+ 1981:0184 idle  _PML_StartupXMS
+ 1981:0A28 idle  _PML_TransferPageSpace
+ 1981:01F7 idle  _PML_XMSCopy
  3A9C:E446       _PMNumBlocks
  3A9C:D3E6       _PMPages
  3A9C:E450       _PMPanicMode
@@ -1221,16 +1221,16 @@ Detailed map of segments
  3A9C:D3EC       _PMSpriteStart
  3A9C:E452       _PMStarted
  3A9C:E44E       _PMThrashing
- 1981:02F7       _PM_CheckMainMem
- 1981:0CE2       _PM_GetPage
- 1981:0811       _PM_GetPageAddress
- 1981:103A       _PM_NextFrame
- 1981:0DD4       _PM_Preload
- 1981:10B4 idle  _PM_Reset
- 1981:02CE       _PM_SetMainMemPurge
- 1981:0DA4       _PM_SetPageLock
- 1981:11D3       _PM_Shutdown
- 1981:1122       _PM_Startup
+ 1981:02F3       _PM_CheckMainMem
+ 1981:0CDE       _PM_GetPage
+ 1981:080D       _PM_GetPageAddress
+ 1981:1036       _PM_NextFrame
+ 1981:0DD0       _PM_Preload
+ 1981:10B0 idle  _PM_Reset
+ 1981:02CA       _PM_SetMainMemPurge
+ 1981:0DA0       _PM_SetPageLock
+ 1981:11CF       _PM_Shutdown
+ 1981:111E       _PM_Startup
  0DB1:03CB idle  _PollControls
  0DB1:0070 idle  _PollJoystickButtons
  0DB1:024B idle  _PollJoystickMove
@@ -1300,40 +1300,40 @@ Detailed map of segments
  3A9C:1490       _screenloc
  3A9C:93B6       _screenofs
  3A9C:37E4       _screenseg
- 1A9F:0B8C       _SDL_DigitizedDone
- 1C31:0016       _SDL_IndicatePC
- 1A9F:08D3 idle  _SDL_LoadDigiSegment
- 1A9F:0908 idle  _SDL_PlayDigiSegment
- 1A9F:0515 idle  _SDL_SBSetDMA
- 1C31:000E       _SDL_SetDS
- 1A9F:0C5A idle  _SDL_SetupDigi
- 1C31:0022       _SDL_t0ExtremeAsmService
- 1C31:00BC       _SDL_t0FastAsmService
- 1C31:031E       _SDL_t0SlowAsmService
- 1A9F:1529 idle  _SD_Default
- 1A9F:1902 idle  _SD_FadeOutMusic
- 1A9F:1863       _SD_MusicOff
- 1A9F:1858       _SD_MusicOn
- 1A9F:1913 idle  _SD_MusicPlaying
- 1A9F:0AC8 idle  _SD_PlayDigitized
- 1A9F:161C       _SD_PlaySound
- 1A9F:09F4       _SD_Poll
- 1A9F:1605       _SD_PositionSound
- 1A9F:0BF6       _SD_SetDigiDevice
- 1A9F:1188       _SD_SetMusicMode
- 1A9F:0A80       _SD_SetPosition
- 1A9F:10F8       _SD_SetSoundMode
- 1A9F:15F3 idle  _SD_SetUserHook
- 1A9F:1598       _SD_Shutdown
- 1A9F:17CD       _SD_SoundPlaying
- 1A9F:18B0       _SD_StartMusic
- 1A9F:11DA       _SD_Startup
- 1A9F:0952       _SD_StopDigitized
- 1A9F:1814       _SD_StopSound
- 1A9F:184B       _SD_WaitSoundDone
+ 1A9F:0B88       _SDL_DigitizedDone
+ 1C31:0012       _SDL_IndicatePC
+ 1A9F:08CF idle  _SDL_LoadDigiSegment
+ 1A9F:0904 idle  _SDL_PlayDigiSegment
+ 1A9F:0511 idle  _SDL_SBSetDMA
+ 1C31:000A       _SDL_SetDS
+ 1A9F:0C56 idle  _SDL_SetupDigi
+ 1C31:001E       _SDL_t0ExtremeAsmService
+ 1C31:00B8       _SDL_t0FastAsmService
+ 1C31:031A       _SDL_t0SlowAsmService
+ 1A9F:1525 idle  _SD_Default
+ 1A9F:18FE idle  _SD_FadeOutMusic
+ 1A9F:185F       _SD_MusicOff
+ 1A9F:1854       _SD_MusicOn
+ 1A9F:190F idle  _SD_MusicPlaying
+ 1A9F:0AC4 idle  _SD_PlayDigitized
+ 1A9F:1618       _SD_PlaySound
+ 1A9F:09F0       _SD_Poll
+ 1A9F:1601       _SD_PositionSound
+ 1A9F:0BF2       _SD_SetDigiDevice
+ 1A9F:1184       _SD_SetMusicMode
+ 1A9F:0A7C       _SD_SetPosition
+ 1A9F:10F4       _SD_SetSoundMode
+ 1A9F:15EF idle  _SD_SetUserHook
+ 1A9F:1594       _SD_Shutdown
+ 1A9F:17C9       _SD_SoundPlaying
+ 1A9F:18AC       _SD_StartMusic
+ 1A9F:11D6       _SD_Startup
+ 1A9F:094E       _SD_StopDigitized
+ 1A9F:1810       _SD_StopSound
+ 1A9F:1847       _SD_WaitSoundDone
  1162:07AA       _SelectChaseDir
  1162:067A       _SelectDodgeDir
- 14E0:150D idle  _SelectPathDir
+ 14E0:1509 idle  _SelectPathDir
  1162:0904       _SelectRunDir
  0000:313E       _setblock
  044B:016C idle  _SetPlaneViewSize
@@ -1721,16 +1721,16 @@ Detailed map of segments
  12D7:08A0 idle  _TryMove
  1162:00C8       _TryWalk
  12D7:1141 idle  _T_Attack
- 14E0:17E1 idle  _T_Bite
- 14E0:1052 idle  _T_Chase
- 14E0:13A4 idle  _T_DogChase
- 14E0:12F4 idle  _T_Ghosts
+ 14E0:17DD idle  _T_Bite
+ 14E0:104E idle  _T_Chase
+ 14E0:13A0 idle  _T_DogChase
+ 14E0:12F0 idle  _T_Ghosts
  14E0:0C4B idle  _T_Launch
- 14E0:1559 idle  _T_Path
+ 14E0:1555 idle  _T_Path
  12D7:12D4 idle  _T_Player
  14E0:010D idle  _T_Projectile
- 14E0:168F idle  _T_Shoot
- 14E0:1042 idle  _T_Stand
+ 14E0:168B idle  _T_Shoot
+ 14E0:103E idle  _T_Stand
  14E0:0983 idle  _T_UShoot
  14E0:0A31 idle  _T_Will
  0000:3902       _ultoa
@@ -1743,33 +1743,33 @@ Detailed map of segments
  3A9C:970F       _updateptr
  0C63:014C       _UpdateSoundLoc
  3A9C:3536 idle  _USL_DrawString
- 1C78:0009 idle  _USL_HardError
+ 1C78:0005 idle  _USL_HardError
  3A9C:3532       _USL_MeasureString
- 1C78:03EA idle  _USL_PrintInCenter
- 1C78:06A6 idle  _US_CenterWindow
- 1C78:0229       _US_CheckParm
- 1C78:0559       _US_ClearWindow
+ 1C78:03E6 idle  _USL_PrintInCenter
+ 1C78:06A2 idle  _US_CenterWindow
+ 1C78:0225       _US_CheckParm
+ 1C78:0555       _US_ClearWindow
  06B4:000B       _US_ControlPanel
- 1C78:04EE       _US_CPrint
- 1C78:048E idle  _US_CPrintLine
- 1C78:0586       _US_DrawWindow
- 1D38:000E       _US_InitRndT
- 1C78:07BF       _US_LineInput
- 1C78:02F2       _US_Print
- 1C78:044A       _US_PrintCentered
- 1C78:03C1 idle  _US_PrintSigned
- 1C78:0398       _US_PrintUnsigned
- 1C78:06F7 idle  _US_RestoreWindow
- 1D38:0036       _US_RndT
- 1C78:06CA idle  _US_SaveWindow
- 1C78:02D3 idle  _US_SetPrintRoutines
- 1C78:0217       _US_Shutdown
- 1C78:0141       _US_Startup
+ 1C78:04EA       _US_CPrint
+ 1C78:048A idle  _US_CPrintLine
+ 1C78:0582       _US_DrawWindow
+ 1D38:000A       _US_InitRndT
+ 1C78:07BB       _US_LineInput
+ 1C78:02EE       _US_Print
+ 1C78:0446       _US_PrintCentered
+ 1C78:03BD idle  _US_PrintSigned
+ 1C78:0394       _US_PrintUnsigned
+ 1C78:06F3 idle  _US_RestoreWindow
+ 1D38:0032       _US_RndT
+ 1C78:06C6 idle  _US_SaveWindow
+ 1C78:02CF idle  _US_SetPrintRoutines
+ 1C78:0213       _US_Shutdown
+ 1C78:013D       _US_Startup
  3A9C:96F5       _uwidthtable
  3A9C:4EC8       _vertwall
  3A9C:14A4 idle  _vgaCeiling
  0F95:0A2B idle  _VGAClearScreen
- 1EB0:0002       _VH_UpdateScreen
+ 1EAF:000E       _VH_UpdateScreen
  0AE0:0281       _Victory
  12D7:1081 idle  _VictorySpin
  12D7:0B5F idle  _VictoryTile
@@ -1788,56 +1788,56 @@ Detailed map of segments
  3A9C:D3F6       _vislist
  3A9C:D3F4       _visptr
  3A9C:D3F2       _visstep
- 1D3D:0676       _VL_Bar
- 1D3D:0098 idle  _VL_ClearVideo
- 1D3D:04C9       _VL_ColorBorder
- 1D3D:00C2 idle  _VL_DePlaneVGA
- 1D3D:0A99 idle  _VL_DrawLatch8String
- 1D3D:0969 idle  _VL_DrawTile8String
- 1D3D:0380       _VL_FadeIn
- 1D3D:0253       _VL_FadeOut
- 1D3D:019E idle  _VL_FillPalette
- 1D3D:01DE idle  _VL_GetColor
- 1D3D:0232 idle  _VL_GetPalette
- 1D3D:052D       _VL_Hlin
- 1D3D:08FF       _VL_LatchToScreen
- 1D3D:086F idle  _VL_MaskedToScreen
- 1D3D:077D       _VL_MemToLatch
- 1D3D:07D2       _VL_MemToScreen
- 1DF4:023A       _VL_MungePic
- 1D3D:04DD       _VL_Plot
- 1E86:00B6       _VL_ScreenToScreen
- 1D3D:01C3 idle  _VL_SetColor
- 1E86:0025 idle  _VL_SetCRTC
- 1D3D:011A idle  _VL_SetLineWidth
- 1D3D:0209       _VL_SetPalette
- 1E86:0049       _VL_SetScreen
- 1D3D:014F idle  _VL_SetSplitScreen
- 1D3D:008E idle  _VL_SetTextMode
- 1D3D:0069       _VL_SetVGAPlaneMode
- 1D3D:005F       _VL_Shutdown
- 1D3D:0B4A idle  _VL_SizeTile8String
- 1D3D:0001       _VL_Startup
- 1D3D:0465       _VL_TestPaletteSet
- 1E86:0136       _VL_VideoID
- 1D3D:060C       _VL_Vlin
- 1E86:000E       _VL_WaitVBL
+ 1D3C:0682       _VL_Bar
+ 1D3C:00A4 idle  _VL_ClearVideo
+ 1D3C:04D5       _VL_ColorBorder
+ 1D3C:00CE idle  _VL_DePlaneVGA
+ 1D3C:0AA5 idle  _VL_DrawLatch8String
+ 1D3C:0975 idle  _VL_DrawTile8String
+ 1D3C:038C       _VL_FadeIn
+ 1D3C:025F       _VL_FadeOut
+ 1D3C:01AA idle  _VL_FillPalette
+ 1D3C:01EA idle  _VL_GetColor
+ 1D3C:023E idle  _VL_GetPalette
+ 1D3C:0539       _VL_Hlin
+ 1D3C:090B       _VL_LatchToScreen
+ 1D3C:087B idle  _VL_MaskedToScreen
+ 1D3C:0789       _VL_MemToLatch
+ 1D3C:07DE       _VL_MemToScreen
+ 1DF4:0236       _VL_MungePic
+ 1D3C:04E9       _VL_Plot
+ 1E86:00B2       _VL_ScreenToScreen
+ 1D3C:01CF idle  _VL_SetColor
+ 1E86:0021 idle  _VL_SetCRTC
+ 1D3C:0126 idle  _VL_SetLineWidth
+ 1D3C:0215       _VL_SetPalette
+ 1E86:0045       _VL_SetScreen
+ 1D3C:015B idle  _VL_SetSplitScreen
+ 1D3C:009A idle  _VL_SetTextMode
+ 1D3C:0075       _VL_SetVGAPlaneMode
+ 1D3C:006B       _VL_Shutdown
+ 1D3C:0B56 idle  _VL_SizeTile8String
+ 1D3C:000D       _VL_Startup
+ 1D3C:0471       _VL_TestPaletteSet
+ 1E86:0132       _VL_VideoID
+ 1D3C:0618       _VL_Vlin
+ 1E86:000A       _VL_WaitVBL
  0000:4094 idle  _vsprintf
- 1DF4:0587       _VWB_Bar
- 1DF4:04DF       _VWB_DrawPic
- 1DF4:054E       _VWB_DrawPropString
- 1DF4:0450       _VWB_DrawTile8
- 1DF4:0498 idle  _VWB_DrawTile8M
- 1DF4:05EE       _VWB_Hlin
- 1DF4:05C3       _VWB_Plot
- 1DF4:0622       _VWB_Vlin
- 1DF4:02FE idle  _VWL_MeasureString
- 1DF4:011B idle  _VW_DrawColorPropString
- 1DF4:0004 idle  _VW_DrawPropString
- 1DF4:0382       _VW_MarkUpdateBlock
- 1DF4:0360 idle  _VW_MeasureMPropString
- 1DF4:033E       _VW_MeasurePropString
- 1DF4:0656       _VW_UpdateScreen
+ 1DF4:0583       _VWB_Bar
+ 1DF4:04DB       _VWB_DrawPic
+ 1DF4:054A       _VWB_DrawPropString
+ 1DF4:044C       _VWB_DrawTile8
+ 1DF4:0494 idle  _VWB_DrawTile8M
+ 1DF4:05EA       _VWB_Hlin
+ 1DF4:05BF       _VWB_Plot
+ 1DF4:061E       _VWB_Vlin
+ 1DF4:02FA idle  _VWL_MeasureString
+ 1DF4:0117 idle  _VW_DrawColorPropString
+ 1DF4:0000 idle  _VW_DrawPropString
+ 1DF4:037E       _VW_MarkUpdateBlock
+ 1DF4:035C idle  _VW_MeasureMPropString
+ 1DF4:033A       _VW_MeasurePropString
+ 1DF4:0652       _VW_UpdateScreen
  06B4:3C2F idle  _WaitKeyUp
  3A9C:4B6A       _wallheight
  0F95:0E12 idle  _WallRefresh
@@ -2510,217 +2510,217 @@ Detailed map of segments
  14E0:0E93 idle  _A_Relaunch
  14E0:0ECF       _SpawnSpectre
  14E0:0F13 idle  _A_Dormant
- 14E0:1042 idle  _T_Stand
- 14E0:1052 idle  _T_Chase
- 14E0:12F4 idle  _T_Ghosts
- 14E0:13A4 idle  _T_DogChase
- 14E0:150D idle  _SelectPathDir
- 14E0:1559 idle  _T_Path
- 14E0:168F idle  _T_Shoot
- 14E0:17E1 idle  _T_Bite
- 166B:000F idle  _GRFILEPOS
- 166B:005F idle  _CA_OpenDebug
- 166B:0083 idle  _CA_CloseDebug
- 166B:0094 idle  _CAL_GetGrChunkLength
- 166B:00F4       _CA_FarRead
- 166B:0140       _CA_FarWrite
- 166B:018C idle  _CA_ReadFile
- 166B:01FE       _CA_WriteFile
- 166B:0256 idle  _CA_LoadFile
- 166B:02D7 idle  _CAL_OptimizeNodes
- 166B:032F idle  _CAL_HuffExpand
- 166B:049C idle  _CAL_CarmackExpand
- 166B:05BA idle  _CA_RLEWCompress
- 166B:0707 idle  _CA_RLEWexpand
- 166B:07C3 idle  _CAL_SetupGrFile
- 166B:09F8 idle  _CAL_SetupMapFile
- 166B:0BC0 idle  _CAL_SetupAudioFile
- 166B:0CF4       _CA_Startup
- 166B:0D15       _CA_Shutdown
- 166B:0D3E       _CA_CacheAudioChunk
- 166B:0DED       _CA_LoadAllSounds
- 166B:0E72 idle  _CAL_ExpandGrChunk
- 166B:0F49       _CA_CacheGrChunk
- 166B:1090       _CA_CacheScreen
- 166B:1185       _CA_CacheMap
- 166B:12E5       _CA_UpLevel
- 166B:132A       _CA_DownLevel
- 166B:1351 idle  _CA_ClearMarks
- 166B:1372 idle  _CA_ClearAllMarks
- 166B:1398 idle  _CA_SetGrPurge
- 166B:13C6       _CA_SetAllPurge
- 166B:13F4       _CA_CacheMarks
- 166B:1700 idle  _CA_CannotOpen
- 17E1:0145       _IN_GetJoyAbs
- 17E1:01E0       _INL_GetJoyDelta
- 17E1:034E idle  _IN_GetJoyButtonsDB
- 17E1:04BF       _IN_SetupJoy
- 17E1:05AC       _IN_Startup
- 17E1:064D idle  _IN_Default
- 17E1:068D       _IN_Shutdown
- 17E1:06B9 idle  _IN_SetKeyHook
- 17E1:06CB       _IN_ClearKeysDown
- 17E1:06EA       _IN_ReadControl
- 17E1:0A0C idle  _IN_SetControlType
- 17E1:0A1D idle  _IN_WaitForKey
- 17E1:0A3B       _IN_WaitForASCII
- 17E1:0A58       _IN_StartAck
- 17E1:0AA8       _IN_CheckAck
- 17E1:0B02       _IN_Ack
- 17E1:0B13       _IN_UserInput
- 17E1:0B58       _IN_MouseButtons
- 17E1:0B6F       _IN_JoyButtons
- 1899:0005 idle  _MML_CheckForXMS
- 1899:0020 idle  _MML_SetupXMS
- 1899:008F idle  _MML_ShutdownXMS
- 1899:00C0       _MML_UseSpace
- 1899:0246 idle  _MML_ClearBlock
- 1899:02AC       _MM_Startup
- 1899:049F       _MM_Shutdown
- 1899:04C7       _MM_GetPtr
- 1899:0784       _MM_FreePtr
- 1899:084B       _MM_SetPurge
- 1899:08CC       _MM_SetLock
- 1899:0952       _MM_SortMem
- 1899:0B0E idle  _MM_ShowMemory
- 1899:0C6B idle  _MM_DumpData
- 1899:0D9C       _MM_UnusedMemory
- 1899:0E03       _MM_TotalFree
- 1899:0E81       _MM_BombOnError
- 1981:000C idle  _PML_MapEMS
- 1981:002F idle  _PML_StartupEMS
- 1981:0164 idle  _PML_ShutdownEMS
- 1981:0188 idle  _PML_StartupXMS
- 1981:01FB idle  _PML_XMSCopy
- 1981:02A8 idle  _PML_ShutdownXMS
- 1981:02CE       _PM_SetMainMemPurge
- 1981:02F7       _PM_CheckMainMem
- 1981:03F0 idle  _PML_StartupMainMem
- 1981:046D idle  _PML_ShutdownMainMem
- 1981:0494 idle  _PML_ReadFromFile
- 1981:0514 idle  _PML_OpenPageFile
- 1981:06FB idle  _PML_ClosePageFile
- 1981:0735 idle  _PML_GetEMSAddress
- 1981:0811       _PM_GetPageAddress
- 1981:086A idle  _PML_GiveLRUPage
- 1981:090B idle  _PML_GiveLRUXMSPage
- 1981:097D idle  _PML_PutPageInXMS
- 1981:0A2C idle  _PML_TransferPageSpace
- 1981:0AFF idle  _PML_GetAPageBuffer
- 1981:0C0C idle  _PML_GetPageFromXMS
- 1981:0C90 idle  _PML_LoadPage
- 1981:0CE2       _PM_GetPage
- 1981:0DA4       _PM_SetPageLock
- 1981:0DD4       _PM_Preload
- 1981:103A       _PM_NextFrame
- 1981:10B4 idle  _PM_Reset
- 1981:1122       _PM_Startup
- 1981:11D3       _PM_Shutdown
- 1A9F:0515 idle  _SDL_SBSetDMA
- 1A9F:08D3 idle  _SDL_LoadDigiSegment
- 1A9F:0908 idle  _SDL_PlayDigiSegment
- 1A9F:0952       _SD_StopDigitized
- 1A9F:09F4       _SD_Poll
- 1A9F:0A80       _SD_SetPosition
- 1A9F:0AC8 idle  _SD_PlayDigitized
- 1A9F:0B8C       _SDL_DigitizedDone
- 1A9F:0BF6       _SD_SetDigiDevice
- 1A9F:0C5A idle  _SDL_SetupDigi
- 1A9F:0D3D       _alOut
- 1A9F:10F8       _SD_SetSoundMode
- 1A9F:1188       _SD_SetMusicMode
- 1A9F:11DA       _SD_Startup
- 1A9F:1529 idle  _SD_Default
- 1A9F:1598       _SD_Shutdown
- 1A9F:15F3 idle  _SD_SetUserHook
- 1A9F:1605       _SD_PositionSound
- 1A9F:161C       _SD_PlaySound
- 1A9F:17CD       _SD_SoundPlaying
- 1A9F:1814       _SD_StopSound
- 1A9F:184B       _SD_WaitSoundDone
- 1A9F:1858       _SD_MusicOn
- 1A9F:1863       _SD_MusicOff
- 1A9F:18B0       _SD_StartMusic
- 1A9F:1902 idle  _SD_FadeOutMusic
- 1A9F:1913 idle  _SD_MusicPlaying
- 1C31:000E       _SDL_SetDS
- 1C31:0016       _SDL_IndicatePC
- 1C31:0022       _SDL_t0ExtremeAsmService
- 1C31:00BC       _SDL_t0FastAsmService
- 1C31:031E       _SDL_t0SlowAsmService
- 1C78:0009 idle  _USL_HardError
- 1C78:0141       _US_Startup
- 1C78:0217       _US_Shutdown
- 1C78:0229       _US_CheckParm
- 1C78:02D3 idle  _US_SetPrintRoutines
- 1C78:02F2       _US_Print
- 1C78:0398       _US_PrintUnsigned
- 1C78:03C1 idle  _US_PrintSigned
- 1C78:03EA idle  _USL_PrintInCenter
- 1C78:044A       _US_PrintCentered
- 1C78:048E idle  _US_CPrintLine
- 1C78:04EE       _US_CPrint
- 1C78:0559       _US_ClearWindow
- 1C78:0586       _US_DrawWindow
- 1C78:06A6 idle  _US_CenterWindow
- 1C78:06CA idle  _US_SaveWindow
- 1C78:06F7 idle  _US_RestoreWindow
- 1C78:07BF       _US_LineInput
- 1D38:000E       _US_InitRndT
- 1D38:0036       _US_RndT
- 1D3D:0001       _VL_Startup
- 1D3D:005F       _VL_Shutdown
- 1D3D:0069       _VL_SetVGAPlaneMode
- 1D3D:008E idle  _VL_SetTextMode
- 1D3D:0098 idle  _VL_ClearVideo
- 1D3D:00C2 idle  _VL_DePlaneVGA
- 1D3D:011A idle  _VL_SetLineWidth
- 1D3D:014F idle  _VL_SetSplitScreen
- 1D3D:019E idle  _VL_FillPalette
- 1D3D:01C3 idle  _VL_SetColor
- 1D3D:01DE idle  _VL_GetColor
- 1D3D:0209       _VL_SetPalette
- 1D3D:0232 idle  _VL_GetPalette
- 1D3D:0253       _VL_FadeOut
- 1D3D:0380       _VL_FadeIn
- 1D3D:0465       _VL_TestPaletteSet
- 1D3D:04C9       _VL_ColorBorder
- 1D3D:04DD       _VL_Plot
- 1D3D:052D       _VL_Hlin
- 1D3D:060C       _VL_Vlin
- 1D3D:0676       _VL_Bar
- 1D3D:077D       _VL_MemToLatch
- 1D3D:07D2       _VL_MemToScreen
- 1D3D:086F idle  _VL_MaskedToScreen
- 1D3D:08FF       _VL_LatchToScreen
- 1D3D:0969 idle  _VL_DrawTile8String
- 1D3D:0A99 idle  _VL_DrawLatch8String
- 1D3D:0B4A idle  _VL_SizeTile8String
- 1DF4:0004 idle  _VW_DrawPropString
- 1DF4:011B idle  _VW_DrawColorPropString
- 1DF4:023A       _VL_MungePic
- 1DF4:02FE idle  _VWL_MeasureString
- 1DF4:033E       _VW_MeasurePropString
- 1DF4:0360 idle  _VW_MeasureMPropString
- 1DF4:0382       _VW_MarkUpdateBlock
- 1DF4:0450       _VWB_DrawTile8
- 1DF4:0498 idle  _VWB_DrawTile8M
- 1DF4:04DF       _VWB_DrawPic
- 1DF4:054E       _VWB_DrawPropString
- 1DF4:0587       _VWB_Bar
- 1DF4:05C3       _VWB_Plot
- 1DF4:05EE       _VWB_Hlin
- 1DF4:0622       _VWB_Vlin
- 1DF4:0656       _VW_UpdateScreen
- 1DF4:0660       _LatchDrawPic
- 1DF4:06BD       _LoadLatchMem
- 1DF4:07DE       _FizzleFade
- 1E86:000E       _VL_WaitVBL
- 1E86:0025 idle  _VL_SetCRTC
- 1E86:0049       _VL_SetScreen
- 1E86:00B6       _VL_ScreenToScreen
- 1E86:0136       _VL_VideoID
- 1EB0:0002       _VH_UpdateScreen
+ 14E0:103E idle  _T_Stand
+ 14E0:104E idle  _T_Chase
+ 14E0:12F0 idle  _T_Ghosts
+ 14E0:13A0 idle  _T_DogChase
+ 14E0:1509 idle  _SelectPathDir
+ 14E0:1555 idle  _T_Path
+ 14E0:168B idle  _T_Shoot
+ 14E0:17DD idle  _T_Bite
+ 166B:000B idle  _GRFILEPOS
+ 166B:005B idle  _CA_OpenDebug
+ 166B:007F idle  _CA_CloseDebug
+ 166B:0090 idle  _CAL_GetGrChunkLength
+ 166B:00F0       _CA_FarRead
+ 166B:013C       _CA_FarWrite
+ 166B:0188 idle  _CA_ReadFile
+ 166B:01FA       _CA_WriteFile
+ 166B:0252 idle  _CA_LoadFile
+ 166B:02D3 idle  _CAL_OptimizeNodes
+ 166B:032B idle  _CAL_HuffExpand
+ 166B:0498 idle  _CAL_CarmackExpand
+ 166B:05B6 idle  _CA_RLEWCompress
+ 166B:0703 idle  _CA_RLEWexpand
+ 166B:07BF idle  _CAL_SetupGrFile
+ 166B:09F4 idle  _CAL_SetupMapFile
+ 166B:0BBC idle  _CAL_SetupAudioFile
+ 166B:0CF0       _CA_Startup
+ 166B:0D11       _CA_Shutdown
+ 166B:0D3A       _CA_CacheAudioChunk
+ 166B:0DE9       _CA_LoadAllSounds
+ 166B:0E6E idle  _CAL_ExpandGrChunk
+ 166B:0F45       _CA_CacheGrChunk
+ 166B:108C       _CA_CacheScreen
+ 166B:1181       _CA_CacheMap
+ 166B:12E1       _CA_UpLevel
+ 166B:1326       _CA_DownLevel
+ 166B:134D idle  _CA_ClearMarks
+ 166B:136E idle  _CA_ClearAllMarks
+ 166B:1394 idle  _CA_SetGrPurge
+ 166B:13C2       _CA_SetAllPurge
+ 166B:13F0       _CA_CacheMarks
+ 166B:16FC idle  _CA_CannotOpen
+ 17E0:0151       _IN_GetJoyAbs
+ 17E0:01EC       _INL_GetJoyDelta
+ 17E0:035A idle  _IN_GetJoyButtonsDB
+ 17E0:04CB       _IN_SetupJoy
+ 17E0:05B8       _IN_Startup
+ 17E0:0659 idle  _IN_Default
+ 17E0:0699       _IN_Shutdown
+ 17E0:06C5 idle  _IN_SetKeyHook
+ 17E0:06D7       _IN_ClearKeysDown
+ 17E0:06F6       _IN_ReadControl
+ 17E0:0A18 idle  _IN_SetControlType
+ 17E0:0A29 idle  _IN_WaitForKey
+ 17E0:0A47       _IN_WaitForASCII
+ 17E0:0A64       _IN_StartAck
+ 17E0:0AB4       _IN_CheckAck
+ 17E0:0B0E       _IN_Ack
+ 17E0:0B1F       _IN_UserInput
+ 17E0:0B64       _IN_MouseButtons
+ 17E0:0B7B       _IN_JoyButtons
+ 1899:0001 idle  _MML_CheckForXMS
+ 1899:001C idle  _MML_SetupXMS
+ 1899:008B idle  _MML_ShutdownXMS
+ 1899:00BC       _MML_UseSpace
+ 1899:0242 idle  _MML_ClearBlock
+ 1899:02A8       _MM_Startup
+ 1899:049B       _MM_Shutdown
+ 1899:04C3       _MM_GetPtr
+ 1899:0780       _MM_FreePtr
+ 1899:0847       _MM_SetPurge
+ 1899:08C8       _MM_SetLock
+ 1899:094E       _MM_SortMem
+ 1899:0B0A idle  _MM_ShowMemory
+ 1899:0C67 idle  _MM_DumpData
+ 1899:0D98       _MM_UnusedMemory
+ 1899:0DFF       _MM_TotalFree
+ 1899:0E7D       _MM_BombOnError
+ 1981:0008 idle  _PML_MapEMS
+ 1981:002B idle  _PML_StartupEMS
+ 1981:0160 idle  _PML_ShutdownEMS
+ 1981:0184 idle  _PML_StartupXMS
+ 1981:01F7 idle  _PML_XMSCopy
+ 1981:02A4 idle  _PML_ShutdownXMS
+ 1981:02CA       _PM_SetMainMemPurge
+ 1981:02F3       _PM_CheckMainMem
+ 1981:03EC idle  _PML_StartupMainMem
+ 1981:0469 idle  _PML_ShutdownMainMem
+ 1981:0490 idle  _PML_ReadFromFile
+ 1981:0510 idle  _PML_OpenPageFile
+ 1981:06F7 idle  _PML_ClosePageFile
+ 1981:0731 idle  _PML_GetEMSAddress
+ 1981:080D       _PM_GetPageAddress
+ 1981:0866 idle  _PML_GiveLRUPage
+ 1981:0907 idle  _PML_GiveLRUXMSPage
+ 1981:0979 idle  _PML_PutPageInXMS
+ 1981:0A28 idle  _PML_TransferPageSpace
+ 1981:0AFB idle  _PML_GetAPageBuffer
+ 1981:0C08 idle  _PML_GetPageFromXMS
+ 1981:0C8C idle  _PML_LoadPage
+ 1981:0CDE       _PM_GetPage
+ 1981:0DA0       _PM_SetPageLock
+ 1981:0DD0       _PM_Preload
+ 1981:1036       _PM_NextFrame
+ 1981:10B0 idle  _PM_Reset
+ 1981:111E       _PM_Startup
+ 1981:11CF       _PM_Shutdown
+ 1A9F:0511 idle  _SDL_SBSetDMA
+ 1A9F:08CF idle  _SDL_LoadDigiSegment
+ 1A9F:0904 idle  _SDL_PlayDigiSegment
+ 1A9F:094E       _SD_StopDigitized
+ 1A9F:09F0       _SD_Poll
+ 1A9F:0A7C       _SD_SetPosition
+ 1A9F:0AC4 idle  _SD_PlayDigitized
+ 1A9F:0B88       _SDL_DigitizedDone
+ 1A9F:0BF2       _SD_SetDigiDevice
+ 1A9F:0C56 idle  _SDL_SetupDigi
+ 1A9F:0D39       _alOut
+ 1A9F:10F4       _SD_SetSoundMode
+ 1A9F:1184       _SD_SetMusicMode
+ 1A9F:11D6       _SD_Startup
+ 1A9F:1525 idle  _SD_Default
+ 1A9F:1594       _SD_Shutdown
+ 1A9F:15EF idle  _SD_SetUserHook
+ 1A9F:1601       _SD_PositionSound
+ 1A9F:1618       _SD_PlaySound
+ 1A9F:17C9       _SD_SoundPlaying
+ 1A9F:1810       _SD_StopSound
+ 1A9F:1847       _SD_WaitSoundDone
+ 1A9F:1854       _SD_MusicOn
+ 1A9F:185F       _SD_MusicOff
+ 1A9F:18AC       _SD_StartMusic
+ 1A9F:18FE idle  _SD_FadeOutMusic
+ 1A9F:190F idle  _SD_MusicPlaying
+ 1C31:000A       _SDL_SetDS
+ 1C31:0012       _SDL_IndicatePC
+ 1C31:001E       _SDL_t0ExtremeAsmService
+ 1C31:00B8       _SDL_t0FastAsmService
+ 1C31:031A       _SDL_t0SlowAsmService
+ 1C78:0005 idle  _USL_HardError
+ 1C78:013D       _US_Startup
+ 1C78:0213       _US_Shutdown
+ 1C78:0225       _US_CheckParm
+ 1C78:02CF idle  _US_SetPrintRoutines
+ 1C78:02EE       _US_Print
+ 1C78:0394       _US_PrintUnsigned
+ 1C78:03BD idle  _US_PrintSigned
+ 1C78:03E6 idle  _USL_PrintInCenter
+ 1C78:0446       _US_PrintCentered
+ 1C78:048A idle  _US_CPrintLine
+ 1C78:04EA       _US_CPrint
+ 1C78:0555       _US_ClearWindow
+ 1C78:0582       _US_DrawWindow
+ 1C78:06A2 idle  _US_CenterWindow
+ 1C78:06C6 idle  _US_SaveWindow
+ 1C78:06F3 idle  _US_RestoreWindow
+ 1C78:07BB       _US_LineInput
+ 1D38:000A       _US_InitRndT
+ 1D38:0032       _US_RndT
+ 1D3C:000D       _VL_Startup
+ 1D3C:006B       _VL_Shutdown
+ 1D3C:0075       _VL_SetVGAPlaneMode
+ 1D3C:009A idle  _VL_SetTextMode
+ 1D3C:00A4 idle  _VL_ClearVideo
+ 1D3C:00CE idle  _VL_DePlaneVGA
+ 1D3C:0126 idle  _VL_SetLineWidth
+ 1D3C:015B idle  _VL_SetSplitScreen
+ 1D3C:01AA idle  _VL_FillPalette
+ 1D3C:01CF idle  _VL_SetColor
+ 1D3C:01EA idle  _VL_GetColor
+ 1D3C:0215       _VL_SetPalette
+ 1D3C:023E idle  _VL_GetPalette
+ 1D3C:025F       _VL_FadeOut
+ 1D3C:038C       _VL_FadeIn
+ 1D3C:0471       _VL_TestPaletteSet
+ 1D3C:04D5       _VL_ColorBorder
+ 1D3C:04E9       _VL_Plot
+ 1D3C:0539       _VL_Hlin
+ 1D3C:0618       _VL_Vlin
+ 1D3C:0682       _VL_Bar
+ 1D3C:0789       _VL_MemToLatch
+ 1D3C:07DE       _VL_MemToScreen
+ 1D3C:087B idle  _VL_MaskedToScreen
+ 1D3C:090B       _VL_LatchToScreen
+ 1D3C:0975 idle  _VL_DrawTile8String
+ 1D3C:0AA5 idle  _VL_DrawLatch8String
+ 1D3C:0B56 idle  _VL_SizeTile8String
+ 1DF4:0000 idle  _VW_DrawPropString
+ 1DF4:0117 idle  _VW_DrawColorPropString
+ 1DF4:0236       _VL_MungePic
+ 1DF4:02FA idle  _VWL_MeasureString
+ 1DF4:033A       _VW_MeasurePropString
+ 1DF4:035C idle  _VW_MeasureMPropString
+ 1DF4:037E       _VW_MarkUpdateBlock
+ 1DF4:044C       _VWB_DrawTile8
+ 1DF4:0494 idle  _VWB_DrawTile8M
+ 1DF4:04DB       _VWB_DrawPic
+ 1DF4:054A       _VWB_DrawPropString
+ 1DF4:0583       _VWB_Bar
+ 1DF4:05BF       _VWB_Plot
+ 1DF4:05EA       _VWB_Hlin
+ 1DF4:061E       _VWB_Vlin
+ 1DF4:0652       _VW_UpdateScreen
+ 1DF4:065C       _LatchDrawPic
+ 1DF4:06B9       _LoadLatchMem
+ 1DF4:07DA       _FizzleFade
+ 1E86:000A       _VL_WaitVBL
+ 1E86:0021 idle  _VL_SetCRTC
+ 1E86:0045       _VL_SetScreen
+ 1E86:00B2       _VL_ScreenToScreen
+ 1E86:0132       _VL_VideoID
+ 1EAF:000E       _VH_UpdateScreen
  1ED0:2152       e086_Entry
  1ED0:26E0       e086_Shortcut
  2148:0306       e087_Entry
