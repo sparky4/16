@@ -199,6 +199,7 @@ TESTEXEC = &
 	vidtest.exe &
 	paltest.exe &
 	exmmtest.exe &
+	mmtest.exe &
 	vgmtest.exe &
 	sountest.exe &
 	imfplay.exe &
@@ -311,6 +312,7 @@ pcxtest2.exe:	pcxtest2.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
 maptest.exe:	maptest.$(OBJ) 16_map.$(OBJ) 16_head.$(OBJ) gfx.lib $(DOSLIB) $(16LIB)
 fmemtest.exe:	fmemtest.$(OBJ)
 exmmtest.exe:	exmmtest.$(OBJ)	$(16LIB) gfx.lib $(DOSLIB)
+mmtest.exe:	mmtest.$(OBJ)	$(16LIB) gfx.lib $(DOSLIB)
 	#16_pm.$(OBJ) 16_head.$(OBJ) 16_ca.$(OBJ) 16_mm.$(OBJ) 16_hc.$(OBJ) kitten.$(OBJ) 16_vl_1.$(OBJ) 16_tail.$(OBJ) 16_in.$(OBJ) 16_dbg.$(OBJ)
 
 vgmtest.exe:	vgmtest.$(OBJ) vgmsnd.lib $(16LIB) $(DOSLIB) gfx.lib
@@ -355,6 +357,7 @@ vrldbg.$(OBJ):	$(SRC)/vrldbg.c
 #testemm0.$(OBJ): $(SRC)/testemm0.c
 #tsthimem.$(OBJ): $(SRC)/tsthimem.c
 exmmtest.$(OBJ): $(SRC)/exmmtest.c
+mmtest.$(OBJ): $(SRC)/mmtest.c
 vgmtest.$(OBJ): $(SRC)/vgmtest.c
 db.$(OBJ):		$(UTIL)/db.c
 ps.$(OBJ):		$(SRC)/ps.c
