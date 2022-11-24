@@ -693,6 +693,7 @@ initlibs: .symbolic
 	@git clone https://github.com/FlatRockSoft/Catacomb3D.git
 	@git clone https://github.com/Malvineous/dro2imf.git
 	@git clone https://github.com/vgmrips/vgmtools.git
+	@git clone https://github.com/jeffpar/abrash-black-book
 	@cd $(BUILD_ROOT)
 	@$(COPYCOMMAND) $(DOSLIBDIR)/make-lowercase .
 
