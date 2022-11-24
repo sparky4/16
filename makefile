@@ -681,6 +681,7 @@ reinitlibs: .symbolic
 	@$(REMOVECOMMAND) -rf 16/shitman
 	@$(REMOVECOMMAND) -rf 16/dro2imf
 	@$(REMOVECOMMAND) -rf 16/vgmtools
+	@$(REMOVECOMMAND) -rf 16/abrash-black-book
 	@wmake -s -h initlibs
 
 initlibs: .symbolic
@@ -693,7 +694,7 @@ initlibs: .symbolic
 	@git clone https://github.com/FlatRockSoft/Catacomb3D.git
 	@git clone https://github.com/Malvineous/dro2imf.git
 	@git clone https://github.com/vgmrips/vgmtools.git
-	@git clone https://github.com/jeffpar/abrash-black-book
+	@git clone https://github.com/jeffpar/abrash-black-book.git
 	@cd $(BUILD_ROOT)
 	@$(COPYCOMMAND) $(DOSLIBDIR)/make-lowercase .
 
