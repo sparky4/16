@@ -33,7 +33,3 @@
 [submodule "vgmtools"]
 	path = "16/vgmtools"
 	url = https://github.com/vgmrips/vgmtools.git
-
-[submodule "abrash-black-book"]
-	path = "16/abrash-black-book"
-	url = https://github.com/jeffpar/abrash-black-book.git
