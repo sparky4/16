@@ -1,5 +1,5 @@
 /* Project 16 Source Code~
- * Copyright (C) 2012-2022 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
+ * Copyright (C) 2012-2023 sparky4 & pngwen & andrius4669 & joncampbell123 & yakui-lover
  *
  * This file is part of Project 16.
  *
@@ -42,19 +42,6 @@
 #define PIXPOSX			gvar->video.page[0].sw/2
 #define PIXPOSY			gvar->video.page[0].sh/2
 
-/*
-===================
-=
-= FizzleFade
-=
-= returns true if aborted
-=
-===================
-*/
-
-//extern	ControlInfo	c;
-//#define PIXPOSX			gvar->video.page[0].sw/2
-//#define PIXPOSY			gvar->video.page[0].sh/2
 #ifdef BAKAFIZZUNSIGNED
 boolean baka_FizzleFade (unsigned source, unsigned dest, unsigned width, unsigned height, unsigned frames, boolean abortable, global_game_variables_t *gvar)
 {
