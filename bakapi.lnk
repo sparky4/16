@@ -1,0 +1,14 @@
+option quiet
+debug dwarf all
+option stack=32768
+system dos
+file bakapi.obj
+file 16_vl.obj
+file 16_vl_1.obj
+file 16text.obj
+file bakapee.obj
+file 16_wcpu.obj
+file gamepal.obj
+name bakapi.exe
+option map=bakapi.meh
+library doslib.lib
