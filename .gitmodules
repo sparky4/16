@@ -36,3 +36,6 @@
 [submodule "16/abrashbb"]
 	path = 16/abrashbb
 	url = https://github.com/jeffpar/abrash-black-book.git
+[submodule "16/keen4-6"]
+	path = 16/keen4-6
+	url = https://github.com/sparky4/keen4-6.git
