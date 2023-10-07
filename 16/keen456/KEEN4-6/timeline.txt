@@ -1,0 +1,352 @@
+KEEN 4 RECREATION TIMELINE:
+---------------------------
+
+2019-02-16:
+
+- started implementation
+- started & finished CK_MAIN.C (except for variables)
+- started & finished CK_DEMO.C (except for variables and fancy intro stuff)
+- started CK_GAME.C, CK_PLAY.C, CK_TEXT.C, CK_STATE.C
+
+
+2019-02-17:
+
+- finished CK_GAME.C (except for variables)
+- finished CK_PLAY.C (except for variables)
+- finished CK_TEXT.C (except for variables)
+- finished CK_STATE.C (except for variables)
+- started CK_KEEN.C
+
+
+2019-02-18:
+
+- finished CK_KEEN.C (except for variables)
+- started & finished CK_KEEN2.C (except for variables)
+- started & finished K4_LEVEL.C (except for variables)
+- started K4_ACT1.C, K4_ACT2.C
+
+
+2019-02-19:
+
+- finished K4_ACT1.C (except for variables)
+- finished K4_ACT2.C (except for variables)
+- started & finished K4_ACT3.C (except for variables)
+- added crawl text in K4_LEVEL.C
+- added states in K4_ACT1.C
+
+
+2019-02-20:
+
+- added states in K4_LEVEL.C
+- added states and initialized variables in CK_KEEN.C
+- added states and initialized variables in CK_KEEN2.C
+- added states in K4_ACT2.C
+- added states in K4_ACT3.C
+
+
+2019-02-22:
+
+- added ID Engine (taken from Catacomb 3D)
+- started creating header files to put it all together
+- fixed tons of typos...
+
+
+2019-02-23:
+
+- finished header files
+- fixed remaining typos & compiler errors
+- code compiles, but linking fails because of missing data that needs to be
+  included in EXE (AUDIOHED, AUDIODICT, EGAHEAD, EGADICT, MAPHEAD)
+- first builds - lots of memory(?) issues, quitting freezes DOSBox
+- fixed menu colors in ID_US_2.C
+- renamed "SKULL 'N' BONES" to "PADDLE WAR" (still need to fix speed issues in pong)
+- fixed error in GFXINFO (wrong number of tile16's) now help texts and quitting work
+- fixed memory issue by increasing number of memory block to 1200 (Cat3D used only 600)
+- first level loads now, but RF_Refresh() locks up/takes forever
+
+
+2019-02-27:
+
+- modified VW_ClearVideo to match Keen4 behavior (also adding in the bug)
+- modified USL_TearDownCtlPanel to use VW_ClearVideo instead of VW_Bar
+- fixed error in DrawCacheBox -> animation plays correctly now
+  (but RF_Refresh still locks up/takes forever)
+- fixed error in ID_CA.H (Keen4 uses tile info order SPEED, ANIM, NORTHWALL, ...)
+  -> RF_Refresh doesn't lock up anymore
+- fixed error in GameLoop -> can now enter sub-levels from world map
+- fixed error in KeenAirReact -> can now land
+- fixed bug in score box (used ammo number for lives)
+- status freezes the game
+- fixed signed/unsigned division bug in KeenStandThink
+- fixed spawn position for slugstain
+- fixed error in PlatformThink (platforms got stuck at the top/right end of the path)
+- added Keen4 Highscore defaults
+- fixed error in StatusWindow -> status window doesn't cause an endless loop anymore
+- fixed error in DrawStatus (bad positions for a few things)
+- fixed bug in CheckGrabPole -> can climb on poles now
+- fixed error in KeenAirReact -> grab edge with correct y position
+- fixed error in KeenClimbEdge1Think -> climbing left works correctly now
+- fixed bugs in SpawnFlag (darn typecasts...)
+- fixed error in ScrollScreenWorld
+- fixed error in KeenPoleTihink -> won't fall off when pressing left/right
+
+
+2019-02-28:
+
+- fixed lindsey floating bug (typecasts)
+- fixed mimrock walking
+- fixed arachnut contact
+- fixed riding the foot
+- fixed thundercloud not randomly turning towards player
+- fixed missing VW_UpdateScreen in LindseyDialog
+- fixed KeenAirReact
+- fixed EggContact
+- fixed controls for scuba keen
+
+
+2019-03-01:
+
+- fixed Sprite, Dopefish and Schoolfish
+- seems fully playable now...
+
+
+2019-03-16:
+
+- renamed PlayDemo to RunDemo, since that's the name that is used in the Keen 4 Demo
+- fixed Dopefish contact code (used to check 'ob' instead of 'hit' for a keenobj)
+
+
+2019-04-10:
+
+- fixed bug in PatchWorldMap (info layer value wasn't set to 0 for completed levels)
+
+
+2019-05-04:
+
+- replaced all sprite numbers with enum names
+- fixed error in WormouthLookLeftThink -> changes state to s_wormouth now
+
+
+2019-05-06:
+
+- replaced some more numbers with enum names
+
+
+2019-05-11:
+
+- fixed error in MergeTile16M
+
+
+2019-05-17:
+
+- fixed bug in WormouthThink (used PIXGLOBAL instead of TILEGLOBAL for xdist)
+
+
+2019-05-19:
+
+- actually moved all far strings into far memory
+
+
+2019-09-27:
+
+- fixed a minor error in PageLayout (skip anything <= space character, not just space char)
+
+
+2019-09-28:
+
+- fixed a bug in control panel (had to adjust indices because options menu was added back in)
+
+
+2019-11-26:
+
+- started implementation of Keen 5 stuff (K5_*.C)
+
+
+2019-11-28:
+
+- started implementation of Keen 6 stuff (K6_*.C)
+
+
+2019-11-30:
+
+- finished implementation of Keen 5 & 6 stuff
+
+
+2019-12-09:
+
+- reorganized KEEN4 project to add support for Keen 5 & 6 without too much redunancy
+- added code specific to Keen 5 and Keen 6 to the main codebase (CK_*.C)
+- excluded code specific to Keen 4 from the other builds (lots of #if & #ifdef)
+- Keen 4 still compiles fine, 5 & 6 still need some header files
+
+
+2019-12-10:
+
+- created header files for Keen 5 and Keen 6
+- all 3 projects compile, but still some bugfixing to do and features to add:
+  - refresh manager constants must be adjusted
+  - copy protection for Keen 6 isn't implemented
+  - sounds for animated tiles (Keen 6) aren't implemented
+- fixed a few bugs, first couple of levels in Keen 6 are playable now
+
+
+2019-12-11:
+
+- adjusted refresh manager constants (now Keen 5 levels are playable, too)
+- adjusted position of the "PRESS A KEY" graphic in the status window 
+  (position in Keen 4 differs from 5 & 6 because of the wetsuit box)
+- added RF_MaskBlockWhite and a few other things
+- studied Terminator-related code in depth, trying to understand it all and
+  find names for all those variables
+
+
+2019-12-12:
+
+- finally found and fixed a bug with the turret shots in Keen 5
+- fixed wrong pole shooting sprites (left and right sprites were swapped)
+- fixed demo-breaking bugs in Spindred and RoboRed (Keen 5)
+- fixed worldmap elevator door code (Keen 5)
+- fixed worldmap rope and rocket bugs (Keen 6)
+- still a demo-breaking bug somewhere (Nospike / Bloogdome, Keen 6 obviously)
+- fixed pole check for shikadi pole sparks
+
+
+2019-12-15:
+
+- FUCLING FINALLY found and fixed the demo-breaking bug in Keen 6
+  (was in NospikeRunThink)
+- fixed bug in Shikadi Master spawn (y offset used tile units instead of pixels)
+- started implementation of the Terminator intro and the Star Wars text crawl
+
+
+2019-12-16:
+
+- finished implementation of the Terminator and Star Wars stuff, but now the
+  compiler crashes...
+- found and fixed the issue that crashed the compiler
+- fixed all bugs in the Staw Wars text crawl
+- fixed all bugs in the Terminator intro
+
+2019-12-17:
+
+- added tile animation sounds for Keen 6
+
+
+2019-12-19:
+
+- implemented Keen 4-6 version of VW_SetScreen (in _ID_VW_AE.ASM) and my
+  customized version of the routine (in ID_VW_AE.ASM). swap the files if you
+  want to use the original code
+- added support for the NOPAN parameter
+- added US_CheckArg in ID_US_1.C
+- added Quiet AdLib mode
+- added Gravis Gamepad support
+
+
+2019-12-20:
+
+- fixed CheckHighScore bug (each episode uses a different map number)
+- fixed shockshund bugs (blast direction, stun jump)
+
+
+2019-12-21:
+
+- fixed EagleWalkThink (condition for starting to fly, Keen 4 obviously)
+- fixed tile-based item stealing for TreasureEater (Keen 4)
+- fixed force field toggling (Keen 6)
+
+
+2019-12-22:
+
+- fixed bug in EagleFlyReact (Keen 4)
+- changed ConfigVersion in ID_US_1.C for full compatibility with version 1.4
+  (saved games are still incompatible, though)
+
+
+2020-01-05:
+
+- modified PaddleWar code to match the code from Keen 4-6
+
+
+2020-01-06:
+
+- moved minimum memory requirement into the episode headers
+  (Keen 4 & 5 need 310,000 bytes, Keen 6 needs 300,000 bytes)
+- added missing code in SD_Default() (also marked the bug in there)
+
+
+2020-01-08:
+
+- fixed a minor issue in ID_RF.C related to the tile animation sounds in Keen 6
+
+
+2020-02-21:
+
+- fixed a bug in Bipship movement code (Keen 6)
+- modified sound engine to avoid SDL_Delay entirely and read port 0x388 instead
+  (which is exactly how version 1.4 and above work)
+
+
+2020-03-05:
+
+- fixed bug in Ampton walk code
+
+
+2020-04-24:
+
+- added the title screen in DemoLoop() (after high scores)
+- replaced some chunk numbers with their enum names in K4_LEVEL.C (smoke sprites)
+
+
+2020-05-20:
+
+- SpawnEnemyShot now makes the object removable (KEEN5)
+
+
+2021-05-05:
+
+- fixed bug in PageLayout (negative top row index)
+
+
+2021-05-05:
+
+- fixed bug in JanitorDialog (bad picture position for KEENMADPIC)
+
+
+2021-06-06 to 2021-06-23:
+
+- renamed things in Keen 4 & 5 to what is believed to be the original naming
+  scheme - Keen 6 stuff is still guesswork
+- adapted code to make it compile with Borland C++ 2.0 and 3.0
+- adjusted compiler settings and code to recreate the original executables as
+  closely as possible (for automated comparison and verification)
+- found and fixed a few bugs along the way
+
+
+2021-06-24:
+
+- tracked down and fixed any remaining differences
+- compiling (with source debugging enabled) and then compressing the EXE files
+  with LZEXE Version 0.91 creates EXACTLY the same files as the original v1.4
+  releases shipped with
+- Mission accomplished, I guess...
+
+
+2021-07-01:
+
+- first public release of this source code
+
+
+2021-07-03:
+
+- Keen 6 EGA v1.5 can now be recreated with this source code thanks to NY00123
+- added some more comments to the source code, mostly explaining what the temp
+  variables are used for in each actor's code
+- changed the function names in the Keen 6 code from ...Think, ...Contact and
+  ...React to T_..., C_... and R_... for more consistency with the Keen 4 and
+  Keen 5 code, also changed some state and sprite names for more consistency
+
+2021-07-08:
+- all CGA executables of versions 1.4 and 1.5 can now be recreated with this
+  source code
+- added a few more comments

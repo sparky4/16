@@ -1,0 +1,55 @@
+;=====================================
+;
+; Graphics .EQU file for .CK6
+; not IGRAB-ed :)
+;
+;=====================================
+
+;INCLUDE "VERSION.EQU"
+
+;
+; Amount of each data item
+;
+NUMFONT     =	3
+NUMFONTM    =	0
+NUMPICM     =	3
+NUMTILE8    =	108
+NUMTILE8M   =	36
+NUMTILE32   =	0
+NUMTILE32M  =	0
+
+;
+; Amount of each item in episode 6
+;
+NUMPICS     =	37
+NUMSPRITES  =	390
+NUMTILE16   =	2376
+NUMTILE16M  =	2736
+NUMEXTERN   =	11
+
+
+;
+; File offsets for data items
+;
+STRUCTPIC       =	0
+STRUCTPICM      =	1
+STRUCTSPRITE    =	2
+
+STARTFONT       =	3
+STARTFONTM      =	(STARTFONT+NUMFONT)
+STARTPICS       =	(STARTFONTM+NUMFONTM)
+STARTPICM       =	(STARTPICS+NUMPICS)
+STARTSPRITES    =	(STARTPICM+NUMPICM)
+STARTTILE8      =	(STARTSPRITES+NUMSPRITES)
+STARTTILE8M     =	(STARTTILE8+1)
+STARTTILE16     =	(STARTTILE8M+1)
+STARTTILE16M    =	(STARTTILE16+NUMTILE16)
+STARTTILE32     =	(STARTTILE16M+NUMTILE16M)
+STARTTILE32M    =	(STARTTILE32+NUMTILE32)
+STARTEXTERN     =	(STARTTILE32M+NUMTILE32M)
+
+NUMCHUNKS       =	(STARTEXTERN+NUMEXTERN)
+
+;
+; Thank you for using IGRAB!
+;
