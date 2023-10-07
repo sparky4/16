@@ -37,3 +37,5 @@ the game is a 16 bit top down scroller in 4 directions where is loads more level
 it will have a save feature, OPL3 and PC speacker sounds, a custom palette manager that loads palette for different sprites and stuff on the fly and merge matching colors together
 i need to return the ylookup table for the graphical system
 which is what wolf 3d used
+
+## This repo is specifically made just for the game engine. all test programs will break here.
