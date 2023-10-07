@@ -1,0 +1,10 @@
+option quiet
+debug dwarf all
+option stack=32768
+system dos
+file mmtest.obj
+name mmtest.exe
+option map=mmtest.meh
+library 16.lib
+library gfx.lib
+library doslib.lib

@@ -1,0 +1,10 @@
+option quiet
+debug dwarf all
+option stack=32768
+system dos
+file paltest.obj
+name paltest.exe
+option map=paltest.meh
+library 16.lib
+library gfx.lib
+library doslib.lib

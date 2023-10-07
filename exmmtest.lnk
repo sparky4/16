@@ -1,0 +1,10 @@
+option quiet
+debug dwarf all
+option stack=32768
+system dos
+file exmmtest.obj
+name exmmtest.exe
+option map=exmmtest.meh
+library 16.lib
+library gfx.lib
+library doslib.lib

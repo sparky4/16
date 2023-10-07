@@ -1,0 +1,10 @@
+option quiet
+debug dwarf all
+option stack=32768
+system dos
+file imfplay.obj
+name imfplay.exe
+option map=imfplay.meh
+library 16.lib
+library doslib.lib
+library gfx.lib
