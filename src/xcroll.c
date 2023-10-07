@@ -330,8 +330,8 @@ void main(int argc, char *argv[])
 	modexFadeOff(4, &gvar.video.palette);
 #endif
 		#ifdef SCROLLEXEDEBUG
-	MM_DumpData (&gvar);
-	HC_heapdump (&gvar);
+//	MM_DumpData (&gvar);
+//	HC_heapdump (&gvar);
 		#endif
 	Shutdown16(&gvar);
 	printf("\nProject 16 xcroll.exe. This is just a test file!\n");
