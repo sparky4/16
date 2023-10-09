@@ -45,3 +45,4 @@ ps.exe
 #!foo.html
 # Ignore objects and archives.
 *.[oa]
+*lnk

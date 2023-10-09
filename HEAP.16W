@@ -1,0 +1,28 @@
+
+	== near ==
+
+  USED block at 1b2e:e786 of size 12
+  USED block at 1b2e:e792 of size 512
+  USED block at 1b2e:e992 of size 82
+  USED block at 1b2e:e9e4 of size 20
+  USED block at 1b2e:e9f8 of size 20
+  USED block at 1b2e:ea0c of size 20
+  USED block at 1b2e:ea20 of size 20
+  USED block at 1b2e:ea34 of size 20
+  FREE block at 1b2e:ea48 of size 5556
+OK - end of heap
+
+	== far ==
+
+ERROR - heap is damaged
+
+Memory Type         Total      Used       Free
+----------------  --------   --------   --------
+Near		   6262		706	  5556
+Far		   0		0	  0
+----------------  --------   --------   --------
+HC_coreleft = 5554
+HC_farcoreleft = 480340
+coreleft = 5554
+farcoreleft = 480340
+stackavail = 31494
