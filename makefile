@@ -183,7 +183,7 @@ DOSLIB=doslib.lib
 
 #CFLAGS is neccessary here
 .$(OBJ).exe :
-	*wcl $(LFLAGS) $(extra_$^&_exe_opts)$<		-fe=$@
+	*wcl $(LFLAGS) $(extra_$^&_exe_opts) $<		-fe=$@
 
 LIBMAKERULE=*wlib $(LIBFLAGS) $(extra_$^&_lib_opts)$@ $<
 .$(OBJ).lib :
@@ -508,7 +508,7 @@ clean: .symbolic
 	@if not exist pcx2vrl wmake -s -h pcx2vrl
 	#@if not exist png2vrl wmake -s -h png2vrl
 	@if not exist dro2imf wmake -s -h drotoimf
-	@if not exist raw2vgm wmake -s -h vgmtools
+	#@if not exist raw2vgm wmake -s -h vgmtools
 !else
 	@if exist *.o $(REMOVECOMMAND) *.o
 !endif

@@ -1,7 +1,0 @@
-option quiet
-debug dwarf all
-option stack=32768
-system dos
-file vrldbg.obj
-name vrldbg.exe
-option map=vrldbg.meh
