@@ -1,0 +1,97 @@
+TED 5.0 Features
+---------------------------------------------------------------------------
+
+__ Handles all current tile types with ease of expansion for future sizes.
+   Current sizes are: 8x8,16x16,32x32. Only one tile size is permitted per
+   map set.
+
+__ Handles any amount of tiles that will fit in EMS memory. If EMS is not
+   present, you can't use TED 5.0!
+
+__ Handles masked and non-masked tiles.
+
+__ Each map has 3 planes: background tiles, foreground tiles, and extra
+   info. The extra info plane will blit icons for values 0-63 (?), higher
+   values will be printed as hex. Planes will be selected upon project
+   creation.
+
+__ Must have ability to turn on/off each individual plane so all planes
+   can be on or off at once.
+
+__ Video modes supported will be CGA 320x200, EGA 320x200/640x480/800x600,
+   VGA 320x200 256-color.
+
+__ Map Morph feature will allow user to select a block area and make snap-
+   shots of it, modify the area, make another snapshot, etc. until the
+   morph process is completed. Full editing capabilities will include:
+   DELETE FRAME, INSERT FRAME, MAKE SNAPSHOT.
+
+__ TileInfo feature will allow user to edit tile attributes. Editing capa-
+   bilities will include: ADD, DELETE, CHANGE NAME.
+
+__ TED editing feature will include:
+
+	__ Flood Fill
+	__ Block Fill
+	__ Copy Block (from tile maps as well) with SparseTile handling
+	__ Paste (with floating corners)
+	__ Draw
+	__ Line
+
+__ Other features:
+
+	__ Info Bar (on/off)
+	__ Tile Search
+	__ Map Info
+	__ ScrollKeys (SHIFT for full screen moves)
+	__ Right-Button tile-pickup
+	__ Map Resizing (with Edge Selection)
+	__ X,Y coords in Hex & Dec
+	__ All numeric input will support HEX,DEC,BIN
+
+__ Map files will be saved as either MAPTEMP.ext for the RLEW-only
+   (development) version, or GAMEMAPS.ext for the HUFF/RLEW version.
+
+__ Dialogs will be implemented.
+
+__ Project selection.
+
+__ Map selection by name!
+
+__ Create ApplePreferred or ILBM Map dumps
+
+
+
+
+
+Map Header Struct
+-------------------------------------------------------------------
+size		what		description
+-------------------------------------------------------------------
+unsigned	HeaderSize	size of the entire map header
+unsigned	MapType		how many planes the map has. If there
+				are 3, you have back/foreground & info.
+				If there are 2, you have back & info, If
+				there is 1, you have background.
+unsigned	TileSize	size of tiles map is made for
+				(1=8,2=16,3=32)
+long		TileInfoOff	offset to TILEINFO data
+long		TileInfoMOff	offset to MASKED TILEINFO data
+unsigned	RLEWtag		RLEW tag byte
+unsigned	Dictionary	offset to Huff dictionary. 0 if RLEW only.
+unsigned	DataOffsets	offset to MapOffset list
+...
+long		MapOffsets	offsets to Maps in map file
+
+
+
+Map Structure
+-------------------------------------------------------------------
+size		what		description
+-------------------------------------------------------------------
+long		Plane 0		offset to plane 0
+long		Plane 1		offset to plane 1 (0 if none)
+long		Plane 2		offset to plane 2 (0 if none)
+char		Name		Map name (16 chars)
+...
+unsigned	MapData		all map data is in WORDs

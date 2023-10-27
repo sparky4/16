@@ -1,0 +1,12 @@
+//////////////////////////////////////
+//
+// Graphics DEFINE file for .TED
+// FGRAB-ed on Thu Aug 08 17:33:46 1991
+//
+//////////////////////////////////////
+
+
+
+//
+// Thank you for using FGRAB!
+//
